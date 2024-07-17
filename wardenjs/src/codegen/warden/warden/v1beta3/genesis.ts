@@ -18,7 +18,7 @@ export interface GenesisState {
   signRequests: SignRequest[];
 }
 export interface GenesisStateProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.GenesisState";
+  typeUrl: "/warden.warden.v1beta3.GenesisState";
   value: Uint8Array;
 }
 /** GenesisState defines the warden module's genesis state. */
@@ -32,7 +32,7 @@ export interface GenesisStateAmino {
   sign_requests: SignRequestAmino[];
 }
 export interface GenesisStateAminoMsg {
-  type: "/warden.warden.v1beta2.GenesisState";
+  type: "/warden.warden.v1beta3.GenesisState";
   value: GenesisStateAmino;
 }
 /** GenesisState defines the warden module's genesis state. */
@@ -55,7 +55,7 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  typeUrl: "/warden.warden.v1beta2.GenesisState",
+  typeUrl: "/warden.warden.v1beta3.GenesisState",
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -212,7 +212,7 @@ export const GenesisState = {
   },
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.GenesisState",
+      typeUrl: "/warden.warden.v1beta3.GenesisState",
       value: GenesisState.encode(message).finish()
     };
   }

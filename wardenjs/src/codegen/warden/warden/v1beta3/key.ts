@@ -173,7 +173,7 @@ export interface KeyRequest {
   ruleId: bigint;
 }
 export interface KeyRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.KeyRequest";
+  typeUrl: "/warden.warden.v1beta3.KeyRequest";
   value: Uint8Array;
 }
 /**
@@ -206,7 +206,7 @@ export interface KeyRequestAmino {
   rule_id?: string;
 }
 export interface KeyRequestAminoMsg {
-  type: "/warden.warden.v1beta2.KeyRequest";
+  type: "/warden.warden.v1beta3.KeyRequest";
   value: KeyRequestAmino;
 }
 /**
@@ -250,7 +250,7 @@ export interface Key {
   ruleId: bigint;
 }
 export interface KeyProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.Key";
+  typeUrl: "/warden.warden.v1beta3.Key";
   value: Uint8Array;
 }
 /** Key is a public key that can be used to sign data. */
@@ -276,7 +276,7 @@ export interface KeyAmino {
   rule_id?: string;
 }
 export interface KeyAminoMsg {
-  type: "/warden.warden.v1beta2.Key";
+  type: "/warden.warden.v1beta3.Key";
   value: KeyAmino;
 }
 /** Key is a public key that can be used to sign data. */
@@ -301,7 +301,7 @@ function createBaseKeyRequest(): KeyRequest {
   };
 }
 export const KeyRequest = {
-  typeUrl: "/warden.warden.v1beta2.KeyRequest",
+  typeUrl: "/warden.warden.v1beta3.KeyRequest",
   encode(message: KeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -454,7 +454,7 @@ export const KeyRequest = {
   },
   toProtoMsg(message: KeyRequest): KeyRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.KeyRequest",
+      typeUrl: "/warden.warden.v1beta3.KeyRequest",
       value: KeyRequest.encode(message).finish()
     };
   }
@@ -470,7 +470,7 @@ function createBaseKey(): Key {
   };
 }
 export const Key = {
-  typeUrl: "/warden.warden.v1beta2.Key",
+  typeUrl: "/warden.warden.v1beta3.Key",
   encode(message: Key, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -597,7 +597,7 @@ export const Key = {
   },
   toProtoMsg(message: Key): KeyProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.Key",
+      typeUrl: "/warden.warden.v1beta3.Key",
       value: Key.encode(message).finish()
     };
   }

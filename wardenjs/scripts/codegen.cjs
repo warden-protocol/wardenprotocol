@@ -104,7 +104,7 @@ telescope({
       enabled: true,
       instantExport: {
         include: {
-          patterns: ['warden.act.v1beta1.**', 'warden.warden.v1beta2.**']
+          patterns: ['warden.act.v1beta1.**', 'warden.warden.v1beta3.**']
         }
       }
     }

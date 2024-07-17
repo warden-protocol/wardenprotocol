@@ -11,13 +11,13 @@ import { isSet } from "../../../helpers.js";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryParamsRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryParamsRequest";
   value: Uint8Array;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryParamsRequest";
+  type: "/warden.warden.v1beta3.QueryParamsRequest";
   value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
@@ -28,7 +28,7 @@ export interface QueryParamsResponse {
   params: Params;
 }
 export interface QueryParamsResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryParamsResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryParamsResponse";
   value: Uint8Array;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
@@ -37,7 +37,7 @@ export interface QueryParamsResponseAmino {
   params: ParamsAmino;
 }
 export interface QueryParamsResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryParamsResponse";
+  type: "/warden.warden.v1beta3.QueryParamsResponse";
   value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
@@ -48,14 +48,14 @@ export interface QuerySpacesRequest {
   pagination?: PageRequest;
 }
 export interface QuerySpacesRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySpacesRequest";
+  typeUrl: "/warden.warden.v1beta3.QuerySpacesRequest";
   value: Uint8Array;
 }
 export interface QuerySpacesRequestAmino {
   pagination?: PageRequestAmino;
 }
 export interface QuerySpacesRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySpacesRequest";
+  type: "/warden.warden.v1beta3.QuerySpacesRequest";
   value: QuerySpacesRequestAmino;
 }
 export interface QuerySpacesRequestSDKType {
@@ -66,7 +66,7 @@ export interface QuerySpacesResponse {
   spaces: Space[];
 }
 export interface QuerySpacesResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySpacesResponse";
+  typeUrl: "/warden.warden.v1beta3.QuerySpacesResponse";
   value: Uint8Array;
 }
 export interface QuerySpacesResponseAmino {
@@ -74,7 +74,7 @@ export interface QuerySpacesResponseAmino {
   spaces?: SpaceAmino[];
 }
 export interface QuerySpacesResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySpacesResponse";
+  type: "/warden.warden.v1beta3.QuerySpacesResponse";
   value: QuerySpacesResponseAmino;
 }
 export interface QuerySpacesResponseSDKType {
@@ -86,7 +86,7 @@ export interface QuerySpacesByOwnerRequest {
   owner: string;
 }
 export interface QuerySpacesByOwnerRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySpacesByOwnerRequest";
+  typeUrl: "/warden.warden.v1beta3.QuerySpacesByOwnerRequest";
   value: Uint8Array;
 }
 export interface QuerySpacesByOwnerRequestAmino {
@@ -94,7 +94,7 @@ export interface QuerySpacesByOwnerRequestAmino {
   owner?: string;
 }
 export interface QuerySpacesByOwnerRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySpacesByOwnerRequest";
+  type: "/warden.warden.v1beta3.QuerySpacesByOwnerRequest";
   value: QuerySpacesByOwnerRequestAmino;
 }
 export interface QuerySpacesByOwnerRequestSDKType {
@@ -105,14 +105,14 @@ export interface QueryKeychainsRequest {
   pagination?: PageRequest;
 }
 export interface QueryKeychainsRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainsRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainsRequest";
   value: Uint8Array;
 }
 export interface QueryKeychainsRequestAmino {
   pagination?: PageRequestAmino;
 }
 export interface QueryKeychainsRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeychainsRequest";
+  type: "/warden.warden.v1beta3.QueryKeychainsRequest";
   value: QueryKeychainsRequestAmino;
 }
 export interface QueryKeychainsRequestSDKType {
@@ -123,7 +123,7 @@ export interface QueryKeychainsResponse {
   keychains: Keychain[];
 }
 export interface QueryKeychainsResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainsResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainsResponse";
   value: Uint8Array;
 }
 export interface QueryKeychainsResponseAmino {
@@ -131,7 +131,7 @@ export interface QueryKeychainsResponseAmino {
   keychains?: KeychainAmino[];
 }
 export interface QueryKeychainsResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeychainsResponse";
+  type: "/warden.warden.v1beta3.QueryKeychainsResponse";
   value: QueryKeychainsResponseAmino;
 }
 export interface QueryKeychainsResponseSDKType {
@@ -142,14 +142,14 @@ export interface QuerySpaceByIdRequest {
   id: bigint;
 }
 export interface QuerySpaceByIdRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdRequest";
+  typeUrl: "/warden.warden.v1beta3.QuerySpaceByIdRequest";
   value: Uint8Array;
 }
 export interface QuerySpaceByIdRequestAmino {
   id?: string;
 }
 export interface QuerySpaceByIdRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySpaceByIdRequest";
+  type: "/warden.warden.v1beta3.QuerySpaceByIdRequest";
   value: QuerySpaceByIdRequestAmino;
 }
 export interface QuerySpaceByIdRequestSDKType {
@@ -159,14 +159,14 @@ export interface QuerySpaceByIdResponse {
   space?: Space;
 }
 export interface QuerySpaceByIdResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdResponse";
+  typeUrl: "/warden.warden.v1beta3.QuerySpaceByIdResponse";
   value: Uint8Array;
 }
 export interface QuerySpaceByIdResponseAmino {
   space?: SpaceAmino;
 }
 export interface QuerySpaceByIdResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySpaceByIdResponse";
+  type: "/warden.warden.v1beta3.QuerySpaceByIdResponse";
   value: QuerySpaceByIdResponseAmino;
 }
 export interface QuerySpaceByIdResponseSDKType {
@@ -176,14 +176,14 @@ export interface QueryKeychainByIdRequest {
   id: bigint;
 }
 export interface QueryKeychainByIdRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainByIdRequest";
   value: Uint8Array;
 }
 export interface QueryKeychainByIdRequestAmino {
   id?: string;
 }
 export interface QueryKeychainByIdRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeychainByIdRequest";
+  type: "/warden.warden.v1beta3.QueryKeychainByIdRequest";
   value: QueryKeychainByIdRequestAmino;
 }
 export interface QueryKeychainByIdRequestSDKType {
@@ -193,14 +193,14 @@ export interface QueryKeychainByIdResponse {
   keychain?: Keychain;
 }
 export interface QueryKeychainByIdResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainByIdResponse";
   value: Uint8Array;
 }
 export interface QueryKeychainByIdResponseAmino {
   keychain?: KeychainAmino;
 }
 export interface QueryKeychainByIdResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeychainByIdResponse";
+  type: "/warden.warden.v1beta3.QueryKeychainByIdResponse";
   value: QueryKeychainByIdResponseAmino;
 }
 export interface QueryKeychainByIdResponseSDKType {
@@ -214,7 +214,7 @@ export interface QueryKeyRequestsRequest {
   spaceId: bigint;
 }
 export interface QueryKeyRequestsRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestsRequest";
   value: Uint8Array;
 }
 export interface QueryKeyRequestsRequestAmino {
@@ -225,7 +225,7 @@ export interface QueryKeyRequestsRequestAmino {
   space_id?: string;
 }
 export interface QueryKeyRequestsRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeyRequestsRequest";
+  type: "/warden.warden.v1beta3.QueryKeyRequestsRequest";
   value: QueryKeyRequestsRequestAmino;
 }
 export interface QueryKeyRequestsRequestSDKType {
@@ -239,7 +239,7 @@ export interface QueryKeyRequestsResponse {
   keyRequests: KeyRequest[];
 }
 export interface QueryKeyRequestsResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestsResponse";
   value: Uint8Array;
 }
 export interface QueryKeyRequestsResponseAmino {
@@ -247,7 +247,7 @@ export interface QueryKeyRequestsResponseAmino {
   key_requests?: KeyRequestAmino[];
 }
 export interface QueryKeyRequestsResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeyRequestsResponse";
+  type: "/warden.warden.v1beta3.QueryKeyRequestsResponse";
   value: QueryKeyRequestsResponseAmino;
 }
 export interface QueryKeyRequestsResponseSDKType {
@@ -258,14 +258,14 @@ export interface QueryKeyRequestByIdRequest {
   id: bigint;
 }
 export interface QueryKeyRequestByIdRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestByIdRequest";
   value: Uint8Array;
 }
 export interface QueryKeyRequestByIdRequestAmino {
   id?: string;
 }
 export interface QueryKeyRequestByIdRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeyRequestByIdRequest";
+  type: "/warden.warden.v1beta3.QueryKeyRequestByIdRequest";
   value: QueryKeyRequestByIdRequestAmino;
 }
 export interface QueryKeyRequestByIdRequestSDKType {
@@ -275,14 +275,14 @@ export interface QueryKeyRequestByIdResponse {
   keyRequest?: KeyRequest;
 }
 export interface QueryKeyRequestByIdResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestByIdResponse";
   value: Uint8Array;
 }
 export interface QueryKeyRequestByIdResponseAmino {
   key_request?: KeyRequestAmino;
 }
 export interface QueryKeyRequestByIdResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeyRequestByIdResponse";
+  type: "/warden.warden.v1beta3.QueryKeyRequestByIdResponse";
   value: QueryKeyRequestByIdResponseAmino;
 }
 export interface QueryKeyRequestByIdResponseSDKType {
@@ -294,7 +294,7 @@ export interface QueryAllKeysRequest {
   deriveAddresses: AddressType[];
 }
 export interface QueryAllKeysRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryAllKeysRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryAllKeysRequest";
   value: Uint8Array;
 }
 export interface QueryAllKeysRequestAmino {
@@ -303,7 +303,7 @@ export interface QueryAllKeysRequestAmino {
   derive_addresses?: AddressType[];
 }
 export interface QueryAllKeysRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryAllKeysRequest";
+  type: "/warden.warden.v1beta3.QueryAllKeysRequest";
   value: QueryAllKeysRequestAmino;
 }
 export interface QueryAllKeysRequestSDKType {
@@ -315,7 +315,7 @@ export interface QueryKeysResponse {
   keys: QueryKeyResponse[];
 }
 export interface QueryKeysResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeysResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryKeysResponse";
   value: Uint8Array;
 }
 export interface QueryKeysResponseAmino {
@@ -323,7 +323,7 @@ export interface QueryKeysResponseAmino {
   keys?: QueryKeyResponseAmino[];
 }
 export interface QueryKeysResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeysResponse";
+  type: "/warden.warden.v1beta3.QueryKeysResponse";
   value: QueryKeysResponseAmino;
 }
 export interface QueryKeysResponseSDKType {
@@ -337,7 +337,7 @@ export interface QueryKeysBySpaceIdRequest {
   deriveAddresses: AddressType[];
 }
 export interface QueryKeysBySpaceIdRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeysBySpaceIdRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryKeysBySpaceIdRequest";
   value: Uint8Array;
 }
 export interface QueryKeysBySpaceIdRequestAmino {
@@ -347,7 +347,7 @@ export interface QueryKeysBySpaceIdRequestAmino {
   derive_addresses?: AddressType[];
 }
 export interface QueryKeysBySpaceIdRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeysBySpaceIdRequest";
+  type: "/warden.warden.v1beta3.QueryKeysBySpaceIdRequest";
   value: QueryKeysBySpaceIdRequestAmino;
 }
 export interface QueryKeysBySpaceIdRequestSDKType {
@@ -361,7 +361,7 @@ export interface QueryKeyByIdRequest {
   deriveAddresses: AddressType[];
 }
 export interface QueryKeyByIdRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyByIdRequest";
+  typeUrl: "/warden.warden.v1beta3.QueryKeyByIdRequest";
   value: Uint8Array;
 }
 export interface QueryKeyByIdRequestAmino {
@@ -370,7 +370,7 @@ export interface QueryKeyByIdRequestAmino {
   derive_addresses?: AddressType[];
 }
 export interface QueryKeyByIdRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeyByIdRequest";
+  type: "/warden.warden.v1beta3.QueryKeyByIdRequest";
   value: QueryKeyByIdRequestAmino;
 }
 export interface QueryKeyByIdRequestSDKType {
@@ -382,7 +382,7 @@ export interface QueryKeyResponse {
   addresses: AddressResponse[];
 }
 export interface QueryKeyResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyResponse";
+  typeUrl: "/warden.warden.v1beta3.QueryKeyResponse";
   value: Uint8Array;
 }
 export interface QueryKeyResponseAmino {
@@ -390,7 +390,7 @@ export interface QueryKeyResponseAmino {
   addresses?: AddressResponseAmino[];
 }
 export interface QueryKeyResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QueryKeyResponse";
+  type: "/warden.warden.v1beta3.QueryKeyResponse";
   value: QueryKeyResponseAmino;
 }
 export interface QueryKeyResponseSDKType {
@@ -402,7 +402,7 @@ export interface AddressResponse {
   type: AddressType;
 }
 export interface AddressResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.AddressResponse";
+  typeUrl: "/warden.warden.v1beta3.AddressResponse";
   value: Uint8Array;
 }
 export interface AddressResponseAmino {
@@ -410,7 +410,7 @@ export interface AddressResponseAmino {
   type?: AddressType;
 }
 export interface AddressResponseAminoMsg {
-  type: "/warden.warden.v1beta2.AddressResponse";
+  type: "/warden.warden.v1beta3.AddressResponse";
   value: AddressResponseAmino;
 }
 export interface AddressResponseSDKType {
@@ -424,7 +424,7 @@ export interface QuerySignRequestsRequest {
   status: SignRequestStatus;
 }
 export interface QuerySignRequestsRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestsRequest";
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestsRequest";
   value: Uint8Array;
 }
 export interface QuerySignRequestsRequestAmino {
@@ -434,7 +434,7 @@ export interface QuerySignRequestsRequestAmino {
   status?: SignRequestStatus;
 }
 export interface QuerySignRequestsRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySignRequestsRequest";
+  type: "/warden.warden.v1beta3.QuerySignRequestsRequest";
   value: QuerySignRequestsRequestAmino;
 }
 export interface QuerySignRequestsRequestSDKType {
@@ -447,7 +447,7 @@ export interface QuerySignRequestsResponse {
   signRequests: SignRequest[];
 }
 export interface QuerySignRequestsResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestsResponse";
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestsResponse";
   value: Uint8Array;
 }
 export interface QuerySignRequestsResponseAmino {
@@ -455,7 +455,7 @@ export interface QuerySignRequestsResponseAmino {
   sign_requests?: SignRequestAmino[];
 }
 export interface QuerySignRequestsResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySignRequestsResponse";
+  type: "/warden.warden.v1beta3.QuerySignRequestsResponse";
   value: QuerySignRequestsResponseAmino;
 }
 export interface QuerySignRequestsResponseSDKType {
@@ -466,14 +466,14 @@ export interface QuerySignRequestByIdRequest {
   id: bigint;
 }
 export interface QuerySignRequestByIdRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestByIdRequest";
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdRequest";
   value: Uint8Array;
 }
 export interface QuerySignRequestByIdRequestAmino {
   id?: string;
 }
 export interface QuerySignRequestByIdRequestAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySignRequestByIdRequest";
+  type: "/warden.warden.v1beta3.QuerySignRequestByIdRequest";
   value: QuerySignRequestByIdRequestAmino;
 }
 export interface QuerySignRequestByIdRequestSDKType {
@@ -483,14 +483,14 @@ export interface QuerySignRequestByIdResponse {
   signRequest?: SignRequest;
 }
 export interface QuerySignRequestByIdResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestByIdResponse";
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdResponse";
   value: Uint8Array;
 }
 export interface QuerySignRequestByIdResponseAmino {
   sign_request?: SignRequestAmino;
 }
 export interface QuerySignRequestByIdResponseAminoMsg {
-  type: "/warden.warden.v1beta2.QuerySignRequestByIdResponse";
+  type: "/warden.warden.v1beta3.QuerySignRequestByIdResponse";
   value: QuerySignRequestByIdResponseAmino;
 }
 export interface QuerySignRequestByIdResponseSDKType {
@@ -500,7 +500,7 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryParamsRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryParamsRequest",
   encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -548,7 +548,7 @@ export const QueryParamsRequest = {
   },
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryParamsRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryParamsRequest",
       value: QueryParamsRequest.encode(message).finish()
     };
   }
@@ -559,7 +559,7 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryParamsResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryParamsResponse",
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -621,7 +621,7 @@ export const QueryParamsResponse = {
   },
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryParamsResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryParamsResponse",
       value: QueryParamsResponse.encode(message).finish()
     };
   }
@@ -632,7 +632,7 @@ function createBaseQuerySpacesRequest(): QuerySpacesRequest {
   };
 }
 export const QuerySpacesRequest = {
-  typeUrl: "/warden.warden.v1beta2.QuerySpacesRequest",
+  typeUrl: "/warden.warden.v1beta3.QuerySpacesRequest",
   encode(message: QuerySpacesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -694,7 +694,7 @@ export const QuerySpacesRequest = {
   },
   toProtoMsg(message: QuerySpacesRequest): QuerySpacesRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySpacesRequest",
+      typeUrl: "/warden.warden.v1beta3.QuerySpacesRequest",
       value: QuerySpacesRequest.encode(message).finish()
     };
   }
@@ -706,7 +706,7 @@ function createBaseQuerySpacesResponse(): QuerySpacesResponse {
   };
 }
 export const QuerySpacesResponse = {
-  typeUrl: "/warden.warden.v1beta2.QuerySpacesResponse",
+  typeUrl: "/warden.warden.v1beta3.QuerySpacesResponse",
   encode(message: QuerySpacesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -787,7 +787,7 @@ export const QuerySpacesResponse = {
   },
   toProtoMsg(message: QuerySpacesResponse): QuerySpacesResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySpacesResponse",
+      typeUrl: "/warden.warden.v1beta3.QuerySpacesResponse",
       value: QuerySpacesResponse.encode(message).finish()
     };
   }
@@ -799,7 +799,7 @@ function createBaseQuerySpacesByOwnerRequest(): QuerySpacesByOwnerRequest {
   };
 }
 export const QuerySpacesByOwnerRequest = {
-  typeUrl: "/warden.warden.v1beta2.QuerySpacesByOwnerRequest",
+  typeUrl: "/warden.warden.v1beta3.QuerySpacesByOwnerRequest",
   encode(message: QuerySpacesByOwnerRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -874,7 +874,7 @@ export const QuerySpacesByOwnerRequest = {
   },
   toProtoMsg(message: QuerySpacesByOwnerRequest): QuerySpacesByOwnerRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySpacesByOwnerRequest",
+      typeUrl: "/warden.warden.v1beta3.QuerySpacesByOwnerRequest",
       value: QuerySpacesByOwnerRequest.encode(message).finish()
     };
   }
@@ -885,7 +885,7 @@ function createBaseQueryKeychainsRequest(): QueryKeychainsRequest {
   };
 }
 export const QueryKeychainsRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainsRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainsRequest",
   encode(message: QueryKeychainsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -947,7 +947,7 @@ export const QueryKeychainsRequest = {
   },
   toProtoMsg(message: QueryKeychainsRequest): QueryKeychainsRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeychainsRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryKeychainsRequest",
       value: QueryKeychainsRequest.encode(message).finish()
     };
   }
@@ -959,7 +959,7 @@ function createBaseQueryKeychainsResponse(): QueryKeychainsResponse {
   };
 }
 export const QueryKeychainsResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainsResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainsResponse",
   encode(message: QueryKeychainsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1040,7 +1040,7 @@ export const QueryKeychainsResponse = {
   },
   toProtoMsg(message: QueryKeychainsResponse): QueryKeychainsResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeychainsResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryKeychainsResponse",
       value: QueryKeychainsResponse.encode(message).finish()
     };
   }
@@ -1051,7 +1051,7 @@ function createBaseQuerySpaceByIdRequest(): QuerySpaceByIdRequest {
   };
 }
 export const QuerySpaceByIdRequest = {
-  typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdRequest",
+  typeUrl: "/warden.warden.v1beta3.QuerySpaceByIdRequest",
   encode(message: QuerySpaceByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1113,7 +1113,7 @@ export const QuerySpaceByIdRequest = {
   },
   toProtoMsg(message: QuerySpaceByIdRequest): QuerySpaceByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdRequest",
+      typeUrl: "/warden.warden.v1beta3.QuerySpaceByIdRequest",
       value: QuerySpaceByIdRequest.encode(message).finish()
     };
   }
@@ -1124,7 +1124,7 @@ function createBaseQuerySpaceByIdResponse(): QuerySpaceByIdResponse {
   };
 }
 export const QuerySpaceByIdResponse = {
-  typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdResponse",
+  typeUrl: "/warden.warden.v1beta3.QuerySpaceByIdResponse",
   encode(message: QuerySpaceByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.space !== undefined) {
       Space.encode(message.space, writer.uint32(10).fork()).ldelim();
@@ -1186,7 +1186,7 @@ export const QuerySpaceByIdResponse = {
   },
   toProtoMsg(message: QuerySpaceByIdResponse): QuerySpaceByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdResponse",
+      typeUrl: "/warden.warden.v1beta3.QuerySpaceByIdResponse",
       value: QuerySpaceByIdResponse.encode(message).finish()
     };
   }
@@ -1197,7 +1197,7 @@ function createBaseQueryKeychainByIdRequest(): QueryKeychainByIdRequest {
   };
 }
 export const QueryKeychainByIdRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainByIdRequest",
   encode(message: QueryKeychainByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1259,7 +1259,7 @@ export const QueryKeychainByIdRequest = {
   },
   toProtoMsg(message: QueryKeychainByIdRequest): QueryKeychainByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryKeychainByIdRequest",
       value: QueryKeychainByIdRequest.encode(message).finish()
     };
   }
@@ -1270,7 +1270,7 @@ function createBaseQueryKeychainByIdResponse(): QueryKeychainByIdResponse {
   };
 }
 export const QueryKeychainByIdResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryKeychainByIdResponse",
   encode(message: QueryKeychainByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.keychain !== undefined) {
       Keychain.encode(message.keychain, writer.uint32(10).fork()).ldelim();
@@ -1332,7 +1332,7 @@ export const QueryKeychainByIdResponse = {
   },
   toProtoMsg(message: QueryKeychainByIdResponse): QueryKeychainByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryKeychainByIdResponse",
       value: QueryKeychainByIdResponse.encode(message).finish()
     };
   }
@@ -1346,7 +1346,7 @@ function createBaseQueryKeyRequestsRequest(): QueryKeyRequestsRequest {
   };
 }
 export const QueryKeyRequestsRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestsRequest",
   encode(message: QueryKeyRequestsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1447,7 +1447,7 @@ export const QueryKeyRequestsRequest = {
   },
   toProtoMsg(message: QueryKeyRequestsRequest): QueryKeyRequestsRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryKeyRequestsRequest",
       value: QueryKeyRequestsRequest.encode(message).finish()
     };
   }
@@ -1459,7 +1459,7 @@ function createBaseQueryKeyRequestsResponse(): QueryKeyRequestsResponse {
   };
 }
 export const QueryKeyRequestsResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestsResponse",
   encode(message: QueryKeyRequestsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1540,7 +1540,7 @@ export const QueryKeyRequestsResponse = {
   },
   toProtoMsg(message: QueryKeyRequestsResponse): QueryKeyRequestsResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryKeyRequestsResponse",
       value: QueryKeyRequestsResponse.encode(message).finish()
     };
   }
@@ -1551,7 +1551,7 @@ function createBaseQueryKeyRequestByIdRequest(): QueryKeyRequestByIdRequest {
   };
 }
 export const QueryKeyRequestByIdRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestByIdRequest",
   encode(message: QueryKeyRequestByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1613,7 +1613,7 @@ export const QueryKeyRequestByIdRequest = {
   },
   toProtoMsg(message: QueryKeyRequestByIdRequest): QueryKeyRequestByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryKeyRequestByIdRequest",
       value: QueryKeyRequestByIdRequest.encode(message).finish()
     };
   }
@@ -1624,7 +1624,7 @@ function createBaseQueryKeyRequestByIdResponse(): QueryKeyRequestByIdResponse {
   };
 }
 export const QueryKeyRequestByIdResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryKeyRequestByIdResponse",
   encode(message: QueryKeyRequestByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.keyRequest !== undefined) {
       KeyRequest.encode(message.keyRequest, writer.uint32(10).fork()).ldelim();
@@ -1686,7 +1686,7 @@ export const QueryKeyRequestByIdResponse = {
   },
   toProtoMsg(message: QueryKeyRequestByIdResponse): QueryKeyRequestByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryKeyRequestByIdResponse",
       value: QueryKeyRequestByIdResponse.encode(message).finish()
     };
   }
@@ -1698,7 +1698,7 @@ function createBaseQueryAllKeysRequest(): QueryAllKeysRequest {
   };
 }
 export const QueryAllKeysRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryAllKeysRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryAllKeysRequest",
   encode(message: QueryAllKeysRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1788,7 +1788,7 @@ export const QueryAllKeysRequest = {
   },
   toProtoMsg(message: QueryAllKeysRequest): QueryAllKeysRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryAllKeysRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryAllKeysRequest",
       value: QueryAllKeysRequest.encode(message).finish()
     };
   }
@@ -1800,7 +1800,7 @@ function createBaseQueryKeysResponse(): QueryKeysResponse {
   };
 }
 export const QueryKeysResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeysResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryKeysResponse",
   encode(message: QueryKeysResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1881,7 +1881,7 @@ export const QueryKeysResponse = {
   },
   toProtoMsg(message: QueryKeysResponse): QueryKeysResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeysResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryKeysResponse",
       value: QueryKeysResponse.encode(message).finish()
     };
   }
@@ -1894,7 +1894,7 @@ function createBaseQueryKeysBySpaceIdRequest(): QueryKeysBySpaceIdRequest {
   };
 }
 export const QueryKeysBySpaceIdRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeysBySpaceIdRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryKeysBySpaceIdRequest",
   encode(message: QueryKeysBySpaceIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1997,7 +1997,7 @@ export const QueryKeysBySpaceIdRequest = {
   },
   toProtoMsg(message: QueryKeysBySpaceIdRequest): QueryKeysBySpaceIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeysBySpaceIdRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryKeysBySpaceIdRequest",
       value: QueryKeysBySpaceIdRequest.encode(message).finish()
     };
   }
@@ -2009,7 +2009,7 @@ function createBaseQueryKeyByIdRequest(): QueryKeyByIdRequest {
   };
 }
 export const QueryKeyByIdRequest = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyByIdRequest",
+  typeUrl: "/warden.warden.v1beta3.QueryKeyByIdRequest",
   encode(message: QueryKeyByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -2099,7 +2099,7 @@ export const QueryKeyByIdRequest = {
   },
   toProtoMsg(message: QueryKeyByIdRequest): QueryKeyByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeyByIdRequest",
+      typeUrl: "/warden.warden.v1beta3.QueryKeyByIdRequest",
       value: QueryKeyByIdRequest.encode(message).finish()
     };
   }
@@ -2111,7 +2111,7 @@ function createBaseQueryKeyResponse(): QueryKeyResponse {
   };
 }
 export const QueryKeyResponse = {
-  typeUrl: "/warden.warden.v1beta2.QueryKeyResponse",
+  typeUrl: "/warden.warden.v1beta3.QueryKeyResponse",
   encode(message: QueryKeyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== undefined) {
       Key.encode(message.key, writer.uint32(10).fork()).ldelim();
@@ -2192,7 +2192,7 @@ export const QueryKeyResponse = {
   },
   toProtoMsg(message: QueryKeyResponse): QueryKeyResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QueryKeyResponse",
+      typeUrl: "/warden.warden.v1beta3.QueryKeyResponse",
       value: QueryKeyResponse.encode(message).finish()
     };
   }
@@ -2204,7 +2204,7 @@ function createBaseAddressResponse(): AddressResponse {
   };
 }
 export const AddressResponse = {
-  typeUrl: "/warden.warden.v1beta2.AddressResponse",
+  typeUrl: "/warden.warden.v1beta3.AddressResponse",
   encode(message: AddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -2279,7 +2279,7 @@ export const AddressResponse = {
   },
   toProtoMsg(message: AddressResponse): AddressResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.AddressResponse",
+      typeUrl: "/warden.warden.v1beta3.AddressResponse",
       value: AddressResponse.encode(message).finish()
     };
   }
@@ -2292,7 +2292,7 @@ function createBaseQuerySignRequestsRequest(): QuerySignRequestsRequest {
   };
 }
 export const QuerySignRequestsRequest = {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestsRequest",
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestsRequest",
   encode(message: QuerySignRequestsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -2380,7 +2380,7 @@ export const QuerySignRequestsRequest = {
   },
   toProtoMsg(message: QuerySignRequestsRequest): QuerySignRequestsRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySignRequestsRequest",
+      typeUrl: "/warden.warden.v1beta3.QuerySignRequestsRequest",
       value: QuerySignRequestsRequest.encode(message).finish()
     };
   }
@@ -2392,7 +2392,7 @@ function createBaseQuerySignRequestsResponse(): QuerySignRequestsResponse {
   };
 }
 export const QuerySignRequestsResponse = {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestsResponse",
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestsResponse",
   encode(message: QuerySignRequestsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -2473,7 +2473,7 @@ export const QuerySignRequestsResponse = {
   },
   toProtoMsg(message: QuerySignRequestsResponse): QuerySignRequestsResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySignRequestsResponse",
+      typeUrl: "/warden.warden.v1beta3.QuerySignRequestsResponse",
       value: QuerySignRequestsResponse.encode(message).finish()
     };
   }
@@ -2484,7 +2484,7 @@ function createBaseQuerySignRequestByIdRequest(): QuerySignRequestByIdRequest {
   };
 }
 export const QuerySignRequestByIdRequest = {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestByIdRequest",
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdRequest",
   encode(message: QuerySignRequestByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -2546,7 +2546,7 @@ export const QuerySignRequestByIdRequest = {
   },
   toProtoMsg(message: QuerySignRequestByIdRequest): QuerySignRequestByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySignRequestByIdRequest",
+      typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdRequest",
       value: QuerySignRequestByIdRequest.encode(message).finish()
     };
   }
@@ -2557,7 +2557,7 @@ function createBaseQuerySignRequestByIdResponse(): QuerySignRequestByIdResponse 
   };
 }
 export const QuerySignRequestByIdResponse = {
-  typeUrl: "/warden.warden.v1beta2.QuerySignRequestByIdResponse",
+  typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdResponse",
   encode(message: QuerySignRequestByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signRequest !== undefined) {
       SignRequest.encode(message.signRequest, writer.uint32(10).fork()).ldelim();
@@ -2619,7 +2619,7 @@ export const QuerySignRequestByIdResponse = {
   },
   toProtoMsg(message: QuerySignRequestByIdResponse): QuerySignRequestByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.QuerySignRequestByIdResponse",
+      typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdResponse",
       value: QuerySignRequestByIdResponse.encode(message).finish()
     };
   }

@@ -26,7 +26,7 @@ export class LCDQueryClient {
   }
   /* Parameters queries the parameters of the module. */
   async params(_params: QueryParamsRequest = {}): Promise<QueryParamsResponseSDKType> {
-    const endpoint = `warden/warden/v1beta2/params`;
+    const endpoint = `warden/warden/v1beta3/params`;
     return await this.req.get<QueryParamsResponseSDKType>(endpoint);
   }
   /* Queries a list of Spaces. */
@@ -39,7 +39,7 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `warden/warden/v1beta2/spaces`;
+    const endpoint = `warden/warden/v1beta3/spaces`;
     return await this.req.get<QuerySpacesResponseSDKType>(endpoint, options);
   }
   /* Queries a list of Spaces that have the specified owner. */
@@ -53,7 +53,7 @@ export class LCDQueryClient {
     if (typeof params?.owner !== "undefined") {
       options.params.owner = params.owner;
     }
-    const endpoint = `warden/warden/v1beta2/spaces_by_owner`;
+    const endpoint = `warden/warden/v1beta3/spaces_by_owner`;
     return await this.req.get<QuerySpacesResponseSDKType>(endpoint, options);
   }
   /* Queries a list of Keychains. */
@@ -66,7 +66,7 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `warden/warden/v1beta2/keychains`;
+    const endpoint = `warden/warden/v1beta3/keychains`;
     return await this.req.get<QueryKeychainsResponseSDKType>(endpoint, options);
   }
   /* Queries a Space by its id. */
@@ -77,7 +77,7 @@ export class LCDQueryClient {
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `warden/warden/v1beta2/space_by_address`;
+    const endpoint = `warden/warden/v1beta3/space_by_address`;
     return await this.req.get<QuerySpaceByIdResponseSDKType>(endpoint, options);
   }
   /* Queries a Keychain by its id. */
@@ -88,7 +88,7 @@ export class LCDQueryClient {
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `warden/warden/v1beta2/keychain_by_id`;
+    const endpoint = `warden/warden/v1beta3/keychain_by_id`;
     return await this.req.get<QueryKeychainByIdResponseSDKType>(endpoint, options);
   }
   /* Queries a list of KeyRequests. */
@@ -108,7 +108,7 @@ export class LCDQueryClient {
     if (typeof params?.spaceId !== "undefined") {
       options.params.space_id = params.spaceId;
     }
-    const endpoint = `warden/warden/v1beta2/key_requests`;
+    const endpoint = `warden/warden/v1beta3/key_requests`;
     return await this.req.get<QueryKeyRequestsResponseSDKType>(endpoint, options);
   }
   /* Queries a KeyRequest by its id. */
@@ -119,7 +119,7 @@ export class LCDQueryClient {
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `warden/warden/v1beta2/key_request_by_id`;
+    const endpoint = `warden/warden/v1beta3/key_request_by_id`;
     return await this.req.get<QueryKeyRequestByIdResponseSDKType>(endpoint, options);
   }
   /* Queries a list of Keys. */
@@ -133,7 +133,7 @@ export class LCDQueryClient {
     if (typeof params?.deriveAddresses !== "undefined") {
       options.params.derive_addresses = params.deriveAddresses;
     }
-    const endpoint = `warden/warden/v1beta2/keys`;
+    const endpoint = `warden/warden/v1beta3/keys`;
     return await this.req.get<QueryKeysResponseSDKType>(endpoint, options);
   }
   /* Queries a list of Keys by their Space ID. */
@@ -150,7 +150,7 @@ export class LCDQueryClient {
     if (typeof params?.deriveAddresses !== "undefined") {
       options.params.derive_addresses = params.deriveAddresses;
     }
-    const endpoint = `warden/warden/v1beta2/keys_by_space_id`;
+    const endpoint = `warden/warden/v1beta3/keys_by_space_id`;
     return await this.req.get<QueryKeysResponseSDKType>(endpoint, options);
   }
   /* Queries a Key by its ID. */
@@ -164,7 +164,7 @@ export class LCDQueryClient {
     if (typeof params?.deriveAddresses !== "undefined") {
       options.params.derive_addresses = params.deriveAddresses;
     }
-    const endpoint = `warden/warden/v1beta2/key_by_id`;
+    const endpoint = `warden/warden/v1beta3/key_by_id`;
     return await this.req.get<QueryKeyResponseSDKType>(endpoint, options);
   }
   /* Queries a list of SignRequests. */
@@ -181,7 +181,7 @@ export class LCDQueryClient {
     if (typeof params?.status !== "undefined") {
       options.params.status = params.status;
     }
-    const endpoint = `warden/warden/v1beta2/get_sign_requests`;
+    const endpoint = `warden/warden/v1beta3/get_sign_requests`;
     return await this.req.get<QuerySignRequestsResponseSDKType>(endpoint, options);
   }
   /* Queries a SignRequest by its id. */
@@ -192,7 +192,7 @@ export class LCDQueryClient {
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `warden/warden/v1beta2/signature_pb_request_by_id`;
+    const endpoint = `warden/warden/v1beta3/signature_pb_request_by_id`;
     return await this.req.get<QuerySignRequestByIdResponseSDKType>(endpoint, options);
   }
 }

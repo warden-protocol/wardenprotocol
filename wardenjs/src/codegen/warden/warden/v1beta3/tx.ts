@@ -18,7 +18,7 @@ export interface MsgUpdateParams {
   params: Params;
 }
 export interface MsgUpdateParamsProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateParams";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateParams";
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -47,7 +47,7 @@ export interface MsgUpdateParamsSDKType {
  */
 export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateParamsResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
 /**
@@ -56,7 +56,7 @@ export interface MsgUpdateParamsResponseProtoMsg {
  */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateParamsResponse";
+  type: "/warden.warden.v1beta3.MsgUpdateParamsResponse";
   value: MsgUpdateParamsResponseAmino;
 }
 /**
@@ -71,7 +71,7 @@ export interface MsgNewSpace {
   additionalOwners: string[];
 }
 export interface MsgNewSpaceProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSpace";
+  typeUrl: "/warden.warden.v1beta3.MsgNewSpace";
   value: Uint8Array;
 }
 export interface MsgNewSpaceAmino {
@@ -81,7 +81,7 @@ export interface MsgNewSpaceAmino {
   additional_owners?: string[];
 }
 export interface MsgNewSpaceAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSpace";
+  type: "/warden.warden.v1beta3.MsgNewSpace";
   value: MsgNewSpaceAmino;
 }
 export interface MsgNewSpaceSDKType {
@@ -94,14 +94,14 @@ export interface MsgNewSpaceResponse {
   id: bigint;
 }
 export interface MsgNewSpaceResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSpaceResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgNewSpaceResponse";
   value: Uint8Array;
 }
 export interface MsgNewSpaceResponseAmino {
   id?: string;
 }
 export interface MsgNewSpaceResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSpaceResponse";
+  type: "/warden.warden.v1beta3.MsgNewSpaceResponse";
   value: MsgNewSpaceResponseAmino;
 }
 export interface MsgNewSpaceResponseSDKType {
@@ -113,7 +113,7 @@ export interface MsgAddSpaceOwner {
   newOwner: string;
 }
 export interface MsgAddSpaceOwnerProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwner";
+  typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwner";
   value: Uint8Array;
 }
 export interface MsgAddSpaceOwnerAmino {
@@ -122,7 +122,7 @@ export interface MsgAddSpaceOwnerAmino {
   new_owner?: string;
 }
 export interface MsgAddSpaceOwnerAminoMsg {
-  type: "/warden.warden.v1beta2.MsgAddSpaceOwner";
+  type: "/warden.warden.v1beta3.MsgAddSpaceOwner";
   value: MsgAddSpaceOwnerAmino;
 }
 export interface MsgAddSpaceOwnerSDKType {
@@ -132,12 +132,12 @@ export interface MsgAddSpaceOwnerSDKType {
 }
 export interface MsgAddSpaceOwnerResponse {}
 export interface MsgAddSpaceOwnerResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwnerResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwnerResponse";
   value: Uint8Array;
 }
 export interface MsgAddSpaceOwnerResponseAmino {}
 export interface MsgAddSpaceOwnerResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgAddSpaceOwnerResponse";
+  type: "/warden.warden.v1beta3.MsgAddSpaceOwnerResponse";
   value: MsgAddSpaceOwnerResponseAmino;
 }
 export interface MsgAddSpaceOwnerResponseSDKType {}
@@ -147,7 +147,7 @@ export interface MsgRemoveSpaceOwner {
   owner: string;
 }
 export interface MsgRemoveSpaceOwnerProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwner";
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwner";
   value: Uint8Array;
 }
 export interface MsgRemoveSpaceOwnerAmino {
@@ -156,7 +156,7 @@ export interface MsgRemoveSpaceOwnerAmino {
   owner?: string;
 }
 export interface MsgRemoveSpaceOwnerAminoMsg {
-  type: "/warden.warden.v1beta2.MsgRemoveSpaceOwner";
+  type: "/warden.warden.v1beta3.MsgRemoveSpaceOwner";
   value: MsgRemoveSpaceOwnerAmino;
 }
 export interface MsgRemoveSpaceOwnerSDKType {
@@ -166,12 +166,12 @@ export interface MsgRemoveSpaceOwnerSDKType {
 }
 export interface MsgRemoveSpaceOwnerResponse {}
 export interface MsgRemoveSpaceOwnerResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse";
   value: Uint8Array;
 }
 export interface MsgRemoveSpaceOwnerResponseAmino {}
 export interface MsgRemoveSpaceOwnerResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse";
+  type: "/warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse";
   value: MsgRemoveSpaceOwnerResponseAmino;
 }
 export interface MsgRemoveSpaceOwnerResponseSDKType {}
@@ -181,7 +181,7 @@ export interface MsgNewKeychain {
   keychainFees?: KeychainFees;
 }
 export interface MsgNewKeychainProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeychain";
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeychain";
   value: Uint8Array;
 }
 export interface MsgNewKeychainAmino {
@@ -190,7 +190,7 @@ export interface MsgNewKeychainAmino {
   keychain_fees?: KeychainFeesAmino;
 }
 export interface MsgNewKeychainAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewKeychain";
+  type: "/warden.warden.v1beta3.MsgNewKeychain";
   value: MsgNewKeychainAmino;
 }
 export interface MsgNewKeychainSDKType {
@@ -202,14 +202,14 @@ export interface MsgNewKeychainResponse {
   id: bigint;
 }
 export interface MsgNewKeychainResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeychainResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeychainResponse";
   value: Uint8Array;
 }
 export interface MsgNewKeychainResponseAmino {
   id?: string;
 }
 export interface MsgNewKeychainResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewKeychainResponse";
+  type: "/warden.warden.v1beta3.MsgNewKeychainResponse";
   value: MsgNewKeychainResponseAmino;
 }
 export interface MsgNewKeychainResponseSDKType {
@@ -221,7 +221,7 @@ export interface MsgAddKeychainWriter {
   writer: string;
 }
 export interface MsgAddKeychainWriterProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter";
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainWriter";
   value: Uint8Array;
 }
 export interface MsgAddKeychainWriterAmino {
@@ -230,7 +230,7 @@ export interface MsgAddKeychainWriterAmino {
   writer?: string;
 }
 export interface MsgAddKeychainWriterAminoMsg {
-  type: "/warden.warden.v1beta2.MsgAddKeychainWriter";
+  type: "/warden.warden.v1beta3.MsgAddKeychainWriter";
   value: MsgAddKeychainWriterAmino;
 }
 export interface MsgAddKeychainWriterSDKType {
@@ -240,12 +240,12 @@ export interface MsgAddKeychainWriterSDKType {
 }
 export interface MsgAddKeychainWriterResponse {}
 export interface MsgAddKeychainWriterResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriterResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainWriterResponse";
   value: Uint8Array;
 }
 export interface MsgAddKeychainWriterResponseAmino {}
 export interface MsgAddKeychainWriterResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgAddKeychainWriterResponse";
+  type: "/warden.warden.v1beta3.MsgAddKeychainWriterResponse";
   value: MsgAddKeychainWriterResponseAmino;
 }
 export interface MsgAddKeychainWriterResponseSDKType {}
@@ -256,7 +256,7 @@ export interface MsgUpdateSpace {
   signRuleId: bigint;
 }
 export interface MsgUpdateSpaceProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateSpace";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateSpace";
   value: Uint8Array;
 }
 export interface MsgUpdateSpaceAmino {
@@ -266,7 +266,7 @@ export interface MsgUpdateSpaceAmino {
   sign_rule_id?: string;
 }
 export interface MsgUpdateSpaceAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateSpace";
+  type: "/warden.warden.v1beta3.MsgUpdateSpace";
   value: MsgUpdateSpaceAmino;
 }
 export interface MsgUpdateSpaceSDKType {
@@ -277,12 +277,12 @@ export interface MsgUpdateSpaceSDKType {
 }
 export interface MsgUpdateSpaceResponse {}
 export interface MsgUpdateSpaceResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateSpaceResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateSpaceResponse";
   value: Uint8Array;
 }
 export interface MsgUpdateSpaceResponseAmino {}
 export interface MsgUpdateSpaceResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateSpaceResponse";
+  type: "/warden.warden.v1beta3.MsgUpdateSpaceResponse";
   value: MsgUpdateSpaceResponseAmino;
 }
 export interface MsgUpdateSpaceResponseSDKType {}
@@ -293,7 +293,7 @@ export interface MsgUpdateKeychain {
   keychainFees?: KeychainFees;
 }
 export interface MsgUpdateKeychainProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychain";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychain";
   value: Uint8Array;
 }
 export interface MsgUpdateKeychainAmino {
@@ -303,7 +303,7 @@ export interface MsgUpdateKeychainAmino {
   keychain_fees?: KeychainFeesAmino;
 }
 export interface MsgUpdateKeychainAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateKeychain";
+  type: "/warden.warden.v1beta3.MsgUpdateKeychain";
   value: MsgUpdateKeychainAmino;
 }
 export interface MsgUpdateKeychainSDKType {
@@ -314,12 +314,12 @@ export interface MsgUpdateKeychainSDKType {
 }
 export interface MsgUpdateKeychainResponse {}
 export interface MsgUpdateKeychainResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychainResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychainResponse";
   value: Uint8Array;
 }
 export interface MsgUpdateKeychainResponseAmino {}
 export interface MsgUpdateKeychainResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateKeychainResponse";
+  type: "/warden.warden.v1beta3.MsgUpdateKeychainResponse";
   value: MsgUpdateKeychainResponseAmino;
 }
 export interface MsgUpdateKeychainResponseSDKType {}
@@ -331,7 +331,7 @@ export interface MsgNewKeyRequest {
   ruleId: bigint;
 }
 export interface MsgNewKeyRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequest";
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequest";
   value: Uint8Array;
 }
 export interface MsgNewKeyRequestAmino {
@@ -342,7 +342,7 @@ export interface MsgNewKeyRequestAmino {
   rule_id?: string;
 }
 export interface MsgNewKeyRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewKeyRequest";
+  type: "/warden.warden.v1beta3.MsgNewKeyRequest";
   value: MsgNewKeyRequestAmino;
 }
 export interface MsgNewKeyRequestSDKType {
@@ -356,14 +356,14 @@ export interface MsgNewKeyRequestResponse {
   id: bigint;
 }
 export interface MsgNewKeyRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequestResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequestResponse";
   value: Uint8Array;
 }
 export interface MsgNewKeyRequestResponseAmino {
   id?: string;
 }
 export interface MsgNewKeyRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewKeyRequestResponse";
+  type: "/warden.warden.v1beta3.MsgNewKeyRequestResponse";
   value: MsgNewKeyRequestResponseAmino;
 }
 export interface MsgNewKeyRequestResponseSDKType {
@@ -373,14 +373,14 @@ export interface MsgNewKey {
   publicKey: Uint8Array;
 }
 export interface MsgNewKeyProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKey";
+  typeUrl: "/warden.warden.v1beta3.MsgNewKey";
   value: Uint8Array;
 }
 export interface MsgNewKeyAmino {
   public_key?: string;
 }
 export interface MsgNewKeyAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewKey";
+  type: "/warden.warden.v1beta3.MsgNewKey";
   value: MsgNewKeyAmino;
 }
 export interface MsgNewKeySDKType {
@@ -394,7 +394,7 @@ export interface MsgFulfilKeyRequest {
   rejectReason?: string;
 }
 export interface MsgFulfilKeyRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequest";
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilKeyRequest";
   value: Uint8Array;
 }
 export interface MsgFulfilKeyRequestAmino {
@@ -405,7 +405,7 @@ export interface MsgFulfilKeyRequestAmino {
   reject_reason?: string;
 }
 export interface MsgFulfilKeyRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgFulfilKeyRequest";
+  type: "/warden.warden.v1beta3.MsgFulfilKeyRequest";
   value: MsgFulfilKeyRequestAmino;
 }
 export interface MsgFulfilKeyRequestSDKType {
@@ -417,12 +417,12 @@ export interface MsgFulfilKeyRequestSDKType {
 }
 export interface MsgFulfilKeyRequestResponse {}
 export interface MsgFulfilKeyRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilKeyRequestResponse";
   value: Uint8Array;
 }
 export interface MsgFulfilKeyRequestResponseAmino {}
 export interface MsgFulfilKeyRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse";
+  type: "/warden.warden.v1beta3.MsgFulfilKeyRequestResponse";
   value: MsgFulfilKeyRequestResponseAmino;
 }
 export interface MsgFulfilKeyRequestResponseSDKType {}
@@ -432,7 +432,7 @@ export interface MsgUpdateKey {
   ruleId: bigint;
 }
 export interface MsgUpdateKeyProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKey";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKey";
   value: Uint8Array;
 }
 export interface MsgUpdateKeyAmino {
@@ -441,7 +441,7 @@ export interface MsgUpdateKeyAmino {
   rule_id?: string;
 }
 export interface MsgUpdateKeyAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateKey";
+  type: "/warden.warden.v1beta3.MsgUpdateKey";
   value: MsgUpdateKeyAmino;
 }
 export interface MsgUpdateKeySDKType {
@@ -451,12 +451,12 @@ export interface MsgUpdateKeySDKType {
 }
 export interface MsgUpdateKeyResponse {}
 export interface MsgUpdateKeyResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKeyResponse";
   value: Uint8Array;
 }
 export interface MsgUpdateKeyResponseAmino {}
 export interface MsgUpdateKeyResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateKeyResponse";
+  type: "/warden.warden.v1beta3.MsgUpdateKeyResponse";
   value: MsgUpdateKeyResponseAmino;
 }
 export interface MsgUpdateKeyResponseSDKType {}
@@ -468,7 +468,7 @@ export interface MsgNewSignRequest {
   encryptionKey: Uint8Array;
 }
 export interface MsgNewSignRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest";
+  typeUrl: "/warden.warden.v1beta3.MsgNewSignRequest";
   value: Uint8Array;
 }
 export interface MsgNewSignRequestAmino {
@@ -479,7 +479,7 @@ export interface MsgNewSignRequestAmino {
   encryption_key?: string;
 }
 export interface MsgNewSignRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSignRequest";
+  type: "/warden.warden.v1beta3.MsgNewSignRequest";
   value: MsgNewSignRequestAmino;
 }
 export interface MsgNewSignRequestSDKType {
@@ -493,14 +493,14 @@ export interface MsgNewSignRequestResponse {
   id: bigint;
 }
 export interface MsgNewSignRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequestResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgNewSignRequestResponse";
   value: Uint8Array;
 }
 export interface MsgNewSignRequestResponseAmino {
   id?: string;
 }
 export interface MsgNewSignRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSignRequestResponse";
+  type: "/warden.warden.v1beta3.MsgNewSignRequestResponse";
   value: MsgNewSignRequestResponseAmino;
 }
 export interface MsgNewSignRequestResponseSDKType {
@@ -510,14 +510,14 @@ export interface MsgSignedData {
   signedData: Uint8Array;
 }
 export interface MsgSignedDataProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgSignedData";
+  typeUrl: "/warden.warden.v1beta3.MsgSignedData";
   value: Uint8Array;
 }
 export interface MsgSignedDataAmino {
   signed_data?: string;
 }
 export interface MsgSignedDataAminoMsg {
-  type: "/warden.warden.v1beta2.MsgSignedData";
+  type: "/warden.warden.v1beta3.MsgSignedData";
   value: MsgSignedDataAmino;
 }
 export interface MsgSignedDataSDKType {
@@ -531,7 +531,7 @@ export interface MsgFulfilSignRequest {
   rejectReason?: string;
 }
 export interface MsgFulfilSignRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest";
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest";
   value: Uint8Array;
 }
 export interface MsgFulfilSignRequestAmino {
@@ -542,7 +542,7 @@ export interface MsgFulfilSignRequestAmino {
   reject_reason?: string;
 }
 export interface MsgFulfilSignRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgFulfilSignRequest";
+  type: "/warden.warden.v1beta3.MsgFulfilSignRequest";
   value: MsgFulfilSignRequestAmino;
 }
 export interface MsgFulfilSignRequestSDKType {
@@ -554,12 +554,12 @@ export interface MsgFulfilSignRequestSDKType {
 }
 export interface MsgFulfilSignRequestResponse {}
 export interface MsgFulfilSignRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse";
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequestResponse";
   value: Uint8Array;
 }
 export interface MsgFulfilSignRequestResponseAmino {}
 export interface MsgFulfilSignRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse";
+  type: "/warden.warden.v1beta3.MsgFulfilSignRequestResponse";
   value: MsgFulfilSignRequestResponseAmino;
 }
 export interface MsgFulfilSignRequestResponseSDKType {}
@@ -570,7 +570,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateParams",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateParams",
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -651,7 +651,7 @@ export const MsgUpdateParams = {
   },
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateParams",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateParams",
       value: MsgUpdateParams.encode(message).finish()
     };
   }
@@ -660,7 +660,7 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateParamsResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateParamsResponse",
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -708,7 +708,7 @@ export const MsgUpdateParamsResponse = {
   },
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateParamsResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateParamsResponse",
       value: MsgUpdateParamsResponse.encode(message).finish()
     };
   }
@@ -722,7 +722,7 @@ function createBaseMsgNewSpace(): MsgNewSpace {
   };
 }
 export const MsgNewSpace = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSpace",
+  typeUrl: "/warden.warden.v1beta3.MsgNewSpace",
   encode(message: MsgNewSpace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
@@ -829,7 +829,7 @@ export const MsgNewSpace = {
   },
   toProtoMsg(message: MsgNewSpace): MsgNewSpaceProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSpace",
+      typeUrl: "/warden.warden.v1beta3.MsgNewSpace",
       value: MsgNewSpace.encode(message).finish()
     };
   }
@@ -840,7 +840,7 @@ function createBaseMsgNewSpaceResponse(): MsgNewSpaceResponse {
   };
 }
 export const MsgNewSpaceResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSpaceResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgNewSpaceResponse",
   encode(message: MsgNewSpaceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -902,7 +902,7 @@ export const MsgNewSpaceResponse = {
   },
   toProtoMsg(message: MsgNewSpaceResponse): MsgNewSpaceResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSpaceResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgNewSpaceResponse",
       value: MsgNewSpaceResponse.encode(message).finish()
     };
   }
@@ -915,7 +915,7 @@ function createBaseMsgAddSpaceOwner(): MsgAddSpaceOwner {
   };
 }
 export const MsgAddSpaceOwner = {
-  typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwner",
+  typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwner",
   encode(message: MsgAddSpaceOwner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -1003,7 +1003,7 @@ export const MsgAddSpaceOwner = {
   },
   toProtoMsg(message: MsgAddSpaceOwner): MsgAddSpaceOwnerProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwner",
+      typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwner",
       value: MsgAddSpaceOwner.encode(message).finish()
     };
   }
@@ -1012,7 +1012,7 @@ function createBaseMsgAddSpaceOwnerResponse(): MsgAddSpaceOwnerResponse {
   return {};
 }
 export const MsgAddSpaceOwnerResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwnerResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwnerResponse",
   encode(_: MsgAddSpaceOwnerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1060,7 +1060,7 @@ export const MsgAddSpaceOwnerResponse = {
   },
   toProtoMsg(message: MsgAddSpaceOwnerResponse): MsgAddSpaceOwnerResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwnerResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwnerResponse",
       value: MsgAddSpaceOwnerResponse.encode(message).finish()
     };
   }
@@ -1073,7 +1073,7 @@ function createBaseMsgRemoveSpaceOwner(): MsgRemoveSpaceOwner {
   };
 }
 export const MsgRemoveSpaceOwner = {
-  typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwner",
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwner",
   encode(message: MsgRemoveSpaceOwner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -1161,7 +1161,7 @@ export const MsgRemoveSpaceOwner = {
   },
   toProtoMsg(message: MsgRemoveSpaceOwner): MsgRemoveSpaceOwnerProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwner",
+      typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwner",
       value: MsgRemoveSpaceOwner.encode(message).finish()
     };
   }
@@ -1170,7 +1170,7 @@ function createBaseMsgRemoveSpaceOwnerResponse(): MsgRemoveSpaceOwnerResponse {
   return {};
 }
 export const MsgRemoveSpaceOwnerResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse",
   encode(_: MsgRemoveSpaceOwnerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1218,7 +1218,7 @@ export const MsgRemoveSpaceOwnerResponse = {
   },
   toProtoMsg(message: MsgRemoveSpaceOwnerResponse): MsgRemoveSpaceOwnerResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse",
       value: MsgRemoveSpaceOwnerResponse.encode(message).finish()
     };
   }
@@ -1231,7 +1231,7 @@ function createBaseMsgNewKeychain(): MsgNewKeychain {
   };
 }
 export const MsgNewKeychain = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeychain",
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeychain",
   encode(message: MsgNewKeychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
@@ -1319,7 +1319,7 @@ export const MsgNewKeychain = {
   },
   toProtoMsg(message: MsgNewKeychain): MsgNewKeychainProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewKeychain",
+      typeUrl: "/warden.warden.v1beta3.MsgNewKeychain",
       value: MsgNewKeychain.encode(message).finish()
     };
   }
@@ -1330,7 +1330,7 @@ function createBaseMsgNewKeychainResponse(): MsgNewKeychainResponse {
   };
 }
 export const MsgNewKeychainResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeychainResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeychainResponse",
   encode(message: MsgNewKeychainResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1392,7 +1392,7 @@ export const MsgNewKeychainResponse = {
   },
   toProtoMsg(message: MsgNewKeychainResponse): MsgNewKeychainResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewKeychainResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgNewKeychainResponse",
       value: MsgNewKeychainResponse.encode(message).finish()
     };
   }
@@ -1405,7 +1405,7 @@ function createBaseMsgAddKeychainWriter(): MsgAddKeychainWriter {
   };
 }
 export const MsgAddKeychainWriter = {
-  typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainWriter",
   encode(message: MsgAddKeychainWriter, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
@@ -1493,7 +1493,7 @@ export const MsgAddKeychainWriter = {
   },
   toProtoMsg(message: MsgAddKeychainWriter): MsgAddKeychainWriterProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+      typeUrl: "/warden.warden.v1beta3.MsgAddKeychainWriter",
       value: MsgAddKeychainWriter.encode(message).finish()
     };
   }
@@ -1502,7 +1502,7 @@ function createBaseMsgAddKeychainWriterResponse(): MsgAddKeychainWriterResponse 
   return {};
 }
 export const MsgAddKeychainWriterResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriterResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainWriterResponse",
   encode(_: MsgAddKeychainWriterResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1550,7 +1550,7 @@ export const MsgAddKeychainWriterResponse = {
   },
   toProtoMsg(message: MsgAddKeychainWriterResponse): MsgAddKeychainWriterResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriterResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgAddKeychainWriterResponse",
       value: MsgAddKeychainWriterResponse.encode(message).finish()
     };
   }
@@ -1564,7 +1564,7 @@ function createBaseMsgUpdateSpace(): MsgUpdateSpace {
   };
 }
 export const MsgUpdateSpace = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateSpace",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateSpace",
   encode(message: MsgUpdateSpace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -1665,7 +1665,7 @@ export const MsgUpdateSpace = {
   },
   toProtoMsg(message: MsgUpdateSpace): MsgUpdateSpaceProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateSpace",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateSpace",
       value: MsgUpdateSpace.encode(message).finish()
     };
   }
@@ -1674,7 +1674,7 @@ function createBaseMsgUpdateSpaceResponse(): MsgUpdateSpaceResponse {
   return {};
 }
 export const MsgUpdateSpaceResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateSpaceResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateSpaceResponse",
   encode(_: MsgUpdateSpaceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1722,7 +1722,7 @@ export const MsgUpdateSpaceResponse = {
   },
   toProtoMsg(message: MsgUpdateSpaceResponse): MsgUpdateSpaceResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateSpaceResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateSpaceResponse",
       value: MsgUpdateSpaceResponse.encode(message).finish()
     };
   }
@@ -1736,7 +1736,7 @@ function createBaseMsgUpdateKeychain(): MsgUpdateKeychain {
   };
 }
 export const MsgUpdateKeychain = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychain",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychain",
   encode(message: MsgUpdateKeychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
@@ -1837,7 +1837,7 @@ export const MsgUpdateKeychain = {
   },
   toProtoMsg(message: MsgUpdateKeychain): MsgUpdateKeychainProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychain",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychain",
       value: MsgUpdateKeychain.encode(message).finish()
     };
   }
@@ -1846,7 +1846,7 @@ function createBaseMsgUpdateKeychainResponse(): MsgUpdateKeychainResponse {
   return {};
 }
 export const MsgUpdateKeychainResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychainResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychainResponse",
   encode(_: MsgUpdateKeychainResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1894,7 +1894,7 @@ export const MsgUpdateKeychainResponse = {
   },
   toProtoMsg(message: MsgUpdateKeychainResponse): MsgUpdateKeychainResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychainResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychainResponse",
       value: MsgUpdateKeychainResponse.encode(message).finish()
     };
   }
@@ -1909,7 +1909,7 @@ function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
   };
 }
 export const MsgNewKeyRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequest",
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequest",
   encode(message: MsgNewKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -2023,7 +2023,7 @@ export const MsgNewKeyRequest = {
   },
   toProtoMsg(message: MsgNewKeyRequest): MsgNewKeyRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequest",
+      typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequest",
       value: MsgNewKeyRequest.encode(message).finish()
     };
   }
@@ -2034,7 +2034,7 @@ function createBaseMsgNewKeyRequestResponse(): MsgNewKeyRequestResponse {
   };
 }
 export const MsgNewKeyRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequestResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequestResponse",
   encode(message: MsgNewKeyRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -2096,7 +2096,7 @@ export const MsgNewKeyRequestResponse = {
   },
   toProtoMsg(message: MsgNewKeyRequestResponse): MsgNewKeyRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequestResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequestResponse",
       value: MsgNewKeyRequestResponse.encode(message).finish()
     };
   }
@@ -2107,7 +2107,7 @@ function createBaseMsgNewKey(): MsgNewKey {
   };
 }
 export const MsgNewKey = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewKey",
+  typeUrl: "/warden.warden.v1beta3.MsgNewKey",
   encode(message: MsgNewKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.publicKey.length !== 0) {
       writer.uint32(10).bytes(message.publicKey);
@@ -2169,7 +2169,7 @@ export const MsgNewKey = {
   },
   toProtoMsg(message: MsgNewKey): MsgNewKeyProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewKey",
+      typeUrl: "/warden.warden.v1beta3.MsgNewKey",
       value: MsgNewKey.encode(message).finish()
     };
   }
@@ -2184,7 +2184,7 @@ function createBaseMsgFulfilKeyRequest(): MsgFulfilKeyRequest {
   };
 }
 export const MsgFulfilKeyRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequest",
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilKeyRequest",
   encode(message: MsgFulfilKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
@@ -2298,7 +2298,7 @@ export const MsgFulfilKeyRequest = {
   },
   toProtoMsg(message: MsgFulfilKeyRequest): MsgFulfilKeyRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequest",
+      typeUrl: "/warden.warden.v1beta3.MsgFulfilKeyRequest",
       value: MsgFulfilKeyRequest.encode(message).finish()
     };
   }
@@ -2307,7 +2307,7 @@ function createBaseMsgFulfilKeyRequestResponse(): MsgFulfilKeyRequestResponse {
   return {};
 }
 export const MsgFulfilKeyRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilKeyRequestResponse",
   encode(_: MsgFulfilKeyRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2355,7 +2355,7 @@ export const MsgFulfilKeyRequestResponse = {
   },
   toProtoMsg(message: MsgFulfilKeyRequestResponse): MsgFulfilKeyRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgFulfilKeyRequestResponse",
       value: MsgFulfilKeyRequestResponse.encode(message).finish()
     };
   }
@@ -2368,7 +2368,7 @@ function createBaseMsgUpdateKey(): MsgUpdateKey {
   };
 }
 export const MsgUpdateKey = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKey",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKey",
   encode(message: MsgUpdateKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -2456,7 +2456,7 @@ export const MsgUpdateKey = {
   },
   toProtoMsg(message: MsgUpdateKey): MsgUpdateKeyProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateKey",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateKey",
       value: MsgUpdateKey.encode(message).finish()
     };
   }
@@ -2465,7 +2465,7 @@ function createBaseMsgUpdateKeyResponse(): MsgUpdateKeyResponse {
   return {};
 }
 export const MsgUpdateKeyResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgUpdateKeyResponse",
   encode(_: MsgUpdateKeyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2513,7 +2513,7 @@ export const MsgUpdateKeyResponse = {
   },
   toProtoMsg(message: MsgUpdateKeyResponse): MsgUpdateKeyResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgUpdateKeyResponse",
       value: MsgUpdateKeyResponse.encode(message).finish()
     };
   }
@@ -2528,7 +2528,7 @@ function createBaseMsgNewSignRequest(): MsgNewSignRequest {
   };
 }
 export const MsgNewSignRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+  typeUrl: "/warden.warden.v1beta3.MsgNewSignRequest",
   encode(message: MsgNewSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -2648,7 +2648,7 @@ export const MsgNewSignRequest = {
   },
   toProtoMsg(message: MsgNewSignRequest): MsgNewSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+      typeUrl: "/warden.warden.v1beta3.MsgNewSignRequest",
       value: MsgNewSignRequest.encode(message).finish()
     };
   }
@@ -2659,7 +2659,7 @@ function createBaseMsgNewSignRequestResponse(): MsgNewSignRequestResponse {
   };
 }
 export const MsgNewSignRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequestResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgNewSignRequestResponse",
   encode(message: MsgNewSignRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -2721,7 +2721,7 @@ export const MsgNewSignRequestResponse = {
   },
   toProtoMsg(message: MsgNewSignRequestResponse): MsgNewSignRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSignRequestResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgNewSignRequestResponse",
       value: MsgNewSignRequestResponse.encode(message).finish()
     };
   }
@@ -2732,7 +2732,7 @@ function createBaseMsgSignedData(): MsgSignedData {
   };
 }
 export const MsgSignedData = {
-  typeUrl: "/warden.warden.v1beta2.MsgSignedData",
+  typeUrl: "/warden.warden.v1beta3.MsgSignedData",
   encode(message: MsgSignedData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signedData.length !== 0) {
       writer.uint32(10).bytes(message.signedData);
@@ -2794,7 +2794,7 @@ export const MsgSignedData = {
   },
   toProtoMsg(message: MsgSignedData): MsgSignedDataProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgSignedData",
+      typeUrl: "/warden.warden.v1beta3.MsgSignedData",
       value: MsgSignedData.encode(message).finish()
     };
   }
@@ -2809,7 +2809,7 @@ function createBaseMsgFulfilSignRequest(): MsgFulfilSignRequest {
   };
 }
 export const MsgFulfilSignRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
   encode(message: MsgFulfilSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
@@ -2923,7 +2923,7 @@ export const MsgFulfilSignRequest = {
   },
   toProtoMsg(message: MsgFulfilSignRequest): MsgFulfilSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+      typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
       value: MsgFulfilSignRequest.encode(message).finish()
     };
   }
@@ -2932,7 +2932,7 @@ function createBaseMsgFulfilSignRequestResponse(): MsgFulfilSignRequestResponse 
   return {};
 }
 export const MsgFulfilSignRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse",
+  typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequestResponse",
   encode(_: MsgFulfilSignRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2980,7 +2980,7 @@ export const MsgFulfilSignRequestResponse = {
   },
   toProtoMsg(message: MsgFulfilSignRequestResponse): MsgFulfilSignRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse",
+      typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequestResponse",
       value: MsgFulfilSignRequestResponse.encode(message).finish()
     };
   }

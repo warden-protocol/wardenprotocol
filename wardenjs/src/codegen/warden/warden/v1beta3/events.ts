@@ -18,7 +18,7 @@ export interface EventCreateSpace {
   signRuleId: bigint;
 }
 export interface EventCreateSpaceProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventCreateSpace";
+  typeUrl: "/warden.warden.v1beta3.EventCreateSpace";
   value: Uint8Array;
 }
 /** EventCreateSpace is emitted on Space creation */
@@ -35,7 +35,7 @@ export interface EventCreateSpaceAmino {
   sign_rule_id?: string;
 }
 export interface EventCreateSpaceAminoMsg {
-  type: "/warden.warden.v1beta2.EventCreateSpace";
+  type: "/warden.warden.v1beta3.EventCreateSpace";
   value: EventCreateSpaceAmino;
 }
 /** EventCreateSpace is emitted on Space creation */
@@ -56,7 +56,7 @@ export interface EventUpdateSpace {
   signRuleId: bigint;
 }
 export interface EventUpdateSpaceProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventUpdateSpace";
+  typeUrl: "/warden.warden.v1beta3.EventUpdateSpace";
   value: Uint8Array;
 }
 /** EventUpdateSpace is emitted when Space is updated */
@@ -69,7 +69,7 @@ export interface EventUpdateSpaceAmino {
   sign_rule_id?: string;
 }
 export interface EventUpdateSpaceAminoMsg {
-  type: "/warden.warden.v1beta2.EventUpdateSpace";
+  type: "/warden.warden.v1beta3.EventUpdateSpace";
   value: EventUpdateSpaceAmino;
 }
 /** EventUpdateSpace is emitted when Space is updated */
@@ -88,7 +88,7 @@ export interface EventAddSpaceOwner {
   ownersCount: bigint;
 }
 export interface EventAddSpaceOwnerProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventAddSpaceOwner";
+  typeUrl: "/warden.warden.v1beta3.EventAddSpaceOwner";
   value: Uint8Array;
 }
 /** EventAddSpaceOwner is emitted when a new owner is added */
@@ -101,7 +101,7 @@ export interface EventAddSpaceOwnerAmino {
   owners_count?: string;
 }
 export interface EventAddSpaceOwnerAminoMsg {
-  type: "/warden.warden.v1beta2.EventAddSpaceOwner";
+  type: "/warden.warden.v1beta3.EventAddSpaceOwner";
   value: EventAddSpaceOwnerAmino;
 }
 /** EventAddSpaceOwner is emitted when a new owner is added */
@@ -120,7 +120,7 @@ export interface EventRemoveSpaceOwner {
   ownersCount: bigint;
 }
 export interface EventRemoveSpaceOwnerProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventRemoveSpaceOwner";
+  typeUrl: "/warden.warden.v1beta3.EventRemoveSpaceOwner";
   value: Uint8Array;
 }
 /** EventRemoveSpaceOwner is emitted when an owner is removed */
@@ -133,7 +133,7 @@ export interface EventRemoveSpaceOwnerAmino {
   owners_count?: string;
 }
 export interface EventRemoveSpaceOwnerAminoMsg {
-  type: "/warden.warden.v1beta2.EventRemoveSpaceOwner";
+  type: "/warden.warden.v1beta3.EventRemoveSpaceOwner";
   value: EventRemoveSpaceOwnerAmino;
 }
 /** EventRemoveSpaceOwner is emitted when an owner is removed */
@@ -158,7 +158,7 @@ export interface EventNewKeyRequest {
   creator: string;
 }
 export interface EventNewKeyRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventNewKeyRequest";
+  typeUrl: "/warden.warden.v1beta3.EventNewKeyRequest";
   value: Uint8Array;
 }
 /** EventNewKeyRequest is emitted on new key request */
@@ -177,7 +177,7 @@ export interface EventNewKeyRequestAmino {
   creator?: string;
 }
 export interface EventNewKeyRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventNewKeyRequest";
+  type: "/warden.warden.v1beta3.EventNewKeyRequest";
   value: EventNewKeyRequestAmino;
 }
 /** EventNewKeyRequest is emitted on new key request */
@@ -203,7 +203,7 @@ export interface EventNewKey {
   ruleId: bigint;
 }
 export interface EventNewKeyProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventNewKey";
+  typeUrl: "/warden.warden.v1beta3.EventNewKey";
   value: Uint8Array;
 }
 /** EventNewKey is emitted when a new Key is created */
@@ -220,7 +220,7 @@ export interface EventNewKeyAmino {
   rule_id?: string;
 }
 export interface EventNewKeyAminoMsg {
-  type: "/warden.warden.v1beta2.EventNewKey";
+  type: "/warden.warden.v1beta3.EventNewKey";
   value: EventNewKeyAmino;
 }
 /** EventNewKey is emitted when a new Key is created */
@@ -237,7 +237,7 @@ export interface EventRejectKeyRequest {
   id: bigint;
 }
 export interface EventRejectKeyRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventRejectKeyRequest";
+  typeUrl: "/warden.warden.v1beta3.EventRejectKeyRequest";
   value: Uint8Array;
 }
 /** EventRejectKeyRequest is emitted when a Key request is rejected */
@@ -246,7 +246,7 @@ export interface EventRejectKeyRequestAmino {
   id?: string;
 }
 export interface EventRejectKeyRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventRejectKeyRequest";
+  type: "/warden.warden.v1beta3.EventRejectKeyRequest";
   value: EventRejectKeyRequestAmino;
 }
 /** EventRejectKeyRequest is emitted when a Key request is rejected */
@@ -261,7 +261,7 @@ export interface EventUpdateKey {
   ruleId: bigint;
 }
 export interface EventUpdateKeyProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventUpdateKey";
+  typeUrl: "/warden.warden.v1beta3.EventUpdateKey";
   value: Uint8Array;
 }
 /** EventUpdateKey is emitted when a key is updated */
@@ -272,7 +272,7 @@ export interface EventUpdateKeyAmino {
   rule_id?: string;
 }
 export interface EventUpdateKeyAminoMsg {
-  type: "/warden.warden.v1beta2.EventUpdateKey";
+  type: "/warden.warden.v1beta3.EventUpdateKey";
   value: EventUpdateKeyAmino;
 }
 /** EventUpdateKey is emitted when a key is updated */
@@ -290,7 +290,7 @@ export interface EventNewSignRequest {
   creator: string;
 }
 export interface EventNewSignRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventNewSignRequest";
+  typeUrl: "/warden.warden.v1beta3.EventNewSignRequest";
   value: Uint8Array;
 }
 /** EventNewSignRequest is emitted on new signature requests */
@@ -303,7 +303,7 @@ export interface EventNewSignRequestAmino {
   creator?: string;
 }
 export interface EventNewSignRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventNewSignRequest";
+  type: "/warden.warden.v1beta3.EventNewSignRequest";
   value: EventNewSignRequestAmino;
 }
 /** EventNewSignRequest is emitted on new signature requests */
@@ -318,7 +318,7 @@ export interface EventFulfilSignRequest {
   id: bigint;
 }
 export interface EventFulfilSignRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventFulfilSignRequest";
+  typeUrl: "/warden.warden.v1beta3.EventFulfilSignRequest";
   value: Uint8Array;
 }
 /** EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled */
@@ -327,7 +327,7 @@ export interface EventFulfilSignRequestAmino {
   id?: string;
 }
 export interface EventFulfilSignRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventFulfilSignRequest";
+  type: "/warden.warden.v1beta3.EventFulfilSignRequest";
   value: EventFulfilSignRequestAmino;
 }
 /** EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled */
@@ -340,7 +340,7 @@ export interface EventRejectSignRequest {
   id: bigint;
 }
 export interface EventRejectSignRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventRejectSignRequest";
+  typeUrl: "/warden.warden.v1beta3.EventRejectSignRequest";
   value: Uint8Array;
 }
 /** EventRejectSignRequest is emitted when a signature request is rejected */
@@ -349,7 +349,7 @@ export interface EventRejectSignRequestAmino {
   id?: string;
 }
 export interface EventRejectSignRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventRejectSignRequest";
+  type: "/warden.warden.v1beta3.EventRejectSignRequest";
   value: EventRejectSignRequestAmino;
 }
 /** EventRejectSignRequest is emitted when a signature request is rejected */
@@ -366,7 +366,7 @@ export interface EventNewKeychain {
   keychainFees?: KeychainFees;
 }
 export interface EventNewKeychainProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventNewKeychain";
+  typeUrl: "/warden.warden.v1beta3.EventNewKeychain";
   value: Uint8Array;
 }
 /** EventNewKeychain is emitted on Keychain creation */
@@ -379,7 +379,7 @@ export interface EventNewKeychainAmino {
   keychain_fees?: KeychainFeesAmino;
 }
 export interface EventNewKeychainAminoMsg {
-  type: "/warden.warden.v1beta2.EventNewKeychain";
+  type: "/warden.warden.v1beta3.EventNewKeychain";
   value: EventNewKeychainAmino;
 }
 /** EventNewKeychain is emitted on Keychain creation */
@@ -396,7 +396,7 @@ export interface EventUpdateKeychain {
   keychainFees?: KeychainFees;
 }
 export interface EventUpdateKeychainProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventUpdateKeychain";
+  typeUrl: "/warden.warden.v1beta3.EventUpdateKeychain";
   value: Uint8Array;
 }
 /** EventUpdateKeychain is emitted when a Keychain is updated */
@@ -407,7 +407,7 @@ export interface EventUpdateKeychainAmino {
   keychain_fees?: KeychainFeesAmino;
 }
 export interface EventUpdateKeychainAminoMsg {
-  type: "/warden.warden.v1beta2.EventUpdateKeychain";
+  type: "/warden.warden.v1beta3.EventUpdateKeychain";
   value: EventUpdateKeychainAmino;
 }
 /** EventUpdateKeychain is emitted when a Keychain is updated */
@@ -425,7 +425,7 @@ export interface EventAddKeychainWriter {
   writersCount: bigint;
 }
 export interface EventAddKeychainWriterProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventAddKeychainWriter";
+  typeUrl: "/warden.warden.v1beta3.EventAddKeychainWriter";
   value: Uint8Array;
 }
 /** EventAddKeychainWriter is emitted when a new writer address is added to a Keychain */
@@ -438,7 +438,7 @@ export interface EventAddKeychainWriterAmino {
   writers_count?: string;
 }
 export interface EventAddKeychainWriterAminoMsg {
-  type: "/warden.warden.v1beta2.EventAddKeychainWriter";
+  type: "/warden.warden.v1beta3.EventAddKeychainWriter";
   value: EventAddKeychainWriterAmino;
 }
 /** EventAddKeychainWriter is emitted when a new writer address is added to a Keychain */
@@ -457,7 +457,7 @@ function createBaseEventCreateSpace(): EventCreateSpace {
   };
 }
 export const EventCreateSpace = {
-  typeUrl: "/warden.warden.v1beta2.EventCreateSpace",
+  typeUrl: "/warden.warden.v1beta3.EventCreateSpace",
   encode(message: EventCreateSpace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -571,7 +571,7 @@ export const EventCreateSpace = {
   },
   toProtoMsg(message: EventCreateSpace): EventCreateSpaceProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventCreateSpace",
+      typeUrl: "/warden.warden.v1beta3.EventCreateSpace",
       value: EventCreateSpace.encode(message).finish()
     };
   }
@@ -584,7 +584,7 @@ function createBaseEventUpdateSpace(): EventUpdateSpace {
   };
 }
 export const EventUpdateSpace = {
-  typeUrl: "/warden.warden.v1beta2.EventUpdateSpace",
+  typeUrl: "/warden.warden.v1beta3.EventUpdateSpace",
   encode(message: EventUpdateSpace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spaceId !== BigInt(0)) {
       writer.uint32(8).uint64(message.spaceId);
@@ -672,7 +672,7 @@ export const EventUpdateSpace = {
   },
   toProtoMsg(message: EventUpdateSpace): EventUpdateSpaceProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventUpdateSpace",
+      typeUrl: "/warden.warden.v1beta3.EventUpdateSpace",
       value: EventUpdateSpace.encode(message).finish()
     };
   }
@@ -685,7 +685,7 @@ function createBaseEventAddSpaceOwner(): EventAddSpaceOwner {
   };
 }
 export const EventAddSpaceOwner = {
-  typeUrl: "/warden.warden.v1beta2.EventAddSpaceOwner",
+  typeUrl: "/warden.warden.v1beta3.EventAddSpaceOwner",
   encode(message: EventAddSpaceOwner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spaceId !== BigInt(0)) {
       writer.uint32(8).uint64(message.spaceId);
@@ -773,7 +773,7 @@ export const EventAddSpaceOwner = {
   },
   toProtoMsg(message: EventAddSpaceOwner): EventAddSpaceOwnerProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventAddSpaceOwner",
+      typeUrl: "/warden.warden.v1beta3.EventAddSpaceOwner",
       value: EventAddSpaceOwner.encode(message).finish()
     };
   }
@@ -786,7 +786,7 @@ function createBaseEventRemoveSpaceOwner(): EventRemoveSpaceOwner {
   };
 }
 export const EventRemoveSpaceOwner = {
-  typeUrl: "/warden.warden.v1beta2.EventRemoveSpaceOwner",
+  typeUrl: "/warden.warden.v1beta3.EventRemoveSpaceOwner",
   encode(message: EventRemoveSpaceOwner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spaceId !== BigInt(0)) {
       writer.uint32(8).uint64(message.spaceId);
@@ -874,7 +874,7 @@ export const EventRemoveSpaceOwner = {
   },
   toProtoMsg(message: EventRemoveSpaceOwner): EventRemoveSpaceOwnerProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventRemoveSpaceOwner",
+      typeUrl: "/warden.warden.v1beta3.EventRemoveSpaceOwner",
       value: EventRemoveSpaceOwner.encode(message).finish()
     };
   }
@@ -890,7 +890,7 @@ function createBaseEventNewKeyRequest(): EventNewKeyRequest {
   };
 }
 export const EventNewKeyRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventNewKeyRequest",
+  typeUrl: "/warden.warden.v1beta3.EventNewKeyRequest",
   encode(message: EventNewKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1017,7 +1017,7 @@ export const EventNewKeyRequest = {
   },
   toProtoMsg(message: EventNewKeyRequest): EventNewKeyRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventNewKeyRequest",
+      typeUrl: "/warden.warden.v1beta3.EventNewKeyRequest",
       value: EventNewKeyRequest.encode(message).finish()
     };
   }
@@ -1032,7 +1032,7 @@ function createBaseEventNewKey(): EventNewKey {
   };
 }
 export const EventNewKey = {
-  typeUrl: "/warden.warden.v1beta2.EventNewKey",
+  typeUrl: "/warden.warden.v1beta3.EventNewKey",
   encode(message: EventNewKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1146,7 +1146,7 @@ export const EventNewKey = {
   },
   toProtoMsg(message: EventNewKey): EventNewKeyProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventNewKey",
+      typeUrl: "/warden.warden.v1beta3.EventNewKey",
       value: EventNewKey.encode(message).finish()
     };
   }
@@ -1157,7 +1157,7 @@ function createBaseEventRejectKeyRequest(): EventRejectKeyRequest {
   };
 }
 export const EventRejectKeyRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventRejectKeyRequest",
+  typeUrl: "/warden.warden.v1beta3.EventRejectKeyRequest",
   encode(message: EventRejectKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1219,7 +1219,7 @@ export const EventRejectKeyRequest = {
   },
   toProtoMsg(message: EventRejectKeyRequest): EventRejectKeyRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventRejectKeyRequest",
+      typeUrl: "/warden.warden.v1beta3.EventRejectKeyRequest",
       value: EventRejectKeyRequest.encode(message).finish()
     };
   }
@@ -1231,7 +1231,7 @@ function createBaseEventUpdateKey(): EventUpdateKey {
   };
 }
 export const EventUpdateKey = {
-  typeUrl: "/warden.warden.v1beta2.EventUpdateKey",
+  typeUrl: "/warden.warden.v1beta3.EventUpdateKey",
   encode(message: EventUpdateKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1306,7 +1306,7 @@ export const EventUpdateKey = {
   },
   toProtoMsg(message: EventUpdateKey): EventUpdateKeyProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventUpdateKey",
+      typeUrl: "/warden.warden.v1beta3.EventUpdateKey",
       value: EventUpdateKey.encode(message).finish()
     };
   }
@@ -1319,7 +1319,7 @@ function createBaseEventNewSignRequest(): EventNewSignRequest {
   };
 }
 export const EventNewSignRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventNewSignRequest",
+  typeUrl: "/warden.warden.v1beta3.EventNewSignRequest",
   encode(message: EventNewSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1407,7 +1407,7 @@ export const EventNewSignRequest = {
   },
   toProtoMsg(message: EventNewSignRequest): EventNewSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventNewSignRequest",
+      typeUrl: "/warden.warden.v1beta3.EventNewSignRequest",
       value: EventNewSignRequest.encode(message).finish()
     };
   }
@@ -1418,7 +1418,7 @@ function createBaseEventFulfilSignRequest(): EventFulfilSignRequest {
   };
 }
 export const EventFulfilSignRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventFulfilSignRequest",
+  typeUrl: "/warden.warden.v1beta3.EventFulfilSignRequest",
   encode(message: EventFulfilSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1480,7 +1480,7 @@ export const EventFulfilSignRequest = {
   },
   toProtoMsg(message: EventFulfilSignRequest): EventFulfilSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventFulfilSignRequest",
+      typeUrl: "/warden.warden.v1beta3.EventFulfilSignRequest",
       value: EventFulfilSignRequest.encode(message).finish()
     };
   }
@@ -1491,7 +1491,7 @@ function createBaseEventRejectSignRequest(): EventRejectSignRequest {
   };
 }
 export const EventRejectSignRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventRejectSignRequest",
+  typeUrl: "/warden.warden.v1beta3.EventRejectSignRequest",
   encode(message: EventRejectSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1553,7 +1553,7 @@ export const EventRejectSignRequest = {
   },
   toProtoMsg(message: EventRejectSignRequest): EventRejectSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventRejectSignRequest",
+      typeUrl: "/warden.warden.v1beta3.EventRejectSignRequest",
       value: EventRejectSignRequest.encode(message).finish()
     };
   }
@@ -1566,7 +1566,7 @@ function createBaseEventNewKeychain(): EventNewKeychain {
   };
 }
 export const EventNewKeychain = {
-  typeUrl: "/warden.warden.v1beta2.EventNewKeychain",
+  typeUrl: "/warden.warden.v1beta3.EventNewKeychain",
   encode(message: EventNewKeychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1654,7 +1654,7 @@ export const EventNewKeychain = {
   },
   toProtoMsg(message: EventNewKeychain): EventNewKeychainProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventNewKeychain",
+      typeUrl: "/warden.warden.v1beta3.EventNewKeychain",
       value: EventNewKeychain.encode(message).finish()
     };
   }
@@ -1666,7 +1666,7 @@ function createBaseEventUpdateKeychain(): EventUpdateKeychain {
   };
 }
 export const EventUpdateKeychain = {
-  typeUrl: "/warden.warden.v1beta2.EventUpdateKeychain",
+  typeUrl: "/warden.warden.v1beta3.EventUpdateKeychain",
   encode(message: EventUpdateKeychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1741,7 +1741,7 @@ export const EventUpdateKeychain = {
   },
   toProtoMsg(message: EventUpdateKeychain): EventUpdateKeychainProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventUpdateKeychain",
+      typeUrl: "/warden.warden.v1beta3.EventUpdateKeychain",
       value: EventUpdateKeychain.encode(message).finish()
     };
   }
@@ -1754,7 +1754,7 @@ function createBaseEventAddKeychainWriter(): EventAddKeychainWriter {
   };
 }
 export const EventAddKeychainWriter = {
-  typeUrl: "/warden.warden.v1beta2.EventAddKeychainWriter",
+  typeUrl: "/warden.warden.v1beta3.EventAddKeychainWriter",
   encode(message: EventAddKeychainWriter, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1842,7 +1842,7 @@ export const EventAddKeychainWriter = {
   },
   toProtoMsg(message: EventAddKeychainWriter): EventAddKeychainWriterProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventAddKeychainWriter",
+      typeUrl: "/warden.warden.v1beta3.EventAddKeychainWriter",
       value: EventAddKeychainWriter.encode(message).finish()
     };
   }

@@ -83,7 +83,7 @@ export interface SignRequest {
   encryptionKey: Uint8Array;
 }
 export interface SignRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.SignRequest";
+  typeUrl: "/warden.warden.v1beta3.SignRequest";
   value: Uint8Array;
 }
 /**
@@ -109,7 +109,7 @@ export interface SignRequestAmino {
   encryption_key?: string;
 }
 export interface SignRequestAminoMsg {
-  type: "/warden.warden.v1beta2.SignRequest";
+  type: "/warden.warden.v1beta3.SignRequest";
   value: SignRequestAmino;
 }
 /**
@@ -142,7 +142,7 @@ function createBaseSignRequest(): SignRequest {
   };
 }
 export const SignRequest = {
-  typeUrl: "/warden.warden.v1beta2.SignRequest",
+  typeUrl: "/warden.warden.v1beta3.SignRequest",
   encode(message: SignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -295,7 +295,7 @@ export const SignRequest = {
   },
   toProtoMsg(message: SignRequest): SignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.SignRequest",
+      typeUrl: "/warden.warden.v1beta3.SignRequest",
       value: SignRequest.encode(message).finish()
     };
   }

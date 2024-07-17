@@ -22,7 +22,7 @@ export default function ConnectedModal() {
 
 					return (
 						<div key={key}>
-							<div className="bg-fill-quaternary p-6 rounded-xl w-full mb-10 flex flex-col gap-6">
+							<div className="bg-fill-quaternary p-6 rounded-xl w-full flex flex-col gap-6">
 								<a
 									href={s.peer.metadata.url}
 									className="flex gap-3 items-center"

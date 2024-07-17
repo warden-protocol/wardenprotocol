@@ -1,6 +1,5 @@
-import { CONTRACTS } from '@certusone/wormhole-sdk';
 import { CHAIN_ID_BASE_SEPOLIA, CHAIN_ID_SOLANA } from '@certusone/wormhole-sdk';
-import { SendTransactionError } from '@solana/web3.js';
+import { Keypair, PublicKey } from '@solana/web3.js';
 import {
   RedisStorage,
   RelayerApp,
@@ -10,17 +9,16 @@ import {
   providers,
   spawnMissedVaaWorker,
   stagingArea,
+  tokenBridgeContracts,
 } from '@warden/wormhole-relayer-engine';
 import { chainToChainId } from '@wormhole-foundation/sdk';
-import { error } from 'console';
+import bs58 from 'bs58';
 import 'dotenv/config';
 import winston from 'winston';
-import { cli } from 'winston/lib/winston/config/index.js';
 
 import { SolanaGmpWithTokenClient } from './clients/solanaGmpWithTokenClient.js';
 import { config } from './config/schema.js';
 import { RelayProcessor } from './processors/relayProcessor.js';
-import { getWormholeContractsNetwork } from './utils.js';
 
 export const rootLogger = winston.createLogger({
   level: 'debug',
@@ -60,6 +58,7 @@ export async function main() {
   // middleware
   app.use(logging(rootLogger));
   app.use(providers());
+  app.use(tokenBridgeContracts());
 
   app.use(
     stagingArea({
@@ -68,17 +67,17 @@ export async function main() {
     }),
   );
 
-  // app.use(processor.relay);
-  app.multiple(
-    {
-      [CHAIN_ID_SOLANA]: ['B8oRMM8MgiM9VTQsHCWKh1H1X2pr1nsHCnVEA2Yg1Nye'],
-      [CHAIN_ID_BASE_SEPOLIA]: [
-        '0x79A1027a6A159502049F10906D333EC57E95F083',
-        '0x2A22d82A10Ff8C3e72cC3771b8B82070b81781d8',
-      ],
-    },
-    processor.relay,
-  );
+  app.use(processor.relay);
+  // app.multiple(
+  //   {
+  //     [CHAIN_ID_SOLANA]: ['B8oRMM8MgiM9VTQsHCWKh1H1X2pr1nsHCnVEA2Yg1Nye'],
+  //     [CHAIN_ID_BASE_SEPOLIA]: [
+  //       '0x79A1027a6A159502049F10906D333EC57E95F083',
+  //       '0x2A22d82A10Ff8C3e72cC3771b8B82070b81781d8',
+  //     ],
+  //   },
+  //   processor.relay,
+  // );
 
   app.use(async (err, ctx, next) => {
     ctx.logger.error('Error middleware triggered: ', err);
@@ -105,7 +104,19 @@ export async function main() {
   //   CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].sepolia.token_bridge,
   // );
 
-  await Promise.all([spawnMissedVaa, app.listen()]);
+  const send = client.sendNative(
+    Keypair.fromSecretKey(
+      bs58.decode('59gdFVEWn6K63CHtWFreZFBcdAZeFRV3LaJEQ5XeWDBwKx5KvVvmgEi8Cr1Wr3DWhXt4EbaJqTuEX88qQWYauWvG'),
+    ),
+    // Buffer.alloc(32, '27b6Fa47efd7Eb3F67ED4A28703EC907A96C2f97', 'hex'),
+    Buffer.alloc(32, 'deadbeef', 'hex'),
+    chainToChainId('Sepolia'),
+    new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr'),
+    0,
+    1000000000n,
+  );
+
+  await Promise.all([spawnMissedVaa, app.listen(), send]);
 }
 
 main()

@@ -1,9 +1,10 @@
-import { CHAIN_ID_ARBITRUM_SEPOLIA } from '@certusone/wormhole-sdk';
+import { CHAIN_ID_ARBITRUM_SEPOLIA, CHAIN_ID_SOLANA, parseTokenTransferPayload } from '@certusone/wormhole-sdk';
 import { Next, StandardRelayerContext } from '@warden/wormhole-relayer-engine';
 import { Chain, ChainAddress, ChainContext, Network, Signer, Wormhole, encoding } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import cosmwasm from '@wormhole-foundation/sdk/platforms/cosmwasm';
 import solana from '@wormhole-foundation/sdk/solana';
+import bs58 from 'bs58';
 
 import { config } from '../config/schema.js';
 
@@ -14,12 +15,19 @@ export class RelayProcessor {
       `Got a VAA: chain: ${ctx.vaa?.emitterChain}, storage_id: ${ctx.storage.job.id}, VAA payload: '${encoding.bytes.decode(ctx.vaa!.payload!)}'`,
     );
 
-    if (
-      ctx.vaa?.emitterChain != CHAIN_ID_ARBITRUM_SEPOLIA ||
-      ctx.vaa.id.emitterAddress == '000000000000000000000000e0418c44f06b0b0d7d1706e01706316dbb0b210e'
-    ) {
+    if (ctx.vaa?.emitterChain != CHAIN_ID_SOLANA) {
       return await next();
     }
+
+    // if (
+    //   ctx.vaa?.emitterChain != CHAIN_ID_ARBITRUM_SEPOLIA ||
+    //   ctx.vaa.id.emitterAddress == '000000000000000000000000e0418c44f06b0b0d7d1706e01706316dbb0b210e'
+    // ) {
+    //   return await next();
+    // }
+
+    const tes = parseTokenTransferPayload(ctx.vaa.payload);
+    const encoded_string = bs58.encode(ctx.vaa.emitterAddress);
 
     return await next();
   }

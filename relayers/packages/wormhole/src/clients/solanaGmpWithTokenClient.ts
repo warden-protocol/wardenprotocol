@@ -6,7 +6,7 @@ import {
 } from '@certusone/wormhole-sdk/lib/cjs/solana/index.js';
 import { deriveEndpointKey } from '@certusone/wormhole-sdk/lib/cjs/solana/tokenBridge/index.js';
 import { getProgramSequenceTracker } from '@certusone/wormhole-sdk/lib/cjs/solana/wormhole/index.js';
-import { Idl, Program } from '@coral-xyz/anchor';
+import { Idl, Program } from '@coral-xyz/anchor/dist/cjs/index.js';
 import { getAssociatedTokenAddressSync } from '@solana/spl-token';
 import {
   Connection,
@@ -17,6 +17,7 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
 import { ChainId } from '@wormhole-foundation/sdk';
+import { BN } from 'bn.js';
 import bs58 from 'bs58';
 
 import { GmpWithToken, IDL as IdlGmpWithToken } from '../../contracts/solana/target/types/gmp_with_token.js';
@@ -24,11 +25,10 @@ import { config } from '../config/schema.js';
 import { getWormholeContractsNetwork } from '../utils.js';
 
 export class SolanaGmpWithTokenClient {
-  wormholeCore: string;
-  wormholeTokenBridge: string;
+  wormholeCore: PublicKeyInitData;
+  wormholeTokenBridge: PublicKeyInitData;
   programId: PublicKey;
   adminKeypair: Keypair;
-  connection: Connection;
 
   constructor() {
     this.wormholeCore = CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].solana.core;
@@ -38,7 +38,11 @@ export class SolanaGmpWithTokenClient {
   }
 
   async initialize(): Promise<void> {
-    const program = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken, this.adminKeypair.publicKey);
+    const [connection, program] = createProgram<GmpWithToken>(
+      this.programId,
+      IdlGmpWithToken,
+      this.adminKeypair.publicKey,
+    );
 
     const instruction = await program.methods
       .initialize(config.SOLANA_GMP_WITH_TOKEN_RELAYER_FEE, config.SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION)
@@ -53,7 +57,7 @@ export class SolanaGmpWithTokenClient {
       .instruction();
 
     const tx = new Transaction().add(instruction);
-    const result = await sendAndConfirmTransaction(this.connection, tx, [this.adminKeypair]);
+    const result = await sendAndConfirmTransaction(connection, tx, [this.adminKeypair]);
 
     console.log(result);
   }
@@ -63,7 +67,11 @@ export class SolanaGmpWithTokenClient {
     foreignContract: Buffer,
     foreignTokenBridge: string,
   ): Promise<void> {
-    const program = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken, this.adminKeypair.publicKey);
+    const [connection, program] = createProgram<GmpWithToken>(
+      this.programId,
+      IdlGmpWithToken,
+      this.adminKeypair.publicKey,
+    );
     // const test = new PublicKey('0x27b6Fa47efd7Eb3F67ED4A28703EC907A96C2f97').toBuffer();
 
     const foreignContractKey = deriveAddress(
@@ -90,14 +98,21 @@ export class SolanaGmpWithTokenClient {
       .instruction();
 
     const tx = new Transaction().add(instruction);
-    const result = await sendAndConfirmTransaction(this.connection, tx, [this.adminKeypair]);
+    const result = await sendAndConfirmTransaction(connection, tx, [this.adminKeypair]);
 
     console.log(result);
   }
 
-  async sendWrapped(from: Keypair, foreignChain: ChainId, mint: PublicKey): Promise<void> {
-    const program = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
-    const tracker = await getProgramSequenceTracker(this.connection, this.wormholeTokenBridge, this.wormholeCore);
+  async sendNative(
+    from: Keypair,
+    to: Buffer,
+    toChain: ChainId,
+    mint: PublicKey,
+    batchId: number,
+    amount: bigint,
+  ): Promise<void> {
+    const [connection, program] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
+    const tracker = await getProgramSequenceTracker(connection, this.wormholeTokenBridge, this.wormholeCore);
     const message = deriveAddress(
       [
         Buffer.from('bridged'),
@@ -117,35 +132,50 @@ export class SolanaGmpWithTokenClient {
       this.programId,
       this.wormholeTokenBridge,
       this.wormholeCore,
-      from,
+      from.publicKey,
       message,
       fromTokenAccount,
       mint,
     );
 
-    // const instruction = this.program.methods
-    //   .sendNativeTokensWithPayload(
-    //     params.batchId,
-    //     new BN(params.amount.toString()),
-    //     [...params.recipientAddress],
-    //     params.recipientChain,
-    //   )
-    //   .accounts({
-    //     config: deriveSenderConfigKey(programId),
-    //     foreignContract: deriveForeignContractKey(programId, params.recipientChain),
-    //     tmpTokenAccount,
-    //     tokenBridgeProgram: new PublicKey(tokenBridgeProgramId),
-    //     ...tokenBridgeAccounts,
-    //   })
-    //   .instruction();
+    const instruction = await program.methods
+      .sendNativeTokensWithPayload(batchId, new BN(amount.toString()), [...to], toChain)
+      .accounts({
+        config: deriveAddress([Buffer.from('sender')], this.programId),
+        foreignContract: deriveAddress(
+          [
+            Buffer.from('foreign_contract'),
+            (() => {
+              const buf = Buffer.alloc(2);
+              buf.writeUInt16LE(toChain);
+              return buf;
+            })(),
+          ],
+          this.programId,
+        ),
+        tmpTokenAccount,
+        tokenBridgeProgram: new PublicKey(this.wormholeTokenBridge),
+        ...tokenBridgeAccounts,
+      })
+      .instruction();
+
+    const tx = new Transaction().add(instruction);
+    const result = await sendAndConfirmTransaction(connection, tx, [from]);
+
+    console.log(result);
   }
 }
 
-function createProgram<IDL extends Idl = Idl>(programId: PublicKeyInitData, idl: IDL, payer?: PublicKeyInitData) {
+function createProgram<IDL extends Idl = Idl>(
+  programId: PublicKeyInitData,
+  idl: IDL,
+  payer?: PublicKeyInitData,
+): [Connection, Program<IDL>] {
   const connection = new Connection(config.SOLANA_RPC, 'processed');
-
-  return new Program<IDL>(idl, new PublicKey(programId), {
+  const program = new Program<IDL>(idl, new PublicKey(programId), {
     connection,
     publicKey: payer == undefined ? undefined : new PublicKey(payer),
   });
+
+  return [connection, program];
 }

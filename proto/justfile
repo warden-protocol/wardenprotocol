@@ -2,7 +2,7 @@ git_root := `git rev-parse --show-toplevel`
 tmpdir := `mktemp -d`
 
 _buf:
-  go mod tidy
+  go mod tidy || echo "go mod tidy failed. Continuing..."
   go install \
     github.com/bufbuild/buf/cmd/buf \
     github.com/cosmos/cosmos-proto/cmd/protoc-gen-go-pulsar \

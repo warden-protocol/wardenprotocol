@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useReducer, useState } from "react";
-import QRCode from "react-qr-code";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { Multiaddr, multiaddr } from "@multiformats/multiaddr";
 import useLibp2p from "@/hooks/useLibp2p";
 import { commonReducer } from "@/utils/common";
-import { RemoteState } from "./types";
-import { decodeRemoteMessage } from "./util";
+import { RemoteState } from "@/features/walletconnect/types";
+import {
+	decodeRemoteMessage,
+	encodeRemoteMessage,
+} from "@/features/walletconnect/util";
 
-interface MobileTransportProps {
-	onData?: (data: Uint8Array) => void;
-}
-export default function MobileTransport(props: MobileTransportProps) {
+export const useWebRTCTransport = () => {
 	const { libp2p, peerId, hostname } = useLibp2p();
 	const [host, port] = hostname?.split(":") ?? [];
 	const [multiaddrs, setMultiaddrs] = useState<Multiaddr[]>();
@@ -21,12 +20,6 @@ export default function MobileTransport(props: MobileTransportProps) {
 			`wc-mobile-transport-topic-${Date.now()}-${Math.floor(Math.random() * 65535)}`,
 		[],
 	);
-
-	useEffect(() => {
-		if (remoteState.data) {
-			props.onData?.(remoteState.data);
-		}
-	}, [remoteState.data, props.onData]);
 
 	useEffect(() => {
 		let intervalId: number | undefined;
@@ -107,7 +100,7 @@ export default function MobileTransport(props: MobileTransportProps) {
 		?.filter((ma) => ma.toString().includes(host))[0]
 		.toString();
 
-	const openUrl = ma
+	const url = ma
 		? `${
 				// fixme no window location
 				window.location.origin
@@ -116,29 +109,23 @@ export default function MobileTransport(props: MobileTransportProps) {
 			)}&topic=${topic}`
 		: undefined;
 
-	return (
-		<div className="w-full flex flex-col justify-center items-center m-4">
-			{openUrl ? (
-				peers.length ? (
-					remoteState.ready ? (
-						<p>Scan pairing QR on device</p>
-					) : (
-						<p>Please enable camera on device</p>
-					)
-				) : (
-					<>
-						<p className="mt-8 mb-4 text-sm">
-							Scan QR code by mobile device or use this{" "}
-							<a href={openUrl}>link</a>
-						</p>
-						<div className="p-4 bg-white">
-							<QRCode value={openUrl} />
-						</div>
-					</>
-				)
-			) : (
-				"Loading..."
-			)}
-		</div>
+	const sendMetadata = useCallback(
+		function sendMetadata(title: string, icon: string) {
+			libp2p?.services.pubsub.publish(
+				topic,
+				encodeRemoteMessage({
+					type: "metadata",
+					payload: JSON.stringify({ title, icon }),
+				}),
+			);
+		},
+		[libp2p, topic],
 	);
-}
+
+	return {
+		url,
+		peers,
+		sendMetadata,
+		...remoteState,
+	};
+};

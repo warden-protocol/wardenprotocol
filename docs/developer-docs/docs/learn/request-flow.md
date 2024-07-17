@@ -10,9 +10,9 @@ The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/
 
 This section explains how the Warden Protocol processes these two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). The main steps are the following:
 
-1. **Sending a request:** A user sends a request, specifying the preferred Keychain and the [Approval Rule](/learn/glossary#approval-rule) to apply.
-2. **Checking the Rule:** Nodes check the Approval Rule and reach [consensus](/learn/glossary#staking).
-3. **Fulfilling the request:** The Keychain publishes a public key or a signature to the Warden Protocol.
+1. **Sending a request**: A user sends a request, specifying the preferred Keychain and the [Approval Rule](/learn/glossary#approval-rule) to apply.
+2. **Checking the Rule**: Nodes check the Approval Rule and reach [consensus](/learn/glossary#staking).
+3. **Fulfilling the request**: The Keychain publishes a public key or a signature to the Warden Protocol.
 
 You'll find a detailed breakdown of these steps below.
 
@@ -20,9 +20,9 @@ You'll find a detailed breakdown of these steps below.
 
 The Warden Protocol includes three types of actors participating in sending and processing transactions:
 
-- **Node:** A server running the Warden Protocol software
-- **Keychain:** Software for generating keys and signing transactions, running on a Keychain operator's server
-- **Client:** Software for interacting with the protocol, running on a user's machine (such as [SpaceWard](/learn/glossary#spaceward))
+- **Node**: A server running the Warden Protocol software
+- **Keychain**: Software for generating keys and signing transactions, running on a Keychain operator's server
+- **Client**: Software for interacting with the protocol, running on a user's machine (such as [SpaceWard](/learn/glossary#spaceward))
 
 ## Key request flow
 
@@ -46,7 +46,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Approval Rule check.
 
-**Note:** 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcast to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
+**Note**: 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcast to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
 
 ### 3. Fulfilling the request
 
@@ -56,7 +56,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
 
-**Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
+**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
 ### Diagram
 
@@ -98,7 +98,7 @@ The flow for requesting a signature includes the following steps:
 
 2. A `SignRequest` object is created and stored in the on-chain database.
 
-**Note:** While key requests directly indicate the [Keychain ID](/learn/glossary#keychain-id) in the request, signature requests contain the Keychain ID inside the `keys` object.
+**Note**: While key requests directly indicate the [Keychain ID](/learn/glossary#keychain-id) in the request, signature requests contain the Keychain ID inside the `keys` object.
 
 ### 2. Checking the Rule
 
@@ -108,7 +108,7 @@ The flow for requesting a signature includes the following steps:
 
 3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Approval Rule check.
 
-**Note:** 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcast to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
+**Note**: 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcast to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
 
 ### 3. Fulfilling the request
 
@@ -118,7 +118,7 @@ The flow for requesting a signature includes the following steps:
 
 3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilSignRequest` transaction with the signature to the Node.
 
-**Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
+**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
 ### Diagram
 

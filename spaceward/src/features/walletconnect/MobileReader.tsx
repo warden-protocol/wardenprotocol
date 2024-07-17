@@ -1,73 +1,28 @@
-import { multiaddr } from "@multiformats/multiaddr";
 import jsqr from "jsqr";
 import { useEffect, useRef, useState } from "react";
-import useLibp2p from "@/hooks/useLibp2p";
 import { Assets } from "./assets";
-import { encodeRemoteMessage } from "./util";
 import clsx from "clsx";
+import type { CommonActions } from "@/utils/common";
+import type { RemoteState } from "./types";
 
 interface MobileReaderProps {
-	base64MultiAddress: string;
-	topic: string;
+	hideQRScaner: () => void;
+	dispatch: (action: CommonActions<RemoteState>) => void;
+}
+
+class BlankError extends Error {
+	constructor() {
+		super("Updated");
+	}
 }
 
 export default function MobileReader(props: MobileReaderProps) {
-	const ma = Buffer.from(props.base64MultiAddress, "base64").toString(
-		"utf-8",
-	);
-
-	const { libp2p } = useLibp2p();
 	const [ready, setReady] = useState(false);
 	const [error, setError] = useState<Error>();
-	const [peers, setPeers] = useState<string[]>([]);
 	const [success, setSuccess] = useState(false);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const videoRef = useRef<HTMLVideoElement>(null);
-
-	useEffect(() => {
-		let intervalId: number | undefined;
-
-		async function initConnection() {
-			if (!libp2p) {
-				return;
-			}
-
-			const connection = await libp2p.dial(multiaddr(ma));
-			await libp2p.services.pubsub.subscribe(props.topic);
-
-			intervalId = setInterval(() => {
-				if (!libp2p) {
-					return;
-				}
-
-				const peers = libp2p.services.pubsub.getSubscribers(
-					props.topic,
-				);
-
-				setPeers((p) => {
-					const next = peers.map((p) => p.toString());
-
-					// strict equal
-					if (JSON.stringify(next) !== JSON.stringify(p)) {
-						return next;
-					}
-
-					return p;
-				});
-			}, 1000) as any;
-
-			return connection;
-		}
-
-		initConnection().catch(console.error);
-
-		return () => {
-			clearInterval(intervalId);
-			libp2p?.services.pubsub.unsubscribe(props.topic);
-			setPeers([]);
-		};
-	}, [libp2p, ma, props.topic]);
 
 	useEffect(() => {
 		let checkInterval: number | undefined;
@@ -134,11 +89,7 @@ export default function MobileReader(props: MobileReaderProps) {
 		initCamera()
 			.then(() => {
 				setReady(true);
-
-				libp2p?.services.pubsub.publish(
-					props.topic,
-					encodeRemoteMessage({ type: "ready", payload: true }),
-				);
+				props.dispatch({ type: "ready", payload: true });
 
 				checkInterval = setInterval(
 					() =>
@@ -164,45 +115,39 @@ export default function MobileReader(props: MobileReaderProps) {
 							setSuccess(Boolean(code));
 
 							if (code) {
-								libp2p?.services.pubsub.publish(
-									props.topic,
-									encodeRemoteMessage({
-										type: "data",
-										payload: Uint8Array.from(
-											Buffer.from(code),
-										),
-									}),
-								);
+								props.dispatch({
+									type: "data",
+									payload: Uint8Array.from(Buffer.from(code)),
+								});
 							}
 						}),
 					500,
 				) as any;
 			})
 			.catch((e) => {
-				setReady(false);
-				setError(e);
+				if (!(e instanceof BlankError)) {
+					setError(e);
+				}
 
-				libp2p?.services.pubsub.publish(
-					props.topic,
-					encodeRemoteMessage({ type: "ready", payload: false }),
-				);
+				setReady(false);
+				props.dispatch({ type: "ready", payload: false });
 			});
 
 		return () => {
-			reject?.(new Error("updated"));
+			reject?.(new BlankError());
 			window.removeEventListener("resize", setVideoSize);
 			clearInterval(checkInterval);
 		};
-	}, [peers]);
+	}, []);
 
 	return (
 		<div
-			className="flex flex-col flex-auto relative w-full h-full justify-center"
+			className="flex flex-col flex-auto relative w-full h-full justify-benween "
 			ref={containerRef}
 		>
-			<canvas ref={canvasRef} className="hidden" />
+			<div className="mb-6 h-full">
+				<canvas ref={canvasRef} className="hidden" />
 
-			{peers.length ? (
 				<video
 					autoPlay
 					muted
@@ -210,29 +155,31 @@ export default function MobileReader(props: MobileReaderProps) {
 					ref={videoRef}
 					className="absolute z-0 w-full h-full"
 				/>
-			) : (
-				<p>Connecting to peer...</p>
-			)}
 
-			<div className="relative z-10 w-full h-full flex flex-col overflow-hidden text-wrap">
-				{error ? (
-					<p>{error.message}</p>
-				) : !peers.length ? (
-					<>
-						<p>Destination multiaddr:</p>
-						<p className="w-full text-wrap break-all">{ma}</p>
-					</>
-				) : ready ? (
-					<div className="flex flex-auto justify-center items-center">
-						<Assets.qrTarget
-							className={clsx({
-								"stroke-green-600": success,
-							})}
-						/>
-					</div>
-				) : (
-					<p>Please allow camera</p>
-				)}
+				<div className="relative z-10 w-full h-full flex flex-col overflow-hidden text-wrap">
+					{error ? (
+						<p>{error.message}</p>
+					) : ready ? (
+						<div className="flex flex-auto justify-center items-center">
+							<Assets.qrTarget
+								className={clsx({
+									"stroke-green-600": success,
+								})}
+							/>
+						</div>
+					) : (
+						<p>Please allow camera</p>
+					)}
+				</div>
+			</div>
+
+			<div className="mt-auto shrink-0 flex flex-col gap-3 mb-4 z-10">
+				<button
+					onClick={props.hideQRScaner}
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-transparent text-muted-foreground font-semibold shrink-0 "
+				>
+					Cancel
+				</button>
 			</div>
 		</div>
 	);

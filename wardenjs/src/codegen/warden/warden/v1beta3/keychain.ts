@@ -31,7 +31,7 @@ export interface Keychain {
   fees?: KeychainFees;
 }
 export interface KeychainProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.Keychain";
+  typeUrl: "/warden.warden.v1beta3.Keychain";
   value: Uint8Array;
 }
 /**
@@ -62,7 +62,7 @@ export interface KeychainAmino {
   fees?: KeychainFeesAmino;
 }
 export interface KeychainAminoMsg {
-  type: "/warden.warden.v1beta2.Keychain";
+  type: "/warden.warden.v1beta3.Keychain";
   value: KeychainAmino;
 }
 /**
@@ -94,7 +94,7 @@ export interface KeychainFees {
   sigReq: Coin[];
 }
 export interface KeychainFeesProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.KeychainFees";
+  typeUrl: "/warden.warden.v1beta3.KeychainFees";
   value: Uint8Array;
 }
 /** Fees for creating and signing Keys. */
@@ -105,7 +105,7 @@ export interface KeychainFeesAmino {
   sig_req: CoinAmino[];
 }
 export interface KeychainFeesAminoMsg {
-  type: "/warden.warden.v1beta2.KeychainFees";
+  type: "/warden.warden.v1beta3.KeychainFees";
   value: KeychainFeesAmino;
 }
 /** Fees for creating and signing Keys. */
@@ -124,7 +124,7 @@ function createBaseKeychain(): Keychain {
   };
 }
 export const Keychain = {
-  typeUrl: "/warden.warden.v1beta2.Keychain",
+  typeUrl: "/warden.warden.v1beta3.Keychain",
   encode(message: Keychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -263,7 +263,7 @@ export const Keychain = {
   },
   toProtoMsg(message: Keychain): KeychainProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.Keychain",
+      typeUrl: "/warden.warden.v1beta3.Keychain",
       value: Keychain.encode(message).finish()
     };
   }
@@ -275,7 +275,7 @@ function createBaseKeychainFees(): KeychainFees {
   };
 }
 export const KeychainFees = {
-  typeUrl: "/warden.warden.v1beta2.KeychainFees",
+  typeUrl: "/warden.warden.v1beta3.KeychainFees",
   encode(message: KeychainFees, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.keyReq) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -362,7 +362,7 @@ export const KeychainFees = {
   },
   toProtoMsg(message: KeychainFees): KeychainFeesProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.KeychainFees",
+      typeUrl: "/warden.warden.v1beta3.KeychainFees",
       value: KeychainFees.encode(message).finish()
     };
   }

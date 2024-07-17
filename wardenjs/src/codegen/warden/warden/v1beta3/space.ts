@@ -38,7 +38,7 @@ export interface Space {
   signRuleId: bigint;
 }
 export interface SpaceProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.Space";
+  typeUrl: "/warden.warden.v1beta3.Space";
   value: Uint8Array;
 }
 /** Space is a collection of users (called owners) that manages a set of Keys. */
@@ -77,7 +77,7 @@ export interface SpaceAmino {
   sign_rule_id?: string;
 }
 export interface SpaceAminoMsg {
-  type: "/warden.warden.v1beta2.Space";
+  type: "/warden.warden.v1beta3.Space";
   value: SpaceAmino;
 }
 /** Space is a collection of users (called owners) that manages a set of Keys. */
@@ -98,7 +98,7 @@ function createBaseSpace(): Space {
   };
 }
 export const Space = {
-  typeUrl: "/warden.warden.v1beta2.Space",
+  typeUrl: "/warden.warden.v1beta3.Space",
   encode(message: Space, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -218,7 +218,7 @@ export const Space = {
   },
   toProtoMsg(message: Space): SpaceProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.Space",
+      typeUrl: "/warden.warden.v1beta3.Space",
       value: Space.encode(message).finish()
     };
   }

@@ -4,7 +4,7 @@ import { JsonSafe } from "../../../json-safe.js";
 /** Params defines the parameters for the module. */
 export interface Params {}
 export interface ParamsProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.Params";
+  typeUrl: "/warden.warden.v1beta3.Params";
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
@@ -19,7 +19,7 @@ function createBaseParams(): Params {
   return {};
 }
 export const Params = {
-  typeUrl: "/warden.warden.v1beta2.Params",
+  typeUrl: "/warden.warden.v1beta3.Params",
   encode(_: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -73,7 +73,7 @@ export const Params = {
   },
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.Params",
+      typeUrl: "/warden.warden.v1beta3.Params",
       value: Params.encode(message).finish()
     };
   }

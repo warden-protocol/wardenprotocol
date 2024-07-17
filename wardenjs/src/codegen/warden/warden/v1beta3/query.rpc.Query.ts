@@ -54,71 +54,71 @@ export class QueryClientImpl implements Query {
   }
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "Params", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   spaces(request: QuerySpacesRequest = {
     pagination: undefined
   }): Promise<QuerySpacesResponse> {
     const data = QuerySpacesRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "Spaces", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "Spaces", data);
     return promise.then(data => QuerySpacesResponse.decode(new BinaryReader(data)));
   }
   spacesByOwner(request: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponse> {
     const data = QuerySpacesByOwnerRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SpacesByOwner", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "SpacesByOwner", data);
     return promise.then(data => QuerySpacesResponse.decode(new BinaryReader(data)));
   }
   keychains(request: QueryKeychainsRequest = {
     pagination: undefined
   }): Promise<QueryKeychainsResponse> {
     const data = QueryKeychainsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "Keychains", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "Keychains", data);
     return promise.then(data => QueryKeychainsResponse.decode(new BinaryReader(data)));
   }
   spaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse> {
     const data = QuerySpaceByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SpaceById", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "SpaceById", data);
     return promise.then(data => QuerySpaceByIdResponse.decode(new BinaryReader(data)));
   }
   keychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse> {
     const data = QueryKeychainByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeychainById", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "KeychainById", data);
     return promise.then(data => QueryKeychainByIdResponse.decode(new BinaryReader(data)));
   }
   keyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse> {
     const data = QueryKeyRequestsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyRequests", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "KeyRequests", data);
     return promise.then(data => QueryKeyRequestsResponse.decode(new BinaryReader(data)));
   }
   keyRequestById(request: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponse> {
     const data = QueryKeyRequestByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyRequestById", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "KeyRequestById", data);
     return promise.then(data => QueryKeyRequestByIdResponse.decode(new BinaryReader(data)));
   }
   allKeys(request: QueryAllKeysRequest): Promise<QueryKeysResponse> {
     const data = QueryAllKeysRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "AllKeys", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "AllKeys", data);
     return promise.then(data => QueryKeysResponse.decode(new BinaryReader(data)));
   }
   keysBySpaceId(request: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponse> {
     const data = QueryKeysBySpaceIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeysBySpaceId", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "KeysBySpaceId", data);
     return promise.then(data => QueryKeysResponse.decode(new BinaryReader(data)));
   }
   keyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse> {
     const data = QueryKeyByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyById", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "KeyById", data);
     return promise.then(data => QueryKeyResponse.decode(new BinaryReader(data)));
   }
   signRequests(request: QuerySignRequestsRequest): Promise<QuerySignRequestsResponse> {
     const data = QuerySignRequestsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignRequests", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "SignRequests", data);
     return promise.then(data => QuerySignRequestsResponse.decode(new BinaryReader(data)));
   }
   signRequestById(request: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponse> {
     const data = QuerySignRequestByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignRequestById", data);
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "SignRequestById", data);
     return promise.then(data => QuerySignRequestByIdResponse.decode(new BinaryReader(data)));
   }
 }

@@ -91,7 +91,7 @@ export const createLCDClient = async ({
         requestClient
       }),
       warden: {
-        v1beta2: new (await import("./warden/v1beta2/query.lcd.js")).LCDQueryClient({
+        v1beta3: new (await import("./warden/v1beta3/query.lcd.js")).LCDQueryClient({
           requestClient
         })
       }

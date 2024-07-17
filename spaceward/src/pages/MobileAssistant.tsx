@@ -1,4 +1,3 @@
-import { Icons } from "@/components/ui/icons";
 import MobileReader from "@/features/walletconnect/MobileReader";
 import ReaderAssistant from "@/features/walletconnect/ReaderAssistant";
 import {
@@ -109,7 +108,7 @@ const MobileAssistant = ({
 	return (
 		<div>
 			{metadata ? (
-				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-8">
+				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-6">
 					<img
 						className="w-[52px] h-[52px]"
 						src={metadata.icon}
@@ -118,7 +117,7 @@ const MobileAssistant = ({
 					<p className="text-xl font-bold">{metadata.title} connected</p>
 				</div>
 			) : isReader ? (
-				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-8">
+				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-6">
 					<MobileReader
 						hideQRScaner={() => setIsReader(false)}
 						dispatch={dispatch}

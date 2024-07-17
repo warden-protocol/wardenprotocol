@@ -6,7 +6,7 @@ import (
 	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

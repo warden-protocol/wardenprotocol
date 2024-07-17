@@ -1,0 +1,172 @@
+syntax = "proto3";
+package warden.warden.v1beta3;
+
+import "warden/warden/v1beta3/key.proto";
+import "warden/warden/v1beta3/keychain.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
+
+// EventCreateSpace is emitted on Space creation
+message EventCreateSpace {
+  // id of the new space
+  uint64 id = 1;
+
+  // creator is the account address of the space creator
+  string creator = 2;
+
+  // owners_count is the count of the space owners
+  uint64 owners_count = 3;
+
+  // id of the rule to be applied to every admin operation
+  uint64 admin_rule_id = 4;
+
+  // id of the rule to be applied to every sign operation
+  uint64 sign_rule_id = 5;
+}
+
+// EventUpdateSpace is emitted when Space is updated
+message EventUpdateSpace {
+  // id of the space being updated
+  uint64 space_id = 1;
+
+  // id of the rule to be applied to every admin operation
+  uint64 admin_rule_id = 2;
+
+  // id of the rule to be applied to every sign operation
+  uint64 sign_rule_id = 3;
+}
+
+// EventAddSpaceOwner is emitted when a new owner is added
+message EventAddSpaceOwner {
+  // id of the space being updated
+  uint64 space_id = 1;
+
+  // new_owner is the address of the new space owner
+  string new_owner = 2;
+
+  // owners_count is the new count of space owners
+  uint64 owners_count = 3;
+}
+
+// EventRemoveSpaceOwner is emitted when an owner is removed
+message EventRemoveSpaceOwner {
+  // id of the space being updated
+  uint64 space_id = 1;
+
+  // removed_owner is the address of the removed space owner
+  string removed_owner = 2;
+
+  // owners_count is the new count of space owners
+  uint64 owners_count = 3;
+}
+
+// EventNewKeyRequest is emitted on new key request
+message EventNewKeyRequest {
+  // id of the new key request
+  uint64 id = 1;
+
+  // space_id associated with the key request
+  uint64 space_id = 2;
+
+  // keychain_id associated with the key request
+  uint64 keychain_id = 3;
+
+  // id of the rule to be applied to every sign operation for this key
+  uint64 rule_id = 4;
+
+  // the crypto scheme requested for this key
+  KeyType key_type = 5;
+
+  // address of the account that requested the key
+  string creator = 6;
+}
+
+// EventNewKey is emitted when a new Key is created
+message EventNewKey {
+  // id of the new key
+  uint64 id = 1;
+
+  // the crypto scheme used by this key
+  KeyType key_type = 2;
+
+  // space_id associated with the key request
+  uint64 space_id = 3;
+
+  // keychain_id associated with the key request
+  uint64 keychain_id = 4;
+
+  // id of the rule to be applied to every sign operation for this key
+  uint64 rule_id = 5;
+}
+
+// EventRejectKeyRequest is emitted when a Key request is rejected
+message EventRejectKeyRequest {
+  // id of the key request
+  uint64 id = 1;
+}
+
+// EventUpdateKey is emitted when a key is updated
+message EventUpdateKey {
+  // id of the key
+  uint64 id = 1;
+
+  // id of the rule to be applied to every sign operation
+  uint64 rule_id = 2;
+}
+
+// EventNewSignRequest is emitted on new signature requests
+message EventNewSignRequest {
+  // id of the signature request
+  uint64 id = 1;
+
+  // id of the Key to be used for signing
+  uint64 key_id = 2;
+
+  // address of the account that requested the signature
+  string creator = 3;
+}
+
+// EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled
+message EventFulfilSignRequest {
+  // id of the sign request
+  uint64 id = 1;
+}
+
+// EventRejectSignRequest is emitted when a signature request is rejected
+message EventRejectSignRequest {
+  // id of the signature request
+  uint64 id = 1;
+}
+
+// EventNewKeychain is emitted on Keychain creation
+message EventNewKeychain {
+  // id of the new keychain
+  uint64 id = 1;
+
+  // address of the account that created the keychain
+  string creator = 2;
+
+  // amount of charging fees for key and signature requests
+  KeychainFees keychain_fees = 3;
+}
+
+// EventUpdateKeychain is emitted when a Keychain is updated
+message EventUpdateKeychain {
+  // id of the keychain
+  uint64 id = 1;
+
+  // amount of charging fees for key and signature requests
+  KeychainFees keychain_fees = 2;
+}
+
+// EventAddKeychainWriter is emitted when a new writer address is added to a Keychain
+message EventAddKeychainWriter {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new writer
+  string new_writer = 2;
+
+  // updated count of writers
+  uint64 writers_count = 3;
+}

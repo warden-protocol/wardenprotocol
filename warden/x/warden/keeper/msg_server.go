@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 type msgServer struct {

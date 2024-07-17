@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilKeyRequest) (*types.MsgFulfilKeyRequestResponse, error) {

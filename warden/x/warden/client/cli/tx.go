@@ -12,13 +12,13 @@ import (
 	"github.com/spf13/cobra"
 
 	actcli "github.com/warden-protocol/wardenprotocol/warden/x/act/client"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 // NewTxCmd returns a root CLI command handler for x/warden transaction commands.
 func NewTxCmd() *cobra.Command {
 	txCmd := &cobra.Command{
-		Use:                        v1beta2.ModuleName,
+		Use:                        v1beta3.ModuleName,
 		Short:                      "Warden transaction subcommands",
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
@@ -43,12 +43,12 @@ func NewActionTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		actcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
-		actcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
-		actcli.RegisterActionCmd(&v1beta2.MsgNewSignRequest{}, "Request a signature"),
-		actcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
-		actcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
-		actcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
+		actcli.RegisterActionCmd(&v1beta3.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
+		actcli.RegisterActionCmd(&v1beta3.MsgNewKeyRequest{}, "Request a new Key"),
+		actcli.RegisterActionCmd(&v1beta3.MsgNewSignRequest{}, "Request a signature"),
+		actcli.RegisterActionCmd(&v1beta3.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
+		actcli.RegisterActionCmd(&v1beta3.MsgUpdateKey{}, "Update a Key information"),
+		actcli.RegisterActionCmd(&v1beta3.MsgUpdateSpace{}, "Update a Space information"),
 	)
 
 	return cmd
@@ -79,11 +79,11 @@ The public key must be a base64 encoded string.`,
 				return err
 			}
 
-			msg := &v1beta2.MsgFulfilKeyRequest{
+			msg := &v1beta3.MsgFulfilKeyRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
-				Status:    v1beta2.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
+				Status:    v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
 				RequestId: reqId,
-				Result:    v1beta2.NewMsgFulfilKeyRequestKey(pk),
+				Result:    v1beta3.NewMsgFulfilKeyRequestKey(pk),
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
@@ -114,11 +114,11 @@ The sender of this transaction must be a writer of the Keychain for the request.
 				return err
 			}
 
-			msg := &v1beta2.MsgFulfilKeyRequest{
+			msg := &v1beta3.MsgFulfilKeyRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
-				Status:    v1beta2.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
+				Status:    v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
 				RequestId: reqId,
-				Result:    v1beta2.NewMsgFulfilKeyRequestReject(args[1]),
+				Result:    v1beta3.NewMsgFulfilKeyRequestReject(args[1]),
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
@@ -155,12 +155,12 @@ The sign-data must be a base64 encoded string.`,
 				return err
 			}
 
-			msg := &v1beta2.MsgFulfilSignRequest{
+			msg := &v1beta3.MsgFulfilSignRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				RequestId: reqId,
-				Status:    v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-				Result: &v1beta2.MsgFulfilSignRequest_Payload{
-					Payload: &v1beta2.MsgSignedData{
+				Status:    v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+				Result: &v1beta3.MsgFulfilSignRequest_Payload{
+					Payload: &v1beta3.MsgSignedData{
 						SignedData: sig,
 					},
 				},
@@ -194,11 +194,11 @@ The sender of this transaction must be a writer of the Keychain for the request.
 				return err
 			}
 
-			msg := &v1beta2.MsgFulfilSignRequest{
+			msg := &v1beta3.MsgFulfilSignRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				RequestId: reqId,
-				Status:    v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-				Result: &v1beta2.MsgFulfilSignRequest_RejectReason{
+				Status:    v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+				Result: &v1beta3.MsgFulfilSignRequest_RejectReason{
 					RejectReason: args[1],
 				},
 			}

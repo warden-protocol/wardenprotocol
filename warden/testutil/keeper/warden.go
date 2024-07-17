@@ -19,7 +19,7 @@ import (
 
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {

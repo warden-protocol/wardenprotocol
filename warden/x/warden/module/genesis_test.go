@@ -7,7 +7,7 @@ import (
 	keepertest "github.com/warden-protocol/wardenprotocol/warden/testutil/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/testutil/nullify"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/module"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func TestGenesis(t *testing.T) {

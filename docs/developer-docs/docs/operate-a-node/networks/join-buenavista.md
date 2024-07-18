@@ -21,9 +21,10 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 ## Prerequisites
 
 - We recommend running public testnet nodes on machines with the following characteristics:
-    - at least 8 cores
-    - 32GB of RAM
-    - 300GB of disk space
+
+  - at least 8 cores
+  - 32GB of RAM
+  - 300GB of disk space
 
 - You'll also need to [install Go](https://golang.org/doc/install).
 
@@ -37,9 +38,9 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 
 2. Initialize the chain home folder:
 
-    ```
-    ./wardend init <custom_moniker>
-    ```
+   ```
+   ./wardend init <custom_moniker>
+   ```
 
 ### Option 2: Use the source code
 
@@ -58,19 +59,19 @@ To configure `wardend`, do the following:
 
 1. Prepare the genesis file:
 
-    ```
-    cd $HOME/.warden/config
-    rm genesis.json
-    wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/genesis.json
-    ```
+   ```
+   cd $HOME/.warden/config
+   rm genesis.json
+   wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/genesis.json
+   ```
 
 2. Set the mandatory configuration options:
 
-    ```bash
-    # Set minimum gas price & peers
-    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
-    sed -i 's/persistent_peers = ""/persistent_peers = "650c66dda5f7aa954f44fd6148a6f32b085ca792@sentry-0.buenavista.wardenprotocol.org:26656,7c70120717ef5eae8236162ede6819249bd6587d@sentry-1.buenavista.wardenprotocol.org:26656,288116b75c3c710268b5d86182d8dd5e33a6b56f@sentry-2.buenavista.wardenprotocol.org:26656"/' config.toml
-    ```
+   ```bash
+   # Set minimum gas price & peers
+   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
+   sed -i 's/persistent_peers = ""/persistent_peers = "92ba004ac4bcd5afbd46bc494ec906579d1f5c1d@52.30.124.80:26656,ed5781ea586d802b580fdc3515d75026262f4b9d@54.171.21.98:26656/' config.toml
+   ```
 
 <!--- To be confirmed
 ## (Recommended) Setup state sync

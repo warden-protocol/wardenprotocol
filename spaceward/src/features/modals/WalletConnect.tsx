@@ -18,8 +18,9 @@ export default function WalletConnectModal() {
 
 	const webRTC = useWebRTCTransport();
 
-	const { w, sessionProposals, sessionRequests, activeSessions } =
-		useWeb3Wallet("wss://relay.walletconnect.org");
+	const { w, sessionProposals } = useWeb3Wallet(
+		"wss://relay.walletconnect.org",
+	);
 
 	useEffect(() => {
 		if (webRTC.data) {

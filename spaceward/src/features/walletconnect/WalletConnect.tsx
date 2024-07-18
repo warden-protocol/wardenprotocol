@@ -260,7 +260,10 @@ export function WalletConnect() {
 												<SignRequestDialog
 													state={cosm.state}
 													error={cosm.error}
-													reset={cosm.reset}
+													reset={() => {
+														cosm.reset();
+														setOpen(false);
+													}}
 												/>
 											</div>
 										))}

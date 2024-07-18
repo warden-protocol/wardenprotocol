@@ -4,6 +4,7 @@ import { Assets } from "./assets";
 import type { CommonActions } from "@/utils/common";
 import type { RemoteState } from "./types";
 import { Icons } from "@/components/ui/icons-assets";
+import { wcUriRegex } from "../modals/WalletConnect";
 
 interface MobileReaderProps {
 	hideQRScaner: () => void;
@@ -112,12 +113,19 @@ export default function MobileReader(props: MobileReaderProps) {
 
 							const data = ctx.getImageData(0, 0, width, height);
 							const code = jsqr(data.data, width, height)?.data;
-							setSuccess(Boolean(code));
 
-							if (code) {
+							const success = Boolean(
+								code && wcUriRegex.test(code),
+							);
+
+							if (success) {
+								setSuccess(true);
+
 								props.dispatch({
 									type: "data",
-									payload: Uint8Array.from(Buffer.from(code)),
+									payload: Uint8Array.from(
+										Buffer.from(code!),
+									),
 								});
 							}
 						}),
@@ -163,11 +171,7 @@ export default function MobileReader(props: MobileReaderProps) {
 						</div>
 					) : ready ? (
 						<div className="flex flex-auto justify-center items-center">
-							{/* <Assets.qrTarget
-								className={clsx({
-									"stroke-green-600": success,
-								})}
-							/> */}
+							<Assets.qrTarget className="m-auto w-[282px] h-[282px] object-contain object-center" />
 						</div>
 					) : (
 						<div className="h-full flex flex-col">
@@ -181,17 +185,16 @@ export default function MobileReader(props: MobileReaderProps) {
 								Open the access
 							</div>
 
-							<Assets.qrLocaed className="m-auto w-[282px] h-[282px] object-contain object-center" />
+							<Assets.qrTarget
+								locked
+								className="m-auto w-[282px] h-[282px] object-contain object-center"
+							/>
 						</div>
 					)}
 				</div>
 			</div>
 
 			<div className="mt-auto shrink-0 flex flex-col gap-3 mb-4 z-10">
-				<button className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background">
-					Open Access
-				</button>
-
 				<button
 					onClick={props.hideQRScaner}
 					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-transparent text-muted-foreground font-semibold shrink-0 "

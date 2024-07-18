@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import PersistentPeers from "@site/src/components/PersistentPeers";
+
 # Join Buenavista
 
 ## Overview
@@ -66,11 +68,14 @@ To configure `wardend`, do the following:
 
 2. Set the mandatory configuration options:
 
-    ```bash
-    # Set minimum gas price & peers
-    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
-    sed -i 's/persistent_peers = ""/persistent_peers = "650c66dda5f7aa954f44fd6148a6f32b085ca792@sentry-0.buenavista.wardenprotocol.org:26656,7c70120717ef5eae8236162ede6819249bd6587d@sentry-1.buenavista.wardenprotocol.org:26656,288116b75c3c710268b5d86182d8dd5e33a6b56f@sentry-2.buenavista.wardenprotocol.org:26656"/' config.toml
-    ```
+```bash
+# Set minimum gas price & peers
+sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
+```
+
+<PersistentPeers
+    chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
+    code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
 <!--- To be confirmed
 ## (Recommended) Setup state sync

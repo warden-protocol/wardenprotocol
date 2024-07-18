@@ -257,8 +257,12 @@ export async function approveRequest({
 				// prepare message
 				const msg = fromHex(req.params.request.params[0].slice(2));
 				const text = new TextDecoder().decode(msg);
+
+				const message =
+					"\x19Ethereum Signed Message:\n" + text.length + text;
+
 				const hash = ethers.keccak256(
-					"\x19Ethereum Signed Message:\n" + text.length + text,
+					Uint8Array.from(Buffer.from(message, "utf-8")),
 				);
 
 				// send signature request to Warden Protocol and wait response

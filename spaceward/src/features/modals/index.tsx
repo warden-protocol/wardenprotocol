@@ -5,6 +5,7 @@ import ReceiveAssetsModal from "./ReceiveAssets";
 import SelectAssetModal from "./SelectAsset";
 import SendAssetsModal from "./SendAssets";
 import WalletConnectModal from "./WalletConnect";
+import ConnectedModal from "./ConnectedModal";
 
 export default function ModalRoot(props: ModalState) {
 	const { dispatch } = useModalContext();
@@ -25,6 +26,8 @@ export default function ModalRoot(props: ModalState) {
 
 			{props.type === "walletconnect" ? (
 				<WalletConnectModal />
+			) : props.type === "dapps-modal" ? (
+				<ConnectedModal />
 			) : !props.params ? (
 				<>params not set</>
 			) : props.type === "select-key" ? (

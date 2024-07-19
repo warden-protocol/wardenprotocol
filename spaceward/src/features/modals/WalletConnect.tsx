@@ -7,7 +7,8 @@ import WCBindSpace from "./WCBindSpace";
 import { approveSession, rejectSession } from "../walletconnect/util";
 import { useModalContext } from "@/context/modalContext";
 
-const wcUriRegex = /^wc:[0-9a-f]+@.+/i;
+/** @deprecated move export */
+export const wcUriRegex = /^wc:[0-9a-f]+@.+/i;
 
 export default function WalletConnectModal() {
 	const { dispatch } = useModalContext();
@@ -17,8 +18,9 @@ export default function WalletConnectModal() {
 
 	const webRTC = useWebRTCTransport();
 
-	const { w, sessionProposals, sessionRequests, activeSessions } =
-		useWeb3Wallet("wss://relay.walletconnect.org");
+	const { w, sessionProposals } = useWeb3Wallet(
+		"wss://relay.walletconnect.org",
+	);
 
 	useEffect(() => {
 		if (webRTC.data) {

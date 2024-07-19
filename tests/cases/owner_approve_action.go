@@ -3,13 +3,14 @@ package cases
 import (
 	"context"
 	"fmt"
-	"github.com/stretchr/testify/require"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func init() {

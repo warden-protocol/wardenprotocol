@@ -1,4 +1,3 @@
-import { Icons } from "@/components/ui/icons";
 import MobileReader from "@/features/walletconnect/MobileReader";
 import ReaderAssistant from "@/features/walletconnect/ReaderAssistant";
 import {
@@ -7,7 +6,7 @@ import {
 } from "@/features/walletconnect/util";
 import useLibp2p from "@/hooks/useLibp2p";
 import { multiaddr } from "@multiformats/multiaddr";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const MobileAssistant = ({
 	base64MultiAddress,
@@ -21,6 +20,8 @@ const MobileAssistant = ({
 	const { libp2p } = useLibp2p();
 	const [peers, setPeers] = useState<string[]>([]);
 	const connected = Boolean(peers.length);
+	const prevConnected = useRef(connected);
+	const [disconnected, setDisconnected] = useState(false);
 	const [metadata, setMetadata] = useState<{ title: string; icon: string }>();
 
 	useEffect(() => {
@@ -106,19 +107,36 @@ const MobileAssistant = ({
 		[libp2p, topic, connected],
 	);
 
+	if (!connected && prevConnected.current && !disconnected) {
+		setDisconnected(true);
+	}
+
+	useEffect(() => {
+		prevConnected.current = connected;
+	}, [connected])
+
 	return (
 		<div>
 			{metadata ? (
-				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-8">
+				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-6">
 					<img
 						className="w-[52px] h-[52px]"
 						src={metadata.icon}
 						alt={metadata.title}
 					/>
-					<p className="text-xl font-bold">{metadata.title} connected</p>
+					<p className="text-xl font-bold">
+						{metadata.title} connected
+					</p>
+				</div>
+			) : disconnected ? (
+				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-6">
+					You disconnected from tab
+					<p className="text-xl font-bold">
+						Please scan the QR Code again
+					</p>
 				</div>
 			) : isReader ? (
-				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-8">
+				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-6">
 					<MobileReader
 						hideQRScaner={() => setIsReader(false)}
 						dispatch={dispatch}

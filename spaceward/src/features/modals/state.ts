@@ -6,7 +6,8 @@ export type ModalType =
 	| "receive"
 	| "send"
 	| "select-asset"
-	| "walletconnect";
+	| "walletconnect"
+	| "dapps-modal";
 
 interface ModalParams {
 	"select-asset": SelectAssetParams;
@@ -14,6 +15,7 @@ interface ModalParams {
 	receive: TransferParams;
 	send: TransferParams;
 	walletconnect: undefined;
+	"dapps-modal": undefined;
 }
 
 export interface ModalState {

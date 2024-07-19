@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgNewRule, MsgUpdateRule, MsgRevokeAction } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.act.v1beta1.MsgUpdateParams", MsgUpdateParams], ["/warden.act.v1beta1.MsgNewAction", MsgNewAction], ["/warden.act.v1beta1.MsgApproveAction", MsgApproveAction], ["/warden.act.v1beta1.MsgNewRule", MsgNewRule], ["/warden.act.v1beta1.MsgUpdateRule", MsgUpdateRule], ["/warden.act.v1beta1.MsgRevokeAction", MsgRevokeAction]];
+import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgCheckAction, MsgNewRule, MsgUpdateRule, MsgRevokeAction } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.act.v1beta1.MsgUpdateParams", MsgUpdateParams], ["/warden.act.v1beta1.MsgNewAction", MsgNewAction], ["/warden.act.v1beta1.MsgApproveAction", MsgApproveAction], ["/warden.act.v1beta1.MsgCheckAction", MsgCheckAction], ["/warden.act.v1beta1.MsgNewRule", MsgNewRule], ["/warden.act.v1beta1.MsgUpdateRule", MsgUpdateRule], ["/warden.act.v1beta1.MsgRevokeAction", MsgRevokeAction]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -25,6 +25,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value: MsgApproveAction.encode(value).finish()
+      };
+    },
+    checkAction(value: MsgCheckAction) {
+      return {
+        typeUrl: "/warden.act.v1beta1.MsgCheckAction",
+        value: MsgCheckAction.encode(value).finish()
       };
     },
     newRule(value: MsgNewRule) {
@@ -62,6 +68,12 @@ export const MessageComposer = {
     approveAction(value: MsgApproveAction) {
       return {
         typeUrl: "/warden.act.v1beta1.MsgApproveAction",
+        value
+      };
+    },
+    checkAction(value: MsgCheckAction) {
+      return {
+        typeUrl: "/warden.act.v1beta1.MsgCheckAction",
         value
       };
     },
@@ -103,6 +115,12 @@ export const MessageComposer = {
         value: MsgApproveAction.toJSON(value)
       };
     },
+    checkAction(value: MsgCheckAction) {
+      return {
+        typeUrl: "/warden.act.v1beta1.MsgCheckAction",
+        value: MsgCheckAction.toJSON(value)
+      };
+    },
     newRule(value: MsgNewRule) {
       return {
         typeUrl: "/warden.act.v1beta1.MsgNewRule",
@@ -141,6 +159,12 @@ export const MessageComposer = {
         value: MsgApproveAction.fromJSON(value)
       };
     },
+    checkAction(value: any) {
+      return {
+        typeUrl: "/warden.act.v1beta1.MsgCheckAction",
+        value: MsgCheckAction.fromJSON(value)
+      };
+    },
     newRule(value: any) {
       return {
         typeUrl: "/warden.act.v1beta1.MsgNewRule",
@@ -177,6 +201,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value: MsgApproveAction.fromPartial(value)
+      };
+    },
+    checkAction(value: MsgCheckAction) {
+      return {
+        typeUrl: "/warden.act.v1beta1.MsgCheckAction",
+        value: MsgCheckAction.fromPartial(value)
       };
     },
     newRule(value: MsgNewRule) {

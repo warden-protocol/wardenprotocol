@@ -28,7 +28,7 @@ function BlockDetails({ block, txs }: { block: Block; txs: Tx[] }) {
 					{formatDateTime(block.header.time)}
 				</CardRow>
 				<CardRow label="Transactions">
-					{block.data.txs.length} txs
+					{txs.length} txs
 				</CardRow>
 
 				<div className="flex flex-row gap-4 pt-8">

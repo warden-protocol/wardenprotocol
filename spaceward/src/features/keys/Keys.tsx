@@ -17,9 +17,9 @@ import { useQueryHooks } from "@/hooks/useClient";
 import {
 	Key as KeyModel,
 	AddressType,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 
 export function Keys({ spaceId }: { spaceId: string }) {

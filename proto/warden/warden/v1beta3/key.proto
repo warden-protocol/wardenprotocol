@@ -1,0 +1,104 @@
+syntax = "proto3";
+package warden.warden.v1beta3;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
+
+// KeyRequestStatus indicates the status of a key request.
+//
+// The possible state transitions are:
+//   * PENDING -> FULFILLED
+//   * PENDING -> REJECTED
+enum KeyRequestStatus {
+  // The request is missing the status field.
+  KEY_REQUEST_STATUS_UNSPECIFIED = 0;
+
+  // The request is waiting to be fulfilled. This is the initial state of a
+  // request.
+  KEY_REQUEST_STATUS_PENDING = 1;
+
+  // The request was fulfilled. This is a final state for a request.
+  KEY_REQUEST_STATUS_FULFILLED = 2;
+
+  // The request was rejected. This is a final state for a request.
+  KEY_REQUEST_STATUS_REJECTED = 3;
+}
+
+// KeyRequest is the request from a user (creator) to a Keychain to create a
+// new Key that will belong to a Space.
+//
+// The request can be:
+//  - fulfilled by the Keychain, in which case a Key will be created;
+//  - rejected, in which case the request reject_reason field will be set.
+message KeyRequest {
+  // Unique id for the request.
+  // If the request is fulfilled, the new Key will be created with this id.
+  uint64 id = 1;
+
+  // Address of the creator of the request.
+  string creator = 2;
+
+  // Space ID of the Space that the Key will belong to.
+  uint64 space_id = 3;
+
+  // Keychain ID of the Keychain that will create the Key.
+  uint64 keychain_id = 4;
+
+  // Crypto scheme of the Key.
+  KeyType key_type = 5;
+
+  // Status of the request.
+  KeyRequestStatus status = 6;
+  
+  // If the request is rejected, this field will contain the reason.
+  string reject_reason = 7;
+
+  // ID of the Rule that the resulting Key will use.
+  uint64 rule_id = 8;
+}
+
+// Scheme is signing crypto scheme of a Key.
+enum KeyType {
+  // The key type is missing.
+  KEY_TYPE_UNSPECIFIED = 0;
+
+  // The key is an ECDSA secp256k1 key.
+  KEY_TYPE_ECDSA_SECP256K1 = 1;
+
+  // The key is an EdDSA Ed25519 key.
+  KEY_TYPE_EDDSA_ED25519 = 2;
+}
+
+// Key is a public key that can be used to sign data.
+message Key {
+  // ID of the key.
+  uint64 id = 1;
+
+  // ID of the space that the key belongs to.
+  uint64 space_id = 2;
+
+  // ID of the keychain that created the key.
+  uint64 keychain_id = 3;
+
+  // Scheme of the key.
+  KeyType type = 4;
+
+  // Public key of the key. The private key is only known to the Keychain that
+  // generated it.
+  bytes public_key = 5;
+
+  // ID of the Rule that will need to be satisfied for using this key to sign
+  // data.
+  // If this is not set, the key will use the signing Rule of the Space.
+  uint64 rule_id = 6;
+}
+
+enum AddressType {
+  // The address type is missing.
+  ADDRESS_TYPE_UNSPECIFIED = 0;
+
+  // Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F).
+  ADDRESS_TYPE_ETHEREUM = 1;
+
+  // Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n).
+  ADDRESS_TYPE_OSMOSIS = 2;
+}

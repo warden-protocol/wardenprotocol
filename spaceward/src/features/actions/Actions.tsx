@@ -42,7 +42,7 @@ export function Actions() {
 	const groups: { [key: string]: ActionModel[] } =
 		q.data?.actions.reduce(
 			(groups, action) => {
-				const date = new Date(Number(action.createdAt.seconds))
+				const date = timestampToDate(action.createdAt)
 					.toISOString()
 					.split("T")[0];
 				if (!groups[date]) {
@@ -108,7 +108,7 @@ export function Actions() {
 														<div className="text-left">
 															{action.msg?.typeUrl
 																?.replace(
-																	"/warden.warden.v1beta2.Msg",
+																	"/warden.warden.v1beta3.Msg",
 																	"",
 																)
 																.replace(

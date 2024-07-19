@@ -46,7 +46,7 @@ export const NewKeyButton = React.forwardRef<HTMLButtonElement>(function NewKeyB
 	const { state, error, requestKey, reset } = useRequestKey();
 
 	const { warden } = useQueryHooks();
-	const q = warden.warden.v1beta2.useKeychains({});
+	const q = warden.warden.v1beta3.useKeychains({});
 
 		const form = useForm<z.infer<typeof FormSchema>>({
 			resolver: zodResolver(FormSchema),

@@ -6,7 +6,7 @@ import { fromBech32 } from "@cosmjs/encoding";
 import { useNewAction } from "@/hooks/useAction";
 import { warden } from "@wardenprotocol/wardenjs";
 
-const { MsgAddSpaceOwner } = warden.warden.v1beta2;
+const { MsgAddSpaceOwner } = warden.warden.v1beta3;
 
 export function AddSpaceOwnerForm({ spaceId }: { spaceId: string }) {
 	const { newAction, authority } = useNewAction(MsgAddSpaceOwner);

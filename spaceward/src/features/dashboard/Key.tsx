@@ -1,6 +1,6 @@
 import { Icons } from "@/components/ui/icons-assets";
 import { useMemo } from "react";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import { shapes } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";

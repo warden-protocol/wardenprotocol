@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewAction, MsgNewActionResponse, MsgApproveAction, MsgApproveActionResponse, MsgNewRule, MsgNewRuleResponse, MsgUpdateRule, MsgUpdateRuleResponse, MsgRevokeAction, MsgRevokeActionResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewAction, MsgNewActionResponse, MsgApproveAction, MsgApproveActionResponse, MsgCheckAction, MsgCheckActionResponse, MsgNewRule, MsgNewRuleResponse, MsgUpdateRule, MsgUpdateRuleResponse, MsgRevokeAction, MsgRevokeActionResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -13,6 +13,8 @@ export interface Msg {
   newAction(request: MsgNewAction): Promise<MsgNewActionResponse>;
   /** Add an approval to an existing Action. */
   approveAction(request: MsgApproveAction): Promise<MsgApproveActionResponse>;
+  /** Add an approval to an existing Action. */
+  checkAction(request: MsgCheckAction): Promise<MsgCheckActionResponse>;
   /** Create a new Rule. */
   newRule(request: MsgNewRule): Promise<MsgNewRuleResponse>;
   /** Update an existing act name and definition. */
@@ -27,6 +29,7 @@ export class MsgClientImpl implements Msg {
     this.updateParams = this.updateParams.bind(this);
     this.newAction = this.newAction.bind(this);
     this.approveAction = this.approveAction.bind(this);
+    this.checkAction = this.checkAction.bind(this);
     this.newRule = this.newRule.bind(this);
     this.updateRule = this.updateRule.bind(this);
     this.revokeAction = this.revokeAction.bind(this);
@@ -45,6 +48,11 @@ export class MsgClientImpl implements Msg {
     const data = MsgApproveAction.encode(request).finish();
     const promise = this.rpc.request("warden.act.v1beta1.Msg", "ApproveAction", data);
     return promise.then(data => MsgApproveActionResponse.decode(new BinaryReader(data)));
+  }
+  checkAction(request: MsgCheckAction): Promise<MsgCheckActionResponse> {
+    const data = MsgCheckAction.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Msg", "CheckAction", data);
+    return promise.then(data => MsgCheckActionResponse.decode(new BinaryReader(data)));
   }
   newRule(request: MsgNewRule): Promise<MsgNewRuleResponse> {
     const data = MsgNewRule.encode(request).finish();

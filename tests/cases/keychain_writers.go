@@ -9,7 +9,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func init() {
@@ -46,12 +46,12 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 
 		// check KeyRequest was updated and Key created
 		client := c.w.GRPCClient(t)
-		res, err := client.Warden.KeyRequestById(ctx, &v1beta2.QueryKeyRequestByIdRequest{Id: 1})
+		res, err := client.Warden.KeyRequestById(ctx, &v1beta3.QueryKeyRequestByIdRequest{Id: 1})
 		require.NoError(t, err)
-		require.Equal(t, v1beta2.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, res.KeyRequest.Status)
+		require.Equal(t, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, res.KeyRequest.Status)
 
 		// SKIP: a bug in the go-protobuf pkg causes this query to panic - not sure why.
-		// keyRes, err := client.Warden.KeyById(ctx, &v1beta2.QueryKeyByIdRequest{Id: res.KeyRequest.Id})
+		// keyRes, err := client.Warden.KeyById(ctx, &v1beta3.QueryKeyByIdRequest{Id: res.KeyRequest.Id})
 		// require.NoError(t, err)
 		// require.Equal(t, "A93VNAt/SYLw61VYTAhYO0pMJUqjnKKT2owP7HjGNRoK", base64.StdEncoding.EncodeToString(keyRes.Key.PublicKey))
 	})
@@ -71,9 +71,9 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 
 		// check SignRequest was updated and Signature created
 		client := c.w.GRPCClient(t)
-		res, err := client.Warden.SignRequestById(ctx, &v1beta2.QuerySignRequestByIdRequest{Id: 1})
+		res, err := client.Warden.SignRequestById(ctx, &v1beta3.QuerySignRequestByIdRequest{Id: 1})
 		require.NoError(t, err)
-		require.Equal(t, v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, res.SignRequest.Status)
-		require.Equal(t, "LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA=", base64.StdEncoding.EncodeToString(res.SignRequest.Result.(*v1beta2.SignRequest_SignedData).SignedData))
+		require.Equal(t, v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, res.SignRequest.Status)
+		require.Equal(t, "LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA=", base64.StdEncoding.EncodeToString(res.SignRequest.Result.(*v1beta3.SignRequest_SignedData).SignedData))
 	})
 }

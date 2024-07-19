@@ -25,7 +25,7 @@ export function Explorer() {
 				queryKey: ["block", latestHeight - BigInt(i)],
 				queryFn: async () => {
 					const client = await getClient();
-					return client.cosmos.base.tendermint.v1beta1.getBlockByHeight({
+					return client.cosmos.tx.v1beta1.getBlockWithTxs({
 						height: (latestHeight - BigInt(i)),
 					});
 				},
@@ -55,6 +55,7 @@ export function Explorer() {
 								<Block
 									key={q.data?.block?.header?.height}
 									block={q.data?.block}
+									txCount={q.data?.txs?.length ?? 0}
 								/>
 							) : null
 						))}
@@ -64,7 +65,7 @@ export function Explorer() {
 	);
 }
 
-function Block({ block }: { block: BlockModel }) {
+function Block({ block, txCount }: { block: BlockModel, txCount: number }) {
 	return (
 		<TableRow
 			className={
@@ -88,7 +89,7 @@ function Block({ block }: { block: BlockModel }) {
 				</span>
 			</TableCell>
 			<TableCell className="text-right">
-				{block.data.txs.length} txs
+				{txCount} txs
 			</TableCell>
 			<TableCell className="text-right">
 				<Button variant="outline" size={"sm"}>

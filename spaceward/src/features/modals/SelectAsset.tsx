@@ -7,7 +7,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import AssetRow, { AssetPlaceholder } from "../assets/AssetRow";
 import { useAssetQueries } from "../assets/hooks";
 import type { SelectAssetParams } from "./types";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 
 const Network = ({ chainName }: { chainName: string }) => {
 	const Icon = NetworkIcons[chainName] ?? AssetPlaceholder;

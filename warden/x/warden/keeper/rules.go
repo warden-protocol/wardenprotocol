@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) RegisterRules(reg *acttypes.RulesRegistry) {
@@ -19,7 +19,7 @@ func (k Keeper) RegisterRules(reg *acttypes.RulesRegistry) {
 	acttypes.RegisterCtx(reg, k.newSignRequestRule)
 }
 
-func (k Keeper) addSpaceOwnerRule(ctx context.Context, msg *v1beta2.MsgAddSpaceOwner) (acttypes.Rule, error) {
+func (k Keeper) addSpaceOwnerRule(ctx context.Context, msg *v1beta3.MsgAddSpaceOwner) (acttypes.Rule, error) {
 	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return acttypes.Rule{}, err
@@ -32,7 +32,7 @@ func (k Keeper) addSpaceOwnerRule(ctx context.Context, msg *v1beta2.MsgAddSpaceO
 	}
 }
 
-func (k Keeper) removeSpaceOwnerRule(ctx context.Context, msg *v1beta2.MsgRemoveSpaceOwner) (acttypes.Rule, error) {
+func (k Keeper) removeSpaceOwnerRule(ctx context.Context, msg *v1beta3.MsgRemoveSpaceOwner) (acttypes.Rule, error) {
 	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return acttypes.Rule{}, err
@@ -45,7 +45,7 @@ func (k Keeper) removeSpaceOwnerRule(ctx context.Context, msg *v1beta2.MsgRemove
 	}
 }
 
-func (k Keeper) newKeyRequestRule(ctx context.Context, msg *v1beta2.MsgNewKeyRequest) (acttypes.Rule, error) {
+func (k Keeper) newKeyRequestRule(ctx context.Context, msg *v1beta3.MsgNewKeyRequest) (acttypes.Rule, error) {
 	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return acttypes.Rule{}, err
@@ -58,7 +58,7 @@ func (k Keeper) newKeyRequestRule(ctx context.Context, msg *v1beta2.MsgNewKeyReq
 	}
 }
 
-func (k Keeper) newSignRequestRule(ctx context.Context, msg *v1beta2.MsgNewSignRequest) (context.Context, acttypes.Rule, error) {
+func (k Keeper) newSignRequestRule(ctx context.Context, msg *v1beta3.MsgNewSignRequest) (context.Context, acttypes.Rule, error) {
 	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, acttypes.Rule{}, err
@@ -88,7 +88,7 @@ func (k Keeper) newSignRequestRule(ctx context.Context, msg *v1beta2.MsgNewSignR
 	return ctxWithVals, rule, nil
 }
 
-func (k Keeper) updateKeyRule(ctx context.Context, msg *v1beta2.MsgUpdateKey) (acttypes.Rule, error) {
+func (k Keeper) updateKeyRule(ctx context.Context, msg *v1beta3.MsgUpdateKey) (acttypes.Rule, error) {
 	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return acttypes.Rule{}, err
@@ -107,7 +107,7 @@ func (k Keeper) updateKeyRule(ctx context.Context, msg *v1beta2.MsgUpdateKey) (a
 	return rule, nil
 }
 
-func (k Keeper) updateSpaceRule(ctx context.Context, msg *v1beta2.MsgUpdateSpace) (acttypes.Rule, error) {
+func (k Keeper) updateSpaceRule(ctx context.Context, msg *v1beta3.MsgUpdateSpace) (acttypes.Rule, error) {
 	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return acttypes.Rule{}, err
@@ -120,7 +120,7 @@ func (k Keeper) updateSpaceRule(ctx context.Context, msg *v1beta2.MsgUpdateSpace
 	}
 }
 
-func (k Keeper) getKeyRule(ctx context.Context, space v1beta2.Space, key v1beta2.Key) (acttypes.Rule, error) {
+func (k Keeper) getKeyRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
 	if key.RuleId > 0 {
 		return k.actKeeper.GetRule(ctx, key.RuleId)
 	} else if space.SignRuleId > 0 {

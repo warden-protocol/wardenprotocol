@@ -10,7 +10,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/testutil/sample"
 	wardensimulation "github.com/warden-protocol/wardenprotocol/warden/x/warden/simulation"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 // avoid unused import issue

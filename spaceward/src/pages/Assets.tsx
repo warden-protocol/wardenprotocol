@@ -16,7 +16,6 @@ import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
-import { useModalContext } from "@/context/modalContext";
 import { FIAT_FORMAT } from "@/features/assets/util";
 import {
 	NetworkIcons,
@@ -26,6 +25,7 @@ import {
 import { AssetPlaceholder } from "@/features/assets/AssetRow";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { commonReducer } from "@/utils/common";
+import { useModalState } from "@/features/modals/state";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -53,7 +53,7 @@ export function AssetsPage() {
 	const currency = curr.currency as Currency;
 	const setCurrency = curr.setCurrency as (currency: Currency) => void;
 	const formatter = FIAT_FORMAT[currency];
-	const { dispatch: modalDispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const { queryKeys, queryBalances, queryPrices } = useAssetQueries(spaceId);
 
@@ -234,12 +234,9 @@ export function AssetsPage() {
 					<div className="grid grid-cols-2 gap-2">
 						<button
 							className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
-							onClick={modalDispatch.bind(null, {
-								type: "set",
-								payload: {
-									type: "select-key",
-									params: { next: "receive", addresses },
-								},
+							onClick={setModal.bind(null, {
+								type: "select-key",
+								params: { next: "receive", addresses },
 							})}
 						>
 							<Icons.arrowDown />
@@ -250,20 +247,17 @@ export function AssetsPage() {
 								onClick={() => {
 									const item = results[0] ?? _results[0];
 
-									modalDispatch({
-										type: "set",
-										payload: {
-											type: "send",
-											params: {
-												chainName: item.chainName,
-												keyResponse: item.key,
-												token: item.token,
-												type: item.type.startsWith(
-													"eip155:",
-												)
-													? AddressType.ADDRESS_TYPE_ETHEREUM
-													: AddressType.ADDRESS_TYPE_OSMOSIS,
-											},
+									setModal({
+										type: "send",
+										params: {
+											chainName: item.chainName,
+											keyResponse: item.key,
+											token: item.token,
+											type: item.type.startsWith(
+												"eip155:",
+											)
+												? AddressType.ADDRESS_TYPE_ETHEREUM
+												: AddressType.ADDRESS_TYPE_OSMOSIS,
 										},
 									});
 								}}
@@ -333,12 +327,9 @@ export function AssetsPage() {
 						</div>
 						<button
 							className="text-black mt-6 bg-white h-[40px] rounded-lg justify-center text-base font-medium py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
-							onClick={modalDispatch.bind(null, {
-								type: "set",
-								payload: {
-									type: "select-key",
-									params: { next: "receive", addresses },
-								},
+							onClick={setModal.bind(null, {
+								type: "select-key",
+								params: { next: "receive", addresses },
 							})}
 						>
 							Receive
@@ -577,21 +568,17 @@ export function AssetsPage() {
 									<div className="flex items-center justify-end gap-2">
 										<button
 											className=" bg-fill-quaternary h-8 rounded justify-center font-medium py-1 px-4"
-											onClick={modalDispatch.bind(null, {
-												type: "set",
-												payload: {
-													type: "receive",
-													params: {
-														address: item.address,
-														chainName:
-															item.chainName,
-														token: item.token,
-														type: item.type.startsWith(
-															"eip155:",
-														)
-															? AddressType.ADDRESS_TYPE_ETHEREUM
-															: AddressType.ADDRESS_TYPE_OSMOSIS,
-													},
+											onClick={setModal.bind(null, {
+												type: "receive",
+												params: {
+													address: item.address,
+													chainName: item.chainName,
+													token: item.token,
+													type: item.type.startsWith(
+														"eip155:",
+													)
+														? AddressType.ADDRESS_TYPE_ETHEREUM
+														: AddressType.ADDRESS_TYPE_OSMOSIS,
 												},
 											})}
 										>
@@ -599,22 +586,18 @@ export function AssetsPage() {
 										</button>
 										<button
 											className=" bg-fill-quaternary h-8 rounded justify-center font-medium py-1 px-4"
-											onClick={modalDispatch.bind(null, {
-												type: "set",
-												payload: {
-													type: "send",
-													params: {
-														address: item.address,
-														chainName:
-															item.chainName,
-														keyResponse: key,
-														token: item.token,
-														type: item.type.startsWith(
-															"eip155:",
-														)
-															? AddressType.ADDRESS_TYPE_ETHEREUM
-															: AddressType.ADDRESS_TYPE_OSMOSIS,
-													},
+											onClick={setModal.bind(null, {
+												type: "send",
+												params: {
+													address: item.address,
+													chainName: item.chainName,
+													keyResponse: key,
+													token: item.token,
+													type: item.type.startsWith(
+														"eip155:",
+													)
+														? AddressType.ADDRESS_TYPE_ETHEREUM
+														: AddressType.ADDRESS_TYPE_OSMOSIS,
 												},
 											})}
 										>

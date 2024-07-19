@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 import type { SelectKeyParams } from "./types";
 import { SelectAddressRow } from "../assets/SelectAddressRow";
-import { useModalContext } from "@/context/modalContext";
+import { useModalState } from "./state";
 
 type UnwrapArray<T> = T extends (infer U)[] ? U : never;
 
 export default function SelectKeyModal({ addresses, next }: SelectKeyParams) {
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 
 	const onClick = useCallback(
 		(item?: UnwrapArray<Required<SelectKeyParams>["addresses"]>) => {
@@ -14,15 +14,12 @@ export default function SelectKeyModal({ addresses, next }: SelectKeyParams) {
 				return;
 			}
 
-			dispatch({
-				type: "set",
-				payload: {
-					type: next,
-					params: item,
-				},
+			setModal({
+				type: next,
+				params: item,
 			});
 		},
-		[next, dispatch],
+		[next],
 	);
 
 	if (!addresses) {

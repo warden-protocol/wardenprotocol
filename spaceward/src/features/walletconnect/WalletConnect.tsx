@@ -8,11 +8,11 @@ import * as Popover from "@radix-ui/react-popover";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { useModalContext } from "@/context/modalContext";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { approveRequest } from "./util";
 import { Icons } from "@/components/ui/icons";
 import { PowerIcon } from "lucide-react";
+import { useModalState } from "../modals/state";
 
 export function WalletConnect() {
 	const [open, setOpen] = useState(false);
@@ -36,7 +36,7 @@ export function WalletConnect() {
 	}, [sessionRequests]);
 
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-	const { dispatch: modalDispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 
 	return (
 		<div>
@@ -86,12 +86,9 @@ export function WalletConnect() {
 							"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
 							sessionRequests.length > 0 && "animate-pulse",
 						)}
-						onClick={modalDispatch.bind(null, {
-							type: "set",
-							payload: {
-								type: "walletconnect",
-								params: undefined,
-							},
+						onClick={setModal.bind(null, {
+							type: "walletconnect",
+							params: undefined,
 						})}
 					>
 						<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
@@ -331,9 +328,7 @@ export function WalletConnect() {
 						>
 							<div
 								className="inset-0 bg-card/40 backdrop-blur-md absolute"
-								onClick={() =>
-										 setListOpen(false)
-								}
+								onClick={() => setListOpen(false)}
 							></div>
 							<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
 								<div className="flex flex-col gap-4">

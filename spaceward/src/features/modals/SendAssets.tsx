@@ -9,7 +9,6 @@ import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import SignRequestDialog from "@/components/SignRequestDialog";
 import { SignRequesterState } from "@/hooks/useRequestSignature";
-import { useModalContext } from "@/context/modalContext";
 import { TxBuild, buildTransaction } from "./util";
 import Key from "../assets/Key";
 import { useAssetQueries } from "../assets/hooks";
@@ -23,6 +22,7 @@ import { AssetPlaceholder } from "../assets/AssetRow";
 import { validateAddress } from "../intents/AddAddressModal";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { walletContext } from "@cosmos-kit/react-lite";
+import { useModalState } from "./state";
 
 const getAddress = (key?: QueryKeyResponse, type?: AddressType) =>
 	key?.addresses.find((a) => a.type === type)?.address;
@@ -41,7 +41,7 @@ export default function SendAssetsModal({
 	const currency = useCurrency().currency as Currency;
 	// todo useFiatConversion hook
 	const formatter = FIAT_FORMAT[currency];
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 
 	const { spaceId } = useSpaceId();
 	const {
@@ -135,9 +135,9 @@ export default function SendAssetsModal({
 		setReceipt(undefined);
 
 		if (receipt) {
-			dispatch({ type: "type", payload: undefined });
+			setModal({ type: undefined, params: undefined });
 		}
-	}, [dispatch, receipt, req]);
+	}, [receipt, req]);
 
 	async function submit() {
 		if (!key) {
@@ -288,9 +288,8 @@ export default function SendAssetsModal({
 										<div
 											onClick={() => {
 												// setCurrentKey(item.address);
-												dispatch({
-													type: "params",
-													payload: {
+												setModal({
+													params: {
 														chainName,
 														keyResponse: item,
 														token,
@@ -350,13 +349,10 @@ export default function SendAssetsModal({
 
 							<div className="relative z-40">
 								<div
-									onClick={dispatch.bind(null, {
-										type: "set",
-										payload: {
-											type: "select-asset",
-											params: {
-												keyResponse: key,
-											},
+									onClick={setModal.bind(null, {
+										type: "select-asset",
+										params: {
+											keyResponse: key,
 										},
 									})}
 									className="cursor-pointer h-[32px] bg-fill-quaternary rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"

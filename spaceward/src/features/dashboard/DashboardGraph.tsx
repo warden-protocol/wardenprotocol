@@ -4,12 +4,12 @@ import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/wa
 import TotalAssetsChart from "./Chart";
 
 import { Icons } from "@/components/ui/icons-assets";
-import { useModalContext } from "@/context/modalContext";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "../assets/hooks";
 import { FIAT_FORMAT } from "../assets/util";
 import { useCurrency } from "@/hooks/useCurrency";
 import { bigintToFloat } from "@/lib/math";
+import { useModalState } from "../modals/state";
 
 type Currency = keyof typeof FIAT_FORMAT;
 
@@ -21,7 +21,7 @@ const DashboardGraph = ({
 	const curr = useCurrency();
 	const currency = curr.currency as Currency;
 	const formatter = FIAT_FORMAT[currency];
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
 
 	const { spaceId } = useSpaceId();
@@ -151,12 +151,9 @@ const DashboardGraph = ({
 					5 assets
 				</div>
 				<button
-					onClick={dispatch.bind(null, {
-						type: "set",
-						payload: {
-							type: "select-key",
-							params: { addresses, next: "receive" },
-						},
+					onClick={setModal.bind(null, {
+						type: "select-key",
+						params: { addresses, next: "receive" },
 					})}
 					className="rounded bg-fill-quaternary h-10 px-5 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>

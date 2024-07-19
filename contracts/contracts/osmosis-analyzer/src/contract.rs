@@ -2,7 +2,7 @@ use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, OsmosisAnalyzerResult, QueryMsg};
 use crate::osmosis;
 use bindings::WardenProtocolQuery;
-use contracts_core::msg::AnalyzeResult;
+use analyzers_core::msg::AnalyzeResult;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdError, StdResult};

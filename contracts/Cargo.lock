@@ -182,6 +182,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "analyzers-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "assert_matches",
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cw2",
+ "derivative",
+ "hex",
+ "serde",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -362,10 +376,10 @@ checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 name = "basic-analyzer"
 version = "0.1.0"
 dependencies = [
+ "analyzers-core",
  "anyhow",
  "assert_matches",
  "bindings",
- "contracts-core",
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw2",
@@ -526,20 +540,6 @@ name = "const-oid"
 version = "0.9.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8"
-
-[[package]]
-name = "contracts-core"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "assert_matches",
- "cosmwasm-schema",
- "cosmwasm-std",
- "cw2",
- "derivative",
- "hex",
- "serde",
-]
 
 [[package]]
 name = "convert_case"
@@ -836,10 +836,10 @@ dependencies = [
  "alloy-primitives",
  "alloy-rlp",
  "alloy-rpc-types",
+ "analyzers-core",
  "anyhow",
  "assert_matches",
  "bindings",
- "contracts-core",
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw2",
@@ -1167,10 +1167,10 @@ checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
 name = "osmosis-analyzer"
 version = "0.1.0"
 dependencies = [
+ "analyzers-core",
  "anyhow",
  "assert_matches",
  "bindings",
- "contracts-core",
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw2",

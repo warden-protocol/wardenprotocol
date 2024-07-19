@@ -26,7 +26,7 @@ basic-analyzer = { path = "contracts/basic-analyzer", version = "0.1.0", feature
 ethereum-analyzer = { path = "contracts/ethereum-analyzer", version = "0.1.0", features = [
   "library",
 ] }
-contracts-core = { path = "contracts/contracts-core", version = "0.1.0", features = [
+analyzers-core = { path = "contracts/analyzers-core", version = "0.1.0", features = [
   "library",
 ] }
 

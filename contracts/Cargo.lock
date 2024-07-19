@@ -365,6 +365,7 @@ dependencies = [
  "anyhow",
  "assert_matches",
  "bindings",
+ "contracts-core",
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw2",
@@ -525,6 +526,20 @@ name = "const-oid"
 version = "0.9.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8"
+
+[[package]]
+name = "contracts-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "assert_matches",
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cw2",
+ "derivative",
+ "hex",
+ "serde",
+]
 
 [[package]]
 name = "convert_case"
@@ -824,6 +839,7 @@ dependencies = [
  "anyhow",
  "assert_matches",
  "bindings",
+ "contracts-core",
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw2",
@@ -1154,6 +1170,7 @@ dependencies = [
  "anyhow",
  "assert_matches",
  "bindings",
+ "contracts-core",
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw2",

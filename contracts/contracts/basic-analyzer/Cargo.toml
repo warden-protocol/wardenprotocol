@@ -16,6 +16,7 @@ library = []
 test-utils = []
 
 [dependencies]
+contracts-core = { workspace = true }
 cosmwasm-schema = { workspace = true }
 cw2 = { workspace = true }
 bindings = { workspace = true }

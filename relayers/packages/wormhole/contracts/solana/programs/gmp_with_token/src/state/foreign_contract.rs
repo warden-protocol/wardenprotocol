@@ -19,6 +19,6 @@ impl ForeignContract {
     pub const SEED_PREFIX: &'static [u8; 16] = b"foreign_contract";
 
     pub fn verify(&self, vaa: &PostedGmpMessage) -> bool {
-        vaa.emitter_chain() == self.chain && *vaa.emitter_address() == self.address
+        vaa.emitter_chain() == self.chain && *vaa.data().from_address() == self.address
     }
 }

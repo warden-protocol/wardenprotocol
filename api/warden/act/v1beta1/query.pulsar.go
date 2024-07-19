@@ -4674,14 +4674,10 @@ func (x *fastReflection_QueryActionsByAddressRequest) Range(f func(protoreflect.
 			return
 		}
 	}
-	if x.XStatus != nil {
-		switch o := x.XStatus.(type) {
-		case *QueryActionsByAddressRequest_Status:
-			v := o.Status
-			value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(v))
-			if !f(fd_QueryActionsByAddressRequest_status, value) {
-				return
-			}
+	if x.Status != 0 {
+		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.Status))
+		if !f(fd_QueryActionsByAddressRequest_status, value) {
+			return
 		}
 	}
 }
@@ -4704,13 +4700,7 @@ func (x *fastReflection_QueryActionsByAddressRequest) Has(fd protoreflect.FieldD
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.address":
 		return x.Address != ""
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.status":
-		if x.XStatus == nil {
-			return false
-		} else if _, ok := x.XStatus.(*QueryActionsByAddressRequest_Status); ok {
-			return true
-		} else {
-			return false
-		}
+		return x.Status != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryActionsByAddressRequest"))
@@ -4732,7 +4722,7 @@ func (x *fastReflection_QueryActionsByAddressRequest) Clear(fd protoreflect.Fiel
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.address":
 		x.Address = ""
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.status":
-		x.XStatus = nil
+		x.Status = 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryActionsByAddressRequest"))
@@ -4756,13 +4746,8 @@ func (x *fastReflection_QueryActionsByAddressRequest) Get(descriptor protoreflec
 		value := x.Address
 		return protoreflect.ValueOfString(value)
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.status":
-		if x.XStatus == nil {
-			return protoreflect.ValueOfEnum(0)
-		} else if v, ok := x.XStatus.(*QueryActionsByAddressRequest_Status); ok {
-			return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(v.Status))
-		} else {
-			return protoreflect.ValueOfEnum(0)
-		}
+		value := x.Status
+		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryActionsByAddressRequest"))
@@ -4788,8 +4773,7 @@ func (x *fastReflection_QueryActionsByAddressRequest) Set(fd protoreflect.FieldD
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.address":
 		x.Address = value.Interface().(string)
 	case "warden.act.v1beta1.QueryActionsByAddressRequest.status":
-		cv := (ActionStatus)(value.Enum())
-		x.XStatus = &QueryActionsByAddressRequest_Status{Status: cv}
+		x.Status = (ActionStatus)(value.Enum())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryActionsByAddressRequest"))
@@ -4852,14 +4836,6 @@ func (x *fastReflection_QueryActionsByAddressRequest) NewField(fd protoreflect.F
 // It panics if the oneof descriptor does not belong to this message.
 func (x *fastReflection_QueryActionsByAddressRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
-	case "warden.act.v1beta1.QueryActionsByAddressRequest._status":
-		if x.XStatus == nil {
-			return nil
-		}
-		switch x.XStatus.(type) {
-		case *QueryActionsByAddressRequest_Status:
-			return x.Descriptor().Fields().ByName("status")
-		}
 	default:
 		panic(fmt.Errorf("%s is not a oneof field in warden.act.v1beta1.QueryActionsByAddressRequest", d.FullName()))
 	}
@@ -4924,8 +4900,8 @@ func (x *fastReflection_QueryActionsByAddressRequest) ProtoMethods() *protoiface
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.Status != nil {
-			n += 1 + runtime.Sov(uint64(*x.Status))
+		if x.Status != 0 {
+			n += 1 + runtime.Sov(uint64(x.Status))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -4956,14 +4932,8 @@ func (x *fastReflection_QueryActionsByAddressRequest) ProtoMethods() *protoiface
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		switch x := x.XStatus.(type) {
-		case *QueryActionsByAddressRequest_Status:
-			i = runtime.EncodeVarint(dAtA, i, uint64(*x.Status))
-			i--
-			dAtA[i] = 0x18
-		}
-		if x.Status != nil {
-			i = runtime.EncodeVarint(dAtA, i, uint64(*x.Status))
+		if x.Status != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Status))
 			i--
 			dAtA[i] = 0x18
 		}
@@ -5109,7 +5079,7 @@ func (x *fastReflection_QueryActionsByAddressRequest) ProtoMethods() *protoiface
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 				}
-				var v ActionStatus
+				x.Status = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -5119,12 +5089,11 @@ func (x *fastReflection_QueryActionsByAddressRequest) ProtoMethods() *protoiface
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					v |= ActionStatus(b&0x7F) << shift
+					x.Status |= ActionStatus(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				x.Status = &v
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -6960,7 +6929,7 @@ type QueryActionsByAddressRequest struct {
 
 	Pagination *v1beta1.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	Address    string               `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
-	Status     *ActionStatus        `protobuf:"varint,3,opt,name=status,proto3,enum=warden.act.v1beta1.ActionStatus,oneof" json:"status,omitempty"`
+	Status     ActionStatus         `protobuf:"varint,3,opt,name=status,proto3,enum=warden.act.v1beta1.ActionStatus" json:"status,omitempty"`
 }
 
 func (x *QueryActionsByAddressRequest) Reset() {
@@ -6998,8 +6967,8 @@ func (x *QueryActionsByAddressRequest) GetAddress() string {
 }
 
 func (x *QueryActionsByAddressRequest) GetStatus() ActionStatus {
-	if x != nil && x.Status != nil {
-		return *x.Status
+	if x != nil {
+		return x.Status
 	}
 	return ActionStatus_ACTION_STATUS_UNSPECIFIED
 }
@@ -7194,7 +7163,7 @@ var file_warden_act_v1beta1_query_proto_rawDesc = []byte{
 	0x65, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2c, 0x0a,
 	0x04, 0x72, 0x75, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x77, 0x61,
 	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x2e, 0x52, 0x75, 0x6c, 0x65, 0x52, 0x04, 0x72, 0x75, 0x6c, 0x65, 0x22, 0xd0, 0x01, 0x0a, 0x1c,
+	0x2e, 0x52, 0x75, 0x6c, 0x65, 0x52, 0x04, 0x72, 0x75, 0x6c, 0x65, 0x22, 0xc0, 0x01, 0x0a, 0x1c,
 	0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x79, 0x41, 0x64,
 	0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a,
 	0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
@@ -7202,12 +7171,11 @@ var file_warden_act_v1beta1_query_proto_rawDesc = []byte{
 	0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67,
 	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61,
 	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x43,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x3e,
 	0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x20,
 	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65,
 	0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
-	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x01, 0x48, 0x00, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
-	0x88, 0x01, 0x01, 0x42, 0x09, 0x0a, 0x07, 0x5f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0xa4,
+	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x01, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0xa4,
 	0x01, 0x0a, 0x1d, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42,
 	0x79, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
 	0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01,
@@ -7557,7 +7525,6 @@ func file_warden_act_v1beta1_query_proto_init() {
 			}
 		}
 	}
-	file_warden_act_v1beta1_query_proto_msgTypes[10].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

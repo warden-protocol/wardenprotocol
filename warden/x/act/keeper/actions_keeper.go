@@ -56,7 +56,7 @@ func (k ActionKeeper) New(ctx context.Context, action *types.Action) (uint64, er
 		return 0, err
 	}
 
-	err = k.setActionsForMentions(ctx, action, id)
+	err = k.updateMentions(ctx, action, id)
 	if err != nil {
 		return 0, err
 	}
@@ -88,7 +88,7 @@ func (k ActionKeeper) Import(ctx sdk.Context, actions []types.Action) error {
 	}
 
 	for _, action := range actions {
-		if err := k.setActionsForMentions(ctx, &action, action.Id); err != nil {
+		if err := k.updateMentions(ctx, &action, action.Id); err != nil {
 			return err
 		}
 	}

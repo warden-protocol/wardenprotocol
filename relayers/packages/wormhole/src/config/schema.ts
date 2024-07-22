@@ -22,6 +22,7 @@ const schema: JSONSchemaType<Env> = {
     'SOLANA_GMP_WITH_TOKEN_CONTRACT_ADDRESS',
     'SOLANA_GMP_WITH_TOKEN_RELAYER_FEE',
     'SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION',
+    'ETHEREUM_GMP_CONTRACT_ADDRESS',
   ],
   properties: {
     APP_NAME: { type: 'string' },
@@ -41,6 +42,7 @@ const schema: JSONSchemaType<Env> = {
     SOLANA_GMP_WITH_TOKEN_CONTRACT_ADDRESS: { type: 'string' },
     SOLANA_GMP_WITH_TOKEN_RELAYER_FEE: { type: 'number' },
     SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION: { type: 'number' },
+    ETHEREUM_GMP_CONTRACT_ADDRESS: { type: 'string' },
   },
 };
 

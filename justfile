@@ -76,6 +76,9 @@ localnet bin="wardend":
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
     {{bin}} genesis gentx val 1000000000uward
     {{bin}} genesis collect-gentxs
+    {{bin}} genesis add-genesis-slinky-markets
+    GENESIS="$HOME/.warden/config/genesis.json"
+    jq '.consensus["params"]["abci"]["vote_extensions_enable_height"] = "2"' "$GENESIS" > "$GENESIS".tmp && mv "$GENESIS".tmp "$GENESIS"
 
     post_start () {
       sleep 3
@@ -102,3 +105,6 @@ deploy-contract contract from="shulgin" label="":
     CODE_ID=$(wardend tx wasm store {{contract}} --from {{from}} -y --gas auto --gas-adjustment 1.3 | wardend q wait-tx -o json | jq '.events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
     ADDR=$(wardend tx wasm instantiate $CODE_ID '{}' --from {{from}} --label "{{if label == "" { "default" } else { label } }}" --no-admin -y | wardend q wait-tx -o json | jq '.events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value')
     echo {{contract}} deployed at $ADDR
+
+slinky:
+    go run github.com/skip-mev/slinky/cmd/slinky

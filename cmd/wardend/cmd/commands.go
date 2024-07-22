@@ -57,6 +57,7 @@ func initRootCmd(
 			basicManager,
 			AddGenesisSpaceCmd(app.DefaultNodeHome),
 			AddGenesisKeychainCmd(app.DefaultNodeHome),
+			AddGenesisSlinkyMarketsCmd(app.DefaultNodeHome),
 		),
 		queryCommand(),
 		txCommand(),

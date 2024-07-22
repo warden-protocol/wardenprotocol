@@ -92,7 +92,7 @@ export default function WCBindSpace({
 
 			<div
 				onClick={() => setIsSelectVisible(true)}
-				className="flex flex-row w-full relative mt-10 mb-12 cursor-pointer"
+				className="flex flex-row w-full relative cursor-pointer"
 			>
 				<img
 					src="/images/somewallet.png"
@@ -159,30 +159,26 @@ export default function WCBindSpace({
 					)}
 			</div>
 
-			<div>{proposal.proposer.metadata.url}</div>
-
-			<div></div>
-
-			<div className="flex flex-row gap-4 place-content-center">
-				<Button
-					disabled={!_enabled}
-					size="sm"
-					variant="destructive"
-					onClick={onReject.bind(null, proposal)}
-				>
-					Reject
-				</Button>
+			<div className="flex flex-col gap-2">
 				<Button
 					disabled={!enabled || loading || !pairedSpace}
-					size="sm"
 					onClick={onApprove.bind(
 						null,
 						proposal,
 						pairedSpace,
 						addresses,
 					)}
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
 				>
 					{loading ? "Loading..." : "Approve"}
+				</Button>
+
+				<Button
+					disabled={!_enabled}
+					onClick={onReject.bind(null, proposal)}
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
+				>
+					Cancel
 				</Button>
 			</div>
 		</div>

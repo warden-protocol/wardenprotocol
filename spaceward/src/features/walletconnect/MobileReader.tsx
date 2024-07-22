@@ -1,9 +1,10 @@
 import jsqr from "jsqr";
 import { useEffect, useRef, useState } from "react";
 import { Assets } from "./assets";
-import clsx from "clsx";
 import type { CommonActions } from "@/utils/common";
 import type { RemoteState } from "./types";
+import { Icons } from "@/components/ui/icons-assets";
+import { wcUriRegex } from "../modals/WalletConnect";
 
 interface MobileReaderProps {
 	hideQRScaner: () => void;
@@ -112,12 +113,19 @@ export default function MobileReader(props: MobileReaderProps) {
 
 							const data = ctx.getImageData(0, 0, width, height);
 							const code = jsqr(data.data, width, height)?.data;
-							setSuccess(Boolean(code));
 
-							if (code) {
+							const success = Boolean(
+								code && wcUriRegex.test(code),
+							);
+
+							if (success) {
+								setSuccess(true);
+
 								props.dispatch({
 									type: "data",
-									payload: Uint8Array.from(Buffer.from(code)),
+									payload: Uint8Array.from(
+										Buffer.from(code!),
+									),
 								});
 							}
 						}),
@@ -142,7 +150,7 @@ export default function MobileReader(props: MobileReaderProps) {
 
 	return (
 		<div
-			className="flex flex-col flex-auto relative w-full h-full justify-benween "
+			className="flex flex-col flex-auto relative w-full h-full justify-benween max-w-[420px] "
 			ref={containerRef}
 		>
 			<div className="mb-6 h-full">
@@ -153,22 +161,35 @@ export default function MobileReader(props: MobileReaderProps) {
 					muted
 					playsInline
 					ref={videoRef}
-					className="absolute z-0 w-full h-full"
+					className="absolute z-0 w-full h-full object-cover"
 				/>
 
-				<div className="relative z-10 w-full h-full flex flex-col overflow-hidden text-wrap">
+				<div className="relative z-10 w-full h-full flex flex-col overflow-hidden text-wrap mx-auto mt-6">
 					{error ? (
-						<p>{error.message}</p>
+						<div className="relative text-center text-[32px] font-bold">
+							{error.message}
+						</div>
 					) : ready ? (
 						<div className="flex flex-auto justify-center items-center">
-							<Assets.qrTarget
-								className={clsx({
-									"stroke-green-600": success,
-								})}
-							/>
+							<Assets.qrTarget className="m-auto w-[282px] h-[282px] object-contain object-center" />
 						</div>
 					) : (
-						<p>Please allow camera</p>
+						<div className="h-full flex flex-col">
+							<div className="relative text-center text-[32px] font-bold">
+								<button
+									onClick={props.hideQRScaner}
+									className="absolute top-1/2 -translate-y-1/2 left-2"
+								>
+									<Icons.chevronRight className="rotate-180" />
+								</button>
+								Open the access
+							</div>
+
+							<Assets.qrTarget
+								locked
+								className="m-auto w-[282px] h-[282px] object-contain object-center"
+							/>
+						</div>
 					)}
 				</div>
 			</div>

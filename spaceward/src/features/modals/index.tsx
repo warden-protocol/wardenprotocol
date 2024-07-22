@@ -1,21 +1,33 @@
+import CreateKeyModal from "./CreateKey";
+import ConnectedModal from "./ConnectedModal";
 import SelectKeyModal from "./SelectKeys";
-import { SelectAssetParams, SelectKeyParams, TransferParams } from "./types";
 import ReceiveAssetsModal from "./ReceiveAssets";
 import SelectAssetModal from "./SelectAsset";
 import SendAssetsModal from "./SendAssets";
 import WalletConnectModal from "./WalletConnect";
 import { useModalState } from "./state";
-import ConnectedModal from "./ConnectedModal";
+import {
+	CreateKeyParams,
+	SelectAssetParams,
+	SelectKeyParams,
+	TransferParams,
+} from "./types";
+import clsx from "clsx";
 
 export default function ModalRoot() {
 	const { data, setData } = useModalState();
 
-	if (!data?.type) {
+	if (!data) {
 		return null;
 	}
 
 	return (
-		<div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate">
+		<div
+			className={clsx(
+				"absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate",
+				{ hidden: !data.type },
+			)}
+		>
 			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
 			<button
 				onClick={() => setData({ type: undefined, params: undefined })}
@@ -23,6 +35,14 @@ export default function ModalRoot() {
 			>
 				<img src="/images/button-close.svg" alt="" />
 			</button>
+
+			{data.type === "create-key" || data.background["create-key"] ? (
+				<CreateKeyModal
+					hidden={data.type !== "create-key"}
+					{...(data.background["create-key"] ??
+						(data.params as CreateKeyParams))}
+				/>
+			) : null}
 
 			{data.type === "walletconnect" ? (
 				<WalletConnectModal />
@@ -39,7 +59,7 @@ export default function ModalRoot() {
 			) : data.type === "select-asset" ? (
 				<SelectAssetModal {...(data.params as SelectAssetParams)} />
 			) : (
-				<>not implemented</>
+				<></>
 			)}
 		</div>
 	);

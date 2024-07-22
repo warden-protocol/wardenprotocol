@@ -56,18 +56,44 @@ func (k ActionKeeper) New(ctx context.Context, action *types.Action) (uint64, er
 		return 0, err
 	}
 
-	for _, addr := range action.Mentions {
-		key := collections.Join(sdk.MustAccAddressFromBech32(addr), id)
-		if err := k.actionByAddress.Set(ctx, key, id); err != nil {
-			return 0, err
-		}
+	err = k.setActionsForMentions(ctx, action, id)
+	if err != nil {
+		return 0, err
 	}
 
 	return id, nil
 }
 
+func (k *ActionKeeper) setActionsForMentions(ctx context.Context, action *types.Action, id uint64) error {
+	for _, addr := range action.Mentions {
+		key := collections.Join(sdk.MustAccAddressFromBech32(addr), id)
+		if err := k.actionByAddress.Set(ctx, key, id); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (k ActionKeeper) ActionsByAddress() collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64] {
 	return k.actionByAddress
+}
+
+func (k ActionKeeper) Import(ctx sdk.Context, actions []types.Action) error {
+	err := k.Coll().Import(ctx, actions, func(action types.Action) uint64 {
+		return action.Id
+	})
+
+	if err != nil {
+		return err
+	}
+
+	for _, action := range actions {
+		if err := k.setActionsForMentions(ctx, &action, action.Id); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (k ActionKeeper) Coll() repo.SeqCollection[types.Action] {

@@ -27,12 +27,10 @@ type Out struct {
 type Faucet struct {
 	log             zerolog.Logger
 	config          config.Config
-	Cooldown        time.Duration
 	DailySupply     float64
 	TokensAvailable float64
 	Amount          float64
 	Batch           []string
-	BatchInterval   time.Duration
 	LatestTXHash    string
 	*sync.Mutex
 }
@@ -138,13 +136,9 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	var err error
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		panic(err)
+		logger.Fatal().Msgf("error loading config: %s", err)
 	}
 
-	totalSupply, err := strconv.Atoi(cfg.DailyLimit)
-	if err != nil {
-		return Faucet{}, err
-	}
 	amount, err := strconv.Atoi(cfg.Amount)
 	if err != nil {
 		return Faucet{}, err
@@ -155,19 +149,9 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		Mutex:           &sync.Mutex{},
 		Batch:           []string{},
 		log:             logger,
-		TokensAvailable: float64(totalSupply) / uwardConversion,
-		DailySupply:     float64(totalSupply) / uwardConversion,
+		TokensAvailable: float64(cfg.DailyLimit) / uwardConversion,
+		DailySupply:     float64(cfg.DailyLimit) / uwardConversion,
 		Amount:          float64(amount),
-	}
-
-	f.Cooldown, err = time.ParseDuration(f.config.CoolDown)
-	if err != nil {
-		return Faucet{}, err
-	}
-
-	f.BatchInterval, err = time.ParseDuration(f.config.BatchInterval)
-	if err != nil {
-		return Faucet{}, err
 	}
 
 	if f.config.Mnemonic != "" {
@@ -185,7 +169,7 @@ func MutexLocked(m *sync.Mutex) bool {
 }
 
 func (f *Faucet) batchProcessInterval(ctx context.Context) {
-	ticker := time.NewTicker(f.BatchInterval)
+	ticker := time.NewTicker(f.config.BatchInterval)
 	defer ticker.Stop()
 
 	for {

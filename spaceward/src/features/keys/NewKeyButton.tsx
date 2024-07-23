@@ -36,29 +36,23 @@ import { useQueryHooks } from "@/hooks/useClient";
 
 const FormSchema = z.object({});
 
-export const NewKeyButton = React.forwardRef<HTMLButtonElement>(function NewKeyButtonWithRef(
-	{},
-	ref,
-) {
-	const [keychainId, setKeychainId] = useKeychainId();
-	const { spaceId } = useSpaceId();
+export const NewKeyButton = React.forwardRef<HTMLButtonElement>(
+	function NewKeyButtonWithRef({}, ref) {
+		const [keychainId, setKeychainId] = useKeychainId();
+		const { spaceId } = useSpaceId();
 
-	const { state, error, requestKey, reset } = useRequestKey();
+		const { state, error, requestKey, reset } = useRequestKey();
 
-	const { warden } = useQueryHooks();
-	const q = warden.warden.v1beta3.useKeychains({});
+		const { warden } = useQueryHooks();
+		const q = warden.warden.v1beta3.useKeychains({});
 
 		const form = useForm<z.infer<typeof FormSchema>>({
 			resolver: zodResolver(FormSchema),
 		});
 
-	return (
-		<>
-			<KeyRequestDialog
-				state={state}
-				error={error}
-				reset={reset}
-			/>
+		return (
+			<>
+				<KeyRequestDialog state={state} error={error} reset={reset} />
 
 				<Sheet>
 					<SheetTrigger asChild>

@@ -13,7 +13,7 @@ import { TxBuild, buildTransaction } from "./util";
 import Key from "../assets/Key";
 import { useAssetQueries } from "../assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { FIAT_FORMAT } from "../assets/util";
+import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
 import { useCurrency } from "@/hooks/useCurrency";
 import { numRestrict } from "../staking/util";
 import { useKeychainSigner } from "@/hooks/useKeychainSigner";

@@ -29,3 +29,28 @@ export function getWormholeSdkNetwork(env: Environment): Network {
       throw new Error(`${env} is not supported`);
   }
 }
+
+// const sepolia_emitter = tryNativeToHexString('DeUdMBvNmuQcZzNFtrCGb8jGUzdoc89djeTbfzuBPWjd', chainToChainId('Solana'));
+// const solana_recipient = tryNativeToHexString(
+//   'YFrLDa88tsfhAepJQCKid2S226fvGbdermVBFwyTAQk',
+//   chainToChainId('Solana'),
+// );
+
+// const spawnMissedVaa = spawnMissedVaaWorker(app, {
+//   namespace: config.APP_NAME,
+//   wormholeRpcs: [defaultWormscanUrl[config.ENVIRONMENT]],
+//   registry: store.registry,
+//   logger: rootLogger,
+//   storagePrefix: store.getPrefix(),
+//   redis,
+//   concurrency: 1,
+//   vaasFetchConcurrency: 1,
+// });
+
+// await client.initialize();
+
+// await client.registerForeignContract(
+//   chainToChainId('Sepolia'),
+//   Buffer.alloc(32, '00000000000000000000000027b6fa47efd7eb3f67ed4a28703ec907a96c2f97', 'hex'),
+//   CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].sepolia.token_bridge,
+// );

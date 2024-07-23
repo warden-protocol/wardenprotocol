@@ -1,5 +1,3 @@
-import { CHAIN_ID_SEPOLIA, CHAIN_ID_SOLANA, CONTRACTS, tryNativeToHexString } from '@certusone/wormhole-sdk';
-import { Keypair, PublicKey } from '@solana/web3.js';
 import {
   RedisStorage,
   RelayerApp,
@@ -11,15 +9,12 @@ import {
   stagingArea,
   tokenBridgeContracts,
 } from '@warden/wormhole-relayer-engine';
-import { chainToChainId } from '@wormhole-foundation/sdk';
-import bs58 from 'bs58';
 import 'dotenv/config';
 import winston from 'winston';
 
-import { SolanaGmpWithTokenClient } from './clients/solanaGmpWithTokenClient.js';
 import { config } from './config/schema.js';
+import { WormholeDataSource } from './database/wormholeDataSource.js';
 import { RelayProcessor } from './processors/relayProcessor.js';
-import { getWormholeContractsNetwork } from './utils.js';
 
 export const rootLogger = winston.createLogger({
   level: 'debug',
@@ -50,7 +45,11 @@ export async function main() {
     redis,
   });
 
-  const processor = new RelayProcessor();
+  const processor = new RelayProcessor(config.WORMHOLE_CHAINS_TO_EMITTERS, config.WORMHOLE_CHAINS_START_SEQUENCES);
+
+  await WormholeDataSource.initialize()
+    .then(() => rootLogger.info('Data Source has been initialized!'))
+    .catch((error) => rootLogger.error(error));
 
   app.spy(config.SPY_URL);
   app.useStorage(store);
@@ -68,53 +67,34 @@ export async function main() {
     }),
   );
 
-  // const sepolia_emitter = tryNativeToHexString('DeUdMBvNmuQcZzNFtrCGb8jGUzdoc89djeTbfzuBPWjd', chainToChainId('Solana'));
-  // const solana_recipient = tryNativeToHexString(
-  //   'YFrLDa88tsfhAepJQCKid2S226fvGbdermVBFwyTAQk',
-  //   chainToChainId('Solana'),
-  // );
-
-  // app.use(processor.relay);
-  app.multiple(
-    {
-      // [CHAIN_ID_SOLANA]: ['B8oRMM8MgiM9VTQsHCWKh1H1X2pr1nsHCnVEA2Yg1Nye'],
-      [CHAIN_ID_SEPOLIA]: ['0xDB5492265f6038831E89f495670FF909aDe94bd9'],
-    },
-    processor.relay,
-  );
+  for (const [chainId, [emitter, _]] of processor.supportedEmitters) {
+    app.chain(chainId).address(emitter, processor.listenToVaas.bind(processor));
+  }
 
   app.use(async (err, ctx, next) => {
     ctx.logger.error('Error middleware triggered: ', err);
-
     await next();
   });
 
-  // const spawnMissedVaa = spawnMissedVaaWorker(app, {
-  //   namespace: config.APP_NAME,
-  //   wormholeRpcs: [defaultWormscanUrl[config.ENVIRONMENT]],
-  //   registry: store.registry,
-  //   logger: rootLogger,
-  //   storagePrefix: store.getPrefix(),
-  //   redis,
-  //   concurrency: 1,
-  //   vaasFetchConcurrency: 1,
-  // });
+  const spawnMissedVaa = spawnMissedVaaWorker(app, {
+    namespace: config.APP_NAME,
+    wormholeRpcs: [defaultWormscanUrl[config.ENVIRONMENT]],
+    registry: store.registry,
+    logger: rootLogger,
+    storagePrefix: store.getPrefix(),
+    redis,
+    concurrency: 1,
+    vaasFetchConcurrency: 1,
+    checkInterval: 15000,
+    maxLookAhead: 1000,
+    forceSeenKeysReindex: true,
+    fetchVaaRetries: 10,
+    startingSequenceConfig: processor.chainStartSequences,
+  });
 
-  // await client.initialize();
-
-  // await client.registerForeignContract(
-  //   chainToChainId('Sepolia'),
-  //   Buffer.alloc(32, '00000000000000000000000027b6fa47efd7eb3f67ed4a28703ec907a96c2f97', 'hex'),
-  //   CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].sepolia.token_bridge,
-  // );
-
-  await Promise.all([
-    // spawnMissedVaa,
-    app.listen(),
-    // send,
-  ]);
+  await Promise.all([spawnMissedVaa, app.listen(), processor.relayVaas()]);
 }
 
 main()
-  .catch((error) => console.error('Unhandled error:', error))
+  .catch((error) => rootLogger.error('Unhandled error:', error))
   .finally(() => process.exit());

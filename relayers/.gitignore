@@ -25,6 +25,3 @@ lib-cov
 *.gz
 *.swp
 *.env
-
-# exceptions
-!.vscode/settings.json

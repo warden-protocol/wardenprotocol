@@ -6,6 +6,7 @@ CREATE TABLE WormholeGmpRequests (
     Timestamp      BIGINT        NOT NULL,
     Status         NVARCHAR(50)  NOT NULL,
     Vaa            TEXT          NOT NULL,
+    ErrorReason    TEXT          NULL,
 
     CONSTRAINT PK_WormholeGmpRequests_Hash PRIMARY KEY (Hash)
 );

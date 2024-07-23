@@ -11,6 +11,12 @@ export interface Env {
   REDIS_ATTEMPTS: number;
   REDIS_QUEUE: string;
 
+  DB_HOST: string;
+  DB_PORT: number;
+  DB_USERNAME: string;
+  DB_PASSWORD: string;
+  DB_NAME: string;
+
   SPY_URL: string;
 
   EVM_PRIVATE_KEY: string;
@@ -18,10 +24,7 @@ export interface Env {
   COSMOS_MNEMONIC: string;
 
   SOLANA_RPC: string;
-  SOLANA_GMP_CONTRACT_ADDRESS: string;
-  SOLANA_GMP_WITH_TOKEN_CONTRACT_ADDRESS: string;
-  SOLANA_GMP_WITH_TOKEN_RELAYER_FEE: number;
-  SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION: number;
 
-  ETHEREUM_GMP_CONTRACT_ADDRESS: string;
+  WORMHOLE_CHAINS_TO_EMITTERS: string;
+  WORMHOLE_CHAINS_START_SEQUENCES: string;
 }

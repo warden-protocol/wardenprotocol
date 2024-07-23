@@ -1,53 +1,66 @@
-import {
-  CHAIN_ID_ARBITRUM_SEPOLIA,
-  CHAIN_ID_SEPOLIA,
-  CHAIN_ID_SOLANA,
-  SignedVaa,
-  TokenBridgePayload,
-  parseTokenTransferPayload,
-  tryNativeToHexString,
-} from '@certusone/wormhole-sdk';
-import { Keypair } from '@solana/web3.js';
+import { TokenBridgePayload, parseTokenTransferPayload, parseTokenTransferVaa } from '@certusone/wormhole-sdk';
 import { Next, StandardRelayerContext, encodeEmitterAddress } from '@warden/wormhole-relayer-engine';
-import { Chain, ChainAddress, ChainContext, Network, Signer, Wormhole, encoding } from '@wormhole-foundation/sdk';
-import { chainToChainId } from '@wormhole-foundation/sdk';
-import evm from '@wormhole-foundation/sdk/evm';
-import cosmwasm from '@wormhole-foundation/sdk/platforms/cosmwasm';
-import solana from '@wormhole-foundation/sdk/solana';
-import bs58 from 'bs58';
+import { ChainId, isChainId, toChain, toChainId } from '@wormhole-foundation/sdk';
+import { In, IsNull, Repository } from 'typeorm';
 
 import { SolanaGmpWithTokenClient } from '../clients/solanaGmpWithTokenClient.js';
-import { config } from '../config/schema.js';
 import { GmpRequest, WormholeRequestStatus } from '../database/entity/index.js';
 import { WormholeDataSource } from '../database/wormholeDataSource.js';
+import { rootLogger } from '../index.js';
+import { delay } from '../utils.js';
 
 export class RelayProcessor {
-  async relay(ctx: StandardRelayerContext, next: Next) {
+  supportedEmitters: Map<ChainId, [string, string]>;
+  chainStartSequences: Partial<Record<ChainId, bigint>>;
+
+  constructor(wormholeChainsToEmitters: string, wormholeStartSequences: string) {
+    this.supportedEmitters = new Map<ChainId, [string, string]>();
+
+    const chainsToEmitters = wormholeChainsToEmitters.split(',');
+
+    for (const cte of chainsToEmitters) {
+      const chainToEmitter = cte.split(':');
+      this.supportedEmitters.set(toChainId(+chainToEmitter[0]), [chainToEmitter[1], chainToEmitter[2]]);
+    }
+
+    this.chainStartSequences = {};
+
+    const data = wormholeStartSequences.split(',').map((x) => x.split(':'));
+    for (const a of data) {
+      this.chainStartSequences[a[0]] = a[1];
+    }
+  }
+
+  async listenToVaas(ctx: StandardRelayerContext, next: Next): Promise<void> {
     ctx.logger.info(`Got a VAA: ${ctx.vaa} from with txhash: ${ctx.sourceTxHash}`);
-    console.log(
-      `Got a VAA: chain: ${ctx.vaa?.emitterChain}, storage_id: ${ctx.storage.job.id}, VAA payload: '${encoding.bytes.decode(ctx.vaa!.payload!)}'`,
-    );
 
     const { payload } = ctx.tokenBridge;
 
-    if (
-      payload?.payloadType !== TokenBridgePayload.Transfer &&
-      payload?.payloadType !== TokenBridgePayload.TransferWithPayload
-    ) {
+    if (payload?.payloadType !== TokenBridgePayload.TransferWithPayload) {
       return await next();
     }
 
-    const parsed = parseTokenTransferPayload(ctx.vaa!.payload);
-    const emitterAddress = parsed.fromAddress?.toString('hex');
+    if (!isChainId(ctx.vaa!.emitterChain)) {
+      return await next();
+    }
 
-    if (emitterAddress != encodeEmitterAddress(CHAIN_ID_SEPOLIA, config.ETHEREUM_GMP_CONTRACT_ADDRESS)) {
+    if (!this.supportedEmitters.has(ctx.vaa!.emitterChain)) {
+      return await next();
+    }
+
+    const [_, contract] = this.supportedEmitters.get(ctx.vaa!.emitterChain)!;
+
+    const parsedVaa = parseTokenTransferPayload(ctx.vaa!.payload);
+    const emitterAddress = parsedVaa.fromAddress?.toString('hex');
+
+    if (emitterAddress != encodeEmitterAddress(ctx.vaa!.emitterChain, contract)) {
       return await next();
     }
 
     const repository = WormholeDataSource.getRepository(GmpRequest);
-    const existing = await repository.findOneBy({ hash: ctx.vaa!.hash.toString('hex') });
+    const existingVaa = await repository.findOneBy({ hash: ctx.vaa!.hash.toString('hex') });
 
-    if (existing !== null) {
+    if (existingVaa !== null) {
       return await next();
     }
 
@@ -58,9 +71,75 @@ export class RelayProcessor {
       sequence: ctx.vaa!.sequence.toString(),
       status: WormholeRequestStatus.ReceivedSignedVaa,
       timestamp: ctx.vaa!.timestamp.toString(),
-      vaa: ctx.vaaBytes!.toString('hex'),
+      vaa: ctx.vaaBytes!.toString('base64'),
+      errorReason: null,
     });
 
     return await next();
+  }
+
+  async relayVaas(): Promise<void> {
+    const repository = WormholeDataSource.getRepository(GmpRequest);
+
+    while (true) {
+      await relayVaa(this.supportedEmitters, repository);
+      await delay(5000);
+    }
+  }
+}
+
+async function relayVaa(
+  supportedEmitters: Map<ChainId, [string, string]>,
+  repository: Repository<GmpRequest>,
+): Promise<void> {
+  let receivedVaa: GmpRequest | null = null;
+
+  try {
+    for (const [chainId, _] of supportedEmitters) {
+      receivedVaa = null;
+
+      receivedVaa = await repository.findOneBy({
+        emitterChain: chainId,
+        status: In([WormholeRequestStatus.ReceivedSignedVaa, WormholeRequestStatus.PostedSignedVaa]),
+        errorReason: IsNull(),
+      });
+
+      if (receivedVaa === null) {
+        continue;
+      }
+
+      const vaaBytes = Buffer.from(receivedVaa.vaa, 'base64');
+      const parsedVaa = parseTokenTransferVaa(vaaBytes);
+
+      const targetChainId = toChainId(parsedVaa.toChain);
+      const targetChain = toChain(parsedVaa.toChain);
+
+      if (!supportedEmitters.has(targetChainId)) {
+        continue;
+      }
+
+      const [_, targetContract] = supportedEmitters.get(targetChainId)!;
+
+      if (receivedVaa.status == WormholeRequestStatus.ReceivedSignedVaa && targetChain == 'Solana') {
+        await new SolanaGmpWithTokenClient(targetContract).postVaa(vaaBytes);
+
+        receivedVaa.status = WormholeRequestStatus.PostedSignedVaa;
+        await repository.save(receivedVaa);
+      } else if (receivedVaa.status == WormholeRequestStatus.PostedSignedVaa && targetChain == 'Solana') {
+        await new SolanaGmpWithTokenClient(targetContract).redeemWrapped(vaaBytes);
+
+        receivedVaa.status = WormholeRequestStatus.RedeemedSignedVaa;
+        await repository.save(receivedVaa);
+      } else {
+        throw new Error(`Chain is not supported: ${targetChain}`);
+      }
+    }
+  } catch (error) {
+    rootLogger.error(error);
+
+    if (receivedVaa !== null) {
+      receivedVaa.errorReason = error.toString();
+      await repository.save(receivedVaa);
+    }
   }
 }

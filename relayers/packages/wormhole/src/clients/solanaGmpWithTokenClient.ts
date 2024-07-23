@@ -54,14 +54,14 @@ export class SolanaGmpWithTokenClient {
   programId: PublicKey;
   adminKeypair: Keypair;
 
-  constructor() {
+  constructor(gmpWithTokenContract: string) {
     this.wormholeCore = CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].solana.core;
     this.wormholeTokenBridge = CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].solana.token_bridge;
-    this.programId = new PublicKey(config.SOLANA_GMP_WITH_TOKEN_CONTRACT_ADDRESS);
+    this.programId = new PublicKey(gmpWithTokenContract);
     this.adminKeypair = Keypair.fromSecretKey(bs58.decode(config.SOL_PRIVATE_KEY));
   }
 
-  async initialize(): Promise<void> {
+  async initialize(relayerFee: number, relayerFeePrecition: number): Promise<void> {
     const [connection, program] = createProgram<GmpWithToken>(
       this.programId,
       IdlGmpWithToken,
@@ -69,7 +69,7 @@ export class SolanaGmpWithTokenClient {
     );
 
     const instruction = await program.methods
-      .initialize(config.SOLANA_GMP_WITH_TOKEN_RELAYER_FEE, config.SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION)
+      .initialize(relayerFee, relayerFeePrecition)
       .accounts({
         owner: this.adminKeypair.publicKey,
         senderConfig: deriveAddress([Buffer.from('sender')], this.programId),
@@ -189,11 +189,8 @@ export class SolanaGmpWithTokenClient {
     console.log(result);
   }
 
-  async redeemWrapped(from: Keypair, vaa: Buffer): Promise<void> {
-    // const address = tryNativeToHexString('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 2);
-    // const address1 = tryNativeToHexString('0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 10002);
-
-    const [connection, program] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
+  async postVaa(vaa: Buffer): Promise<void> {
+    const [connection, _] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
 
     await postVaaSolana(
       connection,
@@ -202,6 +199,13 @@ export class SolanaGmpWithTokenClient {
       this.adminKeypair.publicKey,
       vaa,
     );
+  }
+
+  async redeemWrapped(vaa: Buffer): Promise<void> {
+    // const address = tryNativeToHexString('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 2);
+    // const address1 = tryNativeToHexString('0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 10002);
+
+    const [connection, program] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
 
     const parsedVaa = isBytes(vaa) ? parseTokenTransferVaa(vaa) : vaa;
     const wrappedMint = deriveWrappedMintKey(this.wormholeTokenBridge, parsedVaa.tokenChain, parsedVaa.tokenAddress);
@@ -212,7 +216,8 @@ export class SolanaGmpWithTokenClient {
     const recipientAta = getAssociatedTokenAddressSync(wrappedMint, recipient);
     const cpiProgramId = new PublicKey(parsedVaa.to);
 
-    await getOrCreateAssociatedTokenAccount(connection, from, wrappedMint, recipient);
+    await getOrCreateAssociatedTokenAccount(connection, this.adminKeypair, wrappedMint, recipient);
+    await getOrCreateAssociatedTokenAccount(connection, this.adminKeypair, wrappedMint, this.adminKeypair.publicKey);
 
     const foreignContract = deriveAddress(
       [
@@ -234,10 +239,10 @@ export class SolanaGmpWithTokenClient {
         tmpTokenAccount,
         recipientTokenAccount: recipientAta,
         recipient,
-        payerTokenAccount: getAssociatedTokenAddressSync(wrappedMint, from.publicKey),
+        payerTokenAccount: getAssociatedTokenAddressSync(wrappedMint, this.adminKeypair.publicKey),
         tokenBridgeProgram: new PublicKey(this.wormholeTokenBridge),
         ...{
-          payer: from.publicKey,
+          payer: this.adminKeypair.publicKey,
           tokenBridgeConfig: deriveTokenBridgeConfigKey(this.wormholeTokenBridge),
           vaa: derivePostedVaaKey(this.wormholeCore, parsedVaa.hash),
           tokenBridgeClaim: deriveClaimKey(
@@ -266,7 +271,7 @@ export class SolanaGmpWithTokenClient {
       .instruction();
 
     const tx = new Transaction().add(instruction);
-    const result = await sendAndConfirmTransaction(connection, tx, [from]);
+    const result = await sendAndConfirmTransaction(connection, tx, [this.adminKeypair]);
 
     console.log(result);
   }

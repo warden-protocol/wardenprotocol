@@ -4,13 +4,13 @@ import { WormholeRequestStatus } from './wormholeGmpRequestStatus.js';
 
 @Entity('WormholeGmpRequests')
 export class GmpRequest {
-  @PrimaryColumn({ name: 'Hash', nullable: false })
+  @PrimaryColumn({ name: 'Hash', type: 'nvarchar', nullable: false })
   hash: string;
 
-  @Column({ name: 'EmitterChain', nullable: false })
+  @Column({ name: 'EmitterChain', type: 'int', nullable: false })
   emitterChain: number;
 
-  @Column({ name: 'EmitterAddress', nullable: false })
+  @Column({ name: 'EmitterAddress', type: 'nvarchar', nullable: false })
   emitterAddress: string;
 
   @Column({ name: 'Sequence', type: 'bigint', nullable: false })
@@ -22,6 +22,9 @@ export class GmpRequest {
   @Column({ name: 'Status', type: 'enum', enum: WormholeRequestStatus, nullable: false })
   status: WormholeRequestStatus;
 
-  @Column({ name: 'Vaa', nullable: false })
+  @Column({ name: 'ErrorReason', type: 'text', nullable: true })
+  errorReason?: string | null;
+
+  @Column({ name: 'Vaa', type: 'text', nullable: false })
   vaa: string;
 }

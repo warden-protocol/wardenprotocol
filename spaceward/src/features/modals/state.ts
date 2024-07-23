@@ -23,9 +23,9 @@ interface ModalParams {
 	"select-key": SelectKeyParams;
 	receive: TransferParams;
 	send: TransferParams;
-	walletconnect: undefined;
-	"dapps-modal": undefined;
-	"approve-action": undefined;
+	walletconnect: {};
+	"dapps-modal": {};
+	"approve-action": {};
 }
 
 export interface ModalState {

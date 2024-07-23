@@ -11,10 +11,16 @@ import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { approveRequest } from "./util";
 import { Icons } from "@/components/ui/icons";
+<<<<<<< HEAD
 import { useModalState } from "../modals/state";
+=======
+import { Icons as IconsAssets } from "@/components/ui/icons-assets";
+import Portal from "@/components/ui/portal";
+>>>>>>> 0b7ceadf (fix(spaceward): refs walletconnect-4)
 
 export function WalletConnect() {
 	const [open, setOpen] = useState(false);
+	const [approveActionModal, setApproveActionModal] = useState(true);
 	const { resolvedTheme } = useTheme();
 	const eth = useEthereumTx();
 	const cosm = useRequestSignature();
@@ -110,22 +116,8 @@ export function WalletConnect() {
 						</div>
 					</Button>
 				)}
-				<Popover.Portal>
-					<Popover.Content
-						side={isDesktop ? "left" : "bottom"}
-						sideOffset={8}
-						className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
-					>
-						<div
-							className="inset-0 bg-card/40 backdrop-blur-md absolute"
-							onClick={() =>
-								sessionRequests.length === 0
-									? setOpen(false)
-									: null
-							}
-						></div>
-						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
-							<SignRequestDialog
+
+				{/* <SignRequestDialog
 								state={eth.state}
 								error={eth.error}
 								reset={() => {
@@ -140,138 +132,117 @@ export function WalletConnect() {
 									cosm.reset();
 									setOpen(false);
 								}}
-							/>
-							{sessionRequests.length > 0 ? (
-								<div>
-									<div className="flex flex-col space-y-2">
-										<span className="font-bold">
-											Incoming request
-										</span>
-										{sessionRequests.map((req) => (
-											<div
-												key={req.id}
-												className="grow p-4 border rounded-md"
-											>
-												<div>
-													<div className="flex flex-row gap-2 justify-between">
-														<div className="flex flex-row gap-4 items-center">
-															<img
-																className="w-10 h-10 stroke-current"
-																onError={(
-																	e,
-																) => {
-																	const target =
-																		e.target as HTMLImageElement;
-																	target.src =
-																		resolvedTheme &&
-																		resolvedTheme ===
-																			"light"
-																			? "/app-fallback.svg"
-																			: "/app-fallback-dark.svg";
-																	target.onerror =
-																		null;
-																}}
-																src={
-																	activeSessions
-																		.find(
-																			(
-																				s,
-																			) =>
-																				s.topic ===
-																				req.topic,
-																		)
-																		?.peer.metadata.icons[0].startsWith(
-																			"http",
-																		)
-																		? activeSessions.find(
-																				(
-																					s,
-																				) =>
-																					s.topic ===
-																					req.topic,
-																			)
-																				?.peer
-																				.metadata
-																				.icons[0]
-																		: `${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.url}${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.icons[0]}`
-																}
-															/>
-															<div className="flex flex-col">
-																<span className="text-sm">
-																	{
-																		req
-																			.params
-																			.request
-																			.method
-																	}
-																</span>
-																<span className="text-sm text-muted-foreground">
-																	{
-																		activeSessions.find(
-																			(
-																				s,
-																			) =>
-																				s.topic ===
-																				req.topic,
-																		)?.peer
-																			.metadata
-																			.name
-																	}
-																</span>
-															</div>
-														</div>
-														<div>
-															<Button
-																disabled={
-																	!w ||
-																	loading
-																}
-																size={"sm"}
-																onClick={async () => {
-																	setLoading(
-																		true,
-																	);
-																	try {
-																		await approveRequest(
-																			{
-																				w,
-																				eth,
-																				cosm,
-																				req,
-																			},
-																		);
-																	} finally {
-																		setLoading(
-																			false,
-																		);
-																	}
-																}}
-															>
-																{loading
-																	? "Loading..."
-																	: "Approve"}
-															</Button>
-														</div>
-													</div>
-												</div>
-												<SignRequestDialog
-													state={cosm.state}
-													error={cosm.error}
-													reset={() => {
-														cosm.reset();
-														setOpen(false);
-													}}
-												/>
-											</div>
-										))}
+							/> */}
+				{sessionRequests.length > 0 && approveActionModal ? (
+					<Portal domId="approve-modal">
+						<div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate">
+							<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
+							<button
+								onClick={() => setApproveActionModal(false)}
+								className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+							>
+								<img src="/images/button-close.svg" alt="" />
+							</button>
+
+							<div className="max-w-[520px] w-[520px] pb-5">
+								<div className="flex flex-col gap-12">
+									<div className="rounded-full mx-auto relative bg-white w-[100px] h-[100px] flex items-center justify-center">
+										<img
+											className="w-[52px] h-[52px] stroke-current"
+											onError={(e) => {
+												const target =
+													e.target as HTMLImageElement;
+												target.src =
+													resolvedTheme &&
+													resolvedTheme === "light"
+														? "/app-fallback.svg"
+														: "/app-fallback-dark.svg";
+												target.onerror = null;
+											}}
+											src={
+												activeSessions
+													.find(
+														(s) =>
+															s.topic ===
+															sessionRequests[0]
+																.topic,
+													)
+													?.peer.metadata.icons[0].startsWith(
+														"http",
+													)
+													? activeSessions.find(
+															(s) =>
+																s.topic ===
+																sessionRequests[0]
+																	.topic,
+														)?.peer.metadata
+															.icons[0]
+													: `${activeSessions.find((s) => s.topic === sessionRequests[0].topic)?.peer.metadata.url}${activeSessions.find((s) => s.topic === sessionRequests[0].topic)?.peer.metadata.icons[0]}`
+											}
+										/>
+
+										<div className="rounded-full absolute -right-3 -bottom-3 w-9 h-9 bg-fill-quaternary flex items-center justify-center">
+											<IconsAssets.approveDoc />
+										</div>
+									</div>
+
+									<div>
+										<div className="text-5xl font-display mb-6 font-bold tracking-[0.24px] text-center">
+											Approve the action
+										</div>
+
+										<div className="text-center">
+											{
+												activeSessions.find(
+													(s) =>
+														s.topic ===
+														sessionRequests[0]
+															.topic,
+												)?.peer.metadata.name
+											}{" "}
+											is going to execute the transaction
+										</div>
+									</div>
+
+									<div className="flex flex-col gap-2">
+										<Button
+											disabled={!w || loading}
+											onClick={async () => {
+												let req = sessionRequests[0];
+												setLoading(true);
+												try {
+													await approveRequest({
+														w,
+														eth,
+														cosm,
+														req,
+													});
+												} finally {
+													setLoading(false);
+												}
+											}}
+											className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold"
+										>
+											{loading ? "Loading..." : "Approve"}
+										</Button>
+
+										<Button
+											disabled={!w || loading}
+											onClick={() =>
+												setApproveActionModal(false)
+											}
+											className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
+										>
+											Cancel
+										</Button>
 									</div>
 								</div>
-							) : (
-								<></>
-							)}
+							</div>
 						</div>
-					</Popover.Content>
-				</Popover.Portal>
+					</Portal>
+				) : (
+					<></>
+				)}
 			</Popover.Root>
 			{isDesktop && activeSessions.length ? (
 				<div className="flex flex-col flex-wrap bg-background rounded-xl mx-2 gap-2">

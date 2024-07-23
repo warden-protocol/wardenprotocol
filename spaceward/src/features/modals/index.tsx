@@ -1,3 +1,4 @@
+import ApproveModal from "./ApproveActionModal";
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
 import SelectKeyModal from "./SelectKeys";
@@ -42,6 +43,11 @@ export default function ModalRoot() {
 					{...(data.background["create-key"] ??
 						(data.params as CreateKeyParams))}
 				/>
+			) : null}
+
+			{data.type === "approve-action" ||
+			data.background["approve-action"] ? (
+				<ApproveModal hidden={data.type !== "approve-action"} />
 			) : null}
 
 			{data.type === "walletconnect" ? (

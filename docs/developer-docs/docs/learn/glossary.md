@@ -209,7 +209,9 @@ While most interoperability providers focus on particular ecosystems, Warden's g
 
 ## Oracle service
 
-An oracle is a third-party service that enables smart contracts access real-life data feeds: prices, stock marked data, weather conditions, etc. Warden is currently integrating with [Slinky](https://skip-protocol-docs.netlify.app/slinky/overview). It's an oracle service provided by Skip Protocol and offering mostly price data. More details are coming soon.
+An oracle is a third-party service that enables smart contracts access real-life data feeds: prices, stock marked data, weather conditions, etc. Warden is integrated with [Slinky](https://skip-protocol-docs.netlify.app/slinky/overview) – an oracle service provided by Skip Protocol and offering mostly price data.
+
+Learn more: [Oracle services](oracle-services)
 
 ---
 

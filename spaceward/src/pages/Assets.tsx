@@ -16,7 +16,7 @@ import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
-import { FIAT_FORMAT } from "@/features/assets/util";
+import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
 import {
 	NetworkIcons,
 	NetworkIconsTransparent,

@@ -16,7 +16,8 @@ export default function KeyRequestStatusbar({ className }: { className?: string 
 	const settings = ks?.settings[settingId];
 	const themeIndex = settings?.themeIndex ?? 0;
 
-	return <div className={clsx(className, "flex items-center")}>
-		<Assets.themeSelector themeIndex={themeIndex} />
+	return <div className={clsx("flex items-center rounded-xl bg-fill-quaternary mx-4", className)}>
+		<Assets.themeSelector themeIndex={themeIndex} className="h-full w-auto" />
+		<p className="font-bold ml-4">Creating new key</p>
 	</div>;
 }

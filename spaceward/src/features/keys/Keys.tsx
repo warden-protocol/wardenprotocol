@@ -109,7 +109,6 @@ const KeyCard = ({
 	return (
 		<div className="flex basis-2/6 flex-grow-0 flex-shrink-0 p-4">
 			<div className="keycard-container rounded-xl h-52 w-full items-center justify-center relative overflow-hidden flex">
-				{/* front face */}
 				<div
 					className={clsx(
 						"absolute keycard-frontface h-full w-full transition-transform",
@@ -135,7 +134,6 @@ const KeyCard = ({
 						</div>
 					</div>
 				</div>
-				{/* back face */}
 				<div
 					className={clsx(
 						"absolute keycard-backface h-full w-full bg-secondary-bg transition-transform",
@@ -235,7 +233,7 @@ export function Keys({
 
 	return (
 		<>
-			{state === KeyRequesterState.IDLE ? null : <KeyRequestStatusbar />}
+			{state === KeyRequesterState.IDLE ? null : <KeyRequestStatusbar className="p-6 h-20" />}
 			{query.data?.keys?.length === 0 ? (
 				<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
 					<KeyIcon className="h-10 w-10" />

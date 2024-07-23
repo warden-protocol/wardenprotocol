@@ -118,17 +118,20 @@ export default function CreateKeyModal({
 
 			<Button
 				onClick={() => {
+					console.log({ selected })
 					if (selected === -1) {
 						return;
 					}
 
 					const keychain = keychainsQuery.data?.keychains[selected];
+					console.log({ keychain })
 
 					if (!keychain) {
 						return;
 					}
 
 					setKeychain(keychain);
+					setIsDetails(false);
 				}}
 				className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-12 hover:bg-pixel-pink duration-200 hover:text-background"
 			>
@@ -206,7 +209,7 @@ export default function CreateKeyModal({
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
-									// TODO implement details state
+									setSelected(i);
 									setIsDetails(true);
 								}}
 								className="mt-2 duration-300 transition-all hover:text-pixel-pink font-semibold"
@@ -362,7 +365,7 @@ export default function CreateKeyModal({
 					</Button>
 
 					<Button
-						// onClick={}
+						onClick={() => setKeychain(undefined)}
 						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
 					>
 						Cancel

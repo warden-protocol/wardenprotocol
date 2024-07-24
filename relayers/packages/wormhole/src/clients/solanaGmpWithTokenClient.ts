@@ -1,14 +1,6 @@
-import {
-  CONTRACTS,
-  ParsedTokenTransferVaa,
-  SignedVaa,
-  isBytes,
-  parseTokenTransferVaa,
-  tryNativeToHexString,
-} from '@certusone/wormhole-sdk';
+import { CONTRACTS, isBytes, parseTokenTransferVaa } from '@certusone/wormhole-sdk';
 import {
   NodeWallet,
-  createPostVaaInstructionSolana,
   deriveAddress,
   getTokenBridgeDerivedAccounts,
   getTransferNativeWithPayloadCpiAccounts,
@@ -39,13 +31,13 @@ import {
   Transaction,
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
-import { min } from '@warden/wormhole-relayer-engine';
 import { ChainId } from '@wormhole-foundation/sdk';
 import { BN } from 'bn.js';
 import bs58 from 'bs58';
 
 import { GmpWithToken, IDL as IdlGmpWithToken } from '../../contracts/solana/target/types/gmp_with_token.js';
 import { config } from '../config/schema.js';
+import { rootLogger } from '../index.js';
 import { getWormholeContractsNetwork } from '../utils.js';
 
 export class SolanaGmpWithTokenClient {
@@ -83,7 +75,7 @@ export class SolanaGmpWithTokenClient {
     const tx = new Transaction().add(instruction);
     const result = await sendAndConfirmTransaction(connection, tx, [this.adminKeypair]);
 
-    console.log(result);
+    rootLogger.info(`Gmp with token contract has been successfully initialized: ${result}`);
   }
 
   async registerForeignContract(
@@ -96,7 +88,6 @@ export class SolanaGmpWithTokenClient {
       IdlGmpWithToken,
       this.adminKeypair.publicKey,
     );
-    // const test = new PublicKey('0x27b6Fa47efd7Eb3F67ED4A28703EC907A96C2f97').toBuffer();
 
     const foreignContractKey = deriveAddress(
       [
@@ -124,17 +115,10 @@ export class SolanaGmpWithTokenClient {
     const tx = new Transaction().add(instruction);
     const result = await sendAndConfirmTransaction(connection, tx, [this.adminKeypair]);
 
-    console.log(result);
+    rootLogger.info(`Foreign contract has been successfully registered: ${result}`);
   }
 
-  async sendNative(
-    from: Keypair,
-    to: Buffer,
-    toChain: ChainId,
-    mint: PublicKey,
-    batchId: number,
-    amount: bigint,
-  ): Promise<void> {
+  async sendNative(from: Keypair, to: Buffer, toChain: ChainId, mint: PublicKey, amount: bigint): Promise<void> {
     const [connection, program] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
     const tracker = await getProgramSequenceTracker(connection, this.wormholeTokenBridge, this.wormholeCore);
     const message = deriveAddress(
@@ -163,7 +147,7 @@ export class SolanaGmpWithTokenClient {
     );
 
     const instruction = await program.methods
-      .sendNativeTokensWithPayload(batchId, new BN(amount.toString()), [...to], toChain)
+      .sendNativeTokensWithPayload(0, new BN(amount.toString()), [...to], toChain)
       .accounts({
         config: deriveAddress([Buffer.from('sender')], this.programId),
         foreignContract: deriveAddress(
@@ -186,7 +170,7 @@ export class SolanaGmpWithTokenClient {
     const tx = new Transaction().add(instruction);
     const result = await sendAndConfirmTransaction(connection, tx, [from]);
 
-    console.log(result);
+    rootLogger.info(`GMP with token has been successfully sent: ${result}`);
   }
 
   async postVaa(vaa: Buffer): Promise<void> {
@@ -199,17 +183,15 @@ export class SolanaGmpWithTokenClient {
       this.adminKeypair.publicKey,
       vaa,
     );
+
+    rootLogger.info(`VAA has been successfully posted to Solana`);
   }
 
   async redeemWrapped(vaa: Buffer): Promise<void> {
-    // const address = tryNativeToHexString('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 2);
-    // const address1 = tryNativeToHexString('0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 10002);
-
     const [connection, program] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
 
     const parsedVaa = isBytes(vaa) ? parseTokenTransferVaa(vaa) : vaa;
     const wrappedMint = deriveWrappedMintKey(this.wormholeTokenBridge, parsedVaa.tokenChain, parsedVaa.tokenAddress);
-    // const wrappedMint = deriveWrappedMintKey(this.wormholeTokenBridge, 2, parsedVaa.tokenAddress);
 
     const tmpTokenAccount = deriveAddress([Buffer.from('tmp'), new PublicKey(wrappedMint).toBuffer()], this.programId);
     const recipient = new PublicKey(parsedVaa.tokenTransferPayload.subarray(1, 33));
@@ -273,7 +255,7 @@ export class SolanaGmpWithTokenClient {
     const tx = new Transaction().add(instruction);
     const result = await sendAndConfirmTransaction(connection, tx, [this.adminKeypair]);
 
-    console.log(result);
+    rootLogger.info(`GMP with token has been successfully redeemed: ${result}`);
   }
 }
 

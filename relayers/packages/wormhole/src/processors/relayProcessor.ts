@@ -25,9 +25,9 @@ export class RelayProcessor {
 
     this.chainStartSequences = {};
 
-    const data = wormholeStartSequences.split(',').map((x) => x.split(':'));
-    for (const a of data) {
-      this.chainStartSequences[a[0]] = a[1];
+    const startSequences = wormholeStartSequences.split(',').map((x) => x.split(':'));
+    for (const startSequence of startSequences) {
+      this.chainStartSequences[startSequence[0]] = startSequence[1];
     }
   }
 

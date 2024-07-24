@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (shield) The depth of nesting for functions is limited to 100 levels
+
 ### Features (non-breaking)
 
 ### Bug Fixes

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
+import { ArrowLeft, Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import type { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,6 @@ import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import useRequestKey from "@/hooks/useRequestKey";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
-import { Icons } from "@/components/ui/icons-assets";
 
 const THEME_DISPLAY_COUNT = 4;
 
@@ -71,7 +70,7 @@ export default function CreateKeyModal({
 				onClick={() => setIsDetails(false)}
 				className="absolute top-10 left-10"
 			>
-				<Icons.arrowGoBack />
+				<ArrowLeft />
 			</button>
 			<div className="font-bold text-5xl mb-6 leading-[56px] tracking-[0.24px]">
 				Keychain details
@@ -80,7 +79,7 @@ export default function CreateKeyModal({
 			<div className="bg-fill-quaternary rounded-xl	p-6">
 				<div className="flex items-center gap-[6px] font-bold text-2xl mb-1">
 					Open Custody Protocol
-					<Icons.verified />
+					<Assets.verified />
 				</div>
 
 				<div className="text-label-secondary text-left">
@@ -257,7 +256,7 @@ export default function CreateKeyModal({
 									Paste
 								</button>
 							) : (
-								<Icons.clearCircle
+								<Assets.clearCircle
 									className="cursor-pointer"
 									onClick={() => setName("")}
 								/>

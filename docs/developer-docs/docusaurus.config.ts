@@ -141,7 +141,7 @@ const config: Config = {
                 },
                 {
                     href: "https://help.wardenprotocol.org",
-                    label: "Help Center",
+                    label: "SpaceWard",
                     position: "right",
                 },
             ],

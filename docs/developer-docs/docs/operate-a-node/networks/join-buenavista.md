@@ -67,36 +67,31 @@ To configure `wardend`, do the following:
     ```
 
 2. Set the mandatory configuration options:
-
-```bash
-# Set minimum gas price & peers
-sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
-```
+    
+    ```bash
+    # Set minimum gas price & peers
+    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
+    ```
 
 <PersistentPeers
     chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
     code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
-{/* To be confirmed
 ## (Recommended) Setup state sync
 
 This step is optional.
 
-To speed up the initial sync, you can use the state sync feature. This will
-allow you to download the state at a specific height from a trusted node and
-then only download the blocks after that from the network.
+To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and then only download the blocks after that from the network.
 
 You'll need:
 - a list of trusted RPC endpoints
 - a trusted block height and its corresponding block hash
 
-A list of RPC endpoints can be found in the [Warden networks
-repository](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/rpc-nodes.txt).
-For the rest of the instructions we'll use
-`https://rpc.buenavista.wardenprotocol.org`.
+A list of RPC endpoints can be found in the [Warden networks repository](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/rpc-nodes.txt).
 
-From this RPC endpoint, you can get the trusted block height and hash using the
-following command:
+For the rest of the instructions we'll use `https://rpc.buenavista.wardenprotocol.org`.
+
+From this RPC endpoint, you can get the trusted block height and hash using the following command:
 
 ```bash
 export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443"
@@ -122,7 +117,6 @@ s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
 ```
-*/}
 
 ## 3. Start the node
 

@@ -276,6 +276,8 @@ func (f *Faucet) DailyRefresh() {
 		f.log.Info().Msgf("next token refresh in %s", durationUntilNextDay)
 		time.Sleep(durationUntilNextDay)
 
+		f.Lock()
 		f.TokensAvailable = f.DailySupply
+		f.Unlock()
 	}
 }

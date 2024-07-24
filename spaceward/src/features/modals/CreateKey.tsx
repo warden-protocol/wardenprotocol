@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Circle, Dice5Icon, RefreshCw, XIcon } from "lucide-react";
+import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import type { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
 import { Button } from "@/components/ui/button";
@@ -18,12 +18,14 @@ const THEME_DISPLAY_COUNT = 4;
 export default function CreateKeyModal({
 	hidden,
 	next,
+	spaceId: selectedSpaceId
 }: ModalParams<CreateKeyParams>) {
 	const { useKeychains, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { setData: setModal } = useModalState();
 	const { requestKey } = useRequestKey();
-	const { spaceId } = useSpaceId();
+	const { spaceId: _spaceId } = useSpaceId();
+	const spaceId = selectedSpaceId ?? _spaceId;
 
 	const keychainsQuery = useKeychains({
 		options: {
@@ -118,13 +120,13 @@ export default function CreateKeyModal({
 
 			<Button
 				onClick={() => {
-					console.log({ selected })
+					console.log({ selected });
 					if (selected === -1) {
 						return;
 					}
 
 					const keychain = keychainsQuery.data?.keychains[selected];
-					console.log({ keychain })
+					console.log({ keychain });
 
 					if (!keychain) {
 						return;

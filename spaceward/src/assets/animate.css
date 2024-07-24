@@ -1,0 +1,13 @@
+/* flip card animation helpers */
+.flipper-container {
+	transform-style: preserve-3d;
+}
+
+.flipper-container > .flipper-backface,
+.flipper-container > .flipper-frontface {
+	backface-visibility: hidden;
+}
+
+.flipper-container > .flipped {
+	transform: rotateY(180deg);
+}

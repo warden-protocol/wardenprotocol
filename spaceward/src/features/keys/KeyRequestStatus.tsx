@@ -60,7 +60,7 @@ export default function KeyRequestStatusbar({
 					<>
 						Failed to create key{" "}
 						<div className="text-base text-label-secondary">
-							Short error message TBD
+							{error}
 						</div>
 					</>
 				) : state === KeyRequesterState.KEY_FULFILLED ? (
@@ -71,7 +71,7 @@ export default function KeyRequestStatusbar({
 			</p>
 
 			{percent ? (
-				<div className="mx-8 w-3/5 rounded bg-fill-quaternary h-[6px] overflow-hidden shrink">
+				<div className="mx-8 min-w-12 rounded bg-fill-quaternary h-[6px] overflow-hidden grow basis-auto">
 					<div
 						className={clsx("h-full bg-accent", {
 							"w-1/5": percent <= 20,
@@ -90,7 +90,7 @@ export default function KeyRequestStatusbar({
 						onClick={reset}
 						className="my-4 rounded bg-fill-quaternary text-white h-10 px-5 hover:bg-fill-accent-secondary duration-200 font-semibold"
 					>
-						Try Again
+						Close
 					</Button>
 				) : (
 					<p className="font-display text-xs text-label-secondary whitespace-nowrap">

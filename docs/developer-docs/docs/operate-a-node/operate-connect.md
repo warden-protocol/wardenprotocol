@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Operate Connect
@@ -62,4 +62,4 @@ metrics_enabled = "true"
 
 ## 4. What's next?
 
-You'r all set! Connect will be available on [Warden version v0.4.0](/operate-a-node/upgrade-to-v0.4.0).
+You'r all set! Connect will be available on [Warden version v0.4.0](/networks/upgrade-to-v0.4.0).

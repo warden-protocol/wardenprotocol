@@ -170,3 +170,29 @@ message EventAddKeychainWriter {
   // updated count of writers
   uint64 writers_count = 3;
 }
+
+// EventAddKeychainWriter is emitted when a new writer address is added to a Keychain
+message EventAddKeychainAdmin {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new writer
+  string new_admin = 2;
+
+  // updated count of writers
+  uint64 admins_count = 3;
+}
+
+
+// EventAddKeychainWriter is emitted when a new writer address is added to a Keychain
+message EventRemoveKeychainAdmin {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new writer
+  string admin = 2;
+
+  // updated count of writers
+  uint64 admins_count = 3;
+}
+

@@ -153,6 +153,24 @@ message MsgUpdateKeychain {
 
 message MsgUpdateKeychainResponse {}
 
+message MsgAddKeychainAdminRequest {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  uint64 keychain_id = 2;
+  string new_admin = 3;
+}
+
+message MsgAddKeychainAdminResponse {}
+
+message MsgRemoveKeychainAdminRequest {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  uint64 keychain_id = 2;
+  string admin = 3;
+}
+
+message MsgRemoveKeychainAdminResponse {}
+
 message MsgNewKeyRequest {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;

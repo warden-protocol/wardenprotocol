@@ -44,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
+* (x/warden) Implemented `AddKeychainAdmin`, `RemoveKeychainAdmin` features
+
 ### Bug Fixes
 
 ### Misc

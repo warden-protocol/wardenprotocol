@@ -122,7 +122,7 @@ https://rpc.buenavista.wardenprotocol.org
 
 Now you can start the node using the following command:
 
-```
+```cmd
 wardend start
 ```
 

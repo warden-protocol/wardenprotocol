@@ -58,4 +58,4 @@ metrics_enabled = "true"
 
 ## 4. What's next?
 
-To start validating Slinky's data, you need to [upgrade Warden](upgrade-Warden).
+To start validating Slinky's data, you need to [upgrade Warden](upgrade-warden).

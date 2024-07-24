@@ -1,0 +1,11 @@
+{
+  "position": 2,
+  "label": "Buenavista testnet",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Networks"
+  },
+  "customProps": {}
+}

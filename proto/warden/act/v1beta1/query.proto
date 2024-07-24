@@ -95,7 +95,7 @@ message QueryRuleByIdResponse { Rule rule = 1; }
 message QueryActionsByAddressRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string address = 2;
-  ActionStatus status = 3;
+  ActionStatus status = 3 [ (gogoproto.nullable) = true ];
 }
 
 message QueryActionsByAddressResponse {

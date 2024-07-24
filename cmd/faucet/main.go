@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"html/template"
 	"io"
 	"net/http"
@@ -103,9 +102,7 @@ func main() {
 	}
 
 	// Start batch process
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	go f.batchProcessInterval(ctx)
+	go f.batchProcessInterval()
 
 	// Start refresh interval
 	go f.DailyRefresh()

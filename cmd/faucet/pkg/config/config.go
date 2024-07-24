@@ -30,7 +30,7 @@ type Config struct {
 	Amount         string        `env:"AMOUNT" envDefault:"1000000" mapstructure:"AMOUNT"`
 	Fees           string        `env:"FEES" envDefault:"25uward" mapstructure:"FEES"`
 	KeyringBackend string        `env:"KEYRING" envDefault:"test" mapstructure:"KEYRING"`
-	BatchInterval  time.Duration `env:"BATCH_INTERVAL" envDefault:"10s" mapstructure:"BATCH_INTERVAL"`
+	BatchInterval  time.Duration `env:"BATCH_INTERVAL" envDefault:"5s" mapstructure:"BATCH_INTERVAL"`
 	DailyLimit     int           `env:"DAILY_LIMIT" envDefault:"100000000" mapstructure:"DAILY_LIMIT"`
 	BatchLimit     int           `env:"BATCH_LIMIT" envDefault:"10" mapstructure:"BATCH_LIMIT"`
 	TXRetry        int           `env:"TX_RETRY" envDefault:"10" mapstructure:"TX_RETRY"`

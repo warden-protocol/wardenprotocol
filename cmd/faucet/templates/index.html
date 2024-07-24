@@ -20,6 +20,11 @@
         });
       });
     </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        htmx.ajax("GET", "/update-tokens", "#token-display");
+      });
+    </script>
   </head>
   <body>
     <div class="container" hx-swap="innerHTML">

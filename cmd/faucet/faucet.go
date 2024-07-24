@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 	"os/exec"
-	"reflect"
 	"strconv"
 	"strings"
 	"sync"
@@ -163,12 +162,11 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	return f, nil
 }
 
-func MutexLocked(m *sync.Mutex) bool {
-	state := reflect.ValueOf(m).Elem().FieldByName("state")
-	return state.Int()&mutexLocked == mutexLocked
-}
+func (f *Faucet) batchProcessInterval() {
+	f.log.Info().Msgf("starting batch process interval")
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-func (f *Faucet) batchProcessInterval(ctx context.Context) {
 	ticker := time.NewTicker(f.config.BatchInterval)
 	defer ticker.Stop()
 
@@ -177,7 +175,7 @@ func (f *Faucet) batchProcessInterval(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			if len(f.Batch) > 0 && !MutexLocked(f.Mutex) {
+			if len(f.Batch) > 0 {
 				if txHash, _, err := f.Send("", true); err != nil {
 					f.log.Error().Msgf("error sending batch: %s", err)
 				} else {

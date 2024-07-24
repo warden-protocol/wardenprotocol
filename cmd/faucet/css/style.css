@@ -19,7 +19,7 @@ body {
 
 .container {
   text-align: center;
-  background-image: url("/assets/background.jpg");
+  background-image: url("/assets/background.webp");
   background-color: rgba(0, 0, 0, 0.8);
   background-size: cover;
   background-position: center;
@@ -210,4 +210,3 @@ input[type="submit"]:active {
   cursor: pointer;
   border-radius: 4px;
 }
-

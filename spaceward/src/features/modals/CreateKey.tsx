@@ -296,7 +296,7 @@ export default function CreateKeyModal({
 								},
 							)}
 							<div
-								className="w-16 h-10 rounded-md bg-fill-quaternary flex items-center justify-center cursor-pointer"
+								className="group relative w-16 h-10 hover:bg-fill-accent-secondary duration-200 rounded-md bg-fill-quaternary flex items-center justify-center cursor-pointer"
 								onClick={() => {
 									setThemeOffset(
 										(offset) =>
@@ -306,11 +306,15 @@ export default function CreateKeyModal({
 								}}
 							>
 								<RefreshCw />
+
+								<div className="opacity-0 w-fit bg-fill-quaternary text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+									Switch Styles
+								</div>
 							</div>
 
 							<div className="w-[1px] h-4 bg-label-tertiary" />
 							<div
-								className="w-10 h-10 rounded-full bg-fill-quaternary flex items-center justify-center cursor-pointer"
+								className="w-10 h-10 hover:bg-fill-accent-secondary group relative duration-200 rounded-full bg-fill-quaternary flex items-center justify-center cursor-pointer"
 								onClick={() => {
 									const index = Math.floor(
 										Math.random() * KEY_THEMES.length,
@@ -326,6 +330,10 @@ export default function CreateKeyModal({
 								}}
 							>
 								<Dice5Icon />
+
+								<div className="opacity-0 w-fit bg-fill-quaternary text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+									Random style
+								</div>
 							</div>
 						</div>
 					</div>

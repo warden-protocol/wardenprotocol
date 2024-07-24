@@ -201,6 +201,16 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 								</>
 							)}
 						</div>
+						<div className="h-px bg-fill-quaternary my-1"></div>
+						{addresses.map((addr, i) => (
+							<div
+								className="flex items-center my-1"
+								key={addr.address}
+							>
+								{i ? null : <p>Addresses</p>}
+								<p className="ml-auto">...{addr.address.slice(-12)}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>

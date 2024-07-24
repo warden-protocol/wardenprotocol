@@ -11,10 +11,31 @@ body {
 }
 
 .red-cross {
-  color: red;
-  font-size: 100px;
+  color: rgba(128, 0, 128, 0.7); /* Faded purple color */
+  font-size: 150px;
   text-align: center;
-  line-height: 100px;
+  line-height: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+  margin: 50px auto;
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .container {

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 3
 ---
 
 # Operate Connect
@@ -16,9 +16,13 @@ See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 
 Download the Connect binary from the [Connect releases](https://github.com/skip-mev/slinky/releases) page on GitHub. The initial version required for Warden is [v1.0.3](https://github.com/skip-mev/slinky/releases/tag/v1.0.3) or higher.
 
-We also provide a container image including the binary at [slinky-sidecar](https://github.com/skip-mev/slinky/pkgs/container/slinky-sidecar).
+You can also use a container image including the binary at [slinky-sidecar](https://github.com/skip-mev/slinky/pkgs/container/slinky-sidecar).
 
 ## 2. Run Connect sidecar
+
+:::tip
+If you're running Connect as a container, skip this step.
+:::
 
 Then you need to integrate the Connect sidecar into your setup. To run Connect with stable defaults defined by the Skip team, use this command:
 
@@ -58,4 +62,4 @@ metrics_enabled = "true"
 
 ## 4. What's next?
 
-To start validating Slinky's data, you need to [upgrade Warden](upgrade-warden).
+You'r all set! Connect will be available on [Warden version v0.4.0](upgrade-to-v0.4.0).

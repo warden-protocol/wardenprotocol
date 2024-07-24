@@ -8,24 +8,28 @@ sidebar_position: 6
 
 An **oracle** is a third-party service that enables smart contracts access real-life **data feeds**: prices, stock marked data, weather conditions, etc.
 
-[Omnichain Application](/learn/glossary#omnichain-application) builders can incorporate **Slinky**, an oracle services supported by Warden, into their apps. See the sections below to learn more.
+[Omnichain Application](/learn/glossary#omnichain-application) builders can incorporate **Connect**, an oracle service supported by Warden, into their apps. See the sections below to learn more.
 
 :::tip
 Access to oracle data feeds significantly enhances the capabilities of Warden's [Intents](/learn/glossary#intent), aloowing users to create highly specific Intents such as limit orders for decentralized exchanges. Once we implement [Triggers](/learn/glossary#trigger), users will also be able to create Intents triggered by changes in data feeds.
 :::
 
 
-## Slinky
+## Connect
 
-Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle) – an external module by **Skip Protocol**. This module provides access to [Slinky](https://skip-protocol-docs.netlify.app/slinky/overview) – an oracle service offering mostly price data.
+Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle) – an external module by **Skip Protocol**. This module provides access to [Connect](https://docs.skip.build/connect/introduction) – an oracle service offering mostly price data (formerly known as Slinky).
 
-Key features of Warden's integration with Slinky include the following:
+Key features of Warden's integration with Connect include the following:
 
 - **Secured by Warden's validator set**  
     This integration uses the security framework of the chain, ensuring rapid price updates without relying on third-party systems.
 
 - **Exceptional performance**  
     With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
+
+:::tip
+The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written on-chain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-slinky).
+:::
 
 ## Available data feeds
 

@@ -28,7 +28,7 @@ Key features of Warden's integration with Connect include the following:
     With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
 
 :::tip
-The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written on-chain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-slinky).
+The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written on-chain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-connect).
 :::
 
 ## Available data feeds

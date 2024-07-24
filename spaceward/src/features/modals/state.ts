@@ -14,7 +14,8 @@ export type ModalType =
 	| "send"
 	| "select-asset"
 	| "walletconnect"
-	| "dapps-modal";
+	| "dapps-modal"
+	| "approve-action";
 
 interface ModalParams {
 	"create-key": CreateKeyParams;
@@ -22,8 +23,9 @@ interface ModalParams {
 	"select-key": SelectKeyParams;
 	receive: TransferParams;
 	send: TransferParams;
-	walletconnect: undefined;
-	"dapps-modal": undefined;
+	walletconnect: {};
+	"dapps-modal": {};
+	"approve-action": {};
 }
 
 export interface ModalState {

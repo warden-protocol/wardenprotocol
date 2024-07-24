@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 import PersistentPeers from "@site/src/components/PersistentPeers";
@@ -73,51 +73,50 @@ To configure `wardend`, do the following:
     sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
     ```
 
-<PersistentPeers
-    chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
-    code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
+    <PersistentPeers
+        chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
+        code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
-## 3. Setup state sync
+## 3. Set up the state sync
 
+:::tip
 This step is recommended but optional.
+:::
 
 To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and then only download the blocks after that from the network.
 
-You'll need the following:
+You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/chain.json) – for example, the following:
 
-- A list of trusted RPC endpoints
-- A trusted block height and its corresponding block hash
-
-A list of RPC endpoints can be found in the [Warden networks repository](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/rpc-nodes.txt).
-
-For the rest of the instructions we'll use `https://rpc.buenavista.wardenprotocol.org`.
-
-From this RPC endpoint, you can get the trusted block height and hash using the following command:
-
-```bash
-export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443"
-export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r .result.block.header.height)
-export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
-export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+```cmd
+https://rpc.buenavista.wardenprotocol.org
 ```
 
-Check that all variables have been set correctly:
+1. From this RPC endpoint, you can get the trusted block height and hash:
+    
+    ```bash
+    export SNAP_RPC_SERVERS="    https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
+    export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r     .result.block.header.height)
+    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
+    export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$    BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+    ```
 
-```bash
-echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+2. Check that all variables have been set correctly:
+    
+    ```bash
+    echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+    
+    # output should be similar to:
+    # 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
+    ```
 
-# output should be similar to:
-# 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
-```
+3. Now you can add the state sync configuration to your `config.toml`:
 
-Now you can add the state sync configuration to your `config.toml`:
-
-```bash
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
-```
+    ```bash
+    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
+    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
+    ```
 
 ## 4. Start the node
 

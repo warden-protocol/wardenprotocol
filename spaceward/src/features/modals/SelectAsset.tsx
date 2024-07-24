@@ -1,13 +1,13 @@
 import clsx from "clsx";
-import { Icons } from "@/components/ui/icons-assets";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { useMemo, useState } from "react";
+import { Icons } from "@/components/ui/icons-assets";
 import { NetworkIcons } from "@/components/ui/icons-crypto";
-import { useModalContext } from "@/context/modalContext";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import AssetRow, { AssetPlaceholder } from "../assets/AssetRow";
 import { useAssetQueries } from "../assets/hooks";
 import type { SelectAssetParams } from "./types";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { useModalState } from "./state";
 
 const Network = ({ chainName }: { chainName: string }) => {
 	const Icon = NetworkIcons[chainName] ?? AssetPlaceholder;
@@ -15,7 +15,7 @@ const Network = ({ chainName }: { chainName: string }) => {
 };
 
 export default function SelectAssetModal(props: SelectAssetParams) {
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const [searchValue, setSearchValue] = useState("");
 	const [currentNetwork, setCurrentNetwork] = useState("");
@@ -187,20 +187,15 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 							<AssetRow
 								asset={item}
 								key={key}
-								onClick={dispatch.bind(null, {
-									type: "set",
-									payload: {
-										type: "send",
-										params: {
-											keyResponse: props.keyResponse,
-											chainName: item.chainName,
-											token: item.token,
-											type: item.type.startsWith(
-												"eip155:",
-											)
-												? AddressType.ADDRESS_TYPE_ETHEREUM
-												: AddressType.ADDRESS_TYPE_OSMOSIS,
-										},
+								onClick={setModal.bind(null, {
+									type: "send",
+									params: {
+										keyResponse: props.keyResponse,
+										chainName: item.chainName,
+										token: item.token,
+										type: item.type.startsWith("eip155:")
+											? AddressType.ADDRESS_TYPE_ETHEREUM
+											: AddressType.ADDRESS_TYPE_OSMOSIS,
 									},
 								})}
 							/>

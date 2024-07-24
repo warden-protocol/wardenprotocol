@@ -8,10 +8,10 @@ import * as Popover from "@radix-ui/react-popover";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { useModalContext } from "@/context/modalContext";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { approveRequest } from "./util";
 import { Icons } from "@/components/ui/icons";
+import { useModalState } from "../modals/state";
 
 export function WalletConnect() {
 	const [open, setOpen] = useState(false);
@@ -32,7 +32,7 @@ export function WalletConnect() {
 	}, [sessionRequests]);
 
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-	const { dispatch: modalDispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 
 	return (
 		<div>
@@ -82,12 +82,9 @@ export function WalletConnect() {
 							"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
 							sessionRequests.length > 0 && "animate-pulse",
 						)}
-						onClick={modalDispatch.bind(null, {
-							type: "set",
-							payload: {
-								type: "walletconnect",
-								params: undefined,
-							},
+						onClick={setModal.bind(null, {
+							type: "walletconnect",
+							params: undefined,
 						})}
 					>
 						<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
@@ -315,12 +312,9 @@ export function WalletConnect() {
 					className={cn(
 						"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
 					)}
-					onClick={modalDispatch.bind(null, {
-						type: "set",
-						payload: {
+					onClick={setModal.bind(null, {
 							type: "dapps-modal",
 							params: undefined,
-						},
 					})}
 				>
 					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">

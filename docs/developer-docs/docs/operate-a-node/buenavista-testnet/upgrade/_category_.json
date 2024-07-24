@@ -2,7 +2,7 @@
   "position": 1,
   "label": "Upgrade",
   "collapsible": true,
-  "collapsed": true,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
     "title": "Networks"

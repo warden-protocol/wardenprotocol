@@ -90,7 +90,7 @@ const config: Config = {
                 },
                 {
                     href: "https://docs.wardenprotocol.org",
-                    label: "Docs",
+                    label: "Dev docs",
                     position: "right",
                 },
             ],

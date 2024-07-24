@@ -53,6 +53,6 @@
         {"source":"/validate/validator-concepts","destination":"/learn/glossary#staking", "statusCode": 301},
         {"source":"/validate/validators-states","destination":"/learn/glossary#validator", "statusCode": 301},
         {"source":"/operate-a-node/networks/join-buenavista","destination":"/operate-a-node/buenavista-testnet/join-buenavista", "statusCode": 301},
-        {"source":"/operate-a-node/networks/available-networks","destination":"/operate-a-node/buenavista-testnet/join-buenavista", "statusCode": 301},
+        {"source":"/operate-a-node/networks/available-networks","destination":"/operate-a-node/buenavista-testnet", "statusCode": 301}
     ]
 }

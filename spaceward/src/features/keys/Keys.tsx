@@ -44,6 +44,7 @@ import "./animate.css";
 import { useModalState } from "../modals/state";
 import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
 import KeyRequestStatusbar from "./KeyRequestStatus";
+import { Icons } from "@/components/ui/icons-assets";
 
 const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	return (
@@ -105,11 +106,11 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 	}
 
 	return (
-		<div className="flex basis-2/6 flex-grow-0 flex-shrink-0 p-4">
-			<div className="keycard-container rounded-xl h-52 w-full items-center justify-center relative overflow-hidden flex">
+		<div className="flex basis-2/6 flex-grow-0 flex-shrink-0 p-3">
+			<div className="keycard-container rounded-xl h-52 w-full items-center justify-center relative flex">
 				<div
 					className={clsx(
-						"absolute keycard-frontface h-full w-full transition-transform",
+						"absolute keycard-frontface h-full rounded-xl w-full transition-transform overflow-hidden ",
 						{
 							flipped,
 						},
@@ -132,85 +133,116 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 
 						<div className="mt-auto h-px bg-fill-quaternary mx-4"></div>
 						<div className="flex m-4">
-							<div
-								className="ml-auto cursor-pointer"
-								onClick={() => {
-									setModal({
-										type: "select-key",
-										params: {
-											addresses: addresses.map((a) => ({
-												...a,
-												keyId: key.id,
-											})),
-											next: "receive",
-										},
-									});
-								}}
-							>
-								<ArrowDown />
-							</div>
-							<div
-								className="ml-4 cursor-pointer"
-								onClick={() => {
-									setModal({
-										type: "select-key",
-										params: {
-											addresses: addresses.map((a) => ({
-												...a,
-												keyId: key.id,
-											})),
-											next: "send",
-										},
-									});
-								}}
-							>
-								<Send />
+							<div>#1,223.4</div>
+							<div className="ml-auto flex">
+								<div
+									className="cursor-pointer"
+									onClick={() => {
+										setModal({
+											type: "select-key",
+											params: {
+												addresses: addresses.map(
+													(a) => ({
+														...a,
+														keyId: key.id,
+													}),
+												),
+												next: "receive",
+											},
+										});
+									}}
+								>
+									<ArrowDown />
+								</div>
+								<div
+									className="ml-4 cursor-pointer"
+									onClick={() => {
+										setModal({
+											type: "select-key",
+											params: {
+												addresses: addresses.map(
+													(a) => ({
+														...a,
+														keyId: key.id,
+													}),
+												),
+												next: "send",
+											},
+										});
+									}}
+								>
+									<Send />
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div
 					className={clsx(
-						"absolute keycard-backface h-full w-full bg-secondary-bg transition-transform",
+						"absolute keycard-backface h-full w-full bg-tertiary transition-transform border-border-primary border-[1px] border-solid rounded-xl",
 						{ flipped: !flipped },
 					)}
 				>
 					<div className="relative flex flex-col z-10 p-4">
 						<div className="flex items-center">
 							{!edit ? (
-								<>
-									<p className="font-display">{name}</p>
-									<Edit2Icon
-										className="cursor-pointer h-8 w-8 p-2"
+								<div className="flex gap-2 items-center">
+									<p className="font-display text-xl font-bold tracking-[0.1px]">
+										{name}
+									</p>
+									<button
+										className="cursor-pointer rounded-full w-5 h-5 flex items-center duration-200 hover:bg-fill-accent-secondary bg-fill-quaternary justify-center"
 										onClick={editName}
-									/>
-								</>
+									>
+										<Edit2Icon className="h-3 w-3" />
+									</button>
+								</div>
 							) : (
-								<>
+								<div className="flex justify-between items-center w-full">
 									<input
-										className="font-display"
+										className="font-display text-xl font-bold tracking-[0.1px] focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0"
 										value={nameInput}
 										onChange={(e) =>
 											setNameInput(e.target.value)
 										}
 									/>
-									<CheckIcon
-										className="cursor-pointer p-2 h-8 w-8 ml-auto"
+									<button
+										className="focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0"
 										onClick={saveName}
-									/>
-								</>
+									>
+										<Icons.checkCircle className="cursor-pointer h-6 w-6 ml-auto" />
+									</button>
+								</div>
 							)}
 						</div>
-						<div className="h-px bg-fill-quaternary my-1"></div>
-						{addresses.map((addr, i) => (
-							<div
-								className="flex items-center my-1"
-								key={addr.address}
-							>
-								{i ? null : <p>Addresses</p>}
-								<p className="ml-auto">...{addr.address.slice(-12)}</p>
+						<div className="h-px bg-border-quaternary mt-2 mb-3 -mx-4"></div>
+						<div className="flex flex-col gap-[1px]">
+							{addresses.map((addr, i) => (
+								<div
+									className="flex items-center my-1"
+									key={addr.address}
+								>
+									{i ? null : <p>Addresses</p>}
+									<p className="ml-auto flex items-center gap-1">
+										...{addr.address.slice(-12)}
+										<Copy
+											value={addr.address}
+											variant={"icon"}
+										/>
+									</p>
+								</div>
+							))}
+							<div className="flex items-center justify-between my-1">
+								<div>Keychain</div>
+								<div>OCP KMS</div>
 							</div>
-						))}
+							<div className="flex items-center justify-between my-1">
+								<div>Type</div>
+								<div className="text-xs px-2 flex items-center justify-center w-fit h-6 bg-fill-quaternary rounded-2xl	">
+									ESDA (secp256k1)
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -222,14 +254,14 @@ const CardView = ({ data }: { data?: QueryKeysResponse }) => {
 	const { setData: setModal } = useModalState();
 
 	return (
-		<div className="flex flex-row flex-wrap">
+		<div className="flex flex-row flex-wrap -mx-3 -mt-4">
 			{data?.keys.map((k, i) => (
 				<KeyCard data={k} key={k.key.id.toString()} />
 			))}
 
 			<div className="flex basis-2/6 flex-grow-0 flex-shrink-0 p-4">
 				<div
-					className="rounded-xl border-dashed border-2 border-tertiary h-52 w-full items-center justify-center cursor-pointer flex"
+					className="rounded-xl border-dashed border-2 border-label-tertiary h-52 w-full items-center justify-center cursor-pointer flex"
 					onClick={setModal.bind(null, {
 						type: "create-key",
 						params: {},

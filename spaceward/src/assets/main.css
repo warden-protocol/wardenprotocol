@@ -63,6 +63,8 @@
 		--border-quaternary: rgba(114, 107, 102, 0.28);
 		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--bg-elevated: #424345;
+		--border-primary: #fff;
+		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
 	}
 
@@ -106,8 +108,9 @@
 		--border-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-accent-secondary: #75426a;
 		--bg-elevated: #424345;
+		--border-primary: #fff;
+		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
-
 	}
 }
 

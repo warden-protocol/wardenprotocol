@@ -28,6 +28,8 @@ import {
 	InfoIcon,
 	Edit2Icon,
 	CheckIcon,
+	ArrowDown,
+	Send,
 } from "lucide-react";
 import { AddToMetaMaskButton } from "@/features/metamask";
 import { useQueryHooks } from "@/hooks/useClient";
@@ -59,13 +61,8 @@ const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	);
 };
 
-const KeyCard = ({
-	data: { key },
-	lastInRow,
-}: {
-	data: QueryKeyResponse;
-	lastInRow: boolean;
-}) => {
+const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
+	const { setData: setModal } = useModalState();
 	const [edit, setEdit] = useState(false);
 	const [flipped, setFlipped] = useState(false);
 	const { data, setData: setSettings } = useKeySettingsState();
@@ -104,6 +101,7 @@ const KeyCard = ({
 		});
 
 		setEdit(false);
+		setFlipped(false);
 	}
 
 	return (
@@ -119,18 +117,55 @@ const KeyCard = ({
 				>
 					<img className="absolute z-0" src={bg} alt="" />
 
-					<div className="relative flex flex-col z-10 p-4">
-						<div className="flex items-center">
-							<p
-								style={{ color: KEY_THEMES[themeIndex][2] }}
-								className="font-bold text-lg"
-							>
-								{name}
-							</p>
-							<InfoIcon
+					<div className="relative z-10 w-full h-full bg-overlay-secondary flex flex-col">
+						<div className="flex flex-col p-4">
+							<div className="flex items-center">
+								<p className="font-bold font-sans text-lg">
+									{name}
+								</p>
+								<InfoIcon
+									className="ml-auto cursor-pointer"
+									onClick={setFlipped.bind(null, true)}
+								/>
+							</div>
+						</div>
+
+						<div className="mt-auto h-px bg-fill-quaternary mx-4"></div>
+						<div className="flex m-4">
+							<div
 								className="ml-auto cursor-pointer"
-								onClick={setFlipped.bind(null, true)}
-							/>
+								onClick={() => {
+									setModal({
+										type: "select-key",
+										params: {
+											addresses: addresses.map((a) => ({
+												...a,
+												keyId: key.id,
+											})),
+											next: "receive",
+										},
+									});
+								}}
+							>
+								<ArrowDown />
+							</div>
+							<div
+								className="ml-4 cursor-pointer"
+								onClick={() => {
+									setModal({
+										type: "select-key",
+										params: {
+											addresses: addresses.map((a) => ({
+												...a,
+												keyId: key.id,
+											})),
+											next: "send",
+										},
+									});
+								}}
+							>
+								<Send />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -144,7 +179,7 @@ const KeyCard = ({
 						<div className="flex items-center">
 							{!edit ? (
 								<>
-									<p>{name}</p>
+									<p className="font-display">{name}</p>
 									<Edit2Icon
 										className="cursor-pointer h-8 w-8 p-2"
 										onClick={editName}
@@ -153,6 +188,7 @@ const KeyCard = ({
 							) : (
 								<>
 									<input
+										className="font-display"
 										value={nameInput}
 										onChange={(e) =>
 											setNameInput(e.target.value)
@@ -165,6 +201,16 @@ const KeyCard = ({
 								</>
 							)}
 						</div>
+						<div className="h-px bg-fill-quaternary my-1"></div>
+						{addresses.map((addr, i) => (
+							<div
+								className="flex items-center my-1"
+								key={addr.address}
+							>
+								{i ? null : <p>Addresses</p>}
+								<p className="ml-auto">...{addr.address.slice(-12)}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
@@ -178,11 +224,7 @@ const CardView = ({ data }: { data?: QueryKeysResponse }) => {
 	return (
 		<div className="flex flex-row flex-wrap">
 			{data?.keys.map((k, i) => (
-				<KeyCard
-					lastInRow={i % 3 === 2}
-					data={k}
-					key={k.key.id.toString()}
-				/>
+				<KeyCard data={k} key={k.key.id.toString()} />
 			))}
 
 			<div className="flex basis-2/6 flex-grow-0 flex-shrink-0 p-4">
@@ -233,7 +275,9 @@ export function Keys({
 
 	return (
 		<>
-			{state === KeyRequesterState.IDLE ? null : <KeyRequestStatusbar className="p-6 h-20" />}
+			{state === KeyRequesterState.IDLE ? null : (
+				<KeyRequestStatusbar className="p-6 h-20" />
+			)}
 			{query.data?.keys?.length === 0 ? (
 				<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
 					<KeyIcon className="h-10 w-10" />

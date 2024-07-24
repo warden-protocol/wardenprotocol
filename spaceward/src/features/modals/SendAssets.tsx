@@ -80,13 +80,16 @@ export default function SendAssetsModal({
 
 	const noAssets = results.every((result) => !result.balance);
 
-	const selectedToken = useMemo(
+	const _selectedToken = useMemo(
 		() =>
 			results.find(
 				(data) => data.chainName === chainName && data.token === token,
 			) ?? results[0],
 		[token, chainName, results],
 	);
+
+	// fixme types
+	const selectedToken = _selectedToken as typeof _selectedToken | undefined;
 
 	const [pending, setPending] = useState(false);
 	const [receipt, setReceipt] = useState<TransactionReceipt>();
@@ -95,14 +98,14 @@ export default function SendAssetsModal({
 	const [keyDropdown, setKeyDropdown] = useState(false);
 	const amountNum = parseFloat(amount);
 
-	const amountWarning = amountNum
+	const amountWarning = amountNum && selectedToken
 		? Number.isFinite(amountNum)
 			? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
 				amountNum
 			: true
 		: false;
 
-	const addressWarning = destinationAddress
+	const addressWarning = destinationAddress && selectedToken
 		? !validateAddress(destinationAddress, [
 				selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
 			]).ok
@@ -140,7 +143,7 @@ export default function SendAssetsModal({
 	}, [receipt, req]);
 
 	async function submit() {
-		if (!key) {
+		if (!key || !selectedToken) {
 			return;
 		}
 
@@ -231,12 +234,12 @@ export default function SendAssetsModal({
 
 	const address = getAddress(key, type);
 
-	const maxAmount = bigintToFixed(selectedToken.balance, {
+	const maxAmount = selectedToken ? bigintToFixed(selectedToken.balance, {
 		decimals: selectedToken.decimals,
-	});
+	}) : "0";
 
-	const Token = TokenIcons[selectedToken.token] ?? AssetPlaceholder;
-	const Network = NetworkIcons[selectedToken.chainName] ?? AssetPlaceholder;
+	const Token = TokenIcons[selectedToken?.token ?? ""] ?? AssetPlaceholder;
+	const Network = NetworkIcons[selectedToken?.chainName ?? ""] ?? AssetPlaceholder;
 
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
@@ -361,7 +364,7 @@ export default function SendAssetsModal({
 										<Token className="w-6 h-6 object-contain" />
 										<Network className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]" />
 									</div>
-									{selectedToken.token}
+									{selectedToken?.token}
 									<Icons.chevronDown
 										className={clsx(
 											"ml-auto invert dark:invert-0",
@@ -376,7 +379,7 @@ export default function SendAssetsModal({
 								{/* todo useFiatConversion hook */}
 								{formatter.format(
 									(amount ? parseFloat(amount) : 0) *
-										(fiatConversion
+										(fiatConversion && selectedToken
 											? bigintToFloat(
 													(selectedToken.price *
 														BigInt(10) **
@@ -481,7 +484,7 @@ export default function SendAssetsModal({
 				pending={pending}
 				step={{
 					title: "Broadcast",
-					description: `Transaction was broadcasted to ${selectedToken.chainName} network`,
+					description: `Transaction was broadcasted to ${selectedToken?.chainName} network`,
 				}}
 			/>
 		</div>

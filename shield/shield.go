@@ -11,10 +11,14 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/internal/metadata"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/preprocess"
+	"github.com/warden-protocol/wardenprotocol/shield/internal/validation"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 )
 
 type Environment = env.Environment
+
+// TODO AT: Move to Env or Config?
+const MaxNestingDepth = 100
 
 // Parse parses the input string and returns the root node of the AST.
 // In case of syntax errors, it returns an error.
@@ -24,6 +28,10 @@ func Parse(input string) (*ast.Expression, error) {
 	root := p.Parse()
 	if len(p.Errors()) > 0 {
 		return nil, fmt.Errorf("parser errors: %v", p.Errors())
+	}
+
+	if err := validation.Validate(root, MaxNestingDepth); err != nil {
+		return nil, fmt.Errorf("parser validation error: %v", err)
 	}
 
 	return root, nil

@@ -1,72 +1,47 @@
 package validation
 
 import (
-	"context"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 )
 
-const MAX_DEPTH = 100 // TODO AT: Move to params or configuration?
-
-func AnalyzeFunctionsNesting(ctx context.Context, node *ast.Expression, depth int) (int, error) {
+func AnalyzeFunctionsNesting(node *ast.Expression, depth int) int {
 	switch n := node.Value.(type) {
 	case *ast.Expression_Identifier:
-		return depth, nil
+		return depth
 	case *ast.Expression_ArrayLiteral:
-		newDepth, err := analyzeElements(ctx, n.ArrayLiteral.Elements, depth)
-		return newDepth, err
+		return analyzeElements(n.ArrayLiteral.Elements, depth)
 	case *ast.Expression_CallExpression:
-		newDepth, err := analyzeCallExpression(ctx, n.CallExpression, depth)
-		return newDepth, err
+		return analyzeCallExpression(n.CallExpression, depth)
 	case *ast.Expression_PrefixExpression:
-		newDepth, err := analyzePrefixExpression(ctx, n.PrefixExpression, depth)
-		return newDepth, err
+		return analyzePrefixExpression(n.PrefixExpression, depth)
 	case *ast.Expression_InfixExpression:
-		newDepth, err := analyzeInfixExpression(ctx, n.InfixExpression, depth)
-		return newDepth, err
+		return analyzeInfixExpression(n.InfixExpression, depth)
 	default:
-		return depth, nil
+		return depth
 	}
 }
 
-func analyzeElements(ctx context.Context, elements []*ast.Expression, depth int) (int, error) {
+func analyzeElements(elements []*ast.Expression, depth int) int {
 	var currentMaxDepth = depth
-	var possibleMaxDepth = depth
 	for _, elem := range elements {
-		var err error
-		possibleMaxDepth, err = AnalyzeFunctionsNesting(ctx, elem, depth)
-		if err != nil {
-			return depth, err
-		}
-
+		possibleMaxDepth := AnalyzeFunctionsNesting(elem, depth)
 		currentMaxDepth = max(currentMaxDepth, possibleMaxDepth)
 	}
-	return currentMaxDepth, nil
+	return currentMaxDepth
 }
 
-func analyzePrefixExpression(ctx context.Context, prefix *ast.PrefixExpression, depth int) (int, error) {
-	var err error
-	var newMaxDepth int
-	newMaxDepth, err = AnalyzeFunctionsNesting(ctx, prefix.Right, depth)
-	return newMaxDepth, err
+func analyzePrefixExpression(prefix *ast.PrefixExpression, depth int) int {
+	newMaxDepth := AnalyzeFunctionsNesting(prefix.Right, depth)
+	return newMaxDepth
 }
 
-func analyzeInfixExpression(ctx context.Context, infix *ast.InfixExpression, depth int) (int, error) {
-	var err error
-	var maxDepthLeft int
-	maxDepthLeft, err = AnalyzeFunctionsNesting(ctx, infix.Left, depth)
-	if err != nil {
-		return depth, err
-	}
+func analyzeInfixExpression(infix *ast.InfixExpression, depth int) int {
+	maxDepthLeft := AnalyzeFunctionsNesting(infix.Left, depth)
+	maxDepthRight := AnalyzeFunctionsNesting(infix.Right, depth)
 
-	var maxDepthRight int
-	maxDepthRight, err = AnalyzeFunctionsNesting(ctx, infix.Right, depth)
-	if err != nil {
-		return depth, err
-	}
-
-	return max(maxDepthLeft, maxDepthRight), nil
+	return max(maxDepthLeft, maxDepthRight)
 }
 
-func analyzeCallExpression(ctx context.Context, call *ast.CallExpression, depth int) (int, error) {
-	return analyzeElements(ctx, call.Arguments, depth+1)
+func analyzeCallExpression(call *ast.CallExpression, depth int) int {
+	return analyzeElements(call.Arguments, depth+1)
 }

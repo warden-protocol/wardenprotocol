@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import ApproveModal from "./ApproveActionModal";
-=======
->>>>>>> 101ad6746282e503c8e79ccad7b1edab01778e06
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
 import SelectKeyModal from "./SelectKeys";
@@ -48,7 +45,6 @@ export default function ModalRoot() {
 						(data.params as CreateKeyParams))}
 				/>
 			) : null}
-<<<<<<< HEAD
 			{data.type === "approve-action" ||
 			data.background["approve-action"] ? (
 				<ApproveModal hidden={data.type !== "approve-action"} />
@@ -61,15 +57,6 @@ export default function ModalRoot() {
 				<ConnectedModal />
 			) : !data.params ? (
 				<></>
-=======
-
-			{data.type === "walletconnect" ? (
-				<WalletConnectModal />
-			) : data.type === "dapps-modal" ? (
-				<ConnectedModal />
-			) : !data.params ? (
-				<>params not set</>
->>>>>>> 101ad6746282e503c8e79ccad7b1edab01778e06
 			) : data.type === "select-key" ? (
 				<SelectKeyModal {...(data.params as SelectKeyParams)} />
 			) : data.type === "receive" ? (

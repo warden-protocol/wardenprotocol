@@ -109,7 +109,7 @@ https://rpc.buenavista.wardenprotocol.org
     # 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
     ```
 
-3. Now you can add the state sync configuration to your `config.toml`:
+3. Add the state sync configuration to your `config.toml`:
 
     ```bash
     sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
@@ -120,7 +120,7 @@ https://rpc.buenavista.wardenprotocol.org
 
 ## 4. Start the node
 
-You can now start the node using the following command:
+Now you can start the node using the following command:
 
 ```
 wardend start

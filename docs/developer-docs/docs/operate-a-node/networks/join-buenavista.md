@@ -77,15 +77,16 @@ To configure `wardend`, do the following:
     chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
     code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
-## (Recommended) Setup state sync
+## 3. Setup state sync
 
-This step is optional.
+This step is recommended but optional.
 
 To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and then only download the blocks after that from the network.
 
-You'll need:
-- a list of trusted RPC endpoints
-- a trusted block height and its corresponding block hash
+You'll need the following:
+
+- A list of trusted RPC endpoints
+- A trusted block height and its corresponding block hash
 
 A list of RPC endpoints can be found in the [Warden networks repository](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/rpc-nodes.txt).
 
@@ -118,7 +119,7 @@ s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
 ```
 
-## 3. Start the node
+## 4. Start the node
 
 You can now start the node using the following command:
 
@@ -128,6 +129,6 @@ wardend start
 
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
 
-## 4. Create a validator
+## 5. Create a validator
 
 If you want to create a validator in the testnet, follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.

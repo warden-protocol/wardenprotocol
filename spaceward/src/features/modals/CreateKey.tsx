@@ -120,13 +120,11 @@ export default function CreateKeyModal({
 
 			<Button
 				onClick={() => {
-					console.log({ selected });
 					if (selected === -1) {
 						return;
 					}
 
 					const keychain = keychainsQuery.data?.keychains[selected];
-					console.log({ keychain });
 
 					if (!keychain) {
 						return;

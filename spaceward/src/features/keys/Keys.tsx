@@ -16,7 +16,6 @@ import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
-	AccordionTrigger,
 } from "@/components/ui/accordion";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Copy } from "@/components/ui/copy";
@@ -27,7 +26,6 @@ import {
 	PlusIcon,
 	InfoIcon,
 	Edit2Icon,
-	CheckIcon,
 	ArrowDown,
 	Send,
 } from "lucide-react";
@@ -45,10 +43,18 @@ import { useModalState } from "../modals/state";
 import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
 import KeyRequestStatusbar from "./KeyRequestStatus";
 import { Icons } from "@/components/ui/icons-assets";
+import { AvatarImage, Avatar } from "@/components/ui/avatar";
 
 const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	return (
-		<div className="">
+		<div className="bg-tertiary rounded-xl py-6 px-8">
+			<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
+				<div className="text-sm	text-label-secondary">Key</div>
+				<div className="text-sm	text-label-secondary">Address</div>
+				<div className="text-sm	text-label-secondary">Keychain</div>
+				<div className="text-sm	text-label-secondary">Key Type</div>
+				<div className="text-sm	text-label-secondary">Balance</div>
+			</div>
 			<Accordion type="multiple" className="space-y-3">
 				{data?.keys.map((key) => (
 					<Key
@@ -332,53 +338,100 @@ function Key({
 	keyData: KeyModel;
 	addresses: AddressResponse[];
 }) {
+	console.log(keyData);
+
+	const seedStr = String(keyData.publicKey);
+
+	const { data } = useKeySettingsState();
+	const settings = data?.settings[keyData.id.toString()];
+	const name = settings?.name ?? `Key #${keyData.id.toString()}`;
+	const { setData: setModal } = useModalState();
+
+	const avatar = useMemo(() => {
+		return createAvatar(shapes, {
+			size: 512,
+			seed: seedStr,
+			shape1Color: ["F5F5F5", "9747FF", "F15A24"],
+			shape2Color: ["0000F5", "005156", "0A0A0A"],
+			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
+		}).toDataUriSync();
+	}, [seedStr]);
+
 	return (
-		<AccordionItem
-			value={`item-${keyData.id.toString()}`}
-			className="rounded-xl bg-card"
-		>
-			<AccordionTrigger className="p-6 font-sans font-normal hover:no-underline overflow-scroll">
-				<div className="flex flex-row justify-between w-full mr-4 min-w-[600px]">
-					<div className="flex flex-row items-center gap-4">
-						<AddressAvatar seed={keyData.publicKey} />
-						<div className="flex flex-col text-left">
-							<span className="text-xs text-muted-foreground">
-								Key Material
-							</span>
-							<span className="text-sm">
-								<Copy
-									value={base64FromBytes(keyData.publicKey)}
-									split
-								/>
-							</span>
+		<AccordionItem value={`item-${keyData.id.toString()}`}>
+			<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] min-h-[84px] w-full font-sans font-normal hover:no-underline overflow-scroll">
+				<div className="flex flex-row items-center gap-4">
+					<div className="cursor-pointer min-h-8 h-8 relative shrink-0 p-1 min-w-12 border-[1px] border-border-secondary rounded overflow-hidden isolate">
+						<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">
+							<AvatarImage
+								src={avatar}
+								className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2]"
+							/>
+						</Avatar>
+
+						<div className="z-[-1] absolute left-0 top-0 w-full h-full bg-overlay-secondary" />
+
+						<div className="text-[10px] text-right text-white absolute right-1 bottom-1">
+							...{base64FromBytes(keyData.publicKey).slice(-4)}
 						</div>
 					</div>
-					<div className="flex flex-col text-left">
-						<span className="text-xs text-muted-foreground">
-							Keychain
-						</span>
-						<span className="text-sm">
-							{keyData.keychainId.toString()}
-						</span>
+
+					<div>{name}</div>
+				</div>
+
+				<div className="flex items-center">
+					<span className="text-sm">
+						...{base64FromBytes(keyData.publicKey).slice(-8)}
+					</span>
+				</div>
+
+				<div className="flex items-center">
+					{keyData.keychainId.toString()}
+				</div>
+
+				<div className="flex items-center">
+					{prettyKeyType(keyData.type)}
+				</div>
+
+				<div className="flex items-center">balance</div>
+
+				<div className="flex items-center justify-end gap-2">
+					<div
+						className="cursor-pointer p-1"
+						onClick={() => {
+							setModal({
+								type: "select-key",
+								params: {
+									addresses: addresses.map((a) => ({
+										...a,
+										keyId: keyData.id,
+									})),
+									next: "receive",
+								},
+							});
+						}}
+					>
+						<Icons.receive />
 					</div>
-					<div className="flex flex-col text-left">
-						<span className="text-xs text-muted-foreground">
-							Key Type
-						</span>
-						<span className="text-sm">
-							{prettyKeyType(keyData.type)}
-						</span>
-					</div>
-					<div className="flex flex-row">
-						{/* <Avatar className="bg-white p-2 border">
-							<AvatarImage
-								src="/logos/ethereum.svg"
-								alt="Ethereum"
-							/>
-						</Avatar> */}
+					<div
+						className="ml-4 cursor-pointer p-1"
+						onClick={() => {
+							setModal({
+								type: "select-key",
+								params: {
+									addresses: addresses.map((a) => ({
+										...a,
+										keyId: keyData.id,
+									})),
+									next: "send",
+								},
+							});
+						}}
+					>
+						<Icons.sendPlane />
 					</div>
 				</div>
-			</AccordionTrigger>
+			</div>
 			<AccordionContent className="overflow-scroll px-4">
 				{addresses?.map((addr) => {
 					if (addr.type === AddressType.ADDRESS_TYPE_ETHEREUM) {

@@ -15,9 +15,11 @@ Access to oracle data feeds significantly enhances the capabilities of Warden's 
 :::
 
 
-## Connect
+## Skip\:Connect
 
-Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle) – an external module by **Skip Protocol**. This module provides access to [Connect](https://docs.skip.build/connect/introduction) – an oracle service offering mostly price data (formerly known as Slinky).
+Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle) – an external module by **Skip Protocol**. This module provides access to **Skip:Connect** – an oracle service offering mostly price data, formerly known as Slinky.
+
+See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 
 Key features of Warden's integration with Connect include the following:
 
@@ -33,4 +35,4 @@ The data provided by Connect is [validated](/learn/glossary#validator) by Warden
 
 ## Available data feeds
 
-Slinky can support over 2,000 currencies – see the available [data feeds on GitHub](https://github.com/skip-mev/slinky/blob/30bf58f5ad6dcf417a3747b7cfffdc637ae3c70f/cmd/constants/markets.go#L1615). Please note that this list may change over the course of time.
+**Skip:Connect** can support over 2,000 currencies – see the available [data feeds on GitHub](https://github.com/skip-mev/slinky/blob/30bf58f5ad6dcf417a3747b7cfffdc637ae3c70f/cmd/constants/markets.go#L1615). Please note that this list may change over the course of time.

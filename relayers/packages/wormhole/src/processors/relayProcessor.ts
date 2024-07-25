@@ -32,13 +32,12 @@ export class RelayProcessor {
   }
 
   async listenToVaas(ctx: StandardRelayerContext, next: Next): Promise<void> {
-    ctx.logger.info(`Got a VAA: ${ctx.vaa} from with txhash: ${ctx.sourceTxHash}`);
-
-    const { payload } = ctx.tokenBridge;
-
-    if (payload?.payloadType !== TokenBridgePayload.TransferWithPayload) {
-      return await next();
-    }
+    ctx.logger.info(
+      `Got a VAA from: ${toChain(ctx.vaa?.emitterChain ?? 0)}, ` +
+        `emitter: ${ctx.vaa?.emitterAddress.toString('hex')}, ` +
+        `sequence ${ctx.vaa?.sequence}, ` +
+        `hash: ${ctx.vaa?.hash.toString('hex')}`,
+    );
 
     if (!isChainId(ctx.vaa!.emitterChain)) {
       return await next();
@@ -51,6 +50,11 @@ export class RelayProcessor {
     const [_, contract] = this.supportedEmitters.get(ctx.vaa!.emitterChain)!;
 
     const parsedVaa = parseTokenTransferPayload(ctx.vaa!.payload);
+
+    if (parsedVaa.payloadType !== TokenBridgePayload.TransferWithPayload) {
+      return await next();
+    }
+
     const emitterAddress = parsedVaa.fromAddress?.toString('hex');
 
     if (emitterAddress != encodeEmitterAddress(ctx.vaa!.emitterChain, contract)) {
@@ -122,17 +126,15 @@ async function relayVaa(
 
       if (receivedVaa.status == WormholeRequestStatus.ReceivedSignedVaa && targetChain == 'Solana') {
         await new SolanaGmpWithTokenClient(targetContract).postVaa(vaaBytes);
-
         receivedVaa.status = WormholeRequestStatus.PostedSignedVaa;
-        await repository.save(receivedVaa);
       } else if (receivedVaa.status == WormholeRequestStatus.PostedSignedVaa && targetChain == 'Solana') {
         await new SolanaGmpWithTokenClient(targetContract).redeemWrapped(vaaBytes);
-
         receivedVaa.status = WormholeRequestStatus.RedeemedSignedVaa;
-        await repository.save(receivedVaa);
       } else {
         throw new Error(`Chain is not supported: ${targetChain}`);
       }
+
+      await repository.save(receivedVaa);
     }
   } catch (error) {
     rootLogger.error(error);

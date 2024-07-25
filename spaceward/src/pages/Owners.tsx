@@ -1,8 +1,4 @@
-import { AddSpaceOwnerForm } from "@/features/owners";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { Button } from "@/components/ui/button";
-import AddressAvatar from "@/components/AddressAvatar";
-import { Copy } from "@/components/ui/copy";
 import { warden } from "@wardenprotocol/wardenjs";
 import { useNewAction } from "@/hooks/useAction";
 import { useQueryHooks } from "@/hooks/useClient";
@@ -54,7 +50,7 @@ export function OwnersPage() {
 						<div
 							className="flex items-center text-muted-foreground text-sm rounded-sm bg-fill-quaternary p-2 mr-4 cursor-pointer"
 							onClick={setModal.bind(null, {
-								type: "create-key",
+								type: "add-owner",
 								params: {},
 							})}
 						>
@@ -91,7 +87,13 @@ export function OwnersPage() {
 						</div>
 					))}
 					<div className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4">
-						<div className="rounded-xl h-60 w-full cursor-pointer flex flex-col bg-fill-quaternary">
+						<div
+							className="rounded-xl h-60 w-full cursor-pointer flex flex-col bg-fill-quaternary"
+							onClick={setModal.bind(null, {
+								type: "add-owner",
+								params: {},
+							})}
+						>
 							<div className="flex items-center mx-6 mt-6">
 								<p className="text-base font-semibold">
 									New
@@ -112,15 +114,7 @@ export function OwnersPage() {
 						</div>
 					</div>
 				</div>
-				<div className="w-full items-center bg-card rounded-xl p-4">
-					<div className="flex flex-col space-y-4">
-						<div className="group w-full overflow-scroll flex items-center justify-between">
-							<AddSpaceOwnerForm spaceId={spaceId || ""} />
-						</div>
-					</div>
-				</div>
 			</div>
-			<div></div>
 		</div>
 	);
 }

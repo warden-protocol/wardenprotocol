@@ -1,3 +1,4 @@
+import AddOwnerModal from "./AddOwner";
 import ApproveModal from "./ApproveActionModal";
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
@@ -38,16 +39,19 @@ export default function ModalRoot() {
 				<img src="/images/button-close.svg" alt="" />
 			</button>
 
+			{data.type === "approve-action" ||
+			data.background["approve-action"] ? (
+				<ApproveModal hidden={data.type !== "approve-action"} />
+			) : null}
+			{data.type === "add-owner" || data.background["add-owner"] ? (
+				<AddOwnerModal hidden={data.type !== "add-owner"} />
+			) : null}
 			{data.type === "create-key" || data.background["create-key"] ? (
 				<CreateKeyModal
 					hidden={data.type !== "create-key"}
 					{...(data.background["create-key"] ??
 						(data.params as CreateKeyParams))}
 				/>
-			) : null}
-			{data.type === "approve-action" ||
-			data.background["approve-action"] ? (
-				<ApproveModal hidden={data.type !== "approve-action"} />
 			) : null}
 			{data.type === "walletconnect" ||
 			data.background["walletconnect"] ? (

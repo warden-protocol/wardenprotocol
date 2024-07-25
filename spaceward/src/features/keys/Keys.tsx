@@ -358,125 +358,78 @@ function Key({
 	}, [seedStr]);
 
 	return (
-		<AccordionItem value={`item-${keyData.id.toString()}`}>
-			<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] min-h-[84px] w-full font-sans font-normal hover:no-underline overflow-scroll">
-				<div className="flex flex-row items-center gap-4">
-					<div className="cursor-pointer min-h-8 h-8 relative shrink-0 p-1 min-w-12 border-[1px] border-border-secondary rounded overflow-hidden isolate">
-						<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">
-							<AvatarImage
-								src={avatar}
-								className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2]"
-							/>
-						</Avatar>
+		<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] min-h-[84px]  border-b-[1px] border-border-quaternary last:border-b-0 w-full font-sans font-normal hover:no-underline overflow-scroll">
+			<div className="flex flex-row items-center gap-4">
+				<div className="cursor-pointer min-h-8 h-8 relative shrink-0 p-1 min-w-12 rounded overflow-hidden isolate">
+					<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">
+						<AvatarImage
+							src={avatar}
+							className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2]"
+						/>
+					</Avatar>
 
-						<div className="z-[-1] absolute left-0 top-0 w-full h-full bg-overlay-secondary" />
+					<div className="z-[-1] absolute left-0 top-0 w-full h-full bg-overlay-secondary" />
 
-						<div className="text-[10px] text-right text-white absolute right-1 bottom-1">
-							...{base64FromBytes(keyData.publicKey).slice(-4)}
-						</div>
+					<div className="text-[10px] text-right text-white absolute right-1 bottom-1">
+						...{base64FromBytes(keyData.publicKey).slice(-4)}
 					</div>
-
-					<div>{name}</div>
 				</div>
 
-				<div className="flex items-center">
-					<span className="text-sm">
-						...{base64FromBytes(keyData.publicKey).slice(-8)}
-					</span>
+				<div>{name}</div>
+			</div>
+
+			<div className="flex items-center">
+				<span className="text-sm">
+					...{base64FromBytes(keyData.publicKey).slice(-8)}
+				</span>
+			</div>
+
+			<div className="flex items-center">
+				{keyData.keychainId.toString()}
+			</div>
+
+			<div className="flex items-center">
+				{prettyKeyType(keyData.type)}
+			</div>
+
+			<div className="flex items-center">balance</div>
+
+			<div className="flex items-center justify-end gap-2">
+				<div
+					className="cursor-pointer p-1"
+					onClick={() => {
+						setModal({
+							type: "select-key",
+							params: {
+								addresses: addresses.map((a) => ({
+									...a,
+									keyId: keyData.id,
+								})),
+								next: "receive",
+							},
+						});
+					}}
+				>
+					<Icons.receive />
 				</div>
-
-				<div className="flex items-center">
-					{keyData.keychainId.toString()}
-				</div>
-
-				<div className="flex items-center">
-					{prettyKeyType(keyData.type)}
-				</div>
-
-				<div className="flex items-center">balance</div>
-
-				<div className="flex items-center justify-end gap-2">
-					<div
-						className="cursor-pointer p-1"
-						onClick={() => {
-							setModal({
-								type: "select-key",
-								params: {
-									addresses: addresses.map((a) => ({
-										...a,
-										keyId: keyData.id,
-									})),
-									next: "receive",
-								},
-							});
-						}}
-					>
-						<Icons.receive />
-					</div>
-					<div
-						className="ml-4 cursor-pointer p-1"
-						onClick={() => {
-							setModal({
-								type: "select-key",
-								params: {
-									addresses: addresses.map((a) => ({
-										...a,
-										keyId: keyData.id,
-									})),
-									next: "send",
-								},
-							});
-						}}
-					>
-						<Icons.sendPlane />
-					</div>
+				<div
+					className="ml-4 cursor-pointer p-1"
+					onClick={() => {
+						setModal({
+							type: "select-key",
+							params: {
+								addresses: addresses.map((a) => ({
+									...a,
+									keyId: keyData.id,
+								})),
+								next: "send",
+							},
+						});
+					}}
+				>
+					<Icons.sendPlane />
 				</div>
 			</div>
-			<AccordionContent className="overflow-scroll px-4">
-				{addresses?.map((addr) => {
-					if (addr.type === AddressType.ADDRESS_TYPE_ETHEREUM) {
-						return (
-							<div
-								key={addr.type}
-								className="flex flex-row bg-background justify-between w-full mr-4  px-4 py-4 rounded-lg min-w-[600px]"
-							>
-								<div className="flex flex-row items-center gap-4">
-									<AddressAvatar seed={addr.address} />
-									<div className="flex flex-col text-left">
-										<span className="text-xs text-muted-foreground">
-											Wallet Address
-										</span>
-										<span className="text-sm">
-											<Copy value={addr.address} split />
-										</span>
-									</div>
-								</div>
-								<div className="flex flex-row gap-4">
-									<AddToMetaMaskButton
-										keyId={keyData.id}
-										address={addr.address}
-									/>
-									<ReceiveAssetButton
-										address={addr.address}
-									/>
-									<Link
-										to={`/new-transaction?key=${keyData.id}`}
-									>
-										<Button
-											size="sm"
-											variant="ghost"
-											className="gap-2 w-[110px] text-sm hover:bg-foreground hover:text-background"
-										>
-											<MoveUpRight className="h-4 w-4" />
-											Send
-										</Button>
-									</Link>
-								</div>
-							</div>
-						);
-					}
-				})}
-			</AccordionContent>
-		</AccordionItem>
+		</div>
 	);
 }

@@ -16,7 +16,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 
 ## Version history
 
-| Release | Upgrade Block Height | Upgrade Date |
+| Release | Upgrade block height | Upgrade date |
 | ------- | -------------------- | ------------ |
 | v0.3.0  | genesis              |              |
 

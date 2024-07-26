@@ -19,6 +19,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 | Release | Upgrade block height | Upgrade date |
 | ------- | -------------------- | ------------ |
 | v0.3.0  | genesis              |              |
+| v0.4.0  |                      | August 1, 2024 |
 
 ## Prerequisites
 
@@ -39,7 +40,7 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 
 2. Initialize the chain home folder:
 
-    ```
+    ```bash
     ./wardend init <custom_moniker>
     ```
 
@@ -47,7 +48,7 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 
 Build the `wardend` binary and initialize the chain home folder:
 
-```
+```bash
 git clone --depth 1 --branch v0.3.0 https://github.com/warden-protocol/wardenprotocol/
 just build
 
@@ -60,7 +61,7 @@ To configure `wardend`, do the following:
 
 1. Prepare the genesis file:
 
-    ```
+    ```bash
     cd $HOME/.warden/config
     rm genesis.json
     wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/genesis.json
@@ -69,7 +70,7 @@ To configure `wardend`, do the following:
 2. Set the mandatory configuration options:
     
     ```bash
-    # Set minimum gas price & peers
+    # set minimum gas price & peers
     sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
     ```
 
@@ -87,7 +88,7 @@ To speed up the initial sync, you can use the state sync feature. This will allo
 
 You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/chain.json) – for example, the following:
 
-```cmd
+```bash
 https://rpc.buenavista.wardenprotocol.org
 ```
 
@@ -122,7 +123,7 @@ https://rpc.buenavista.wardenprotocol.org
 
 Now you can start the node using the following command:
 
-```cmd
+```bash
 wardend start
 ```
 

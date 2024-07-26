@@ -20,7 +20,7 @@ func (k msgServer) AddKeychainAdmin(goCtx context.Context, msg *types.MsgAddKeyc
 		return nil, fmt.Errorf("keychain updates should be requested by admins")
 	}
 	if kr.IsAdmin(msg.NewAdmin) {
-		return &types.MsgAddKeychainAdminResponse{}, nil
+		return nil, fmt.Errorf("address is already an admin in the keychain")
 	}
 
 	kr.AddAdmin(msg.NewAdmin)

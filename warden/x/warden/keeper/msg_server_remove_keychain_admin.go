@@ -20,7 +20,7 @@ func (k msgServer) RemoveKeychainAdmin(goCtx context.Context, msg *types.MsgRemo
 		return nil, fmt.Errorf("keychain updates should be requested by admins")
 	}
 	if !kr.IsAdmin(msg.Admin) {
-		return &types.MsgRemoveKeychainAdminResponse{}, nil
+		return nil, fmt.Errorf("address is not an admin in the keychain")
 	}
 	if len(kr.Admins) == 1 {
 		return nil, fmt.Errorf("keychain must have at least one admin")

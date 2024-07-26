@@ -1,6 +1,7 @@
 use crate::error::ContractError;
-use crate::msg::{AnalyzeResult, BasicAnalyzerResult, ExecuteMsg, QueryMsg};
+use crate::msg::{BasicAnalyzerResult, ExecuteMsg, QueryMsg};
 use bindings::WardenProtocolQuery;
+use analyzers_core::msg::AnalyzeResult;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdError, StdResult};

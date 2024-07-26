@@ -24,7 +24,7 @@ We should add more details here since there are things that are unique for our c
 
 ## x/oracle
 
-The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices on-chain in **Connect** (an oracle service).
+The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices on-chain in **Skip:Connect** (an oracle service).
 
 To learn more, see the following:
 

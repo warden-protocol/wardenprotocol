@@ -1,5 +1,5 @@
 import { LoaderCircle } from "lucide-react";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { Icons } from "@/components/ui/icons-assets";
@@ -19,8 +19,6 @@ interface CurrentSpaceProps {
 export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const { setData: setModal } = useModalState();
 	const { useSpaceById, isReady } = useQueryHooks();
-	// fixme new key hack
-	const newKeyButtonRef = useRef<HTMLButtonElement | null>(null);
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
 
 	const spaceQuery = useSpaceById({
@@ -58,7 +56,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						First add a key to start receiving assets
 					</div>
 
-					<NewKeyButton />
+					<NewKeyButton className="mt-4" />
 				</div>
 			) : (
 				<DashboardGraph addresses={addresses} />
@@ -117,12 +115,10 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						</div>
 					)}
 
-					<div className="hidden">
-						<NewKeyButton ref={newKeyButtonRef} />
-					</div>
-
 					<div
-						onClick={() => newKeyButtonRef.current?.click()}
+						onClick={() =>
+							setModal({ type: "create-key", params: {} })
+						}
 						className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
 					>
 						<Icons.plus className="w-4 h-4" stroke="currentColor" />

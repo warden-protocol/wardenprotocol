@@ -12,6 +12,7 @@ export interface SelectKeyParams {
 
 export interface CreateKeyParams {
 	next?: ModalType;
+	spaceId?: string;
 }
 
 export interface TransferParams {

@@ -19,6 +19,7 @@ export default function AddressAvatar({
 	logo,
 	customTooltip,
 	className,
+	size = 512,
 }: {
 	seed: string | Uint8Array;
 	disableTooltip?: boolean;
@@ -26,6 +27,7 @@ export default function AddressAvatar({
 	logo?: string;
 	customTooltip?: string;
 	className?: string;
+	size?: number;
 }) {
 	const seedStr = stringify(seed);
 
@@ -33,14 +35,14 @@ export default function AddressAvatar({
 		return (
 			logo ??
 			createAvatar(shapes, {
-				size: 512,
+				size,
 				seed: seedStr,
 				shape1Color: ["F5F5F5", "9747FF", "F15A24"],
 				shape2Color: ["0000F5", "005156", "0A0A0A"],
 				shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
 			}).toDataUriSync()
 		);
-	}, [seedStr, logo]);
+	}, [seedStr, logo, size]);
 
 	const { address: myAddress } = useAddressContext();
 	return (

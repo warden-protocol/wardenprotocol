@@ -55,6 +55,7 @@
 		--pink-secondary: rgba(255, 109, 225, 0.15);
 		--border-secondary: rgba(136, 126, 120, 0.15);
 		--fill-quaternary: rgba(136, 126, 120, 0.15);
+		--fill-elevated: rgba(229, 238, 255, 0.1);
 		--overlay: rgba(237, 231, 230, 0.8);
 		--secondary-bg: #fff;
 		--label-secondary: rgba(84, 78, 74, 0.7);
@@ -62,6 +63,9 @@
 		--border-quaternary: rgba(114, 107, 102, 0.28);
 		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--bg-elevated: #424345;
+		--border-primary: #fff;
+		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
+		--border-edge: rgba(229, 238, 255, 0.05);
 	}
 
 	.dark {
@@ -96,6 +100,7 @@
 		--pink-secondary: rgba(255, 174, 238, 0.15);
 		--border-secondary: rgba(229, 238, 255, 0.04);
 		--fill-quaternary: rgba(229, 238, 255, 0.1);
+		--fill-elevated: rgba(229, 238, 255, 0.1);
 		--overlay: rgba(64, 64, 64, 0.4);
 		--secondary-bg: rgba(229, 238, 255, 0.15);
 		--label-secondary: #737373;
@@ -103,6 +108,9 @@
 		--border-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-accent-secondary: #75426a;
 		--bg-elevated: #424345;
+		--border-primary: #fff;
+		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
+		--border-edge: rgba(229, 238, 255, 0.05);
 	}
 }
 

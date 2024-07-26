@@ -6,8 +6,8 @@ import TotalAssetsChart from "./Chart";
 import { Icons } from "@/components/ui/icons-assets";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "../assets/hooks";
-import { FIAT_FORMAT } from "../assets/util";
 import { useCurrency } from "@/hooks/useCurrency";
+import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
 import { bigintToFloat } from "@/lib/math";
 import { useModalState } from "../modals/state";
 

@@ -44,7 +44,7 @@ export default function KeyRequestStatusbar({
 				"flex items-center rounded-xl mx-4",
 				{
 					"bg-fill-quaternary": state !== KeyRequesterState.ERROR,
-					"fill-negative-secondary":
+					"bg-fill-negative-secondary":
 						state === KeyRequesterState.ERROR,
 				},
 				className,
@@ -55,16 +55,23 @@ export default function KeyRequestStatusbar({
 				className="h-full w-auto"
 			/>
 
-			<p className="ml-4 font-display text-xl font-bold">
-				{state === KeyRequesterState.ERROR
-					? "Failed to create key"
-					: state === KeyRequesterState.KEY_FULFILLED
-						? "Key created"
-						: "Creating new key"}
+			<p className="ml-4 font-display text-xl font-bold whitespace-nowrap">
+				{state === KeyRequesterState.ERROR ? (
+					<>
+						Failed to create key{" "}
+						<div className="text-base text-label-secondary">
+							{error}
+						</div>
+					</>
+				) : state === KeyRequesterState.KEY_FULFILLED ? (
+					"Key created"
+				) : (
+					"Creating a new key"
+				)}
 			</p>
 
 			{percent ? (
-				<div className="ml-12 w-3/5 rounded bg-fill-quaternary h-[6px] overflow-hidden">
+				<div className="mx-8 min-w-12 rounded bg-fill-quaternary h-[6px] overflow-hidden grow basis-auto">
 					<div
 						className={clsx("h-full bg-accent", {
 							"w-1/5": percent <= 20,
@@ -80,16 +87,15 @@ export default function KeyRequestStatusbar({
 				{state === KeyRequesterState.ERROR ||
 				state === KeyRequesterState.KEY_FULFILLED ? (
 					<Button
-						variant="secondary"
 						onClick={reset}
-						className="font-display my-4 rounded-lg"
+						className="my-4 rounded bg-fill-quaternary text-white h-10 px-5 hover:bg-fill-accent-secondary duration-200 font-semibold"
 					>
 						Close
 					</Button>
 				) : (
-					<p className="font-display">
+					<p className="font-display text-xs text-label-secondary whitespace-nowrap">
 						{state === KeyRequesterState.BROADCAST_KEY_REQUEST
-							? "Broadcasting key request"
+							? "New key request for this space..."
 							: state === KeyRequesterState.AWAITING_APPROVALS
 								? "Awaiting approvals"
 								: state === KeyRequesterState.WAITING_KEYCHAIN

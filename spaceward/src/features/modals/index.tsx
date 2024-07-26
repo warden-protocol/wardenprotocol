@@ -1,3 +1,5 @@
+import AddOwnerModal from "./AddOwner";
+import ApproveModal from "./ApproveActionModal";
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
 import SelectKeyModal from "./SelectKeys";
@@ -29,6 +31,7 @@ export default function ModalRoot() {
 			)}
 		>
 			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
+
 			<button
 				onClick={() => setData({ type: undefined, params: undefined })}
 				className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
@@ -36,6 +39,13 @@ export default function ModalRoot() {
 				<img src="/images/button-close.svg" alt="" />
 			</button>
 
+			{data.type === "approve-action" ||
+			data.background["approve-action"] ? (
+				<ApproveModal hidden={data.type !== "approve-action"} />
+			) : null}
+			{data.type === "add-owner" || data.background["add-owner"] ? (
+				<AddOwnerModal hidden={data.type !== "add-owner"} />
+			) : null}
 			{data.type === "create-key" || data.background["create-key"] ? (
 				<CreateKeyModal
 					hidden={data.type !== "create-key"}
@@ -43,13 +53,14 @@ export default function ModalRoot() {
 						(data.params as CreateKeyParams))}
 				/>
 			) : null}
-
-			{data.type === "walletconnect" ? (
-				<WalletConnectModal />
-			) : data.type === "dapps-modal" ? (
+			{data.type === "walletconnect" ||
+			data.background["walletconnect"] ? (
+				<WalletConnectModal hidden={data.type !== "walletconnect"} />
+			) : null}
+			{data.type === "dapps-modal" ? (
 				<ConnectedModal />
 			) : !data.params ? (
-				<>params not set</>
+				<></>
 			) : data.type === "select-key" ? (
 				<SelectKeyModal {...(data.params as SelectKeyParams)} />
 			) : data.type === "receive" ? (

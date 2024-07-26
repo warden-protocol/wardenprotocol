@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { useTheme } from "next-themes";
 import { approveRequest } from "../walletconnect/util";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import useRequestSignature from "@/hooks/useRequestSignature";
+import { Assets } from "@/features/walletconnect/assets";
 import { ModalParams } from "./types";
 import { useModalState } from "./state";
 import clsx from "clsx";
@@ -50,7 +50,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 					/>
 
 					<div className="rounded-full absolute -right-3 -bottom-3 w-9 h-9 bg-fill-quaternary flex items-center justify-center">
-						<IconsAssets.approveDoc />
+						<Assets.approveDoc />
 					</div>
 				</div>
 

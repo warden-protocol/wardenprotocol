@@ -8,24 +8,26 @@ import type {
 } from "./types";
 
 export type ModalType =
+	| "add-owner"
+	| "approve-action"
 	| "create-key"
-	| "select-key"
-	| "receive"
-	| "send"
-	| "select-asset"
-	| "walletconnect"
 	| "dapps-modal"
-	| "approve-action";
+	| "receive"
+	| "select-asset"
+	| "select-key"
+	| "send"
+	| "walletconnect";
 
 interface ModalParams {
+	"add-owner": {};
+	"approve-action": {};
 	"create-key": CreateKeyParams;
+	"dapps-modal": {};
+	receive: TransferParams;
 	"select-asset": SelectAssetParams;
 	"select-key": SelectKeyParams;
-	receive: TransferParams;
 	send: TransferParams;
 	walletconnect: {};
-	"dapps-modal": {};
-	"approve-action": {};
 }
 
 export interface ModalState {

@@ -1,16 +1,16 @@
-import { AddSpaceOwnerForm } from "@/features/owners";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { Button } from "@/components/ui/button";
-import AddressAvatar from "@/components/AddressAvatar";
-import { Copy } from "@/components/ui/copy";
 import { warden } from "@wardenprotocol/wardenjs";
 import { useNewAction } from "@/hooks/useAction";
 import { useQueryHooks } from "@/hooks/useClient";
+import { useModalState } from "@/features/modals/state";
+import { PlusIcon } from "lucide-react";
+import OwnerCard from "@/features/owners/OwnerCard";
 
 const { MsgRemoveSpaceOwner } = warden.warden.v1beta3;
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
+	const { setData: setModal } = useModalState();
 
 	const { newAction, authority } = useNewAction(MsgRemoveSpaceOwner);
 
@@ -40,54 +40,81 @@ export function OwnersPage() {
 	}
 
 	return (
-		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
+		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8 mt-16">
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
 					<h2 className="text-5xl">Owners</h2>
-					<p className="text-muted-foreground hidden xl:block text-sm">
-						With default intents, owners will be able to perform
-						actions such as adding other owners or signing
-						transactions.
-					</p>
 				</div>
+				{spaceId ? (
+					<div className="!ml-auto flex items-center">
+						<div
+							className="flex items-center text-muted-foreground text-sm rounded-sm bg-fill-quaternary p-2 mr-4 cursor-pointer"
+							onClick={setModal.bind(null, {
+								type: "add-owner",
+								params: {},
+							})}
+						>
+							<PlusIcon className="h-4 w-4 mr-2" />
+							Add new
+						</div>
+					</div>
+				) : null}
 			</div>
-			<div>
-				<div className="w-full items-center bg-card rounded-xl p-4">
-					<div className="flex flex-col space-y-4">
-						{space.owners.map((owner) => (
-							<div
-								key={owner}
-								className="group w-full flex items-center justify-between bg-background rounded-lg p-4 overflow-scroll"
-							>
-								<div className="flex flex-row space-x-4 items-center">
-									<AddressAvatar
-										seed={owner || ""}
-										disableTooltip
-									/>
-									<span>
-										<Copy value={owner} split />
-									</span>
-								</div>
+			<div className="h-full flex-1 flex-col space-y-8 flex">
+				<div className="flex flex-row flex-wrap -mx-3 -mt-4">
+					{space.owners.map((owner) => (
+						<div
+							className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4"
+							key={owner}
+						>
+							<OwnerCard
+								owner={owner}
+								onRemove={() => {
+									if (typeof window === "undefined") {
+										return;
+									}
 
-								<Button
-									variant="destructive"
-									size={"sm"}
-									className="opacity-40 group-hover:opacity-100"
-									onClick={() => {
-										removeOwner(owner);
-									}}
-								>
-									Remove
-								</Button>
+									const confirmed =
+										window.confirm("Are you sure?");
+
+									if (!confirmed) {
+										return;
+									}
+
+									removeOwner(owner);
+								}}
+							/>
+						</div>
+					))}
+					<div className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4">
+						<div
+							className="rounded-xl h-60 w-full cursor-pointer flex flex-col bg-fill-quaternary"
+							onClick={setModal.bind(null, {
+								type: "add-owner",
+								params: {},
+							})}
+						>
+							<div className="flex items-center mx-6 mt-6">
+								<p className="text-base font-semibold">
+									New
+									<br />
+									Owner
+								</p>
+								<div className="ml-auto h-10 w-10 rounded-full bg-fill-quaternary flex justify-center items-center">
+									<PlusIcon className="stroke-label-tertiary" />
+								</div>
 							</div>
-						))}
-						<div className="group w-full overflow-scroll flex items-center justify-between">
-							<AddSpaceOwnerForm spaceId={spaceId || ""} />
+							<div className="mt-auto mb-8 mx-6">
+								<p className="text-muted-foreground hidden xl:block text-sm">
+									With default intents, owners will be able to
+									perform actions such as adding other owners
+									or signing transactions.
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div></div>
 		</div>
 	);
 }

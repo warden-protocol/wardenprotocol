@@ -1,0 +1,11 @@
+[package]
+name = "bindings"
+version.workspace = true
+edition = "2021"
+description = "Bindings for Wormhole bridge Protocol"
+
+[dependencies]
+cosmwasm-schema = { workspace = true }
+cosmwasm-std = { workspace = true }
+schemars = { workspace = true }
+serde = { workspace = true }

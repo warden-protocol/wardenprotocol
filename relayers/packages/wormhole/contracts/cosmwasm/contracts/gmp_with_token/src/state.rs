@@ -10,4 +10,6 @@ pub const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub const ADMIN: Admin = Admin::new("admin");
 pub const WORMHOLE_CORE_CONTRACT: Item<Addr> = Item::new("wormhole_core_contract");
+pub const WORMHOLE_TOKEN_BRIDGE_CONTRACT: Item<Addr> = Item::new("wormhole_token_bridge_contract");
 pub const WORMHOLE_CHAINS_EMITTERS: Map<u16, [u8; 32]> = Map::new("wormhole_chains_emitters");
+pub const CW_DENOMS: Map<String, String> = Map::new("cw_denoms");

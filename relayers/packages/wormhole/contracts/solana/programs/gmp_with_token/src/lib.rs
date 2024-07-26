@@ -241,6 +241,8 @@ pub mod gmp_with_token {
             GmpWithTokenError::AlreadyRedeemed
         );
 
+        // TODO: add VAA signatures validation
+
         // The intended recipient must agree with the recipient.
         let GmpMessage::Payload { recipient } = ctx.accounts.vaa.message().data();
         require!(
@@ -480,6 +482,8 @@ pub mod gmp_with_token {
             ctx.accounts.token_bridge_claim.data_is_empty(),
             GmpWithTokenError::AlreadyRedeemed
         );
+
+        // TODO: add VAA signatures validation
 
         // The intended recipient must agree with the recipient.
         let GmpMessage::Payload { recipient } = ctx.accounts.vaa.message().data();

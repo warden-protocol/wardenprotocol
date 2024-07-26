@@ -28,7 +28,7 @@ builds:
       - CXX=aarch64-linux-gnu-g++
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm_muslc.a
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.0.0/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm_muslc.aarch64.a
     flags:
       - -mod=readonly
       - -trimpath

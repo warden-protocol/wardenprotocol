@@ -13,7 +13,7 @@ before:
     - apk add gcc musl-dev
 
     # setup libwasmvm
-    - wget https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm_muslc.x86_64.a -O /lib/libwasmvm_muslc.a
+    - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.0.0/libwasmvm_muslc.x86_64.a -O /lib/libwasmvm_muslc.x86_64.a
 
     # You may remove this if you don't use go modules.
     - go mod tidy

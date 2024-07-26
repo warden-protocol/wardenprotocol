@@ -7,7 +7,7 @@ import { createAvatar } from "@dicebear/core";
 
 const Key = ({
 	keyValue,
-	onClick
+	onClick,
 }: {
 	keyValue: QueryKeyResponse;
 	onClick: () => void;

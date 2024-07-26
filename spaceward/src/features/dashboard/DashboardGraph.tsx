@@ -4,6 +4,7 @@ import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/wa
 import TotalAssetsChart from "./Chart";
 
 import { Icons } from "@/components/ui/icons-assets";
+import { Icons as IconsAssets } from "./icons";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "../assets/hooks";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -155,8 +156,9 @@ const DashboardGraph = ({
 						type: "select-key",
 						params: { addresses, next: "receive" },
 					})}
-					className="rounded bg-fill-quaternary h-10 px-5 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
+					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>
+					<IconsAssets.arrInCircle />
 					Receive
 				</button>
 			</div>

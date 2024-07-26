@@ -32,7 +32,7 @@ _release-wardend-linux-amd64:
     	-v {{ invocation_directory() }}:/go/src/wardend \
     	-w /go/src/wardend \
     	ghcr.io/goreleaser/goreleaser:v1.25.1 \
-    	--clean --skip=publish -f ./.goreleaser-amd64.yaml
+    	--clean --skip=validate --skip=publish -f ./.goreleaser-amd64.yaml
 
 release_tag := `git tag --points-at HEAD`
 

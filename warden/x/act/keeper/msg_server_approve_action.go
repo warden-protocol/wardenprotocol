@@ -36,6 +36,10 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
+	if err := k.ActionKeeper.Set(ctx, act); err != nil {
+		return nil, fmt.Errorf("persisting updated action: %w", err)
+	}
+
 	if err := k.TryExecuteAction(ctx, &act); err != nil {
 		return nil, err
 	}

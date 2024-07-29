@@ -1,6 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import CardRow from "@/components/ui/card-row";
-import AddressAvatar from "@/components/AddressAvatar";
+import KeychainCard from "@/features/keychains/KeychainCard";
 import { useQueryHooks } from "@/hooks/useClient";
 
 export function KeychainsPage() {
@@ -20,56 +18,40 @@ export function KeychainsPage() {
 		);
 	}
 
+	const KEYCHAINS = [
+		{
+			name: "OCP KMS",
+			link: "#",
+			description:
+				"Open Custody Protocol (OCP), a modular custody primitive to expand the original vision from blah blah blah blah blah blah blah blah blah Open Custody Protocol (OCP), a modular custody primitive to expand the original",
+			lastSeen: "1",
+		},
+		{
+			name: "Open Custody Protocol (Fordefi MPC)",
+			link: "#",
+			description:
+				"Open Custody Protocol (OCP), a modular custody primitive to expand the original vision from Qredo by blah blah blah blah blah blah blah blah blah blah Open Custody Protocol (OCP), dy primitive to expand the original",
+			lastSeen: "3",
+		},
+		{
+			name: "OCP KMS",
+			link: "#",
+			description:
+				"Open Custody Protocol (OCP), a modular to expand the original vision from Qredo by blah blah blah blah blah blah blah blah blah blah Open Custody Protocol (OCP), a modular custody primitive to expand the original",
+			lastSeen: "2",
+		},
+	];
+
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
-			<div className="flex items-center justify-between pb-4 space-y-2">
-				<div>
-					<h2 className="text-5xl">Keychains</h2>
-					<p className="text-muted-foreground text-sm">
-						A keychain is a trusted operator that holds your private
-						keys.
-					</p>
+			<h2 className="text-5xl font-bold">Keychains</h2>
+
+			<div className="my-10">
+				<div className="grid grid-cols-2 gap-6">
+					{KEYCHAINS.map((item, key) => (
+						<KeychainCard key={key} {...item} />
+					))}
 				</div>
-			</div>
-			<div className="space-y-6">
-				{keychains.map((kc) => (
-					<Card key={kc.id}>
-						<CardHeader>
-							<CardTitle>Keychain #{kc.id.toString()}</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div className="grid w-full items-center gap-4">
-								<CardRow label="Description">
-									{kc.description}
-								</CardRow>
-
-								<CardRow label="Creator">
-									<AddressAvatar seed={kc.creator} />
-								</CardRow>
-
-								<CardRow label="Admins">
-									<ul>
-										{kc.admins.map((admin) => (
-											<li key={admin}>
-												<AddressAvatar seed={admin} />
-											</li>
-										))}
-									</ul>
-								</CardRow>
-
-								<CardRow label="Writers">
-									<ul>
-										{kc.writers.map((p) => (
-											<li key={p}>
-												<AddressAvatar seed={p} />
-											</li>
-										))}
-									</ul>
-								</CardRow>
-							</div>
-						</CardContent>
-					</Card>
-				))}
 			</div>
 		</div>
 	);

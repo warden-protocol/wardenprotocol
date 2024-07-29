@@ -1,5 +1,5 @@
 import { LoaderCircle } from "lucide-react";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { Icons } from "@/components/ui/icons-assets";
@@ -10,17 +10,15 @@ import DashboardGraph from "./DashboardGraph";
 import { useRules } from "@/pages";
 import Intent from "./Intent";
 import { useAssetQueries } from "../assets/hooks";
-import { useModalContext } from "@/context/modalContext";
+import { useModalState } from "../modals/state";
 
 interface CurrentSpaceProps {
 	spaceId: bigint;
 }
 
 export default function Keys({ spaceId }: CurrentSpaceProps) {
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 	const { useSpaceById, isReady } = useQueryHooks();
-	// fixme new key hack
-	const newKeyButtonRef = useRef<HTMLButtonElement | null>(null);
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
 
 	const spaceQuery = useSpaceById({
@@ -58,7 +56,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						First add a key to start receiving assets
 					</div>
 
-					<NewKeyButton />
+					<NewKeyButton className="mt-4" />
 				</div>
 			) : (
 				<DashboardGraph addresses={addresses} />
@@ -98,20 +96,17 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 											}
 										}
 
-										dispatch({
-											type: "set",
-											payload: {
-												type: "send",
-												params: {
-													chainName: result.chainName,
-													keyResponse: item,
-													token: result.token,
-													type: result.type.startsWith(
-														"eip155:",
-													)
-														? AddressType.ADDRESS_TYPE_ETHEREUM
-														: AddressType.ADDRESS_TYPE_OSMOSIS,
-												},
+										setModal({
+											type: "send",
+											params: {
+												chainName: result.chainName,
+												keyResponse: item,
+												token: result.token,
+												type: result.type.startsWith(
+													"eip155:",
+												)
+													? AddressType.ADDRESS_TYPE_ETHEREUM
+													: AddressType.ADDRESS_TYPE_OSMOSIS,
 											},
 										});
 									}}
@@ -120,12 +115,10 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						</div>
 					)}
 
-					<div className="hidden">
-						<NewKeyButton ref={newKeyButtonRef} />
-					</div>
-
 					<div
-						onClick={() => newKeyButtonRef.current?.click()}
+						onClick={() =>
+							setModal({ type: "create-key", params: {} })
+						}
 						className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
 					>
 						<Icons.plus className="w-4 h-4" stroke="currentColor" />

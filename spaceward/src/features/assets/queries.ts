@@ -42,7 +42,7 @@ const ERC20_TOKENS: {
 	},
 ];
 
-const EIP_155_NATIVE_PRICE_FEEDS: Record<ChainName, `0x${string}` | undefined> =
+const EIP_155_NATIVE_PRICE_FEEDS: Partial<Record<ChainName, `0x${string}` | undefined>> =
 	{
 		mainnet: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
 		arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",

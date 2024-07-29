@@ -1,8 +1,8 @@
 {
-  "position": 7,
+  "position": 8,
   "label": "Build the frontend",
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "link": {
     "type": "generated-index",
     "title": "Build the frontend"

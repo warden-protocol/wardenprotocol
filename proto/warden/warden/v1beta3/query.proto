@@ -133,9 +133,9 @@ message QueryKeychainByIdResponse { Keychain keychain = 1; }
 
 message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  uint64 keychain_id = 2;
-  KeyRequestStatus status = 3; // Optional
-  uint64 space_id = 4;
+  uint64 keychain_id = 2 [ (gogoproto.nullable) = true ];
+  KeyRequestStatus status = 3 [ (gogoproto.nullable) = true ];
+  uint64 space_id = 4 [ (gogoproto.nullable) = true ];
 }
 
 message QueryKeyRequestsResponse {
@@ -149,7 +149,7 @@ message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
 
 message QueryAllKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  repeated AddressType derive_addresses = 2; // Optional
+  repeated AddressType derive_addresses = 2 [ (gogoproto.nullable) = true ];
 }
 
 message QueryKeysResponse {
@@ -160,12 +160,12 @@ message QueryKeysResponse {
 message QueryKeysBySpaceIdRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 space_id = 2;
-  repeated AddressType derive_addresses = 3; // Optional
+  repeated AddressType derive_addresses = 3 [ (gogoproto.nullable) = true ];
 }
 
 message QueryKeyByIdRequest {
   uint64 id = 1;
-  repeated AddressType derive_addresses = 2; // Optional
+  repeated AddressType derive_addresses = 2 [ (gogoproto.nullable) = true ];
 }
 
 message QueryKeyResponse {
@@ -181,7 +181,7 @@ message AddressResponse {
 message QuerySignRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 keychain_id = 2;
-  SignRequestStatus status = 3; // Optional
+  SignRequestStatus status = 3 [ (gogoproto.nullable) = true ];
 }
 
 message QuerySignRequestsResponse {

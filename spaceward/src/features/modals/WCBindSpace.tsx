@@ -9,6 +9,9 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import clsx from "clsx";
 import { Input } from "@/components/ui/input";
+import { useModalState } from "./state";
+import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
+import KeyRequestStatusbar from "../keys/KeyRequestStatus";
 
 interface WCBindSpaceProps {
 	enabled: boolean;
@@ -29,10 +32,12 @@ export default function WCBindSpace({
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
+	const { state } = useRequestKey();
 	const { useSpacesByOwner, useKeysBySpaceId } = useQueryHooks();
 	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
 	const [isSelectVesisble, setIsSelectVisible] = useState(false);
+	const { setData: setModal } = useModalState();
 
 	const spacesQuery = useSpacesByOwner({
 		request: {
@@ -160,18 +165,39 @@ export default function WCBindSpace({
 			</div>
 
 			<div className="flex flex-col gap-2">
-				<Button
-					disabled={!enabled || loading || !pairedSpace}
-					onClick={onApprove.bind(
-						null,
-						proposal,
-						pairedSpace,
-						addresses,
-					)}
-					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
-				>
-					{loading ? "Loading..." : "Approve"}
-				</Button>
+				{!keysQuery.data?.keys.length ? (
+					state === KeyRequesterState.IDLE ? (
+						<Button
+							disabled={loading || !pairedSpace}
+							onClick={setModal.bind(null, {
+								background: { walletconnect: {} },
+								type: "create-key",
+								params: {
+									next: "walletconnect",
+									spaceId: pairedSpace,
+								},
+							})}
+							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+						>
+							Create key
+						</Button>
+					) : (
+						<KeyRequestStatusbar className="h-14 mx-0 px-4" />
+					)
+				) : (
+					<Button
+						disabled={!enabled || loading || !pairedSpace}
+						onClick={onApprove.bind(
+							null,
+							proposal,
+							pairedSpace,
+							addresses,
+						)}
+						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+					>
+						{loading ? "Loading..." : "Approve"}
+					</Button>
+				)}
 
 				<Button
 					disabled={!_enabled}

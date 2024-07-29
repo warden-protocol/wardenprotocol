@@ -5,13 +5,15 @@ import { useWebRTCTransport } from "@/hooks/useWebRTCTransport";
 import WCPair from "./WCPair";
 import WCBindSpace from "./WCBindSpace";
 import { approveSession, rejectSession } from "../walletconnect/util";
-import { useModalContext } from "@/context/modalContext";
+import { useModalState } from "./state";
+import { ModalParams } from "./types";
+import clsx from "clsx";
 
 /** @deprecated move export */
 export const wcUriRegex = /^wc:[0-9a-f]+@.+/i;
 
-export default function WalletConnectModal() {
-	const { dispatch } = useModalContext();
+export default function WalletConnectModal({ hidden }: ModalParams<{}>) {
+	const { setData } = useModalState();
 	const [error, setError] = useState<Error>();
 	const [loading, setLoading] = useState(false);
 	const [uri, setUri] = useState("");
@@ -51,7 +53,7 @@ export default function WalletConnectModal() {
 	}, [uri]);
 
 	return (
-		<div className="max-w-[520px] w-[520px] pb-5">
+		<div className={clsx("max-w-[520px] w-[520px] pb-5", { hidden })}>
 			{webRTC.peers.length && !uri ? (
 				<div className="flex items-center justify-between gap-2">
 					<div>
@@ -93,7 +95,7 @@ export default function WalletConnectModal() {
 								addresses,
 							);
 
-							dispatch({ type: "type", payload: undefined });
+							setData({ type: undefined, params: undefined });
 						} catch (error) {
 							console.error(error);
 							setLoading(false);
@@ -107,7 +109,7 @@ export default function WalletConnectModal() {
 						try {
 							setLoading(true);
 							await rejectSession(w, proposal.id);
-							dispatch({ type: "type", payload: undefined });
+							setData({ type: undefined, params: undefined });
 						} catch (error) {
 							console.error(error);
 						}

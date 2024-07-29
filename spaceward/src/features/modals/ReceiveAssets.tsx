@@ -8,17 +8,17 @@ import {
 import QRCode from "react-qr-code";
 import { Copy } from "@/components/ui/copy";
 import { TransferParams } from "./types";
-import { useModalContext } from "@/context/modalContext";
+import { useModalState } from "./state";
 
 export default function ReceiveAssetsModal(props: TransferParams) {
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 
 	return (
 		<Dialog
 			open
 			onOpenChange={(v) => {
 				if (!v) {
-					dispatch({ type: "type", payload: undefined });
+					setModal({ type: undefined, params: undefined });
 				}
 			}}
 		>

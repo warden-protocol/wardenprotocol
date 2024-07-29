@@ -18,6 +18,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
+import ModalRoot from "@/features/modals";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -158,6 +159,7 @@ export function Root() {
 						</>
 					)}
 				</div>
+				<ModalRoot />
 			</ThemeProvider>
 		</>
 	);

@@ -36,6 +36,9 @@ export type TxBuild<T extends TxType> = T extends "eth"
 			type: T;
 		};
 
+export function capitalize<T extends string>(s?: T): Capitalize<T> {
+	return (!s ? "" : s.charAt(0).toUpperCase() + s.slice(1)) as Capitalize<T>;
+}
 export async function buildTransaction({
 	item,
 	from,

@@ -3,7 +3,6 @@ import { createGlobalState } from "@/hooks/state";
 import type {
 	CreateKeyParams,
 	SelectAssetParams,
-	SelectKeyParams,
 	TransferParams,
 } from "./types";
 
@@ -14,7 +13,6 @@ export type ModalType =
 	| "dapps-modal"
 	| "receive"
 	| "select-asset"
-	| "select-key"
 	| "send"
 	| "walletconnect";
 
@@ -25,7 +23,6 @@ interface ModalParams {
 	"dapps-modal": {};
 	receive: TransferParams;
 	"select-asset": SelectAssetParams;
-	"select-key": SelectKeyParams;
 	send: TransferParams;
 	walletconnect: {};
 }

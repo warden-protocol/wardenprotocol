@@ -49,7 +49,7 @@ export function Actions() {
 
 	if (q.status === "loading" || !actions?.length) {
 		return (
-			<div className="bg-card border-[1px] flex-col gap-5 border-border-secondary rounded-2xl flex items-center justify-center text-center mt-8 p-16">
+			<div className="bg-card border-[1px] flex-col gap-5 border-border-edge rounded-2xl flex items-center justify-center text-center mt-8 p-16">
 				{q.status === "loading" ? (
 					<LoaderCircle className="animate-spin mt-2" />
 				) : (
@@ -60,7 +60,7 @@ export function Actions() {
 	}
 
 	return (
-		<div className="bg-card  py-5 px-6 mt-6 border-[1px] border-border-secondary rounded-2xl">
+		<div className="bg-card  py-5 px-6 mt-6 border-[1px] border-border-edge rounded-2xl">
 			<div className="flex justify-between items-center gap-2 mb-3">
 				<div className="font-bold text-2xl flex items-center justify-between">
 					Latest actions

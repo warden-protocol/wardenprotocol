@@ -1,92 +1,85 @@
+import clsx from "clsx";
+import { useState } from "react";
 import QRCode from "react-qr-code";
 import { Copy } from "@/components/ui/copy";
 import { TransferParams } from "./types";
 import { Icons } from "../dashboard/icons";
-import KeySelect from "./receiveAssets/KeySelect";
-import { useMemo, useState } from "react";
+import KeySelect from "./KeySelector";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "../assets/hooks";
-import TokenSelect from "./receiveAssets/TokenSelect";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import SelectAsset from "./receiveAssets/SelectAsset";
+import SelectAsset from "./AssetSelector";
+import { TokenIcons } from "@/components/ui/icons-crypto";
+import { AssetPlaceholder } from "@/features/assets/AssetRow";
+import { capitalize } from "./util";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+
+const TokenSelect = ({
+	chainName,
+	token,
+	isSelect,
+	switchToSelect,
+}: {
+	token?: string;
+	chainName?: string;
+	isSelect: boolean;
+	switchToSelect: () => void;
+}) => {
+	const TokenIcon = token ? TokenIcons[token] ?? AssetPlaceholder : undefined;
+
+	return (
+		<div
+			className="relative flex z-10 items-center"
+			onClick={switchToSelect}
+		>
+			<div
+				className={clsx(
+					"rounded-lg z-20 py-3 px-4 flex items-center gap-4 h-[72px] bg-fill-elevated border-[1px] border-solid border-border-quaternary w-full",
+					isSelect && "pointer-events-none opacity-30",
+				)}
+			>
+				{TokenIcon && <TokenIcon className="w-10 h-10" />}
+
+				<div>
+					<div className="">{token}</div>
+
+					<div className="text-xs text-label-secondary">
+						{capitalize(chainName)}
+					</div>
+				</div>
+
+				<Icons.chevronDown
+					className={clsx(
+						"ml-auto duration-200",
+						isSelect && "rotate-180",
+					)}
+				/>
+			</div>
+		</div>
+	);
+};
+
+const getQrValue = (_chainName: string, address: string) => {
+	// fixme
+	const chainName = _chainName === "osmosis" ? "osmosis" : "ethereum";
+	return `${chainName}:${address}`;
+};
 
 export default function ReceiveAssetsModal(props: TransferParams) {
 	const { spaceId } = useSpaceId();
-	const { queryKeys } = useAssetQueries(spaceId?.toString());
-
-	const addresses = useMemo(
-		() =>
-			queryKeys.data?.keys.flatMap(({ addresses, key }) =>
-				addresses.map((x) => ({ ...x, keyId: key.id })),
-			),
-		[queryKeys.data?.keys],
-	);
-
-	const [searchValue, setSearchValue] = useState("");
-	const [currentNetwork, setCurrentNetwork] = useState("");
-
 	const { queryBalances } = useAssetQueries(spaceId);
-
-	const [currentKey, setCurrentKey] = useState(
-		addresses?.find((item) => item.address == props.address) ?? addresses,
-	);
-	const _results = queryBalances
-		.filter((result) => {
-			if (result.data?.key.key.id !== currentKey?.keyId) {
-				return false;
-			}
-
-			return true;
-		})
-		.flatMap((query) => query.data?.results ?? []);
-
-	const { chains, results, withBalance } = useMemo(() => {
-		const chainNames = new Set<string>();
-
-		const withBalance: string[] = [];
-
-		const results = _results.filter(({ balance, chainName, token }) => {
-			chainNames.add(chainName);
-
-			if (searchValue) {
-				if (!token.includes(searchValue.toUpperCase())) {
-					return false;
-				}
-			}
-
-			if (currentNetwork) {
-				if (chainName !== currentNetwork) {
-					return false;
-				}
-			}
-
-			if (balance) {
-				withBalance.push(token);
-			}
-
-			return true;
-		});
-
-		return {
-			chains: Array.from(chainNames),
-			results,
-			withBalance,
-		};
-	}, [_results, currentNetwork, searchValue]);
-
 	const [isSelectAsset, setSelectAsset] = useState(false);
+	const key = props?.keyResponse ?? queryBalances[0]?.data?.key;
+	const token = props?.token ?? queryBalances[0]?.data?.results[0]?.token;
 
-	const currentToken = results.find(
-		(item) => item.token.toUpperCase() === props.token?.toUpperCase(),
-	);
-
-	const queryResults = queryBalances.flatMap(
-		({ data }) => data?.results ?? [],
-	);
-
-	const balancesByCoin = queryResults.filter(
-		({ token }) => token === props.token,
-	);
+	const chainName =
+		props?.chainName ?? queryBalances[0]?.data?.results[0]?.chainName;
+	// fixme
+	const addressType =
+		chainName === "osmosis"
+			? AddressType.ADDRESS_TYPE_OSMOSIS
+			: AddressType.ADDRESS_TYPE_ETHEREUM;
+	const address = key?.addresses?.find((a) => a.type === addressType);
 
 	return (
 		<div className="grid grid-cols-[1fr_520px] gap-12 pb-5 max-w-[928px] mx-auto">
@@ -99,17 +92,16 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 				<div className="mb-5 font-bold text-xl">Key</div>
 
 				<KeySelect
-					currentKey={currentKey}
-					setKey={(key) => setCurrentKey(key)}
-					token={props?.token}
-					balancesByCoin={balancesByCoin}
+					className="relative flex z-20 items-center mb-8"
+					currentKey={key}
+					token={token}
 				/>
 
 				<div className="mb-5 font-bold text-xl">Asset</div>
 
 				<TokenSelect
-					currentKey={currentKey}
-					token={currentToken}
+					chainName={chainName}
+					token={token}
 					switchToSelect={() => setSelectAsset(true)}
 					isSelect={isSelectAsset}
 				/>
@@ -118,29 +110,25 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 			<div className="bg-bg-elevated pt-12 px-4 pb-4 rounded-2xl">
 				{isSelectAsset ? (
 					<SelectAsset
-						hideSelectAsset={() => setSelectAsset(false)}
-						currentNetwork={currentNetwork}
-						chains={chains}
-						changeNetwork={(network) => setCurrentNetwork(network)}
-						results={results}
-						withBalance={withBalance}
 						spaceId={spaceId ?? ""}
-						changeSearchValue={(value) => setSearchValue(value)}
-						searchValue={searchValue}
+						selectedKey={key}
+						onClose={() => setSelectAsset(false)}
 					/>
 				) : (
 					<div className="text-center flex flex-col gap-10">
 						<div>
 							<div className="font-bold mb-2 text-[32px]">
-								Receive {currentToken?.token.toUpperCase()}
+								Receive {token}
 							</div>
+							<div>Send only {token} to the address below</div>
 							<div>
-								Send only {currentToken?.token}{" "}
-								{currentToken?.chainName} to the address below
+								Make sure that the network is{" "}
+								{capitalize(chainName)}
 							</div>
 						</div>
 
 						<QRCode
+							className="rounded-2xl p-4 bg-white"
 							size={240}
 							style={{
 								height: "auto",
@@ -148,20 +136,24 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 								width: "240px",
 								margin: "0 auto",
 							}}
-							value={props?.address ?? ""}
+							value={
+								chainName && address?.address
+									? getQrValue(chainName, address.address)
+									: ""
+							}
 							viewBox={`0 0 240 240`}
 						/>
 
 						<div className="bg-fill-elevated rounded-lg	w-full pt-4 px-4 pb-6 text-center flex flex-col items-center">
 							<div className="text-label-secondary text-xs mb-2">
-								Your {currentToken?.token}{" "}
-								{currentToken?.chainName} address
+								Your {token}({capitalize(chainName)} network)
+								address
 							</div>
 							<div>
-								<Copy value={props?.address} />
+								<Copy value={address?.address} />
 							</div>
 
-							<CopyToClipboard text={props?.address ?? ""}>
+							<CopyToClipboard text={address?.address ?? ""}>
 								<button className="bg-pixel-pink cursor-pointer rounded px-5 h-10 flex items-center justify-center font-semibold text-black duration-300 hover:bg-fill-accent-hover mt-4">
 									Copy Address
 								</button>

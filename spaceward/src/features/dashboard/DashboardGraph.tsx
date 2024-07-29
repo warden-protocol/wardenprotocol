@@ -70,7 +70,7 @@ const DashboardGraph = ({
 	}, [results]);
 
 	return (
-		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-secondary rounded-2xl">
+		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-edge rounded-2xl">
 			<div className="flex items-start justify-between mb-1">
 				<div className="font-bold text-[32px] flex items-center gap-3">
 					{formatter.format(
@@ -153,8 +153,8 @@ const DashboardGraph = ({
 				</div>
 				<button
 					onClick={setModal.bind(null, {
-						type: "select-key",
-						params: { addresses, next: "receive" },
+						type: "receive",
+						params: { },
 					})}
 					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>

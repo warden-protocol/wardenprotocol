@@ -308,7 +308,7 @@ export function GovernancePage() {
 			<div
 				className={clsx(
 					state.layout === "list"
-						? "bg-card rounded-xl border-border-secondary border-[1px] px-8 py-6"
+						? "bg-card rounded-xl border-border-edge border-[1px] px-8 py-6"
 						: noProposals
 							? ""
 							: "grid grid-cols-3 gap-6 pb-10",

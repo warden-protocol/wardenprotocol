@@ -3,6 +3,7 @@ package warden.warden.v1beta3;
 
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
+import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
 
@@ -170,3 +171,29 @@ message EventAddKeychainWriter {
   // updated count of writers
   uint64 writers_count = 3;
 }
+
+// EventAddKeychainAdmin is emitted when a new admin address is added to a Keychain
+message EventAddKeychainAdmin {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new admin
+  string new_admin = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // updated count of admins
+  uint64 admins_count = 3;
+}
+
+
+// EventRemoveKeychainAdmin is emitted when a new admin address is removed from a Keychain
+message EventRemoveKeychainAdmin {
+  // id of the keychain
+  uint64 id = 1;
+
+  // address of the new admin
+  string admin = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // updated count of admins
+  uint64 admins_count = 3;
+}
+

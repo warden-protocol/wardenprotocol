@@ -35,6 +35,19 @@ func (k *Keychain) AddWriter(address string) {
 	k.Writers = append(k.Writers, address)
 }
 
+func (k *Keychain) AddAdmin(address string) {
+	k.Admins = append(k.Admins, address)
+}
+
+func (k *Keychain) RemoveAdmin(address string) {
+	for i, owner := range k.Admins {
+		if owner == address {
+			k.Admins = append(k.Admins[:i], k.Admins[i+1:]...)
+			return
+		}
+	}
+}
+
 func (k *Keychain) SetFees(fees *KeychainFees) {
 	k.Fees = fees
 }

@@ -7,18 +7,13 @@ import { Icons as AssetIcons } from "@/components/ui/icons-assets";
 import {
 	AppWindow,
 	ArrowLeftRight,
-	Cog,
 	Coins,
 	Key,
-	Plus,
 	Grid2X2,
 	FolderKey,
 	User2Icon,
 	HomeIcon,
-	HelpCircleIcon,
-	OrbitIcon,
 	FileCheckIcon,
-	BookUserIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SpaceSelector } from "@/features/spaces";
@@ -29,11 +24,6 @@ const spaceNavItems = [
 		icon: <HomeIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/",
 	},
-	// {
-	// 	label: "Spaces",
-	// 	icon: <OrbitIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/spaces",
-	// },
 	{
 		label: "Keys",
 		icon: <Key strokeWidth={1} className="h-4 w-4 mr-4" />,
@@ -82,11 +72,6 @@ const globalNavItems = [
 		icon: <ArrowLeftRight strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/actions",
 	},
-	// {
-	// 	label: "Address Book",
-	// 	icon: <BookUserIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/address-book",
-	// },
 	{
 		label: "Keychains",
 		icon: <FolderKey strokeWidth={1} className="h-4 w-4 mr-4" />,
@@ -102,11 +87,6 @@ const globalNavItems = [
 		icon: <AppWindow strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/apps",
 	},
-	// {
-	// 	label: "Settings",
-	// 	icon: <Cog strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/settings",
-	// },
 ];
 
 export function InnerSidebar() {
@@ -117,7 +97,6 @@ export function InnerSidebar() {
 				<div className="my-6 mx-6">
 					<a href="/" className="items-center">
 						<Icons.logo className="h-6 w-auto hidden md:block" />
-						{/* <Icons.icon className="h-8 ml-3 w-auto md:hidden block" /> */}
 					</a>
 				</div>
 				<div className="px-2">

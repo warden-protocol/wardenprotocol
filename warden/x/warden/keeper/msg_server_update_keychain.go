@@ -11,6 +11,10 @@ import (
 func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKeychain) (*types.MsgUpdateKeychainResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	if err := ensureKeychainFeesValid(msg.KeychainFees); err != nil {
+		return nil, err
+	}
+
 	kr, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err

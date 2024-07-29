@@ -62,6 +62,10 @@ service Msg {
   // Fulfil or reject a SignRequest.
   rpc FulfilSignRequest(MsgFulfilSignRequest)
       returns (MsgFulfilSignRequestResponse);
+
+  // Create a new InferenceRequest.
+  rpc NewInferenceRequest(MsgNewInferenceRequest)
+      returns (MsgNewInferenceRequestResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -236,3 +240,11 @@ message MsgFulfilSignRequest {
 }
 
 message MsgFulfilSignRequestResponse {}
+
+message MsgNewInferenceRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  bytes input = 3;
+}
+
+message MsgNewInferenceRequestResponse { uint64 id = 1; }

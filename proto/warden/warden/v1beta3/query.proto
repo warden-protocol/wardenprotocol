@@ -5,6 +5,7 @@ import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "warden/warden/v1beta3/inference.proto";
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
 import "warden/warden/v1beta3/params.proto";
@@ -85,6 +86,12 @@ service Query {
       returns (QuerySignRequestByIdResponse) {
     option (google.api.http).get =
         "/warden/warden/v1beta3/signature_pb_request_by_id";
+  }
+
+  rpc InferenceRequests(QueryInferenceRequestsRequest)
+      returns (QueryInferenceRequestsResponse) {
+    option (google.api.http).get =
+        "/warden/warden/v1beta3/inference_requests";
   }
 }
 
@@ -193,3 +200,11 @@ message QuerySignRequestByIdRequest { uint64 id = 1; }
 
 message QuerySignRequestByIdResponse { SignRequest sign_request = 1; }
 
+message QueryInferenceRequestsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryInferenceRequestsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated InferenceRequest inference_requests = 2 [ (gogoproto.nullable) = false ];
+}

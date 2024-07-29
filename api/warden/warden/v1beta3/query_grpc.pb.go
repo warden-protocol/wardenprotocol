@@ -19,19 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Params_FullMethodName          = "/warden.warden.v1beta3.Query/Params"
-	Query_Spaces_FullMethodName          = "/warden.warden.v1beta3.Query/Spaces"
-	Query_SpacesByOwner_FullMethodName   = "/warden.warden.v1beta3.Query/SpacesByOwner"
-	Query_Keychains_FullMethodName       = "/warden.warden.v1beta3.Query/Keychains"
-	Query_SpaceById_FullMethodName       = "/warden.warden.v1beta3.Query/SpaceById"
-	Query_KeychainById_FullMethodName    = "/warden.warden.v1beta3.Query/KeychainById"
-	Query_KeyRequests_FullMethodName     = "/warden.warden.v1beta3.Query/KeyRequests"
-	Query_KeyRequestById_FullMethodName  = "/warden.warden.v1beta3.Query/KeyRequestById"
-	Query_AllKeys_FullMethodName         = "/warden.warden.v1beta3.Query/AllKeys"
-	Query_KeysBySpaceId_FullMethodName   = "/warden.warden.v1beta3.Query/KeysBySpaceId"
-	Query_KeyById_FullMethodName         = "/warden.warden.v1beta3.Query/KeyById"
-	Query_SignRequests_FullMethodName    = "/warden.warden.v1beta3.Query/SignRequests"
-	Query_SignRequestById_FullMethodName = "/warden.warden.v1beta3.Query/SignRequestById"
+	Query_Params_FullMethodName            = "/warden.warden.v1beta3.Query/Params"
+	Query_Spaces_FullMethodName            = "/warden.warden.v1beta3.Query/Spaces"
+	Query_SpacesByOwner_FullMethodName     = "/warden.warden.v1beta3.Query/SpacesByOwner"
+	Query_Keychains_FullMethodName         = "/warden.warden.v1beta3.Query/Keychains"
+	Query_SpaceById_FullMethodName         = "/warden.warden.v1beta3.Query/SpaceById"
+	Query_KeychainById_FullMethodName      = "/warden.warden.v1beta3.Query/KeychainById"
+	Query_KeyRequests_FullMethodName       = "/warden.warden.v1beta3.Query/KeyRequests"
+	Query_KeyRequestById_FullMethodName    = "/warden.warden.v1beta3.Query/KeyRequestById"
+	Query_AllKeys_FullMethodName           = "/warden.warden.v1beta3.Query/AllKeys"
+	Query_KeysBySpaceId_FullMethodName     = "/warden.warden.v1beta3.Query/KeysBySpaceId"
+	Query_KeyById_FullMethodName           = "/warden.warden.v1beta3.Query/KeyById"
+	Query_SignRequests_FullMethodName      = "/warden.warden.v1beta3.Query/SignRequests"
+	Query_SignRequestById_FullMethodName   = "/warden.warden.v1beta3.Query/SignRequestById"
+	Query_InferenceRequests_FullMethodName = "/warden.warden.v1beta3.Query/InferenceRequests"
 )
 
 // QueryClient is the client API for Query service.
@@ -64,6 +65,7 @@ type QueryClient interface {
 	SignRequests(ctx context.Context, in *QuerySignRequestsRequest, opts ...grpc.CallOption) (*QuerySignRequestsResponse, error)
 	// Queries a SignRequest by its id.
 	SignRequestById(ctx context.Context, in *QuerySignRequestByIdRequest, opts ...grpc.CallOption) (*QuerySignRequestByIdResponse, error)
+	InferenceRequests(ctx context.Context, in *QueryInferenceRequestsRequest, opts ...grpc.CallOption) (*QueryInferenceRequestsResponse, error)
 }
 
 type queryClient struct {
@@ -191,6 +193,15 @@ func (c *queryClient) SignRequestById(ctx context.Context, in *QuerySignRequestB
 	return out, nil
 }
 
+func (c *queryClient) InferenceRequests(ctx context.Context, in *QueryInferenceRequestsRequest, opts ...grpc.CallOption) (*QueryInferenceRequestsResponse, error) {
+	out := new(QueryInferenceRequestsResponse)
+	err := c.cc.Invoke(ctx, Query_InferenceRequests_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -221,6 +232,7 @@ type QueryServer interface {
 	SignRequests(context.Context, *QuerySignRequestsRequest) (*QuerySignRequestsResponse, error)
 	// Queries a SignRequest by its id.
 	SignRequestById(context.Context, *QuerySignRequestByIdRequest) (*QuerySignRequestByIdResponse, error)
+	InferenceRequests(context.Context, *QueryInferenceRequestsRequest) (*QueryInferenceRequestsResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -266,6 +278,9 @@ func (UnimplementedQueryServer) SignRequests(context.Context, *QuerySignRequests
 }
 func (UnimplementedQueryServer) SignRequestById(context.Context, *QuerySignRequestByIdRequest) (*QuerySignRequestByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignRequestById not implemented")
+}
+func (UnimplementedQueryServer) InferenceRequests(context.Context, *QueryInferenceRequestsRequest) (*QueryInferenceRequestsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InferenceRequests not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -514,6 +529,24 @@ func _Query_SignRequestById_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_InferenceRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryInferenceRequestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).InferenceRequests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_InferenceRequests_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).InferenceRequests(ctx, req.(*QueryInferenceRequestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -572,6 +605,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignRequestById",
 			Handler:    _Query_SignRequestById_Handler,
+		},
+		{
+			MethodName: "InferenceRequests",
+			Handler:    _Query_InferenceRequests_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

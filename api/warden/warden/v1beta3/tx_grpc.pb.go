@@ -19,19 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName      = "/warden.warden.v1beta3.Msg/UpdateParams"
-	Msg_NewSpace_FullMethodName          = "/warden.warden.v1beta3.Msg/NewSpace"
-	Msg_AddSpaceOwner_FullMethodName     = "/warden.warden.v1beta3.Msg/AddSpaceOwner"
-	Msg_RemoveSpaceOwner_FullMethodName  = "/warden.warden.v1beta3.Msg/RemoveSpaceOwner"
-	Msg_NewKeychain_FullMethodName       = "/warden.warden.v1beta3.Msg/NewKeychain"
-	Msg_AddKeychainWriter_FullMethodName = "/warden.warden.v1beta3.Msg/AddKeychainWriter"
-	Msg_UpdateSpace_FullMethodName       = "/warden.warden.v1beta3.Msg/UpdateSpace"
-	Msg_UpdateKeychain_FullMethodName    = "/warden.warden.v1beta3.Msg/UpdateKeychain"
-	Msg_NewKeyRequest_FullMethodName     = "/warden.warden.v1beta3.Msg/NewKeyRequest"
-	Msg_FulfilKeyRequest_FullMethodName  = "/warden.warden.v1beta3.Msg/FulfilKeyRequest"
-	Msg_UpdateKey_FullMethodName         = "/warden.warden.v1beta3.Msg/UpdateKey"
-	Msg_NewSignRequest_FullMethodName    = "/warden.warden.v1beta3.Msg/NewSignRequest"
-	Msg_FulfilSignRequest_FullMethodName = "/warden.warden.v1beta3.Msg/FulfilSignRequest"
+	Msg_UpdateParams_FullMethodName        = "/warden.warden.v1beta3.Msg/UpdateParams"
+	Msg_NewSpace_FullMethodName            = "/warden.warden.v1beta3.Msg/NewSpace"
+	Msg_AddSpaceOwner_FullMethodName       = "/warden.warden.v1beta3.Msg/AddSpaceOwner"
+	Msg_RemoveSpaceOwner_FullMethodName    = "/warden.warden.v1beta3.Msg/RemoveSpaceOwner"
+	Msg_NewKeychain_FullMethodName         = "/warden.warden.v1beta3.Msg/NewKeychain"
+	Msg_AddKeychainWriter_FullMethodName   = "/warden.warden.v1beta3.Msg/AddKeychainWriter"
+	Msg_UpdateSpace_FullMethodName         = "/warden.warden.v1beta3.Msg/UpdateSpace"
+	Msg_UpdateKeychain_FullMethodName      = "/warden.warden.v1beta3.Msg/UpdateKeychain"
+	Msg_NewKeyRequest_FullMethodName       = "/warden.warden.v1beta3.Msg/NewKeyRequest"
+	Msg_FulfilKeyRequest_FullMethodName    = "/warden.warden.v1beta3.Msg/FulfilKeyRequest"
+	Msg_UpdateKey_FullMethodName           = "/warden.warden.v1beta3.Msg/UpdateKey"
+	Msg_NewSignRequest_FullMethodName      = "/warden.warden.v1beta3.Msg/NewSignRequest"
+	Msg_FulfilSignRequest_FullMethodName   = "/warden.warden.v1beta3.Msg/FulfilSignRequest"
+	Msg_NewInferenceRequest_FullMethodName = "/warden.warden.v1beta3.Msg/NewInferenceRequest"
 )
 
 // MsgClient is the client API for Msg service.
@@ -65,6 +66,8 @@ type MsgClient interface {
 	NewSignRequest(ctx context.Context, in *MsgNewSignRequest, opts ...grpc.CallOption) (*MsgNewSignRequestResponse, error)
 	// Fulfil or reject a SignRequest.
 	FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequest, opts ...grpc.CallOption) (*MsgFulfilSignRequestResponse, error)
+	// Create a new InferenceRequest.
+	NewInferenceRequest(ctx context.Context, in *MsgNewInferenceRequest, opts ...grpc.CallOption) (*MsgNewInferenceRequestResponse, error)
 }
 
 type msgClient struct {
@@ -192,6 +195,15 @@ func (c *msgClient) FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequ
 	return out, nil
 }
 
+func (c *msgClient) NewInferenceRequest(ctx context.Context, in *MsgNewInferenceRequest, opts ...grpc.CallOption) (*MsgNewInferenceRequestResponse, error) {
+	out := new(MsgNewInferenceRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_NewInferenceRequest_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -223,6 +235,8 @@ type MsgServer interface {
 	NewSignRequest(context.Context, *MsgNewSignRequest) (*MsgNewSignRequestResponse, error)
 	// Fulfil or reject a SignRequest.
 	FulfilSignRequest(context.Context, *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error)
+	// Create a new InferenceRequest.
+	NewInferenceRequest(context.Context, *MsgNewInferenceRequest) (*MsgNewInferenceRequestResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -268,6 +282,9 @@ func (UnimplementedMsgServer) NewSignRequest(context.Context, *MsgNewSignRequest
 }
 func (UnimplementedMsgServer) FulfilSignRequest(context.Context, *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignRequest not implemented")
+}
+func (UnimplementedMsgServer) NewInferenceRequest(context.Context, *MsgNewInferenceRequest) (*MsgNewInferenceRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewInferenceRequest not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -516,6 +533,24 @@ func _Msg_FulfilSignRequest_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_NewInferenceRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewInferenceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).NewInferenceRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_NewInferenceRequest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).NewInferenceRequest(ctx, req.(*MsgNewInferenceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -574,6 +609,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FulfilSignRequest",
 			Handler:    _Msg_FulfilSignRequest_Handler,
+		},
+		{
+			MethodName: "NewInferenceRequest",
+			Handler:    _Msg_NewInferenceRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

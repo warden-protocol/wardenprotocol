@@ -1,13 +1,18 @@
 package app
 
 import (
+	"bytes"
 	"context"
+	"encoding/binary"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"slices"
 	"time"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
@@ -85,6 +90,21 @@ func (app *App) wrappedPreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBloc
 		return &sdk.ResponsePreBlock{}, err
 	}
 
+	if len(req.Txs) > 1 {
+		var inferenceVoteExtension wardentypes.InferenceVoteExtension
+		if err := app.appCodec.Unmarshal(req.Txs[1], &inferenceVoteExtension); err != nil {
+			// this tx was not created by us, so let's move on
+			return resp, nil
+		}
+
+		for _, result := range inferenceVoteExtension.Results {
+			err := app.WardenKeeper.UpdateInferenceRequest(ctx, result)
+			if err != nil {
+				return resp, err
+			}
+		}
+	}
+
 	// return resp from app's preblocker which can return consensus param changed flag
 	return resp, nil
 }
@@ -108,8 +128,88 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 		currencypair.NewDeltaCurrencyPairStrategy(app.OracleKeeper),
 		oracleMetrics,
 	)
-	app.SetPrepareProposal(proposalHandler.PrepareProposalHandler())
-	app.SetProcessProposal(proposalHandler.ProcessProposalHandler())
+	oraclePrepareProposalHandler := proposalHandler.PrepareProposalHandler()
+	app.SetPrepareProposal(func(ctx sdk.Context, rpp *abci.RequestPrepareProposal) (*abci.ResponsePrepareProposal, error) {
+		resp, err := oraclePrepareProposalHandler(ctx, rpp)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(resp.Txs) < 1 {
+			return resp, nil
+		}
+		slinkyTx := resp.Txs[0]
+
+		var restOfTxs [][]byte
+		if len(resp.Txs) > 1 {
+			restOfTxs = resp.Txs[1:]
+		}
+
+		// todo: check rpp.maxtxbytes is respected
+
+		pendingInferenceRequests, err := app.WardenKeeper.PendingInferenceRequests(ctx)
+		if err != nil {
+			return resp, err
+		}
+
+		results := make([]*wardentypes.InferenceResult, len(pendingInferenceRequests))
+		for i, req := range pendingInferenceRequests {
+			inputInts, err := unmarshalFloat64Slice(req.Input)
+			if err != nil {
+				return resp, err
+			}
+
+			res, err := inferenceEndpoint(inputInts)
+			if err != nil {
+				return resp, err
+			}
+
+			outputInts, err := marshalFloat64Slice(res.ValueOutput)
+			if err != nil {
+				return resp, err
+			}
+
+			results[i] = &wardentypes.InferenceResult{
+				Id:     req.Id,
+				Output: outputInts,
+			}
+		}
+
+		inferenceTx := app.appCodec.MustMarshal(&wardentypes.InferenceVoteExtension{
+			MagicNumber: 42,
+			Results:     results,
+		})
+
+		resp.Txs = [][]byte{
+			slinkyTx,
+			inferenceTx,
+		}
+		resp.Txs = append(resp.Txs, restOfTxs...)
+
+		return resp, nil
+	})
+	oracleProcessProposalHandler := proposalHandler.ProcessProposalHandler()
+	app.SetProcessProposal(func(ctx sdk.Context, rpp *abci.RequestProcessProposal) (*abci.ResponseProcessProposal, error) {
+		if len(rpp.Txs) >= 2 {
+			inferenceTx := rpp.Txs[1]
+			var inferenceVoteExtension wardentypes.InferenceVoteExtension
+			if err := app.appCodec.Unmarshal(inferenceTx, &inferenceVoteExtension); err != nil {
+				// this tx was not created by us, so let's move on
+				return oracleProcessProposalHandler(ctx, rpp)
+			}
+
+			if inferenceVoteExtension.MagicNumber != 42 {
+				// this tx was not created by us, so let's move on
+				return oracleProcessProposalHandler(ctx, rpp)
+			}
+
+			for _, result := range inferenceVoteExtension.Results {
+				// todo: verify result
+				ctx.Logger().Info("got result", "result", result)
+			}
+		}
+		return oracleProcessProposalHandler(ctx, rpp)
+	})
 
 	// Create the aggregation function that will be used to aggregate oracle data
 	// from each validator.
@@ -266,4 +366,78 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			},
 		},
 	}
+}
+
+type inferenceRequest struct {
+	ValueInput []float64 `json:"value_input"`
+	K          uint64    `json:"K"`
+	Delay      float64   `json:"delay"`
+}
+
+type inferenceResponse struct {
+	ValueOutput []float64 `json:"value_output"`
+	ValueHash   string    `json:"value_hash"`
+	Time        float64   `json:"time"`
+}
+
+func inferenceEndpoint(input []float64) (inferenceResponse, error) {
+	req := inferenceRequest{
+		ValueInput: input,
+		K:          80,
+		Delay:      0.01,
+	}
+
+	jsonBz, err := json.Marshal(req)
+	if err != nil {
+		return inferenceResponse{}, err
+	}
+
+	res, err := http.Post("http://localhost:9001/inference/request", "application/json", bytes.NewReader(jsonBz))
+	if err != nil {
+		return inferenceResponse{}, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return inferenceResponse{}, fmt.Errorf("inference endpoint returned non-200 status code: %d", res.StatusCode)
+	}
+
+	var resp inferenceResponse
+	err = json.NewDecoder(res.Body).Decode(&resp)
+	if err != nil {
+		return inferenceResponse{}, err
+	}
+
+	return resp, nil
+}
+
+func marshalFloat64Slice(data []float64) ([]byte, error) {
+	buf := new(bytes.Buffer)
+	for _, val := range data {
+		err := binary.Write(buf, binary.LittleEndian, val)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return buf.Bytes(), nil
+}
+
+func unmarshalFloat64Slice(data []byte) ([]float64, error) {
+	buf := bytes.NewReader(data)
+	var result []float64
+
+	for {
+		var val float64
+		err := binary.Read(buf, binary.LittleEndian, &val)
+		if err != nil {
+			// Check for EOF
+			if err.Error() == "EOF" {
+				break
+			}
+			return nil, err
+		}
+		result = append(result, val)
+	}
+
+	return result, nil
 }

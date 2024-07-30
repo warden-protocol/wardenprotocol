@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
@@ -78,7 +78,7 @@ func (k Keeper) newSignRequestRule(ctx context.Context, msg *v1beta3.MsgNewSignR
 
 	ctxWithVals, dataForSigning, err := k.executeAnalyzers(ctx, creator, msg.Analyzers, msg.Input)
 	if err != nil {
-		return nil, acttypes.Rule{}, fmt.Errorf("executing analyzers: %w", err)
+		return nil, acttypes.Rule{}, errors.Wrapf(v1beta3.ErrAnalyzer, "%v", err)
 	}
 
 	if dataForSigning != nil {
@@ -142,7 +142,7 @@ func (k Keeper) executeAnalyzers(ctx context.Context, creator string, contracts 
 			return nil, nil, err
 		}
 		if dfs != nil && dataForSigning != nil {
-			return nil, nil, fmt.Errorf("two or more contracts tried to set DataForSigning. Only one analyzer contract can return DataForSigning")
+			return nil, nil, v1beta3.ErrDuplicateAnalyzersDataForSigning
 		}
 		if dfs != nil {
 			dataForSigning = dfs

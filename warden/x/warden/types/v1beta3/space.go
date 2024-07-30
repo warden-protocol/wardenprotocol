@@ -1,8 +1,6 @@
 package v1beta3
 
 import (
-	"fmt"
-
 	"github.com/warden-protocol/wardenprotocol/shield"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -18,7 +16,7 @@ func (w *Space) IsOwner(address string) bool {
 
 func (w *Space) AddOwner(address string) error {
 	if w.IsOwner(address) {
-		return fmt.Errorf("owner already exists")
+		return ErrDuplicateSpaceOwner
 	}
 	w.Owners = append(w.Owners, address)
 	return nil

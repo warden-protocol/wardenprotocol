@@ -1,27 +1,28 @@
-import { Icons } from "@/features/keychains/icons";
 import clsx from "clsx";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
+import { Icons } from "@/features/keychains/icons";
+import { useModalState } from "../modals/state";
 
 interface KeychainProps {
-	key: number;
+	id: bigint;
 	name: string;
 	link: string;
-	description: string;
+	description: ReactNode;
 	lastSeen: string;
+	verified?: boolean;
 }
 
 const KeychainCard = (props: KeychainProps) => {
-	const [isDescriptoin, setIsDescription] = useState(false);
+	const [isDescription, setIsDescription] = useState(false);
+	const { setData: setModal } = useModalState();
+
 	return (
-		<div
-			key={props.key}
-			className="flex flex-col bg-fill-quaternary border-border-edge border-solid border-[1px] rounded-xl px-6 pt-6 pb-4"
-		>
+		<div className="flex flex-col bg-fill-quaternary border-border-edge border-solid border-[1px] rounded-xl px-6 pt-6 pb-4">
 			<div className="flex items-center gap-[8px]">
 				<div className="text-2xl font-bold text-ellipsis whitespace-nowrap overflow-hidden max-w-[calc(100%_-_68px)]">
 					{props.name}
 				</div>
-				<Icons.verified />
+				{props.verified ? <Icons.verified /> : null}
 				<a href={props.link} target="_blank" className="ml-auto">
 					<Icons.externalLink className="invert dark:invert-0" />
 				</a>
@@ -31,18 +32,18 @@ const KeychainCard = (props: KeychainProps) => {
 				<span
 					className={clsx(
 						"text-label-secondary text-xs mt-2 pr-8",
-						isDescriptoin ? "inline-block" : "line-clamp-2",
+						isDescription ? "inline-block" : "line-clamp-2",
 					)}
 				>
 					{props.description}
 				</span>
 				<button
 					onClick={() => {
-						setIsDescription(!isDescriptoin);
+						setIsDescription(!isDescription);
 					}}
 					className="text-xs cursor-pointer leading-[16px] absolute right-0 bottom-0 focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0"
 				>
-					{isDescriptoin ? "Less" : "More"}
+					{isDescription ? "Less" : "More"}
 				</button>
 			</div>
 
@@ -82,12 +83,18 @@ const KeychainCard = (props: KeychainProps) => {
 
 			<div className="flex my-4 items-center gap-2 text-xs text-label-secondary">
 				<Icons.clock className="invert dark:invert-0" />
-				Last seen {props.lastSeen} h ago
+				Last seen {props.lastSeen}
 			</div>
 
 			<div className="bg-border-quaternary h-[1px] mb-2 mt-auto" />
 
-			<button className="focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 flex items-center justify-center gap-2 h-14 font-semibold duration-300 text-pixel-pink hover:text-foreground w-full">
+			<button
+				className="focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 flex items-center justify-center gap-2 h-14 font-semibold duration-300 text-pixel-pink hover:text-foreground w-full"
+				onClick={setModal.bind(null, {
+					type: "create-key",
+					params: { keychainId: props.id },
+				})}
+			>
 				<Icons.plus />
 				Create Key for $X.XX
 			</button>

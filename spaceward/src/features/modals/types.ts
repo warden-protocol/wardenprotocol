@@ -5,6 +5,7 @@ import type { ModalType } from "./state";
 export interface CreateKeyParams {
 	next?: ModalType;
 	spaceId?: string;
+	keychainId?: bigint;
 }
 
 export interface TransferParams {

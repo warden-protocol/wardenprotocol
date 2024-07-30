@@ -19,6 +19,7 @@ export default function CreateKeyModal({
 	hidden,
 	next,
 	spaceId: selectedSpaceId,
+	keychainId,
 }: ModalParams<CreateKeyParams>) {
 	const { useKeychains, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
@@ -33,12 +34,25 @@ export default function CreateKeyModal({
 		},
 	});
 
-	const [keychain, setKeychain] = useState<Keychain>();
+	const keychain = keychainsQuery.data?.keychains.find(
+		(kc) => kc.id === keychainId,
+	);
 	const [selected, setSelected] = useState(-1);
 	const [isDetails, setIsDetails] = useState(false);
 	const [name, setName] = useState("");
 	const [themeIndex, setThemeIndex] = useState(0);
 	const [themeOffset, setThemeOffset] = useState(0);
+
+	function setKeychain(keychain: Keychain | undefined) {
+		const keychainId = keychain?.id;
+		setModal({
+			params: {
+				next,
+				spaceId,
+				keychainId,
+			},
+		});
+	}
 
 	async function create() {
 		if (!keychain || !ks || !spaceId) {

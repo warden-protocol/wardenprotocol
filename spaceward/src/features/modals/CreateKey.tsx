@@ -18,7 +18,7 @@ const THEME_DISPLAY_COUNT = 4;
 export default function CreateKeyModal({
 	hidden,
 	next,
-	spaceId: selectedSpaceId
+	spaceId: selectedSpaceId,
 }: ModalParams<CreateKeyParams>) {
 	const { useKeychains, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
@@ -85,7 +85,7 @@ export default function CreateKeyModal({
 					<Icons.verified />
 				</div>
 
-				<div className="text-label-secondary text-left">
+				<div className="text-muted-foreground text-left">
 					A modular custody primitive to expand the original vision
 					from Qredo by connecting multiple next generation custodial
 					and key management solutions to builders. Powered by the

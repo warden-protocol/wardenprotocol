@@ -2,6 +2,7 @@ package v1beta3
 
 import (
 	"encoding/binary"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -54,4 +55,16 @@ func (k *Keychain) SetFees(fees *KeychainFees) {
 
 func (k *Keychain) SetDescription(description string) {
 	k.Description = description
+}
+
+func (kf *KeychainFees) EnsureValid() error {
+	if err := kf.KeyReq.Validate(); err != nil {
+		return fmt.Errorf("key req is invalid: %w", err)
+	}
+
+	if err := kf.SigReq.Validate(); err != nil {
+		return fmt.Errorf("sig req is invalid: %w", err)
+	}
+
+	return nil
 }

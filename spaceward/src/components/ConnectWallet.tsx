@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FaucetButton from "./FaucetButton";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, ChevronsUpDown, LogOutIcon } from "lucide-react";
+import { AlertCircle, ChevronsUpDown } from "lucide-react";
 import {
 	Popover,
 	PopoverContent,
@@ -20,15 +20,32 @@ import {
 	TooltipTrigger,
 	TooltipProvider,
 } from "./ui/tooltip";
+import { Icons } from "@/layouts/icons";
+import { wallets } from "cosmos-kit";
 
 export function ConnectWallet() {
 	const { wallet, disconnect, username } = useChain(env.cosmoskitChainName);
 	const { address } = useAddressContext();
 
 	const [showTooltip, setShowTooltip] = useState<Boolean>(false);
+	const [currentWallet, setCurrentWallet] = useState("");
 
 	const { balance } = useAsset("uward");
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
+
+	useEffect(() => {
+		typeof window !== undefined &&
+			"localStorage" &&
+			setCurrentWallet(
+				localStorage.getItem("cosmos-kit@2:core//current-wallet") ?? "",
+			);
+	}, [address]);
+
+	const supportedWallets = wallets.for("keplr", "leap", "cosmostation");
+
+	const walletIcon = supportedWallets.find(
+		(item) => item.walletInfo.name === currentWallet,
+	)?.walletInfo.logo;
 
 	return (
 		<Popover>
@@ -38,12 +55,20 @@ export function ConnectWallet() {
 						asChild
 						variant="outline"
 						role="combobox"
-						className="justify-between w-auto md:w-80 bg-transparent hover:bg-transparent cursor-pointer rounded-xl bg:bg-card h-16 px-0 md:px-4 gap-2 min-w-0 md:hover:bg-card hover:text-foreground border-0"
+						className="p-0 my-0 w-full flex items-center bg-transparent hover:bg-transparent cursor-pointer rounded-xl bg:bg-card mt-6 min-w-0 md:hover:bg-card hover:text-foreground border-0"
 					>
-						<div>
-							<div className="relative w-10">
-								<AddressAvatar seed={address} />
+						<div className="relative flex flex-col">
+							<div className="border-[2px] flex items-center justify-center shrink-0 p-[2px] rounded-full focus:border-pixel-pink border-transparent">
+								<AddressAvatar
+									seed={address}
+									className="w-6 h-6"
+								/>
 							</div>
+							<div className="text-center text-label-secondary text-xs mt-[6px]">
+								..{address.slice(-4)}
+							</div>
+						</div>
+						{/* <div>
 							<div className="md:flex flex-col text-left text-xs hidden w-full px-4">
 								<span className="block text-sm max-w-44 truncate">
 									{username}
@@ -53,7 +78,7 @@ export function ConnectWallet() {
 								</span>
 							</div>
 							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 hidden md:block" />
-						</div>
+						</div> */}
 					</Button>
 				) : (
 					<Button
@@ -74,13 +99,40 @@ export function ConnectWallet() {
 			</PopoverTrigger>
 
 			{address ? (
-				<PopoverContent className="w-80 bg-card rounded-xl border-0 px-4 py-6">
-					<div className="grid gap-4">
-						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center px-2">
-							<span className="block text-sm">
-								<Copy value={address} split />
-							</span>
-							<div className="flex flex-row gap-2">
+				<PopoverContent
+					side="left"
+					className="w-80 mt-2 mr-2 bg-card rounded-xl p-6 border-[1px] border-border-edge border-solid"
+				>
+					<div className="grid gap-6">
+						<div className="flex flex-row text-left gap-3 items-center">
+							<div className="relative flex items-center justify-center shrink-0">
+								<AddressAvatar
+									seed={address}
+									className="w-10 h-10"
+								/>
+								{currentWallet && walletIcon ? (
+									<div className="absolute w-4 h-4 bg-fill-quaternary rounded-full -right-[6px] -bottom-[6px] p-1 flex-center justify-center">
+										<img
+											src={
+												typeof walletIcon === "string"
+													? walletIcon
+													: walletIcon.minor
+											}
+											alt=""
+										/>
+									</div>
+								) : (
+									<></>
+								)}
+							</div>
+							<div>
+								<div className="overflow-hidden text-ellipsis max-w-[160px]">{username}</div>
+								<div className="text-xs text-label-secondary">
+									<Copy value={address} split />
+								</div>
+							</div>
+
+							<div className="flex flex-row gap-2 ml-auto">
 								<TooltipProvider>
 									<Tooltip>
 										<TooltipTrigger
@@ -91,9 +143,9 @@ export function ConnectWallet() {
 												setShowTooltip(false)
 											}
 										>
-											<LogOutIcon
+											<Icons.logOut
 												onClick={() => disconnect()}
-												className="h-4 w-4 cursor-pointer"
+												className="h-6 w-6 cursor-pointer "
 											/>
 										</TooltipTrigger>
 										{showTooltip && (
@@ -105,18 +157,17 @@ export function ConnectWallet() {
 								</TooltipProvider>
 							</div>
 						</div>
-						<div className="bg-background rounded-xl">
-							<div className="px-6 py-4 text-sm border-b border-card flex justify-between">
-								<span>Wallet</span>
-								<span>{wallet?.prettyName || ""}</span>
+						<div className="bg-fill-quaternary rounded-lg flex items-center gap-3 p-4">
+							<Icons.wardPink />
+							<div>
+								<div className="text-xs text-label-secondary">
+									Balance
+								</div>
+								<div>{ward.toFixed(2)} WARD</div>
 							</div>
-							<div className="px-6 py-4 text-sm flex justify-between">
-								<span>Balance</span>
-								<span>{ward.toFixed(2)} WARD</span>
+							<div className="ml-auto">
+								<FaucetButton />
 							</div>
-						</div>
-						<div className="flex flex-col gap-4 flex-grow mx-2">
-							<FaucetButton />
 						</div>
 					</div>
 				</PopoverContent>

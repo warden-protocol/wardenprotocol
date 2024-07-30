@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Icons } from "@/components/ui/icons";
-import { ConnectWallet } from "@/components/ConnectWallet";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
@@ -61,9 +60,6 @@ export function SiteHeader() {
 					<div className="md:hidden block">
 						<WalletConnect />
 					</div>
-					<nav className="flex items-center">
-						<ConnectWallet />
-					</nav>
 				</div>
 			</div>
 		</header>

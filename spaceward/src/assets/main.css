@@ -253,3 +253,17 @@ input::-webkit-outer-spin-button {
 	-webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
 	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
 } */
+
+.mask-space {
+	-webkit-mask-image: -webkit-gradient(
+		linear,
+		left 0%,
+		left bottom,
+		from(rgba(0, 0, 0, 1)),
+		to(rgba(0, 0, 0, 0))
+	);
+}
+
+.fix-avatar .rounded-full {
+	border-radius: 0;
+}

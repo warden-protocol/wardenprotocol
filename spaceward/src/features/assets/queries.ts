@@ -79,7 +79,7 @@ export const cosmosBalancesQuery = (params: {
 			throw new Error("Chain assets not found");
 		}
 
-		return balances.balances.map((x): BalanceEntry => {
+		const result = balances.balances.map((x): BalanceEntry => {
 			// todo optimise
 			const asset = chainAssets!.assets.find((y) => y.base === x.denom);
 
@@ -97,6 +97,7 @@ export const cosmosBalancesQuery = (params: {
 				chainId: chainAssets?.chain_name,
 				chainName: params.chainName,
 				decimals: exp,
+				// fixme
 				price: BigInt(0),
 				priceDecimals: 8,
 				token: asset?.symbol ?? "",
@@ -104,6 +105,26 @@ export const cosmosBalancesQuery = (params: {
 				type: "osmosis",
 			};
 		});
+
+		if (!result.length) {
+			const [native] = chainAssets.assets;
+
+			result.push({
+				address: params.address!,
+				balance: BigInt(0),
+				chainId: chainAssets.chain_name,
+				chainName: params.chainName,
+				decimals: native.denom_units[0].exponent,
+				// fixme
+				price: BigInt(0),
+				priceDecimals: 8,
+				token: native.symbol,
+				title: native.name,
+				type: "osmosis",
+			})
+		}
+
+		return result;
 	},
 	refetchInterval: Infinity,
 	staleTime: 15000,

@@ -98,15 +98,15 @@
 		--ring: 0 0% 83.1%;
 
 		--pink-secondary: rgba(255, 174, 238, 0.15);
-		--border-secondary: rgba(229, 238, 255, 0.04);
+		--border-secondary: rgba(229, 238, 255, 0.6);
 		--fill-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-elevated: rgba(229, 238, 255, 0.1);
 		--overlay: rgba(64, 64, 64, 0.4);
 		--secondary-bg: rgba(229, 238, 255, 0.15);
-		--label-secondary: #737373;
+		--label-secondary: rgba(229, 238, 255, 0.6);
 		--label-tertiary: rgba(229, 238, 255, 0.3);
 		--border-quaternary: rgba(229, 238, 255, 0.1);
-		--fill-accent-secondary: #75426a;
+		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--bg-elevated: #424345;
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);

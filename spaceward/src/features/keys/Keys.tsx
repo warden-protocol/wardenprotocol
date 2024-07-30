@@ -188,13 +188,9 @@ function Key({
 					className="cursor-pointer p-1"
 					onClick={() => {
 						setModal({
-							type: "select-key",
+							type: "receive",
 							params: {
-								addresses: addresses.map((a) => ({
-									...a,
-									keyId: key.id,
-								})),
-								next: "receive",
+								keyResponse: { key, addresses },
 							},
 						});
 					}}
@@ -205,13 +201,10 @@ function Key({
 					className="ml-4 cursor-pointer p-1"
 					onClick={() => {
 						setModal({
-							type: "select-key",
+							type: "send",
 							params: {
-								addresses: addresses.map((a) => ({
-									...a,
-									keyId: key.id,
-								})),
-								next: "send",
+								address: addresses[0].address,
+								keyResponse: { key, addresses },
 							},
 						});
 					}}
@@ -280,15 +273,9 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 									className="cursor-pointer"
 									onClick={() => {
 										setModal({
-											type: "select-key",
+											type: "receive",
 											params: {
-												addresses: addresses.map(
-													(a) => ({
-														...a,
-														keyId: key.id,
-													}),
-												),
-												next: "receive",
+												keyResponse: { key, addresses }
 											},
 										});
 									}}
@@ -299,15 +286,10 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 									className="ml-4 cursor-pointer"
 									onClick={() => {
 										setModal({
-											type: "select-key",
+											type: "send",
 											params: {
-												addresses: addresses.map(
-													(a) => ({
-														...a,
-														keyId: key.id,
-													}),
-												),
-												next: "send",
+												address: addresses[0].address,
+												keyResponse: { key, addresses }
 											},
 										});
 									}}

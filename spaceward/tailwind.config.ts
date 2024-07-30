@@ -30,6 +30,7 @@ const config = {
 				"fill-quaternary": "var(--fill-quaternary)",
 				"fill-elevated": "var(--fill-elevated)",
 				"fill-accent-secondary": "var(--fill-accent-secondary)",
+				"fill-accent-hover": "#F478DB",
 				"bg-elevated": "var(--bg-elevated)",
 				"border-edge": "var(--border-edge)",
 				"secondary-text": "rgba(229,238,255,0.60)",

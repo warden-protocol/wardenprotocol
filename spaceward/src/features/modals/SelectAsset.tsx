@@ -8,6 +8,7 @@ import AssetRow, { AssetPlaceholder } from "../assets/AssetRow";
 import { useAssetQueries } from "../assets/hooks";
 import type { SelectAssetParams } from "./types";
 import { useModalState } from "./state";
+import { capitalize } from "./util";
 
 const Network = ({ chainName }: { chainName: string }) => {
 	const Icon = NetworkIcons[chainName] ?? AssetPlaceholder;
@@ -116,12 +117,23 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 							className=" bg-secondary-bg cursor-pointer rounded-[20px] flex gap-[6px] p-1 pr-2"
 						>
 							<div className="flex">
-								{chains.slice(0, 3).map((chainName, key) => (
-									<Network key={key} chainName={chainName} />
-								))}
+								{currentNetwork ? (
+									<Network chainName={currentNetwork} />
+								) : (
+									chains
+										.slice(0, 3)
+										.map((chainName, key) => (
+											<Network
+												key={key}
+												chainName={chainName}
+											/>
+										))
+								)}
 							</div>
 
-							{currentNetwork ? currentNetwork : "All Networks"}
+							{currentNetwork
+								? capitalize(currentNetwork)
+								: "All Networks"}
 
 							<Icons.chevronDown
 								className={clsx(
@@ -155,7 +167,7 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 											className="flex cursor-pointer items-center text-sm gap-3 py-[8px]"
 										>
 											<Network chainName={chainName} />
-											{chainName}
+											{capitalize(chainName)}
 
 											{currentNetwork === chainName && (
 												<Icons.check className="ml-auto" />

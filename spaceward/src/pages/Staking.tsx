@@ -237,7 +237,7 @@ export function StakingPage() {
 				reward={queryTotalRewards.data?.rewards[0]}
 			/>
 
-			<div className="bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6">
+			<div className="bg-card  rounded-xl border-border-edge border-[1px] px-8 py-6">
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-3">
 						<div

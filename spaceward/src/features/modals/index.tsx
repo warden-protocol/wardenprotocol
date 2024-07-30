@@ -1,20 +1,14 @@
+import clsx from "clsx";
 import AddOwnerModal from "./AddOwner";
 import ApproveModal from "./ApproveActionModal";
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
-import SelectKeyModal from "./SelectKeys";
 import ReceiveAssetsModal from "./ReceiveAssets";
 import SelectAssetModal from "./SelectAsset";
 import SendAssetsModal from "./SendAssets";
 import WalletConnectModal from "./WalletConnect";
 import { useModalState } from "./state";
-import {
-	CreateKeyParams,
-	SelectAssetParams,
-	SelectKeyParams,
-	TransferParams,
-} from "./types";
-import clsx from "clsx";
+import type { CreateKeyParams, SelectAssetParams, TransferParams } from "./types";
 
 export default function ModalRoot() {
 	const { data, setData } = useModalState();
@@ -61,8 +55,6 @@ export default function ModalRoot() {
 				<ConnectedModal />
 			) : !data.params ? (
 				<></>
-			) : data.type === "select-key" ? (
-				<SelectKeyModal {...(data.params as SelectKeyParams)} />
 			) : data.type === "receive" ? (
 				<ReceiveAssetsModal {...(data.params as TransferParams)} />
 			) : data.type === "send" ? (

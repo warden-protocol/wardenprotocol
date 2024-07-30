@@ -19,6 +19,7 @@ const COMPACT_UTIL: CompactConf[] = [
 ];
 
 interface ToFixedFormatOptions {
+	ceil?: boolean;
 	compact?: boolean;
 	decimals: number;
 	format?: boolean;
@@ -40,7 +41,13 @@ export const bigintToFloat = (v: bigint, decimals: number): number => {
 
 export const bigintToFixed = (
 	v: bigint | undefined,
-	{ compact, decimals, format, display: _display }: ToFixedFormatOptions,
+	{
+		ceil,
+		compact,
+		decimals,
+		format,
+		display: _display,
+	}: ToFixedFormatOptions,
 ) => {
 	const display = _display
 		? decimals < _display
@@ -50,7 +57,7 @@ export const bigintToFixed = (
 
 	const unit = BigInt(10) ** BigInt(decimals);
 	const int = (v ?? BigInt(0)) / unit;
-	const fra = (v ?? BigInt(0)) % unit;
+	let fra = (v ?? BigInt(0)) % unit;
 
 	if (compact) {
 		for (const { unit, moreThan } of COMPACT_UTIL) {
@@ -69,7 +76,19 @@ export const bigintToFixed = (
 		return int.toString(10);
 	}
 
-	const padded = fra.toString(10).padStart(decimals, "0").slice(0, display);
+	let plusOne = false;
+
+	if (display < decimals) {
+		const _unit = BigInt(10) ** BigInt(decimals - display);
+
+		if (ceil) {
+			plusOne = Boolean(fra % _unit);
+		}
+
+		fra = fra / _unit + BigInt(plusOne);
+	}
+
+	const padded = fra.toString(10).padStart(display, "0");
 	const trimmed = padded.replace(/0+$/, "");
 	return `${format ? int.toLocaleString("en-US") : int}${trimmed ? `.${trimmed}` : ""}`;
 };

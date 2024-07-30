@@ -235,8 +235,8 @@ export function AssetsPage() {
 						<button
 							className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
 							onClick={setModal.bind(null, {
-								type: "select-key",
-								params: { next: "receive", addresses },
+								type: "receive",
+								params: {},
 							})}
 						>
 							<Icons.arrowDown />
@@ -269,7 +269,7 @@ export function AssetsPage() {
 						) : null}
 					</div>
 				</div>
-				<div className="bg-card  rounded-xl min-h-[220px] border-border-secondary border-[1px] py-6 px-8">
+				<div className="bg-card  rounded-xl min-h-[220px] border-border-edge border-[1px] py-6 px-8">
 					<div className="flex justify-between items-center">
 						<div className="text-2xl font-bold tracking-[0.12px]">
 							Performance
@@ -316,7 +316,7 @@ export function AssetsPage() {
 				</div>
 			</div>
 
-			<div className="bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6">
+			<div className="bg-card  rounded-xl border-border-edge border-[1px] px-8 py-6">
 				{noAssets ? (
 					<div className="min-h-[280px] flex flex-col items-center justify-center text-center">
 						<div className="text-2xl font-bold tracking-[0.12px] mb-1">
@@ -328,8 +328,8 @@ export function AssetsPage() {
 						<button
 							className="text-black mt-6 bg-white h-[40px] rounded-lg justify-center text-base font-medium py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
 							onClick={setModal.bind(null, {
-								type: "select-key",
-								params: { next: "receive", addresses },
+								type: "receive",
+								params: {},
 							})}
 						>
 							Receive
@@ -579,6 +579,7 @@ export function AssetsPage() {
 													)
 														? AddressType.ADDRESS_TYPE_ETHEREUM
 														: AddressType.ADDRESS_TYPE_OSMOSIS,
+													keyResponse: key,
 												},
 											})}
 										>
@@ -591,13 +592,13 @@ export function AssetsPage() {
 												params: {
 													address: item.address,
 													chainName: item.chainName,
-													keyResponse: key,
 													token: item.token,
 													type: item.type.startsWith(
 														"eip155:",
 													)
 														? AddressType.ADDRESS_TYPE_ETHEREUM
 														: AddressType.ADDRESS_TYPE_OSMOSIS,
+													keyResponse: key,
 												},
 											})}
 										>

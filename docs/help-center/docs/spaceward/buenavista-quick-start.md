@@ -26,20 +26,20 @@ The following is a brief overview explaining how to start using SpaceWard. For m
     - 👉 [Keplr](https://www.keplr.app/download)
     - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension)
 
-2. 👉 [Connect Your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/) and follow the prompts.
+2. 👉 [Connect your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/), click **Connect**, and follow the prompts.
 
-3. 👉 [Get test WARD](get-test-ward): On the top right, select your connected wallet and click **GET WARD**.
+3. 👉 [Get test WARD](get-test-ward): Click **GET WARD**. You'll be redirected to a faucet where you can get some WARD.
 
-4. 👉 [Create a Space](create-a-space): On the top left, click **Active Space** and then **Create a New Space**.
+4. 👉 [Create a Space](create-a-space): Click **Create a new space**. Approve the action in your wallet.
 
-5. 👉 [Request a new Key](request-a-new-key): In the left menu, navigate to **Keys** and click **Create Key**.
+5. 👉 [Request a new Key](request-a-new-key): In the left menu, navigate to **Keys** and click **Create Key**. Then select a Keychain, click **Create**, and approve in your wallet.
 
 6. Fund your wallet: Select your new key, click **Receive** to get its address, and receive some Sepolia ETH from these faucets:
 
     - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
     - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
 
-7. 👉 [Use WalletConnect](use-walletconnect). Click the **WalletConnect** icon to access UniSwap or any other dApp supporting Sepolia.
+7. 👉 [Use WalletConnect](use-walletconnect): Click the **WalletConnect** icon to access UniSwap or any other dApp supporting Sepolia.
 
 Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
 

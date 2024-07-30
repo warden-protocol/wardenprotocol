@@ -16,7 +16,7 @@ To use SpaceWard, connect your **Cosmos wallet** to your Warden account:
     
     ![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
     
-2. Choose a wallet to connect:
+2. Select a wallet to connect.
     
     ![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)
 

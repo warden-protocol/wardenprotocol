@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"runtime/debug"
 
-	errorsmod "cosmossdk.io/errors"
+	"cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -58,12 +58,12 @@ func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 	var msg sdk.Msg
 	err := k.cdc.UnpackAny(act.Msg, &msg)
 	if err != nil {
-		return fmt.Errorf("unpacking Action.Msg: %w", err)
+		return errors.Wrapf(types.ErrInvalidActionMsg, "unpacking Msg: %v", err)
 	}
 
 	handler := k.router.Handler(msg)
 	if handler == nil {
-		return fmt.Errorf("no handler registered for %s", sdk.MsgTypeURL(msg))
+		return errors.Wrapf(types.ErrNoActionMsgHandler, sdk.MsgTypeURL(msg))
 	}
 
 	var res *sdk.Result
@@ -75,7 +75,7 @@ func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 			return err
 		}
 		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
-			return fmt.Errorf("persisting updated action: %w", err)
+			return err
 		}
 		return nil
 	}
@@ -87,11 +87,11 @@ func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 	sdkCtx.EventManager().EmitEvents(res.GetEvents())
 
 	if err := act.SetResult(sdkCtx, res.MsgResponses[0]); err != nil {
-		return fmt.Errorf("updating Action.Result: %w", err)
+		return err
 	}
 
 	if err := k.ActionKeeper.Set(ctx, *act); err != nil {
-		return fmt.Errorf("persisting updated action: %w", err)
+		return err
 	}
 
 	return nil
@@ -141,7 +141,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	ctx = ctxWithActionCreator(ctx, creator)
 	ctx, rule, err := k.rulesRegistry.Get(ctx, msg)
 	if err != nil {
-		return nil, fmt.Errorf("can't get intent for message: %w", err)
+		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)
 	}
 
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
@@ -202,7 +202,7 @@ func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	}
 
 	if sdk.AccAddress(signers[0]).String() != k.GetModuleAddress() {
-		return errorsmod.Wrapf(types.ErrInvalidActionMsgSigner, sdk.AccAddress(signers[0]).String())
+		return errors.Wrapf(types.ErrInvalidActionMsgSigner, sdk.AccAddress(signers[0]).String())
 	}
 
 	return nil

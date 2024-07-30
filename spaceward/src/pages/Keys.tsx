@@ -38,7 +38,7 @@ export function KeysPage() {
 						</div>
 
 						<Assets.toggleView
-							className="cursor-pointer"
+							className="cursor-pointer bg-fill-quaternary rounded-2xl invert dark:invert-0"
 							selected={data?.view}
 							onClick={toggleView}
 						/>

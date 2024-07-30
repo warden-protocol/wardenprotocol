@@ -185,7 +185,7 @@ function Key({
 
 			<div className="flex items-center justify-end gap-2">
 				<div
-					className="cursor-pointer p-1"
+					className="cursor-pointer p-1 invert dark:invert-0"
 					onClick={() => {
 						setModal({
 							type: "receive",
@@ -198,7 +198,7 @@ function Key({
 					<Icons.receive />
 				</div>
 				<div
-					className="ml-4 cursor-pointer p-1"
+					className="ml-4 cursor-pointer p-1 invert dark:invert-0"
 					onClick={() => {
 						setModal({
 							type: "send",
@@ -248,10 +248,10 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 				>
 					<img className="absolute z-0" src={avatar} alt="" />
 
-					<div className="relative z-10 w-full h-full bg-overlay-secondary flex flex-col">
+					<div className="relative z-10 w-full h-full text-white bg-overlay-secondary flex flex-col">
 						<div className="flex flex-col p-4">
 							<div className="flex items-center">
-								<p className="font-bold font-sans text-lg">
+								<p className="font-bold font-sans text-lg ">
 									{name}
 								</p>
 								<InfoIcon
@@ -302,7 +302,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 				</div>
 				<div
 					className={clsx(
-						"absolute flipper-backface h-full w-full bg-tertiary transition-transform border-border-primary border-[1px] border-solid rounded-xl",
+						"absolute flipper-backface h-full w-full bg-card transition-transform border-border-primary border-[1px] border-solid rounded-xl",
 						{ flipped: !flipped },
 					)}
 				>
@@ -381,7 +381,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 
 const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	return (
-		<div className="bg-tertiary rounded-xl py-6 px-8">
+		<div className="bg-card rounded-xl py-6 px-8">
 			<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
 				<div className="text-sm	text-label-secondary">Key</div>
 				<div className="text-sm	text-label-secondary">Addresses</div>

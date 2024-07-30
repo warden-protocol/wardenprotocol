@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
@@ -15,9 +14,6 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
-	if act.Status != types.ActionStatus_ACTION_STATUS_PENDING {
-		return nil, fmt.Errorf("action not pending %s", act.Status.String())
-	}
 	if act.TimeoutHeight > 0 && act.TimeoutHeight < uint64(ctx.BlockHeight()) {
 		if err := act.SetStatus(ctx, types.ActionStatus_ACTION_STATUS_TIMEOUT); err != nil {
 			return nil, err
@@ -37,7 +33,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 	}
 
 	if err := k.ActionKeeper.Set(ctx, act); err != nil {
-		return nil, fmt.Errorf("persisting updated action: %w", err)
+		return nil, err
 	}
 
 	if err := k.TryExecuteAction(ctx, &act); err != nil {

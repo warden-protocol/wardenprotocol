@@ -1,9 +1,9 @@
 package v1beta1
 
 import (
-	"fmt"
 	time "time"
 
+	"cosmossdk.io/errors"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -28,7 +28,7 @@ func (a *Action) SetResult(ctx sdk.Context, result *codectypes.Any) error {
 
 func (a *Action) SetStatus(ctx sdk.Context, status ActionStatus) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
-		return fmt.Errorf("cannot set result of action in status: %s", a.Status.String())
+		return errors.Wrapf(ErrInvalidActionStatusChange, "from %s to %s", a.Status.String(), status.String())
 	}
 	prevStatus := a.Status
 	a.Status = status
@@ -42,12 +42,12 @@ func (a *Action) SetStatus(ctx sdk.Context, status ActionStatus) error {
 
 func (a *Action) AddApprover(ctx sdk.Context, address string) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
-		return fmt.Errorf("action already completed")
+		return errors.Wrapf(ErrInvalidActionStatus, "can't add approver to an action that's not pending")
 	}
 
 	for _, a := range a.Approvers {
 		if a.Address == address {
-			return fmt.Errorf("approver already added")
+			return ErrApproverExists
 		}
 	}
 

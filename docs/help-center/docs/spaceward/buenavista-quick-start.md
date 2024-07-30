@@ -28,7 +28,7 @@ The following is a brief overview explaining how to start using SpaceWard. For m
 
 2. 👉 [Connect your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/), click **Connect**, and follow the prompts.
 
-3. 👉 [Get test WARD](get-test-ward): Click **GET WARD**. You'll be redirected to a faucet where you can get some WARD.
+3. 👉 [Get test WARD](get-test-ward): Click **Get WARD**. You'll be redirected to a faucet where you can get some WARD.
 
 4. 👉 [Create a Space](create-a-space): Click **Create a new space**. Approve the action in your wallet.
 

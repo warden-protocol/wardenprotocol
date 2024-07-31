@@ -8,7 +8,11 @@ import SelectAssetModal from "./SelectAsset";
 import SendAssetsModal from "./SendAssets";
 import WalletConnectModal from "./WalletConnect";
 import { useModalState } from "./state";
-import type { CreateKeyParams, SelectAssetParams, TransferParams } from "./types";
+import type {
+	CreateKeyParams,
+	SelectAssetParams,
+	TransferParams,
+} from "./types";
 
 export default function ModalRoot() {
 	const { data, setData } = useModalState();
@@ -20,7 +24,7 @@ export default function ModalRoot() {
 	return (
 		<div
 			className={clsx(
-				"absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate",
+				"absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate z-[999]",
 				{ hidden: !data.type },
 			)}
 		>
@@ -28,7 +32,7 @@ export default function ModalRoot() {
 
 			<button
 				onClick={() => setData({ type: undefined, params: undefined })}
-				className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+				className="absolute top-8 invert dark:invert-0 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
 			>
 				<img src="/images/button-close.svg" alt="" />
 			</button>

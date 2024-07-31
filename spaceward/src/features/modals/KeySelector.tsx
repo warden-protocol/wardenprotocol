@@ -10,7 +10,7 @@ import AddressAvatar from "@/components/AddressAvatar";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
-import {  bigintToFloat } from "@/lib/math";
+import { bigintToFloat } from "@/lib/math";
 import { useKeySettingsState } from "../keys/state";
 import { KEY_THEMES } from "../keys/assets";
 
@@ -28,12 +28,10 @@ const KeySelector = ({
 	// fixme undefined type not resolved
 	const addresses = currentKey?.addresses;
 	const key = currentKey?.key;
-	console.log({ currentKey, key })
+	console.log({ currentKey, key });
 	const settings = ks?.settings[key?.id.toString() ?? ""];
 	const [keyDropdown, setKeyDropdown] = useState(false);
-	const seed = Buffer.from(key?.publicKey ?? []).toString(
-		"base64",
-	);
+	const seed = Buffer.from(key?.publicKey ?? []).toString("base64");
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId?.toString());
@@ -75,7 +73,7 @@ const KeySelector = ({
 					setKeyDropdown(true);
 				}}
 				className={clsx(
-					"rounded-lg z-20 py-3 px-4 flex items-center gap-4 h-[72px] bg-fill-elevated border-[1px] border-solid border-border-quaternary w-full",
+					"rounded-lg z-20 py-3 px-4 flex text-left items-center gap-4 h-[72px] bg-fill-elevated border-[1px] border-solid border-border-quaternary w-full",
 					keyDropdown && "pointer-events-none opacity-30",
 				)}
 			>
@@ -95,7 +93,9 @@ const KeySelector = ({
 				</div>
 
 				<div>
-					<div className="text-xs text-label-secondary text-left">{settings?.name ?? `Key #${key?.id.toString()}`}</div>
+					<div className="text-xs text-label-secondary text-left">
+						{settings?.name ?? `Key #${key?.id.toString()}`}
+					</div>
 
 					<div className="">
 						{address?.address.toString().slice(0, 8)}...

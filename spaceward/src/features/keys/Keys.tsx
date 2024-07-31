@@ -145,7 +145,7 @@ function Key({
 	const { setData: setModal } = useModalState();
 
 	return (
-		<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] min-h-[84px]  border-b-[1px] border-border-quaternary last:border-b-0 w-full font-sans font-normal hover:no-underline overflow-scroll">
+		<div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.85fr_0.6fr_0.5fr] gap-2 min-h-[84px]  border-b-[1px] border-border-quaternary last:border-b-0 w-full font-sans font-normal hover:no-underline overflow-scroll">
 			<div className="flex flex-row items-center gap-4">
 				<div className="cursor-pointer min-h-8 h-8 relative shrink-0 p-1 min-w-12 rounded overflow-hidden isolate">
 					<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">
@@ -162,7 +162,9 @@ function Key({
 					</div>
 				</div>
 
-				<div>{name}</div>
+				<div className="max-w-[142px] overflow-hidden text-ellipsis whitespace-nowrap">
+					{name}
+				</div>
 			</div>
 
 			<div className="flex justify-center flex-col">
@@ -174,10 +176,16 @@ function Key({
 			</div>
 
 			<div className="flex items-center">
-				{keychain?.keychain?.description}
+				<div className="max-w-[166px] overflow-hidden text-ellipsis whitespace-nowrap">
+					{keychain?.keychain?.description}
+				</div>
 			</div>
 
-			<div className="flex items-center">{prettyKeyType(key.type)}</div>
+			<div className="flex items-center">
+				<div className="max-w-[176px] overflow-hidden text-ellipsis whitespace-nowrap">
+					{prettyKeyType(key.type)}
+				</div>
+			</div>
 
 			<div className="flex items-center">
 				{formatter.format(bigintToFloat(total, targetDecimals))}
@@ -275,7 +283,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 										setModal({
 											type: "receive",
 											params: {
-												keyResponse: { key, addresses }
+												keyResponse: { key, addresses },
 											},
 										});
 									}}
@@ -289,7 +297,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 											type: "send",
 											params: {
 												address: addresses[0].address,
-												keyResponse: { key, addresses }
+												keyResponse: { key, addresses },
 											},
 										});
 									}}
@@ -382,7 +390,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	return (
 		<div className="bg-card rounded-xl py-6 px-8">
-			<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
+			<div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.85fr_0.6fr_0.5fr] gap-2 border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
 				<div className="text-sm	text-label-secondary">Key</div>
 				<div className="text-sm	text-label-secondary">Addresses</div>
 				<div className="text-sm	text-label-secondary">Keychain</div>

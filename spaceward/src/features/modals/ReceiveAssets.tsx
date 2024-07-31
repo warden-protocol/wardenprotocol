@@ -50,7 +50,7 @@ const TokenSelect = ({
 
 				<Icons.chevronDown
 					className={clsx(
-						"ml-auto duration-200",
+						"ml-auto duration-200 invert dark:invert-0 shrink-0 w-6 h-6",
 						isSelect && "rotate-180",
 					)}
 				/>
@@ -84,9 +84,9 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 	return (
 		<div className="grid grid-cols-[1fr_520px] gap-12 pb-5 max-w-[928px] mx-auto">
 			<div>
-				<Icons.arrInCircle className="w-20 h-20 mt-6 mb-8 mx-auto" />
+				<Icons.arrInCircle className="w-20 h-20 mt-6 mb-8 mx-auto invert dark:invert-0" />
 				<div className="font-bold text-2xl leading-[32px] tracking-[0.12px] mb-8 text-center">
-					Choose a key and asset to receive
+					Choose a key and asset to&nbsp;receive
 				</div>
 
 				<div className="mb-5 font-bold text-xl">Key</div>
@@ -107,7 +107,7 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 				/>
 			</div>
 
-			<div className="bg-bg-elevated pt-12 px-4 pb-4 rounded-2xl">
+			<div className="bg-card pt-12 px-4 pb-4 rounded-2xl">
 				{isSelectAsset ? (
 					<SelectAsset
 						spaceId={spaceId ?? ""}
@@ -144,7 +144,7 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 							viewBox={`0 0 240 240`}
 						/>
 
-						<div className="bg-fill-elevated rounded-lg	w-full pt-4 px-4 pb-6 text-center flex flex-col items-center">
+						<div className="bg-fill-quaternary rounded-lg	w-full pt-4 px-4 pb-6 text-center flex flex-col items-center">
 							<div className="text-label-secondary text-xs mb-2">
 								Your {token}({capitalize(chainName)} network)
 								address

@@ -93,7 +93,7 @@ const KeySelector = ({
 				</div>
 
 				<div>
-					<div className="text-xs text-label-secondary text-left">
+					<div className="text-xs text-label-secondary text-left overflow-hidden text-ellipsis whitespace-nowrap max-w-[232px]">
 						{settings?.name ?? `Key #${key?.id.toString()}`}
 					</div>
 
@@ -105,14 +105,14 @@ const KeySelector = ({
 
 				<Icons.chevronDown
 					className={clsx(
-						"ml-auto duration-200",
+						"ml-auto duration-200 invert dark:invert-0 shrink-0 w-6 h-6",
 						keyDropdown && "rotate-180",
 					)}
 				/>
 			</div>
 
 			{keyDropdown && (
-				<div className="absolute no-scrollbar overflow-scroll max-h-[200px] z-30 left-0 -bottom-2 translate-y-full w-full rounded-lg bg-bg-elevated border-[1px] border-solid border-border-quaternary py-2">
+				<div className="absolute no-scrollbar overflow-scroll max-h-[200px] z-30 left-0 -bottom-2 translate-y-full w-full rounded-lg bg-card border-[1px] border-solid border-border-quaternary py-2">
 					{queryKeys.data?.keys.map((item) => {
 						const keySettings =
 							ks?.settings[item.key.id.toString()];
@@ -170,7 +170,7 @@ const KeySelector = ({
 									{...themeDicebar}
 								/>
 								<div>
-									<div className="text-xs text-label-secondary">
+									<div className="text-xs text-label-secondary overflow-hidden text-ellipsis whitespace-nowrap max-w-[184px]">
 										{name}
 									</div>
 

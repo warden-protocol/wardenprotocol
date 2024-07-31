@@ -22,7 +22,6 @@
 		"@cosmjs/math": "^0.32.3",
 		"@cosmjs/proto-signing": "^0.32.3",
 		"@cosmjs/stargate": "^0.32.3",
-		"@cosmjs/tendermint-rpc": "^0.32.4",
 		"@cosmos-kit/core": "^2.9.0",
 		"@cosmos-kit/keplr": "^2.6.9",
 		"@cosmos-kit/react": "^2.10.11",

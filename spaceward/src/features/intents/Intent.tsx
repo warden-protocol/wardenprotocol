@@ -271,11 +271,11 @@ const IntentComponent = ({
 								`cursor-pointer relative group flex items-center justify-center w-8 h-8 rounded-full hover:bg-[rgba(255,174,238,0.15)] transition-all duration-300`,
 							)}
 						>
-							<Icons.plusCircle />
+							<Icons.plusCircle className="invert dark:invert-0" />
 
 							<div
 								className={clsx(
-									`opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%] before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]`,
+									`opacity-0 w-fit bg-fill-quaternary text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%] before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]`,
 									isCondition &&
 										`opacity-0 group-hover:opacity-0`,
 								)}
@@ -286,7 +286,7 @@ const IntentComponent = ({
 							</div>
 
 							{isCondition ? (
-								<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
+								<div className="bg-fill-quaternary backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
 									{editState === "simple" ? (
 										<div
 											onClick={() => {
@@ -320,7 +320,7 @@ const IntentComponent = ({
 										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
-										<Icons.userPlus />
+										<Icons.userPlus className="invert dark:invert-0" />
 										<div className="text-sm whitespace-nowrap">
 											Add Whitelist Address
 										</div>
@@ -355,7 +355,10 @@ const IntentComponent = ({
 							ref={editDropdownRef}
 							className="group relative z-10"
 						>
-							<Edit2Icon strokeWidth={1} className="h-6 w-6" />
+							<Edit2Icon
+								strokeWidth={1}
+								className="h-6 w-6 invert dark:invert-0"
+							/>
 							<div
 								className={clsx(
 									`opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%] before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]`,
@@ -364,7 +367,7 @@ const IntentComponent = ({
 								Edit intent
 							</div>
 							{editDropdownVisible ? (
-								<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
+								<div className="bg-fill-quaternary backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
 									<div
 										onClick={() => {
 											dispatch({
@@ -378,7 +381,7 @@ const IntentComponent = ({
 										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
-										<Icons.blocks />
+										<Icons.blocks className="invert dark:invert-0" />
 										<div className="text-sm whitespace-nowrap">
 											Edit
 										</div>
@@ -396,7 +399,7 @@ const IntentComponent = ({
 										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
-										<Icons.wand />
+										<Icons.wand className="invert dark:invert-0" />
 
 										<div className="text-sm whitespace-nowrap">
 											Edit in Advanced mode
@@ -413,7 +416,7 @@ const IntentComponent = ({
 						<div
 							className={clsx(
 								`w-14 h-8 rounded-2xl px-1 py-1 relative cursor-pointer transition-all duration-300`,
-								isActive ? `bg-accent` : `bg-foreground/30`,
+								isActive ? `bg-pixel-pink` : `bg-foreground/30`,
 							)}
 							onClick={async () => {
 								if (onIntentToggle) {

@@ -158,7 +158,7 @@ const DashboardGraph = ({
 					})}
 					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>
-					<IconsAssets.arrInCircle />
+					<IconsAssets.arrInCircle className="invert dark:invert-0" />
 					Receive
 				</button>
 			</div>

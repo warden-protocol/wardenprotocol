@@ -110,6 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Remove deprecated `SignMethod` field from `MsgNewSignatureRequest`. Use analyzers instead.
 * (x/act) Fix bug for Rules hooks not having the creator of the Action in the context
 * (x/act) Added a new MsgCheckAction for manually re-checking the action rule status 
+* (x/act) Added Export/Import for the State the module (`Rules`, `Actions`)
 * (x/gmp) Added a new module to make Axelar GMP requests from Warden.
 * (cosmwasm) Installed IBC-Hooks to be able to call CosmWasm contracts from the other chains.
 

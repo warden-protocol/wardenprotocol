@@ -13,6 +13,7 @@ import { useModalState } from "./state";
 import { bigintToFloat } from "@/lib/math";
 import { useKeySettingsState } from "../keys/state";
 import { KEY_THEMES } from "../keys/assets";
+import { isOsmosis } from "./ReceiveAssets";
 
 const KeySelector = ({
 	className,
@@ -46,7 +47,7 @@ const KeySelector = ({
 		.filter((result) => token && result.keyId && result.token === token);
 
 	const addressType =
-		balances[0]?.type === "osmosis"
+		isOsmosis(balances[0]?.type)
 			? AddressType.ADDRESS_TYPE_OSMOSIS
 			: AddressType.ADDRESS_TYPE_ETHEREUM;
 

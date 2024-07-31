@@ -148,15 +148,16 @@ export default function SendAssetsModal({
 				setReceipt(receipt);
 			} else if (txBuild.type === "cosmos") {
 				const { fee, msgs } = txBuild as TxBuild<"cosmos">;
-				const repo = walletManager.getWalletRepo(chainName);
+				/*const repo = walletManager.getWalletRepo(chainName);
 				repo.activate();
 				const rpc = await repo.getRpcEndpoint();
+				*/
 
-				const endpoint = rpc
+				const endpoint = "https://rpc.testnet.osmosis.zone"; /* rpc
 					? typeof rpc === "string"
 						? rpc
 						: rpc.url
-					: `https://rpc.cosmos.directory/${chainName}`;
+					: `https://rpc.cosmos.directory/${chainName}`*/
 
 				const client = await SigningStargateClient.connectWithSigner(
 					endpoint,
@@ -200,8 +201,6 @@ export default function SendAssetsModal({
 				console.error("Failed to read clipboard contents: ", err);
 			});
 	}
-
-	const address = getAddress(key, type);
 
 	const maxAmount = selectedToken
 		? bigintToFixed(selectedToken.balance, {

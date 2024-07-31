@@ -44,7 +44,7 @@ export default function SignRequestDialog({
 }) {
 	return (
 		<AlertDialog open={state !== "idle"}>
-			<AlertDialogContent>
+			<AlertDialogContent style={{ zIndex: 1000 }}>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
 						New sign transaction request

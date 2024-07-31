@@ -76,7 +76,13 @@ export const NetworkIcons: Record<
 			/>
 		</svg>
 	),
+	sepolia: (props) => getNetworkIcons().mainnet?.(props),
 };
+
+/** @deprecated fixme visibility hack */
+function getNetworkIcons() {
+	return NetworkIcons;
+}
 
 export const NetworkIconsTransparent: Record<
 	string,
@@ -265,7 +271,13 @@ export const NetworkIconsTransparent: Record<
 			</defs>
 		</svg>
 	),
+	sepolia: (props) => getNetworkTransparentIcons().mainnet?.(props),
 };
+
+/** @deprecated fixme visibility hack */
+function getNetworkTransparentIcons() {
+	return NetworkIconsTransparent;
+}
 
 export const TokenIcons: Record<
 	string,

@@ -432,6 +432,8 @@ export async function approveRequest({
 					throw new Error(`Unknown address ${signerAddress}`);
 				}
 
+				console.log({ signDoc })
+
 				let signature = await cosm.requestSignature(
 					key.id,
 					[env.aminoAnalyzerContract],

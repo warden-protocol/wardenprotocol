@@ -112,7 +112,7 @@ export default function AddressAvatar({
 	);
 }
 
-function stringify(seed: string | Uint8Array): string {
+export function stringify(seed: string | Uint8Array): string {
 	if (typeof seed === "string") {
 		return seed;
 	}

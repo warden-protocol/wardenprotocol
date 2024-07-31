@@ -114,13 +114,12 @@ export function InnerSidebar() {
 	return (
 		<div className="w-[calc(100%-16px)] md:w-60 xl:flex flex-col overflow-scroll no-scrollbar pb-20 bg-card m-2 rounded-xl">
 			<div>
-				<div className="my-6 mx-6">
-					<a href="/" className="items-center">
+				<div className="my-6 mx-6 relative z-20">
+					<a href="/" className="items-center justify-center flex">
 						<Icons.logo className="h-6 w-auto hidden md:block" />
-						{/* <Icons.icon className="h-8 ml-3 w-auto md:hidden block" /> */}
 					</a>
 				</div>
-				<div className="px-2">
+				<div className="px-2 relative z-10">
 					<SpaceSelector />
 				</div>
 				<div>
@@ -137,8 +136,8 @@ export function InnerSidebar() {
 												size: "lg",
 											}),
 											location.pathname === item.url
-												? "bg-background text-accent"
-												: "bg-transparent text-muted-foreground",
+												? "bg-fill-quaternary"
+												: "bg-transparent text-foreground",
 											"w-full justify-start px-4 h-12 text-sm hover:bg-background hover:text-accent rounded-lg",
 										)}
 									>
@@ -152,8 +151,13 @@ export function InnerSidebar() {
 				</div>
 			</div>
 			<div>
-				<Separator className="bg-background" />
+				<Separator className="bg-border-quaternary" />
+
 				<div className="flex flex-col space-y-1 py-2 px-2">
+					<div className="px-4 h-12 flex items-center text-sm text-label-tertiary">
+						Global
+					</div>
+
 					{globalNavItems.map((item) => (
 						<Link
 							to={item.url}
@@ -164,8 +168,8 @@ export function InnerSidebar() {
 									size: "lg",
 								}),
 								location.pathname === item.url
-									? "bg-background text-accent"
-									: "bg-transparent text-muted-foreground",
+									? "bg-fill-quaternary"
+									: "bg-transparent text-foreground",
 								"w-full justify-start px-4 h-12 text-sm hover:bg-background hover:text-accent rounded-lg",
 							)}
 						>

@@ -70,35 +70,48 @@ export function SpaceSelector() {
 	return count && count > 0 ? (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button
-					asChild
-					variant="outline"
-					role="combobox"
-					className="justify-between cursor-pointer w-full rounded-lg bg-background h-16 px-2 gap-1 min-w-0 hover:text-foreground hover:bg-background border-0"
-				>
-					{spaceId ? (
-						<div>
-							<div className="relative">
-								<AddressAvatar seed={spaceId} disableTooltip />
+				<div className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]  mb-5 ">
+					<Button
+						asChild
+						variant="outline"
+						role="combobox"
+						className="relative rounded-lg cursor-pointer w-full bg-background h-[60px] px-4 gap-1 min-w-0 hover:text-foreground hover:bg-background border-0"
+					>
+						{spaceId ? (
+							<div>
+								<div className="absolute -z-0 -top-8 -left-4 -right-4 h-[220px] blur-[20px] mask-space fix-avatar -translate-y-1/2">
+									<AddressAvatar
+										seed={spaceId}
+										disableTooltip
+										className=" w-[512px] h-[512px] object-center"
+									/>
+								</div>
+
+								<div className="absolute rounded-lg fix-avatar overflow-hidden z-0 top-0 left-0 w-full h-full">
+									<AddressAvatar
+										seed={spaceId}
+										disableTooltip
+										className=" w-[220px] h-[220px] -translate-y-[10px]"
+									/>
+								</div>
+								<div className="flex relative z-10 flex-col mr-auto text-left">
+									<span className="block text-xs">
+										Active Space
+									</span>
+									<span className="block font-semibold">
+										{"#" + spaceId + "Space"}
+									</span>
+								</div>
 							</div>
-							<div className="flex flex-col text-left text-xs px-1">
-								<span className="block text-xs text-muted-foreground">
-									Active Space
-								</span>
-								<span className="block text-sm">
-									{"Space #" + spaceId}
+						) : (
+							<div>
+								<span className="block text-xs">
+									No Active Space
 								</span>
 							</div>
-							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-						</div>
-					) : (
-						<div>
-							<span className="block text-xs text-muted-foreground">
-								No Active Space
-							</span>
-						</div>
-					)}
-				</Button>
+						)}
+					</Button>
+				</div>
 			</PopoverTrigger>
 
 			<PopoverContent

@@ -6,7 +6,7 @@ sidebar_position: 10
 
 ## Overview
 
-You can **stake WARD tokens** in SpaceWard. Staking allows you to earn rewards and directly [participate in governance](participate-in-governance). The more you stake the more rewards and voting power you receive!
+You can **stake** your [WARD tokens](https://docs.wardenprotocol.org/tokens/ward-token/ward) in SpaceWard. Staking allows you to earn **daily rewards** and directly [participate in governance](participate-in-governance). The more you stake the more rewards and voting power you receive!
 
 This section explains how to stake WARD and then to redelegate your stake, claim rewards, stake more, or unstake.
 
@@ -33,12 +33,11 @@ After staking, you can claim your rewards or stake more at any time, including r
 
 If you initiate redelegation to another validator or unstaking, you'll have to wait for the **unbonding period of 21 days**. During this period your tokens don't earn rewards.
 
-
 To manage your stake, do the following:
 
 1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Staking**
 2. Navigate to the **My staking** tab with the list of your stakes.
-3. Click your stake to open its details.
+3. Click your staked amount in the table to open details of the stake.
 4. Select one of the available options:
     - **Redelegate**
     - **Claim rewards**

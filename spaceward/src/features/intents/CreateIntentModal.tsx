@@ -46,7 +46,7 @@ const CreateIntentModal = ({
 						<div
 							onClick={() => {
 								handleClick(
-									`#${(length ?? 0) + 1} Intent name`,
+									`#${(length ?? 0) + 1} Rule name`,
 									"joint",
 								);
 							}}
@@ -69,7 +69,7 @@ const CreateIntentModal = ({
 						<div
 							onClick={() => {
 								handleClick(
-									`#${(length ?? 0) + 1} Intent name`,
+									`#${(length ?? 0) + 1} Rule name`,
 									"group:2",
 								);
 							}}
@@ -95,7 +95,7 @@ const CreateIntentModal = ({
 						<div
 							onClick={() => {
 								handleClick(
-									`#${(length ?? 0) + 1} Intent name`,
+									`#${(length ?? 0) + 1} Rule name`,
 									"anyone",
 								);
 							}}
@@ -120,7 +120,7 @@ const CreateIntentModal = ({
 						<div
 							onClick={() => {
 								handleClick(
-									`#${(length ?? 0) + 1} Intent name`,
+									`#${(length ?? 0) + 1} Rule name`,
 									"advanced",
 								);
 							}}

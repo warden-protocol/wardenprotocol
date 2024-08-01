@@ -14,7 +14,6 @@ import type {
 
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { Accordion } from "@/components/ui/accordion";
-import { Copy } from "@/components/ui/copy";
 import {
 	KeyIcon,
 	PlusIcon,
@@ -40,7 +39,7 @@ import { balancesQueryCosmos, balancesQueryEth } from "../assets/queries";
 import { bigintToFloat } from "@/lib/math";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
-
+export 
 const useKeyData = ({ key, addresses }: QueryKeyResponse) => {
 	const { isReady, useKeychainById } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();

@@ -117,7 +117,7 @@ export function WalletConnect() {
 					})}
 				>
 					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
-						<Icons.wcSessionList />
+						<Icons.wcSessionList className="invert dark:invert-0" />
 					</div>
 				</Button>
 			) : null}

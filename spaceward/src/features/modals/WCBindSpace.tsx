@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { useModalState } from "./state";
 import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
 import KeyRequestStatusbar from "../keys/KeyRequestStatus";
+import AddressAvatar from "@/components/AddressAvatar";
 
 interface WCBindSpaceProps {
 	enabled: boolean;
@@ -99,11 +100,13 @@ export default function WCBindSpace({
 				onClick={() => setIsSelectVisible(true)}
 				className="flex flex-row w-full relative cursor-pointer"
 			>
-				<img
-					src="/images/somewallet.png"
-					className="w-10 h-10 object-contain absolute left-4 top-1/2 -translate-y-1/2"
-					alt=""
-				/>
+				<div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center">
+					<AddressAvatar
+						seed={pairedSpace}
+						disableTooltip
+						className="w-10 h-10 object-contain"
+					/>
+				</div>
 				{pairedSpace && (
 					<div className="absolute left-[68px] top-3 text-xs text-muted-foreground">
 						Space to connect
@@ -129,28 +132,28 @@ export default function WCBindSpace({
 
 				{isSelectVesisble &&
 					(spacesQuery.data?.spaces.length ?? 0) > 1 && (
-						<div className="absolute left-0 -bottom-[6px] translate-y-full bg-bg-elevated rounded-xl w-full py-2 text-left">
+						<div className="absolute left-0 -bottom-[6px] translate-y-full bg-card rounded-xl w-full py-2 text-left">
 							{spacesQuery.data?.spaces.map((w) =>
 								w ? (
 									<div
-										className="flex items-center gap-3 py-3 px-5 hover:bg-card transition-all duration-200 cursor-pointer"
+										className="flex items-center gap-3 py-3 px-5 hover:bg-fill-quaternary transition-all duration-200 cursor-pointer"
 										onClick={(e) => {
 											e.stopPropagation();
 											setPairedSpace(w.id.toString());
 											setIsSelectVisible(false);
 										}}
 									>
-										<img
-											src="/images/somewallet.png"
+										<AddressAvatar
+											seed={w.id.toString()}
+											disableTooltip
 											className="w-10 h-10 object-contain"
-											alt=""
 										/>
 										<div>
-											{w.id.toString() === spaceId && (
+											{/* {w.id.toString() === spaceId && (
 												<div className="text-label-secondary text-xs">
 													Active space
 												</div>
-											)}
+											)} */}
 											#{w.id.toString()}
 										</div>
 
@@ -177,7 +180,7 @@ export default function WCBindSpace({
 									spaceId: pairedSpace,
 								},
 							})}
-							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
 						>
 							Create key
 						</Button>
@@ -193,7 +196,7 @@ export default function WCBindSpace({
 							pairedSpace,
 							addresses,
 						)}
-						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
 					>
 						{loading ? "Loading..." : "Approve"}
 					</Button>
@@ -202,7 +205,7 @@ export default function WCBindSpace({
 				<Button
 					disabled={!_enabled}
 					onClick={onReject.bind(null, proposal)}
-					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
 				>
 					Cancel
 				</Button>

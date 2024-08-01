@@ -4,6 +4,7 @@ import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { SessionTypes } from "@walletconnect/types";
 import { useModalState } from "./state";
 import { ModalParams } from "./types";
+import AddressAvatar from "@/components/AddressAvatar";
 
 export default function ConnectedModal(props: ModalParams<{}>) {
 	const { w, activeSessions } = useWeb3Wallet(
@@ -76,12 +77,11 @@ export default function ConnectedModal(props: ModalParams<{}>) {
 										className="flex gap-3 items-center"
 										key={s.topic}
 									>
-										<img
-											src="/images/somewallet.png"
+										<AddressAvatar
+											seed={s.topic}
+											disableTooltip
 											className="w-10 h-10 object-contain shrink-0"
-											alt=""
 										/>
-
 										<div>
 											Space #
 											{localStorage.getItem(

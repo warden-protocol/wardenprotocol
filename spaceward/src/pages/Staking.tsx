@@ -20,6 +20,7 @@ import {
 } from "@/features/staking/util";
 import { bigintToFixed } from "@/lib/math";
 import ValidatorRow from "@/features/staking/ValidatorRow";
+import { useAsset } from "@/hooks/useAsset";
 
 export function StakingPage() {
 	const [state, dispatch] = useReducer(commonReducer<StakingState>, {
@@ -40,10 +41,12 @@ export function StakingPage() {
 		queryValidators,
 	} = useStakingQueries(address);
 
-	const { availableWard, delegationsByAddress } = useMemo(
+	const { /*availableWard,*/ delegationsByAddress } = useMemo(
 		() => getDelegationsData(queryDelegations.data?.delegationResponses),
 		[queryDelegations.data?.delegationResponses],
 	);
+
+	const { balance: availableWard } = useAsset("uward");
 
 	const { bondedTokens, apr } = useMemo(
 		() =>
@@ -227,7 +230,7 @@ export function StakingPage() {
 			</div>
 
 			<StakingHeading
-				availableWard={availableWard}
+				availableWard={BigInt(availableWard?.amount ?? 0)}
 				stakedWard={stakedWard}
 				total={queryTotalRewards.data?.total}
 				unbondSeconds={

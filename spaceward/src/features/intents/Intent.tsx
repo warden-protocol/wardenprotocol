@@ -237,7 +237,7 @@ const IntentComponent = ({
 				{editState ? (
 					<input
 						className="block w-full text-2xl bg-transparent outline-none focus:outline-none font-bold"
-						placeholder="Intent Name"
+						placeholder="Rule Name"
 						value={intent.name}
 						onChange={(e) => {
 							dispatch({

@@ -15,24 +15,16 @@ import { Icons } from "@/components/ui/icons-assets";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { bigintToFixed, bigintToFloat } from "@/lib/math";
+import { bigintToFloat } from "@/lib/math";
 import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
-import {
-	NetworkIcons,
-	NetworkIconsTransparent,
-	TokenIcons,
-} from "@/components/ui/icons-crypto";
+import { NetworkIcons } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "@/features/assets/AssetRow";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { commonReducer } from "@/utils/common";
 import { useModalState } from "@/features/modals/state";
 import { KeysDropdownItem } from "@/features/keys/KeysDropdown";
 import AssetTableRow from "@/features/assets/AssetTableRow";
-
-function capitalize<T extends string>(str: T): Capitalize<T> {
-	return (str.charAt(0).toUpperCase() +
-		str.slice(1).toLowerCase()) as Capitalize<T>;
-}
+import { useKeySettingsState } from "@/features/keys/state";
 
 type Currency = keyof typeof FIAT_FORMAT;
 
@@ -104,7 +96,6 @@ export function AssetsPage() {
 		}
 	}, [queryPrices, currency]);
 
-	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
 	const [isDopositFinalModal, setIsDepositFinalModal] = useState(false);
 
 	const keysRef = useRef<HTMLDivElement | null>(null);
@@ -147,18 +138,11 @@ export function AssetsPage() {
 		return { chains: Array.from(chains), totalBalance, noAssets };
 	}, [results]);
 
-	const addresses = useMemo(() => {
-		return queryKeys.data?.keys.flatMap((key) =>
-			key.addresses.map((v) => {
-				const keyId = key.key.id;
-				return { ...v, keyId };
-			}),
-		);
-	}, [queryKeys.data?.keys]);
-
 	const noKeys = !queryKeys.data?.keys.length;
 
-	console.log(queryKeys.data?.keys);
+	const { data } = useKeySettingsState();
+	const settings = data?.settings[state.keyFilter.toString()];
+	const name = settings?.name ?? `Key #${state.keyFilter.toString()}`;
 
 	if (noKeys) {
 		return (
@@ -359,9 +343,11 @@ export function AssetsPage() {
 										}
 										className="cursor-pointer group relative h-8 rounded-2xl bg-fill-quaternary py-2 px-3 text-xs fill-quaternary flex items-center gap-[2px]"
 									>
-										{state.keyFilter
-											? `Key #${state.keyFilter}`
-											: "All Keys"}
+										<div className="max-w-[124px] whitespace-nowrap overflow-hidden text-ellipsis ">
+											{state.keyFilter
+												? name
+												: "All Keys"}
+										</div>
 										<Icons.chevronDown
 											className={clsx(
 												"invert dark:invert-0",
@@ -399,13 +385,13 @@ export function AssetsPage() {
 																item.addresses
 															}
 															keyResponse={item}
-															onClick={() =>
+															onClick={() => {
 																dispatch({
 																	type: "keyFilter",
 																	payload:
 																		item.key.id.toString(),
-																})
-															}
+																});
+															}}
 															isActive={
 																state.keyFilter ===
 																item.key.id.toString()

@@ -102,8 +102,8 @@ const AssetSelector = ({
 	return (
 		<div className="px-8 flex flex-col gap-6">
 			<div className="flex items-center justify-between relative z-30">
-				<button onClick={onClose} className="p-1">
-					<Icons.arrLeft />
+				<button onClick={onClose} className="p-1 ">
+					<Icons.arrLeft className="invert dark:invert-0" />
 				</button>
 
 				<div className="relative" ref={networksRef}>
@@ -118,23 +118,27 @@ const AssetSelector = ({
 								className="ml-1"
 							/>
 						) : (
-							chains
-								.slice(0, 3)
-								.map((chain, i) => (
+							<div className="flex items-center">
+								{chains.slice(0, 3).map((chain, i) => (
 									<Network
 										color
 										network={chain}
 										key={chain}
 										className={clsx({ "ml-1": !i })}
 									/>
-								))
+								))}
+							</div>
 						)}
 
 						{filterByChain
 							? capitalize(filterByChain)
 							: "All Networks"}
 						<Icons.chevronDown
-							className={isNetworkDropdown ? "rotate-180" : ""}
+							className={
+								isNetworkDropdown
+									? "rotate-180 invert dark:invert-0"
+									: "invert dark:invert-0 "
+							}
 						/>
 					</div>
 					{isNetworkDropdown && (
@@ -149,7 +153,7 @@ const AssetSelector = ({
 								<div className="w-6 h-6 object-contain cursor-pointer" />
 								All Networks
 								{!filterByChain && (
-									<IconsAssets.check className="ml-auto" />
+									<IconsAssets.check className="ml-auto invert dark:invert-0" />
 								)}
 							</div>
 							{chains.map((chain) => {
@@ -166,7 +170,7 @@ const AssetSelector = ({
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
 										key={chain}
 									>
-										<Network className="w-6 h-6 object-contain cursor-pointer" />
+										<Network className="w-6 h-6 object-contain cursor-pointer invert dark:invert-0" />
 										{capitalize(chain)}
 
 										{chain === filterByChain && (
@@ -206,7 +210,7 @@ const AssetSelector = ({
 				{searchValue && (
 					<button
 						type="button"
-						className="p-1 ml-auto"
+						className="p-1 ml-auto invert dark:invert-0"
 						onClick={() => setSearchValue("")}
 					>
 						<IconsAssets.xCircle />
@@ -248,7 +252,7 @@ const AssetSelector = ({
 												onClose();
 											}}
 										>
-											<Token className="w-10 h-10" />
+											<Token className="w-10 h-10 " />
 
 											<div>
 												<div>{item.token}</div>
@@ -294,6 +298,7 @@ const AssetSelector = ({
 											<div className="h-6 border-[1px] border-border-secondary border-solid flex items-center gap-1 text-xs text-label-secondary rounded p-1 pr-2 w-20">
 												<Network
 													network={item.chainName}
+													className="invert dark:invert-0"
 												/>
 												{item.chainName
 													.charAt(0)
@@ -344,7 +349,10 @@ const AssetSelector = ({
 									</div>
 
 									<div className="h-6 border-[1px] ml-auto border-border-secondary border-solid flex items-center gap-1 text-xs text-label-secondary rounded p-1 pr-2 w-20">
-										<Network network={item.chainName} />
+										<Network
+											network={item.chainName}
+											className="invert dark:invert-0"
+										/>
 
 										{item.chainName
 											.charAt(0)

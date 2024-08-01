@@ -29,7 +29,6 @@ const KeySelector = ({
 	// fixme undefined type not resolved
 	const addresses = currentKey?.addresses;
 	const key = currentKey?.key;
-	console.log({ currentKey, key });
 	const settings = ks?.settings[key?.id.toString() ?? ""];
 	const [keyDropdown, setKeyDropdown] = useState(false);
 	const seed = Buffer.from(key?.publicKey ?? []).toString("base64");

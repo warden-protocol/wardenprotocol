@@ -201,7 +201,7 @@ const isValidEthParams = (params: any): params is EthParams => {
 
 	return (
 		typeof params.gas === "string" &&
-		typeof params.value === "string" &&
+		(!params.value || typeof params.value === "string") &&
 		typeof params.from === "string" &&
 		typeof params.to === "string" &&
 		typeof params.data === "string"
@@ -286,6 +286,7 @@ export async function approveRequest({
 				}
 
 				const txParam = req.params.request.params[0];
+				console.log({ txParam });
 
 				if (!isValidEthParams(txParam)) {
 					throw new Error("Invalid transaction parameters");
@@ -432,7 +433,14 @@ export async function approveRequest({
 					throw new Error(`Unknown address ${signerAddress}`);
 				}
 
-				console.log({ signDoc })
+				// fixme testnet hack
+				if (signDoc?.fee) {
+					if (!signDoc.fee?.amount.length) {
+						signDoc.fee.amount = [
+							{ denom: "uosmo", amount: "500" },
+						];
+					}
+				}
 
 				let signature = await cosm.requestSignature(
 					key.id,

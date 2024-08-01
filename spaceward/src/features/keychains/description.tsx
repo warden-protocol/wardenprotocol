@@ -6,6 +6,7 @@ const descriptions = [
 		description: <Fragment>WardenKMS</Fragment>,
 		title: "WardenKMS",
 		verified: true,
+		disabled: false,
 		link: "#",
 	},
 	{
@@ -21,6 +22,7 @@ const descriptions = [
 		),
 		title: "OCP KMS",
 		verified: true,
+		disabled: false,
 		link: "#",
 	},
 	{
@@ -36,6 +38,7 @@ const descriptions = [
 		),
 		title: "Open Custody Protocol (Fordefi MPC)",
 		verified: true,
+		disabled: false,
 		link: "#",
 	},
 	{
@@ -43,6 +46,7 @@ const descriptions = [
 		description: <Fragment>Bushinode Keychain</Fragment>,
 		title: "Bushinode Keychain",
 		verified: false,
+		disabled: true,
 		link: "#",
 	},
 	{
@@ -58,6 +62,7 @@ const descriptions = [
 		),
 		title: "Silence Laboratories",
 		verified: true,
+		disabled: false,
 		link: "#",
 	},
 ];

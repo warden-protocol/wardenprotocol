@@ -1,7 +1,7 @@
 import { Icons } from "@/components/ui/icons-assets";
 import StakingCard from "@/features/dashboard/StakingCard";
 import { useStakingQueries } from "@/features/staking/hooks";
-import { getValidatorData } from "@/features/staking/util";
+import { getDelegationsData, getValidatorData } from "@/features/staking/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useQueryHooks } from "@/hooks/useClient";
 import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
@@ -11,11 +11,11 @@ import { Link } from "react-router-dom";
 
 export default function GovernanceDashboard() {
 	const { address } = useAddressContext();
-	const { queryTotalRewards, queryValidators } = useStakingQueries(address);
+	const { queryTotalRewards, queryDelegations } = useStakingQueries(address);
 
-	const { stakedWard } = useMemo(
-		() => getValidatorData(queryValidators.data?.validators),
-		[queryValidators.data?.validators],
+	const { availableWard: stakedWard } = useMemo(
+		() => getDelegationsData(queryDelegations.data?.delegationResponses),
+		[queryDelegations.data],
 	);
 
 	const {

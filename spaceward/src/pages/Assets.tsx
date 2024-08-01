@@ -26,6 +26,8 @@ import { AssetPlaceholder } from "@/features/assets/AssetRow";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { commonReducer } from "@/utils/common";
 import { useModalState } from "@/features/modals/state";
+import { KeysDropdownItem } from "@/features/keys/KeysDropdown";
+import AssetTableRow from "@/features/assets/AssetTableRow";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -155,6 +157,8 @@ export function AssetsPage() {
 	}, [queryKeys.data?.keys]);
 
 	const noKeys = !queryKeys.data?.keys.length;
+
+	console.log(queryKeys.data?.keys);
 
 	if (noKeys) {
 		return (
@@ -380,7 +384,7 @@ export function AssetsPage() {
 												>
 													<img
 														src="/images/key.png"
-														className="w-6 h-6 object-contain cursor-pointer"
+														className="w-6 h-6 object-contain cursor-pointer invert dark:invert-0"
 														alt=""
 													/>
 													All Keys
@@ -389,30 +393,24 @@ export function AssetsPage() {
 													)}
 												</div>
 												{queryKeys.data?.keys.map(
-													(key) => (
-														<div
+													(item) => (
+														<KeysDropdownItem
+															addresses={
+																item.addresses
+															}
+															keyResponse={item}
 															onClick={() =>
 																dispatch({
 																	type: "keyFilter",
 																	payload:
-																		key.key.id.toString(),
+																		item.key.id.toString(),
 																})
 															}
-															className="cursor-pointer h-10 px-4 flex items-center gap-3"
-															key={key.key.id}
-														>
-															<img
-																src="/images/somewallet.png"
-																className="w-6 h-6 object-contain cursor-pointer"
-																alt=""
-															/>
-															Key #
-															{key.key.id.toString()}
-															{state.keyFilter ===
-																key.key.id.toString() && (
-																<Icons.check className="ml-auto" />
-															)}
-														</div>
+															isActive={
+																state.keyFilter ===
+																item.key.id.toString()
+															}
+														/>
 													),
 												)}
 											</div>
@@ -502,111 +500,8 @@ export function AssetsPage() {
 						<div className="h-4" />
 
 						{results.map(({ key, ...item }) => {
-							const Network =
-								NetworkIconsTransparent[item.chainName] ??
-								AssetPlaceholder;
-
-							const Token =
-								TokenIcons[item.token] ?? AssetPlaceholder;
-
 							return (
-								<div
-									className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]"
-									key={`${item.token}:${item.chainName}:${item.address}`}
-								>
-									<div className="flex items-center gap-3">
-										<div className="relative">
-											<Token className="w-10 h-10 object-contain" />
-											<Network className="w-[18px] h-[18px] object-contain absolute right-[-4px] bottom-[-4px]" />
-										</div>
-										<div>
-											<div>{item.token}</div>
-											<div className="text-xs text-muted-foreground">
-												{item.title} (
-												{capitalize(item.chainName)})
-											</div>
-										</div>
-									</div>
-
-									<div className="text-right flex flex-col justify-center">
-										<div>
-											...
-											{item.address.slice(-8)}
-										</div>
-										<div className="text-xs text-muted-foreground">
-											Key #{key?.key.id.toString()}
-										</div>
-									</div>
-
-									<div className="text-right flex flex-col justify-center">
-										<div>
-											{bigintToFixed(item.balance, {
-												decimals: item.decimals,
-
-												display: 4,
-												format: true,
-											})}
-										</div>
-										<div className="text-xs text-muted-foreground">
-											{formatter.format(
-												bigintToFloat(
-													fiatConversion
-														? (item.balance *
-																item.price *
-																BigInt(10) **
-																	BigInt(
-																		fiatConversion.decimals,
-																	)) /
-																fiatConversion.value
-														: BigInt(0),
-													item.decimals +
-														item.priceDecimals,
-												),
-											)}
-										</div>
-									</div>
-
-									<div className="flex items-center justify-end gap-2">
-										<button
-											className=" bg-fill-quaternary h-8 rounded justify-center font-medium py-1 px-4"
-											onClick={setModal.bind(null, {
-												type: "receive",
-												params: {
-													address: item.address,
-													chainName: item.chainName,
-													token: item.token,
-													type: item.type.startsWith(
-														"eip155:",
-													)
-														? AddressType.ADDRESS_TYPE_ETHEREUM
-														: AddressType.ADDRESS_TYPE_OSMOSIS,
-													keyResponse: key,
-												},
-											})}
-										>
-											Receive
-										</button>
-										<button
-											className=" bg-fill-quaternary h-8 rounded justify-center font-medium py-1 px-4"
-											onClick={setModal.bind(null, {
-												type: "send",
-												params: {
-													address: item.address,
-													chainName: item.chainName,
-													token: item.token,
-													type: item.type.startsWith(
-														"eip155:",
-													)
-														? AddressType.ADDRESS_TYPE_ETHEREUM
-														: AddressType.ADDRESS_TYPE_OSMOSIS,
-													keyResponse: key,
-												},
-											})}
-										>
-											Send
-										</button>
-									</div>
-								</div>
+								<AssetTableRow item={item} keyResponse={key} />
 							);
 						})}
 					</div>

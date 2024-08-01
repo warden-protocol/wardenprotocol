@@ -10,14 +10,30 @@ const descriptions = [
 	},
 	{
 		key: "OCP KMS",
-		description: <Fragment>OCP KMS</Fragment>,
+		description: (
+			<Fragment>
+				Introducing OCP KMS: Your gateway to effortless and robust
+				crypto security! This innovative key management solution
+				streamlines digital asset protection, offering a user-friendly
+				experience that caters to both newcomers and seasoned crypto
+				enthusiasts alike.
+			</Fragment>
+		),
 		title: "OCP KMS",
 		verified: true,
 		link: "#",
 	},
 	{
 		key: "Open Custody Protocol (Fordefi MPC)",
-		description: <Fragment>Open Custody Protocol (Fordefi MPC)</Fragment>,
+		description: (
+			<Fragment>
+				Unlock the future of secure digital asset management with Open
+				Custody Protocol's cutting-edge MPC keychain! Powered by
+				Fordefi's advanced wallet tech and trusted execution
+				environments, it's your key to next-level crypto safety and
+				flexibility.
+			</Fragment>
+		),
 		title: "Open Custody Protocol (Fordefi MPC)",
 		verified: true,
 		link: "#",

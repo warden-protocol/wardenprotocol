@@ -59,9 +59,13 @@ const TokenSelect = ({
 	);
 };
 
+/** @deprecated fixme chain names */
+export const isOsmosis = (chainName?: string) =>
+	["osmosis", "osmosistestnet"].includes(chainName ?? "");
+
 const getQrValue = (_chainName: string, address: string) => {
 	// fixme
-	const chainName = _chainName === "osmosis" ? "osmosis" : "ethereum";
+	const chainName = isOsmosis(_chainName) ? "osmosis" : "ethereum";
 	return `${chainName}:${address}`;
 };
 
@@ -76,7 +80,7 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 		props?.chainName ?? queryBalances[0]?.data?.results[0]?.chainName;
 	// fixme
 	const addressType =
-		chainName === "osmosis"
+		isOsmosis(chainName)
 			? AddressType.ADDRESS_TYPE_OSMOSIS
 			: AddressType.ADDRESS_TYPE_ETHEREUM;
 	const address = key?.addresses?.find((a) => a.type === addressType);

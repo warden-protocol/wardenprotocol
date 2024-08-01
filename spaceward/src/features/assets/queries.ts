@@ -40,16 +40,24 @@ const ERC20_TOKENS: {
 		address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
 		stablecoin: true,
 	},
+	{
+		chainName: "sepolia",
+		// WETH
+		address: "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+		// same as native
+		priceFeed: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
+	}
 ];
 
-const EIP_155_NATIVE_PRICE_FEEDS: Partial<Record<ChainName, `0x${string}` | undefined>> =
-	{
-		mainnet: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
-		arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
-		sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-	};
+const EIP_155_NATIVE_PRICE_FEEDS: Partial<
+	Record<ChainName, `0x${string}` | undefined>
+> = {
+	mainnet: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+	arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
+	sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
+};
 
-export const cosmosBalancesQuery = (params: {
+const cosmosBalancesQuery = (params: {
 	address?: string;
 	enabled: boolean;
 	chainName: string;
@@ -121,7 +129,7 @@ export const cosmosBalancesQuery = (params: {
 				token: native.symbol,
 				title: native.name,
 				type: "osmosis",
-			})
+			});
 		}
 
 		return result;
@@ -320,7 +328,7 @@ export const balancesQueryEth = (
 	});
 
 	const queries = [
-		...(["arbitrum", "sepolia", "mainnet"] as const).flatMap(
+		...([/*"arbitrum", "mainnet"*/ "sepolia"] as const).flatMap(
 			(chainName) => {
 				return eth.map((address) => ({
 					...eip155NativeBalanceQuery({
@@ -332,19 +340,20 @@ export const balancesQueryEth = (
 				}));
 			},
 		),
-		...ERC20_TOKENS.flatMap(
-			({ chainName, address: token, priceFeed, stablecoin }) =>
-				eth.map((address) => ({
-					...eip155ERC20BalanceQuery({
-						enabled,
-						chainName,
-						address,
-						token,
-						priceFeed,
-						stablecoin,
-					}),
-					select,
-				})),
+		...ERC20_TOKENS.filter(({ chainName }) =>
+			["sepolia"].includes(chainName),
+		).flatMap(({ chainName, address: token, priceFeed, stablecoin }) =>
+			eth.map((address) => ({
+				...eip155ERC20BalanceQuery({
+					enabled,
+					chainName,
+					address,
+					token,
+					priceFeed,
+					stablecoin,
+				}),
+				select,
+			})),
 		),
 	];
 

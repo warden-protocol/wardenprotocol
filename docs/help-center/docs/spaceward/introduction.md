@@ -30,11 +30,11 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 6. [Stake WARD](/spaceward/stake-ward)
 7. [Participate in governance](/spaceward/participate-in-governance)
 8. View Actions in your Space
-9. View available Keychains
+9. [View Keychains](/spaceward/manage-keys#view-keychains)
 10. Monitor transactions
-11. [Use decentralized applications](/spaceward/use-dapps)
-12. Get your Warden address, [get test WARD](/spaceward/get-test-ward), or close the session
-13. [Use external wallets](/spaceward/use-external-wallets) (MetaMask Snap, WalletConnect)
+11. [Use dApps](/spaceward/use-dapps#use-spaceward-collection) from the SpaceWard-curated collection
+12. [Get your Warden address](/spaceward/connect-your-wallet#get-your-warden-address), [get test WARD](/spaceward/get-test-ward), or close the session
+13. [Access dApps](/spaceward/use-dapps#use-spaceward-collection) through WalletConnect and MetaMask Snap
 
 ![SpaceWard overview](../../static/img/spaceward-overview.png)
 

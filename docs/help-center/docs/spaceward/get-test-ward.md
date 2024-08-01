@@ -11,9 +11,7 @@ After you connect a wallet for the first time, SpaceWard will prompt you to get 
 If you wish to get more WARD after that, take these steps:
 
 1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
-
 2. In the top-right corner of the screen, click your [connected wallet](connect-your-wallet) and then click **Get**.
+3. You'll be redirected to a faucet. Click **Get WARD** and wait for WARD to be sent to your wallet.
 
 ![Get test WARD](../../static/img/get-test-ward.png)
-
-3. You'll be redirected to a faucet. Click **Get WARD** and wait for WARD to be sent to your wallet.

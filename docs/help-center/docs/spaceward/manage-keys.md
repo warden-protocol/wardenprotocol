@@ -40,7 +40,7 @@ To get your key (wallet) address in a certain network, do the following:
 
 ## View Keychains
 
-To access a list of all available Keychains and their details, do this:
+You can access a list of all available Keychains – custodians that generate and store keys and sign transactions:
 
 1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
 2. In the left menu, navigate to **Keychains**.

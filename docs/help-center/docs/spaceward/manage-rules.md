@@ -26,7 +26,7 @@ To create a Rule, do this:
     - **Approval by certain amount**: A minimum threshold number of approvals is required.
     - **Approval by anyone**: One approval is required.
     - **Advance mode**: Create a custom Rule. See [Advanced Rules](#advanced-rules).
-5. If needed, add approvers and specify other details by [editing your Rule](#edit).
+5. If needed, add approvers and specify other details by [editing your Rule](#edit-a-rule).
 6. To start applying a new Rule, toggle its slider. Only one Rule can be active at a time.
 
 ![Enable a Rule](../../static/img/enable-rule.png)

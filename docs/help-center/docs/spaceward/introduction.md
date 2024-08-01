@@ -22,19 +22,19 @@ To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-y
 
 Within SpaceWard, you have the ability to carry out a wide range of protocol-related activities:
 
-1. [Manage Spaces](manage-spaces)
-2. [Manage keys](manage-keys)
-3. [Manage assets](manage-assets)
-4. [Manage Space owners](manage-owners)
-5. [Manage Rules](manage-rules)
-6. [Stake WARD](stake-ward)
-7. [Participate in governance](participate-in-governance)
+1. [Manage Spaces](/spaceward/manage-spaces)
+2. [Manage keys](/spaceward/manage-keys)
+3. [Manage assets](/spaceward/manage-assets)
+4. [Manage Space owners](/spaceward/manage-owners)
+5. [Manage Rules](/spaceward/manage-rules)
+6. [Stake WARD](/spaceward/stake-ward)
+7. [Participate in governance](/spaceward/participate-in-governance)
 8. View Actions in your Space
 9. View available Keychains
 10. Monitor transactions
-11. [Use decentralized applications](use-dApps)
-12. Get your Warden address, [get test WARD](get-test-ward), or close the session
-13. [Use external wallets](use-external-wallets) (MetaMask Snap, WalletConnect)
+11. [Use decentralized applications](/spaceward/use-dapps)
+12. Get your Warden address, [get test WARD](/spaceward/get-test-ward), or close the session
+13. [Use external wallets](/spaceward/use-external-wallets) (MetaMask Snap, WalletConnect)
 
 ![SpaceWard overview](../../static/img/spaceward-overview.png)
 

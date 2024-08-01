@@ -6,7 +6,7 @@ sidebar_position: 8
 
 ## Overview
 
-A [Space](create-a-space) can have multiple **owners**, identified by their Warden addresses.
+A [Space](manage-spaces) can have multiple **owners**, identified by their Warden addresses.
 
 Here are the main rules of Space ownership:
 

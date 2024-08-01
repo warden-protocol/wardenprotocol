@@ -6,7 +6,7 @@ sidebar_position: 7
 
 ## Overview
 
-Within your [Space](create-a-space), you can receive or send assets across different chains. Assets are associated with your [keys](request-a-new-key) (wallets).
+Within your [Space](manage-spaces), you can receive or send assets across different chains. Assets are associated with your [keys](manage-keys) (wallets).
 
 :::warning
 SpaceWard currently operates on the **Buenavista testnet**, so you should use **only testnet assets** – for example, Sepolia ETH. Otherwise, your might lose your assets.

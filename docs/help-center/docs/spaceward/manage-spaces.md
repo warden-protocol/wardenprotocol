@@ -14,7 +14,7 @@ Note that a Space can have multiple [owners](manage-owners).
 
 After you connect a wallet for the first time, SpaceWard will prompt you to create your first Space, as shown in the [Quick start guide](buenavista-quick-start).
 
-To check an overview of your Space, click **Dashboard** in the left menu. To unlock more features, [request a key](request-a-new-key).
+To check an overview of your Space, click **Dashboard** in the left menu. To unlock more features, [request a key](manage-keys#request-a-key).
 
 ## Create more Spaces
 

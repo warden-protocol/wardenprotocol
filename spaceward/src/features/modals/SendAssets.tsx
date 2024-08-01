@@ -300,8 +300,11 @@ export default function SendAssetsModal({
 								)}
 							</div>
 							<div
+								onClick={() => {
+									setAmount(maxAmount);
+								}}
 								className={clsx(
-									"text-xs",
+									"text-xs cursor-pointer",
 									amountWarning && "text-negative",
 									!amountWarning && "text-pixel-pink",
 								)}

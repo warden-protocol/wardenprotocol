@@ -4,6 +4,8 @@ package warden.intent;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "warden/intent/params.proto";
+import "warden/intent/action.proto";
+import "warden/intent/intent.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
 
@@ -11,6 +13,16 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/t
 message GenesisState {
   // params defines all the parameters of the module.
   Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+
+  repeated Intent intents = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+
+  repeated Action actions = 3 [
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];

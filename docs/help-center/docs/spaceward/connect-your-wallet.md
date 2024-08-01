@@ -14,16 +14,14 @@ To use SpaceWard, connect your **Cosmos wallet** to your Warden account:
 
 1. Open [SpaceWard homepage](https://spaceward.buenavista.wardenprotocol.org) and click **Connect**.
     
-    ![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
-    
 2. Select a wallet to connect.
     
-    ![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)
-
-3. After connecting, you'll be asked to add the Warden Protocol chain.
-
-    ![Add the Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
+3. Your wallet will prompt you to add the Warden Protocol chain.
 
 4. Approve the transaction, and you'll be ready to enter SpaceWard!
 
-5. You'll find your Warden address at the top right of the screen. If you click it, a pop-up will open where you can see the wallet details and copy the address.
+:::tip
+After connecting, you'll receive a **Warden address**.
+
+To get it, click your connected wallet icon in the top-right corner of the screen. A pop-up will open where you can see the wallet details and copy the address.
+:::

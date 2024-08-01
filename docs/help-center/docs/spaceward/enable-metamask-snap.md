@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 9
+sidebar_position: 13
 ---
 
 # Enable MetaMask Snap

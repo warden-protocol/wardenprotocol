@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Buenavista Quick start
+# Buenavista quick start
 
 ## Overview
 
@@ -30,16 +30,16 @@ The following is a brief overview explaining how to start using SpaceWard. For m
 
 3. 👉 [Get test WARD](get-test-ward): Click **Get WARD**. You'll be redirected to a faucet where you can get some WARD.
 
-4. 👉 [Create a Space](create-a-space): Click **Create a new space**. Approve the action in your wallet.
+4. 👉 [Create a Space](create-a-space): Click **Create a new Space**. Approve it in your connected wallet.
 
-5. 👉 [Request a new Key](request-a-new-key): In the left menu, navigate to **Keys** and click **Create Key**. Then select a Keychain, click **Create**, and approve in your wallet.
+5. 👉 [Request a key](manage-keys#request-a-key): In the left menu, navigate to **Keys** and click **New key**. Then select a Keychain, click **Create key**, and approve in your connected wallet.
 
-6. Fund your wallet: Select your new key, click **Receive** to get its address, and receive some Sepolia ETH from these faucets:
+6. [Fund your wallet](manage-assets#receive-assets): Click the **↓** icon on your new key and select the **ETH Sepolia** asset. Then copy your address and receive some Sepolia ETH from these faucets:
 
     - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
     - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
 
-7. 👉 [Use WalletConnect](use-walletconnect): Click the **WalletConnect** icon to access UniSwap or any other dApp supporting Sepolia.
+7. 👉 [Use WalletConnect](use-dapps#use-walletconnect): Click the **WalletConnect** icon in the right part of the screen to access UniSwap or any other dApp supporting Sepolia.
 
 Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
 

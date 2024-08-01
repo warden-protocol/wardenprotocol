@@ -65,7 +65,6 @@ In your Rule expressions, you can use numbers and approver addresses in combinat
 
 - `AND`
 - `OR`
-- `NOT`
 - `ALL`
 - `ANY` + `FROM`
 

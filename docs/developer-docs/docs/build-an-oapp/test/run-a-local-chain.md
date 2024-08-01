@@ -20,6 +20,14 @@ cd wardenprotocol
 
 ## 2. Build the chain
 
+Check if `just` is installed. If not, you can install it via brew:
+
+```sh
+brew install just
+```
+
+Then, you can proceed to install the `wardend` binary.
+
 ```sh
 just install
 ```
@@ -33,12 +41,20 @@ wardend version
 v0.4.0.0
 ```
 
-
 ## 3. Run the chain
 
-### Option 1. Run locally
+### Option 1. Run the chain using `just`
 
-This option is recommended for development purposes.
+Once `just` and `wardend` are correctly installed, you can start a new chain.
+
+```sh
+just localnet
+```
+This will start the chain and you will see blocks produced and height incrementing.
+
+### Option 2. Run locally
+
+This option is recommended for development purposes, when you want to manually configure the chain.
 
 1. Initialize the Node
 
@@ -104,7 +120,7 @@ wardend start
 
 This will start the chain and you will see blocks produced and height incrementing.
 
-### Option 2. Use the devnet snapshot
+### Option 3. Use the devnet snapshot
 
 This option is recommended for testing purposes.
 

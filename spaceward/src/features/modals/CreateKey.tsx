@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
-import type { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
+import { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
 import { Button } from "@/components/ui/button";
 import { useQueryHooks } from "@/hooks/useClient";
 import { pasteFromClipboard } from "@/utils/browser";
@@ -12,7 +12,9 @@ import useRequestKey from "@/hooks/useRequestKey";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
 import { Icons } from "@/components/ui/icons-assets";
+import descriptions from "../keychains/description";
 
+const DESCRIPTION_MAP = Object.fromEntries(descriptions.map((d) => [d.key, d]));
 const THEME_DISPLAY_COUNT = 4;
 
 export default function CreateKeyModal({
@@ -81,6 +83,13 @@ export default function CreateKeyModal({
 		setModal({ background: {} });
 	}
 
+	const desc =
+		selected >= 0
+			? DESCRIPTION_MAP[
+					keychainsQuery.data?.keychains[selected]?.description ?? ""
+				]
+			: undefined;
+
 	return hidden ? null : isDetails ? (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
 			<button
@@ -95,15 +104,13 @@ export default function CreateKeyModal({
 
 			<div className="bg-fill-quaternary rounded-xl	p-6">
 				<div className="flex items-center gap-[6px] font-bold text-2xl mb-1">
-					Open Custody Protocol
-					<Icons.verified />
+					{desc?.title ?? keychain?.description}
+
+					{desc?.verified ? <Icons.verified /> : undefined}
 				</div>
 
 				<div className="text-muted-foreground text-left">
-					A modular custody primitive to expand the original vision
-					from Qredo by connecting multiple next generation custodial
-					and key management solutions to builders. Powered by the
-					OPEN token (previously known as QRDO) &#183; opencustody.org
+					{desc?.description ?? "Missing description"}
 				</div>
 
 				{/* <div className="my-4 h-[1px] w-full bg-border-quaternary" />
@@ -134,7 +141,7 @@ export default function CreateKeyModal({
 
 			<Button
 				onClick={() => {
-					if (selected === -1) {
+					if (selected === -1 || desc?.disabled) {
 						return;
 					}
 
@@ -147,7 +154,17 @@ export default function CreateKeyModal({
 					setKeychain(keychain);
 					setIsDetails(false);
 				}}
-				className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-12 hover:bg-pixel-pink duration-200 hover:text-background"
+				className={clsx(
+					"flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-12 duration-200 hover:text-background",
+					{
+						"hover:bg-pixel-pink hover:text-background":
+							!desc?.disabled,
+					},
+					{
+						"bg-fill-quaternary text-muted-foreground":
+							desc?.disabled,
+					},
+				)}
 			>
 				Use this keychain
 			</Button>
@@ -163,7 +180,7 @@ export default function CreateKeyModal({
 
 			{!keychain ? (
 				<div className="tracking-normal">
-					To stores the key and signs transactions
+					To store the key and sign transactions
 				</div>
 			) : null}
 
@@ -176,62 +193,64 @@ export default function CreateKeyModal({
 							: "",
 					)}
 				>
-					{keychainsQuery.data?.keychains.map((item, i) => (
-						<div
-							className="rounded-xl p-6 flex flex-col bg-fill-quaternary w-full"
-							key={item.id.toString()}
-							onClick={setSelected.bind(null, i)}
-						>
-							<div className="flex items-center mb-1">
-								<div className="text-xl	font-bold flex items-center gap-[6px]">
-									{item.description}
-								</div>
+					{keychainsQuery.data?.keychains.map((item, i) => {
+						const desc = DESCRIPTION_MAP[item.description];
 
-								{selected === i ? (
-									<div className="ml-auto relative w-6 h-6">
+						return (
+							<div
+								className="rounded-xl p-6 flex flex-col bg-fill-quaternary w-full"
+								key={item.id.toString()}
+								onClick={setSelected.bind(null, i)}
+							>
+								<div className="flex items-center mb-1">
+									<div className="text-xl	font-bold flex items-center gap-[6px]">
+										{desc?.title ?? item.description}
+									</div>
+
+									{selected === i ? (
+										<div className="ml-auto relative w-6 h-6">
+											<Circle
+												stroke="#FFAEEE"
+												stroke-width="1"
+												cy={12}
+												cx={12}
+											/>
+											<Circle
+												className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4"
+												fill="#FFAEEE"
+												stroke="transparent"
+												stroke-width="0"
+											/>
+										</div>
+									) : (
 										<Circle
-											stroke="#FFAEEE"
+											className="ml-auto opacity-60"
+											stroke="#E5EEFF"
 											stroke-width="1"
 											cy={12}
 											cx={12}
 										/>
-										<Circle
-											className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4"
-											fill="#FFAEEE"
-											stroke="transparent"
-											stroke-width="0"
-										/>
-									</div>
-								) : (
-									<Circle
-										className="ml-auto opacity-60"
-										stroke="#E5EEFF"
-										stroke-width="1"
-										cy={12}
-										cx={12}
-									/>
-								)}
+									)}
+								</div>
+								{/* TODO get description from somewhere */}
+								<p className="m-0 text-muted-foreground">
+									{desc?.description ?? "Missing description"}
+								</p>
+								<a
+									href="#"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										setSelected(i);
+										setIsDetails(true);
+									}}
+									className="mt-2 duration-300 transition-all hover:text-pixel-pink font-semibold"
+								>
+									Learn more
+								</a>
 							</div>
-							{/* TODO get description from somewhere */}
-							<p className="m-0 text-muted-foreground">
-								Open Custody Protocol (OCP), a modular custody
-								primitive to expand the original vision from
-								Qredo by...
-							</p>
-							<a
-								href="#"
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									setSelected(i);
-									setIsDetails(true);
-								}}
-								className="mt-2 duration-300 transition-all hover:text-pixel-pink font-semibold"
-							>
-								Learn more
-							</a>
-						</div>
-					))}
+						);
+					})}
 				</div>
 			) : (
 				<>
@@ -367,13 +386,23 @@ export default function CreateKeyModal({
 						const keychain =
 							keychainsQuery.data?.keychains[selected];
 
-						if (!keychain) {
+						if (!keychain || desc?.disabled) {
 							return;
 						}
 
 						setKeychain(keychain);
 					}}
-					className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-5 hover:bg-pixel-pink duration-200 hover:text-background"
+					className={clsx(
+						"flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-5 duration-200",
+						{
+							"hover:bg-pixel-pink hover:text-background":
+								!desc?.disabled,
+						},
+						{
+							"bg-fill-quaternary text-muted-foreground":
+								desc?.disabled || selected === -1,
+						},
+					)}
 				>
 					Use this keychain
 				</Button>

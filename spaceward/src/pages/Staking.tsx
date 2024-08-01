@@ -41,7 +41,7 @@ export function StakingPage() {
 		queryValidators,
 	} = useStakingQueries(address);
 
-	const { /*availableWard,*/ delegationsByAddress } = useMemo(
+	const { availableWard: stakedWard, delegationsByAddress } = useMemo(
 		() => getDelegationsData(queryDelegations.data?.delegationResponses),
 		[queryDelegations.data?.delegationResponses],
 	);
@@ -64,7 +64,7 @@ export function StakingPage() {
 		],
 	);
 
-	const { stakedWard, validatorsByAddress } = useMemo(
+	const { /* stakedWard, */ validatorsByAddress } = useMemo(
 		() => getValidatorData(queryValidators.data?.validators),
 		[queryValidators.data?.validators],
 	);

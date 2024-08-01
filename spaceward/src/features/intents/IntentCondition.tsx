@@ -241,6 +241,7 @@ const IntentCondition = ({
 					</AdvancedMode>
 				) : (
 					<AddressList
+						warning={!users.length}
 						addresses={users}
 						onAdd={() =>
 							toggleChangeAddresses(users, "person", (group) =>

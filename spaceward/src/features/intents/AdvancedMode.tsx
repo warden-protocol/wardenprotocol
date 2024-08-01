@@ -334,6 +334,15 @@ export default function AdvancedMode({
 		}
 	}, [input.lookup, input.shield, input.parsed.errors]);
 
+	const arrNodes = Object.values(input.parsed.refs).filter(
+		(node) => node.type === "array",
+	);
+
+	// fixme hotfix for https://github.com/warden-protocol/wardenprotocol/issues/365
+	const warning = Boolean(
+		arrNodes.length && !arrNodes.flatMap((node) => node.tokens).length,
+	);
+
 	return (
 		<div>
 			{!hideHeader ? (
@@ -453,9 +462,10 @@ export default function AdvancedMode({
 
 			{children?.({
 				code: input.shield?.value ?? "",
-				error: addresses.length
-					? error?.message
-					: "Please add at least one approver",
+				error:
+					addresses.length && !warning
+						? error?.message
+						: "Please add at least one approver",
 				isUpdated,
 			})}
 		</div>

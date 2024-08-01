@@ -31,7 +31,7 @@ You can check the list of your stakes in the **My staking** tab.
 
 After staking, you can claim your rewards or stake more at any time, including restaking your rewards.
 
-If you initiate redelegation to another validator or unstaking, you'll have to wait for the **unbonding period of 21 days**. During this period your tokens don't earn rewards.
+If you initiate redelegation to another validator or unstaking, you'll have to wait for the **unbonding period of 21 days**. During this period, your tokens don't earn rewards.
 
 To manage your stake, do the following:
 

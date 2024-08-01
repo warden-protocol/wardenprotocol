@@ -6,7 +6,7 @@ sidebar_position: 13
 
 ## Overview
 
-SpaceWard allows you integrating with external wallets such as **WalletConnect** and **MetaMask Snap**.
+SpaceWard allows you to integrate with external wallets such as **WalletConnect** and **MetaMask Snap**.
 
 ## Use WalletConnect
 

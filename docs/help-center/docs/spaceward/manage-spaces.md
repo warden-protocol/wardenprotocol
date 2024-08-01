@@ -33,6 +33,6 @@ To switch between Spaces, just use the **Active Space** menu.
 
 Within your Space, you can view its details and monitor activity. Use the following sections in the left menu:
 
-- **Dasboard**: Access an overview of your assets, stakes, Rules, latest Actions, and other information related to the Space.
+- **Dashboard**: Access an overview of your assets, stakes, Rules, latest Actions, and other information related to the Space.
 - **Actions**: Monitor activity in your Space: key requests, removing space owners, etc.
 - **Explorer**: Access Warden block explorer to monitor the state of the Warden Protocol, including the activity in you Space.

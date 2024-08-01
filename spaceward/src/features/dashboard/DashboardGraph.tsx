@@ -11,6 +11,7 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
 import { bigintToFloat } from "@/lib/math";
 import { useModalState } from "../modals/state";
+import { Link } from "react-router-dom";
 
 type Currency = keyof typeof FIAT_FORMAT;
 
@@ -84,11 +85,12 @@ const DashboardGraph = ({
 							2,
 						),
 					)}
-
-					<Icons.buttonArrow className="group-hover:opacity-100 opacity-0 ease-out duration-300" />
+					<Link to="/assets">
+						<Icons.buttonArrow className="group-hover:opacity-100 opacity-0 ease-out duration-300" />
+					</Link>
 				</div>
 
-				<div className="flex gap-2">
+				{/* <div className="flex gap-2">
 					<div
 						onClick={() => setGraphInterval(7)}
 						className={clsx(
@@ -119,17 +121,27 @@ const DashboardGraph = ({
 					>
 						3M
 					</div>
-				</div>
+				</div> */}
 			</div>
 
 			<div className="text-muted-foreground">In total</div>
 
 			<div className="-mx-6 w-[calc(100%_+_48px)] max-w-none h-[191px] overflow-hidden rounded-lg">
-				<TotalAssetsChart />
+				<TotalAssetsChart
+					balance={bigintToFloat(
+						fiatConversion
+							? (totalBalance *
+									BigInt(10) **
+										BigInt(fiatConversion.decimals)) /
+									fiatConversion.value
+							: BigInt(0),
+						2,
+					)}
+				/>
 			</div>
 
 			<div className="absolute left-6 bottom-6 flex w-[calc(100%_-_48px)] justify-between">
-				<div className="flex items-center gap-3">
+				{/* <div className="flex items-center gap-3">
 					<div className="flex">
 						<img
 							className="w-10 h-10 object-contain"
@@ -150,11 +162,11 @@ const DashboardGraph = ({
 						/>
 					</div>
 					5 assets
-				</div>
+				</div> */}
 				<button
 					onClick={setModal.bind(null, {
 						type: "receive",
-						params: { },
+						params: {},
 					})}
 					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>

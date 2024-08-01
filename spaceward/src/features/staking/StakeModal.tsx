@@ -124,13 +124,15 @@ const StakeModal = ({
 								target="_blank"
 								className="flex items-center gap-[6px] cursor-pointer"
 							>
-
-								{icon ? <img
-									src={icon}
-									className="w-6 h-6 object-contain"
-									alt=""
-								/> : <AssetPlaceholder
-									className="w-6 h-6 object-contain" />}
+								{icon ? (
+									<img
+										src={icon}
+										className="w-6 h-6 object-contain"
+										alt=""
+									/>
+								) : (
+									<AssetPlaceholder className="w-6 h-6 object-contain" />
+								)}
 
 								<span className="decoration-solid underline">
 									{validator.description?.moniker}
@@ -138,9 +140,7 @@ const StakeModal = ({
 							</a>
 						) : (
 							<div className="flex items-center gap-[6px] cursor-pointer">
-								<AssetPlaceholder
-									className="w-6 h-6 object-contain"
-								/>
+								<AssetPlaceholder className="w-6 h-6 object-contain" />
 
 								<span className="decoration-solid">
 									{validator.description?.moniker}
@@ -150,7 +150,7 @@ const StakeModal = ({
 					</div>
 
 					<div className="flex h-8 justify-between items-center w-full">
-						<div>Commision</div>
+						<div>Commission</div>
 						<div>
 							{(
 								Number(

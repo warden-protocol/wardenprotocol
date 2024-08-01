@@ -185,8 +185,9 @@ export function AssetsPage() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-[320px_1fr] gap-[24px]">
-				<div className="bg-pink-secondary  relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl">
+			{/* <div className="grid grid-cols-[320px_1fr] gap-[24px]"> */}
+			<div className="">
+				<div className="bg-pink-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
 					<img
 						src="/images/asset-decor.png"
 						alt=""
@@ -231,7 +232,7 @@ export function AssetsPage() {
 						) : null}
 					</div>
 
-					<div className="grid grid-cols-2 gap-2">
+					<div className="grid grid-cols-2 gap-2 max-w-[320px]">
 						<button
 							className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
 							onClick={setModal.bind(null, {
@@ -269,7 +270,7 @@ export function AssetsPage() {
 						) : null}
 					</div>
 				</div>
-				<div className="bg-card  rounded-xl min-h-[220px] border-border-edge border-[1px] py-6 px-8">
+				{/* <div className="bg-card  rounded-xl min-h-[220px] border-border-edge border-[1px] py-6 px-8">
 					<div className="flex justify-between items-center">
 						<div className="text-2xl font-bold tracking-[0.12px]">
 							Performance
@@ -313,7 +314,7 @@ export function AssetsPage() {
 						alt=""
 						className="h-[107px] object-contain"
 					/>
-				</div>
+				</div> */}
 			</div>
 
 			<div className="bg-card  rounded-xl border-border-edge border-[1px] px-8 py-6">

@@ -106,7 +106,7 @@ export default function CreateKeyModal({
 					OPEN token (previously known as QRDO) &#183; opencustody.org
 				</div>
 
-				<div className="my-4 h-[1px] w-full bg-border-quaternary" />
+				{/* <div className="my-4 h-[1px] w-full bg-border-quaternary" />
 
 				<div className="flex flex-col gap-4">
 					<div className="flex items-center justify-between py-1">
@@ -129,7 +129,7 @@ export default function CreateKeyModal({
 						<div>Last actvity</div>
 						<div>Use this Keychain</div>
 					</div>
-				</div>
+				</div> */}
 			</div>
 
 			<Button
@@ -294,18 +294,18 @@ export default function CreateKeyModal({
 										<div
 											key={themeOffset + i}
 											className={clsx(
-												"w-16 h-10 rounded-lg overflow-hidden border-solid py-[2px] border-2 cursor-pointer",
+												"w-14 h-10 rounded-lg overflow-hidden border-solid border-2 cursor-pointer",
 												{
 													"border-transparent":
 														index !== themeIndex,
-													"border-accent":
+													"border-accent p-0.5":
 														index === themeIndex,
 												},
 											)}
 											onClick={() => setThemeIndex(index)}
 										>
 											<Assets.themeSelector
-												className="w-full h-full object-cover rounded-lg overflow-hidden"
+												className="w-full h-full object-cover rounded-sm overflow-hidden"
 												themeIndex={index}
 											/>
 										</div>

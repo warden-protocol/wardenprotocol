@@ -91,7 +91,7 @@ export function SpaceSelector() {
 									<AddressAvatar
 										seed={spaceId}
 										disableTooltip
-										className=" w-[220px] h-[220px] -translate-y-[10px]"
+										className=" w-[250px] h-[250px] -translate-y-[10px]"
 									/>
 								</div>
 								<div className="flex relative z-10 flex-col mr-auto text-left">
@@ -99,9 +99,10 @@ export function SpaceSelector() {
 										Active Space
 									</span>
 									<span className="block font-semibold">
-										{"#" + spaceId + "Space"}
+										{"Space #" + spaceId}
 									</span>
 								</div>
+								<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 							</div>
 						) : (
 							<div>

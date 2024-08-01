@@ -7,18 +7,15 @@ import { Icons as AssetIcons } from "@/components/ui/icons-assets";
 import {
 	AppWindow,
 	ArrowLeftRight,
-	Cog,
 	Coins,
 	Key,
-	Plus,
 	Grid2X2,
 	FolderKey,
 	User2Icon,
 	HomeIcon,
-	HelpCircleIcon,
-	OrbitIcon,
 	FileCheckIcon,
-	BookUserIcon,
+	CircleCheckBig,
+	Layers3,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SpaceSelector } from "@/features/spaces";
@@ -29,11 +26,6 @@ const spaceNavItems = [
 		icon: <HomeIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/",
 	},
-	// {
-	// 	label: "Spaces",
-	// 	icon: <OrbitIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/spaces",
-	// },
 	{
 		label: "Keys",
 		icon: <Key strokeWidth={1} className="h-4 w-4 mr-4" />,
@@ -50,31 +42,21 @@ const spaceNavItems = [
 		url: "/owners",
 	},
 	{
-		label: "Intents",
+		label: "Rules",
 		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-		url: "/intents",
+		url: "/rules",
 	},
 ];
 
 const globalNavItems = [
 	{
 		label: "Staking",
-		icon: (
-			<AssetIcons.staking
-				stroke="currentColor"
-				className="h-4 w-4 mr-4"
-			/>
-		),
+		icon: <Layers3 strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/staking",
 	},
 	{
 		label: "Governance",
-		icon: (
-			<AssetIcons.governance
-				stroke="currentColor"
-				className="h-4 w-4 mr-4"
-			/>
-		),
+		icon: <CircleCheckBig strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/governance",
 	},
 	{
@@ -82,11 +64,6 @@ const globalNavItems = [
 		icon: <ArrowLeftRight strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/actions",
 	},
-	// {
-	// 	label: "Address Book",
-	// 	icon: <BookUserIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/address-book",
-	// },
 	{
 		label: "Keychains",
 		icon: <FolderKey strokeWidth={1} className="h-4 w-4 mr-4" />,
@@ -102,11 +79,6 @@ const globalNavItems = [
 		icon: <AppWindow strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/apps",
 	},
-	// {
-	// 	label: "Settings",
-	// 	icon: <Cog strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/settings",
-	// },
 ];
 
 export function InnerSidebar() {

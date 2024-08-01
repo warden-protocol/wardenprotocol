@@ -288,7 +288,7 @@ export function StakingPage() {
 								>
 									APR is estimated percentage of your staked
 									tokens that you will earn, on top of your
-									staked tokens. The validators commission
+									staked tokens. The validator’s commission
 									will be subtracted from it
 								</div>
 							</div>
@@ -304,7 +304,7 @@ export function StakingPage() {
 						onClick={openSortDropdown("comission")}
 						className="text-sm cursor-pointer w-fit	text-label-secondary flex items-center gap-1 group relative"
 					>
-						Commision
+						Commission
 						<Icons.chevronsUpDown className="invert dark:invert-0" />
 						{state.sortDropdown === "comission" ? (
 							<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">

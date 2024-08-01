@@ -21,18 +21,23 @@ export function NoSpaces() {
 					</h1>
 					<p className="">
 						A space functions as a management hub for a collection
-						of keys, assets and intents.
+						of keys, assets and rules.
 					</p>
 					<Button
 						onClick={() => {
-							tx([newSpace({
-								creator: address,
-								signRuleId: BigInt(0),
-								adminRuleId: BigInt(0),
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-								// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-								additionalOwners: undefined,
-							})], {});
+							tx(
+								[
+									newSpace({
+										creator: address,
+										signRuleId: BigInt(0),
+										adminRuleId: BigInt(0),
+										// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+										// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+										additionalOwners: undefined,
+									}),
+								],
+								{},
+							);
 						}}
 					>
 						Create a new space

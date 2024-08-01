@@ -135,7 +135,7 @@ const CreateIntentModal = ({
 									Advanced mode
 									<div className="text-xs	font-normal	leading-3 flex items-center gap-[2px] rounded-2xl	bg-[rgba(229,238,255,0.15)] backdrop-blur-md py-1 pl-1 pr-2 h-6">
 										<Icons.star />
-										For expert
+										For experts
 									</div>
 								</p>
 								<p className="text-muted-foreground text-xs">

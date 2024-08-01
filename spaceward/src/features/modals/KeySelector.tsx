@@ -46,10 +46,9 @@ const KeySelector = ({
 		)
 		.filter((result) => token && result.keyId && result.token === token);
 
-	const addressType =
-		isOsmosis(balances[0]?.type)
-			? AddressType.ADDRESS_TYPE_OSMOSIS
-			: AddressType.ADDRESS_TYPE_ETHEREUM;
+	const addressType = isOsmosis(balances[0]?.type)
+		? AddressType.ADDRESS_TYPE_OSMOSIS
+		: AddressType.ADDRESS_TYPE_ETHEREUM;
 
 	const address = addresses?.find((a) => a.type === addressType);
 
@@ -171,7 +170,7 @@ const KeySelector = ({
 									{...themeDicebar}
 								/>
 								<div>
-									<div className="text-xs text-label-secondary overflow-hidden text-ellipsis whitespace-nowrap max-w-[184px]">
+									<div className="text-xs text-label-secondary overflow-hidden text-ellipsis whitespace-nowrap max-w-[184px] text-left">
 										{name}
 									</div>
 

@@ -128,12 +128,12 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 				<div className="mb-[22px] mt-1 h-[1px] bg-background" />
 
 				<Link
-					to="/intents"
+					to="/rules"
 					className="py-[10px] flex justify-between items-center gap-3 cursor-pointer"
 				>
 					<div className="flex gap-3 items-center">
 						<Icons.activeIntent stroke="currentColor" />
-						Active Intent
+						Active Rule
 					</div>
 
 					{activeRuleId ? (

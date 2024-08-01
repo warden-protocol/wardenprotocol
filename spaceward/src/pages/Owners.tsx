@@ -40,10 +40,10 @@ export function OwnersPage() {
 	}
 
 	return (
-		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8 mt-16">
+		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-5xl">Owners</h2>
+					<h2 className="text-5xl font-bold">Owners</h2>
 				</div>
 				{spaceId ? (
 					<div className="!ml-auto flex items-center">
@@ -106,7 +106,7 @@ export function OwnersPage() {
 							</div>
 							<div className="mt-auto mb-8 mx-6">
 								<p className="text-muted-foreground hidden xl:block text-sm">
-									With default intents, owners will be able to
+									With default rules, owners will be able to
 									perform actions such as adding other owners
 									or signing transactions.
 								</p>

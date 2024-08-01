@@ -152,7 +152,7 @@ function App() {
 														}
 													/>
 													<Route
-														path="/intents"
+														path="/rules"
 														element={
 															<IntentsPage />
 														}

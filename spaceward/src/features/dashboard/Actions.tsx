@@ -6,7 +6,10 @@ import { prettyActionStatus } from "@/utils/formatting";
 import { Icons } from "@/components/ui/icons-assets";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { Action as ActionModel, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import {
+	Action as ActionModel,
+	ActionStatus,
+} from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { timestampToDate } from "@/lib/datetime";
 
 export function Actions() {
@@ -14,7 +17,9 @@ export function Actions() {
 	const {
 		isReady,
 		warden: {
-			act: { v1beta1: { useActionsByAddress } },
+			act: {
+				v1beta1: { useActionsByAddress },
+			},
 		},
 	} = useQueryHooks();
 
@@ -36,7 +41,9 @@ export function Actions() {
 
 	const groups: { [key: string]: ActionModel[] } = actions.reduce(
 		(groups, action) => {
-			const date = timestampToDate(action.createdAt).toISOString().split("T")[0];
+			const date = timestampToDate(action.createdAt)
+				.toISOString()
+				.split("T")[0];
 			if (!groups[date]) {
 				groups[date] = [];
 			}
@@ -45,7 +52,6 @@ export function Actions() {
 		},
 		{} as { [key: string]: ActionModel[] },
 	);
-
 
 	if (q.status === "loading" || !actions?.length) {
 		return (
@@ -92,7 +98,9 @@ export function Actions() {
 								</span>
 								<div>
 									{group.map((action) => {
-										const date = timestampToDate(action.createdAt);
+										const date = timestampToDate(
+											action.createdAt,
+										);
 										const shortTime =
 											new Intl.DateTimeFormat("en", {
 												timeStyle: "short",
@@ -103,13 +111,14 @@ export function Actions() {
 												className={`py-3`}
 											>
 												<div className="flex flex-row hover:no-underline">
-													<div className="grid gap-x-2 gap-y-5 grid-cols-[70px_174px_1fr_0.5fr_1fr] w-full">
+													<div className="grid gap-x-2 gap-y-5 grid-cols-[70px_174px_1fr_0.5fr] w-full text-sm">
 														<div className="text-left">
 															#
 															{action.id.toString()}
 														</div>
 														<div className="text-left">
-															{action?.msg?.typeUrl.replace(
+															{action?.msg?.typeUrl
+																.replace(
 																	"/warden.warden.v1beta3.Msg",
 																	"",
 																)
@@ -119,12 +128,12 @@ export function Actions() {
 																)
 																.trim()}
 														</div>
-														<div>
+														{/* <div>
 															{action.rule.id.toString() ==
 																"0"
-																? `Default intent`
-																: `Intent #${action.rule.id.toString()}`}
-														</div>
+																? `Default rule`
+																: `Rule #${action.rule.id.toString()}`}
+														</div> */}
 														<div>
 															{shortTime.format(
 																date,

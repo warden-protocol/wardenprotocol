@@ -348,16 +348,17 @@ const AssetSelector = ({
 										</div>
 									</div>
 
-									<div className="h-6 border-[1px] ml-auto border-border-secondary border-solid flex items-center gap-1 text-xs text-label-secondary rounded p-1 pr-2 w-20">
+									<div className="h-6 border ml-auto border-border-secondary border-solid flex items-center gap-1 text-xs text-label-secondary rounded p-1 pr-2 min-w-20">
 										<Network
 											network={item.chainName}
 											className="invert dark:invert-0"
 										/>
-
-										{item.chainName
-											.charAt(0)
-											.toUpperCase() +
-											item.chainName.slice(1)}
+										<span className="max-w-14 text-ellipsis overflow-hidden">
+											{item.chainName
+												.charAt(0)
+												.toUpperCase() +
+												item.chainName.slice(1)}
+										</span>
 									</div>
 								</div>
 							);

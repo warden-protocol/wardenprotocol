@@ -26,9 +26,9 @@ export default function DappsDashboard() {
 				/>
 				<div>
 					<div>Uniswap</div>
-					<div className="text-xs text-muted-foreground">
+					{/* <div className="text-xs text-muted-foreground">
 						The most popular DEX
-					</div>
+					</div> */}
 				</div>
 			</Link>
 
@@ -43,14 +43,14 @@ export default function DappsDashboard() {
 				/>
 				<div>
 					<div>Squid</div>
-					<div className="text-xs text-muted-foreground">
+					{/* <div className="text-xs text-muted-foreground">
 						Cross-chain DEX
-					</div>
+					</div> */}
 				</div>
 			</Link>
 
 			<Link
-				to="/apps/open?url=https://testnet.osmosis.zone/?to=ATOM&from=OSMO"
+				to="/apps/open?url=https://testnet.osmosis.zone/?to=OSMO&from=ATOM"
 				className="flex items-center rounded-lg p-3 ease-out duration-300 gap-3 hover:bg-background cursor-pointer"
 			>
 				<img
@@ -60,9 +60,9 @@ export default function DappsDashboard() {
 				/>
 				<div>
 					<div>Osmosis</div>
-					<div className="text-xs text-muted-foreground">
+					{/* <div className="text-xs text-muted-foreground">
 						The premier DEX
-					</div>
+					</div> */}
 				</div>
 			</Link>
 		</div>

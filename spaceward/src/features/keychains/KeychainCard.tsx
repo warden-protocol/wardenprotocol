@@ -23,9 +23,9 @@ const KeychainCard = (props: KeychainProps) => {
 					{props.name}
 				</div>
 				{props.verified ? <Icons.verified /> : null}
-				<a href={props.link} target="_blank" className="ml-auto">
+				{/* <a href={props.link} target="_blank" className="ml-auto">
 					<Icons.externalLink className="invert dark:invert-0" />
-				</a>
+				</a> */}
 			</div>
 
 			<div className="relative">
@@ -47,7 +47,7 @@ const KeychainCard = (props: KeychainProps) => {
 				</button>
 			</div>
 
-			<div className="flex items-cent gap-1  mt-4">
+			{/* <div className="flex items-cent gap-1  mt-4">
 				<div className="bg-fill-quaternary rounded-lg	p-3">
 					<div className="flex gap-1 items-center font-semibold">
 						<span>
@@ -79,14 +79,14 @@ const KeychainCard = (props: KeychainProps) => {
 
 					<div className="mt-1 text-label-secondary text-xs">TVL</div>
 				</div>
-			</div>
+			</div> */}
 
-			<div className="flex my-4 items-center gap-2 text-xs text-label-secondary">
+			{/* <div className="flex my-4 items-center gap-2 text-xs text-label-secondary">
 				<Icons.clock className="invert dark:invert-0" />
 				Last seen {props.lastSeen}
-			</div>
+			</div> */}
 
-			<div className="bg-border-quaternary h-[1px] mb-2 mt-auto" />
+			<div className="bg-border-quaternary h-[1px] mb-2 mt-4" />
 
 			<button
 				className="focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 flex items-center justify-center gap-2 h-14 font-semibold duration-300 text-pixel-pink hover:text-foreground w-full"
@@ -96,7 +96,7 @@ const KeychainCard = (props: KeychainProps) => {
 				})}
 			>
 				<Icons.plus />
-				Create Key for $X.XX
+				Create Key
 			</button>
 		</div>
 	);

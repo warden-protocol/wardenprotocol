@@ -14,7 +14,7 @@ Get ready to embark on an exciting journey into the future of decentralized fina
 
 :::warning
 - This is a **testnet environment**. It's aimed for testing and can break at any time due to unforeseen circumstances.
-- You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, your might lose your assets.
+- You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.
 :::
 
 ## Get started

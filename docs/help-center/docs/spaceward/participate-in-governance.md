@@ -32,6 +32,6 @@ Your **voting power** depends on the total amount of staked WARD. To view it, do
 
 ## Suggest a proposal
 
-To join the conversation around potential governance proposal, visit our Discord:  
+To join the conversation around a potential governance proposal, visit our Discord:  
 
 - 👉 [Join Warden Discord](https://discord.com/invite/wardenprotocol)

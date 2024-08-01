@@ -11,7 +11,7 @@ SpaceWard allows you using your [keys](manage-keys) (addresses) in **decentraliz
 You can access a **SpaceWard-curated collection** or use **WalletConnect** and **MetaMask Snap**. See the sections below.
 
 :::note
-As the testnet phase advances, we plan to enhance connectivity with Cosmos chains. Cosmos wallets will gain the ability to interact directly once they are fully integrated with the Warden Protocol. We anticipate to achieve this goal in the months leading up to the mainnet launch.
+As the testnet phase advances, we plan to enhance connectivity with Cosmos chains. Cosmos wallets will gain the ability to interact directly once they are fully integrated with the Warden Protocol. We anticipate achieving this goal in the months leading up to the mainnet launch.
 :::
 
 ## Use SpaceWard collection

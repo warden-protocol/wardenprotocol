@@ -9,7 +9,7 @@ sidebar_position: 6
 This guide explains how to create and manage your **keys** (wallets).
 
 :::note
-Note that in the Warden Protocol keys are associated with **Keychains** – custodians that generate and store keys and sign transactions. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
+In the Warden Protocol keys are associated with **Keychains** – custodians that generate and store keys and sign transactions. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
 :::
 
 ## Request a key

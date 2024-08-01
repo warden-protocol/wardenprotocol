@@ -35,4 +35,4 @@ Within your Space, you can view its details and monitor activity. Use the follow
 
 - **Dashboard**: Access an overview of your assets, stakes, Rules, latest Actions, and other information related to the Space.
 - **Actions**: Monitor activity in your Space: key requests, removing space owners, etc.
-- **Explorer**: Access Warden block explorer to monitor the state of the Warden Protocol, including the activity in you Space.
+- **Explorer**: Access Warden block explorer to monitor the state of the Warden Protocol, including the activity in your Space.

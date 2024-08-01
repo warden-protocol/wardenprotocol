@@ -34,10 +34,12 @@ export const KeysDropdownItem = ({
 					className="w-6 h-6 object-contain cursor-pointer"
 				/>
 			</Avatar>
-			<div className="max-w-[174px] overflow-hidden text-ellipsis">
+			<div className="max-w-[140px] overflow-hidden text-ellipsis">
 				{name}
 			</div>
-			{isActive && <Icons.check className="ml-auto" />}
+			{isActive && (
+				<Icons.check className="ml-auto invert dark:invert-0" />
+			)}
 		</div>
 	);
 };

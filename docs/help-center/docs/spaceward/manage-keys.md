@@ -26,13 +26,17 @@ To obtain a new key, do this:
 
 In the **Keys** section of [SpaceWard](https://spaceward.buenavista.wardenprotocol.org), you can click your key and view its addresses, Keychain, and type. You can also edit the key name.
 
-:::tip
+![View key details](../../static/img/view-key-details.png)
+
+## Get your key address
+
 To get your key (wallet) address in a certain network, do the following:
 
 - Click the **↓** icon on your new key.
 - Select the asset and network pair.
 - Copy the address.
-:::
+
+![Get your key address](../../static/img/get-key-address.png)
 
 ## View Keychains
 

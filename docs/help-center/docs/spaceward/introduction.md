@@ -36,6 +36,8 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 12. Get your Warden address, [get test WARD](get-test-ward), or close the session
 13. [Use external wallets](use-external-wallets) (MetaMask Snap, WalletConnect)
 
+![SpaceWard overview](../../static/img/spaceward-overview.png)
+
 ## Transaction flow
 
 SpaceWard allows you to securely carry out operations across multiple blockchains.

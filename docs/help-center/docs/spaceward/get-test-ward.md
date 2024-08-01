@@ -14,4 +14,6 @@ If you wish to get more WARD after that, take these steps:
 
 2. In the top-right corner of the screen, click your [connected wallet](connect-your-wallet) and then click **Get**.
 
+![Get test WARD](../../static/img/get-test-ward.png)
+
 3. You'll be redirected to a faucet. Click **Get WARD** and wait for WARD to be sent to your wallet.

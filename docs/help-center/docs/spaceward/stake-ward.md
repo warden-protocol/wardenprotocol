@@ -45,3 +45,8 @@ To manage your stake, do the following:
     - **Unstake**
 5. If required, specify details such as the amount of WARD or a new validator.
 6. Confirm the transaction in your connected wallet.
+
+![Find stake details](../../static/img/stake-details-1.png)
+
+![Manage your stake](../../static/img/manage-stake.png)
+

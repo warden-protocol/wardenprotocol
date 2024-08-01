@@ -28,6 +28,8 @@ Your **voting power** depends on the total amount of staked WARD. To view it, do
 2. Navigate to the **My staking** tab with the list of your stakes.
 3. Check the **Voting power** column in the table.
 
+![View your voting power](../../static/img/voting-power.png)
+
 ## Suggest a proposal
 
 To join the conversation around potential governance proposal, visit our Discord:  

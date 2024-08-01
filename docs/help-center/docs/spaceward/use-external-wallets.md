@@ -21,6 +21,8 @@ You can connect to any EVM-based decentralized application through WalletConnect
 5. Paste the pairing code or the QR code and click **Connect**.
 6. Select the Space or address you wish to use and click **Approve connection**.
 
+![WalletConnect logo](../../static/img/walletconnect.png)
+
 ### Approve
 
 After you initiate a transaction in a dApp, you'll see an approval request. Then you need to do the following:
@@ -56,6 +58,8 @@ The Warden Protocol is in the testnet phase, so you have to use MetaMask Flask. 
 5. Select the preferred key and click **Add to MetaMask**.
 6. Confirm in MetaMask Flask.
 
+![MetaMask Snap logo](../../static/img/metamask-snap.png)
+
 ### Result
 
 Congratulations! You've successfully integrated SpaceWard with MetaMask Flask. You'll be able to see your address in your MetaMask Flask wallet, tagged as **Warden Protocol**.
@@ -63,7 +67,3 @@ Congratulations! You've successfully integrated SpaceWard with MetaMask Flask. Y
 :::warning
 Exercise caution and refrain from using real assets at this stage. Safety first!
 :::
-
-### Video tutorial
-
-<iframe width="100%" height="444" src="https://www.youtube.com/embed/sTH6okVKvss?si=yTZns9n0r_3ZXdav" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

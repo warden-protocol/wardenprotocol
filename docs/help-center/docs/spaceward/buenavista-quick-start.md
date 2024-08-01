@@ -43,10 +43,6 @@ The following is a brief overview explaining how to start using SpaceWard. For m
 
 Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
 
-## Video tutorial
-
-<iframe width="100%" height="444" src="https://www.youtube.com/embed/JZdpHGyOLoY?si=zs-wRqd-PuH1-nZk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ## Provide feedback
 
 Exciting times lie ahead as SpaceWard revolutionizes the way we interact with blockchain technology. Don't miss out on the opportunity to be part of this innovative journey:

@@ -10,6 +10,10 @@ sidebar_position: 9
 
 SpaceWard users can set up their own Rules as conditions to get transactions approved. For example, an Intent can allow executing a transaction only if 2 of 3 approvers sign it.
 
+:::tip
+Each approver is identified by Warden address – an address that is assigned to a SpaceWard user after [connecting a wallet](connect-your-wallet). To check your address, click its icon in the top-right corner of the screen.
+:::
+
 ## Create and enable a Rule
 
 To create a Rule, do this:
@@ -25,6 +29,8 @@ To create a Rule, do this:
 5. If needed, add approvers and specify other details by [editing your Rule](#edit).
 6. To start applying a new Rule, toggle its slider. Only one Rule can be active at a time.
 
+![Enable a Rule](../../static/img/enable-rule.png)
+
 ## Edit a Rule
 
 You can edit your Rule at any moment:
@@ -37,9 +43,9 @@ You can edit your Rule at any moment:
     - To add a whitelist address, click the plus button and select **Add whitelist address**. Only transactions to these addresses will be approved.
 4. Click **Save**.
 
-:::tip
-Each approver is identified by Warden address – an address that is assigned to a SpaceWard user after [connecting a wallet](connect-your-wallet). To check your address, click its icon in the top-right corner of the screen.
-:::
+![Edit a Rule 1](../../static/img/edit-rule-1.png)
+
+![Edit a Rule 2](../../static/img/edit-rule-2.png)
 
 ## Advanced Rules
 
@@ -50,6 +56,8 @@ To configure an advanced Rule, take these steps:
 1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Rules**.
 2. Click the pencil symbol on your Rule. Click **Edit in Advanced mode**.
 3. Enter a custom expression for your Rule.
+
+![Edit an advanced Rule](../../static/img/edit-rule-advanced.png)
 
 ### Operators
 

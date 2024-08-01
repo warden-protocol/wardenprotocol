@@ -27,6 +27,8 @@ If you wish to create additional Spaces, take these steps:
 
 To switch between Spaces, just use the **Active Space** menu.
 
+![Manage Spaces](../../static/img/manage-spaces.png)
+
 ## View details & activity
 
 Within your Space, you can view its details and monitor activity. Use the following sections in the left menu:

@@ -17,19 +17,16 @@ SpaceWard currently operates on the **Buenavista testnet**, so you should use **
 To receive assets, take these steps:
 
 1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
-
 2. In the left menu, navigate to **Assets**. You'll see a list of assets you hold.
-
 3. Click **Receive**.
-
 4. Select the key you wish to use and the asset & network pair.
-
 5. Copy your address in the selected network.
+6. Receive crypto to your address.
 
-5. Receive crypto to your address. For **Sepolia ETH**, you can use these faucets:
+For **Sepolia ETH**, you can use these faucets:
 
-    - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
-    - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
+- 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
+- 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
 
 ## Send assets
 

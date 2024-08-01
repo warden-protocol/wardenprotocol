@@ -61,7 +61,7 @@ export function ConnectWallet() {
 							<div className="border-[2px] flex items-center justify-center shrink-0 p-[2px] rounded-full focus:border-pixel-pink border-transparent">
 								<AddressAvatar
 									seed={address}
-									className="w-6 h-6"
+									className="w-8 h-8"
 								/>
 							</div>
 							<div className="text-center text-label-secondary text-xs mt-[6px]">
@@ -126,7 +126,9 @@ export function ConnectWallet() {
 								)}
 							</div>
 							<div>
-								<div className="overflow-hidden text-ellipsis max-w-[160px]">{username}</div>
+								<div className="overflow-hidden text-ellipsis max-w-[160px]">
+									{username}
+								</div>
 								<div className="text-xs text-label-secondary">
 									<Copy value={address} split />
 								</div>

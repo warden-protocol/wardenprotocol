@@ -354,7 +354,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 						</div>
 						<div className="h-px bg-border-quaternary mt-2 mb-3 -mx-4"></div>
 						<div className="flex flex-col gap-[1px]">
-							{addresses.map((addr, i) => (
+							{/* {addresses.map((addr, i) => (
 								<div
 									className="flex items-center my-1"
 									key={addr.address}
@@ -368,7 +368,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 										/>
 									</p>
 								</div>
-							))}
+							))} */}
 							<div className="flex items-center justify-between my-1">
 								<div>Keychain</div>
 								<div>{keychain?.keychain?.description}</div>
@@ -428,7 +428,7 @@ const CardView = ({ data }: { data?: QueryKeysResponse }) => {
 					})}
 				>
 					<div className="flex items-center justify-center h-10 w-10 rounded-full bg-fill-quaternary">
-						<PlusIcon className="stroke-label-tertiary" />
+						<PlusIcon />
 					</div>
 				</div>
 			</div>

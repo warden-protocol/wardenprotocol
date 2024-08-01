@@ -15,10 +15,10 @@ export function KeysPage() {
 	}
 
 	return (
-		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8 mt-16">
+		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center pb-4 space-x-4">
 				<div>
-					<h2 className="text-5xl">Keys</h2>
+					<h2 className="text-5xl font-bold">Keys</h2>
 					{/* <p className="text-muted-foreground hidden xl:block">
 						Keys are used to derive blockchain addresses and sign
 						transactions.
@@ -37,11 +37,11 @@ export function KeysPage() {
 							New key
 						</div>
 
-						<Assets.toggleView
+						{/* <Assets.toggleView
 							className="cursor-pointer bg-fill-quaternary rounded-2xl invert dark:invert-0"
 							selected={data?.view}
 							onClick={toggleView}
-						/>
+						/> */}
 					</div>
 				) : null}
 			</div>

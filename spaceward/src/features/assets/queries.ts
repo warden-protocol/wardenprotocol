@@ -57,6 +57,10 @@ const EIP_155_NATIVE_PRICE_FEEDS: Partial<
 	sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
 };
 
+const COSMOS_PRICES: Record<string, bigint | undefined> = {
+	ATOM: BigInt(5.775 * 10 ** 8),
+	OSMO: BigInt(0.4446 * 10 ** 8),
+}
 const cosmosBalancesQuery = (params: {
 	address?: string;
 	enabled: boolean;
@@ -99,6 +103,8 @@ const cosmosBalancesQuery = (params: {
 				(unit) => unit.denom === asset.display,
 			)?.exponent as number;
 
+			const token = asset.symbol;
+
 			return {
 				address: params.address!,
 				balance: BigInt(x.amount),
@@ -106,10 +112,10 @@ const cosmosBalancesQuery = (params: {
 				chainName: params.chainName,
 				decimals: exp,
 				// fixme
-				price: BigInt(0),
+				price: COSMOS_PRICES[token] ?? BigInt(0),
 				priceDecimals: 8,
-				token: asset?.symbol ?? "",
-				title: asset?.name ?? "",
+				token,
+				title: asset.name,
 				type: "osmosis",
 			};
 		});

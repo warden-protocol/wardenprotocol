@@ -6,7 +6,7 @@ replace (
 	// evmos integration - need this replace when importing cosmos/rosetta pkg
 	cosmossdk.io/core => cosmossdk.io/core v0.11.0
 	// evmos integration
-	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.7-evmos-warden
+	github.com/cosmos/cosmos-sdk => github.com/evmos/cosmos-sdk v0.50.7-evmos
 	// evmos + types for slinky
 	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
@@ -44,8 +44,8 @@ require (
 	github.com/cosmos/ibc-apps/modules/ibc-hooks/v8 v8.0.0-20240530162148-4827cf263165
 	github.com/cosmos/ibc-go/modules/capability v1.0.0
 	github.com/cosmos/ibc-go/v8 v8.4.0
-	github.com/ethereum/go-ethereum v1.14.7
-	github.com/evmos/evmos/v18 v18.0.0-20240622221742-6d53a917cc75
+	github.com/ethereum/go-ethereum v1.14.5
+	github.com/evmos/evmos/v18 v18.0.0-20240719123340-11b5d80cf7bb
 	github.com/golang/protobuf v1.5.4
 	github.com/gorilla/mux v1.8.1
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0

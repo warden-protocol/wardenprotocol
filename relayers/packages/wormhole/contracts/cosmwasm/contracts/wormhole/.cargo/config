@@ -1,0 +1,5 @@
+[alias]
+wasm = "build --release --target wasm32-unknown-unknown"
+wasm-debug = "build --target wasm32-unknown-unknown"
+unit-test = "test --lib --features backtraces"
+integration-test = "test --test integration"

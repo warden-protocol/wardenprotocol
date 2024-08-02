@@ -8,27 +8,27 @@ resolver = "2"
 version = "0.1.0"
 
 [workspace.dependencies]
+anybuf = "0.5.0"
+anyhow = "1"
 bs58 = "0.5.1"
-cosmwasm-schema = "2.0.0"
-cosmwasm-std = "2.0.2"
-cw2 = "2.0.0"
-cw20 = "2.0.0"
-schemars = "0.8.15"
-semver = "1"
-serde = { version = "1.0.188", default-features = false, features = ["derive"] }
-thiserror = "1.0.4"
+cosmwasm-schema = "2.1.1"
+cosmwasm-std = { version="2.1.1" }
 cw-controllers = "2.0.0"
 cw-storage-plus = "2.0.0"
-
+cw-utils = "2.0.0"
+cw2 = "2.0.0"
+cw20 = "2.0.0"
+cw20-base = { version = "2.0.0" }
+serde = { version = "1.0.188" }
+serde-json-wasm = "1.0.1"
+schemars = "0.8.15"
+semver = "1"
+thiserror = "1.0.4"
 cw20-wrapped-2 = { version = "0.1.0", features = ["library"] }
-token-bridge-cosmwasm = { version = "0.1.0", features = ["library"] }
-wormhole-cosmwasm = { version = "0.1.0", features = ["library"] }
-wormhole-bindings = { version = "0.1.0" }
 
+[patch.crates-io]
 bindings = { path = "packages/bindings", version = "0.1.0" }
-gmp-with-token = { path = "contracts/gmp_with_token", version = "0.1.0", features = [
-  "library",
-] }
+cw20-wrapped-2 = { path = "contracts/cw20-wrapped" }
 
 [profile.release.package.sample]
 codegen-units = 1
@@ -41,9 +41,3 @@ overflow-checks = true
 opt-level = 3
 debug = false
 debug-assertions = false
-
-[patch.crates-io]
-cw20-wrapped-2 = { git = "https://github.com/wormhole-foundation/wormhole" }
-token-bridge-cosmwasm = { git = "https://github.com/wormhole-foundation/wormhole" }
-wormhole-cosmwasm = { git = "https://github.com/wormhole-foundation/wormhole" }
-wormhole-bindings = { git = "https://github.com/wormhole-foundation/wormhole" }

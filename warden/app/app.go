@@ -175,7 +175,6 @@ type App struct {
 }
 
 func init() {
-	runtime.InitRuntimeModule()
 	userHomeDir, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)

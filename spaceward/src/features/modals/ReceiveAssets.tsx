@@ -13,6 +13,9 @@ import { TokenIcons } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "@/features/assets/AssetRow";
 import { capitalize } from "./util";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { getCosmosChain, isOsmosis } from "../assets/util";
+import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
+import { fromBech32, toBech32 } from "@cosmjs/encoding";
 
 const TokenSelect = ({
 	chainName,
@@ -59,14 +62,35 @@ const TokenSelect = ({
 	);
 };
 
-/** @deprecated fixme chain names */
-export const isOsmosis = (chainName?: string) =>
-	["osmosis", "osmosistestnet"].includes(chainName ?? "");
-
 const getQrValue = (_chainName: string, address: string) => {
 	// fixme
 	const chainName = isOsmosis(_chainName) ? "osmosis" : "ethereum";
 	return `${chainName}:${address}`;
+};
+
+/** @deprecated refactor chain select */
+export const fixAddress = (addressResponse?: AddressResponse, chainName?: string) => {
+	if (!addressResponse) {
+		return;
+	}
+
+	if (isOsmosis(chainName)) {
+		const chain = getCosmosChain(chainName);
+
+		if (!chain) {
+			return;
+		}
+
+		return {
+			...addressResponse,
+			address: toBech32(
+				chain.bech32_prefix,
+				fromBech32(addressResponse.address).data,
+			),
+		};
+	} else {
+		return addressResponse;
+	}
 };
 
 export default function ReceiveAssetsModal(props: TransferParams) {
@@ -79,11 +103,14 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 	const chainName =
 		props?.chainName ?? queryBalances[0]?.data?.results[0]?.chainName;
 	// fixme
-	const addressType =
-		isOsmosis(chainName)
-			? AddressType.ADDRESS_TYPE_OSMOSIS
-			: AddressType.ADDRESS_TYPE_ETHEREUM;
-	const address = key?.addresses?.find((a) => a.type === addressType);
+	const addressType = isOsmosis(chainName)
+		? AddressType.ADDRESS_TYPE_OSMOSIS
+		: AddressType.ADDRESS_TYPE_ETHEREUM;
+
+	const address = fixAddress(
+		key?.addresses?.find((a) => a.type === addressType),
+		chainName,
+	);
 
 	return (
 		<div className="grid grid-cols-[1fr_520px] gap-12 pb-5 max-w-[928px] mx-auto">

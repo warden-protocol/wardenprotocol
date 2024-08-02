@@ -11,7 +11,23 @@ import {
 import type { CosmosQueryClient } from "./types";
 // import { walletContext } from "@cosmos-kit/react-lite";
 
-const COSMOS_CHAINS = [/*"osmosis",*/ "osmosistestnet"];
+/** @deprecated move somewhere else */
+export const COSMOS_CHAINS: {
+	chainName: string;
+	feeAmount: string;
+	rpc: string;
+}[] = [
+	{
+		chainName: "cosmoshubtestnet",
+		feeAmount: "1000",
+		rpc: "https://rpc.sentry-01.theta-testnet.polypore.xyz",
+	},
+	{
+		chainName: /*"osmosis",*/ "osmosistestnet",
+		feeAmount: "1500",
+		rpc: "https://rpc.testnet.osmosis.zone",
+	},
+];
 
 const DERIVE_ADDRESSES = [
 	AddressType.ADDRESS_TYPE_ETHEREUM,
@@ -24,19 +40,20 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 	useEffect(() => {
 		Promise.all(
-			COSMOS_CHAINS.map((chainName) => {
+			COSMOS_CHAINS.map(({ chainName, rpc }) => {
+				// fixme use walletRepo(works okay with mainnets but not testnets) along with hardcoded values
+
 				/*const repo = walletManager.getWalletRepo(chainName);
 				repo.activate();
 
 				*/ return /* repo.getRpcEndpoint().then((endpoint) =>*/ cosmos.ClientFactory.createRPCQueryClient(
 					// fixme revert back to waleltRepo
 					{
-						rpcEndpoint:
-							/*endpoint
+						rpcEndpoint: /*endpoint
 								? typeof endpoint === "string"
 									? endpoint
 									: endpoint.url
-								: `https://rpc.cosmos.directory/${chainName}`*/ "https://rpc.testnet.osmosis.zone",
+								: `https://rpc.cosmos.directory/${chainName}`*/ rpc,
 					},
 				) /*,
 					)*/

@@ -26,12 +26,10 @@ function ToastComponent({
 		if (!action) {
 			const closeToast = setTimeout(() => {
 				dismiss(id);
-				return () => {
-					clearTimeout(closeToast);
-				};
 			}, 5000);
+			return () => clearTimeout(closeToast);
 		}
-	}, [action, dismiss, id]);
+	}, [action, id]);
 
 	return (
 		<Toast key={id} {...props}>

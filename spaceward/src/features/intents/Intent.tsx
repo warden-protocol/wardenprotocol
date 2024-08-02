@@ -224,9 +224,10 @@ const IntentComponent = ({
 	return (
 		<div
 			className={clsx(
-				`p-6 w-full rounded-xl bg-card`,
+				`p-6 w-full rounded-xl bg-card relative`,
 				isActive ? `border-accent border-2` : `border-0`,
 			)}
+			style={{ zIndex: Math.round(50 / (index + 1)) }}
 		>
 			<div
 				className={clsx(

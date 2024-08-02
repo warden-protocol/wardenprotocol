@@ -2,7 +2,6 @@ import clsx from "clsx";
 import type { TransactionReceipt } from "ethers";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
@@ -10,7 +9,7 @@ import { useEthereumTx } from "@/hooks/useEthereumTx";
 import SignRequestDialog from "@/components/SignRequestDialog";
 import { SignRequesterState } from "@/hooks/useRequestSignature";
 import { TxBuild, buildTransaction } from "./util";
-import { useAssetQueries } from "../assets/hooks";
+import { COSMOS_CHAINS, useAssetQueries } from "../assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useFiatConversion from "@/hooks/useFiatConversion";
 import { numRestrict } from "../staking/util";
@@ -22,9 +21,6 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { walletContext } from "@cosmos-kit/react-lite";
 import { useModalState } from "./state";
 import KeySelector from "./KeySelector";
-
-const getAddress = (key?: QueryKeyResponse, type?: AddressType) =>
-	key?.addresses?.find((a) => a.type === type)?.address;
 
 export default function SendAssetsModal({
 	// address,
@@ -86,6 +82,7 @@ export default function SendAssetsModal({
 
 	const { signer, ...cosm } = useKeychainSigner({
 		keys,
+		chainName: selectedToken?.chainName,
 	});
 
 	const req =
@@ -148,12 +145,17 @@ export default function SendAssetsModal({
 				setReceipt(receipt);
 			} else if (txBuild.type === "cosmos") {
 				const { fee, msgs } = txBuild as TxBuild<"cosmos">;
-				/*const repo = walletManager.getWalletRepo(chainName);
-				repo.activate();
-				const rpc = await repo.getRpcEndpoint();
-				*/
 
-				const endpoint = "https://rpc.testnet.osmosis.zone"; /* rpc
+				const chain = COSMOS_CHAINS.find(
+					(item) => item.chainName === chainName,
+				);
+				/* const repo = walletManager.getWalletRepo(chainName);
+				repo.activate();
+				const rpc = await repo.getRpcEndpoint(); */
+
+				const endpoint =
+					chain?.rpc ??
+					`https://rpc.cosmos.directory/${chainName}`; /* rpc
 					? typeof rpc === "string"
 						? rpc
 						: rpc.url

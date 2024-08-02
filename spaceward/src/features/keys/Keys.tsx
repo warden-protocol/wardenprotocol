@@ -34,38 +34,33 @@ import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
 import KeyRequestStatusbar from "./KeyRequestStatus";
 import { Icons } from "@/components/ui/icons-assets";
 import useFiatConversion from "@/hooks/useFiatConversion";
-import { useQueries } from "@tanstack/react-query";
-import { balancesQueryCosmos, balancesQueryEth } from "../assets/queries";
 import { bigintToFloat } from "@/lib/math";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
-export 
-const useKeyData = ({ key, addresses }: QueryKeyResponse) => {
+import { useAssetQueries } from "../assets/hooks";
+export const useKeyData = ({ key }: QueryKeyResponse) => {
 	const { isReady, useKeychainById } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
 	const name = settings?.name ?? `Key #${key.id.toString()}`;
 	const seed = Buffer.from(key.publicKey).toString("base64");
 	const themeIndex = (settings?.themeIndex ?? 0) % KEY_THEMES.length;
+	const spaceId = key.spaceId;
 
 	const queryKeychain = useKeychainById({
 		request: { id: key.keychainId },
 		options: { enabled: isReady },
 	});
 
-	const queryBalancesEth = useQueries(
-		balancesQueryEth(isReady, [{ key, addresses }]),
-	);
-
-	const queryBalancesCosmos = useQueries(
-		balancesQueryCosmos(isReady, [{ key, addresses }]),
-	);
-
+	const { queryBalances } = useAssetQueries(spaceId.toString());
 	const { formatter, fiatConversion } = useFiatConversion();
 	const targetDecimals = 2;
 
-	const total = [...queryBalancesEth, ...queryBalancesCosmos].reduce(
-		(total, item) => {
+	const total = queryBalances
+		.filter(({ data }) => {
+			return data?.key.key.id === key.id;
+		})
+		.reduce((total, item) => {
 			if (!item.data) {
 				return total;
 			}
@@ -86,9 +81,7 @@ const useKeyData = ({ key, addresses }: QueryKeyResponse) => {
 				: BigInt(0);
 
 			return total + value;
-		},
-		BigInt(0),
-	);
+		}, BigInt(0));
 
 	const avatar = useMemo(() => {
 		const theme = KEY_THEMES[themeIndex].map((color) => color.slice(1));

@@ -13,7 +13,7 @@ import { useModalState } from "./state";
 import { bigintToFloat } from "@/lib/math";
 import { useKeySettingsState } from "../keys/state";
 import { KEY_THEMES } from "../keys/assets";
-import { isOsmosis } from "./ReceiveAssets";
+import { isOsmosis } from "@/features/assets/util";
 
 const KeySelector = ({
 	className,

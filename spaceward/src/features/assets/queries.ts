@@ -6,6 +6,8 @@ import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient } from "./types";
+import { getCosmosChain } from "./util";
+import { fromBech32, toBech32 } from "@cosmjs/encoding";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -46,7 +48,7 @@ const ERC20_TOKENS: {
 		address: "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
 		// same as native
 		priceFeed: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-	}
+	},
 ];
 
 const EIP_155_NATIVE_PRICE_FEEDS: Partial<
@@ -60,7 +62,8 @@ const EIP_155_NATIVE_PRICE_FEEDS: Partial<
 const COSMOS_PRICES: Record<string, bigint | undefined> = {
 	ATOM: BigInt(5.775 * 10 ** 8),
 	OSMO: BigInt(0.4446 * 10 ** 8),
-}
+};
+
 const cosmosBalancesQuery = (params: {
 	address?: string;
 	enabled: boolean;
@@ -76,6 +79,12 @@ const cosmosBalancesQuery = (params: {
 
 		if (!params.client) {
 			throw new Error("Client is required");
+		}
+
+		const chain = getCosmosChain(params.chainName);
+
+		if (!chain) {
+			throw new Error("Invalid chain name");
 		}
 
 		const balances = await params.client.cosmos.bank.v1beta1.allBalances({
@@ -108,7 +117,7 @@ const cosmosBalancesQuery = (params: {
 			return {
 				address: params.address!,
 				balance: BigInt(x.amount),
-				chainId: chainAssets?.chain_name,
+				chainId: chain.chain_id,
 				chainName: params.chainName,
 				decimals: exp,
 				// fixme
@@ -264,6 +273,8 @@ const eip155ERC20BalanceQuery = ({
 const is0x = (address: string): address is `0x${string}` =>
 	address.startsWith("0x");
 
+const DEFAULT_BECH32_PREFIX = getCosmosChain("osmosis")!.bech32_prefix;
+
 export const balancesQueryCosmos = (
 	enabled: boolean,
 	keys?: QueryKeyResponse[],
@@ -282,9 +293,18 @@ export const balancesQueryCosmos = (
 		) ?? [];
 
 	const select = (results: BalanceEntry[]) => {
-		const key = results[0]?.address
-			? byAddress[results[0].address]
-			: keys?.[0]!;
+		const _address = results[0]?.address;
+
+		if (!_address) {
+			throw new Error("Expected not empty result");
+		}
+
+		const address = toBech32(
+			DEFAULT_BECH32_PREFIX,
+			fromBech32(_address).data,
+		);
+
+		const key = byAddress[address] ?? keys?.[0]!;
 
 		return {
 			results,
@@ -293,7 +313,16 @@ export const balancesQueryCosmos = (
 	};
 
 	const queries = (clients ?? []).flatMap(([client, chainName]) => {
-		return addresses.map((address) => {
+		const targetPrefix = getCosmosChain(chainName)?.bech32_prefix;
+
+		if (!targetPrefix) {
+			throw new Error("Invalid chain name");
+		}
+
+		return addresses.map((_address) => {
+			const { data } = fromBech32(_address);
+			const address = toBech32(targetPrefix, data);
+
 			return {
 				...cosmosBalancesQuery({
 					enabled,

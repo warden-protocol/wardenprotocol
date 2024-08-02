@@ -10,8 +10,6 @@ export default function TotalAssetsChart(balance: any) {
 	const [hasMounted, setHasMounted] = useState(false);
 	const [mockData, setMockData] = useState(TOTAL_ASSET_CHART_MOCK);
 
-	console.log(mockData);
-
 	useEffect(() => {
 		// setHasMounted(false);
 		setMockData(

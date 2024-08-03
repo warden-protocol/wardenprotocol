@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
-	"github.com/skip-mev/slinky/cmd/constants"
+	"github.com/skip-mev/slinky/cmd/constants/marketmaps"
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 )
@@ -23,7 +23,7 @@ func AddGenesisSlinkyMarketsCmd(defaultNodeHome string) *cobra.Command {
 			return updateGenesisState(
 				genesisFileURL,
 				func(appState map[string]json.RawMessage) error {
-					coreMarkets := constants.CoreMarketMap
+					coreMarkets := marketmaps.CoreMarketMap
 
 					// update marketmap genesis state
 					var marketmapGenState marketmaptypes.GenesisState

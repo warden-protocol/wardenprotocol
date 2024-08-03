@@ -399,6 +399,10 @@ github.com/cosmos/gogoproto v1.4.11 h1:LZcMHrx4FjUgrqQSWeaGC1v/TeuVFqSLa43CC6aWR
 github.com/cosmos/gogoproto v1.4.11/go.mod h1:/g39Mh8m17X8Q/GDEs5zYTSNaNnInBSohtaxzQnYq1Y=
 github.com/cosmos/iavl v1.0.1 h1:D+mYbcRO2wptYzOM1Hxl9cpmmHU1ZEt9T2Wv5nZTeUw=
 github.com/cosmos/iavl v1.0.1/go.mod h1:8xIUkgVvwvVrBu81scdPty+/Dx9GqwHnAvXz4cwF7RY=
+github.com/cosmos/iavl v1.0.3 h1:yNJ5oS6gZ4ZKg6NGE78F8xeF2jFU0TZqFiczUdtU9JA=
+github.com/cosmos/iavl v1.0.3/go.mod h1:8xIUkgVvwvVrBu81scdPty+/Dx9GqwHnAvXz4cwF7RY=
+github.com/cosmos/iavl v1.0.4 h1:L1WORKEPCeTFmZL04cVeZrn/I55J9vJ2xYIms2TIoiE=
+github.com/cosmos/iavl v1.0.4/go.mod h1:8xIUkgVvwvVrBu81scdPty+/Dx9GqwHnAvXz4cwF7RY=
 github.com/cosmos/ibc-go/modules/capability v1.0.0 h1:r/l++byFtn7jHYa09zlAdSeevo8ci1mVZNO9+V0xsLE=
 github.com/cosmos/ibc-go/modules/capability v1.0.0/go.mod h1:D81ZxzjZAe0ZO5ambnvn1qedsFQ8lOwtqicG6liLBco=
 github.com/cosmos/ibc-go/v8 v8.2.0 h1:7oCzyy1sZCcgpeQLnHxC56brsSz3KWwQGKXalXwXFzE=

@@ -26,7 +26,7 @@ import (
 	compression "github.com/skip-mev/slinky/abci/strategies/codec"
 	"github.com/skip-mev/slinky/abci/strategies/currencypair"
 	"github.com/skip-mev/slinky/abci/ve"
-	"github.com/skip-mev/slinky/cmd/constants"
+	"github.com/skip-mev/slinky/cmd/constants/marketmaps"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 	"github.com/skip-mev/slinky/pkg/math/voteweighted"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
@@ -220,7 +220,7 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			}
 
 			// add core markets
-			coreMarkets := constants.CoreMarketMap
+			coreMarkets := marketmaps.CoreMarketMap
 			markets := coreMarkets.Markets
 			keys := make([]string, 0, len(markets))
 			for name := range markets {

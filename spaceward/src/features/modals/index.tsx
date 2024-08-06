@@ -28,7 +28,7 @@ export default function ModalRoot() {
 				{ hidden: !data.type },
 			)}
 		>
-			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
+			<div className="bg-overlay fixed left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
 
 			<button
 				onClick={() => setData({ type: undefined, params: undefined })}

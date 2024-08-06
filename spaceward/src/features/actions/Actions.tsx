@@ -20,13 +20,13 @@ export function Actions() {
 			"pagination.reverse": true,
 		},
 		{},
-		10,
+		100,
 	);
 
 	const actions = (q.data?.pages?.flatMap((p) => p.actions || []) ||
 		[]) as Required<ActionModel>[];
 
-	const groups: { [key: string]: ActionModel[] } = actions.reduce(
+	const groups = actions.reduce<{ [key: string]: ActionModel[] }>(
 		(groups, action) => {
 			const date = action.created_at.split("T")[0];
 			if (!groups[date]) {

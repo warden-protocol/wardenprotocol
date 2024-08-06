@@ -5,7 +5,7 @@ import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import { getProvider } from "@/lib/eth";
-import { BalanceEntry, CosmosQueryClient } from "./types";
+import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
 import { getCosmosChain } from "./util";
 import { fromBech32, toBech32 } from "@cosmjs/encoding";
 
@@ -59,6 +59,7 @@ const EIP_155_NATIVE_PRICE_FEEDS: Partial<
 	sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
 };
 
+/** @deprecated remove hardcoded values when all tokens are in slinky */
 const COSMOS_PRICES: Record<string, bigint | undefined> = {
 	ATOM: BigInt(5.775 * 10 ** 8),
 	OSMO: BigInt(0.4446 * 10 ** 8),
@@ -69,6 +70,7 @@ const cosmosBalancesQuery = (params: {
 	enabled: boolean;
 	chainName: string;
 	client?: CosmosQueryClient;
+	prices?: PriceMapSlinky;
 }) => ({
 	enabled: params.enabled,
 	queryKey: ["cosmos", params.chainName, "balance", params.address],
@@ -114,6 +116,15 @@ const cosmosBalancesQuery = (params: {
 
 			const token = asset.symbol;
 
+			const price =
+				(params.prices?.[token]
+					? BigInt(params.prices[token].price?.price ?? 0)
+					: COSMOS_PRICES[token]) ?? BigInt(0);
+
+			const priceDecimals = params.prices?.[token]
+				? Number(params.prices[token].decimals)
+				: 8;
+
 			return {
 				address: params.address!,
 				balance: BigInt(x.amount),
@@ -121,8 +132,8 @@ const cosmosBalancesQuery = (params: {
 				chainName: params.chainName,
 				decimals: exp,
 				// fixme
-				price: COSMOS_PRICES[token] ?? BigInt(0),
-				priceDecimals: 8,
+				price,
+				priceDecimals,
 				token,
 				title: asset.name,
 				type: "osmosis",
@@ -131,6 +142,16 @@ const cosmosBalancesQuery = (params: {
 
 		if (!result.length) {
 			const [native] = chainAssets.assets;
+			const token = native.symbol;
+
+			const price =
+				(params.prices?.[token]
+					? BigInt(params.prices[token].price?.price ?? 0)
+					: COSMOS_PRICES[token]) ?? BigInt(0);
+
+			const priceDecimals = params.prices?.[token]
+				? Number(params.prices[token].decimals)
+				: 8;
 
 			result.push({
 				address: params.address!,
@@ -139,9 +160,9 @@ const cosmosBalancesQuery = (params: {
 				chainName: params.chainName,
 				decimals: native.denom_units[0].exponent,
 				// fixme
-				price: BigInt(0),
-				priceDecimals: 8,
-				token: native.symbol,
+				price,
+				priceDecimals,
+				token,
 				title: native.name,
 				type: "osmosis",
 			});
@@ -157,10 +178,12 @@ const eip155NativeBalanceQuery = ({
 	enabled,
 	chainName,
 	address,
+	prices,
 }: {
 	enabled: boolean;
 	chainName: ChainName;
 	address?: `0x${string}`;
+	prices?: PriceMapSlinky;
 }) => ({
 	queryKey: ["eip155", chainName, "native", address],
 	queryFn: async (): Promise<BalanceEntry> => {
@@ -168,23 +191,32 @@ const eip155NativeBalanceQuery = ({
 			throw new Error("Address is required");
 		}
 
+		const token = "ETH"; // fixme, eg "MATIC" for polygon
+		const slinkyPrice = prices?.[token];
 		const priceFeed = EIP_155_NATIVE_PRICE_FEEDS[chainName];
-		const priceFeedContract = priceFeed
-			? new ethers.Contract(
-					priceFeed,
-					aggregatorV3InterfaceABI,
-					getProvider(chainName),
-				)
-			: undefined;
+
+		// fixme remove chainlink pricefeed when all tokens are in slinky
+		const priceFeedContract =
+			priceFeed && !slinkyPrice
+				? new ethers.Contract(
+						priceFeed,
+						aggregatorV3InterfaceABI,
+						getProvider(chainName),
+					)
+				: undefined;
+
 		const provider = getProvider(chainName);
 		const balance = await provider.getBalance(address);
 		const network = await provider.getNetwork();
 
-		const price: bigint =
-			(priceFeedContract
-				? await priceFeedContract.latestRoundData()
-				: undefined
-			)?.answer ?? BigInt(0);
+		const price: bigint = slinkyPrice
+			? BigInt(slinkyPrice.price?.price ?? 0)
+			: (priceFeedContract
+					? await priceFeedContract.latestRoundData()
+					: undefined
+				)?.answer ?? BigInt(0);
+
+		const priceDecimals = slinkyPrice ? Number(slinkyPrice.decimals) : 8;
 
 		return {
 			address,
@@ -193,11 +225,11 @@ const eip155NativeBalanceQuery = ({
 			chainName,
 			decimals: 18,
 			price,
-			priceDecimals: 8,
+			priceDecimals,
 			// fixme native token titles
 			title: "Ethereum",
 			// fixme native token names
-			token: "ETH",
+			token,
 			type: "eip155:native",
 		};
 	},
@@ -212,6 +244,7 @@ const eip155ERC20BalanceQuery = ({
 	address,
 	token,
 	priceFeed,
+	prices,
 	stablecoin,
 }: {
 	enabled: boolean;
@@ -220,6 +253,7 @@ const eip155ERC20BalanceQuery = ({
 	token?: `0x${string}`;
 	stablecoin?: boolean;
 	priceFeed?: `0x${string}`;
+	prices?: PriceMapSlinky;
 }) => ({
 	enabled: enabled && Boolean(address && token),
 	queryKey: ["eip155", chainName, "erc20", address, token],
@@ -230,27 +264,37 @@ const eip155ERC20BalanceQuery = ({
 
 		const provider = getProvider(chainName);
 		const contract = new ethers.Contract(token, erc20Abi, provider);
-
-		const priceFeedContract = priceFeed
-			? new ethers.Contract(
-					priceFeed,
-					aggregatorV3InterfaceABI,
-					getProvider(chainName),
-				)
-			: undefined;
-
 		const balance = await contract.balanceOf(address);
 		const decimals = await contract.decimals();
 		const symbol = await contract.symbol();
 		const name = await contract.name();
 		const network = await provider.getNetwork();
+		const slinkyPrice = prices?.[symbol];
+
+		// fixme remove chainlink pricefeed when all tokens are in slinky
+		const priceFeedContract =
+			priceFeed && !slinkyPrice
+				? new ethers.Contract(
+						priceFeed,
+						aggregatorV3InterfaceABI,
+						getProvider(chainName),
+					)
+				: undefined;
 
 		const price: bigint = stablecoin
 			? BigInt("100000000")
-			: (priceFeedContract
-					? await priceFeedContract.latestRoundData()
-					: undefined
-				)?.answer ?? BigInt(0);
+			: slinkyPrice
+				? BigInt(slinkyPrice.price?.price ?? 0)
+				: (priceFeedContract
+						? await priceFeedContract.latestRoundData()
+						: undefined
+					)?.answer ?? BigInt(0);
+
+		const priceDecimals = stablecoin
+			? 8
+			: slinkyPrice
+				? Number(slinkyPrice.decimals)
+				: 8;
 
 		return {
 			address,
@@ -260,7 +304,7 @@ const eip155ERC20BalanceQuery = ({
 			decimals: Number(decimals),
 			erc20Token: token,
 			price,
-			priceDecimals: 8,
+			priceDecimals,
 			title: name,
 			token: symbol,
 			type: "eip155:erc20",
@@ -279,6 +323,7 @@ export const balancesQueryCosmos = (
 	enabled: boolean,
 	keys?: QueryKeyResponse[],
 	clients?: [CosmosQueryClient, string][],
+	prices?: PriceMapSlinky,
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
 
@@ -329,6 +374,7 @@ export const balancesQueryCosmos = (
 					chainName,
 					address,
 					client,
+					prices,
 				}),
 				select,
 			};
@@ -341,6 +387,7 @@ export const balancesQueryCosmos = (
 export const balancesQueryEth = (
 	enabled: boolean,
 	keys?: QueryKeyResponse[],
+	prices?: PriceMapSlinky,
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
 
@@ -370,6 +417,7 @@ export const balancesQueryEth = (
 						enabled,
 						chainName,
 						address,
+						prices,
 					}),
 					select,
 				}));
@@ -386,6 +434,7 @@ export const balancesQueryEth = (
 					token,
 					priceFeed,
 					stablecoin,
+					prices,
 				}),
 				select,
 			})),

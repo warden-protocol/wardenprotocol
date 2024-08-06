@@ -45,8 +45,6 @@ export function Actions() {
 		};
 	});
 
-	console.log({ actionsArrays });
-
 	return (
 		<div className="flex items-center content-center place-content-center">
 			{actions.length > 0 ? (

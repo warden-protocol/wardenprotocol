@@ -18,7 +18,7 @@ export function UpdateSpaces({ actions }: { actions: Action[] }) {
 	async function updateSpaces() {
 		const defaultFee = {
 			amount: [],
-			gas: "200000",
+			gas: (200000 * actions.length).toString(),
 		};
 
 		const msgs = actions.map((action) =>
@@ -47,11 +47,7 @@ export function UpdateSpaces({ actions }: { actions: Action[] }) {
 						please take a moment to approve some pending actions for
 						each of your spaces. You can get started below
 					</p>
-					<Button
-						onClick={updateSpaces}
-					>
-						Approve all
-					</Button>
+					<Button onClick={updateSpaces}>Approve all</Button>
 				</>
 			) : (
 				<>

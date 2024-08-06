@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -24,14 +23,9 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 	}
 
 	if keychain.Fees != nil {
-		err := k.bankKeeper.SendCoins(
-			ctx,
-			sdk.MustAccAddressFromBech32(creator),
-			keychain.AccAddress(),
-			keychain.Fees.KeyReq,
-		)
-		if err != nil {
-			return nil, err
+		err2 := chargeKeychainFee(&k, ctx, msg.MaxFees, keychain.AccAddress(), keychain.Fees.KeyReq, creator)
+		if err2 != nil {
+			return nil, err2
 		}
 	}
 

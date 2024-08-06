@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -31,12 +32,7 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 	}
 
 	if keychain.Fees != nil {
-		err := k.bankKeeper.SendCoins(
-			ctx,
-			sdk.MustAccAddressFromBech32(creator),
-			keychain.AccAddress(),
-			keychain.Fees.SigReq,
-		)
+		err := chargeKeychainFee(&k, ctx, msg.MaxFees, keychain.AccAddress(), keychain.Fees.SigReq, creator)
 		if err != nil {
 			return nil, err
 		}
@@ -65,4 +61,30 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 	}
 
 	return &types.MsgNewSignRequestResponse{Id: id}, nil
+}
+
+func chargeKeychainFee(
+	k *msgServer,
+	ctx context.Context,
+	requestedFee sdk.Coin,
+	keychainAccAddress sdk.AccAddress,
+	keychainFees sdk.Coins,
+	creator string) error {
+	found, feeInCoin := keychainFees.Find(requestedFee.Denom)
+	if !found {
+		return fmt.Errorf("requested fee denom could not be accepted")
+	}
+
+	if !requestedFee.IsGTE(feeInCoin) {
+		return fmt.Errorf("requested fee amount is less than accepted by keychain:d %v", feeInCoin)
+	}
+
+	err := k.bankKeeper.SendCoins(
+		ctx,
+		sdk.MustAccAddressFromBech32(creator),
+		keychainAccAddress,
+		keychainFees,
+	)
+
+	return err
 }

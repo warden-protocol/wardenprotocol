@@ -8,7 +8,7 @@ Goal: run a local chain for development and testing purposes.
 
 ## Prerequisites
 
-- [Go](https://golang.org/dl/) 1.22 or later
+- [Go](https://golang.org/dl/) 1.22.5 or later
 - [just](https://just.systems/man/en/chapter_4.html)
 
 ## 1. Clone the Warden Protocol repo
@@ -20,27 +20,109 @@ cd wardenprotocol
 
 ## 2. Build the chain
 
+Check if `just` is installed. If not, you can install it via brew:
+
 ```sh
-cd wardenprotocol
+brew install just
+```
+
+Then, you can proceed to install the `wardend` binary.
+
+```sh
 just install
 ```
 
-This will build the chain binary called `wardend` and install it in your `$GOPATH`.
+This will build the chain binary called `wardend` and install it in your `$GOPATH`. Please check if your `wardend` binary has been properly installed by running the command `wardend version`.
 
+You will see output as:
+
+```sh
+wardend version  
+v0.4.0.0
+```
 
 ## 3. Run the chain
 
-### Option 1. Use `ignite`
+### Option 1. Run the chain using `just`
 
-This option is recommended for development purposes.
+Once `just` and `wardend` are correctly installed, you can start a new chain.
 
 ```sh
-ignite chain serve -p warden --home ~/.warden -v
+just localnet
+```
+This will start the chain and you will see blocks produced and height incrementing.
+
+### Option 2. Run locally
+
+This option is recommended for development purposes, when you want to manually configure the chain.
+
+1. Initialize the Node
+
+```sh
+wardend init my-local-node --chain-id local-testnet
 ```
 
-### Option 2. Use the devnet snapshot
+This will initialize a new node which you can find in the `$HOME/.warden/config` folder.
 
-This option is recommended for testing purposes and doesn't require installing other tools such as `ignite`.
+2. Create a Key Pair
+
+```sh
+wardend keys add my-validator
+```
+
+Tip: Note down the generated address and the mnemonic. This will be used to recover your account if needed.
+
+3. Add Genesis Account
+
+```sh
+wardend genesis add-genesis-account my-validator 100000000000stake
+```
+
+Add the validator's address to the genesis file with sufficient tokens
+
+4. Generate Genesis Transaction (gentx)
+
+```sh
+wardend genesis gentx my-validator 1000000000stake --chain-id local-testnet
+```
+
+Create a genesis transaction for your validator
+
+5. Collect Genesis Transactions
+
+```sh
+wardend genesis collect-gentxs
+```
+
+Add the gentx to the genesis file
+
+6. Validate the Genesis File
+
+```sh
+wardend genesis validate-genesis
+```
+
+Ensure the genesis file is valid
+
+7. Configure app.toml
+
+Navigate to $HOME/.warden/config/app.toml and edit the gas value as needed.
+
+```toml
+minimum-gas-prices = "0.025stake"
+```
+
+8. Start the Node
+
+```sh
+wardend start
+```
+
+This will start the chain and you will see blocks produced and height incrementing.
+
+### Option 3. Use the devnet snapshot
+
+This option is recommended for testing purposes.
 
 Download the devnet snapshot and extract it to `~/.warden`:
 

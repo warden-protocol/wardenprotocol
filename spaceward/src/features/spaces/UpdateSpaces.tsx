@@ -40,9 +40,10 @@ export function UpdateSpaces({ actions }: { actions: Action[] }) {
 			{ward > 0 ? (
 				<>
 					<h1 className="text-6xl font-display">
-						Approve {actions.length} Actions
+						Approve {actions.length} Action
+						{actions.length > 1 ? "s" : ""}
 					</h1>
-					<p className="">
+					<p className="max-w-[800px]">
 						To continue using SpaceWard with our latest updates,
 						please take a moment to approve some pending actions for
 						each of your spaces. You can get started below

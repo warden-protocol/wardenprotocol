@@ -17,7 +17,10 @@ export function UpdateSpaces({ actions }: { actions: Action[] }) {
 
 	async function updateSpaces() {
 		const defaultFee = {
-			amount: [],
+			amount: [{
+				denom: "uward",
+				amount: (500 * actions.length).toString(),
+			}],
 			gas: (200000 * actions.length).toString(),
 		};
 

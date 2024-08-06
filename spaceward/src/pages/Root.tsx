@@ -12,10 +12,12 @@ import { useChain } from "@cosmos-kit/react";
 import useWallet from "@/hooks/useWallet";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
-import { NoSpaces } from "@/features/spaces";
+import { NoSpaces, UpdateSpaces } from "@/features/spaces";
 import cn from "clsx";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useSpaceId } from "@/hooks/useSpaceId";
+import useWardenIntent from "@/hooks/useWardenIntent";
+import { ActionStatus } from "@wardenprotocol/wardjs/dist/codegen/warden/intent/action";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -80,6 +82,28 @@ export function Root() {
 		);
 	}
 
+	const { QueryActionsByAddress: useQueryActions } = useWardenIntent();
+
+	const { data: actionsQuery } = useQueryActions(
+		{
+			address,
+			status: ActionStatus.ACTION_STATUS_PENDING,
+		},
+		{},
+		100,
+	);
+
+	const updateActions = actionsQuery?.pages.flatMap(
+		(p) =>
+			p.actions?.filter(
+				(action) =>
+					action && address &&
+					action.msg?.["@type"] ===
+						"/warden.warden.v1beta2.MsgUpdateSpace" &&
+					action.mentions?.includes(address),
+			) ?? [],
+	);
+
 	if (
 		(env.spacewardEnv === "production" && env.maintenance) ||
 		(env.spacewardEnv === "production" &&
@@ -141,18 +165,34 @@ export function Root() {
 						</>
 					) : (
 						<>
-							{spaceCount !== 0 && <Sidebar />}
+							{spaceCount !== 0 && !updateActions?.length ? (
+								<Sidebar />
+							) : null}
 							<main
 								className={cn(
 									"pb-2 pt-0 md:pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
-									spaceCount === 0 && "mx-2",
+									{
+										"mx-2":
+											spaceCount === 0 ||
+											updateActions?.length,
+									},
 								)}
 							>
 								<SiteHeader />
-								{spaceCount === 0 ? <NoSpaces /> : <Outlet />}
+								{updateActions?.length ? (
+									<UpdateSpaces
+										actions={updateActions.slice(0, 10)}
+									/>
+								) : spaceCount === 0 ? (
+									<NoSpaces />
+								) : (
+									<Outlet />
+								)}
 								<Toaster />
 							</main>
-							{spaceCount !== 0 && <RightSidebar />}
+							{spaceCount !== 0 && !updateActions?.length ? (
+								<RightSidebar />
+							) : null}
 						</>
 					)}
 				</div>

@@ -179,12 +179,7 @@ message MsgNewKeyRequest {
   uint64 keychain_id = 3;
   KeyType key_type = 4;
   uint64 rule_id = 5;
-  cosmos.base.v1beta1.Coin maxFees = 6 [
-    (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
-  ];
+  string max_fees = 6;
 }
 
 message MsgNewKeyRequestResponse { uint64 id = 1; }
@@ -221,12 +216,7 @@ message MsgNewSignRequest {
   bytes input = 3;
   repeated string analyzers = 4 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   bytes encryption_key = 5;
-  cosmos.base.v1beta1.Coin maxFees = 6 [
-    (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
-  ];
+  string max_fees = 6;
 }
 
 message MsgNewSignRequestResponse { uint64 id = 1; }

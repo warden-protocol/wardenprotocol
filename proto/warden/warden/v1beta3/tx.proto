@@ -181,7 +181,9 @@ message MsgNewKeyRequest {
   uint64 rule_id = 5;
   cosmos.base.v1beta1.Coin maxFees = 6 [
     (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty)   = true,
+    (amino.encoding)         = "legacy_coins"
   ];
 }
 
@@ -221,7 +223,9 @@ message MsgNewSignRequest {
   bytes encryption_key = 5;
   cosmos.base.v1beta1.Coin maxFees = 6 [
     (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty)   = true,
+    (amino.encoding)         = "legacy_coins"
   ];
 }
 

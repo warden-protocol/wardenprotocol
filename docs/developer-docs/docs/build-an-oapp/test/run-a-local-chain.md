@@ -91,7 +91,7 @@ You can use a devnet snapshot with prebuilt node settings.
     ```
 
 :::note
-You can check the settings of your node in the genesis fine: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc
+You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
 :::
 
 :::tip

@@ -115,14 +115,15 @@ const cosmosBalancesQuery = (params: {
 			)?.exponent as number;
 
 			const token = asset.symbol;
+			const slinkyPrice = params.prices?.[token];
 
 			const price =
-				(params.prices?.[token]
-					? BigInt(params.prices[token].price?.price ?? 0)
+				(slinkyPrice
+					? BigInt(slinkyPrice.price?.price ?? 0)
 					: COSMOS_PRICES[token]) ?? BigInt(0);
 
-			const priceDecimals = params.prices?.[token]
-				? Number(params.prices[token].decimals)
+			const priceDecimals = slinkyPrice
+				? Number(slinkyPrice.decimals)
 				: 8;
 
 			return {

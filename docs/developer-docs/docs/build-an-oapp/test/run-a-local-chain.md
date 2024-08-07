@@ -248,7 +248,7 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
 
     The output should look like this:
 
-    ```
+    ```sh
     keychains:
     - admins:
       - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc

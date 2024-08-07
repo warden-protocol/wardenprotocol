@@ -121,7 +121,7 @@ Options 1 and 2 allow you to run a node with prebuilt settings. Alternatively, y
     After you enter the passphrase, the node will return the validator address and a mnemonic phrase. Note them down: you'll need this data for recovering your account if necessary.
     :::
 
-3. Add a genesis account. Specify your validator name and the amount of tokens staked:
+3. Add a genesis account. Specify your validator name and the number of tokens staked:
 
     ```sh
     wardend genesis add-genesis-account my-validator-name 100000000000stake
@@ -236,13 +236,13 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
 
 1. Create a Keychain. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your validator name, chain ID, and fees to pay:
 
-    ```
+    ```sh
     wardend tx warden new-keychain --description 'my-description' --from my-validator-name --chain-id my-chain-id --fees 5000stake
     ```
 
     Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
 
-    ```
+    ```sh
     wardend query warden keychains
     ```
 
@@ -261,19 +261,19 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
 
 2. Create a Space. Specify your validator name, chain ID, and fees to pay:
 
-    ```
+    ```sh
     wardend tx warden new-space --from my-validator-name --chain-id my-chain-id --fees 5000stake
     ```
 
     Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
 
-    ```
+    ```sh
     wardend query warden spaces
     ```
 
     The output should look like this::
 
-    ```
+    ```sh
     pagination:
       total: "1"
     spaces:

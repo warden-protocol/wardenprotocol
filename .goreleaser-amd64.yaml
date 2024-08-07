@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
-version: 1
+version: 2
 
 project_name: wardend
 
@@ -15,8 +15,6 @@ before:
     # setup libwasmvm
     - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.0.0/libwasmvm_muslc.x86_64.a -O /lib/libwasmvm_muslc.x86_64.a
 
-    # You may remove this if you don't use go modules.
-    - go mod tidy
     # you may remove this if you don't need go generate
     - go generate ./...
 

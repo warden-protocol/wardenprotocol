@@ -1,14 +1,12 @@
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
-version: 1
+version: 2
 
 project_name: wardend
 
 before:
   hooks:
-    # You may remove this if you don't use go modules.
-    - go mod tidy
     # you may remove this if you don't need go generate
     - go generate ./...
     # setup musl

@@ -212,10 +212,10 @@ The output should contain status information about your node:
     "catching_up": false
   },
   "validator_info": {
-    "address": "1F674105DB80C22DF80A11D5D319D4491E9C9ADD",
+    "address": "349AB1D6A70EE7F83B1C11A51CA72A11DFF1EBB3",
     "pub_key": {
       "type": "tendermint/PubKeyEd25519",
-      "value": "q/HIq3za0Q+nVljuEkh8yY54UCTY0I0NgEMlcABX9UI="
+      "value": "q/OralvfqN2OpLGvCWaVAlkYSjI45Rtp3AOLdrMhJ3xCc="
     },
     "voting_power": "1000"
   }
@@ -232,22 +232,53 @@ If you need to stop the node, use **Ctrl + C**. Note that when you run the chain
 
 ## 5. Additional configuration
 
-If you configured your node manually in Step 3 ([Option 3](#option-3-configure-manually)), you may also need to add a Space and a Keychain to the genesis file for testing purposes. Other flows utilize prebuilt configurations that already contain these settings.
+If you configured your node manually in Step 3 ([Option 3](#option-3-configure-manually)), you may also need to add a Space and a Keychain for testing purposes. Other flows utilize prebuilt configurations that already contain these settings.
 
-1. Stop the node.
+1. Create a Keychain. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your validator name, chain ID, and fees to pay:
 
-2. Add a genesis Keychain. Specify a custom Keychain description and your validator name:
-
-    ```sh
-    wardend genesis add-genesis-keychain my-validator-name my-description
+    ```
+    wardend tx warden new-keychain --description 'my-description' --from my-validator-name --chain-id my-chain-id --fees 5000stake
     ```
 
-    You can find your Keychain in the `keychains` section of the genesis file: `$HOME/.warden/config/genesis.json`
+    You can query the node to check the result:
 
-3. Add a genesis Space, specifying your validator name:
-
-    ```sh
-    wardend genesis add-genesis-space  my-validator-name
+    ```
+    wardend query warden keychains
     ```
 
-    You can find your Space in the `spaces` section of the genesis file: `$HOME/.warden/config/genesis.json`
+    The output should look like this:
+
+    ```
+    keychains:
+    - admins:
+      - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+      creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+      description: my-description
+      id: "1"
+    pagination:
+      total: "1"
+    ```
+
+2. Create a Space. Specify your validator name, chain ID, and fees to pay:
+
+    ```
+    wardend tx warden new-space --from my-validator-name --chain-id my-chain-id --fees 5000stake
+    ```
+
+    You can query the node to check the result:
+
+    ```
+    wardend query warden spaces
+    ```
+
+    The output should look like this::
+
+    ```
+    pagination:
+      total: "1"
+    spaces:
+    - creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+      id: "1"
+    owners:
+    - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+    ```

@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-This guide explains how run a local chain for development and testing purposes.
+This guide explains how to run a local chain for development and testing purposes.
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ cd wardenprotocol
     
     This will build the chain binary called `wardend` and install it in your `$GOPATH`. You can check the location by running this:
 
-    ```
+    ```sh
     which wardend
     ```
 
@@ -69,7 +69,7 @@ just localnet
 You'll see blocks being produced and height incrementing.
 
 :::note
-You can check the settings of your node in the genesis fine: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
+You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
 :::
 
 ### Option 2. Use the devnet snapshot
@@ -175,13 +175,13 @@ If the chain is up, you'll see logs every time a new block is produced (approxim
 
 You should also be able to query the chain and access data from the genesis block. For example, you can run the following in a separate terminal window:
 
-```
+```sh
 wardend status
 ```
 
 The output should contain status information about your node:
 
-```
+```json
 {
   "node_info": {
     "protocol_version": {
@@ -238,7 +238,7 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
 
 2. Add a genesis Keychain. Specify a custom Keychain description and your validator name:
 
-    ```
+    ```sh
     wardend genesis add-genesis-keychain my-validator-name my-description
     ```
 
@@ -246,7 +246,7 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
 
 3. Add a genesis Space, specifying your validator name:
 
-    ```
+    ```sh
     wardend genesis add-genesis-space  my-validator-name
     ```
 

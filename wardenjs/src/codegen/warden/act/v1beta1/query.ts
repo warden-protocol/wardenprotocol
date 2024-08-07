@@ -190,7 +190,7 @@ export interface QueryRuleByIdResponseSDKType {
 export interface QueryActionsByAddressRequest {
   pagination?: PageRequest;
   address: string;
-  status: ActionStatus;
+  status?: ActionStatus;
 }
 export interface QueryActionsByAddressRequestProtoMsg {
   typeUrl: "/warden.act.v1beta1.QueryActionsByAddressRequest";
@@ -208,7 +208,7 @@ export interface QueryActionsByAddressRequestAminoMsg {
 export interface QueryActionsByAddressRequestSDKType {
   pagination?: PageRequestSDKType;
   address: string;
-  status: ActionStatus;
+  status?: ActionStatus;
 }
 export interface QueryActionsByAddressResponse {
   pagination?: PageResponse;
@@ -1036,7 +1036,7 @@ function createBaseQueryActionsByAddressRequest(): QueryActionsByAddressRequest 
   return {
     pagination: undefined,
     address: "",
-    status: 0
+    status: undefined
   };
 }
 export const QueryActionsByAddressRequest = {
@@ -1048,7 +1048,7 @@ export const QueryActionsByAddressRequest = {
     if (message.address !== "") {
       writer.uint32(18).string(message.address);
     }
-    if (message.status !== 0) {
+    if (message.status !== undefined) {
       writer.uint32(24).int32(message.status);
     }
     return writer;
@@ -1080,7 +1080,7 @@ export const QueryActionsByAddressRequest = {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       address: isSet(object.address) ? String(object.address) : "",
-      status: isSet(object.status) ? actionStatusFromJSON(object.status) : -1
+      status: isSet(object.status) ? actionStatusFromJSON(object.status) : undefined
     };
   },
   toJSON(message: QueryActionsByAddressRequest): JsonSafe<QueryActionsByAddressRequest> {
@@ -1094,7 +1094,7 @@ export const QueryActionsByAddressRequest = {
     const message = createBaseQueryActionsByAddressRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.address = object.address ?? "";
-    message.status = object.status ?? 0;
+    message.status = object.status ?? undefined;
     return message;
   },
   fromAmino(object: QueryActionsByAddressRequestAmino): QueryActionsByAddressRequest {
@@ -1114,7 +1114,7 @@ export const QueryActionsByAddressRequest = {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     obj.address = message.address === "" ? undefined : message.address;
-    obj.status = message.status === 0 ? undefined : message.status;
+    obj.status = message.status === null ? undefined : message.status;
     return obj;
   },
   fromAminoMsg(object: QueryActionsByAddressRequestAminoMsg): QueryActionsByAddressRequest {

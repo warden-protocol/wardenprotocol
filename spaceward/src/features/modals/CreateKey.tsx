@@ -41,7 +41,7 @@ export default function CreateKeyModal({
 	);
 	const [selected, setSelected] = useState(-1);
 	const [isDetails, setIsDetails] = useState(false);
-	const [name, setName] = useState("");
+	const [name, setName] = useState("Key #1");
 	const [themeIndex, setThemeIndex] = useState(0);
 	const [themeOffset, setThemeOffset] = useState(0);
 
@@ -173,7 +173,7 @@ export default function CreateKeyModal({
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
 			<div
 				className="font-bold text-5xl mb-6
-			 leading-[56px] tracking-[0.24px]"
+			 leading-[56px] tracking-[0.24px] font-display"
 			>
 				{!keychain ? "Select Keychain" : "Create Key"}
 			</div>
@@ -255,7 +255,7 @@ export default function CreateKeyModal({
 			) : (
 				<>
 					<div>
-						<div className="font-bold tracking-[0.12px] text-2xl text-left mb-6">
+						<div className="font-bold font-display tracking-[0.12px] text-2xl text-left mb-6">
 							Add a name
 						</div>
 
@@ -279,16 +279,17 @@ export default function CreateKeyModal({
 								/>
 							</div>
 							{!name ? (
-								<button
-									className="font-medium text-label-secondary px-2 hover:text-white transition-all duration-200"
-									onClick={async (e) => {
-										e.preventDefault();
-										const text = await pasteFromClipboard();
-										setName(text);
-									}}
-								>
-									Paste
-								</button>
+								<></>
+								// <button
+								// 	className="font-medium text-label-secondary px-2 hover:text-white transition-all duration-200"
+								// 	onClick={async (e) => {
+								// 		e.preventDefault();
+								// 		const text = await pasteFromClipboard();
+								// 		setName(text);
+								// 	}}
+								// >
+								// 	Paste
+								// </button>
 							) : (
 								<Icons.clearCircle
 									className="cursor-pointer"
@@ -299,7 +300,7 @@ export default function CreateKeyModal({
 					</div>
 
 					<div className="mt-8">
-						<div className="font-bold tracking-[0.12px] text-2xl text-left mb-6">
+						<div className="font-bold font-display tracking-[0.12px] text-2xl text-left mb-6">
 							Select a style
 						</div>
 
@@ -412,7 +413,7 @@ export default function CreateKeyModal({
 						onClick={create}
 						className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-pixel-pink duration-200 hover:text-background"
 					>
-						Create key
+						Create Key
 					</Button>
 
 					<Button

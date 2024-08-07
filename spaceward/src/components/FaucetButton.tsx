@@ -10,13 +10,13 @@ function FaucetButton() {
 
 	return (
 		<Button
-			className="bg-fill-quaternary h-8 px-4 hover:bg-fill-accent-secondary font-semibold text-primary backdrop-blur-[20px] rounded"
+			className="bg-fill-primary h-[56px] px-8 font-semibold rounded-lg"
 			size={"sm"}
 			asChild
 		>
 			<a href={u.toString()} target="_blank">
 				{/* <PlusCircleIcon strokeWidth={1} className="h-6 w-6" /> */}
-				Get
+				Get WARD
 			</a>
 		</Button>
 	);

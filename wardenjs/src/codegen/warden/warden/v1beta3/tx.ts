@@ -323,6 +323,74 @@ export interface MsgUpdateKeychainResponseAminoMsg {
   value: MsgUpdateKeychainResponseAmino;
 }
 export interface MsgUpdateKeychainResponseSDKType {}
+export interface MsgAddKeychainAdminRequest {
+  authority: string;
+  keychainId: bigint;
+  newAdmin: string;
+}
+export interface MsgAddKeychainAdminRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest";
+  value: Uint8Array;
+}
+export interface MsgAddKeychainAdminRequestAmino {
+  authority?: string;
+  keychain_id?: string;
+  new_admin?: string;
+}
+export interface MsgAddKeychainAdminRequestAminoMsg {
+  type: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest";
+  value: MsgAddKeychainAdminRequestAmino;
+}
+export interface MsgAddKeychainAdminRequestSDKType {
+  authority: string;
+  keychain_id: bigint;
+  new_admin: string;
+}
+export interface MsgAddKeychainAdminResponse {}
+export interface MsgAddKeychainAdminResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminResponse";
+  value: Uint8Array;
+}
+export interface MsgAddKeychainAdminResponseAmino {}
+export interface MsgAddKeychainAdminResponseAminoMsg {
+  type: "/warden.warden.v1beta3.MsgAddKeychainAdminResponse";
+  value: MsgAddKeychainAdminResponseAmino;
+}
+export interface MsgAddKeychainAdminResponseSDKType {}
+export interface MsgRemoveKeychainAdminRequest {
+  authority: string;
+  keychainId: bigint;
+  admin: string;
+}
+export interface MsgRemoveKeychainAdminRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest";
+  value: Uint8Array;
+}
+export interface MsgRemoveKeychainAdminRequestAmino {
+  authority?: string;
+  keychain_id?: string;
+  admin?: string;
+}
+export interface MsgRemoveKeychainAdminRequestAminoMsg {
+  type: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest";
+  value: MsgRemoveKeychainAdminRequestAmino;
+}
+export interface MsgRemoveKeychainAdminRequestSDKType {
+  authority: string;
+  keychain_id: bigint;
+  admin: string;
+}
+export interface MsgRemoveKeychainAdminResponse {}
+export interface MsgRemoveKeychainAdminResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminResponse";
+  value: Uint8Array;
+}
+export interface MsgRemoveKeychainAdminResponseAmino {}
+export interface MsgRemoveKeychainAdminResponseAminoMsg {
+  type: "/warden.warden.v1beta3.MsgRemoveKeychainAdminResponse";
+  value: MsgRemoveKeychainAdminResponseAmino;
+}
+export interface MsgRemoveKeychainAdminResponseSDKType {}
 export interface MsgNewKeyRequest {
   authority: string;
   spaceId: bigint;
@@ -1896,6 +1964,322 @@ export const MsgUpdateKeychainResponse = {
     return {
       typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychainResponse",
       value: MsgUpdateKeychainResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgAddKeychainAdminRequest(): MsgAddKeychainAdminRequest {
+  return {
+    authority: "",
+    keychainId: BigInt(0),
+    newAdmin: ""
+  };
+}
+export const MsgAddKeychainAdminRequest = {
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+  encode(message: MsgAddKeychainAdminRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.keychainId !== BigInt(0)) {
+      writer.uint32(16).uint64(message.keychainId);
+    }
+    if (message.newAdmin !== "") {
+      writer.uint32(26).string(message.newAdmin);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddKeychainAdminRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgAddKeychainAdminRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.keychainId = reader.uint64();
+          break;
+        case 3:
+          message.newAdmin = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgAddKeychainAdminRequest {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
+      newAdmin: isSet(object.newAdmin) ? String(object.newAdmin) : ""
+    };
+  },
+  toJSON(message: MsgAddKeychainAdminRequest): JsonSafe<MsgAddKeychainAdminRequest> {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
+    message.newAdmin !== undefined && (obj.newAdmin = message.newAdmin);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgAddKeychainAdminRequest>): MsgAddKeychainAdminRequest {
+    const message = createBaseMsgAddKeychainAdminRequest();
+    message.authority = object.authority ?? "";
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
+    message.newAdmin = object.newAdmin ?? "";
+    return message;
+  },
+  fromAmino(object: MsgAddKeychainAdminRequestAmino): MsgAddKeychainAdminRequest {
+    const message = createBaseMsgAddKeychainAdminRequest();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.keychain_id !== undefined && object.keychain_id !== null) {
+      message.keychainId = BigInt(object.keychain_id);
+    }
+    if (object.new_admin !== undefined && object.new_admin !== null) {
+      message.newAdmin = object.new_admin;
+    }
+    return message;
+  },
+  toAmino(message: MsgAddKeychainAdminRequest): MsgAddKeychainAdminRequestAmino {
+    const obj: any = {};
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.new_admin = message.newAdmin === "" ? undefined : message.newAdmin;
+    return obj;
+  },
+  fromAminoMsg(object: MsgAddKeychainAdminRequestAminoMsg): MsgAddKeychainAdminRequest {
+    return MsgAddKeychainAdminRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgAddKeychainAdminRequestProtoMsg): MsgAddKeychainAdminRequest {
+    return MsgAddKeychainAdminRequest.decode(message.value);
+  },
+  toProto(message: MsgAddKeychainAdminRequest): Uint8Array {
+    return MsgAddKeychainAdminRequest.encode(message).finish();
+  },
+  toProtoMsg(message: MsgAddKeychainAdminRequest): MsgAddKeychainAdminRequestProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+      value: MsgAddKeychainAdminRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgAddKeychainAdminResponse(): MsgAddKeychainAdminResponse {
+  return {};
+}
+export const MsgAddKeychainAdminResponse = {
+  typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminResponse",
+  encode(_: MsgAddKeychainAdminResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddKeychainAdminResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgAddKeychainAdminResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgAddKeychainAdminResponse {
+    return {};
+  },
+  toJSON(_: MsgAddKeychainAdminResponse): JsonSafe<MsgAddKeychainAdminResponse> {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgAddKeychainAdminResponse>): MsgAddKeychainAdminResponse {
+    const message = createBaseMsgAddKeychainAdminResponse();
+    return message;
+  },
+  fromAmino(_: MsgAddKeychainAdminResponseAmino): MsgAddKeychainAdminResponse {
+    const message = createBaseMsgAddKeychainAdminResponse();
+    return message;
+  },
+  toAmino(_: MsgAddKeychainAdminResponse): MsgAddKeychainAdminResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgAddKeychainAdminResponseAminoMsg): MsgAddKeychainAdminResponse {
+    return MsgAddKeychainAdminResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgAddKeychainAdminResponseProtoMsg): MsgAddKeychainAdminResponse {
+    return MsgAddKeychainAdminResponse.decode(message.value);
+  },
+  toProto(message: MsgAddKeychainAdminResponse): Uint8Array {
+    return MsgAddKeychainAdminResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgAddKeychainAdminResponse): MsgAddKeychainAdminResponseProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminResponse",
+      value: MsgAddKeychainAdminResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgRemoveKeychainAdminRequest(): MsgRemoveKeychainAdminRequest {
+  return {
+    authority: "",
+    keychainId: BigInt(0),
+    admin: ""
+  };
+}
+export const MsgRemoveKeychainAdminRequest = {
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+  encode(message: MsgRemoveKeychainAdminRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.keychainId !== BigInt(0)) {
+      writer.uint32(16).uint64(message.keychainId);
+    }
+    if (message.admin !== "") {
+      writer.uint32(26).string(message.admin);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRemoveKeychainAdminRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRemoveKeychainAdminRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.keychainId = reader.uint64();
+          break;
+        case 3:
+          message.admin = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgRemoveKeychainAdminRequest {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
+      admin: isSet(object.admin) ? String(object.admin) : ""
+    };
+  },
+  toJSON(message: MsgRemoveKeychainAdminRequest): JsonSafe<MsgRemoveKeychainAdminRequest> {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
+    message.admin !== undefined && (obj.admin = message.admin);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgRemoveKeychainAdminRequest>): MsgRemoveKeychainAdminRequest {
+    const message = createBaseMsgRemoveKeychainAdminRequest();
+    message.authority = object.authority ?? "";
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
+    message.admin = object.admin ?? "";
+    return message;
+  },
+  fromAmino(object: MsgRemoveKeychainAdminRequestAmino): MsgRemoveKeychainAdminRequest {
+    const message = createBaseMsgRemoveKeychainAdminRequest();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.keychain_id !== undefined && object.keychain_id !== null) {
+      message.keychainId = BigInt(object.keychain_id);
+    }
+    if (object.admin !== undefined && object.admin !== null) {
+      message.admin = object.admin;
+    }
+    return message;
+  },
+  toAmino(message: MsgRemoveKeychainAdminRequest): MsgRemoveKeychainAdminRequestAmino {
+    const obj: any = {};
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.admin = message.admin === "" ? undefined : message.admin;
+    return obj;
+  },
+  fromAminoMsg(object: MsgRemoveKeychainAdminRequestAminoMsg): MsgRemoveKeychainAdminRequest {
+    return MsgRemoveKeychainAdminRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRemoveKeychainAdminRequestProtoMsg): MsgRemoveKeychainAdminRequest {
+    return MsgRemoveKeychainAdminRequest.decode(message.value);
+  },
+  toProto(message: MsgRemoveKeychainAdminRequest): Uint8Array {
+    return MsgRemoveKeychainAdminRequest.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRemoveKeychainAdminRequest): MsgRemoveKeychainAdminRequestProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+      value: MsgRemoveKeychainAdminRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgRemoveKeychainAdminResponse(): MsgRemoveKeychainAdminResponse {
+  return {};
+}
+export const MsgRemoveKeychainAdminResponse = {
+  typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminResponse",
+  encode(_: MsgRemoveKeychainAdminResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRemoveKeychainAdminResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRemoveKeychainAdminResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgRemoveKeychainAdminResponse {
+    return {};
+  },
+  toJSON(_: MsgRemoveKeychainAdminResponse): JsonSafe<MsgRemoveKeychainAdminResponse> {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgRemoveKeychainAdminResponse>): MsgRemoveKeychainAdminResponse {
+    const message = createBaseMsgRemoveKeychainAdminResponse();
+    return message;
+  },
+  fromAmino(_: MsgRemoveKeychainAdminResponseAmino): MsgRemoveKeychainAdminResponse {
+    const message = createBaseMsgRemoveKeychainAdminResponse();
+    return message;
+  },
+  toAmino(_: MsgRemoveKeychainAdminResponse): MsgRemoveKeychainAdminResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgRemoveKeychainAdminResponseAminoMsg): MsgRemoveKeychainAdminResponse {
+    return MsgRemoveKeychainAdminResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRemoveKeychainAdminResponseProtoMsg): MsgRemoveKeychainAdminResponse {
+    return MsgRemoveKeychainAdminResponse.decode(message.value);
+  },
+  toProto(message: MsgRemoveKeychainAdminResponse): Uint8Array {
+    return MsgRemoveKeychainAdminResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRemoveKeychainAdminResponse): MsgRemoveKeychainAdminResponseProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminResponse",
+      value: MsgRemoveKeychainAdminResponse.encode(message).finish()
     };
   }
 };

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package slinky.marketmap.v1;
+
+option go_package = "github.com/skip-mev/slinky/x/marketmap/types";
+
+// Params defines the parameters for the x/marketmap module.
+message Params {
+  // MarketAuthorities is the list of authority accounts that are able to
+  // control updating the marketmap.
+  repeated string market_authorities = 1;
+
+  // Admin is an address that can remove addresses from the MarketAuthorities
+  // list. Only governance can add to the MarketAuthorities or change the Admin.
+  string admin = 2;
+}

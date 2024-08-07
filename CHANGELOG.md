@@ -38,15 +38,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## Unreleased changes
 
 ### Consensus Breaking Changes
 
 ### Features (non-breaking)
 
+### Bug Fixes
+
+### Misc
+
+## [v0.4.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.1) - 2024-08-07
+
+### Consensus Breaking Changes
+
 * (x/warden) Implemented `AddKeychainAdmin`, `RemoveKeychainAdmin` features
+* (x/warden) Add `AddKeychainAdmin` and `RemoveKeychainAdmin` to manage Keychain's admins
+* (cosmwasm) Add interoperability with the following messages, that can now be used in CosmWasm contracts:
+    * `MsgNewSignatureRequest`
+    * `KeysBySpaceId`
+    * `KeyById`
+    * `SignRequests`
+    * `SignRequestById`
 
 ### Bug Fixes
+
+* (wardend) Upgrade Cosmos SDK to v0.50.8
+* (wardend) Upgrade cosmos/iavl to v1.2.0
+* (x/act) When an Action is approved, the new approval was not recorded in the database
+* (x/warden) Fixed a bug where UpdateKey could be used to set RuleID to a non-existent Rule
+* (x/warden) Fixed a bug where Keychains fees could be set to negative or invalid amounts
 
 ### Misc
 

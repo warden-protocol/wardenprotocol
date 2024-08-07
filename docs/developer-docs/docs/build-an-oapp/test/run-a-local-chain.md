@@ -240,7 +240,7 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
     wardend tx warden new-keychain --description 'my-description' --from my-validator-name --chain-id my-chain-id --fees 5000stake
     ```
 
-    You can query the node to check the result:
+    Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
 
     ```
     wardend query warden keychains
@@ -265,7 +265,7 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
     wardend tx warden new-space --from my-validator-name --chain-id my-chain-id --fees 5000stake
     ```
 
-    You can query the node to check the result:
+    Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
 
     ```
     wardend query warden spaces

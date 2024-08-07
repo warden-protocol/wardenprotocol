@@ -58,7 +58,9 @@ cd wardenprotocol
 
 ### Option 1. Use `just`
 
-Once `just` and `wardend` are correctly installed, you can initiate a script that creates, configures, and runs a new chain:
+Once `just` and `wardend` are correctly installed, you can initiate a script that creates, configures, and runs a new chain.
+
+Make sure you're in the `wardenprotocol` directory and execute this command:
 
 ```sh
 just localnet
@@ -95,7 +97,6 @@ You can check the settings of your node in the genesis fine: `$HOME/.warden/conf
 :::tip
 You can find [other devnet snapshots](https://github.com/warden-protocol/snapshots) on GitHub and use  them as alternative starting points.
 :::
-
 
 ### Option 3. Configure manually
 

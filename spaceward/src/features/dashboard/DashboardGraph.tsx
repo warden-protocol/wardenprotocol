@@ -1,54 +1,30 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
-import TotalAssetsChart from "./Chart";
 
 import { Icons } from "@/components/ui/icons-assets";
-import { Icons as IconsAssets } from "./icons";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useAssetQueries } from "../assets/hooks";
 import { useCurrency } from "@/hooks/useCurrency";
-import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
+import useFiatConversion from "@/hooks/useFiatConversion";
 import { bigintToFloat } from "@/lib/math";
+import TotalAssetsChart from "./Chart";
+import { Icons as IconsAssets } from "./icons";
+import { useAssetQueries } from "../assets/hooks";
 import { useModalState } from "../modals/state";
-import { Link } from "react-router-dom";
-
-type Currency = keyof typeof FIAT_FORMAT;
 
 const DashboardGraph = ({
 	addresses,
 }: {
 	addresses?: (AddressResponse & { keyId: bigint })[];
 }) => {
-	const curr = useCurrency();
-	const currency = curr.currency as Currency;
-	const formatter = FIAT_FORMAT[currency];
+	const { fiatConversion, formatter } = useFiatConversion();
 	const { setData: setModal } = useModalState();
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances, queryPrices } = useAssetQueries(spaceId);
 	const results = queryBalances.flatMap((item) => item.data?.results);
-
-	const fiatConversion = useMemo(() => {
-		if (currency === "usd") {
-			return {
-				name: "usd",
-				value: BigInt(1),
-				decimals: 0,
-			};
-		}
-
-		for (const entry of queryPrices) {
-			if (!entry.data) {
-				continue;
-			}
-
-			if (entry.data.name === currency) {
-				return entry.data;
-			}
-		}
-	}, [queryPrices, currency]);
 
 	const totalBalance = useMemo(() => {
 		const targetDecimals = 2;

@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/act) When an Action is approved, the new approval was not recorded in the database
 * (x/warden) Fixed a bug where UpdateKey could be used to set RuleID to a non-existent Rule
 * (x/warden) Fixed a bug where Keychains fees could be set to negative or invalid amounts
+* (x/warden) Fixed a bug in v3 migrations where some insertions in the database were performed in a non-deterministic order. From our tests this didn't lead to any problem, in this particular case, but we want to play it safe.
 
 ### Misc
 

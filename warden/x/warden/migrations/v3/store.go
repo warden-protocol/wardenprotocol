@@ -1,6 +1,9 @@
 package v3
 
 import (
+	"bytes"
+	"sort"
+
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/math"
@@ -178,10 +181,27 @@ func migrateSpacesByOwner(ctx sdk.Context, ns NewStore, ownersMap map[string][]u
 		return err
 	}
 
+	spacesByOwner := make([]struct {
+		Owner  sdk.AccAddress
+		Spaces []uint64
+	}, 0, len(ownersMap))
 	for owner, spaceIds := range ownersMap {
-		for _, spaceId := range spaceIds {
-			ownerAddr := sdk.MustAccAddressFromBech32(owner)
-			if err := ns.SpacesByOwner.Set(ctx, collections.Join(ownerAddr, spaceId)); err != nil {
+		ownerAddr := sdk.MustAccAddressFromBech32(owner)
+		spacesByOwner = append(spacesByOwner, struct {
+			Owner  sdk.AccAddress
+			Spaces []uint64
+		}{
+			Owner:  ownerAddr,
+			Spaces: spaceIds,
+		})
+	}
+	sort.Slice(spacesByOwner, func(i, j int) bool {
+		return bytes.Compare(spacesByOwner[i].Owner, spacesByOwner[j].Owner) < 0
+	})
+
+	for _, os := range spacesByOwner {
+		for _, spaceId := range os.Spaces {
+			if err := ns.SpacesByOwner.Set(ctx, collections.Join(os.Owner, spaceId)); err != nil {
 				return err
 			}
 		}

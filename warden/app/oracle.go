@@ -7,7 +7,9 @@ import (
 	"time"
 
 	abci "github.com/cometbft/cometbft/abci/types"
+	"github.com/warden-protocol/wardenprotocol/warden/app/inference"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
@@ -85,6 +87,27 @@ func (app *App) wrappedPreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBloc
 		return &sdk.ResponsePreBlock{}, err
 	}
 
+	if len(req.Txs) > 1 {
+		var inferenceTx wardentypes.InferenceTx
+		if err := app.appCodec.Unmarshal(req.Txs[1], &inferenceTx); err != nil {
+			// this tx was not created by us, so let's move on
+			return resp, nil
+		}
+
+		if inferenceTx.MagicNumber != 42 {
+			// this tx was not created by us, so let's move on
+			return resp, nil
+		}
+
+		for _, result := range inferenceTx.Results {
+			ctx.Logger().Info("updating inference request", "id", result.Id)
+			err := app.WardenKeeper.UpdateInferenceRequest(ctx, result)
+			if err != nil {
+				return resp, err
+			}
+		}
+	}
+
 	// return resp from app's preblocker which can return consensus param changed flag
 	return resp, nil
 }
@@ -108,8 +131,117 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 		currencypair.NewDeltaCurrencyPairStrategy(app.OracleKeeper),
 		oracleMetrics,
 	)
-	app.SetPrepareProposal(proposalHandler.PrepareProposalHandler())
-	app.SetProcessProposal(proposalHandler.ProcessProposalHandler())
+	oraclePrepareProposalHandler := proposalHandler.PrepareProposalHandler()
+	app.SetPrepareProposal(func(ctx sdk.Context, rpp *abci.RequestPrepareProposal) (*abci.ResponsePrepareProposal, error) {
+		resp, err := oraclePrepareProposalHandler(ctx, rpp)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(resp.Txs) < 1 {
+			return resp, nil
+		}
+		slinkyTx := resp.Txs[0]
+
+		var restOfTxs [][]byte
+		if len(resp.Txs) > 1 {
+			restOfTxs = resp.Txs[1:]
+		}
+
+		// todo: check rpp.maxtxbytes is respected
+
+		pendingInferenceRequests, err := app.WardenKeeper.PendingInferenceRequests(ctx)
+		if err != nil {
+			return resp, err
+		}
+
+		results := make([]*wardentypes.InferenceResult, len(pendingInferenceRequests))
+		for i, req := range pendingInferenceRequests {
+			inputInts, err := inference.DeserializeInputData(req.Input)
+			if err != nil {
+				ctx.Logger().Error("invalid inference input data", "id", req.Id, "err", err)
+				results[i] = &wardentypes.InferenceResult{
+					Id:    req.Id,
+					Error: fmt.Sprintf("failed to solve: %v", err),
+				}
+				continue
+			}
+
+			res, err := inference.Solve(inputInts)
+			if err != nil {
+				ctx.Logger().Error("failed to solve inference", "id", req.Id, "err", err)
+				results[i] = &wardentypes.InferenceResult{
+					Id:    req.Id,
+					Error: fmt.Sprintf("failed to solve: %v", err),
+				}
+				continue
+			}
+
+			outputInts, err := res.Data.Serialize()
+			if err != nil {
+				ctx.Logger().Error("failed to serialize inference output", "id", req.Id, "err", err)
+				results[i] = &wardentypes.InferenceResult{
+					Id:    req.Id,
+					Error: fmt.Sprintf("failed to serialize output: %v", err),
+				}
+				continue
+			}
+
+			ctx.Logger().Info("solved inference", "id", req.Id, "output", outputInts)
+			results[i] = &wardentypes.InferenceResult{
+				Id:      req.Id,
+				Output:  outputInts,
+				Receipt: res.Receipt,
+			}
+		}
+
+		inferenceTx := app.appCodec.MustMarshal(&wardentypes.InferenceTx{
+			MagicNumber: 42,
+			Results:     results,
+		})
+
+		resp.Txs = [][]byte{
+			slinkyTx,
+			inferenceTx,
+		}
+		resp.Txs = append(resp.Txs, restOfTxs...)
+
+		return resp, nil
+	})
+	oracleProcessProposalHandler := proposalHandler.ProcessProposalHandler()
+	app.SetProcessProposal(func(ctx sdk.Context, rpp *abci.RequestProcessProposal) (*abci.ResponseProcessProposal, error) {
+		if len(rpp.Txs) >= 2 {
+			inferenceTx := rpp.Txs[1]
+			var inferenceVoteExtension wardentypes.InferenceTx
+			if err := app.appCodec.Unmarshal(inferenceTx, &inferenceVoteExtension); err != nil {
+				// this tx was not created by us, so let's move on
+				return oracleProcessProposalHandler(ctx, rpp)
+			}
+
+			if inferenceVoteExtension.MagicNumber != 42 {
+				// this tx was not created by us, so let's move on
+				return oracleProcessProposalHandler(ctx, rpp)
+			}
+
+			for _, result := range inferenceVoteExtension.Results {
+				infReq, err := app.WardenKeeper.InferenceRequestById(ctx, result.Id)
+				if err != nil {
+					return nil, fmt.Errorf("got result for invalid inference request ID: %w", err)
+				}
+
+				input, err := inference.DeserializeInputData(infReq.Input)
+				if err != nil {
+					return nil, fmt.Errorf("can't deserialize input data: %w", err)
+				}
+
+				err = inference.Verify(input, result.Receipt, 10)
+				if err != nil {
+					return nil, fmt.Errorf("can't verify inference result: %w", err)
+				}
+			}
+		}
+		return oracleProcessProposalHandler(ctx, rpp)
+	})
 
 	// Create the aggregation function that will be used to aggregate oracle data
 	// from each validator.

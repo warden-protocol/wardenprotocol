@@ -35,6 +35,8 @@ type (
 		keyRequests  repo.SeqCollection[v1beta3.KeyRequest]
 		signRequests repo.SeqCollection[v1beta3.SignRequest]
 
+		inferenceRequests repo.SeqCollection[v1beta3.InferenceRequest]
+
 		SpacesKeeper SpacesKeeper
 		KeysKeeper   KeysKeeper
 
@@ -45,17 +47,19 @@ type (
 )
 
 var (
-	SpaceSeqPrefix       = collections.NewPrefix(0)
-	SpacesPrefix         = collections.NewPrefix(1)
-	KeychainSeqPrefix    = collections.NewPrefix(2)
-	KeychainsPrefix      = collections.NewPrefix(3)
-	KeyPrefix            = collections.NewPrefix(5)
-	KeyRequestSeqPrefix  = collections.NewPrefix(6)
-	KeyRequestsPrefix    = collections.NewPrefix(7)
-	SignRequestSeqPrefix = collections.NewPrefix(8)
-	SignRequestsPrefix   = collections.NewPrefix(9)
-	KeysSpaceIndexPrefix = collections.NewPrefix(12)
-	SpacesByOwnerPrefix  = collections.NewPrefix(13)
+	SpaceSeqPrefix            = collections.NewPrefix(0)
+	SpacesPrefix              = collections.NewPrefix(1)
+	KeychainSeqPrefix         = collections.NewPrefix(2)
+	KeychainsPrefix           = collections.NewPrefix(3)
+	KeyPrefix                 = collections.NewPrefix(5)
+	KeyRequestSeqPrefix       = collections.NewPrefix(6)
+	KeyRequestsPrefix         = collections.NewPrefix(7)
+	SignRequestSeqPrefix      = collections.NewPrefix(8)
+	SignRequestsPrefix        = collections.NewPrefix(9)
+	KeysSpaceIndexPrefix      = collections.NewPrefix(12)
+	SpacesByOwnerPrefix       = collections.NewPrefix(13)
+	InferenceRequestSeqPrefix = collections.NewPrefix(14)
+	InferenceRequestsPrefix   = collections.NewPrefix(15)
 )
 
 func NewKeeper(
@@ -91,6 +95,10 @@ func NewKeeper(
 	signRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature_requests", collections.Uint64Key, codec.CollValue[v1beta3.SignRequest](cdc))
 	signRequests := repo.NewSeqCollection(signRequestsSeq, signRequestsColl, func(sr *v1beta3.SignRequest, u uint64) { sr.Id = u })
 
+	inferenceRequestsSeq := collections.NewSequence(sb, InferenceRequestSeqPrefix, "inference_requests_sequence")
+	inferenceRequestsColl := collections.NewMap(sb, InferenceRequestsPrefix, "inference_requests", collections.Uint64Key, codec.CollValue[v1beta3.InferenceRequest](cdc))
+	inferenceRequests := repo.NewSeqCollection(inferenceRequestsSeq, inferenceRequestsColl, func(ir *v1beta3.InferenceRequest, u uint64) { ir.Id = u })
+
 	if _, err := sb.Build(); err != nil {
 		panic(err)
 	}
@@ -109,6 +117,8 @@ func NewKeeper(
 
 		SpacesKeeper: spacesKeeper,
 		KeysKeeper:   keysKeeper,
+
+		inferenceRequests: inferenceRequests,
 
 		bankKeeper:    bankKeeper,
 		actKeeper:     actKeeper,
@@ -139,4 +149,52 @@ func (k Keeper) assertActAuthority(addr string) error {
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", v1beta3.ModuleName))
+}
+
+func (k Keeper) InferenceRequestById(ctx sdk.Context, id uint64) (v1beta3.InferenceRequest, error) {
+	return k.inferenceRequests.Get(ctx, id)
+}
+
+func (k Keeper) PendingInferenceRequests(ctx sdk.Context) ([]v1beta3.InferenceRequest, error) {
+	it, err := k.inferenceRequests.Iterate(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer it.Close()
+
+	var requests []v1beta3.InferenceRequest
+	for ; it.Valid(); it.Next() {
+		req, err := it.Value()
+		if err != nil {
+			return nil, err
+		}
+
+		if len(req.Output) > 0 || len(req.Error) > 0 {
+			// already processed
+			continue
+		}
+
+		requests = append(requests, req)
+		if len(requests) >= 10 {
+			break
+		}
+	}
+
+	return requests, nil
+}
+
+func (k Keeper) UpdateInferenceRequest(ctx sdk.Context, result *v1beta3.InferenceResult) error {
+	req, err := k.inferenceRequests.Get(ctx, result.Id)
+	if err != nil {
+		return err
+	}
+
+	req.Output = result.Output
+	req.Error = result.Error
+
+	if err := k.inferenceRequests.Set(ctx, req.Id, req); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package warden.warden.v1beta3;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
+
+message InferenceRequest {
+  uint64 id = 1;
+  string creator = 2;
+  bytes input = 3;
+  bytes output = 4;
+  string error = 5;
+}
+
+message InferenceResult {
+  uint64 id = 1;
+  bytes output = 2;
+  bytes receipt = 3;
+  string error = 4;
+}
+
+message InferenceTx {
+  uint64 magic_number = 1;
+  repeated InferenceResult results = 2;
+}

@@ -3,6 +3,7 @@ package cli
 import (
 	"encoding/base64"
 	"fmt"
+	"math"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -11,6 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 
+	"github.com/warden-protocol/wardenprotocol/warden/app/inference"
 	actcli "github.com/warden-protocol/wardenprotocol/warden/x/act/client"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -31,6 +33,7 @@ func NewTxCmd() *cobra.Command {
 		RejectKeyRequestTxCmd(),
 		FulfillSignRequestTxCmd(),
 		RejectSignRequestTxCmd(),
+		NewInferenceRequestTxCmd(),
 	)
 
 	return txCmd
@@ -208,6 +211,70 @@ The sender of this transaction must be a writer of the Keychain for the request.
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func NewInferenceRequestTxCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "new-inference-request --input [input]",
+		Short: "Create a new inference request",
+		Long: `Create a new inference request by providing an input.
+
+The input is a list of numbers.
+The first number is used to indicate how many vectors there will be.
+The following numbers are the vectors.
+
+E.g. the list:
+	10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+will be interpreted as 10 vectors of size 2:
+	(1, 2), (3, 4), (5, 6), (7, 8), (9, 10), (11, 12), (13, 14), (15, 16), (17, 18), (19, 20)
+`,
+		Example: fmt.Sprintf("%s tx warden new-inference-request --input 10,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20", version.AppName),
+		Args:    cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			input, err := cmd.Flags().GetFloat64Slice("input")
+			if err != nil {
+				return err
+			}
+
+			if len(input) < 2 {
+				return fmt.Errorf("input must contain at least two numbers")
+			}
+
+			vectorsCount := input[0]
+			if math.Trunc(vectorsCount) != vectorsCount {
+				return fmt.Errorf("size of vectors must be an integer")
+			}
+			if vectorsCount <= 0 {
+				return fmt.Errorf("size of vectors must be greater than 0")
+			}
+
+			if (len(input)-1)%int(vectorsCount) != 0 {
+				return fmt.Errorf("expected %d vectors (got %d numbers)", int(vectorsCount), len(input)-1)
+			}
+
+			inputBz, err := inference.Input(input).Serialize()
+			if err != nil {
+				return err
+			}
+
+			msg := &v1beta3.MsgNewInferenceRequest{
+				Creator: clientCtx.GetFromAddress().String(),
+				Input:   inputBz,
+			}
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().Float64Slice("input", nil, "Input vectors")
 
 	return cmd
 }

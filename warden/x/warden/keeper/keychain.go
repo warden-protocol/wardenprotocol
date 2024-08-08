@@ -18,8 +18,12 @@ func (k Keeper) deductKeychainFees(
 		return fmt.Errorf("invalid format fee passed: %w", err)
 	}
 
-	if len(maxFeeCoins) != len(keychainFees) {
-		return fmt.Errorf("invalid number of provided fees: wanted %s", keychainFees)
+	if len(maxFeeCoins) == 0 || len(keychainFees) == 0 {
+		return fmt.Errorf("fees cannot be empty")
+	}
+
+	if !keychainFees.DenomsSubsetOf(maxFeeCoins) {
+		return fmt.Errorf("fee denominations do not match: wanted %s", keychainFees)
 	}
 
 	if keychainFees.IsAllLTE(maxFeeCoins) {

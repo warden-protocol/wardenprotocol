@@ -3,6 +3,7 @@ package warden.warden.v1beta3;
 
 import "amino/amino.proto";
 import "cosmos/msg/v1/msg.proto";
+import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
@@ -178,6 +179,7 @@ message MsgNewKeyRequest {
   uint64 keychain_id = 3;
   KeyType key_type = 4;
   uint64 rule_id = 5;
+  string max_keychain_fees = 6;
 }
 
 message MsgNewKeyRequestResponse { uint64 id = 1; }
@@ -214,6 +216,7 @@ message MsgNewSignRequest {
   bytes input = 3;
   repeated string analyzers = 4 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   bytes encryption_key = 5;
+  string max_keychain_fees = 6;
 }
 
 message MsgNewSignRequestResponse { uint64 id = 1; }

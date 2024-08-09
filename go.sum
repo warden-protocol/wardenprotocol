@@ -235,6 +235,8 @@ github.com/CosmWasm/wasmd v0.51.0 h1:3A2o20RrdF7P1D3Xb+R7A/pHbbHWsYCDXrHLa7S0SC8
 github.com/CosmWasm/wasmd v0.51.0/go.mod h1:7TSaj5HoolghujuVWeExqmcUKgpcYWEySGLSODbnnwY=
 github.com/CosmWasm/wasmvm/v2 v2.0.0 h1:IqNCI2G0mvs7K6ej17/I28805rVqnu+Y1cWDqIdwb08=
 github.com/CosmWasm/wasmvm/v2 v2.0.0/go.mod h1:su9lg5qLr7adV95eOfzjZWkGiky8WNaNIHDr7Fpu7Ck=
+github.com/CosmWasm/wasmvm/v2 v2.1.2 h1:GkJ5bAsRlLHfIQVg/FY1VHwLyBwlCjAhDea0B8L+e20=
+github.com/CosmWasm/wasmvm/v2 v2.1.2/go.mod h1:bMhLQL4Yp9CzJi9A83aR7VO9wockOsSlZbT4ztOl6bg=
 github.com/DataDog/datadog-go v3.2.0+incompatible h1:qSG2N4FghB1He/r2mFrWKCaL7dXCilEuNEeAn20fdD4=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
 github.com/DataDog/zstd v1.5.5 h1:oWf5W7GtOLgp6bciQYDmhHHjdhYkALu6S/5Ni9ZgSvQ=
@@ -1072,6 +1074,8 @@ github.com/sasha-s/go-deadlock v0.3.1/go.mod h1:F73l+cr82YSh10GxyRI6qZiCgK64VaZj
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
 github.com/sethvargo/go-envconfig v1.0.0 h1:1C66wzy4QrROf5ew4KdVw942CQDa55qmlYmw9FZxZdU=
 github.com/sethvargo/go-envconfig v1.0.0/go.mod h1:Lzc75ghUn5ucmcRGIdGQ33DKJrcjk4kihFYgSTBmjIc=
+github.com/shamaton/msgpack/v2 v2.2.0 h1:IP1m01pHwCrMa6ZccP9B3bqxEMKMSmMVAVKk54g3L/Y=
+github.com/shamaton/msgpack/v2 v2.2.0/go.mod h1:6khjYnkx73f7VQU7wjcFS9DFjs+59naVWJv1TB7qdOI=
 github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible h1:Bn1aCHHRnjv4Bl16T8rcaFjYSrGrIZvpiGO6P3Q4GpU=
 github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=

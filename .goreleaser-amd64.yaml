@@ -13,7 +13,7 @@ before:
     - apk add gcc musl-dev
 
     # setup libwasmvm
-    - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.0.0/libwasmvm_muslc.x86_64.a -O /lib/libwasmvm_muslc.x86_64.a
+    - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm_muslc.x86_64.a -O /lib/libwasmvm_muslc.x86_64.a
 
     # you may remove this if you don't need go generate
     - go generate ./...

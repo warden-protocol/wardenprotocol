@@ -123,6 +123,12 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 				cmd.Flags().StringSlice(flagName, nil, "")
 			case reflect.Uint8:
 				cmd.Flags().BytesBase64(flagName, nil, "")
+			case reflect.Struct:
+				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeOf(sdk.Coin{})) {
+					cmd.Flags().StringSlice(flagName, nil, "(e.g. 10uward)")
+				} else {
+					panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
+				}
 			default:
 				panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
 			}
@@ -237,6 +243,20 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 					return err
 				}
 				v.Field(i).Set(reflect.ValueOf(value))
+			case reflect.Struct:
+				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeOf(sdk.Coin{})) {
+					coinsStrings, err := cmd.Flags().GetStringSlice(flagName)
+					if err != nil {
+						return err
+					}
+					coins, err := sdk.ParseCoinsNormalized(strings.Join(coinsStrings, ","))
+					if err != nil {
+						return err
+					}
+					v.Field(i).Set(reflect.ValueOf(coins))
+				} else {
+					panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
+				}
 			default:
 				panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
 			}

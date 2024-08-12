@@ -1,14 +1,12 @@
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
-version: 1
+version: 2
 
 project_name: wardend
 
 before:
   hooks:
-    # You may remove this if you don't use go modules.
-    - go mod tidy
     # you may remove this if you don't need go generate
     - go generate ./...
     # setup musl
@@ -28,7 +26,7 @@ builds:
       - CXX=aarch64-linux-gnu-g++
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.0.0/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm_muslc.aarch64.a
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm_muslc.aarch64.a
     flags:
       - -mod=readonly
       - -trimpath
@@ -51,7 +49,7 @@ builds:
       - CGO_LDFLAGS=-L/lib
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.0.0/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
     goos:
       - darwin
     goarch:

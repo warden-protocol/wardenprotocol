@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/warden) Keychain fees are deducted with escrow account
+
 ### Features (non-breaking)
 
 * (x/warden) Implemented `AddKeychainAdmin`, `RemoveKeychainAdmin` features

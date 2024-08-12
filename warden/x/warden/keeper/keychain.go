@@ -9,24 +9,19 @@ import (
 
 func (k Keeper) deductKeychainFees(
 	ctx context.Context,
-	maxKeychainFee string,
+	maxKeychainFee sdk.Coins,
 	keychainAccAddress sdk.AccAddress,
 	keychainFees sdk.Coins,
 	creator string) error {
-	maxFeeCoins, err := sdk.ParseCoinsNormalized(maxKeychainFee)
-	if err != nil {
-		return fmt.Errorf("invalid format fee passed: %w", err)
-	}
-
-	if len(maxFeeCoins) == 0 || len(keychainFees) == 0 {
+	if len(maxKeychainFee) == 0 || len(keychainFees) == 0 {
 		return fmt.Errorf("fees cannot be empty")
 	}
 
-	if !keychainFees.DenomsSubsetOf(maxFeeCoins) {
+	if !keychainFees.DenomsSubsetOf(maxKeychainFee) {
 		return fmt.Errorf("fee denominations do not match: wanted %s", keychainFees)
 	}
 
-	if keychainFees.IsAllLTE(maxFeeCoins) {
+	if keychainFees.IsAllLTE(maxKeychainFee) {
 		return k.bankKeeper.SendCoins(
 			ctx,
 			sdk.MustAccAddressFromBech32(creator),

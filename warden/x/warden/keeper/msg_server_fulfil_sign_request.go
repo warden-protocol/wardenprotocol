@@ -2,8 +2,6 @@ package keeper
 
 import (
 	"context"
-	"crypto/ed25519"
-
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -37,50 +35,35 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		sigData := (msg.Result.(*types.MsgFulfilSignRequest_Payload)).Payload.SignedData
-
-		// validate that the returned signature is correctly formatted
-		switch key.Type {
-		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
-			if l := len(sigData); l != 64 && l != 65 {
-				return nil, errors.Wrapf(types.ErrInvalidSignature, "invalid ecdsa signature %x of length %v (expected 64 or 65)", sigData, l)
-			}
-		case types.KeyType_KEY_TYPE_EDDSA_ED25519:
-			if l := len(sigData); l != ed25519.SignatureSize {
-				return nil, errors.Wrapf(types.ErrInvalidSignature, "invalid eddsa signature %x of length %v (expected %v)", sigData, l, ed25519.SignatureSize)
-			}
-		default:
-			return nil, errors.Wrap(types.ErrUnsupportedKeyType, key.Type.String())
-		}
-
-		// update sign request with signed data
-		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
-		req.Result = &types.SignRequest_SignedData{
-			SignedData: sigData,
-		}
-
-		if err := k.signRequests.Set(ctx, req.Id, req); err != nil {
+		if err := k.fullfilSignRequest(msg, key, req, ctx); err != nil {
 			return nil, err
 		}
 
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignRequest{
+		if err := k.ReleaseFeesToKeychain(ctx, keychain, req.DeductedKeychainFees); err != nil {
+			return nil, err
+		}
+
+		err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignRequest{
 			Id: req.Id,
-		}); err != nil {
+		})
+		if err != nil {
 			return nil, err
 		}
 
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
-		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
-		req.Result = &types.SignRequest_RejectReason{
-			RejectReason: msg.Result.(*types.MsgFulfilSignRequest_RejectReason).RejectReason,
-		}
-		if err := k.signRequests.Set(ctx, req.Id, req); err != nil {
+		if err := k.rejectSignRequest(req, msg, ctx); err != nil {
 			return nil, err
 		}
 
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectSignRequest{
+		err := k.RefundFeesToCreator(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
+		if err != nil {
+			return nil, err
+		}
+
+		err = ctx.EventManager().EmitTypedEvent(&types.EventRejectSignRequest{
 			Id: req.Id,
-		}); err != nil {
+		})
+		if err != nil {
 			return nil, err
 		}
 

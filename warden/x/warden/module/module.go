@@ -221,12 +221,14 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 	actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
+	wardenAuthority := authtypes.NewModuleAddress(v1beta3.ModuleName)
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
 		actAuthority.String(),
+		wardenAuthority,
 		in.BankKeeper,
 		in.ActKeeper,
 		in.GetWasmKeeper,

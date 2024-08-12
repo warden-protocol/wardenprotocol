@@ -24,24 +24,23 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 	}
 
 	if keychain.Fees != nil {
-		err := k.bankKeeper.SendCoins(
+		err := k.DeductFeesToEscrow(
 			ctx,
 			sdk.MustAccAddressFromBech32(creator),
-			keychain.AccAddress(),
-			keychain.Fees.KeyReq,
-		)
+			keychain.Fees.KeyReq)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	req := &types.KeyRequest{
-		Creator:    creator,
-		SpaceId:    msg.SpaceId,
-		KeychainId: msg.KeychainId,
-		KeyType:    msg.KeyType,
-		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-		RuleId:     msg.RuleId,
+		Creator:              creator,
+		SpaceId:              msg.SpaceId,
+		KeychainId:           msg.KeychainId,
+		KeyType:              msg.KeyType,
+		Status:               types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		RuleId:               msg.RuleId,
+		DeductedKeychainFees: keychain.Fees.KeyReq,
 	}
 
 	id, err := k.keyRequests.Append(ctx, req)

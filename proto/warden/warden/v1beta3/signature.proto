@@ -2,6 +2,8 @@ syntax = "proto3";
 package warden.warden.v1beta3;
 
 import "amino/amino.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
 
@@ -57,5 +59,13 @@ message SignRequest {
   }
 
   bytes encryption_key = 8;
+
+  // Amount of fees deducted during new sign request
+  repeated cosmos.base.v1beta1.Coin deducted_keychain_fees = 9 [
+    (gogoproto.nullable)     = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty)   = true,
+    (amino.encoding)         = "legacy_coins"
+  ];
 }
 

@@ -2,8 +2,6 @@ package keeper
 
 import (
 	"context"
-	"crypto/ed25519"
-
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -33,64 +31,40 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 
 	switch msg.Status {
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED:
-
-		pubKey := (msg.Result.(*types.MsgFulfilKeyRequest_Key)).Key.PublicKey
-
-		//
-		// validate that the returned public key is correctly formatted
-		//
-		switch req.KeyType {
-		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
-			if l := len(pubKey); l != 33 && l != 65 {
-				return nil, errors.Wrapf(types.ErrInvalidKey, "ecdsa public key %x of length %v (expected 33 or 65)", pubKey, l)
-			}
-		case types.KeyType_KEY_TYPE_EDDSA_ED25519:
-			if l := len(pubKey); l != ed25519.PublicKeySize {
-				return nil, errors.Wrapf(types.ErrInvalidKey, "eddsa public key %x of length %v (expected %v)", pubKey, l, ed25519.PublicKeySize)
-			}
-		default:
-			return nil, errors.Wrap(types.ErrUnsupportedKeyType, req.KeyType.String())
-		}
-		// setup new key
-		key := types.Key{
-			SpaceId:    req.SpaceId,
-			KeychainId: req.KeychainId,
-			Type:       req.KeyType,
-			PublicKey:  pubKey,
-			RuleId:     req.RuleId,
-		}
-
-		if err := k.KeysKeeper.New(ctx, key, req); err != nil {
-			return nil, err
-		}
-
-		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
-		err := k.keyRequests.Set(ctx, req.Id, req)
+		key, err := k.fulfillKeyRequest(msg, req, ctx)
 		if err != nil {
 			return nil, err
 		}
 
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
+		if err := k.ReleaseFeesToKeychain(ctx, kr, req.DeductedKeychainFees); err != nil {
+			return nil, err
+		}
+
+		err = ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
 			Id:         key.Id,
 			KeyType:    key.Type,
 			SpaceId:    key.SpaceId,
 			KeychainId: key.KeychainId,
 			RuleId:     key.RuleId,
-		}); err != nil {
-			return nil, err
-		}
-
-	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
-		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
-		req.RejectReason = msg.Result.(*types.MsgFulfilKeyRequest_RejectReason).RejectReason
-		err := k.keyRequests.Set(ctx, req.Id, req)
+		})
 		if err != nil {
 			return nil, err
 		}
 
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectKeyRequest{
+	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
+		if err := k.rejectKeyRequest(msg, req, ctx); err != nil {
+			return nil, err
+		}
+
+		err := k.RefundFeesToCreator(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
+		if err != nil {
+			return nil, err
+		}
+
+		err = ctx.EventManager().EmitTypedEvent(&types.EventRejectKeyRequest{
 			Id: req.Id,
-		}); err != nil {
+		})
+		if err != nil {
 			return nil, err
 		}
 

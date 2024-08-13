@@ -71,14 +71,17 @@ export default function ConnectedModal(props: ModalParams<{}>) {
 
 									<IconsAssets.chevronRight className="ml-auto" />
 								</a>
-
 								{sessions.map((s) => (
 									<div
 										className="flex gap-3 items-center"
 										key={s.topic}
 									>
 										<AddressAvatar
-											seed={s.topic}
+											seed={
+												localStorage.getItem(
+													`WALLETCONNECT_SESSION_WS_${s.topic}`,
+												) || ""
+											}
 											disableTooltip
 											className="w-10 h-10 object-contain shrink-0"
 										/>

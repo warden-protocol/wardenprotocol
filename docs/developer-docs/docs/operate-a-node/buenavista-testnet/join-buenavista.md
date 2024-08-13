@@ -24,9 +24,10 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 ## Prerequisites
 
 - We recommend running public testnet nodes on machines with the following characteristics:
-    - at least 8 cores
-    - 32GB of RAM
-    - 300GB of disk space
+
+  - at least 8 cores
+  - 32GB of RAM
+  - 300GB of disk space
 
 - You'll also need to [install Go](https://golang.org/doc/install).
 
@@ -40,9 +41,9 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 
 2. Initialize the chain home folder:
 
-    ```bash
-    ./wardend init <custom_moniker>
-    ```
+   ```bash
+   ./wardend init <custom_moniker>
+   ```
 
 ### Option 2: Use the source code
 
@@ -61,22 +62,22 @@ To configure `wardend`, do the following:
 
 1. Prepare the genesis file:
 
-    ```bash
-    cd $HOME/.warden/config
-    rm genesis.json
-    wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/genesis.json
-    ```
+   ```bash
+   cd $HOME/.warden/config
+   rm genesis.json
+   wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz
+   ```
 
 2. Set the mandatory configuration options:
-    
-    ```bash
-    # set minimum gas price & peers
-    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
-    ```
 
-    <PersistentPeers
-        chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
-        code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
+   ```bash
+   # set minimum gas price & peers
+   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
+   ```
+
+   <PersistentPeers
+   chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
+   code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
 ## 3. Set up the state sync
 
@@ -93,31 +94,31 @@ https://rpc.buenavista.wardenprotocol.org
 ```
 
 1. From this RPC endpoint, you can get the trusted block height and hash:
-    
-    ```bash
-    export SNAP_RPC_SERVERS="    https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
-    export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r     .result.block.header.height)
-    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
-    export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$    BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-    ```
+
+   ```bash
+   export SNAP_RPC_SERVERS="    https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
+   export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r     .result.block.header.height)
+   export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
+   export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$    BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+   ```
 
 2. Check that all variables have been set correctly:
-    
-    ```bash
-    echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-    
-    # output should be similar to:
-    # 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
-    ```
+
+   ```bash
+   echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+   # output should be similar to:
+   # 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
+   ```
 
 3. Add the state sync configuration to your `config.toml`:
 
-    ```bash
-    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
-    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
-    ```
+   ```bash
+   sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+   s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
+   s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+   s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
+   ```
 
 ## 4. Start the node
 

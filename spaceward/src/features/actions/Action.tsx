@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { TxMsgDetails } from "@/components/TxMsgDetails";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { Action as ActionModel, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import {
+	Action as ActionModel,
+	ActionStatus,
+} from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Copy } from "@/components/ui/copy";
 import { warden } from "@wardenprotocol/wardenjs";
@@ -23,13 +26,11 @@ export function Action({ action }: { action: ActionModel }) {
 	}
 	return (
 		<div className="border-0 p-0 m-0 pt-4 bg-transparent">
-			<div className="p-0 flex flex-row">
-				<div className="grid w-7/12 items-center gap-4">
-					{action.msg ? (
-						<TxMsgDetails msg={action.msg} />
-					) : null}
+			<div className="p-0 flex flex-col gap-4 lg:gap-0 lg:flex-row">
+				<div className="grid overflow-scroll w-full lg:w-7/12 items-center gap-4">
+					{action.msg ? <TxMsgDetails msg={action.msg} /> : null}
 				</div>
-				<div className="w-5/12 px-4 flex flex-col space-y-3">
+				<div className="w-full lg:w-5/12 px-4 flex flex-col space-y-3">
 					<span className="font-bold">Approvals</span>
 					{action.approvers.map((approval) => {
 						const date = timestampToDate(approval.approvedAt);
@@ -63,10 +64,15 @@ export function Action({ action }: { action: ActionModel }) {
 					<Button
 						size={"sm"}
 						onClick={async () => {
-							tx([approveAction({
-								creator: address,
-								actionId: action.id,
-							})], {});
+							tx(
+								[
+									approveAction({
+										creator: address,
+										actionId: action.id,
+									}),
+								],
+								{},
+							);
 						}}
 					>
 						Approve

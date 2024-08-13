@@ -1,11 +1,4 @@
-import {
-	Toast,
-	ToastClose,
-	ToastDescription,
-	ToastProvider,
-	ToastTitle,
-	ToastViewport,
-} from "@/components/ui/toast";
+import { ToastProvider, ToastViewport } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import ToastComponent from "./ToastComponent";
 
@@ -23,6 +16,7 @@ export function Toaster() {
 			}) {
 				return (
 					<ToastComponent
+						key={id}
 						id={id}
 						title={title}
 						description={description}

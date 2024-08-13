@@ -43,9 +43,9 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const isEmpty = !space || !queryKeys.data?.keys.length;
 
 	return (
-		<div className="grid gap-6 grid-cols-[2fr_1fr]">
+		<div className="grid gap-6 grid-cols-1 lg:grid-cols-[2fr_1fr]">
 			{isEmpty ? (
-				<div className="relative isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl overflow-hidden">
+				<div className="relative min-h-72 isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl overflow-hidden">
 					<img
 						className="absolute left-0 top-0 z-[-1] w-full h-full object-cover invert dark:invert-0"
 						src="/images/nokeys.png"
@@ -73,7 +73,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					{queryKeys.status === "loading" ? (
 						<LoaderCircle className="animate-spin mb-1" />
 					) : (
-						<div className="flex gap-2 justify-center">
+						<div className="flex flex-wrap gap-2 justify-center w-full mb-4 max-w-96">
 							{queryKeys.data?.keys.map((item) => (
 								<Key
 									keyValue={item}
@@ -114,20 +114,20 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 									}}
 								/>
 							))}
-						</div>
-					)}
-
-					{queryKeys.data?.keys.length && (
-						<div
-							onClick={() =>
-								setModal({ type: "create-key", params: {} })
-							}
-							className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
-						>
-							<Icons.plus
-								className="w-4 h-4"
-								stroke="currentColor"
-							/>
+							<div
+								onClick={() =>
+									setModal({
+										type: "create-key",
+										params: {},
+									})
+								}
+								className="cursor-pointer h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
+							>
+								<Icons.plus
+									className="w-4 h-4"
+									stroke="currentColor"
+								/>
+							</div>
 						</div>
 					)}
 				</div>

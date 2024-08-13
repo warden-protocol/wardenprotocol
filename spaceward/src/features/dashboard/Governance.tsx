@@ -38,7 +38,7 @@ export default function GovernanceDashboard() {
 
 	const proposalsVoting = proposalsQuery.data?.proposals.length;
 	return (
-		<div className="grid grid-cols-2 gap-6">
+		<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 			<Link
 				to="/governance"
 				className="cursor-pointer group bg-pink-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"

@@ -176,6 +176,7 @@
 *::-webkit-scrollbar {
 	display: none;
 }
+
 .scroll-visible::-webkit-scrollbar {
 	display: block;
 }
@@ -209,14 +210,13 @@
 }
 
 .actions-trigger {
-	--grid-id: minmax(50px, 0.25fr);
+	--grid-id: minmax(125px, 0.25fr);
 	--grid-type: minmax(150px, 3fr);
 	--grid-info: minmax(150px, 3fr);
 	--grid-date: minmax(200px, 3fr);
 	--grid-status: minmax(120px, 1fr);
 	grid-template-columns:
-		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date)
-		var(--grid-status);
+		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date) var(--grid-status);
 	grid-template-areas: "id type info date status";
 	width: 100%;
 	display: grid;
@@ -230,8 +230,7 @@
 	--grid-value: minmax(100px, 1.5fr);
 	--grid-action: minmax(100px, 1fr);
 	grid-template-columns:
-		var(--grid-address) var(--grid-tokens) var(--grid-value)
-		var(--grid-action);
+		var(--grid-address) var(--grid-tokens) var(--grid-value) var(--grid-action);
 	grid-template-areas: "address tokens value action";
 	width: 100%;
 	display: grid;
@@ -260,6 +259,7 @@ input::-webkit-outer-spin-button {
 }
 
 @layer utilities {
+
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
@@ -280,13 +280,11 @@ input::-webkit-outer-spin-button {
 } */
 
 .mask-space {
-	-webkit-mask-image: -webkit-gradient(
-		linear,
-		left 0%,
-		left bottom,
-		from(rgba(0, 0, 0, 1)),
-		to(rgba(0, 0, 0, 0))
-	);
+	-webkit-mask-image: -webkit-gradient(linear,
+			left 0%,
+			left bottom,
+			from(rgba(0, 0, 0, 1)),
+			to(rgba(0, 0, 0, 0)));
 }
 
 .fix-avatar .rounded-full {

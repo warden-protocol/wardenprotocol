@@ -65,8 +65,8 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 			)}
 
 			<div className="bg-card py-6 px-8 border-[1px] border-border-edge rounded-2xl">
-				<div className="font-bold text-[32px] tracking-[0.16px] text-center mb-4">
-					#{spaceId.toString()} Space
+				<div className="font-bold text-3xl text-center mb-6">
+					Space #{spaceId.toString()}
 				</div>
 
 				<div className="flex gap-2 justify-center min-h-[56px]">

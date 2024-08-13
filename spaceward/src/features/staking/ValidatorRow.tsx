@@ -24,9 +24,10 @@ export default function ValidatorRow(props: ValidatorProps) {
 	const icon = VALIDATOR_LOGOS[props.description?.website];
 
 	return (
-		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-border-quaternary">
+		<div className="grid grid-cols-[250px_1fr_1fr_1fr_1fr] min-w-[600px] gap-3 h-[72px]  border-t-[1px] border-border-quaternary">
 			<div className="flex items-center gap-3">
-				{icon ? (
+				{/* TODO: replace with actual validator icons */}
+				{/* {icon ? (
 					<img
 						src={icon}
 						alt=""
@@ -34,9 +35,11 @@ export default function ValidatorRow(props: ValidatorProps) {
 					/>
 				) : (
 					<AssetPlaceholder className="w-10 h-10 object-contain" />
-				)}
+				)} */}
 
-				<div>{props.description.moniker} </div>
+				<span className="max-w-[250px] text-ellipsis overflow-hidden whitespace-nowrap">
+					{props.description.moniker}
+				</span>
 			</div>
 
 			<div className="flex flex-col justify-center">

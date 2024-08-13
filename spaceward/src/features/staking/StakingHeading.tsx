@@ -17,7 +17,7 @@ interface HeadingProps {
 
 export default function StakingHeading(props: HeadingProps) {
 	return (
-		<div className="grid grid-cols-4 gap-6">
+		<div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
 			<div className="bg-card  border-border-edge border-[1px] rounded-xl	px-6 py-6">
 				<div className="text-label-secondary text-sm">
 					Available WARD

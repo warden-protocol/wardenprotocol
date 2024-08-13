@@ -41,8 +41,8 @@ export default function AddressAvatar({
 			size,
 			seed: seedStr,
 			// @ts-ignore
-			// shape1Color: ["F5F5F5", "9747FF", "F15A24"],
-			shape2Color: ["0000F5", "005156", "0A0A0A"],
+			shape1Color: ["8DE3E9", "9747FF", "F15A24"],
+			shape2Color: ["F15A24", "005156", "0A0A0A"],
 			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
 		};
 

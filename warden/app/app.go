@@ -78,11 +78,13 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
+	evmosante "github.com/evmos/evmos/v18/app/ante"
 	ethante "github.com/evmos/evmos/v18/app/ante/evm"
 	srvflags "github.com/evmos/evmos/v18/server/flags"
 	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
 	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
 
+	evmosencodingcodec "github.com/evmos/evmos/v18/encoding/codec"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
@@ -156,8 +158,8 @@ type App struct {
 	ActKeeper    actmodulekeeper.Keeper
 
 	// Slinky
-	OracleKeeper     *oraclekeeper.Keeper
-	MarketMapKeeper  *marketmapkeeper.Keeper
+	OracleKeeper    *oraclekeeper.Keeper
+	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// evmOS
 	EvmKeeper       *evmkeeper.Keeper
@@ -196,10 +198,23 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 	return govProposalHandlers
 }
 
+func ProvideCustomRegisterCrypto() runtime.CustomRegisterLegacyAminoCodec {
+	return evmosencodingcodec.RegisterLegacyAminoCodec
+}
+
+func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
+	return evmosencodingcodec.RegisterInterfaces
+}
+
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
+		// used in runtime.ProvideApp to register eth signing types
+		depinject.Provide(ProvideCustomRegisterCrypto),
+		depinject.Provide(ProvideCustomRegisterInterfaces),
+
 		moduleConfig(),
+		// will be used inside runtime.ProvideInterfaceRegistry
 		depinject.Provide(ProvideMsgEthereumTxCustomGetSigner),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
@@ -622,7 +637,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 		HandlerOptions: ante.HandlerOptions{
 			SignModeHandler: txConfig.SignModeHandler(),
 			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+			SigGasConsumer:  evmosante.SigVerificationGasConsumer,
 		},
 		IBCKeeper:             app.IBCKeeper,
 		WasmConfig:            &wasmConfig,

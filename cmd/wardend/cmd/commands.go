@@ -15,7 +15,6 @@ import (
 
 	// "github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
 	"github.com/cosmos/cosmos-sdk/client/snapshot"
@@ -26,10 +25,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
+	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	evmosclient "github.com/evmos/evmos/v18/client"
 	"github.com/evmos/evmos/v18/client/debug"
 	evmosserver "github.com/evmos/evmos/v18/server"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
@@ -66,10 +69,11 @@ func initRootCmd(
 			AddGenesisSpaceCmd(app.DefaultNodeHome),
 			AddGenesisKeychainCmd(app.DefaultNodeHome),
 			AddGenesisSlinkyMarketsCmd(app.DefaultNodeHome),
+			AddGenesisAccountCmd(app.DefaultNodeHome),
 		),
 		queryCommand(),
 		txCommand(),
-		keys.Commands(),
+		evmosclient.KeyCommands(app.DefaultNodeHome),
 	)
 }
 
@@ -77,9 +81,30 @@ func addModuleInitFlags(startCmd *cobra.Command) {
 	crisis.AddModuleInitFlags(startCmd)
 }
 
+// Analog of sdk's CommandsWithCustomMigrationMap without AddGenesisAccountCmd, that should be embeded separately
+func CommandsWithCustomMigrationMap(txConfig client.TxConfig, moduleBasics module.BasicManager, defaultNodeHome string, migrationMap genutiltypes.MigrationMap) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:                        "genesis",
+		Short:                      "Application's genesis-related subcommands",
+		DisableFlagParsing:         false,
+		SuggestionsMinimumDistance: 2,
+		RunE:                       client.ValidateCmd,
+	}
+	gentxModule := moduleBasics[genutiltypes.ModuleName].(genutil.AppModuleBasic)
+
+	cmd.AddCommand(
+		genutilcli.GenTxCmd(moduleBasics, txConfig, banktypes.GenesisBalancesIterator{}, defaultNodeHome, txConfig.SigningContext().ValidatorAddressCodec()),
+		genutilcli.MigrateGenesisCmd(migrationMap),
+		genutilcli.CollectGenTxsCmd(banktypes.GenesisBalancesIterator{}, defaultNodeHome, gentxModule.GenTxValidator, txConfig.SigningContext().ValidatorAddressCodec()),
+		genutilcli.ValidateGenesisCmd(moduleBasics),
+	)
+
+	return cmd
+}
+
 // genesisCommand builds genesis-related `wardend genesis` command. Users may provide application specific commands as a parameter
 func genesisCommand(txConfig client.TxConfig, basicManager module.BasicManager, cmds ...*cobra.Command) *cobra.Command {
-	cmd := genutilcli.Commands(txConfig, basicManager, app.DefaultNodeHome)
+	cmd := CommandsWithCustomMigrationMap(txConfig, basicManager, app.DefaultNodeHome, genutilcli.MigrationMap)
 
 	for _, subCmd := range cmds {
 		cmd.AddCommand(subCmd)

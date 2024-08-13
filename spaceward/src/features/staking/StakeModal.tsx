@@ -58,7 +58,7 @@ const StakeModal = ({
 			{isInactive && (
 				<div className="mb-12 bg-bg-negative rounded-lg	py-4 px-4 flex items-center gap-3">
 					<Icons.alert />
-					Validator is inactive. Staking are not possible at this time
+					Validator is inactive. Staking is not possible at this time
 				</div>
 			)}
 
@@ -82,7 +82,7 @@ const StakeModal = ({
 							setAmount(numRestrict(value));
 						}}
 						value={amount}
-						placeholder="Amount WARD"
+						placeholder="WARD Amount"
 					/>
 					{isInputError && <Icons.alert />}
 					{amount && (

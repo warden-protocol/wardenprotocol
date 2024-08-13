@@ -99,7 +99,7 @@ export function SpaceSelector() {
 										Active Space
 									</span>
 									<span className="block font-semibold">
-										{"Space #" + spaceId}
+										{"#" + spaceId}
 									</span>
 								</div>
 								<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

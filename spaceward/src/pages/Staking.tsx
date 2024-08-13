@@ -409,7 +409,7 @@ export function StakingPage() {
 						)}
 					</div>
 					<div className="text-sm	text-label-secondary text-right">
-						{state.tab == "all" && "Amount staked"}
+						Amount staked
 					</div>
 				</div>
 

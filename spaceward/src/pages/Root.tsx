@@ -111,9 +111,9 @@ export function Root() {
 						<>
 							<main className="pt-10 pb-10 h-screen">
 								<div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full">
-									<div className="hidden w-1/2 xl:w-4/12 rounded-xl bg-[url(/landing-bg.svg)] border-2 border-accent bg-background dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
+									<div className="hidden w-1/2 xl:w-4/12 rounded-xl bg-[url(/landing-bg.svg)] border-2 border-border-accent bg-background dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
 										<div className="">
-											<h1 className="text-5xl text-accent">
+											<h1 className="text-5xl text-label-accent font-bold tracking-[0.24px] leading-[120%]">
 												Welcome to SpaceWard. Unlock the
 												Potential of Warden Protocol.
 											</h1>
@@ -124,11 +124,11 @@ export function Root() {
 											<Icons.logo className="h-6 w-auto" />
 										</div>
 										<div className="flex items-center place-content-center pb-4">
-											<h1 className="text-3xl md:text-5xl text-center">
+											<h1 className="text-3xl md:text-5xl font-bold tracking-[0.24px] leading-[120%] text-center">
 												Connect Wallet
 											</h1>
 										</div>
-										<div className="flex items-center place-content-center pb-6">
+										<div className="flex items-center place-content-center pb-12">
 											<p className="mx-auto text-center max-w-92">
 												Connect your wallet to get
 												started with SpaceWard.

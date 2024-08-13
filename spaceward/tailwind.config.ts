@@ -13,7 +13,7 @@ const config = {
 		fontFamily: {
 			display: "Alliance Neue Regular, Arial, sans-serif",
 			sans: "Inter, Arial, sans-serif",
-			mono: "monospace"
+			mono: "monospace",
 		},
 		container: {
 			center: true,
@@ -28,6 +28,7 @@ const config = {
 				"pink-secondary": "var(--pink-secondary)",
 				"fill-primary": "var(--fill-primary)",
 				"fill-gray": "#9EA4AE",
+				"fill-primary": "var(--fill-primary)",
 				"fill-quaternary": "var(--fill-quaternary)",
 				"fill-elevated": "var(--fill-elevated)",
 				"fill-accent-secondary": "var(--fill-accent-secondary)",
@@ -37,6 +38,8 @@ const config = {
 				"secondary-text": "rgba(229,238,255,0.60)",
 				"label-tertiary": "var(--label-tertiary)",
 				"border-quaternary": "var(--border-quaternary)",
+				"border-accent": "var(--border-accent)",
+				"label-accent": "var(--label-accent)",
 				"label-secondary": "var(--label-secondary)",
 				"label-invert": "var(--label-invert)",
 				"border-primary": "var(--border-primary)",

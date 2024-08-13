@@ -72,7 +72,7 @@ export default function GovernanceDashboard() {
 						Active votes
 					</div>
 				) : (
-					<button className="rounded h-10 px-5 font-semibold bg-background duration-300 ease-out hover:bg-pink-secondary">
+					<button className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-pink-secondary">
 						Vote
 					</button>
 				)}

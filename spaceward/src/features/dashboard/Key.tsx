@@ -28,7 +28,7 @@ const Key = ({
 		<>
 			<div
 				onClick={onClick}
-				className="cursor-pointer mb-8 max-h-8 relative p-1 min-w-12 border-[1px] border-border-secondary rounded overflow-hidden isolate"
+				className="cursor-pointer mb-8 max-h-8 relative p-1 min-w-12 border-[1px] border-border-edge rounded overflow-hidden isolate"
 			>
 				<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">
 					<AvatarImage

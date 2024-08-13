@@ -150,11 +150,8 @@ type App struct {
 	ActKeeper    actmodulekeeper.Keeper
 
 	// Slinky
-	OracleKeeper     *oraclekeeper.Keeper
-	MarketMapKeeper  *marketmapkeeper.Keeper
-	oraclePreBlocker sdk.PreBlocker
-
-	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+	OracleKeeper    *oraclekeeper.Keeper
+	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager

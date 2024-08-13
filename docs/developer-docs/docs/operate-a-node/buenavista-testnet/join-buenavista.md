@@ -19,7 +19,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 | Release | Upgrade block height | Upgrade date |
 | ------- | -------------------- | ------------ |
 | v0.3.0  | genesis              |              |
-| v0.4.0  | -                    | TBD          |
+| v0.4.1  | 1675700              | Aug 13, 2024 |
 
 ## Prerequisites
 

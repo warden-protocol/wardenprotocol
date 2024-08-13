@@ -1,0 +1,85 @@
+syntax = "proto3";
+package slinky.marketmap.v1;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "slinky/types/v1/currency_pair.proto";
+import "slinky/marketmap/v1/market.proto";
+import "slinky/marketmap/v1/params.proto";
+
+option go_package = "github.com/skip-mev/slinky/x/marketmap/types";
+
+// Query is the query service for the x/marketmap module.
+service Query {
+  // MarketMap returns the full market map stored in the x/marketmap
+  // module.
+  rpc MarketMap(MarketMapRequest) returns (MarketMapResponse) {
+    option (google.api.http).get = "/slinky/marketmap/v1/marketmap";
+  }
+
+  // Market returns a market stored in the x/marketmap
+  // module.
+  rpc Market(MarketRequest) returns (MarketResponse) {
+    option (google.api.http).get = "/slinky/marketmap/v1/market";
+  }
+
+  // LastUpdated returns the last height the market map was updated at.
+  rpc LastUpdated(LastUpdatedRequest) returns (LastUpdatedResponse) {
+    option (google.api.http).get = "/slinky/marketmap/v1/last_updated";
+  }
+
+  // Params returns the current x/marketmap module parameters.
+  rpc Params(ParamsRequest) returns (ParamsResponse) {
+    option (google.api.http) = {
+      get : "/slinky/marketmap/v1/params"
+    };
+  }
+}
+
+// MarketMapRequest is the query request for the MarketMap query.
+// It takes no arguments.
+message MarketMapRequest {}
+
+// MarketMapResponse is the query response for the MarketMap query.
+message MarketMapResponse {
+  // MarketMap defines the global set of market configurations for all providers
+  // and markets.
+  MarketMap market_map = 1 [ (gogoproto.nullable) = false ];
+
+  // LastUpdated is the last block height that the market map was updated.
+  // This field can be used as an optimization for clients checking if there
+  // is a new update to the map.
+  uint64 last_updated = 2;
+
+  // ChainId is the chain identifier for the market map.
+  string chain_id = 3;
+}
+
+// MarketRequest is the query request for the Market query.
+// It takes the currency pair of the market as an argument.
+message MarketRequest {
+  // CurrencyPair is the currency pair associated with the market being
+  // requested.
+  slinky.types.v1.CurrencyPair currency_pair = 1
+      [ (gogoproto.nullable) = false ];
+}
+
+// MarketResponse is the query response for the Market query.
+message MarketResponse {
+  // Market is the configuration of a single market to be price-fetched for.
+  Market market = 1 [ (gogoproto.nullable) = false ];
+}
+
+// ParamsRequest is the request type for the Query/Params RPC method.
+message ParamsRequest {}
+
+// ParamsResponse is the response type for the Query/Params RPC method.
+message ParamsResponse { Params params = 1 [ (gogoproto.nullable) = false ]; }
+
+// LastUpdatedRequest is the request type for the Query/LastUpdated RPC
+// method.
+message LastUpdatedRequest {}
+
+// LastUpdatedResponse is the response type for the Query/LastUpdated RPC
+// method.
+message LastUpdatedResponse { uint64 last_updated = 1; }

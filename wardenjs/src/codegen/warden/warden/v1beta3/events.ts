@@ -447,6 +447,70 @@ export interface EventAddKeychainWriterSDKType {
   new_writer: string;
   writers_count: bigint;
 }
+/** EventAddKeychainAdmin is emitted when a new admin address is added to a Keychain */
+export interface EventAddKeychainAdmin {
+  /** id of the keychain */
+  id: bigint;
+  /** address of the new admin */
+  newAdmin: string;
+  /** updated count of admins */
+  adminsCount: bigint;
+}
+export interface EventAddKeychainAdminProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.EventAddKeychainAdmin";
+  value: Uint8Array;
+}
+/** EventAddKeychainAdmin is emitted when a new admin address is added to a Keychain */
+export interface EventAddKeychainAdminAmino {
+  /** id of the keychain */
+  id?: string;
+  /** address of the new admin */
+  new_admin?: string;
+  /** updated count of admins */
+  admins_count?: string;
+}
+export interface EventAddKeychainAdminAminoMsg {
+  type: "/warden.warden.v1beta3.EventAddKeychainAdmin";
+  value: EventAddKeychainAdminAmino;
+}
+/** EventAddKeychainAdmin is emitted when a new admin address is added to a Keychain */
+export interface EventAddKeychainAdminSDKType {
+  id: bigint;
+  new_admin: string;
+  admins_count: bigint;
+}
+/** EventRemoveKeychainAdmin is emitted when a new admin address is removed from a Keychain */
+export interface EventRemoveKeychainAdmin {
+  /** id of the keychain */
+  id: bigint;
+  /** address of the new admin */
+  admin: string;
+  /** updated count of admins */
+  adminsCount: bigint;
+}
+export interface EventRemoveKeychainAdminProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.EventRemoveKeychainAdmin";
+  value: Uint8Array;
+}
+/** EventRemoveKeychainAdmin is emitted when a new admin address is removed from a Keychain */
+export interface EventRemoveKeychainAdminAmino {
+  /** id of the keychain */
+  id?: string;
+  /** address of the new admin */
+  admin?: string;
+  /** updated count of admins */
+  admins_count?: string;
+}
+export interface EventRemoveKeychainAdminAminoMsg {
+  type: "/warden.warden.v1beta3.EventRemoveKeychainAdmin";
+  value: EventRemoveKeychainAdminAmino;
+}
+/** EventRemoveKeychainAdmin is emitted when a new admin address is removed from a Keychain */
+export interface EventRemoveKeychainAdminSDKType {
+  id: bigint;
+  admin: string;
+  admins_count: bigint;
+}
 function createBaseEventCreateSpace(): EventCreateSpace {
   return {
     id: BigInt(0),
@@ -1844,6 +1908,208 @@ export const EventAddKeychainWriter = {
     return {
       typeUrl: "/warden.warden.v1beta3.EventAddKeychainWriter",
       value: EventAddKeychainWriter.encode(message).finish()
+    };
+  }
+};
+function createBaseEventAddKeychainAdmin(): EventAddKeychainAdmin {
+  return {
+    id: BigInt(0),
+    newAdmin: "",
+    adminsCount: BigInt(0)
+  };
+}
+export const EventAddKeychainAdmin = {
+  typeUrl: "/warden.warden.v1beta3.EventAddKeychainAdmin",
+  encode(message: EventAddKeychainAdmin, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.newAdmin !== "") {
+      writer.uint32(18).string(message.newAdmin);
+    }
+    if (message.adminsCount !== BigInt(0)) {
+      writer.uint32(24).uint64(message.adminsCount);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): EventAddKeychainAdmin {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventAddKeychainAdmin();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64();
+          break;
+        case 2:
+          message.newAdmin = reader.string();
+          break;
+        case 3:
+          message.adminsCount = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventAddKeychainAdmin {
+    return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
+      newAdmin: isSet(object.newAdmin) ? String(object.newAdmin) : "",
+      adminsCount: isSet(object.adminsCount) ? BigInt(object.adminsCount.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: EventAddKeychainAdmin): JsonSafe<EventAddKeychainAdmin> {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.newAdmin !== undefined && (obj.newAdmin = message.newAdmin);
+    message.adminsCount !== undefined && (obj.adminsCount = (message.adminsCount || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<EventAddKeychainAdmin>): EventAddKeychainAdmin {
+    const message = createBaseEventAddKeychainAdmin();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.newAdmin = object.newAdmin ?? "";
+    message.adminsCount = object.adminsCount !== undefined && object.adminsCount !== null ? BigInt(object.adminsCount.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: EventAddKeychainAdminAmino): EventAddKeychainAdmin {
+    const message = createBaseEventAddKeychainAdmin();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    if (object.new_admin !== undefined && object.new_admin !== null) {
+      message.newAdmin = object.new_admin;
+    }
+    if (object.admins_count !== undefined && object.admins_count !== null) {
+      message.adminsCount = BigInt(object.admins_count);
+    }
+    return message;
+  },
+  toAmino(message: EventAddKeychainAdmin): EventAddKeychainAdminAmino {
+    const obj: any = {};
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.new_admin = message.newAdmin === "" ? undefined : message.newAdmin;
+    obj.admins_count = message.adminsCount !== BigInt(0) ? message.adminsCount.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventAddKeychainAdminAminoMsg): EventAddKeychainAdmin {
+    return EventAddKeychainAdmin.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventAddKeychainAdminProtoMsg): EventAddKeychainAdmin {
+    return EventAddKeychainAdmin.decode(message.value);
+  },
+  toProto(message: EventAddKeychainAdmin): Uint8Array {
+    return EventAddKeychainAdmin.encode(message).finish();
+  },
+  toProtoMsg(message: EventAddKeychainAdmin): EventAddKeychainAdminProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.EventAddKeychainAdmin",
+      value: EventAddKeychainAdmin.encode(message).finish()
+    };
+  }
+};
+function createBaseEventRemoveKeychainAdmin(): EventRemoveKeychainAdmin {
+  return {
+    id: BigInt(0),
+    admin: "",
+    adminsCount: BigInt(0)
+  };
+}
+export const EventRemoveKeychainAdmin = {
+  typeUrl: "/warden.warden.v1beta3.EventRemoveKeychainAdmin",
+  encode(message: EventRemoveKeychainAdmin, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.admin !== "") {
+      writer.uint32(18).string(message.admin);
+    }
+    if (message.adminsCount !== BigInt(0)) {
+      writer.uint32(24).uint64(message.adminsCount);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): EventRemoveKeychainAdmin {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventRemoveKeychainAdmin();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64();
+          break;
+        case 2:
+          message.admin = reader.string();
+          break;
+        case 3:
+          message.adminsCount = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventRemoveKeychainAdmin {
+    return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
+      admin: isSet(object.admin) ? String(object.admin) : "",
+      adminsCount: isSet(object.adminsCount) ? BigInt(object.adminsCount.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: EventRemoveKeychainAdmin): JsonSafe<EventRemoveKeychainAdmin> {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.admin !== undefined && (obj.admin = message.admin);
+    message.adminsCount !== undefined && (obj.adminsCount = (message.adminsCount || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<EventRemoveKeychainAdmin>): EventRemoveKeychainAdmin {
+    const message = createBaseEventRemoveKeychainAdmin();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.admin = object.admin ?? "";
+    message.adminsCount = object.adminsCount !== undefined && object.adminsCount !== null ? BigInt(object.adminsCount.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: EventRemoveKeychainAdminAmino): EventRemoveKeychainAdmin {
+    const message = createBaseEventRemoveKeychainAdmin();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    if (object.admin !== undefined && object.admin !== null) {
+      message.admin = object.admin;
+    }
+    if (object.admins_count !== undefined && object.admins_count !== null) {
+      message.adminsCount = BigInt(object.admins_count);
+    }
+    return message;
+  },
+  toAmino(message: EventRemoveKeychainAdmin): EventRemoveKeychainAdminAmino {
+    const obj: any = {};
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.admin = message.admin === "" ? undefined : message.admin;
+    obj.admins_count = message.adminsCount !== BigInt(0) ? message.adminsCount.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventRemoveKeychainAdminAminoMsg): EventRemoveKeychainAdmin {
+    return EventRemoveKeychainAdmin.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventRemoveKeychainAdminProtoMsg): EventRemoveKeychainAdmin {
+    return EventRemoveKeychainAdmin.decode(message.value);
+  },
+  toProto(message: EventRemoveKeychainAdmin): Uint8Array {
+    return EventRemoveKeychainAdmin.encode(message).finish();
+  },
+  toProtoMsg(message: EventRemoveKeychainAdmin): EventRemoveKeychainAdminProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.EventRemoveKeychainAdmin",
+      value: EventRemoveKeychainAdmin.encode(message).finish()
     };
   }
 };

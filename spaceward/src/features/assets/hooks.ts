@@ -2,13 +2,13 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import { useQueries } from "@tanstack/react-query";
-import { /* useContext, */ useEffect, useState } from "react";
+import { /* useContext, */ useEffect, useMemo, useState } from "react";
 import {
 	balancesQueryCosmos,
 	balancesQueryEth,
 	fiatPricesQuery,
 } from "./queries";
-import type { CosmosQueryClient } from "./types";
+import type { CosmosQueryClient, PriceMapSlinky } from "./types";
 // import { walletContext } from "@cosmos-kit/react-lite";
 
 /** @deprecated move somewhere else */
@@ -35,8 +35,67 @@ const DERIVE_ADDRESSES = [
 ];
 export const useAssetQueries = (spaceId?: string | null) => {
 	// const { walletManager } = useContext(walletContext);
-	const { isReady, useKeysBySpaceId } = useQueryHooks();
+	const { isReady, useKeysBySpaceId, slinky } = useQueryHooks();
 	const [clients, setClients] = useState<[CosmosQueryClient, string][]>([]);
+
+	const pairs = slinky.oracle.v1.useGetAllCurrencyPairs({
+		options: { enabled: isReady, refetchInterval: Infinity },
+		request: {},
+	});
+
+	const currencyPairs = useMemo(
+		() =>
+			pairs.data?.currencyPairs.map(({ Base, Quote }) => ({
+				id: `${Base}/${Quote}`,
+				token: Base,
+			})) ?? [],
+		[pairs.data],
+	);
+
+	const prices = slinky.oracle.v1.useGetPrices({
+		options: {
+			enabled: isReady && Boolean(currencyPairs.length),
+		},
+		request: {
+			currencyPairIds: currencyPairs.map(({ id }) => id) ?? [],
+		},
+	});
+
+	const priceMap = useMemo(() => {
+		const priceMap =
+			prices.data?.prices.reduce((acc, price, i) => {
+				const pair = currencyPairs[i];
+
+				if (!pair) {
+					return acc;
+				}
+
+				return {
+					...acc,
+					// assume all quotes are in USD
+					[pair.token]: {
+						...price,
+						ticker: pair.id,
+						token: pair.token,
+					},
+				};
+			}, {} as PriceMapSlinky);
+
+		if (!priceMap) {
+			return;
+		}
+
+		// fixme weth
+		if (priceMap["ETH"]) {
+			priceMap["WETH"] = {
+				...priceMap["ETH"],
+				token: "WETH",
+				ticker: "WETH/USD",
+			};
+		}
+
+		return priceMap;
+	}, [prices.data, currencyPairs]);
 
 	useEffect(() => {
 		Promise.all(
@@ -78,11 +137,11 @@ export const useAssetQueries = (spaceId?: string | null) => {
 	});
 
 	const queryBalancesEth = useQueries(
-		balancesQueryEth(isReady, queryKeys.data?.keys),
+		balancesQueryEth(isReady && Boolean(priceMap), queryKeys.data?.keys, priceMap),
 	);
 
 	const queryBalancesCosmos = useQueries(
-		balancesQueryCosmos(isReady, queryKeys.data?.keys, clients),
+		balancesQueryCosmos(isReady && Boolean(priceMap), queryKeys.data?.keys, clients, priceMap),
 	);
 
 	const queryPrices = useQueries(fiatPricesQuery(isReady));

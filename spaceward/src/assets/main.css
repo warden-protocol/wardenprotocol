@@ -66,6 +66,8 @@
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
+		--label-invert: #fff;
+		--fill-primary: #000;
 	}
 
 	.dark {
@@ -111,6 +113,8 @@
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
+		--label-invert: #000;
+		--fill-primary: #fff;
 	}
 }
 

@@ -147,9 +147,9 @@ export function AssetsPage() {
 	if (noKeys) {
 		return (
 			<div className="h-[calc(100vh_-_106px)] min-h-[550px] flex flex-col justify-center items-center text-center">
-				<Icons.noAssetsKey className="mb-[72px]" />
+				<Icons.noAssetsKey className="mb-[72px] invert dark:invert-0 " />
 
-				<div className="text-5xl font-bold">No Keys found</div>
+				<div className="text-5xl font-bold font-display tracking-[0.24px]">No Keys found</div>
 
 				<div className="h-6" />
 
@@ -168,19 +168,16 @@ export function AssetsPage() {
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-5xl font-bold">Assets</h2>
+					<h2 className="text-5xl font-bold tracking-[0.24px]">
+						Assets
+					</h2>
 					<p className="text-muted-foreground"></p>
 				</div>
 			</div>
 
 			{/* <div className="grid grid-cols-[320px_1fr] gap-[24px]"> */}
 			<div className="">
-				<div className="bg-pink-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
-					<img
-						src="/images/asset-decor.png"
-						alt=""
-						className="absolute right-0 top-0 h-full w-auto z-[-5]"
-					/>
+				<div className="before:content-[' '] before:bg-contain before:bg-right before:bg-no-repeat before:bg-[url('/images/asset-decor-light.png')] before:h-full before:w-[171px] before:z-[-5] before:absolute before:right-0 before:top-0 bg-pink-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
 					<div className="flex items-baseline gap-[6px]">
 						<div className="text-2xl font-bold">
 							{formatter.format(
@@ -315,7 +312,7 @@ export function AssetsPage() {
 							Deposit assets to SpaceWard
 						</div>
 						<button
-							className="text-black mt-6 bg-white h-[40px] rounded-lg justify-center text-base font-medium py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
+							className="text-black mt-6 bg-fill-primary h-[40px] text-label-invert rounded justify-center text-base font-semibold py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
 							onClick={setModal.bind(null, {
 								type: "receive",
 								params: {},

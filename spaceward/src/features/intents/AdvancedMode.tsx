@@ -334,6 +334,15 @@ export default function AdvancedMode({
 		}
 	}, [input.lookup, input.shield, input.parsed.errors]);
 
+	const arrNodes = Object.values(input.parsed.refs).filter(
+		(node) => node.type === "array",
+	);
+
+	// fixme hotfix for https://github.com/warden-protocol/wardenprotocol/issues/365
+	const warning = Boolean(
+		arrNodes.length && !arrNodes.flatMap((node) => node.tokens).length,
+	);
+
 	return (
 		<div>
 			{!hideHeader ? (
@@ -341,7 +350,7 @@ export default function AdvancedMode({
 					<div className="text-xl bg-transparent flex justify-between items-center font-bold">
 						Advanced mode
 					</div>
-					<div className="text-[rgba(229,238,255,0.60)] mt-1">
+					<div className="text-label-secondary mt-1">
 						Use an expression to set approval conditions
 					</div>
 				</div>
@@ -361,13 +370,13 @@ export default function AdvancedMode({
 				onSubmit={(e) => e.preventDefault()}
 				action=""
 				className={clsx(
-					`relative mt-8 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] px-4 h-[60px]`,
+					`relative mt-8 text-left flex items-center justify-between gap-2 bg-fill-quaternary px-4 h-[60px]`,
 				)}
 				ref={formRef}
 			>
 				<div className="w-full flex items-center gap-[6px]">
 					<label
-						className="text-[rgba(229,238,255,0.60)] text-xs"
+						className="text-label-secondary text-xs"
 						htmlFor="address"
 					>
 						f(x)
@@ -431,17 +440,16 @@ export default function AdvancedMode({
 									key={`${i}${item?.value}`}
 									className={clsx(
 										"flex justify-center flex-col h-12 w-full px-3 cursor-pointer",
-										"hover:bg-[rgba(229,238,255,0.15)]",
+										"hover:bg-fill-quaternary",
 										{
-											"bg-[rgba(229,238,255,0.15)]":
-												selected,
+											"bg-fill-quaternary": selected,
 										},
 									)}
 									onClick={() => input.autoComplete(i)}
 								>
 									{item?.title}
 									{item?.description && (
-										<div className="text-xs text-[rgba(229,238,255,0.60)] leading-none">
+										<div className="text-xs text-label-secondary leading-none">
 											{item.description}
 										</div>
 									)}
@@ -454,9 +462,10 @@ export default function AdvancedMode({
 
 			{children?.({
 				code: input.shield?.value ?? "",
-				error: addresses.length
-					? error?.message
-					: "Please add at least one approver",
+				error:
+					addresses.length && !warning
+						? error?.message
+						: "Please add at least one approver",
 				isUpdated,
 			})}
 		</div>

@@ -135,13 +135,17 @@ export function GovernancePage() {
 					</div>
 					<div className="h-2" />
 					<div className="">
-						Join the conversation around potentional governance
+						Join the conversation around potential governance
 						proposals
 					</div>
 				</div>
-				<a href="#" className="flex gap-2 items-center font-semibold">
+				<a
+					href="https://discord.gg/wardenprotocol"
+					target="_blank"
+					className="flex gap-2 items-center font-semibold"
+				>
 					<Icons.externalLink className="invert dark:invert-0" />
-					Visit Warden Forum
+					Join us on Discord
 				</a>
 			</div>
 
@@ -308,7 +312,7 @@ export function GovernancePage() {
 			<div
 				className={clsx(
 					state.layout === "list"
-						? "bg-card rounded-xl border-border-secondary border-[1px] px-8 py-6"
+						? "bg-card rounded-xl border-border-edge border-[1px] px-8 py-6"
 						: noProposals
 							? ""
 							: "grid grid-cols-3 gap-6 pb-10",
@@ -486,7 +490,7 @@ export function GovernancePage() {
 				)}
 
 				{noProposals ? (
-					<div className="h-[calc(100vh_-_120px)] min-h-[550px] flex flex-col justify-center items-center text-center">
+					<div className="py-20 flex flex-col justify-center items-center text-center">
 						<Icons.noFile className="invert dark:invert-0" />
 						<div className="h-[72px]" />
 						<div className="text-5xl font-bold">
@@ -495,10 +499,14 @@ export function GovernancePage() {
 						<div className="h-6" />
 						<div className="">Suggest your proposals</div>
 						<div className="h-12" />
-						<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
+						<a
+							href="https://discord.gg/wardenprotocol"
+							target="_blank"
+							className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6"
+						>
 							<Icons.externalLink stroke="currentColor" />
-							Visit Warden Forum
-						</button>
+							Join us on Discord
+						</a>
 					</div>
 				) : (
 					proposals?.map((item) => (

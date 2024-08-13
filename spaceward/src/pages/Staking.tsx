@@ -20,6 +20,7 @@ import {
 } from "@/features/staking/util";
 import { bigintToFixed } from "@/lib/math";
 import ValidatorRow from "@/features/staking/ValidatorRow";
+import { useAsset } from "@/hooks/useAsset";
 
 export function StakingPage() {
 	const [state, dispatch] = useReducer(commonReducer<StakingState>, {
@@ -40,10 +41,12 @@ export function StakingPage() {
 		queryValidators,
 	} = useStakingQueries(address);
 
-	const { availableWard, delegationsByAddress } = useMemo(
+	const { availableWard: stakedWard, delegationsByAddress } = useMemo(
 		() => getDelegationsData(queryDelegations.data?.delegationResponses),
 		[queryDelegations.data?.delegationResponses],
 	);
+
+	const { balance: availableWard } = useAsset("uward");
 
 	const { bondedTokens, apr } = useMemo(
 		() =>
@@ -61,7 +64,7 @@ export function StakingPage() {
 		],
 	);
 
-	const { stakedWard, validatorsByAddress } = useMemo(
+	const { /* stakedWard, */ validatorsByAddress } = useMemo(
 		() => getValidatorData(queryValidators.data?.validators),
 		[queryValidators.data?.validators],
 	);
@@ -227,7 +230,7 @@ export function StakingPage() {
 			</div>
 
 			<StakingHeading
-				availableWard={availableWard}
+				availableWard={BigInt(availableWard?.amount ?? 0)}
 				stakedWard={stakedWard}
 				total={queryTotalRewards.data?.total}
 				unbondSeconds={
@@ -237,7 +240,7 @@ export function StakingPage() {
 				reward={queryTotalRewards.data?.rewards[0]}
 			/>
 
-			<div className="bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6">
+			<div className="bg-card  rounded-xl border-border-edge border-[1px] px-8 py-6">
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-3">
 						<div
@@ -288,7 +291,7 @@ export function StakingPage() {
 								>
 									APR is estimated percentage of your staked
 									tokens that you will earn, on top of your
-									staked tokens. The validators commission
+									staked tokens. The validator’s commission
 									will be subtracted from it
 								</div>
 							</div>
@@ -304,7 +307,7 @@ export function StakingPage() {
 						onClick={openSortDropdown("comission")}
 						className="text-sm cursor-pointer w-fit	text-label-secondary flex items-center gap-1 group relative"
 					>
-						Commision
+						Commission
 						<Icons.chevronsUpDown className="invert dark:invert-0" />
 						{state.sortDropdown === "comission" ? (
 							<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
@@ -406,7 +409,7 @@ export function StakingPage() {
 						)}
 					</div>
 					<div className="text-sm	text-label-secondary text-right">
-						{state.tab == "all" && "Amount staked"}
+						Amount staked
 					</div>
 				</div>
 

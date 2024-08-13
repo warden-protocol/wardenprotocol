@@ -9,12 +9,13 @@ import {
 } from "ethers";
 
 import type { EncodeObject } from "@cosmjs/proto-signing";
-import type {  StdFee } from "@cosmjs/stargate";
+import type { StdFee } from "@cosmjs/stargate";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import type { BalanceEntry } from "../assets/types";
 import { getAbiItem } from "../assets/util";
+import { COSMOS_CHAINS } from "../assets/hooks";
 
 function typedStartsWith<T extends string>(
 	prefix: T,
@@ -36,6 +37,9 @@ export type TxBuild<T extends TxType> = T extends "eth"
 			type: T;
 		};
 
+export function capitalize<T extends string>(s?: T): Capitalize<T> {
+	return (!s ? "" : s.charAt(0).toUpperCase() + s.slice(1)) as Capitalize<T>;
+}
 export async function buildTransaction({
 	item,
 	from,
@@ -125,16 +129,20 @@ export async function buildTransaction({
 		fromAddress: from,
 	});
 
-	// todo remove hardcoded fees
-	const feeToken = chainAssets?.find((x) => x.symbol === "OSMO");
+	const feeToken = chainAssets?.[0];
 
 	if (!feeToken) {
 		throw new Error("fee token not found");
 	}
 
+	const feeAmount =
+		COSMOS_CHAINS.find((x) => x.chainName === item.chainName)?.feeAmount ??
+		"225";
+
 	const fee: StdFee = {
-		amount: [{ denom: feeToken.base, amount: "225" }],
-		gas: "90000",
+		// fixme remove hardcoded fees
+		amount: [{ denom: feeToken.base, amount: feeAmount }],
+		gas: "200000",
 	};
 
 	return {

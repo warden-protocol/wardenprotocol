@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -17,13 +17,13 @@ func (k msgServer) RemoveKeychainAdmin(goCtx context.Context, msg *types.MsgRemo
 	}
 
 	if !kr.IsAdmin(msg.Authority) {
-		return nil, fmt.Errorf("keychain updates should be requested by admins")
+		return nil, types.ErrNotKeychainAdmin
 	}
 	if !kr.IsAdmin(msg.Admin) {
-		return nil, fmt.Errorf("address is not an admin in the keychain")
+		return nil, errors.Wrapf(types.ErrNotKeychainAdmin, "%s can't be removed as it's not an admin of the keychain", msg.Admin)
 	}
 	if len(kr.Admins) == 1 {
-		return nil, fmt.Errorf("keychain must have at least one admin")
+		return nil, types.ErrCantRemoveLastKeychainAdmin
 	}
 
 	kr.RemoveAdmin(msg.Admin)

@@ -1,0 +1,71 @@
+syntax = "proto3";
+package slinky.oracle.v1;
+
+import "slinky/oracle/v1/genesis.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/msg/v1/msg.proto";
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "slinky/types/v1/currency_pair.proto";
+
+option go_package = "github.com/skip-mev/slinky/x/oracle/types";
+
+// Msg is the message service for the x/oracle module.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // AddCurrencyPairs will be used only by governance to update the set of
+  // available CurrencyPairs. Given a set of CurrencyPair objects, update
+  // the available currency pairs in the module .
+  rpc AddCurrencyPairs(MsgAddCurrencyPairs)
+      returns (MsgAddCurrencyPairsResponse);
+
+  // RemoveCurrencyPairs will be used explicitly by governance to remove the
+  // given set of currency-pairs from the module's state. Thus these
+  // CurrencyPairs will no longer have price-data available from this module.
+  rpc RemoveCurrencyPairs(MsgRemoveCurrencyPairs)
+      returns (MsgRemoveCurrencyPairsResponse);
+}
+
+// Given an authority + a set of CurrencyPairs, the x/oracle module will
+// check to see that the authority has permissions to update the set of
+// CurrencyPairs tracked in the oracle, and add the given CurrencyPairs to be
+// tracked in each VoteExtension
+message MsgAddCurrencyPairs {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "slinky/x/oracle/MsgAddCurrencyPairs";
+
+  option (gogoproto.equal) = false;
+
+  // authority is the address of the account that is authorized to update the
+  // x/oracle's CurrencyPairs
+  string authority = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  // set of CurrencyPairs to be added to the module (+ prices if they are to be
+  // set)
+  repeated slinky.types.v1.CurrencyPair currency_pairs = 2
+      [ (gogoproto.nullable) = false ];
+}
+
+message MsgAddCurrencyPairsResponse {}
+
+// Given an authority + a set of CurrencyPairIDs, the x/oracle module's message
+// service will remove all of the CurrencyPairs identified by each
+// CurrencyPairID in the request from state. Notice, if a given currency-pair
+// does not exist in state, the module ignores that currency-pair and continues
+// removing the rest.
+message MsgRemoveCurrencyPairs {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "slinky/x/oracle/MsgSetCurrencyPairs";
+
+  option (gogoproto.equal) = false;
+
+  // authority is the address of the account that is authorized to update the
+  // x/oracle's CurrencyPairs
+  string authority = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // currency_pair_ids are the stringified representation of a currency-pairs
+  // (base/quote) to be removed from the module's state
+  repeated string currency_pair_ids = 2;
+}
+
+message MsgRemoveCurrencyPairsResponse {}

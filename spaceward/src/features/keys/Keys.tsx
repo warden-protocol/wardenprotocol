@@ -14,7 +14,6 @@ import type {
 
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { Accordion } from "@/components/ui/accordion";
-import { Copy } from "@/components/ui/copy";
 import {
 	KeyIcon,
 	PlusIcon,
@@ -35,38 +34,33 @@ import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
 import KeyRequestStatusbar from "./KeyRequestStatus";
 import { Icons } from "@/components/ui/icons-assets";
 import useFiatConversion from "@/hooks/useFiatConversion";
-import { useQueries } from "@tanstack/react-query";
-import { balancesQueryCosmos, balancesQueryEth } from "../assets/queries";
 import { bigintToFloat } from "@/lib/math";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
-
-const useKeyData = ({ key, addresses }: QueryKeyResponse) => {
+import { useAssetQueries } from "../assets/hooks";
+export const useKeyData = ({ key }: QueryKeyResponse) => {
 	const { isReady, useKeychainById } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
 	const name = settings?.name ?? `Key #${key.id.toString()}`;
 	const seed = Buffer.from(key.publicKey).toString("base64");
 	const themeIndex = (settings?.themeIndex ?? 0) % KEY_THEMES.length;
+	const spaceId = key.spaceId;
 
 	const queryKeychain = useKeychainById({
 		request: { id: key.keychainId },
 		options: { enabled: isReady },
 	});
 
-	const queryBalancesEth = useQueries(
-		balancesQueryEth(isReady, [{ key, addresses }]),
-	);
-
-	const queryBalancesCosmos = useQueries(
-		balancesQueryCosmos(isReady, [{ key, addresses }]),
-	);
-
+	const { queryBalances } = useAssetQueries(spaceId.toString());
 	const { formatter, fiatConversion } = useFiatConversion();
 	const targetDecimals = 2;
 
-	const total = [...queryBalancesEth, ...queryBalancesCosmos].reduce(
-		(total, item) => {
+	const total = queryBalances
+		.filter(({ data }) => {
+			return data?.key.key.id === key.id;
+		})
+		.reduce((total, item) => {
 			if (!item.data) {
 				return total;
 			}
@@ -87,9 +81,7 @@ const useKeyData = ({ key, addresses }: QueryKeyResponse) => {
 				: BigInt(0);
 
 			return total + value;
-		},
-		BigInt(0),
-	);
+		}, BigInt(0));
 
 	const avatar = useMemo(() => {
 		const theme = KEY_THEMES[themeIndex].map((color) => color.slice(1));
@@ -145,7 +137,7 @@ function Key({
 	const { setData: setModal } = useModalState();
 
 	return (
-		<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] min-h-[84px]  border-b-[1px] border-border-quaternary last:border-b-0 w-full font-sans font-normal hover:no-underline overflow-scroll">
+		<div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.85fr_0.6fr_0.5fr] gap-2 min-h-[84px]  border-b-[1px] border-border-quaternary last:border-b-0 w-full font-sans font-normal hover:no-underline overflow-scroll">
 			<div className="flex flex-row items-center gap-4">
 				<div className="cursor-pointer min-h-8 h-8 relative shrink-0 p-1 min-w-12 rounded overflow-hidden isolate">
 					<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">
@@ -162,7 +154,9 @@ function Key({
 					</div>
 				</div>
 
-				<div>{name}</div>
+				<div className="max-w-[142px] overflow-hidden text-ellipsis whitespace-nowrap">
+					{name}
+				</div>
 			</div>
 
 			<div className="flex justify-center flex-col">
@@ -174,10 +168,16 @@ function Key({
 			</div>
 
 			<div className="flex items-center">
-				{keychain?.keychain?.description}
+				<div className="max-w-[166px] overflow-hidden text-ellipsis whitespace-nowrap">
+					{keychain?.keychain?.description}
+				</div>
 			</div>
 
-			<div className="flex items-center">{prettyKeyType(key.type)}</div>
+			<div className="flex items-center">
+				<div className="max-w-[176px] overflow-hidden text-ellipsis whitespace-nowrap">
+					{prettyKeyType(key.type)}
+				</div>
+			</div>
 
 			<div className="flex items-center">
 				{formatter.format(bigintToFloat(total, targetDecimals))}
@@ -185,16 +185,12 @@ function Key({
 
 			<div className="flex items-center justify-end gap-2">
 				<div
-					className="cursor-pointer p-1"
+					className="cursor-pointer p-1 invert dark:invert-0"
 					onClick={() => {
 						setModal({
-							type: "select-key",
+							type: "receive",
 							params: {
-								addresses: addresses.map((a) => ({
-									...a,
-									keyId: key.id,
-								})),
-								next: "receive",
+								keyResponse: { key, addresses },
 							},
 						});
 					}}
@@ -202,16 +198,13 @@ function Key({
 					<Icons.receive />
 				</div>
 				<div
-					className="ml-4 cursor-pointer p-1"
+					className="ml-4 cursor-pointer p-1 invert dark:invert-0"
 					onClick={() => {
 						setModal({
-							type: "select-key",
+							type: "send",
 							params: {
-								addresses: addresses.map((a) => ({
-									...a,
-									keyId: key.id,
-								})),
-								next: "send",
+								address: addresses[0].address,
+								keyResponse: { key, addresses },
 							},
 						});
 					}}
@@ -255,10 +248,10 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 				>
 					<img className="absolute z-0" src={avatar} alt="" />
 
-					<div className="relative z-10 w-full h-full bg-overlay-secondary flex flex-col">
+					<div className="relative z-10 w-full h-full text-white bg-overlay-secondary flex flex-col">
 						<div className="flex flex-col p-4">
 							<div className="flex items-center">
-								<p className="font-bold font-sans text-lg">
+								<p className="font-bold font-sans text-lg ">
 									{name}
 								</p>
 								<InfoIcon
@@ -280,15 +273,9 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 									className="cursor-pointer"
 									onClick={() => {
 										setModal({
-											type: "select-key",
+											type: "receive",
 											params: {
-												addresses: addresses.map(
-													(a) => ({
-														...a,
-														keyId: key.id,
-													}),
-												),
-												next: "receive",
+												keyResponse: { key, addresses },
 											},
 										});
 									}}
@@ -299,15 +286,10 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 									className="ml-4 cursor-pointer"
 									onClick={() => {
 										setModal({
-											type: "select-key",
+											type: "send",
 											params: {
-												addresses: addresses.map(
-													(a) => ({
-														...a,
-														keyId: key.id,
-													}),
-												),
-												next: "send",
+												address: addresses[0].address,
+												keyResponse: { key, addresses },
 											},
 										});
 									}}
@@ -320,7 +302,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 				</div>
 				<div
 					className={clsx(
-						"absolute flipper-backface h-full w-full bg-tertiary transition-transform border-border-primary border-[1px] border-solid rounded-xl",
+						"absolute flipper-backface h-full w-full bg-card transition-transform border-border-primary border-[1px] border-solid rounded-xl",
 						{ flipped: !flipped },
 					)}
 				>
@@ -364,7 +346,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 						</div>
 						<div className="h-px bg-border-quaternary mt-2 mb-3 -mx-4"></div>
 						<div className="flex flex-col gap-[1px]">
-							{addresses.map((addr, i) => (
+							{/* {addresses.map((addr, i) => (
 								<div
 									className="flex items-center my-1"
 									key={addr.address}
@@ -378,7 +360,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 										/>
 									</p>
 								</div>
-							))}
+							))} */}
 							<div className="flex items-center justify-between my-1">
 								<div>Keychain</div>
 								<div>{keychain?.keychain?.description}</div>
@@ -399,8 +381,8 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 
 const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	return (
-		<div className="bg-tertiary rounded-xl py-6 px-8">
-			<div className="grid grid-cols-[1fr_0.75fr_0.8fr_0.85fr_0.6fr_0.5fr] border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
+		<div className="bg-card rounded-xl py-6 px-8">
+			<div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.85fr_0.6fr_0.5fr] gap-2 border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
 				<div className="text-sm	text-label-secondary">Key</div>
 				<div className="text-sm	text-label-secondary">Addresses</div>
 				<div className="text-sm	text-label-secondary">Keychain</div>
@@ -438,7 +420,7 @@ const CardView = ({ data }: { data?: QueryKeysResponse }) => {
 					})}
 				>
 					<div className="flex items-center justify-center h-10 w-10 rounded-full bg-fill-quaternary">
-						<PlusIcon className="stroke-label-tertiary" />
+						<PlusIcon />
 					</div>
 				</div>
 			</div>

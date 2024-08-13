@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	"crypto/ed25519"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -24,11 +24,11 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 	}
 
 	if !kr.IsWriter(msg.Creator) {
-		return nil, fmt.Errorf("only one writer of the keychain can update key request")
+		return nil, types.ErrNotKeychainWriter
 	}
 
 	if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING {
-		return nil, fmt.Errorf("request is not pending, can't be updated")
+		return nil, types.ErrRequestNotPending
 	}
 
 	switch msg.Status {
@@ -42,14 +42,14 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 		switch req.KeyType {
 		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
 			if l := len(pubKey); l != 33 && l != 65 {
-				return nil, fmt.Errorf("invalid ecdsa public key %x of length %v", pubKey, l)
+				return nil, errors.Wrapf(types.ErrInvalidKey, "ecdsa public key %x of length %v (expected 33 or 65)", pubKey, l)
 			}
 		case types.KeyType_KEY_TYPE_EDDSA_ED25519:
 			if l := len(pubKey); l != ed25519.PublicKeySize {
-				return nil, fmt.Errorf("invalid eddsa public key %x of length %v", pubKey, l)
+				return nil, errors.Wrapf(types.ErrInvalidKey, "eddsa public key %x of length %v (expected %v)", pubKey, l, ed25519.PublicKeySize)
 			}
 		default:
-			return nil, fmt.Errorf("invalid key type: %v", req.KeyType.String())
+			return nil, errors.Wrap(types.ErrUnsupportedKeyType, req.KeyType.String())
 		}
 		// setup new key
 		key := types.Key{
@@ -95,7 +95,7 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 		}
 
 	default:
-		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
+		return nil, errors.Wrapf(types.ErrInvalidRequestStatusUpdate, "invalid status field, should be either fulfilled/rejected, got %s", req.Status.String())
 	}
 
 	return &types.MsgFulfilKeyRequestResponse{}, nil

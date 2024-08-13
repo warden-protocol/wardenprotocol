@@ -164,7 +164,7 @@ const IntentCondition = ({
 													return (
 														<div
 															className={clsx(
-																`min-h-[24px] flex justify-center items-center text-[rgba(229,238,255,0.60)]`,
+																`min-h-[24px] flex justify-center items-center text-label-secondary`,
 																item.toString() ==
 																	threshold &&
 																	`text-white bg-[rgba(229,238,255,0.15)]`,
@@ -241,6 +241,7 @@ const IntentCondition = ({
 					</AdvancedMode>
 				) : (
 					<AddressList
+						warning={!users.length}
 						addresses={users}
 						onAdd={() =>
 							toggleChangeAddresses(users, "person", (group) =>

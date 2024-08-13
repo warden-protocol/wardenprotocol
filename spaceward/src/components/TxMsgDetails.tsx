@@ -9,9 +9,22 @@ import CardRow from "@/components/ui/card-row";
 import { DecodeObject } from "@cosmjs/proto-signing";
 import AddressAvatar from "./AddressAvatar";
 import { MsgSend } from "@wardenprotocol/wardenjs/codegen/cosmos/bank/v1beta1/tx";
-import { MsgApproveAction, MsgNewRule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
-import { MsgAddSpaceOwner, MsgNewKeyRequest, MsgNewKeychain, MsgNewSpace, MsgRemoveSpaceOwner, MsgUpdateSpace } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
-import { cosmosProtoRegistry, wardenProtoRegistry } from "@wardenprotocol/wardenjs";
+import {
+	MsgApproveAction,
+	MsgNewRule,
+} from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
+import {
+	MsgAddSpaceOwner,
+	MsgNewKeyRequest,
+	MsgNewKeychain,
+	MsgNewSpace,
+	MsgRemoveSpaceOwner,
+	MsgUpdateSpace,
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
+import {
+	cosmosProtoRegistry,
+	wardenProtoRegistry,
+} from "@wardenprotocol/wardenjs";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
@@ -22,22 +35,42 @@ export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 			return <MsgNewSpaceDetails msg={MsgNewSpace.decode(msg.value)} />;
 		}
 		if (msg.typeUrl === MsgAddSpaceOwner.typeUrl) {
-			return <MsgAddSpaceOwnerDetails msg={MsgAddSpaceOwner.decode(msg.value)} />;
+			return (
+				<MsgAddSpaceOwnerDetails
+					msg={MsgAddSpaceOwner.decode(msg.value)}
+				/>
+			);
 		}
 		if (msg.typeUrl === MsgRemoveSpaceOwner.typeUrl) {
-			return <MsgRemoveSpaceOwnerDetails msg={MsgRemoveSpaceOwner.decode(msg.value)} />;
+			return (
+				<MsgRemoveSpaceOwnerDetails
+					msg={MsgRemoveSpaceOwner.decode(msg.value)}
+				/>
+			);
 		}
 		if (msg.typeUrl === MsgNewKeychain.typeUrl) {
-			return <MsgNewKeychainDetails msg={MsgNewKeychain.decode(msg.value)} />;
+			return (
+				<MsgNewKeychainDetails msg={MsgNewKeychain.decode(msg.value)} />
+			);
 		}
 		if (msg.typeUrl === MsgUpdateSpace.typeUrl) {
-			return <MsgUpdateSpaceDetails msg={MsgUpdateSpace.decode(msg.value)} />;
+			return (
+				<MsgUpdateSpaceDetails msg={MsgUpdateSpace.decode(msg.value)} />
+			);
 		}
 		if (msg.typeUrl === MsgApproveAction.typeUrl) {
-			return <MsgApproveActionDetails msg={MsgApproveAction.decode(msg.value)} />;
+			return (
+				<MsgApproveActionDetails
+					msg={MsgApproveAction.decode(msg.value)}
+				/>
+			);
 		}
 		if (msg.typeUrl === MsgNewKeyRequest.typeUrl) {
-			return <MsgNewKeyRequestDetails msg={MsgNewKeyRequest.decode(msg.value)} />;
+			return (
+				<MsgNewKeyRequestDetails
+					msg={MsgNewKeyRequest.decode(msg.value)}
+				/>
+			);
 		}
 		if (msg.typeUrl === MsgNewRule.typeUrl) {
 			return <MsgNewRuleDetails msg={MsgNewRule.decode(msg.value)} />;
@@ -224,10 +257,9 @@ function MsgNewRuleDetails({ msg }: { msg: MsgNewRule }) {
 function MsgFallback({ msg }: { msg: DecodeObject }) {
 	const type = msg.typeUrl;
 
-	const t = [
-		...wardenProtoRegistry,
-		...cosmosProtoRegistry,
-	].find((r) => r[0] === type)?.[1];
+	const t = [...wardenProtoRegistry, ...cosmosProtoRegistry].find(
+		(r) => r[0] === type,
+	)?.[1];
 	if (t) {
 		return <MsgFallbackDetails type={type} msg={t.decode(msg.value)} />;
 	}
@@ -253,7 +285,7 @@ function MsgFallback({ msg }: { msg: DecodeObject }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function MsgFallbackDetails({ type, msg }: { type: string, msg: any }) {
+function MsgFallbackDetails({ type, msg }: { type: string; msg: any }) {
 	return (
 		<Card className="bg-background">
 			<CardHeader>
@@ -266,7 +298,9 @@ function MsgFallbackDetails({ type, msg }: { type: string, msg: any }) {
 			</CardHeader>
 			<CardContent>
 				{Object.entries(msg).map(([key, value]) => (
-					<CardRow label={key} key={key}>{String(value)}</CardRow>
+					<CardRow label={key} key={key}>
+						{String(value)}
+					</CardRow>
 				))}
 			</CardContent>
 		</Card>

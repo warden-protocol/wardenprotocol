@@ -8,6 +8,8 @@ import {
 } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useMemo } from "react";
+import { fixAddress } from "@/features/modals/ReceiveAssets";
+import { fromBech32 } from "@cosmjs/encoding";
 
 type Algo = "secp256k1" | "ed25519" | "sr25519";
 interface AccountData {
@@ -49,9 +51,11 @@ type RequestSignature = ReturnType<
 >["requestSignature"];
 
 const getOfflineSigner = ({
+	chainName,
 	keys,
 	requestSignature,
 }: {
+	chainName?: string;
 	requestSignature: RequestSignature;
 	keys?: QueryKeyResponse[];
 }): OfflineAminoSigner => {
@@ -62,8 +66,11 @@ const getOfflineSigner = ({
 			}
 
 			return keys.map(({ key, addresses }) => {
-				const address = addresses.find(
-					(a) => a.type === AddressType.ADDRESS_TYPE_OSMOSIS,
+				const address = fixAddress(
+					addresses.find(
+						(a) => a.type === AddressType.ADDRESS_TYPE_OSMOSIS,
+					),
+					chainName,
 				);
 
 				if (!address) {
@@ -96,7 +103,16 @@ const getOfflineSigner = ({
 			}
 
 			const key = keys?.find(({ addresses }) =>
-				addresses.some(({ address }) => address === signerAddress),
+				addresses.some(
+					({ address, type }) =>
+						type === AddressType.ADDRESS_TYPE_OSMOSIS &&
+						Buffer.from(fromBech32(address).data).toString(
+							"base64",
+						) ===
+							Buffer.from(
+								fromBech32(signerAddress).data,
+							).toString("base64"),
+				),
 			);
 
 			if (!key) {
@@ -144,14 +160,16 @@ const getOfflineSigner = ({
 };
 
 export function useKeychainSigner({
+	chainName,
 	keys,
 }: {
+	chainName?: string;
 	keys?: QueryKeyResponse[];
 }) {
 	const { requestSignature, ...rest } = useRequestSignature();
 
 	const signer = useMemo(
-		() => getOfflineSigner({ keys, requestSignature }),
+		() => getOfflineSigner({ keys, requestSignature, chainName }),
 		[keys, requestSignature],
 	);
 

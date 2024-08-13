@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -17,10 +16,10 @@ func (k msgServer) AddKeychainAdmin(goCtx context.Context, msg *types.MsgAddKeyc
 	}
 
 	if !kr.IsAdmin(msg.Authority) {
-		return nil, fmt.Errorf("keychain updates should be requested by admins")
+		return nil, types.ErrNotKeychainAdmin
 	}
 	if kr.IsAdmin(msg.NewAdmin) {
-		return nil, fmt.Errorf("address is already an admin in the keychain")
+		return nil, types.ErrDuplicateKeychainAdmin
 	}
 
 	kr.AddAdmin(msg.NewAdmin)

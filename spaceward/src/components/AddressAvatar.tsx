@@ -20,6 +20,7 @@ export default function AddressAvatar({
 	customTooltip,
 	className,
 	size = 512,
+	...theme
 }: {
 	seed: string | Uint8Array;
 	disableTooltip?: boolean;
@@ -28,21 +29,41 @@ export default function AddressAvatar({
 	customTooltip?: string;
 	className?: string;
 	size?: number;
+	backgroundColor?: string;
+	shape1Color?: string;
+	shape2Color?: string;
+	shape3Color?: string;
 }) {
 	const seedStr = stringify(seed);
 
 	const avatar = useMemo(() => {
-		return (
-			logo ??
-			createAvatar(shapes, {
-				size,
-				seed: seedStr,
-				shape1Color: ["F5F5F5", "9747FF", "F15A24"],
-				shape2Color: ["0000F5", "005156", "0A0A0A"],
-				shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
-			}).toDataUriSync()
-		);
-	}, [seedStr, logo, size]);
+		const params: NonNullable<Parameters<typeof createAvatar>[1]> = {
+			size,
+			seed: seedStr,
+			// @ts-ignore
+			// shape1Color: ["F5F5F5", "9747FF", "F15A24"],
+			shape2Color: ["0000F5", "005156", "0A0A0A"],
+			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
+		};
+
+		for (const key in theme) {
+			// @ts-ignore
+			if (theme[key]) {
+				// @ts-ignore
+				params[key] = [theme[key]];
+			}
+		}
+
+		return logo ?? createAvatar(shapes, params).toDataUriSync();
+	}, [
+		seedStr,
+		logo,
+		size,
+		theme.backgroundColor,
+		theme.shape1Color,
+		theme.shape2Color,
+		theme.shape3Color,
+	]);
 
 	const { address: myAddress } = useAddressContext();
 	return (
@@ -91,7 +112,7 @@ export default function AddressAvatar({
 	);
 }
 
-function stringify(seed: string | Uint8Array): string {
+export function stringify(seed: string | Uint8Array): string {
 	if (typeof seed === "string") {
 		return seed;
 	}

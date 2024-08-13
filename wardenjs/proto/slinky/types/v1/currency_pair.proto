@@ -1,0 +1,16 @@
+syntax = "proto3";
+package slinky.types.v1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/skip-mev/slinky/pkg/types";
+
+// CurrencyPair is the standard representation of a pair of assets, where one
+// (Base) is priced in terms of the other (Quote)
+message CurrencyPair {
+  option (gogoproto.goproto_stringer) = false;
+  option (gogoproto.stringer) = false;
+
+  string Base = 1;
+  string Quote = 2;
+}

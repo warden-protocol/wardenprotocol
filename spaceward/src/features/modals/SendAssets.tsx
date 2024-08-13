@@ -2,7 +2,6 @@ import clsx from "clsx";
 import type { TransactionReceipt } from "ethers";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
@@ -10,11 +9,9 @@ import { useEthereumTx } from "@/hooks/useEthereumTx";
 import SignRequestDialog from "@/components/SignRequestDialog";
 import { SignRequesterState } from "@/hooks/useRequestSignature";
 import { TxBuild, buildTransaction } from "./util";
-import Key from "../assets/Key";
-import { useAssetQueries } from "../assets/hooks";
+import { COSMOS_CHAINS, useAssetQueries } from "../assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
-import { useCurrency } from "@/hooks/useCurrency";
+import useFiatConversion from "@/hooks/useFiatConversion";
 import { numRestrict } from "../staking/util";
 import { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
@@ -23,11 +20,7 @@ import { validateAddress } from "../intents/AddAddressModal";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { walletContext } from "@cosmos-kit/react-lite";
 import { useModalState } from "./state";
-
-const getAddress = (key?: QueryKeyResponse, type?: AddressType) =>
-	key?.addresses.find((a) => a.type === type)?.address;
-
-type Currency = keyof typeof FIAT_FORMAT;
+import KeySelector from "./KeySelector";
 
 export default function SendAssetsModal({
 	// address,
@@ -37,43 +30,14 @@ export default function SendAssetsModal({
 	keyResponse: key,
 }: TransferParams) {
 	const { walletManager } = useContext(walletContext);
-	// todo useFiatConversion hook
-	const currency = useCurrency().currency as Currency;
-	// todo useFiatConversion hook
-	const formatter = FIAT_FORMAT[currency];
 	const { setData: setModal } = useModalState();
+	const { formatter, fiatConversion } = useFiatConversion();
 
 	const { spaceId } = useSpaceId();
-	const {
-		queryKeys,
-		queryBalances,
-		// todo useFiatConversion hook
-		queryPrices,
-	} = useAssetQueries(spaceId);
-
-	// todo useFiatConversion hook
-	const fiatConversion = useMemo(() => {
-		if (currency === "usd") {
-			return {
-				name: "usd",
-				value: BigInt(1),
-				decimals: 0,
-			};
-		}
-
-		for (const entry of queryPrices) {
-			if (!entry.data) {
-				continue;
-			}
-
-			if (entry.data.name === currency) {
-				return entry.data;
-			}
-		}
-	}, [queryPrices, currency]);
+	const { queryBalances } = useAssetQueries(spaceId);
 
 	const results = queryBalances
-		.filter((result) => result.data?.key.key.id === key?.key.id)
+		.filter((result) => result.data?.key?.key?.id === key?.key?.id)
 		.flatMap(({ data, refetch }) => {
 			return (data?.results ?? []).map((item) => ({ ...item, refetch }));
 		});
@@ -95,21 +59,22 @@ export default function SendAssetsModal({
 	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
-	const [keyDropdown, setKeyDropdown] = useState(false);
 	const amountNum = parseFloat(amount);
 
-	const amountWarning = amountNum && selectedToken
-		? Number.isFinite(amountNum)
-			? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
-				amountNum
-			: true
-		: false;
+	const amountWarning =
+		amountNum && selectedToken
+			? Number.isFinite(amountNum)
+				? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
+					amountNum
+				: true
+			: false;
 
-	const addressWarning = destinationAddress && selectedToken
-		? !validateAddress(destinationAddress, [
-				selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
-			]).ok
-		: false;
+	const addressWarning =
+		destinationAddress && selectedToken
+			? !validateAddress(destinationAddress, [
+					selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
+				]).ok
+			: false;
 
 	const { signEthereumTx, ...eth } = useEthereumTx();
 
@@ -117,6 +82,7 @@ export default function SendAssetsModal({
 
 	const { signer, ...cosm } = useKeychainSigner({
 		keys,
+		chainName: selectedToken?.chainName,
 	});
 
 	const req =
@@ -179,15 +145,21 @@ export default function SendAssetsModal({
 				setReceipt(receipt);
 			} else if (txBuild.type === "cosmos") {
 				const { fee, msgs } = txBuild as TxBuild<"cosmos">;
-				const repo = walletManager.getWalletRepo(chainName);
-				repo.activate();
-				const rpc = await repo.getRpcEndpoint();
 
-				const endpoint = rpc
+				const chain = COSMOS_CHAINS.find(
+					(item) => item.chainName === chainName,
+				);
+				/* const repo = walletManager.getWalletRepo(chainName);
+				repo.activate();
+				const rpc = await repo.getRpcEndpoint(); */
+
+				const endpoint =
+					chain?.rpc ??
+					`https://rpc.cosmos.directory/${chainName}`; /* rpc
 					? typeof rpc === "string"
 						? rpc
 						: rpc.url
-					: `https://rpc.cosmos.directory/${chainName}`;
+					: `https://rpc.cosmos.directory/${chainName}`*/
 
 				const client = await SigningStargateClient.connectWithSigner(
 					endpoint,
@@ -232,14 +204,15 @@ export default function SendAssetsModal({
 			});
 	}
 
-	const address = getAddress(key, type);
-
-	const maxAmount = selectedToken ? bigintToFixed(selectedToken.balance, {
-		decimals: selectedToken.decimals,
-	}) : "0";
+	const maxAmount = selectedToken
+		? bigintToFixed(selectedToken.balance, {
+				decimals: selectedToken.decimals,
+			})
+		: "0";
 
 	const Token = TokenIcons[selectedToken?.token ?? ""] ?? AssetPlaceholder;
-	const Network = NetworkIcons[selectedToken?.chainName ?? ""] ?? AssetPlaceholder;
+	const Network =
+		NetworkIcons[selectedToken?.chainName ?? ""] ?? AssetPlaceholder;
 
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
@@ -247,75 +220,11 @@ export default function SendAssetsModal({
 
 			<form action="" onSubmit={(e) => e.preventDefault()}>
 				<div>
-					<div className="relative mb-8 z-50 ">
-						<div
-							onClick={() => {
-								setKeyDropdown(!keyDropdown);
-							}}
-							className="min-h-[60px] cursor-pointer text-left bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center  relative z-50 gap-3"
-						>
-							<Key keyValue={address} />
-
-							<div>
-								<label
-									className="text-label-secondary text-xs "
-									htmlFor="network"
-								>
-									From Key
-								</label>
-
-								<div
-									className={clsx(
-										"block w-full mt-[-4px] text-left pointer-events-none bg-transparent outline-none foces:outline-none",
-									)}
-								>
-									{address
-										? `${address.slice(0, 8)}...${address.slice(-8)}`
-										: ""}
-								</div>
-							</div>
-							<Icons.chevronDown
-								className={
-									keyDropdown
-										? "rotate-180 ml-auto"
-										: " ml-auto"
-								}
-							/>
-						</div>
-						{keyDropdown && (
-							<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[20px] rounded-lg py-2">
-								{queryKeys.data?.keys.map((item) => {
-									const addr = getAddress(item, type);
-
-									return (
-										<div
-											onClick={() => {
-												// setCurrentKey(item.address);
-												setModal({
-													params: {
-														chainName,
-														keyResponse: item,
-														token,
-														type,
-													},
-												});
-												setKeyDropdown(false);
-											}}
-											key={addr}
-											className="cursor-pointer flex items-center gap-2 px-4 h-12"
-										>
-											<Key keyValue={addr} />
-											{addr?.slice(0, 8)}...
-											{address?.slice(-8)}
-											{addr === address && (
-												<Icons.check className="ml-auto" />
-											)}
-										</div>
-									);
-								})}
-							</div>
-						)}
-					</div>
+					<KeySelector
+						currentKey={key}
+						token={selectedToken?.token}
+						className="relative mb-8 z-50"
+					/>
 
 					{noAssets && (
 						<div className="flex rounded-lg px-4 h-[56px] bg-negative-secondary mb-8 items-center gap-3">
@@ -393,8 +302,11 @@ export default function SendAssetsModal({
 								)}
 							</div>
 							<div
+								onClick={() => {
+									setAmount(maxAmount);
+								}}
 								className={clsx(
-									"text-xs",
+									"text-xs cursor-pointer",
 									amountWarning && "text-negative",
 									!amountWarning && "text-pixel-pink",
 								)}

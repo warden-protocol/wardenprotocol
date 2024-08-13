@@ -1,18 +1,11 @@
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type {
-	AddressResponse,
-	QueryKeyResponse,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
+import type { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import type { ModalType } from "./state";
-
-export interface SelectKeyParams {
-	addresses?: (AddressResponse & { keyId: bigint })[];
-	next?: ModalType;
-}
 
 export interface CreateKeyParams {
 	next?: ModalType;
 	spaceId?: string;
+	keychainId?: bigint;
 }
 
 export interface TransferParams {

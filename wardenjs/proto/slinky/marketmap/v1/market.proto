@@ -1,0 +1,84 @@
+syntax = "proto3";
+package slinky.marketmap.v1;
+
+option go_package = "github.com/skip-mev/slinky/x/marketmap/types";
+
+import "gogoproto/gogo.proto";
+import "slinky/types/v1/currency_pair.proto";
+
+// Market encapsulates a Ticker and its provider-specific configuration.
+message Market {
+  option (gogoproto.goproto_stringer) = false;
+  option (gogoproto.stringer) = false;
+
+  // Ticker represents a price feed for a given asset pair i.e. BTC/USD. The
+  // price feed is scaled to a number of decimal places and has a minimum number
+  // of providers required to consider the ticker valid.
+  Ticker ticker = 1 [ (gogoproto.nullable) = false ];
+
+  // ProviderConfigs is the list of provider-specific configs for this Market.
+  repeated ProviderConfig provider_configs = 2 [ (gogoproto.nullable) = false ];
+}
+
+// Ticker represents a price feed for a given asset pair i.e. BTC/USD. The price
+// feed is scaled to a number of decimal places and has a minimum number of
+// providers required to consider the ticker valid.
+message Ticker {
+  option (gogoproto.goproto_stringer) = false;
+  option (gogoproto.stringer) = false;
+
+  // CurrencyPair is the currency pair for this ticker.
+  slinky.types.v1.CurrencyPair currency_pair = 1
+      [ (gogoproto.nullable) = false ];
+
+  // Decimals is the number of decimal places for the ticker. The number of
+  // decimal places is used to convert the price to a human-readable format.
+  uint64 decimals = 2;
+
+  // MinProviderCount is the minimum number of providers required to consider
+  // the ticker valid.
+  uint64 min_provider_count = 3;
+
+  // Enabled is the flag that denotes if the Ticker is enabled for price
+  // fetching by an oracle.
+  bool enabled = 14;
+
+  // MetadataJSON is a string of JSON that encodes any extra configuration
+  // for the given ticker.
+  string metadata_JSON = 15;
+}
+
+message ProviderConfig {
+  // Name corresponds to the name of the provider for which the configuration is
+  // being set.
+  string name = 1;
+
+  // OffChainTicker is the off-chain representation of the ticker i.e. BTC/USD.
+  // The off-chain ticker is unique to a given provider and is used to fetch the
+  // price of the ticker from the provider.
+  string off_chain_ticker = 2;
+
+  // NormalizeByPair is the currency pair for this ticker to be normalized by.
+  // For example, if the desired Ticker is BTC/USD, this market could be reached
+  // using: OffChainTicker = BTC/USDT NormalizeByPair = USDT/USD This field is
+  // optional and nullable.
+  slinky.types.v1.CurrencyPair normalize_by_pair = 3;
+
+  // Invert is a boolean indicating if the BASE and QUOTE of the market should
+  // be inverted. i.e. BASE -> QUOTE, QUOTE -> BASE
+  bool invert = 4;
+
+  // MetadataJSON is a string of JSON that encodes any extra configuration
+  // for the given provider config.
+  string metadata_JSON = 15;
+}
+
+// MarketMap maps ticker strings to their Markets.
+message MarketMap {
+  option (gogoproto.goproto_stringer) = false;
+  option (gogoproto.stringer) = false;
+
+  // Markets is the full list of tickers and their associated configurations
+  // to be stored on-chain.
+  map<string, Market> markets = 1 [ (gogoproto.nullable) = false ];
+}

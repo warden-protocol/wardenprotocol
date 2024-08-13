@@ -9,7 +9,7 @@ export function DashboardPage() {
 
 	return (
 		<div className="px-8 py-4">
-			<h2 className="text-5xl mb-10 font-bold">Dashboard</h2>
+			<h2 className="text-5xl mb-10 font-bold leading-[0.24px]">Dashboard</h2>
 
 			{spaceId ? <Keys spaceId={BigInt(spaceId)} /> : null}
 

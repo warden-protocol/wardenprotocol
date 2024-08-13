@@ -45,7 +45,7 @@ const ChangeAddressesModal = ({
 					: "can receive transactions"}
 			</div>
 
-			<div className="mt-12 flex justify-between items-center text-[rgba(229,238,255,0.60)] font-semibold">
+			<div className="mt-12 flex justify-between items-center text-label-secondary font-semibold">
 				<button
 					onClick={() => {
 						showAddPerson();

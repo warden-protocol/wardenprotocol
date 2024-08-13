@@ -26,6 +26,7 @@ const config = {
 			colors: {
 				"pixel-pink": "#FFAEEE",
 				"pink-secondary": "var(--pink-secondary)",
+				"fill-primary": "var(--fill-primary)",
 				"fill-gray": "#9EA4AE",
 				"fill-primary": "var(--fill-primary)",
 				"fill-quaternary": "var(--fill-quaternary)",
@@ -40,6 +41,7 @@ const config = {
 				"border-accent": "var(--border-accent)",
 				"label-accent": "var(--label-accent)",
 				"label-secondary": "var(--label-secondary)",
+				"label-invert": "var(--label-invert)",
 				"border-primary": "var(--border-primary)",
 				tertiary: "#141414",
 				positive: "#00997F",

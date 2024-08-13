@@ -82,6 +82,7 @@
 		--bg-elevated: #424345;
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
+		--label-invert: #fff;
 		--border-edge: rgba(136, 126, 120, 0.15);
 		--fill-primary: #171717;
 		--border-accent: #f34ad5;
@@ -131,6 +132,7 @@
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
+		--label-invert: #000;
 		--fill-primary: #fff;
 		--border-accent: #ffaeee;
 		--label-accent: #ffaeee;

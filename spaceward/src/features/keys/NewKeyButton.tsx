@@ -8,7 +8,7 @@ export default function NewKeyButton({ className }: { className?: string }) {
 	return (
 		<div
 			className={clsx(
-				"flex items-center text-muted-foreground text-sm rounded-sm bg-fill-quaternary p-2 mr-4 cursor-pointer",
+				"flex items-center bg-fill-primary px-5 h-10 justify-center cursor-pointer",
 				className,
 			)}
 			onClick={setModal.bind(null, {
@@ -16,8 +16,7 @@ export default function NewKeyButton({ className }: { className?: string }) {
 				params: {},
 			})}
 		>
-			<PlusIcon className="h-4 w-4 mr-2" />
-			New key
+			Create Key
 		</div>
 	);
 }

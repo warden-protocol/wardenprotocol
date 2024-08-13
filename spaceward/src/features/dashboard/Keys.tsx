@@ -45,25 +45,27 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 	return (
 		<div className="grid gap-6 grid-cols-[2fr_1fr]">
 			{isEmpty ? (
-				<div className="relative isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl">
+				<div className="relative isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl overflow-hidden">
 					<img
-						className="absolute left-0 top-0 z-[-1] w-full h-full object-cover"
+						className="absolute left-0 top-0 z-[-1] w-full h-full object-cover invert dark:invert-0"
 						src="/images/nokeys.png"
 						alt=""
 					/>
-					<div className="font-bold text-2xl">No Keys found</div>
+					<div className="font-bold text-2xl tracking-[0.12px]">
+						No Keys found
+					</div>
 					<div className="text-muted-foreground">
 						First add a key to start receiving assets
 					</div>
 
-					<NewKeyButton className="mt-4" />
+					<NewKeyButton className="mt-4 text-background bg-foreground rounded-lg font-semibold hover:bg-pixel-pink duration-200" />
 				</div>
 			) : (
 				<DashboardGraph addresses={addresses} />
 			)}
 
 			<div className="bg-card py-6 px-8 border-[1px] border-border-edge rounded-2xl">
-				<div className="font-bold text-[32px] text-center mb-4">
+				<div className="font-bold text-[32px] tracking-[0.16px] text-center mb-4">
 					#{spaceId.toString()} Space
 				</div>
 
@@ -115,17 +117,22 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						</div>
 					)}
 
-					<div
-						onClick={() =>
-							setModal({ type: "create-key", params: {} })
-						}
-						className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
-					>
-						<Icons.plus className="w-4 h-4" stroke="currentColor" />
-					</div>
+					{queryKeys.data?.keys.length && (
+						<div
+							onClick={() =>
+								setModal({ type: "create-key", params: {} })
+							}
+							className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
+						>
+							<Icons.plus
+								className="w-4 h-4"
+								stroke="currentColor"
+							/>
+						</div>
+					)}
 				</div>
 
-				<div className="mb-[22px] mt-1 h-[1px] bg-background" />
+				<div className="mb-[22px] mt-1 h-[1px] bg-border-quaternary" />
 
 				<Link
 					to="/rules"

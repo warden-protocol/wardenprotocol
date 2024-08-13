@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
@@ -28,10 +27,15 @@ const DashboardGraph = ({
 
 	const totalBalance = useMemo(() => {
 		const targetDecimals = 2;
+		let noAssets = true;
 
 		const total = results.reduce((acc, item) => {
 			if (!item) {
 				return acc;
+			}
+
+			if (item.balance) {
+				noAssets = false;
 			}
 
 			const decimals = item.decimals + item.priceDecimals;
@@ -43,17 +47,17 @@ const DashboardGraph = ({
 			return acc + usd;
 		}, BigInt(0));
 
-		return total;
+		return { total, noAssets };
 	}, [results]);
 
 	return (
-		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-edge rounded-2xl">
+		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-edge rounded-2xl overflow-hidden">
 			<div className="flex items-start justify-between mb-1">
 				<div className="font-bold text-[32px] flex items-center gap-3">
 					{formatter.format(
 						bigintToFloat(
 							fiatConversion
-								? (totalBalance *
+								? (totalBalance.total *
 										BigInt(10) **
 											BigInt(fiatConversion.decimals)) /
 										fiatConversion.value
@@ -106,7 +110,7 @@ const DashboardGraph = ({
 				<TotalAssetsChart
 					balance={bigintToFloat(
 						fiatConversion
-							? (totalBalance *
+							? (totalBalance.total *
 									BigInt(10) **
 										BigInt(fiatConversion.decimals)) /
 									fiatConversion.value
@@ -116,8 +120,12 @@ const DashboardGraph = ({
 				/>
 			</div>
 
-			<div className="absolute left-6 bottom-6 flex w-[calc(100%_-_48px)] justify-between">
-				{/* <div className="flex items-center gap-3">
+			<div className="absolute left-6 bottom-6 flex w-[calc(100%_-_48px)] justify-between items-center">
+				{totalBalance.noAssets ? (
+					<div>No assets yet</div>
+				) : (
+					<>
+						{/* <div className="flex items-center gap-3">
 					<div className="flex">
 						<img
 							className="w-10 h-10 object-contain"
@@ -139,6 +147,9 @@ const DashboardGraph = ({
 					</div>
 					5 assets
 				</div> */}
+					</>
+				)}
+
 				<button
 					onClick={setModal.bind(null, {
 						type: "receive",

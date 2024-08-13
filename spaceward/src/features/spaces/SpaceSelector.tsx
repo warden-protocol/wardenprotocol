@@ -70,7 +70,7 @@ export function SpaceSelector() {
 	return count && count > 0 ? (
 		<Popover>
 			<PopoverTrigger asChild>
-				<div className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]  mb-5 ">
+				<div className="mb-5 text-white">
 					<Button
 						asChild
 						variant="outline"

@@ -11,7 +11,7 @@ export function RightSidebar() {
 			<div className="w-16 m-2 flex flex-col gap-4 overflow-scroll no-scrollbar justify-between bg-card rounded-xl border-[1px] border-border-edge border-solid">
 				<div>
 					<ConnectWallet />
-					<Separator className="bg-border-quaternary mt-4" />
+					{/* <Separator className="bg-border-quaternary mt-4" /> */}
 					{/* <Notifications /> */}
 					<MetaMaskRequests />
 					<WalletConnect />

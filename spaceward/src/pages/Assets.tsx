@@ -147,7 +147,7 @@ export function AssetsPage() {
 	if (noKeys) {
 		return (
 			<div className="h-[calc(100vh_-_106px)] min-h-[550px] flex flex-col justify-center items-center text-center">
-				<Icons.noAssetsKey className="mb-[72px]" />
+				<Icons.noAssetsKey className="mb-[72px] invert dark:invert-0" />
 
 				<div className="text-5xl font-bold">No Keys found</div>
 

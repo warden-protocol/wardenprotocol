@@ -74,7 +74,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						<LoaderCircle className="animate-spin mb-1" />
 					) : (
 						<div className="flex gap-2 justify-center">
-							{queryKeys.data?.keys.map((item) => (
+							{queryKeys.data?.keys.slice(0, 4).map((item) => (
 								<Key
 									keyValue={item}
 									key={item.key.id}

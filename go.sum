@@ -495,6 +495,7 @@ github.com/docker/go-units v0.5.0 h1:69rxXcBk27SvSaaxTtLh/8llcHD8vYHT7WSdRZ/jvr4
 github.com/docker/go-units v0.5.0/go.mod h1:fgPhTUdO+D/Jk86RDLlptpiXQzgHJF7gydDDbaIK4Dk=
 github.com/dop251/goja v0.0.0-20220405120441-9037c2b61cbf h1:Yt+4K30SdjOkRoRRm3vYNQgR+/ZIy0RmeUDZo7Y8zeQ=
 github.com/dop251/goja v0.0.0-20220405120441-9037c2b61cbf/go.mod h1:R9ET47fwRVRPZnOGvHxxhuZcbrMCuiqOz3Rlrh4KSnk=
+github.com/dop251/goja_nodejs v0.0.0-20210225215109-d91c329300e7/go.mod h1:hn7BA7c8pLvoGndExHudxTDKZ84Pyvv+90pbBjbTz0Y=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
@@ -522,8 +523,6 @@ github.com/envoyproxy/go-control-plane v0.10.2-0.20220325020618-49ff273808a1/go.
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/envoyproxy/protoc-gen-validate v1.0.4 h1:gVPz/FMfvh57HdSJQyvBtF00j8JU4zdyUgIUNhlgg0A=
 github.com/envoyproxy/protoc-gen-validate v1.0.4/go.mod h1:qys6tmnRsYrQqIhm2bvKZH4Blx/1gTIZ2UKVY1M+Yew=
-github.com/evmos/cosmos-sdk v0.50.7-evmos h1:t+ewA2qhRscetc2Mo68+oBFRhXatOIqcX8KJgtQ5B+E=
-github.com/evmos/cosmos-sdk v0.50.7-evmos/go.mod h1:84xDDJEHttRT7NDGwBaUOLVOMN0JNE9x7NbsYIxXs1s=
 github.com/evmos/evmos/v18 v18.0.0-20240719123340-11b5d80cf7bb h1:n0xXv0n3iaYkoiaBAMx++84P8rTwNcz37woX8RRNqQY=
 github.com/evmos/evmos/v18 v18.0.0-20240719123340-11b5d80cf7bb/go.mod h1:v3Tp8b4fPj06Uasw2MJwpIms+Y01qLwGelHuFZCQfNg=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
@@ -1227,6 +1226,8 @@ github.com/urfave/cli/v2 v2.10.2 h1:x3p8awjp/2arX+Nl/G2040AZpOCHS/eMJJ1/a+mye4Y=
 github.com/urfave/cli/v2 v2.10.2/go.mod h1:f8iq5LtQ/bLxafbdBSLPPNsgaW0l/2fYYEHhAyPlwvo=
 github.com/vbatts/tar-split v0.11.5 h1:3bHCTIheBm1qFTcgh9oPu+nNBtX+XJIupG/vacinCts=
 github.com/vbatts/tar-split v0.11.5/go.mod h1:yZbwRsSeGjusneWgA781EKej9HF8vme8okylkAeNKLk=
+github.com/warden-protocol/cosmos-sdk v0.50.7-evmos-warden-2 h1:j8o88eFxJ3d8/5/N836qTXavf4i+hCsb/OVLm0EM1lc=
+github.com/warden-protocol/cosmos-sdk v0.50.7-evmos-warden-2/go.mod h1:84xDDJEHttRT7NDGwBaUOLVOMN0JNE9x7NbsYIxXs1s=
 github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2 h1:wqfEum6h4viP5CZdQCQABA5hFYrzVLPqY/g4VBkCY/M=
 github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2/go.mod h1:/6CsT5Ceen2WPLI/oCA3xMcZ5sWMF/D46SjM/ayY0Oo=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=

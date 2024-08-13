@@ -2,14 +2,6 @@ import { Fragment } from "react";
 
 const descriptions = [
 	{
-		key: "WardenKMS",
-		description: <Fragment>WardenKMS</Fragment>,
-		title: "WardenKMS",
-		verified: true,
-		disabled: false,
-		link: "#",
-	},
-	{
 		key: "OCP KMS",
 		description: (
 			<Fragment>
@@ -38,14 +30,6 @@ const descriptions = [
 		),
 		title: "Open Custody Protocol (Fordefi MPC)",
 		verified: true,
-		disabled: false,
-		link: "#",
-	},
-	{
-		key: "Bushinode Keychain",
-		description: <Fragment>Bushinode Keychain</Fragment>,
-		title: "Bushinode Keychain",
-		verified: false,
 		disabled: true,
 		link: "#",
 	},
@@ -61,6 +45,14 @@ const descriptions = [
 			</Fragment>
 		),
 		title: "Silence Laboratories",
+		verified: true,
+		disabled: false,
+		link: "#",
+	},
+	{
+		key: "WardenKMS",
+		description: <Fragment>WardenKMS</Fragment>,
+		title: "WardenKMS",
 		verified: true,
 		disabled: false,
 		link: "#",

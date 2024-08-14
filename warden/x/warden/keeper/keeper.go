@@ -191,6 +191,7 @@ func (k Keeper) UpdateInferenceRequest(ctx sdk.Context, result *v1beta3.Inferenc
 
 	req.Output = result.Output
 	req.Error = result.Error
+	req.UpdatedAt = uint64(ctx.BlockHeight())
 
 	if err := k.inferenceRequests.Set(ctx, req.Id, req); err != nil {
 		return err

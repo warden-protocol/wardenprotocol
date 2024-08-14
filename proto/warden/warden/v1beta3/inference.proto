@@ -9,6 +9,8 @@ message InferenceRequest {
   bytes input = 3;
   bytes output = 4;
   string error = 5;
+  uint64 created_at = 6;
+  uint64 updated_at = 7;
 }
 
 message InferenceResult {

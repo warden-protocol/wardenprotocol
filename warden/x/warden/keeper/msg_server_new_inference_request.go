@@ -11,8 +11,9 @@ func (k msgServer) NewInferenceRequest(goCtx context.Context, msg *types.MsgNewI
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	id, err := k.inferenceRequests.Append(ctx, &types.InferenceRequest{
-		Creator: msg.Creator,
-		Input:   msg.Input,
+		Creator:   msg.Creator,
+		Input:     msg.Input,
+		CreatedAt: uint64(ctx.BlockHeight()),
 	})
 	if err != nil {
 		return nil, err

@@ -93,6 +93,7 @@ export function SpaceSelector() {
 										disableTooltip
 										className=" w-[250px] h-[250px] -translate-y-[10px]"
 									/>
+									<div className="absolute top-0 left-0 w-full h-full bg-[#302730] opacity-30 dark:bg-[#000] dark:opacity-40"></div>
 								</div>
 								<div className="flex relative z-10 flex-col mr-auto text-left">
 									<span className="block text-xs">

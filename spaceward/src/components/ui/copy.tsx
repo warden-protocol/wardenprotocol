@@ -3,6 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { cn } from "@/lib/utils";
 import { CopyIcon } from "lucide-react";
+import clsx from "clsx";
 
 const buttonVariants = cva("", {
 	variants: {
@@ -35,7 +36,14 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			}, 2000);
 		}, []);
 		return (
-			<div className="relative flex">
+			<div
+				className={clsx(
+					"relative",
+					className?.indexOf("inline-block") !== -1
+						? "inline-block mx-1"
+						: "flex",
+				)}
+			>
 				{value && (
 					<CopyToClipboard text={value} onCopy={onCopy}>
 						<span

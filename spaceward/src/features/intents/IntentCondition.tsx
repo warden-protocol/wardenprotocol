@@ -153,11 +153,11 @@ const IntentCondition = ({
 								onClick={() => {
 									setIsCountChange(!isCountChange);
 								}}
-								className="min-w-[17px] text-center inline-block bg-[rgba(229,238,255,0.15)] border-[1px] border-[rgba(229,238,255,0.30)] px-[2px] text-white rounded-sm cursor-pointer relative"
+								className="min-w-[17px] text-center inline-block bg-secondary-bg border-[1px] border-border-edge px-[2px] text-foreground rounded-sm cursor-pointer relative"
 							>
 								{threshold}
 								{isCountChange && (
-									<div className="w-[56px] bg-[rgba(229,238,255,0.15)] absolute z-10 top-1/2 right-[calc(-100%_-_12px)] translate-x-[100%] backdrop-blur-[20px] translate-y-[-50%] before:content-[''] before:absolute before:left-[0] before:top-1/2  before:border-[rgba(229,238,255,0.3)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[45deg] before:translate-y-[-50%] before:translate-x-[-50%]">
+									<div className="w-[56px] bg-secondary-bg absolute z-10 top-1/2 right-[calc(-100%_-_12px)] translate-x-[100%] backdrop-blur-[20px] translate-y-[-50%] before:content-[''] before:absolute before:left-[0] before:top-1/2  before:border-[rgba(229,238,255,0.3)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[45deg] before:translate-y-[-50%] before:translate-x-[-50%]">
 										<div className="flex flex-col gap-[2px] text-white text-center text-sm py-1 px-1 max-h-[120px] overflow-scroll no-scrollbar">
 											{[2, 3, 4, 5, 6, 7, 8, 9].map(
 												(item, key) => {
@@ -167,7 +167,7 @@ const IntentCondition = ({
 																`min-h-[24px] flex justify-center items-center text-label-secondary`,
 																item.toString() ==
 																	threshold &&
-																	`text-white bg-[rgba(229,238,255,0.15)]`,
+																	`text-foreground bg-secondary-bg`,
 															)}
 															key={key}
 															onClick={() =>

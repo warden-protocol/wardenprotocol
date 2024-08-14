@@ -6,7 +6,7 @@ replace (
 	// evmos integration - need this replace when importing cosmos/rosetta pkg
 	cosmossdk.io/core => cosmossdk.io/core v0.11.0
 	// evmos integration
-	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.7-evmos-warden-2
+	github.com/cosmos/cosmos-sdk => github.com/warden-protocol/cosmos-sdk v0.50.8-evmos-warden
 	// evmos + types for slinky
 	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
@@ -43,7 +43,7 @@ require (
 	github.com/cosmos/ibc-apps/modules/ibc-hooks/v8 v8.0.0-20240530162148-4827cf263165
 	github.com/cosmos/ibc-go/modules/capability v1.0.0
 	github.com/cosmos/ibc-go/v8 v8.2.0
-	github.com/ethereum/go-ethereum v1.14.5
+	github.com/ethereum/go-ethereum v1.14.7
 	github.com/evmos/evmos/v18 v18.0.0-20240719123340-11b5d80cf7bb
 	github.com/golang/protobuf v1.5.4
 	github.com/gorilla/mux v1.8.1
@@ -89,7 +89,6 @@ require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816 // indirect
 	github.com/bits-and-blooms/bitset v1.13.0 // indirect
-	github.com/blendle/zapdriver v1.3.1 // indirect
 	github.com/btcsuite/btcd v0.24.0 // indirect
 	github.com/btcsuite/btcd/btcutil v1.1.5 // indirect
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0 // indirect

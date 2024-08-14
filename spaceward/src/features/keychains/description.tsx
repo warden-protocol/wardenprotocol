@@ -30,7 +30,7 @@ const descriptions = [
 		),
 		title: "Open Custody Protocol (Fordefi MPC)",
 		verified: true,
-		disabled: true,
+		disabled: false,
 		link: "#",
 	},
 	{

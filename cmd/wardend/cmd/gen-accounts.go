@@ -69,7 +69,6 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 					kr = clientCtx.Keyring
 				}
 
-				fmt.Printf("  args[0] %v", args[0])
 				info, err := kr.Key(args[0])
 				if err != nil {
 					return fmt.Errorf("failed to get key info from Keyring: %w", err)

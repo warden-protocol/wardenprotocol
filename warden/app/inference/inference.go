@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 )
 
 var c = &http.Client{
-	Timeout: time.Second * 10,
+	Timeout: time.Minute,
 }
 
 type Input []float64
@@ -55,6 +56,13 @@ type Response struct {
 	Receipt []byte `json:"receipt"`
 }
 
+func solveURL() string {
+	if os.Getenv("INFERENCE_URL") != "" {
+		return os.Getenv("INFERENCE_URL") + "/job/solve"
+	}
+	return "http://localhost:9001/job/solve"
+}
+
 func Solve(input Input) (Response, error) {
 	req := Request{
 		Data: input,
@@ -65,7 +73,7 @@ func Solve(input Input) (Response, error) {
 		return Response{}, err
 	}
 
-	res, err := c.Post("http://localhost:9001/job/solve", "application/json", bytes.NewReader(jsonBz))
+	res, err := c.Post(solveURL(), "application/json", bytes.NewReader(jsonBz))
 	if err != nil {
 		return Response{}, err
 	}
@@ -94,6 +102,13 @@ type VerifyRequest struct {
 	K             int    `json:"K"`
 }
 
+func verifyURL() string {
+	if os.Getenv("INFERENCE_URL") != "" {
+		return os.Getenv("INFERENCE_URL") + "/job/verify"
+	}
+	return "http://localhost:9001/job/verify"
+}
+
 func Verify(data Input, receipt []byte, k int) error {
 	req := VerifyRequest{
 		SolverRequest: struct {
@@ -110,7 +125,7 @@ func Verify(data Input, receipt []byte, k int) error {
 		return err
 	}
 
-	res, err := c.Post("http://localhost:9001/job/verify", "application/json", bytes.NewReader(jsonBz))
+	res, err := c.Post(verifyURL(), "application/json", bytes.NewReader(jsonBz))
 	if err != nil {
 		return err
 	}

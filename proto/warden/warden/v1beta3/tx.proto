@@ -244,6 +244,7 @@ message MsgFulfilSignRequestResponse {}
 message MsgNewInferenceRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
+  string contract_callback = 2;
   bytes input = 3;
 }
 

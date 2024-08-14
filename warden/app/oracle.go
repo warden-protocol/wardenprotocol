@@ -224,7 +224,7 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 			}
 
 			for _, result := range inferenceVoteExtension.Results {
-				infReq, err := app.WardenKeeper.InferenceRequestById(ctx, result.Id)
+				infReq, err := app.WardenKeeper.GetInferenceRequestById(ctx, result.Id)
 				if err != nil {
 					return nil, fmt.Errorf("got result for invalid inference request ID: %w", err)
 				}

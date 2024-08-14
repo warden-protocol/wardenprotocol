@@ -93,6 +93,12 @@ service Query {
     option (google.api.http).get =
         "/warden/warden/v1beta3/inference_requests";
   }
+
+  rpc InferenceRequestById(QueryInferenceRequestByIdRequest)
+      returns (QueryInferenceRequestByIdResponse) {
+    option (google.api.http).get =
+        "/warden/warden/v1beta3/inference_request_by_id";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -207,4 +213,12 @@ message QueryInferenceRequestsRequest {
 message QueryInferenceRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated InferenceRequest inference_requests = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryInferenceRequestByIdRequest {
+  uint64 id = 1;
+}
+
+message QueryInferenceRequestByIdResponse {
+  InferenceRequest inference_request = 1 [ (gogoproto.nullable) = false ];
 }

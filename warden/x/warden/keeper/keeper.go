@@ -151,7 +151,7 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", v1beta3.ModuleName))
 }
 
-func (k Keeper) InferenceRequestById(ctx sdk.Context, id uint64) (v1beta3.InferenceRequest, error) {
+func (k Keeper) GetInferenceRequestById(ctx sdk.Context, id uint64) (v1beta3.InferenceRequest, error) {
 	return k.inferenceRequests.Get(ctx, id)
 }
 

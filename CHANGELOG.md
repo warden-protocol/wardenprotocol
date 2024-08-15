@@ -60,6 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Return error if analyzer's address is not bench32
 * (evm) Resolve dependencies issues. For go-ethereum use [evmos fork](https://github.com/evmos/go-ethereum/releases/tag/v1.10.26-evmos-rc2) patched with [c1b68f1d05a7ee8eee1bde3c4054f49f5d3e3b9f](https://github.com/ethereum/go-ethereum/pull/24911) from original repository to support slinky.
 * (evm) To adopt ethsecp256k1 use fork of evmos's cosmos-sdk. Fork patched runtime/module adding into ProvideApp two arguments to customize registering interface registry and legacy amino codec.
+* (evm) Introduce award denomination to adjust units with Ethereum
+* (evm) Using ethsecp256k1 signature for all transactions. Users should reimport their seeds to get new addresses.
 
 ### Bug Fixes
 * (x/gmp) Remove the GMP default params from genesis

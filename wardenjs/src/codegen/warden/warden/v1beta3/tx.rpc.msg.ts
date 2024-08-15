@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignRequest, MsgNewSignRequestResponse, MsgFulfilSignRequest, MsgFulfilSignRequestResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignRequest, MsgNewSignRequestResponse, MsgFulfilSignRequest, MsgFulfilSignRequestResponse, MsgNewInferenceRequest, MsgNewInferenceRequestResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -33,6 +33,8 @@ export interface Msg {
   newSignRequest(request: MsgNewSignRequest): Promise<MsgNewSignRequestResponse>;
   /** Fulfil or reject a SignRequest. */
   fulfilSignRequest(request: MsgFulfilSignRequest): Promise<MsgFulfilSignRequestResponse>;
+  /** Create a new InferenceRequest. */
+  newInferenceRequest(request: MsgNewInferenceRequest): Promise<MsgNewInferenceRequestResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -51,6 +53,7 @@ export class MsgClientImpl implements Msg {
     this.updateKey = this.updateKey.bind(this);
     this.newSignRequest = this.newSignRequest.bind(this);
     this.fulfilSignRequest = this.fulfilSignRequest.bind(this);
+    this.newInferenceRequest = this.newInferenceRequest.bind(this);
   }
   updateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -116,5 +119,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgFulfilSignRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta3.Msg", "FulfilSignRequest", data);
     return promise.then(data => MsgFulfilSignRequestResponse.decode(new BinaryReader(data)));
+  }
+  newInferenceRequest(request: MsgNewInferenceRequest): Promise<MsgNewInferenceRequestResponse> {
+    const data = MsgNewInferenceRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta3.Msg", "NewInferenceRequest", data);
+    return promise.then(data => MsgNewInferenceRequestResponse.decode(new BinaryReader(data)));
   }
 }

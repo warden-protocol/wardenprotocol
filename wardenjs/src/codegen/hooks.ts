@@ -185,6 +185,16 @@ export const createRpcQueryHooks = ({
      * warden.warden.v1beta3.useSignRequestById
      * Queries a SignRequest by its id.
      */
-    useSignRequestById: _WardenWardenV1beta3Queryrpc.createRpcQueryHooks(rpc).useSignRequestById
+    useSignRequestById: _WardenWardenV1beta3Queryrpc.createRpcQueryHooks(rpc).useSignRequestById,
+    /**
+     * warden.warden.v1beta3.useInferenceRequests
+     * InferenceRequests
+     */
+    useInferenceRequests: _WardenWardenV1beta3Queryrpc.createRpcQueryHooks(rpc).useInferenceRequests,
+    /**
+     * warden.warden.v1beta3.useInferenceRequestById
+     * InferenceRequestById
+     */
+    useInferenceRequestById: _WardenWardenV1beta3Queryrpc.createRpcQueryHooks(rpc).useInferenceRequestById
   };
 };

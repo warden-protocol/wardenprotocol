@@ -4,7 +4,7 @@ import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignRequestsRequest, QuerySignRequestsResponse, QuerySignRequestByIdRequest, QuerySignRequestByIdResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignRequestsRequest, QuerySignRequestsResponse, QuerySignRequestByIdRequest, QuerySignRequestByIdResponse, QueryInferenceRequestsRequest, QueryInferenceRequestsResponse, QueryInferenceRequestByIdRequest, QueryInferenceRequestByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -33,6 +33,8 @@ export interface Query {
   signRequests(request: QuerySignRequestsRequest): Promise<QuerySignRequestsResponse>;
   /** Queries a SignRequest by its id. */
   signRequestById(request: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponse>;
+  inferenceRequests(request?: QueryInferenceRequestsRequest): Promise<QueryInferenceRequestsResponse>;
+  inferenceRequestById(request: QueryInferenceRequestByIdRequest): Promise<QueryInferenceRequestByIdResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -51,6 +53,8 @@ export class QueryClientImpl implements Query {
     this.keyById = this.keyById.bind(this);
     this.signRequests = this.signRequests.bind(this);
     this.signRequestById = this.signRequestById.bind(this);
+    this.inferenceRequests = this.inferenceRequests.bind(this);
+    this.inferenceRequestById = this.inferenceRequestById.bind(this);
   }
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -121,6 +125,18 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("warden.warden.v1beta3.Query", "SignRequestById", data);
     return promise.then(data => QuerySignRequestByIdResponse.decode(new BinaryReader(data)));
   }
+  inferenceRequests(request: QueryInferenceRequestsRequest = {
+    pagination: undefined
+  }): Promise<QueryInferenceRequestsResponse> {
+    const data = QueryInferenceRequestsRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "InferenceRequests", data);
+    return promise.then(data => QueryInferenceRequestsResponse.decode(new BinaryReader(data)));
+  }
+  inferenceRequestById(request: QueryInferenceRequestByIdRequest): Promise<QueryInferenceRequestByIdResponse> {
+    const data = QueryInferenceRequestByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta3.Query", "InferenceRequestById", data);
+    return promise.then(data => QueryInferenceRequestByIdResponse.decode(new BinaryReader(data)));
+  }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
@@ -164,6 +180,12 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     signRequestById(request: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponse> {
       return queryService.signRequestById(request);
+    },
+    inferenceRequests(request?: QueryInferenceRequestsRequest): Promise<QueryInferenceRequestsResponse> {
+      return queryService.inferenceRequests(request);
+    },
+    inferenceRequestById(request: QueryInferenceRequestByIdRequest): Promise<QueryInferenceRequestByIdResponse> {
+      return queryService.inferenceRequestById(request);
     }
   };
 };
@@ -205,6 +227,12 @@ export interface UseSignRequestsQuery<TData> extends ReactQueryParams<QuerySignR
 }
 export interface UseSignRequestByIdQuery<TData> extends ReactQueryParams<QuerySignRequestByIdResponse, TData> {
   request: QuerySignRequestByIdRequest;
+}
+export interface UseInferenceRequestsQuery<TData> extends ReactQueryParams<QueryInferenceRequestsResponse, TData> {
+  request?: QueryInferenceRequestsRequest;
+}
+export interface UseInferenceRequestByIdQuery<TData> extends ReactQueryParams<QueryInferenceRequestByIdResponse, TData> {
+  request: QueryInferenceRequestByIdRequest;
 }
 const _queryClients: WeakMap<ProtobufRpcClient, QueryClientImpl> = new WeakMap();
 const getQueryService = (rpc: ProtobufRpcClient | undefined): QueryClientImpl | undefined => {
@@ -335,6 +363,24 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.signRequestById(request);
     }, options);
   };
+  const useInferenceRequests = <TData = QueryInferenceRequestsResponse,>({
+    request,
+    options
+  }: UseInferenceRequestsQuery<TData>) => {
+    return useQuery<QueryInferenceRequestsResponse, Error, TData>(["inferenceRequestsQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.inferenceRequests(request);
+    }, options);
+  };
+  const useInferenceRequestById = <TData = QueryInferenceRequestByIdResponse,>({
+    request,
+    options
+  }: UseInferenceRequestByIdQuery<TData>) => {
+    return useQuery<QueryInferenceRequestByIdResponse, Error, TData>(["inferenceRequestByIdQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.inferenceRequestById(request);
+    }, options);
+  };
   return {
     /** Parameters queries the parameters of the module. */useParams,
     /** Queries a list of Spaces. */useSpaces,
@@ -348,6 +394,8 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
     /** Queries a list of Keys by their Space ID. */useKeysBySpaceId,
     /** Queries a Key by its ID. */useKeyById,
     /** Queries a list of SignRequests. */useSignRequests,
-    /** Queries a SignRequest by its id. */useSignRequestById
+    /** Queries a SignRequest by its id. */useSignRequestById,
+    useInferenceRequests,
+    useInferenceRequestById
   };
 };

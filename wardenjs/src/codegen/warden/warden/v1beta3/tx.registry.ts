@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta3.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta3.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta3.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta3.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta3.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta3.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta3.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta3.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta3.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta3.MsgFulfilKeyRequest", MsgFulfilKeyRequest], ["/warden.warden.v1beta3.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta3.MsgNewSignRequest", MsgNewSignRequest], ["/warden.warden.v1beta3.MsgFulfilSignRequest", MsgFulfilSignRequest]];
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest, MsgNewInferenceRequest } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta3.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta3.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta3.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta3.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta3.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta3.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta3.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta3.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta3.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta3.MsgFulfilKeyRequest", MsgFulfilKeyRequest], ["/warden.warden.v1beta3.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta3.MsgNewSignRequest", MsgNewSignRequest], ["/warden.warden.v1beta3.MsgFulfilSignRequest", MsgFulfilSignRequest], ["/warden.warden.v1beta3.MsgNewInferenceRequest", MsgNewInferenceRequest]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -86,6 +86,12 @@ export const MessageComposer = {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.encode(value).finish()
       };
+    },
+    newInferenceRequest(value: MsgNewInferenceRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
+        value: MsgNewInferenceRequest.encode(value).finish()
+      };
     }
   },
   withTypeUrl: {
@@ -164,6 +170,12 @@ export const MessageComposer = {
     fulfilSignRequest(value: MsgFulfilSignRequest) {
       return {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
+        value
+      };
+    },
+    newInferenceRequest(value: MsgNewInferenceRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
         value
       };
     }
@@ -246,6 +258,12 @@ export const MessageComposer = {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.toJSON(value)
       };
+    },
+    newInferenceRequest(value: MsgNewInferenceRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
+        value: MsgNewInferenceRequest.toJSON(value)
+      };
     }
   },
   fromJSON: {
@@ -326,6 +344,12 @@ export const MessageComposer = {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.fromJSON(value)
       };
+    },
+    newInferenceRequest(value: any) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
+        value: MsgNewInferenceRequest.fromJSON(value)
+      };
     }
   },
   fromPartial: {
@@ -405,6 +429,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.fromPartial(value)
+      };
+    },
+    newInferenceRequest(value: MsgNewInferenceRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
+        value: MsgNewInferenceRequest.fromPartial(value)
       };
     }
   }

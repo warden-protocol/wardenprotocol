@@ -631,6 +631,43 @@ export interface MsgFulfilSignRequestResponseAminoMsg {
   value: MsgFulfilSignRequestResponseAmino;
 }
 export interface MsgFulfilSignRequestResponseSDKType {}
+export interface MsgNewInferenceRequest {
+  creator: string;
+  input: Uint8Array;
+}
+export interface MsgNewInferenceRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest";
+  value: Uint8Array;
+}
+export interface MsgNewInferenceRequestAmino {
+  creator?: string;
+  input?: string;
+}
+export interface MsgNewInferenceRequestAminoMsg {
+  type: "/warden.warden.v1beta3.MsgNewInferenceRequest";
+  value: MsgNewInferenceRequestAmino;
+}
+export interface MsgNewInferenceRequestSDKType {
+  creator: string;
+  input: Uint8Array;
+}
+export interface MsgNewInferenceRequestResponse {
+  id: bigint;
+}
+export interface MsgNewInferenceRequestResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequestResponse";
+  value: Uint8Array;
+}
+export interface MsgNewInferenceRequestResponseAmino {
+  id?: string;
+}
+export interface MsgNewInferenceRequestResponseAminoMsg {
+  type: "/warden.warden.v1beta3.MsgNewInferenceRequestResponse";
+  value: MsgNewInferenceRequestResponseAmino;
+}
+export interface MsgNewInferenceRequestResponseSDKType {
+  id: bigint;
+}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -3366,6 +3403,166 @@ export const MsgFulfilSignRequestResponse = {
     return {
       typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequestResponse",
       value: MsgFulfilSignRequestResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgNewInferenceRequest(): MsgNewInferenceRequest {
+  return {
+    creator: "",
+    input: new Uint8Array()
+  };
+}
+export const MsgNewInferenceRequest = {
+  typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
+  encode(message: MsgNewInferenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.input.length !== 0) {
+      writer.uint32(26).bytes(message.input);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewInferenceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgNewInferenceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.input = reader.bytes();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgNewInferenceRequest {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array()
+    };
+  },
+  toJSON(message: MsgNewInferenceRequest): JsonSafe<MsgNewInferenceRequest> {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.input !== undefined && (obj.input = base64FromBytes(message.input !== undefined ? message.input : new Uint8Array()));
+    return obj;
+  },
+  fromPartial(object: Partial<MsgNewInferenceRequest>): MsgNewInferenceRequest {
+    const message = createBaseMsgNewInferenceRequest();
+    message.creator = object.creator ?? "";
+    message.input = object.input ?? new Uint8Array();
+    return message;
+  },
+  fromAmino(object: MsgNewInferenceRequestAmino): MsgNewInferenceRequest {
+    const message = createBaseMsgNewInferenceRequest();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.input !== undefined && object.input !== null) {
+      message.input = bytesFromBase64(object.input);
+    }
+    return message;
+  },
+  toAmino(message: MsgNewInferenceRequest): MsgNewInferenceRequestAmino {
+    const obj: any = {};
+    obj.creator = message.creator === "" ? undefined : message.creator;
+    obj.input = message.input ? base64FromBytes(message.input) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgNewInferenceRequestAminoMsg): MsgNewInferenceRequest {
+    return MsgNewInferenceRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgNewInferenceRequestProtoMsg): MsgNewInferenceRequest {
+    return MsgNewInferenceRequest.decode(message.value);
+  },
+  toProto(message: MsgNewInferenceRequest): Uint8Array {
+    return MsgNewInferenceRequest.encode(message).finish();
+  },
+  toProtoMsg(message: MsgNewInferenceRequest): MsgNewInferenceRequestProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest",
+      value: MsgNewInferenceRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgNewInferenceRequestResponse(): MsgNewInferenceRequestResponse {
+  return {
+    id: BigInt(0)
+  };
+}
+export const MsgNewInferenceRequestResponse = {
+  typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequestResponse",
+  encode(message: MsgNewInferenceRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewInferenceRequestResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgNewInferenceRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgNewInferenceRequestResponse {
+    return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: MsgNewInferenceRequestResponse): JsonSafe<MsgNewInferenceRequestResponse> {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MsgNewInferenceRequestResponse>): MsgNewInferenceRequestResponse {
+    const message = createBaseMsgNewInferenceRequestResponse();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: MsgNewInferenceRequestResponseAmino): MsgNewInferenceRequestResponse {
+    const message = createBaseMsgNewInferenceRequestResponse();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    return message;
+  },
+  toAmino(message: MsgNewInferenceRequestResponse): MsgNewInferenceRequestResponseAmino {
+    const obj: any = {};
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgNewInferenceRequestResponseAminoMsg): MsgNewInferenceRequestResponse {
+    return MsgNewInferenceRequestResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgNewInferenceRequestResponseProtoMsg): MsgNewInferenceRequestResponse {
+    return MsgNewInferenceRequestResponse.decode(message.value);
+  },
+  toProto(message: MsgNewInferenceRequestResponse): Uint8Array {
+    return MsgNewInferenceRequestResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgNewInferenceRequestResponse): MsgNewInferenceRequestResponseProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequestResponse",
+      value: MsgNewInferenceRequestResponse.encode(message).finish()
     };
   }
 };

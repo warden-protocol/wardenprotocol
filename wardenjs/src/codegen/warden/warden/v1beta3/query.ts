@@ -5,6 +5,7 @@ import { SignRequestStatus, SignRequest, SignRequestAmino, SignRequestSDKType, s
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Space, SpaceAmino, SpaceSDKType } from "./space.js";
 import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain.js";
+import { InferenceRequest, InferenceRequestAmino, InferenceRequestSDKType } from "./inference.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { JsonSafe } from "../../../json-safe.js";
 import { isSet } from "../../../helpers.js";
@@ -485,6 +486,77 @@ export interface QuerySignRequestByIdResponseAminoMsg {
 }
 export interface QuerySignRequestByIdResponseSDKType {
   sign_request?: SignRequestSDKType;
+}
+export interface QueryInferenceRequestsRequest {
+  pagination?: PageRequest;
+}
+export interface QueryInferenceRequestsRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestsRequest";
+  value: Uint8Array;
+}
+export interface QueryInferenceRequestsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryInferenceRequestsRequestAminoMsg {
+  type: "/warden.warden.v1beta3.QueryInferenceRequestsRequest";
+  value: QueryInferenceRequestsRequestAmino;
+}
+export interface QueryInferenceRequestsRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
+export interface QueryInferenceRequestsResponse {
+  pagination?: PageResponse;
+  inferenceRequests: InferenceRequest[];
+}
+export interface QueryInferenceRequestsResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestsResponse";
+  value: Uint8Array;
+}
+export interface QueryInferenceRequestsResponseAmino {
+  pagination?: PageResponseAmino;
+  inference_requests?: InferenceRequestAmino[];
+}
+export interface QueryInferenceRequestsResponseAminoMsg {
+  type: "/warden.warden.v1beta3.QueryInferenceRequestsResponse";
+  value: QueryInferenceRequestsResponseAmino;
+}
+export interface QueryInferenceRequestsResponseSDKType {
+  pagination?: PageResponseSDKType;
+  inference_requests: InferenceRequestSDKType[];
+}
+export interface QueryInferenceRequestByIdRequest {
+  id: bigint;
+}
+export interface QueryInferenceRequestByIdRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestByIdRequest";
+  value: Uint8Array;
+}
+export interface QueryInferenceRequestByIdRequestAmino {
+  id?: string;
+}
+export interface QueryInferenceRequestByIdRequestAminoMsg {
+  type: "/warden.warden.v1beta3.QueryInferenceRequestByIdRequest";
+  value: QueryInferenceRequestByIdRequestAmino;
+}
+export interface QueryInferenceRequestByIdRequestSDKType {
+  id: bigint;
+}
+export interface QueryInferenceRequestByIdResponse {
+  inferenceRequest: InferenceRequest;
+}
+export interface QueryInferenceRequestByIdResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestByIdResponse";
+  value: Uint8Array;
+}
+export interface QueryInferenceRequestByIdResponseAmino {
+  inference_request?: InferenceRequestAmino;
+}
+export interface QueryInferenceRequestByIdResponseAminoMsg {
+  type: "/warden.warden.v1beta3.QueryInferenceRequestByIdResponse";
+  value: QueryInferenceRequestByIdResponseAmino;
+}
+export interface QueryInferenceRequestByIdResponseSDKType {
+  inference_request: InferenceRequestSDKType;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -2615,6 +2687,318 @@ export const QuerySignRequestByIdResponse = {
     return {
       typeUrl: "/warden.warden.v1beta3.QuerySignRequestByIdResponse",
       value: QuerySignRequestByIdResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryInferenceRequestsRequest(): QueryInferenceRequestsRequest {
+  return {
+    pagination: undefined
+  };
+}
+export const QueryInferenceRequestsRequest = {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestsRequest",
+  encode(message: QueryInferenceRequestsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryInferenceRequestsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryInferenceRequestsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryInferenceRequestsRequest {
+    return {
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+    };
+  },
+  toJSON(message: QueryInferenceRequestsRequest): JsonSafe<QueryInferenceRequestsRequest> {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryInferenceRequestsRequest>): QueryInferenceRequestsRequest {
+    const message = createBaseQueryInferenceRequestsRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryInferenceRequestsRequestAmino): QueryInferenceRequestsRequest {
+    const message = createBaseQueryInferenceRequestsRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryInferenceRequestsRequest): QueryInferenceRequestsRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryInferenceRequestsRequestAminoMsg): QueryInferenceRequestsRequest {
+    return QueryInferenceRequestsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryInferenceRequestsRequestProtoMsg): QueryInferenceRequestsRequest {
+    return QueryInferenceRequestsRequest.decode(message.value);
+  },
+  toProto(message: QueryInferenceRequestsRequest): Uint8Array {
+    return QueryInferenceRequestsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryInferenceRequestsRequest): QueryInferenceRequestsRequestProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestsRequest",
+      value: QueryInferenceRequestsRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryInferenceRequestsResponse(): QueryInferenceRequestsResponse {
+  return {
+    pagination: undefined,
+    inferenceRequests: []
+  };
+}
+export const QueryInferenceRequestsResponse = {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestsResponse",
+  encode(message: QueryInferenceRequestsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.inferenceRequests) {
+      InferenceRequest.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryInferenceRequestsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryInferenceRequestsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.inferenceRequests.push(InferenceRequest.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryInferenceRequestsResponse {
+    return {
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+      inferenceRequests: Array.isArray(object?.inferenceRequests) ? object.inferenceRequests.map((e: any) => InferenceRequest.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: QueryInferenceRequestsResponse): JsonSafe<QueryInferenceRequestsResponse> {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    if (message.inferenceRequests) {
+      obj.inferenceRequests = message.inferenceRequests.map(e => e ? InferenceRequest.toJSON(e) : undefined);
+    } else {
+      obj.inferenceRequests = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<QueryInferenceRequestsResponse>): QueryInferenceRequestsResponse {
+    const message = createBaseQueryInferenceRequestsResponse();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
+    message.inferenceRequests = object.inferenceRequests?.map(e => InferenceRequest.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: QueryInferenceRequestsResponseAmino): QueryInferenceRequestsResponse {
+    const message = createBaseQueryInferenceRequestsResponse();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    message.inferenceRequests = object.inference_requests?.map(e => InferenceRequest.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryInferenceRequestsResponse): QueryInferenceRequestsResponseAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    if (message.inferenceRequests) {
+      obj.inference_requests = message.inferenceRequests.map(e => e ? InferenceRequest.toAmino(e) : undefined);
+    } else {
+      obj.inference_requests = message.inferenceRequests;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryInferenceRequestsResponseAminoMsg): QueryInferenceRequestsResponse {
+    return QueryInferenceRequestsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryInferenceRequestsResponseProtoMsg): QueryInferenceRequestsResponse {
+    return QueryInferenceRequestsResponse.decode(message.value);
+  },
+  toProto(message: QueryInferenceRequestsResponse): Uint8Array {
+    return QueryInferenceRequestsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryInferenceRequestsResponse): QueryInferenceRequestsResponseProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestsResponse",
+      value: QueryInferenceRequestsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryInferenceRequestByIdRequest(): QueryInferenceRequestByIdRequest {
+  return {
+    id: BigInt(0)
+  };
+}
+export const QueryInferenceRequestByIdRequest = {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestByIdRequest",
+  encode(message: QueryInferenceRequestByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryInferenceRequestByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryInferenceRequestByIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryInferenceRequestByIdRequest {
+    return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: QueryInferenceRequestByIdRequest): JsonSafe<QueryInferenceRequestByIdRequest> {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<QueryInferenceRequestByIdRequest>): QueryInferenceRequestByIdRequest {
+    const message = createBaseQueryInferenceRequestByIdRequest();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: QueryInferenceRequestByIdRequestAmino): QueryInferenceRequestByIdRequest {
+    const message = createBaseQueryInferenceRequestByIdRequest();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    return message;
+  },
+  toAmino(message: QueryInferenceRequestByIdRequest): QueryInferenceRequestByIdRequestAmino {
+    const obj: any = {};
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryInferenceRequestByIdRequestAminoMsg): QueryInferenceRequestByIdRequest {
+    return QueryInferenceRequestByIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryInferenceRequestByIdRequestProtoMsg): QueryInferenceRequestByIdRequest {
+    return QueryInferenceRequestByIdRequest.decode(message.value);
+  },
+  toProto(message: QueryInferenceRequestByIdRequest): Uint8Array {
+    return QueryInferenceRequestByIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryInferenceRequestByIdRequest): QueryInferenceRequestByIdRequestProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestByIdRequest",
+      value: QueryInferenceRequestByIdRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryInferenceRequestByIdResponse(): QueryInferenceRequestByIdResponse {
+  return {
+    inferenceRequest: InferenceRequest.fromPartial({})
+  };
+}
+export const QueryInferenceRequestByIdResponse = {
+  typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestByIdResponse",
+  encode(message: QueryInferenceRequestByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.inferenceRequest !== undefined) {
+      InferenceRequest.encode(message.inferenceRequest, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryInferenceRequestByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryInferenceRequestByIdResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.inferenceRequest = InferenceRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryInferenceRequestByIdResponse {
+    return {
+      inferenceRequest: isSet(object.inferenceRequest) ? InferenceRequest.fromJSON(object.inferenceRequest) : undefined
+    };
+  },
+  toJSON(message: QueryInferenceRequestByIdResponse): JsonSafe<QueryInferenceRequestByIdResponse> {
+    const obj: any = {};
+    message.inferenceRequest !== undefined && (obj.inferenceRequest = message.inferenceRequest ? InferenceRequest.toJSON(message.inferenceRequest) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryInferenceRequestByIdResponse>): QueryInferenceRequestByIdResponse {
+    const message = createBaseQueryInferenceRequestByIdResponse();
+    message.inferenceRequest = object.inferenceRequest !== undefined && object.inferenceRequest !== null ? InferenceRequest.fromPartial(object.inferenceRequest) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryInferenceRequestByIdResponseAmino): QueryInferenceRequestByIdResponse {
+    const message = createBaseQueryInferenceRequestByIdResponse();
+    if (object.inference_request !== undefined && object.inference_request !== null) {
+      message.inferenceRequest = InferenceRequest.fromAmino(object.inference_request);
+    }
+    return message;
+  },
+  toAmino(message: QueryInferenceRequestByIdResponse): QueryInferenceRequestByIdResponseAmino {
+    const obj: any = {};
+    obj.inference_request = message.inferenceRequest ? InferenceRequest.toAmino(message.inferenceRequest) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryInferenceRequestByIdResponseAminoMsg): QueryInferenceRequestByIdResponse {
+    return QueryInferenceRequestByIdResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryInferenceRequestByIdResponseProtoMsg): QueryInferenceRequestByIdResponse {
+    return QueryInferenceRequestByIdResponse.decode(message.value);
+  },
+  toProto(message: QueryInferenceRequestByIdResponse): Uint8Array {
+    return QueryInferenceRequestByIdResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryInferenceRequestByIdResponse): QueryInferenceRequestByIdResponseProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.QueryInferenceRequestByIdResponse",
+      value: QueryInferenceRequestByIdResponse.encode(message).finish()
     };
   }
 };

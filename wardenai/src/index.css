@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 25, 90%, 4%;
+    --foreground: 80, 11%, 89%;
+    --card: 25, 90%, 4%;
+    --card-foreground: 80, 11%, 89%;
+    --popover: 25, 90%, 4%;
+    --popover-foreground: 80, 11%, 89%;
+    --primary: 80, 11%, 89%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 80, 11%, 89%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 0, 0%, 70%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 80, 11%, 89%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 80, 11%, 89%;
+    --border: 0, 0%, 30%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --radius: 8px;
+  }
+
+  /* .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  } */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground bg-[url('/bg.svg')] bg-cover bg-no-repeat bg-center bg-fixed;
+  }
+
+  body::after {
+    content: "";
+    @apply fixed top-0 left-0 border-l border-t border-[#BDFF00] m-10 rounded-tl-3xl w-16 h-16;
+  }
+
+  body::before {
+    content: "";
+    @apply fixed top-0 right-0 border-r border-t border-[#BDFF00] m-10 rounded-tr-3xl w-16 h-16;
+  }
+
+  #root::after {
+    content: "";
+    @apply fixed bottom-0 left-0 border-l border-b border-[#BDFF00] m-10 rounded-bl-3xl w-16 h-16;
+  }
+
+  #root:before {
+    content: "";
+    @apply fixed bottom-0 right-0 border-r border-b border-[#BDFF00] m-10 rounded-br-3xl w-16 h-16;
+  }
+}

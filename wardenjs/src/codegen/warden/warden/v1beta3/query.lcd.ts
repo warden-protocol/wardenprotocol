@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QuerySpacesRequest, QuerySpacesResponseSDKType, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponseSDKType, QuerySpaceByIdRequest, QuerySpaceByIdResponseSDKType, QueryKeychainByIdRequest, QueryKeychainByIdResponseSDKType, QueryKeyRequestsRequest, QueryKeyRequestsResponseSDKType, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponseSDKType, QueryAllKeysRequest, QueryKeysResponseSDKType, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponseSDKType, QuerySignRequestsRequest, QuerySignRequestsResponseSDKType, QuerySignRequestByIdRequest, QuerySignRequestByIdResponseSDKType } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QuerySpacesRequest, QuerySpacesResponseSDKType, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponseSDKType, QuerySpaceByIdRequest, QuerySpaceByIdResponseSDKType, QueryKeychainByIdRequest, QueryKeychainByIdResponseSDKType, QueryKeyRequestsRequest, QueryKeyRequestsResponseSDKType, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponseSDKType, QueryAllKeysRequest, QueryKeysResponseSDKType, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponseSDKType, QuerySignRequestsRequest, QuerySignRequestsResponseSDKType, QuerySignRequestByIdRequest, QuerySignRequestByIdResponseSDKType, QueryInferenceRequestsRequest, QueryInferenceRequestsResponseSDKType, QueryInferenceRequestByIdRequest, QueryInferenceRequestByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -23,6 +23,8 @@ export class LCDQueryClient {
     this.keyById = this.keyById.bind(this);
     this.signRequests = this.signRequests.bind(this);
     this.signRequestById = this.signRequestById.bind(this);
+    this.inferenceRequests = this.inferenceRequests.bind(this);
+    this.inferenceRequestById = this.inferenceRequestById.bind(this);
   }
   /* Parameters queries the parameters of the module. */
   async params(_params: QueryParamsRequest = {}): Promise<QueryParamsResponseSDKType> {
@@ -194,5 +196,29 @@ export class LCDQueryClient {
     }
     const endpoint = `warden/warden/v1beta3/signature_pb_request_by_id`;
     return await this.req.get<QuerySignRequestByIdResponseSDKType>(endpoint, options);
+  }
+  /* InferenceRequests */
+  async inferenceRequests(params: QueryInferenceRequestsRequest = {
+    pagination: undefined
+  }): Promise<QueryInferenceRequestsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `warden/warden/v1beta3/inference_requests`;
+    return await this.req.get<QueryInferenceRequestsResponseSDKType>(endpoint, options);
+  }
+  /* InferenceRequestById */
+  async inferenceRequestById(params: QueryInferenceRequestByIdRequest): Promise<QueryInferenceRequestByIdResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.id !== "undefined") {
+      options.params.id = params.id;
+    }
+    const endpoint = `warden/warden/v1beta3/inference_request_by_id`;
+    return await this.req.get<QueryInferenceRequestByIdResponseSDKType>(endpoint, options);
   }
 }

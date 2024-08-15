@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"cosmossdk.io/collections"
@@ -195,6 +196,26 @@ func (k Keeper) UpdateInferenceRequest(ctx sdk.Context, result *v1beta3.Inferenc
 
 	if err := k.inferenceRequests.Set(ctx, req.Id, req); err != nil {
 		return err
+	}
+
+	if req.ContractCallback != "" {
+		type Msg struct {
+			InferenceRequestCallback v1beta3.InferenceRequest `json:"inference_request_callback"`
+		}
+
+		msg, err := json.Marshal(Msg{
+			InferenceRequestCallback: req,
+		})
+		if err != nil {
+			return fmt.Errorf("marshalling inference request: %w", err)
+		}
+
+		callbackOut, err := k.executeContract(ctx, sdk.MustAccAddressFromBech32(req.ContractCallback), sdk.MustAccAddressFromBech32(req.Creator), msg)
+		if err != nil {
+			return fmt.Errorf("executing contract callback: %w", err)
+		}
+
+		ctx.Logger().Info("executed contract callback", "callback", req.ContractCallback, "creator", req.Creator, "output", string(callbackOut))
 	}
 
 	return nil

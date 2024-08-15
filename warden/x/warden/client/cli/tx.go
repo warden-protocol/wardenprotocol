@@ -264,9 +264,15 @@ will be interpreted as 10 vectors of size 2:
 				return err
 			}
 
+			callbackContractAddr, err := cmd.Flags().GetString("callback-contract-addr")
+			if err != nil {
+				return err
+			}
+
 			msg := &v1beta3.MsgNewInferenceRequest{
-				Creator: clientCtx.GetFromAddress().String(),
-				Input:   inputBz,
+				Creator:          clientCtx.GetFromAddress().String(),
+				Input:            inputBz,
+				ContractCallback: callbackContractAddr,
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
@@ -275,6 +281,7 @@ will be interpreted as 10 vectors of size 2:
 
 	flags.AddTxFlagsToCmd(cmd)
 	cmd.Flags().Float64Slice("input", nil, "Input vectors")
+	cmd.Flags().String("callback-contract-addr", "", "CosmWasm address of the contract to call after inference is done")
 
 	return cmd
 }

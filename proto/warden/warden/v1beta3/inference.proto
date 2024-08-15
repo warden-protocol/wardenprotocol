@@ -11,6 +11,7 @@ message InferenceRequest {
   string error = 5;
   uint64 created_at = 6;
   uint64 updated_at = 7;
+  string contract_callback = 8;
 }
 
 message InferenceResult {

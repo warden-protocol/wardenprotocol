@@ -1035,6 +1035,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "inference-callback"
+version = "0.1.0"
+dependencies = [
+ "analyzers-core",
+ "anyhow",
+ "assert_matches",
+ "bindings",
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cw2",
+ "derivative",
+ "schemars",
+ "serde",
+ "serde-json-wasm",
+ "thiserror",
+]
+
+[[package]]
 name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"

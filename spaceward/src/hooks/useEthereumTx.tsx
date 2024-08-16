@@ -1,45 +1,71 @@
 import { ethers } from "ethers";
-import useRequestSignature from "./useRequestSignature";
 import { env } from "@/env";
+import { useNewAction } from "./useAction";
+import { warden } from "@wardenprotocol/wardenjs";
+import { useEnqueueAction } from "@/features/actions/hooks";
 
 export function useEthereumTx() {
-	const { state, error, requestSignature, reset } = useRequestSignature();
+	const { getMessage, authority } = useNewAction(
+		warden.warden.v1beta3.MsgNewSignRequest,
+	);
+
+	const { addAction } = useEnqueueAction(getMessage);
 
 	const signRaw = async (keyId: bigint, input: Uint8Array) => {
-		return await requestSignature(
-			keyId,
-			[],
-			input,
+		if (!authority) {
+			throw new Error("no authority");
+		}
+
+		return await addAction(
+			{
+				authority,
+				keyId,
+				analyzers: [],
+				input,
+				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+				encryptionKey: undefined,
+			},
+			{},
 		);
 	};
 
-	const signEthereumTx = async (keyId: bigint, tx: ethers.Transaction) => {
+	const signEthereumTx = async (
+		keyId: bigint,
+		_tx: ethers.TransactionLike,
+		chainName: string,
+	) => {
+		if (!authority) {
+			throw new Error("no authority");
+		}
+
 		if (!env.ethereumAnalyzerContract) {
-			console.warn("Missing ethereumAnalyzerContract. Can't use Ethereum transactions.");
+			console.warn(
+				"Missing ethereumAnalyzerContract. Can't use Ethereum transactions.",
+			);
+
 			return;
 		}
 
-		const signature = await requestSignature(
-			keyId,
-			[env.ethereumAnalyzerContract],
-			ethers.getBytes(tx.unsignedSerialized),
+		const tx = ethers.Transaction.from(_tx);
+
+		return await addAction(
+			{
+				analyzers: [env.ethereumAnalyzerContract],
+				authority,
+				input: ethers.getBytes(tx.unsignedSerialized),
+				keyId,
+				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+				encryptionKey: undefined,
+			},
+			{
+				tx: _tx,
+				chainName,
+			},
 		);
-		if (!signature) {
-			return;
-		}
-
-		// add the signature to the transaction
-		const signedTx = tx.clone();
-		signedTx.signature = ethers.hexlify(signature);
-
-		return signedTx;
 	};
 
 	return {
-		state,
-		error,
-		reset,
 		signRaw,
 		signEthereumTx,
-	}
+	};
 }

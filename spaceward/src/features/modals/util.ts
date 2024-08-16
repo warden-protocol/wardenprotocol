@@ -5,17 +5,32 @@ import {
 	keccak256,
 	parseUnits,
 	toUtf8Bytes,
-	Transaction,
+	//	Transaction,
+	TransactionLike,
 } from "ethers";
 
-import type { EncodeObject } from "@cosmjs/proto-signing";
-import type { StdFee } from "@cosmjs/stargate";
+import {
+	encodePubkey,
+	makeAuthInfoBytes,
+	Registry,
+	type EncodeObject,
+} from "@cosmjs/proto-signing";
+import {
+	AminoTypes,
+	createDefaultAminoConverters,
+	defaultRegistryTypes,
+	type SigningStargateClient,
+	type StdFee,
+} from "@cosmjs/stargate";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import type { BalanceEntry } from "../assets/types";
 import { getAbiItem } from "../assets/util";
 import { COSMOS_CHAINS } from "../assets/hooks";
+import { encodeSecp256k1Pubkey, makeSignDoc, StdSignDoc } from "@cosmjs/amino";
+import { Int53 } from "@cosmjs/math";
+import { SignMode } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/signing/v1beta1/signing";
 
 function typedStartsWith<T extends string>(
 	prefix: T,
@@ -27,8 +42,7 @@ function typedStartsWith<T extends string>(
 type TxType = "eth" | "cosmos";
 export type TxBuild<T extends TxType> = T extends "eth"
 	? {
-			provider: ReturnType<typeof getProvider>;
-			tx: Transaction;
+			tx: TransactionLike;
 			type: T;
 		}
 	: {
@@ -63,7 +77,7 @@ export async function buildTransaction({
 		const gasLimit = BigInt(21000);
 
 		if (item.type === "eip155:native") {
-			const tx = Transaction.from({
+			const tx: TransactionLike = {
 				type: 2, // 2: Dynamic fee transaction
 				chainId: item.chainId,
 				nonce,
@@ -71,9 +85,9 @@ export async function buildTransaction({
 				value: amount,
 				...feeData,
 				gasLimit,
-			});
+			};
 
-			return { provider, tx, type: "eth" };
+			return { tx, type: "eth" };
 		} else if (item.type === "eip155:erc20") {
 			if (!item.erc20Token) {
 				throw new Error("missing token contract address");
@@ -92,19 +106,19 @@ export async function buildTransaction({
 
 			const data = concat([selector, params]);
 
-			const tx = Transaction.from({
+			const tx: TransactionLike = {
 				type: 2, // 2: Dynamic fee transaction
 				chainId: item.chainId,
 				nonce,
 				data,
 				to: item.erc20Token,
 				...feeData,
-			});
+			};
 
 			const gasLimit = await provider.estimateGas({ ...tx, from });
 			// fixme gas limit
 			tx.gasLimit = gasLimit * BigInt(2);
-			return { provider, tx, type: "eth" } as TxBuild<"eth">;
+			return { tx, type: "eth" } as TxBuild<"eth">;
 		} else {
 			throw new Error(`unsupported type: ${item.type}`);
 		}
@@ -150,4 +164,62 @@ export async function buildTransaction({
 		msgs: [msg],
 		fee,
 	} as TxBuild<"cosmos">;
+}
+
+const aminoTypes = new AminoTypes(createDefaultAminoConverters());
+const registry = new Registry(defaultRegistryTypes);
+
+export async function createAminoSignDoc({
+	tx,
+	client,
+	address,
+}: {
+	tx: TxBuild<"cosmos">;
+	client: SigningStargateClient;
+	address: string;
+}) {
+	const { accountNumber, sequence } = await client.getSequence(address);
+	const chainId = await client.getChainId();
+
+	return makeSignDoc(
+		tx.msgs.map((x) => aminoTypes.toAmino(x)),
+		tx.fee,
+		chainId,
+		// memo
+		"",
+		accountNumber,
+		sequence,
+	);
+}
+
+export function prepareTx(signDoc: StdSignDoc, pubkey: Uint8Array) {
+	const signedTxBody = {
+		messages: signDoc.msgs.map((msg) => aminoTypes.fromAmino(msg)),
+		memo: signDoc.memo,
+		timeoutHeight: 0,
+	};
+
+	const signedGasLimit = Int53.fromString(signDoc.fee.gas).toNumber();
+	const signedSequence = Int53.fromString(signDoc.sequence).toNumber();
+	const signedAuthInfoBytes = makeAuthInfoBytes(
+		[
+			{
+				pubkey: encodePubkey(encodeSecp256k1Pubkey(pubkey)),
+				sequence: signedSequence,
+			},
+		],
+		signDoc.fee.amount,
+		signedGasLimit,
+		signDoc.fee.granter,
+		signDoc.fee.payer,
+		SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+	);
+
+	return {
+		signedTxBodyBytes: registry.encode({
+			typeUrl: "/cosmos.tx.v1beta1.TxBody",
+			value: signedTxBody,
+		}),
+		signedAuthInfoBytes,
+	};
 }

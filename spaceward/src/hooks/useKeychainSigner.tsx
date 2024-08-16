@@ -6,10 +6,11 @@ import {
 	AddressType,
 	KeyType,
 } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useMemo } from "react";
 import { fixAddress } from "@/features/modals/ReceiveAssets";
-import { fromBech32 } from "@cosmjs/encoding";
+import { useNewAction } from "./useAction";
+import { warden } from "@wardenprotocol/wardenjs";
+import { useEnqueueAction } from "@/features/actions/hooks";
 
 type Algo = "secp256k1" | "ed25519" | "sr25519";
 interface AccountData {
@@ -46,17 +47,11 @@ interface OfflineAminoSigner {
 	) => Promise<AminoSignResponse>;
 }
 
-type RequestSignature = ReturnType<
-	typeof useRequestSignature
->["requestSignature"];
-
 const getOfflineSigner = ({
 	chainName,
 	keys,
-	requestSignature,
 }: {
 	chainName?: string;
-	requestSignature: RequestSignature;
 	keys?: QueryKeyResponse[];
 }): OfflineAminoSigner => {
 	return {
@@ -95,6 +90,7 @@ const getOfflineSigner = ({
 				};
 			});
 		},
+		// @ts-expect-error this method is not called
 		signAmino: async (signerAddress, signDoc) => {
 			if (!env.aminoAnalyzerContract) {
 				throw new Error(
@@ -102,6 +98,8 @@ const getOfflineSigner = ({
 				);
 			}
 
+			throw new Error("should not be called");
+			/*
 			const key = keys?.find(({ addresses }) =>
 				addresses.some(
 					({ address, type }) =>
@@ -155,6 +153,7 @@ const getOfflineSigner = ({
 					},
 				},
 			};
+			*/
 		},
 	};
 };
@@ -166,16 +165,49 @@ export function useKeychainSigner({
 	chainName?: string;
 	keys?: QueryKeyResponse[];
 }) {
-	const { requestSignature, ...rest } = useRequestSignature();
+	const signer = useMemo(() => getOfflineSigner({ keys, chainName }), [keys]);
 
-	const signer = useMemo(
-		() => getOfflineSigner({ keys, requestSignature, chainName }),
-		[keys, requestSignature],
+	const { getMessage, authority } = useNewAction(
+		warden.warden.v1beta3.MsgNewSignRequest,
 	);
 
+	const { addAction } = useEnqueueAction(getMessage);
+
+	async function signAmino(key: QueryKeyResponse, signDoc: StdSignDoc, chainName: string) {
+		if (!authority) {
+			throw new Error("no authority");
+		}
+
+		if (!env.aminoAnalyzerContract) {
+			throw new Error(
+				"Missing aminoAnalyzerContract. Can't use Osmosis transactions.",
+			);
+		}
+
+		return await addAction(
+			{
+				authority,
+				keyId: key.key.id,
+				analyzers: [env.aminoAnalyzerContract],
+				input: Uint8Array.from(
+					JSON.stringify(signDoc)
+						.split("")
+						.map((c) => c.charCodeAt(0)),
+				),
+				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+				encryptionKey: undefined,
+			},
+			{
+				pubkey: key.key.publicKey,
+				chainName,
+				signDoc
+			},
+		);
+	}
+
 	return {
-		...rest,
-		requestSignature,
+		/** @deprecated */
 		signer,
+		signAmino
 	};
 }

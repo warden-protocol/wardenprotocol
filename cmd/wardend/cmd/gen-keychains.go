@@ -24,7 +24,7 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 
 			var keychainFees wardentypes.KeychainFees
 			if err := cdc.UnmarshalJSON([]byte(keychainFeesJson), &keychainFees); err != nil {
-				return fmt.Errorf("cannot marshal keychain fees: %w", err)
+				return fmt.Errorf("cannot unmarshal keychain fees JSON: %w", err)
 			}
 
 			return updateGenesisState(

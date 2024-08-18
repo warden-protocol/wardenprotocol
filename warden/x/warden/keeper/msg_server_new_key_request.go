@@ -23,7 +23,12 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 	}
 
 	if keychain.Fees != nil {
-		err := k.deductKeychainFees(ctx, msg.MaxKeychainFees, keychain.AccAddress(), keychain.Fees.KeyReq, creator)
+		err := k.deductKeychainFees(
+			ctx,
+			msg.MaxKeychainFees,
+			keychain.AccAddress(),
+			keychain.Fees.KeyReq,
+			sdk.MustAccAddressFromBech32(creator))
 		if err != nil {
 			return nil, err
 		}

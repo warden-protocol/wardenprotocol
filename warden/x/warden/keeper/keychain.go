@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -12,8 +11,8 @@ func (k Keeper) deductKeychainFees(
 	maxKeychainFee sdk.Coins,
 	keychainAccAddress sdk.AccAddress,
 	keychainFees sdk.Coins,
-	creator string) error {
-	if len(maxKeychainFee) == 0 || len(keychainFees) == 0 {
+	creator sdk.AccAddress) error {
+	if maxKeychainFee.Empty() || keychainFees.Empty() {
 		return fmt.Errorf("fees cannot be empty")
 	}
 
@@ -24,7 +23,7 @@ func (k Keeper) deductKeychainFees(
 	if keychainFees.IsAllLTE(maxKeychainFee) {
 		return k.bankKeeper.SendCoins(
 			ctx,
-			sdk.MustAccAddressFromBech32(creator),
+			creator,
 			keychainAccAddress,
 			keychainFees,
 		)

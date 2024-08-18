@@ -105,7 +105,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 		isEnum := strings.Contains(v.Type().Field(i).Tag.Get("protobuf"), "enum")
 		if isEnum {
 			cmd.Flags().String(flagName, "", "")
-			return
+			continue
 		}
 
 		switch v.Field(i).Kind() {
@@ -170,38 +170,11 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 
 		// the field is an enum, handle it differently
 		if enumProtoType != "" {
-			value, err := cmd.Flags().GetString(flagName)
-			if err != nil {
+			if err := parseEnum(cmd, flagName, v, i, enumProtoType); err != nil {
 				return err
 			}
 
-			if value == "" {
-				return nil
-			}
-
-			// if user provided a number, use it as-is
-			valueN, err := strconv.ParseInt(value, 10, 64)
-			if err == nil {
-				v.Field(i).SetInt(valueN)
-				return nil
-			}
-
-			// else, reverse lookup the enum value
-			fmt.Println(enumProtoType)
-			valsMap := proto.EnumValueMap(enumProtoType)
-			for k, val := range valsMap {
-				if strings.EqualFold(k, value) {
-					v.Field(i).SetInt(int64(val))
-					return nil
-				}
-			}
-
-			possibleValues := make([]string, 0, len(valsMap))
-			for k := range valsMap {
-				possibleValues = append(possibleValues, k)
-			}
-
-			return fmt.Errorf("invalid enum value %s for flag %s; possible values: %s", value, flagName, strings.Join(possibleValues, ", "))
+			continue
 		}
 
 		switch v.Field(i).Kind() {
@@ -249,6 +222,7 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 					if err != nil {
 						return err
 					}
+
 					coins, err := sdk.ParseCoinsNormalized(strings.Join(coinsStrings, ","))
 					if err != nil {
 						return err
@@ -283,4 +257,38 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 	}
 
 	return nil
+}
+
+func parseEnum(cmd *cobra.Command, flagName string, v reflect.Value, i int, enumProtoType string) error {
+	value, err := cmd.Flags().GetString(flagName)
+	if err != nil {
+		return err
+	}
+
+	if value == "" {
+		return nil
+	}
+
+	// if user provided a number, use it as-is
+	valueN, err := strconv.ParseInt(value, 10, 64)
+	if err == nil {
+		v.Field(i).SetInt(valueN)
+		return nil
+	}
+
+	// else, reverse lookup the enum value
+	valsMap := proto.EnumValueMap(enumProtoType)
+	for k, val := range valsMap {
+		if strings.EqualFold(k, value) {
+			v.Field(i).SetInt(int64(val))
+			return nil
+		}
+	}
+
+	possibleValues := make([]string, 0, len(valsMap))
+	for k := range valsMap {
+		possibleValues = append(possibleValues, k)
+	}
+
+	return fmt.Errorf("invalid enum value %s for flag %s; possible values: %s", value, flagName, strings.Join(possibleValues, ", "))
 }

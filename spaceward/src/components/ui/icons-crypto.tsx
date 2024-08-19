@@ -631,6 +631,7 @@ export const NetworkIconsTransparent: Record<
 		</svg>
 	),
 	sepolia: (props) => getNetworkTransparentIcons().mainnet?.(props),
+	osmosistestnet: NetworkIcons.osmosistestnet,
 };
 
 /** @deprecated fixme visibility hack */
@@ -1068,3 +1069,8 @@ export const TokenIcons: Record<
 		</svg>
 	),
 };
+
+/** @deprecated fixme visibility hack */
+function getTokenIcons() {
+	return TokenIcons;
+}

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SpaceSelector } from "@/features/spaces";
+import ActionSidebar from "@/features/actions/Sidebar";
 
 const spaceNavItems = [
 	{
@@ -99,6 +100,7 @@ export function InnerSidebar() {
 						<SpaceSelector />
 					</div>
 				</div>
+				<ActionSidebar />
 				<div>
 					<div className="space-y-4 py-2">
 						<div className="px-2 py-0">

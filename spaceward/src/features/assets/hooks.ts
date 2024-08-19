@@ -9,25 +9,8 @@ import {
 	fiatPricesQuery,
 } from "./queries";
 import type { CosmosQueryClient, PriceMapSlinky } from "./types";
+import { COSMOS_CHAINS } from "@/config/tokens";
 // import { walletContext } from "@cosmos-kit/react-lite";
-
-/** @deprecated move somewhere else */
-export const COSMOS_CHAINS: {
-	chainName: string;
-	feeAmount: string;
-	rpc: string;
-}[] = [
-	{
-		chainName: "cosmoshubtestnet",
-		feeAmount: "1000",
-		rpc: "https://rpc.sentry-01.theta-testnet.polypore.xyz",
-	},
-	{
-		chainName: /*"osmosis",*/ "osmosistestnet",
-		feeAmount: "1500",
-		rpc: "https://rpc.testnet.osmosis.zone",
-	},
-];
 
 const DERIVE_ADDRESSES = [
 	AddressType.ADDRESS_TYPE_ETHEREUM,

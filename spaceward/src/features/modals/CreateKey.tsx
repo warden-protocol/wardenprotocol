@@ -39,7 +39,7 @@ export default function CreateKeyModal({
 	const keychain = keychainsQuery.data?.keychains.find(
 		(kc) => kc.id === keychainId,
 	);
-	const [selected, setSelected] = useState(-1);
+	const [selected, setSelected] = useState(0);
 	const [isDetails, setIsDetails] = useState(false);
 	const [name, setName] = useState("");
 	const [themeIndex, setThemeIndex] = useState(0);
@@ -102,7 +102,7 @@ export default function CreateKeyModal({
 				Keychain details
 			</div>
 
-			<div className="bg-fill-quaternary rounded-xl	p-6">
+			<div className="bg-fill-quaternary rounded-xl p-6">
 				<div className="flex items-center gap-[6px] font-bold text-2xl mb-1">
 					{desc?.title ?? keychain?.description}
 
@@ -187,69 +187,72 @@ export default function CreateKeyModal({
 			{!keychain ? (
 				<div
 					className={clsx(
-						"mt-12 text-left flex flex-col gap-4 max-h-[400px]  relative",
-						(keychainsQuery.data?.keychains.length ?? 0) >= 3
-							? "before:content-[''] before:absolute no-scrollbar overflow-scroll before:left-0 before:bottom-0 before:w-full before:h-[90px] before:z-20 before:bg-gradient-to-b before:from-[transparent] before:to-[#222]							"
-							: "",
+						"mt-12 text-left flex flex-col gap-4 max-h-[400px] relative",
+						// (keychainsQuery.data?.keychains.length ?? 0) >= 3
+						// 	? "before:content-[''] before:absolute no-scrollbar overflow-scroll before:left-0 before:bottom-0 before:w-full before:h-[90px] before:z-20 before:bg-gradient-to-b before:from-[transparent] before:to-[#222]"
+						// 	: "",
 					)}
 				>
 					{keychainsQuery.data?.keychains.map((item, i) => {
 						const desc = DESCRIPTION_MAP[item.description];
 
-						return (
-							<div
-								className="rounded-xl p-6 flex flex-col bg-fill-quaternary w-full"
-								key={item.id.toString()}
-								onClick={setSelected.bind(null, i)}
-							>
-								<div className="flex items-center mb-1">
-									<div className="text-xl	font-bold flex items-center gap-[6px]">
-										{desc?.title ?? item.description}
-									</div>
+						if (desc && !desc.disabled) {
+							return (
+								<div
+									className="rounded-xl p-6 flex flex-col bg-fill-quaternary w-full"
+									key={item.id.toString()}
+									onClick={setSelected.bind(null, i)}
+								>
+									<div className="flex items-center mb-1">
+										<div className="text-xl	font-bold flex items-center gap-[6px]">
+											{desc?.title ?? item.description}
+										</div>
 
-									{selected === i ? (
-										<div className="ml-auto relative w-6 h-6">
+										{selected === i ? (
+											<div className="ml-auto relative w-6 h-6">
+												<Circle
+													stroke="#FFAEEE"
+													stroke-width="1"
+													cy={12}
+													cx={12}
+												/>
+												<Circle
+													className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4"
+													fill="#FFAEEE"
+													stroke="transparent"
+													stroke-width="0"
+												/>
+											</div>
+										) : (
 											<Circle
-												stroke="#FFAEEE"
+												className="ml-auto opacity-60"
+												stroke="#E5EEFF"
 												stroke-width="1"
 												cy={12}
 												cx={12}
 											/>
-											<Circle
-												className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4"
-												fill="#FFAEEE"
-												stroke="transparent"
-												stroke-width="0"
-											/>
-										</div>
-									) : (
-										<Circle
-											className="ml-auto opacity-60"
-											stroke="#E5EEFF"
-											stroke-width="1"
-											cy={12}
-											cx={12}
-										/>
-									)}
+										)}
+									</div>
+									{/* TODO get description from somewhere */}
+									<p className="m-0 text-muted-foreground">
+										{desc?.description ??
+											"Missing description"}
+									</p>
+									{/* <a
+										href="#"
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											setSelected(i);
+											setIsDetails(true);
+										}}
+										className="mt-2 duration-300 transition-all hover:text-pixel-pink font-semibold"
+									>
+										Learn more
+									</a> */}
 								</div>
-								{/* TODO get description from somewhere */}
-								<p className="m-0 text-muted-foreground">
-									{desc?.description ?? "Missing description"}
-								</p>
-								<a
-									href="#"
-									onClick={(e) => {
-										e.preventDefault();
-										e.stopPropagation();
-										setSelected(i);
-										setIsDetails(true);
-									}}
-									className="mt-2 duration-300 transition-all hover:text-pixel-pink font-semibold"
-								>
-									Learn more
-								</a>
-							</div>
-						);
+							);
+						}
 					})}
 				</div>
 			) : (

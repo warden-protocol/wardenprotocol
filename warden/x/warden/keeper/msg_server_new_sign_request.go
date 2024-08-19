@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -31,7 +30,12 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 	}
 
 	if keychain.Fees != nil {
-		err := k.DeductFeesToEscrow(ctx, sdk.MustAccAddressFromBech32(creator), keychain.Fees.SigReq)
+		err := k.DeductFeesToEscrow(
+			ctx,
+			msg.MaxKeychainFees,
+			sdk.MustAccAddressFromBech32(creator),
+			keychain.Fees.SigReq,
+		)
 		if err != nil {
 			return nil, err
 		}

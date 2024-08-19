@@ -59,8 +59,8 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 	return hidden ? null : (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
 			<div
-				className="font-bold text-5xl mb-6
-			 leading-[56px] tracking-[0.24px]"
+				className="font-bold text-5xl mb-12
+			 leading-[56px] tracking-[0.24px] font-display"
 			>
 				New owner
 			</div>
@@ -68,7 +68,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 			<div>
 				<div
 					className={clsx(
-						"my-4 rounded-lg text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] px-4 h-[60px] border-white",
+						"mb-8 rounded-lg text-left flex items-center justify-between gap-2 bg-fill-elevated border-[1px] px-4 h-[60px] border-border-quaternary",
 						{
 							"!border-negative":
 								address && !isValidBech32(address),
@@ -109,7 +109,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 				</div>
 				<div
 					className={clsx(
-						"rounded-lg	text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] px-4 h-[60px] border-white",
+						"rounded-lg	text-left flex items-center justify-between gap-2 bg-fill-elevated border-[1px] px-4 h-[60px] border-border-quaternary",
 					)}
 				>
 					<div className="w-full">
@@ -126,18 +126,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 							value={name}
 						/>
 					</div>
-					{!name ? (
-						<button
-							className="font-medium text-label-secondary px-2 hover:text-white transition-all duration-200"
-							onClick={async (e) => {
-								e.preventDefault();
-								const text = await pasteFromClipboard();
-								setName(text);
-							}}
-						>
-							Paste
-						</button>
-					) : (
+					{name && (
 						<Icons.clearCircle
 							className="cursor-pointer"
 							onClick={() => setName("")}
@@ -148,6 +137,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 				<div className="mt-12 flex flex-col gap-2">
 					<Button
 						onClick={create}
+						disabled={!name || !address}
 						className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-pixel-pink duration-200 hover:text-background"
 					>
 						{pending

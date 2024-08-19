@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import { useState } from "react";
 import "@/assets/animate.css";
-import { Edit2Icon, InfoIcon, XIcon } from "lucide-react";
+import { Edit2Icon, XIcon } from "lucide-react";
 import AddressAvatar from "@/components/AddressAvatar";
 import { useOwnerSettingsState } from "./state";
 import { Icons } from "@/components/ui/icons-assets";
+import { IconsOwner } from "./Icons";
+import { Copy } from "@/components/ui/copy";
 
 export default function OwnerCard({
 	onRemove,
@@ -48,7 +50,7 @@ export default function OwnerCard({
 					{ flipped },
 				)}
 			>
-				<div className="relative pt-6 w-full overflow-hidden z-0 flex items-center flex-col">
+				<div className="relative py-6 w-full overflow-hidden z-0 flex items-center justify-center flex-col">
 					<AddressAvatar
 						seed={owner}
 						size={96}
@@ -56,12 +58,12 @@ export default function OwnerCard({
 					/>
 					<p className="mt-4 text-sm">{name}</p>
 					<p className="mt-1 text-sm text-muted-foreground">
-						...{owner.slice(-12)}
+						...{owner.slice(-8)}
 					</p>
 				</div>
 
-				<InfoIcon
-					className="absolute right-0 cursor-pointer my-4 mr-4 z-10"
+				<IconsOwner.info
+					className="absolute right-0 cursor-pointer my-4 mr-4 z-10 invert dark:invert-0"
 					onClick={setFlipped.bind(null, true)}
 				/>
 			</div>
@@ -71,7 +73,7 @@ export default function OwnerCard({
 					{ flipped: !flipped },
 				)}
 			>
-				<div className="flex m-4 relative justify-center items-center">
+				<div className="flex m-4 mb-3 relative justify-center items-center">
 					<p className="text-muted-foreground text-sm">Address</p>
 
 					<XIcon
@@ -79,14 +81,23 @@ export default function OwnerCard({
 						onClick={setFlipped.bind(null, false)}
 					/>
 				</div>
-				<div className="flex justify-center items-center text-wrap overflow-hidden bg-fill-quaternary rounded-lg mx-2 p-4">
-					<p className="font-mono break-all text-center">{owner}</p>
+				<div className="flex justify-center items-center text-wrap overflow-hidden bg-fill-quaternary rounded-lg mx-2 px-4 py-2">
+					<p className="text-center">
+						<span className="inline font-mono break-all text-base leading-[20px]">
+							{owner}
+						</span>
+						<Copy
+							value={owner}
+							variant={"icon"}
+							className="inline-block"
+						/>
+					</p>
 				</div>
-				<div className="relative flex flex-col z-10 p-4">
+				<div className="relative flex flex-col z-10 p-2">
 					<div className="flex flex-col items-center justify-center">
 						{!edit ? (
 							<div className="flex gap-2 items-center justify-center w-full my-2">
-								<p className="font-display text-base font-bold tracking-[0.1px] text-center">
+								<p className="font-display text-base font-semibold tracking-[0.1px] text-center">
 									{name}
 								</p>
 								<button
@@ -99,7 +110,7 @@ export default function OwnerCard({
 						) : (
 							<div className="flex justify-between items-center w-full my-2">
 								<input
-									className="w-full font-display text-base font-bold tracking-[0.1px] focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 text-center"
+									className="w-full font-display text-base font-semibold bg-transparent tracking-[0.1px] focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 text-center"
 									value={nameInput}
 									onChange={(e) =>
 										setNameInput(e.target.value)
@@ -116,7 +127,7 @@ export default function OwnerCard({
 							</button>
 						) : (
 							<button
-								className="font-display text-base font-bold my-4 text-primary"
+								className="font-display w-full rounded p-1 h-8 flex items-center justify-center mt-4 bg-pixel-pink text-base font-bold text-label-invert"
 								onClick={saveName}
 							>
 								Done

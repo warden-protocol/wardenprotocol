@@ -31,7 +31,7 @@ _release-wardend-linux-amd64:
     	-v /var/run/docker.sock:/var/run/docker.sock \
     	-v {{ invocation_directory() }}:/go/src/wardend \
     	-w /go/src/wardend \
-    	ghcr.io/goreleaser/goreleaser:v1.25.1 \
+    	ghcr.io/goreleaser/goreleaser:v2.1.0 \
     	--clean --skip=validate --skip=publish -f ./.goreleaser-amd64.yaml
 
 release_tag := `git tag --points-at HEAD`
@@ -73,7 +73,7 @@ localnet bin="wardend":
     {{bin}} genesis add-genesis-account val 10000000000000000000000000uward
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000uward
     {{bin}} genesis add-genesis-space {{shulgin}}
-    {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
+    {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[{\"denom\":\"uward\",\"amount\":\"2\"}],\"sig_req\":[{\"denom\":\"uward\",\"amount\": \"2\"}]}"
     {{bin}} genesis gentx val 1000000000uward
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets

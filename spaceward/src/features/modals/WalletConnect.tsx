@@ -53,7 +53,7 @@ export default function WalletConnectModal({ hidden }: ModalParams<{}>) {
 	}, [uri]);
 
 	return (
-		<div className={clsx("max-w-[520px] w-[520px] pb-5", { hidden })}>
+		<div className={clsx("max-w-[520px] w-[520px] pb-5 py-10", { hidden })}>
 			{webRTC.peers.length && !uri ? (
 				<div className="flex items-center justify-between gap-2">
 					<div>

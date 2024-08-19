@@ -4,6 +4,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { prettyActionStatus } from "@/utils/formatting";
 import { Icons } from "@/components/ui/icons-assets";
+import { Icons as IconsDashboard } from "@/features/dashboard/icons";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import {
@@ -59,7 +60,10 @@ export function Actions() {
 				{q.status === "loading" ? (
 					<LoaderCircle className="animate-spin mt-2" />
 				) : (
-					<div className="text-xl	font-bold">No actions yet</div>
+					<div className="flex flex-col gap-3 items-center justify-center">
+						<IconsDashboard.noActions />
+						<div className="text-xl	font-bold">No actions yet</div>
+					</div>
 				)}
 			</div>
 		);
@@ -118,6 +122,10 @@ export function Actions() {
 														</div>
 														<div className="text-left">
 															{action?.msg?.typeUrl
+																.replace(
+																	"/warden.warden.v1beta2.Msg",
+																	"",
+																)
 																.replace(
 																	"/warden.warden.v1beta3.Msg",
 																	"",

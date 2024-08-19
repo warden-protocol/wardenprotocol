@@ -2,14 +2,6 @@ import { Fragment } from "react";
 
 const descriptions = [
 	{
-		key: "WardenKMS",
-		description: <Fragment>WardenKMS</Fragment>,
-		title: "WardenKMS",
-		verified: true,
-		disabled: false,
-		link: "#",
-	},
-	{
 		key: "OCP KMS",
 		description: (
 			<Fragment>
@@ -42,14 +34,6 @@ const descriptions = [
 		link: "#",
 	},
 	{
-		key: "Bushinode Keychain",
-		description: <Fragment>Bushinode Keychain</Fragment>,
-		title: "Bushinode Keychain",
-		verified: false,
-		disabled: true,
-		link: "#",
-	},
-	{
 		key: "Silence Laboratories",
 		description: (
 			<Fragment>
@@ -61,6 +45,14 @@ const descriptions = [
 			</Fragment>
 		),
 		title: "Silence Laboratories",
+		verified: true,
+		disabled: false,
+		link: "#",
+	},
+	{
+		key: "WardenKMS",
+		description: <Fragment>WardenKMS</Fragment>,
+		title: "WardenKMS",
 		verified: true,
 		disabled: false,
 		link: "#",

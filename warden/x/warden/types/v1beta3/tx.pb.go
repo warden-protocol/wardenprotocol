@@ -8,6 +8,8 @@ import (
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
 	_ "github.com/cosmos/cosmos-sdk/codec/types"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -1032,11 +1034,12 @@ func (m *MsgRemoveKeychainAdminResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgRemoveKeychainAdminResponse proto.InternalMessageInfo
 
 type MsgNewKeyRequest struct {
-	Authority  string  `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	SpaceId    uint64  `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	KeychainId uint64  `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	KeyType    KeyType `protobuf:"varint,4,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta3.KeyType" json:"key_type,omitempty"`
-	RuleId     uint64  `protobuf:"varint,5,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	Authority       string                                   `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	SpaceId         uint64                                   `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	KeychainId      uint64                                   `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	KeyType         KeyType                                  `protobuf:"varint,4,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta3.KeyType" json:"key_type,omitempty"`
+	RuleId          uint64                                   `protobuf:"varint,5,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	MaxKeychainFees github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,6,rep,name=max_keychain_fees,json=maxKeychainFees,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"max_keychain_fees"`
 }
 
 func (m *MsgNewKeyRequest) Reset()         { *m = MsgNewKeyRequest{} }
@@ -1105,6 +1108,13 @@ func (m *MsgNewKeyRequest) GetRuleId() uint64 {
 		return m.RuleId
 	}
 	return 0
+}
+
+func (m *MsgNewKeyRequest) GetMaxKeychainFees() github_com_cosmos_cosmos_sdk_types.Coins {
+	if m != nil {
+		return m.MaxKeychainFees
+	}
+	return nil
 }
 
 type MsgNewKeyRequestResponse struct {
@@ -1438,11 +1448,12 @@ func (m *MsgUpdateKeyResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgUpdateKeyResponse proto.InternalMessageInfo
 
 type MsgNewSignRequest struct {
-	Authority     string   `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	KeyId         uint64   `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
-	Input         []byte   `protobuf:"bytes,3,opt,name=input,proto3" json:"input,omitempty"`
-	Analyzers     []string `protobuf:"bytes,4,rep,name=analyzers,proto3" json:"analyzers,omitempty"`
-	EncryptionKey []byte   `protobuf:"bytes,5,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryption_key,omitempty"`
+	Authority       string                                   `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	KeyId           uint64                                   `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
+	Input           []byte                                   `protobuf:"bytes,3,opt,name=input,proto3" json:"input,omitempty"`
+	Analyzers       []string                                 `protobuf:"bytes,4,rep,name=analyzers,proto3" json:"analyzers,omitempty"`
+	EncryptionKey   []byte                                   `protobuf:"bytes,5,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryption_key,omitempty"`
+	MaxKeychainFees github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,6,rep,name=max_keychain_fees,json=maxKeychainFees,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"max_keychain_fees"`
 }
 
 func (m *MsgNewSignRequest) Reset()         { *m = MsgNewSignRequest{} }
@@ -1509,6 +1520,13 @@ func (m *MsgNewSignRequest) GetAnalyzers() []string {
 func (m *MsgNewSignRequest) GetEncryptionKey() []byte {
 	if m != nil {
 		return m.EncryptionKey
+	}
+	return nil
+}
+
+func (m *MsgNewSignRequest) GetMaxKeychainFees() github_com_cosmos_cosmos_sdk_types.Coins {
+	if m != nil {
+		return m.MaxKeychainFees
 	}
 	return nil
 }
@@ -3128,6 +3146,20 @@ func (m *MsgNewKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.MaxKeychainFees) > 0 {
+		for iNdEx := len(m.MaxKeychainFees) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MaxKeychainFees[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x32
+		}
+	}
 	if m.RuleId != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.RuleId))
 		i--
@@ -3406,6 +3438,20 @@ func (m *MsgNewSignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.MaxKeychainFees) > 0 {
+		for iNdEx := len(m.MaxKeychainFees) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MaxKeychainFees[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x32
+		}
+	}
 	if len(m.EncryptionKey) > 0 {
 		i -= len(m.EncryptionKey)
 		copy(dAtA[i:], m.EncryptionKey)
@@ -3945,6 +3991,12 @@ func (m *MsgNewKeyRequest) Size() (n int) {
 	if m.RuleId != 0 {
 		n += 1 + sovTx(uint64(m.RuleId))
 	}
+	if len(m.MaxKeychainFees) > 0 {
+		for _, e := range m.MaxKeychainFees {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -4080,6 +4132,12 @@ func (m *MsgNewSignRequest) Size() (n int) {
 	l = len(m.EncryptionKey)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.MaxKeychainFees) > 0 {
+		for _, e := range m.MaxKeychainFees {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
 	}
 	return n
 }
@@ -6233,6 +6291,40 @@ func (m *MsgNewKeyRequest) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxKeychainFees", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MaxKeychainFees = append(m.MaxKeychainFees, types.Coin{})
+			if err := m.MaxKeychainFees[len(m.MaxKeychainFees)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -6992,6 +7084,40 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 			m.EncryptionKey = append(m.EncryptionKey[:0], dAtA[iNdEx:postIndex]...)
 			if m.EncryptionKey == nil {
 				m.EncryptionKey = []byte{}
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxKeychainFees", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MaxKeychainFees = append(m.MaxKeychainFees, types.Coin{})
+			if err := m.MaxKeychainFees[len(m.MaxKeychainFees)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		default:

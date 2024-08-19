@@ -68,6 +68,13 @@ export const useStakingQueries = (address: string) => {
 		request: {
 			// @ts-expect-error string expected; fixme possible type bug
 			status: BondStatus.BOND_STATUS_UNSPECIFIED,
+			pagination: {
+				key: new Uint8Array(),
+				offset: BigInt(0),
+				limit: BigInt(2000),
+				countTotal: true,
+				reverse: false,
+			},
 		},
 		options: {
 			enabled: isReady,
@@ -92,8 +99,10 @@ export const useStakingTx = (dispatch: Dispatch) => {
 	const { address } = useAddressContext();
 	const { tx } = useTx();
 
-	const { withdrawDelegatorReward } = cosmos.distribution.v1beta1.MessageComposer.withTypeUrl;
-	const { delegate, undelegate, beginRedelegate } = cosmos.staking.v1beta1.MessageComposer.withTypeUrl;
+	const { withdrawDelegatorReward } =
+		cosmos.distribution.v1beta1.MessageComposer.withTypeUrl;
+	const { delegate, undelegate, beginRedelegate } =
+		cosmos.staking.v1beta1.MessageComposer.withTypeUrl;
 
 	// fixme no copy-paste
 	const submitClaimTx = useCallback(
@@ -107,10 +116,15 @@ export const useStakingTx = (dispatch: Dispatch) => {
 				payload: true,
 			});
 
-			const res = await tx([withdrawDelegatorReward({
-				delegatorAddress: address,
-				validatorAddress,
-			})], {});
+			const res = await tx(
+				[
+					withdrawDelegatorReward({
+						delegatorAddress: address,
+						validatorAddress,
+					}),
+				],
+				{},
+			);
 
 			dispatch({
 				type: "txPending",
@@ -133,14 +147,19 @@ export const useStakingTx = (dispatch: Dispatch) => {
 				payload: true,
 			});
 
-			const res = await tx([delegate({
-				delegatorAddress: address,
-				validatorAddress,
-				amount: {
-					amount: amount.toString(),
-					denom: "uward",
-				},
-			})], {});
+			const res = await tx(
+				[
+					delegate({
+						delegatorAddress: address,
+						validatorAddress,
+						amount: {
+							amount: amount.toString(),
+							denom: "uward",
+						},
+					}),
+				],
+				{},
+			);
 
 			dispatch({
 				type: "txPending",
@@ -163,14 +182,19 @@ export const useStakingTx = (dispatch: Dispatch) => {
 				payload: true,
 			});
 
-			const res = await tx([undelegate({
-				delegatorAddress: address,
-				validatorAddress,
-				amount: {
-					amount: amount.toString(),
-					denom: "uward",
-				},
-			})], {});
+			const res = await tx(
+				[
+					undelegate({
+						delegatorAddress: address,
+						validatorAddress,
+						amount: {
+							amount: amount.toString(),
+							denom: "uward",
+						},
+					}),
+				],
+				{},
+			);
 
 			dispatch({
 				type: "txPending",
@@ -193,15 +217,20 @@ export const useStakingTx = (dispatch: Dispatch) => {
 				payload: true,
 			});
 
-			const res = await tx([beginRedelegate({
-					delegatorAddress: address,
-					validatorSrcAddress: from,
-					validatorDstAddress: to,
-					amount: {
-						amount: amount.toString(),
-						denom: "uward",
-					},
-			})], {});
+			const res = await tx(
+				[
+					beginRedelegate({
+						delegatorAddress: address,
+						validatorSrcAddress: from,
+						validatorDstAddress: to,
+						amount: {
+							amount: amount.toString(),
+							denom: "uward",
+						},
+					}),
+				],
+				{},
+			);
 
 			dispatch({
 				type: "txPending",

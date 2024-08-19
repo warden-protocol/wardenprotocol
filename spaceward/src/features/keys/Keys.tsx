@@ -236,7 +236,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 	}
 
 	return (
-		<div className="flex basis-2/6 flex-grow-0 flex-shrink-0 p-3">
+		<div className="flex basis-full md:basis-1/2 lg:basis-2/6 flex-grow-0 flex-shrink-0 p-3">
 			<div className="flipper-container rounded-xl h-52 w-full items-center justify-center relative flex">
 				<div
 					className={clsx(

@@ -9,13 +9,15 @@ export function DashboardPage() {
 
 	return (
 		<div className="px-8 py-4">
-			<h2 className="text-5xl mb-10 font-bold">Dashboard</h2>
+			<h2 className="text-5xl mb-10 font-bold leading-[0.24px]">
+				Dashboard
+			</h2>
 
 			{spaceId ? <Keys spaceId={BigInt(spaceId)} /> : null}
 
 			<div className="my-6 h-[1px] bg-background" />
 
-			<div className="grid gap-6 grid-cols-[2fr_1fr] mb-5">
+			<div className="grid gap-6 grid-cols-1 lg:grid-cols-[2fr_1fr] mb-5">
 				<div>
 					<GovernanceDashboard />
 					<Actions />

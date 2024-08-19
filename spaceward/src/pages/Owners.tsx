@@ -43,12 +43,14 @@ export function OwnersPage() {
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-5xl font-bold">Owners</h2>
+					<h2 className="text-5xl font-bold !tracking-[0.24px]">
+						Owners
+					</h2>
 				</div>
 				{spaceId ? (
 					<div className="!ml-auto flex items-center">
 						<div
-							className="flex items-center text-muted-foreground text-sm rounded-sm bg-fill-quaternary p-2 mr-4 cursor-pointer"
+							className="flex items-center text-label-primary text-base font-semibold capitalize rounded-sm bg-fill-quaternary p-2 mr-4 cursor-pointer"
 							onClick={setModal.bind(null, {
 								type: "add-owner",
 								params: {},
@@ -88,7 +90,7 @@ export function OwnersPage() {
 					))}
 					<div className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4">
 						<div
-							className="rounded-xl h-60 w-full cursor-pointer flex flex-col bg-fill-quaternary"
+							className="rounded-xl border-[1px] border-solid border-border-edge h-60 w-full cursor-pointer flex flex-col bg-fill-quaternary"
 							onClick={setModal.bind(null, {
 								type: "add-owner",
 								params: {},

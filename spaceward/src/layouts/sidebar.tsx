@@ -86,13 +86,18 @@ export function InnerSidebar() {
 	return (
 		<div className="w-[calc(100%-16px)] md:w-60 xl:flex flex-col overflow-scroll no-scrollbar pb-20 bg-card m-2 rounded-xl">
 			<div>
-				<div className="my-6 mx-6 relative z-20">
-					<a href="/" className="items-center justify-center flex">
-						<Icons.logo className="h-6 w-auto hidden md:block" />
-					</a>
-				</div>
-				<div className="px-2 relative z-10">
-					<SpaceSelector />
+				<div className="overflow-hidden">
+					<div className="my-6 mx-6 relative z-20">
+						<a
+							href="/"
+							className="items-center justify-center flex"
+						>
+							<Icons.logo className="h-6 w-auto hidden md:block invert dark:invert-0" />
+						</a>
+					</div>
+					<div className="px-2 relative z-10">
+						<SpaceSelector />
+					</div>
 				</div>
 				<div>
 					<div className="space-y-4 py-2">

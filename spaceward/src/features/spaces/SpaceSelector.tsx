@@ -70,7 +70,7 @@ export function SpaceSelector() {
 	return count && count > 0 ? (
 		<Popover>
 			<PopoverTrigger asChild>
-				<div className="shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]  mb-5 ">
+				<div className="mb-5 text-white">
 					<Button
 						asChild
 						variant="outline"
@@ -93,13 +93,14 @@ export function SpaceSelector() {
 										disableTooltip
 										className=" w-[250px] h-[250px] -translate-y-[10px]"
 									/>
+									<div className="absolute top-0 left-0 w-full h-full bg-[#302730] opacity-30 dark:bg-[#000] dark:opacity-40"></div>
 								</div>
 								<div className="flex relative z-10 flex-col mr-auto text-left">
 									<span className="block text-xs">
 										Active Space
 									</span>
 									<span className="block font-semibold">
-										{"Space #" + spaceId}
+										{"#" + spaceId}
 									</span>
 								</div>
 								<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

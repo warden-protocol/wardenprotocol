@@ -7,6 +7,7 @@
 @font-face {
 	font-family: "Alliance Neue Regular";
 	src:
+		url("/fonts/Alliance-NeueRegular.ttf") format("truetype"),
 		url("/fonts/alliance-neueregular-webfont.woff2") format("woff2"),
 		url("/fonts/alliance-neueregular-webfont.woff") format("woff");
 	font-display: swap;
@@ -15,8 +16,24 @@
 @font-face {
 	font-family: "Alliance Neue Bold";
 	src:
+		url("/fonts/Alliance-NeueBold.ttf") format("truetype"),
 		url("/fonts/alliance-neuebold-webfont.woff2") format("woff2"),
 		url("/fonts/alliance-neuebold-webfont.woff") format("woff");
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Alliance Neue SemiBold";
+	src: url("/fonts/Alliance-NeueSemiBold.ttf") format("truetype");
+	font-weight: 600;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Alliance Neue Medium";
+	src: url("/fonts/Alliance-Medium.ttf") format("truetype");
+	font-weight: 600;
 	font-display: swap;
 }
 
@@ -65,7 +82,11 @@
 		--bg-elevated: #424345;
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
-		--border-edge: rgba(229, 238, 255, 0.05);
+		--label-invert: #fff;
+		--border-edge: rgba(136, 126, 120, 0.15);
+		--fill-primary: #171717;
+		--border-accent: #f34ad5;
+		--label-accent: #f34ad5;
 	}
 
 	.dark {
@@ -111,6 +132,10 @@
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
+		--label-invert: #000;
+		--fill-primary: #fff;
+		--border-accent: #ffaeee;
+		--label-accent: #ffaeee;
 	}
 }
 
@@ -151,6 +176,7 @@
 *::-webkit-scrollbar {
 	display: none;
 }
+
 .scroll-visible::-webkit-scrollbar {
 	display: block;
 }
@@ -184,14 +210,13 @@
 }
 
 .actions-trigger {
-	--grid-id: minmax(50px, 0.25fr);
+	--grid-id: minmax(125px, 0.25fr);
 	--grid-type: minmax(150px, 3fr);
 	--grid-info: minmax(150px, 3fr);
 	--grid-date: minmax(200px, 3fr);
 	--grid-status: minmax(120px, 1fr);
 	grid-template-columns:
-		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date)
-		var(--grid-status);
+		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date) var(--grid-status);
 	grid-template-areas: "id type info date status";
 	width: 100%;
 	display: grid;
@@ -205,8 +230,7 @@
 	--grid-value: minmax(100px, 1.5fr);
 	--grid-action: minmax(100px, 1fr);
 	grid-template-columns:
-		var(--grid-address) var(--grid-tokens) var(--grid-value)
-		var(--grid-action);
+		var(--grid-address) var(--grid-tokens) var(--grid-value) var(--grid-action);
 	grid-template-areas: "address tokens value action";
 	width: 100%;
 	display: grid;
@@ -235,6 +259,7 @@ input::-webkit-outer-spin-button {
 }
 
 @layer utilities {
+
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
@@ -255,13 +280,11 @@ input::-webkit-outer-spin-button {
 } */
 
 .mask-space {
-	-webkit-mask-image: -webkit-gradient(
-		linear,
-		left 0%,
-		left bottom,
-		from(rgba(0, 0, 0, 1)),
-		to(rgba(0, 0, 0, 0))
-	);
+	-webkit-mask-image: -webkit-gradient(linear,
+			left 0%,
+			left bottom,
+			from(rgba(0, 0, 0, 1)),
+			to(rgba(0, 0, 0, 0)));
 }
 
 .fix-avatar .rounded-full {

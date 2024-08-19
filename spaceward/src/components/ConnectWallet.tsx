@@ -101,7 +101,7 @@ export function ConnectWallet() {
 			{address ? (
 				<PopoverContent
 					side="left"
-					className="w-80 mt-2 mr-2 bg-card rounded-xl p-6 border-[1px] border-border-edge border-solid"
+					className="w-[384px] mt-2 mr-2 bg-card rounded-xl p-6 border-[1px] border-border-edge border-solid"
 				>
 					<div className="grid gap-6">
 						<div className="flex flex-row text-left gap-3 items-center">

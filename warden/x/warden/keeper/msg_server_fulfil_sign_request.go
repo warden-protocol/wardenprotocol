@@ -39,7 +39,7 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 			return nil, err
 		}
 
-		if err := k.ReleaseFeesToKeychain(ctx, keychain, req.DeductedKeychainFees); err != nil {
+		if err := k.ReleaseKeychainFees(ctx, keychain, req.DeductedKeychainFees); err != nil {
 			return nil, err
 		}
 
@@ -55,7 +55,7 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 			return nil, err
 		}
 
-		err := k.RefundFeesToCreator(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
+		err := k.RefundKeychainFees(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
 		if err != nil {
 			return nil, err
 		}

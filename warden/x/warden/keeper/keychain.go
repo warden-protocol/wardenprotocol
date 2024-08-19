@@ -2,32 +2,35 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func (k Keeper) deductKeychainFees(
-	ctx context.Context,
-	maxKeychainFee sdk.Coins,
-	keychainAccAddress sdk.AccAddress,
-	keychainFees sdk.Coins,
-	creator sdk.AccAddress) error {
-	if maxKeychainFee.Empty() || keychainFees.Empty() {
-		return fmt.Errorf("fees cannot be empty")
+// DeductKeychainFees is to deduct fees from creator's address to warden escrow address
+func (k Keeper) DeductKeychainFees(ctx context.Context, creator sdk.AccAddress, fees sdk.Coins) error {
+	if !fees.Empty() {
+		return k.bankKeeper.SendCoins(ctx, creator, k.wardenAuthority, fees)
 	}
 
-	if !keychainFees.DenomsSubsetOf(maxKeychainFee) {
-		return fmt.Errorf("fee denominations do not match: wanted %s", keychainFees)
+	return nil
+}
+
+// ReleaseKeychainFees is to release paid keychain fees to keychain, when Keychain operation is
+// completed
+func (k Keeper) ReleaseKeychainFees(ctx context.Context, kr types.Keychain, fees sdk.Coins) error {
+	if !fees.Empty() {
+		return k.bankKeeper.SendCoins(ctx, k.wardenAuthority, kr.AccAddress(), fees)
 	}
 
-	if keychainFees.IsAllLTE(maxKeychainFee) {
-		return k.bankKeeper.SendCoins(
-			ctx,
-			creator,
-			keychainAccAddress,
-			keychainFees,
-		)
+	return nil
+}
+
+// RefundKeychainFees is to refund paid keychain fees to action's creator, when Keychain operation is
+// rejected or timed-out
+func (k Keeper) RefundKeychainFees(ctx context.Context, creator sdk.AccAddress, fees sdk.Coins) error {
+	if !fees.Empty() {
+		return k.bankKeeper.SendCoins(ctx, k.wardenAuthority, creator, fees)
 	}
 
-	return fmt.Errorf("keychain fees are not sufficient: wanted %s", keychainFees)
+	return nil
 }

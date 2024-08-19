@@ -68,3 +68,27 @@ func (kf *KeychainFees) EnsureValid() error {
 
 	return nil
 }
+
+func (k *Keychain) EnsureSufficientKeyFees(fees sdk.Coins) error {
+	return ensureSufficientKeyFees(k.Fees.KeyReq, fees)
+}
+
+func (k *Keychain) EnsureSufficientSignFees(fees sdk.Coins) error {
+	return ensureSufficientKeyFees(k.Fees.SigReq, fees)
+}
+
+func ensureSufficientKeyFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
+	if maxFees.Empty() || wantedFees.Empty() {
+		return fmt.Errorf("fees cannot be empty")
+	}
+
+	if !wantedFees.DenomsSubsetOf(maxFees) {
+		return fmt.Errorf("fee denominations do not match: wanted %s", wantedFees)
+	}
+
+	if wantedFees.IsAllLTE(maxFees) {
+		return nil
+	}
+
+	return fmt.Errorf("keychain fees are not sufficient: wanted %s", wantedFees)
+}

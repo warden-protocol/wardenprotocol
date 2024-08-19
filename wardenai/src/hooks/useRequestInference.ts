@@ -36,11 +36,6 @@ export default function useRequestInference() {
                     throw new Error(`tx failed with code: ${res.code}`);
                 }
 
-                // const actionCreated = MsgNewActionResponse.decode(
-                //     res.msgResponses[0].value
-                // );
-                // const actionId = actionCreated.id;
-
                 const inferenceRequestCreated =
                     MsgNewInferenceRequestResponse.decode(
                         res.msgResponses[0].value
@@ -48,52 +43,6 @@ export default function useRequestInference() {
 
                 const inferenceRequestId = inferenceRequestCreated.id;
 
-                // wait for action to be completed
-                // let InferenceRequestId = null;
-
-                // eslint-disable-next-line no-constant-condition
-                // while (true) {
-                //     const res = await client.w.v1beta1.actionById({
-                //         id: actionId,
-                //     });
-
-                //     if (
-                //         res.action?.status !==
-                //             ActionStatus.ACTION_STATUS_PENDING &&
-                //         res.action?.status !==
-                //             ActionStatus.ACTION_STATUS_COMPLETED
-                //     ) {
-                //         throw new Error(
-                //             `action failed: ${JSON.stringify(res.action)}`
-                //         );
-                //     }
-
-                //     if (
-                //         res.action?.result?.typeUrl !==
-                //         MsgNewInferenceRequestResponse.typeUrl
-                //     ) {
-                //         throw new Error(
-                //             `unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewInferenceRequestResponse.typeUrl}`
-                //         );
-                //     }
-
-                //     if (res.action?.result?.value) {
-                //         InferenceRequestId =
-                //             MsgNewInferenceRequestResponse.decode(
-                //                 res.action?.result.value
-                //             ).id;
-                //         if (InferenceRequestId) {
-                //             break;
-                //         }
-                //     }
-
-                //     await sleep(1000);
-                // }
-
-                // wait for request to be processed by keychain
-                // setData({ state: InferenceRequesterState.WAITING_KEYCHAIN });
-                // eslint-disable-next-line no-constant-condition
-                // while (true) {
                 const result =
                     await client.warden.warden.v1beta3.inferenceRequestById({
                         id: inferenceRequestId,

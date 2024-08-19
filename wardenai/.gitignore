@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 .vite
 .vercel
+.vite/*
+.vercel/*

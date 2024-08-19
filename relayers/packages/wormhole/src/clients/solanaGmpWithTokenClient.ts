@@ -31,7 +31,7 @@ import {
   Transaction,
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
-import { ChainId } from '@wormhole-foundation/sdk';
+import { ChainId, GatewayTransferWithPayloadMsg, makeGatewayTransferMsg } from '@wormhole-foundation/sdk';
 import { BN } from 'bn.js';
 import bs58 from 'bs58';
 
@@ -39,6 +39,7 @@ import { GmpWithToken, IDL as IdlGmpWithToken } from '../../contracts/solana/tar
 import { config } from '../config/schema.js';
 import { rootLogger } from '../index.js';
 import { getWormholeContractsNetwork } from '../utils.js';
+import { GatewayPayload } from './types/gatewayPayload.js';
 
 export class SolanaGmpWithTokenClient {
   wormholeCore: PublicKeyInitData;
@@ -118,7 +119,7 @@ export class SolanaGmpWithTokenClient {
     rootLogger.info(`Foreign contract has been successfully registered: ${result}`);
   }
 
-  async sendNative(from: Keypair, to: Buffer, toChain: ChainId, mint: PublicKey, amount: bigint): Promise<void> {
+  async sendNative(from: Keypair, payload: GatewayTransferWithPayloadMsg, toChain: ChainId, mint: PublicKey, amount: bigint): Promise<void> {
     const [connection, program] = createProgram<GmpWithToken>(this.programId, IdlGmpWithToken);
     const tracker = await getProgramSequenceTracker(connection, this.wormholeTokenBridge, this.wormholeCore);
     const message = deriveAddress(
@@ -147,7 +148,7 @@ export class SolanaGmpWithTokenClient {
     );
 
     const instruction = await program.methods
-      .sendNativeTokensWithPayload(0, new BN(amount.toString()), [...to], toChain)
+      .sendNativeTokensWithPayload(0, new BN(amount.toString()), Buffer.from(JSON.stringify(payload)), toChain)
       .accounts({
         config: deriveAddress([Buffer.from('sender')], this.programId),
         foreignContract: deriveAddress(

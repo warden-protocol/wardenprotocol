@@ -106,7 +106,7 @@ pub mod gmp_with_token {
         ctx: Context<SendNativeTokensWithPayload>,
         batch_id: u32,
         amount: u64,
-        recipient_address: [u8; 32],
+        payload: Vec<u8>,
         recipient_chain: u16,
     ) -> Result<()> {
         // Token Bridge program truncates amounts to 8 decimals, so there will
@@ -126,7 +126,7 @@ pub mod gmp_with_token {
         require!(
             recipient_chain > 0
                 && recipient_chain != wormhole::CHAIN_ID_SOLANA
-                && !recipient_address.iter().all(|&x| x == 0),
+                && !payload.is_empty(),
             GmpWithTokenError::InvalidRecipient,
         );
 
@@ -166,12 +166,6 @@ pub mod gmp_with_token {
             ),
             truncated_amount,
         )?;
-
-        // Serialize GmpMessage as encoded payload for Token Bridge transfer.
-        let payload = GmpMessage::Payload {
-            recipient: recipient_address,
-        }
-        .try_to_vec()?;
 
         // Bridge native token with encoded payload.
         token_bridge::transfer_native_with_payload(
@@ -353,14 +347,14 @@ pub mod gmp_with_token {
         ctx: Context<SendWrappedTokensWithPayload>,
         batch_id: u32,
         amount: u64,
-        recipient_address: [u8; 32],
+        payload: Vec<u8>,
         recipient_chain: u16,
     ) -> Result<()> {
         require!(amount > 0, GmpWithTokenError::ZeroBridgeAmount);
         require!(
             recipient_chain > 0
                 && recipient_chain != wormhole::CHAIN_ID_SOLANA
-                && !recipient_address.iter().all(|&x| x == 0),
+                && !payload.is_empty(),
             GmpWithTokenError::InvalidRecipient,
         );
 
@@ -400,13 +394,6 @@ pub mod gmp_with_token {
             ),
             amount,
         )?;
-
-        // Serialize GmpMessage as encoded payload for Token Bridge
-        // transfer.
-        let payload = GmpMessage::Payload {
-            recipient: recipient_address,
-        }
-        .try_to_vec()?;
 
         // Bridge wrapped token with encoded payload.
         token_bridge::transfer_wrapped_with_payload(

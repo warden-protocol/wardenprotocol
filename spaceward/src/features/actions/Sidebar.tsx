@@ -17,7 +17,7 @@ import {
 import "./animate.css";
 import { isUint8Array } from "@/lib/utils";
 import { prepareTx } from "../modals/util";
-import { COSMOS_CHAINS } from "../assets/hooks";
+import { COSMOS_CHAINS } from "@/config/tokens";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useToast } from "@/components/ui/use-toast";

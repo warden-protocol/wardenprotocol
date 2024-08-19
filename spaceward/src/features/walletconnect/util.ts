@@ -20,8 +20,8 @@ import { useEthereumTx } from "@/hooks/useEthereumTx";
 import type { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { getProviderByChainId, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
 import { fixAddress } from "../modals/ReceiveAssets";
-import { COSMOS_CHAINS } from "../assets/hooks";
 import { RemoteMessageType, type RemoteState } from "./types";
+import { COSMOS_CHAINS } from "@/config/tokens";
 
 export function decodeRemoteMessage(
 	message: Uint8Array,

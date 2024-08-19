@@ -5,7 +5,7 @@ import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { TxBuild, buildTransaction, createAminoSignDoc } from "./util";
-import { COSMOS_CHAINS, useAssetQueries } from "../assets/hooks";
+import { useAssetQueries } from "../assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useFiatConversion from "@/hooks/useFiatConversion";
 import { numRestrict } from "../staking/util";
@@ -16,6 +16,7 @@ import { validateAddress } from "../intents/AddAddressModal";
 import { StargateClient } from "@cosmjs/stargate";
 import { useModalState } from "./state";
 import KeySelector from "./KeySelector";
+import { COSMOS_CHAINS } from "@/config/tokens";
 
 export default function SendAssetsModal({
 	// address,

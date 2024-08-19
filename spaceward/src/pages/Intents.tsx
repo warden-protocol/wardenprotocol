@@ -78,6 +78,8 @@ export const useRules = () => {
 				{},
 			);
 
+			console.log({ res })
+
 			if (!res) {
 				throw new Error("failed to broadcast tx");
 			}

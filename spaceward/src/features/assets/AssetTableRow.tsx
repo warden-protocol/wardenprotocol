@@ -42,9 +42,7 @@ const AssetTableRow = ({
 }) => {
 	const { setData: setModal } = useModalState();
 	const Network = NetworkIconsTransparent[item.chainName] ?? AssetPlaceholder;
-
 	const Token = TokenIcons[item.token] ?? AssetPlaceholder;
-
 	const { spaceId } = useSpaceId();
 	const { queryPrices } = useAssetQueries(spaceId);
 	const curr = useCurrency();
@@ -72,8 +70,7 @@ const AssetTableRow = ({
 	}, [queryPrices, currency]);
 
 	const { name } = useKeyData({
-		key: keyResponse?.key,
-		addresses: keyResponse?.addresses,
+		key: keyResponse?.key!,
 	});
 
 	return (

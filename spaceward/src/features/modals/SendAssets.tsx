@@ -1,6 +1,5 @@
 import clsx from "clsx";
-import type { TransactionReceipt } from "ethers";
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
@@ -14,7 +13,7 @@ import { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "../assets/AssetRow";
 import { validateAddress } from "../intents/AddAddressModal";
-import { SigningStargateClient } from "@cosmjs/stargate";
+import { StargateClient } from "@cosmjs/stargate";
 import { useModalState } from "./state";
 import KeySelector from "./KeySelector";
 
@@ -48,9 +47,7 @@ export default function SendAssetsModal({
 
 	// fixme types
 	const selectedToken = _selectedToken as typeof _selectedToken | undefined;
-
 	const [pending, setPending] = useState(false);
-	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
 	const amountNum = parseFloat(amount);
@@ -71,13 +68,7 @@ export default function SendAssetsModal({
 			: false;
 
 	const { signEthereumTx } = useEthereumTx();
-
-	const keys = useMemo(() => (key ? [key] : []), [key]);
-
-	const { signer, signAmino } = useKeychainSigner({
-		keys,
-		chainName: selectedToken?.chainName,
-	});
+	const { signAmino } = useKeychainSigner();
 
 	async function submit() {
 		if (!key || !selectedToken) {
@@ -110,10 +101,7 @@ export default function SendAssetsModal({
 				const endpoint =
 					chain?.rpc ?? `https://rpc.cosmos.directory/${chainName}`;
 
-				const client = await SigningStargateClient.connectWithSigner(
-					endpoint,
-					signer,
-				);
+				const client = await StargateClient.connect(endpoint);
 
 				const signDoc = await createAminoSignDoc({
 					tx: txBuild as TxBuild<"cosmos">,

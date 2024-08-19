@@ -19,24 +19,6 @@ const defaultFee: StdFee = {
 	amount: [{ denom: "uward", amount: "250" }],
 };
 
-export interface TxRawBase64 {
-	bodyBytes: string;
-	authInfoBytes: string;
-	signatures: string[];
-}
-
-export const txRawBase64Encode = (txRaw: TxRaw): TxRawBase64 => ({
-	bodyBytes: Buffer.from(txRaw.bodyBytes).toString("base64"),
-	authInfoBytes: Buffer.from(txRaw.authInfoBytes).toString("base64"),
-	signatures: txRaw.signatures.map((s) => Buffer.from(s).toString("base64")),
-});
-
-export const txRawBase64Decode = (txRaw: TxRawBase64): TxRaw => ({
-	bodyBytes: Buffer.from(txRaw.bodyBytes, "base64"),
-	authInfoBytes: Buffer.from(txRaw.authInfoBytes, "base64"),
-	signatures: txRaw.signatures.map((s) => Buffer.from(s, "base64")),
-});
-
 export enum QueuedActionStatus {
 	Signed = 0x00,
 	Broadcast,
@@ -48,7 +30,7 @@ export enum QueuedActionStatus {
 }
 
 export interface QueuedAction {
-	b64Tx: TxRawBase64;
+	txRaw: TxRaw;
 	data: any;
 	id: string;
 	chainName?: string;
@@ -57,11 +39,16 @@ export interface QueuedAction {
 	response?: DeliverTxResponse;
 	actionId?: bigint;
 	action?: Action;
-	networkType?: "eth" | "cosmos";
+	networkType?: "eth" | "eth-raw" | "cosmos";
 	value?: any;
+	/** @deprecated fix naming */
 	tx?: TransactionLike;
+	/** @deprecated fix naming */
 	signDoc?: StdSignDoc;
 	pubkey?: Uint8Array;
+
+	walletConnectRequestId?: number;
+	walletConnectTopic?: string;
 }
 
 export const useActionsState = createPersistantState<
@@ -85,10 +72,20 @@ export function useEnqueueAction<Data>(
 			tx?: TransactionLike;
 			signDoc?: StdSignDoc;
 			pubkey?: Uint8Array;
+			walletConnectRequestId?: number;
+			walletConnectTopic?: string;
 		} = {},
 		actionTimeoutHeight = 0,
 	) {
-		const { chainName, tx, pubkey, signDoc, ...opts } = _opts;
+		const {
+			chainName,
+			tx,
+			pubkey,
+			signDoc,
+			walletConnectRequestId,
+			walletConnectTopic,
+			...opts
+		} = _opts;
 
 		if (!address) {
 			throw new Error("Wallet not connected");
@@ -100,11 +97,10 @@ export function useEnqueueAction<Data>(
 		const msg = getMessage(data, actionTimeoutHeight);
 		const fee = opts.fee || defaultFee;
 		const signedTx = await client.sign(address, [msg], fee, "");
-		const b64Tx = txRawBase64Encode(signedTx);
 
 		setData({
 			[storeId]: {
-				b64Tx,
+				txRaw: signedTx,
 				id: storeId,
 				typeUrl: msg.typeUrl,
 				data,
@@ -112,7 +108,9 @@ export function useEnqueueAction<Data>(
 				chainName,
 				tx,
 				signDoc,
-				pubkey
+				pubkey,
+				walletConnectRequestId,
+				walletConnectTopic,
 			},
 		});
 

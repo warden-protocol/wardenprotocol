@@ -2,17 +2,12 @@ import clsx from "clsx";
 import { useEffect } from "react";
 import { useChain } from "@cosmos-kit/react-lite";
 import { env } from "@/env";
-import {
-	QueuedAction,
-	QueuedActionStatus,
-	txRawBase64Decode,
-	useActionsState,
-} from "./hooks";
+import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
 import { getClient, getSigningClient } from "@/hooks/useClient";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-import { hexlify, Transaction, TransactionReceipt } from "ethers";
+import { hexlify, Transaction } from "ethers";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import {
 	Popover,
@@ -23,6 +18,9 @@ import "./animate.css";
 import { isUint8Array } from "@/lib/utils";
 import { prepareTx } from "../modals/util";
 import { COSMOS_CHAINS } from "../assets/hooks";
+import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -32,14 +30,16 @@ type GetStatus = (client: Awaited<ReturnType<typeof getClient>>) => Promise<{
 	pending: boolean;
 	error: boolean;
 	done: boolean;
-	next?: "eth" | "cosmos";
+	next?: "eth" | "eth-raw" | "cosmos";
 	value?: any;
 }>;
 
 function ActionItem({ single, ...item }: ItemProps) {
+	const { toast } = useToast();
+	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
 	const { setData } = useActionsState();
 
-	const { address, getOfflineSignerDirect: getOfflineSigner } = useChain(
+	const { getOfflineSignerDirect: getOfflineSigner } = useChain(
 		env.cosmoskitChainName,
 	);
 
@@ -54,10 +54,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 						return;
 					}
 
-					const txRaw = cosmos.tx.v1beta1.TxRaw.encode(
-						txRawBase64Decode(item.b64Tx),
-					);
-
+					const txRaw = cosmos.tx.v1beta1.TxRaw.encode(item.txRaw);
 					return client.broadcastTx(Uint8Array.from(txRaw.finish()));
 				})
 				.then((res) => {
@@ -76,6 +73,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 					} else {
 						console.error("Failed to broadcast", res);
 
+						toast({
+							title: "Faled",
+							description: "Could not broadcast transaction",
+							duration: 10000,
+						});
+
 						setData({
 							[item.id]: {
 								...item,
@@ -86,6 +89,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 					}
 				})
 				.catch((err) => {
+					toast({
+						title: "Faled",
+						description: err.message ?? "Unexpected error",
+						duration: 10000,
+					});
+
 					setData({
 						[item.id]: {
 							...item,
@@ -164,6 +173,11 @@ function ActionItem({ single, ...item }: ItemProps) {
 					) as unknown as number;
 				} else {
 					console.error("action failed", res);
+					toast({
+						title: "Faled",
+						description: "Unexpected action status",
+						duration: 10000,
+					});
 
 					setData({
 						[item.id]: {
@@ -187,10 +201,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 			switch (item.action?.result?.typeUrl) {
 				case warden.warden.v1beta3.MsgNewSignRequestResponse.typeUrl: {
-					const id =
+					const { id } =
 						warden.warden.v1beta3.MsgNewSignRequestResponse.decode(
 							item.action.result.value,
-						).id;
+						);
 
 					getStatus = (client) =>
 						client.warden.warden.v1beta3
@@ -211,6 +225,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 												typeof warden.warden.v1beta3.MsgNewSignRequest.encode
 											>[0]
 										).analyzers;
+										const {
+											walletConnectRequestId,
+											walletConnectTopic,
+										} = item;
 
 										return {
 											pending: false,
@@ -224,7 +242,11 @@ function ActionItem({ single, ...item }: ItemProps) {
 															env.aminoAnalyzerContract,
 													  )
 													? "cosmos"
-													: undefined,
+													: // fixme
+														walletConnectRequestId &&
+														  walletConnectTopic
+														? "eth-raw"
+														: undefined,
 											value: signRequest?.signedData,
 										};
 									default:
@@ -251,6 +273,11 @@ function ActionItem({ single, ...item }: ItemProps) {
 				const status = await getStatus(client);
 
 				if (status.error) {
+					toast({
+						title: "Faled",
+						description: "Action failed",
+						duration: 10000,
+					});
 					setData({
 						[item.id]: {
 							...item,
@@ -260,6 +287,13 @@ function ActionItem({ single, ...item }: ItemProps) {
 				} else if (status.pending) {
 					setTimeout(checkResult, 1000);
 				} else if (status.done) {
+					if (!status.next) {
+						toast({
+							title: "Success",
+							description: "Action successful",
+							duration: 10000,
+						});
+					}
 					setData({
 						[item.id]: status.next
 							? {
@@ -283,11 +317,52 @@ function ActionItem({ single, ...item }: ItemProps) {
 				clearTimeout(timeout);
 			};
 		} else if (item.status === QueuedActionStatus.AwaitingBroadcast) {
-			let promise: Promise<TransactionReceipt | null> | undefined;
+			let promise: Promise</*TransactionReceipt*/ {} | null> | undefined;
 
 			switch (item.networkType) {
+				case "eth-raw": {
+					const {
+						value,
+						walletConnectRequestId,
+						walletConnectTopic,
+					} = item;
+
+					if (!value) {
+						console.error("missing value");
+						return;
+					}
+
+					if (!walletConnectRequestId || !walletConnectTopic) {
+						promise = Promise.reject(
+							new Error("only walletconnect supported"),
+						);
+					} else if (!w) {
+						promise = Promise.reject(
+							new Error("walletconnect not initialized"),
+						);
+					} else {
+						promise = w
+							.respondSessionRequest({
+								topic: walletConnectTopic,
+								response: {
+									jsonrpc: "2.0",
+									id: walletConnectRequestId,
+									result: hexlify(value),
+								},
+							})
+							.then(() => true);
+					}
+
+					break;
+				}
 				case "eth": {
-					const { chainName, tx, value } = item;
+					const {
+						chainName,
+						tx,
+						value,
+						walletConnectRequestId,
+						walletConnectTopic,
+					} = item;
 
 					if (!tx || !value) {
 						console.error("missing tx or value");
@@ -305,13 +380,44 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 					promise = provider
 						.broadcastTransaction(signedTx.serialized)
-						.then((res) => provider.waitForTransaction(res.hash));
+						.then((res) => {
+							if (walletConnectRequestId && walletConnectTopic) {
+								if (!w) {
+									throw new Error(
+										"walletconnect not initialized",
+									);
+								}
+
+								return (
+									w
+										.respondSessionRequest({
+											topic: walletConnectTopic,
+											response: {
+												jsonrpc: "2.0",
+												id: walletConnectRequestId,
+												result: res.hash,
+											},
+										})
+										// fixme
+										.then(() => true)
+								);
+							}
+
+							return provider.waitForTransaction(res.hash);
+						});
 
 					break;
 				}
 
 				case "cosmos": {
-					const { chainName, signDoc, value, pubkey } = item;
+					const {
+						chainName,
+						signDoc,
+						value,
+						pubkey,
+						walletConnectRequestId,
+						walletConnectTopic,
+					} = item;
 
 					if (!chainName || !signDoc || !pubkey) {
 						console.error(
@@ -345,22 +451,64 @@ function ActionItem({ single, ...item }: ItemProps) {
 						return;
 					}
 
-					const { signedTxBodyBytes, signedAuthInfoBytes } =
-						prepareTx(signDoc, pubkey);
-
-					const txRaw = cosmos.tx.v1beta1.TxRaw.fromPartial({
-						bodyBytes: signedTxBodyBytes,
-						authInfoBytes: signedAuthInfoBytes,
-						signatures: [sig],
-					});
-
-					promise = StargateClient.connect(chain.rpc).then(
-						(client) =>
-							client.broadcastTx(
-								cosmos.tx.v1beta1.TxRaw.encode(txRaw).finish(),
+					if (walletConnectRequestId && walletConnectTopic) {
+						if (!w) {
+							promise = Promise.reject(
+								new Error("walletconnect not initialized"),
+							);
+						} else {
+							promise = w
+								.respondSessionRequest({
+									topic: walletConnectTopic,
+									response: {
+										jsonrpc: "2.0",
+										id: walletConnectRequestId,
+										result: {
+											signed: signDoc,
+											signature: {
+												signature: base64FromBytes(sig),
+												pub_key: {
+													type: "tendermint/PubKeySecp256k1",
+													value: base64FromBytes(
+														pubkey,
+													),
+												},
+											},
+										},
+									},
+								})
 								// fixme
-							) as any,
-					);
+								.then(() => true);
+						}
+					} else {
+						const { signedTxBodyBytes, signedAuthInfoBytes } =
+							prepareTx(signDoc, pubkey);
+
+						const txRaw = cosmos.tx.v1beta1.TxRaw.fromPartial({
+							bodyBytes: signedTxBodyBytes,
+							authInfoBytes: signedAuthInfoBytes,
+							signatures: [sig],
+						});
+
+						promise = StargateClient.connect(chain.rpc)
+							.then((client) => {
+								return client.broadcastTx(
+									cosmos.tx.v1beta1.TxRaw.encode(
+										txRaw,
+									).finish(),
+									// fixme
+								);
+							})
+							.then((res) => {
+								if (!isDeliverTxSuccess(res)) {
+									console.error("broadcast failed", res);
+									throw new Error("broadcast failed");
+								}
+
+								return res as any;
+							});
+					}
+
 					break;
 				}
 
@@ -375,6 +523,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 			promise
 				.then((res) => {
 					if (!res) {
+						toast({
+							title: "Faled",
+							description: "Transaction failed",
+							duration: 10000,
+						});
+
 						setData({
 							[item.id]: {
 								...item,
@@ -384,7 +538,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 						return;
 					}
 
-					console.log({ res });
+					toast({
+						title: "Success",
+						description: "Transaction successful",
+						duration: 10000,
+					});
+
 					setData({
 						[item.id]: {
 							...item,
@@ -394,6 +553,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 				})
 				.catch((err) => {
 					console.error("broadcast failed", err);
+
+					toast({
+						title: "Faled",
+						description: err.message ?? "Unexpected error",
+						duration: 10000,
+					});
 
 					setData({
 						[item.id]: {
@@ -405,8 +570,6 @@ function ActionItem({ single, ...item }: ItemProps) {
 		}
 	}, [item.status]);
 
-	// console.log(item);
-
 	return (
 		<div
 			className={clsx("flex flex-col", {
@@ -417,9 +580,9 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 			<p className="text-sm text-gray-500 mb-2">
 				{item.status === QueuedActionStatus.Signed
-					? "Signing transaction"
+					? "Awaiting broadcast"
 					: item.status === QueuedActionStatus.Broadcast
-						? "Broadcasting transaction"
+						? "Awaiting action result"
 						: item.status === QueuedActionStatus.AwaitingApprovals
 							? "Awaiting approvals"
 							: item.status === QueuedActionStatus.ActionReady
@@ -453,24 +616,6 @@ function ActionItem({ single, ...item }: ItemProps) {
 				</div>
 			</div>
 		</div>
-		/* <pre>
-			{JSON.stringify(
-				item,
-				(_, v) =>
-					typeof v === "bigint"
-						? {
-								type: "bigint",
-								value: v.toString(),
-							}
-						: v instanceof Uint8Array
-							? {
-									type: "Uint8Array",
-									value: Array.from(v),
-								}
-							: v,
-				2,
-			)}
-		</pre> */
 	);
 }
 
@@ -490,7 +635,6 @@ export default function ActionSidebar() {
 	const total = filtered.length;
 	const hidden = !total;
 	const first = data?.[filtered[0]];
-	console.log({ total });
 
 	return (
 		<div

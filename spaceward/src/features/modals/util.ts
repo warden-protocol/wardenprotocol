@@ -19,7 +19,7 @@ import {
 	AminoTypes,
 	createDefaultAminoConverters,
 	defaultRegistryTypes,
-	type SigningStargateClient,
+	type StargateClient,
 	type StdFee,
 } from "@cosmjs/stargate";
 import { cosmos } from "@wardenprotocol/wardenjs";
@@ -175,7 +175,7 @@ export async function createAminoSignDoc({
 	address,
 }: {
 	tx: TxBuild<"cosmos">;
-	client: SigningStargateClient;
+	client: StargateClient;
 	address: string;
 }) {
 	const { accountNumber, sequence } = await client.getSequence(address);

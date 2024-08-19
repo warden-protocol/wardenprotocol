@@ -11,7 +11,15 @@ export function useEthereumTx() {
 
 	const { addAction } = useEnqueueAction(getMessage);
 
-	const signRaw = async (keyId: bigint, input: Uint8Array) => {
+	const signRaw = async (
+		keyId: bigint,
+		input: Uint8Array,
+
+		wc?: {
+			requestId: number;
+			topic: string;
+		},
+	) => {
 		if (!authority) {
 			throw new Error("no authority");
 		}
@@ -25,7 +33,10 @@ export function useEthereumTx() {
 				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
 				encryptionKey: undefined,
 			},
-			{},
+			{
+				walletConnectRequestId: wc?.requestId,
+				walletConnectTopic: wc?.topic,
+			},
 		);
 	};
 
@@ -33,6 +44,10 @@ export function useEthereumTx() {
 		keyId: bigint,
 		_tx: ethers.TransactionLike,
 		chainName: string,
+		wc?: {
+			requestId: number;
+			topic: string;
+		},
 	) => {
 		if (!authority) {
 			throw new Error("no authority");
@@ -60,6 +75,8 @@ export function useEthereumTx() {
 			{
 				tx: _tx,
 				chainName,
+				walletConnectRequestId: wc?.requestId,
+				walletConnectTopic: wc?.topic,
 			},
 		);
 	};

@@ -42,7 +42,7 @@ export const ETH_CHAINID_MAP = {
 
 export const REVERSE_ETH_CHAINID_MAP = Object.fromEntries(
 	Object.entries(ETH_CHAINID_MAP).map(([k, v]) => [v, k]),
-) as Record<string, SupportedNetwork>;
+) as Record<string, SupportedNetwork | undefined>;
 
 type SupportedNetwork = keyof typeof ETH_CHAINID_MAP;
 const providers: Partial<Record<SupportedNetwork, ethers.JsonRpcProvider>> = {};

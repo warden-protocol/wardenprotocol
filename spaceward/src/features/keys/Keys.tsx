@@ -38,7 +38,7 @@ import { bigintToFloat } from "@/lib/math";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
 import { useAssetQueries } from "../assets/hooks";
-export const useKeyData = ({ key }: QueryKeyResponse) => {
+export const useKeyData = ({ key }: Pick<QueryKeyResponse, "key">) => {
 	const { isReady, useKeychainById } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
@@ -131,7 +131,6 @@ function Key({
 	const { avatar, name, targetDecimals, total, formatter, keychain } =
 		useKeyData({
 			key,
-			addresses,
 		});
 
 	const { setData: setModal } = useModalState();
@@ -222,7 +221,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 	const [flipped, setFlipped] = useState(false);
 	const [nameInput, setNameInput] = useState("");
 	const { name, avatar, save, formatter, total, targetDecimals, keychain } =
-		useKeyData({ addresses, key });
+		useKeyData({ key });
 
 	function editName() {
 		setEdit(true);

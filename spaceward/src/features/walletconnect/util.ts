@@ -16,13 +16,12 @@ import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/wa
 
 import { getClient } from "@/hooks/useClient";
 import type { CommonActions } from "@/utils/common";
-import { RemoteMessageType, type RemoteState } from "./types";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { getProviderByChainId } from "@/lib/eth";
-import { env } from "@/env";
-import useRequestSignature from "@/hooks/useRequestSignature";
+import type { useKeychainSigner } from "@/hooks/useKeychainSigner";
+import { getProviderByChainId, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
 import { fixAddress } from "../modals/ReceiveAssets";
-import { COSMOS_CHAINS } from "../assets/hooks";
+import { RemoteMessageType, type RemoteState } from "./types";
+import { COSMOS_CHAINS } from "@/config/tokens";
 
 export function decodeRemoteMessage(
 	message: Uint8Array,
@@ -220,7 +219,7 @@ export async function approveRequest({
 	w?: IWeb3Wallet | null;
 	req: PendingRequestTypes.Struct;
 	eth: ReturnType<typeof useEthereumTx>;
-	cosm: ReturnType<typeof useRequestSignature>;
+	cosm: ReturnType<typeof useKeychainSigner>;
 }) {
 	if (!w) {
 		throw new Error("WalletConnect not initialized");
@@ -240,8 +239,8 @@ export async function approveRequest({
 			);
 		}
 
-		let response = null;
 		const [chainType, chainId] = req.params.chainId.split(":");
+		let storeId: string | undefined;
 
 		switch (req.params.request.method) {
 			case "personal_sign": {
@@ -269,17 +268,14 @@ export async function approveRequest({
 				);
 
 				// send signature request to Warden Protocol and wait response
-				const sig = await eth.signRaw(key.id, ethers.getBytes(hash));
+				storeId = await eth.signRaw(key.id, ethers.getBytes(hash), {
+					requestId: req.id,
+					topic,
+				});
 
-				if (!sig) {
+				if (!storeId) {
 					return;
 				}
-
-				response = {
-					result: ethers.hexlify(sig),
-					id: req.id,
-					jsonrpc: "2.0",
-				};
 
 				break;
 			}
@@ -289,7 +285,6 @@ export async function approveRequest({
 				}
 
 				const txParam = req.params.request.params[0];
-				console.log({ txParam });
 
 				if (!isValidEthParams(txParam)) {
 					throw new Error("Invalid transaction parameters");
@@ -302,34 +297,36 @@ export async function approveRequest({
 				}
 
 				const provider = getProviderByChainId(chainId);
+				const chainName = REVERSE_ETH_CHAINID_MAP[chainId];
+
+				if (!chainName) {
+					throw new Error(`Unknown chain id ${chainId}`);
+				}
+
 				const nonce = await provider.getTransactionCount(txParam.from);
 				const feeData = await provider.getFeeData();
 
-				const tx = ethers.Transaction.from({
+				const tx = {
 					type: 2,
 					chainId: Number(chainId),
-					maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-					maxFeePerGas: feeData.maxFeePerGas,
 					nonce,
 					to: txParam.to,
 					value: txParam.value,
 					gasLimit: txParam.gas,
 					data: txParam.data,
+					...feeData,
+				};
+
+				storeId = await eth.signEthereumTx(key.id, tx, chainName, {
+					requestId: req.id,
+					topic,
 				});
 
-				const signedTx = await eth.signEthereumTx(key.id, tx);
-
-				if (!signedTx) {
+				if (!storeId) {
+					// todo error
 					return;
 				}
 
-				await provider.broadcastTransaction(signedTx.serialized);
-
-				response = {
-					result: signedTx.hash,
-					id: req.id,
-					jsonrpc: "2.0",
-				};
 				break;
 			}
 			case "eth_signTypedData_v4": {
@@ -366,10 +363,12 @@ export async function approveRequest({
 					"EIP712Domain",
 					data.domain,
 				);
+
 				const message = messageEncoder.hashStruct(
 					data.primaryType,
 					data.message,
 				);
+
 				const toSign = ethers.keccak256(
 					ethers.concat([
 						ethers.getBytes("0x1901"),
@@ -378,20 +377,15 @@ export async function approveRequest({
 					]),
 				);
 
-				const signature = await eth.signRaw(
-					key.id,
-					ethers.getBytes(toSign),
-				);
+				storeId = await eth.signRaw(key.id, ethers.getBytes(toSign), {
+					requestId: req.id,
+					topic,
+				});
 
-				if (!signature) {
+				if (!storeId) {
 					return;
 				}
 
-				response = {
-					result: ethers.hexlify(signature),
-					id: req.id,
-					jsonrpc: "2.0",
-				};
 				break;
 			}
 			case "cosmos_getAccounts": {
@@ -423,7 +417,7 @@ export async function approveRequest({
 					})),
 				);
 
-				response = {
+				const response = {
 					result: addresses?.map(({ address, publicKey }) => ({
 						address,
 						algo: "secp256k1",
@@ -433,7 +427,8 @@ export async function approveRequest({
 					jsonrpc: "2.0",
 				};
 
-				break;
+				await w!.respondSessionRequest({ topic, response });
+				return;
 			}
 			case "cosmos_signAmino": {
 				const { request, chainId: _chainId } = req.params;
@@ -470,7 +465,7 @@ export async function approveRequest({
 				}
 
 				const feeAmount = COSMOS_CHAINS.find(
-					({ chainName }) => (chainName = chain.chain_name),
+					({ chainName }) => chainName === chain.chain_name,
 				)?.feeAmount;
 
 				// fixme testnet hack
@@ -487,38 +482,19 @@ export async function approveRequest({
 					}
 				}
 
-				let signature = await cosm.requestSignature(
-					key.id,
-					[env.aminoAnalyzerContract],
-					Uint8Array.from(
-						JSON.stringify(signDoc)
-							.split("")
-							.map((c) => c.charCodeAt(0)),
-					),
+				storeId = await cosm.signAmino(
+					{ key },
+					signDoc,
+					chain.chain_name,
+					{
+						requestId: req.id,
+						topic,
+					},
 				);
 
-				if (signature?.length === 65) {
-					signature = signature.slice(0, -1);
+				if (!storeId) {
+					return;
 				}
-
-				if (signature?.length !== 64) {
-					throw new Error("unexpected signature length");
-				}
-
-				response = {
-					jsonrpc: "2.0",
-					id: req.id,
-					result: {
-						signed: signDoc,
-						signature: {
-							signature: base64FromBytes(signature),
-							pub_key: {
-								type: "tendermint/PubKeySecp256k1", // hardcoded value
-								value: base64FromBytes(key.publicKey),
-							},
-						},
-					},
-				};
 
 				break;
 			}
@@ -528,7 +504,13 @@ export async function approveRequest({
 				);
 		}
 
-		await w!.respondSessionRequest({ topic, response });
+		if (!storeId) {
+			throw new Error(
+				`Failed to sign request for method: ${req.params.request.method}`,
+			);
+		} else {
+			return true;
+		}
 	} catch (error) {
 		console.error(error);
 

@@ -1,69 +1,17 @@
 import { assets } from "chain-registry";
 import { ethers } from "ethers";
+import { fromBech32, toBech32 } from "@cosmjs/encoding";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
+import { COSMOS_PRICES, EIP_155_NATIVE_PRICE_FEEDS, ENABLED_ETH_CHAINS, ERC20_TOKENS } from "@/config/tokens";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
 import { getCosmosChain } from "./util";
-import { fromBech32, toBech32 } from "@cosmjs/encoding";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
-const ERC20_TOKENS: {
-	chainName: ChainName;
-	address: `0x${string}`;
-	// taken from https://docs.chain.link/data-feeds/price-feeds/addresses
-	priceFeed?: `0x${string}`;
-	stablecoin?: boolean;
-}[] = [
-	{
-		chainName: "arbitrum",
-		// ARB
-		address: "0x912ce59144191c1204e64559fe8253a0e49e6548",
-		priceFeed: "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
-	},
-	{
-		chainName: "arbitrum",
-		// USDT
-		address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
-		stablecoin: true,
-	},
-	{
-		chainName: "mainnet",
-		// USDT
-		address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-		stablecoin: true,
-	},
-	{
-		chainName: "arbitrum",
-		// USDC native
-		address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-		stablecoin: true,
-	},
-	{
-		chainName: "sepolia",
-		// WETH
-		address: "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
-		// same as native
-		priceFeed: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-	},
-];
-
-const EIP_155_NATIVE_PRICE_FEEDS: Partial<
-	Record<ChainName, `0x${string}` | undefined>
-> = {
-	mainnet: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
-	arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
-	sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-};
-
-/** @deprecated remove hardcoded values when all tokens are in slinky */
-const COSMOS_PRICES: Record<string, bigint | undefined> = {
-	ATOM: BigInt(5.775 * 10 ** 8),
-	OSMO: BigInt(0.4446 * 10 ** 8),
-};
 
 const cosmosBalancesQuery = (params: {
 	address?: string;
@@ -411,7 +359,7 @@ export const balancesQueryEth = (
 	});
 
 	const queries = [
-		...([/*"arbitrum", "mainnet"*/ "sepolia"] as const).flatMap(
+		...(ENABLED_ETH_CHAINS).flatMap(
 			(chainName) => {
 				return eth.map((address) => ({
 					...eip155NativeBalanceQuery({
@@ -425,7 +373,7 @@ export const balancesQueryEth = (
 			},
 		),
 		...ERC20_TOKENS.filter(({ chainName }) =>
-			["sepolia"].includes(chainName),
+			ENABLED_ETH_CHAINS.includes(chainName),
 		).flatMap(({ chainName, address: token, priceFeed, stablecoin }) =>
 			eth.map((address) => ({
 				...eip155ERC20BalanceQuery({

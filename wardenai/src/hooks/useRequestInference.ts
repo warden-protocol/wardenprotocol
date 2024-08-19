@@ -1,29 +1,21 @@
-import { useNewAction } from "./useAction";
+// import { useNewAction } from "./useAction";
 import { warden } from "@wardenprotocol/wardenjs";
-import {
-    MsgNewInferenceRequest,
-    MsgNewInferenceRequestResponse,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
-import { getClient } from "./useClient";
-import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-const { MsgNewActionResponse } = warden.act.v1beta1;
+import { MsgNewInferenceRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
+import { getClient, useTx } from "./useClient";
 
 export default function useRequestInference() {
-    const { newAction, authority } = useNewAction(MsgNewInferenceRequest);
+    const { tx } = useTx();
+    const { newInferenceRequest } =
+        warden.warden.v1beta3.MessageComposer.withTypeUrl;
 
     async function sendRequestInference(creator: string, input: Uint8Array) {
-        if (!authority) return;
-        return await newAction(
-            {
-                creator,
-                input,
-                authority,
-            },
+        return await tx(
+            [
+                newInferenceRequest({
+                    creator,
+                    input,
+                }),
+            ],
             {}
         );
     }
@@ -44,99 +36,105 @@ export default function useRequestInference() {
                     throw new Error(`tx failed with code: ${res.code}`);
                 }
 
-                const actionCreated = MsgNewActionResponse.decode(
-                    res.msgResponses[0].value
-                );
-                const actionId = actionCreated.id;
+                // const actionCreated = MsgNewActionResponse.decode(
+                //     res.msgResponses[0].value
+                // );
+                // const actionId = actionCreated.id;
+
+                const inferenceRequestCreated =
+                    MsgNewInferenceRequestResponse.decode(
+                        res.msgResponses[0].value
+                    );
+
+                const inferenceRequestId = inferenceRequestCreated.id;
 
                 // wait for action to be completed
-                let InferenceRequestId = null;
+                // let InferenceRequestId = null;
+
                 // eslint-disable-next-line no-constant-condition
-                while (true) {
-                    const res = await client.warden.act.v1beta1.actionById({
-                        id: actionId,
-                    });
+                // while (true) {
+                //     const res = await client.w.v1beta1.actionById({
+                //         id: actionId,
+                //     });
 
-                    if (
-                        res.action?.status !==
-                            ActionStatus.ACTION_STATUS_PENDING &&
-                        res.action?.status !==
-                            ActionStatus.ACTION_STATUS_COMPLETED
-                    ) {
-                        throw new Error(
-                            `action failed: ${JSON.stringify(res.action)}`
-                        );
-                    }
+                //     if (
+                //         res.action?.status !==
+                //             ActionStatus.ACTION_STATUS_PENDING &&
+                //         res.action?.status !==
+                //             ActionStatus.ACTION_STATUS_COMPLETED
+                //     ) {
+                //         throw new Error(
+                //             `action failed: ${JSON.stringify(res.action)}`
+                //         );
+                //     }
 
-                    if (
-                        res.action?.result?.typeUrl !==
-                        MsgNewInferenceRequestResponse.typeUrl
-                    ) {
-                        throw new Error(
-                            `unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewInferenceRequestResponse.typeUrl}`
-                        );
-                    }
+                //     if (
+                //         res.action?.result?.typeUrl !==
+                //         MsgNewInferenceRequestResponse.typeUrl
+                //     ) {
+                //         throw new Error(
+                //             `unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewInferenceRequestResponse.typeUrl}`
+                //         );
+                //     }
 
-                    if (res.action?.result?.value) {
-                        InferenceRequestId =
-                            MsgNewInferenceRequestResponse.decode(
-                                res.action?.result.value
-                            ).id;
-                        if (InferenceRequestId) {
-                            break;
-                        }
-                    }
+                //     if (res.action?.result?.value) {
+                //         InferenceRequestId =
+                //             MsgNewInferenceRequestResponse.decode(
+                //                 res.action?.result.value
+                //             ).id;
+                //         if (InferenceRequestId) {
+                //             break;
+                //         }
+                //     }
 
-                    await sleep(1000);
-                }
+                //     await sleep(1000);
+                // }
 
                 // wait for request to be processed by keychain
                 // setData({ state: InferenceRequesterState.WAITING_KEYCHAIN });
                 // eslint-disable-next-line no-constant-condition
-                while (true) {
-                    const res =
-                        await client.warden.warden.v1beta3.inferenceRequestById(
-                            {
-                                id: InferenceRequestId,
-                            }
-                        );
+                // while (true) {
+                const result =
+                    await client.warden.warden.v1beta3.inferenceRequestById({
+                        id: inferenceRequestId,
+                    });
 
-                    const InferenceRequest = res.inferenceRequest;
+                const InferenceRequest = result.inferenceRequest;
 
-                    console.log(InferenceRequest);
-                    // setData({ InferenceRequest });
+                console.log(InferenceRequest);
+                // setData({ InferenceRequest });
 
-                    // if (
-                    //     InferenceRequest?.status ===
-                    //     InferenceRequest.KEY_REQUEST_STATUS_PENDING
-                    // ) {
-                    //     await sleep(1000);
-                    //     continue;
-                    // }
+                // if (
+                //     InferenceRequest?.status ===
+                //     InferenceRequest.KEY_REQUEST_STATUS_PENDING
+                // ) {
+                //     await sleep(1000);
+                //     continue;
+                // }
 
-                    // if (
-                    //     InferenceRequest?.status ===
-                    //     InferenceRequestStatus.KEY_REQUEST_STATUS_FULFILLED
-                    // ) {
-                    //     setKeySettings({
-                    //         settings: {
-                    //             ...ksRef.current?.settings,
-                    //             [InferenceRequest.id.toString()]:
-                    //                 ksRef.current?.settings[TEMP_KEY],
-                    //             [TEMP_KEY]: undefined,
-                    //         },
-                    //     });
+                // if (
+                //     InferenceRequest?.status ===
+                //     InferenceRequestStatus.KEY_REQUEST_STATUS_FULFILLED
+                // ) {
+                //     setKeySettings({
+                //         settings: {
+                //             ...ksRef.current?.settings,
+                //             [InferenceRequest.id.toString()]:
+                //                 ksRef.current?.settings[TEMP_KEY],
+                //             [TEMP_KEY]: undefined,
+                //         },
+                //     });
 
-                    //     setData({
-                    //         state: InferenceRequesterState.KEY_FULFILLED,
-                    //     });
-                    //     return;
-                    // }
+                //     setData({
+                //         state: InferenceRequesterState.KEY_FULFILLED,
+                //     });
+                //     return;
+                // }
 
-                    // throw new Error(
-                    //     `key request rejected with reason: ${InferenceRequest?.rejectReason}`
-                    // );
-                }
+                // throw new Error(
+                //     `key request rejected with reason: ${InferenceRequest?.rejectReason}`
+                // );
+                // }
             } catch (e) {
                 // setData({
                 //     state: InferenceRequesterState.ERROR,

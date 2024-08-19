@@ -49,7 +49,7 @@ const createDefinition = (intent: SimpleIntent) => {
 export const useRules = () => {
 	const { spaceId } = useSpaceId();
 	const queryHooks = useQueryHooks();
-	const useSpaceById = queryHooks.warden.warden.v1beta2.useSpaceById;
+	const useSpaceById = queryHooks.warden.warden.v1beta3.useSpaceById;
 	const useRules = queryHooks.warden.act.v1beta1.useRules;
 	const { tx } = useTx();
 
@@ -133,7 +133,7 @@ export const useRules = () => {
 	const space = useSpaceById({ request: { id: BigInt(spaceId || "") } }).data
 		?.space;
 
-	const { MsgUpdateSpace } = warden.warden.v1beta2;
+	const { MsgUpdateSpace } = warden.warden.v1beta3;
 	const { newAction, authority } = useNewAction(MsgUpdateSpace);
 
 	const setActiveRule = useCallback(
@@ -261,11 +261,11 @@ export function IntentsPage() {
 		<div className="flex flex-col flex-1 px-8 py-4 space-y-8">
 			<div className="flex items-center pb-4 space-x-6">
 				<div>
-					<h2 className="text-5xl">Rules</h2>
-					<p className="text-muted-foreground hidden xl:block text-sm">
+					<h2 className="text-5xl font-bold">Rules</h2>
+					{/* <p className="text-muted-foreground hidden xl:block text-sm">
 						Rules that define who can operate or use its keys to
 						generate and sign transactions.
-					</p>
+					</p> */}
 				</div>
 				{/* <div>
 					<NewIntentButton onClick={() => setIsCreateModal(true)} />
@@ -314,7 +314,7 @@ export function IntentsPage() {
 									strokeWidth={1}
 									className="h-8 w-8 text-foreground"
 								/>
-								<p className="text-base">Create a new intent</p>
+								<p className="text-base">Create a new rule</p>
 							</div>
 						</div>
 					</div>
@@ -328,8 +328,8 @@ export function IntentsPage() {
 									1
 								</div>
 								<p className="flex items-center gap-2">
-									Create an Intent by pressing
-									&#39;Create&#39; button
+									Create a rule by pressing &#39;Create&#39;
+									button
 								</p>
 							</div>
 
@@ -362,7 +362,7 @@ export function IntentsPage() {
 									strokeWidth={1}
 									className="h-8 w-8 text-foreground"
 								/>
-								<p className="text-base">Create a new intent</p>
+								<p className="text-base">Create a new rule</p>
 							</div>
 						</div>
 					</div>

@@ -10,7 +10,7 @@ import { NewKeyButton } from "@/features/keys";
 import { ReceiveAssetButton } from "@/features/assets";
 import { Copy } from "@/components/ui/copy";
 import { useQueryHooks } from "@/hooks/useClient";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { getProvider } from "@/lib/eth";
 

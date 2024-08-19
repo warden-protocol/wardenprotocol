@@ -20,7 +20,7 @@ export function Button({ text, disabled, onClick = noop }: ButtonProps) {
 			variant="outline"
 			disabled={disabled}
 			size="sm"
-			className="space-x-4 px-12 h-12 bg-foreground text-background text-xl w-full"
+			className="space-x-4 px-6 rounded-lg h-12 bg-foreground text-background text-xl w-full"
 			onClick={onClick}
 		>
 			<WalletIcon strokeWidth={1} className="h-6 w-6" />

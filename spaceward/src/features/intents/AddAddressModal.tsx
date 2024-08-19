@@ -104,7 +104,7 @@ const AddAddressModal = ({
 				) : null}
 				<div className="w-full">
 					<label
-						className="text-[rgba(229,238,255,0.60)] text-xs"
+						className="text-label-secondary text-xs"
 						htmlFor="address"
 					>
 						Address
@@ -118,7 +118,7 @@ const AddAddressModal = ({
 				</div>
 				{!validation.ok ? (
 					<button
-						className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duration-200"
+						className="font-medium text-label-secondary px-2 hover:text-white transition-all duration-200"
 						onClick={pasteFromClipboard}
 					>
 						Paste

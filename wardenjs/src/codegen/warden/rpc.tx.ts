@@ -41,7 +41,7 @@ export const createRPCMsgClient = async ({
     },
     gmp: new (await import("./gmp/tx.rpc.msg.js")).MsgClientImpl(rpc),
     warden: {
-      v1beta2: new (await import("./warden/v1beta2/tx.rpc.msg.js")).MsgClientImpl(rpc)
+      v1beta3: new (await import("./warden/v1beta3/tx.rpc.msg.js")).MsgClientImpl(rpc)
     }
   }
 });

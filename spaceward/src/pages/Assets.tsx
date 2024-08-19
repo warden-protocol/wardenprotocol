@@ -14,23 +14,17 @@ import DepositFinalModal from "@/features/assets/DepositFinalModal";
 import { Icons } from "@/components/ui/icons-assets";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
-import { bigintToFixed, bigintToFloat } from "@/lib/math";
-import { useModalContext } from "@/context/modalContext";
-import { FIAT_FORMAT } from "@/features/assets/util";
-import {
-	NetworkIcons,
-	NetworkIconsTransparent,
-	TokenIcons,
-} from "@/components/ui/icons-crypto";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { bigintToFloat } from "@/lib/math";
+import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
+import { NetworkIcons } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "@/features/assets/AssetRow";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { commonReducer } from "@/utils/common";
-
-function capitalize<T extends string>(str: T): Capitalize<T> {
-	return (str.charAt(0).toUpperCase() +
-		str.slice(1).toLowerCase()) as Capitalize<T>;
-}
+import { useModalState } from "@/features/modals/state";
+import { KeysDropdownItem } from "@/features/keys/KeysDropdown";
+import AssetTableRow from "@/features/assets/AssetTableRow";
+import { useKeySettingsState } from "@/features/keys/state";
 
 type Currency = keyof typeof FIAT_FORMAT;
 
@@ -53,7 +47,7 @@ export function AssetsPage() {
 	const currency = curr.currency as Currency;
 	const setCurrency = curr.setCurrency as (currency: Currency) => void;
 	const formatter = FIAT_FORMAT[currency];
-	const { dispatch: modalDispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const { queryKeys, queryBalances, queryPrices } = useAssetQueries(spaceId);
 
@@ -102,7 +96,6 @@ export function AssetsPage() {
 		}
 	}, [queryPrices, currency]);
 
-	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
 	const [isDopositFinalModal, setIsDepositFinalModal] = useState(false);
 
 	const keysRef = useRef<HTMLDivElement | null>(null);
@@ -145,23 +138,20 @@ export function AssetsPage() {
 		return { chains: Array.from(chains), totalBalance, noAssets };
 	}, [results]);
 
-	const addresses = useMemo(() => {
-		return queryKeys.data?.keys.flatMap((key) =>
-			key.addresses.map((v) => {
-				const keyId = key.key.id;
-				return { ...v, keyId };
-			}),
-		);
-	}, [queryKeys.data?.keys]);
-
 	const noKeys = !queryKeys.data?.keys.length;
+
+	const { data } = useKeySettingsState();
+	const settings = data?.settings[state.keyFilter.toString()];
+	const name = settings?.name ?? `Key #${state.keyFilter.toString()}`;
 
 	if (noKeys) {
 		return (
 			<div className="h-[calc(100vh_-_106px)] min-h-[550px] flex flex-col justify-center items-center text-center">
-				<Icons.noAssetsKey className="mb-[72px]" />
+				<Icons.noAssetsKey className="mb-[72px] invert dark:invert-0" />
 
-				<div className="text-5xl font-bold">No Keys found</div>
+				<div className="text-5xl font-bold font-display tracking-[0.24px]">
+					No Keys found
+				</div>
 
 				<div className="h-6" />
 
@@ -180,18 +170,16 @@ export function AssetsPage() {
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-5xl font-bold">Assets</h2>
+					<h2 className="text-5xl font-bold tracking-[0.24px]">
+						Assets
+					</h2>
 					<p className="text-muted-foreground"></p>
 				</div>
 			</div>
 
-			<div className="grid grid-cols-[320px_1fr] gap-[24px]">
-				<div className="bg-pink-secondary  relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl">
-					<img
-						src="/images/asset-decor.png"
-						alt=""
-						className="absolute right-0 top-0 h-full w-auto z-[-5]"
-					/>
+			{/* <div className="grid grid-cols-[320px_1fr] gap-[24px]"> */}
+			<div className="">
+				<div className="before:content-[' '] before:bg-contain before:bg-right before:bg-no-repeat before:bg-[url('/images/asset-decor-light.png')] before:h-full before:w-[171px] before:z-[-5] before:absolute before:right-0 before:top-0 bg-pink-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
 					<div className="flex items-baseline gap-[6px]">
 						<div className="text-2xl font-bold">
 							{formatter.format(
@@ -231,15 +219,12 @@ export function AssetsPage() {
 						) : null}
 					</div>
 
-					<div className="grid grid-cols-2 gap-2">
+					<div className="grid grid-cols-2 gap-2 max-w-[320px]">
 						<button
 							className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
-							onClick={modalDispatch.bind(null, {
-								type: "set",
-								payload: {
-									type: "select-key",
-									params: { next: "receive", addresses },
-								},
+							onClick={setModal.bind(null, {
+								type: "receive",
+								params: {},
 							})}
 						>
 							<Icons.arrowDown />
@@ -250,20 +235,17 @@ export function AssetsPage() {
 								onClick={() => {
 									const item = results[0] ?? _results[0];
 
-									modalDispatch({
-										type: "set",
-										payload: {
-											type: "send",
-											params: {
-												chainName: item.chainName,
-												keyResponse: item.key,
-												token: item.token,
-												type: item.type.startsWith(
-													"eip155:",
-												)
-													? AddressType.ADDRESS_TYPE_ETHEREUM
-													: AddressType.ADDRESS_TYPE_OSMOSIS,
-											},
+									setModal({
+										type: "send",
+										params: {
+											chainName: item.chainName,
+											keyResponse: item.key,
+											token: item.token,
+											type: item.type.startsWith(
+												"eip155:",
+											)
+												? AddressType.ADDRESS_TYPE_ETHEREUM
+												: AddressType.ADDRESS_TYPE_OSMOSIS,
 										},
 									});
 								}}
@@ -275,7 +257,7 @@ export function AssetsPage() {
 						) : null}
 					</div>
 				</div>
-				<div className="bg-card  rounded-xl min-h-[220px] border-border-secondary border-[1px] py-6 px-8">
+				{/* <div className="bg-card  rounded-xl min-h-[220px] border-border-edge border-[1px] py-6 px-8">
 					<div className="flex justify-between items-center">
 						<div className="text-2xl font-bold tracking-[0.12px]">
 							Performance
@@ -319,10 +301,10 @@ export function AssetsPage() {
 						alt=""
 						className="h-[107px] object-contain"
 					/>
-				</div>
+				</div> */}
 			</div>
 
-			<div className="bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6">
+			<div className="bg-card  rounded-xl border-border-edge border-[1px] px-8 py-6">
 				{noAssets ? (
 					<div className="min-h-[280px] flex flex-col items-center justify-center text-center">
 						<div className="text-2xl font-bold tracking-[0.12px] mb-1">
@@ -332,13 +314,10 @@ export function AssetsPage() {
 							Deposit assets to SpaceWard
 						</div>
 						<button
-							className="text-black mt-6 bg-white h-[40px] rounded-lg justify-center text-base font-medium py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
-							onClick={modalDispatch.bind(null, {
-								type: "set",
-								payload: {
-									type: "select-key",
-									params: { next: "receive", addresses },
-								},
+							className="text-black mt-6 bg-fill-primary h-[40px] text-label-invert rounded justify-center text-base font-semibold py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
+							onClick={setModal.bind(null, {
+								type: "receive",
+								params: {},
 							})}
 						>
 							Receive
@@ -363,9 +342,11 @@ export function AssetsPage() {
 										}
 										className="cursor-pointer group relative h-8 rounded-2xl bg-fill-quaternary py-2 px-3 text-xs fill-quaternary flex items-center gap-[2px]"
 									>
-										{state.keyFilter
-											? `Key #${state.keyFilter}`
-											: "All Keys"}
+										<div className="max-w-[124px] whitespace-nowrap overflow-hidden text-ellipsis ">
+											{state.keyFilter
+												? name
+												: "All Keys"}
+										</div>
 										<Icons.chevronDown
 											className={clsx(
 												"invert dark:invert-0",
@@ -388,7 +369,7 @@ export function AssetsPage() {
 												>
 													<img
 														src="/images/key.png"
-														className="w-6 h-6 object-contain cursor-pointer"
+														className="w-6 h-6 object-contain cursor-pointer invert dark:invert-0"
 														alt=""
 													/>
 													All Keys
@@ -397,30 +378,24 @@ export function AssetsPage() {
 													)}
 												</div>
 												{queryKeys.data?.keys.map(
-													(key) => (
-														<div
-															onClick={() =>
+													(item) => (
+														<KeysDropdownItem
+															addresses={
+																item.addresses
+															}
+															keyResponse={item}
+															onClick={() => {
 																dispatch({
 																	type: "keyFilter",
 																	payload:
-																		key.key.id.toString(),
-																})
+																		item.key.id.toString(),
+																});
+															}}
+															isActive={
+																state.keyFilter ===
+																item.key.id.toString()
 															}
-															className="cursor-pointer h-10 px-4 flex items-center gap-3"
-															key={key.key.id}
-														>
-															<img
-																src="/images/somewallet.png"
-																className="w-6 h-6 object-contain cursor-pointer"
-																alt=""
-															/>
-															Key #
-															{key.key.id.toString()}
-															{state.keyFilter ===
-																key.key.id.toString() && (
-																<Icons.check className="ml-auto" />
-															)}
-														</div>
+														/>
 													),
 												)}
 											</div>
@@ -510,118 +485,8 @@ export function AssetsPage() {
 						<div className="h-4" />
 
 						{results.map(({ key, ...item }) => {
-							const Network =
-								NetworkIconsTransparent[item.chainName] ??
-								AssetPlaceholder;
-
-							const Token =
-								TokenIcons[item.token] ?? AssetPlaceholder;
-
 							return (
-								<div
-									className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]"
-									key={`${item.token}:${item.chainName}:${item.address}`}
-								>
-									<div className="flex items-center gap-3">
-										<div className="relative">
-											<Token className="w-10 h-10 object-contain" />
-											<Network className="w-[18px] h-[18px] object-contain absolute right-[-4px] bottom-[-4px]" />
-										</div>
-										<div>
-											<div>{item.token}</div>
-											<div className="text-xs text-muted-foreground">
-												{item.title} (
-												{capitalize(item.chainName)})
-											</div>
-										</div>
-									</div>
-
-									<div className="text-right flex flex-col justify-center">
-										<div>
-											...
-											{item.address.slice(-8)}
-										</div>
-										<div className="text-xs text-muted-foreground">
-											Key #{key?.key.id.toString()}
-										</div>
-									</div>
-
-									<div className="text-right flex flex-col justify-center">
-										<div>
-											{bigintToFixed(item.balance, {
-												decimals: item.decimals,
-
-												display: 4,
-												format: true,
-											})}
-										</div>
-										<div className="text-xs text-muted-foreground">
-											{formatter.format(
-												bigintToFloat(
-													fiatConversion
-														? (item.balance *
-																item.price *
-																BigInt(10) **
-																	BigInt(
-																		fiatConversion.decimals,
-																	)) /
-																fiatConversion.value
-														: BigInt(0),
-													item.decimals +
-														item.priceDecimals,
-												),
-											)}
-										</div>
-									</div>
-
-									<div className="flex items-center justify-end gap-2">
-										<button
-											className=" bg-fill-quaternary h-8 rounded justify-center font-medium py-1 px-4"
-											onClick={modalDispatch.bind(null, {
-												type: "set",
-												payload: {
-													type: "receive",
-													params: {
-														address: item.address,
-														chainName:
-															item.chainName,
-														token: item.token,
-														type: item.type.startsWith(
-															"eip155:",
-														)
-															? AddressType.ADDRESS_TYPE_ETHEREUM
-															: AddressType.ADDRESS_TYPE_OSMOSIS,
-													},
-												},
-											})}
-										>
-											Receive
-										</button>
-										<button
-											className=" bg-fill-quaternary h-8 rounded justify-center font-medium py-1 px-4"
-											onClick={modalDispatch.bind(null, {
-												type: "set",
-												payload: {
-													type: "send",
-													params: {
-														address: item.address,
-														chainName:
-															item.chainName,
-														keyResponse: key,
-														token: item.token,
-														type: item.type.startsWith(
-															"eip155:",
-														)
-															? AddressType.ADDRESS_TYPE_ETHEREUM
-															: AddressType.ADDRESS_TYPE_OSMOSIS,
-													},
-												},
-											})}
-										>
-											Send
-										</button>
-									</div>
-								</div>
+								<AssetTableRow item={item} keyResponse={key} />
 							);
 						})}
 					</div>

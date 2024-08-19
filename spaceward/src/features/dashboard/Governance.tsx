@@ -1,7 +1,7 @@
 import { Icons } from "@/components/ui/icons-assets";
 import StakingCard from "@/features/dashboard/StakingCard";
 import { useStakingQueries } from "@/features/staking/hooks";
-import { getValidatorData } from "@/features/staking/util";
+import { getDelegationsData, getValidatorData } from "@/features/staking/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useQueryHooks } from "@/hooks/useClient";
 import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
@@ -11,11 +11,11 @@ import { Link } from "react-router-dom";
 
 export default function GovernanceDashboard() {
 	const { address } = useAddressContext();
-	const { queryTotalRewards, queryValidators } = useStakingQueries(address);
+	const { queryTotalRewards, queryDelegations } = useStakingQueries(address);
 
-	const { stakedWard } = useMemo(
-		() => getValidatorData(queryValidators.data?.validators),
-		[queryValidators.data?.validators],
+	const { availableWard: stakedWard } = useMemo(
+		() => getDelegationsData(queryDelegations.data?.delegationResponses),
+		[queryDelegations.data],
 	);
 
 	const {
@@ -38,7 +38,7 @@ export default function GovernanceDashboard() {
 
 	const proposalsVoting = proposalsQuery.data?.proposals.length;
 	return (
-		<div className="grid grid-cols-2 gap-6">
+		<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 			<Link
 				to="/governance"
 				className="cursor-pointer group bg-pink-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
@@ -72,7 +72,7 @@ export default function GovernanceDashboard() {
 						Active votes
 					</div>
 				) : (
-					<button className="rounded h-10 px-5 font-semibold bg-background duration-300 ease-out hover:bg-pink-secondary">
+					<button className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-pink-secondary">
 						Vote
 					</button>
 				)}

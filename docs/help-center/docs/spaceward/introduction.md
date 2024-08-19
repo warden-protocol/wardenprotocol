@@ -6,10 +6,6 @@ slug: /
 
 # Introduction
 
-:::warning 
-Please note that we're developing a major update to the Warden Protocol, introducing significant architectural and conceptual changes. We're currently updating SpaceWard to align it with the latest improvements in the protocol. Stay tuned in! 
-:::
-
 ## Overview
 
 👉 [Try SpaceWard on Buenavista testnet](https://spaceward.buenavista.wardenprotocol.org)
@@ -26,29 +22,31 @@ To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-y
 
 Within SpaceWard, you have the ability to carry out a wide range of protocol-related activities:
 
-1. Establish and choose spaces
-2. Produce keys (wallet addresses)
-3. Examine all assets contained within your keys
-4. Add or remove Space owners
-5. Set up and oversee Intents
-6. Check and execute operations based on your activities – for example, approve Intent requests
-7. Manage Keychains operations
-8. Monitor transaction progress and access details in the Explorer
-9. Explore the SpaceWard-curated dApp list
-10. Explore your Space and account settings
-11. Monitor any pending actions
-12. Check your current connection to SpaceWard, change the wallet, or close the session
-13. Use external wallets (MetaMask Snaps, WalletConnect) with your Keychain addresses
+1. [Manage Spaces](/spaceward/manage-spaces)
+2. [Manage keys](/spaceward/manage-keys)
+3. [Manage assets](/spaceward/manage-assets)
+4. [Manage Space owners](/spaceward/manage-owners)
+5. [Manage Rules](/spaceward/manage-rules)
+6. [Stake WARD](/spaceward/stake-ward)
+7. [Participate in governance](/spaceward/participate-in-governance)
+8. View Actions in your Space
+9. [View Keychains](/spaceward/manage-keys#view-keychains)
+10. Monitor transactions
+11. [Use dApps](/spaceward/use-dapps#use-spaceward-collection) from the SpaceWard-curated collection
+12. [Get your Warden address](/spaceward/connect-your-wallet#get-your-warden-address), [get test WARD](/spaceward/get-test-ward), or close the session
+13. [Access dApps](/spaceward/use-dapps#use-spaceward-collection) through WalletConnect and MetaMask Snap
 
-![enter image description here](https://i.ibb.co/5MzQqDs/spaceward.png)
+![SpaceWard overview](../../static/img/spaceward-overview.png)
 
 ## Transaction flow
 
-SpaceWard allows you to securely carry out Intent-based operations across multiple blockchains. Here is how it works:
+SpaceWard allows you to securely carry out operations across multiple blockchains.
 
-1. Users have the flexibility to initiate transactions from their preferred decentralized application (dApp) across any Ethereum Virtual Machine (EVM) or Cosmos-based dApp. These transactions originate from wallets that users have previously created using one of the available Keychains.
-2. Upon initiation, the transaction passes through a series of Intents. Intents act as checkpoints that either approve or reject the transaction based on pre-established conditions.
-3. When Intents validate and approve the transaction, the system requests a signature from the Keychain associated with the user's wallet.
-4. Once signed, the transaction is then broadcast to the appropriate blockchain network for execution.
+You need to create a **key** (wallet) associated with a certain **Keychain** – a custodian that generates and stores keys and signs transactions. The Keychain will sign your transaction only it meets the **Approval Rule** you created. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
 
-![Warden Protocol diagram](https://i.ibb.co/6yYvGJK/Screenshot-2024-02-09-at-12-21-22.png)
+This is how it works:
+
+1. You can initiate a transaction from your preferred decentralized application (dApp).
+2. Upon initiation, the transaction passes through Approval Rules.
+3. If approval is granted, the system requests a signature from the Keychain.
+4. Once signed, the transaction is then broadcast to its network.

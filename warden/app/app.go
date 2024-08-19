@@ -66,10 +66,12 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
+	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -148,11 +150,8 @@ type App struct {
 	ActKeeper    actmodulekeeper.Keeper
 
 	// Slinky
-	OracleKeeper     *oraclekeeper.Keeper
-	MarketMapKeeper  *marketmapkeeper.Keeper
-	oraclePreBlocker sdk.PreBlocker
-
-	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+	OracleKeeper    *oraclekeeper.Keeper
+	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -429,7 +428,7 @@ func New(
 
 	// Slinky upgrader
 	slinkyUpgrade := createSlinkyUpgrader(app)
-	app.UpgradeKeeper.SetUpgradeHandler(slinkyUpgrade.Name, slinkyUpgrade.Handler)
+	app.UpgradeKeeper.SetUpgradeHandler(slinkyUpgrade.Name, slinkyUpgrade.Handler) // includes v0.4 upgrade
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
 	if err != nil {
@@ -437,7 +436,19 @@ func New(
 	}
 	if upgradeInfo.Name == slinkyUpgrade.Name {
 		// add slinky stores if this upgrade is the slinky upgrade.
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &slinkyUpgrade.StoreUpgrade))
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
+			Added: append(
+				slinkyUpgrade.StoreUpgrade.Added,
+				gmptypes.StoreKey,
+				ibchookstypes.StoreKey,
+			),
+			Renamed: []storetypes.StoreRename{
+				{
+					OldKey: "intent",
+					NewKey: acttypes.ModuleName,
+				},
+			},
+		}))
 	}
 
 	if err := app.Load(loadLatest); err != nil {

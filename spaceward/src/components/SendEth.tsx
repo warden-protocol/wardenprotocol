@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
 import SignRequestDialog from "@/components/SignRequestDialog";
 import { useQueryHooks } from "@/hooks/useClient";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { ArrowUpRight } from "lucide-react";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { getProvider } from "@/lib/eth";

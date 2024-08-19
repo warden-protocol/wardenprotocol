@@ -8,7 +8,7 @@ This is a simple step-by-step guide for setting up a validator on Buenavista tes
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Buenavista](networks/join-buenavista) instructions.
+The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Buenavista](buenavista-testnet/join-buenavista) instructions.
 
 ## 1. Create/restore a key pair
 

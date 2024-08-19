@@ -17,8 +17,8 @@ interface HeadingProps {
 
 export default function StakingHeading(props: HeadingProps) {
 	return (
-		<div className="grid grid-cols-4 gap-6">
-			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+		<div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+			<div className="bg-card  border-border-edge border-[1px] rounded-xl	px-6 py-6">
 				<div className="text-label-secondary text-sm">
 					Available WARD
 				</div>
@@ -31,7 +31,7 @@ export default function StakingHeading(props: HeadingProps) {
 					})}
 				</div>
 			</div>
-			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+			<div className="bg-card  border-border-edge border-[1px] rounded-xl	px-6 py-6">
 				<div className="text-label-secondary text-sm">Staked WARD</div>
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
@@ -41,7 +41,7 @@ export default function StakingHeading(props: HeadingProps) {
 					})}
 				</div>
 			</div>
-			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+			<div className="bg-card  border-border-edge border-[1px] rounded-xl	px-6 py-6">
 				<div className="text-label-secondary text-sm flex items-center gap-1 ">
 					Unbonding Period
 					<div className="group relative z-10">
@@ -62,7 +62,7 @@ export default function StakingHeading(props: HeadingProps) {
 					{getDaysFromBigint(props.unbondSeconds)} days
 				</div>
 			</div>
-			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+			<div className="bg-card  border-border-edge border-[1px] rounded-xl	px-6 py-6">
 				<div className="text-label-secondary text-sm">Rewards WARD</div>
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">

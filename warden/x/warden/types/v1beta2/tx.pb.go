@@ -6,19 +6,21 @@ package v1beta2
 import (
 	context "context"
 	fmt "fmt"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+
 	_ "github.com/cosmos/cosmos-proto"
-	_ "github.com/cosmos/cosmos-sdk/codec/types"
+	types "github.com/cosmos/cosmos-sdk/codec/types"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
+	types1 "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta0"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	io "io"
-	math "math"
-	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -129,8 +131,8 @@ var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
 type MsgNewSpace struct {
 	Creator          string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	AdminRuleId      uint64   `protobuf:"varint,2,opt,name=admin_rule_id,json=adminRuleId,proto3" json:"admin_rule_id,omitempty"`
-	SignRuleId       uint64   `protobuf:"varint,3,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
+	AdminIntentId    uint64   `protobuf:"varint,2,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
+	SignIntentId     uint64   `protobuf:"varint,3,opt,name=sign_intent_id,json=signIntentId,proto3" json:"sign_intent_id,omitempty"`
 	AdditionalOwners []string `protobuf:"bytes,4,rep,name=additional_owners,json=additionalOwners,proto3" json:"additional_owners,omitempty"`
 }
 
@@ -174,16 +176,16 @@ func (m *MsgNewSpace) GetCreator() string {
 	return ""
 }
 
-func (m *MsgNewSpace) GetAdminRuleId() uint64 {
+func (m *MsgNewSpace) GetAdminIntentId() uint64 {
 	if m != nil {
-		return m.AdminRuleId
+		return m.AdminIntentId
 	}
 	return 0
 }
 
-func (m *MsgNewSpace) GetSignRuleId() uint64 {
+func (m *MsgNewSpace) GetSignIntentId() uint64 {
 	if m != nil {
-		return m.SignRuleId
+		return m.SignIntentId
 	}
 	return 0
 }
@@ -240,9 +242,10 @@ func (m *MsgNewSpaceResponse) GetId() uint64 {
 }
 
 type MsgAddSpaceOwner struct {
-	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	SpaceId   uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	NewOwner  string `protobuf:"bytes,3,opt,name=new_owner,json=newOwner,proto3" json:"new_owner,omitempty"`
+	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	SpaceId  uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	NewOwner string `protobuf:"bytes,3,opt,name=new_owner,json=newOwner,proto3" json:"new_owner,omitempty"`
+	Btl      uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (m *MsgAddSpaceOwner) Reset()         { *m = MsgAddSpaceOwner{} }
@@ -278,9 +281,9 @@ func (m *MsgAddSpaceOwner) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgAddSpaceOwner proto.InternalMessageInfo
 
-func (m *MsgAddSpaceOwner) GetAuthority() string {
+func (m *MsgAddSpaceOwner) GetCreator() string {
 	if m != nil {
-		return m.Authority
+		return m.Creator
 	}
 	return ""
 }
@@ -297,6 +300,13 @@ func (m *MsgAddSpaceOwner) GetNewOwner() string {
 		return m.NewOwner
 	}
 	return ""
+}
+
+func (m *MsgAddSpaceOwner) GetBtl() uint64 {
+	if m != nil {
+		return m.Btl
+	}
+	return 0
 }
 
 type MsgAddSpaceOwnerResponse struct {
@@ -336,9 +346,10 @@ func (m *MsgAddSpaceOwnerResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgAddSpaceOwnerResponse proto.InternalMessageInfo
 
 type MsgRemoveSpaceOwner struct {
-	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	SpaceId   uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	Owner     string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	SpaceId uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	Owner   string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
+	Btl     uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (m *MsgRemoveSpaceOwner) Reset()         { *m = MsgRemoveSpaceOwner{} }
@@ -374,9 +385,9 @@ func (m *MsgRemoveSpaceOwner) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRemoveSpaceOwner proto.InternalMessageInfo
 
-func (m *MsgRemoveSpaceOwner) GetAuthority() string {
+func (m *MsgRemoveSpaceOwner) GetCreator() string {
 	if m != nil {
-		return m.Authority
+		return m.Creator
 	}
 	return ""
 }
@@ -393,6 +404,13 @@ func (m *MsgRemoveSpaceOwner) GetOwner() string {
 		return m.Owner
 	}
 	return ""
+}
+
+func (m *MsgRemoveSpaceOwner) GetBtl() uint64 {
+	if m != nil {
+		return m.Btl
+	}
+	return 0
 }
 
 type MsgRemoveSpaceOwnerResponse struct {
@@ -432,9 +450,10 @@ func (m *MsgRemoveSpaceOwnerResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgRemoveSpaceOwnerResponse proto.InternalMessageInfo
 
 type MsgNewKeychain struct {
-	Creator      string        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Description  string        `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	KeychainFees *KeychainFees `protobuf:"bytes,4,opt,name=keychain_fees,json=keychainFees,proto3" json:"keychain_fees,omitempty"`
+	Creator       string        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Description   string        `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	AdminIntentId uint64        `protobuf:"varint,3,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
+	KeychainFees  *KeychainFees `protobuf:"bytes,4,opt,name=keychain_fees,json=keychainFees,proto3" json:"keychain_fees,omitempty"`
 }
 
 func (m *MsgNewKeychain) Reset()         { *m = MsgNewKeychain{} }
@@ -482,6 +501,13 @@ func (m *MsgNewKeychain) GetDescription() string {
 		return m.Description
 	}
 	return ""
+}
+
+func (m *MsgNewKeychain) GetAdminIntentId() uint64 {
+	if m != nil {
+		return m.AdminIntentId
+	}
+	return 0
 }
 
 func (m *MsgNewKeychain) GetKeychainFees() *KeychainFees {
@@ -535,24 +561,24 @@ func (m *MsgNewKeychainResponse) GetId() uint64 {
 	return 0
 }
 
-type MsgAddKeychainWriter struct {
+type MsgAddKeychainParty struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	KeychainId uint64 `protobuf:"varint,2,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	Writer     string `protobuf:"bytes,3,opt,name=writer,proto3" json:"writer,omitempty"`
+	Party      string `protobuf:"bytes,3,opt,name=party,proto3" json:"party,omitempty"`
 }
 
-func (m *MsgAddKeychainWriter) Reset()         { *m = MsgAddKeychainWriter{} }
-func (m *MsgAddKeychainWriter) String() string { return proto.CompactTextString(m) }
-func (*MsgAddKeychainWriter) ProtoMessage()    {}
-func (*MsgAddKeychainWriter) Descriptor() ([]byte, []int) {
+func (m *MsgAddKeychainParty) Reset()         { *m = MsgAddKeychainParty{} }
+func (m *MsgAddKeychainParty) String() string { return proto.CompactTextString(m) }
+func (*MsgAddKeychainParty) ProtoMessage()    {}
+func (*MsgAddKeychainParty) Descriptor() ([]byte, []int) {
 	return fileDescriptor_89bb1c32f2576e28, []int{10}
 }
-func (m *MsgAddKeychainWriter) XXX_Unmarshal(b []byte) error {
+func (m *MsgAddKeychainParty) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgAddKeychainWriter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddKeychainParty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgAddKeychainWriter.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgAddKeychainParty.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -562,54 +588,54 @@ func (m *MsgAddKeychainWriter) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgAddKeychainWriter) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddKeychainWriter.Merge(m, src)
+func (m *MsgAddKeychainParty) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddKeychainParty.Merge(m, src)
 }
-func (m *MsgAddKeychainWriter) XXX_Size() int {
+func (m *MsgAddKeychainParty) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgAddKeychainWriter) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddKeychainWriter.DiscardUnknown(m)
+func (m *MsgAddKeychainParty) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddKeychainParty.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgAddKeychainWriter proto.InternalMessageInfo
+var xxx_messageInfo_MsgAddKeychainParty proto.InternalMessageInfo
 
-func (m *MsgAddKeychainWriter) GetCreator() string {
+func (m *MsgAddKeychainParty) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgAddKeychainWriter) GetKeychainId() uint64 {
+func (m *MsgAddKeychainParty) GetKeychainId() uint64 {
 	if m != nil {
 		return m.KeychainId
 	}
 	return 0
 }
 
-func (m *MsgAddKeychainWriter) GetWriter() string {
+func (m *MsgAddKeychainParty) GetParty() string {
 	if m != nil {
-		return m.Writer
+		return m.Party
 	}
 	return ""
 }
 
-type MsgAddKeychainWriterResponse struct {
+type MsgAddKeychainPartyResponse struct {
 }
 
-func (m *MsgAddKeychainWriterResponse) Reset()         { *m = MsgAddKeychainWriterResponse{} }
-func (m *MsgAddKeychainWriterResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgAddKeychainWriterResponse) ProtoMessage()    {}
-func (*MsgAddKeychainWriterResponse) Descriptor() ([]byte, []int) {
+func (m *MsgAddKeychainPartyResponse) Reset()         { *m = MsgAddKeychainPartyResponse{} }
+func (m *MsgAddKeychainPartyResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgAddKeychainPartyResponse) ProtoMessage()    {}
+func (*MsgAddKeychainPartyResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_89bb1c32f2576e28, []int{11}
 }
-func (m *MsgAddKeychainWriterResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgAddKeychainPartyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgAddKeychainWriterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddKeychainPartyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgAddKeychainWriterResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgAddKeychainPartyResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -619,23 +645,24 @@ func (m *MsgAddKeychainWriterResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *MsgAddKeychainWriterResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddKeychainWriterResponse.Merge(m, src)
+func (m *MsgAddKeychainPartyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddKeychainPartyResponse.Merge(m, src)
 }
-func (m *MsgAddKeychainWriterResponse) XXX_Size() int {
+func (m *MsgAddKeychainPartyResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgAddKeychainWriterResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddKeychainWriterResponse.DiscardUnknown(m)
+func (m *MsgAddKeychainPartyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddKeychainPartyResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgAddKeychainWriterResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgAddKeychainPartyResponse proto.InternalMessageInfo
 
 type MsgUpdateSpace struct {
-	Authority   string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	SpaceId     uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	AdminRuleId uint64 `protobuf:"varint,3,opt,name=admin_rule_id,json=adminRuleId,proto3" json:"admin_rule_id,omitempty"`
-	SignRuleId  uint64 `protobuf:"varint,4,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
+	Creator       string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	SpaceId       uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	AdminIntentId uint64 `protobuf:"varint,3,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
+	SignIntentId  uint64 `protobuf:"varint,4,opt,name=sign_intent_id,json=signIntentId,proto3" json:"sign_intent_id,omitempty"`
+	Btl           uint64 `protobuf:"varint,5,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (m *MsgUpdateSpace) Reset()         { *m = MsgUpdateSpace{} }
@@ -671,9 +698,9 @@ func (m *MsgUpdateSpace) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateSpace proto.InternalMessageInfo
 
-func (m *MsgUpdateSpace) GetAuthority() string {
+func (m *MsgUpdateSpace) GetCreator() string {
 	if m != nil {
-		return m.Authority
+		return m.Creator
 	}
 	return ""
 }
@@ -685,16 +712,23 @@ func (m *MsgUpdateSpace) GetSpaceId() uint64 {
 	return 0
 }
 
-func (m *MsgUpdateSpace) GetAdminRuleId() uint64 {
+func (m *MsgUpdateSpace) GetAdminIntentId() uint64 {
 	if m != nil {
-		return m.AdminRuleId
+		return m.AdminIntentId
 	}
 	return 0
 }
 
-func (m *MsgUpdateSpace) GetSignRuleId() uint64 {
+func (m *MsgUpdateSpace) GetSignIntentId() uint64 {
 	if m != nil {
-		return m.SignRuleId
+		return m.SignIntentId
+	}
+	return 0
+}
+
+func (m *MsgUpdateSpace) GetBtl() uint64 {
+	if m != nil {
+		return m.Btl
 	}
 	return 0
 }
@@ -736,10 +770,10 @@ func (m *MsgUpdateSpaceResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgUpdateSpaceResponse proto.InternalMessageInfo
 
 type MsgUpdateKeychain struct {
-	Creator      string        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	KeychainId   uint64        `protobuf:"varint,2,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	Description  string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	KeychainFees *KeychainFees `protobuf:"bytes,5,opt,name=keychain_fees,json=keychainFees,proto3" json:"keychain_fees,omitempty"`
+	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	KeychainId  uint64 `protobuf:"varint,2,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	IsActive    bool   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 }
 
 func (m *MsgUpdateKeychain) Reset()         { *m = MsgUpdateKeychain{} }
@@ -796,11 +830,11 @@ func (m *MsgUpdateKeychain) GetDescription() string {
 	return ""
 }
 
-func (m *MsgUpdateKeychain) GetKeychainFees() *KeychainFees {
+func (m *MsgUpdateKeychain) GetIsActive() bool {
 	if m != nil {
-		return m.KeychainFees
+		return m.IsActive
 	}
-	return nil
+	return false
 }
 
 type MsgUpdateKeychainResponse struct {
@@ -840,11 +874,12 @@ func (m *MsgUpdateKeychainResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgUpdateKeychainResponse proto.InternalMessageInfo
 
 type MsgNewKeyRequest struct {
-	Authority  string  `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	Creator    string  `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	SpaceId    uint64  `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
 	KeychainId uint64  `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
 	KeyType    KeyType `protobuf:"varint,4,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta2.KeyType" json:"key_type,omitempty"`
-	RuleId     uint64  `protobuf:"varint,5,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	Btl        uint64  `protobuf:"varint,5,opt,name=btl,proto3" json:"btl,omitempty"`
+	IntentId   uint64  `protobuf:"varint,6,opt,name=intent_id,json=intentId,proto3" json:"intent_id,omitempty"`
 }
 
 func (m *MsgNewKeyRequest) Reset()         { *m = MsgNewKeyRequest{} }
@@ -880,9 +915,9 @@ func (m *MsgNewKeyRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgNewKeyRequest proto.InternalMessageInfo
 
-func (m *MsgNewKeyRequest) GetAuthority() string {
+func (m *MsgNewKeyRequest) GetCreator() string {
 	if m != nil {
-		return m.Authority
+		return m.Creator
 	}
 	return ""
 }
@@ -908,9 +943,16 @@ func (m *MsgNewKeyRequest) GetKeyType() KeyType {
 	return KeyType_KEY_TYPE_UNSPECIFIED
 }
 
-func (m *MsgNewKeyRequest) GetRuleId() uint64 {
+func (m *MsgNewKeyRequest) GetBtl() uint64 {
 	if m != nil {
-		return m.RuleId
+		return m.Btl
+	}
+	return 0
+}
+
+func (m *MsgNewKeyRequest) GetIntentId() uint64 {
+	if m != nil {
+		return m.IntentId
 	}
 	return 0
 }
@@ -1003,29 +1045,34 @@ func (m *MsgNewKey) GetPublicKey() []byte {
 	return nil
 }
 
-type MsgFulfilKeyRequest struct {
+type MsgUpdateKeyRequest struct {
 	Creator   string           `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	RequestId uint64           `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status    KeyRequestStatus `protobuf:"varint,3,opt,name=status,proto3,enum=warden.warden.v1beta2.KeyRequestStatus" json:"status,omitempty"`
+	// Holds the result of the request. If status is approved, the result will
+	// contain the requested key's public key that can be used for signing
+	// payloads.
+	// If status is rejected, the result will contain the reason.
+	//
 	// Types that are valid to be assigned to Result:
 	//
-	//	*MsgFulfilKeyRequest_Key
-	//	*MsgFulfilKeyRequest_RejectReason
-	Result isMsgFulfilKeyRequest_Result `protobuf_oneof:"result"`
+	//	*MsgUpdateKeyRequest_Key
+	//	*MsgUpdateKeyRequest_RejectReason
+	Result isMsgUpdateKeyRequest_Result `protobuf_oneof:"result"`
 }
 
-func (m *MsgFulfilKeyRequest) Reset()         { *m = MsgFulfilKeyRequest{} }
-func (m *MsgFulfilKeyRequest) String() string { return proto.CompactTextString(m) }
-func (*MsgFulfilKeyRequest) ProtoMessage()    {}
-func (*MsgFulfilKeyRequest) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateKeyRequest) Reset()         { *m = MsgUpdateKeyRequest{} }
+func (m *MsgUpdateKeyRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateKeyRequest) ProtoMessage()    {}
+func (*MsgUpdateKeyRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_89bb1c32f2576e28, []int{19}
 }
-func (m *MsgFulfilKeyRequest) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateKeyRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgFulfilKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgFulfilKeyRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateKeyRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1035,99 +1082,99 @@ func (m *MsgFulfilKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *MsgFulfilKeyRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgFulfilKeyRequest.Merge(m, src)
+func (m *MsgUpdateKeyRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateKeyRequest.Merge(m, src)
 }
-func (m *MsgFulfilKeyRequest) XXX_Size() int {
+func (m *MsgUpdateKeyRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgFulfilKeyRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgFulfilKeyRequest.DiscardUnknown(m)
+func (m *MsgUpdateKeyRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateKeyRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgFulfilKeyRequest proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateKeyRequest proto.InternalMessageInfo
 
-type isMsgFulfilKeyRequest_Result interface {
-	isMsgFulfilKeyRequest_Result()
+type isMsgUpdateKeyRequest_Result interface {
+	isMsgUpdateKeyRequest_Result()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type MsgFulfilKeyRequest_Key struct {
+type MsgUpdateKeyRequest_Key struct {
 	Key *MsgNewKey `protobuf:"bytes,4,opt,name=key,proto3,oneof" json:"key,omitempty"`
 }
-type MsgFulfilKeyRequest_RejectReason struct {
+type MsgUpdateKeyRequest_RejectReason struct {
 	RejectReason string `protobuf:"bytes,5,opt,name=reject_reason,json=rejectReason,proto3,oneof" json:"reject_reason,omitempty"`
 }
 
-func (*MsgFulfilKeyRequest_Key) isMsgFulfilKeyRequest_Result()          {}
-func (*MsgFulfilKeyRequest_RejectReason) isMsgFulfilKeyRequest_Result() {}
+func (*MsgUpdateKeyRequest_Key) isMsgUpdateKeyRequest_Result()          {}
+func (*MsgUpdateKeyRequest_RejectReason) isMsgUpdateKeyRequest_Result() {}
 
-func (m *MsgFulfilKeyRequest) GetResult() isMsgFulfilKeyRequest_Result {
+func (m *MsgUpdateKeyRequest) GetResult() isMsgUpdateKeyRequest_Result {
 	if m != nil {
 		return m.Result
 	}
 	return nil
 }
 
-func (m *MsgFulfilKeyRequest) GetCreator() string {
+func (m *MsgUpdateKeyRequest) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgFulfilKeyRequest) GetRequestId() uint64 {
+func (m *MsgUpdateKeyRequest) GetRequestId() uint64 {
 	if m != nil {
 		return m.RequestId
 	}
 	return 0
 }
 
-func (m *MsgFulfilKeyRequest) GetStatus() KeyRequestStatus {
+func (m *MsgUpdateKeyRequest) GetStatus() KeyRequestStatus {
 	if m != nil {
 		return m.Status
 	}
 	return KeyRequestStatus_KEY_REQUEST_STATUS_UNSPECIFIED
 }
 
-func (m *MsgFulfilKeyRequest) GetKey() *MsgNewKey {
-	if x, ok := m.GetResult().(*MsgFulfilKeyRequest_Key); ok {
+func (m *MsgUpdateKeyRequest) GetKey() *MsgNewKey {
+	if x, ok := m.GetResult().(*MsgUpdateKeyRequest_Key); ok {
 		return x.Key
 	}
 	return nil
 }
 
-func (m *MsgFulfilKeyRequest) GetRejectReason() string {
-	if x, ok := m.GetResult().(*MsgFulfilKeyRequest_RejectReason); ok {
+func (m *MsgUpdateKeyRequest) GetRejectReason() string {
+	if x, ok := m.GetResult().(*MsgUpdateKeyRequest_RejectReason); ok {
 		return x.RejectReason
 	}
 	return ""
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*MsgFulfilKeyRequest) XXX_OneofWrappers() []interface{} {
+func (*MsgUpdateKeyRequest) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*MsgFulfilKeyRequest_Key)(nil),
-		(*MsgFulfilKeyRequest_RejectReason)(nil),
+		(*MsgUpdateKeyRequest_Key)(nil),
+		(*MsgUpdateKeyRequest_RejectReason)(nil),
 	}
 }
 
-type MsgFulfilKeyRequestResponse struct {
+type MsgUpdateKeyRequestResponse struct {
 }
 
-func (m *MsgFulfilKeyRequestResponse) Reset()         { *m = MsgFulfilKeyRequestResponse{} }
-func (m *MsgFulfilKeyRequestResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgFulfilKeyRequestResponse) ProtoMessage()    {}
-func (*MsgFulfilKeyRequestResponse) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateKeyRequestResponse) Reset()         { *m = MsgUpdateKeyRequestResponse{} }
+func (m *MsgUpdateKeyRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateKeyRequestResponse) ProtoMessage()    {}
+func (*MsgUpdateKeyRequestResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_89bb1c32f2576e28, []int{20}
 }
-func (m *MsgFulfilKeyRequestResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateKeyRequestResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgFulfilKeyRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateKeyRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgFulfilKeyRequestResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateKeyRequestResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1137,22 +1184,23 @@ func (m *MsgFulfilKeyRequestResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *MsgFulfilKeyRequestResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgFulfilKeyRequestResponse.Merge(m, src)
+func (m *MsgUpdateKeyRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateKeyRequestResponse.Merge(m, src)
 }
-func (m *MsgFulfilKeyRequestResponse) XXX_Size() int {
+func (m *MsgUpdateKeyRequestResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgFulfilKeyRequestResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgFulfilKeyRequestResponse.DiscardUnknown(m)
+func (m *MsgUpdateKeyRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateKeyRequestResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgFulfilKeyRequestResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateKeyRequestResponse proto.InternalMessageInfo
 
 type MsgUpdateKey struct {
-	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	KeyId     uint64 `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
-	RuleId    uint64 `protobuf:"varint,3,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	KeyId    uint64 `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
+	IntentId uint64 `protobuf:"varint,3,opt,name=intent_id,json=intentId,proto3" json:"intent_id,omitempty"`
+	Btl      uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (m *MsgUpdateKey) Reset()         { *m = MsgUpdateKey{} }
@@ -1188,9 +1236,9 @@ func (m *MsgUpdateKey) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateKey proto.InternalMessageInfo
 
-func (m *MsgUpdateKey) GetAuthority() string {
+func (m *MsgUpdateKey) GetCreator() string {
 	if m != nil {
-		return m.Authority
+		return m.Creator
 	}
 	return ""
 }
@@ -1202,9 +1250,16 @@ func (m *MsgUpdateKey) GetKeyId() uint64 {
 	return 0
 }
 
-func (m *MsgUpdateKey) GetRuleId() uint64 {
+func (m *MsgUpdateKey) GetIntentId() uint64 {
 	if m != nil {
-		return m.RuleId
+		return m.IntentId
+	}
+	return 0
+}
+
+func (m *MsgUpdateKey) GetBtl() uint64 {
+	if m != nil {
+		return m.Btl
 	}
 	return 0
 }
@@ -1245,26 +1300,27 @@ func (m *MsgUpdateKeyResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateKeyResponse proto.InternalMessageInfo
 
-type MsgNewSignRequest struct {
-	Authority     string   `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
-	KeyId         uint64   `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
-	Input         []byte   `protobuf:"bytes,3,opt,name=input,proto3" json:"input,omitempty"`
-	Analyzers     []string `protobuf:"bytes,4,rep,name=analyzers,proto3" json:"analyzers,omitempty"`
-	EncryptionKey []byte   `protobuf:"bytes,5,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryption_key,omitempty"`
+type MsgNewSignatureRequest struct {
+	Creator        string     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	KeyId          uint64     `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
+	DataForSigning []byte     `protobuf:"bytes,3,opt,name=data_for_signing,json=dataForSigning,proto3" json:"data_for_signing,omitempty"`
+	SignMethod     SignMethod `protobuf:"varint,4,opt,name=sign_method,json=signMethod,proto3,enum=warden.warden.v1beta2.SignMethod" json:"sign_method,omitempty"`
+	Metadata       *types.Any `protobuf:"bytes,5,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Btl            uint64     `protobuf:"varint,6,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
-func (m *MsgNewSignRequest) Reset()         { *m = MsgNewSignRequest{} }
-func (m *MsgNewSignRequest) String() string { return proto.CompactTextString(m) }
-func (*MsgNewSignRequest) ProtoMessage()    {}
-func (*MsgNewSignRequest) Descriptor() ([]byte, []int) {
+func (m *MsgNewSignatureRequest) Reset()         { *m = MsgNewSignatureRequest{} }
+func (m *MsgNewSignatureRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgNewSignatureRequest) ProtoMessage()    {}
+func (*MsgNewSignatureRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_89bb1c32f2576e28, []int{23}
 }
-func (m *MsgNewSignRequest) XXX_Unmarshal(b []byte) error {
+func (m *MsgNewSignatureRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgNewSignRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNewSignatureRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgNewSignRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNewSignatureRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1274,69 +1330,76 @@ func (m *MsgNewSignRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgNewSignRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgNewSignRequest.Merge(m, src)
+func (m *MsgNewSignatureRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNewSignatureRequest.Merge(m, src)
 }
-func (m *MsgNewSignRequest) XXX_Size() int {
+func (m *MsgNewSignatureRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgNewSignRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgNewSignRequest.DiscardUnknown(m)
+func (m *MsgNewSignatureRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNewSignatureRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgNewSignRequest proto.InternalMessageInfo
+var xxx_messageInfo_MsgNewSignatureRequest proto.InternalMessageInfo
 
-func (m *MsgNewSignRequest) GetAuthority() string {
+func (m *MsgNewSignatureRequest) GetCreator() string {
 	if m != nil {
-		return m.Authority
+		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgNewSignRequest) GetKeyId() uint64 {
+func (m *MsgNewSignatureRequest) GetKeyId() uint64 {
 	if m != nil {
 		return m.KeyId
 	}
 	return 0
 }
 
-func (m *MsgNewSignRequest) GetInput() []byte {
+func (m *MsgNewSignatureRequest) GetDataForSigning() []byte {
 	if m != nil {
-		return m.Input
+		return m.DataForSigning
 	}
 	return nil
 }
 
-func (m *MsgNewSignRequest) GetAnalyzers() []string {
+func (m *MsgNewSignatureRequest) GetSignMethod() SignMethod {
 	if m != nil {
-		return m.Analyzers
+		return m.SignMethod
+	}
+	return SignMethod_SIGN_METHOD_BLACK_BOX
+}
+
+func (m *MsgNewSignatureRequest) GetMetadata() *types.Any {
+	if m != nil {
+		return m.Metadata
 	}
 	return nil
 }
 
-func (m *MsgNewSignRequest) GetEncryptionKey() []byte {
+func (m *MsgNewSignatureRequest) GetBtl() uint64 {
 	if m != nil {
-		return m.EncryptionKey
+		return m.Btl
 	}
-	return nil
+	return 0
 }
 
-type MsgNewSignRequestResponse struct {
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+type MetadataEthereum struct {
+	ChainId uint64 `protobuf:"varint,1,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
 }
 
-func (m *MsgNewSignRequestResponse) Reset()         { *m = MsgNewSignRequestResponse{} }
-func (m *MsgNewSignRequestResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgNewSignRequestResponse) ProtoMessage()    {}
-func (*MsgNewSignRequestResponse) Descriptor() ([]byte, []int) {
+func (m *MetadataEthereum) Reset()         { *m = MetadataEthereum{} }
+func (m *MetadataEthereum) String() string { return proto.CompactTextString(m) }
+func (*MetadataEthereum) ProtoMessage()    {}
+func (*MetadataEthereum) Descriptor() ([]byte, []int) {
 	return fileDescriptor_89bb1c32f2576e28, []int{24}
 }
-func (m *MsgNewSignRequestResponse) XXX_Unmarshal(b []byte) error {
+func (m *MetadataEthereum) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgNewSignRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MetadataEthereum) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgNewSignRequestResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MetadataEthereum.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1346,19 +1409,63 @@ func (m *MsgNewSignRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgNewSignRequestResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgNewSignRequestResponse.Merge(m, src)
+func (m *MetadataEthereum) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MetadataEthereum.Merge(m, src)
 }
-func (m *MsgNewSignRequestResponse) XXX_Size() int {
+func (m *MetadataEthereum) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgNewSignRequestResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgNewSignRequestResponse.DiscardUnknown(m)
+func (m *MetadataEthereum) XXX_DiscardUnknown() {
+	xxx_messageInfo_MetadataEthereum.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgNewSignRequestResponse proto.InternalMessageInfo
+var xxx_messageInfo_MetadataEthereum proto.InternalMessageInfo
 
-func (m *MsgNewSignRequestResponse) GetId() uint64 {
+func (m *MetadataEthereum) GetChainId() uint64 {
+	if m != nil {
+		return m.ChainId
+	}
+	return 0
+}
+
+type MsgNewSignatureRequestResponse struct {
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *MsgNewSignatureRequestResponse) Reset()         { *m = MsgNewSignatureRequestResponse{} }
+func (m *MsgNewSignatureRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgNewSignatureRequestResponse) ProtoMessage()    {}
+func (*MsgNewSignatureRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_89bb1c32f2576e28, []int{25}
+}
+func (m *MsgNewSignatureRequestResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgNewSignatureRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgNewSignatureRequestResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgNewSignatureRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNewSignatureRequestResponse.Merge(m, src)
+}
+func (m *MsgNewSignatureRequestResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgNewSignatureRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNewSignatureRequestResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgNewSignatureRequestResponse proto.InternalMessageInfo
+
+func (m *MsgNewSignatureRequestResponse) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
@@ -1373,7 +1480,7 @@ func (m *MsgSignedData) Reset()         { *m = MsgSignedData{} }
 func (m *MsgSignedData) String() string { return proto.CompactTextString(m) }
 func (*MsgSignedData) ProtoMessage()    {}
 func (*MsgSignedData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_89bb1c32f2576e28, []int{25}
+	return fileDescriptor_89bb1c32f2576e28, []int{26}
 }
 func (m *MsgSignedData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1409,7 +1516,7 @@ func (m *MsgSignedData) GetSignedData() []byte {
 	return nil
 }
 
-type MsgFulfilSignRequest struct {
+type MsgFulfilSignatureRequest struct {
 	Creator   string            `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	RequestId uint64            `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status    SignRequestStatus `protobuf:"varint,3,opt,name=status,proto3,enum=warden.warden.v1beta2.SignRequestStatus" json:"status,omitempty"`
@@ -1419,23 +1526,23 @@ type MsgFulfilSignRequest struct {
 	//
 	// Types that are valid to be assigned to Result:
 	//
-	//	*MsgFulfilSignRequest_Payload
-	//	*MsgFulfilSignRequest_RejectReason
-	Result isMsgFulfilSignRequest_Result `protobuf_oneof:"result"`
+	//	*MsgFulfilSignatureRequest_Payload
+	//	*MsgFulfilSignatureRequest_RejectReason
+	Result isMsgFulfilSignatureRequest_Result `protobuf_oneof:"result"`
 }
 
-func (m *MsgFulfilSignRequest) Reset()         { *m = MsgFulfilSignRequest{} }
-func (m *MsgFulfilSignRequest) String() string { return proto.CompactTextString(m) }
-func (*MsgFulfilSignRequest) ProtoMessage()    {}
-func (*MsgFulfilSignRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_89bb1c32f2576e28, []int{26}
+func (m *MsgFulfilSignatureRequest) Reset()         { *m = MsgFulfilSignatureRequest{} }
+func (m *MsgFulfilSignatureRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgFulfilSignatureRequest) ProtoMessage()    {}
+func (*MsgFulfilSignatureRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_89bb1c32f2576e28, []int{27}
 }
-func (m *MsgFulfilSignRequest) XXX_Unmarshal(b []byte) error {
+func (m *MsgFulfilSignatureRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgFulfilSignRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgFulfilSignatureRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgFulfilSignRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgFulfilSignatureRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1445,99 +1552,99 @@ func (m *MsgFulfilSignRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgFulfilSignRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgFulfilSignRequest.Merge(m, src)
+func (m *MsgFulfilSignatureRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgFulfilSignatureRequest.Merge(m, src)
 }
-func (m *MsgFulfilSignRequest) XXX_Size() int {
+func (m *MsgFulfilSignatureRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgFulfilSignRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgFulfilSignRequest.DiscardUnknown(m)
+func (m *MsgFulfilSignatureRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgFulfilSignatureRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgFulfilSignRequest proto.InternalMessageInfo
+var xxx_messageInfo_MsgFulfilSignatureRequest proto.InternalMessageInfo
 
-type isMsgFulfilSignRequest_Result interface {
-	isMsgFulfilSignRequest_Result()
+type isMsgFulfilSignatureRequest_Result interface {
+	isMsgFulfilSignatureRequest_Result()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type MsgFulfilSignRequest_Payload struct {
+type MsgFulfilSignatureRequest_Payload struct {
 	Payload *MsgSignedData `protobuf:"bytes,4,opt,name=payload,proto3,oneof" json:"payload,omitempty"`
 }
-type MsgFulfilSignRequest_RejectReason struct {
+type MsgFulfilSignatureRequest_RejectReason struct {
 	RejectReason string `protobuf:"bytes,5,opt,name=reject_reason,json=rejectReason,proto3,oneof" json:"reject_reason,omitempty"`
 }
 
-func (*MsgFulfilSignRequest_Payload) isMsgFulfilSignRequest_Result()      {}
-func (*MsgFulfilSignRequest_RejectReason) isMsgFulfilSignRequest_Result() {}
+func (*MsgFulfilSignatureRequest_Payload) isMsgFulfilSignatureRequest_Result()      {}
+func (*MsgFulfilSignatureRequest_RejectReason) isMsgFulfilSignatureRequest_Result() {}
 
-func (m *MsgFulfilSignRequest) GetResult() isMsgFulfilSignRequest_Result {
+func (m *MsgFulfilSignatureRequest) GetResult() isMsgFulfilSignatureRequest_Result {
 	if m != nil {
 		return m.Result
 	}
 	return nil
 }
 
-func (m *MsgFulfilSignRequest) GetCreator() string {
+func (m *MsgFulfilSignatureRequest) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgFulfilSignRequest) GetRequestId() uint64 {
+func (m *MsgFulfilSignatureRequest) GetRequestId() uint64 {
 	if m != nil {
 		return m.RequestId
 	}
 	return 0
 }
 
-func (m *MsgFulfilSignRequest) GetStatus() SignRequestStatus {
+func (m *MsgFulfilSignatureRequest) GetStatus() SignRequestStatus {
 	if m != nil {
 		return m.Status
 	}
 	return SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED
 }
 
-func (m *MsgFulfilSignRequest) GetPayload() *MsgSignedData {
-	if x, ok := m.GetResult().(*MsgFulfilSignRequest_Payload); ok {
+func (m *MsgFulfilSignatureRequest) GetPayload() *MsgSignedData {
+	if x, ok := m.GetResult().(*MsgFulfilSignatureRequest_Payload); ok {
 		return x.Payload
 	}
 	return nil
 }
 
-func (m *MsgFulfilSignRequest) GetRejectReason() string {
-	if x, ok := m.GetResult().(*MsgFulfilSignRequest_RejectReason); ok {
+func (m *MsgFulfilSignatureRequest) GetRejectReason() string {
+	if x, ok := m.GetResult().(*MsgFulfilSignatureRequest_RejectReason); ok {
 		return x.RejectReason
 	}
 	return ""
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*MsgFulfilSignRequest) XXX_OneofWrappers() []interface{} {
+func (*MsgFulfilSignatureRequest) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*MsgFulfilSignRequest_Payload)(nil),
-		(*MsgFulfilSignRequest_RejectReason)(nil),
+		(*MsgFulfilSignatureRequest_Payload)(nil),
+		(*MsgFulfilSignatureRequest_RejectReason)(nil),
 	}
 }
 
-type MsgFulfilSignRequestResponse struct {
+type MsgFulfilSignatureRequestResponse struct {
 }
 
-func (m *MsgFulfilSignRequestResponse) Reset()         { *m = MsgFulfilSignRequestResponse{} }
-func (m *MsgFulfilSignRequestResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgFulfilSignRequestResponse) ProtoMessage()    {}
-func (*MsgFulfilSignRequestResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_89bb1c32f2576e28, []int{27}
+func (m *MsgFulfilSignatureRequestResponse) Reset()         { *m = MsgFulfilSignatureRequestResponse{} }
+func (m *MsgFulfilSignatureRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgFulfilSignatureRequestResponse) ProtoMessage()    {}
+func (*MsgFulfilSignatureRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_89bb1c32f2576e28, []int{28}
 }
-func (m *MsgFulfilSignRequestResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgFulfilSignatureRequestResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgFulfilSignRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgFulfilSignatureRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgFulfilSignRequestResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgFulfilSignatureRequestResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1547,17 +1654,17 @@ func (m *MsgFulfilSignRequestResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *MsgFulfilSignRequestResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgFulfilSignRequestResponse.Merge(m, src)
+func (m *MsgFulfilSignatureRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgFulfilSignatureRequestResponse.Merge(m, src)
 }
-func (m *MsgFulfilSignRequestResponse) XXX_Size() int {
+func (m *MsgFulfilSignatureRequestResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgFulfilSignRequestResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgFulfilSignRequestResponse.DiscardUnknown(m)
+func (m *MsgFulfilSignatureRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgFulfilSignatureRequestResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgFulfilSignRequestResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgFulfilSignatureRequestResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "warden.warden.v1beta2.MsgUpdateParams")
@@ -1570,8 +1677,8 @@ func init() {
 	proto.RegisterType((*MsgRemoveSpaceOwnerResponse)(nil), "warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse")
 	proto.RegisterType((*MsgNewKeychain)(nil), "warden.warden.v1beta2.MsgNewKeychain")
 	proto.RegisterType((*MsgNewKeychainResponse)(nil), "warden.warden.v1beta2.MsgNewKeychainResponse")
-	proto.RegisterType((*MsgAddKeychainWriter)(nil), "warden.warden.v1beta2.MsgAddKeychainWriter")
-	proto.RegisterType((*MsgAddKeychainWriterResponse)(nil), "warden.warden.v1beta2.MsgAddKeychainWriterResponse")
+	proto.RegisterType((*MsgAddKeychainParty)(nil), "warden.warden.v1beta2.MsgAddKeychainParty")
+	proto.RegisterType((*MsgAddKeychainPartyResponse)(nil), "warden.warden.v1beta2.MsgAddKeychainPartyResponse")
 	proto.RegisterType((*MsgUpdateSpace)(nil), "warden.warden.v1beta2.MsgUpdateSpace")
 	proto.RegisterType((*MsgUpdateSpaceResponse)(nil), "warden.warden.v1beta2.MsgUpdateSpaceResponse")
 	proto.RegisterType((*MsgUpdateKeychain)(nil), "warden.warden.v1beta2.MsgUpdateKeychain")
@@ -1579,106 +1686,112 @@ func init() {
 	proto.RegisterType((*MsgNewKeyRequest)(nil), "warden.warden.v1beta2.MsgNewKeyRequest")
 	proto.RegisterType((*MsgNewKeyRequestResponse)(nil), "warden.warden.v1beta2.MsgNewKeyRequestResponse")
 	proto.RegisterType((*MsgNewKey)(nil), "warden.warden.v1beta2.MsgNewKey")
-	proto.RegisterType((*MsgFulfilKeyRequest)(nil), "warden.warden.v1beta2.MsgFulfilKeyRequest")
-	proto.RegisterType((*MsgFulfilKeyRequestResponse)(nil), "warden.warden.v1beta2.MsgFulfilKeyRequestResponse")
+	proto.RegisterType((*MsgUpdateKeyRequest)(nil), "warden.warden.v1beta2.MsgUpdateKeyRequest")
+	proto.RegisterType((*MsgUpdateKeyRequestResponse)(nil), "warden.warden.v1beta2.MsgUpdateKeyRequestResponse")
 	proto.RegisterType((*MsgUpdateKey)(nil), "warden.warden.v1beta2.MsgUpdateKey")
 	proto.RegisterType((*MsgUpdateKeyResponse)(nil), "warden.warden.v1beta2.MsgUpdateKeyResponse")
-	proto.RegisterType((*MsgNewSignRequest)(nil), "warden.warden.v1beta2.MsgNewSignRequest")
-	proto.RegisterType((*MsgNewSignRequestResponse)(nil), "warden.warden.v1beta2.MsgNewSignRequestResponse")
+	proto.RegisterType((*MsgNewSignatureRequest)(nil), "warden.warden.v1beta2.MsgNewSignatureRequest")
+	proto.RegisterType((*MetadataEthereum)(nil), "warden.warden.v1beta2.MetadataEthereum")
+	proto.RegisterType((*MsgNewSignatureRequestResponse)(nil), "warden.warden.v1beta2.MsgNewSignatureRequestResponse")
 	proto.RegisterType((*MsgSignedData)(nil), "warden.warden.v1beta2.MsgSignedData")
-	proto.RegisterType((*MsgFulfilSignRequest)(nil), "warden.warden.v1beta2.MsgFulfilSignRequest")
-	proto.RegisterType((*MsgFulfilSignRequestResponse)(nil), "warden.warden.v1beta2.MsgFulfilSignRequestResponse")
+	proto.RegisterType((*MsgFulfilSignatureRequest)(nil), "warden.warden.v1beta2.MsgFulfilSignatureRequest")
+	proto.RegisterType((*MsgFulfilSignatureRequestResponse)(nil), "warden.warden.v1beta2.MsgFulfilSignatureRequestResponse")
 }
 
 func init() { proto.RegisterFile("warden/warden/v1beta2/tx.proto", fileDescriptor_89bb1c32f2576e28) }
 
 var fileDescriptor_89bb1c32f2576e28 = []byte{
-	// 1357 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0xcf, 0x8f, 0xdb, 0xc4,
-	0x17, 0x8f, 0x37, 0x3f, 0x76, 0xfd, 0x92, 0xcd, 0x77, 0xd7, 0xdf, 0x6d, 0x9b, 0x4d, 0xbb, 0x69,
-	0xe4, 0x36, 0x34, 0xca, 0x6a, 0x93, 0x36, 0x45, 0x48, 0xf4, 0x42, 0xbb, 0x42, 0x65, 0x97, 0x6a,
-	0x01, 0xb9, 0x20, 0xa4, 0x4a, 0x28, 0x9a, 0x8d, 0x67, 0x5d, 0x13, 0xc7, 0x0e, 0x1e, 0xbb, 0x69,
-	0x38, 0x01, 0xe2, 0xc4, 0x09, 0xf1, 0x0f, 0x70, 0xad, 0x38, 0xed, 0x81, 0x3b, 0xd7, 0x5e, 0x40,
-	0x15, 0x27, 0x4e, 0x08, 0xb5, 0x87, 0xfd, 0x37, 0x90, 0x67, 0xec, 0x89, 0x63, 0xc7, 0x4e, 0xba,
-	0xf4, 0xb2, 0xd9, 0x99, 0xf9, 0xcc, 0xbc, 0xf7, 0x3e, 0xef, 0xf3, 0x66, 0x9e, 0x0c, 0xb5, 0x31,
-	0xb2, 0x55, 0x6c, 0x76, 0xfc, 0x9f, 0x27, 0xb7, 0x8e, 0xb1, 0x83, 0xba, 0x1d, 0xe7, 0x69, 0x7b,
-	0x64, 0x5b, 0x8e, 0x25, 0x5d, 0x60, 0x0b, 0x6d, 0xff, 0xc7, 0x5f, 0xaf, 0x6e, 0xa2, 0xa1, 0x6e,
-	0x5a, 0x1d, 0xfa, 0x97, 0x21, 0xab, 0x97, 0xfa, 0x16, 0x19, 0x5a, 0xa4, 0x33, 0x24, 0x5a, 0xe7,
-	0xc9, 0x2d, 0xef, 0xc7, 0x5f, 0xd8, 0x66, 0x0b, 0x3d, 0x3a, 0xea, 0xb0, 0x81, 0xbf, 0xb4, 0xa5,
-	0x59, 0x9a, 0xc5, 0xe6, 0xbd, 0xff, 0x82, 0x0d, 0x9a, 0x65, 0x69, 0x06, 0xee, 0xd0, 0xd1, 0xb1,
-	0x7b, 0xd2, 0x41, 0xe6, 0xc4, 0x5f, 0xba, 0x3a, 0xdf, 0xdd, 0x01, 0x0e, 0x00, 0xd7, 0x13, 0x01,
-	0xfd, 0xc7, 0x48, 0x37, 0x7d, 0x94, 0x3c, 0x1f, 0x35, 0x42, 0x36, 0x1a, 0x06, 0xbe, 0x35, 0xe6,
-	0x63, 0x88, 0xae, 0x99, 0xc8, 0x71, 0x6d, 0xcc, 0x60, 0xf2, 0x6f, 0x02, 0xfc, 0xef, 0x88, 0x68,
-	0x9f, 0x8d, 0x54, 0xe4, 0xe0, 0x4f, 0xe8, 0x01, 0xd2, 0x3b, 0x20, 0x22, 0xd7, 0x79, 0x6c, 0xd9,
-	0xba, 0x33, 0xa9, 0x08, 0x75, 0xa1, 0x29, 0xee, 0x57, 0xfe, 0xfc, 0x75, 0x6f, 0xcb, 0x8f, 0xfd,
-	0x9e, 0xaa, 0xda, 0x98, 0x90, 0x87, 0x8e, 0xad, 0x9b, 0x9a, 0x32, 0x85, 0x4a, 0x77, 0xa1, 0xc0,
-	0x5c, 0xa8, 0xac, 0xd4, 0x85, 0x66, 0xb1, 0xbb, 0xd3, 0x9e, 0xcb, 0x7e, 0x9b, 0x99, 0xd9, 0x17,
-	0x9f, 0xff, 0x7d, 0x35, 0xf3, 0xec, 0xec, 0xb4, 0x25, 0x28, 0xfe, 0xbe, 0x3b, 0xdd, 0xef, 0xce,
-	0x4e, 0x5b, 0xd3, 0x13, 0x7f, 0x38, 0x3b, 0x6d, 0x05, 0x94, 0x3d, 0x0d, 0x22, 0x89, 0x78, 0x2b,
-	0x6f, 0xc3, 0xa5, 0xc8, 0x94, 0x82, 0xc9, 0xc8, 0x32, 0x09, 0x96, 0x9f, 0x09, 0x50, 0x3c, 0x22,
-	0xda, 0x47, 0x78, 0xfc, 0x70, 0x84, 0xfa, 0x58, 0xaa, 0xc0, 0x6a, 0xdf, 0xc6, 0xc8, 0xb1, 0x6c,
-	0x16, 0x96, 0x12, 0x0c, 0x25, 0x19, 0xd6, 0x91, 0x3a, 0xd4, 0xcd, 0x9e, 0xed, 0x1a, 0xb8, 0xa7,
-	0xab, 0x34, 0x82, 0x9c, 0x52, 0xa4, 0x93, 0x8a, 0x6b, 0xe0, 0x43, 0x55, 0xaa, 0x43, 0xc9, 0x63,
-	0x8f, 0x43, 0xb2, 0x14, 0x02, 0xde, 0x9c, 0x8f, 0xd8, 0x85, 0x4d, 0xa4, 0xaa, 0xba, 0xa3, 0x5b,
-	0x26, 0x32, 0x7a, 0xd6, 0xd8, 0xc4, 0x36, 0xa9, 0xe4, 0xea, 0xd9, 0xa6, 0xa8, 0x6c, 0x4c, 0x17,
-	0x3e, 0xa6, 0xf3, 0x77, 0x4a, 0x5e, 0xac, 0x81, 0x03, 0x72, 0x03, 0xfe, 0x1f, 0xf2, 0x34, 0x88,
-	0x40, 0x2a, 0xc3, 0x8a, 0xae, 0x52, 0x67, 0x73, 0xca, 0x8a, 0xae, 0xca, 0x4f, 0x61, 0xe3, 0x88,
-	0x68, 0xf7, 0x54, 0x95, 0xc2, 0xe8, 0x49, 0xd2, 0x95, 0x58, 0xba, 0xc2, 0x49, 0xd9, 0x86, 0x35,
-	0xe2, 0x61, 0xa7, 0x41, 0xad, 0xd2, 0xf1, 0xa1, 0x2a, 0x5d, 0x06, 0xd1, 0xc4, 0x63, 0xe6, 0x27,
-	0x8d, 0x46, 0x54, 0xd6, 0x4c, 0x3c, 0xa6, 0xa7, 0xde, 0x29, 0xcf, 0xa6, 0x42, 0xae, 0x42, 0x25,
-	0x6a, 0x99, 0xf3, 0xec, 0x50, 0xe7, 0x15, 0x3c, 0xb4, 0x9e, 0xe0, 0x37, 0xe1, 0xd8, 0x16, 0xe4,
-	0xc3, 0x4e, 0xb1, 0x41, 0xcc, 0xa3, 0x1d, 0xb8, 0x3c, 0xc7, 0x2a, 0x77, 0xea, 0x17, 0x01, 0xca,
-	0x8c, 0xd2, 0x07, 0x7e, 0xf5, 0xa4, 0xe4, 0xbf, 0x0e, 0x45, 0x15, 0x93, 0xbe, 0xad, 0x8f, 0xbc,
-	0x1c, 0x51, 0x7f, 0x44, 0x25, 0x3c, 0x25, 0x1d, 0xc0, 0x7a, 0x50, 0x85, 0xbd, 0x13, 0x8c, 0xbd,
-	0xbc, 0x7a, 0x1a, 0xbf, 0x96, 0xa0, 0xf1, 0xc0, 0xe6, 0x7d, 0x8c, 0x89, 0x52, 0x1a, 0x84, 0x46,
-	0xb3, 0x89, 0xff, 0x30, 0xb7, 0x96, 0xdd, 0xc8, 0xc9, 0x4d, 0xb8, 0x38, 0xeb, 0x6b, 0xa2, 0x02,
-	0xc6, 0xb0, 0xc5, 0xf2, 0x10, 0x20, 0x3f, 0xb7, 0x75, 0x07, 0xdb, 0x29, 0xb1, 0x5d, 0x85, 0x22,
-	0xf7, 0x9c, 0x73, 0x0d, 0xc1, 0xd4, 0xa1, 0x2a, 0x5d, 0x84, 0xc2, 0x98, 0x1e, 0xe2, 0xf3, 0xed,
-	0x8f, 0x22, 0x0a, 0xad, 0xc1, 0x95, 0x79, 0x86, 0x39, 0xdf, 0x3f, 0x33, 0xbe, 0x59, 0x21, 0xb2,
-	0x7a, 0x3b, 0xb7, 0x00, 0x62, 0xe5, 0x98, 0x5d, 0x5c, 0x8e, 0xb9, 0x68, 0x39, 0xc6, 0x04, 0x53,
-	0xa1, 0x24, 0x87, 0x1c, 0xe4, 0xbe, 0xff, 0x21, 0xc0, 0x26, 0x5f, 0x5a, 0x42, 0x2e, 0x0b, 0x29,
-	0x8d, 0xe8, 0x29, 0xbb, 0x84, 0x9e, 0xf2, 0x6f, 0x4a, 0x4f, 0xb9, 0x8d, 0xbc, 0x7c, 0x19, 0xb6,
-	0x63, 0xf1, 0xf0, 0x68, 0x5f, 0x08, 0xf4, 0x16, 0x61, 0x6a, 0x53, 0xf0, 0x57, 0x2e, 0x26, 0xce,
-	0xf9, 0x73, 0x15, 0xe1, 0x22, 0x1b, 0xe3, 0xe2, 0x5d, 0x58, 0x1b, 0xe0, 0x49, 0xcf, 0x99, 0x8c,
-	0x30, 0x4d, 0x52, 0xb9, 0x5b, 0x4b, 0x0e, 0xf2, 0xd3, 0xc9, 0x08, 0x2b, 0xab, 0x03, 0xf6, 0x8f,
-	0x74, 0x09, 0x56, 0x83, 0xf4, 0xe6, 0xe9, 0xb9, 0x05, 0x7b, 0x7e, 0x6a, 0x5b, 0xf4, 0x76, 0x9a,
-	0x89, 0x28, 0xb1, 0x82, 0x5a, 0x20, 0x72, 0xac, 0xb4, 0x03, 0x30, 0x72, 0x8f, 0x0d, 0xbd, 0xdf,
-	0x1b, 0x60, 0x16, 0x77, 0x49, 0x11, 0xd9, 0xcc, 0x03, 0x3c, 0x91, 0xbf, 0x5f, 0xa1, 0x57, 0xdb,
-	0x7d, 0xd7, 0x38, 0xd1, 0x8d, 0x10, 0x5b, 0xc9, 0xd2, 0xd8, 0x01, 0xb0, 0x19, 0x68, 0xca, 0x95,
-	0xe8, 0xcf, 0x1c, 0xaa, 0xd2, 0x7b, 0x50, 0x20, 0x0e, 0x72, 0x5c, 0x42, 0x89, 0x2a, 0x77, 0x6f,
-	0x24, 0x53, 0xe1, 0xdb, 0x7a, 0x48, 0xe1, 0x8a, 0xbf, 0x4d, 0x7a, 0x1b, 0xb2, 0x9e, 0xa7, 0xec,
-	0xf6, 0xa9, 0x27, 0xec, 0xe6, 0xf1, 0x1d, 0x64, 0x14, 0x0f, 0x2e, 0x35, 0x60, 0xdd, 0xc6, 0x5f,
-	0xe2, 0xbe, 0xd3, 0xb3, 0x31, 0x22, 0x96, 0x49, 0xe9, 0x14, 0x0f, 0x32, 0x4a, 0x89, 0x4d, 0x2b,
-	0x74, 0x76, 0x56, 0x4a, 0xfb, 0x6b, 0x50, 0xb0, 0x31, 0x71, 0x0d, 0xc7, 0xbf, 0x6a, 0xa3, 0x2c,
-	0x70, 0x41, 0x19, 0x50, 0x0a, 0xab, 0x6d, 0x81, 0x96, 0x2e, 0x40, 0xc1, 0xd3, 0x03, 0x67, 0x27,
-	0x3f, 0xc0, 0x93, 0x43, 0x35, 0x9c, 0xeb, 0x6c, 0x6a, 0xae, 0x2f, 0xd2, 0x1b, 0x90, 0x5b, 0xe3,
-	0x5e, 0xfc, 0xce, 0x8a, 0xd8, 0x7b, 0x43, 0xbd, 0x3b, 0x60, 0x29, 0x5d, 0x27, 0xf8, 0xb2, 0x05,
-	0x79, 0xdd, 0x1c, 0xb9, 0x0e, 0xf5, 0xa4, 0xa4, 0xb0, 0x01, 0xed, 0x8b, 0x4c, 0x64, 0x4c, 0xbe,
-	0xe6, 0xcf, 0x7a, 0x6a, 0x5f, 0x14, 0x40, 0xa5, 0x06, 0x94, 0xb1, 0xd9, 0xb7, 0x27, 0xb4, 0xf0,
-	0xa9, 0xce, 0xf2, 0xf4, 0xd8, 0xf5, 0xe9, 0xec, 0x03, 0x3c, 0x89, 0xc5, 0xb9, 0x4b, 0x6b, 0x78,
-	0x36, 0x9c, 0x44, 0x51, 0xdf, 0x84, 0xf5, 0x23, 0xa2, 0x79, 0x48, 0xac, 0xbe, 0x8f, 0x1c, 0xe4,
-	0x95, 0x25, 0xa1, 0xa3, 0x9e, 0x8a, 0x1c, 0xe4, 0x2b, 0x1b, 0x08, 0x07, 0xc8, 0x3f, 0xad, 0x50,
-	0x1e, 0x59, 0x52, 0xc3, 0x8c, 0x9d, 0x5b, 0xdb, 0x77, 0x23, 0xda, 0x6e, 0x26, 0xa8, 0x33, 0x64,
-	0x2c, 0x22, 0xee, 0xbb, 0xb0, 0x3a, 0x42, 0x13, 0xc3, 0x42, 0xaa, 0x2f, 0xf0, 0xeb, 0xc9, 0x02,
-	0x9f, 0xc6, 0x7a, 0x90, 0x51, 0x82, 0x6d, 0xff, 0x55, 0xe8, 0xec, 0x91, 0x8b, 0x71, 0x12, 0xd0,
-	0xde, 0xfd, 0xb6, 0x08, 0xd9, 0x23, 0xa2, 0x49, 0x27, 0x50, 0x9a, 0x69, 0x99, 0xdf, 0x4a, 0xf6,
-	0x33, 0x8c, 0xab, 0xb6, 0x97, 0xc3, 0xf1, 0x34, 0x3f, 0x82, 0x35, 0xde, 0xbd, 0xca, 0xa9, 0xc5,
-	0x4e, 0x31, 0xd5, 0xd6, 0x62, 0x0c, 0x3f, 0x5b, 0x87, 0xf5, 0xd9, 0x46, 0xf2, 0x46, 0xf2, 0xe6,
-	0x19, 0x60, 0xb5, 0xb3, 0x24, 0x90, 0x9b, 0xb2, 0x61, 0x23, 0xd6, 0x1d, 0xa6, 0xb8, 0x1a, 0xc5,
-	0x56, 0xbb, 0xcb, 0x63, 0xb9, 0xcd, 0x3e, 0x14, 0xc3, 0xbd, 0x5f, 0x63, 0xd1, 0x55, 0x49, 0x61,
-	0xd5, 0xbd, 0xa5, 0x60, 0xdc, 0x88, 0x0b, 0x9b, 0xf1, 0x56, 0x6c, 0x37, 0x95, 0x9e, 0x59, 0x70,
-	0xf5, 0xf6, 0x6b, 0x80, 0xc3, 0xb1, 0x85, 0xfb, 0xac, 0xc6, 0x22, 0x55, 0x31, 0x71, 0xec, 0x2d,
-	0x05, 0xe3, 0x46, 0x0c, 0x28, 0x47, 0x1a, 0xa2, 0xe6, 0xa2, 0x03, 0x38, 0x8d, 0x37, 0x97, 0x45,
-	0x86, 0xd5, 0x38, 0xdb, 0x90, 0xdc, 0x58, 0x94, 0x09, 0x1f, 0x98, 0xa6, 0xc6, 0xf9, 0x0d, 0x81,
-	0x0d, 0x1b, 0xb1, 0x07, 0x3d, 0x45, 0x8d, 0x51, 0x6c, 0x9a, 0x1a, 0x93, 0x9e, 0x48, 0xe9, 0x0b,
-	0x10, 0xa7, 0xef, 0xe3, 0xb5, 0x25, 0xd8, 0xa9, 0xee, 0x2e, 0x01, 0x0a, 0xe7, 0x2a, 0xf2, 0xee,
-	0x35, 0xd3, 0x6f, 0x82, 0x29, 0x32, 0x2d, 0x57, 0x09, 0x8f, 0x8f, 0x0b, 0x9b, 0xf1, 0x67, 0x63,
-	0x77, 0x11, 0x2b, 0x61, 0x9b, 0xb7, 0x5f, 0x03, 0x1c, 0x98, 0xad, 0xe6, 0xbf, 0x39, 0x3b, 0x6d,
-	0x09, 0xfb, 0xe8, 0xf9, 0xcb, 0x9a, 0xf0, 0xe2, 0x65, 0x4d, 0xf8, 0xe7, 0x65, 0x4d, 0xf8, 0xf1,
-	0x55, 0x2d, 0xf3, 0xe2, 0x55, 0x2d, 0xf3, 0xd7, 0xab, 0x5a, 0xe6, 0xd1, 0x07, 0x9a, 0xee, 0x3c,
-	0x76, 0x8f, 0xdb, 0x7d, 0x6b, 0xe8, 0x7f, 0x2d, 0xd8, 0xa3, 0x5f, 0x39, 0xfa, 0x96, 0xe1, 0x8f,
-	0x23, 0xc3, 0xe9, 0x57, 0x05, 0xaf, 0x3b, 0x25, 0xc1, 0x57, 0x92, 0xe3, 0x02, 0xc5, 0xdd, 0xfe,
-	0x37, 0x00, 0x00, 0xff, 0xff, 0x1c, 0xa7, 0xf5, 0x5f, 0x5f, 0x12, 0x00, 0x00,
+	// 1431 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x58, 0x31, 0x73, 0x1b, 0x45,
+	0x14, 0xd6, 0x59, 0xb6, 0xac, 0x7b, 0x92, 0x15, 0xe5, 0xe2, 0x24, 0xb2, 0x3c, 0x96, 0x1d, 0x25,
+	0x4e, 0x34, 0x62, 0x2c, 0x39, 0x82, 0x61, 0x20, 0x0d, 0xb1, 0x81, 0x60, 0x4f, 0x46, 0x10, 0xce,
+	0xa4, 0x20, 0xcd, 0xcd, 0x59, 0xb7, 0x3e, 0x1f, 0x92, 0xee, 0xc4, 0xed, 0xca, 0x8e, 0x66, 0x28,
+	0x32, 0x4c, 0x1a, 0xa8, 0xe8, 0x28, 0xf8, 0x03, 0x94, 0x9e, 0x81, 0x8a, 0x86, 0x36, 0x05, 0x45,
+	0x86, 0x8a, 0x8a, 0xc9, 0xc4, 0x85, 0xff, 0x06, 0x73, 0xbb, 0x7b, 0x2b, 0xe9, 0x74, 0xa7, 0x53,
+	0x48, 0x63, 0x69, 0xdf, 0x7e, 0xbb, 0xfb, 0xbd, 0xef, 0xbd, 0xb7, 0xfb, 0x2c, 0x28, 0x9d, 0xea,
+	0xae, 0x81, 0xec, 0x3a, 0xff, 0x38, 0xb9, 0x7b, 0x88, 0x88, 0xde, 0xa8, 0x93, 0xa7, 0xb5, 0x9e,
+	0xeb, 0x10, 0x47, 0xb9, 0xca, 0x26, 0x6a, 0xfc, 0x83, 0xcf, 0x17, 0x2f, 0xeb, 0x5d, 0xcb, 0x76,
+	0xea, 0xf4, 0x2f, 0x43, 0x16, 0xaf, 0xb7, 0x1c, 0xdc, 0x75, 0x70, 0xbd, 0x8b, 0xcd, 0xfa, 0xc9,
+	0x5d, 0xef, 0x83, 0x4f, 0xac, 0xb0, 0x09, 0x8d, 0x8e, 0xea, 0x6c, 0xc0, 0xa7, 0x96, 0x4d, 0xc7,
+	0x74, 0x98, 0xdd, 0xfb, 0xe6, 0x2f, 0x30, 0x1d, 0xc7, 0xec, 0xa0, 0x3a, 0x1d, 0x1d, 0xf6, 0x8f,
+	0xea, 0xba, 0x3d, 0xe0, 0x53, 0x45, 0xce, 0xd3, 0xb2, 0x09, 0xb2, 0x49, 0x5d, 0x6f, 0x11, 0xcb,
+	0xb1, 0xf9, 0xdc, 0x7a, 0xb8, 0x2b, 0x6d, 0xe4, 0x2f, 0xbe, 0x15, 0x09, 0x68, 0x1d, 0xeb, 0x96,
+	0xbf, 0x4d, 0x39, 0x1c, 0xd5, 0xd3, 0x5d, 0xbd, 0xeb, 0xf3, 0xde, 0x0c, 0xc7, 0x60, 0xcb, 0xb4,
+	0x75, 0xd2, 0x77, 0x11, 0x83, 0x95, 0xff, 0x94, 0xe0, 0x52, 0x13, 0x9b, 0x8f, 0x7b, 0x86, 0x4e,
+	0xd0, 0x23, 0xba, 0x81, 0xf2, 0x3e, 0xc8, 0x7a, 0x9f, 0x1c, 0x3b, 0xae, 0x45, 0x06, 0x05, 0x69,
+	0x43, 0xaa, 0xc8, 0xbb, 0x85, 0xbf, 0x7f, 0xdf, 0x5a, 0xe6, 0xba, 0xec, 0x18, 0x86, 0x8b, 0x30,
+	0x3e, 0x20, 0xae, 0x65, 0x9b, 0xea, 0x10, 0xaa, 0xdc, 0x87, 0x14, 0xa3, 0x50, 0x98, 0xdb, 0x90,
+	0x2a, 0x99, 0xc6, 0x5a, 0x2d, 0x34, 0x32, 0x35, 0x76, 0xcc, 0xae, 0xfc, 0xe2, 0xdf, 0xf5, 0xc4,
+	0xaf, 0x17, 0x67, 0x55, 0x49, 0xe5, 0xeb, 0xee, 0x35, 0xbe, 0xbf, 0x38, 0xab, 0x0e, 0x77, 0xfc,
+	0xf1, 0xe2, 0xac, 0xea, 0x4b, 0xf6, 0xd4, 0xf7, 0x24, 0xc0, 0xb6, 0xbc, 0x02, 0xd7, 0x03, 0x26,
+	0x15, 0xe1, 0x9e, 0x63, 0x63, 0x54, 0x3e, 0x93, 0x20, 0xd3, 0xc4, 0xe6, 0xe7, 0xe8, 0xf4, 0xa0,
+	0xa7, 0xb7, 0x90, 0x52, 0x80, 0xc5, 0x96, 0x8b, 0x74, 0xe2, 0xb8, 0xcc, 0x2d, 0xd5, 0x1f, 0x2a,
+	0xb7, 0xe1, 0x92, 0x6e, 0x74, 0x2d, 0x5b, 0x63, 0x51, 0xd3, 0x2c, 0x83, 0xfa, 0x30, 0xaf, 0x2e,
+	0x51, 0xf3, 0x3e, 0xb5, 0xee, 0x1b, 0xca, 0x2d, 0xc8, 0x79, 0x0a, 0x8e, 0xc0, 0x92, 0x14, 0x96,
+	0xf5, 0xac, 0x02, 0xf5, 0x0e, 0x5c, 0xd6, 0x0d, 0xc3, 0xf2, 0x02, 0xaf, 0x77, 0x34, 0xe7, 0xd4,
+	0x46, 0x2e, 0x2e, 0xcc, 0x6f, 0x24, 0x2b, 0xb2, 0x9a, 0x1f, 0x4e, 0x7c, 0x41, 0xed, 0xf7, 0xb2,
+	0x9e, 0xcf, 0x3e, 0x91, 0xf2, 0x26, 0x5c, 0x19, 0x61, 0xec, 0x7b, 0xa2, 0xe4, 0x60, 0xce, 0x32,
+	0x28, 0xe9, 0x79, 0x75, 0xce, 0x32, 0xca, 0xcf, 0x25, 0xc8, 0x37, 0xb1, 0xb9, 0x63, 0x18, 0x14,
+	0x47, 0xb7, 0x9a, 0xe2, 0xde, 0x0a, 0xa4, 0xb1, 0x87, 0x1b, 0xfa, 0xb5, 0x48, 0xc7, 0xfb, 0x86,
+	0xb2, 0x0a, 0xb2, 0x8d, 0x4e, 0x19, 0x49, 0xea, 0x8c, 0xac, 0xa6, 0x6d, 0x74, 0xca, 0x76, 0xcc,
+	0x43, 0xf2, 0x90, 0x74, 0x0a, 0xf3, 0x74, 0x89, 0xf7, 0x35, 0xc0, 0xb6, 0x08, 0x85, 0x20, 0x0b,
+	0x21, 0xfe, 0x33, 0x89, 0xba, 0xa2, 0xa2, 0xae, 0x73, 0x82, 0xde, 0x96, 0xe5, 0x32, 0x2c, 0x8c,
+	0x32, 0x64, 0x83, 0x58, 0x7a, 0x6b, 0xb0, 0x1a, 0xc2, 0x40, 0x30, 0xfc, 0x4b, 0x82, 0x1c, 0x13,
+	0xfb, 0x21, 0xaf, 0xaf, 0x29, 0xe4, 0x36, 0x20, 0x63, 0x20, 0xdc, 0x72, 0xad, 0x9e, 0x17, 0x3d,
+	0xca, 0x4f, 0x56, 0x47, 0x4d, 0x61, 0x39, 0x94, 0x0c, 0xcb, 0xa1, 0x3d, 0x58, 0xf2, 0xeb, 0x59,
+	0x3b, 0x42, 0x08, 0x53, 0xfe, 0x99, 0xc6, 0xcd, 0x88, 0x6a, 0xf1, 0xb9, 0x3d, 0x40, 0x08, 0xab,
+	0xd9, 0xf6, 0xc8, 0x28, 0xe0, 0x6d, 0x05, 0xae, 0x8d, 0x7b, 0x13, 0x99, 0x3d, 0x84, 0x46, 0x66,
+	0xc7, 0x30, 0x7c, 0xe4, 0x23, 0xdd, 0x25, 0x83, 0x29, 0xce, 0xaf, 0x43, 0x46, 0x50, 0x16, 0xc1,
+	0x01, 0xdf, 0xc4, 0xe2, 0xd3, 0xf3, 0xf6, 0xf0, 0xe3, 0x43, 0x07, 0xa1, 0xd1, 0x08, 0x9e, 0x2a,
+	0xa2, 0xf1, 0x1b, 0x8b, 0x06, 0x2b, 0xe4, 0xb8, 0x7a, 0x9d, 0x92, 0x2a, 0xb3, 0x86, 0x61, 0xb2,
+	0x94, 0xe7, 0x43, 0x4a, 0x99, 0xa7, 0xd8, 0x42, 0x54, 0x8a, 0x15, 0xa8, 0xe8, 0x23, 0xa4, 0x85,
+	0x3f, 0xbf, 0x48, 0x70, 0x59, 0x4c, 0xcd, 0x90, 0x60, 0xb1, 0x1a, 0x07, 0x32, 0x30, 0x39, 0x99,
+	0x81, 0xab, 0x20, 0x5b, 0x58, 0xf3, 0x5e, 0x9c, 0x13, 0x44, 0xbd, 0x49, 0xab, 0x69, 0x0b, 0xef,
+	0xd0, 0x71, 0x80, 0xf7, 0x2a, 0xac, 0x4c, 0x90, 0x13, 0xd4, 0x5f, 0xb1, 0xdb, 0x85, 0xa5, 0x92,
+	0x8a, 0xbe, 0xed, 0x23, 0x4c, 0xfe, 0x5f, 0x30, 0x02, 0x4e, 0x25, 0x27, 0x9c, 0xfa, 0x10, 0xd2,
+	0x6d, 0x34, 0xd0, 0xc8, 0xa0, 0xc7, 0x18, 0xe7, 0x1a, 0xa5, 0xe8, 0x3a, 0xf8, 0x6a, 0xd0, 0x43,
+	0xea, 0x62, 0x9b, 0x7d, 0x99, 0x0c, 0x0d, 0xf5, 0x5f, 0x44, 0x33, 0x45, 0xed, 0x69, 0x8b, 0x47,
+	0x32, 0xe0, 0x7f, 0x95, 0xde, 0x5c, 0x63, 0x1e, 0x46, 0x96, 0x4b, 0x15, 0x64, 0x81, 0x55, 0xd6,
+	0x00, 0x7a, 0xfd, 0xc3, 0x8e, 0xd5, 0xd2, 0xda, 0x88, 0xbd, 0x8e, 0x59, 0x55, 0x66, 0x96, 0x87,
+	0x68, 0x50, 0x7e, 0x3e, 0x47, 0x6b, 0x4b, 0x08, 0x1b, 0xaf, 0xde, 0x1a, 0x80, 0xcb, 0x40, 0x43,
+	0xfd, 0x64, 0x6e, 0xd9, 0x37, 0x94, 0x8f, 0x20, 0x85, 0x89, 0x4e, 0xfa, 0x98, 0x8a, 0x97, 0x6b,
+	0xdc, 0x89, 0x96, 0x87, 0x9f, 0x75, 0x40, 0xe1, 0x2a, 0x5f, 0xa6, 0xbc, 0x07, 0x49, 0x8f, 0x29,
+	0xbb, 0x64, 0x36, 0x22, 0x56, 0x0b, 0xff, 0xf6, 0x12, 0xaa, 0x07, 0x57, 0x36, 0x61, 0xc9, 0x45,
+	0xdf, 0xa0, 0x16, 0xd1, 0x5c, 0xa4, 0x63, 0xc7, 0xa6, 0x32, 0xcb, 0x7b, 0x09, 0x35, 0xcb, 0xcc,
+	0x2a, 0xb5, 0x8e, 0x8b, 0xba, 0x9b, 0x86, 0x94, 0x8b, 0x70, 0xbf, 0x43, 0x78, 0xad, 0x07, 0x55,
+	0x10, 0x09, 0xf6, 0x1d, 0x64, 0x47, 0xa7, 0xa7, 0xa8, 0x73, 0x15, 0x52, 0x5e, 0x7e, 0x08, 0x65,
+	0x16, 0xda, 0x68, 0xc0, 0x5e, 0xad, 0x60, 0x79, 0x8b, 0x48, 0xc7, 0x3e, 0x0b, 0xd7, 0x60, 0x79,
+	0x9c, 0x1c, 0x67, 0xf5, 0xc3, 0x9c, 0x7f, 0x83, 0x1e, 0xf8, 0x5d, 0x52, 0x7c, 0xf8, 0x22, 0x08,
+	0x56, 0x20, 0x6f, 0xe8, 0x44, 0xd7, 0x8e, 0x1c, 0x57, 0xf3, 0x2e, 0x14, 0xcb, 0x36, 0x29, 0xcf,
+	0xac, 0x9a, 0xf3, 0xec, 0x0f, 0x1c, 0xf7, 0x80, 0x59, 0x95, 0x5d, 0xc8, 0xd0, 0x7b, 0xa8, 0x8b,
+	0xc8, 0xb1, 0x63, 0xf0, 0x22, 0xb8, 0x11, 0x11, 0x27, 0x6f, 0x51, 0x93, 0x02, 0x55, 0xc0, 0xe2,
+	0xbb, 0xb2, 0x0d, 0xe9, 0x2e, 0x22, 0xba, 0xb7, 0x33, 0x0d, 0x54, 0xa6, 0xb1, 0x5c, 0x63, 0x1d,
+	0x6a, 0xcd, 0xef, 0x50, 0x6b, 0x3b, 0xf6, 0x40, 0x15, 0x28, 0x5f, 0xa3, 0x54, 0x94, 0x46, 0x5b,
+	0x90, 0x6f, 0x72, 0xec, 0xa7, 0xe4, 0x18, 0xb9, 0xa8, 0xdf, 0xf5, 0xea, 0x5c, 0x54, 0x32, 0xab,
+	0x8e, 0x45, 0x5e, 0xc6, 0xe5, 0x6d, 0x28, 0x85, 0x2b, 0x17, 0x59, 0x54, 0xdb, 0xb0, 0xd4, 0xc4,
+	0xa6, 0x07, 0x47, 0xc6, 0x27, 0x1e, 0xa3, 0x75, 0xa6, 0x03, 0x32, 0x34, 0xea, 0x06, 0xab, 0x2c,
+	0xc0, 0x02, 0x50, 0xfe, 0x79, 0x8e, 0xde, 0x59, 0x0f, 0xfa, 0x9d, 0x23, 0xab, 0xf3, 0x06, 0x11,
+	0x8a, 0x29, 0xb0, 0xfb, 0x81, 0x02, 0xab, 0x4c, 0x91, 0x3e, 0xbc, 0xc2, 0xee, 0xc3, 0x62, 0x4f,
+	0x1f, 0x74, 0x1c, 0xdd, 0xe0, 0x55, 0x76, 0x2b, 0xba, 0xca, 0x86, 0x0e, 0xef, 0x25, 0x54, 0x7f,
+	0xd9, 0xdb, 0x56, 0xdb, 0x4d, 0xb8, 0x11, 0x29, 0x8c, 0x1f, 0x80, 0xc6, 0x1f, 0x00, 0xc9, 0x26,
+	0x36, 0x95, 0x23, 0xc8, 0x8e, 0x75, 0xfb, 0xb7, 0xa3, 0xc9, 0x8e, 0xe2, 0x8a, 0xb5, 0xd9, 0x70,
+	0x22, 0xe0, 0x4f, 0x20, 0x2d, 0x1a, 0xef, 0xf2, 0xd4, 0x6b, 0x87, 0x62, 0x8a, 0xd5, 0x78, 0x8c,
+	0xd8, 0xfb, 0x6b, 0x58, 0x1a, 0x6f, 0x7d, 0xef, 0x44, 0x2f, 0x1e, 0x03, 0x16, 0xd7, 0x7d, 0x04,
+	0xbb, 0x2d, 0x28, 0x80, 0xfe, 0x87, 0xf6, 0xb1, 0xa7, 0x2a, 0x32, 0x14, 0x0d, 0xf2, 0x13, 0x2d,
+	0xeb, 0x14, 0x6a, 0x41, 0x6c, 0xfc, 0x01, 0x2d, 0xc8, 0x8c, 0x76, 0x9c, 0x9b, 0x71, 0x37, 0x32,
+	0x85, 0x15, 0xb7, 0x66, 0x82, 0x09, 0x81, 0x5c, 0xc8, 0x4f, 0xb4, 0x77, 0xd5, 0xa9, 0x1a, 0x8d,
+	0x61, 0x8b, 0x8d, 0xd9, 0xb1, 0xe2, 0xcc, 0xc7, 0x90, 0x19, 0x6d, 0xde, 0x36, 0xe3, 0xf2, 0x85,
+	0x85, 0x3d, 0x56, 0xaf, 0x0e, 0xe4, 0x02, 0x3d, 0x54, 0x25, 0x6e, 0x67, 0xa1, 0xda, 0xf6, 0xac,
+	0xc8, 0xd1, 0xcc, 0x1a, 0x6f, 0x7b, 0xee, 0xc4, 0x09, 0xcf, 0x81, 0xf1, 0x8e, 0xb8, 0x90, 0x9f,
+	0x68, 0x0b, 0xaa, 0x33, 0x10, 0xf4, 0x0f, 0x68, 0xcc, 0x8e, 0x15, 0xee, 0x7c, 0x09, 0xf2, 0xf0,
+	0x95, 0xbd, 0x39, 0xc3, 0x06, 0xf1, 0x6e, 0x20, 0xb8, 0x12, 0xf6, 0x42, 0x4e, 0x4f, 0xd0, 0x20,
+	0x3c, 0xfe, 0x98, 0xe7, 0x12, 0x5c, 0x8b, 0xb8, 0xea, 0xa7, 0x44, 0x35, 0x7c, 0x45, 0xf1, 0x83,
+	0x37, 0x5d, 0xe1, 0x0b, 0x58, 0x5c, 0x78, 0x76, 0x71, 0x56, 0x95, 0x76, 0xf5, 0x17, 0xaf, 0x4b,
+	0xd2, 0xcb, 0xd7, 0x25, 0xe9, 0xd5, 0xeb, 0x92, 0xf4, 0xd3, 0x79, 0x29, 0xf1, 0xf2, 0xbc, 0x94,
+	0xf8, 0xe7, 0xbc, 0x94, 0x78, 0xf2, 0x99, 0x69, 0x91, 0xe3, 0xfe, 0x61, 0xad, 0xe5, 0x74, 0xf9,
+	0x2f, 0x14, 0x5b, 0xf4, 0xc9, 0x6d, 0x39, 0x1d, 0x3e, 0x0e, 0x0c, 0x87, 0xbf, 0x64, 0x78, 0x4d,
+	0x2f, 0xf6, 0x7f, 0x99, 0x39, 0x4c, 0x51, 0xdc, 0xbb, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0x1d,
+	0xbf, 0x7f, 0xd5, 0xef, 0x12, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1698,28 +1811,32 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// Create a new Space. The creator will be the first owner of the Space.
 	NewSpace(ctx context.Context, in *MsgNewSpace, opts ...grpc.CallOption) (*MsgNewSpaceResponse, error)
-	// Add a new owner to a Space.
-	AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*MsgAddSpaceOwnerResponse, error)
-	// Remove an owner from the Space.
-	RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*MsgRemoveSpaceOwnerResponse, error)
-	// Create a new Keychain. The user will be the first admin of the Keychain.
+	// Add a new owner to a space.
+	AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*types1.MsgActionCreated, error)
+	// Remove an owner from the space. The user can remove itself, but at
+	// least one owner must be left.
+	RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*types1.MsgActionCreated, error)
+	// Create a new keychain. The user will be the first admin of the keychain.
 	NewKeychain(ctx context.Context, in *MsgNewKeychain, opts ...grpc.CallOption) (*MsgNewKeychainResponse, error)
-	// Add a new writer to a Keychain.
-	AddKeychainWriter(ctx context.Context, in *MsgAddKeychainWriter, opts ...grpc.CallOption) (*MsgAddKeychainWriterResponse, error)
-	// Update a Space.
-	UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*MsgUpdateSpaceResponse, error)
-	// Update a Keychain.
+	// Add a new party to a keychain. Transactions coming from this party will
+	// be considered trusted by the keychain.
+	AddKeychainParty(ctx context.Context, in *MsgAddKeychainParty, opts ...grpc.CallOption) (*MsgAddKeychainPartyResponse, error)
+	// Update a space, e.g. changing the intents in use.
+	UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*types1.MsgActionCreated, error)
+	// Update a keychain, e.g. update the status or description.
 	UpdateKeychain(ctx context.Context, in *MsgUpdateKeychain, opts ...grpc.CallOption) (*MsgUpdateKeychainResponse, error)
-	// Create a new KeyRequest.
-	NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*MsgNewKeyRequestResponse, error)
-	// Fulfil or reject a KeyRequest.
-	FulfilKeyRequest(ctx context.Context, in *MsgFulfilKeyRequest, opts ...grpc.CallOption) (*MsgFulfilKeyRequestResponse, error)
-	// Update a Key.
-	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error)
-	// Create a new SignRequest.
-	NewSignRequest(ctx context.Context, in *MsgNewSignRequest, opts ...grpc.CallOption) (*MsgNewSignRequestResponse, error)
-	// Fulfil or reject a SignRequest.
-	FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequest, opts ...grpc.CallOption) (*MsgFulfilSignRequestResponse, error)
+	// Request a new key to a keychain, the key will belong to the specified
+	// space.
+	NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*types1.MsgActionCreated, error)
+	// Update an existing request by writing a result into it. This method is
+	// called by a keychain party.
+	UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error)
+	// Update informations of a Key.
+	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*types1.MsgActionCreated, error)
+	// Request a new signature
+	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*types1.MsgActionCreated, error)
+	// Fulfill a signature request
+	FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error)
 }
 
 type msgClient struct {
@@ -1748,8 +1865,8 @@ func (c *msgClient) NewSpace(ctx context.Context, in *MsgNewSpace, opts ...grpc.
 	return out, nil
 }
 
-func (c *msgClient) AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*MsgAddSpaceOwnerResponse, error) {
-	out := new(MsgAddSpaceOwnerResponse)
+func (c *msgClient) AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*types1.MsgActionCreated, error) {
+	out := new(types1.MsgActionCreated)
 	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/AddSpaceOwner", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1757,8 +1874,8 @@ func (c *msgClient) AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opt
 	return out, nil
 }
 
-func (c *msgClient) RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*MsgRemoveSpaceOwnerResponse, error) {
-	out := new(MsgRemoveSpaceOwnerResponse)
+func (c *msgClient) RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*types1.MsgActionCreated, error) {
+	out := new(types1.MsgActionCreated)
 	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/RemoveSpaceOwner", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1775,17 +1892,17 @@ func (c *msgClient) NewKeychain(ctx context.Context, in *MsgNewKeychain, opts ..
 	return out, nil
 }
 
-func (c *msgClient) AddKeychainWriter(ctx context.Context, in *MsgAddKeychainWriter, opts ...grpc.CallOption) (*MsgAddKeychainWriterResponse, error) {
-	out := new(MsgAddKeychainWriterResponse)
-	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/AddKeychainWriter", in, out, opts...)
+func (c *msgClient) AddKeychainParty(ctx context.Context, in *MsgAddKeychainParty, opts ...grpc.CallOption) (*MsgAddKeychainPartyResponse, error) {
+	out := new(MsgAddKeychainPartyResponse)
+	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/AddKeychainParty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*MsgUpdateSpaceResponse, error) {
-	out := new(MsgUpdateSpaceResponse)
+func (c *msgClient) UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*types1.MsgActionCreated, error) {
+	out := new(types1.MsgActionCreated)
 	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/UpdateSpace", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1802,8 +1919,8 @@ func (c *msgClient) UpdateKeychain(ctx context.Context, in *MsgUpdateKeychain, o
 	return out, nil
 }
 
-func (c *msgClient) NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*MsgNewKeyRequestResponse, error) {
-	out := new(MsgNewKeyRequestResponse)
+func (c *msgClient) NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*types1.MsgActionCreated, error) {
+	out := new(types1.MsgActionCreated)
 	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/NewKeyRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1811,17 +1928,17 @@ func (c *msgClient) NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opt
 	return out, nil
 }
 
-func (c *msgClient) FulfilKeyRequest(ctx context.Context, in *MsgFulfilKeyRequest, opts ...grpc.CallOption) (*MsgFulfilKeyRequestResponse, error) {
-	out := new(MsgFulfilKeyRequestResponse)
-	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/FulfilKeyRequest", in, out, opts...)
+func (c *msgClient) UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error) {
+	out := new(MsgUpdateKeyRequestResponse)
+	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/UpdateKeyRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error) {
-	out := new(MsgUpdateKeyResponse)
+func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*types1.MsgActionCreated, error) {
+	out := new(types1.MsgActionCreated)
 	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/UpdateKey", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1829,18 +1946,18 @@ func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grp
 	return out, nil
 }
 
-func (c *msgClient) NewSignRequest(ctx context.Context, in *MsgNewSignRequest, opts ...grpc.CallOption) (*MsgNewSignRequestResponse, error) {
-	out := new(MsgNewSignRequestResponse)
-	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/NewSignRequest", in, out, opts...)
+func (c *msgClient) NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*types1.MsgActionCreated, error) {
+	out := new(types1.MsgActionCreated)
+	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/NewSignatureRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequest, opts ...grpc.CallOption) (*MsgFulfilSignRequestResponse, error) {
-	out := new(MsgFulfilSignRequestResponse)
-	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/FulfilSignRequest", in, out, opts...)
+func (c *msgClient) FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error) {
+	out := new(MsgFulfilSignatureRequestResponse)
+	err := c.cc.Invoke(ctx, "/warden.warden.v1beta2.Msg/FulfilSignatureRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1854,28 +1971,32 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// Create a new Space. The creator will be the first owner of the Space.
 	NewSpace(context.Context, *MsgNewSpace) (*MsgNewSpaceResponse, error)
-	// Add a new owner to a Space.
-	AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*MsgAddSpaceOwnerResponse, error)
-	// Remove an owner from the Space.
-	RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*MsgRemoveSpaceOwnerResponse, error)
-	// Create a new Keychain. The user will be the first admin of the Keychain.
+	// Add a new owner to a space.
+	AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*types1.MsgActionCreated, error)
+	// Remove an owner from the space. The user can remove itself, but at
+	// least one owner must be left.
+	RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*types1.MsgActionCreated, error)
+	// Create a new keychain. The user will be the first admin of the keychain.
 	NewKeychain(context.Context, *MsgNewKeychain) (*MsgNewKeychainResponse, error)
-	// Add a new writer to a Keychain.
-	AddKeychainWriter(context.Context, *MsgAddKeychainWriter) (*MsgAddKeychainWriterResponse, error)
-	// Update a Space.
-	UpdateSpace(context.Context, *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error)
-	// Update a Keychain.
+	// Add a new party to a keychain. Transactions coming from this party will
+	// be considered trusted by the keychain.
+	AddKeychainParty(context.Context, *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error)
+	// Update a space, e.g. changing the intents in use.
+	UpdateSpace(context.Context, *MsgUpdateSpace) (*types1.MsgActionCreated, error)
+	// Update a keychain, e.g. update the status or description.
 	UpdateKeychain(context.Context, *MsgUpdateKeychain) (*MsgUpdateKeychainResponse, error)
-	// Create a new KeyRequest.
-	NewKeyRequest(context.Context, *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error)
-	// Fulfil or reject a KeyRequest.
-	FulfilKeyRequest(context.Context, *MsgFulfilKeyRequest) (*MsgFulfilKeyRequestResponse, error)
-	// Update a Key.
-	UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error)
-	// Create a new SignRequest.
-	NewSignRequest(context.Context, *MsgNewSignRequest) (*MsgNewSignRequestResponse, error)
-	// Fulfil or reject a SignRequest.
-	FulfilSignRequest(context.Context, *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error)
+	// Request a new key to a keychain, the key will belong to the specified
+	// space.
+	NewKeyRequest(context.Context, *MsgNewKeyRequest) (*types1.MsgActionCreated, error)
+	// Update an existing request by writing a result into it. This method is
+	// called by a keychain party.
+	UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error)
+	// Update informations of a Key.
+	UpdateKey(context.Context, *MsgUpdateKey) (*types1.MsgActionCreated, error)
+	// Request a new signature
+	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*types1.MsgActionCreated, error)
+	// Fulfill a signature request
+	FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -1888,38 +2009,38 @@ func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateP
 func (*UnimplementedMsgServer) NewSpace(ctx context.Context, req *MsgNewSpace) (*MsgNewSpaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewSpace not implemented")
 }
-func (*UnimplementedMsgServer) AddSpaceOwner(ctx context.Context, req *MsgAddSpaceOwner) (*MsgAddSpaceOwnerResponse, error) {
+func (*UnimplementedMsgServer) AddSpaceOwner(ctx context.Context, req *MsgAddSpaceOwner) (*types1.MsgActionCreated, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddSpaceOwner not implemented")
 }
-func (*UnimplementedMsgServer) RemoveSpaceOwner(ctx context.Context, req *MsgRemoveSpaceOwner) (*MsgRemoveSpaceOwnerResponse, error) {
+func (*UnimplementedMsgServer) RemoveSpaceOwner(ctx context.Context, req *MsgRemoveSpaceOwner) (*types1.MsgActionCreated, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveSpaceOwner not implemented")
 }
 func (*UnimplementedMsgServer) NewKeychain(ctx context.Context, req *MsgNewKeychain) (*MsgNewKeychainResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewKeychain not implemented")
 }
-func (*UnimplementedMsgServer) AddKeychainWriter(ctx context.Context, req *MsgAddKeychainWriter) (*MsgAddKeychainWriterResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddKeychainWriter not implemented")
+func (*UnimplementedMsgServer) AddKeychainParty(ctx context.Context, req *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddKeychainParty not implemented")
 }
-func (*UnimplementedMsgServer) UpdateSpace(ctx context.Context, req *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error) {
+func (*UnimplementedMsgServer) UpdateSpace(ctx context.Context, req *MsgUpdateSpace) (*types1.MsgActionCreated, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSpace not implemented")
 }
 func (*UnimplementedMsgServer) UpdateKeychain(ctx context.Context, req *MsgUpdateKeychain) (*MsgUpdateKeychainResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKeychain not implemented")
 }
-func (*UnimplementedMsgServer) NewKeyRequest(ctx context.Context, req *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error) {
+func (*UnimplementedMsgServer) NewKeyRequest(ctx context.Context, req *MsgNewKeyRequest) (*types1.MsgActionCreated, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewKeyRequest not implemented")
 }
-func (*UnimplementedMsgServer) FulfilKeyRequest(ctx context.Context, req *MsgFulfilKeyRequest) (*MsgFulfilKeyRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FulfilKeyRequest not implemented")
+func (*UnimplementedMsgServer) UpdateKeyRequest(ctx context.Context, req *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateKeyRequest not implemented")
 }
-func (*UnimplementedMsgServer) UpdateKey(ctx context.Context, req *MsgUpdateKey) (*MsgUpdateKeyResponse, error) {
+func (*UnimplementedMsgServer) UpdateKey(ctx context.Context, req *MsgUpdateKey) (*types1.MsgActionCreated, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKey not implemented")
 }
-func (*UnimplementedMsgServer) NewSignRequest(ctx context.Context, req *MsgNewSignRequest) (*MsgNewSignRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewSignRequest not implemented")
+func (*UnimplementedMsgServer) NewSignatureRequest(ctx context.Context, req *MsgNewSignatureRequest) (*types1.MsgActionCreated, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewSignatureRequest not implemented")
 }
-func (*UnimplementedMsgServer) FulfilSignRequest(ctx context.Context, req *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignRequest not implemented")
+func (*UnimplementedMsgServer) FulfilSignatureRequest(ctx context.Context, req *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignatureRequest not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -2016,20 +2137,20 @@ func _Msg_NewKeychain_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AddKeychainWriter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddKeychainWriter)
+func _Msg_AddKeychainParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddKeychainParty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).AddKeychainWriter(ctx, in)
+		return srv.(MsgServer).AddKeychainParty(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.warden.v1beta2.Msg/AddKeychainWriter",
+		FullMethod: "/warden.warden.v1beta2.Msg/AddKeychainParty",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddKeychainWriter(ctx, req.(*MsgAddKeychainWriter))
+		return srv.(MsgServer).AddKeychainParty(ctx, req.(*MsgAddKeychainParty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2088,20 +2209,20 @@ func _Msg_NewKeyRequest_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_FulfilKeyRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgFulfilKeyRequest)
+func _Msg_UpdateKeyRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).FulfilKeyRequest(ctx, in)
+		return srv.(MsgServer).UpdateKeyRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.warden.v1beta2.Msg/FulfilKeyRequest",
+		FullMethod: "/warden.warden.v1beta2.Msg/UpdateKeyRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).FulfilKeyRequest(ctx, req.(*MsgFulfilKeyRequest))
+		return srv.(MsgServer).UpdateKeyRequest(ctx, req.(*MsgUpdateKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2124,38 +2245,38 @@ func _Msg_UpdateKey_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_NewSignRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgNewSignRequest)
+func _Msg_NewSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewSignatureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).NewSignRequest(ctx, in)
+		return srv.(MsgServer).NewSignatureRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.warden.v1beta2.Msg/NewSignRequest",
+		FullMethod: "/warden.warden.v1beta2.Msg/NewSignatureRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).NewSignRequest(ctx, req.(*MsgNewSignRequest))
+		return srv.(MsgServer).NewSignatureRequest(ctx, req.(*MsgNewSignatureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_FulfilSignRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgFulfilSignRequest)
+func _Msg_FulfilSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgFulfilSignatureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).FulfilSignRequest(ctx, in)
+		return srv.(MsgServer).FulfilSignatureRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.warden.v1beta2.Msg/FulfilSignRequest",
+		FullMethod: "/warden.warden.v1beta2.Msg/FulfilSignatureRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).FulfilSignRequest(ctx, req.(*MsgFulfilSignRequest))
+		return srv.(MsgServer).FulfilSignatureRequest(ctx, req.(*MsgFulfilSignatureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2185,8 +2306,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewKeychain_Handler,
 		},
 		{
-			MethodName: "AddKeychainWriter",
-			Handler:    _Msg_AddKeychainWriter_Handler,
+			MethodName: "AddKeychainParty",
+			Handler:    _Msg_AddKeychainParty_Handler,
 		},
 		{
 			MethodName: "UpdateSpace",
@@ -2201,20 +2322,20 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewKeyRequest_Handler,
 		},
 		{
-			MethodName: "FulfilKeyRequest",
-			Handler:    _Msg_FulfilKeyRequest_Handler,
+			MethodName: "UpdateKeyRequest",
+			Handler:    _Msg_UpdateKeyRequest_Handler,
 		},
 		{
 			MethodName: "UpdateKey",
 			Handler:    _Msg_UpdateKey_Handler,
 		},
 		{
-			MethodName: "NewSignRequest",
-			Handler:    _Msg_NewSignRequest_Handler,
+			MethodName: "NewSignatureRequest",
+			Handler:    _Msg_NewSignatureRequest_Handler,
 		},
 		{
-			MethodName: "FulfilSignRequest",
-			Handler:    _Msg_FulfilSignRequest_Handler,
+			MethodName: "FulfilSignatureRequest",
+			Handler:    _Msg_FulfilSignatureRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2313,13 +2434,13 @@ func (m *MsgNewSpace) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x22
 		}
 	}
-	if m.SignRuleId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.SignRuleId))
+	if m.SignIntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.SignIntentId))
 		i--
 		dAtA[i] = 0x18
 	}
-	if m.AdminRuleId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.AdminRuleId))
+	if m.AdminIntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.AdminIntentId))
 		i--
 		dAtA[i] = 0x10
 	}
@@ -2381,6 +2502,11 @@ func (m *MsgAddSpaceOwner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Btl != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Btl))
+		i--
+		dAtA[i] = 0x20
+	}
 	if len(m.NewOwner) > 0 {
 		i -= len(m.NewOwner)
 		copy(dAtA[i:], m.NewOwner)
@@ -2393,10 +2519,10 @@ func (m *MsgAddSpaceOwner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x10
 	}
-	if len(m.Authority) > 0 {
-		i -= len(m.Authority)
-		copy(dAtA[i:], m.Authority)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -2446,6 +2572,11 @@ func (m *MsgRemoveSpaceOwner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Btl != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Btl))
+		i--
+		dAtA[i] = 0x20
+	}
 	if len(m.Owner) > 0 {
 		i -= len(m.Owner)
 		copy(dAtA[i:], m.Owner)
@@ -2458,10 +2589,10 @@ func (m *MsgRemoveSpaceOwner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x10
 	}
-	if len(m.Authority) > 0 {
-		i -= len(m.Authority)
-		copy(dAtA[i:], m.Authority)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -2523,6 +2654,11 @@ func (m *MsgNewKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x22
 	}
+	if m.AdminIntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.AdminIntentId))
+		i--
+		dAtA[i] = 0x18
+	}
 	if len(m.Description) > 0 {
 		i -= len(m.Description)
 		copy(dAtA[i:], m.Description)
@@ -2568,7 +2704,7 @@ func (m *MsgNewKeychainResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgAddKeychainWriter) Marshal() (dAtA []byte, err error) {
+func (m *MsgAddKeychainParty) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2578,20 +2714,20 @@ func (m *MsgAddKeychainWriter) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgAddKeychainWriter) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgAddKeychainParty) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgAddKeychainWriter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddKeychainParty) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Writer) > 0 {
-		i -= len(m.Writer)
-		copy(dAtA[i:], m.Writer)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Writer)))
+	if len(m.Party) > 0 {
+		i -= len(m.Party)
+		copy(dAtA[i:], m.Party)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Party)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -2610,7 +2746,7 @@ func (m *MsgAddKeychainWriter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgAddKeychainWriterResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgAddKeychainPartyResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2620,12 +2756,12 @@ func (m *MsgAddKeychainWriterResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgAddKeychainWriterResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgAddKeychainPartyResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgAddKeychainWriterResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddKeychainPartyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2653,13 +2789,18 @@ func (m *MsgUpdateSpace) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.SignRuleId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.SignRuleId))
+	if m.Btl != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Btl))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.SignIntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.SignIntentId))
 		i--
 		dAtA[i] = 0x20
 	}
-	if m.AdminRuleId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.AdminRuleId))
+	if m.AdminIntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.AdminIntentId))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -2668,10 +2809,10 @@ func (m *MsgUpdateSpace) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x10
 	}
-	if len(m.Authority) > 0 {
-		i -= len(m.Authority)
-		copy(dAtA[i:], m.Authority)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -2721,17 +2862,15 @@ func (m *MsgUpdateKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.KeychainFees != nil {
-		{
-			size, err := m.KeychainFees.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
+	if m.IsActive {
+		i--
+		if m.IsActive {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x20
 	}
 	if len(m.Description) > 0 {
 		i -= len(m.Description)
@@ -2798,8 +2937,13 @@ func (m *MsgNewKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.RuleId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.RuleId))
+	if m.IntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.IntentId))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.Btl != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Btl))
 		i--
 		dAtA[i] = 0x28
 	}
@@ -2818,10 +2962,10 @@ func (m *MsgNewKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x10
 	}
-	if len(m.Authority) > 0 {
-		i -= len(m.Authority)
-		copy(dAtA[i:], m.Authority)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -2886,7 +3030,7 @@ func (m *MsgNewKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgFulfilKeyRequest) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateKeyRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2896,12 +3040,12 @@ func (m *MsgFulfilKeyRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgFulfilKeyRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2935,12 +3079,12 @@ func (m *MsgFulfilKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgFulfilKeyRequest_Key) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequest_Key) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilKeyRequest_Key) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequest_Key) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.Key != nil {
 		{
@@ -2956,12 +3100,12 @@ func (m *MsgFulfilKeyRequest_Key) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	}
 	return len(dAtA) - i, nil
 }
-func (m *MsgFulfilKeyRequest_RejectReason) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequest_RejectReason) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilKeyRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i -= len(m.RejectReason)
 	copy(dAtA[i:], m.RejectReason)
@@ -2970,7 +3114,7 @@ func (m *MsgFulfilKeyRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (in
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
 }
-func (m *MsgFulfilKeyRequestResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateKeyRequestResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2980,12 +3124,12 @@ func (m *MsgFulfilKeyRequestResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgFulfilKeyRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequestResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilKeyRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateKeyRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3013,8 +3157,13 @@ func (m *MsgUpdateKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.RuleId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.RuleId))
+	if m.Btl != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Btl))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.IntentId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.IntentId))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -3023,10 +3172,10 @@ func (m *MsgUpdateKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x10
 	}
-	if len(m.Authority) > 0 {
-		i -= len(m.Authority)
-		copy(dAtA[i:], m.Authority)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -3056,7 +3205,7 @@ func (m *MsgUpdateKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgNewSignRequest) Marshal() (dAtA []byte, err error) {
+func (m *MsgNewSignatureRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3066,36 +3215,42 @@ func (m *MsgNewSignRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgNewSignRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNewSignatureRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgNewSignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNewSignatureRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.EncryptionKey) > 0 {
-		i -= len(m.EncryptionKey)
-		copy(dAtA[i:], m.EncryptionKey)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.EncryptionKey)))
+	if m.Btl != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Btl))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.Metadata != nil {
+		{
+			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0x2a
 	}
-	if len(m.Analyzers) > 0 {
-		for iNdEx := len(m.Analyzers) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Analyzers[iNdEx])
-			copy(dAtA[i:], m.Analyzers[iNdEx])
-			i = encodeVarintTx(dAtA, i, uint64(len(m.Analyzers[iNdEx])))
-			i--
-			dAtA[i] = 0x22
-		}
+	if m.SignMethod != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.SignMethod))
+		i--
+		dAtA[i] = 0x20
 	}
-	if len(m.Input) > 0 {
-		i -= len(m.Input)
-		copy(dAtA[i:], m.Input)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Input)))
+	if len(m.DataForSigning) > 0 {
+		i -= len(m.DataForSigning)
+		copy(dAtA[i:], m.DataForSigning)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DataForSigning)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -3104,17 +3259,17 @@ func (m *MsgNewSignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x10
 	}
-	if len(m.Authority) > 0 {
-		i -= len(m.Authority)
-		copy(dAtA[i:], m.Authority)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgNewSignRequestResponse) Marshal() (dAtA []byte, err error) {
+func (m *MetadataEthereum) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3124,12 +3279,40 @@ func (m *MsgNewSignRequestResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgNewSignRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MetadataEthereum) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgNewSignRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MetadataEthereum) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ChainId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ChainId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgNewSignatureRequestResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgNewSignatureRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgNewSignatureRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3172,7 +3355,7 @@ func (m *MsgSignedData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgFulfilSignRequest) Marshal() (dAtA []byte, err error) {
+func (m *MsgFulfilSignatureRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3182,12 +3365,12 @@ func (m *MsgFulfilSignRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgFulfilSignRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilSignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3221,12 +3404,12 @@ func (m *MsgFulfilSignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgFulfilSignRequest_Payload) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_Payload) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilSignRequest_Payload) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_Payload) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.Payload != nil {
 		{
@@ -3242,12 +3425,12 @@ func (m *MsgFulfilSignRequest_Payload) MarshalToSizedBuffer(dAtA []byte) (int, e
 	}
 	return len(dAtA) - i, nil
 }
-func (m *MsgFulfilSignRequest_RejectReason) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_RejectReason) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilSignRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i -= len(m.RejectReason)
 	copy(dAtA[i:], m.RejectReason)
@@ -3256,7 +3439,7 @@ func (m *MsgFulfilSignRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (i
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
 }
-func (m *MsgFulfilSignRequestResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgFulfilSignatureRequestResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3266,12 +3449,12 @@ func (m *MsgFulfilSignRequestResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgFulfilSignRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequestResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfilSignRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3324,11 +3507,11 @@ func (m *MsgNewSpace) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.AdminRuleId != 0 {
-		n += 1 + sovTx(uint64(m.AdminRuleId))
+	if m.AdminIntentId != 0 {
+		n += 1 + sovTx(uint64(m.AdminIntentId))
 	}
-	if m.SignRuleId != 0 {
-		n += 1 + sovTx(uint64(m.SignRuleId))
+	if m.SignIntentId != 0 {
+		n += 1 + sovTx(uint64(m.SignIntentId))
 	}
 	if len(m.AdditionalOwners) > 0 {
 		for _, s := range m.AdditionalOwners {
@@ -3357,7 +3540,7 @@ func (m *MsgAddSpaceOwner) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Authority)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -3367,6 +3550,9 @@ func (m *MsgAddSpaceOwner) Size() (n int) {
 	l = len(m.NewOwner)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Btl != 0 {
+		n += 1 + sovTx(uint64(m.Btl))
 	}
 	return n
 }
@@ -3386,7 +3572,7 @@ func (m *MsgRemoveSpaceOwner) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Authority)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -3396,6 +3582,9 @@ func (m *MsgRemoveSpaceOwner) Size() (n int) {
 	l = len(m.Owner)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Btl != 0 {
+		n += 1 + sovTx(uint64(m.Btl))
 	}
 	return n
 }
@@ -3423,6 +3612,9 @@ func (m *MsgNewKeychain) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	if m.AdminIntentId != 0 {
+		n += 1 + sovTx(uint64(m.AdminIntentId))
+	}
 	if m.KeychainFees != nil {
 		l = m.KeychainFees.Size()
 		n += 1 + l + sovTx(uint64(l))
@@ -3442,7 +3634,7 @@ func (m *MsgNewKeychainResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgAddKeychainWriter) Size() (n int) {
+func (m *MsgAddKeychainParty) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3455,14 +3647,14 @@ func (m *MsgAddKeychainWriter) Size() (n int) {
 	if m.KeychainId != 0 {
 		n += 1 + sovTx(uint64(m.KeychainId))
 	}
-	l = len(m.Writer)
+	l = len(m.Party)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgAddKeychainWriterResponse) Size() (n int) {
+func (m *MsgAddKeychainPartyResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3477,18 +3669,21 @@ func (m *MsgUpdateSpace) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Authority)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.SpaceId != 0 {
 		n += 1 + sovTx(uint64(m.SpaceId))
 	}
-	if m.AdminRuleId != 0 {
-		n += 1 + sovTx(uint64(m.AdminRuleId))
+	if m.AdminIntentId != 0 {
+		n += 1 + sovTx(uint64(m.AdminIntentId))
 	}
-	if m.SignRuleId != 0 {
-		n += 1 + sovTx(uint64(m.SignRuleId))
+	if m.SignIntentId != 0 {
+		n += 1 + sovTx(uint64(m.SignIntentId))
+	}
+	if m.Btl != 0 {
+		n += 1 + sovTx(uint64(m.Btl))
 	}
 	return n
 }
@@ -3519,9 +3714,8 @@ func (m *MsgUpdateKeychain) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.KeychainFees != nil {
-		l = m.KeychainFees.Size()
-		n += 1 + l + sovTx(uint64(l))
+	if m.IsActive {
+		n += 2
 	}
 	return n
 }
@@ -3541,7 +3735,7 @@ func (m *MsgNewKeyRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Authority)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -3554,8 +3748,11 @@ func (m *MsgNewKeyRequest) Size() (n int) {
 	if m.KeyType != 0 {
 		n += 1 + sovTx(uint64(m.KeyType))
 	}
-	if m.RuleId != 0 {
-		n += 1 + sovTx(uint64(m.RuleId))
+	if m.Btl != 0 {
+		n += 1 + sovTx(uint64(m.Btl))
+	}
+	if m.IntentId != 0 {
+		n += 1 + sovTx(uint64(m.IntentId))
 	}
 	return n
 }
@@ -3585,7 +3782,7 @@ func (m *MsgNewKey) Size() (n int) {
 	return n
 }
 
-func (m *MsgFulfilKeyRequest) Size() (n int) {
+func (m *MsgUpdateKeyRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3607,7 +3804,7 @@ func (m *MsgFulfilKeyRequest) Size() (n int) {
 	return n
 }
 
-func (m *MsgFulfilKeyRequest_Key) Size() (n int) {
+func (m *MsgUpdateKeyRequest_Key) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3619,7 +3816,7 @@ func (m *MsgFulfilKeyRequest_Key) Size() (n int) {
 	}
 	return n
 }
-func (m *MsgFulfilKeyRequest_RejectReason) Size() (n int) {
+func (m *MsgUpdateKeyRequest_RejectReason) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3629,7 +3826,7 @@ func (m *MsgFulfilKeyRequest_RejectReason) Size() (n int) {
 	n += 1 + l + sovTx(uint64(l))
 	return n
 }
-func (m *MsgFulfilKeyRequestResponse) Size() (n int) {
+func (m *MsgUpdateKeyRequestResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3644,15 +3841,18 @@ func (m *MsgUpdateKey) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Authority)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.KeyId != 0 {
 		n += 1 + sovTx(uint64(m.KeyId))
 	}
-	if m.RuleId != 0 {
-		n += 1 + sovTx(uint64(m.RuleId))
+	if m.IntentId != 0 {
+		n += 1 + sovTx(uint64(m.IntentId))
+	}
+	if m.Btl != 0 {
+		n += 1 + sovTx(uint64(m.Btl))
 	}
 	return n
 }
@@ -3666,37 +3866,49 @@ func (m *MsgUpdateKeyResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgNewSignRequest) Size() (n int) {
+func (m *MsgNewSignatureRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Authority)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.KeyId != 0 {
 		n += 1 + sovTx(uint64(m.KeyId))
 	}
-	l = len(m.Input)
+	l = len(m.DataForSigning)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if len(m.Analyzers) > 0 {
-		for _, s := range m.Analyzers {
-			l = len(s)
-			n += 1 + l + sovTx(uint64(l))
-		}
+	if m.SignMethod != 0 {
+		n += 1 + sovTx(uint64(m.SignMethod))
 	}
-	l = len(m.EncryptionKey)
-	if l > 0 {
+	if m.Metadata != nil {
+		l = m.Metadata.Size()
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Btl != 0 {
+		n += 1 + sovTx(uint64(m.Btl))
 	}
 	return n
 }
 
-func (m *MsgNewSignRequestResponse) Size() (n int) {
+func (m *MetadataEthereum) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ChainId != 0 {
+		n += 1 + sovTx(uint64(m.ChainId))
+	}
+	return n
+}
+
+func (m *MsgNewSignatureRequestResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3721,7 +3933,7 @@ func (m *MsgSignedData) Size() (n int) {
 	return n
 }
 
-func (m *MsgFulfilSignRequest) Size() (n int) {
+func (m *MsgFulfilSignatureRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3743,7 +3955,7 @@ func (m *MsgFulfilSignRequest) Size() (n int) {
 	return n
 }
 
-func (m *MsgFulfilSignRequest_Payload) Size() (n int) {
+func (m *MsgFulfilSignatureRequest_Payload) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3755,7 +3967,7 @@ func (m *MsgFulfilSignRequest_Payload) Size() (n int) {
 	}
 	return n
 }
-func (m *MsgFulfilSignRequest_RejectReason) Size() (n int) {
+func (m *MsgFulfilSignatureRequest_RejectReason) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3765,7 +3977,7 @@ func (m *MsgFulfilSignRequest_RejectReason) Size() (n int) {
 	n += 1 + l + sovTx(uint64(l))
 	return n
 }
-func (m *MsgFulfilSignRequestResponse) Size() (n int) {
+func (m *MsgFulfilSignatureRequestResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -4008,9 +4220,9 @@ func (m *MsgNewSpace) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AdminRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AdminIntentId", wireType)
 			}
-			m.AdminRuleId = 0
+			m.AdminIntentId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -4020,16 +4232,16 @@ func (m *MsgNewSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.AdminRuleId |= uint64(b&0x7F) << shift
+				m.AdminIntentId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SignRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SignIntentId", wireType)
 			}
-			m.SignRuleId = 0
+			m.SignIntentId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -4039,7 +4251,7 @@ func (m *MsgNewSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SignRuleId |= uint64(b&0x7F) << shift
+				m.SignIntentId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -4197,7 +4409,7 @@ func (m *MsgAddSpaceOwner) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4225,7 +4437,7 @@ func (m *MsgAddSpaceOwner) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Authority = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -4278,6 +4490,25 @@ func (m *MsgAddSpaceOwner) Unmarshal(dAtA []byte) error {
 			}
 			m.NewOwner = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Btl", wireType)
+			}
+			m.Btl = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Btl |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -4380,7 +4611,7 @@ func (m *MsgRemoveSpaceOwner) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4408,7 +4639,7 @@ func (m *MsgRemoveSpaceOwner) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Authority = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -4461,6 +4692,25 @@ func (m *MsgRemoveSpaceOwner) Unmarshal(dAtA []byte) error {
 			}
 			m.Owner = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Btl", wireType)
+			}
+			m.Btl = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Btl |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -4625,6 +4875,25 @@ func (m *MsgNewKeychain) Unmarshal(dAtA []byte) error {
 			}
 			m.Description = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AdminIntentId", wireType)
+			}
+			m.AdminIntentId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.AdminIntentId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field KeychainFees", wireType)
@@ -4751,7 +5020,7 @@ func (m *MsgNewKeychainResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgAddKeychainWriter) Unmarshal(dAtA []byte) error {
+func (m *MsgAddKeychainParty) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4774,10 +5043,10 @@ func (m *MsgAddKeychainWriter) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddKeychainWriter: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgAddKeychainParty: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddKeychainWriter: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgAddKeychainParty: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4833,7 +5102,7 @@ func (m *MsgAddKeychainWriter) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Writer", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Party", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4861,7 +5130,7 @@ func (m *MsgAddKeychainWriter) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Writer = string(dAtA[iNdEx:postIndex])
+			m.Party = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -4884,7 +5153,7 @@ func (m *MsgAddKeychainWriter) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgAddKeychainWriterResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgAddKeychainPartyResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4907,10 +5176,10 @@ func (m *MsgAddKeychainWriterResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddKeychainWriterResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgAddKeychainPartyResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddKeychainWriterResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgAddKeychainPartyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -4965,7 +5234,7 @@ func (m *MsgUpdateSpace) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4993,7 +5262,7 @@ func (m *MsgUpdateSpace) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Authority = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -5016,9 +5285,9 @@ func (m *MsgUpdateSpace) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AdminRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AdminIntentId", wireType)
 			}
-			m.AdminRuleId = 0
+			m.AdminIntentId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -5028,16 +5297,16 @@ func (m *MsgUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.AdminRuleId |= uint64(b&0x7F) << shift
+				m.AdminIntentId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SignRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SignIntentId", wireType)
 			}
-			m.SignRuleId = 0
+			m.SignIntentId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -5047,7 +5316,26 @@ func (m *MsgUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SignRuleId |= uint64(b&0x7F) << shift
+				m.SignIntentId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Btl", wireType)
+			}
+			m.Btl = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Btl |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -5235,11 +5523,11 @@ func (m *MsgUpdateKeychain) Unmarshal(dAtA []byte) error {
 			}
 			m.Description = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field KeychainFees", wireType)
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsActive", wireType)
 			}
-			var msglen int
+			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -5249,28 +5537,12 @@ func (m *MsgUpdateKeychain) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.KeychainFees == nil {
-				m.KeychainFees = &KeychainFees{}
-			}
-			if err := m.KeychainFees.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
+			m.IsActive = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -5373,7 +5645,7 @@ func (m *MsgNewKeyRequest) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5401,7 +5673,7 @@ func (m *MsgNewKeyRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Authority = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -5462,9 +5734,9 @@ func (m *MsgNewKeyRequest) Unmarshal(dAtA []byte) error {
 			}
 		case 5:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Btl", wireType)
 			}
-			m.RuleId = 0
+			m.Btl = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -5474,7 +5746,26 @@ func (m *MsgNewKeyRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RuleId |= uint64(b&0x7F) << shift
+				m.Btl |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IntentId", wireType)
+			}
+			m.IntentId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.IntentId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -5653,7 +5944,7 @@ func (m *MsgNewKey) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgFulfilKeyRequest) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateKeyRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5676,10 +5967,10 @@ func (m *MsgFulfilKeyRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgFulfilKeyRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateKeyRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgFulfilKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5785,7 +6076,7 @@ func (m *MsgFulfilKeyRequest) Unmarshal(dAtA []byte) error {
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Result = &MsgFulfilKeyRequest_Key{v}
+			m.Result = &MsgUpdateKeyRequest_Key{v}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -5817,7 +6108,7 @@ func (m *MsgFulfilKeyRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &MsgFulfilKeyRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
+			m.Result = &MsgUpdateKeyRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -5840,7 +6131,7 @@ func (m *MsgFulfilKeyRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgFulfilKeyRequestResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateKeyRequestResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5863,10 +6154,10 @@ func (m *MsgFulfilKeyRequestResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgFulfilKeyRequestResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateKeyRequestResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgFulfilKeyRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateKeyRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5921,7 +6212,7 @@ func (m *MsgUpdateKey) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5949,7 +6240,7 @@ func (m *MsgUpdateKey) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Authority = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -5972,9 +6263,9 @@ func (m *MsgUpdateKey) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field IntentId", wireType)
 			}
-			m.RuleId = 0
+			m.IntentId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -5984,7 +6275,26 @@ func (m *MsgUpdateKey) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RuleId |= uint64(b&0x7F) << shift
+				m.IntentId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Btl", wireType)
+			}
+			m.Btl = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Btl |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -6060,7 +6370,7 @@ func (m *MsgUpdateKeyResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
+func (m *MsgNewSignatureRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6083,15 +6393,15 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgNewSignRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNewSignatureRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgNewSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNewSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6119,7 +6429,7 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Authority = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -6142,7 +6452,7 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Input", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DataForSigning", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
@@ -6169,16 +6479,16 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Input = append(m.Input[:0], dAtA[iNdEx:postIndex]...)
-			if m.Input == nil {
-				m.Input = []byte{}
+			m.DataForSigning = append(m.DataForSigning[:0], dAtA[iNdEx:postIndex]...)
+			if m.DataForSigning == nil {
+				m.DataForSigning = []byte{}
 			}
 			iNdEx = postIndex
 		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Analyzers", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SignMethod", wireType)
 			}
-			var stringLen uint64
+			m.SignMethod = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -6188,29 +6498,16 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.SignMethod |= SignMethod(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Analyzers = append(m.Analyzers, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptionKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Metadata", wireType)
 			}
-			var byteLen int
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -6220,26 +6517,47 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + byteLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.EncryptionKey = append(m.EncryptionKey[:0], dAtA[iNdEx:postIndex]...)
-			if m.EncryptionKey == nil {
-				m.EncryptionKey = []byte{}
+			if m.Metadata == nil {
+				m.Metadata = &types.Any{}
+			}
+			if err := m.Metadata.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Btl", wireType)
+			}
+			m.Btl = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Btl |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -6261,7 +6579,7 @@ func (m *MsgNewSignRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgNewSignRequestResponse) Unmarshal(dAtA []byte) error {
+func (m *MetadataEthereum) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6284,10 +6602,79 @@ func (m *MsgNewSignRequestResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgNewSignRequestResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MetadataEthereum: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgNewSignRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MetadataEthereum: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			m.ChainId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgNewSignatureRequestResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgNewSignatureRequestResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgNewSignatureRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -6414,7 +6801,7 @@ func (m *MsgSignedData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgFulfilSignRequest) Unmarshal(dAtA []byte) error {
+func (m *MsgFulfilSignatureRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6437,10 +6824,10 @@ func (m *MsgFulfilSignRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgFulfilSignRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgFulfilSignatureRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgFulfilSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgFulfilSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -6546,7 +6933,7 @@ func (m *MsgFulfilSignRequest) Unmarshal(dAtA []byte) error {
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Result = &MsgFulfilSignRequest_Payload{v}
+			m.Result = &MsgFulfilSignatureRequest_Payload{v}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -6578,7 +6965,7 @@ func (m *MsgFulfilSignRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &MsgFulfilSignRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
+			m.Result = &MsgFulfilSignatureRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -6601,7 +6988,7 @@ func (m *MsgFulfilSignRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgFulfilSignRequestResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgFulfilSignatureRequestResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6624,10 +7011,10 @@ func (m *MsgFulfilSignRequestResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgFulfilSignRequestResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgFulfilSignatureRequestResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgFulfilSignRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgFulfilSignatureRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

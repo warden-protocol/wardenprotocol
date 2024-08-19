@@ -1,59 +1,41 @@
-import clsx from "clsx";
 import { useMemo, useState } from "react";
-import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
-import TotalAssetsChart from "./Chart";
+import { Link } from "react-router-dom";
+import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 
 import { Icons } from "@/components/ui/icons-assets";
-import { useModalContext } from "@/context/modalContext";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useAssetQueries } from "../assets/hooks";
-import { FIAT_FORMAT } from "../assets/util";
 import { useCurrency } from "@/hooks/useCurrency";
+import useFiatConversion from "@/hooks/useFiatConversion";
 import { bigintToFloat } from "@/lib/math";
-
-type Currency = keyof typeof FIAT_FORMAT;
+import TotalAssetsChart from "./Chart";
+import { Icons as IconsAssets } from "./icons";
+import { useAssetQueries } from "../assets/hooks";
+import { useModalState } from "../modals/state";
 
 const DashboardGraph = ({
 	addresses,
 }: {
 	addresses?: (AddressResponse & { keyId: bigint })[];
 }) => {
-	const curr = useCurrency();
-	const currency = curr.currency as Currency;
-	const formatter = FIAT_FORMAT[currency];
-	const { dispatch } = useModalContext();
+	const { fiatConversion, formatter } = useFiatConversion();
+	const { setData: setModal } = useModalState();
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances, queryPrices } = useAssetQueries(spaceId);
 	const results = queryBalances.flatMap((item) => item.data?.results);
 
-	const fiatConversion = useMemo(() => {
-		if (currency === "usd") {
-			return {
-				name: "usd",
-				value: BigInt(1),
-				decimals: 0,
-			};
-		}
-
-		for (const entry of queryPrices) {
-			if (!entry.data) {
-				continue;
-			}
-
-			if (entry.data.name === currency) {
-				return entry.data;
-			}
-		}
-	}, [queryPrices, currency]);
-
 	const totalBalance = useMemo(() => {
 		const targetDecimals = 2;
+		let noAssets = true;
 
 		const total = results.reduce((acc, item) => {
 			if (!item) {
 				return acc;
+			}
+
+			if (item.balance) {
+				noAssets = false;
 			}
 
 			const decimals = item.decimals + item.priceDecimals;
@@ -65,17 +47,17 @@ const DashboardGraph = ({
 			return acc + usd;
 		}, BigInt(0));
 
-		return total;
+		return { total, noAssets };
 	}, [results]);
 
 	return (
-		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-secondary rounded-2xl">
+		<div className="relative group cursor-pointer bg-card p-6 pb-0 min-h-72 border border-border-edge rounded-2xl overflow-hidden">
 			<div className="flex items-start justify-between mb-1">
 				<div className="font-bold text-[32px] flex items-center gap-3">
 					{formatter.format(
 						bigintToFloat(
 							fiatConversion
-								? (totalBalance *
+								? (totalBalance.total *
 										BigInt(10) **
 											BigInt(fiatConversion.decimals)) /
 										fiatConversion.value
@@ -83,11 +65,12 @@ const DashboardGraph = ({
 							2,
 						),
 					)}
-
-					<Icons.buttonArrow className="group-hover:opacity-100 opacity-0 ease-out duration-300" />
+					<Link to="/assets">
+						<Icons.buttonArrow className="group-hover:opacity-100 opacity-0 ease-out duration-300" />
+					</Link>
 				</div>
 
-				<div className="flex gap-2">
+				{/* <div className="flex gap-2">
 					<div
 						onClick={() => setGraphInterval(7)}
 						className={clsx(
@@ -118,17 +101,31 @@ const DashboardGraph = ({
 					>
 						3M
 					</div>
-				</div>
+				</div> */}
 			</div>
 
 			<div className="text-muted-foreground">In total</div>
 
-			<div className="-mx-6 w-[calc(100%_+_48px)] max-w-none h-[191px] overflow-hidden rounded-lg">
-				<TotalAssetsChart />
+			<div className="-mx-6 w-[calc(100%_+_48px)] bottom-0 absolute max-w-none h-[191px] overflow-hidden rounded-lg">
+				<TotalAssetsChart
+					balance={bigintToFloat(
+						fiatConversion
+							? (totalBalance.total *
+									BigInt(10) **
+										BigInt(fiatConversion.decimals)) /
+									fiatConversion.value
+							: BigInt(0),
+						2,
+					)}
+				/>
 			</div>
 
-			<div className="absolute left-6 bottom-6 flex w-[calc(100%_-_48px)] justify-between">
-				<div className="flex items-center gap-3">
+			<div className="absolute left-6 bottom-6 flex w-[calc(100%_-_48px)] justify-between items-center">
+				{totalBalance.noAssets ? (
+					<div>No assets yet</div>
+				) : (
+					<>
+						{/* <div className="flex items-center gap-3">
 					<div className="flex">
 						<img
 							className="w-10 h-10 object-contain"
@@ -149,17 +146,18 @@ const DashboardGraph = ({
 						/>
 					</div>
 					5 assets
-				</div>
+				</div> */}
+					</>
+				)}
+
 				<button
-					onClick={dispatch.bind(null, {
-						type: "set",
-						payload: {
-							type: "select-key",
-							params: { addresses, next: "receive" },
-						},
+					onClick={setModal.bind(null, {
+						type: "receive",
+						params: {},
 					})}
-					className="rounded bg-fill-quaternary h-10 px-5 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
+					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>
+					<IconsAssets.arrInCircle className="invert dark:invert-0" />
 					Receive
 				</button>
 			</div>

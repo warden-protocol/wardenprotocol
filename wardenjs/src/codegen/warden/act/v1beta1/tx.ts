@@ -247,6 +247,43 @@ export interface MsgRevokeActionResponseAminoMsg {
   value: MsgRevokeActionResponseAmino;
 }
 export interface MsgRevokeActionResponseSDKType {}
+export interface MsgCheckAction {
+  creator: string;
+  actionId: bigint;
+}
+export interface MsgCheckActionProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgCheckAction";
+  value: Uint8Array;
+}
+export interface MsgCheckActionAmino {
+  creator?: string;
+  action_id?: string;
+}
+export interface MsgCheckActionAminoMsg {
+  type: "/warden.act.v1beta1.MsgCheckAction";
+  value: MsgCheckActionAmino;
+}
+export interface MsgCheckActionSDKType {
+  creator: string;
+  action_id: bigint;
+}
+export interface MsgCheckActionResponse {
+  status: string;
+}
+export interface MsgCheckActionResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgCheckActionResponse";
+  value: Uint8Array;
+}
+export interface MsgCheckActionResponseAmino {
+  status?: string;
+}
+export interface MsgCheckActionResponseAminoMsg {
+  type: "/warden.act.v1beta1.MsgCheckActionResponse";
+  value: MsgCheckActionResponseAmino;
+}
+export interface MsgCheckActionResponseSDKType {
+  status: string;
+}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -1218,6 +1255,166 @@ export const MsgRevokeActionResponse = {
     return {
       typeUrl: "/warden.act.v1beta1.MsgRevokeActionResponse",
       value: MsgRevokeActionResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCheckAction(): MsgCheckAction {
+  return {
+    creator: "",
+    actionId: BigInt(0)
+  };
+}
+export const MsgCheckAction = {
+  typeUrl: "/warden.act.v1beta1.MsgCheckAction",
+  encode(message: MsgCheckAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.actionId !== BigInt(0)) {
+      writer.uint32(16).uint64(message.actionId);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCheckAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCheckAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.actionId = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgCheckAction {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      actionId: isSet(object.actionId) ? BigInt(object.actionId.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: MsgCheckAction): JsonSafe<MsgCheckAction> {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.actionId !== undefined && (obj.actionId = (message.actionId || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MsgCheckAction>): MsgCheckAction {
+    const message = createBaseMsgCheckAction();
+    message.creator = object.creator ?? "";
+    message.actionId = object.actionId !== undefined && object.actionId !== null ? BigInt(object.actionId.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: MsgCheckActionAmino): MsgCheckAction {
+    const message = createBaseMsgCheckAction();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.action_id !== undefined && object.action_id !== null) {
+      message.actionId = BigInt(object.action_id);
+    }
+    return message;
+  },
+  toAmino(message: MsgCheckAction): MsgCheckActionAmino {
+    const obj: any = {};
+    obj.creator = message.creator === "" ? undefined : message.creator;
+    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCheckActionAminoMsg): MsgCheckAction {
+    return MsgCheckAction.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCheckActionProtoMsg): MsgCheckAction {
+    return MsgCheckAction.decode(message.value);
+  },
+  toProto(message: MsgCheckAction): Uint8Array {
+    return MsgCheckAction.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCheckAction): MsgCheckActionProtoMsg {
+    return {
+      typeUrl: "/warden.act.v1beta1.MsgCheckAction",
+      value: MsgCheckAction.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCheckActionResponse(): MsgCheckActionResponse {
+  return {
+    status: ""
+  };
+}
+export const MsgCheckActionResponse = {
+  typeUrl: "/warden.act.v1beta1.MsgCheckActionResponse",
+  encode(message: MsgCheckActionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.status !== "") {
+      writer.uint32(10).string(message.status);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCheckActionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCheckActionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.status = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgCheckActionResponse {
+    return {
+      status: isSet(object.status) ? String(object.status) : ""
+    };
+  },
+  toJSON(message: MsgCheckActionResponse): JsonSafe<MsgCheckActionResponse> {
+    const obj: any = {};
+    message.status !== undefined && (obj.status = message.status);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgCheckActionResponse>): MsgCheckActionResponse {
+    const message = createBaseMsgCheckActionResponse();
+    message.status = object.status ?? "";
+    return message;
+  },
+  fromAmino(object: MsgCheckActionResponseAmino): MsgCheckActionResponse {
+    const message = createBaseMsgCheckActionResponse();
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    return message;
+  },
+  toAmino(message: MsgCheckActionResponse): MsgCheckActionResponseAmino {
+    const obj: any = {};
+    obj.status = message.status === "" ? undefined : message.status;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCheckActionResponseAminoMsg): MsgCheckActionResponse {
+    return MsgCheckActionResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCheckActionResponseProtoMsg): MsgCheckActionResponse {
+    return MsgCheckActionResponse.decode(message.value);
+  },
+  toProto(message: MsgCheckActionResponse): Uint8Array {
+    return MsgCheckActionResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCheckActionResponse): MsgCheckActionResponseProtoMsg {
+    return {
+      typeUrl: "/warden.act.v1beta1.MsgCheckActionResponse",
+      value: MsgCheckActionResponse.encode(message).finish()
     };
   }
 };

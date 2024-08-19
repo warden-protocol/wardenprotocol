@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -22,7 +21,7 @@ func (k msgServer) UpdateRule(ctx context.Context, msg *types.MsgUpdateRule) (*t
 	}
 
 	if rule.Creator != msg.Creator {
-		return nil, fmt.Errorf("account is not the creator of the rule")
+		return nil, types.ErrInvalidUpdateRuleAccount
 	}
 
 	rule.Expression = expr

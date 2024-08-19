@@ -82,7 +82,7 @@ import (
 	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
-	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 

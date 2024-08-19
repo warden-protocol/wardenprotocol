@@ -8,12 +8,14 @@ import (
 )
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*Metadata)(nil), &MetadataEthereum{})
+
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddKeychainWriter{},
+		&MsgAddKeychainParty{},
 		&MsgAddSpaceOwner{},
 		&MsgNewKeyRequest{},
 		&MsgNewKeychain{},
-		&MsgNewSignRequest{},
+		&MsgNewSignatureRequest{},
 		&MsgNewSpace{},
 		&MsgRemoveSpaceOwner{},
 		&MsgUpdateKeychain{},
@@ -24,7 +26,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAddSpaceOwnerResponse{},
 		&MsgNewKeyRequestResponse{},
-		&MsgNewSignRequestResponse{},
+		&MsgNewSignatureRequestResponse{},
 		&MsgRemoveSpaceOwnerResponse{},
 		&MsgUpdateSpaceResponse{},
 	)

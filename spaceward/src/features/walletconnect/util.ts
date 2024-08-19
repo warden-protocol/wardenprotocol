@@ -1,6 +1,7 @@
+import { chains } from "chain-registry";
 import * as ethers from "ethers";
 // import ethers from "ethers";
-import { fromHex } from "@cosmjs/encoding";
+import { fromBech32, fromHex, toBech32 } from "@cosmjs/encoding";
 import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import type { PendingRequestTypes, ProposalTypes } from "@walletconnect/types";
 
@@ -9,9 +10,9 @@ import {
 	buildApprovedNamespaces,
 	BuildApprovedNamespacesParams,
 } from "@walletconnect/utils";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
-import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 
 import { getClient } from "@/hooks/useClient";
 import type { CommonActions } from "@/utils/common";
@@ -20,6 +21,8 @@ import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { getProviderByChainId } from "@/lib/eth";
 import { env } from "@/env";
 import useRequestSignature from "@/hooks/useRequestSignature";
+import { fixAddress } from "../modals/ReceiveAssets";
+import { COSMOS_CHAINS } from "../assets/hooks";
 
 export function decodeRemoteMessage(
 	message: Uint8Array,
@@ -169,7 +172,7 @@ export async function approveSession(
 
 async function findKeyByAddress(spaceId: string, address: string) {
 	const client = await getClient();
-	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
+	const queryKeys = client.warden.warden.v1beta3.keysBySpaceId;
 
 	const res = await queryKeys({
 		spaceId: BigInt(spaceId),
@@ -201,7 +204,7 @@ const isValidEthParams = (params: any): params is EthParams => {
 
 	return (
 		typeof params.gas === "string" &&
-		typeof params.value === "string" &&
+		(!params.value || typeof params.value === "string") &&
 		typeof params.from === "string" &&
 		typeof params.to === "string" &&
 		typeof params.data === "string"
@@ -257,8 +260,12 @@ export async function approveRequest({
 				// prepare message
 				const msg = fromHex(req.params.request.params[0].slice(2));
 				const text = new TextDecoder().decode(msg);
+
+				const message =
+					"\x19Ethereum Signed Message:\n" + text.length + text;
+
 				const hash = ethers.keccak256(
-					"\x19Ethereum Signed Message:\n" + text.length + text,
+					Uint8Array.from(Buffer.from(message, "utf-8")),
 				);
 
 				// send signature request to Warden Protocol and wait response
@@ -282,6 +289,7 @@ export async function approveRequest({
 				}
 
 				const txParam = req.params.request.params[0];
+				console.log({ txParam });
 
 				if (!isValidEthParams(txParam)) {
 					throw new Error("Invalid transaction parameters");
@@ -387,8 +395,21 @@ export async function approveRequest({
 				break;
 			}
 			case "cosmos_getAccounts": {
+				const { chainId: _chainId } = req.params;
+				const [chainType, chainId] = _chainId.split(":");
+
+				if (chainType !== "cosmos") {
+					throw new Error(`Unsupported chain type: ${chainType}`);
+				}
+
+				const chain = chains.find((c) => c.chain_id === chainId);
+
+				if (!chain) {
+					throw new Error(`Unknown chain id ${chainId}`);
+				}
+
 				const client = await getClient();
-				const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
+				const queryKeys = client.warden.warden.v1beta3.keysBySpaceId;
 
 				const res = await queryKeys({
 					spaceId: BigInt(wsAddr),
@@ -397,7 +418,7 @@ export async function approveRequest({
 
 				const addresses = res.keys.flatMap((key) =>
 					key.addresses.map((addr) => ({
-						...addr,
+						...fixAddress(addr, chain.chain_name),
 						publicKey: key.key.publicKey,
 					})),
 				);
@@ -415,17 +436,55 @@ export async function approveRequest({
 				break;
 			}
 			case "cosmos_signAmino": {
+				const { request, chainId: _chainId } = req.params;
+				const [chainType, chainId] = _chainId.split(":");
+
+				if (chainType !== "cosmos") {
+					throw new Error(`Unsupported chain type: ${chainType}`);
+				}
+
+				const chain = chains.find((c) => c.chain_id === chainId);
+
+				if (!chain) {
+					throw new Error(`Unknown chain id ${chainId}`);
+				}
+
 				const {
 					signerAddress,
 					signDoc,
 				}: {
 					signerAddress: string;
 					signDoc: any;
-				} = req.params.request.params;
+				} = request.params;
 
-				const key = await findKeyByAddress(wsAddr, signerAddress);
+				const key = await findKeyByAddress(
+					wsAddr,
+					toBech32(
+						chain.bech32_prefix,
+						fromBech32(signerAddress).data,
+					),
+				);
+
 				if (!key) {
 					throw new Error(`Unknown address ${signerAddress}`);
+				}
+
+				const feeAmount = COSMOS_CHAINS.find(
+					({ chainName }) => (chainName = chain.chain_name),
+				)?.feeAmount;
+
+				// fixme testnet hack
+				if (signDoc?.fee) {
+					if (!signDoc.fee?.amount.length && feeAmount) {
+						// todo look into fee_tokens
+						const denom = chain.fees?.fee_tokens[0]?.denom;
+
+						if (!denom) {
+							throw new Error("Missing fee denom");
+						}
+
+						signDoc.fee.amount = [{ denom, amount: feeAmount }];
+					}
 				}
 
 				let signature = await cosm.requestSignature(

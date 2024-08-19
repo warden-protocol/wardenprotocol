@@ -3,9 +3,10 @@ package app
 import (
 	"context"
 	"fmt"
-	abci "github.com/cometbft/cometbft/abci/types"
 	"slices"
 	"time"
+
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
@@ -24,7 +25,7 @@ import (
 	compression "github.com/skip-mev/slinky/abci/strategies/codec"
 	"github.com/skip-mev/slinky/abci/strategies/currencypair"
 	"github.com/skip-mev/slinky/abci/ve"
-	"github.com/skip-mev/slinky/cmd/constants"
+	"github.com/skip-mev/slinky/cmd/constants/marketmaps"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 	"github.com/skip-mev/slinky/pkg/math/voteweighted"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
@@ -68,23 +69,6 @@ func (app *App) initializeOracle(appOpts types.AppOptions) {
 		app.Logger().Info("started oracle client", "address", cfg.OracleAddress)
 	}()
 	initializeABCIExtensions(app, oracleMetrics)
-}
-
-func (app *App) wrappedPreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
-	// call app's preblocker first in case there is changes made on upgrades
-	// that can modify state and lead to serialization/deserialization issues
-	resp, err := app.ModuleManager.PreBlock(ctx)
-	if err != nil {
-		return resp, err
-	}
-
-	_, err = app.oraclePreBlocker(ctx, req)
-	if err != nil {
-		return &sdk.ResponsePreBlock{}, err
-	}
-
-	// return resp from app's preblocker which can return consensus param changed flag
-	return resp, nil
 }
 
 func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
@@ -135,8 +119,7 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 		),
 	)
 
-	app.oraclePreBlocker = oraclePreBlockHandler.PreBlocker()
-	app.SetPreBlocker(app.wrappedPreBlocker)
+	app.SetPreBlocker(oraclePreBlockHandler.WrappedPreBlocker(app.ModuleManager))
 
 	// Create the vote extensions handler that will be used to extend and verify
 	// vote extensions (i.e. oracle data).
@@ -189,6 +172,10 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 	return AppUpgrade{
 		Name: "v03-to-v04",
 		Handler: func(ctx context.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			// renamed module
+			fromVM[acttypes.ModuleName] = fromVM["intent"]
+			delete(fromVM, "intent")
+
 			migrations, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 			if err != nil {
 				return nil, err
@@ -214,7 +201,7 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			}
 
 			// add core markets
-			coreMarkets := constants.CoreMarketMap
+			coreMarkets := marketmaps.CoreMarketMap
 			markets := coreMarkets.Markets
 			keys := make([]string, 0, len(markets))
 			for name := range markets {

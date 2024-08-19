@@ -1,10 +1,23 @@
 import Chart from "chart.js/auto";
 import { useEffect, useRef, useState } from "react";
-import { TOTAL_ASSET_CHART_MOCK } from "./mock";
+import {
+	TOTAL_ASSET_CHART_MOCK,
+	TOTAL_ASSET_CHART_MOCK_WITH_BALANCE,
+} from "./mock";
 
-export default function TotalAssetsChart() {
+export default function TotalAssetsChart(balance: any) {
 	const ref = useRef<HTMLCanvasElement>(null);
 	const [hasMounted, setHasMounted] = useState(false);
+	const [mockData, setMockData] = useState(TOTAL_ASSET_CHART_MOCK);
+
+	useEffect(() => {
+		// setHasMounted(false);
+		setMockData(
+			balance && balance.balance > 0
+				? TOTAL_ASSET_CHART_MOCK_WITH_BALANCE
+				: TOTAL_ASSET_CHART_MOCK,
+		);
+	}, [balance]);
 
 	useEffect(() => {
 		const canvas = ref.current;
@@ -26,13 +39,13 @@ export default function TotalAssetsChart() {
 		const chart = new Chart(canvas, {
 			type: "line",
 			data: {
-				labels: TOTAL_ASSET_CHART_MOCK.map(() => ""),
+				labels: mockData.map(() => ""),
 				datasets: [
 					{
 						fill: true,
 						backgroundColor: gradient,
 						label: "",
-						data: TOTAL_ASSET_CHART_MOCK.map((item) => item.y),
+						data: mockData.map((item) => item.y),
 						borderColor: "rgb(255, 174, 238)",
 						tension: 0.1,
 					},
@@ -66,12 +79,12 @@ export default function TotalAssetsChart() {
 			chart.destroy();
 			setHasMounted(false);
 		};
-	}, [!hasMounted]);
+	}, [!hasMounted, mockData]);
 
 	useEffect(() => {
 		// hot reload
 		setHasMounted(true);
-	}, []);
+	}, [mockData]);
 
 	return <canvas ref={ref} className="m-[-5px] mt-0" />;
 }

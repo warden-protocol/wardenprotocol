@@ -3,7 +3,7 @@ package warden
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/v1beta2"
+	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/v1beta3"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

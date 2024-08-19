@@ -1,7 +1,7 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddressAvatar from "@/components/AddressAvatar";
-import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 
 export function SelectAddressRow({
 	asset,

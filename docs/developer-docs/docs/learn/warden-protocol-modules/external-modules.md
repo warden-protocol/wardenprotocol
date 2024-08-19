@@ -22,6 +22,16 @@ To learn more, see the following:
 We should add more details here since there are things that are unique for our chain.
 --->
 
+## x/oracle
+
+The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices on-chain in **Skip:Connect** (an oracle service).
+
+To learn more, see the following:
+
+- [Connect documentation](https://docs.skip.build/connect/introduction)
+- [`x/oracle` on GitHub](https://github.com/skip-mev/slinky/tree/main/x/oracle)
+- [Warden docs: Oracle services](/learn/oracle-services)
+
 ## x/wasm
 
 The `x/wasm` module is a Cosmos SDK module that processes certain messages and uses them to upload, instantiate, and execute smart contracts. It's an integral part of **CosmWasm** – a smart contract platform that can be integrated into any blockchain built on top of the Cosmos SDK.

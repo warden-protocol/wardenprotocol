@@ -36,13 +36,13 @@ export function Actions() {
 		},
 		options: {
 			enabled: isReady,
-		}
+		},
 	});
 
 	const groups: { [key: string]: ActionModel[] } =
 		q.data?.actions.reduce(
 			(groups, action) => {
-				const date = new Date(Number(action.createdAt.seconds))
+				const date = timestampToDate(action.createdAt)
 					.toISOString()
 					.split("T")[0];
 				if (!groups[date]) {
@@ -109,6 +109,10 @@ export function Actions() {
 															{action.msg?.typeUrl
 																?.replace(
 																	"/warden.warden.v1beta2.Msg",
+																	"",
+																)
+																.replace(
+																	"/warden.warden.v1beta3.Msg",
 																	"",
 																)
 																.replace(

@@ -1,24 +1,38 @@
-import { FileWarning } from "lucide-react";
+// import { FileWarning } from "lucide-react";
 import {
 	NetworkIconsTransparent,
 	TokenIcons,
 } from "@/components/ui/icons-crypto";
 import { bigintToFixed } from "@/lib/math";
 import type { BalanceEntry } from "./types";
+import clsx from "clsx";
 
 export const AssetPlaceholder = ({ className }: { className?: string }) => (
-	// fixme use another placeholder
-	<FileWarning className={className} />
+	<div
+		className={clsx(
+			className,
+			"border-card-foreground rounded-full bg-card-foreground",
+		)}
+	></div>
 );
 
-const AssetRow = ({ asset, onClick }: { asset: BalanceEntry, onClick?: () => void }) => {
+const AssetRow = ({
+	asset,
+	onClick,
+}: {
+	asset: BalanceEntry;
+	onClick?: () => void;
+}) => {
 	const Network =
 		NetworkIconsTransparent[asset.chainName] ?? AssetPlaceholder;
 
 	const Token = TokenIcons[asset.token] ?? AssetPlaceholder;
 
 	return (
-		<div className="flex gap-3 text-left cursor-pointer items-center p-3" onClick={onClick}>
+		<div
+			className="flex gap-3 text-left cursor-pointer items-center p-3"
+			onClick={onClick}
+		>
 			<div className="relative">
 				<Token className="w-10 h-10" />
 

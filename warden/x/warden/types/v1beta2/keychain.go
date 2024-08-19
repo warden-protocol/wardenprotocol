@@ -10,12 +10,12 @@ func (k *Keychain) AccAddress() sdk.AccAddress {
 	bz := make([]byte, 8)
 	binary.BigEndian.PutUint64(bz, k.Id)
 	addr := append([]byte("keychain-"), bz...)
-	return addr
+	return sdk.AccAddress(addr)
 }
 
-func (k *Keychain) IsWriter(address string) bool {
-	for _, w := range k.Writers {
-		if w == address {
+func (k *Keychain) IsParty(address string) bool {
+	for _, party := range k.Parties {
+		if party == address {
 			return true
 		}
 	}
@@ -31,12 +31,12 @@ func (k *Keychain) IsAdmin(address string) bool {
 	return false
 }
 
-func (k *Keychain) AddWriter(address string) {
-	k.Writers = append(k.Writers, address)
+func (k *Keychain) AddParty(address string) {
+	k.Parties = append(k.Parties, address)
 }
 
-func (k *Keychain) SetFees(fees *KeychainFees) {
-	k.Fees = fees
+func (k *Keychain) SetStatus(status bool) {
+	k.IsActive = status
 }
 
 func (k *Keychain) SetDescription(description string) {

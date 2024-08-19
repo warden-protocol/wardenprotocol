@@ -209,7 +209,9 @@ While most interoperability providers focus on particular ecosystems, Warden's g
 
 ## Oracle service
 
-An oracle is a third-party service that enables smart contracts access real-life data feeds: prices, stock marked data, weather conditions, etc. Warden is currently integrating with [Slinky](https://skip-protocol-docs.netlify.app/slinky/overview). It's an oracle service provided by Skip Protocol and offering mostly price data. More details are coming soon.
+An oracle is a third-party service that enables smart contracts access real-life data feeds: prices, stock marked data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction) – an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written on-chain.
+
+Learn more: [Oracle services](oracle-services)
 
 ---
 
@@ -241,7 +243,7 @@ A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key).
 
 SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [Help Center](https://help.wardenprotocol.org)
+Learn more: [SpaceWard documentation](https://help.wardenprotocol.org)
 
 ---
 
@@ -321,6 +323,14 @@ Reasons for running a node include the following:
 WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
 
 Learn more: [WARP token](/tokens/warp-token/warp)
+
+---
+
+## YieldWard
+
+YieldWard is an [Omnichain Application](#omnichain-application) functioning as a smart yield generator that automates and optimizes your earnings across multiple protocols. YieldWard simplifies your yield and staking experience, letting you enjoy effortless management, decentralized security, and optimal yields.
+
+Learn more: [YieldWard documentation](https://docs.yieldward.com)
 
 ---
 

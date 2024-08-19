@@ -59,7 +59,7 @@ export const createRPCQueryClient = async ({
       },
       gmp: (await import("./gmp/query.rpc.Query.js")).createRpcQueryExtension(client),
       warden: {
-        v1beta2: (await import("./warden/v1beta2/query.rpc.Query.js")).createRpcQueryExtension(client)
+        v1beta3: (await import("./warden/v1beta3/query.rpc.Query.js")).createRpcQueryExtension(client)
       }
     }
   };

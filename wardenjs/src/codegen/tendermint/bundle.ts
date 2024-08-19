@@ -1,39 +1,39 @@
 //@ts-nocheck
-import * as _71 from "./abci/types.js";
-import * as _72 from "./crypto/keys.js";
-import * as _73 from "./crypto/proof.js";
-import * as _74 from "./libs/bits/types.js";
-import * as _75 from "./p2p/types.js";
-import * as _76 from "./types/block.js";
-import * as _77 from "./types/evidence.js";
-import * as _78 from "./types/params.js";
-import * as _79 from "./types/types.js";
-import * as _80 from "./types/validator.js";
-import * as _81 from "./version/types.js";
+import * as _82 from "./abci/types.js";
+import * as _83 from "./crypto/keys.js";
+import * as _84 from "./crypto/proof.js";
+import * as _85 from "./libs/bits/types.js";
+import * as _86 from "./p2p/types.js";
+import * as _87 from "./types/block.js";
+import * as _88 from "./types/evidence.js";
+import * as _89 from "./types/params.js";
+import * as _90 from "./types/types.js";
+import * as _91 from "./types/validator.js";
+import * as _92 from "./version/types.js";
 export namespace tendermint {
   export const abci = {
-    ..._71
+    ..._82
   };
   export const crypto = {
-    ..._72,
-    ..._73
+    ..._83,
+    ..._84
   };
   export namespace libs {
     export const bits = {
-      ..._74
+      ..._85
     };
   }
   export const p2p = {
-    ..._75
+    ..._86
   };
   export const types = {
-    ..._76,
-    ..._77,
-    ..._78,
-    ..._79,
-    ..._80
+    ..._87,
+    ..._88,
+    ..._89,
+    ..._90,
+    ..._91
   };
   export const version = {
-    ..._81
+    ..._92
   };
 }

@@ -1,0 +1,27 @@
+syntax = "proto3";
+package warden.warden.v1beta3;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "warden/warden/v1beta3/key.proto";
+import "warden/warden/v1beta3/keychain.proto";
+import "warden/warden/v1beta3/params.proto";
+import "warden/warden/v1beta3/signature.proto";
+import "warden/warden/v1beta3/space.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
+
+// GenesisState defines the warden module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+
+  repeated Keychain keychains = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Space spaces = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Key keys = 4 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated KeyRequest key_requests = 5 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated SignRequest sign_requests = 6 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (*types.MsgUpdateSpaceResponse, error) {
@@ -18,14 +18,14 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	}
 
 	if msg.AdminRuleId != space.AdminRuleId {
-		if err := k.isValidRuleId(ctx, msg.AdminRuleId); err != nil {
+		if err := k.actKeeper.IsValidRule(ctx, msg.AdminRuleId); err != nil {
 			return nil, err
 		}
 		space.AdminRuleId = msg.AdminRuleId
 	}
 
 	if msg.SignRuleId != space.SignRuleId {
-		if err := k.isValidRuleId(ctx, msg.SignRuleId); err != nil {
+		if err := k.actKeeper.IsValidRule(ctx, msg.SignRuleId); err != nil {
 			return nil, err
 		}
 		space.SignRuleId = msg.SignRuleId
@@ -45,13 +45,4 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	}
 
 	return &types.MsgUpdateSpaceResponse{}, nil
-}
-
-func (k msgServer) isValidRuleId(ctx context.Context, id uint64) error {
-	if id == 0 {
-		// we consider 0 as a valid rule id for the "default" rule
-		return nil
-	}
-	_, err := k.actKeeper.GetRule(ctx, id)
-	return err
 }

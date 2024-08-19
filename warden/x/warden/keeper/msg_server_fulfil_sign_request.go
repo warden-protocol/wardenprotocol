@@ -43,10 +43,9 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 			return nil, err
 		}
 
-		err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignRequest{
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignRequest{
 			Id: req.Id,
-		})
-		if err != nil {
+		}); err != nil {
 			return nil, err
 		}
 
@@ -60,10 +59,9 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 			return nil, err
 		}
 
-		err = ctx.EventManager().EmitTypedEvent(&types.EventRejectSignRequest{
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectSignRequest{
 			Id: req.Id,
-		})
-		if err != nil {
+		}); err != nil {
 			return nil, err
 		}
 

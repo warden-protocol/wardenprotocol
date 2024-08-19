@@ -40,14 +40,13 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 			return nil, err
 		}
 
-		err = ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
 			Id:         key.Id,
 			KeyType:    key.Type,
 			SpaceId:    key.SpaceId,
 			KeychainId: key.KeychainId,
 			RuleId:     key.RuleId,
-		})
-		if err != nil {
+		}); err != nil {
 			return nil, err
 		}
 
@@ -61,10 +60,9 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 			return nil, err
 		}
 
-		err = ctx.EventManager().EmitTypedEvent(&types.EventRejectKeyRequest{
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectKeyRequest{
 			Id: req.Id,
-		})
-		if err != nil {
+		}); err != nil {
 			return nil, err
 		}
 

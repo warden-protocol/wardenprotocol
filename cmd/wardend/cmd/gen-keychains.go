@@ -12,14 +12,14 @@ import (
 
 func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-genesis-keychain <creator> <description>",
+		Use:   "add-genesis-keychain <creator> <name>",
 		Short: "Add a Keychain to the genesis file",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cdc, genesisFileURL := setupGenCommand(cmd)
 
 			creator := args[0]
-			description := args[1]
+			name := args[1]
 
 			return updateGenesisState(
 				genesisFileURL,
@@ -27,12 +27,12 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 					wardenGenState := wardentypes.GetGenesisStateFromAppState(cdc, appState)
 
 					wardenGenState.Keychains = append(wardenGenState.Keychains, wardentypes.Keychain{
-						Id:          1 + uint64(len(wardenGenState.Keychains)),
-						Creator:     creator,
-						Description: description,
-						Admins:      []string{creator},
-						Writers:     []string{creator},
-						Fees:        nil,
+						Id:      1 + uint64(len(wardenGenState.Keychains)),
+						Creator: creator,
+						Name:    name,
+						Admins:  []string{creator},
+						Writers: []string{creator},
+						Fees:    nil,
 					})
 
 					wardenGenStateBz, err := cdc.MarshalJSON(wardenGenState)

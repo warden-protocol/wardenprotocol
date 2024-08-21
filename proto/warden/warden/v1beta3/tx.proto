@@ -116,9 +116,12 @@ message MsgRemoveSpaceOwnerResponse {}
 message MsgNewKeychain {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string description = 2;
+  string name = 2;
   reserved 3;
   KeychainFees keychain_fees = 4;
+  string description = 6;
+  string url = 7;
+  string keybaseId = 8;
 }
 
 message MsgNewKeychainResponse { uint64 id = 1; }
@@ -146,9 +149,12 @@ message MsgUpdateKeychain {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 keychain_id = 2;
-  string description = 3;
+  string name = 3;
   reserved 4;
   KeychainFees keychain_fees = 5;
+  string description = 6;
+  string url = 7;
+  string keybaseId = 8;
 }
 
 message MsgUpdateKeychainResponse {}

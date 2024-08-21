@@ -26,8 +26,8 @@ message Keychain {
   // Address of the creator of the Keychain.
   string creator = 2;
 
-  // A human-readable description of the Keychain.
-  string description = 3;
+  // A human-readable name of the Keychain.
+  string name = 3;
 
   // Addresses that can update this Keychain.
   repeated string admins = 4;
@@ -39,6 +39,17 @@ message Keychain {
 
   // Fees for creating and signing Keys.
   KeychainFees fees = 7 [(gogoproto.nullable) = true];
+
+  // A human-readable description of the Keychain.
+  string description = 8 [(gogoproto.nullable) = true];
+
+  string url = 9 [(gogoproto.nullable) = true];
+
+  KeybaseId keybase_id = 10 [(gogoproto.nullable) = true];
+}
+
+message KeybaseId {
+  string value = 1;
 }
 
 // Fees for creating and signing Keys.

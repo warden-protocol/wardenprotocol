@@ -74,7 +74,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 						console.error("Failed to broadcast", res);
 
 						toast({
-							title: "Faled",
+							title: "Failed",
 							description: "Could not broadcast transaction",
 							duration: 10000,
 						});
@@ -90,7 +90,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				})
 				.catch((err) => {
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: err.message ?? "Unexpected error",
 						duration: 10000,
 					});
@@ -174,7 +174,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				} else {
 					console.error("action failed", res);
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: "Unexpected action status",
 						duration: 10000,
 					});
@@ -274,7 +274,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 				if (status.error) {
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: "Action failed",
 						duration: 10000,
 					});
@@ -524,7 +524,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				.then((res) => {
 					if (!res) {
 						toast({
-							title: "Faled",
+							title: "Failed",
 							description: "Transaction failed",
 							duration: 10000,
 						});
@@ -555,7 +555,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 					console.error("broadcast failed", err);
 
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: err.message ?? "Unexpected error",
 						duration: 10000,
 					});

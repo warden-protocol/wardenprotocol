@@ -1,0 +1,134 @@
+﻿---
+sidebar_position: 1
+---
+
+# Keychain SDK
+
+## Overview
+
+The **Keychain SDK** offers a robust framework for managing cryptographic operations on the Warden Protocol. It simplifies the development of applications that interact with the Warden Protocol, handling both key requests and sign requests with efficiency and security.
+
+## Module Descriptions
+
+In this section, we will walk you through different modules of **Keychain SDK.**
+
+### Sign Requests (`sign_requests.go`)
+
+**Purpose**: This module handles sign requests, allowing the application to process and respond to cryptographic signing operations.
+
+**Key Components:**
+
+- **SignResponseWriter Interface**: Provides methods to fulfill or reject sign requests.
+  - `Fulfil(signature []byte) error`: Writes a signature to a sign request.
+  - `Reject(reason string) error`: Writes a rejection message to a sign request.
+- **SignRequestHandler**: A function type that processes individual sign requests.
+- **signResponseWriter Struct**: Implements the `SignResponseWriter` interface, managing encryption and transaction writing.
+
+**Functions:**
+
+- `handleSignRequest`: Processes a sign request using the provided `SignRequestHandler`.
+- `ingestSignRequests`: Continuously fetches and handles new sign requests.
+
+### Keychain (`keychain.go`)
+
+**Purpose**: Central application management, coordinating key and sign request handling.
+
+**Key Components:**
+
+- **App Struct**: Represents the Keychain application, managing configuration and handlers.
+  - Key members include `config`, `query`, `txWriter`, `keyRequestTracker`, and `signRequestTracker`.
+- **NewApp Function**: Initializes a new `App` instance with the provided configuration.
+- **Handlers**: These methods set the functions for processing requests.
+  - `SetKeyRequestHandler`: Sets the handler for key requests.
+  - `SetSignRequestHandler`: Sets the handler for sign requests.
+- **Start Method**: Begins the Keychain application's operations, managing request channels and transaction writing.
+- `ConnectionState`: Returns the state of the gRPC connection.
+- `initConnections`: Establishes connections to the Warden Protocol via gRPC.
+
+### Key Requests (`key_requests.go`)
+
+**Purpose**: Handles key requests, providing interfaces to fulfill or reject requests for public keys.
+
+**Key Components:**
+
+- **KeyResponseWriter Interface**: Contains methods to fulfill or reject key requests.
+  - `Fulfil(publicKey []byte) error`: Sends a public key in response.
+  - `Reject(reason string) error`: Sends a rejection reason.
+- **KeyRequestHandler**: A function type for handling key requests.
+- **keyResponseWriter Struct**: Implements the `KeyResponseWriter` interface, processing key requests and writing results.
+
+**Functions:**
+
+- `handleKeyRequest`: Processes a key request using the provided `KeyRequestHandler`.
+- `ingestKeyRequests`: Continuously fetches and handles new key requests.
+
+### Configuration (`config.go`)
+
+**Purpose**: Defines the configuration structure for the Keychain SDK, detailing all necessary parameters for application setup.
+
+**Key Components:**
+
+- **Config Struct**: Specifies settings such as logger, chain ID, gRPC details, and batching options.
+
+```go
+type Config struct {
+    Logger          *slog.Logger
+    ChainID         string
+    GRPCURL         string
+    GRPCInsecure    bool
+    KeychainID      uint64
+    DerivationPath  string
+    Mnemonic        string
+    BatchInterval   time.Duration
+    BatchSize       int
+    GasLimit        uint64
+    TxFees          sdk.Coins
+    TxTimeout       time.Duration
+}
+```
+
+### Transaction Writer (`writer.go`)
+
+**Purpose**: Manages transaction batching and sending operations.
+
+**Key Components:**
+
+- **W Struct**: Handles batch management and sending transactions to the blockchain.
+
+**Functions:**
+
+- `Start`: Begins the transaction writing process.
+- `Write`: Adds messages to the batch for processing.
+- `Flush`: Sends accumulated transactions in a batch.
+- `sendWaitTx`: Handles the actual transaction submission and awaits confirmation.
+
+### Request Tracker (`tracker.go`)
+
+**Purpose**: Tracks processed request IDs to prevent duplicate processing.
+
+**Key Components:**
+
+- **T Struct**: Manages an ingested map to track processed requests, ensuring each request is only handled once.
+
+**Functions:**
+
+- `IsNew`: Checks if a request ID is new.
+- `Ingested`: Marks a request as ingested.
+- `Done`: Removes a request from the ingested map.
+
+### Encryption Utilities (`enc.go`)
+
+**Purpose**: Provides encryption utilities for cryptographic operations.
+
+**Key Functions:**
+
+- **Encrypt**: Encrypts data using a provided ECDSA public key.
+- **ValidateEncryptionKey**: Validates an ECDSA public key.
+
+You can find more details about Keychain SDK in our GitHub repository:
+
+- [Keychain SDK](https://github.com/warden-protocol/wardenprotocol/tree/main/keychain-sdk)
+
+To learn about the available types and functions, check the reference page:
+
+- [Keychain SDK reference](https://pkg.go.dev/github.com/warden-protocol/wardenprotocol/keychain-sdk)

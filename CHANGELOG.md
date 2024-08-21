@@ -42,6 +42,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/warden) [#570](https://github.com/warden-protocol/wardenprotocol/570) Added more metadata to Keychain
+  * Replaced Description by Name field (required, non-empty)
+  * Added new Description field instead of replaced one
+  * Added Url field
+  * Added Keybase Id field (16 symbols)
+
 ### Features (non-breaking)
 
 ### Bug Fixes

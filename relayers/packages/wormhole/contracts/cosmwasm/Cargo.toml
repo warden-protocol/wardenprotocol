@@ -8,34 +8,24 @@ resolver = "2"
 version = "0.1.0"
 
 [workspace.dependencies]
-anybuf = "0.5.0"
-anyhow = "1"
-bs58 = "0.5.1"
-cosmwasm-schema = "2.1.1"
-cosmwasm-std = { version="2.1.1" }
+bech32 = "0.11.0"
+cosmwasm-schema = "2.0.0"
+cosmwasm-std = "2.0.2"
+cw2 = "2.0.0"
 cw-controllers = "2.0.0"
 cw-storage-plus = "2.0.0"
-cw-utils = "2.0.0"
-cw2 = "2.0.0"
-cw20 = "2.0.0"
-cw20-base = { version = "2.0.0" }
-serde = { version = "1.0.188" }
-serde-json-wasm = "1.0.1"
 schemars = "0.8.15"
 semver = "1"
+serde = { version = "1.0.188", default-features = false, features = ["derive"] }
+sha2 = "0.10.8"
 thiserror = "1.0.4"
-cw20-wrapped-2 = { version = "0.1.0", features = ["library"] }
-hex = { version = "0.4.3"}
-generic-array = { version = "1.1.0" }
-k256 = { version = "0.13.3" }
-sha3 = { version = "0.10.8" }
 
-[patch.crates-io]
 bindings = { path = "packages/bindings", version = "0.1.0" }
-cw20-wrapped-2 = { path = "contracts/cw20-wrapped" }
-wormhole-cosmwasm = { path = "contracts/wormhole" }
+gmp-with-token = { path = "contracts/gmp_with_token", version = "0.1.0", features = [
+  "library",
+] }
 
-[profile.release.package.sample]
+[profile.release.package.gmp_with_token]
 codegen-units = 1
 incremental = false
 

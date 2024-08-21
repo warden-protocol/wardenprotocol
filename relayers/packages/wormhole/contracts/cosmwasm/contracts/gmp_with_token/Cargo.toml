@@ -1,0 +1,32 @@
+[package]
+name = "gmp-with-token"
+version.workspace = true
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/warden-protocol/wardenprotocol/relayers/packages/wormhole/contracts/cosmwasm"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# use library feature to disable all instantiate/execute/query exports
+library = []
+test-utils = []
+
+[dependencies]
+bech32 = { workspace = true }
+cosmwasm-schema = { workspace = true }
+cw2 = { workspace = true }
+cw-controllers = { workspace = true }
+cw-storage-plus = { workspace = true }
+bindings = { workspace = true }
+cosmwasm-std = { workspace = true, features = ["stargate"] }
+schemars = { workspace = true }
+serde = { workspace = true }
+sha2 = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+anyhow = "1"
+assert_matches = "1"
+derivative = "2"

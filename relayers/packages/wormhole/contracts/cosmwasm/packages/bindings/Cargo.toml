@@ -2,7 +2,9 @@
 name = "bindings"
 version.workspace = true
 edition = "2021"
-description = "Bindings for Wormhole bridge Protocol"
+description = "Bindings for Warden relayers"
+license = "Apache-2.0"
+repository = "https://github.com/warden-protocol/wardenprotocol/relayers/packages/wormhole/contracts/cosmwasm"
 
 [dependencies]
 cosmwasm-schema = { workspace = true }

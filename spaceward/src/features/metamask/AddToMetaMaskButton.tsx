@@ -79,11 +79,11 @@ export function AddToMetaMaskButton({
 		<Button
 			size="sm"
 			variant="ghost"
-			className="hidden md:flex border-0 gap-2 border-foreground hover:bg-foreground hover:text-background"
+			className="hidden md:flex border-0 gap-2 border-foreground hover:bg-transparent hover:opacity-80"
 			onClick={handleClick}
 		>
-			<PlusCircleIcon strokeWidth={1} className="h-4 w-4" />
 			Add to MetaMask
+			<PlusCircleIcon className="h-6 w-6" />
 		</Button>
 	);
 }

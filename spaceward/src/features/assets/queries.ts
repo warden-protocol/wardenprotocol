@@ -5,13 +5,55 @@ import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1be
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
-import { COSMOS_PRICES, EIP_155_NATIVE_PRICE_FEEDS, ENABLED_ETH_CHAINS, ERC20_TOKENS } from "@/config/tokens";
+import {
+	COSMOS_PRICES,
+	EIP_155_NATIVE_PRICE_FEEDS,
+	ENABLED_ETH_CHAINS as _ENABLED_ETH_CHAINS,
+	ERC20_TOKENS,
+} from "@/config/tokens";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
 import { getCosmosChain } from "./util";
 
+// fixme
+const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS
+	.filter(({ testnet }) => /* !testnet */ true)
+	.map(({ chainName }) => chainName);
+
 type ChainName = Parameters<typeof getProvider>[0];
 
+const assetsByChain: Record<string, (typeof assets)[number] | undefined> = {};
+
+const getChainAssets = (chainName: string) => {
+	if (chainName in assetsByChain) {
+		return assetsByChain[chainName];
+	}
+
+	const chainAssets = assets.find((x) => x.chain_name === chainName);
+	assetsByChain[chainName] = chainAssets;
+	return chainAssets;
+};
+
+type UA<T> = T extends (infer U)[] ? U : T;
+type AssetList = NonNullable<ReturnType<typeof getChainAssets>>;
+const assetIndex: Record<
+	string,
+	Record<string, UA<AssetList["assets"]> | undefined>
+> = {};
+
+const getAsset = (chainAssets: AssetList, denom: string) => {
+	if (!assetIndex[chainAssets.chain_name]) {
+		assetIndex[chainAssets.chain_name] = {};
+	}
+
+	if (denom in assetIndex[chainAssets.chain_name]) {
+		return assetIndex[chainAssets.chain_name][denom];
+	}
+
+	const asset = chainAssets.assets.find((x) => x.base === denom);
+	assetIndex[chainAssets.chain_name][denom] = asset;
+	return asset;
+};
 
 const cosmosBalancesQuery = (params: {
 	address?: string;
@@ -41,53 +83,54 @@ const cosmosBalancesQuery = (params: {
 			address: params.address,
 		});
 
-		// todo need not to do find on each query
-		const chainAssets = assets.find(
-			(x) => x.chain_name === params.chainName,
-		);
+		const chainAssets = getChainAssets(params.chainName);
 
 		if (!chainAssets) {
 			throw new Error("Chain assets not found");
 		}
 
-		const result = balances.balances.map((x): BalanceEntry => {
-			// todo optimise
-			const asset = chainAssets!.assets.find((y) => y.base === x.denom);
+		const result = balances.balances
+			.filter(({ denom }) => {
+				// fix for unknown ibc tokens
+				return Boolean(getAsset(chainAssets, denom));
+			})
+			.map((x): BalanceEntry => {
+				const asset = getAsset(chainAssets, x.denom)!;
 
-			if (!asset) {
-				throw new Error("Asset not found");
-			}
+				const exp = asset.denom_units.find(
+					(unit) => unit.denom === asset.display,
+				)?.exponent as number;
 
-			const exp = asset.denom_units.find(
-				(unit) => unit.denom === asset.display,
-			)?.exponent as number;
+				const token = asset.symbol;
+				const slinkyPrice = params.prices?.[token];
 
-			const token = asset.symbol;
-			const slinkyPrice = params.prices?.[token];
+				const price =
+					(slinkyPrice
+						? BigInt(slinkyPrice.price?.price ?? 0)
+						: COSMOS_PRICES[token]) ?? BigInt(0);
 
-			const price =
-				(slinkyPrice
-					? BigInt(slinkyPrice.price?.price ?? 0)
-					: COSMOS_PRICES[token]) ?? BigInt(0);
+				const priceDecimals = slinkyPrice
+					? Number(slinkyPrice.decimals)
+					: 8;
 
-			const priceDecimals = slinkyPrice
-				? Number(slinkyPrice.decimals)
-				: 8;
-
-			return {
-				address: params.address!,
-				balance: BigInt(x.amount),
-				chainId: chain.chain_id,
-				chainName: params.chainName,
-				decimals: exp,
-				// fixme
-				price,
-				priceDecimals,
-				token,
-				title: asset.name,
-				type: "osmosis",
-			};
-		});
+				return {
+					address: params.address!,
+					balance: BigInt(x.amount),
+					chainId: chain.chain_id,
+					chainName: params.chainName,
+					decimals: exp,
+					// fixme
+					price,
+					priceDecimals,
+					token,
+					title: asset.name,
+					type: "osmosis",
+					logo:
+						asset.logo_URIs?.svg ??
+						asset.logo_URIs?.png ??
+						asset.logo_URIs?.jpeg,
+				};
+			});
 
 		if (!result.length) {
 			const [native] = chainAssets.assets;
@@ -275,6 +318,9 @@ export const balancesQueryCosmos = (
 	prices?: PriceMapSlinky,
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
+	// debug:
+	// cosmos1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep4tgu9q - cosmostation
+	const debugAddress = "osmo1clpqr4nrk4khgkxj78fcwwh6dl3uw4epasmvnj"; // cosmostation
 
 	const addresses =
 		keys?.flatMap((key) =>
@@ -285,6 +331,21 @@ export const balancesQueryCosmos = (
 					return address;
 				}),
 		) ?? [];
+
+	// debug
+	if (keys?.length) {
+		byAddress[debugAddress] = {
+			key: keys?.[0].key,
+			addresses: [
+				{
+					type: 0,
+					address: debugAddress,
+				},
+			],
+		};
+
+		addresses.push(debugAddress);
+	}
 
 	const select = (results: BalanceEntry[]) => {
 		const _address = results[0]?.address;
@@ -339,6 +400,8 @@ export const balancesQueryEth = (
 	prices?: PriceMapSlinky,
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
+	// debug
+	const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
 
 	const eth =
 		keys?.flatMap((key) =>
@@ -353,25 +416,38 @@ export const balancesQueryEth = (
 				.filter(is0x),
 		) ?? [];
 
+	// debug
+	if (keys?.length) {
+		byAddress[debugAddress] = {
+			key: keys?.[0].key,
+			addresses: [
+				{
+					type: 0,
+					address: debugAddress,
+				},
+			],
+		};
+
+		eth.push(debugAddress);
+	}
+
 	const select = (result: BalanceEntry) => ({
 		results: [result],
 		key: byAddress[result.address],
 	});
 
 	const queries = [
-		...(ENABLED_ETH_CHAINS).flatMap(
-			(chainName) => {
-				return eth.map((address) => ({
-					...eip155NativeBalanceQuery({
-						enabled,
-						chainName,
-						address,
-						prices,
-					}),
-					select,
-				}));
-			},
-		),
+		...ENABLED_ETH_CHAINS.flatMap((chainName) => {
+			return eth.map((address) => ({
+				...eip155NativeBalanceQuery({
+					enabled,
+					chainName,
+					address,
+					prices,
+				}),
+				select,
+			}));
+		}),
 		...ERC20_TOKENS.filter(({ chainName }) =>
 			ENABLED_ETH_CHAINS.includes(chainName),
 		).flatMap(({ chainName, address: token, priceFeed, stablecoin }) =>

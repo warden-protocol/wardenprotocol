@@ -8,23 +8,23 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useMemo, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import clsx from "clsx";
 import DepositFinalModal from "@/features/assets/DepositFinalModal";
 import { Icons } from "@/components/ui/icons-assets";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { bigintToFloat } from "@/lib/math";
+import { bigintToFloat, displayPagination } from "@/lib/math";
 import { FIAT_FORMAT } from "@/hooks/useFiatConversion";
-import { NetworkIcons } from "@/components/ui/icons-crypto";
-import { AssetPlaceholder } from "@/features/assets/AssetRow";
+import { AssetIcon } from "@/features/assets/AssetRow";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { commonReducer } from "@/utils/common";
 import { useModalState } from "@/features/modals/state";
 import { KeysDropdownItem } from "@/features/keys/KeysDropdown";
 import AssetTableRow from "@/features/assets/AssetTableRow";
 import { useKeySettingsState } from "@/features/keys/state";
+import { capitalize } from "@/features/modals/util";
 
 type Currency = keyof typeof FIAT_FORMAT;
 
@@ -143,6 +143,16 @@ export function AssetsPage() {
 	const { data } = useKeySettingsState();
 	const settings = data?.settings[state.keyFilter.toString()];
 	const name = settings?.name ?? `Key #${state.keyFilter.toString()}`;
+	const total = results.length;
+	const perPage = 20;
+	const pages = Math.ceil(total / perPage);
+	const [page, setPage] = useState(0);
+	const pagination = displayPagination(page, pages, 3);
+	const items = results.slice(page * perPage, (page + 1) * perPage);
+
+	useEffect(() => {
+		setPage(0);
+	}, [pages]);
 
 	if (noKeys) {
 		return (
@@ -416,7 +426,7 @@ export function AssetsPage() {
 										className="cursor-pointer group relative h-8 rounded-2xl bg-fill-quaternary py-2 px-3 text-xs  flex items-center gap-[2px]"
 									>
 										{state.networkFilter
-											? state.networkFilter
+											? capitalize(state.networkFilter)
 											: "All Networks"}
 
 										<Icons.chevronDown
@@ -449,10 +459,6 @@ export function AssetsPage() {
 													)}
 												</div>
 												{chains.map((chainName) => {
-													const Network =
-														NetworkIcons[
-															chainName
-														] ?? AssetPlaceholder;
 													return (
 														<div
 															onClick={() =>
@@ -465,8 +471,16 @@ export function AssetsPage() {
 															className="cursor-pointer h-10 px-4 flex items-center gap-3"
 															key={chainName}
 														>
-															<Network className="w-6 h-6 object-contain cursor-pointer" />
-															{chainName}
+															<AssetIcon
+																type="network"
+																value={
+																	chainName
+																}
+																className="w-6 h-6 object-contain cursor-pointer"
+															/>
+															{capitalize(
+																chainName,
+															)}
 
 															{state.networkFilter ===
 																chainName && (
@@ -484,11 +498,51 @@ export function AssetsPage() {
 
 						<div className="h-4" />
 
-						{results.map(({ key, ...item }) => {
+						{items.map(({ key, ...item }) => {
 							return (
-								<AssetTableRow item={item} keyResponse={key} />
+								<AssetTableRow
+									item={item}
+									keyResponse={key}
+									key={`${item.token}:${item.chainName}:${item.address}`}
+								/>
 							);
 						})}
+
+						<div className="h-4" />
+						{pagination.length > 1 ? (
+							<div className="flex items-center px-2">
+								{pagination.map((p, i) => {
+									return (
+										<div
+											className={clsx({
+												"ml-auto": !i,
+											})}
+											key={p}
+										>
+											{i > 0 &&
+											p - 1 !== pagination[i - 1] ? (
+												<span className="px-1">
+													...
+												</span>
+											) : null}
+											<span
+												className={clsx("px-1", {
+													"underline cursor-pointer":
+														page !== p,
+												})}
+												onClick={() => {
+													if (page !== p) {
+														setPage(p);
+													}
+												}}
+											>
+												{p + 1}
+											</span>
+										</div>
+									);
+								})}
+							</div>
+						) : null}
 					</div>
 				)}
 			</div>

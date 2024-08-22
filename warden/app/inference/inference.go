@@ -2,9 +2,9 @@ package inference
 
 import (
 	"bytes"
-	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"net/http"
 	"os"
 	"time"
@@ -14,48 +14,6 @@ var c = &http.Client{
 	Timeout: time.Minute,
 }
 
-type Input []float64
-
-func (i Input) Serialize() ([]byte, error) {
-	buf := new(bytes.Buffer)
-	for _, val := range i {
-		err := binary.Write(buf, binary.LittleEndian, val)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return buf.Bytes(), nil
-}
-
-func DeserializeInputData(data []byte) (Input, error) {
-	buf := bytes.NewReader(data)
-	var result []float64
-
-	for {
-		var val float64
-		err := binary.Read(buf, binary.LittleEndian, &val)
-		if err != nil {
-			// Check for EOF
-			if err.Error() == "EOF" {
-				break
-			}
-			return nil, err
-		}
-		result = append(result, val)
-	}
-
-	return result, nil
-}
-
-type Request struct {
-	Data Input `json:"data"`
-}
-
-type Response struct {
-	Data    Input  `json:"data"`
-	Receipt []byte `json:"receipt"`
-}
-
 func solveURL() string {
 	if os.Getenv("INFERENCE_URL") != "" {
 		return os.Getenv("INFERENCE_URL") + "/job/solve"
@@ -63,30 +21,32 @@ func solveURL() string {
 	return "http://localhost:9001/job/solve"
 }
 
-func Solve(input Input) (Response, error) {
-	req := Request{
-		Data: input,
+func Solve(input types.SolverInput, falsePositiveRate float64) (types.SolverResponse, error) {
+	req := types.SolverRequest{
+		SolverInput:       input,
+		ExpectedItems:     int64(len(input.Tokens)),
+		FalsePositiveRate: falsePositiveRate,
 	}
 
 	jsonBz, err := json.Marshal(req)
 	if err != nil {
-		return Response{}, err
+		return types.SolverResponse{}, err
 	}
 
 	res, err := c.Post(solveURL(), "application/json", bytes.NewReader(jsonBz))
 	if err != nil {
-		return Response{}, err
+		return types.SolverResponse{}, err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return Response{}, fmt.Errorf("inference endpoint returned non-200 status code: %d", res.StatusCode)
+		return types.SolverResponse{}, fmt.Errorf("inference endpoint returned non-200 status code: %d", res.StatusCode)
 	}
 
-	var resp Response
+	var resp types.SolverResponse
 	err = json.NewDecoder(res.Body).Decode(&resp)
 	if err != nil {
-		return Response{}, err
+		return types.SolverResponse{}, err
 	}
 
 	return resp, nil
@@ -95,11 +55,9 @@ func Solve(input Input) (Response, error) {
 var ErrVerifyFailed = fmt.Errorf("verify failed")
 
 type VerifyRequest struct {
-	SolverRequest struct {
-		Data Input `json:"data"`
-	} `json:"solverRequest"`
-	SolverReceipt []byte `json:"solverReceipt"`
-	K             int    `json:"K"`
+	SolverRequest types.SolverRequest `json:"solverRequest"`
+	SolverReceipt []byte              `json:"solverReceipt"`
+	K             int                 `json:"K"`
 }
 
 func verifyURL() string {
@@ -109,13 +67,12 @@ func verifyURL() string {
 	return "http://localhost:9001/job/verify"
 }
 
-func Verify(data Input, receipt []byte, k int) error {
+func Verify(
+	request types.SolverRequest,
+	receipt []byte,
+	k int) error {
 	req := VerifyRequest{
-		SolverRequest: struct {
-			Data Input `json:"data"`
-		}{
-			Data: data,
-		},
+		SolverRequest: request,
 		SolverReceipt: receipt,
 		K:             k,
 	}

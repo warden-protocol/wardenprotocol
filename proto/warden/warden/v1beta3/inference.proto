@@ -1,6 +1,8 @@
 syntax = "proto3";
 package warden.warden.v1beta3;
 
+import "gogoproto/gogo.proto";
+
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
 
 message InferenceRequest {
@@ -24,4 +26,24 @@ message InferenceResult {
 message InferenceTx {
   uint64 magic_number = 1;
   repeated InferenceResult results = 2;
+}
+
+message SolverRequest {
+  SolverInput solver_input = 1 [(gogoproto.nullable) = false];
+  int64 ExpectedItems = 2;
+  double FalsePositiveRate = 3;
+}
+
+message SolverInput {
+  repeated string tokens = 1;
+  bool adversary_mode = 2;
+}
+
+message SolverResponse {
+  SolverOutput solver_output = 1 [(gogoproto.nullable) = false];
+  bytes solver_receipt = 2;
+}
+
+message SolverOutput {
+  map<string, float> forecasts = 1 [(gogoproto.nullable) = false];
 }

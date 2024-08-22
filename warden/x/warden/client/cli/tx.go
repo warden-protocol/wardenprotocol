@@ -3,7 +3,6 @@ package cli
 import (
 	"encoding/base64"
 	"fmt"
-	"math"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -12,7 +11,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 
-	"github.com/warden-protocol/wardenprotocol/warden/app/inference"
 	actcli "github.com/warden-protocol/wardenprotocol/warden/x/act/client"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -217,20 +215,18 @@ The sender of this transaction must be a writer of the Keychain for the request.
 
 func NewInferenceRequestTxCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-inference-request --input [input]",
+		Use:   "new-inference-request --input [input] --adversary-mode [true,false]",
 		Short: "Create a new inference request",
 		Long: `Create a new inference request by providing an input.
 
-The input is a list of numbers.
-The first number is used to indicate how many vectors there will be.
-The following numbers are the vectors.
+The input is a list of token denoms.
 
 E.g. the list:
-	10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-will be interpreted as 10 vectors of size 2:
-	(1, 2), (3, 4), (5, 6), (7, 8), (9, 10), (11, 12), (13, 14), (15, 16), (17, 18), (19, 20)
+	ward, usdt, atom
+will be interpreted as list of 3 elements:
+	["ward", "usdt", "atom"]
 `,
-		Example: fmt.Sprintf("%s tx warden new-inference-request --input 10,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20", version.AppName),
+		Example: fmt.Sprintf("%s tx warden new-inference-request --input ward,usdt,atom --adversary-mode true", version.AppName),
 		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -238,28 +234,25 @@ will be interpreted as 10 vectors of size 2:
 				return err
 			}
 
-			input, err := cmd.Flags().GetFloat64Slice("input")
+			input, err := cmd.Flags().GetStringSlice("input")
 			if err != nil {
 				return err
 			}
 
-			if len(input) < 2 {
-				return fmt.Errorf("input must contain at least two numbers")
+			if len(input) < 1 {
+				return fmt.Errorf("input must contain at least one token")
 			}
 
-			vectorsCount := input[0]
-			if math.Trunc(vectorsCount) != vectorsCount {
-				return fmt.Errorf("size of vectors must be an integer")
-			}
-			if vectorsCount <= 0 {
-				return fmt.Errorf("size of vectors must be greater than 0")
+			adversaryMode, err := cmd.Flags().GetBool("adversary-mode")
+			if err != nil {
+				return err
 			}
 
-			if (len(input)-1)%int(vectorsCount) != 0 {
-				return fmt.Errorf("expected %d vectors (got %d numbers)", int(vectorsCount), len(input)-1)
+			solverInput := v1beta3.SolverInput{
+				Tokens:        input,
+				AdversaryMode: adversaryMode,
 			}
-
-			inputBz, err := inference.Input(input).Serialize()
+			inputBz, err := (&solverInput).Marshal()
 			if err != nil {
 				return err
 			}
@@ -280,7 +273,8 @@ will be interpreted as 10 vectors of size 2:
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().Float64Slice("input", nil, "Input vectors")
+	cmd.Flags().StringSlice("input", nil, "Input tokens")
+	cmd.Flags().Bool("adversary-mode", true, "Run in adversary mode")
 	cmd.Flags().String("callback-contract-addr", "", "CosmWasm address of the contract to call after inference is done")
 
 	return cmd

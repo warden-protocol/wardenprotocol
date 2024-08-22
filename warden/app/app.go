@@ -78,7 +78,6 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
-	evmosante "github.com/evmos/evmos/v18/app/ante"
 	ethante "github.com/evmos/evmos/v18/app/ante/evm"
 	srvflags "github.com/evmos/evmos/v18/server/flags"
 	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
@@ -637,7 +636,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 		HandlerOptions: ante.HandlerOptions{
 			SignModeHandler: txConfig.SignModeHandler(),
 			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  evmosante.SigVerificationGasConsumer,
+			SigGasConsumer:  SigVerificationGasConsumer,
 		},
 		IBCKeeper:             app.IBCKeeper,
 		WasmConfig:            &wasmConfig,

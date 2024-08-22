@@ -68,8 +68,8 @@ localnet bin="wardend":
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
-    {{bin}} keys add val > /dev/null
-    echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
+    {{bin}} keys add val --key-type secp256k1 --keyring-backend test > /dev/null
+    echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --key-type secp256k1 --keyring-backend test --recover > /dev/null
     {{bin}} genesis add-genesis-account val 10000000000000000000000000award
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}

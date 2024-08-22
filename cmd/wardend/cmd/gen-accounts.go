@@ -17,7 +17,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 
-	evmoskr "github.com/evmos/evmos/v18/crypto/keyring"
+	evmoshd "github.com/evmos/evmos/v18/crypto/hd"
 
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	authvestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
@@ -60,7 +60,7 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 						clientCtx.HomeDir,
 						inBuf,
 						clientCtx.Codec,
-						evmoskr.Option(),
+						evmoshd.EthSecp256k1Option(),
 					)
 					if err != nil {
 						return err

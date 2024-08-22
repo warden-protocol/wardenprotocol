@@ -15,7 +15,6 @@ test-utils = []
 
 [dependencies]
 bech32 = { workspace = true }
-bindings = { workspace = true }
 cosmwasm-schema = { workspace = true }
 cosmwasm-std = { workspace = true, features = ["stargate"] }
 cw2 = { workspace = true }

@@ -5,17 +5,21 @@ use crate::state::{
     POST_MESSAGE_RECOVERY, POST_MESSAGE_REPLY, WARDEN_PREFIX, WORMHOLE_CHAINS_EMITTERS,
     WORMHOLE_GATEWAY_IBC_CONFIG,
 };
+use crate::ContractError;
 use bech32::{encode as bech32_encode, Bech32, Hrp};
 use cosmwasm_std::{
     coins, to_json_string, BankMsg, CosmosMsg, IbcMsg, Reply, SubMsg, SubMsgResult,
 };
 #[cfg(not(feature = "library"))]
-use cosmwasm_std::{Binary, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
+use cosmwasm_std::{Binary, DepsMut, Env, MessageInfo, Response};
 use cw2::set_contract_version;
 use prost::Message;
 use sha2::{Digest, Sha256};
 
-pub fn execute_instantiate(deps: &mut DepsMut, msg: &InstantiateMsg) -> StdResult<Response> {
+pub fn execute_instantiate(
+    deps: &mut DepsMut,
+    msg: &InstantiateMsg,
+) -> Result<Response, ContractError> {
     let admin_addr = deps.api.addr_validate(&msg.admin)?;
 
     ADMIN.set(deps.branch(), Some(admin_addr))?;
@@ -26,7 +30,7 @@ pub fn execute_instantiate(deps: &mut DepsMut, msg: &InstantiateMsg) -> StdResul
             channel_id: msg.wormhole_ibc_channel_id.clone(),
             sender: deps.api.addr_validate(&msg.wormhole_ibc_sender)?,
             recipient: deps.api.addr_validate(&msg.wormhole_ibc_recipient)?,
-            timeout_sec: msg.wormhole_ibc_timeout_sec.clone(),
+            timeout_sec: msg.wormhole_ibc_timeout_sec,
         },
     )?;
 
@@ -40,12 +44,14 @@ pub fn execute_set_chain_emitter(
     info: &MessageInfo,
     chain_id: u16,
     emitter: &Binary,
-) -> StdResult<Response> {
+) -> Result<Response, ContractError> {
     ADMIN
         .assert_admin(deps.as_ref(), &info.sender)
-        .map_err(|err| StdError::generic_err(err.to_string()))?;
+        .map_err(|err| ContractError::SetChainEmittorFailed {
+            message: err.to_string(),
+        })?;
 
-    WORMHOLE_CHAINS_EMITTERS.save(deps.storage, chain_id, &emitter)?;
+    WORMHOLE_CHAINS_EMITTERS.save(deps.storage, chain_id, emitter)?;
 
     Ok(Response::default())
 }
@@ -54,7 +60,7 @@ pub fn execute_receive_message(
     deps: &DepsMut,
     info: &mut MessageInfo,
     message: &Binary,
-) -> StdResult<Response> {
+) -> Result<Response, ContractError> {
     let wormhole_gateway_ibc_config = WORMHOLE_GATEWAY_IBC_CONFIG.load(deps.storage)?;
 
     let expected_sender = derive_intermediate_sender(
@@ -63,10 +69,9 @@ pub fn execute_receive_message(
     )?;
 
     if info.sender.clone().into_string() != expected_sender {
-        return Err(StdError::generic_err(format!(
-            "invalid sender {} != {}",
-            info.sender, expected_sender
-        )));
+        return Err(ContractError::ReceiveMessageFailed {
+            message: format!("invalid sender {} != {}", info.sender, expected_sender),
+        });
     }
 
     let res = Response::default()
@@ -82,16 +87,19 @@ pub fn execute_post_message(
     info: &mut MessageInfo,
     chain_id: u16,
     message: &Binary,
-) -> StdResult<Response> {
+) -> Result<Response, ContractError> {
     let wormhole_gateway_ibc_config = WORMHOLE_GATEWAY_IBC_CONFIG.load(deps.storage)?;
     let target_chain_emitter = WORMHOLE_CHAINS_EMITTERS.load(deps.storage, chain_id)?;
     let reply = POST_MESSAGE_REPLY.may_load(deps.storage)?;
 
-    let coin =
-        cw_utils::one_coin(&info).map_err(|error| StdError::generic_err(error.to_string()))?;
+    let coin = cw_utils::one_coin(info).map_err(|error| ContractError::PostMessageFailed {
+        message: error.to_string(),
+    })?;
 
     if reply.is_some() {
-        return Err(StdError::generic_err("reply is already exist".to_string()));
+        return Err(ContractError::PostMessageFailed {
+            message: "reply is already exist".to_string(),
+        });
     }
 
     POST_MESSAGE_REPLY.save(
@@ -139,7 +147,10 @@ pub fn execute_post_message(
     Ok(res)
 }
 
-pub fn execute_post_message_reply(deps: &mut DepsMut, message: &Reply) -> StdResult<Response> {
+pub fn execute_post_message_reply(
+    deps: &mut DepsMut,
+    message: &Reply,
+) -> Result<Response, ContractError> {
     let reply_result = match message.result.clone() {
         SubMsgResult::Ok(response) if response.msg_responses.is_empty() =>
         {
@@ -151,14 +162,15 @@ pub fn execute_post_message_reply(deps: &mut DepsMut, message: &Reply) -> StdRes
             #[allow(deprecated)]
             Ok(response.msg_responses[0].value.clone())
         }
-        SubMsgResult::Ok(_) | SubMsgResult::Err(_) => Err(StdError::generic_err(format!(
-            "failed reply: {:?}",
-            message.result
-        ))),
+        SubMsgResult::Ok(_) | SubMsgResult::Err(_) => Err(ContractError::PostMessageFailed {
+            message: format!("failed reply: {:?}", message.result),
+        }),
     }?;
 
     let response = PostMessageResponse::decode(&reply_result[..]).map_err(|_e| {
-        StdError::generic_err(format!("failed to decode reply result: {reply_result}"))
+        ContractError::PostMessageFailed {
+            message: format!("failed to decode reply result: {reply_result}"),
+        }
     })?;
 
     let reply = POST_MESSAGE_REPLY.load(deps.storage)?;
@@ -193,16 +205,16 @@ pub fn execute_receive_lifecycle_completion(
     source_channel_id: &String,
     sequence: u64,
     success: bool,
-) -> StdResult<Response> {
+) -> Result<Response, ContractError> {
     let response = Response::new().add_attribute("action", action);
 
     let sent_message =
-        POST_MESSAGE_INFLIGHT.may_load(deps.storage, (&source_channel_id, sequence))?;
+        POST_MESSAGE_INFLIGHT.may_load(deps.storage, (source_channel_id, sequence))?;
     let Some(inflight_sent_message) = sent_message else {
         return Ok(response.add_attribute("status", "unexpected call"));
     };
 
-    POST_MESSAGE_INFLIGHT.remove(deps.storage, (&source_channel_id, sequence));
+    POST_MESSAGE_INFLIGHT.remove(deps.storage, (source_channel_id, sequence));
 
     if success {
         return Ok(response.add_attribute("status", "message successfully delivered"));
@@ -214,7 +226,7 @@ pub fn execute_receive_lifecycle_completion(
     POST_MESSAGE_RECOVERY.update(deps.storage, &sender, |items| {
         recovery.status = fail_status;
         let Some(mut items) = items else {
-            return Ok::<_, StdError>(vec![recovery]);
+            return Ok::<_, ContractError>(vec![recovery]);
         };
         items.push(recovery);
         Ok(items)
@@ -226,7 +238,10 @@ pub fn execute_receive_lifecycle_completion(
     ))
 }
 
-pub fn execute_recover_funds(deps: &mut DepsMut, info: &MessageInfo) -> StdResult<Response> {
+pub fn execute_recover_funds(
+    deps: &mut DepsMut,
+    info: &MessageInfo,
+) -> Result<Response, ContractError> {
     let recoveries = POST_MESSAGE_RECOVERY.load(deps.storage, &info.sender)?;
 
     let msgs = recoveries.into_iter().map(|r| BankMsg::Send {
@@ -237,7 +252,10 @@ pub fn execute_recover_funds(deps: &mut DepsMut, info: &MessageInfo) -> StdResul
     Ok(Response::new().add_messages(msgs))
 }
 
-fn derive_intermediate_sender(channel: &str, original_sender: &str) -> StdResult<String> {
+fn derive_intermediate_sender(
+    channel: &str,
+    original_sender: &str,
+) -> Result<String, ContractError> {
     let mut sha = Sha256::new();
 
     sha.update(IBC_HOOKS_SENDER_PREFIX.as_bytes());
@@ -247,9 +265,13 @@ fn derive_intermediate_sender(channel: &str, original_sender: &str) -> StdResult
     sha.update(th);
     sha.update(format!("{}/{}", channel, original_sender).as_bytes());
 
-    Ok(bech32_encode::<Bech32>(
-        Hrp::parse(WARDEN_PREFIX).map_err(|error| StdError::generic_err(error.to_string()))?,
+    bech32_encode::<Bech32>(
+        Hrp::parse(WARDEN_PREFIX).map_err(|error| ContractError::HashDeriviationFailed {
+            message: error.to_string(),
+        })?,
         sha.clone().finalize().as_slice(),
     )
-    .map_err(|error| StdError::generic_err(error.to_string()))?)
+    .map_err(|error| ContractError::HashDeriviationFailed {
+        message: error.to_string(),
+    })
 }

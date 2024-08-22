@@ -1,5 +1,5 @@
 [workspace]
-members = ["packages/*", "contracts/*"]
+members = ["contracts/*"]
 
 # Resolver has to be set explicitely in workspaces, see https://github.com/rust-lang/cargo/issues/9956
 resolver = "2"
@@ -23,7 +23,6 @@ serde = { version = "1.0.188", default-features = false, features = ["derive"] }
 sha2 = "0.10.8"
 thiserror = "1.0.4"
 
-bindings = { path = "packages/bindings", version = "0.1.0" }
 gmp-with-token = { path = "contracts/gmp_with_token", version = "0.1.0", features = [
   "library",
 ] }

@@ -1,5 +1,5 @@
 use cosmwasm_schema::cw_serde;
-use cosmwasm_std::Binary;
+use cosmwasm_std::{Addr, Binary};
 use enum_repr::EnumRepr;
 
 #[EnumRepr(type = "u64")]
@@ -12,6 +12,9 @@ pub struct PostMessageResponse {
     #[prost(uint64, tag = "1")]
     pub sequence: u64,
 }
+
+#[cw_serde]
+pub enum MigrateMsg {}
 
 #[cw_serde]
 pub struct InstantiateMsg {
@@ -28,6 +31,14 @@ pub enum ExecuteMsg {
     PostMessage { chain_id: u16, message: Binary },
     ReceiveMessage { message: Binary },
     RecoverFunds {},
+}
+
+#[cw_serde]
+pub enum QueryMsg {
+    Admin {},
+    ChainEmitter { chain_id: u16 },
+    WormholeGatewayIbcConfig {},
+    PostMessageRecovery { account: Addr },
 }
 
 #[cw_serde]

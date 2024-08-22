@@ -2,6 +2,8 @@ import { getProvider } from "../lib/eth";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
+export const MULTICALL3_ADDRESS = "0xcA11bde05977b3631167028862bE2a173976CA11";
+
 export const ERC20_TOKENS: {
 	chainName: ChainName;
 	address: `0x${string}`;
@@ -254,7 +256,9 @@ export const COSMOS_CHAINS: {
 	{
 		chainName: "sei",
 	},
-	{ chainName: "thorchain" },
+	{
+		chainName: "thorchain",
+	},
 	{
 		chainName: "cosmoshubtestnet",
 		feeAmount: "1000",

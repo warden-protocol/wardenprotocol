@@ -1,6 +1,6 @@
 import { Chain } from "@chain-registry/types";
 import { chains } from "chain-registry";
-import { InterfaceAbi } from "ethers";
+import { InterfaceAbi, JsonFragment } from "ethers";
 
 type UnwrapArray<T> = T extends readonly (infer U)[] ? U : never;
 type FilterByName<T extends {}, N extends string> = T extends { name: N }
@@ -11,15 +11,35 @@ type GetAbiItem<ABI extends InterfaceAbi, F extends string> = FilterByName<
 	F
 >;
 
+export function getInterface<T extends JsonFragment>(item: T) {
+	const { inputs, outputs, type, name, stateMutability } = item;
+
+	// todo typing
+	const inputsTypes = (inputs ?? []).map((input) => input.type).join(", ");
+
+	// todo typing
+	const outputsTypes = (outputs ?? [])
+		.map((output) => output.type)
+		.join(", ");
+
+	return `${type as T["type"]} ${name as T["name"]}(${inputsTypes}) ${stateMutability as T["stateMutability"]} returns (${outputsTypes})` as const;
+}
+
 export function getAbiItem<ABI extends InterfaceAbi, F extends string>(
 	abi: ABI,
 	name: F,
-): GetAbiItem<ABI, F> | undefined {
+) {
 	if (!Array.isArray(abi)) {
-		return undefined;
+		throw new Error("ABI is not an array");
 	}
 
-	return abi.find((item) => item.name === name) as GetAbiItem<ABI, F>;
+	const item = abi.find((item) => item.name === name) as GetAbiItem<ABI, F>;
+
+	if (!item) {
+		throw new Error(`No ABI item found with name ${name}`);
+	}
+
+	return item
 }
 
 const _chains: Record<string, Chain | undefined | false> = {};

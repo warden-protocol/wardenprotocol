@@ -4,16 +4,18 @@ import { fromBech32, toBech32 } from "@cosmjs/encoding";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
+import multicallAbi from "@/contracts/eip155/multicall3Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import {
 	COSMOS_PRICES,
 	EIP_155_NATIVE_PRICE_FEEDS,
 	ENABLED_ETH_CHAINS as _ENABLED_ETH_CHAINS,
 	ERC20_TOKENS,
+	MULTICALL3_ADDRESS,
 } from "@/config/tokens";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
-import { getCosmosChain } from "./util";
+import { getAbiItem, getCosmosChain, getInterface } from "./util";
 
 // fixme
 const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS
@@ -230,6 +232,17 @@ const eip155NativeBalanceQuery = ({
 	enabled: Boolean(address) && enabled,
 });
 
+const erc20BalanceOf = getAbiItem(erc20Abi, "balanceOf");
+const erc20Decimals = getAbiItem(erc20Abi, "decimals");
+const erc20Symbol = getAbiItem(erc20Abi, "symbol");
+const erc20Name = getAbiItem(erc20Abi, "name");
+const erc20Interface = new ethers.Interface([
+	getInterface(erc20BalanceOf),
+	getInterface(erc20Decimals),
+	getInterface(erc20Symbol),
+	getInterface(erc20Name),
+]);
+
 const eip155ERC20BalanceQuery = ({
 	enabled,
 	chainName,
@@ -255,11 +268,79 @@ const eip155ERC20BalanceQuery = ({
 		}
 
 		const provider = getProvider(chainName);
-		const contract = new ethers.Contract(token, erc20Abi, provider);
-		const balance = await contract.balanceOf(address);
-		const decimals = await contract.decimals();
-		const symbol = await contract.symbol();
-		const name = await contract.name();
+
+		const multicall = new ethers.Contract(
+			MULTICALL3_ADDRESS,
+			multicallAbi,
+			provider,
+		);
+
+		// const contract = new ethers.Contract(token, erc20Abi, provider);
+		const balanceCall = {
+			target: token,
+			allowFailure: true,
+			callData: erc20Interface.encodeFunctionData("balanceOf", [address]),
+		};
+
+		const decimalsCall = {
+			target: token,
+			allowFailure: true,
+			callData: erc20Interface.encodeFunctionData("decimals", []),
+		};
+
+		const symbolCall = {
+			target: token,
+			allowFailure: true,
+			callData: erc20Interface.encodeFunctionData("symbol", []),
+		};
+
+		const nameCall = {
+			target: token,
+			allowFailure: true,
+			callData: erc20Interface.encodeFunctionData("name", []),
+		};
+
+		type Aggregate3Response = { success: boolean; returnData: string };
+
+		const resolverResults: Aggregate3Response[] =
+			await multicall.aggregate3.staticCall([
+				balanceCall,
+				decimalsCall,
+				symbolCall,
+				nameCall,
+			]);
+
+		const [balanceData, decimalsData, symbolData, nameData] =
+			resolverResults;
+
+		const balance = balanceData.success
+			? erc20Interface.decodeFunctionResult(
+					"balanceOf",
+					balanceData.returnData,
+				)[0]
+			: BigInt(0);
+
+		const decimals = decimalsData.success
+			? erc20Interface.decodeFunctionResult(
+					"decimals",
+					decimalsData.returnData,
+				)[0]
+			: BigInt(0);
+
+		const symbol = symbolData.success
+			? erc20Interface.decodeFunctionResult(
+					"symbol",
+					symbolData.returnData,
+				)[0]
+			: "";
+
+		const name = nameData.success
+			? erc20Interface.decodeFunctionResult(
+					"name",
+					nameData.returnData,
+				)[0]
+			: "";
+
 		const network = await provider.getNetwork();
 		const slinkyPrice = prices?.[symbol];
 

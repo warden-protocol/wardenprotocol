@@ -15,12 +15,15 @@ test-utils = []
 
 [dependencies]
 bech32 = { workspace = true }
+bindings = { workspace = true }
 cosmwasm-schema = { workspace = true }
+cosmwasm-std = { workspace = true, features = ["stargate"] }
 cw2 = { workspace = true }
 cw-controllers = { workspace = true }
 cw-storage-plus = { workspace = true }
-bindings = { workspace = true }
-cosmwasm-std = { workspace = true, features = ["stargate"] }
+cw-utils = { workspace = true }
+enum-repr = { workspace = true }
+prost = { workspace = true }
 schemars = { workspace = true }
 serde = { workspace = true }
 sha2 = { workspace = true }

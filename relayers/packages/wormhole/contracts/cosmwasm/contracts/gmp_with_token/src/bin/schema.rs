@@ -1,10 +1,8 @@
 use cosmwasm_schema::write_api;
-
-use wormhole_relayer::msg::{ExecuteMsg, QueryMsg};
+use gmp_with_token::msg::ExecuteMsg;
 
 fn main() {
     write_api! {
         execute: ExecuteMsg,
-        query: QueryMsg
     }
 }

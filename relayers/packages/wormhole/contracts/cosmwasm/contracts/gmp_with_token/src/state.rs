@@ -1,5 +1,5 @@
 use cosmwasm_schema::cw_serde;
-use cosmwasm_std::{Addr, Binary};
+use cosmwasm_std::{Addr, Binary, Timestamp};
 #[allow(unused_imports)]
 use cosmwasm_std::{StdResult, Storage};
 use cw_controllers::Admin;
@@ -15,6 +15,11 @@ pub const ADMIN: Admin = Admin::new("admin");
 pub const WORMHOLE_CHAINS_EMITTERS: Map<u16, Binary> = Map::new("wormhole_chains_emitters");
 pub const WORMHOLE_GATEWAY_IBC_CONFIG: Item<WormholeGatewayIbcConfig> =
     Item::new("wormhole_gateway_ibc_config");
+pub const POST_MESSAGE_REPLY: Item<PostMessageReply> = Item::new("post_message_reply");
+pub const POST_MESSAGE_INFLIGHT: Map<(&str, u64), PostMessageIbcTransfer> =
+    Map::new("post_message_inflight");
+pub const POST_MESSAGE_RECOVERY: Map<&Addr, Vec<PostMessageIbcTransfer>> =
+    Map::new("post_message_recovery");
 
 #[cw_serde]
 pub struct WormholeGatewayIbcConfig {
@@ -22,4 +27,33 @@ pub struct WormholeGatewayIbcConfig {
     pub recipient: Addr,
     pub sender: Addr,
     pub timeout_sec: u64,
+}
+
+#[cw_serde]
+pub struct PostMessageReply {
+    pub channel_id: String,
+    pub recipient: String,
+    pub denom: String,
+    pub amount: u128,
+    pub sender: Addr,
+    pub contract: Addr,
+    pub block_time: Timestamp,
+}
+
+#[cw_serde]
+pub enum PostMessageStatus {
+    Sent,
+    AckSuccess,
+    AckFailure,
+    TimedOut,
+}
+
+#[cw_serde]
+pub struct PostMessageIbcTransfer {
+    pub sender: Addr,
+    pub channel_id: String,
+    pub sequence: u64,
+    pub amount: u128,
+    pub denom: String,
+    pub status: PostMessageStatus,
 }

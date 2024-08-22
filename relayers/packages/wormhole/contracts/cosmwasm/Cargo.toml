@@ -14,6 +14,9 @@ cosmwasm-std = "2.0.2"
 cw2 = "2.0.0"
 cw-controllers = "2.0.0"
 cw-storage-plus = "2.0.0"
+cw-utils = "2.0.0"
+enum-repr = "0.2.6"
+prost = {version = "0.13.1", default-features = false, features = ["prost-derive"]}
 schemars = "0.8.15"
 semver = "1"
 serde = { version = "1.0.188", default-features = false, features = ["derive"] }
@@ -25,7 +28,7 @@ gmp-with-token = { path = "contracts/gmp_with_token", version = "0.1.0", feature
   "library",
 ] }
 
-[profile.release.package.gmp_with_token]
+[profile.release.package.gmp-with-token]
 codegen-units = 1
 incremental = false
 

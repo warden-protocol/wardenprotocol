@@ -1,13 +1,18 @@
-use crate::msg::{GatewayIbcTokenBridgePayload, InstantiateMsg};
+use crate::msg::{GatewayIbcTokenBridgePayload, InstantiateMsg, MsgReplyId, PostMessageResponse};
 use crate::state::{
-    WormholeGatewayIbcConfig, ADMIN, CONTRACT_NAME, CONTRACT_VERSION, IBC_HOOKS_SENDER_PREFIX,
-    WARDEN_PREFIX, WORMHOLE_CHAINS_EMITTERS, WORMHOLE_GATEWAY_IBC_CONFIG,
+    PostMessageIbcTransfer, PostMessageReply, PostMessageStatus, WormholeGatewayIbcConfig, ADMIN,
+    CONTRACT_NAME, CONTRACT_VERSION, IBC_HOOKS_SENDER_PREFIX, POST_MESSAGE_INFLIGHT,
+    POST_MESSAGE_RECOVERY, POST_MESSAGE_REPLY, WARDEN_PREFIX, WORMHOLE_CHAINS_EMITTERS,
+    WORMHOLE_GATEWAY_IBC_CONFIG,
 };
 use bech32::{encode as bech32_encode, Bech32, Hrp};
-use cosmwasm_std::{to_json_string, CosmosMsg, IbcMsg};
+use cosmwasm_std::{
+    coins, to_json_string, BankMsg, CosmosMsg, IbcMsg, Reply, SubMsg, SubMsgResult,
+};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{Binary, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
 use cw2::set_contract_version;
+use prost::Message;
 use sha2::{Digest, Sha256};
 
 pub fn execute_instantiate(deps: &mut DepsMut, msg: &InstantiateMsg) -> StdResult<Response> {
@@ -48,22 +53,9 @@ pub fn execute_set_chain_emitter(
 pub fn execute_receive_message(
     deps: &DepsMut,
     info: &mut MessageInfo,
-    env: &Env,
     message: &Binary,
 ) -> StdResult<Response> {
-    // let parsed_vaa: ParsedVAA = query_verify_vaas(deps, env, None, vaa)?;
-
-    // let expected_emitter = WORMHOLE_CHAINS_EMITTERS.load(deps.storage, parsed_vaa.emitter_chain)?;
-
-    // if parsed_vaa.emitter_address != expected_emitter {
-    //     return Err(StdError::generic_err("invalid emitter address"));
-    // }
-
-    // let payload = String::from_utf8(parsed_vaa.payload).expect("invalid utf8");
-
     let wormhole_gateway_ibc_config = WORMHOLE_GATEWAY_IBC_CONFIG.load(deps.storage)?;
-
-    let payload = String::from_utf8(message.to_vec()).expect("invalid utf8");
 
     let expected_sender = derive_intermediate_sender(
         wormhole_gateway_ibc_config.channel_id.as_str(),
@@ -79,13 +71,13 @@ pub fn execute_receive_message(
 
     let res = Response::default()
         .add_attribute("action", "execute_receive_message")
-        .add_attribute("message", payload);
+        .add_attribute("message", to_json_string(message)?);
 
     Ok(res)
 }
 
 pub fn execute_post_message(
-    deps: &DepsMut,
+    deps: &mut DepsMut,
     env: &Env,
     info: &mut MessageInfo,
     chain_id: u16,
@@ -93,15 +85,27 @@ pub fn execute_post_message(
 ) -> StdResult<Response> {
     let wormhole_gateway_ibc_config = WORMHOLE_GATEWAY_IBC_CONFIG.load(deps.storage)?;
     let target_chain_emitter = WORMHOLE_CHAINS_EMITTERS.load(deps.storage, chain_id)?;
+    let reply = POST_MESSAGE_REPLY.may_load(deps.storage)?;
 
-    let coin = match info.funds.pop() {
-        Some(coin) => coin,
-        None => return Err(StdError::generic_err("coin is missing")),
-    };
+    let coin =
+        cw_utils::one_coin(&info).map_err(|error| StdError::generic_err(error.to_string()))?;
 
-    if !info.funds.is_empty() {
-        return Err(StdError::generic_err("only one coin can be ibc trasferred"));
+    if reply.is_some() {
+        return Err(StdError::generic_err("reply is already exist".to_string()));
     }
+
+    POST_MESSAGE_REPLY.save(
+        deps.storage,
+        &PostMessageReply {
+            channel_id: wormhole_gateway_ibc_config.channel_id.clone(),
+            recipient: wormhole_gateway_ibc_config.recipient.clone().into_string(),
+            denom: coin.denom.clone(),
+            amount: coin.amount.u128(),
+            sender: info.sender.clone(),
+            block_time: env.block.time,
+            contract: env.contract.address.clone(),
+        },
+    )?;
 
     let ibc_timeout = env
         .block
@@ -124,16 +128,116 @@ pub fn execute_post_message(
         memo: Some(payload.clone()),
     });
 
+    let sub_msg = SubMsg::reply_on_success(msg, MsgReplyId::PostMessage.repr());
+
     let res = Response::new()
-        .add_message(msg)
         .add_attribute("action", "execute_post_message")
         .add_attribute("chain_id", chain_id.to_string())
-        .add_attribute("message", payload);
+        .add_attribute("message", format!("{:?}", sub_msg))
+        .add_submessage(sub_msg);
 
     Ok(res)
 }
 
-pub fn derive_intermediate_sender(channel: &str, original_sender: &str) -> StdResult<String> {
+pub fn execute_post_message_reply(deps: &mut DepsMut, message: &Reply) -> StdResult<Response> {
+    let reply_result = match message.result.clone() {
+        SubMsgResult::Ok(response) if response.msg_responses.is_empty() =>
+        {
+            #[allow(deprecated)]
+            Ok(response.data.unwrap())
+        }
+        SubMsgResult::Ok(response) if !response.msg_responses.is_empty() =>
+        {
+            #[allow(deprecated)]
+            Ok(response.msg_responses[0].value.clone())
+        }
+        SubMsgResult::Ok(_) | SubMsgResult::Err(_) => Err(StdError::generic_err(format!(
+            "failed reply: {:?}",
+            message.result
+        ))),
+    }?;
+
+    let response = PostMessageResponse::decode(&reply_result[..]).map_err(|_e| {
+        StdError::generic_err(format!("failed to decode reply result: {reply_result}"))
+    })?;
+
+    let reply = POST_MESSAGE_REPLY.load(deps.storage)?;
+    POST_MESSAGE_REPLY.remove(deps.storage);
+
+    POST_MESSAGE_INFLIGHT.save(
+        deps.storage,
+        (&reply.channel_id, response.sequence),
+        &PostMessageIbcTransfer {
+            channel_id: reply.channel_id.clone(),
+            sequence: response.sequence,
+            sender: reply.sender.clone(),
+            amount: reply.amount,
+            denom: reply.denom.clone(),
+            status: PostMessageStatus::Sent,
+        },
+    )?;
+
+    Ok(Response::new()
+        .add_attribute("action", "execute_post_message_reply")
+        .add_attribute("channel_id", reply.channel_id)
+        .add_attribute("sequence", response.sequence.to_string())
+        .add_attribute("sender", reply.sender)
+        .add_attribute("amount", reply.amount.to_string())
+        .add_attribute("denom", reply.denom))
+}
+
+pub fn execute_receive_lifecycle_completion(
+    deps: &mut DepsMut,
+    action: &str,
+    fail_status: PostMessageStatus,
+    source_channel_id: &String,
+    sequence: u64,
+    success: bool,
+) -> StdResult<Response> {
+    let response = Response::new().add_attribute("action", action);
+
+    let sent_message =
+        POST_MESSAGE_INFLIGHT.may_load(deps.storage, (&source_channel_id, sequence))?;
+    let Some(inflight_sent_message) = sent_message else {
+        return Ok(response.add_attribute("status", "unexpected call"));
+    };
+
+    POST_MESSAGE_INFLIGHT.remove(deps.storage, (&source_channel_id, sequence));
+
+    if success {
+        return Ok(response.add_attribute("status", "message successfully delivered"));
+    }
+
+    let mut recovery = inflight_sent_message;
+    let sender = recovery.sender.clone();
+
+    POST_MESSAGE_RECOVERY.update(deps.storage, &sender, |items| {
+        recovery.status = fail_status;
+        let Some(mut items) = items else {
+            return Ok::<_, StdError>(vec![recovery]);
+        };
+        items.push(recovery);
+        Ok(items)
+    })?;
+
+    Ok(response.add_attribute(
+        "status",
+        format!("recovery created for address: {:?}", sender),
+    ))
+}
+
+pub fn execute_recover_funds(deps: &mut DepsMut, info: &MessageInfo) -> StdResult<Response> {
+    let recoveries = POST_MESSAGE_RECOVERY.load(deps.storage, &info.sender)?;
+
+    let msgs = recoveries.into_iter().map(|r| BankMsg::Send {
+        to_address: r.sender.into(),
+        amount: coins(r.amount, r.denom),
+    });
+
+    Ok(Response::new().add_messages(msgs))
+}
+
+fn derive_intermediate_sender(channel: &str, original_sender: &str) -> StdResult<String> {
     let mut sha = Sha256::new();
 
     sha.update(IBC_HOOKS_SENDER_PREFIX.as_bytes());
@@ -148,18 +252,4 @@ pub fn derive_intermediate_sender(channel: &str, original_sender: &str) -> StdRe
         sha.clone().finalize().as_slice(),
     )
     .map_err(|error| StdError::generic_err(error.to_string()))?)
-}
-
-pub fn prefixed_sha256(prefix: &str, address: &str) -> [u8; 32] {
-    let mut hasher = Sha256::default();
-
-    hasher.update(prefix.as_bytes());
-    let prefix_hash = hasher.finalize();
-
-    let mut hasher = Sha256::default();
-
-    hasher.update(prefix_hash);
-    hasher.update(address.as_bytes());
-
-    hasher.finalize().into()
 }

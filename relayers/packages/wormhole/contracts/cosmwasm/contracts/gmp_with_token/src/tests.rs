@@ -136,18 +136,3 @@
 //         })
 //     );
 // }
-
-#[test]
-fn test_execute_post_message() {
-    use crate::methods::derive_intermediate_sender;
-    use crate::methods::execute_post_message;
-    use crate::msg::WormholeExecuteMsg;
-    // use crate::state::WORMHOLE_CORE_CONTRACT;
-    // use cosmwasm_std::testing::mock_dependencies;
-    use cosmwasm_std::to_json_binary;
-    use cosmwasm_std::{Binary, CosmosMsg, WasmMsg};
-
-    let _asd =
-        derive_intermediate_sender("channel-0", "juno12smx2wdlyttvyzvzg54y2vnqwq2qjatezqwqxu");
-    let asd = derive_intermediate_sender("0", "juno12smx2wdlyttvyzvzg54y2vnqwq2qjatezqwqxu");
-}

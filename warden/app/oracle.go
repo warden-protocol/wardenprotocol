@@ -37,6 +37,10 @@ import (
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 )
 
+const (
+	FalsePositiveRate = 0.01
+)
+
 func (app *App) initializeOracle(appOpts types.AppOptions) {
 	// Read general config from app-opts, and construct oracle service.
 	cfg, err := oracleconfig.ReadConfigFromAppOpts(appOpts)
@@ -157,7 +161,8 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 
 		results := make([]*wardentypes.InferenceResult, len(pendingInferenceRequests))
 		for i, req := range pendingInferenceRequests {
-			inputInts, err := inference.DeserializeInputData(req.Input)
+			var input wardentypes.SolverInput
+			err := input.Unmarshal(req.Input)
 			if err != nil {
 				ctx.Logger().Error("invalid inference input data", "id", req.Id, "err", err)
 				results[i] = &wardentypes.InferenceResult{
@@ -167,7 +172,7 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 				continue
 			}
 
-			res, err := inference.Solve(inputInts)
+			res, err := inference.Solve(input, FalsePositiveRate)
 			if err != nil {
 				ctx.Logger().Error("failed to solve inference", "id", req.Id, "err", err)
 				results[i] = &wardentypes.InferenceResult{
@@ -177,7 +182,7 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 				continue
 			}
 
-			outputInts, err := res.Data.Serialize()
+			output, err := res.SolverOutput.Marshal()
 			if err != nil {
 				ctx.Logger().Error("failed to serialize inference output", "id", req.Id, "err", err)
 				results[i] = &wardentypes.InferenceResult{
@@ -187,11 +192,11 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 				continue
 			}
 
-			ctx.Logger().Info("solved inference", "id", req.Id, "output", outputInts)
+			ctx.Logger().Info("solved inference", "id", req.Id, "output", output)
 			results[i] = &wardentypes.InferenceResult{
 				Id:      req.Id,
-				Output:  outputInts,
-				Receipt: res.Receipt,
+				Output:  output,
+				Receipt: res.SolverReceipt,
 			}
 		}
 
@@ -229,12 +234,19 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 					return nil, fmt.Errorf("got result for invalid inference request ID: %w", err)
 				}
 
-				input, err := inference.DeserializeInputData(infReq.Input)
-				if err != nil {
+				var input wardentypes.SolverInput
+				if err := input.Unmarshal(infReq.Input); err != nil {
 					return nil, fmt.Errorf("can't deserialize input data: %w", err)
 				}
 
-				err = inference.Verify(input, result.Receipt, 10)
+				err = inference.Verify(
+					wardentypes.SolverRequest{
+						SolverInput:       input,
+						ExpectedItems:     int64(len(input.Tokens)),
+						FalsePositiveRate: FalsePositiveRate,
+					},
+					result.Receipt,
+					10)
 				if err != nil {
 					return nil, fmt.Errorf("can't verify inference result: %w", err)
 				}

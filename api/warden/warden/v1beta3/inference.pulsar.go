@@ -2,13 +2,17 @@
 package wardenv1beta3
 
 import (
+	binary "encoding/binary"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
+	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	math "math"
 	reflect "reflect"
+	sort "sort"
 	sync "sync"
 )
 
@@ -1978,6 +1982,2203 @@ func (x *fastReflection_InferenceTx) ProtoMethods() *protoiface.Methods {
 	}
 }
 
+var (
+	md_SolverRequest                   protoreflect.MessageDescriptor
+	fd_SolverRequest_solver_input      protoreflect.FieldDescriptor
+	fd_SolverRequest_ExpectedItems     protoreflect.FieldDescriptor
+	fd_SolverRequest_FalsePositiveRate protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_warden_v1beta3_inference_proto_init()
+	md_SolverRequest = File_warden_warden_v1beta3_inference_proto.Messages().ByName("SolverRequest")
+	fd_SolverRequest_solver_input = md_SolverRequest.Fields().ByName("solver_input")
+	fd_SolverRequest_ExpectedItems = md_SolverRequest.Fields().ByName("ExpectedItems")
+	fd_SolverRequest_FalsePositiveRate = md_SolverRequest.Fields().ByName("FalsePositiveRate")
+}
+
+var _ protoreflect.Message = (*fastReflection_SolverRequest)(nil)
+
+type fastReflection_SolverRequest SolverRequest
+
+func (x *SolverRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_SolverRequest)(x)
+}
+
+func (x *SolverRequest) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_SolverRequest_messageType fastReflection_SolverRequest_messageType
+var _ protoreflect.MessageType = fastReflection_SolverRequest_messageType{}
+
+type fastReflection_SolverRequest_messageType struct{}
+
+func (x fastReflection_SolverRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_SolverRequest)(nil)
+}
+func (x fastReflection_SolverRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_SolverRequest)
+}
+func (x fastReflection_SolverRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverRequest
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_SolverRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverRequest
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_SolverRequest) Type() protoreflect.MessageType {
+	return _fastReflection_SolverRequest_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_SolverRequest) New() protoreflect.Message {
+	return new(fastReflection_SolverRequest)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_SolverRequest) Interface() protoreflect.ProtoMessage {
+	return (*SolverRequest)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_SolverRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.SolverInput != nil {
+		value := protoreflect.ValueOfMessage(x.SolverInput.ProtoReflect())
+		if !f(fd_SolverRequest_solver_input, value) {
+			return
+		}
+	}
+	if x.ExpectedItems != int64(0) {
+		value := protoreflect.ValueOfInt64(x.ExpectedItems)
+		if !f(fd_SolverRequest_ExpectedItems, value) {
+			return
+		}
+	}
+	if x.FalsePositiveRate != float64(0) || math.Signbit(x.FalsePositiveRate) {
+		value := protoreflect.ValueOfFloat64(x.FalsePositiveRate)
+		if !f(fd_SolverRequest_FalsePositiveRate, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_SolverRequest) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverRequest.solver_input":
+		return x.SolverInput != nil
+	case "warden.warden.v1beta3.SolverRequest.ExpectedItems":
+		return x.ExpectedItems != int64(0)
+	case "warden.warden.v1beta3.SolverRequest.FalsePositiveRate":
+		return x.FalsePositiveRate != float64(0) || math.Signbit(x.FalsePositiveRate)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverRequest"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverRequest) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverRequest.solver_input":
+		x.SolverInput = nil
+	case "warden.warden.v1beta3.SolverRequest.ExpectedItems":
+		x.ExpectedItems = int64(0)
+	case "warden.warden.v1beta3.SolverRequest.FalsePositiveRate":
+		x.FalsePositiveRate = float64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverRequest"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_SolverRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.warden.v1beta3.SolverRequest.solver_input":
+		value := x.SolverInput
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.warden.v1beta3.SolverRequest.ExpectedItems":
+		value := x.ExpectedItems
+		return protoreflect.ValueOfInt64(value)
+	case "warden.warden.v1beta3.SolverRequest.FalsePositiveRate":
+		value := x.FalsePositiveRate
+		return protoreflect.ValueOfFloat64(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverRequest"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverRequest does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverRequest.solver_input":
+		x.SolverInput = value.Message().Interface().(*SolverInput)
+	case "warden.warden.v1beta3.SolverRequest.ExpectedItems":
+		x.ExpectedItems = value.Int()
+	case "warden.warden.v1beta3.SolverRequest.FalsePositiveRate":
+		x.FalsePositiveRate = value.Float()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverRequest"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverRequest.solver_input":
+		if x.SolverInput == nil {
+			x.SolverInput = new(SolverInput)
+		}
+		return protoreflect.ValueOfMessage(x.SolverInput.ProtoReflect())
+	case "warden.warden.v1beta3.SolverRequest.ExpectedItems":
+		panic(fmt.Errorf("field ExpectedItems of message warden.warden.v1beta3.SolverRequest is not mutable"))
+	case "warden.warden.v1beta3.SolverRequest.FalsePositiveRate":
+		panic(fmt.Errorf("field FalsePositiveRate of message warden.warden.v1beta3.SolverRequest is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverRequest"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_SolverRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverRequest.solver_input":
+		m := new(SolverInput)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.warden.v1beta3.SolverRequest.ExpectedItems":
+		return protoreflect.ValueOfInt64(int64(0))
+	case "warden.warden.v1beta3.SolverRequest.FalsePositiveRate":
+		return protoreflect.ValueOfFloat64(float64(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverRequest"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_SolverRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta3.SolverRequest", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_SolverRequest) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverRequest) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_SolverRequest) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_SolverRequest) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*SolverRequest)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.SolverInput != nil {
+			l = options.Size(x.SolverInput)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.ExpectedItems != 0 {
+			n += 1 + runtime.Sov(uint64(x.ExpectedItems))
+		}
+		if x.FalsePositiveRate != 0 || math.Signbit(x.FalsePositiveRate) {
+			n += 9
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*SolverRequest)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.FalsePositiveRate != 0 || math.Signbit(x.FalsePositiveRate) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.FalsePositiveRate))))
+			i--
+			dAtA[i] = 0x19
+		}
+		if x.ExpectedItems != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ExpectedItems))
+			i--
+			dAtA[i] = 0x10
+		}
+		if x.SolverInput != nil {
+			encoded, err := options.Marshal(x.SolverInput)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*SolverRequest)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverRequest: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SolverInput", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.SolverInput == nil {
+					x.SolverInput = &SolverInput{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.SolverInput); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExpectedItems", wireType)
+				}
+				x.ExpectedItems = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ExpectedItems |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 3:
+				if wireType != 1 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FalsePositiveRate", wireType)
+				}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.FalsePositiveRate = float64(math.Float64frombits(v))
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var _ protoreflect.List = (*_SolverInput_1_list)(nil)
+
+type _SolverInput_1_list struct {
+	list *[]string
+}
+
+func (x *_SolverInput_1_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_SolverInput_1_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfString((*x.list)[i])
+}
+
+func (x *_SolverInput_1_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_SolverInput_1_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_SolverInput_1_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message SolverInput at list field Tokens as it is not of Message kind"))
+}
+
+func (x *_SolverInput_1_list) Truncate(n int) {
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_SolverInput_1_list) NewElement() protoreflect.Value {
+	v := ""
+	return protoreflect.ValueOfString(v)
+}
+
+func (x *_SolverInput_1_list) IsValid() bool {
+	return x.list != nil
+}
+
+var (
+	md_SolverInput                protoreflect.MessageDescriptor
+	fd_SolverInput_tokens         protoreflect.FieldDescriptor
+	fd_SolverInput_adversary_mode protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_warden_v1beta3_inference_proto_init()
+	md_SolverInput = File_warden_warden_v1beta3_inference_proto.Messages().ByName("SolverInput")
+	fd_SolverInput_tokens = md_SolverInput.Fields().ByName("tokens")
+	fd_SolverInput_adversary_mode = md_SolverInput.Fields().ByName("adversary_mode")
+}
+
+var _ protoreflect.Message = (*fastReflection_SolverInput)(nil)
+
+type fastReflection_SolverInput SolverInput
+
+func (x *SolverInput) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_SolverInput)(x)
+}
+
+func (x *SolverInput) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_SolverInput_messageType fastReflection_SolverInput_messageType
+var _ protoreflect.MessageType = fastReflection_SolverInput_messageType{}
+
+type fastReflection_SolverInput_messageType struct{}
+
+func (x fastReflection_SolverInput_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_SolverInput)(nil)
+}
+func (x fastReflection_SolverInput_messageType) New() protoreflect.Message {
+	return new(fastReflection_SolverInput)
+}
+func (x fastReflection_SolverInput_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverInput
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_SolverInput) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverInput
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_SolverInput) Type() protoreflect.MessageType {
+	return _fastReflection_SolverInput_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_SolverInput) New() protoreflect.Message {
+	return new(fastReflection_SolverInput)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_SolverInput) Interface() protoreflect.ProtoMessage {
+	return (*SolverInput)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_SolverInput) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Tokens) != 0 {
+		value := protoreflect.ValueOfList(&_SolverInput_1_list{list: &x.Tokens})
+		if !f(fd_SolverInput_tokens, value) {
+			return
+		}
+	}
+	if x.AdversaryMode != false {
+		value := protoreflect.ValueOfBool(x.AdversaryMode)
+		if !f(fd_SolverInput_adversary_mode, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_SolverInput) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverInput.tokens":
+		return len(x.Tokens) != 0
+	case "warden.warden.v1beta3.SolverInput.adversary_mode":
+		return x.AdversaryMode != false
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverInput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverInput does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverInput) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverInput.tokens":
+		x.Tokens = nil
+	case "warden.warden.v1beta3.SolverInput.adversary_mode":
+		x.AdversaryMode = false
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverInput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverInput does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_SolverInput) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.warden.v1beta3.SolverInput.tokens":
+		if len(x.Tokens) == 0 {
+			return protoreflect.ValueOfList(&_SolverInput_1_list{})
+		}
+		listValue := &_SolverInput_1_list{list: &x.Tokens}
+		return protoreflect.ValueOfList(listValue)
+	case "warden.warden.v1beta3.SolverInput.adversary_mode":
+		value := x.AdversaryMode
+		return protoreflect.ValueOfBool(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverInput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverInput does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverInput) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverInput.tokens":
+		lv := value.List()
+		clv := lv.(*_SolverInput_1_list)
+		x.Tokens = *clv.list
+	case "warden.warden.v1beta3.SolverInput.adversary_mode":
+		x.AdversaryMode = value.Bool()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverInput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverInput does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverInput) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverInput.tokens":
+		if x.Tokens == nil {
+			x.Tokens = []string{}
+		}
+		value := &_SolverInput_1_list{list: &x.Tokens}
+		return protoreflect.ValueOfList(value)
+	case "warden.warden.v1beta3.SolverInput.adversary_mode":
+		panic(fmt.Errorf("field adversary_mode of message warden.warden.v1beta3.SolverInput is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverInput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverInput does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_SolverInput) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverInput.tokens":
+		list := []string{}
+		return protoreflect.ValueOfList(&_SolverInput_1_list{list: &list})
+	case "warden.warden.v1beta3.SolverInput.adversary_mode":
+		return protoreflect.ValueOfBool(false)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverInput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverInput does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_SolverInput) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta3.SolverInput", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_SolverInput) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverInput) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_SolverInput) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_SolverInput) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*SolverInput)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if len(x.Tokens) > 0 {
+			for _, s := range x.Tokens {
+				l = len(s)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
+		if x.AdversaryMode {
+			n += 2
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*SolverInput)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.AdversaryMode {
+			i--
+			if x.AdversaryMode {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x10
+		}
+		if len(x.Tokens) > 0 {
+			for iNdEx := len(x.Tokens) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.Tokens[iNdEx])
+				copy(dAtA[i:], x.Tokens[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Tokens[iNdEx])))
+				i--
+				dAtA[i] = 0xa
+			}
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*SolverInput)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverInput: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Tokens", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Tokens = append(x.Tokens, string(dAtA[iNdEx:postIndex]))
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AdversaryMode", wireType)
+				}
+				var v int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				x.AdversaryMode = bool(v != 0)
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_SolverResponse                protoreflect.MessageDescriptor
+	fd_SolverResponse_solver_output  protoreflect.FieldDescriptor
+	fd_SolverResponse_solver_receipt protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_warden_v1beta3_inference_proto_init()
+	md_SolverResponse = File_warden_warden_v1beta3_inference_proto.Messages().ByName("SolverResponse")
+	fd_SolverResponse_solver_output = md_SolverResponse.Fields().ByName("solver_output")
+	fd_SolverResponse_solver_receipt = md_SolverResponse.Fields().ByName("solver_receipt")
+}
+
+var _ protoreflect.Message = (*fastReflection_SolverResponse)(nil)
+
+type fastReflection_SolverResponse SolverResponse
+
+func (x *SolverResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_SolverResponse)(x)
+}
+
+func (x *SolverResponse) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_SolverResponse_messageType fastReflection_SolverResponse_messageType
+var _ protoreflect.MessageType = fastReflection_SolverResponse_messageType{}
+
+type fastReflection_SolverResponse_messageType struct{}
+
+func (x fastReflection_SolverResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_SolverResponse)(nil)
+}
+func (x fastReflection_SolverResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_SolverResponse)
+}
+func (x fastReflection_SolverResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverResponse
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_SolverResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverResponse
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_SolverResponse) Type() protoreflect.MessageType {
+	return _fastReflection_SolverResponse_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_SolverResponse) New() protoreflect.Message {
+	return new(fastReflection_SolverResponse)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_SolverResponse) Interface() protoreflect.ProtoMessage {
+	return (*SolverResponse)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_SolverResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.SolverOutput != nil {
+		value := protoreflect.ValueOfMessage(x.SolverOutput.ProtoReflect())
+		if !f(fd_SolverResponse_solver_output, value) {
+			return
+		}
+	}
+	if len(x.SolverReceipt) != 0 {
+		value := protoreflect.ValueOfBytes(x.SolverReceipt)
+		if !f(fd_SolverResponse_solver_receipt, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_SolverResponse) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverResponse.solver_output":
+		return x.SolverOutput != nil
+	case "warden.warden.v1beta3.SolverResponse.solver_receipt":
+		return len(x.SolverReceipt) != 0
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverResponse"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverResponse) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverResponse.solver_output":
+		x.SolverOutput = nil
+	case "warden.warden.v1beta3.SolverResponse.solver_receipt":
+		x.SolverReceipt = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverResponse"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_SolverResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.warden.v1beta3.SolverResponse.solver_output":
+		value := x.SolverOutput
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.warden.v1beta3.SolverResponse.solver_receipt":
+		value := x.SolverReceipt
+		return protoreflect.ValueOfBytes(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverResponse"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverResponse does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverResponse.solver_output":
+		x.SolverOutput = value.Message().Interface().(*SolverOutput)
+	case "warden.warden.v1beta3.SolverResponse.solver_receipt":
+		x.SolverReceipt = value.Bytes()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverResponse"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverResponse.solver_output":
+		if x.SolverOutput == nil {
+			x.SolverOutput = new(SolverOutput)
+		}
+		return protoreflect.ValueOfMessage(x.SolverOutput.ProtoReflect())
+	case "warden.warden.v1beta3.SolverResponse.solver_receipt":
+		panic(fmt.Errorf("field solver_receipt of message warden.warden.v1beta3.SolverResponse is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverResponse"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_SolverResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverResponse.solver_output":
+		m := new(SolverOutput)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.warden.v1beta3.SolverResponse.solver_receipt":
+		return protoreflect.ValueOfBytes(nil)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverResponse"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_SolverResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta3.SolverResponse", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_SolverResponse) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverResponse) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_SolverResponse) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_SolverResponse) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*SolverResponse)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.SolverOutput != nil {
+			l = options.Size(x.SolverOutput)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.SolverReceipt)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*SolverResponse)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.SolverReceipt) > 0 {
+			i -= len(x.SolverReceipt)
+			copy(dAtA[i:], x.SolverReceipt)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SolverReceipt)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if x.SolverOutput != nil {
+			encoded, err := options.Marshal(x.SolverOutput)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*SolverResponse)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverResponse: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SolverOutput", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.SolverOutput == nil {
+					x.SolverOutput = &SolverOutput{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.SolverOutput); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SolverReceipt", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.SolverReceipt = append(x.SolverReceipt[:0], dAtA[iNdEx:postIndex]...)
+				if x.SolverReceipt == nil {
+					x.SolverReceipt = []byte{}
+				}
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var _ protoreflect.Map = (*_SolverOutput_1_map)(nil)
+
+type _SolverOutput_1_map struct {
+	m *map[string]float32
+}
+
+func (x *_SolverOutput_1_map) Len() int {
+	if x.m == nil {
+		return 0
+	}
+	return len(*x.m)
+}
+
+func (x *_SolverOutput_1_map) Range(f func(protoreflect.MapKey, protoreflect.Value) bool) {
+	if x.m == nil {
+		return
+	}
+	for k, v := range *x.m {
+		mapKey := (protoreflect.MapKey)(protoreflect.ValueOfString(k))
+		mapValue := protoreflect.ValueOfFloat32(v)
+		if !f(mapKey, mapValue) {
+			break
+		}
+	}
+}
+
+func (x *_SolverOutput_1_map) Has(key protoreflect.MapKey) bool {
+	if x.m == nil {
+		return false
+	}
+	keyUnwrapped := key.String()
+	concreteValue := keyUnwrapped
+	_, ok := (*x.m)[concreteValue]
+	return ok
+}
+
+func (x *_SolverOutput_1_map) Clear(key protoreflect.MapKey) {
+	if x.m == nil {
+		return
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	delete(*x.m, concreteKey)
+}
+
+func (x *_SolverOutput_1_map) Get(key protoreflect.MapKey) protoreflect.Value {
+	if x.m == nil {
+		return protoreflect.Value{}
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	v, ok := (*x.m)[concreteKey]
+	if !ok {
+		return protoreflect.Value{}
+	}
+	return protoreflect.ValueOfFloat32(v)
+}
+
+func (x *_SolverOutput_1_map) Set(key protoreflect.MapKey, value protoreflect.Value) {
+	if !key.IsValid() || !value.IsValid() {
+		panic("invalid key or value provided")
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	valueUnwrapped := value.Float()
+	concreteValue := (float32)(valueUnwrapped)
+	(*x.m)[concreteKey] = concreteValue
+}
+
+func (x *_SolverOutput_1_map) Mutable(key protoreflect.MapKey) protoreflect.Value {
+	panic("should not call Mutable on protoreflect.Map whose value is not of type protoreflect.Message")
+}
+
+func (x *_SolverOutput_1_map) NewValue() protoreflect.Value {
+	v := float32(0)
+	return protoreflect.ValueOfFloat32(v)
+}
+
+func (x *_SolverOutput_1_map) IsValid() bool {
+	return x.m != nil
+}
+
+var (
+	md_SolverOutput           protoreflect.MessageDescriptor
+	fd_SolverOutput_forecasts protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_warden_v1beta3_inference_proto_init()
+	md_SolverOutput = File_warden_warden_v1beta3_inference_proto.Messages().ByName("SolverOutput")
+	fd_SolverOutput_forecasts = md_SolverOutput.Fields().ByName("forecasts")
+}
+
+var _ protoreflect.Message = (*fastReflection_SolverOutput)(nil)
+
+type fastReflection_SolverOutput SolverOutput
+
+func (x *SolverOutput) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_SolverOutput)(x)
+}
+
+func (x *SolverOutput) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_SolverOutput_messageType fastReflection_SolverOutput_messageType
+var _ protoreflect.MessageType = fastReflection_SolverOutput_messageType{}
+
+type fastReflection_SolverOutput_messageType struct{}
+
+func (x fastReflection_SolverOutput_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_SolverOutput)(nil)
+}
+func (x fastReflection_SolverOutput_messageType) New() protoreflect.Message {
+	return new(fastReflection_SolverOutput)
+}
+func (x fastReflection_SolverOutput_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverOutput
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_SolverOutput) Descriptor() protoreflect.MessageDescriptor {
+	return md_SolverOutput
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_SolverOutput) Type() protoreflect.MessageType {
+	return _fastReflection_SolverOutput_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_SolverOutput) New() protoreflect.Message {
+	return new(fastReflection_SolverOutput)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_SolverOutput) Interface() protoreflect.ProtoMessage {
+	return (*SolverOutput)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_SolverOutput) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Forecasts) != 0 {
+		value := protoreflect.ValueOfMap(&_SolverOutput_1_map{m: &x.Forecasts})
+		if !f(fd_SolverOutput_forecasts, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_SolverOutput) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverOutput.forecasts":
+		return len(x.Forecasts) != 0
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverOutput does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverOutput) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverOutput.forecasts":
+		x.Forecasts = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverOutput does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_SolverOutput) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.warden.v1beta3.SolverOutput.forecasts":
+		if len(x.Forecasts) == 0 {
+			return protoreflect.ValueOfMap(&_SolverOutput_1_map{})
+		}
+		mapValue := &_SolverOutput_1_map{m: &x.Forecasts}
+		return protoreflect.ValueOfMap(mapValue)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverOutput does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverOutput) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverOutput.forecasts":
+		mv := value.Map()
+		cmv := mv.(*_SolverOutput_1_map)
+		x.Forecasts = *cmv.m
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverOutput does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverOutput) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverOutput.forecasts":
+		if x.Forecasts == nil {
+			x.Forecasts = make(map[string]float32)
+		}
+		value := &_SolverOutput_1_map{m: &x.Forecasts}
+		return protoreflect.ValueOfMap(value)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverOutput does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_SolverOutput) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.SolverOutput.forecasts":
+		m := make(map[string]float32)
+		return protoreflect.ValueOfMap(&_SolverOutput_1_map{m: &m})
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.SolverOutput does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_SolverOutput) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta3.SolverOutput", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_SolverOutput) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_SolverOutput) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_SolverOutput) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_SolverOutput) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*SolverOutput)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if len(x.Forecasts) > 0 {
+			SiZeMaP := func(k string, v float32) {
+				mapEntrySize := 1 + len(k) + runtime.Sov(uint64(len(k))) + 1 + 4
+				n += mapEntrySize + 1 + runtime.Sov(uint64(mapEntrySize))
+			}
+			if options.Deterministic {
+				sortme := make([]string, 0, len(x.Forecasts))
+				for k := range x.Forecasts {
+					sortme = append(sortme, k)
+				}
+				sort.Strings(sortme)
+				for _, k := range sortme {
+					v := x.Forecasts[k]
+					SiZeMaP(k, v)
+				}
+			} else {
+				for k, v := range x.Forecasts {
+					SiZeMaP(k, v)
+				}
+			}
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*SolverOutput)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Forecasts) > 0 {
+			MaRsHaLmAp := func(k string, v float32) (protoiface.MarshalOutput, error) {
+				baseI := i
+				i -= 4
+				binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
+				i--
+				dAtA[i] = 0x15
+				i -= len(k)
+				copy(dAtA[i:], k)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(k)))
+				i--
+				dAtA[i] = 0xa
+				i = runtime.EncodeVarint(dAtA, i, uint64(baseI-i))
+				i--
+				dAtA[i] = 0xa
+				return protoiface.MarshalOutput{}, nil
+			}
+			if options.Deterministic {
+				keysForForecasts := make([]string, 0, len(x.Forecasts))
+				for k := range x.Forecasts {
+					keysForForecasts = append(keysForForecasts, string(k))
+				}
+				sort.Slice(keysForForecasts, func(i, j int) bool {
+					return keysForForecasts[i] < keysForForecasts[j]
+				})
+				for iNdEx := len(keysForForecasts) - 1; iNdEx >= 0; iNdEx-- {
+					v := x.Forecasts[string(keysForForecasts[iNdEx])]
+					out, err := MaRsHaLmAp(keysForForecasts[iNdEx], v)
+					if err != nil {
+						return out, err
+					}
+				}
+			} else {
+				for k := range x.Forecasts {
+					v := x.Forecasts[k]
+					out, err := MaRsHaLmAp(k, v)
+					if err != nil {
+						return out, err
+					}
+				}
+			}
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*SolverOutput)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverOutput: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SolverOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Forecasts", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Forecasts == nil {
+					x.Forecasts = make(map[string]float32)
+				}
+				var mapkey string
+				var mapvalue float32
+				for iNdEx < postIndex {
+					entryPreIndex := iNdEx
+					var wire uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+						}
+						if iNdEx >= l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						wire |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					fieldNum := int32(wire >> 3)
+					if fieldNum == 1 {
+						var stringLenmapkey uint64
+						for shift := uint(0); ; shift += 7 {
+							if shift >= 64 {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+							}
+							if iNdEx >= l {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+							}
+							b := dAtA[iNdEx]
+							iNdEx++
+							stringLenmapkey |= uint64(b&0x7F) << shift
+							if b < 0x80 {
+								break
+							}
+						}
+						intStringLenmapkey := int(stringLenmapkey)
+						if intStringLenmapkey < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						postStringIndexmapkey := iNdEx + intStringLenmapkey
+						if postStringIndexmapkey < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if postStringIndexmapkey > l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+						iNdEx = postStringIndexmapkey
+					} else if fieldNum == 2 {
+						var mapvaluetemp uint32
+						if (iNdEx + 4) > l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						mapvaluetemp = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+						iNdEx += 4
+						mapvalue = math.Float32frombits(mapvaluetemp)
+					} else {
+						iNdEx = entryPreIndex
+						skippy, err := runtime.Skip(dAtA[iNdEx:])
+						if err != nil {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+						}
+						if (skippy < 0) || (iNdEx+skippy) < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if (iNdEx + skippy) > postIndex {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						iNdEx += skippy
+					}
+				}
+				x.Forecasts[mapkey] = mapvalue
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
 // Code generated by protoc-gen-go. DO NOT EDIT.
 // versions:
 // 	protoc-gen-go v1.27.0
@@ -2184,58 +4385,267 @@ func (x *InferenceTx) GetResults() []*InferenceResult {
 	return nil
 }
 
+type SolverRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SolverInput       *SolverInput `protobuf:"bytes,1,opt,name=solver_input,json=solverInput,proto3" json:"solver_input,omitempty"`
+	ExpectedItems     int64        `protobuf:"varint,2,opt,name=ExpectedItems,proto3" json:"ExpectedItems,omitempty"`
+	FalsePositiveRate float64      `protobuf:"fixed64,3,opt,name=FalsePositiveRate,proto3" json:"FalsePositiveRate,omitempty"`
+}
+
+func (x *SolverRequest) Reset() {
+	*x = SolverRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SolverRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SolverRequest) ProtoMessage() {}
+
+// Deprecated: Use SolverRequest.ProtoReflect.Descriptor instead.
+func (*SolverRequest) Descriptor() ([]byte, []int) {
+	return file_warden_warden_v1beta3_inference_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SolverRequest) GetSolverInput() *SolverInput {
+	if x != nil {
+		return x.SolverInput
+	}
+	return nil
+}
+
+func (x *SolverRequest) GetExpectedItems() int64 {
+	if x != nil {
+		return x.ExpectedItems
+	}
+	return 0
+}
+
+func (x *SolverRequest) GetFalsePositiveRate() float64 {
+	if x != nil {
+		return x.FalsePositiveRate
+	}
+	return 0
+}
+
+type SolverInput struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Tokens        []string `protobuf:"bytes,1,rep,name=tokens,proto3" json:"tokens,omitempty"`
+	AdversaryMode bool     `protobuf:"varint,2,opt,name=adversary_mode,json=adversaryMode,proto3" json:"adversary_mode,omitempty"`
+}
+
+func (x *SolverInput) Reset() {
+	*x = SolverInput{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SolverInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SolverInput) ProtoMessage() {}
+
+// Deprecated: Use SolverInput.ProtoReflect.Descriptor instead.
+func (*SolverInput) Descriptor() ([]byte, []int) {
+	return file_warden_warden_v1beta3_inference_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SolverInput) GetTokens() []string {
+	if x != nil {
+		return x.Tokens
+	}
+	return nil
+}
+
+func (x *SolverInput) GetAdversaryMode() bool {
+	if x != nil {
+		return x.AdversaryMode
+	}
+	return false
+}
+
+type SolverResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SolverOutput  *SolverOutput `protobuf:"bytes,1,opt,name=solver_output,json=solverOutput,proto3" json:"solver_output,omitempty"`
+	SolverReceipt []byte        `protobuf:"bytes,2,opt,name=solver_receipt,json=solverReceipt,proto3" json:"solver_receipt,omitempty"`
+}
+
+func (x *SolverResponse) Reset() {
+	*x = SolverResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SolverResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SolverResponse) ProtoMessage() {}
+
+// Deprecated: Use SolverResponse.ProtoReflect.Descriptor instead.
+func (*SolverResponse) Descriptor() ([]byte, []int) {
+	return file_warden_warden_v1beta3_inference_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SolverResponse) GetSolverOutput() *SolverOutput {
+	if x != nil {
+		return x.SolverOutput
+	}
+	return nil
+}
+
+func (x *SolverResponse) GetSolverReceipt() []byte {
+	if x != nil {
+		return x.SolverReceipt
+	}
+	return nil
+}
+
+type SolverOutput struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Forecasts map[string]float32 `protobuf:"bytes,1,rep,name=forecasts,proto3" json:"forecasts,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"fixed32,2,opt,name=value,proto3"`
+}
+
+func (x *SolverOutput) Reset() {
+	*x = SolverOutput{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SolverOutput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SolverOutput) ProtoMessage() {}
+
+// Deprecated: Use SolverOutput.ProtoReflect.Descriptor instead.
+func (*SolverOutput) Descriptor() ([]byte, []int) {
+	return file_warden_warden_v1beta3_inference_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SolverOutput) GetForecasts() map[string]float32 {
+	if x != nil {
+		return x.Forecasts
+	}
+	return nil
+}
+
 var File_warden_warden_v1beta3_inference_proto protoreflect.FileDescriptor
 
 var file_warden_warden_v1beta3_inference_proto_rawDesc = []byte{
 	0x0a, 0x25, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
 	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2f, 0x69, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63,
 	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x15, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x22, 0xeb,
-	0x01, 0x0a, 0x10, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x14, 0x0a,
-	0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e,
-	0x70, 0x75, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x65,
-	0x72, 0x72, 0x6f, 0x72, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f,
-	0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18,
-	0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74,
-	0x12, 0x1d, 0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x07,
-	0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12,
-	0x2b, 0x0a, 0x11, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x63, 0x61, 0x6c, 0x6c,
-	0x62, 0x61, 0x63, 0x6b, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10, 0x63, 0x6f, 0x6e, 0x74,
-	0x72, 0x61, 0x63, 0x74, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x22, 0x69, 0x0a, 0x0f,
-	0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12,
-	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12,
-	0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52,
-	0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x72, 0x65, 0x63, 0x65, 0x69,
-	0x70, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x72, 0x65, 0x63, 0x65, 0x69, 0x70,
-	0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x72, 0x0a, 0x0b, 0x49, 0x6e, 0x66, 0x65, 0x72,
-	0x65, 0x6e, 0x63, 0x65, 0x54, 0x78, 0x12, 0x21, 0x0a, 0x0c, 0x6d, 0x61, 0x67, 0x69, 0x63, 0x5f,
-	0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x6d, 0x61,
-	0x67, 0x69, 0x63, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x40, 0x0a, 0x07, 0x72, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x33, 0x2e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x75,
-	0x6c, 0x74, 0x52, 0x07, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x73, 0x42, 0xf4, 0x01, 0x0a, 0x19,
-	0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x42, 0x0e, 0x49, 0x6e, 0x66, 0x65, 0x72,
-	0x65, 0x6e, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33,
-	0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xa2, 0x02,
-	0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xca, 0x02, 0x15, 0x57,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x1a, 0x14,
+	0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xeb, 0x01, 0x0a, 0x10, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e,
+	0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x6f, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74,
+	0x70, 0x75, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75,
+	0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x64, 0x5f, 0x61, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x75, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x2b, 0x0a, 0x11, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
+	0x74, 0x5f, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61,
+	0x63, 0x6b, 0x22, 0x69, 0x0a, 0x0f, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52,
+	0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x18, 0x0a,
+	0x07, 0x72, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07,
+	0x72, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x72, 0x0a,
+	0x0b, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x54, 0x78, 0x12, 0x21, 0x0a, 0x0c,
+	0x6d, 0x61, 0x67, 0x69, 0x63, 0x5f, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x0b, 0x6d, 0x61, 0x67, 0x69, 0x63, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12,
+	0x40, 0x0a, 0x07, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x26, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e,
+	0x63, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x52, 0x07, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74,
+	0x73, 0x22, 0xb0, 0x01, 0x0a, 0x0d, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x4b, 0x0a, 0x0c, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f, 0x69, 0x6e,
+	0x70, 0x75, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x33, 0x2e, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x42, 0x04, 0xc8,
+	0xde, 0x1f, 0x00, 0x52, 0x0b, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x49, 0x6e, 0x70, 0x75, 0x74,
+	0x12, 0x24, 0x0a, 0x0d, 0x45, 0x78, 0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x49, 0x74, 0x65, 0x6d,
+	0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0d, 0x45, 0x78, 0x70, 0x65, 0x63, 0x74, 0x65,
+	0x64, 0x49, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x2c, 0x0a, 0x11, 0x46, 0x61, 0x6c, 0x73, 0x65, 0x50,
+	0x6f, 0x73, 0x69, 0x74, 0x69, 0x76, 0x65, 0x52, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x01, 0x52, 0x11, 0x46, 0x61, 0x6c, 0x73, 0x65, 0x50, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x76, 0x65,
+	0x52, 0x61, 0x74, 0x65, 0x22, 0x4c, 0x0a, 0x0b, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x49, 0x6e,
+	0x70, 0x75, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x06, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x61,
+	0x64, 0x76, 0x65, 0x72, 0x73, 0x61, 0x72, 0x79, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x0d, 0x61, 0x64, 0x76, 0x65, 0x72, 0x73, 0x61, 0x72, 0x79, 0x4d, 0x6f,
+	0x64, 0x65, 0x22, 0x87, 0x01, 0x0a, 0x0e, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4e, 0x0a, 0x0d, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f,
+	0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x33, 0x2e, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f, 0x75, 0x74, 0x70, 0x75,
+	0x74, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f,
+	0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x25, 0x0a, 0x0e, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f,
+	0x72, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0d, 0x73,
+	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x22, 0xa4, 0x01, 0x0a,
+	0x0c, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x56, 0x0a,
+	0x09, 0x66, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f,
+	0x75, 0x74, 0x70, 0x75, 0x74, 0x2e, 0x46, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74, 0x73, 0x45,
+	0x6e, 0x74, 0x72, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x09, 0x66, 0x6f, 0x72, 0x65,
+	0x63, 0x61, 0x73, 0x74, 0x73, 0x1a, 0x3c, 0x0a, 0x0e, 0x46, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73,
+	0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
+	0x02, 0x38, 0x01, 0x42, 0xf4, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x33, 0x42, 0x0e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74,
+	0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61,
+	0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x33, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57,
 	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x5c, 0x47, 0x50, 0x42,
-	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x74, 0x61, 0x33, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
+	0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -2250,19 +4660,27 @@ func file_warden_warden_v1beta3_inference_proto_rawDescGZIP() []byte {
 	return file_warden_warden_v1beta3_inference_proto_rawDescData
 }
 
-var file_warden_warden_v1beta3_inference_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_warden_warden_v1beta3_inference_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_warden_warden_v1beta3_inference_proto_goTypes = []interface{}{
 	(*InferenceRequest)(nil), // 0: warden.warden.v1beta3.InferenceRequest
 	(*InferenceResult)(nil),  // 1: warden.warden.v1beta3.InferenceResult
 	(*InferenceTx)(nil),      // 2: warden.warden.v1beta3.InferenceTx
+	(*SolverRequest)(nil),    // 3: warden.warden.v1beta3.SolverRequest
+	(*SolverInput)(nil),      // 4: warden.warden.v1beta3.SolverInput
+	(*SolverResponse)(nil),   // 5: warden.warden.v1beta3.SolverResponse
+	(*SolverOutput)(nil),     // 6: warden.warden.v1beta3.SolverOutput
+	nil,                      // 7: warden.warden.v1beta3.SolverOutput.ForecastsEntry
 }
 var file_warden_warden_v1beta3_inference_proto_depIdxs = []int32{
 	1, // 0: warden.warden.v1beta3.InferenceTx.results:type_name -> warden.warden.v1beta3.InferenceResult
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 1: warden.warden.v1beta3.SolverRequest.solver_input:type_name -> warden.warden.v1beta3.SolverInput
+	6, // 2: warden.warden.v1beta3.SolverResponse.solver_output:type_name -> warden.warden.v1beta3.SolverOutput
+	7, // 3: warden.warden.v1beta3.SolverOutput.forecasts:type_name -> warden.warden.v1beta3.SolverOutput.ForecastsEntry
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_warden_warden_v1beta3_inference_proto_init() }
@@ -2307,6 +4725,54 @@ func file_warden_warden_v1beta3_inference_proto_init() {
 				return nil
 			}
 		}
+		file_warden_warden_v1beta3_inference_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SolverRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_warden_v1beta3_inference_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SolverInput); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_warden_v1beta3_inference_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SolverResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_warden_v1beta3_inference_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SolverOutput); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2314,7 +4780,7 @@ func file_warden_warden_v1beta3_inference_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_warden_v1beta3_inference_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

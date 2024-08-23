@@ -10,7 +10,7 @@ slug: /
 
 The **Warden Protocol** is a L1 blockhain bringing AI to Web3 and enabling any application, protocol, or smart contract to integrate **safe AI**.
 
-Mass adoption of Web3 requires the creation of safe and seamless AI experiences. Warden empovers developers to achieve this goal.
+Mass adoption of Web3 requires the creation of safe and seamless AI experiences, and Warden empovers developers to achieve this goal.
 
 ## AI Blockchain Interface
 
@@ -46,16 +46,16 @@ Warden provides operator sets and integrations with leading wallets, explorers, 
 Here is what you can do with Warden:
 
 - **Build an application**  
-You can build an EVM-compatible application on Warden with [CosmWasm](https://cosmwasm.com). An example of a Warden app is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for the protocol.
+You can build EVM-compatible [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) with [CosmWasm](https://cosmwasm.com). OApps are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for the protocol.
 
 - **Operate a Keychain**  
-[Keychains](/learn/glossary#keychain) can sign transactions on virtually any chain. No more manual cross-chain coordination.
+[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination.
 
 - **Run a validator node**  
-Run a [validator](/learn/glossary#validator) and earn rewards while securing Warden’s network.
+You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden’s network.
 
 - **Bring AI to your app**  
-Unleash new user experiences by integrating AI into your app, protocol or smart contract.
+Warden allows you unleashing new user experiences by integrating AI into your application, protocol, or smart contract.
 
 ## Documentation overview
 
@@ -64,7 +64,7 @@ Welcome to the Warden Protocol documentation!
 Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
 
 - **Learn**: The basic information about the protocol
-- [Build an App](/build-an-app/introduction): Guides for OApp developers
+- [Build an App](/build-an-app/introduction): Guides for application developers
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed of Warden tokens – WARD and WARP

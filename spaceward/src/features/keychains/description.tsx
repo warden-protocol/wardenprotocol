@@ -46,7 +46,7 @@ const descriptions = [
 		),
 		title: "Silence Laboratories",
 		verified: true,
-		disabled: false,
+		disabled: true,
 		link: "#",
 	},
 	{

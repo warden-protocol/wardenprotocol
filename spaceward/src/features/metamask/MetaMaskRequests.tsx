@@ -127,7 +127,8 @@ export function MetaMaskRequests() {
 				) {
 					throw new Error("wrong params length");
 				}
-				const txParam = req.request.params[0]?.valueOf() as SignTransactionParams;
+				const txParam =
+					req.request.params[0]?.valueOf() as SignTransactionParams;
 				const tx = await buildSignTransaction(txParam);
 				const signedTx = await signEthereumTx(keyId, tx);
 				if (!signedTx || !signedTx.signature) {
@@ -160,7 +161,7 @@ export function MetaMaskRequests() {
 					SignTypedDataVersion.V4,
 				);
 
-				const signature = await signRaw( keyId, ethers.getBytes(toSign));
+				const signature = await signRaw(keyId, ethers.getBytes(toSign));
 				if (!signature) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",
@@ -215,11 +216,11 @@ export function MetaMaskRequests() {
 						onClick={() => setOpen(false)}
 					></div>
 					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] top-2 rounded-xl right-0">
-						<SignRequestDialog
+						{/* <SignRequestDialog
 							state={reqSignatureState}
 							error={reqSignatureError}
 							reset={resetReqSignature}
-						/>
+						/> */}
 
 						<div className="flex flex-col space-y-4">
 							<div className="text-center pt-6 flex items-center place-content-center">

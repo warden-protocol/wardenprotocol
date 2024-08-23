@@ -80,8 +80,8 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "buildOapp",
-                    label: "Build an OApp",
+                    sidebarId: "buildApp",
+                    label: "Build an App",
                     position: "left",
                 },
                 {
@@ -110,12 +110,12 @@ const config: Config = {
                         {
                             type: "doc",
                             label: "Smart contract API",
-                            docId: "build-an-oapp/smart-contract-api-reference",
+                            docId: "build-an-app/smart-contract-api-reference",
                         },
                         {
                             type: "doc",
                             label: "WardenJS",
-                            docId: "build-an-oapp/build-the-frontend/wardenjs-functions",
+                            docId: "build-an-app/build-the-frontend/wardenjs-functions",
                         },
                         {
                             type: "doc",

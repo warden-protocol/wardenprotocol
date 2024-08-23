@@ -19,5 +19,5 @@ To get started, follow the steps in the [Quick start](quick-start) guide. You ca
 In the future, we're going to provide off-chain infrastructure to facilitate Keychain deployment.
 
 :::tip
-If you're [building an Omnichain Application](/build-an-oapp/introduction) and wish to run a Keychain for testing purposes, check this guide: [Run a Keychain from CLI](/build-an-oapp/test/run-a-keychain-from-cli).
+If you're [building an Omnichain Application](/build-an-app/introduction) and wish to run a Keychain for testing purposes, check this guide: [Run a Keychain from CLI](/build-an-oapp/test/run-a-keychain-from-cli).
 :::

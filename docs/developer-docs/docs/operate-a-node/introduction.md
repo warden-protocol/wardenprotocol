@@ -29,5 +29,5 @@ We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-nod
 :::
 
 :::tip
-If you're [building an Omnichain Application](/build-an-oapp/introduction) and wish to run a node locally for testing purposes, check this guide: [Run a local chain](/build-an-oapp/test/run-a-local-chain).
+If you're [building an Omnichain Application](/build-an-app/introduction) and wish to run a node locally for testing purposes, check this guide: [Run a local chain](/build-an-oapp/test/run-a-local-chain).
 :::

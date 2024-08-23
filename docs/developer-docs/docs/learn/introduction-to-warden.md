@@ -8,7 +8,7 @@ slug: /
 
 ## The Warden Protocol
 
-The **Warden Protocol** is a L1 blockhain bringing AI to Web3 and enabling any application, protocol, or smart contract to integrate **safe AI**.
+The **Warden Protocol** is a L1 blockchain bringing AI to Web3 and enabling any application, protocol, or smart contract to integrate **safe AI**.
 
 Mass adoption of Web3 requires the creation of safe and seamless AI experiences, and Warden empowers developers to achieve this goal.
 

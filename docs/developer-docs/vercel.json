@@ -27,7 +27,7 @@
         {"source":"/ward/supply","destination":"/tokens/ward-token/supply", "statusCode": 301},
         {"source":"/warp","destination":"/tokens/warp-token/warp", "statusCode": 301},
         {"source":"/warp/bridge-base","destination":"/tokens/warp-token/bridge-base", "statusCode": 301},
-        {"source":"/developers","destination":"/build-an-oapp/introduction", "statusCode": 301},
+        {"source":"/developers","destination":"/build-an-app/introduction", "statusCode": 301},
         {"source":"/developers/protocol","destination":"/learn/request-flow", "statusCode": 301},
         {"source":"/developers/installation","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/3-installation.md", "statusCode": 301},
         {"source":"/developers/keychain-sdk","destination":"/build-a-keychain/keychain-sdk", "statusCode": 301},

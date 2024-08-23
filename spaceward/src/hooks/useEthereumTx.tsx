@@ -19,6 +19,9 @@ export function useEthereumTx() {
 			requestId: number;
 			topic: string;
 		},
+		snap?: {
+			requestId: string;
+		}
 	) => {
 		if (!authority) {
 			throw new Error("no authority");
@@ -36,6 +39,7 @@ export function useEthereumTx() {
 			{
 				walletConnectRequestId: wc?.requestId,
 				walletConnectTopic: wc?.topic,
+				snapRequestId: snap?.requestId
 			},
 		);
 	};
@@ -48,6 +52,9 @@ export function useEthereumTx() {
 			requestId: number;
 			topic: string;
 		},
+		snap?: {
+			requestId: string;
+		}
 	) => {
 		if (!authority) {
 			throw new Error("no authority");
@@ -77,6 +84,7 @@ export function useEthereumTx() {
 				chainName,
 				walletConnectRequestId: wc?.requestId,
 				walletConnectTopic: wc?.topic,
+				snapRequestId: snap?.requestId
 			},
 		);
 	};

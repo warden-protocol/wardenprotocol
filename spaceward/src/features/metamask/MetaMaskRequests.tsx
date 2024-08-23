@@ -18,6 +18,7 @@ import {
 } from "@metamask/eth-sig-util";
 import { useMetaMask } from "@/hooks/useMetaMask";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
+import { REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
 
 interface SignTransactionParams {
 	chainId: string;
@@ -73,11 +74,6 @@ export function MetaMaskRequests() {
 			})) ?? [],
 	});
 
-	console.log(
-		{ keyringSnapClient, origin: env.snapOrigin, eth: window.ethereum },
-		requestsQ.data,
-		accountsQ,
-	);
 	const accountsQLoading = accountsQ.some((q) => q.isLoading);
 
 	const accounts = accountsQ.reduce(
@@ -109,15 +105,15 @@ export function MetaMaskRequests() {
 				const msg = ethers.hashMessage(
 					ethers.getBytes(msgHex as string),
 				);
-				const signature = await signRaw(keyId, ethers.getBytes(msg));
-				if (!signature) {
+
+				const storeId = await signRaw(keyId, ethers.getBytes(msg), undefined, { requestId: req.id });
+
+				if (!storeId) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",
 					);
 				}
-				await keyringSnapClient.approveRequest(req.id, {
-					result: ethers.hexlify(signature),
-				});
+
 				break;
 			}
 			case "eth_signTransaction": {
@@ -129,21 +125,21 @@ export function MetaMaskRequests() {
 				}
 				const txParam =
 					req.request.params[0]?.valueOf() as SignTransactionParams;
+
+				const chainId = parseInt(txParam.chainId.slice(2), 16);
+				const chainName = REVERSE_ETH_CHAINID_MAP[chainId];
+
+				if (!chainName) {
+					throw new Error(`chainId not supported: ${chainId}`)
+				}
 				const tx = await buildSignTransaction(txParam);
-				const signedTx = await signEthereumTx(keyId, tx);
-				if (!signedTx || !signedTx.signature) {
+				const storeId = await signEthereumTx(keyId, tx, chainName, undefined, { requestId: req.id });
+
+				if (!storeId) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",
 					);
 				}
-
-				await keyringSnapClient.approveRequest(req.id, {
-					result: {
-						r: signedTx.signature.r,
-						s: signedTx.signature.s,
-						v: signedTx.signature.v,
-					},
-				});
 
 				break;
 			}
@@ -161,16 +157,14 @@ export function MetaMaskRequests() {
 					SignTypedDataVersion.V4,
 				);
 
-				const signature = await signRaw(keyId, ethers.getBytes(toSign));
-				if (!signature) {
+				const storeId = await signRaw(keyId, ethers.getBytes(toSign), undefined, { requestId: req.id });
+
+				if (!storeId) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",
 					);
 				}
 
-				await keyringSnapClient.approveRequest(req.id, {
-					result: ethers.hexlify(signature),
-				});
 				break;
 			}
 		}
@@ -261,7 +255,7 @@ export function MetaMaskRequests() {
 											<Button
 												size="sm"
 												onClick={() =>
-													handleApproveRequest(req)
+													handleApproveRequest(req).then(() => setOpen(false))
 												}
 											>
 												Approve

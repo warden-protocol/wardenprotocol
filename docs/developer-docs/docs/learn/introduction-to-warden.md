@@ -10,7 +10,7 @@ slug: /
 
 The **Warden Protocol** is a L1 blockhain bringing AI to Web3 and enabling any application, protocol, or smart contract to integrate **safe AI**.
 
-Mass adoption of Web3 requires the creation of safe and seamless AI experiences, and Warden empovers developers to achieve this goal.
+Mass adoption of Web3 requires the creation of safe and seamless AI experiences, and Warden empowers developers to achieve this goal.
 
 ## AI Blockchain Interface
 
@@ -55,7 +55,7 @@ You can build EVM-compatible [Omnichain Applications (OApps)](/learn/glossary#om
 You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden’s network.
 
 - **Bring AI to your app**  
-Warden allows you unleashing new user experiences by integrating AI into your application, protocol, or smart contract.
+Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract.
 
 ## Documentation overview
 
@@ -67,7 +67,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build an App](/build-an-app/introduction): Guides for application developers
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
-- [Tokens](/tokens/introduction): A detailed of Warden tokens – WARD and WARP
+- [Tokens](/tokens/introduction): A detailed overview of Warden tokens – WARD and WARP
 - **Tools**: API and function references
 - [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
 

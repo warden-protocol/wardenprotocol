@@ -12,8 +12,6 @@ export function KeychainsPage() {
 
 	const keychains = q.data?.keychains;
 
-	console.log(keychains);
-
 	if (!keychains || keychains.length === 0) {
 		return (
 			<div>

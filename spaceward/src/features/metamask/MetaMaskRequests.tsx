@@ -2,7 +2,6 @@ import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import SignRequestDialog from "@/components/SignRequestDialog";
 import { InstallMetaMaskSnapButton } from "@/features/metamask";
 import {
 	KeyringAccount,
@@ -48,19 +47,14 @@ async function buildSignTransaction(data: SignTransactionParams) {
 }
 
 export function MetaMaskRequests() {
-	const {
-		state: reqSignatureState,
-		error: reqSignatureError,
-		reset: resetReqSignature,
-		signRaw,
-		signEthereumTx,
-	} = useEthereumTx();
+	const { signRaw, signEthereumTx } = useEthereumTx();
 	const { installedSnap } = useMetaMask();
 
 	const keyringSnapClient = new KeyringSnapRpcClient(
 		env.snapOrigin,
 		window.ethereum,
 	);
+
 	const requestsQ = useQuery(
 		["metamask-keyring-requests"],
 		() => keyringSnapClient.listRequests(),
@@ -78,6 +72,12 @@ export function MetaMaskRequests() {
 				refetchInterval: Infinity,
 			})) ?? [],
 	});
+
+	console.log(
+		{ keyringSnapClient, origin: env.snapOrigin, eth: window.ethereum },
+		requestsQ.data,
+		accountsQ,
+	);
 	const accountsQLoading = accountsQ.some((q) => q.isLoading);
 
 	const accounts = accountsQ.reduce(
@@ -216,12 +216,6 @@ export function MetaMaskRequests() {
 						onClick={() => setOpen(false)}
 					></div>
 					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] top-2 rounded-xl right-0">
-						<SignRequestDialog
-							state={reqSignatureState}
-							error={reqSignatureError}
-							reset={resetReqSignature}
-						/>
-
 						<div className="flex flex-col space-y-4">
 							<div className="text-center pt-6 flex items-center place-content-center">
 								<img
@@ -244,7 +238,9 @@ export function MetaMaskRequests() {
 							{requestsQ.isLoading ? (
 								<div>Loading...</div>
 							) : requestsQ.isError ? (
-								<div>Error: {requestsQ.error?.toString()}</div>
+								<div>
+									Error: {JSON.stringify(requestsQ.error)}
+								</div>
 							) : requestsQ.data?.length === 0 ? (
 								<div>No pending requests</div>
 							) : (

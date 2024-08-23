@@ -1,7 +1,7 @@
 use crate::methods::{
     execute_instantiate, execute_post_message, execute_post_message_reply,
     execute_receive_lifecycle_completion, execute_receive_message, execute_recover_funds,
-    execute_set_chain_emitter,
+    execute_set_chain_emitter, execute_update_wormhole_config,
 };
 use crate::msg::{
     ExecuteMsg, IBCLifecycleComplete, InstantiateMsg, MigrateMsg, MsgReplyId, QueryMsg, SudoMsg,
@@ -53,6 +53,20 @@ pub fn execute(
         }
 
         ExecuteMsg::RecoverFunds {} => execute_recover_funds(&mut deps, &info),
+
+        ExecuteMsg::UpdateWormholeConfig {
+            ibc_channel_id,
+            ibc_sender,
+            ibc_recipient,
+            ibc_timeout_sec,
+        } => execute_update_wormhole_config(
+            &mut deps,
+            &info,
+            &ibc_channel_id,
+            &ibc_sender,
+            &ibc_recipient,
+            ibc_timeout_sec,
+        ),
     }
 }
 

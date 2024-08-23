@@ -24,8 +24,8 @@ pub const POST_MESSAGE_RECOVERY: Map<&Addr, Vec<PostMessageIbcTransfer>> =
 #[cw_serde]
 pub struct WormholeGatewayIbcConfig {
     pub channel_id: String,
-    pub recipient: Addr,
-    pub sender: Addr,
+    pub recipient: String,
+    pub sender: String,
     pub timeout_sec: u64,
 }
 

@@ -1,12 +1,5 @@
 cosmwasm_optimizer_version := "0.16.0"
 
-# regenerate bindings schema
-bindings:
-  #!/usr/bin/env bash -e
-  cd packages/bindings
-  cargo build
-  cargo run schema
-
 # regenerate schema for the specified contract
 schema contract:
   #!/usr/bin/env bash -e

@@ -7,7 +7,7 @@ pub enum ContractError {
     Std(#[from] StdError),
 
     #[error("Unauthorized")]
-    Unauthorized {},
+    Unauthorized { message: String },
 
     #[error("ReplyFailed")]
     ReplyFailed { message: String },
@@ -17,9 +17,6 @@ pub enum ContractError {
 
     #[error("ReceiveMessageFailed")]
     ReceiveMessageFailed { message: String },
-
-    #[error("SetChainEmittorFailed")]
-    SetChainEmittorFailed { message: String },
 
     #[error("HashDeriviationFailed")]
     HashDeriviationFailed { message: String },

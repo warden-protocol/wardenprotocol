@@ -8,7 +8,7 @@ pub enum MsgReplyId {
 }
 
 #[derive(Clone, PartialEq, Eq, ::prost::Message)]
-pub struct PostMessageResponse {
+pub struct MsgTransferResponse {
     #[prost(uint64, tag = "1")]
     pub sequence: u64,
 }
@@ -27,10 +27,24 @@ pub struct InstantiateMsg {
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    SetChainEmitter { chain_id: u16, emitter: Binary },
-    PostMessage { chain_id: u16, message: Binary },
-    ReceiveMessage { message: Binary },
+    SetChainEmitter {
+        chain_id: u16,
+        emitter: Binary,
+    },
+    PostMessage {
+        chain_id: u16,
+        message: Binary,
+    },
+    ReceiveMessage {
+        message: Binary,
+    },
     RecoverFunds {},
+    UpdateWormholeConfig {
+        ibc_channel_id: String,
+        ibc_sender: String,
+        ibc_recipient: String,
+        ibc_timeout_sec: u64,
+    },
 }
 
 #[cw_serde]

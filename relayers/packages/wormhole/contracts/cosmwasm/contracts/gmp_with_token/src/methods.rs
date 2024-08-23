@@ -1,4 +1,4 @@
-use crate::msg::{GatewayIbcTokenBridgePayload, InstantiateMsg, MsgReplyId, PostMessageResponse};
+use crate::msg::{GatewayIbcTokenBridgePayload, InstantiateMsg, MsgReplyId, MsgTransferResponse};
 use crate::state::{
     PostMessageIbcTransfer, PostMessageReply, PostMessageStatus, WormholeGatewayIbcConfig, ADMIN,
     CONTRACT_NAME, CONTRACT_VERSION, IBC_HOOKS_SENDER_PREFIX, POST_MESSAGE_INFLIGHT,
@@ -28,8 +28,8 @@ pub fn execute_instantiate(
         deps.storage,
         &WormholeGatewayIbcConfig {
             channel_id: msg.wormhole_ibc_channel_id.clone(),
-            sender: deps.api.addr_validate(&msg.wormhole_ibc_sender)?,
-            recipient: deps.api.addr_validate(&msg.wormhole_ibc_recipient)?,
+            sender: msg.wormhole_ibc_sender.clone(),
+            recipient: msg.wormhole_ibc_recipient.clone(),
             timeout_sec: msg.wormhole_ibc_timeout_sec,
         },
     )?;
@@ -47,7 +47,7 @@ pub fn execute_set_chain_emitter(
 ) -> Result<Response, ContractError> {
     ADMIN
         .assert_admin(deps.as_ref(), &info.sender)
-        .map_err(|err| ContractError::SetChainEmittorFailed {
+        .map_err(|err| ContractError::Unauthorized {
             message: err.to_string(),
         })?;
 
@@ -106,7 +106,7 @@ pub fn execute_post_message(
         deps.storage,
         &PostMessageReply {
             channel_id: wormhole_gateway_ibc_config.channel_id.clone(),
-            recipient: wormhole_gateway_ibc_config.recipient.clone().into_string(),
+            recipient: wormhole_gateway_ibc_config.recipient.clone(),
             denom: coin.denom.clone(),
             amount: coin.amount.u128(),
             sender: info.sender.clone(),
@@ -167,7 +167,7 @@ pub fn execute_post_message_reply(
         }),
     }?;
 
-    let response = PostMessageResponse::decode(&reply_result[..]).map_err(|_e| {
+    let response = MsgTransferResponse::decode(&reply_result[..]).map_err(|_e| {
         ContractError::PostMessageFailed {
             message: format!("failed to decode reply result: {reply_result}"),
         }
@@ -250,6 +250,33 @@ pub fn execute_recover_funds(
     });
 
     Ok(Response::new().add_messages(msgs))
+}
+
+pub fn execute_update_wormhole_config(
+    deps: &mut DepsMut,
+    info: &MessageInfo,
+    ibc_channel_id: &str,
+    ibc_sender: &str,
+    ibc_recipient: &str,
+    ibc_timeout_sec: u64,
+) -> Result<Response, ContractError> {
+    ADMIN
+        .assert_admin(deps.as_ref(), &info.sender)
+        .map_err(|err| ContractError::Unauthorized {
+            message: err.to_string(),
+        })?;
+
+    WORMHOLE_GATEWAY_IBC_CONFIG.save(
+        deps.storage,
+        &WormholeGatewayIbcConfig {
+            channel_id: ibc_channel_id.to_string(),
+            sender: ibc_sender.to_string(),
+            recipient: ibc_recipient.to_string(),
+            timeout_sec: ibc_timeout_sec,
+        },
+    )?;
+
+    Ok(Response::default())
 }
 
 fn derive_intermediate_sender(

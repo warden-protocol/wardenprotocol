@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
     title: "Warden Protocol Docs",
     tagline: "",
-    favicon: "img/favicon.ico",
+    favicon: "img/favicon.svg",
 
     // Set the production url of your site here
     url: "https://docs.wardenprotocol.org",

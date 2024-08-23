@@ -127,7 +127,8 @@ export function MetaMaskRequests() {
 				) {
 					throw new Error("wrong params length");
 				}
-				const txParam = req.request.params[0]?.valueOf() as SignTransactionParams;
+				const txParam =
+					req.request.params[0]?.valueOf() as SignTransactionParams;
 				const tx = await buildSignTransaction(txParam);
 				const signedTx = await signEthereumTx(keyId, tx);
 				if (!signedTx || !signedTx.signature) {
@@ -160,7 +161,7 @@ export function MetaMaskRequests() {
 					SignTypedDataVersion.V4,
 				);
 
-				const signature = await signRaw( keyId, ethers.getBytes(toSign));
+				const signature = await signRaw(keyId, ethers.getBytes(toSign));
 				if (!signature) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",

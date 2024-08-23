@@ -30,13 +30,13 @@ Easily integrate AI with your application, protocols, and smart contracts. Autom
 
 Warden's key features allow creating a truly open AI experience:
 
-- **AI-Ready**  
+- **AI-ready**  
 Warden allows you to easily integrate AI in your application and enjoy novel AI-driven Web3 experiences.
 
-- **Simplified Cryptography**  
+- **Simplified cryptography**  
 With Warden, you can easily develop Web3 applications with [intent-driven](/learn/glossary#intent) key management.
 
-- **Abstracted Interoperability**  
+- **Abstracted interoperability**  
 Build applications that allow aggregating multiple accounts for different chains and signing transactions at any destination chain.
 
 ## Build with Warden

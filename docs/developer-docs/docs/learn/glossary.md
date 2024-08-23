@@ -14,14 +14,6 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 ---
 
-## Abstracted Interoperability
-
-Abstracted Interoperability refers to the possibility of communication between different blockchain networks. While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. 
-
-Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within the Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain and provide cross-chain swapping and [bridging](#bridging). They are able to exchange information with each other as well, overcoming the fragmentation of the blockchain landscape.
-
----
-
 ## Action
 
 An Action is an on-chain action (transaction) on the Warden Protocol:
@@ -31,6 +23,12 @@ An Action is an on-chain action (transaction) on the Warden Protocol:
 - Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
 
 An Action happens after an [Approval](#approval) is granted according to a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent). In the future, we're going to implement off-chain Actions, such as sending a message to a Slack channel.
+
+---
+
+## AI Blockchain Interface (AIBI)
+
+Artificial Intelligence Blockchain Interface (AIBI) brings AI on-chain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
 ---
 
@@ -189,13 +187,13 @@ By decoupling application-layer and protocol-layer security, Warden takes the be
 
 ## Omnichain Application
 
-An Omnichain Application (OApp) is a powerful evolution of traditional smart contracts. It allows signing transactions at any chain, while traditional smart contract applications only target users of a single chain. OApps contribute to Warden's [Abstracted Interoperability](#abstracted-interoperability) and [Modular Security](#modular-security)
+An Omnichain Application (OApp) is a powerful evolution of traditional smart contracts. It allows signing transactions at any chain, while traditional smart contract applications only target users of a single chain.
 
 ---
 
 ## Omnichain Contract
 
-An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-application). Omnichain Contracts contribute to Warden's [Abstracted Interoperability](#abstracted-interoperability).
+An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-application). 
 
 ---
 
@@ -227,7 +225,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Space
 
-A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces contribute to Warden's [Abstracted Interoperability](#abstracted-interoperability): they aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
+A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
 
 ---
 

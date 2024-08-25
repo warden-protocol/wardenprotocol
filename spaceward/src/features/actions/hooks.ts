@@ -1,6 +1,6 @@
 import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { useChain } from "@cosmos-kit/react";
-import { cosmos, warden } from "@wardenprotocol/wardenjs";
+import { cosmos } from "@wardenprotocol/wardenjs";
 import { createPersistantState } from "../../hooks/state";
 import { useNewAction } from "../../hooks/useAction";
 import { getSigningClient, TxOptions } from "../../hooks/useClient";
@@ -49,6 +49,7 @@ export interface QueuedAction {
 
 	walletConnectRequestId?: number;
 	walletConnectTopic?: string;
+	snapRequestId?: string;
 }
 
 export const useActionsState = createPersistantState<
@@ -74,6 +75,7 @@ export function useEnqueueAction<Data>(
 			pubkey?: Uint8Array;
 			walletConnectRequestId?: number;
 			walletConnectTopic?: string;
+			snapRequestId?: string;
 		} = {},
 		actionTimeoutHeight = 0,
 	) {
@@ -82,6 +84,7 @@ export function useEnqueueAction<Data>(
 			tx,
 			pubkey,
 			signDoc,
+			snapRequestId,
 			walletConnectRequestId,
 			walletConnectTopic,
 			...opts
@@ -106,9 +109,10 @@ export function useEnqueueAction<Data>(
 				data,
 				status: QueuedActionStatus.Signed,
 				chainName,
-				tx,
-				signDoc,
 				pubkey,
+				signDoc,
+				snapRequestId,
+				tx,
 				walletConnectRequestId,
 				walletConnectTopic,
 			},

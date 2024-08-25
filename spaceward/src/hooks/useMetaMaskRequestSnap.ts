@@ -12,26 +12,26 @@ import useMetaMaskContext from "./useMetaMaskContext";
  * @returns The `wallet_requestSnaps` wrapper.
  */
 export const useMetaMaskRequestSnap = (
-    snapId = env.snapOrigin,
-    version?: string
+	snapId = env.snapOrigin,
+	version?: string,
 ) => {
-    const request = useMetaMaskRequest();
-    const { setInstalledSnap } = useMetaMaskContext();
+	const request = useMetaMaskRequest();
+	const { setInstalledSnap } = useMetaMaskContext();
 
-    /**
-     * Request the Snap.
-     */
-    const requestSnap = async () => {
-        const snaps = (await request({
-            method: "wallet_requestSnaps",
-            params: {
-                [snapId]: { version },
-            },
-        })) as Record<string, Snap>;
+	/**
+	 * Request the Snap.
+	 */
+	const requestSnap = async () => {
+		const snaps = (await request({
+			method: "wallet_requestSnaps",
+			params: {
+				[snapId]: { version },
+			},
+		})) as Record<string, Snap>;
 
-        // Updates the `installedSnap` context variable since we just installed the Snap.
-        setInstalledSnap(snaps[snapId] ?? null);
-    };
+		// Updates the `installedSnap` context variable since we just installed the Snap.
+		setInstalledSnap(snaps[snapId] ?? null);
+	};
 
-    return requestSnap;
+	return requestSnap;
 };

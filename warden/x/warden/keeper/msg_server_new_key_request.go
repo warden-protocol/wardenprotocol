@@ -14,7 +14,12 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 
 	creator := k.actKeeper.GetActionCreator(ctx)
 
-	if _, err := k.SpacesKeeper.Get(ctx, msg.SpaceId); err != nil {
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = space.EnsureNonce(msg.Nonce); err != nil {
 		return nil, err
 	}
 

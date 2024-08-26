@@ -119,9 +119,9 @@ message MsgNewKeychain {
   string name = 2;
   reserved 3;
   KeychainFees keychain_fees = 4;
-  string description = 6;
-  string url = 7;
-  string keybaseId = 8;
+  string description = 5;
+  string url = 6;
+  string keybaseId = 7;
 }
 
 message MsgNewKeychainResponse { uint64 id = 1; }

@@ -103,36 +103,80 @@ fn test_execute_set_chain_emitter() {
     );
 }
 
-// #[test]
-// fn test_execute_post_message() {
-//     use crate::methods::execute_post_message;
-//     use crate::msg::WormholeExecuteMsg;
-//     use crate::state::WORMHOLE_CORE_CONTRACT;
-//     use cosmwasm_std::testing::mock_dependencies;
-//     use cosmwasm_std::to_json_binary;
-//     use cosmwasm_std::{Binary, CosmosMsg, WasmMsg};
+#[test]
+fn test_execute_post_message() {
+    use crate::methods::execute_instantiate;
+    use crate::methods::execute_post_message;
+    use crate::methods::execute_set_chain_emitter;
+    use crate::msg::GatewayIbcTokenBridgePayload;
+    use crate::msg::InstantiateMsg;
+    use cosmwasm_std::coins;
+    use cosmwasm_std::testing::message_info;
+    use cosmwasm_std::testing::mock_dependencies;
+    use cosmwasm_std::testing::mock_env;
+    use cosmwasm_std::to_json_string;
+    use cosmwasm_std::Binary;
+    use cosmwasm_std::CosmosMsg;
+    use cosmwasm_std::IbcMsg;
 
-//     let mut deps = mock_dependencies();
-//     let wormhole_core = deps.api.addr_make("mock_wormhole_core_bridge");
-//     let message = Binary::from_base64("d2FyZGVuIHRlc3QgbWVzc2FnZQo=").unwrap();
+    let mut deps = mock_dependencies();
+    let env = mock_env();
 
-//     WORMHOLE_CORE_CONTRACT
-//         .save(deps.as_mut().storage, &wormhole_core)
-//         .unwrap();
+    let message = Binary::from_base64("d2FyZGVuIHRlc3QgbWVzc2FnZQo=").unwrap();
+    let admin = deps.api.addr_make("admin");
+    let sender = deps.api.addr_make("sender");
+    let wormhole_ibc_channel_id = "channel-1".to_string();
+    let wormhole_ibc_recipient = deps.api.addr_make("wormhole_ibc_recipient");
+    let wormhole_ibc_sender = deps.api.addr_make("wormhole_ibc_sender");
+    let wormhole_ibc_timeout_sec = 123;
+    let coin = coins(1000, "uward");
+    let ibc_timeout = env.block.time.plus_seconds(wormhole_ibc_timeout_sec).into();
+    let chain_id = 1;
+    let chain_emitter = Binary::from(vec![1; 32]);
+    let payload = to_json_string(&GatewayIbcTokenBridgePayload::GatewayTransferWithPayload {
+        chain: chain_id,
+        contract: chain_emitter.clone(),
+        payload: message.clone(),
+        nonce: 0,
+    })
+    .unwrap();
 
-//     let response = execute_post_message(&deps.as_mut(), 1, &message).unwrap();
+    let msg = InstantiateMsg {
+        admin: String::from(admin.clone()),
+        wormhole_ibc_recipient: wormhole_ibc_recipient.clone().into_string(),
+        wormhole_ibc_sender: wormhole_ibc_sender.clone().into_string(),
+        wormhole_ibc_channel_id: wormhole_ibc_channel_id.clone(),
+        wormhole_ibc_timeout_sec: 123,
+    };
 
-//     assert_eq!(response.messages.len(), 1);
-//     assert_eq!(
-//         response.messages[0].msg,
-//         CosmosMsg::Wasm(WasmMsg::Execute {
-//             contract_addr: wormhole_core.into_string(),
-//             funds: vec![],
-//             msg: to_json_binary(&WormholeExecuteMsg::PostMessage {
-//                 message: message.clone(),
-//                 nonce: 1u32,
-//             })
-//             .unwrap()
-//         })
-//     );
-// }
+    execute_instantiate(&mut deps.as_mut(), &msg).unwrap();
+
+    execute_set_chain_emitter(
+        &mut deps.as_mut(),
+        &message_info(&admin, &[]),
+        chain_id,
+        &chain_emitter,
+    )
+    .unwrap();
+
+    let response = execute_post_message(
+        &mut deps.as_mut(),
+        &env,
+        &mut message_info(&sender, &coin.clone()),
+        chain_id,
+        &Binary::from_base64("d2FyZGVuIHRlc3QgbWVzc2FnZQo=").unwrap(),
+    )
+    .unwrap();
+
+    assert_eq!(response.messages.len(), 1);
+    assert_eq!(
+        response.messages[0].msg,
+        CosmosMsg::Ibc(IbcMsg::Transfer {
+            channel_id: wormhole_ibc_channel_id,
+            to_address: wormhole_ibc_recipient.clone().into_string(),
+            amount: coin.get(0).unwrap().clone(),
+            timeout: ibc_timeout,
+            memo: Some(payload.clone())
+        })
+    );
+}

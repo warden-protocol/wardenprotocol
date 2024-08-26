@@ -72,7 +72,7 @@ To configure `wardend`, do the following:
 
    ```bash
    # set minimum gas price & peers
-   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
+   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250uward"/' app.toml
    ```
 
    <PersistentPeers

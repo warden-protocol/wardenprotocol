@@ -6,7 +6,7 @@ import {
 	NetworkIconsTransparent,
 	TokenIcons,
 } from "@/components/ui/icons-crypto";
-import { AssetPlaceholder } from "@/features/assets/AssetRow";
+import { AssetIcon } from "@/features/assets/AssetRow";
 import { Icons } from "@/features/dashboard/icons";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
@@ -25,11 +25,13 @@ const Network = ({
 	color?: boolean;
 	network: string;
 }) => {
-	const Icon =
-		(color ? NetworkIcons : NetworkIconsTransparent)[network] ??
-		AssetPlaceholder;
-
-	return <Icon className={clsx(className, "w-4 h-4 object-contain")} />;
+	return (
+		<AssetIcon
+			type={color ? "network" : "network-transparent"}
+			value={network}
+			className={clsx(className, "w-4 h-4 object-contain")}
+		/>
+	);
 };
 
 const AssetSelector = ({
@@ -157,10 +159,6 @@ const AssetSelector = ({
 								)}
 							</div>
 							{chains.map((chain) => {
-								const Network =
-									NetworkIconsTransparent[chain] ??
-									AssetPlaceholder;
-
 								return (
 									<div
 										onClick={() => {
@@ -170,7 +168,11 @@ const AssetSelector = ({
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
 										key={chain}
 									>
-										<Network className="w-6 h-6 object-contain cursor-pointer invert dark:invert-0" />
+										<AssetIcon
+											type="network-transparent"
+											value={chain}
+											className="w-6 h-6 object-contain cursor-pointer invert dark:invert-0"
+										/>
 										{capitalize(chain)}
 
 										{chain === filterByChain && (
@@ -231,10 +233,6 @@ const AssetSelector = ({
 										withBalance[chainName]?.[token],
 								)
 								.map((item, key) => {
-									const Token =
-										TokenIcons[item.token] ??
-										AssetPlaceholder;
-
 									return (
 										<div
 											className="py-1 cursor-pointer flex items-center gap-3"
@@ -252,7 +250,12 @@ const AssetSelector = ({
 												onClose();
 											}}
 										>
-											<Token className="w-10 h-10 " />
+											<AssetIcon
+												type="token"
+												value={item.token}
+												logo={item.logo}
+												className="w-10 h-10 "
+											/>
 
 											<div>
 												<div>{item.token}</div>
@@ -321,8 +324,6 @@ const AssetSelector = ({
 								!withBalance[chainName]?.[token],
 						)
 						.map((item, key) => {
-							const Token =
-								TokenIcons[item.token] ?? AssetPlaceholder;
 							return (
 								<div
 									className="p-4 border-t-[1px] border-solid border-border-quaternary first:border-[0px] cursor-pointer flex items-center gap-3"
@@ -339,7 +340,12 @@ const AssetSelector = ({
 										onClose();
 									}}
 								>
-									<Token className="w-10 h-10" />
+									<AssetIcon
+										type="token"
+										value={item.token}
+										logo={item.logo}
+										className="w-10 h-10"
+									/>
 
 									<div>
 										<div>{item.token}</div>

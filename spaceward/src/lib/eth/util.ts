@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ETH_CHAINID_MAP, ETH_RPC_URL } from "./constants";
+import { ETH_CHAINID_MAP, ETH_CHAIN_CONFIG } from "./constants";
 
 export const REVERSE_ETH_CHAINID_MAP = Object.fromEntries(
 	Object.entries(ETH_CHAINID_MAP).map(([k, v]) => [v, k]),
@@ -14,17 +14,17 @@ export const isSupportedNetwork = (
 	Boolean(network && network in ETH_CHAINID_MAP);
 
 export const getProvider = (type: SupportedNetwork) => {
-	if (!providers[type]) {
-		const chainId = ETH_CHAINID_MAP[type];
+	const chainId = ETH_CHAINID_MAP[type];
+	const config = ETH_CHAIN_CONFIG[chainId];
+	const token = config?.token ?? "ETH";
 
-		if (!chainId) {
+	if (!providers[type]) {
+		if (!chainId || !config) {
 			throw new Error(`Unsupported network: ${type}`);
 		}
 
 		let retry = 0;
-		const getUrl = () =>
-			ETH_RPC_URL[chainId][retry % ETH_RPC_URL[chainId].length];
-
+		const getUrl = () => config.rpc[retry % config.rpc.length];
 		const url = getUrl();
 		const req = new ethers.FetchRequest(url);
 		req.timeout = 10000;
@@ -52,8 +52,8 @@ export const getProvider = (type: SupportedNetwork) => {
 		});
 	}
 
-	const provider = providers[type]!.provider;
-	return provider;
+	const provider = providers[type];
+	return { provider, token };
 };
 
 export const getProviderByChainId = (chainId: string) => {
@@ -63,7 +63,7 @@ export const getProviderByChainId = (chainId: string) => {
 		throw new Error(`Unsupported chainId: ${chainId}`);
 	}
 
-	return getProvider(network);
+	return getProvider(network).provider;
 };
 
 interface KnownAddress {

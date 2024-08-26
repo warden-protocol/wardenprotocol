@@ -256,9 +256,9 @@ export const COSMOS_CHAINS: {
 	{
 		chainName: "sei",
 	},
-	{
+	/*{
 		chainName: "thorchain",
-	},
+	},*/
 	{
 		chainName: "cosmoshubtestnet",
 		feeAmount: "1000",

@@ -187,6 +187,15 @@ func (f *Faucet) batchProcessInterval() {
 	}
 }
 
+func addressInBatch(batch []string, addr string) bool {
+	for _, a := range batch {
+		if a == addr {
+			return true
+		}
+	}
+	return false
+}
+
 func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	f.Lock()
 	defer f.Unlock()
@@ -201,6 +210,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		if err := validAddress(addr); err != nil {
 			return "", http.StatusUnprocessableEntity, err
 		}
+		if addressInBatch(f.Batch, addr) {
+			return "", http.StatusUnprocessableEntity, fmt.Errorf("address already in batch")
+		}
+
 		f.Batch = append(f.Batch, addr)
 		return "", 0, nil
 	}

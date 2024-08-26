@@ -13,7 +13,7 @@ require (
 	cosmossdk.io/api v0.7.5
 	cosmossdk.io/client/v2 v2.0.0-beta.1
 	cosmossdk.io/collections v0.4.0
-	cosmossdk.io/core v0.11.0
+	cosmossdk.io/core v0.11.1
 	cosmossdk.io/depinject v1.0.0
 	cosmossdk.io/errors v1.0.1
 	cosmossdk.io/log v1.3.1
@@ -27,10 +27,10 @@ require (
 	github.com/CosmWasm/wasmd v0.51.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/bufbuild/buf v1.30.1
-	github.com/cometbft/cometbft v0.38.10
+	github.com/cometbft/cometbft v0.38.11
 	github.com/cosmos/cosmos-db v1.0.2
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
-	github.com/cosmos/cosmos-sdk v0.50.8
+	github.com/cosmos/cosmos-sdk v0.50.9
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/gogoproto v1.5.0
 	github.com/cosmos/ibc-apps/modules/ibc-hooks/v8 v8.0.0-20240530162148-4827cf263165
@@ -65,7 +65,7 @@ require (
 	cloud.google.com/go/storage v1.38.0 // indirect
 	connectrpc.com/connect v1.16.0 // indirect
 	connectrpc.com/otelconnect v0.7.0 // indirect
-	cosmossdk.io/x/tx v0.13.3 // indirect
+	cosmossdk.io/x/tx v0.13.4 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.2 // indirect

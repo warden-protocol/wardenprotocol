@@ -15,6 +15,7 @@ export interface BalanceEntry {
 	type: "eip155:native" | "eip155:erc20" | "osmosis";
 	token: string;
 	title: string;
+	logo?: string;
 }
 
 export type CosmosQueryClient = UnwrapPromise<

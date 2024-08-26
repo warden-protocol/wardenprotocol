@@ -1,0 +1,90 @@
+syntax = "proto3";
+package slinky.oracle.v1;
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "slinky/oracle/v1/genesis.proto";
+import "slinky/types/v1/currency_pair.proto";
+
+option go_package = "github.com/skip-mev/slinky/x/oracle/types";
+
+// Query is the query service for the x/oracle module.
+service Query {
+  // Get all the currency pairs the x/oracle module is tracking price-data for.
+  rpc GetAllCurrencyPairs(GetAllCurrencyPairsRequest)
+      returns (GetAllCurrencyPairsResponse) {
+    option (google.api.http).get = "/slinky/oracle/v1/get_all_tickers";
+  };
+
+  // Given a CurrencyPair (or its identifier) return the latest QuotePrice for
+  // that CurrencyPair.
+  rpc GetPrice(GetPriceRequest) returns (GetPriceResponse) {
+    option (google.api.http).get = "/slinky/oracle/v1/get_price";
+  };
+
+  rpc GetPrices(GetPricesRequest) returns (GetPricesResponse) {
+    option (google.api.http).get = "/slinky/oracle/v1/get_prices";
+  }
+
+  // Get the mapping of currency pair ID -> currency pair. This is useful for
+  // indexers that have access to the ID of a currency pair, but no way to get
+  // the underlying currency pair from it.
+  rpc GetCurrencyPairMapping(GetCurrencyPairMappingRequest)
+      returns (GetCurrencyPairMappingResponse) {
+    option (google.api.http).get =
+        "/slinky/oracle/v1/get_currency_pair_mapping";
+  }
+}
+
+message GetAllCurrencyPairsRequest {}
+
+// GetAllCurrencyPairsResponse returns all CurrencyPairs that the module is
+// currently tracking.
+message GetAllCurrencyPairsResponse {
+  repeated slinky.types.v1.CurrencyPair currency_pairs = 1
+      [ (gogoproto.nullable) = false ];
+}
+
+// GetPriceRequest either takes a CurrencyPair, or an identifier for the
+// CurrencyPair in the format base/quote.
+message GetPriceRequest {
+  // CurrencyPair represents the pair that the user wishes to query.
+  slinky.types.v1.CurrencyPair currency_pair = 1
+      [ (gogoproto.nullable) = false ];
+}
+
+// GetPriceResponse is the response from the GetPrice grpc method exposed from
+// the x/oracle query service.
+message GetPriceResponse {
+  // QuotePrice represents the quote-price for the CurrencyPair given in
+  // GetPriceRequest (possibly nil if no update has been made)
+  QuotePrice price = 1 [ (gogoproto.nullable) = true ];
+  // nonce represents the nonce for the CurrencyPair if it exists in state
+  uint64 nonce = 2;
+  // decimals represents the number of decimals that the quote-price is
+  // represented in. For Pairs where ETHEREUM is the quote this will be 18,
+  // otherwise it will be 8.
+  uint64 decimals = 3;
+  // ID represents the identifier for the CurrencyPair.
+  uint64 id = 4;
+}
+
+// GetPricesRequest takes an identifier for the CurrencyPair
+// in the format base/quote.
+message GetPricesRequest { repeated string currency_pair_ids = 1; }
+
+// GetPricesResponse is the response from the GetPrices grpc method exposed from
+// the x/oracle query service.
+message GetPricesResponse {
+  repeated GetPriceResponse prices = 1 [ (gogoproto.nullable) = false ];
+}
+
+// GetCurrencyPairMappingRequest is the GetCurrencyPairMapping request type.
+message GetCurrencyPairMappingRequest {}
+
+// GetCurrencyPairMappingResponse is the GetCurrencyPairMapping response type.
+message GetCurrencyPairMappingResponse {
+  // currency_pair_mapping is a mapping of the id representing the currency pair
+  // to the currency pair itself.
+  map<uint64, slinky.types.v1.CurrencyPair> currency_pair_mapping = 1
+      [ (gogoproto.nullable) = false ];
+}

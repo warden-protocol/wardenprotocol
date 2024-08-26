@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -13,7 +13,7 @@ func (k msgServer) AddKeychainWriter(goCtx context.Context, msg *types.MsgAddKey
 
 	_, err := sdk.AccAddressFromBech32(msg.Writer)
 	if err != nil {
-		return nil, fmt.Errorf("invalid writer address: %s", err)
+		return nil, errors.Wrapf(types.ErrInvalidKeychainWriterAddress, "%v", err)
 	}
 
 	kr, err := k.keychains.Get(ctx, msg.KeychainId)
@@ -22,11 +22,11 @@ func (k msgServer) AddKeychainWriter(goCtx context.Context, msg *types.MsgAddKey
 	}
 
 	if kr.IsWriter(msg.Writer) {
-		return nil, fmt.Errorf("writer is already a writer of the keychain")
+		return nil, types.ErrDuplicateKeychainWriter
 	}
 
 	if !kr.IsAdmin(msg.Creator) {
-		return nil, fmt.Errorf("tx creator is no keychain admin")
+		return nil, types.ErrNotKeychainAdmin
 	}
 
 	kr.AddWriter(msg.Writer)

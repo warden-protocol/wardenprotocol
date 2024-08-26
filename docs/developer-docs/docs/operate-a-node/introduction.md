@@ -20,7 +20,7 @@ This section explains how to run a node and become a validator.
 
 These are the basic steps to get started:
 
-- Download the [wardend binary](https://github.com/warden-protocol/wardenprotocol/releases) or run it in a container and [join Buenavista](networks/join-buenavista).
+- Download the [wardend binary](https://github.com/warden-protocol/wardenprotocol/releases) or run it in a container and [join Buenavista](buenavista-testnet/join-buenavista).
 - To become a validator, follow this guide: [Create a validator](create-a-validator).
 - To interact with a node, use the [Node API](node-api-reference).
 
@@ -29,5 +29,5 @@ We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-nod
 :::
 
 :::tip
-If you're [building an Omnichain Application](/build-an-oapp/introduction) and wish to run a node locally for testing purposes, check this guide: [Run a local chain](/build-an-oapp/test/run-a-local-chain).
+If you're [building an Omnichain Application](/build-an-app/introduction) and wish to run a node locally for testing purposes, check this guide: [Run a local chain](/build-an-app/test/run-a-local-chain).
 :::

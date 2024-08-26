@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
-import { useModalContext } from "@/context/modalContext";
 import { SessionTypes } from "@walletconnect/types";
+import { useModalState } from "./state";
+import { ModalParams } from "./types";
+import AddressAvatar from "@/components/AddressAvatar";
 
-export default function ConnectedModal() {
+export default function ConnectedModal(props: ModalParams<{}>) {
 	const { w, activeSessions } = useWeb3Wallet(
 		"wss://relay.walletconnect.org",
 	);
 
-	const { dispatch: modalDispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 
 	const sessionsByApp = activeSessions.reduce<
 		Record<string, SessionTypes.Struct[]>
@@ -26,7 +28,7 @@ export default function ConnectedModal() {
 		return next;
 	}, {});
 
-	return (
+	return props.hidden ? null : (
 		<div className="max-w-[520px] w-[520px] pb-5">
 			<div className="flex flex-col gap-12">
 				<p className="text-5xl font-display font-bold pb-2 tracking-[0.24px] text-center">
@@ -69,15 +71,20 @@ export default function ConnectedModal() {
 
 									<IconsAssets.chevronRight className="ml-auto" />
 								</a>
-
 								{sessions.map((s) => (
-									<div className="flex gap-3 items-center" key={s.topic}>
-										<img
-											src="/images/somewallet.png"
+									<div
+										className="flex gap-3 items-center"
+										key={s.topic}
+									>
+										<AddressAvatar
+											seed={
+												localStorage.getItem(
+													`WALLETCONNECT_SESSION_WS_${s.topic}`,
+												) || ""
+											}
+											disableTooltip
 											className="w-10 h-10 object-contain shrink-0"
-											alt=""
 										/>
-
 										<div>
 											Space #
 											{localStorage.getItem(
@@ -109,12 +116,9 @@ export default function ConnectedModal() {
 				})}
 
 				<Button
-					onClick={modalDispatch.bind(null, {
-						type: "set",
-						payload: {
-							type: "walletconnect",
-							params: undefined,
-						},
+					onClick={setModal.bind(null, {
+						type: "walletconnect",
+						params: undefined,
 					})}
 					className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold"
 				>

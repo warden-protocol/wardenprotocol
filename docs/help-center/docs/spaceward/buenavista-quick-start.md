@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Buenavista Quick start
+# Buenavista quick start
 
 ## Overview
 
@@ -14,7 +14,7 @@ Get ready to embark on an exciting journey into the future of decentralized fina
 
 :::warning
 - This is a **testnet environment**. It's aimed for testing and can break at any time due to unforeseen circumstances.
-- You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, your might lose your assets.
+- You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.
 :::
 
 ## Get started
@@ -26,26 +26,22 @@ The following is a brief overview explaining how to start using SpaceWard. For m
     - 👉 [Keplr](https://www.keplr.app/download)
     - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension)
 
-2. 👉 [Connect Your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/) and follow the prompts.
+2. 👉 [Connect your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/), click **Connect**, and follow the prompts.
 
-3. 👉 [Get test WARD](get-test-ward): On the top right, select your connected wallet and click **GET WARD**.
+3. 👉 [Get test WARD](get-test-ward): Click **Get WARD**. You'll be redirected to a faucet where you can get some WARD.
 
-4. 👉 [Create a Space](create-a-space): On the top left, click **Active Space** and then **Create a New Space**.
+4. 👉 [Create a Space](manage-spaces): Click **Create a new Space**. Approve it in your connected wallet.
 
-5. 👉 [Request a new Key](request-a-new-key): In the left menu, navigate to **Keys** and click **Create Key**.
+5. 👉 [Request a key](manage-keys#request-a-key): In the left menu, navigate to **Keys** and click **New key**. Then select a Keychain, click **Create key**, and approve in your connected wallet.
 
-6. Fund your wallet: Select your new key, click **Receive** to get its address, and receive some Sepolia ETH from these faucets:
+6. [Fund your wallet](manage-assets#receive-assets): Click the **↓** icon on your new key and select the **ETH Sepolia** asset. Then copy your address and receive some Sepolia ETH from these faucets:
 
     - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
     - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
 
-7. 👉 [Use WalletConnect](use-walletconnect). Click the **WalletConnect** icon to access UniSwap or any other dApp supporting Sepolia.
+7. 👉 [Use WalletConnect](use-dapps#use-walletconnect): Click the **WalletConnect** icon in the right part of the screen to access UniSwap or any other dApp supporting Sepolia.
 
 Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
-
-## Video tutorial
-
-<iframe width="100%" height="444" src="https://www.youtube.com/embed/JZdpHGyOLoY?si=zs-wRqd-PuH1-nZk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Provide feedback
 

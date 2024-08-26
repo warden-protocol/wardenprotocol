@@ -1,4 +1,5 @@
 import { cosmos } from "@wardenprotocol/wardenjs";
+import { GetPriceResponse } from "@wardenprotocol/wardenjs/codegen/slinky/oracle/v1/query";
 import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
@@ -24,3 +25,12 @@ export interface BalanceQueryResult {
 	results: BalanceEntry[];
 	key: QueryKeyResponse;
 }
+
+export type PriceMapSlinky = Record<
+	string,
+	| undefined
+	| (GetPriceResponse & {
+			ticker: string;
+			token: string;
+	  })
+>;

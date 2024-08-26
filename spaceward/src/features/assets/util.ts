@@ -1,3 +1,5 @@
+import { Chain } from "@chain-registry/types";
+import { chains } from "chain-registry";
 import { InterfaceAbi } from "ethers";
 
 type UnwrapArray<T> = T extends readonly (infer U)[] ? U : never;
@@ -20,23 +22,31 @@ export function getAbiItem<ABI extends InterfaceAbi, F extends string>(
 	return abi.find((item) => item.name === name) as GetAbiItem<ABI, F>;
 }
 
-const USDollar = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "USD",
-});
+const _chains: Record<string, Chain | undefined | false> = {};
 
-const Euro = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "EUR",
-});
+/** @deprecated fixme chain names */
+export const isOsmosis = (chainName?: string) => {
+	if (!chainName) {
+		return false;
+	}
 
-const GBP = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "GBP",
-});
+	if (typeof _chains[chainName] === "undefined") {
+		const entry = chains.find((chain) => chain.chain_name === chainName);
+		_chains[chainName] = entry ?? false;
+	}
 
-export const FIAT_FORMAT = {
-	usd: USDollar,
-	eur: Euro,
-	gbp: GBP,
-} as const;
+	return typeof _chains[chainName] === "object";
+};
+
+export const getCosmosChain = (chainName?: string) => {
+	if (!chainName) {
+		return;
+	}
+
+	if (typeof _chains[chainName] === "undefined") {
+		const entry = chains.find((chain) => chain.chain_name === chainName);
+		_chains[chainName] = entry ?? false;
+	}
+
+	return _chains[chainName] || undefined;
+};

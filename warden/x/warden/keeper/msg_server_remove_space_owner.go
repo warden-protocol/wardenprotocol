@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -19,7 +19,7 @@ func (k msgServer) RemoveSpaceOwner(ctx context.Context, msg *types.MsgRemoveSpa
 	}
 
 	if !space.IsOwner(msg.Owner) {
-		return nil, fmt.Errorf("owner does not exist")
+		return nil, errors.Wrapf(types.ErrNotSpaceOwner, "%s is not an owner of the space", msg.Owner)
 	}
 
 	space.RemoveOwner(msg.Owner)

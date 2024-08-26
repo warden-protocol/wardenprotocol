@@ -50,10 +50,18 @@ export const useWebRTCTransport = () => {
 
 			libp2p.addEventListener("self:peer:update", onSelfPeerUpdate);
 			libp2p.services.pubsub.addEventListener("message", onPubsubMessage);
+			const connections = libp2p.getConnections();
+			const multiaddrs = libp2p.getMultiaddrs();
 
-			await libp2p.dial(
-				multiaddr(`/dns4/${host}/tcp/${port}/wss/p2p/${peerId}`),
-			);
+			if (multiaddrs.length) {
+				setMultiaddrs(multiaddrs);
+			}
+
+			if (!connections.find((c) => c.remotePeer.toString() === peerId)) {
+				await libp2p.dial(
+					multiaddr(`/dns4/${host}/tcp/${port}/wss/p2p/${peerId}`),
+				);
+			}
 
 			await libp2p.services.pubsub.subscribe(topic);
 

@@ -34,7 +34,7 @@ export interface TxOptions {
 export enum TxStatus {
 	Failed = 'Transaction Failed',
 	Successful = 'Transaction Successful',
-	Broadcasting = 'Transaction Broadcasting',
+	Broadcasting = 'Transaction confirmation in progress',
 }
 
 export function useTx() {

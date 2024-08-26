@@ -56,7 +56,7 @@ export const onKeyringRequest: OnKeyringRequestHandler = async ({
   const keyring = await getKeyring();
   return handleKeyringRequest(keyring, request).then((response) => {
     if (!response) {
-      return {} as Json;
+      return null; // {} as Json;
     }
     return response;
   });

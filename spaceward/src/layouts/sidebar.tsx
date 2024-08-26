@@ -7,21 +7,19 @@ import { Icons as AssetIcons } from "@/components/ui/icons-assets";
 import {
 	AppWindow,
 	ArrowLeftRight,
-	Cog,
 	Coins,
 	Key,
-	Plus,
 	Grid2X2,
 	FolderKey,
 	User2Icon,
 	HomeIcon,
-	HelpCircleIcon,
-	OrbitIcon,
 	FileCheckIcon,
-	BookUserIcon,
+	CircleCheckBig,
+	Layers3,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SpaceSelector } from "@/features/spaces";
+import ActionSidebar from "@/features/actions/Sidebar";
 
 const spaceNavItems = [
 	{
@@ -29,11 +27,6 @@ const spaceNavItems = [
 		icon: <HomeIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/",
 	},
-	// {
-	// 	label: "Spaces",
-	// 	icon: <OrbitIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/spaces",
-	// },
 	{
 		label: "Keys",
 		icon: <Key strokeWidth={1} className="h-4 w-4 mr-4" />,
@@ -50,31 +43,21 @@ const spaceNavItems = [
 		url: "/owners",
 	},
 	{
-		label: "Intents",
+		label: "Rules",
 		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-		url: "/intents",
+		url: "/rules",
 	},
 ];
 
 const globalNavItems = [
 	{
 		label: "Staking",
-		icon: (
-			<AssetIcons.staking
-				stroke="currentColor"
-				className="h-4 w-4 mr-4"
-			/>
-		),
+		icon: <Layers3 strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/staking",
 	},
 	{
 		label: "Governance",
-		icon: (
-			<AssetIcons.governance
-				stroke="currentColor"
-				className="h-4 w-4 mr-4"
-			/>
-		),
+		icon: <CircleCheckBig strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/governance",
 	},
 	{
@@ -82,11 +65,6 @@ const globalNavItems = [
 		icon: <ArrowLeftRight strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/actions",
 	},
-	// {
-	// 	label: "Address Book",
-	// 	icon: <BookUserIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/address-book",
-	// },
 	{
 		label: "Keychains",
 		icon: <FolderKey strokeWidth={1} className="h-4 w-4 mr-4" />,
@@ -102,11 +80,6 @@ const globalNavItems = [
 		icon: <AppWindow strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/apps",
 	},
-	// {
-	// 	label: "Settings",
-	// 	icon: <Cog strokeWidth={1} className="h-4 w-4 mr-4" />,
-	// 	url: "/settings",
-	// },
 ];
 
 export function InnerSidebar() {
@@ -114,15 +87,20 @@ export function InnerSidebar() {
 	return (
 		<div className="w-[calc(100%-16px)] md:w-60 xl:flex flex-col overflow-scroll no-scrollbar pb-20 bg-card m-2 rounded-xl">
 			<div>
-				<div className="my-6 mx-6">
-					<a href="/" className="items-center">
-						<Icons.logo className="h-6 w-auto hidden md:block" />
-						{/* <Icons.icon className="h-8 ml-3 w-auto md:hidden block" /> */}
-					</a>
+				<div className="overflow-hidden">
+					<div className="my-6 mx-6 relative z-20">
+						<a
+							href="/"
+							className="items-center justify-center flex"
+						>
+							<Icons.logo className="h-6 w-auto hidden md:block invert dark:invert-0" />
+						</a>
+					</div>
+					<div className="px-2 relative z-10">
+						<SpaceSelector />
+					</div>
 				</div>
-				<div className="px-2">
-					<SpaceSelector />
-				</div>
+				<ActionSidebar />
 				<div>
 					<div className="space-y-4 py-2">
 						<div className="px-2 py-0">
@@ -137,8 +115,8 @@ export function InnerSidebar() {
 												size: "lg",
 											}),
 											location.pathname === item.url
-												? "bg-background text-accent"
-												: "bg-transparent text-muted-foreground",
+												? "bg-fill-quaternary"
+												: "bg-transparent text-foreground",
 											"w-full justify-start px-4 h-12 text-sm hover:bg-background hover:text-accent rounded-lg",
 										)}
 									>
@@ -152,8 +130,13 @@ export function InnerSidebar() {
 				</div>
 			</div>
 			<div>
-				<Separator className="bg-background" />
+				<Separator className="bg-border-quaternary" />
+
 				<div className="flex flex-col space-y-1 py-2 px-2">
+					<div className="px-4 h-12 flex items-center text-sm text-label-tertiary">
+						Global
+					</div>
+
 					{globalNavItems.map((item) => (
 						<Link
 							to={item.url}
@@ -164,8 +147,8 @@ export function InnerSidebar() {
 									size: "lg",
 								}),
 								location.pathname === item.url
-									? "bg-background text-accent"
-									: "bg-transparent text-muted-foreground",
+									? "bg-fill-quaternary"
+									: "bg-transparent text-foreground",
 								"w-full justify-start px-4 h-12 text-sm hover:bg-background hover:text-accent rounded-lg",
 							)}
 						>

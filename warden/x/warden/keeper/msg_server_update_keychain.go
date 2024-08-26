@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -11,6 +10,10 @@ import (
 func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKeychain) (*types.MsgUpdateKeychainResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	if err := msg.KeychainFees.EnsureValid(); err != nil {
+		return nil, err
+	}
+
 	kr, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err
@@ -18,7 +21,7 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 
 	// Check if the requester is an admin
 	if !kr.IsAdmin(msg.Creator) {
-		return nil, fmt.Errorf("keychain updates should be requested by admins")
+		return nil, types.ErrNotKeychainAdmin
 	}
 
 	kr.SetFees(msg.KeychainFees)

@@ -10,6 +10,15 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
+func (k Keeper) IsValidRule(ctx context.Context, id uint64) error {
+	if id == 0 {
+		// we consider 0 as a valid rule id for the "default" rule
+		return nil
+	}
+	_, err := k.GetRule(ctx, id)
+	return err
+}
+
 func (k Keeper) GetRule(ctx context.Context, id uint64) (types.Rule, error) {
 	return k.rules.Get(ctx, id)
 }

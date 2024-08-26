@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	"crypto/ed25519"
-	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -18,7 +18,7 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 	}
 
 	if req.Status != types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING {
-		return nil, fmt.Errorf("request is not pending, can't be updated")
+		return nil, types.ErrRequestNotPending
 	}
 
 	key, err := k.KeysKeeper.Get(ctx, req.KeyId)
@@ -32,7 +32,7 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 	}
 
 	if !keychain.IsWriter(msg.Creator) {
-		return nil, fmt.Errorf("only one writer of the keychain can update signature requests")
+		return nil, types.ErrNotKeychainWriter
 	}
 
 	switch msg.Status {
@@ -43,14 +43,14 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 		switch key.Type {
 		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
 			if l := len(sigData); l != 64 && l != 65 {
-				return nil, fmt.Errorf("invalid ecdsa signature %x of length %v", sigData, l)
+				return nil, errors.Wrapf(types.ErrInvalidSignature, "invalid ecdsa signature %x of length %v (expected 64 or 65)", sigData, l)
 			}
 		case types.KeyType_KEY_TYPE_EDDSA_ED25519:
 			if l := len(sigData); l != ed25519.SignatureSize {
-				return nil, fmt.Errorf("invalid eddsa signature %x of length %v", sigData, l)
+				return nil, errors.Wrapf(types.ErrInvalidSignature, "invalid eddsa signature %x of length %v (expected %v)", sigData, l, ed25519.SignatureSize)
 			}
 		default:
-			return nil, fmt.Errorf("invalid key type: %v", key.Type.String())
+			return nil, errors.Wrap(types.ErrUnsupportedKeyType, key.Type.String())
 		}
 
 		// update sign request with signed data
@@ -85,7 +85,7 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 		}
 
 	default:
-		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
+		return nil, errors.Wrapf(types.ErrInvalidRequestStatusUpdate, "invalid status field, should be either fulfilled/rejected, got %s", req.Status.String())
 	}
 
 	return &types.MsgFulfilSignRequestResponse{}, nil

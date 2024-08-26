@@ -9,6 +9,10 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import clsx from "clsx";
 import { Input } from "@/components/ui/input";
+import { useModalState } from "./state";
+import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
+import KeyRequestStatusbar from "../keys/KeyRequestStatus";
+import AddressAvatar from "@/components/AddressAvatar";
 
 interface WCBindSpaceProps {
 	enabled: boolean;
@@ -29,10 +33,12 @@ export default function WCBindSpace({
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
+	const { state } = useRequestKey();
 	const { useSpacesByOwner, useKeysBySpaceId } = useQueryHooks();
 	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
 	const [isSelectVesisble, setIsSelectVisible] = useState(false);
+	const { setData: setModal } = useModalState();
 
 	const spacesQuery = useSpacesByOwner({
 		request: {
@@ -94,11 +100,13 @@ export default function WCBindSpace({
 				onClick={() => setIsSelectVisible(true)}
 				className="flex flex-row w-full relative cursor-pointer"
 			>
-				<img
-					src="/images/somewallet.png"
-					className="w-10 h-10 object-contain absolute left-4 top-1/2 -translate-y-1/2"
-					alt=""
-				/>
+				<div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center">
+					<AddressAvatar
+						seed={pairedSpace}
+						disableTooltip
+						className="w-10 h-10 object-contain"
+					/>
+				</div>
 				{pairedSpace && (
 					<div className="absolute left-[68px] top-3 text-xs text-muted-foreground">
 						Space to connect
@@ -124,28 +132,28 @@ export default function WCBindSpace({
 
 				{isSelectVesisble &&
 					(spacesQuery.data?.spaces.length ?? 0) > 1 && (
-						<div className="absolute left-0 -bottom-[6px] translate-y-full bg-bg-elevated rounded-xl w-full py-2 text-left">
+						<div className="absolute left-0 -bottom-[6px] translate-y-full bg-card rounded-xl w-full py-2 text-left">
 							{spacesQuery.data?.spaces.map((w) =>
 								w ? (
 									<div
-										className="flex items-center gap-3 py-3 px-5 hover:bg-card transition-all duration-200 cursor-pointer"
+										className="flex items-center gap-3 py-3 px-5 hover:bg-fill-quaternary transition-all duration-200 cursor-pointer"
 										onClick={(e) => {
 											e.stopPropagation();
 											setPairedSpace(w.id.toString());
 											setIsSelectVisible(false);
 										}}
 									>
-										<img
-											src="/images/somewallet.png"
+										<AddressAvatar
+											seed={w.id.toString()}
+											disableTooltip
 											className="w-10 h-10 object-contain"
-											alt=""
 										/>
 										<div>
-											{w.id.toString() === spaceId && (
+											{/* {w.id.toString() === spaceId && (
 												<div className="text-label-secondary text-xs">
 													Active space
 												</div>
-											)}
+											)} */}
 											#{w.id.toString()}
 										</div>
 
@@ -160,23 +168,44 @@ export default function WCBindSpace({
 			</div>
 
 			<div className="flex flex-col gap-2">
-				<Button
-					disabled={!enabled || loading || !pairedSpace}
-					onClick={onApprove.bind(
-						null,
-						proposal,
-						pairedSpace,
-						addresses,
-					)}
-					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
-				>
-					{loading ? "Loading..." : "Approve"}
-				</Button>
+				{!keysQuery.data?.keys.length ? (
+					state === KeyRequesterState.IDLE ? (
+						<Button
+							disabled={loading || !pairedSpace}
+							onClick={setModal.bind(null, {
+								background: { walletconnect: {} },
+								type: "create-key",
+								params: {
+									next: "walletconnect",
+									spaceId: pairedSpace,
+								},
+							})}
+							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+						>
+							Create key
+						</Button>
+					) : (
+						<KeyRequestStatusbar className="h-14 mx-0 px-4" />
+					)
+				) : (
+					<Button
+						disabled={!enabled || loading || !pairedSpace}
+						onClick={onApprove.bind(
+							null,
+							proposal,
+							pairedSpace,
+							addresses,
+						)}
+						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+					>
+						{loading ? "Loading..." : "Approve"}
+					</Button>
+				)}
 
 				<Button
 					disabled={!_enabled}
 					onClick={onReject.bind(null, proposal)}
-					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
 				>
 					Cancel
 				</Button>

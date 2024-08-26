@@ -12,7 +12,7 @@ This guide will walk you through the process of building a [Keychain](/learn/glo
 
 You need to install the following:
 
-- [Go](https://golang.org/dl/) 1.22 or later
+- [Go](https://golang.org/dl/) 1.23 or later
 - `make`
 
 ## 1. Prepare the chain
@@ -21,8 +21,8 @@ You need to install the following:
 
 You can:
 
-- [Run a local chain](/build-an-oapp/test/run-a-local-chain)
-- [Connect to our Buenavista testnet](/operate-a-node/networks/join-buenavista)
+- [Run a local chain](/build-an-app/test/run-a-local-chain)
+- [Connect to our Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista)
 
 For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain and its Writers and referenced as `<your-key>` in the following commands.
 
@@ -53,11 +53,9 @@ You need to register your Keychain entity on-chain.
     ```bash
     wardend tx warden new-keychain \
       --description 'My Keychain' \
-      --keychain-fees \
-      '{"key_req": [{"amount": "100", "denom": "uward"}], \
-      "sig_req": [{"amount": "0", "denom": "uward"}]}' \
+     --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"uward\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"uward\"}]}" \
       --from <your-key> \
-      --chain-id wardenprotocol
+      --chain-id warden
     ```
 
     Specify the following details:
@@ -67,7 +65,7 @@ You need to register your Keychain entity on-chain.
          - `key_req`: A fee in uWARD for creating a key pair
          - `key_req`: A fee in uWARD for signing a transaction
     - `from`: Your local account
-    - `chain-id`: The chain ID – `wardenprotocol`
+    - `chain-id`: The chain ID – `warden`
 
 3. A new Keychain object will be created on-chain with its dedicated [Keychain ID](/learn/glossary#keychain-id). Get the ID:
     
@@ -97,9 +95,9 @@ To add a Keychain Writer, take these steps:
       type: local
     
     
-    **Important** write this mnemonic phrase in a safe place. It is the only way to recover your account if you ever forget your     password.
+    **Important** write this mnemonic phrase in a safe place. It is the only way to recover your account if you ever forget your password.
     
-    virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg     bird mask more trick
+    virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick
     ```
 
     :::tip
@@ -114,7 +112,7 @@ To add a Keychain Writer, take these steps:
     wardend tx bank send <your-key> \
       $(wardend keys show -a my-keychain-writer) \
       1000000uward \
-      --chain-id wardenprotocol
+      --chain-id warden
     ```
 ## 2. Build a Go app
 
@@ -198,7 +196,7 @@ func main() {
         Logger: logger, // not required, but recommended
 
         // setup the connection to the Warden Protocol node
-        ChainID:      "wardenprotocol",
+        ChainID:      "warden",
         GRPCURL:      "localhost:9090",
         GRPCInsecure: true,
 
@@ -260,7 +258,7 @@ wardend tx warden new-key-request \
   --keychain-id 1 \
   --key-type ecdsa-secp256-k1 \
   --from <your-key> \
-  --chain-id wardenprotocol 
+  --chain-id warden
 ```
 
 You haven't implemented a key request handler yet, so you'll get an error:

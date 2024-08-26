@@ -42,14 +42,15 @@ export const ETH_CHAINID_MAP = {
 
 export const REVERSE_ETH_CHAINID_MAP = Object.fromEntries(
 	Object.entries(ETH_CHAINID_MAP).map(([k, v]) => [v, k]),
-) as Record<string, SupportedNetwork>;
+) as Record<string, SupportedNetwork | undefined>;
 
 type SupportedNetwork = keyof typeof ETH_CHAINID_MAP;
 const providers: Partial<Record<SupportedNetwork, ethers.JsonRpcProvider>> = {};
 
 export const isSupportedNetwork = (
-	network: string,
-): network is SupportedNetwork => network in ETH_CHAINID_MAP;
+	network?: string,
+): network is SupportedNetwork =>
+	Boolean(network && network in ETH_CHAINID_MAP);
 
 export const getProvider = (type: SupportedNetwork) => {
 	if (!providers[type]) {
@@ -73,7 +74,7 @@ export const getProviderByChainId = (chainId: string) => {
 	}
 
 	return getProvider(network);
-}
+};
 
 interface KnownAddress {
 	address: `0x${string}`;

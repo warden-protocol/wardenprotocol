@@ -54,7 +54,6 @@ import {
 import { GovernancePage } from "./pages/Governance.tsx";
 import { hashQueryKey } from "./utils/queryKeyHash.ts";
 import { DashboardPage } from "./pages/Dashboard.tsx";
-import { ModalProvider } from "./context/modalContext.tsx";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -143,104 +142,94 @@ function App() {
 							<AddressProvider>
 								<WalletProvider>
 									<DenomProvider>
-										<ModalProvider>
-											<BrowserRouter>
-												<FaroRoutes>
-													<Route element={<Root />}>
-														<Route
-															path="/"
-															element={
-																<DashboardPage />
-															}
-														/>
-														<Route
-															path="/intents"
-															element={
-																<IntentsPage />
-															}
-														/>
-														<Route
-															path="/staking"
-															element={
-																<StakingPage />
-															}
-														/>
-														<Route
-															path="/governance"
-															element={
-																<GovernancePage />
-															}
-														/>
-														<Route
-															path="/actions"
-															element={
-																<ActionsPage />
-															}
-														/>
-														<Route
-															path="/explorer"
-															element={
-																<ExplorerPage />
-															}
-														/>
-														<Route
-															path="/explorer/block-by-height/:height"
-															element={
-																<BlockByHeightPage />
-															}
-														/>
-														<Route
-															path="/keys"
-															element={
-																<KeysPage />
-															}
-														/>
-														<Route
-															path="/keychains"
-															element={
-																<KeychainsPage />
-															}
-														/>
-														<Route
-															path="/assets"
-															element={
-																<AssetsPage />
-															}
-														/>
-														<Route
-															path="/apps"
-															element={
-																<AppsPage />
-															}
-														/>
-														<Route
-															path="/apps/open"
-															element={
-																<AppsOpenPage />
-															}
-														/>
-														<Route
-															path="/settings"
-															element={
-																<SettingsPage />
-															}
-														/>
-														<Route
-															path="/new-transaction"
-															element={
-																<NewTransactionPage />
-															}
-														/>
-														<Route
-															path="/owners"
-															element={
-																<OwnersPage />
-															}
-														/>
-													</Route>
-												</FaroRoutes>
-											</BrowserRouter>
-										</ModalProvider>
+										<BrowserRouter>
+											<FaroRoutes>
+												<Route element={<Root />}>
+													<Route
+														path="/"
+														element={
+															<DashboardPage />
+														}
+													/>
+													<Route
+														path="/rules"
+														element={
+															<IntentsPage />
+														}
+													/>
+													<Route
+														path="/staking"
+														element={
+															<StakingPage />
+														}
+													/>
+													<Route
+														path="/governance"
+														element={
+															<GovernancePage />
+														}
+													/>
+													<Route
+														path="/actions"
+														element={
+															<ActionsPage />
+														}
+													/>
+													<Route
+														path="/explorer"
+														element={
+															<ExplorerPage />
+														}
+													/>
+													<Route
+														path="/explorer/block-by-height/:height"
+														element={
+															<BlockByHeightPage />
+														}
+													/>
+													<Route
+														path="/keys"
+														element={<KeysPage />}
+													/>
+													<Route
+														path="/keychains"
+														element={
+															<KeychainsPage />
+														}
+													/>
+													<Route
+														path="/assets"
+														element={<AssetsPage />}
+													/>
+													<Route
+														path="/apps"
+														element={<AppsPage />}
+													/>
+													<Route
+														path="/apps/open"
+														element={
+															<AppsOpenPage />
+														}
+													/>
+													<Route
+														path="/settings"
+														element={
+															<SettingsPage />
+														}
+													/>
+													<Route
+														path="/new-transaction"
+														element={
+															<NewTransactionPage />
+														}
+													/>
+													<Route
+														path="/owners"
+														element={<OwnersPage />}
+													/>
+												</Route>
+											</FaroRoutes>
+										</BrowserRouter>
 									</DenomProvider>
 								</WalletProvider>
 							</AddressProvider>

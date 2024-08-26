@@ -1,86 +1,44 @@
 import clsx from "clsx";
-import type { TransactionReceipt } from "ethers";
-import { useCallback, useContext, useMemo, useState } from "react";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
+import { useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import SignRequestDialog from "@/components/SignRequestDialog";
-import { SignRequesterState } from "@/hooks/useRequestSignature";
-import { useModalContext } from "@/context/modalContext";
-import { TxBuild, buildTransaction } from "./util";
-import Key from "../assets/Key";
+import { TxBuild, buildTransaction, createAminoSignDoc } from "./util";
 import { useAssetQueries } from "../assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { FIAT_FORMAT } from "../assets/util";
-import { useCurrency } from "@/hooks/useCurrency";
+import useFiatConversion from "@/hooks/useFiatConversion";
 import { numRestrict } from "../staking/util";
 import { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "../assets/AssetRow";
 import { validateAddress } from "../intents/AddAddressModal";
-import { SigningStargateClient } from "@cosmjs/stargate";
-import { walletContext } from "@cosmos-kit/react-lite";
-
-const getAddress = (key?: QueryKeyResponse, type?: AddressType) =>
-	key?.addresses.find((a) => a.type === type)?.address;
-
-type Currency = keyof typeof FIAT_FORMAT;
+import { StargateClient } from "@cosmjs/stargate";
+import { useModalState } from "./state";
+import KeySelector from "./KeySelector";
+import { COSMOS_CHAINS } from "@/config/tokens";
 
 export default function SendAssetsModal({
 	// address,
 	chainName,
 	token,
-	type,
 	keyResponse: key,
 }: TransferParams) {
-	const { walletManager } = useContext(walletContext);
-	// todo useFiatConversion hook
-	const currency = useCurrency().currency as Currency;
-	// todo useFiatConversion hook
-	const formatter = FIAT_FORMAT[currency];
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
+	const { formatter, fiatConversion } = useFiatConversion();
 
 	const { spaceId } = useSpaceId();
-	const {
-		queryKeys,
-		queryBalances,
-		// todo useFiatConversion hook
-		queryPrices,
-	} = useAssetQueries(spaceId);
-
-	// todo useFiatConversion hook
-	const fiatConversion = useMemo(() => {
-		if (currency === "usd") {
-			return {
-				name: "usd",
-				value: BigInt(1),
-				decimals: 0,
-			};
-		}
-
-		for (const entry of queryPrices) {
-			if (!entry.data) {
-				continue;
-			}
-
-			if (entry.data.name === currency) {
-				return entry.data;
-			}
-		}
-	}, [queryPrices, currency]);
+	const { queryBalances } = useAssetQueries(spaceId);
 
 	const results = queryBalances
-		.filter((result) => result.data?.key.key.id === key?.key.id)
+		.filter((result) => result.data?.key?.key?.id === key?.key?.id)
 		.flatMap(({ data, refetch }) => {
 			return (data?.results ?? []).map((item) => ({ ...item, refetch }));
 		});
 
 	const noAssets = results.every((result) => !result.balance);
 
-	const selectedToken = useMemo(
+	const _selectedToken = useMemo(
 		() =>
 			results.find(
 				(data) => data.chainName === chainName && data.token === token,
@@ -88,59 +46,33 @@ export default function SendAssetsModal({
 		[token, chainName, results],
 	);
 
+	// fixme types
+	const selectedToken = _selectedToken as typeof _selectedToken | undefined;
 	const [pending, setPending] = useState(false);
-	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
-	const [keyDropdown, setKeyDropdown] = useState(false);
 	const amountNum = parseFloat(amount);
 
-	const amountWarning = amountNum
-		? Number.isFinite(amountNum)
-			? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
-				amountNum
-			: true
-		: false;
+	const amountWarning =
+		amountNum && selectedToken
+			? Number.isFinite(amountNum)
+				? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
+					amountNum
+				: true
+			: false;
 
-	const addressWarning = destinationAddress
-		? !validateAddress(destinationAddress, [
-				selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
-			]).ok
-		: false;
+	const addressWarning =
+		destinationAddress && selectedToken
+			? !validateAddress(destinationAddress, [
+					selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
+				]).ok
+			: false;
 
-	const { signEthereumTx, ...eth } = useEthereumTx();
-
-	const keys = useMemo(() => (key ? [key] : []), [key]);
-
-	const { signer, ...cosm } = useKeychainSigner({
-		keys,
-	});
-
-	const req =
-		type === AddressType.ADDRESS_TYPE_ETHEREUM
-			? eth
-			: type === AddressType.ADDRESS_TYPE_OSMOSIS
-				? cosm
-				: null;
-
-	const state =
-		(req?.state === SignRequesterState.IDLE && pending
-			? SignRequesterState.BROADCAST_SIGN_REQUEST
-			: req?.state) ?? SignRequesterState.IDLE;
-
-	const error = req ? req.error : "Wrong address type"; // todo tx broadcast error
-
-	const reset = useCallback(() => {
-		req?.reset();
-		setReceipt(undefined);
-
-		if (receipt) {
-			dispatch({ type: "type", payload: undefined });
-		}
-	}, [dispatch, receipt, req]);
+	const { signEthereumTx } = useEthereumTx();
+	const { signAmino } = useKeychainSigner();
 
 	async function submit() {
-		if (!key) {
+		if (!key || !selectedToken) {
 			return;
 		}
 
@@ -156,50 +88,33 @@ export default function SendAssetsModal({
 			});
 
 			if (txBuild.type === "eth") {
-				const { provider, tx } = txBuild;
-				const signedTx = await signEthereumTx(key.key.id, tx);
+				const { tx } = txBuild;
+				const storeId = await signEthereumTx(key.key.id, tx, chainName);
 
-				if (!signedTx) {
-					throw new Error("Failed to sign transaction");
+				if (storeId) {
+					setModal({ type: undefined });
 				}
-
-				const res = await provider.broadcastTransaction(
-					signedTx.serialized,
-				);
-
-				const receipt = await provider.waitForTransaction(res.hash);
-
-				if (!receipt) {
-					throw new Error("Failed to get transaction receipt");
-				}
-
-				setReceipt(receipt);
 			} else if (txBuild.type === "cosmos") {
-				const { fee, msgs } = txBuild as TxBuild<"cosmos">;
-				const repo = walletManager.getWalletRepo(chainName);
-				repo.activate();
-				const rpc = await repo.getRpcEndpoint();
-
-				const endpoint = rpc
-					? typeof rpc === "string"
-						? rpc
-						: rpc.url
-					: `https://rpc.cosmos.directory/${chainName}`;
-
-				const client = await SigningStargateClient.connectWithSigner(
-					endpoint,
-					signer,
+				const chain = COSMOS_CHAINS.find(
+					(item) => item.chainName === chainName,
 				);
 
-				const res = await client.signAndBroadcast(address, msgs, fee);
+				const endpoint =
+					chain?.rpc ?? `https://rpc.cosmos.directory/${chainName}`;
 
-				if (res.code) {
-					console.error(res);
-					throw new Error("tx failed");
+				const client = await StargateClient.connect(endpoint);
+
+				const signDoc = await createAminoSignDoc({
+					tx: txBuild as TxBuild<"cosmos">,
+					client,
+					address,
+				});
+
+				const storeId = await signAmino(key, signDoc, chainName);
+
+				if (storeId) {
+					setModal({ type: undefined });
 				}
-
-				// fixme types
-				setReceipt(res as any);
 			} else {
 				throw new Error(`not implemented: ${txBuild.type}`);
 			}
@@ -229,14 +144,15 @@ export default function SendAssetsModal({
 			});
 	}
 
-	const address = getAddress(key, type);
+	const maxAmount = selectedToken
+		? bigintToFixed(selectedToken.balance, {
+				decimals: selectedToken.decimals,
+			})
+		: "0";
 
-	const maxAmount = bigintToFixed(selectedToken.balance, {
-		decimals: selectedToken.decimals,
-	});
-
-	const Token = TokenIcons[selectedToken.token] ?? AssetPlaceholder;
-	const Network = NetworkIcons[selectedToken.chainName] ?? AssetPlaceholder;
+	const Token = TokenIcons[selectedToken?.token ?? ""] ?? AssetPlaceholder;
+	const Network =
+		NetworkIcons[selectedToken?.chainName ?? ""] ?? AssetPlaceholder;
 
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
@@ -244,76 +160,11 @@ export default function SendAssetsModal({
 
 			<form action="" onSubmit={(e) => e.preventDefault()}>
 				<div>
-					<div className="relative mb-8 z-50 ">
-						<div
-							onClick={() => {
-								setKeyDropdown(!keyDropdown);
-							}}
-							className="min-h-[60px] cursor-pointer text-left bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center  relative z-50 gap-3"
-						>
-							<Key keyValue={address} />
-
-							<div>
-								<label
-									className="text-label-secondary text-xs "
-									htmlFor="network"
-								>
-									From Key
-								</label>
-
-								<div
-									className={clsx(
-										"block w-full mt-[-4px] text-left pointer-events-none bg-transparent outline-none foces:outline-none",
-									)}
-								>
-									{address
-										? `${address.slice(0, 8)}...${address.slice(-8)}`
-										: ""}
-								</div>
-							</div>
-							<Icons.chevronDown
-								className={
-									keyDropdown
-										? "rotate-180 ml-auto"
-										: " ml-auto"
-								}
-							/>
-						</div>
-						{keyDropdown && (
-							<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[20px] rounded-lg py-2">
-								{queryKeys.data?.keys.map((item) => {
-									const addr = getAddress(item, type);
-
-									return (
-										<div
-											onClick={() => {
-												// setCurrentKey(item.address);
-												dispatch({
-													type: "params",
-													payload: {
-														chainName,
-														keyResponse: item,
-														token,
-														type,
-													},
-												});
-												setKeyDropdown(false);
-											}}
-											key={addr}
-											className="cursor-pointer flex items-center gap-2 px-4 h-12"
-										>
-											<Key keyValue={addr} />
-											{addr?.slice(0, 8)}...
-											{address?.slice(-8)}
-											{addr === address && (
-												<Icons.check className="ml-auto" />
-											)}
-										</div>
-									);
-								})}
-							</div>
-						)}
-					</div>
+					<KeySelector
+						currentKey={key}
+						token={selectedToken?.token}
+						className="relative mb-8 z-50"
+					/>
 
 					{noAssets && (
 						<div className="flex rounded-lg px-4 h-[56px] bg-negative-secondary mb-8 items-center gap-3">
@@ -350,13 +201,10 @@ export default function SendAssetsModal({
 
 							<div className="relative z-40">
 								<div
-									onClick={dispatch.bind(null, {
-										type: "set",
-										payload: {
-											type: "select-asset",
-											params: {
-												keyResponse: key,
-											},
+									onClick={setModal.bind(null, {
+										type: "select-asset",
+										params: {
+											keyResponse: key,
 										},
 									})}
 									className="cursor-pointer h-[32px] bg-fill-quaternary rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
@@ -365,7 +213,7 @@ export default function SendAssetsModal({
 										<Token className="w-6 h-6 object-contain" />
 										<Network className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]" />
 									</div>
-									{selectedToken.token}
+									{selectedToken?.token}
 									<Icons.chevronDown
 										className={clsx(
 											"ml-auto invert dark:invert-0",
@@ -380,7 +228,7 @@ export default function SendAssetsModal({
 								{/* todo useFiatConversion hook */}
 								{formatter.format(
 									(amount ? parseFloat(amount) : 0) *
-										(fiatConversion
+										(fiatConversion && selectedToken
 											? bigintToFloat(
 													(selectedToken.price *
 														BigInt(10) **
@@ -394,8 +242,11 @@ export default function SendAssetsModal({
 								)}
 							</div>
 							<div
+								onClick={() => {
+									setAmount(maxAmount);
+								}}
 								className={clsx(
-									"text-xs",
+									"text-xs cursor-pointer",
 									amountWarning && "text-negative",
 									!amountWarning && "text-pixel-pink",
 								)}
@@ -468,26 +319,16 @@ export default function SendAssetsModal({
 					onClick={submit}
 					className={clsx(
 						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
-						(amount == "" ||
-							destinationAddress == "" ||
-							noAssets) &&
+						(amount === "" ||
+							destinationAddress === "" ||
+							noAssets ||
+							pending) &&
 							"pointer-events-none opacity-50",
 					)}
 				>
-					Send
+					{pending ? "Loading.." : "Send"}
 				</button>
 			</div>
-
-			<SignRequestDialog
-				state={state}
-				reset={reset}
-				error={error}
-				pending={pending}
-				step={{
-					title: "Broadcast",
-					description: `Transaction was broadcasted to ${selectedToken.chainName} network`,
-				}}
-			/>
 		</div>
 	);
 }

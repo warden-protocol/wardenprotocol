@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
     title: "Warden Protocol Help Center",
     tagline: "",
-    favicon: "img/favicon.ico",
+    favicon: "img/favicon.svg",
 
     // Set the production url of your site here
     url: "https://help.wardenprotocol.org",
@@ -90,7 +90,7 @@ const config: Config = {
                 },
                 {
                     href: "https://docs.wardenprotocol.org",
-                    label: "Docs",
+                    label: "Dev docs",
                     position: "right",
                 },
             ],

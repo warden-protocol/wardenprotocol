@@ -17,7 +17,12 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 		return nil, err
 	}
 
-	key.RuleId = msg.RuleId
+	if key.RuleId != msg.RuleId {
+		if err = k.actKeeper.IsValidRule(ctx, msg.RuleId); err != nil {
+			return nil, err
+		}
+		key.RuleId = msg.RuleId
+	}
 
 	if err := k.KeysKeeper.Set(ctx, key); err != nil {
 		return nil, err

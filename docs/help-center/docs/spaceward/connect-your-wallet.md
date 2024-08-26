@@ -4,26 +4,29 @@ sidebar_position: 3
 
 # Connect your wallet
 
-To use SpaceWard, connect your **Cosmos wallet** to your Warden account:
+To start using SpaceWard, connect your **Cosmos wallet** to your Warden account.
 
-1. If you don't have a wallet, create one. Currently, the following wallets are available:
+## Create a Cosmos wallet
 
-   - 👉 [Leap](https://leapwallet.io/download) 
-   - 👉 [Keplr](https://www.keplr.app/download)
-   - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension) 
+If you don't have a wallet, create one. Currently, the following wallets are available:
 
-1. Open [SpaceWard homepage](https://spaceward.buenavista.wardenprotocol.org) and click **Connect**.
-    
-    ![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
-    
-2. Choose a wallet to connect:
-    
-    ![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)
+- 👉 [Leap](https://leapwallet.io/download) 
+- 👉 [Keplr](https://www.keplr.app/download)
+- 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension) 
 
-3. After connecting, you'll be asked to add the Warden Protocol chain.
+## Connect
 
-    ![Add the Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
+Now you can connect to SpaceWard:
 
+1. Open [SpaceWard homepage](https://spaceward.buenavista.wardenprotocol.org) and click **Connect**.    
+2. Select a wallet to connect.    
+3. Your wallet will prompt you to add the Warden Protocol chain.
 4. Approve the transaction, and you'll be ready to enter SpaceWard!
 
-5. You'll find your Warden address at the top right of the screen. If you click it, a pop-up will open where you can see the wallet details and copy the address.
+## Get your Warden address
+
+After connecting, you'll receive a **Warden address**.
+
+To get it, click your connected wallet icon in the top-right corner of the screen. A pop-up will open where you can see the wallet details and copy the address.
+
+![Get your connected wallet address](../../static/img/connected-wallet-address.png)

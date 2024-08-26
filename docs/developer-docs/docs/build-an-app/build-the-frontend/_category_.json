@@ -1,0 +1,11 @@
+{
+  "position": 8,
+  "label": "Build the frontend",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Build the frontend"
+  },
+  "customProps": {}
+}

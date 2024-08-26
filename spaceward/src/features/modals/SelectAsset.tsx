@@ -1,13 +1,14 @@
 import clsx from "clsx";
-import { Icons } from "@/components/ui/icons-assets";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { useMemo, useState } from "react";
+import { Icons } from "@/components/ui/icons-assets";
 import { NetworkIcons } from "@/components/ui/icons-crypto";
-import { useModalContext } from "@/context/modalContext";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import AssetRow, { AssetPlaceholder } from "../assets/AssetRow";
 import { useAssetQueries } from "../assets/hooks";
 import type { SelectAssetParams } from "./types";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { useModalState } from "./state";
+import { capitalize } from "./util";
 
 const Network = ({ chainName }: { chainName: string }) => {
 	const Icon = NetworkIcons[chainName] ?? AssetPlaceholder;
@@ -15,7 +16,7 @@ const Network = ({ chainName }: { chainName: string }) => {
 };
 
 export default function SelectAssetModal(props: SelectAssetParams) {
-	const { dispatch } = useModalContext();
+	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const [searchValue, setSearchValue] = useState("");
 	const [currentNetwork, setCurrentNetwork] = useState("");
@@ -116,12 +117,23 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 							className=" bg-secondary-bg cursor-pointer rounded-[20px] flex gap-[6px] p-1 pr-2"
 						>
 							<div className="flex">
-								{chains.slice(0, 3).map((chainName, key) => (
-									<Network key={key} chainName={chainName} />
-								))}
+								{currentNetwork ? (
+									<Network chainName={currentNetwork} />
+								) : (
+									chains
+										.slice(0, 3)
+										.map((chainName, key) => (
+											<Network
+												key={key}
+												chainName={chainName}
+											/>
+										))
+								)}
 							</div>
 
-							{currentNetwork ? currentNetwork : "All Networks"}
+							{currentNetwork
+								? capitalize(currentNetwork)
+								: "All Networks"}
 
 							<Icons.chevronDown
 								className={clsx(
@@ -155,7 +167,7 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 											className="flex cursor-pointer items-center text-sm gap-3 py-[8px]"
 										>
 											<Network chainName={chainName} />
-											{chainName}
+											{capitalize(chainName)}
 
 											{currentNetwork === chainName && (
 												<Icons.check className="ml-auto" />
@@ -187,20 +199,15 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 							<AssetRow
 								asset={item}
 								key={key}
-								onClick={dispatch.bind(null, {
-									type: "set",
-									payload: {
-										type: "send",
-										params: {
-											keyResponse: props.keyResponse,
-											chainName: item.chainName,
-											token: item.token,
-											type: item.type.startsWith(
-												"eip155:",
-											)
-												? AddressType.ADDRESS_TYPE_ETHEREUM
-												: AddressType.ADDRESS_TYPE_OSMOSIS,
-										},
+								onClick={setModal.bind(null, {
+									type: "send",
+									params: {
+										keyResponse: props.keyResponse,
+										chainName: item.chainName,
+										token: item.token,
+										type: item.type.startsWith("eip155:")
+											? AddressType.ADDRESS_TYPE_ETHEREUM
+											: AddressType.ADDRESS_TYPE_OSMOSIS,
 									},
 								})}
 							/>

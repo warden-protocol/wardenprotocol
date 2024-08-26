@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
-* (x/warden) [#660](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to ensure consistency
+* (x/warden) [#660](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to Space to avoid race conditions
 
 ### Features (non-breaking)
 

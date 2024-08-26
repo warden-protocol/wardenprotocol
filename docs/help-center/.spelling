@@ -50,8 +50,6 @@ NewKeyRequest
 NewKeychain
 NewSignTransactionRequest
 NewSignRequest
-OApp
-OApps
 OpenAPI
 Polkadot
 QPIPs

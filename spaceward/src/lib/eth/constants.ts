@@ -1,13 +1,17 @@
+// taken from https://chainlist.org
 export const ETH_RPC_URL = {
-	"1": ["https://cloudflare-eth.com"],
+	"1": ["https://cloudflare-eth.com", "https://eth.llamarpc.com"],
 	"5": ["https://rpc.goerli.mudit.blog/"],
-	"10": ["https://mainnet.optimism.io/"],
-	"56": ["https://bsc-dataseed1.bnbchain.org"],
-	"137": ["https://polygon-rpc.com/"],
+	"10": ["https://mainnet.optimism.io/", "https://optimism.llamarpc.com"],
+	"56": [
+		"https://bsc-dataseed1.bnbchain.org",
+		"https://binance.llamarpc.com",
+	],
+	"137": ["https://polygon-rpc.com/", "https://polygon.llamarpc.com"],
 	"324": ["https://mainnet.era.zksync.io/"],
 	"420": ["https://goerli.optimism.io"],
-	"8453": ["https://mainnet.base.org/"],
-	"42161": ["https://arb1.arbitrum.io/rpc"],
+	"8453": ["https://mainnet.base.org/", "https://base.llamarpc.com"],
+	"42161": ["https://arb1.arbitrum.io/rpc", "https://arbitrum.llamarpc.com"],
 	"42220": ["https://forno.celo.org"],
 	"43114": ["https://api.avax.network/ext/bc/C/rpc"],
 	"44787": ["https://alfajores-forno.celo-testnet.org"],
@@ -15,7 +19,10 @@ export const ETH_RPC_URL = {
 	"81457": ["https://rpc.blast.io/"],
 	"421613": ["https://goerli-rollup.arbitrum.io/rpc"],
 	"7777777": ["https://rpc.zora.energy/"],
-	"11155111": ["https://rpc.sepolia.org/"],
+	"11155111": [
+		"https://rpc.sepolia.org/",
+		"wss://ethereum-sepolia-rpc.publicnode.com",
+	],
 };
 
 export const ETH_CHAINID_MAP = {

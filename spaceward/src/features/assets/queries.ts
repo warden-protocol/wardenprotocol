@@ -313,75 +313,91 @@ const eip155ERC20BalanceQuery = ({
 		const [balanceData, decimalsData, symbolData, nameData] =
 			resolverResults;
 
-		const balance = balanceData.success
-			? erc20Interface.decodeFunctionResult(
-					"balanceOf",
-					balanceData.returnData,
-				)[0]
-			: BigInt(0);
+		try {
+			const balance = balanceData.success
+				? erc20Interface.decodeFunctionResult(
+						"balanceOf",
+						balanceData.returnData,
+					)[0]
+				: BigInt(0);
 
-		const decimals = decimalsData.success
-			? erc20Interface.decodeFunctionResult(
-					"decimals",
-					decimalsData.returnData,
-				)[0]
-			: BigInt(0);
+			const decimals = decimalsData.success
+				? erc20Interface.decodeFunctionResult(
+						"decimals",
+						decimalsData.returnData,
+					)[0]
+				: BigInt(0);
 
-		const symbol = symbolData.success
-			? erc20Interface.decodeFunctionResult(
-					"symbol",
-					symbolData.returnData,
-				)[0]
-			: "";
+			const symbol = symbolData.success
+				? erc20Interface.decodeFunctionResult(
+						"symbol",
+						symbolData.returnData,
+					)[0]
+				: "";
 
-		const name = nameData.success
-			? erc20Interface.decodeFunctionResult(
-					"name",
-					nameData.returnData,
-				)[0]
-			: "";
+			const name = nameData.success
+				? erc20Interface.decodeFunctionResult(
+						"name",
+						nameData.returnData,
+					)[0]
+				: "";
 
-		const network = await provider.getNetwork();
-		const slinkyPrice = prices?.[symbol];
+			const network = await provider.getNetwork();
+			const slinkyPrice = prices?.[symbol];
 
-		// fixme remove chainlink pricefeed when all tokens are in slinky
-		const priceFeedContract =
-			priceFeed && !slinkyPrice
-				? new ethers.Contract(
-						priceFeed,
-						aggregatorV3InterfaceABI,
-						getProvider(chainName),
-					)
-				: undefined;
+			// fixme remove chainlink pricefeed when all tokens are in slinky
+			const priceFeedContract =
+				priceFeed && !slinkyPrice
+					? new ethers.Contract(
+							priceFeed,
+							aggregatorV3InterfaceABI,
+							getProvider(chainName),
+						)
+					: undefined;
 
-		const price: bigint = stablecoin
-			? BigInt("100000000")
-			: slinkyPrice
-				? BigInt(slinkyPrice.price?.price ?? 0)
-				: (priceFeedContract
-						? await priceFeedContract.latestRoundData()
-						: undefined
-					)?.answer ?? BigInt(0);
+			const price: bigint = stablecoin
+				? BigInt("100000000")
+				: slinkyPrice
+					? BigInt(slinkyPrice.price?.price ?? 0)
+					: (priceFeedContract
+							? await priceFeedContract.latestRoundData()
+							: undefined
+						)?.answer ?? BigInt(0);
 
-		const priceDecimals = stablecoin
-			? 8
-			: slinkyPrice
-				? Number(slinkyPrice.decimals)
-				: 8;
+			const priceDecimals = stablecoin
+				? 8
+				: slinkyPrice
+					? Number(slinkyPrice.decimals)
+					: 8;
 
-		return {
-			address,
-			balance,
-			chainId: network.chainId.toString(),
-			chainName,
-			decimals: Number(decimals),
-			erc20Token: token,
-			price,
-			priceDecimals,
-			title: name,
-			token: symbol,
-			type: "eip155:erc20",
-		};
+			return {
+				address,
+				balance,
+				chainId: network.chainId.toString(),
+				chainName,
+				decimals: Number(decimals),
+				erc20Token: token,
+				price,
+				priceDecimals,
+				title: name,
+				token: symbol,
+				type: "eip155:erc20",
+			};
+		} catch (e) {
+			console.error(e);
+
+			console.warn("incorrect token data", {
+				balanceData,
+				decimalsData,
+				symbolData,
+				nameData,
+				chainName,
+				token,
+				address,
+			});
+
+			throw e;
+		}
 	},
 	refetchInterval: Infinity,
 	staleTime: 15000,
@@ -401,7 +417,7 @@ export const balancesQueryCosmos = (
 	const byAddress: Record<string, QueryKeyResponse> = {};
 	// debug:
 	// cosmos1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep4tgu9q - cosmostation
-	const debugAddress = "osmo1clpqr4nrk4khgkxj78fcwwh6dl3uw4epasmvnj"; // cosmostation
+	// const debugAddress = "osmo1clpqr4nrk4khgkxj78fcwwh6dl3uw4epasmvnj"; // cosmostation
 
 	const addresses =
 		keys?.flatMap((key) =>
@@ -414,7 +430,7 @@ export const balancesQueryCosmos = (
 		) ?? [];
 
 	// debug
-	if (keys?.length) {
+	/* if (keys?.length) {
 		byAddress[debugAddress] = {
 			key: keys?.[0].key,
 			addresses: [
@@ -426,7 +442,7 @@ export const balancesQueryCosmos = (
 		};
 
 		addresses.push(debugAddress);
-	}
+	} */
 
 	const select = (results: BalanceEntry[]) => {
 		const _address = results[0]?.address;
@@ -482,7 +498,7 @@ export const balancesQueryEth = (
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
 	// debug
-	const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
+	// const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
 
 	const eth =
 		keys?.flatMap((key) =>
@@ -498,7 +514,7 @@ export const balancesQueryEth = (
 		) ?? [];
 
 	// debug
-	if (keys?.length) {
+	/* if (keys?.length) {
 		byAddress[debugAddress] = {
 			key: keys?.[0].key,
 			addresses: [
@@ -510,7 +526,7 @@ export const balancesQueryEth = (
 		};
 
 		eth.push(debugAddress);
-	}
+	} */
 
 	const select = (result: BalanceEntry) => ({
 		results: [result],

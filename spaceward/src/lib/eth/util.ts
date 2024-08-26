@@ -30,6 +30,21 @@ export const getProvider = (type: SupportedNetwork) => {
 		req.timeout = 10000;
 		req.setThrottleParams({ maxAttempts: 12 });
 
+		req.retryFunc = async (request, response, attempt) => {
+			console.log("ethers.FetchRequest::retryFunc", {
+				request,
+				response,
+				attempt,
+				type,
+			});
+
+			retry++;
+			const url = getUrl();
+			console.log({ url, retry });
+			req.url = url;
+			return true;
+		};
+
 		providers[type] = new ethers.JsonRpcProvider(req, undefined, {
 			batchMaxCount: 10,
 			batchStallTime: 100,

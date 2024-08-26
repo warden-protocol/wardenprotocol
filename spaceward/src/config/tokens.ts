@@ -40,7 +40,7 @@ export const ERC20_TOKENS: {
 	// ada
 	{
 		chainName: "bsc",
-		address: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+		address: "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47",
 	},
 	// doge
 	{

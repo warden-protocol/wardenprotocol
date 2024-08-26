@@ -180,3 +180,68 @@ fn test_execute_post_message() {
         })
     );
 }
+
+#[test]
+fn test_execute_receive_message() {
+    use crate::methods::derive_intermediate_sender;
+    use crate::methods::execute_instantiate;
+    use crate::methods::execute_receive_message;
+    use crate::msg::InstantiateMsg;
+    use crate::ContractError;
+    use cosmwasm_std::coins;
+    use cosmwasm_std::testing::message_info;
+    use cosmwasm_std::testing::mock_dependencies;
+    use cosmwasm_std::to_json_string;
+    use cosmwasm_std::Addr;
+    use cosmwasm_std::Binary;
+    use cosmwasm_std::Response;
+
+    let mut deps = mock_dependencies();
+
+    let message = Binary::from_base64("d2FyZGVuIHRlc3QgbWVzc2FnZQo=").unwrap();
+    let admin = deps.api.addr_make("admin");
+    let wormhole_ibc_channel_id = "channel-1".to_string();
+    let wormhole_ibc_recipient = deps.api.addr_make("wormhole_ibc_recipient");
+    let wormhole_ibc_sender = deps.api.addr_make("wormhole_ibc_sender");
+    let coin = coins(1000, "uward");
+
+    let msg = InstantiateMsg {
+        admin: String::from(admin.clone()),
+        wormhole_ibc_recipient: wormhole_ibc_recipient.clone().into_string(),
+        wormhole_ibc_sender: wormhole_ibc_sender.clone().into_string(),
+        wormhole_ibc_channel_id: wormhole_ibc_channel_id.clone(),
+        wormhole_ibc_timeout_sec: 123,
+    };
+
+    execute_instantiate(&mut deps.as_mut(), &msg).unwrap();
+
+    let sender = derive_intermediate_sender(
+        wormhole_ibc_channel_id.as_str(),
+        wormhole_ibc_sender.as_str(),
+    )
+    .unwrap();
+
+    assert_eq!(
+        execute_receive_message(
+            &mut deps.as_mut(),
+            &mut message_info(&Addr::unchecked("invalid_sender"), &coin.clone()),
+            &message,
+        )
+        .unwrap_err(),
+        ContractError::ReceiveMessageFailed {
+            message: "invalid sender invalid_sender != warden16ck22h8sfrkhw6wcp3qv2dmyng65dlq9ydzz56e7sctpqjx930rqj5n3ml".to_string()
+        }
+    );
+
+    assert_eq!(
+        execute_receive_message(
+            &mut deps.as_mut(),
+            &mut message_info(&Addr::unchecked(sender), &coin.clone()),
+            &message,
+        )
+        .unwrap(),
+        Response::default()
+            .add_attribute("action", "execute_receive_message")
+            .add_attribute("message", to_json_string(&message).unwrap())
+    );
+}

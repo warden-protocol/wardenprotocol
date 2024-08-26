@@ -8,11 +8,12 @@ use crate::state::{
 use crate::ContractError;
 use bech32::{encode as bech32_encode, Bech32, Hrp};
 use cosmwasm_std::{
-    coins, to_json_string, BankMsg, CosmosMsg, IbcMsg, Reply, SubMsg, SubMsgResult,
+    coins, to_json_string, Addr, BankMsg, CosmosMsg, IbcMsg, Reply, SubMsg, SubMsgResult,
 };
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{Binary, DepsMut, Env, MessageInfo, Response};
 use cw2::set_contract_version;
+use cw_storage_plus::KeyDeserialize;
 use prost::Message;
 use sha2::{Digest, Sha256};
 
@@ -279,7 +280,7 @@ pub fn execute_update_wormhole_config(
     Ok(Response::default())
 }
 
-fn derive_intermediate_sender(
+pub fn derive_intermediate_sender(
     channel: &str,
     original_sender: &str,
 ) -> Result<String, ContractError> {

@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/warden) [#225](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to ensure consistency
+
 ### Features (non-breaking)
 
 ### Bug Fixes

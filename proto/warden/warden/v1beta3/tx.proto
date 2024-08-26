@@ -100,6 +100,7 @@ message MsgAddSpaceOwner {
   string authority = 1;
   uint64 space_id = 2;
   string new_owner = 3;
+  uint64 nonce = 4;
 }
 
 message MsgAddSpaceOwnerResponse {}
@@ -109,6 +110,7 @@ message MsgRemoveSpaceOwner {
   string authority = 1;
   uint64 space_id = 2;
   string owner = 3;
+  uint64 nonce = 4;
 }
 
 message MsgRemoveSpaceOwnerResponse {}
@@ -138,6 +140,7 @@ message MsgUpdateSpace {
   uint64 space_id = 2;
   uint64 admin_rule_id = 3;
   uint64 sign_rule_id = 4;
+  uint64 nonce = 5;
 }
 
 message MsgUpdateSpaceResponse {}

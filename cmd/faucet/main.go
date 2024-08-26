@@ -117,6 +117,8 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		csrfToken, _ := c.Get(middleware.DefaultCSRFConfig.ContextKey).(string)
 		page.Form.CSRFToken = csrfToken
+		page.Form.Address = c.QueryParam("addr")
+		logger.Info().Msgf("page.Form.Address: %s", page.Form.Address)
 		return c.Render(http.StatusOK, "index", page)
 	})
 

@@ -6,6 +6,7 @@
     id="address"
     name="address"
     placeholder="Enter your address here"
+    value="{{.Address}}"
   /><br />
   {{ if .Errors.address }}
   <div class="error-message">{{ .Errors.address }}</div>

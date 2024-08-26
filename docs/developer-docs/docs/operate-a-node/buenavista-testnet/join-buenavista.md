@@ -65,7 +65,7 @@ To configure `wardend`, do the following:
    ```bash
    cd $HOME/.warden/config
    rm genesis.json
-   wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz
+   wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
 2. Set the mandatory configuration options:

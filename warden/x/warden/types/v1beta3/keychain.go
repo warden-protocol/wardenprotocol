@@ -70,14 +70,14 @@ func (kf *KeychainFees) EnsureValid() error {
 }
 
 func (k *Keychain) EnsureSufficientKeyFees(fees sdk.Coins) error {
-	return ensureSufficientKeyFees(k.Fees.KeyReq, fees)
+	return ensureSufficientFees(k.Fees.KeyReq, fees)
 }
 
 func (k *Keychain) EnsureSufficientSignFees(fees sdk.Coins) error {
-	return ensureSufficientKeyFees(k.Fees.SigReq, fees)
+	return ensureSufficientFees(k.Fees.SigReq, fees)
 }
 
-func ensureSufficientKeyFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
+func ensureSufficientFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
 	if maxFees.Empty() || wantedFees.Empty() {
 		return fmt.Errorf("fees cannot be empty")
 	}

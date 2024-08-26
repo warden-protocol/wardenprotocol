@@ -123,9 +123,11 @@ func (f *Faucet) setupNewAccount() error {
 func validAddress(addr string) error {
 	pref, _, err := bech32.DecodeAndConvert(addr)
 	if err != nil {
+		reqInvalidAddrCount.Inc()
 		return fmt.Errorf("invalid address: %w", err)
 	}
 	if pref != "warden" {
+		reqInvalidAddrCount.Inc()
 		return fmt.Errorf("invalid address prefix: %s", pref)
 	}
 	return nil
@@ -177,10 +179,13 @@ func (f *Faucet) batchProcessInterval() {
 		case <-ticker.C:
 			if len(f.Batch) > 0 {
 				if txHash, _, err := f.Send("", true); err != nil {
+					reqErrorCount.Inc()
 					f.log.Error().Msgf("error sending batch: %s", err)
 				} else {
 					f.log.Info().Msgf("tx hash %s", txHash)
 					f.LatestTXHash = txHash
+					batchSendCount.Inc()
+					batchSize.Set(0)
 				}
 			}
 		}
@@ -215,6 +220,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		}
 
 		f.Batch = append(f.Batch, addr)
+		batchSize.Inc()
 		return "", 0, nil
 	}
 

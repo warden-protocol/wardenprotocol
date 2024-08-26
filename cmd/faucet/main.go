@@ -10,6 +10,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/rs/zerolog"
 )
 
@@ -112,6 +113,7 @@ func main() {
 	e.File("/js/tx.js", "js/tx.js")
 	e.File("/js/circle.js", "js/circle.js")
 
+	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	e.GET("/", func(c echo.Context) error {
 		csrfToken, _ := c.Get(middleware.DefaultCSRFConfig.ContextKey).(string)
 		page.Form.CSRFToken = csrfToken
@@ -132,6 +134,7 @@ func main() {
 		var txHash string
 		var httpStatusCode int
 
+		reqCount.Inc()
 		txHash, httpStatusCode, err = f.Send(c.FormValue("address"), false)
 		if err != nil {
 			logger.Error().Msgf("error sending tokens: %s", err)

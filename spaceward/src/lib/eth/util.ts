@@ -1,44 +1,5 @@
 import { ethers } from "ethers";
-
-const rpcMap = {
-	"1": "https://cloudflare-eth.com",
-	"5": "https://rpc.goerli.mudit.blog/",
-	"10": "https://mainnet.optimism.io/",
-	"56": "https://bsc-dataseed1.bnbchain.org",
-	"137": "https://polygon-rpc.com/",
-	"324": "https://mainnet.era.zksync.io/",
-	"420": "https://goerli.optimism.io",
-	"8453": "https://mainnet.base.org/",
-	"42161": "https://arb1.arbitrum.io/rpc",
-	"42220": "https://forno.celo.org",
-	"43114": "https://api.avax.network/ext/bc/C/rpc",
-	"44787": "https://alfajores-forno.celo-testnet.org",
-	"80001": "https://rpc-mumbai.maticvigil.com",
-	"81457": "https://rpc.blast.io/",
-	"421613": "https://goerli-rollup.arbitrum.io/rpc",
-	"7777777": "https://rpc.zora.energy/",
-	"11155111": "https://rpc.sepolia.org/",
-};
-
-export const ETH_CHAINID_MAP = {
-	mainnet: "1",
-	goerli: "5",
-	optimism: "10",
-	bsc: "56",
-	polygon: "137",
-	zksync: "324",
-	optimismGoerli: "420",
-	base: "8453",
-	arbitrum: "42161",
-	celo: "42220",
-	avalanche: "43114",
-	celoTestnet: "44787",
-	mumbai: "80001",
-	blast: "81457",
-	arbitrumGoerli: "421613",
-	zora: "7777777",
-	sepolia: "11155111",
-} as const;
+import { ETH_CHAINID_MAP, ETH_RPC_URL } from "./constants";
 
 export const REVERSE_ETH_CHAINID_MAP = Object.fromEntries(
 	Object.entries(ETH_CHAINID_MAP).map(([k, v]) => [v, k]),
@@ -60,10 +21,39 @@ export const getProvider = (type: SupportedNetwork) => {
 			throw new Error(`Unsupported network: ${type}`);
 		}
 
-		providers[type] = new ethers.JsonRpcProvider(rpcMap[chainId]);
+		let retry = 0;
+		const getUrl = () =>
+			ETH_RPC_URL[chainId][retry % ETH_RPC_URL[chainId].length];
+
+		const url = getUrl();
+		const req = new ethers.FetchRequest(url);
+		req.timeout = 10000;
+		req.setThrottleParams({ maxAttempts: 12 });
+
+		req.retryFunc = async (request, response, attempt) => {
+			console.log("ethers.FetchRequest::retryFunc", {
+				request,
+				response,
+				attempt,
+				type,
+			});
+
+			retry++;
+			const url = getUrl();
+			console.log({ url, retry });
+			req.url = url;
+			return true;
+		};
+
+		providers[type] = new ethers.JsonRpcProvider(req, undefined, {
+			batchMaxCount: 10,
+			batchStallTime: 100,
+			staticNetwork: ethers.Network.from(BigInt(chainId)),
+		});
 	}
 
-	return providers[type] as ethers.JsonRpcProvider;
+	const provider = providers[type]!.provider;
+	return provider;
 };
 
 export const getProviderByChainId = (chainId: string) => {

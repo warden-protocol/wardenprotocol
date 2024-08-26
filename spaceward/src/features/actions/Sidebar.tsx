@@ -21,6 +21,7 @@ import { COSMOS_CHAINS } from "@/config/tokens";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useToast } from "@/components/ui/use-toast";
+import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -74,7 +75,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 						console.error("Failed to broadcast", res);
 
 						toast({
-							title: "Faled",
+							title: "Failed",
 							description: "Could not broadcast transaction",
 							duration: 10000,
 						});
@@ -90,7 +91,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				})
 				.catch((err) => {
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: err.message ?? "Unexpected error",
 						duration: 10000,
 					});
@@ -174,7 +175,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				} else {
 					console.error("action failed", res);
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: "Unexpected action status",
 						duration: 10000,
 					});
@@ -228,6 +229,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 										const {
 											walletConnectRequestId,
 											walletConnectTopic,
+											snapRequestId
 										} = item;
 
 										return {
@@ -239,12 +241,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 											)
 												? "eth"
 												: analyzers.includes(
-															env.aminoAnalyzerContract,
-													  )
+													env.aminoAnalyzerContract,
+												)
 													? "cosmos"
 													: // fixme
-														walletConnectRequestId &&
-														  walletConnectTopic
+													(walletConnectRequestId &&
+														walletConnectTopic) || snapRequestId
 														? "eth-raw"
 														: undefined,
 											value: signRequest?.signedData,
@@ -274,7 +276,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 				if (status.error) {
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: "Action failed",
 						duration: 10000,
 					});
@@ -297,15 +299,15 @@ function ActionItem({ single, ...item }: ItemProps) {
 					setData({
 						[item.id]: status.next
 							? {
-									...item,
-									status: QueuedActionStatus.AwaitingBroadcast,
-									networkType: status.next,
-									value: status.value,
-								}
+								...item,
+								status: QueuedActionStatus.AwaitingBroadcast,
+								networkType: status.next,
+								value: status.value,
+							}
 							: {
-									...item,
-									status: QueuedActionStatus.Success,
-								},
+								...item,
+								status: QueuedActionStatus.Success,
+							},
 					});
 				}
 			}
@@ -325,6 +327,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 						value,
 						walletConnectRequestId,
 						walletConnectTopic,
+						snapRequestId
 					} = item;
 
 					if (!value) {
@@ -332,25 +335,47 @@ function ActionItem({ single, ...item }: ItemProps) {
 						return;
 					}
 
-					if (!walletConnectRequestId || !walletConnectTopic) {
-						promise = Promise.reject(
-							new Error("only walletconnect supported"),
-						);
-					} else if (!w) {
-						promise = Promise.reject(
-							new Error("walletconnect not initialized"),
-						);
-					} else {
-						promise = w
-							.respondSessionRequest({
-								topic: walletConnectTopic,
-								response: {
-									jsonrpc: "2.0",
-									id: walletConnectRequestId,
-									result: hexlify(value),
-								},
-							})
-							.then(() => true);
+					const type = snapRequestId ? "snap" : (walletConnectRequestId && walletConnectTopic) ? "wc" : undefined
+
+					switch (type) {
+						case "wc": {
+							if (!w) {
+								promise = Promise.reject(
+									new Error("walletconnect not initialized"),
+								);
+
+								break;
+							}
+
+							promise = w
+								.respondSessionRequest({
+									topic: walletConnectTopic!,
+									response: {
+										jsonrpc: "2.0",
+										id: walletConnectRequestId!,
+										result: hexlify(value),
+									},
+								})
+								.then(() => true);
+							break;
+						}
+
+						case "snap": {
+							const keyringSnapClient = new KeyringSnapRpcClient(
+								env.snapOrigin,
+								window.ethereum,
+							);
+
+							promise = keyringSnapClient.getRequest(snapRequestId!)
+								.then((req) => keyringSnapClient.approveRequest(
+									req.id,
+									{ result: hexlify(value) })
+								).then(() => true)
+							break;
+						}
+
+						default:
+							promise = Promise.reject(`type ${type} not implemented`)
 					}
 
 					break;
@@ -362,6 +387,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 						value,
 						walletConnectRequestId,
 						walletConnectTopic,
+						snapRequestId
 					} = item;
 
 					if (!tx || !value) {
@@ -374,37 +400,62 @@ function ActionItem({ single, ...item }: ItemProps) {
 						return;
 					}
 
-					const signedTx = Transaction.from(tx);
+					const signedTx = Transaction.from({ ...tx });
 					signedTx.signature = hexlify(value);
-					const provider = getProvider(chainName);
 
-					promise = provider
-						.broadcastTransaction(signedTx.serialized)
-						.then((res) => {
-							if (walletConnectRequestId && walletConnectTopic) {
-								if (!w) {
-									throw new Error(
-										"walletconnect not initialized",
+					if (snapRequestId) {
+						if (!signedTx.signature) {
+							promise = Promise.reject(new Error("invalid signature"))
+						} else {
+							const keyringSnapClient = new KeyringSnapRpcClient(
+								env.snapOrigin,
+								window.ethereum,
+							);
+
+							const { r, s, yParity } = signedTx.signature;
+
+							promise = keyringSnapClient.getRequest(snapRequestId).then(req => {
+								return keyringSnapClient.approveRequest(req.id, {
+									result: {
+										r,
+										s,
+										v: `0x${yParity}`,
+
+									}
+								});
+							}).then(() => true);
+						}
+					} else {
+						const provider = getProvider(chainName);
+
+						promise = provider
+							.broadcastTransaction(signedTx.serialized)
+							.then((res) => {
+								if (walletConnectRequestId && walletConnectTopic) {
+									if (!w) {
+										throw new Error(
+											"walletconnect not initialized",
+										);
+									}
+
+									return (
+										w
+											.respondSessionRequest({
+												topic: walletConnectTopic,
+												response: {
+													jsonrpc: "2.0",
+													id: walletConnectRequestId,
+													result: res.hash,
+												},
+											})
+											// fixme
+											.then(() => true)
 									);
 								}
 
-								return (
-									w
-										.respondSessionRequest({
-											topic: walletConnectTopic,
-											response: {
-												jsonrpc: "2.0",
-												id: walletConnectRequestId,
-												result: res.hash,
-											},
-										})
-										// fixme
-										.then(() => true)
-								);
-							}
-
-							return provider.waitForTransaction(res.hash);
-						});
+								return provider.waitForTransaction(res.hash);
+							});
+					}
 
 					break;
 				}
@@ -524,7 +575,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				.then((res) => {
 					if (!res) {
 						toast({
-							title: "Faled",
+							title: "Failed",
 							description: "Transaction failed",
 							duration: 10000,
 						});
@@ -555,7 +606,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 					console.error("broadcast failed", err);
 
 					toast({
-						title: "Faled",
+						title: "Failed",
 						description: err.message ?? "Unexpected error",
 						duration: 10000,
 					});
@@ -588,12 +639,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 							: item.status === QueuedActionStatus.ActionReady
 								? "Action ready"
 								: item.status ===
-									  QueuedActionStatus.AwaitingBroadcast
+									QueuedActionStatus.AwaitingBroadcast
 									? "Awaiting broadcast"
 									: item.status === QueuedActionStatus.Success
 										? "Success"
 										: item.status ===
-											  QueuedActionStatus.Failed
+											QueuedActionStatus.Failed
 											? "Failed"
 											: "Unknown"}
 			</p>
@@ -603,14 +654,13 @@ function ActionItem({ single, ...item }: ItemProps) {
 					<div
 						className="h-1 bg-accent rounded-lg"
 						style={{
-							width: `${
-								item.status === QueuedActionStatus.Success
-									? 100
-									: (item.status /
-											(QueuedActionStatus.AwaitingBroadcast +
-												1)) *
-										100
-							}%`,
+							width: `${item.status === QueuedActionStatus.Success
+								? 100
+								: (item.status /
+									(QueuedActionStatus.AwaitingBroadcast +
+										1)) *
+								100
+								}%`,
 						}}
 					/>
 				</div>

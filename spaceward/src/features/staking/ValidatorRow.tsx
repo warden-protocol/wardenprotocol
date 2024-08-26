@@ -10,7 +10,6 @@ import {
 import clsx from "clsx";
 import { getVotingPower } from "./util";
 import { VALIDATOR_LOGOS } from "./assets";
-import { AssetPlaceholder } from "../assets/AssetRow";
 
 interface ValidatorProps extends Validator {
 	openStakeModal: (address: string) => void;

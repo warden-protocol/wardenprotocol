@@ -21,7 +21,7 @@ You need to install the following:
 
 You can:
 
-- [Run a local chain](/build-an-oapp/test/run-a-local-chain)
+- [Run a local chain](/build-an-app/test/run-a-local-chain)
 - [Connect to our Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista)
 
 For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain and its Writers and referenced as `<your-key>` in the following commands.

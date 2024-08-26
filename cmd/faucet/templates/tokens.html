@@ -10,8 +10,8 @@
     <svg viewBox="0 0 100 100">
       <defs>
         <linearGradient id="circleGradient" gradientTransform="rotate(45)">
-          <stop offset="0%" stop-color="#4B0082" />
-          <stop offset="100%" stop-color="#9400D3" />
+          <stop offset="0%" stop-color="#cafa93" />
+          <stop offset="100%" stop-color="#6c844c" />
         </linearGradient>
       </defs>
       <circle
@@ -26,8 +26,13 @@
       />
     </svg>
   </div>
-  <div id="tokenInfo" data-tokens-available="{{.TokensAvailablePercent}}">
-    {{ .TokensAvailable }} / {{ .TokenSupply }} WARD
+  <div
+    class="tokens"
+    id="tokenInfo"
+    data-tokens-available="{{.TokensAvailablePercent}}"
+  >
+    Daily WARD Amount </br>
+    {{ .TokensAvailable }} / {{ .TokenSupply }} 
   </div>
   {{ end}}
 </div>

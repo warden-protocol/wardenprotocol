@@ -334,12 +334,15 @@ export default function App() {
                                     size={"lg"}
                                     className="rounded-xl uppercase bg-[#CAFF94] hover:text-background"
                                     onClick={() => {
-                                        const input = new Uint8Array([
-                                            10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                            11, 12, 13, 14, 15, 16, 17, 18, 19,
-                                            20,
-                                        ]);
-                                        requestInference(address, input);
+                                        const tokens = [
+                                            "Aave",
+                                            "ethereum",
+                                            "uniswap",
+                                        ];
+                                        requestInference(address, "", {
+                                            tokens,
+                                            adversaryMode: false,
+                                        });
                                         setStep("2");
                                     }}
                                 >

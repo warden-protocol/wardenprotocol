@@ -3,6 +3,7 @@ import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
 import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key.js";
 import { SignRequestStatus, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
+import { SolverInput, SolverInputAmino, SolverInputSDKType } from "./inference.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -633,7 +634,8 @@ export interface MsgFulfilSignRequestResponseAminoMsg {
 export interface MsgFulfilSignRequestResponseSDKType {}
 export interface MsgNewInferenceRequest {
   creator: string;
-  input: Uint8Array;
+  contractCallback: string;
+  input?: SolverInput;
 }
 export interface MsgNewInferenceRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewInferenceRequest";
@@ -641,7 +643,8 @@ export interface MsgNewInferenceRequestProtoMsg {
 }
 export interface MsgNewInferenceRequestAmino {
   creator?: string;
-  input?: string;
+  contract_callback?: string;
+  input?: SolverInputAmino;
 }
 export interface MsgNewInferenceRequestAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewInferenceRequest";
@@ -649,7 +652,8 @@ export interface MsgNewInferenceRequestAminoMsg {
 }
 export interface MsgNewInferenceRequestSDKType {
   creator: string;
-  input: Uint8Array;
+  contract_callback: string;
+  input?: SolverInputSDKType;
 }
 export interface MsgNewInferenceRequestResponse {
   id: bigint;
@@ -3409,7 +3413,8 @@ export const MsgFulfilSignRequestResponse = {
 function createBaseMsgNewInferenceRequest(): MsgNewInferenceRequest {
   return {
     creator: "",
-    input: new Uint8Array()
+    contractCallback: "",
+    input: undefined
   };
 }
 export const MsgNewInferenceRequest = {
@@ -3418,8 +3423,11 @@ export const MsgNewInferenceRequest = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.input.length !== 0) {
-      writer.uint32(26).bytes(message.input);
+    if (message.contractCallback !== "") {
+      writer.uint32(18).string(message.contractCallback);
+    }
+    if (message.input !== undefined) {
+      SolverInput.encode(message.input, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -3433,8 +3441,11 @@ export const MsgNewInferenceRequest = {
         case 1:
           message.creator = reader.string();
           break;
+        case 2:
+          message.contractCallback = reader.string();
+          break;
         case 3:
-          message.input = reader.bytes();
+          message.input = SolverInput.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -3446,19 +3457,22 @@ export const MsgNewInferenceRequest = {
   fromJSON(object: any): MsgNewInferenceRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array()
+      contractCallback: isSet(object.contractCallback) ? String(object.contractCallback) : "",
+      input: isSet(object.input) ? SolverInput.fromJSON(object.input) : undefined
     };
   },
   toJSON(message: MsgNewInferenceRequest): JsonSafe<MsgNewInferenceRequest> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.input !== undefined && (obj.input = base64FromBytes(message.input !== undefined ? message.input : new Uint8Array()));
+    message.contractCallback !== undefined && (obj.contractCallback = message.contractCallback);
+    message.input !== undefined && (obj.input = message.input ? SolverInput.toJSON(message.input) : undefined);
     return obj;
   },
   fromPartial(object: Partial<MsgNewInferenceRequest>): MsgNewInferenceRequest {
     const message = createBaseMsgNewInferenceRequest();
     message.creator = object.creator ?? "";
-    message.input = object.input ?? new Uint8Array();
+    message.contractCallback = object.contractCallback ?? "";
+    message.input = object.input !== undefined && object.input !== null ? SolverInput.fromPartial(object.input) : undefined;
     return message;
   },
   fromAmino(object: MsgNewInferenceRequestAmino): MsgNewInferenceRequest {
@@ -3466,15 +3480,19 @@ export const MsgNewInferenceRequest = {
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
+    if (object.contract_callback !== undefined && object.contract_callback !== null) {
+      message.contractCallback = object.contract_callback;
+    }
     if (object.input !== undefined && object.input !== null) {
-      message.input = bytesFromBase64(object.input);
+      message.input = SolverInput.fromAmino(object.input);
     }
     return message;
   },
   toAmino(message: MsgNewInferenceRequest): MsgNewInferenceRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.input = message.input ? base64FromBytes(message.input) : undefined;
+    obj.contract_callback = message.contractCallback === "" ? undefined : message.contractCallback;
+    obj.input = message.input ? SolverInput.toAmino(message.input) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewInferenceRequestAminoMsg): MsgNewInferenceRequest {

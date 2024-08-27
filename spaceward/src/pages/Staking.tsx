@@ -66,8 +66,6 @@ export function StakingPage() {
 		],
 	);
 
-	console.log(queryValidators.data?.validators);
-
 	const { /* stakedWard, */ validatorsByAddress } = useMemo(
 		() => getValidatorData(queryValidators.data?.validators),
 		[queryValidators.data?.validators],

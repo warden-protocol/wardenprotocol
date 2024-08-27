@@ -161,18 +161,7 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 
 		results := make([]*wardentypes.InferenceResult, len(pendingInferenceRequests))
 		for i, req := range pendingInferenceRequests {
-			var input wardentypes.SolverInput
-			err := input.Unmarshal(req.Input)
-			if err != nil {
-				ctx.Logger().Error("invalid inference input data", "id", req.Id, "err", err)
-				results[i] = &wardentypes.InferenceResult{
-					Id:    req.Id,
-					Error: fmt.Sprintf("failed to solve: %v", err),
-				}
-				continue
-			}
-
-			res, err := inference.Solve(input, FalsePositiveRate)
+			res, err := inference.Solve(*req.Input, FalsePositiveRate)
 			if err != nil {
 				ctx.Logger().Error("failed to solve inference", "id", req.Id, "err", err)
 				results[i] = &wardentypes.InferenceResult{
@@ -182,21 +171,10 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 				continue
 			}
 
-			output, err := res.SolverOutput.Marshal()
-			if err != nil {
-				ctx.Logger().Error("failed to serialize inference output", "id", req.Id, "err", err)
-				results[i] = &wardentypes.InferenceResult{
-					Id:    req.Id,
-					Error: fmt.Sprintf("failed to serialize output: %v", err),
-				}
-				continue
-			}
-
-			ctx.Logger().Info("solved inference", "id", req.Id, "output", output)
+			ctx.Logger().Info("solved inference", "id", req.Id)
 			results[i] = &wardentypes.InferenceResult{
-				Id:      req.Id,
-				Output:  output,
-				Receipt: res.SolverReceipt,
+				Id:       req.Id,
+				Response: &res,
 			}
 		}
 
@@ -234,18 +212,13 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 					return nil, fmt.Errorf("got result for invalid inference request ID: %w", err)
 				}
 
-				var input wardentypes.SolverInput
-				if err := input.Unmarshal(infReq.Input); err != nil {
-					return nil, fmt.Errorf("can't deserialize input data: %w", err)
-				}
-
 				err = inference.Verify(
 					wardentypes.SolverRequest{
-						SolverInput:       input,
-						ExpectedItems:     int64(len(input.Tokens)),
+						SolverInput:       *infReq.Input,
+						ExpectedItems:     int64(len(infReq.Input.Tokens)),
 						FalsePositiveRate: FalsePositiveRate,
 					},
-					result.Receipt,
+					result.Response.SolverReceipt,
 					10)
 				if err != nil {
 					return nil, fmt.Errorf("can't verify inference result: %w", err)

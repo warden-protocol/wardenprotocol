@@ -170,7 +170,7 @@ func (k Keeper) PendingInferenceRequests(ctx sdk.Context) ([]v1beta3.InferenceRe
 			return nil, err
 		}
 
-		if len(req.Output) > 0 || len(req.Error) > 0 {
+		if req.Response != nil || len(req.Error) > 0 {
 			// already processed
 			continue
 		}
@@ -190,7 +190,7 @@ func (k Keeper) UpdateInferenceRequest(ctx sdk.Context, result *v1beta3.Inferenc
 		return err
 	}
 
-	req.Output = result.Output
+	req.Response = result.Response
 	req.Error = result.Error
 	req.UpdatedAt = uint64(ctx.BlockHeight())
 

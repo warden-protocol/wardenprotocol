@@ -12,7 +12,6 @@ import (
 	io "io"
 	math "math"
 	reflect "reflect"
-	sort "sort"
 	sync "sync"
 )
 
@@ -21,7 +20,7 @@ var (
 	fd_InferenceRequest_id                protoreflect.FieldDescriptor
 	fd_InferenceRequest_creator           protoreflect.FieldDescriptor
 	fd_InferenceRequest_input             protoreflect.FieldDescriptor
-	fd_InferenceRequest_output            protoreflect.FieldDescriptor
+	fd_InferenceRequest_response          protoreflect.FieldDescriptor
 	fd_InferenceRequest_error             protoreflect.FieldDescriptor
 	fd_InferenceRequest_created_at        protoreflect.FieldDescriptor
 	fd_InferenceRequest_updated_at        protoreflect.FieldDescriptor
@@ -34,7 +33,7 @@ func init() {
 	fd_InferenceRequest_id = md_InferenceRequest.Fields().ByName("id")
 	fd_InferenceRequest_creator = md_InferenceRequest.Fields().ByName("creator")
 	fd_InferenceRequest_input = md_InferenceRequest.Fields().ByName("input")
-	fd_InferenceRequest_output = md_InferenceRequest.Fields().ByName("output")
+	fd_InferenceRequest_response = md_InferenceRequest.Fields().ByName("response")
 	fd_InferenceRequest_error = md_InferenceRequest.Fields().ByName("error")
 	fd_InferenceRequest_created_at = md_InferenceRequest.Fields().ByName("created_at")
 	fd_InferenceRequest_updated_at = md_InferenceRequest.Fields().ByName("updated_at")
@@ -118,15 +117,15 @@ func (x *fastReflection_InferenceRequest) Range(f func(protoreflect.FieldDescrip
 			return
 		}
 	}
-	if len(x.Input) != 0 {
-		value := protoreflect.ValueOfBytes(x.Input)
+	if x.Input != nil {
+		value := protoreflect.ValueOfMessage(x.Input.ProtoReflect())
 		if !f(fd_InferenceRequest_input, value) {
 			return
 		}
 	}
-	if len(x.Output) != 0 {
-		value := protoreflect.ValueOfBytes(x.Output)
-		if !f(fd_InferenceRequest_output, value) {
+	if x.Response != nil {
+		value := protoreflect.ValueOfMessage(x.Response.ProtoReflect())
+		if !f(fd_InferenceRequest_response, value) {
 			return
 		}
 	}
@@ -174,9 +173,9 @@ func (x *fastReflection_InferenceRequest) Has(fd protoreflect.FieldDescriptor) b
 	case "warden.warden.v1beta3.InferenceRequest.creator":
 		return x.Creator != ""
 	case "warden.warden.v1beta3.InferenceRequest.input":
-		return len(x.Input) != 0
-	case "warden.warden.v1beta3.InferenceRequest.output":
-		return len(x.Output) != 0
+		return x.Input != nil
+	case "warden.warden.v1beta3.InferenceRequest.response":
+		return x.Response != nil
 	case "warden.warden.v1beta3.InferenceRequest.error":
 		return x.Error != ""
 	case "warden.warden.v1beta3.InferenceRequest.created_at":
@@ -207,8 +206,8 @@ func (x *fastReflection_InferenceRequest) Clear(fd protoreflect.FieldDescriptor)
 		x.Creator = ""
 	case "warden.warden.v1beta3.InferenceRequest.input":
 		x.Input = nil
-	case "warden.warden.v1beta3.InferenceRequest.output":
-		x.Output = nil
+	case "warden.warden.v1beta3.InferenceRequest.response":
+		x.Response = nil
 	case "warden.warden.v1beta3.InferenceRequest.error":
 		x.Error = ""
 	case "warden.warden.v1beta3.InferenceRequest.created_at":
@@ -241,10 +240,10 @@ func (x *fastReflection_InferenceRequest) Get(descriptor protoreflect.FieldDescr
 		return protoreflect.ValueOfString(value)
 	case "warden.warden.v1beta3.InferenceRequest.input":
 		value := x.Input
-		return protoreflect.ValueOfBytes(value)
-	case "warden.warden.v1beta3.InferenceRequest.output":
-		value := x.Output
-		return protoreflect.ValueOfBytes(value)
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.warden.v1beta3.InferenceRequest.response":
+		value := x.Response
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "warden.warden.v1beta3.InferenceRequest.error":
 		value := x.Error
 		return protoreflect.ValueOfString(value)
@@ -282,9 +281,9 @@ func (x *fastReflection_InferenceRequest) Set(fd protoreflect.FieldDescriptor, v
 	case "warden.warden.v1beta3.InferenceRequest.creator":
 		x.Creator = value.Interface().(string)
 	case "warden.warden.v1beta3.InferenceRequest.input":
-		x.Input = value.Bytes()
-	case "warden.warden.v1beta3.InferenceRequest.output":
-		x.Output = value.Bytes()
+		x.Input = value.Message().Interface().(*SolverInput)
+	case "warden.warden.v1beta3.InferenceRequest.response":
+		x.Response = value.Message().Interface().(*SolverResponse)
 	case "warden.warden.v1beta3.InferenceRequest.error":
 		x.Error = value.Interface().(string)
 	case "warden.warden.v1beta3.InferenceRequest.created_at":
@@ -313,14 +312,20 @@ func (x *fastReflection_InferenceRequest) Set(fd protoreflect.FieldDescriptor, v
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_InferenceRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "warden.warden.v1beta3.InferenceRequest.input":
+		if x.Input == nil {
+			x.Input = new(SolverInput)
+		}
+		return protoreflect.ValueOfMessage(x.Input.ProtoReflect())
+	case "warden.warden.v1beta3.InferenceRequest.response":
+		if x.Response == nil {
+			x.Response = new(SolverResponse)
+		}
+		return protoreflect.ValueOfMessage(x.Response.ProtoReflect())
 	case "warden.warden.v1beta3.InferenceRequest.id":
 		panic(fmt.Errorf("field id of message warden.warden.v1beta3.InferenceRequest is not mutable"))
 	case "warden.warden.v1beta3.InferenceRequest.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.v1beta3.InferenceRequest is not mutable"))
-	case "warden.warden.v1beta3.InferenceRequest.input":
-		panic(fmt.Errorf("field input of message warden.warden.v1beta3.InferenceRequest is not mutable"))
-	case "warden.warden.v1beta3.InferenceRequest.output":
-		panic(fmt.Errorf("field output of message warden.warden.v1beta3.InferenceRequest is not mutable"))
 	case "warden.warden.v1beta3.InferenceRequest.error":
 		panic(fmt.Errorf("field error of message warden.warden.v1beta3.InferenceRequest is not mutable"))
 	case "warden.warden.v1beta3.InferenceRequest.created_at":
@@ -347,9 +352,11 @@ func (x *fastReflection_InferenceRequest) NewField(fd protoreflect.FieldDescript
 	case "warden.warden.v1beta3.InferenceRequest.creator":
 		return protoreflect.ValueOfString("")
 	case "warden.warden.v1beta3.InferenceRequest.input":
-		return protoreflect.ValueOfBytes(nil)
-	case "warden.warden.v1beta3.InferenceRequest.output":
-		return protoreflect.ValueOfBytes(nil)
+		m := new(SolverInput)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.warden.v1beta3.InferenceRequest.response":
+		m := new(SolverResponse)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "warden.warden.v1beta3.InferenceRequest.error":
 		return protoreflect.ValueOfString("")
 	case "warden.warden.v1beta3.InferenceRequest.created_at":
@@ -434,12 +441,12 @@ func (x *fastReflection_InferenceRequest) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.Input)
-		if l > 0 {
+		if x.Input != nil {
+			l = options.Size(x.Input)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.Output)
-		if l > 0 {
+		if x.Response != nil {
+			l = options.Size(x.Response)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		l = len(x.Error)
@@ -509,17 +516,31 @@ func (x *fastReflection_InferenceRequest) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x2a
 		}
-		if len(x.Output) > 0 {
-			i -= len(x.Output)
-			copy(dAtA[i:], x.Output)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Output)))
+		if x.Response != nil {
+			encoded, err := options.Marshal(x.Response)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x22
 		}
-		if len(x.Input) > 0 {
-			i -= len(x.Input)
-			copy(dAtA[i:], x.Input)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Input)))
+		if x.Input != nil {
+			encoded, err := options.Marshal(x.Input)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x1a
 		}
@@ -639,7 +660,7 @@ func (x *fastReflection_InferenceRequest) ProtoMethods() *protoiface.Methods {
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Input", wireType)
 				}
-				var byteLen int
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -649,31 +670,33 @@ func (x *fastReflection_InferenceRequest) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					byteLen |= int(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				if byteLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + byteLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Input = append(x.Input[:0], dAtA[iNdEx:postIndex]...)
 				if x.Input == nil {
-					x.Input = []byte{}
+					x.Input = &SolverInput{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Input); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Response", wireType)
 				}
-				var byteLen int
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -683,24 +706,26 @@ func (x *fastReflection_InferenceRequest) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					byteLen |= int(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				if byteLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + byteLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Output = append(x.Output[:0], dAtA[iNdEx:postIndex]...)
-				if x.Output == nil {
-					x.Output = []byte{}
+				if x.Response == nil {
+					x.Response = &SolverResponse{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Response); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
 			case 5:
@@ -841,19 +866,17 @@ func (x *fastReflection_InferenceRequest) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_InferenceResult         protoreflect.MessageDescriptor
-	fd_InferenceResult_id      protoreflect.FieldDescriptor
-	fd_InferenceResult_output  protoreflect.FieldDescriptor
-	fd_InferenceResult_receipt protoreflect.FieldDescriptor
-	fd_InferenceResult_error   protoreflect.FieldDescriptor
+	md_InferenceResult          protoreflect.MessageDescriptor
+	fd_InferenceResult_id       protoreflect.FieldDescriptor
+	fd_InferenceResult_response protoreflect.FieldDescriptor
+	fd_InferenceResult_error    protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta3_inference_proto_init()
 	md_InferenceResult = File_warden_warden_v1beta3_inference_proto.Messages().ByName("InferenceResult")
 	fd_InferenceResult_id = md_InferenceResult.Fields().ByName("id")
-	fd_InferenceResult_output = md_InferenceResult.Fields().ByName("output")
-	fd_InferenceResult_receipt = md_InferenceResult.Fields().ByName("receipt")
+	fd_InferenceResult_response = md_InferenceResult.Fields().ByName("response")
 	fd_InferenceResult_error = md_InferenceResult.Fields().ByName("error")
 }
 
@@ -928,15 +951,9 @@ func (x *fastReflection_InferenceResult) Range(f func(protoreflect.FieldDescript
 			return
 		}
 	}
-	if len(x.Output) != 0 {
-		value := protoreflect.ValueOfBytes(x.Output)
-		if !f(fd_InferenceResult_output, value) {
-			return
-		}
-	}
-	if len(x.Receipt) != 0 {
-		value := protoreflect.ValueOfBytes(x.Receipt)
-		if !f(fd_InferenceResult_receipt, value) {
+	if x.Response != nil {
+		value := protoreflect.ValueOfMessage(x.Response.ProtoReflect())
+		if !f(fd_InferenceResult_response, value) {
 			return
 		}
 	}
@@ -963,10 +980,8 @@ func (x *fastReflection_InferenceResult) Has(fd protoreflect.FieldDescriptor) bo
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.InferenceResult.id":
 		return x.Id != uint64(0)
-	case "warden.warden.v1beta3.InferenceResult.output":
-		return len(x.Output) != 0
-	case "warden.warden.v1beta3.InferenceResult.receipt":
-		return len(x.Receipt) != 0
+	case "warden.warden.v1beta3.InferenceResult.response":
+		return x.Response != nil
 	case "warden.warden.v1beta3.InferenceResult.error":
 		return x.Error != ""
 	default:
@@ -987,10 +1002,8 @@ func (x *fastReflection_InferenceResult) Clear(fd protoreflect.FieldDescriptor) 
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.InferenceResult.id":
 		x.Id = uint64(0)
-	case "warden.warden.v1beta3.InferenceResult.output":
-		x.Output = nil
-	case "warden.warden.v1beta3.InferenceResult.receipt":
-		x.Receipt = nil
+	case "warden.warden.v1beta3.InferenceResult.response":
+		x.Response = nil
 	case "warden.warden.v1beta3.InferenceResult.error":
 		x.Error = ""
 	default:
@@ -1012,12 +1025,9 @@ func (x *fastReflection_InferenceResult) Get(descriptor protoreflect.FieldDescri
 	case "warden.warden.v1beta3.InferenceResult.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta3.InferenceResult.output":
-		value := x.Output
-		return protoreflect.ValueOfBytes(value)
-	case "warden.warden.v1beta3.InferenceResult.receipt":
-		value := x.Receipt
-		return protoreflect.ValueOfBytes(value)
+	case "warden.warden.v1beta3.InferenceResult.response":
+		value := x.Response
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "warden.warden.v1beta3.InferenceResult.error":
 		value := x.Error
 		return protoreflect.ValueOfString(value)
@@ -1043,10 +1053,8 @@ func (x *fastReflection_InferenceResult) Set(fd protoreflect.FieldDescriptor, va
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.InferenceResult.id":
 		x.Id = value.Uint()
-	case "warden.warden.v1beta3.InferenceResult.output":
-		x.Output = value.Bytes()
-	case "warden.warden.v1beta3.InferenceResult.receipt":
-		x.Receipt = value.Bytes()
+	case "warden.warden.v1beta3.InferenceResult.response":
+		x.Response = value.Message().Interface().(*SolverResponse)
 	case "warden.warden.v1beta3.InferenceResult.error":
 		x.Error = value.Interface().(string)
 	default:
@@ -1069,12 +1077,13 @@ func (x *fastReflection_InferenceResult) Set(fd protoreflect.FieldDescriptor, va
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_InferenceResult) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "warden.warden.v1beta3.InferenceResult.response":
+		if x.Response == nil {
+			x.Response = new(SolverResponse)
+		}
+		return protoreflect.ValueOfMessage(x.Response.ProtoReflect())
 	case "warden.warden.v1beta3.InferenceResult.id":
 		panic(fmt.Errorf("field id of message warden.warden.v1beta3.InferenceResult is not mutable"))
-	case "warden.warden.v1beta3.InferenceResult.output":
-		panic(fmt.Errorf("field output of message warden.warden.v1beta3.InferenceResult is not mutable"))
-	case "warden.warden.v1beta3.InferenceResult.receipt":
-		panic(fmt.Errorf("field receipt of message warden.warden.v1beta3.InferenceResult is not mutable"))
 	case "warden.warden.v1beta3.InferenceResult.error":
 		panic(fmt.Errorf("field error of message warden.warden.v1beta3.InferenceResult is not mutable"))
 	default:
@@ -1092,10 +1101,9 @@ func (x *fastReflection_InferenceResult) NewField(fd protoreflect.FieldDescripto
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.InferenceResult.id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta3.InferenceResult.output":
-		return protoreflect.ValueOfBytes(nil)
-	case "warden.warden.v1beta3.InferenceResult.receipt":
-		return protoreflect.ValueOfBytes(nil)
+	case "warden.warden.v1beta3.InferenceResult.response":
+		m := new(SolverResponse)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "warden.warden.v1beta3.InferenceResult.error":
 		return protoreflect.ValueOfString("")
 	default:
@@ -1170,12 +1178,8 @@ func (x *fastReflection_InferenceResult) ProtoMethods() *protoiface.Methods {
 		if x.Id != 0 {
 			n += 1 + runtime.Sov(uint64(x.Id))
 		}
-		l = len(x.Output)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		l = len(x.Receipt)
-		if l > 0 {
+		if x.Response != nil {
+			l = options.Size(x.Response)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		l = len(x.Error)
@@ -1216,19 +1220,19 @@ func (x *fastReflection_InferenceResult) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], x.Error)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Error)))
 			i--
-			dAtA[i] = 0x22
-		}
-		if len(x.Receipt) > 0 {
-			i -= len(x.Receipt)
-			copy(dAtA[i:], x.Receipt)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Receipt)))
-			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.Output) > 0 {
-			i -= len(x.Output)
-			copy(dAtA[i:], x.Output)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Output)))
+		if x.Response != nil {
+			encoded, err := options.Marshal(x.Response)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x12
 		}
@@ -1307,9 +1311,9 @@ func (x *fastReflection_InferenceResult) ProtoMethods() *protoiface.Methods {
 				}
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Response", wireType)
 				}
-				var byteLen int
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1319,61 +1323,29 @@ func (x *fastReflection_InferenceResult) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					byteLen |= int(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				if byteLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + byteLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Output = append(x.Output[:0], dAtA[iNdEx:postIndex]...)
-				if x.Output == nil {
-					x.Output = []byte{}
+				if x.Response == nil {
+					x.Response = &SolverResponse{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Response); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
 			case 3:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Receipt", wireType)
-				}
-				var byteLen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					byteLen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if byteLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + byteLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Receipt = append(x.Receipt[:0], dAtA[iNdEx:postIndex]...)
-				if x.Receipt == nil {
-					x.Receipt = []byte{}
-				}
-				iNdEx = postIndex
-			case 4:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
 				}
@@ -3541,86 +3513,55 @@ func (x *fastReflection_SolverResponse) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var _ protoreflect.Map = (*_SolverOutput_1_map)(nil)
+var _ protoreflect.List = (*_SolverOutput_1_list)(nil)
 
-type _SolverOutput_1_map struct {
-	m *map[string]float32
+type _SolverOutput_1_list struct {
+	list *[]*Forecast
 }
 
-func (x *_SolverOutput_1_map) Len() int {
-	if x.m == nil {
+func (x *_SolverOutput_1_list) Len() int {
+	if x.list == nil {
 		return 0
 	}
-	return len(*x.m)
+	return len(*x.list)
 }
 
-func (x *_SolverOutput_1_map) Range(f func(protoreflect.MapKey, protoreflect.Value) bool) {
-	if x.m == nil {
-		return
+func (x *_SolverOutput_1_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_SolverOutput_1_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*Forecast)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_SolverOutput_1_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*Forecast)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_SolverOutput_1_list) AppendMutable() protoreflect.Value {
+	v := new(Forecast)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_SolverOutput_1_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
 	}
-	for k, v := range *x.m {
-		mapKey := (protoreflect.MapKey)(protoreflect.ValueOfString(k))
-		mapValue := protoreflect.ValueOfFloat32(v)
-		if !f(mapKey, mapValue) {
-			break
-		}
-	}
+	*x.list = (*x.list)[:n]
 }
 
-func (x *_SolverOutput_1_map) Has(key protoreflect.MapKey) bool {
-	if x.m == nil {
-		return false
-	}
-	keyUnwrapped := key.String()
-	concreteValue := keyUnwrapped
-	_, ok := (*x.m)[concreteValue]
-	return ok
+func (x *_SolverOutput_1_list) NewElement() protoreflect.Value {
+	v := new(Forecast)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_SolverOutput_1_map) Clear(key protoreflect.MapKey) {
-	if x.m == nil {
-		return
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	delete(*x.m, concreteKey)
-}
-
-func (x *_SolverOutput_1_map) Get(key protoreflect.MapKey) protoreflect.Value {
-	if x.m == nil {
-		return protoreflect.Value{}
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	v, ok := (*x.m)[concreteKey]
-	if !ok {
-		return protoreflect.Value{}
-	}
-	return protoreflect.ValueOfFloat32(v)
-}
-
-func (x *_SolverOutput_1_map) Set(key protoreflect.MapKey, value protoreflect.Value) {
-	if !key.IsValid() || !value.IsValid() {
-		panic("invalid key or value provided")
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	valueUnwrapped := value.Float()
-	concreteValue := (float32)(valueUnwrapped)
-	(*x.m)[concreteKey] = concreteValue
-}
-
-func (x *_SolverOutput_1_map) Mutable(key protoreflect.MapKey) protoreflect.Value {
-	panic("should not call Mutable on protoreflect.Map whose value is not of type protoreflect.Message")
-}
-
-func (x *_SolverOutput_1_map) NewValue() protoreflect.Value {
-	v := float32(0)
-	return protoreflect.ValueOfFloat32(v)
-}
-
-func (x *_SolverOutput_1_map) IsValid() bool {
-	return x.m != nil
+func (x *_SolverOutput_1_list) IsValid() bool {
+	return x.list != nil
 }
 
 var (
@@ -3700,7 +3641,7 @@ func (x *fastReflection_SolverOutput) Interface() protoreflect.ProtoMessage {
 // on the current field descriptor.
 func (x *fastReflection_SolverOutput) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if len(x.Forecasts) != 0 {
-		value := protoreflect.ValueOfMap(&_SolverOutput_1_map{m: &x.Forecasts})
+		value := protoreflect.ValueOfList(&_SolverOutput_1_list{list: &x.Forecasts})
 		if !f(fd_SolverOutput_forecasts, value) {
 			return
 		}
@@ -3758,10 +3699,10 @@ func (x *fastReflection_SolverOutput) Get(descriptor protoreflect.FieldDescripto
 	switch descriptor.FullName() {
 	case "warden.warden.v1beta3.SolverOutput.forecasts":
 		if len(x.Forecasts) == 0 {
-			return protoreflect.ValueOfMap(&_SolverOutput_1_map{})
+			return protoreflect.ValueOfList(&_SolverOutput_1_list{})
 		}
-		mapValue := &_SolverOutput_1_map{m: &x.Forecasts}
-		return protoreflect.ValueOfMap(mapValue)
+		listValue := &_SolverOutput_1_list{list: &x.Forecasts}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
@@ -3783,9 +3724,9 @@ func (x *fastReflection_SolverOutput) Get(descriptor protoreflect.FieldDescripto
 func (x *fastReflection_SolverOutput) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.SolverOutput.forecasts":
-		mv := value.Map()
-		cmv := mv.(*_SolverOutput_1_map)
-		x.Forecasts = *cmv.m
+		lv := value.List()
+		clv := lv.(*_SolverOutput_1_list)
+		x.Forecasts = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
@@ -3808,10 +3749,10 @@ func (x *fastReflection_SolverOutput) Mutable(fd protoreflect.FieldDescriptor) p
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.SolverOutput.forecasts":
 		if x.Forecasts == nil {
-			x.Forecasts = make(map[string]float32)
+			x.Forecasts = []*Forecast{}
 		}
-		value := &_SolverOutput_1_map{m: &x.Forecasts}
-		return protoreflect.ValueOfMap(value)
+		value := &_SolverOutput_1_list{list: &x.Forecasts}
+		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
@@ -3826,8 +3767,8 @@ func (x *fastReflection_SolverOutput) Mutable(fd protoreflect.FieldDescriptor) p
 func (x *fastReflection_SolverOutput) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "warden.warden.v1beta3.SolverOutput.forecasts":
-		m := make(map[string]float32)
-		return protoreflect.ValueOfMap(&_SolverOutput_1_map{m: &m})
+		list := []*Forecast{}
+		return protoreflect.ValueOfList(&_SolverOutput_1_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.SolverOutput"))
@@ -3898,24 +3839,9 @@ func (x *fastReflection_SolverOutput) ProtoMethods() *protoiface.Methods {
 		var l int
 		_ = l
 		if len(x.Forecasts) > 0 {
-			SiZeMaP := func(k string, v float32) {
-				mapEntrySize := 1 + len(k) + runtime.Sov(uint64(len(k))) + 1 + 4
-				n += mapEntrySize + 1 + runtime.Sov(uint64(mapEntrySize))
-			}
-			if options.Deterministic {
-				sortme := make([]string, 0, len(x.Forecasts))
-				for k := range x.Forecasts {
-					sortme = append(sortme, k)
-				}
-				sort.Strings(sortme)
-				for _, k := range sortme {
-					v := x.Forecasts[k]
-					SiZeMaP(k, v)
-				}
-			} else {
-				for k, v := range x.Forecasts {
-					SiZeMaP(k, v)
-				}
+			for _, e := range x.Forecasts {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
 		if x.unknownFields != nil {
@@ -3948,45 +3874,19 @@ func (x *fastReflection_SolverOutput) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], x.unknownFields)
 		}
 		if len(x.Forecasts) > 0 {
-			MaRsHaLmAp := func(k string, v float32) (protoiface.MarshalOutput, error) {
-				baseI := i
-				i -= 4
-				binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
-				i--
-				dAtA[i] = 0x15
-				i -= len(k)
-				copy(dAtA[i:], k)
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(k)))
+			for iNdEx := len(x.Forecasts) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Forecasts[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 				i--
 				dAtA[i] = 0xa
-				i = runtime.EncodeVarint(dAtA, i, uint64(baseI-i))
-				i--
-				dAtA[i] = 0xa
-				return protoiface.MarshalOutput{}, nil
-			}
-			if options.Deterministic {
-				keysForForecasts := make([]string, 0, len(x.Forecasts))
-				for k := range x.Forecasts {
-					keysForForecasts = append(keysForForecasts, string(k))
-				}
-				sort.Slice(keysForForecasts, func(i, j int) bool {
-					return keysForForecasts[i] < keysForForecasts[j]
-				})
-				for iNdEx := len(keysForForecasts) - 1; iNdEx >= 0; iNdEx-- {
-					v := x.Forecasts[string(keysForForecasts[iNdEx])]
-					out, err := MaRsHaLmAp(keysForForecasts[iNdEx], v)
-					if err != nil {
-						return out, err
-					}
-				}
-			} else {
-				for k := range x.Forecasts {
-					v := x.Forecasts[k]
-					out, err := MaRsHaLmAp(k, v)
-					if err != nil {
-						return out, err
-					}
-				}
 			}
 		}
 		if input.Buf != nil {
@@ -4067,83 +3967,472 @@ func (x *fastReflection_SolverOutput) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.Forecasts == nil {
-					x.Forecasts = make(map[string]float32)
+				x.Forecasts = append(x.Forecasts, &Forecast{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Forecasts[len(x.Forecasts)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
-				var mapkey string
-				var mapvalue float32
-				for iNdEx < postIndex {
-					entryPreIndex := iNdEx
-					var wire uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						wire |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					fieldNum := int32(wire >> 3)
-					if fieldNum == 1 {
-						var stringLenmapkey uint64
-						for shift := uint(0); ; shift += 7 {
-							if shift >= 64 {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-							}
-							if iNdEx >= l {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-							}
-							b := dAtA[iNdEx]
-							iNdEx++
-							stringLenmapkey |= uint64(b&0x7F) << shift
-							if b < 0x80 {
-								break
-							}
-						}
-						intStringLenmapkey := int(stringLenmapkey)
-						if intStringLenmapkey < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						postStringIndexmapkey := iNdEx + intStringLenmapkey
-						if postStringIndexmapkey < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if postStringIndexmapkey > l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-						iNdEx = postStringIndexmapkey
-					} else if fieldNum == 2 {
-						var mapvaluetemp uint32
-						if (iNdEx + 4) > l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						mapvaluetemp = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
-						iNdEx += 4
-						mapvalue = math.Float32frombits(mapvaluetemp)
-					} else {
-						iNdEx = entryPreIndex
-						skippy, err := runtime.Skip(dAtA[iNdEx:])
-						if err != nil {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-						}
-						if (skippy < 0) || (iNdEx+skippy) < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if (iNdEx + skippy) > postIndex {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						iNdEx += skippy
-					}
-				}
-				x.Forecasts[mapkey] = mapvalue
 				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_Forecast       protoreflect.MessageDescriptor
+	fd_Forecast_key   protoreflect.FieldDescriptor
+	fd_Forecast_value protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_warden_v1beta3_inference_proto_init()
+	md_Forecast = File_warden_warden_v1beta3_inference_proto.Messages().ByName("Forecast")
+	fd_Forecast_key = md_Forecast.Fields().ByName("key")
+	fd_Forecast_value = md_Forecast.Fields().ByName("value")
+}
+
+var _ protoreflect.Message = (*fastReflection_Forecast)(nil)
+
+type fastReflection_Forecast Forecast
+
+func (x *Forecast) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_Forecast)(x)
+}
+
+func (x *Forecast) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_Forecast_messageType fastReflection_Forecast_messageType
+var _ protoreflect.MessageType = fastReflection_Forecast_messageType{}
+
+type fastReflection_Forecast_messageType struct{}
+
+func (x fastReflection_Forecast_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_Forecast)(nil)
+}
+func (x fastReflection_Forecast_messageType) New() protoreflect.Message {
+	return new(fastReflection_Forecast)
+}
+func (x fastReflection_Forecast_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_Forecast
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_Forecast) Descriptor() protoreflect.MessageDescriptor {
+	return md_Forecast
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_Forecast) Type() protoreflect.MessageType {
+	return _fastReflection_Forecast_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_Forecast) New() protoreflect.Message {
+	return new(fastReflection_Forecast)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_Forecast) Interface() protoreflect.ProtoMessage {
+	return (*Forecast)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_Forecast) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Key != "" {
+		value := protoreflect.ValueOfString(x.Key)
+		if !f(fd_Forecast_key, value) {
+			return
+		}
+	}
+	if x.Value != float32(0) || math.Signbit(float64(x.Value)) {
+		value := protoreflect.ValueOfFloat32(x.Value)
+		if !f(fd_Forecast_value, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_Forecast) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.Forecast.key":
+		return x.Key != ""
+	case "warden.warden.v1beta3.Forecast.value":
+		return x.Value != float32(0) || math.Signbit(float64(x.Value))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Forecast"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.Forecast does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_Forecast) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.Forecast.key":
+		x.Key = ""
+	case "warden.warden.v1beta3.Forecast.value":
+		x.Value = float32(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Forecast"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.Forecast does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_Forecast) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.warden.v1beta3.Forecast.key":
+		value := x.Key
+		return protoreflect.ValueOfString(value)
+	case "warden.warden.v1beta3.Forecast.value":
+		value := x.Value
+		return protoreflect.ValueOfFloat32(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Forecast"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.Forecast does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_Forecast) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.Forecast.key":
+		x.Key = value.Interface().(string)
+	case "warden.warden.v1beta3.Forecast.value":
+		x.Value = float32(value.Float())
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Forecast"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.Forecast does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_Forecast) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.Forecast.key":
+		panic(fmt.Errorf("field key of message warden.warden.v1beta3.Forecast is not mutable"))
+	case "warden.warden.v1beta3.Forecast.value":
+		panic(fmt.Errorf("field value of message warden.warden.v1beta3.Forecast is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Forecast"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.Forecast does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_Forecast) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.warden.v1beta3.Forecast.key":
+		return protoreflect.ValueOfString("")
+	case "warden.warden.v1beta3.Forecast.value":
+		return protoreflect.ValueOfFloat32(float32(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Forecast"))
+		}
+		panic(fmt.Errorf("message warden.warden.v1beta3.Forecast does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_Forecast) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta3.Forecast", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_Forecast) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_Forecast) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_Forecast) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_Forecast) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*Forecast)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Key)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Value != 0 || math.Signbit(float64(x.Value)) {
+			n += 5
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*Forecast)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Value != 0 || math.Signbit(float64(x.Value)) {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(x.Value))))
+			i--
+			dAtA[i] = 0x15
+		}
+		if len(x.Key) > 0 {
+			i -= len(x.Key)
+			copy(dAtA[i:], x.Key)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Key)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*Forecast)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: Forecast: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: Forecast: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Key = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 5 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+				}
+				var v uint32
+				if (iNdEx + 4) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+				iNdEx += 4
+				x.Value = float32(math.Float32frombits(v))
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -4197,14 +4486,14 @@ type InferenceRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id               uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator          string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Input            []byte `protobuf:"bytes,3,opt,name=input,proto3" json:"input,omitempty"`
-	Output           []byte `protobuf:"bytes,4,opt,name=output,proto3" json:"output,omitempty"`
-	Error            string `protobuf:"bytes,5,opt,name=error,proto3" json:"error,omitempty"`
-	CreatedAt        uint64 `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt        uint64 `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	ContractCallback string `protobuf:"bytes,8,opt,name=contract_callback,json=contractCallback,proto3" json:"contract_callback,omitempty"`
+	Id               uint64          `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Creator          string          `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	Input            *SolverInput    `protobuf:"bytes,3,opt,name=input,proto3" json:"input,omitempty"`
+	Response         *SolverResponse `protobuf:"bytes,4,opt,name=response,proto3" json:"response,omitempty"`
+	Error            string          `protobuf:"bytes,5,opt,name=error,proto3" json:"error,omitempty"`
+	CreatedAt        uint64          `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt        uint64          `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	ContractCallback string          `protobuf:"bytes,8,opt,name=contract_callback,json=contractCallback,proto3" json:"contract_callback,omitempty"`
 }
 
 func (x *InferenceRequest) Reset() {
@@ -4241,16 +4530,16 @@ func (x *InferenceRequest) GetCreator() string {
 	return ""
 }
 
-func (x *InferenceRequest) GetInput() []byte {
+func (x *InferenceRequest) GetInput() *SolverInput {
 	if x != nil {
 		return x.Input
 	}
 	return nil
 }
 
-func (x *InferenceRequest) GetOutput() []byte {
+func (x *InferenceRequest) GetResponse() *SolverResponse {
 	if x != nil {
-		return x.Output
+		return x.Response
 	}
 	return nil
 }
@@ -4288,10 +4577,9 @@ type InferenceResult struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Output  []byte `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
-	Receipt []byte `protobuf:"bytes,3,opt,name=receipt,proto3" json:"receipt,omitempty"`
-	Error   string `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
+	Id       uint64          `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Response *SolverResponse `protobuf:"bytes,2,opt,name=response,proto3" json:"response,omitempty"`
+	Error    string          `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 }
 
 func (x *InferenceResult) Reset() {
@@ -4321,16 +4609,9 @@ func (x *InferenceResult) GetId() uint64 {
 	return 0
 }
 
-func (x *InferenceResult) GetOutput() []byte {
+func (x *InferenceResult) GetResponse() *SolverResponse {
 	if x != nil {
-		return x.Output
-	}
-	return nil
-}
-
-func (x *InferenceResult) GetReceipt() []byte {
-	if x != nil {
-		return x.Receipt
+		return x.Response
 	}
 	return nil
 }
@@ -4527,7 +4808,7 @@ type SolverOutput struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Forecasts map[string]float32 `protobuf:"bytes,1,rep,name=forecasts,proto3" json:"forecasts,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"fixed32,2,opt,name=value,proto3"`
+	Forecasts []*Forecast `protobuf:"bytes,1,rep,name=forecasts,proto3" json:"forecasts,omitempty"`
 }
 
 func (x *SolverOutput) Reset() {
@@ -4550,11 +4831,54 @@ func (*SolverOutput) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta3_inference_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *SolverOutput) GetForecasts() map[string]float32 {
+func (x *SolverOutput) GetForecasts() []*Forecast {
 	if x != nil {
 		return x.Forecasts
 	}
 	return nil
+}
+
+type Forecast struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key   string  `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value float32 `protobuf:"fixed32,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *Forecast) Reset() {
+	*x = Forecast{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_warden_v1beta3_inference_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Forecast) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Forecast) ProtoMessage() {}
+
+// Deprecated: Use Forecast.ProtoReflect.Descriptor instead.
+func (*Forecast) Descriptor() ([]byte, []int) {
+	return file_warden_warden_v1beta3_inference_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *Forecast) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *Forecast) GetValue() float32 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
 }
 
 var File_warden_warden_v1beta3_inference_proto protoreflect.FileDescriptor
@@ -4565,28 +4889,34 @@ var file_warden_warden_v1beta3_inference_proto_rawDesc = []byte{
 	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x15, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
 	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x1a, 0x14,
 	0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xeb, 0x01, 0x0a, 0x10, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xba, 0x02, 0x0a, 0x10, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e,
 	0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65,
 	0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61,
-	0x74, 0x6f, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74,
-	0x70, 0x75, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75,
-	0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x63, 0x72, 0x65,
-	0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x64, 0x5f, 0x61, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x75, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x2b, 0x0a, 0x11, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
-	0x74, 0x5f, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61,
-	0x63, 0x6b, 0x22, 0x69, 0x0a, 0x0f, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52,
-	0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x18, 0x0a,
-	0x07, 0x72, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07,
-	0x72, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x72, 0x0a,
+	0x74, 0x6f, 0x72, 0x12, 0x38, 0x0a, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x53, 0x6f, 0x6c, 0x76, 0x65,
+	0x72, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x52, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x12, 0x41, 0x0a,
+	0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x25, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x64, 0x5f, 0x61, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64,
+	0x5f, 0x61, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x75, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x64, 0x41, 0x74, 0x12, 0x2b, 0x0a, 0x11, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x5f, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63,
+	0x6b, 0x22, 0x7a, 0x0a, 0x0f, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65,
+	0x73, 0x75, 0x6c, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04,
+	0x52, 0x02, 0x69, 0x64, 0x12, 0x41, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x25, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x53,
+	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x08, 0x72,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x72, 0x0a,
 	0x0b, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x54, 0x78, 0x12, 0x21, 0x0a, 0x0c,
 	0x6d, 0x61, 0x67, 0x69, 0x63, 0x5f, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x04, 0x52, 0x0b, 0x6d, 0x61, 0x67, 0x69, 0x63, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12,
@@ -4618,34 +4948,32 @@ var file_warden_warden_v1beta3_inference_proto_rawDesc = []byte{
 	0x74, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f,
 	0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x25, 0x0a, 0x0e, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f,
 	0x72, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0d, 0x73,
-	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x22, 0xa4, 0x01, 0x0a,
-	0x0c, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x56, 0x0a,
-	0x09, 0x66, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f,
-	0x75, 0x74, 0x70, 0x75, 0x74, 0x2e, 0x46, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74, 0x73, 0x45,
-	0x6e, 0x74, 0x72, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x09, 0x66, 0x6f, 0x72, 0x65,
-	0x63, 0x61, 0x73, 0x74, 0x73, 0x1a, 0x3c, 0x0a, 0x0e, 0x46, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73,
-	0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
-	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
-	0x02, 0x38, 0x01, 0x42, 0xf4, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x33, 0x42, 0x0e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x33, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x33, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
-	0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x52, 0x65, 0x63, 0x65, 0x69, 0x70, 0x74, 0x22, 0x53, 0x0a, 0x0c,
+	0x53, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x43, 0x0a, 0x09,
+	0x66, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x1f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x46, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74,
+	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x09, 0x66, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74,
+	0x73, 0x22, 0x32, 0x0a, 0x08, 0x46, 0x6f, 0x72, 0x65, 0x63, 0x61, 0x73, 0x74, 0x12, 0x10, 0x0a,
+	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
+	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x42, 0xf4, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x33, 0x42, 0x0e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x50, 0x72,
+	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f,
+	0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02,
+	0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02,
+	0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
+	0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4669,18 +4997,21 @@ var file_warden_warden_v1beta3_inference_proto_goTypes = []interface{}{
 	(*SolverInput)(nil),      // 4: warden.warden.v1beta3.SolverInput
 	(*SolverResponse)(nil),   // 5: warden.warden.v1beta3.SolverResponse
 	(*SolverOutput)(nil),     // 6: warden.warden.v1beta3.SolverOutput
-	nil,                      // 7: warden.warden.v1beta3.SolverOutput.ForecastsEntry
+	(*Forecast)(nil),         // 7: warden.warden.v1beta3.Forecast
 }
 var file_warden_warden_v1beta3_inference_proto_depIdxs = []int32{
-	1, // 0: warden.warden.v1beta3.InferenceTx.results:type_name -> warden.warden.v1beta3.InferenceResult
-	4, // 1: warden.warden.v1beta3.SolverRequest.solver_input:type_name -> warden.warden.v1beta3.SolverInput
-	6, // 2: warden.warden.v1beta3.SolverResponse.solver_output:type_name -> warden.warden.v1beta3.SolverOutput
-	7, // 3: warden.warden.v1beta3.SolverOutput.forecasts:type_name -> warden.warden.v1beta3.SolverOutput.ForecastsEntry
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 0: warden.warden.v1beta3.InferenceRequest.input:type_name -> warden.warden.v1beta3.SolverInput
+	5, // 1: warden.warden.v1beta3.InferenceRequest.response:type_name -> warden.warden.v1beta3.SolverResponse
+	5, // 2: warden.warden.v1beta3.InferenceResult.response:type_name -> warden.warden.v1beta3.SolverResponse
+	1, // 3: warden.warden.v1beta3.InferenceTx.results:type_name -> warden.warden.v1beta3.InferenceResult
+	4, // 4: warden.warden.v1beta3.SolverRequest.solver_input:type_name -> warden.warden.v1beta3.SolverInput
+	6, // 5: warden.warden.v1beta3.SolverResponse.solver_output:type_name -> warden.warden.v1beta3.SolverOutput
+	7, // 6: warden.warden.v1beta3.SolverOutput.forecasts:type_name -> warden.warden.v1beta3.Forecast
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_warden_warden_v1beta3_inference_proto_init() }
@@ -4763,6 +5094,18 @@ func file_warden_warden_v1beta3_inference_proto_init() {
 		}
 		file_warden_warden_v1beta3_inference_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SolverOutput); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_warden_v1beta3_inference_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Forecast); i {
 			case 0:
 				return &v.state
 			case 1:

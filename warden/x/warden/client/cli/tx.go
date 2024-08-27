@@ -252,10 +252,6 @@ will be interpreted as list of 3 elements:
 				Tokens:        input,
 				AdversaryMode: adversaryMode,
 			}
-			inputBz, err := (&solverInput).Marshal()
-			if err != nil {
-				return err
-			}
 
 			callbackContractAddr, err := cmd.Flags().GetString("callback-contract-addr")
 			if err != nil {
@@ -264,7 +260,7 @@ will be interpreted as list of 3 elements:
 
 			msg := &v1beta3.MsgNewInferenceRequest{
 				Creator:          clientCtx.GetFromAddress().String(),
-				Input:            inputBz,
+				Input:            &solverInput,
 				ContractCallback: callbackContractAddr,
 			}
 

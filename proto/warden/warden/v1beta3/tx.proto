@@ -6,6 +6,7 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
+import "warden/warden/v1beta3/inference.proto";
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
 import "warden/warden/v1beta3/params.proto";
@@ -245,7 +246,7 @@ message MsgNewInferenceRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string contract_callback = 2;
-  bytes input = 3;
+  SolverInput input = 3;
 }
 
 message MsgNewInferenceRequestResponse { uint64 id = 1; }

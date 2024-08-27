@@ -58,44 +58,44 @@ To create a validator and initialize it with a self-delegation, you need to crea
 
 1. Obtain your validator public key by running the following command:
 
-    ```bash
-    wardend comet show-validator
-    ```
+   ```bash
+   wardend comet show-validator
+   ```
 
-    The output will be similar to this (with a different key):
-    
-    ```bash
-    {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
-    ```
-    
+   The output will be similar to this (with a different key):
+   
+   ```bash
+   {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
+   ```
+   
 2. Create a file named `validator.json` with the following content:
 
-    ```json
-    {    
-        "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
-        "amount": "1000000uward",
-        "moniker": "your validator human-readable name (moniker)",
-        "identity": "your validator identity signature",
-        "website": "(optional) your validator website",
-        "security": "(optional) your validator security contact",
-        "details": "(optional) your validator details",
-        "commission-rate": "0.1",
-        "commission-max-rate": "0.2",
-        "commission-max-change-rate": "0.01",
-        "min-self-delegation": "1"
-    }
-    ```
+   ```json
+   {    
+       "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
+       "amount": "1000000uward",
+       "moniker": "your validator human-readable name (moniker)",
+       "identity": "your validator identity signature",
+       "website": "(optional) your validator website",
+       "security": "(optional) your validator security contact",
+       "details": "(optional) your validator details",
+       "commission-rate": "0.1",
+       "commission-max-rate": "0.2",
+       "commission-max-change-rate": "0.01",
+       "min-self-delegation": "1"
+   }
+   ```
 
-    Here you have the chance to set your validator’s commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
+   Here you have the chance to set your validator’s commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
 
 3. Finally, you're ready to submit the transaction to create the validator:
     
-    ```bash
-    wardend tx staking create-validator validator.json \
-        --from=my-key-name \
-        --chain-id=buenavista-1 \
-        --fees=500uward
-    ```
+   ```bash
+   wardend tx staking create-validator validator.json \
+       --from=my-key-name \
+       --chain-id=buenavista-1 \
+       --fees=500uward
+   ```
     
 **✏️ CAUTION**
 

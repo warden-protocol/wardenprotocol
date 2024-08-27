@@ -40,10 +40,10 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) and unzip it. The archive contains the `wardend` binary.
 
 2. Initialize the chain home folder:
-
-```bash
-./wardend init my-chain-moniker
-    ```
+  
+   ```bash
+   ./wardend init my-chain-moniker
+   ```
 
 ### Option 2: Use the source code
 

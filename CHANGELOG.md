@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (evm) Using ethsecp256k1 signature for all transactions. Users should reimport their seeds to get new addresses.
 * (wardend) Validate bench32 format in add-genesis-keychain and add-genesis-space
 * (x/warden) Return error if analyzer's address is not bench32
+* (wardend) Validate bench32 format in add-genesis-keychain and add-genesis-space
 
 ### Bug Fixes
 * (x/gmp) Remove the GMP default params from genesis

@@ -8,69 +8,54 @@ slug: /
 
 ## The Warden Protocol
 
-The **Warden Protocol** is a modular L1 blockchain enabling developers to deploy [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) with [CosmWasm](https://cosmwasm.com). You can also participate by operating a [Keychain](/learn/glossary#keychain) or running a [node](/learn/glossary#warden-protocol-node) and becoming a [validator](/learn/glossary#validator).
+The **Warden Protocol** is a L1 blockchain bringing AI to Web3 and enabling any application, protocol, or smart contract to integrate **safe AI**.
 
-OApps are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for Warden.
+Mass adoption of Web3 requires the creation of safe and seamless AI experiences, and Warden empowers developers to achieve this goal.
 
-:::tip
-We're currently implementing a breaking update to the protocol. OApp developers will be able to build and integrate [AI-driven Agents](/learn/glossary#agent) – autonomous trainable programs independently managing complex processes. You can find more information here: [Glossary: Coming soon](/learn/glossary#coming-soon).
-:::
+## AI Blockchain Interface
 
-## Key protocol features
+Warden supports **AIBI** – **Artificial Intelligence Blockchain Interface**
 
-- **Dynamic smart contracts**  
-Utilize a next-generation CosmWasm smart contract layer capable of autonomous logic execution to ship truly decentralized applications with a flexible development suite powered by Rust.
+AIBI brings AI on-chain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
-- **Novel Web3 modules**  
-Access the premier plug-and-play Web3 modules to rapidly iterate a diverse array of groundbreaking dApps.
+Within Warden, AI is integrated on two layers:
 
-- **Unprecedented interoperability**  
-Ship dApps with native access to all popular assets, bridges, oracles, and wallets. Warden is one of the most interoperable protocols available with connections to leading blockchains such as Ethereum and Cosmos while also being IBC-enabled.
+- **Verification layer**  
+Warden is designed to bring AIs on-chain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
 
-- **Highly secure**  
-Deploy on a Tendermint-based PoS network secured by a globally distributed group of renowned validators and trusted by leading institutions worldwide.
-
-- **Coming Soon: Tailored for AI**  
-Leverage the only layer one protocol optimized for building DeFi apps that can reach the next billion users in Web3. Put Intents and the evolution of intents using AI here. 
-
-<!---
-## Why joining Warden?
-
-The main advantage of Warden is [modular architecture](#modular-architecture). The protocol distinguishes between the application- and protocol-level security, taking the best from monolithic and isolated security systems and reducing the risks of both.
+- **Execution layer**  
+Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain.
 
 ## Key protocol features
 
-Key features of the Warden Protocol include the following:
+Warden's key features allow creating a truly open AI experience:
 
-- **Modular Security**  
-Thanks to Warden's modular architecture, the same Omnichain Application can combine application- and protocol-level security models. This approach allows Warden to take the best from monolithic and isolated security systems and reduce the risks of both. To learn more, see [Modular architecture](#modular-architecture). 
+- **AI-ready**  
+Warden allows you to easily integrate AI in your application and enjoy novel AI-driven Web3 experiences.
 
-- **Chain Abstraction**  
-Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](/learn/glossary#space) within the Warden Protocol. Omnichain Applications allow signing transactions and messages at any destination chain.
+- **Simplified cryptography**  
+With Warden, you can easily develop Web3 applications with [intent-driven](/learn/glossary#intent) key management.
 
-- **Omnichain Interoperability**  
-It refers to the possibility of communication between different blockchain networks. While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. Omnichain Applications not only provide cross-chain swapping and [bridging](/learn/glossary#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
+- **Abstracted interoperability**  
+Build applications that allow aggregating multiple accounts for different chains and signing transactions at any destination chain.
 
-## Modular architecture
+## Build with Warden
 
-The Warden Protocol's architecture is based on several independent [modules](https://warden-docs-git-docs-test-qrdo-foundation.vercel.app/learn/warden-protocol-modules/introduction). This allows finding a middle ground between two main approaches to security in Web3 applications:
+Warden provides operator sets and integrations with leading wallets, explorers, bridges, oracles, and more, so developers can focus on what matters most: building products.
 
-- **Monolithic systems** impose equal security on their applications. A vulnerability on a monolithic protocol may affect several applications, leaving developers and users with no means of protection.
+Here is what you can do with Warden:
 
-- **Isolated security** allows developers to define security configurations separately for each application. Users have to validate the risk of each application, relying on developers as trusted third parties.
+- **Build an application**  
+You can build EVM-compatible [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) with [CosmWasm](https://cosmwasm.com). OApps are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for the protocol.
 
-Warden offers a third approach:
+- **Operate a Keychain**  
+[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination.
 
-- **Modular Security** is based on distinguishing between the application- and protocol-level security. Developers can deploy the same OApp with different security models, combining monolithic protocol security with isolated application security:
+- **Run a validator node**  
+You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden’s network.
 
-    - **Application-level security**: OApp users can set and manage their own application security settings with the help of [Approval Rules](/learn/glossary#approval-rule) and [Keychains](/learn/glossary#keychain). Warden's [Modular Key Management](/learn/glossary#keychain) enables users to choose third parties they can trust.
-
-    - **Protocol-level security**: Each OApp is collectively secured by all the tokens [staked](/learn/glossary#staking) on the protocol. All OApps share the same protocol security, which isn't fragmented when the number of applications scales up. In addition, developers are able to implement new security technologies.
-
-This diagram demonstrates the difference between the monolithic and modular architectures:
-
-![The Warden Protocol security stack](https://i.ibb.co/ZYKzx64/Untitled.png)
---->
+- **Bring AI to your app**  
+Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract.
 
 ## Documentation overview
 
@@ -79,12 +64,12 @@ Welcome to the Warden Protocol documentation!
 Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
 
 - **Learn**: The basic information about the protocol
-- [Build an OApp](/build-an-oapp/introduction): Guides for OApp developers
+- [Build an App](/build-an-app/introduction): Guides for application developers
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
-- [Tokens](/tokens/introduction): A detailed of Warden tokens – WARD and WARP
+- [Tokens](/tokens/introduction): A detailed overview of Warden tokens – WARD and WARP
 - **Tools**: API and function references
-- [Help Center](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
+- [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
 
 ## Contribute
 

@@ -1,10 +1,6 @@
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
-import {
-	NetworkIconsTransparent,
-	TokenIcons,
-} from "@/components/ui/icons-crypto";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { AssetPlaceholder } from "@/features/assets/AssetRow";
+import { AssetIcon } from "@/features/assets/AssetRow";
 import { useModalState } from "@/features/modals/state";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "@/features/assets/hooks";
@@ -13,6 +9,7 @@ import { useMemo } from "react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useKeyData } from "../keys/Keys";
+import { BalanceEntry } from "./types";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -25,26 +22,10 @@ const AssetTableRow = ({
 	item,
 	keyResponse,
 }: {
-	item: {
-		address: string;
-		balance: bigint;
-		chainId: string;
-		chainName: string;
-		decimals: number;
-		erc20Token?: `0x${string}` | undefined;
-		price: bigint;
-		priceDecimals: number;
-		type: "eip155:native" | "eip155:erc20" | "osmosis";
-		token: string;
-		title: string;
-	};
+	item: BalanceEntry;
 	keyResponse?: QueryKeyResponse;
 }) => {
 	const { setData: setModal } = useModalState();
-	const Network = NetworkIconsTransparent[item.chainName] ?? AssetPlaceholder;
-
-	const Token = TokenIcons[item.token] ?? AssetPlaceholder;
-
 	const { spaceId } = useSpaceId();
 	const { queryPrices } = useAssetQueries(spaceId);
 	const curr = useCurrency();
@@ -72,8 +53,7 @@ const AssetTableRow = ({
 	}, [queryPrices, currency]);
 
 	const { name } = useKeyData({
-		key: keyResponse?.key,
-		addresses: keyResponse?.addresses,
+		key: keyResponse?.key!,
 	});
 
 	return (
@@ -83,8 +63,17 @@ const AssetTableRow = ({
 		>
 			<div className="flex items-center gap-3">
 				<div className="relative">
-					<Token className="w-10 h-10 object-contain" />
-					<Network className="w-[18px] h-[18px] object-contain absolute right-[-4px] bottom-[-4px]" />
+					<AssetIcon
+						type="token"
+						value={item.token}
+						logo={item.logo}
+						className="w-10 h-10 object-contain"
+					/>
+					<AssetIcon
+						type="network-transparent"
+						value={item.chainName}
+						className="w-[18px] h-[18px] object-contain absolute right-[-4px] bottom-[-4px]"
+					/>
 				</div>
 				<div>
 					<div>{item.token}</div>

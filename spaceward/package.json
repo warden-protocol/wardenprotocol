@@ -17,6 +17,7 @@
 		"@chainsafe/libp2p-gossipsub": "^13.0.0",
 		"@chainsafe/libp2p-noise": "^15.0.0",
 		"@chainsafe/libp2p-yamux": "^6.0.1",
+		"@cosmjs/amino": "0.32.3",
 		"@cosmjs/encoding": "^0.32.3",
 		"@cosmjs/launchpad": "^0.27.1",
 		"@cosmjs/math": "^0.32.3",

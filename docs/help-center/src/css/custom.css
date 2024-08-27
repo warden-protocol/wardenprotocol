@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 /**
  * Any CSS included here will be global. The classic template
@@ -48,7 +49,7 @@ h6 {
 }
 
 body {
-  font-family: "Syne", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .navbar {

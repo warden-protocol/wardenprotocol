@@ -251,10 +251,20 @@ enabled = "true"
 oracle_address = "localhost:8080"
 
 # Client Timeout is the time that the client is willing to wait for responses from
-# the oracle before timing out.
+# the oracle before timing out. The recommended timeout is 3 seconds (3000ms).
 client_timeout = "2s"
 
 # MetricsEnabled determines whether oracle metrics are enabled. Specifically
 # this enables instrumentation of the oracle client and the interaction between
 # the oracle and the app.
 metrics_enabled = "false"
+
+# PriceTTL is the maximum age of the latest price response before it is considered stale.
+# The recommended max age is 10 seconds (10s). If this is greater than 1 minute (1m), the app
+# will not start.
+price_ttl = "0s"
+
+# Interval is the time between each price update request. The recommended interval
+# is the block time of the chain. Otherwise, 1.5 seconds (1500ms) is a good default. If this
+# is greater than 1 minute (1m), the app will not start.
+interval = "0s"

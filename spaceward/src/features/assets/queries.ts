@@ -185,7 +185,7 @@ const eip155NativeBalanceQuery = ({
 			throw new Error("Address is required");
 		}
 
-		const token = "ETH"; // fixme, eg "MATIC" for polygon
+		const { provider, token } = getProvider(chainName);
 		const slinkyPrice = prices?.[token];
 		const priceFeed = EIP_155_NATIVE_PRICE_FEEDS[chainName];
 
@@ -199,7 +199,6 @@ const eip155NativeBalanceQuery = ({
 					)
 				: undefined;
 
-		const provider = getProvider(chainName);
 		const balance = await provider.getBalance(address);
 		const network = await provider.getNetwork();
 
@@ -267,7 +266,7 @@ const eip155ERC20BalanceQuery = ({
 			throw new Error("Address and token are required");
 		}
 
-		const provider = getProvider(chainName);
+		const { provider } = getProvider(chainName);
 
 		const multicall = new ethers.Contract(
 			MULTICALL3_ADDRESS,
@@ -498,7 +497,7 @@ export const balancesQueryEth = (
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
 	// debug
-	// const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
+	const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
 
 	const eth =
 		keys?.flatMap((key) =>
@@ -514,7 +513,7 @@ export const balancesQueryEth = (
 		) ?? [];
 
 	// debug
-	/* if (keys?.length) {
+	if (keys?.length) {
 		byAddress[debugAddress] = {
 			key: keys?.[0].key,
 			addresses: [
@@ -526,7 +525,7 @@ export const balancesQueryEth = (
 		};
 
 		eth.push(debugAddress);
-	} */
+	}
 
 	const select = (result: BalanceEntry) => ({
 		results: [result],

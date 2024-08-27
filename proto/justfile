@@ -1,6 +1,9 @@
 git_root := `git rev-parse --show-toplevel`
 tmpdir := `mktemp -d`
 
+# regenerate all protobuf definitions using "buf"
+all: gogo pulsar
+
 _buf:
   go mod tidy || echo "go mod tidy failed. Continuing..."
   go install \
@@ -13,29 +16,29 @@ _buf:
     google.golang.org/grpc/cmd/protoc-gen-go-grpc \
     google.golang.org/protobuf/cmd/protoc-gen-go
 
-_clean-proto-gogo:
+_clean-gogo:
   #!/usr/bin/env bash
   shopt -s globstar
   rm -rf {{git_root / "warden/x/**/*.pb.go"}}
 
-proto-gogo: _buf
+# run "buf" to generate gogo definitions
+gogo: _buf
   buf generate --template={{git_root / "proto/buf.gen.gogo.yaml"}} --output={{tmpdir}}
   cp -rf {{tmpdir}}/github.com/warden-protocol/wardenprotocol/* {{git_root}}
 
-_clean-proto-pulsar:
+_clean-pulsar:
   #!/usr/bin/env bash
   shopt -s globstar
   mkdir -p {{git_root / "api"}}
   rm -rf {{git_root / "api/**/*.pulsar.go"}}
 
-proto-pulsar: _buf _clean-proto-pulsar
+# run "buf" to generate pulsar definitions
+pulsar: _buf _clean-pulsar
   buf generate --template={{git_root / "proto/buf.gen.pulsar.yaml"}} --output={{tmpdir}}
   rm -rf {{git_root / "api/"}}
   cp -rf {{tmpdir}}/api {{git_root / "api"}}
 
 # run linter for protobufs
-proto-lint: _buf
+lint: _buf
   buf lint
 
-# regenerate all protobuf definitions using "buf"
-proto: proto-gogo proto-pulsar

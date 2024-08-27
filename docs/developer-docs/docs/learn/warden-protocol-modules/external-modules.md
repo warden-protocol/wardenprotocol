@@ -40,4 +40,4 @@ To learn more, see the following:
 
 - [CosmWasm Contract Semantics](https://docs.cosmwasm.com/docs/smart-contracts/contract-semantics)
 - [`x/wasm` on GitHub](https://github.com/CosmWasm/wasmd/blob/main/x/wasm)
-- [Warden docs: Build an OApp](/build-an-oapp/introduction)
+- [Warden docs: Build an OApp](/build-an-app/introduction)

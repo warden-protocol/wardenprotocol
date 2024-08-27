@@ -1,35 +1,28 @@
 import clsx from "clsx";
-import type { TransactionReceipt } from "ethers";
-import { useCallback, useContext, useMemo, useState } from "react";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import SignRequestDialog from "@/components/SignRequestDialog";
-import { SignRequesterState } from "@/hooks/useRequestSignature";
-import { TxBuild, buildTransaction } from "./util";
-import { COSMOS_CHAINS, useAssetQueries } from "../assets/hooks";
+import { TxBuild, buildTransaction, createAminoSignDoc } from "./util";
+import { useAssetQueries } from "../assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useFiatConversion from "@/hooks/useFiatConversion";
 import { numRestrict } from "../staking/util";
 import { useKeychainSigner } from "@/hooks/useKeychainSigner";
-import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
-import { AssetPlaceholder } from "../assets/AssetRow";
+import { AssetIcon } from "../assets/AssetRow";
 import { validateAddress } from "../intents/AddAddressModal";
-import { SigningStargateClient } from "@cosmjs/stargate";
-import { walletContext } from "@cosmos-kit/react-lite";
+import { StargateClient } from "@cosmjs/stargate";
 import { useModalState } from "./state";
 import KeySelector from "./KeySelector";
+import { COSMOS_CHAINS } from "@/config/tokens";
 
 export default function SendAssetsModal({
 	// address,
 	chainName,
 	token,
-	type,
 	keyResponse: key,
 }: TransferParams) {
-	const { walletManager } = useContext(walletContext);
 	const { setData: setModal } = useModalState();
 	const { formatter, fiatConversion } = useFiatConversion();
 
@@ -54,9 +47,7 @@ export default function SendAssetsModal({
 
 	// fixme types
 	const selectedToken = _selectedToken as typeof _selectedToken | undefined;
-
 	const [pending, setPending] = useState(false);
-	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
 	const amountNum = parseFloat(amount);
@@ -76,37 +67,8 @@ export default function SendAssetsModal({
 				]).ok
 			: false;
 
-	const { signEthereumTx, ...eth } = useEthereumTx();
-
-	const keys = useMemo(() => (key ? [key] : []), [key]);
-
-	const { signer, ...cosm } = useKeychainSigner({
-		keys,
-		chainName: selectedToken?.chainName,
-	});
-
-	const req =
-		type === AddressType.ADDRESS_TYPE_ETHEREUM
-			? eth
-			: type === AddressType.ADDRESS_TYPE_OSMOSIS
-				? cosm
-				: null;
-
-	const state =
-		(req?.state === SignRequesterState.IDLE && pending
-			? SignRequesterState.BROADCAST_SIGN_REQUEST
-			: req?.state) ?? SignRequesterState.IDLE;
-
-	const error = req ? req.error : "Wrong address type"; // todo tx broadcast error
-
-	const reset = useCallback(() => {
-		req?.reset();
-		setReceipt(undefined);
-
-		if (receipt) {
-			setModal({ type: undefined, params: undefined });
-		}
-	}, [receipt, req]);
+	const { signEthereumTx } = useEthereumTx();
+	const { signAmino } = useKeychainSigner();
 
 	async function submit() {
 		if (!key || !selectedToken) {
@@ -125,56 +87,33 @@ export default function SendAssetsModal({
 			});
 
 			if (txBuild.type === "eth") {
-				const { provider, tx } = txBuild;
-				const signedTx = await signEthereumTx(key.key.id, tx);
+				const { tx } = txBuild;
+				const storeId = await signEthereumTx(key.key.id, tx, chainName);
 
-				if (!signedTx) {
-					throw new Error("Failed to sign transaction");
+				if (storeId) {
+					setModal({ type: undefined });
 				}
-
-				const res = await provider.broadcastTransaction(
-					signedTx.serialized,
-				);
-
-				const receipt = await provider.waitForTransaction(res.hash);
-
-				if (!receipt) {
-					throw new Error("Failed to get transaction receipt");
-				}
-
-				setReceipt(receipt);
 			} else if (txBuild.type === "cosmos") {
-				const { fee, msgs } = txBuild as TxBuild<"cosmos">;
-
 				const chain = COSMOS_CHAINS.find(
 					(item) => item.chainName === chainName,
 				);
-				/* const repo = walletManager.getWalletRepo(chainName);
-				repo.activate();
-				const rpc = await repo.getRpcEndpoint(); */
 
 				const endpoint =
-					chain?.rpc ??
-					`https://rpc.cosmos.directory/${chainName}`; /* rpc
-					? typeof rpc === "string"
-						? rpc
-						: rpc.url
-					: `https://rpc.cosmos.directory/${chainName}`*/
+					chain?.rpc ?? `https://rpc.cosmos.directory/${chainName}`;
 
-				const client = await SigningStargateClient.connectWithSigner(
-					endpoint,
-					signer,
-				);
+				const client = await StargateClient.connect(endpoint);
 
-				const res = await client.signAndBroadcast(address, msgs, fee);
+				const signDoc = await createAminoSignDoc({
+					tx: txBuild as TxBuild<"cosmos">,
+					client,
+					address,
+				});
 
-				if (res.code) {
-					console.error(res);
-					throw new Error("tx failed");
+				const storeId = await signAmino(key, signDoc, chainName);
+
+				if (storeId) {
+					setModal({ type: undefined });
 				}
-
-				// fixme types
-				setReceipt(res as any);
 			} else {
 				throw new Error(`not implemented: ${txBuild.type}`);
 			}
@@ -209,10 +148,6 @@ export default function SendAssetsModal({
 				decimals: selectedToken.decimals,
 			})
 		: "0";
-
-	const Token = TokenIcons[selectedToken?.token ?? ""] ?? AssetPlaceholder;
-	const Network =
-		NetworkIcons[selectedToken?.chainName ?? ""] ?? AssetPlaceholder;
 
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
@@ -270,8 +205,19 @@ export default function SendAssetsModal({
 									className="cursor-pointer h-[32px] bg-fill-quaternary rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
 								>
 									<div className="relative w-6 h-6 ">
-										<Token className="w-6 h-6 object-contain" />
-										<Network className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]" />
+										<AssetIcon
+											type="token"
+											value={selectedToken?.token ?? ""}
+											logo={selectedToken?.logo}
+											className="w-6 h-6 object-contain"
+										/>
+										<AssetIcon
+											type="network"
+											value={
+												selectedToken?.chainName ?? ""
+											}
+											className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]"
+										/>
 									</div>
 									{selectedToken?.token}
 									<Icons.chevronDown
@@ -379,26 +325,16 @@ export default function SendAssetsModal({
 					onClick={submit}
 					className={clsx(
 						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
-						(amount == "" ||
-							destinationAddress == "" ||
-							noAssets) &&
+						(amount === "" ||
+							destinationAddress === "" ||
+							noAssets ||
+							pending) &&
 							"pointer-events-none opacity-50",
 					)}
 				>
-					Send
+					{pending ? "Loading.." : "Send"}
 				</button>
 			</div>
-
-			<SignRequestDialog
-				state={state}
-				reset={reset}
-				error={error}
-				pending={pending}
-				step={{
-					title: "Broadcast",
-					description: `Transaction was broadcasted to ${selectedToken?.chainName} network`,
-				}}
-			/>
 		</div>
 	);
 }

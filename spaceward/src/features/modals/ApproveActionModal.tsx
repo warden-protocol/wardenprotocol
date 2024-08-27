@@ -4,7 +4,7 @@ import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { useTheme } from "next-themes";
 import { approveRequest } from "../walletconnect/util";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import useRequestSignature from "@/hooks/useRequestSignature";
+import { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { Assets } from "@/features/walletconnect/assets";
 import { ModalParams } from "./types";
 import { useModalState } from "./state";
@@ -16,11 +16,11 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 	);
 
 	const eth = useEthereumTx();
-	const cosm = useRequestSignature();
+	const cosm = useKeychainSigner();
 	const [loading, setLoading] = useState(false);
 	const { setData: setModal } = useModalState();
 	const { resolvedTheme } = useTheme();
-	const [request, ...awaitingRequests] = sessionRequests;
+	const [request /*, ...awaitingRequests*/] = sessionRequests;
 	const session = activeSessions.find((s) => s.topic === request?.topic);
 
 	if (!request) {
@@ -71,13 +71,21 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 						onClick={async () => {
 							let req = sessionRequests[0];
 							setLoading(true);
+
 							try {
-								await approveRequest({
+								const close = await approveRequest({
 									w,
 									eth,
 									cosm,
 									req,
 								});
+
+								if (close) {
+									setModal({
+										type: undefined,
+										params: undefined,
+									});
+								}
 							} finally {
 								setLoading(false);
 							}

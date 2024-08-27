@@ -8,7 +8,7 @@ import { getVotingPower, numRestrict } from "./util";
 import { bigintToFixed } from "@/lib/math";
 import { useAsset } from "@/hooks/useAsset";
 import { VALIDATOR_LOGOS } from "./assets";
-import { AssetPlaceholder } from "../assets/AssetRow";
+import { AssetIcon } from "../assets/AssetRow";
 
 const StakeModal = ({
 	apr,
@@ -131,7 +131,11 @@ const StakeModal = ({
 										alt=""
 									/>
 								) : (
-									<AssetPlaceholder className="w-6 h-6 object-contain" />
+									<AssetIcon
+										type="token"
+										value=""
+										className="w-6 h-6 object-contain"
+									/>
 								)}
 
 								<span className="decoration-solid underline">
@@ -140,7 +144,11 @@ const StakeModal = ({
 							</a>
 						) : (
 							<div className="flex items-center gap-[6px] cursor-pointer">
-								<AssetPlaceholder className="w-6 h-6 object-contain" />
+								<AssetIcon
+									type="token"
+									value=""
+									className="w-6 h-6 object-contain"
+								/>
 
 								<span className="decoration-solid">
 									{validator.description?.moniker}

@@ -38,7 +38,9 @@ import { bigintToFloat } from "@/lib/math";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
 import { useAssetQueries } from "../assets/hooks";
-export const useKeyData = ({ key }: QueryKeyResponse) => {
+import { AddToMetaMaskButton } from "@/features/metamask/AddToMetaMaskButton";
+
+export const useKeyData = ({ key }: Pick<QueryKeyResponse, "key">) => {
 	const { isReady, useKeychainById } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
@@ -131,7 +133,6 @@ function Key({
 	const { avatar, name, targetDecimals, total, formatter, keychain } =
 		useKeyData({
 			key,
-			addresses,
 		});
 
 	const { setData: setModal } = useModalState();
@@ -222,7 +223,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 	const [flipped, setFlipped] = useState(false);
 	const [nameInput, setNameInput] = useState("");
 	const { name, avatar, save, formatter, total, targetDecimals, keychain } =
-		useKeyData({ addresses, key });
+		useKeyData({ key });
 
 	function editName() {
 		setEdit(true);
@@ -249,14 +250,22 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 					<img className="absolute z-0" src={avatar} alt="" />
 
 					<div className="relative z-10 w-full h-full text-white bg-overlay-secondary flex flex-col">
-						<div className="flex flex-col p-4">
-							<div className="flex items-center">
-								<p className="font-bold font-sans text-lg ">
-									{name}
-								</p>
-								<InfoIcon
-									className="ml-auto cursor-pointer"
-									onClick={setFlipped.bind(null, true)}
+						<div className="flex flex-col justify-between w-full h-full">
+							<div className="flex flex-col p-4">
+								<div className="flex items-center">
+									<p className="font-bold font-sans text-lg ">
+										{name}
+									</p>
+									<InfoIcon
+										className="ml-auto cursor-pointer"
+										onClick={setFlipped.bind(null, true)}
+									/>
+								</div>
+							</div>
+							<div className="w-full flex justify-end mb-2 pr-1">
+								<AddToMetaMaskButton
+									keyId={key.id}
+									address={addresses[0].address}
 								/>
 							</div>
 						</div>

@@ -222,7 +222,6 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 					if err != nil {
 						return err
 					}
-
 					coins, err := sdk.ParseCoinsNormalized(strings.Join(coinsStrings, ","))
 					if err != nil {
 						return err

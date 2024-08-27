@@ -11,3 +11,7 @@ export function getValidChildren(children: React.ReactNode) {
     React.isValidElement(child)
   ) as React.ReactElement[]
 }
+
+export function isUint8Array(value: unknown): value is Uint8Array {
+  return value instanceof Uint8Array
+}

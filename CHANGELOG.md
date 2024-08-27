@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 * (x/warden) Keychain fees are deducted with escrow account
+* (wardend) Bump Cosmos SDK to v0.50.9
 
 ### Features (non-breaking)
 
@@ -52,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 
 ### Misc
+
+* (wardend) Bump CometBFT to v0.38.11
 
 ## [v0.4.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.1) - 2024-08-07
 

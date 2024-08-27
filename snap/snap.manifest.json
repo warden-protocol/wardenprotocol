@@ -7,7 +7,7 @@
     "url": "https://github.com/warden-protocol/wardenprotocol.git"
   },
   "source": {
-    "shasum": "jq/UFAP9Pm3j1EF2A8r0FEQcrBY++F3Cfr9yiJxDEEs=",
+    "shasum": "w6mS09fkJloCXpIk6Nukklfom8LY1jEzFxmC6g8nJis=",
     "location": {
       "npm": {
         "filePath": "dist/wardenprotocol-snap.bundle.js",

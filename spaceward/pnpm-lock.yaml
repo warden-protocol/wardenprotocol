@@ -27,6 +27,9 @@ importers:
       '@chainsafe/libp2p-yamux':
         specifier: ^6.0.1
         version: 6.0.2
+      '@cosmjs/amino':
+        specifier: 0.32.3
+        version: 0.32.3
       '@cosmjs/encoding':
         specifier: ^0.32.3
         version: 0.32.3

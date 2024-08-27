@@ -70,7 +70,17 @@ export function createPersistantState<T>(
 				return initialData;
 			}
 
-			const data = JSON.parse(raw);
+			const data = JSON.parse(raw, (_, v) => {
+				if (typeof v === "object") {
+					if (v.type === "bigint") {
+						return BigInt(v.value);
+					} else if (v.type === "Uint8Array") {
+						return Uint8Array.from(v.value);
+					}
+				}
+
+				return v;
+			});
 			return data;
 		} catch {
 			return initialData;
@@ -104,7 +114,23 @@ export function createPersistantState<T>(
 				}
 
 				const _data = { ...ref.current, ...nextData };
-				window.localStorage.setItem(lsKey, JSON.stringify(_data));
+
+				window.localStorage.setItem(
+					lsKey,
+					JSON.stringify(_data, (_, v) =>
+						typeof v === "bigint"
+							? {
+									type: "bigint",
+									value: v.toString(),
+								}
+							: v instanceof Uint8Array
+								? {
+										type: "Uint8Array",
+										value: Array.from(v)
+									}
+								: v,
+					),
+				);
 				queryClient.setQueryData([prefix, queryKey], _data);
 			},
 			[queryClient],

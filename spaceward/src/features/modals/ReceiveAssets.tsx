@@ -9,8 +9,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "../assets/hooks";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import SelectAsset from "./AssetSelector";
-import { TokenIcons } from "@/components/ui/icons-crypto";
-import { AssetPlaceholder } from "@/features/assets/AssetRow";
+import { AssetIcon } from "@/features/assets/AssetRow";
 import { capitalize } from "./util";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getCosmosChain, isOsmosis } from "../assets/util";
@@ -28,8 +27,6 @@ const TokenSelect = ({
 	isSelect: boolean;
 	switchToSelect: () => void;
 }) => {
-	const TokenIcon = token ? TokenIcons[token] ?? AssetPlaceholder : undefined;
-
 	return (
 		<div
 			className="relative flex z-10 items-center"
@@ -41,7 +38,14 @@ const TokenSelect = ({
 					isSelect && "pointer-events-none opacity-30",
 				)}
 			>
-				{TokenIcon && <TokenIcon className="w-10 h-10" />}
+				{token && (
+					<AssetIcon
+						type="token"
+						value={token}
+						/* fixme logo from balancequery */
+						className="w-10 h-10"
+					/>
+				)}
 
 				<div>
 					<div className="">{token}</div>
@@ -69,7 +73,10 @@ const getQrValue = (_chainName: string, address: string) => {
 };
 
 /** @deprecated refactor chain select */
-export const fixAddress = (addressResponse?: AddressResponse, chainName?: string) => {
+export const fixAddress = (
+	addressResponse?: AddressResponse,
+	chainName?: string,
+) => {
 	if (!addressResponse) {
 		return;
 	}

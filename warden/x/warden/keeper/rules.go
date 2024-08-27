@@ -136,7 +136,10 @@ func (k Keeper) executeAnalyzers(ctx context.Context, creator string, contracts 
 	analyzerVals := make(map[string]map[string]*ast.Expression)
 	var dataForSigning []byte
 	for _, contract := range contracts {
-		contractAddr := sdk.MustAccAddressFromBech32(contract)
+		contractAddr, err := sdk.AccAddressFromBech32(contract)
+		if err != nil {
+			return nil, nil, err
+		}
 		dfs, vals, err := k.ExecuteAnalyzer(sdkCtx, contractAddr, creatorAddr, input)
 		if err != nil {
 			return nil, nil, err

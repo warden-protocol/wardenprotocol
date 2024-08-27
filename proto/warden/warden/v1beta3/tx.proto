@@ -121,7 +121,7 @@ message MsgNewKeychain {
   KeychainFees keychain_fees = 4;
   string description = 5;
   string url = 6;
-  string keybaseId = 7;
+  string keybase_id = 7;
 }
 
 message MsgNewKeychainResponse { uint64 id = 1; }
@@ -154,7 +154,7 @@ message MsgUpdateKeychain {
   KeychainFees keychain_fees = 5;
   string description = 6;
   string url = 7;
-  string keybaseId = 8;
+  string keybase_id = 8;
 }
 
 message MsgUpdateKeychainResponse {}

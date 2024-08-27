@@ -25,21 +25,20 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 	}
 
 	kr.SetFees(msg.KeychainFees)
-	if msg.Name != "" {
-		kr.SetName(msg.Name)
+
+	if err := kr.SetName(msg.Name); err != nil {
+		return nil, err
 	}
 
-	if msg.Description != "" {
-		kr.SetDescription(msg.Description)
+	kr.SetDescription(msg.Description)
+	kr.SetUrl(msg.Url)
+
+	keybaseId, err := types.NewKeybaseId(msg.KeybaseId)
+	if err != nil {
+		return nil, err
 	}
 
-	if msg.Url != "" {
-		kr.SetUrl(msg.Url)
-	}
-
-	if msg.KeybaseId != "" {
-		kr.SetKeybaseId(&types.KeybaseId{Value: msg.KeybaseId})
-	}
+	kr.SetKeybaseId(keybaseId)
 
 	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
 		return nil, err

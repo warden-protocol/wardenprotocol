@@ -53,8 +53,14 @@ func (k *Keychain) SetFees(fees *KeychainFees) {
 	k.Fees = fees
 }
 
-func (k *Keychain) SetName(name string) {
+func (k *Keychain) SetName(name string) error {
+	if name == "" {
+		return fmt.Errorf("name cannot be empty")
+	}
+
 	k.Name = name
+
+	return nil
 }
 
 func (k *Keychain) SetDescription(description string) {

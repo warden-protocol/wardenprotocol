@@ -51,9 +51,11 @@ type Keychain struct {
 	// Fees for creating and signing Keys.
 	Fees *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
 	// A human-readable description of the Keychain.
-	Description string     `protobuf:"bytes,8,opt,name=description,proto3" json:"description,omitempty"`
-	Url         string     `protobuf:"bytes,9,opt,name=url,proto3" json:"url,omitempty"`
-	KeybaseId   *KeybaseId `protobuf:"bytes,10,opt,name=keybase_id,json=keybaseId,proto3" json:"keybase_id,omitempty"`
+	Description string `protobuf:"bytes,8,opt,name=description,proto3" json:"description,omitempty"`
+	// A link that points to the website of the keychain provider
+	Url string `protobuf:"bytes,9,opt,name=url,proto3" json:"url,omitempty"`
+	// `KeybaseId` to retrieve an avatar by using the `Keybase` api. The exact length is 16 characters.
+	KeybaseId *KeybaseId `protobuf:"bytes,10,opt,name=keybase_id,json=keybaseId,proto3" json:"keybase_id,omitempty"`
 }
 
 func (m *Keychain) Reset()         { *m = Keychain{} }

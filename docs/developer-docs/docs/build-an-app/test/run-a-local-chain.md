@@ -243,7 +243,7 @@ If you need to stop the node, use **Ctrl + C**. Note that when you run the chain
 
 If you configured your node manually in Step 3 ([Option 3](#option-3-configure-manually)), you may also need to add a Space and a Keychain for testing purposes. Other flows utilize prebuilt configurations that already contain these settings.
 
-1. Create a Keychain. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name, chain ID, and fees to pay.
+1. Create a Keychain. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name, and the chain ID:
 
    ```bash
    wardend tx warden new-keychain \
@@ -271,7 +271,7 @@ If you configured your node manually in Step 3 ([Option 3](#option-3-configure-m
      total: "1"
    ```
 
-2. Create a Space. Specify your key name, chain ID, and fees to pay:
+2. Create a Space. Specify your key name, and the chain ID:
 
    ```bash
    wardend tx warden new-space \

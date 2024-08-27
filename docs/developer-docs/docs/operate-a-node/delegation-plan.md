@@ -55,7 +55,7 @@ These standards include:
 - Governance participation of at least 80%
 - Minimal slashing rate
 - Timely upgrades and responsiveness to protocol release
-- Run Skip Connect Oracle and any other external services required from the network
+- Run the Skip:Connect oracle and any other external services required from the network
 
 **Note**: Validators are slashed when they demonstrate malicious behavior.
 

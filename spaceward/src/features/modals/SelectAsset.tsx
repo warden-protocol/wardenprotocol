@@ -4,15 +4,14 @@ import { useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
 import { NetworkIcons } from "@/components/ui/icons-crypto";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import AssetRow, { AssetPlaceholder } from "../assets/AssetRow";
+import AssetRow, { AssetIcon } from "../assets/AssetRow";
 import { useAssetQueries } from "../assets/hooks";
 import type { SelectAssetParams } from "./types";
 import { useModalState } from "./state";
 import { capitalize } from "./util";
 
 const Network = ({ chainName }: { chainName: string }) => {
-	const Icon = NetworkIcons[chainName] ?? AssetPlaceholder;
-	return <Icon className="w-6 h-6" />;
+	return <AssetIcon type="network" value={chainName} className="w-6 h-6" />;
 };
 
 export default function SelectAssetModal(props: SelectAssetParams) {

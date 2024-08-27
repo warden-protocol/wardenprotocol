@@ -1,16 +1,12 @@
-const apiURL =
-	import.meta.env.VITE_WARDEN_REST_URL ??
-	"https://api.buenavista.wardenprotocol.org";
-const rpcURL =
-	import.meta.env.VITE_WARDEN_RPC_URL ??
-	"https://rpc.buenavista.wardenprotocol.org";
+const apiURL = import.meta.env.VITE_WARDEN_REST_URL ?? "http://127.0.0.1:1317";
+const rpcURL = import.meta.env.VITE_WARDEN_RPC_URL ?? "http://127.0.0.1:26657";
 const prefix = import.meta.env.VITE_ADDRESS_PREFIX ?? "warden";
 const faucetURL = import.meta.env.VITE_FAUCET_URL ?? "http://127.0.0.1:8000";
 const chainName =
-	import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol Buenavista";
+	import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol (local)";
 const cosmoskitChainName =
-	import.meta.env.VITE_WARDEN_COSMOSKIT_CHAIN_NAME || "buenavista";
-const chainId = import.meta.env.VITE_WARDEN_CHAIN_ID || "buenavista-1";
+	import.meta.env.VITE_WARDEN_COSMOSKIT_CHAIN_NAME || "wardenprotocollocal";
+const chainId = import.meta.env.VITE_WARDEN_CHAIN_ID || "warden";
 const maintenance = import.meta.env.VITE_WARDEN_MAINTENANCE || false;
 const snapOrigin =
 	import.meta.env.VITE_WARDEN_SNAP_ORIGIN || "local:http://localhost:8123";

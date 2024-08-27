@@ -76,6 +76,10 @@ func (k *Keychain) SetKeybaseId(keybaseId *KeybaseId) {
 }
 
 func (kf *KeychainFees) EnsureValid() error {
+	if kf == nil {
+		return fmt.Errorf("nil KeychainFees. Use zero-filled fees instead")
+	}
+
 	if err := kf.KeyReq.Validate(); err != nil {
 		return fmt.Errorf("key req is invalid: %w", err)
 	}

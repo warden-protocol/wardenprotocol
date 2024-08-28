@@ -317,10 +317,16 @@ export async function approveRequest({
 					...feeData,
 				};
 
-				storeId = await eth.signEthereumTx(key.id, tx, chainName, {
-					requestId: req.id,
-					topic,
-				});
+				storeId = await eth.signEthereumTx(
+					key.id,
+					tx,
+					chainName,
+					"Approve walletconnect request",
+					{
+						requestId: req.id,
+						topic,
+					},
+				);
 
 				if (!storeId) {
 					// todo error
@@ -486,6 +492,7 @@ export async function approveRequest({
 					{ key },
 					signDoc,
 					chain.chain_name,
+					"Approve walletconnect request",
 					{
 						requestId: req.id,
 						topic,

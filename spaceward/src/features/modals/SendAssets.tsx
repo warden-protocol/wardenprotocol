@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
@@ -16,6 +16,8 @@ import { StargateClient } from "@cosmjs/stargate";
 import { useModalState } from "./state";
 import KeySelector from "./KeySelector";
 import { COSMOS_CHAINS } from "@/config/tokens";
+import { walletContext } from "@cosmos-kit/react-lite";
+import { BalanceEntry } from "../assets/types";
 
 export default function SendAssetsModal({
 	// address,
@@ -23,13 +25,14 @@ export default function SendAssetsModal({
 	token,
 	keyResponse: key,
 }: TransferParams) {
+	const { walletManager } = useContext(walletContext);
 	const { setData: setModal } = useModalState();
 	const { formatter, fiatConversion } = useFiatConversion();
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances } = useAssetQueries(spaceId);
 
-	const results = queryBalances
+	const results: (BalanceEntry & { refetch: () => void })[] = queryBalances
 		.filter((result) => result.data?.key?.key?.id === key?.key?.id)
 		.flatMap(({ data, refetch }) => {
 			return (data?.results ?? []).map((item) => ({ ...item, refetch }));
@@ -37,7 +40,7 @@ export default function SendAssetsModal({
 
 	const noAssets = results.every((result) => !result.balance);
 
-	const _selectedToken = useMemo(
+	const selectedToken = useMemo(
 		() =>
 			results.find(
 				(data) => data.chainName === chainName && data.token === token,
@@ -45,8 +48,6 @@ export default function SendAssetsModal({
 		[token, chainName, results],
 	);
 
-	// fixme types
-	const selectedToken = _selectedToken as typeof _selectedToken | undefined;
 	const [pending, setPending] = useState(false);
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
@@ -56,15 +57,15 @@ export default function SendAssetsModal({
 		amountNum && selectedToken
 			? Number.isFinite(amountNum)
 				? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
-					amountNum
+				amountNum
 				: true
 			: false;
 
 	const addressWarning =
 		destinationAddress && selectedToken
 			? !validateAddress(destinationAddress, [
-					selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
-				]).ok
+				selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
+			]).ok
 			: false;
 
 	const { signEthereumTx } = useEthereumTx();
@@ -75,7 +76,7 @@ export default function SendAssetsModal({
 			return;
 		}
 
-		const { address, chainName } = selectedToken;
+		const { address, chainName, token } = selectedToken;
 		setPending(true);
 
 		try {
@@ -86,9 +87,11 @@ export default function SendAssetsModal({
 				amount,
 			});
 
+			const title = `Send ${amount} ${token}`;
+
 			if (txBuild.type === "eth") {
 				const { tx } = txBuild;
-				const storeId = await signEthereumTx(key.key.id, tx, chainName);
+				const storeId = await signEthereumTx(key.key.id, tx, chainName, title);
 
 				if (storeId) {
 					setModal({ type: undefined });
@@ -98,10 +101,16 @@ export default function SendAssetsModal({
 					(item) => item.chainName === chainName,
 				);
 
-				const endpoint =
-					chain?.rpc ?? `https://rpc.cosmos.directory/${chainName}`;
+				let rpc = chain?.rpc;
 
-				const client = await StargateClient.connect(endpoint);
+				if (!rpc) {
+					const repo = walletManager.getWalletRepo(chainName);
+					repo.activate();
+					const endpoint = await repo.getRpcEndpoint();
+					rpc = endpoint ? typeof endpoint === "string" ? endpoint : endpoint.url : `https://rpc.cosmos.directory/${chainName}`;
+				}
+
+				const client = await StargateClient.connect(rpc);
 
 				const signDoc = await createAminoSignDoc({
 					tx: txBuild as TxBuild<"cosmos">,
@@ -109,7 +118,7 @@ export default function SendAssetsModal({
 					address,
 				});
 
-				const storeId = await signAmino(key, signDoc, chainName);
+				const storeId = await signAmino(key, signDoc, chainName, title);
 
 				if (storeId) {
 					setModal({ type: undefined });
@@ -145,8 +154,8 @@ export default function SendAssetsModal({
 
 	const maxAmount = selectedToken
 		? bigintToFixed(selectedToken.balance, {
-				decimals: selectedToken.decimals,
-			})
+			decimals: selectedToken.decimals,
+		})
 		: "0";
 
 	return (
@@ -234,17 +243,17 @@ export default function SendAssetsModal({
 								{/* todo useFiatConversion hook */}
 								{formatter.format(
 									(amount ? parseFloat(amount) : 0) *
-										(fiatConversion && selectedToken
-											? bigintToFloat(
-													(selectedToken.price *
-														BigInt(10) **
-															BigInt(
-																fiatConversion.decimals,
-															)) /
-														fiatConversion.value,
-													selectedToken.priceDecimals,
-												)
-											: 0),
+									(fiatConversion && selectedToken
+										? bigintToFloat(
+											(selectedToken.price *
+												BigInt(10) **
+												BigInt(
+													fiatConversion.decimals,
+												)) /
+											fiatConversion.value,
+											selectedToken.priceDecimals,
+										)
+										: 0),
 								)}
 							</div>
 							<div
@@ -329,7 +338,7 @@ export default function SendAssetsModal({
 							destinationAddress === "" ||
 							noAssets ||
 							pending) &&
-							"pointer-events-none opacity-50",
+						"pointer-events-none opacity-50",
 					)}
 				>
 					{pending ? "Loading.." : "Send"}

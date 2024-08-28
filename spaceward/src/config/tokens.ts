@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import { getProvider } from "../lib/eth";
 
 type ChainName = Parameters<typeof getProvider>[0];
@@ -222,17 +223,26 @@ Binance Coin	native	BNB
 Ethereum Classic	native	ETC
 Polygon	native	MATIC
 */
-export const ENABLED_ETH_CHAINS: { chainName: ChainName; testnet?: boolean }[] =
-	[
-		{ chainName: "arbitrum" },
-		{ chainName: "base" },
-		{ chainName: "bsc" },
-		{ chainName: "mainnet" },
-		{ chainName: "optimism" },
-		{ chainName: "sepolia", testnet: true },
-	];
+const _ENABLED_ETH_CHAINS: { chainName: ChainName; testnet?: boolean }[] = [
+	{ chainName: "arbitrum" },
+	{ chainName: "base" },
+	{ chainName: "bsc" },
+	{ chainName: "mainnet" },
+	{ chainName: "optimism" },
+	{ chainName: "sepolia", testnet: true },
+];
 
-export const COSMOS_CHAINS: {
+export const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS.filter(({ testnet }) =>
+	env.networkVisibility === "all"
+		? true
+		: env.networkVisibility === "mainnet"
+			? !testnet
+			: Boolean(testnet),
+);
+
+console.log("ENABLED_ETH_CHAINS", ENABLED_ETH_CHAINS);
+
+const _COSMOS_CHAINS: {
 	chainName: string;
 	feeAmount?: string;
 	rpc?: string;
@@ -272,3 +282,11 @@ export const COSMOS_CHAINS: {
 		testnet: true,
 	},
 ];
+
+export const COSMOS_CHAINS = _COSMOS_CHAINS.filter(({ testnet }) =>
+	env.networkVisibility === "all"
+		? true
+		: env.networkVisibility === "mainnet"
+			? !testnet
+			: Boolean(testnet),
+);

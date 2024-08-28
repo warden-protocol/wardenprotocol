@@ -1217,8 +1217,8 @@ github.com/valyala/fasttemplate v1.2.2 h1:lxLXG0uE3Qnshl9QyaK6XJxMXlQZELvChBOCmQ
 github.com/valyala/fasttemplate v1.2.2/go.mod h1:KHLXt3tVN2HBp8eijSv/kGJopbvo7S+qRAEEKiv+SiQ=
 github.com/vbatts/tar-split v0.11.5 h1:3bHCTIheBm1qFTcgh9oPu+nNBtX+XJIupG/vacinCts=
 github.com/vbatts/tar-split v0.11.5/go.mod h1:yZbwRsSeGjusneWgA781EKej9HF8vme8okylkAeNKLk=
-github.com/warden-protocol/cosmos-sdk v0.50.8-evmos-warden h1:sT7Fx8UeD3hSZSJHOZNXybuI9/Zk3lygW6GG9GKSZ/c=
-github.com/warden-protocol/cosmos-sdk v0.50.8-evmos-warden/go.mod h1:Zb+DgHtiByNwgj71IlJBXwOq6dLhtyAq3AgqpXm/jHo=
+github.com/warden-protocol/cosmos-sdk v0.50.9-evmos-warden h1:yOMUIVxTd5DPnvXZbqRyt+Ed+lkZXwGhObyIB6u96lk=
+github.com/warden-protocol/cosmos-sdk v0.50.9-evmos-warden/go.mod h1:TMH6wpoYBcg7Cp5BEg8fneLr+8XloNQkf2MRNF9V6JE=
 github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2 h1:wqfEum6h4viP5CZdQCQABA5hFYrzVLPqY/g4VBkCY/M=
 github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2/go.mod h1:/6CsT5Ceen2WPLI/oCA3xMcZ5sWMF/D46SjM/ayY0Oo=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=

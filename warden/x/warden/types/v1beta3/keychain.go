@@ -50,6 +50,9 @@ func (k *Keychain) RemoveAdmin(address string) {
 }
 
 func (k *Keychain) SetFees(fees *KeychainFees) {
+	fees.SigReq = sdk.NewCoins(fees.SigReq...)
+	fees.KeyReq = sdk.NewCoins(fees.KeyReq...)
+
 	k.Fees = fees
 }
 
@@ -59,7 +62,7 @@ func (k *Keychain) SetDescription(description string) {
 
 func (kf *KeychainFees) EnsureValid() error {
 	if kf == nil {
-		return fmt.Errorf("nil KeychainFees. Use zero-filled fees instead")
+		return fmt.Errorf("nil KeychainFees. Use empty fees instead")
 	}
 
 	if err := kf.KeyReq.Validate(); err != nil {
@@ -82,7 +85,7 @@ func (k *Keychain) EnsureSufficientSignFees(fees sdk.Coins) error {
 }
 
 func ensureSufficientFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
-	if maxFees.Empty() || wantedFees.Empty() {
+	if maxFees.Empty() {
 		return fmt.Errorf("fees cannot be empty")
 	}
 

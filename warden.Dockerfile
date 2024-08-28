@@ -10,7 +10,7 @@ RUN apt-get update && \
 COPY . .
 
 # Install the binary
-RUN just install
+RUN just -f wardend.just install
 
 # Command to run the app
 CMD ["just", "localnet"]

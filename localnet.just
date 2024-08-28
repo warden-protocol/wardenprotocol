@@ -33,7 +33,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-account val 10000000000000000000000000uward
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000uward
     {{bin}} genesis add-genesis-space {{shulgin}}
-    {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
+    {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
     {{bin}} genesis gentx val 1000000000uward
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets

@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Return error if analyzer's address is not bench32
 
 ### Bug Fixes
+* (x/gmp) Remove the GMP default params from genesis
 
 ### Misc
 

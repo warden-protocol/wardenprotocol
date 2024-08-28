@@ -56,8 +56,26 @@ func (k *Keychain) SetFees(fees *KeychainFees) {
 	k.Fees = fees
 }
 
+func (k *Keychain) SetName(name string) error {
+	if name == "" {
+		return fmt.Errorf("name cannot be empty")
+	}
+
+	k.Name = name
+
+	return nil
+}
+
 func (k *Keychain) SetDescription(description string) {
 	k.Description = description
+}
+
+func (k *Keychain) SetUrl(url string) {
+	k.Url = url
+}
+
+func (k *Keychain) SetKeybaseId(keybaseId *KeybaseId) {
+	k.KeybaseId = keybaseId
 }
 
 func (kf *KeychainFees) EnsureValid() error {
@@ -74,6 +92,18 @@ func (kf *KeychainFees) EnsureValid() error {
 	}
 
 	return nil
+}
+
+func NewKeybaseId(value string) (*KeybaseId, error) {
+	if value == "" {
+		return nil, nil
+	}
+
+	if len(value) != 16 {
+		return nil, fmt.Errorf("keybase id must be length of 16")
+	}
+
+	return &KeybaseId{Value: value}, nil
 }
 
 func (k *Keychain) EnsureSufficientKeyFees(fees sdk.Coins) error {

@@ -435,8 +435,11 @@ var xxx_messageInfo_MsgRemoveSpaceOwnerResponse proto.InternalMessageInfo
 
 type MsgNewKeychain struct {
 	Creator      string        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Description  string        `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Name         string        `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	KeychainFees *KeychainFees `protobuf:"bytes,4,opt,name=keychain_fees,json=keychainFees,proto3" json:"keychain_fees,omitempty"`
+	Description  string        `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Url          string        `protobuf:"bytes,6,opt,name=url,proto3" json:"url,omitempty"`
+	KeybaseId    string        `protobuf:"bytes,7,opt,name=keybase_id,json=keybaseId,proto3" json:"keybase_id,omitempty"`
 }
 
 func (m *MsgNewKeychain) Reset()         { *m = MsgNewKeychain{} }
@@ -479,9 +482,9 @@ func (m *MsgNewKeychain) GetCreator() string {
 	return ""
 }
 
-func (m *MsgNewKeychain) GetDescription() string {
+func (m *MsgNewKeychain) GetName() string {
 	if m != nil {
-		return m.Description
+		return m.Name
 	}
 	return ""
 }
@@ -491,6 +494,27 @@ func (m *MsgNewKeychain) GetKeychainFees() *KeychainFees {
 		return m.KeychainFees
 	}
 	return nil
+}
+
+func (m *MsgNewKeychain) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *MsgNewKeychain) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
+func (m *MsgNewKeychain) GetKeybaseId() string {
+	if m != nil {
+		return m.KeybaseId
+	}
+	return ""
 }
 
 type MsgNewKeychainResponse struct {
@@ -740,8 +764,11 @@ var xxx_messageInfo_MsgUpdateSpaceResponse proto.InternalMessageInfo
 type MsgUpdateKeychain struct {
 	Creator      string        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	KeychainId   uint64        `protobuf:"varint,2,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	Description  string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Name         string        `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	KeychainFees *KeychainFees `protobuf:"bytes,5,opt,name=keychain_fees,json=keychainFees,proto3" json:"keychain_fees,omitempty"`
+	Description  string        `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+	Url          string        `protobuf:"bytes,7,opt,name=url,proto3" json:"url,omitempty"`
+	KeybaseId    string        `protobuf:"bytes,8,opt,name=keybase_id,json=keybaseId,proto3" json:"keybase_id,omitempty"`
 }
 
 func (m *MsgUpdateKeychain) Reset()         { *m = MsgUpdateKeychain{} }
@@ -791,9 +818,9 @@ func (m *MsgUpdateKeychain) GetKeychainId() uint64 {
 	return 0
 }
 
-func (m *MsgUpdateKeychain) GetDescription() string {
+func (m *MsgUpdateKeychain) GetName() string {
 	if m != nil {
-		return m.Description
+		return m.Name
 	}
 	return ""
 }
@@ -803,6 +830,27 @@ func (m *MsgUpdateKeychain) GetKeychainFees() *KeychainFees {
 		return m.KeychainFees
 	}
 	return nil
+}
+
+func (m *MsgUpdateKeychain) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *MsgUpdateKeychain) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
+func (m *MsgUpdateKeychain) GetKeybaseId() string {
+	if m != nil {
+		return m.KeybaseId
+	}
+	return ""
 }
 
 type MsgUpdateKeychainResponse struct {
@@ -2735,6 +2783,27 @@ func (m *MsgNewKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.KeybaseId) > 0 {
+		i -= len(m.KeybaseId)
+		copy(dAtA[i:], m.KeybaseId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.KeybaseId)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.Url) > 0 {
+		i -= len(m.Url)
+		copy(dAtA[i:], m.Url)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Url)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x2a
+	}
 	if m.KeychainFees != nil {
 		{
 			size, err := m.KeychainFees.MarshalToSizedBuffer(dAtA[:i])
@@ -2747,10 +2816,10 @@ func (m *MsgNewKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2945,6 +3014,27 @@ func (m *MsgUpdateKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.KeybaseId) > 0 {
+		i -= len(m.KeybaseId)
+		copy(dAtA[i:], m.KeybaseId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.KeybaseId)))
+		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.Url) > 0 {
+		i -= len(m.Url)
+		copy(dAtA[i:], m.Url)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Url)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x32
+	}
 	if m.KeychainFees != nil {
 		{
 			size, err := m.KeychainFees.MarshalToSizedBuffer(dAtA[:i])
@@ -2957,10 +3047,10 @@ func (m *MsgUpdateKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x2a
 	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -3801,12 +3891,24 @@ func (m *MsgNewKeychain) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Description)
+	l = len(m.Name)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.KeychainFees != nil {
 		l = m.KeychainFees.Size()
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Url)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.KeybaseId)
+	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
@@ -3897,12 +3999,24 @@ func (m *MsgUpdateKeychain) Size() (n int) {
 	if m.KeychainId != 0 {
 		n += 1 + sovTx(uint64(m.KeychainId))
 	}
-	l = len(m.Description)
+	l = len(m.Name)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.KeychainFees != nil {
 		l = m.KeychainFees.Size()
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Url)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.KeybaseId)
+	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
@@ -5047,7 +5161,7 @@ func (m *MsgNewKeychain) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5075,7 +5189,7 @@ func (m *MsgNewKeychain) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Description = string(dAtA[iNdEx:postIndex])
+			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -5112,6 +5226,102 @@ func (m *MsgNewKeychain) Unmarshal(dAtA []byte) error {
 			if err := m.KeychainFees.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Url", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Url = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeybaseId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeybaseId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -5657,7 +5867,7 @@ func (m *MsgUpdateKeychain) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5685,7 +5895,7 @@ func (m *MsgUpdateKeychain) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Description = string(dAtA[iNdEx:postIndex])
+			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -5722,6 +5932,102 @@ func (m *MsgUpdateKeychain) Unmarshal(dAtA []byte) error {
 			if err := m.KeychainFees.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Url", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Url = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeybaseId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeybaseId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

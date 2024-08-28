@@ -1,0 +1,16 @@
+{{ block "form" . }}
+<form hx-swap="outerHTML" hx-post="/send-tokens" hx-swap="innerHTML">
+  <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
+  <input
+    type="text"
+    id="address"
+    name="address"
+    placeholder="Enter your address here"
+    value="{{.Address}}"
+  /><br />
+  {{ if .Errors.address }}
+  <div class="error-message">{{ .Errors.address }}</div>
+  {{ end }}
+  <input style="button" type="submit" />
+</form>
+{{ end }}

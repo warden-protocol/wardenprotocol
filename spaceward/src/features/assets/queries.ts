@@ -190,7 +190,7 @@ const eip155NativeBalanceQuery = ({
 				? new ethers.Contract(
 						priceFeed,
 						aggregatorV3InterfaceABI,
-						getProvider(chainName),
+						provider,
 					)
 				: undefined;
 
@@ -345,7 +345,7 @@ const eip155ERC20BalanceQuery = ({
 					? new ethers.Contract(
 							priceFeed,
 							aggregatorV3InterfaceABI,
-							getProvider(chainName),
+							provider,
 						)
 					: undefined;
 
@@ -574,7 +574,7 @@ const fiatPriceQuery = (enabled: boolean, name: string) => {
 		throw new Error("Invalid fiat currency");
 	}
 
-	const provider = getProvider("mainnet");
+	const { provider } = getProvider("mainnet");
 
 	const priceFeedContract = new ethers.Contract(
 		FIAT_PRICE_FEEDS[name],

@@ -71,7 +71,7 @@ export async function buildTransaction({
 		}
 
 		const amount = parseUnits(_amount, item.decimals);
-		const provider = getProvider(item.chainName);
+		const { provider } = getProvider(item.chainName);
 		const nonce = await provider.getTransactionCount(from);
 		const feeData = await provider.getFeeData();
 		const gasLimit = BigInt(21000);

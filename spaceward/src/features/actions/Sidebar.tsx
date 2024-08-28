@@ -371,7 +371,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 							}).then(() => true);
 						}
 					} else {
-						const provider = getProvider(chainName).provider;
+						const  { provider } = getProvider(chainName);
 
 						promise = provider
 							.broadcastTransaction(signedTx.serialized)

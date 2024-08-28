@@ -240,8 +240,6 @@ export const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS.filter(({ testnet }) =>
 			: Boolean(testnet),
 );
 
-console.log("ENABLED_ETH_CHAINS", ENABLED_ETH_CHAINS);
-
 const _COSMOS_CHAINS: {
 	chainName: string;
 	feeAmount?: string;

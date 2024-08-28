@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Oracle services
@@ -24,10 +24,10 @@ See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 Key features of Warden's integration with Connect include the following:
 
 - **Secured by Warden's validator set**  
-    This integration uses the security framework of the chain, ensuring rapid price updates without relying on third-party systems.
+This integration uses the security framework of the chain, ensuring rapid price updates without relying on third-party systems.
 
 - **Exceptional performance**  
-    With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
+With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
 
 :::tip
 The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written on-chain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-connect).

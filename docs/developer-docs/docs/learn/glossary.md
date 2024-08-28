@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Glossary
@@ -26,6 +26,12 @@ An Action happens after an [Approval](#approval) is granted according to a user-
 
 ---
 
+## AI Blockchain Interface (AIBI)
+
+Artificial Intelligence Blockchain Interface (AIBI) brings AI on-chain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+
+---
+
 ## Approval
 
 An Approval is a permission for an [Action](#action) to be performed. Approvals are granted according to user-defined [Approval Rules](#approval-rule).
@@ -34,7 +40,7 @@ An Approval is a permission for an [Action](#action) to be performed. Approvals 
 
 ## Approval Rule
 
-An Approval Rule is a set of user-defined conditions under which an [Action](#action) is performed. For example, a Rule can allow executing a transaction only if 2 of 3 approvers sign it. Rules contribute to Warden's [Modular Security](#modular-security).
+An Approval Rule is a set of user-defined conditions under which an [Action](#action) is performed. For example, a Rule can allow executing a transaction only if 2 of 3 approvers sign it.
 
 You can define Approval Rules as part of [Intents](#intent), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
@@ -59,12 +65,6 @@ Learn more: [Bridging](bridging)
 ## Builder incentive
 
 The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichain Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
-
----
-
-## Chain Abstraction
-
-Chain Abstraction is one of Warden's key features. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within the Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain.
 
 ---
 
@@ -144,7 +144,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ## Keychain
 
-Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular Security](#modular-security).
+Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
 
 The Warden Protocol allows users or external organizations become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures. To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
 
@@ -176,7 +176,7 @@ Modular Key Management is a flexible approach to managing keys in Warden. Instea
 
 ## Modular Security
 
-Modular Security is one of Warden's key features. Thanks to modularity, the same [Omnichain Application](#omnichain-application) can combine different security models:
+Thanks to modularity, the same [Omnichain Application](#omnichain-application) can combine different security models:
 
 - OApp users can set and manage their own application security settings with the help of [Approval Rules](#approval-rule) and [Keychains](#keychain).
 - Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
@@ -189,21 +189,11 @@ By decoupling application-layer and protocol-layer security, Warden takes the be
 
 An Omnichain Application (OApp) is a powerful evolution of traditional smart contracts. It allows signing transactions at any chain, while traditional smart contract applications only target users of a single chain.
 
-OApps contribute to all Warden's key features: [Chain Abstraction](#chain-abstraction), [Modular Security](#modular-security), and [Omnichain Interoperability](#omnichain-interoperability).
-
 ---
 
 ## Omnichain Contract
 
-An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-application). Omnichain Contracts contribute to Warden's [Chain Abstraction](#chain-abstraction).
-
----
-
-## Omnichain Interoperability
-
-Omnichain Interoperability is one of Warden's key features. It refers to the possibility of communication between different blockchain networks.
-
-While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. [Omnichain Applications](#omnichain-application) not only provide cross-chain swapping and [bridging](#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
+An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-application). 
 
 ---
 
@@ -235,7 +225,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Space
 
-A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces contribute to Warden's [Chain Abstraction](#chain-abstraction): they aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
+A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
 
 ---
 

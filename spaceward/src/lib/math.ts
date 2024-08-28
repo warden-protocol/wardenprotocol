@@ -92,3 +92,30 @@ export const bigintToFixed = (
 	const trimmed = padded.replace(/0+$/, "");
 	return `${format ? int.toLocaleString("en-US") : int}${trimmed ? `.${trimmed}` : ""}`;
 };
+
+export const negToZero = (num: number) => (num < 0 ? 0 : num);
+
+export const displayPagination = (
+	page: number,
+	total: number,
+	display: number,
+) => {
+	const from = negToZero(page - Math.floor(display / 2));
+	const d = !from ? display + 1 : display;
+	const result = !from ? [] : [0];
+	const last = total - 1;
+
+	for (let i = from; i < from + d; ++i) {
+		if (i >= last) {
+			break;
+		}
+
+		result.push(i);
+	}
+
+	if (last !== 0) {
+		result.push(total - 1);
+	}
+
+	return result;
+};

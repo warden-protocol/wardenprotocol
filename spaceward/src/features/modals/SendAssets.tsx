@@ -10,8 +10,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import useFiatConversion from "@/hooks/useFiatConversion";
 import { numRestrict } from "../staking/util";
 import { useKeychainSigner } from "@/hooks/useKeychainSigner";
-import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
-import { AssetPlaceholder } from "../assets/AssetRow";
+import { AssetIcon } from "../assets/AssetRow";
 import { validateAddress } from "../intents/AddAddressModal";
 import { StargateClient } from "@cosmjs/stargate";
 import { useModalState } from "./state";
@@ -150,10 +149,6 @@ export default function SendAssetsModal({
 			})
 		: "0";
 
-	const Token = TokenIcons[selectedToken?.token ?? ""] ?? AssetPlaceholder;
-	const Network =
-		NetworkIcons[selectedToken?.chainName ?? ""] ?? AssetPlaceholder;
-
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
 			<div className="font-bold text-5xl mb-12 leading-[56px]">Send</div>
@@ -210,8 +205,19 @@ export default function SendAssetsModal({
 									className="cursor-pointer h-[32px] bg-fill-quaternary rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
 								>
 									<div className="relative w-6 h-6 ">
-										<Token className="w-6 h-6 object-contain" />
-										<Network className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]" />
+										<AssetIcon
+											type="token"
+											value={selectedToken?.token ?? ""}
+											logo={selectedToken?.logo}
+											className="w-6 h-6 object-contain"
+										/>
+										<AssetIcon
+											type="network"
+											value={
+												selectedToken?.chainName ?? ""
+											}
+											className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]"
+										/>
 									</div>
 									{selectedToken?.token}
 									<Icons.chevronDown

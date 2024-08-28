@@ -2,7 +2,7 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import { useQueries } from "@tanstack/react-query";
-import { /* useContext, */ useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
 	balancesQueryCosmos,
 	balancesQueryEth,
@@ -10,14 +10,15 @@ import {
 } from "./queries";
 import type { CosmosQueryClient, PriceMapSlinky } from "./types";
 import { COSMOS_CHAINS } from "@/config/tokens";
-// import { walletContext } from "@cosmos-kit/react-lite";
+import { walletContext } from "@cosmos-kit/react-lite";
+import { ExtendedHttpEndpoint } from "@cosmos-kit/core";
 
 const DERIVE_ADDRESSES = [
 	AddressType.ADDRESS_TYPE_ETHEREUM,
 	AddressType.ADDRESS_TYPE_OSMOSIS,
 ];
 export const useAssetQueries = (spaceId?: string | null) => {
-	// const { walletManager } = useContext(walletContext);
+	const { walletManager } = useContext(walletContext);
 	const { isReady, useKeysBySpaceId, slinky } = useQueryHooks();
 	const [clients, setClients] = useState<[CosmosQueryClient, string][]>([]);
 
@@ -45,24 +46,23 @@ export const useAssetQueries = (spaceId?: string | null) => {
 	});
 
 	const priceMap = useMemo(() => {
-		const priceMap =
-			prices.data?.prices.reduce((acc, price, i) => {
-				const pair = currencyPairs[i];
+		const priceMap = prices.data?.prices.reduce((acc, price, i) => {
+			const pair = currencyPairs[i];
 
-				if (!pair) {
-					return acc;
-				}
+			if (!pair) {
+				return acc;
+			}
 
-				return {
-					...acc,
-					// assume all quotes are in USD
-					[pair.token]: {
-						...price,
-						ticker: pair.id,
-						token: pair.token,
-					},
-				};
-			}, {} as PriceMapSlinky);
+			return {
+				...acc,
+				// assume all quotes are in USD
+				[pair.token]: {
+					...price,
+					ticker: pair.id,
+					token: pair.token,
+				},
+			};
+		}, {} as PriceMapSlinky);
 
 		if (!priceMap) {
 			return;
@@ -82,23 +82,31 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 	useEffect(() => {
 		Promise.all(
-			COSMOS_CHAINS.map(({ chainName, rpc }) => {
-				// fixme use walletRepo(works okay with mainnets but not testnets) along with hardcoded values
+			COSMOS_CHAINS.map(({ chainName, rpc, testnet }) => {
+				let promise: Promise<ExtendedHttpEndpoint | string>;
 
-				/*const repo = walletManager.getWalletRepo(chainName);
-				repo.activate();
+				if (!testnet) {
+					const repo = walletManager.getWalletRepo(chainName);
+					repo.activate();
+					promise = repo.getRpcEndpoint();
+				} else if (!rpc) {
+					promise = Promise.reject(
+						new Error("rpc endpoint is required for testnet"),
+					);
+				} else {
+					promise = Promise.resolve(rpc);
+				}
 
-				*/ return /* repo.getRpcEndpoint().then((endpoint) =>*/ cosmos.ClientFactory.createRPCQueryClient(
-					// fixme revert back to waleltRepo
-					{
-						rpcEndpoint: /*endpoint
+				return promise
+					.then((endpoint) =>
+						cosmos.ClientFactory.createRPCQueryClient({
+							rpcEndpoint: endpoint
 								? typeof endpoint === "string"
 									? endpoint
 									: endpoint.url
-								: `https://rpc.cosmos.directory/${chainName}`*/ rpc,
-					},
-				) /*,
-					)*/
+								: `https://rpc.cosmos.directory/${chainName}`,
+						}),
+					)
 					.then(
 						(client) =>
 							[client, chainName] as [CosmosQueryClient, string],
@@ -120,11 +128,20 @@ export const useAssetQueries = (spaceId?: string | null) => {
 	});
 
 	const queryBalancesEth = useQueries(
-		balancesQueryEth(isReady && Boolean(priceMap), queryKeys.data?.keys, priceMap),
+		balancesQueryEth(
+			isReady && Boolean(priceMap),
+			queryKeys.data?.keys,
+			priceMap,
+		),
 	);
 
 	const queryBalancesCosmos = useQueries(
-		balancesQueryCosmos(isReady && Boolean(priceMap), queryKeys.data?.keys, clients, priceMap),
+		balancesQueryCosmos(
+			isReady && Boolean(priceMap),
+			queryKeys.data?.keys,
+			clients,
+			priceMap,
+		),
 	);
 
 	const queryPrices = useQueries(fiatPricesQuery(isReady));

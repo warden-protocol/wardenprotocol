@@ -18,7 +18,19 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 		Description: msg.Description,
 		Admins:      []string{msg.Creator},
 		Fees:        msg.KeychainFees,
+		Url:         msg.Url,
 	}
+
+	if err := keychain.SetName(msg.Name); err != nil {
+		return nil, err
+	}
+
+	keybaseId, err := types.NewKeybaseId(msg.KeybaseId)
+	if err != nil {
+		return nil, err
+	}
+
+	keychain.SetKeybaseId(keybaseId)
 
 	id, err := k.keychains.Append(ctx, keychain)
 	if err != nil {

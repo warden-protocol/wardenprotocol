@@ -28,19 +28,19 @@ message InferenceTx {
 }
 
 message SolverRequest {
-  SolverInput solver_input = 1 [(gogoproto.nullable) = false];
-  int64 ExpectedItems = 2;
-  double FalsePositiveRate = 3;
+  SolverInput solver_input = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "solverInput"];
+  int64 ExpectedItems = 2 [(gogoproto.jsontag) = "expectedItems"];
+  double FalsePositiveRate = 3 [(gogoproto.jsontag) = "falsePositiveRate"];
 }
 
 message SolverInput {
   repeated string tokens = 1;
-  bool adversary_mode = 2;
+  bool adversary_mode = 2 [(gogoproto.jsontag) = "adversaryMode"];
 }
 
 message SolverResponse {
-  SolverOutput solver_output = 1 [(gogoproto.nullable) = false];
-  bytes solver_receipt = 2;
+  SolverOutput solver_output = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "solverOutput"];
+  bytes solver_receipt = 2 [(gogoproto.jsontag) = "solverReceipt"];
 }
 
 message SolverOutput {

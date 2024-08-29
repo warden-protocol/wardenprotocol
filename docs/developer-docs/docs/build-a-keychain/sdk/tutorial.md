@@ -79,7 +79,7 @@ Note that in a production environment, you'd need to implement actual logic for 
    }
    ```
 
-   Let us first define `handleKeyRequest` function. This function takes in a `KeyResponseWriter` and a `KeyRequest` as    parameters.Inside the function, let us create a logger using `slog.Default()` and log informational messages with the    request ID and key type.
+   Let's first define `handleKeyRequest` function. This function takes in a `KeyResponseWriter` and a `KeyRequest` as    parameters.Inside the function, let us create a logger using `slog.Default()` and log informational messages with the    request ID and key type.
    
    **Note:** This function will create a dummy public key as a byte slice.
    

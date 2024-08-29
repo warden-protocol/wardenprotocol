@@ -426,6 +426,10 @@ func New(
 		return versionMap, err
 	})
 
+	app.UpgradeKeeper.SetUpgradeHandler("v042", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		return fromVM, nil
+	})
+
 	// Slinky upgrader
 	slinkyUpgrade := createSlinkyUpgrader(app)
 	app.UpgradeKeeper.SetUpgradeHandler(slinkyUpgrade.Name, slinkyUpgrade.Handler) // includes v0.4 upgrade

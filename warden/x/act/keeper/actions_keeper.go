@@ -3,6 +3,8 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/types/query"
+	"time"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
@@ -98,4 +100,54 @@ func (k ActionKeeper) Import(ctx sdk.Context, actions []types.Action) error {
 
 func (k ActionKeeper) Coll() repo.SeqCollection[types.Action] {
 	return k.actions
+}
+
+func (k ActionKeeper) PruneActions(ctx context.Context, actions []types.Action) error {
+	if len(actions) == 0 {
+		return nil
+	}
+
+	for _, action := range actions {
+		if err := k.pruneAction(ctx, action); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action) error {
+	if err := k.actions.Remove(ctx, action.Id); err != nil {
+		return err
+	}
+
+	for _, addr := range action.Mentions {
+		key := collections.Join(sdk.MustAccAddressFromBech32(addr), action.Id)
+		if err := k.actionByAddress.Remove(ctx, key); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (k ActionKeeper) ExpiredActions(
+	ctx context.Context,
+	status types.ActionStatus,
+	blockTime time.Time,
+	timeout time.Duration) ([]types.Action, error) {
+	isExceededTimeout := func(key uint64, value types.Action) (include bool, err error) {
+		isCompletedStatus := value.Status == status
+		isKeepTimeExceeded := blockTime.After(value.UpdatedAt.Add(timeout))
+		return isCompletedStatus && isKeepTimeExceeded, nil
+	}
+
+	id := func(key uint64, value types.Action) (types.Action, error) {
+		return value, nil
+	}
+
+	actions, _, err := query.CollectionFilteredPaginate[uint64, types.Action, repo.SeqCollection[types.Action], types.Action](
+		ctx, k.Coll(), nil, isExceededTimeout, id)
+
+	return actions, err
 }

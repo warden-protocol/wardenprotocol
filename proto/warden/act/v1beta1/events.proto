@@ -51,13 +51,13 @@ message EventActionStateChange {
   ActionStatus new_status = 3;
 }
 
-// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+// EventCompletedActionTimedOut is emitted when an Action is pruned in `Completed` or `Revoked` state and won't be processed further
 message EventCompletedActionTimedOut {
   // id of action
   uint64 id = 1;
 }
 
-// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+// EventPendingActionTimedOut is emitted when an Action is pruned in `Pending` state and won't be processed further
 message EventPendingActionTimedOut {
   // id of action
   uint64 id = 1;

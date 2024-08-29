@@ -297,7 +297,7 @@ func (m *EventActionStateChange) GetNewStatus() ActionStatus {
 	return ActionStatus_ACTION_STATUS_UNSPECIFIED
 }
 
-// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+// EventCompletedActionTimedOut is emitted when an Action is pruned in `Completed` or `Revoked` state and won't be processed further
 type EventCompletedActionTimedOut struct {
 	// id of action
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -343,7 +343,7 @@ func (m *EventCompletedActionTimedOut) GetId() uint64 {
 	return 0
 }
 
-// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+// EventPendingActionTimedOut is emitted when an Action is pruned in `Pending` state and won't be processed further
 type EventPendingActionTimedOut struct {
 	// id of action
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`

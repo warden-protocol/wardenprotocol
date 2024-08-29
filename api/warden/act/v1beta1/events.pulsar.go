@@ -3371,7 +3371,7 @@ func (x *EventActionStateChange) GetNewStatus() ActionStatus {
 	return ActionStatus_ACTION_STATUS_UNSPECIFIED
 }
 
-// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+// EventCompletedActionTimedOut is emitted when an Action is pruned in `Completed` or `Revoked` state and won't be processed further
 type EventCompletedActionTimedOut struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3408,7 +3408,7 @@ func (x *EventCompletedActionTimedOut) GetId() uint64 {
 	return 0
 }
 
-// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+// EventPendingActionTimedOut is emitted when an Action is pruned in `Pending` state and won't be processed further
 type EventPendingActionTimedOut struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

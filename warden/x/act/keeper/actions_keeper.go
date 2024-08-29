@@ -102,21 +102,7 @@ func (k ActionKeeper) Coll() repo.SeqCollection[types.Action] {
 	return k.actions
 }
 
-func (k ActionKeeper) PruneActions(ctx context.Context, actions []types.Action) error {
-	if len(actions) == 0 {
-		return nil
-	}
-
-	for _, action := range actions {
-		if err := k.pruneAction(ctx, action); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action) error {
+func (k ActionKeeper) PruneAction(ctx context.Context, action types.Action) error {
 	if err := k.actions.Remove(ctx, action.Id); err != nil {
 		return err
 	}

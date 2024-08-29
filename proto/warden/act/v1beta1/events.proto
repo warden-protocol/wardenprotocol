@@ -50,3 +50,15 @@ message EventActionStateChange {
   // new_status is the new status of the action
   ActionStatus new_status = 3;
 }
+
+// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+message EventCompletedActionTimedOut {
+  // id of action
+  uint64 id = 1;
+}
+
+// EventActionTimedOut is emitted when an Action is pruned and won't be processed further
+message EventPendingActionTimedOut {
+  // id of action
+  uint64 id = 1;
+}

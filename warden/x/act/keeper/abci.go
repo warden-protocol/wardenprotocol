@@ -9,19 +9,26 @@ import (
 func (k Keeper) EndBlocker(ctx context.Context) error {
 	blockTime := k.getBlockTime(ctx)
 
+	completedStatuses := map[types.ActionStatus]struct{}{
+		types.ActionStatus_ACTION_STATUS_COMPLETED: {},
+		types.ActionStatus_ACTION_STATUS_REVOKED:   {},
+	}
 	if err := k.pruneActionsByStatus(
 		ctx,
 		blockTime,
 		k.GetParams(ctx).MaxCompletedTime,
-		types.ActionStatus_ACTION_STATUS_COMPLETED); err != nil {
+		completedStatuses); err != nil {
 		return err
 	}
 
+	pendingStatuses := map[types.ActionStatus]struct{}{
+		types.ActionStatus_ACTION_STATUS_PENDING: {},
+	}
 	if err := k.pruneActionsByStatus(
 		ctx,
 		blockTime,
 		k.GetParams(ctx).MaxPendingTime,
-		types.ActionStatus_ACTION_STATUS_PENDING); err != nil {
+		pendingStatuses); err != nil {
 		return err
 	}
 
@@ -29,10 +36,10 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 }
 
 func (k Keeper) pruneActionsByStatus(
-	ctx context.Context, blockTime time.Time, timeout time.Duration, status types.ActionStatus) error {
+	ctx context.Context, blockTime time.Time, timeout time.Duration, statuses map[types.ActionStatus]struct{}) error {
 
 	actions, err := k.ActionKeeper.ExpiredActions(
-		ctx, status, blockTime, timeout)
+		ctx, statuses, blockTime, timeout)
 
 	if err != nil {
 		return err

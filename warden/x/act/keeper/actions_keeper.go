@@ -131,13 +131,9 @@ func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action) erro
 	return nil
 }
 
-func (k ActionKeeper) ExpiredActions(
-	ctx context.Context,
-	status types.ActionStatus,
-	blockTime time.Time,
-	timeout time.Duration) ([]types.Action, error) {
+func (k ActionKeeper) ExpiredActions(ctx context.Context, statuses map[types.ActionStatus]struct{}, blockTime time.Time, timeout time.Duration) ([]types.Action, error) {
 	isExceededTimeout := func(key uint64, value types.Action) (include bool, err error) {
-		isCompletedStatus := value.Status == status
+		_, isCompletedStatus := statuses[value.Status]
 		isKeepTimeExceeded := blockTime.After(value.UpdatedAt.Add(timeout))
 		return isCompletedStatus && isKeepTimeExceeded, nil
 	}

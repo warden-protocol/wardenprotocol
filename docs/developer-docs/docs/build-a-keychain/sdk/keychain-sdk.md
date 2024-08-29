@@ -10,7 +10,7 @@ The **Keychain SDK** offers a robust framework for managing cryptographic operat
 
 ## Module Descriptions
 
-In this section, we will walk you through different modules of **Keychain SDK.**
+In this section, we will walk you through different modules of the **Keychain SDK.**
 
 ### Sign Requests (`sign_requests.go`)
 
@@ -125,10 +125,10 @@ type Config struct {
 - **Encrypt**: Encrypts data using a provided ECDSA public key.
 - **ValidateEncryptionKey**: Validates an ECDSA public key.
 
-You can find more details about Keychain SDK in our GitHub repository:
+You can find more details about the Keychain SDK in our GitHub repository:
 
-- [Keychain SDK](https://github.com/warden-protocol/wardenprotocol/tree/main/keychain-sdk)
+- [The Keychain SDK](https://github.com/warden-protocol/wardenprotocol/tree/main/keychain-sdk)
 
 To learn about the available types and functions, check the reference page:
 
-- [Keychain SDK reference](https://pkg.go.dev/github.com/warden-protocol/wardenprotocol/keychain-sdk)
+- [The Keychain SDK reference](https://pkg.go.dev/github.com/warden-protocol/wardenprotocol/keychain-sdk)

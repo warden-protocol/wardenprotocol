@@ -71,7 +71,6 @@ func (k Keeper) pruneActionsByStatus(
 		if err := sdkCtx.EventManager().EmitTypedEvent(eventFabric(action)); err != nil {
 			return err
 		}
-
 	}
 
 	return nil

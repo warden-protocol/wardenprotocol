@@ -22,7 +22,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build faucet-v2
+    just output_dir=/build build faucet
 
 FROM debian:bookworm-slim AS wardend
 RUN apt update && \
@@ -47,14 +47,21 @@ RUN apt-get update && apt-get install -y \
     useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
     install -o 1000 -g 1000 -d /data
 
+
 COPY --from=wardend-build --chown=warden:warden /build/wardend /usr/bin/wardend
-COPY --from=wardend-build --chown=warden:warden /build/faucet-v2 /usr/bin/faucet-v2
-ADD --chown=warden:warden --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+COPY --from=wardend-build --chown=warden:warden /build/faucet /usr/bin/faucet
+ADD --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+RUN chmod 444 /lib/libwasmvm.x86_64.so
 
-EXPOSE 8000
 USER warden
-CMD ["/usr/bin/faucet-v2"]
 
+COPY cmd/faucet/assets/ /assets
+COPY cmd/faucet/css/ /css
+COPY cmd/faucet/js/ /js
+COPY cmd/faucet/templates/ /templates
+
+EXPOSE 8081
+CMD ["/usr/bin/faucet"]
 
 ## wardenkms
 FROM build-env AS wardenkms-build

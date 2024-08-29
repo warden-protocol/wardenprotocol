@@ -76,7 +76,7 @@ const DashboardGraph = ({
 						className={clsx(
 							"text-xs text-pixel-pink py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
 							graphInterval == 7 &&
-								"bg-pink-secondary pointer-events-none",
+								"bg-fill-accent-secondary pointer-events-none",
 						)}
 					>
 						7D
@@ -86,7 +86,7 @@ const DashboardGraph = ({
 						className={clsx(
 							"text-xs text-pixel-pink py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
 							graphInterval == 30 &&
-								"bg-pink-secondary pointer-events-none",
+								"bg-fill-accent-secondary pointer-events-none",
 						)}
 					>
 						1M
@@ -96,7 +96,7 @@ const DashboardGraph = ({
 						className={clsx(
 							"text-xs text-pixel-pink py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
 							graphInterval == 90 &&
-								"bg-pink-secondary pointer-events-none",
+								"bg-fill-accent-secondary pointer-events-none",
 						)}
 					>
 						3M
@@ -155,7 +155,7 @@ const DashboardGraph = ({
 						type: "receive",
 						params: {},
 					})}
-					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
+					className="flex items-center gap-2 rounded bg-fill-accent-secondary h-10 px-3 font-semibold  duration-300 ease-out hover:bg-fill-accent-secondary"
 				>
 					<IconsAssets.arrInCircle className="invert dark:invert-0" />
 					Receive

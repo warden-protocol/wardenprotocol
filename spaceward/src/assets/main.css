@@ -1,39 +1,51 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @font-face {
-	font-family: "Alliance Neue Regular";
+	font-family: "Syne";
 	src:
-		url("/fonts/Alliance-NeueRegular.ttf") format("truetype"),
-		url("/fonts/alliance-neueregular-webfont.woff2") format("woff2"),
-		url("/fonts/alliance-neueregular-webfont.woff") format("woff");
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Alliance Neue Bold";
-	src:
-		url("/fonts/Alliance-NeueBold.ttf") format("truetype"),
-		url("/fonts/alliance-neuebold-webfont.woff2") format("woff2"),
-		url("/fonts/alliance-neuebold-webfont.woff") format("woff");
+		url("/fonts/syne/Syne-Bold.ttf") format("truetype"),
+		url("/fonts//syne/Syne-Bold.woff2") format("woff2"),
+		url("/fonts//syne/Syne-Bold.woff") format("woff");
 	font-weight: 700;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "Alliance Neue SemiBold";
-	src: url("/fonts/Alliance-NeueSemiBold.ttf") format("truetype");
+	font-family: "Syne";
+	src:
+		url("/fonts/syne/Syne-Bold.ttf") format("truetype"),
+		url("/fonts//syne/Syne-Bold.woff2") format("woff2"),
+		url("/fonts//syne/Syne-Bold.woff") format("woff");
+	font-weight: 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Syne";
+	src:
+		url("/fonts/syne/Syne-SemiBold.ttf") format("truetype"),
+		url("/fonts//syne/Syne-SemiBold.woff2") format("woff2"),
+		url("/fonts//syne/Syne-SemiBold.woff") format("woff");
 	font-weight: 600;
 	font-display: swap;
 }
-
 @font-face {
-	font-family: "Alliance Neue Medium";
-	src: url("/fonts/Alliance-Medium.ttf") format("truetype");
-	font-weight: 600;
+	font-family: "Syne";
+	src:
+		url("/fonts/syne/Syne-Medium.ttf") format("truetype"),
+		url("/fonts//syne/Syne-Medium.woff2") format("woff2"),
+		url("/fonts//syne/Syne-Medium.woff") format("woff");
+	font-weight: 500;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Syne";
+	src:
+		url("/fonts/syne/Syne-Regular.ttf") format("truetype"),
+		url("/fonts//syne/Syne-Regular.woff2") format("woff2"),
+		url("/fonts//syne/Syne-Regular.woff") format("woff");
+	font-weight: 400;
 	font-display: swap;
 }
 
@@ -69,7 +81,7 @@
 
 		--radius: 0.5rem;
 
-		--pink-secondary: rgba(255, 109, 225, 0.15);
+		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--border-secondary: rgba(136, 126, 120, 0.15);
 		--fill-quaternary: rgba(136, 126, 120, 0.15);
 		--fill-elevated: rgba(229, 238, 255, 0.1);
@@ -78,7 +90,6 @@
 		--label-secondary: rgba(84, 78, 74, 0.7);
 		--label-tertiary: rgba(116, 109, 105, 0.45);
 		--border-quaternary: rgba(114, 107, 102, 0.28);
-		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--bg-elevated: #424345;
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
@@ -90,10 +101,10 @@
 	}
 
 	.dark {
-		--background: 0 0% 0%;
+		--background: #140901;
 		--foreground: 0 0% 98%;
 
-		--card: 0 0% 7.8%;
+		--card: 24 19% 10%;
 		--card-foreground: 0 0% 98%;
 
 		--popover: 0 0% 3.9%;
@@ -108,7 +119,7 @@
 		--muted: 0 0% 14.9%;
 		--muted-foreground: 0 0% 63.9%;
 
-		--accent: 313, 100%, 84%;
+		--accent: 89.72, 100%, 79.02%;
 		--accent-foreground: 0 0% 98%;
 
 		--destructive: 0 62.8% 30.6%;
@@ -118,7 +129,7 @@
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
 
-		--pink-secondary: rgba(255, 174, 238, 0.15);
+		--fill-accent-secondary: rgba(202, 255, 148, 0.15);
 		--border-secondary: rgba(229, 238, 255, 0.6);
 		--fill-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-elevated: rgba(229, 238, 255, 0.1);
@@ -127,15 +138,14 @@
 		--label-secondary: rgba(229, 238, 255, 0.6);
 		--label-tertiary: rgba(229, 238, 255, 0.3);
 		--border-quaternary: rgba(229, 238, 255, 0.1);
-		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--bg-elevated: #424345;
 		--border-primary: #fff;
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--border-edge: rgba(229, 238, 255, 0.05);
 		--label-invert: #000;
 		--fill-primary: #fff;
-		--border-accent: #ffaeee;
-		--label-accent: #ffaeee;
+		--border-accent: #caff94;
+		--label-accent: #caff94;
 	}
 }
 
@@ -147,7 +157,9 @@
 	body {
 		/* @apply bg-background text-foreground font-sans bg-cover bg-fixed dark:bg-[url("/bg.svg")]; */
 		/* @apply bg-background text-foreground font-sans bg-cover bg-center bg-fixed dark:bg-[url("/no-space-bg.svg")]; */
-		@apply bg-background text-foreground font-sans;
+		@apply text-foreground font-sans;
+		font-variant-numeric: lining-nums proportional-nums;
+		background: var(--background);
 	}
 
 	h1,
@@ -156,7 +168,7 @@
 	h4,
 	h5,
 	h6 {
-		@apply font-display !tracking-wide;
+		@apply font-display;
 	}
 }
 
@@ -216,7 +228,8 @@
 	--grid-date: minmax(200px, 3fr);
 	--grid-status: minmax(120px, 1fr);
 	grid-template-columns:
-		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date) var(--grid-status);
+		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date)
+		var(--grid-status);
 	grid-template-areas: "id type info date status";
 	width: 100%;
 	display: grid;
@@ -230,7 +243,8 @@
 	--grid-value: minmax(100px, 1.5fr);
 	--grid-action: minmax(100px, 1fr);
 	grid-template-columns:
-		var(--grid-address) var(--grid-tokens) var(--grid-value) var(--grid-action);
+		var(--grid-address) var(--grid-tokens) var(--grid-value)
+		var(--grid-action);
 	grid-template-areas: "address tokens value action";
 	width: 100%;
 	display: grid;
@@ -259,7 +273,6 @@ input::-webkit-outer-spin-button {
 }
 
 @layer utilities {
-
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
@@ -280,11 +293,13 @@ input::-webkit-outer-spin-button {
 } */
 
 .mask-space {
-	-webkit-mask-image: -webkit-gradient(linear,
-			left 0%,
-			left bottom,
-			from(rgba(0, 0, 0, 1)),
-			to(rgba(0, 0, 0, 0)));
+	-webkit-mask-image: -webkit-gradient(
+		linear,
+		left 0%,
+		left bottom,
+		from(rgba(0, 0, 0, 1)),
+		to(rgba(0, 0, 0, 0))
+	);
 }
 
 .fix-avatar .rounded-full {

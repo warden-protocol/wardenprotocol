@@ -33,8 +33,8 @@ export default function TotalAssetsChart(balance: any) {
 		}
 
 		const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-		gradient.addColorStop(0, "rgba(255,174,238,0.4)");
-		gradient.addColorStop(1, "rgba(250,174,238,0.05)");
+		gradient.addColorStop(0, "rgba(202, 255, 148, .4)");
+		gradient.addColorStop(1, "rgba(202, 255, 148, 0.05)");
 
 		const chart = new Chart(canvas, {
 			type: "line",
@@ -46,7 +46,7 @@ export default function TotalAssetsChart(balance: any) {
 						backgroundColor: gradient,
 						label: "",
 						data: mockData.map((item) => item.y),
-						borderColor: "rgb(255, 174, 238)",
+						borderColor: "rgb(202, 255, 148)",
 						tension: 0.1,
 					},
 				],

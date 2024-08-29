@@ -13,7 +13,7 @@ export function NoSpaces() {
 
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 	return (
-		<div className="w-full min-h-[calc(100vh-20px)] bg-[url(/landing-bg-light.svg)] dark:bg-transparent  rounded-xl border-2 border-border-accent -mt-[20px] flex flex-col gap-4 items-center place-content-center text-center no-space">
+		<div className="w-full min-h-[calc(100vh-20px)] bg-[url(/landing-bg-light.svg)] dark:bg-transparent  rounded-xl border-2 border-border-accent -mt-[48px] flex flex-col gap-4 items-center place-content-center text-center no-space">
 			{ward > 0 ? (
 				<>
 					<h1 className="text-5xl font-bold tracking-[0.24px] leading-[120%]">

@@ -11,8 +11,8 @@ const config = {
 	prefix: "",
 	theme: {
 		fontFamily: {
-			display: "Alliance Neue Regular, Arial, sans-serif",
-			sans: "Inter, Arial, sans-serif",
+			display: "Syne, Arial, sans-serif",
+			sans: "Syne, Arial, sans-serif",
 			mono: "monospace",
 		},
 		container: {
@@ -24,8 +24,8 @@ const config = {
 		},
 		extend: {
 			colors: {
-				"pixel-pink": "#FFAEEE",
-				"pink-secondary": "var(--pink-secondary)",
+				"pixel-pink": "#CAFF94",
+				"fill-accent-secondary": "var(--fill-accent-secondary)",
 				"fill-primary": "var(--fill-primary)",
 				"fill-gray": "#9EA4AE",
 				"fill-primary": "var(--fill-primary)",
@@ -60,7 +60,7 @@ const config = {
 				"border-secondary": "var(--border-secondary)",
 				orange: "#E57F45",
 				"orange-secondary": "rgba(229,238,255,0.04)",
-				"staking-bg": "rgba(63,176,184,0.15)",
+				"staking-bg": "rgba(228, 230, 224, 0.15)",
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",

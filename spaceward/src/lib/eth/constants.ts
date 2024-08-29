@@ -33,8 +33,10 @@ export const ETH_CHAIN_CONFIG: Record<
 	"7777777": { rpc: ["https://rpc.zora.energy/"] },
 	"11155111": {
 		rpc: [
+			"https://ethereum-sepolia.rpc.subquery.network/public",
 			"https://rpc.sepolia.org/",
-			"wss://ethereum-sepolia-rpc.publicnode.com",
+			"https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+			"https://sepolia.gateway.tenderly.co",
 		],
 	},
 };

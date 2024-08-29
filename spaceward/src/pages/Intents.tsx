@@ -163,9 +163,6 @@ export const useRules = () => {
 			pagination: PageRequest.fromPartial({ limit: BigInt(100000) }),
 		},
 	});
-	console.log(rules.data)
-
-
 
 	/** @deprecated would be nice to query intent by creator or space */
 	const rulesBySpace = useMemo(

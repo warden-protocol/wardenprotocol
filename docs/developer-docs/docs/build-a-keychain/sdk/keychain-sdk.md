@@ -8,21 +8,21 @@ sidebar_position: 1
 
 The **Keychain SDK** offers a robust framework for managing cryptographic operations on the Warden Protocol. It simplifies the development of applications that interact with the Warden Protocol, handling both key requests and sign requests with efficiency and security.
 
-## Module Descriptions
+## Module descriptions
 
 In this section, we will walk you through different modules of the **Keychain SDK.**
 
-### Sign Requests (`sign_requests.go`)
+### Sign requests (`sign_requests.go`)
 
 **Purpose**: This module handles sign requests, allowing the application to process and respond to cryptographic signing operations.
 
-**Key Components:**
+**Key components:**
 
-- **SignResponseWriter Interface**: Provides methods to fulfill or reject sign requests.
+- **SignResponseWriter interface**: Provides methods to fulfill or reject sign requests.
   - `Fulfil(signature []byte) error`: Writes a signature to a sign request.
   - `Reject(reason string) error`: Writes a rejection message to a sign request.
 - **SignRequestHandler**: A function type that processes individual sign requests.
-- **signResponseWriter Struct**: Implements the `SignResponseWriter` interface, managing encryption and transaction writing.
+- **signResponseWriter struct**: Implements the `SignResponseWriter` interface, managing encryption and transaction writing.
 
 **Functions:**
 
@@ -33,23 +33,23 @@ In this section, we will walk you through different modules of the **Keychain SD
 
 **Purpose**: Central application management, coordinating key and sign request handling.
 
-**Key Components:**
+**Key components:**
 
-- **App Struct**: Represents the Keychain application, managing configuration and handlers.
+- **App struct**: Represents the Keychain application, managing configuration and handlers.
   - Key members include `config`, `query`, `txWriter`, `keyRequestTracker`, and `signRequestTracker`.
-- **NewApp Function**: Initializes a new `App` instance with the provided configuration.
+- **NewApp function**: Initializes a new `App` instance with the provided configuration.
 - **Handlers**: These methods set the functions for processing requests.
   - `SetKeyRequestHandler`: Sets the handler for key requests.
   - `SetSignRequestHandler`: Sets the handler for sign requests.
-- **Start Method**: Begins the Keychain application's operations, managing request channels and transaction writing.
+- **Start method**: Begins the Keychain application's operations, managing request channels and transaction writing.
 - `ConnectionState`: Returns the state of the gRPC connection.
 - `initConnections`: Establishes connections to the Warden Protocol via gRPC.
 
-### Key Requests (`key_requests.go`)
+### Key requests (`key_requests.go`)
 
 **Purpose**: Handles key requests, providing interfaces to fulfill or reject requests for public keys.
 
-**Key Components:**
+**Key components:**
 
 - **KeyResponseWriter Interface**: Contains methods to fulfill or reject key requests.
   - `Fulfil(publicKey []byte) error`: Sends a public key in response.
@@ -66,9 +66,9 @@ In this section, we will walk you through different modules of the **Keychain SD
 
 **Purpose**: Defines the configuration structure for the Keychain SDK, detailing all necessary parameters for application setup.
 
-**Key Components:**
+**Key components:**
 
-- **Config Struct**: Specifies settings such as logger, chain ID, gRPC details, and batching options.
+- **Config struct**: Specifies settings such as logger, chain ID, gRPC details, and batching options.
 
 ```go
 type Config struct {
@@ -87,13 +87,13 @@ type Config struct {
 }
 ```
 
-### Transaction Writer (`writer.go`)
+### Transaction 2riter (`writer.go`)
 
 **Purpose**: Manages transaction batching and sending operations.
 
-**Key Components:**
+**Key components:**
 
-- **W Struct**: Handles batch management and sending transactions to the blockchain.
+- **W struct**: Handles batch management and sending transactions to the blockchain.
 
 **Functions:**
 
@@ -102,13 +102,13 @@ type Config struct {
 - `Flush`: Sends accumulated transactions in a batch.
 - `sendWaitTx`: Handles the actual transaction submission and awaits confirmation.
 
-### Request Tracker (`tracker.go`)
+### Request tracker (`tracker.go`)
 
 **Purpose**: Tracks processed request IDs to prevent duplicate processing.
 
-**Key Components:**
+**Key components:**
 
-- **T Struct**: Manages an ingested map to track processed requests, ensuring each request is only handled once.
+- **T struct**: Manages an ingested map to track processed requests, ensuring each request is only handled once.
 
 **Functions:**
 
@@ -116,11 +116,11 @@ type Config struct {
 - `Ingested`: Marks a request as ingested.
 - `Done`: Removes a request from the ingested map.
 
-### Encryption Utilities (`enc.go`)
+### Encryption utilities (`enc.go`)
 
 **Purpose**: Provides encryption utilities for cryptographic operations.
 
-**Key Functions:**
+**Key functions:**
 
 - **Encrypt**: Encrypts data using a provided ECDSA public key.
 - **ValidateEncryptionKey**: Validates an ECDSA public key.

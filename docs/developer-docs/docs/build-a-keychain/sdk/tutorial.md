@@ -60,7 +60,7 @@ Note that in a production environment, you'd need to implement actual logic for 
    
    // Create a new Keychain application
    
-   })
+   }
    
    // Set up handlers for key requests and sign requests
    app.SetKeyRequestHandler(handleKeyRequest)

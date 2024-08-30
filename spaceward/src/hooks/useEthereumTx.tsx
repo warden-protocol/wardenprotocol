@@ -48,6 +48,7 @@ export function useEthereumTx() {
 		keyId: bigint,
 		_tx: ethers.TransactionLike,
 		chainName: string,
+		title: string,
 		wc?: {
 			requestId: number;
 			topic: string;
@@ -84,7 +85,8 @@ export function useEthereumTx() {
 				chainName,
 				walletConnectRequestId: wc?.requestId,
 				walletConnectTopic: wc?.topic,
-				snapRequestId: snap?.requestId
+				snapRequestId: snap?.requestId,
+				title
 			},
 		);
 	};

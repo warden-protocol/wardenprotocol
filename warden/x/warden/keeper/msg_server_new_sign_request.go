@@ -34,24 +34,24 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 		return nil, err
 	}
 
-	if keychain.Fees != nil {
-		err := k.bankKeeper.SendCoins(
-			ctx,
-			sdk.MustAccAddressFromBech32(creator),
-			keychain.AccAddress(),
-			keychain.Fees.SigReq,
-		)
-		if err != nil {
-			return nil, err
-		}
+	if err := keychain.EnsureSufficientSignFees(msg.MaxKeychainFees); err != nil {
+		return nil, err
+	}
+
+	if err := k.deductKeychainFees(
+		ctx,
+		sdk.MustAccAddressFromBech32(creator),
+		keychain.Fees.SigReq); err != nil {
+		return nil, err
 	}
 
 	req := &types.SignRequest{
-		Creator:        creator,
-		KeyId:          msg.KeyId,
-		DataForSigning: msg.Input,
-		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
-		EncryptionKey:  msg.EncryptionKey,
+		Creator:              creator,
+		KeyId:                msg.KeyId,
+		DataForSigning:       msg.Input,
+		Status:               types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		EncryptionKey:        msg.EncryptionKey,
+		DeductedKeychainFees: keychain.Fees.SigReq,
 	}
 
 	id, err := k.signRequests.Append(ctx, req)

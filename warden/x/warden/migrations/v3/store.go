@@ -145,9 +145,9 @@ func migrateKeyRequest(kr v1beta2.KeyRequest) v1beta3.KeyRequest {
 }
 
 func migrateKeychain(kc v1beta2.Keychain) v1beta3.Keychain {
-	var fees *v1beta3.KeychainFees
+	var fees v1beta3.KeychainFees
 	if kc.Fees != nil {
-		fees = &v1beta3.KeychainFees{
+		fees = v1beta3.KeychainFees{
 			KeyReq: sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(kc.Fees.KeyReq))),
 			SigReq: sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(kc.Fees.SigReq))),
 		}

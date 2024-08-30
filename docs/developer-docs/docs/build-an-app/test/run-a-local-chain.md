@@ -17,7 +17,7 @@ This guide explains how to run a local chain for development and testing purpose
 
 Clone the Warden Protocol repository and navigate to the root directory:
 
-```sh
+```bash
 git clone https://github.com/warden-protocol/wardenprotocol
 cd wardenprotocol
 ```
@@ -25,34 +25,34 @@ cd wardenprotocol
 ## 2. Build the chain
 
 1. Check if `just` is installed. If not, you can install it using `brew`:
-    
-    ```sh
-    brew install just
-    ```
+   
+   ```bash
+   brew install just
+   ```
 
 2. Install the `wardend` binary:
-    
-    ```sh
-    just install
-    ```
-    
-    This will build the chain binary called `wardend` and install it in your `$GOPATH`. You can check the location by running this:
+   
+   ```bash
+   just install
+   ```
+   
+   This will build the chain binary called `wardend` and install it in your `$GOPATH`. You can check the location by running this:
 
-    ```sh
-    which wardend
-    ```
+   ```bash
+   which wardend
+   ```
 
 3. Check if your `wardend` binary has been properly installed:
 
-    ```sh
-    wardend version  
-    ```
+   ```bash
+   wardend version  
+   ```
 
-    You'll see an output like this:
+   You'll see an output like this:
 
-    ```sh
-    v0.4.0.0
-    ```
+   ```bash
+   v0.4.0.0
+   ```
 
 ## 3. Run the chain
 
@@ -62,7 +62,7 @@ Once `just` and `wardend` are correctly installed, you can initiate a script tha
 
 Make sure you're in the `wardenprotocol` directory and execute this command:
 
-```sh
+```bash
 just localnet
 ```
 
@@ -77,18 +77,18 @@ You can check the settings of your node in the genesis file: `$HOME/.warden/conf
 You can use a devnet snapshot with prebuilt node settings.
 
 1. Download the [devnet snapshot](https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz) and extract it to `~/.warden`:
-    
-    ```sh
-    wget https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz
-    mkdir ~/.warden
-    tar -xvf devnet.tar.gz -C ~/.warden
-    ```
-       
+   
+   ```bash
+   wget https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz
+   mkdir ~/.warden
+   tar -xvf devnet.tar.gz -C ~/.warden
+   ```
+
 2. Run the chain:
-    
-    ```sh
-    wardend start
-    ```
+   
+   ```bash
+   wardend start
+   ```
 
 :::note
 You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
@@ -103,67 +103,76 @@ You can find [other devnet snapshots](https://github.com/warden-protocol/snapsho
 Options 1 and 2 allow you to run a node with prebuilt settings. Alternatively, you can configure your node manually before running it, as shown in the steps below.
 
 1. Initialize a local node. Specify a human-readable name (moniker) and ID for your chain:
-    
-    ```sh
-    wardend init my-chain-name --chain-id my-chain-id
-    ```
+   
+   ```bash
+   wardend init my-chain-moniker --chain-id my-chain-id
+   ```
 
-    You can find your new node in the `$HOME/.warden/config` directory.
+   You can find your new node in the `$HOME/.warden/config` directory. For the genesis file, see `$HOME/.warden/config/genesis.json.`
 
-2. Create a key pair, specifying a custom validator name:
-    ```sh
-    wardend keys add my-validator-name
-    ```
+2. Set the correct denomination in `uward` across the genesis file:
 
-    You'll be prompted to create a passphrase, which is required for confirming some of the next steps.
+   ```
+   sed -i 's/stake/uward/g' ../.warden/config/genesis.json
+   ```
 
-    :::warning
-    After you enter the passphrase, the node will return the validator address and a mnemonic phrase. Note them down: you'll need this data for recovering your account if necessary.
-    :::
+3. Create a key pair, specifying a custom key (validator account) name:
 
-3. Add a genesis account. Specify your validator name and the number of tokens staked:
+   ```bash
+   wardend keys add my-key-name
+   ```
 
-    ```sh
-    wardend genesis add-genesis-account my-validator-name 100000000000stake
-    ```
+   You'll be prompted to create a passphrase, which is required for confirming some of the next steps.
 
-    This will add your validator address to the `accounts` section of the genesis file. See `$HOME/.warden/config/genesis.json`.
+   :::warning
+   After you enter the passphrase, the node will return the validator account address and a mnemonic phrase. Note them down: you'll need this data for recovering your account if necessary.
+   :::
 
-4. Generate a genesis transaction. Specify your validator name, the amount to stake, and the chain ID:
-    
-    ```sh
-    wardend genesis gentx my-validator-name 1000000000stake --chain-id my-chain-id
-    ```
+4. Add a genesis (validator) account. Specify your key name and the number of tokens staked:
 
-5. Collect genesis transactions:
-    
-    ```sh
-    wardend genesis collect-gentxs
-    ```
+   ```bash
+   wardend genesis add-genesis-account my-key-name 250000000000000uward
+   ```
+
+   This will add your address to the `accounts` section of the genesis file.
+
+5. Generate a genesis transaction. Specify your key name, the amount to stake, and the chain ID:
+   
+   ```bash
+   wardend genesis gentx my-key-name 1000000000000uward --chain-id my-chain-id
+   ```
+
+6. Collect genesis transactions:
+   
+   ```bash
+   wardend genesis collect-gentxs
+   ```
 
    This will add your transaction to the `gen_txs` section of the genesis file.
 
-6. Validate the genesis file:
-    
-    ```sh
-    wardend genesis validate-genesis
-    ```
+7. Validate the genesis file:
+   
+   ```bash
+   wardend genesis validate-genesis
+   ```
 
-    You should receive a confirmation that `genesis.json` is a valid genesis file.
+   You should receive a confirmation that `genesis.json` is a valid genesis file.
 
-7. Edit the `app.toml` file. Navigate to `$HOME/.warden/config/app.toml` and add your preferred gas price to the `minimum-gas-prices` field:
+8. Set the minimum gas price:
 
-    ```toml
-    minimum-gas-prices = "0.025stake"
-    ```
-    
-8. Start your node:
-    
-    ```sh
-    wardend start
-    ```
-    
-    You'll see blocks being produced and height incrementing.
+   ```
+   wardend config set app minimum-gas-prices 0uward
+   ```
+
+   This command will update the `minimum-gas-prices` field in `$HOME/.warden/config/app.toml`. For testing purposes, we recommend setting the gas price to 0. Otherwise, you'll have to add a `--fee` flag to all transactions, such as creating a Keychain or a Space.
+
+9. Start your node:
+   
+   ```bash
+   wardend start
+   ```
+   
+   You'll see blocks being produced and height incrementing.
 
 :::tip
 After you verify your node is running in [Step 4](#4-verify-the-chain-is-up), you may need to make more configurations, as shown in [Step 5](#5-additional-configuration).
@@ -175,7 +184,7 @@ If the chain is up, you'll see logs every time a new block is produced (approxim
 
 You should also be able to query the chain and access data from the genesis block. For example, you can run the following in a separate terminal window:
 
-```sh
+```bash
 wardend status
 ```
 
@@ -194,7 +203,7 @@ The output should contain status information about your node:
     "network": "my-chain-id",
     "version": "0.38.7",
     "channels": "40202122233038606100",
-    "moniker": "my-chain-name",
+    "moniker": "my-chain-moniker",
     "other": {
       "tx_index": "on",
       "rpc_address": "tcp://127.0.0.1:26657"
@@ -217,7 +226,7 @@ The output should contain status information about your node:
       "type": "tendermint/PubKeyEd25519",
       "value": "q/OralvfqN2OpLGvCWaVAlkYSjI45Rtp3AOLdrMhJ3xCc="
     },
-    "voting_power": "1000"
+    "voting_power": "1000000"
   }
 }
 ```
@@ -234,51 +243,56 @@ If you need to stop the node, use **Ctrl + C**. Note that when you run the chain
 
 If you configured your node manually in Step 3 ([Option 3](#option-3-configure-manually)), you may also need to add a Space and a Keychain for testing purposes. Other flows utilize prebuilt configurations that already contain these settings.
 
-1. Create a Keychain. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your validator name, chain ID, and fees to pay:
+1. Create a Keychain. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name, and the chain ID:
 
-    ```sh
-    wardend tx warden new-keychain --description 'my-description' --from my-validator-name --chain-id my-chain-id --fees 5000stake
-    ```
+   ```bash
+   wardend tx warden new-keychain \
+     --description 'my-description' \
+     --from my-key-name \
+     --chain-id my-chain-id
+   ```
 
-    Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
+   Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
 
-    ```sh
-    wardend query warden keychains
-    ```
+   ```bash
+   wardend query warden keychains
+   ```
 
-    The output should look like this:
+   The output should look like this:
 
-    ```sh
-    keychains:
-    - admins:
-      - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      description: my-description
-      id: "1"
-    pagination:
-      total: "1"
-    ```
+   ```bash
+   keychains:
+   - admins:
+     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     description: my-description
+     id: "1"
+   pagination:
+     total: "1"
+   ```
 
-2. Create a Space. Specify your validator name, chain ID, and fees to pay:
+2. Create a Space. Specify your key name, and the chain ID:
 
-    ```sh
-    wardend tx warden new-space --from my-validator-name --chain-id my-chain-id --fees 5000stake
-    ```
+   ```bash
+   wardend tx warden new-space \
+     --from my-key-name \
+     --chain-id my-chain-id
+   ```
 
-    Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
+   Enter your passphrase and confirm the transaction. After that, you can query the node to check the result:
 
-    ```sh
-    wardend query warden spaces
-    ```
+   ```bash
+   wardend query warden spaces
+   ```
 
-    The output should look like this::
+   The output should look like this::
 
-    ```sh
-    pagination:
-      total: "1"
-    spaces:
-    - creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      id: "1"
-    owners:
-    - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-    ```
+   ```bash
+   pagination:
+     total: "1"
+   spaces:
+   - creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     id: "1"
+   owners:
+   - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+   ```

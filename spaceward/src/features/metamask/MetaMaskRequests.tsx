@@ -133,7 +133,7 @@ export function MetaMaskRequests() {
 					throw new Error(`chainId not supported: ${chainId}`)
 				}
 				const tx = await buildSignTransaction(txParam);
-				const storeId = await signEthereumTx(keyId, tx, chainName, undefined, { requestId: req.id });
+				const storeId = await signEthereumTx(keyId, tx, chainName, "Approve snap transaction", undefined, { requestId: req.id });
 
 				if (!storeId) {
 					throw new Error(

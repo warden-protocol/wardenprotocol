@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"strings"
 	"testing"
 	"time"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
 
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
@@ -100,6 +102,8 @@ func (w *WardenNode) grpcAddr() string {
 type GRPCClient struct {
 	Warden wardentypes.QueryClient
 	Act    acttypes.QueryClient
+	Bank   banktypes.QueryClient
+	Auth   authtypes.QueryClient
 }
 
 func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
@@ -113,5 +117,7 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 	return &GRPCClient{
 		Warden: wardentypes.NewQueryClient(grpcConn),
 		Act:    acttypes.NewQueryClient(grpcConn),
+		Bank:   banktypes.NewQueryClient(grpcConn),
+		Auth:   authtypes.NewQueryClient(grpcConn),
 	}
 }

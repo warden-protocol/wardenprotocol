@@ -40,9 +40,9 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) and unzip it. The archive contains the `wardend` binary.
 
 2. Initialize the chain home folder:
-
+  
    ```bash
-   ./wardend init <custom_moniker>
+   ./wardend init my-chain-moniker
    ```
 
 ### Option 2: Use the source code
@@ -53,7 +53,7 @@ Build the `wardend` binary and initialize the chain home folder:
 git clone --depth 1 --branch v0.3.0 https://github.com/warden-protocol/wardenprotocol/
 just build
 
-build/wardend init <custom_moniker>
+build/wardend init my-chain-moniker
 ```
 
 ## 2. Configure
@@ -68,10 +68,9 @@ To configure `wardend`, do the following:
    wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
-2. Set the mandatory configuration options:
+2. Set the mandatory configuration options: the minimum gas price and persistent peers.
 
    ```bash
-   # set minimum gas price & peers
    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250uward"/' app.toml
    ```
 

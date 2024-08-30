@@ -12,22 +12,22 @@ The following instructions assume you have already set up a full-node and are sy
 
 ## 1. Create/restore a key pair
 
-The first step is creating a new key pair for your validator. Replace `<key-name>` with a key name of your choice and run the following: 
+The first step is creating a new key pair for your validator. Replace `my-key-name` with a key name of your choice and run the following: 
 
 ```bash
-wardend keys add <key-name>
+wardend keys add my-key-name
 ```
 
-Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `<key-name>` with a key name of your choice and run the following: 
+Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following: 
 
 ```bash
-wardend keys add <key-name> --recover.
+wardend keys add my-key-name --recover.
 ```
 
 Then get your public address:
 
 ```bash
-wardend keys show <key-name> -a
+wardend keys show my-key-name -a
 ```
 
 **✏️ CAUTION**
@@ -41,13 +41,13 @@ In the next steps, you'll register your new validator by submitting a `create-va
 You can obtain testnet tokens from our **WARD faucet**:
 
 ```bash
-curl -XPOST -d '{"address": "<your-address>"}' https://faucet.buenavista.wardenprotocol.org
+curl -XPOST -d '{"address": "my-address"}' https://faucet.buenavista.wardenprotocol.org
 ```
 
 To verify your balance, use this command:
 
 ```bash
-wardend query bank balances <key-name>
+wardend query bank balances my-key-name
 ```
 
 ## 3. Create a validator
@@ -58,44 +58,44 @@ To create a validator and initialize it with a self-delegation, you need to crea
 
 1. Obtain your validator public key by running the following command:
 
-    ```bash
-    wardend comet show-validator
-    ```
+   ```bash
+   wardend comet show-validator
+   ```
 
-    The output will be similar to this (with a different key):
-    
-    ```bash
-    {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
-    ```
-    
+   The output will be similar to this (with a different key):
+   
+   ```bash
+   {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
+   ```
+   
 2. Create a file named `validator.json` with the following content:
 
-    ```json
-    {    
-        "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
-        "amount": "1000000uward",
-        "moniker": "your-node-moniker",
-        "identity": "eqlab testnet validator",
-        "website": "optional website for your validator",
-        "security": "optional security contact for your validator",
-        "details": "optional details for your validator",
-        "commission-rate": "0.1",
-        "commission-max-rate": "0.2",
-        "commission-max-change-rate": "0.01",
-        "min-self-delegation": "1"
-    }
-    ```
+   ```json
+   {    
+       "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
+       "amount": "1000000uward",
+       "moniker": "your validator human-readable name (moniker)",
+       "identity": "your validator identity signature",
+       "website": "(optional) your validator website",
+       "security": "(optional) your validator security contact",
+       "details": "(optional) your validator details",
+       "commission-rate": "0.1",
+       "commission-max-rate": "0.2",
+       "commission-max-change-rate": "0.01",
+       "min-self-delegation": "1"
+   }
+   ```
 
-    Here you have the chance to set your validator’s commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
+   Here you have the chance to set your validator’s commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
 
 3. Finally, you're ready to submit the transaction to create the validator:
     
-    ```bash
-    wardend tx staking create-validator validator.json \
-        --from=<key-name> \
-        --chain-id=buenavista-1 \
-        --fees=500uward
-    ```
+   ```bash
+   wardend tx staking create-validator validator.json \
+       --from=my-key-name \
+       --chain-id=buenavista-1 \
+       --fees=500uward
+   ```
     
 **✏️ CAUTION**
 

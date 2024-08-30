@@ -26,8 +26,8 @@ message Keychain {
   // Address of the creator of the Keychain.
   string creator = 2;
 
-  // A human-readable description of the Keychain.
-  string description = 3;
+  // A human-readable name of the Keychain.
+  string name = 3;
 
   // Addresses that can update this Keychain.
   repeated string admins = 4;
@@ -38,7 +38,20 @@ message Keychain {
   reserved 6;
 
   // Fees for creating and signing Keys.
-  KeychainFees fees = 7 [(gogoproto.nullable) = true];
+  KeychainFees fees = 7 [(gogoproto.nullable) = false];
+
+  // A human-readable description of the Keychain.
+  string description = 8 [(gogoproto.nullable) = true];
+
+  // A link that points to the website of the keychain provider
+  string url = 9 [(gogoproto.nullable) = true];
+
+  // `KeybaseId` to retrieve an avatar by using the `Keybase` api. The exact length is 16 characters.
+  KeybaseId keybase_id = 10 [(gogoproto.nullable) = true];
+}
+
+message KeybaseId {
+  string value = 1;
 }
 
 // Fees for creating and signing Keys.

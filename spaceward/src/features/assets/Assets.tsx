@@ -15,7 +15,7 @@ import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getProvider } from "@/lib/eth";
 
-const provider = getProvider("sepolia");
+const { provider } = getProvider("sepolia");
 
 const USDollar = new Intl.NumberFormat("en-US", {
 	style: "currency",

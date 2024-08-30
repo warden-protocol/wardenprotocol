@@ -12,14 +12,28 @@ import (
 
 func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-genesis-keychain <creator> <description>",
+		Use:   "add-genesis-keychain <creator> <name> <keychain-fees>",
 		Short: "Add a Keychain to the genesis file",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cdc, genesisFileURL := setupGenCommand(cmd)
 
 			creator := args[0]
-			description := args[1]
+			name := args[1]
+			keychainFeesJson := args[2]
+
+			var keychainFees wardentypes.KeychainFees
+			if err := cdc.UnmarshalJSON([]byte(keychainFeesJson), &keychainFees); err != nil {
+				return fmt.Errorf("cannot unmarshal keychain fees JSON: %w", err)
+			}
+
+			if err := keychainFees.KeyReq.Validate(); err != nil {
+				return fmt.Errorf("invalid keychain fees: %w", err)
+			}
+
+			if err := keychainFees.SigReq.Validate(); err != nil {
+				return fmt.Errorf("invalid keychain fees: %w", err)
+			}
 
 			return updateGenesisState(
 				genesisFileURL,
@@ -27,12 +41,12 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 					wardenGenState := wardentypes.GetGenesisStateFromAppState(cdc, appState)
 
 					wardenGenState.Keychains = append(wardenGenState.Keychains, wardentypes.Keychain{
-						Id:          1 + uint64(len(wardenGenState.Keychains)),
-						Creator:     creator,
-						Description: description,
-						Admins:      []string{creator},
-						Writers:     []string{creator},
-						Fees:        nil,
+						Id:      1 + uint64(len(wardenGenState.Keychains)),
+						Creator: creator,
+						Name:    name,
+						Admins:  []string{creator},
+						Writers: []string{creator},
+						Fees:    keychainFees,
 					})
 
 					wardenGenStateBz, err := cdc.MarshalJSON(wardenGenState)

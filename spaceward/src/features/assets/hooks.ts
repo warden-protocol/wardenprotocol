@@ -82,19 +82,15 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 	useEffect(() => {
 		Promise.all(
-			COSMOS_CHAINS.map(({ chainName, rpc, testnet }) => {
+			COSMOS_CHAINS.map(({ chainName, rpc }) => {
 				let promise: Promise<ExtendedHttpEndpoint | string>;
 
-				if (!testnet) {
+				if (!rpc) {
 					const repo = walletManager.getWalletRepo(chainName);
 					repo.activate();
 					promise = repo.getRpcEndpoint();
-				} else if (!rpc) {
-					promise = Promise.reject(
-						new Error("rpc endpoint is required for testnet"),
-					);
 				} else {
-					promise = Promise.resolve(rpc);
+					promise = Promise.resolve(rpc[0]);
 				}
 
 				return promise

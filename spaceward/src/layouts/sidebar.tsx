@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
-import { Icons as AssetIcons } from "@/components/ui/icons-assets";
 import {
 	AppWindow,
 	ArrowLeftRight,
@@ -52,19 +51,12 @@ const spaceNavItems = [
 const globalNavItems = [
 	{
 		label: "Staking",
-		icon: (
-			<AssetIcons.stakingMenu strokeWidth={1} className="h-5 w-5 mr-5" />
-		),
+		icon: <Layers3 strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/staking",
 	},
 	{
 		label: "Governance",
-		icon: (
-			<AssetIcons.governanceMenu
-				strokeWidth={1}
-				className="h-5 w-5 mr-5"
-			/>
-		),
+		icon: <CircleCheckBig strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/governance",
 	},
 	{

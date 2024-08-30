@@ -1,63 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-	font-family: "Syne";
-	src:
-		url("/fonts/syne/Syne-Bold.ttf") format("truetype"),
-		url("/fonts/syne/Syne-Bold.woff2") format("woff2"),
-		url("/fonts/syne/Syne-Bold.woff") format("woff");
-	font-weight: 700;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Syne";
-	src:
-		url("/fonts/syne/Syne-Bold.ttf") format("truetype"),
-		url("/fonts/syne/Syne-Bold.woff2") format("woff2"),
-		url("/fonts/syne/Syne-Bold.woff") format("woff");
-	font-weight: 700;
-	font-display: swap;
-}
-@font-face {
-	font-family: "Syne";
-	src:
-		url("/fonts/syne/Syne-SemiBold.ttf") format("truetype"),
-		url("/fonts/syne/Syne-SemiBold.woff2") format("woff2"),
-		url("/fonts/syne/Syne-SemiBold.woff") format("woff");
-	font-weight: 600;
-	font-display: swap;
-}
-@font-face {
-	font-family: "Syne";
-	src:
-		url("/fonts/syne/Syne-Medium.ttf") format("truetype"),
-		url("/fonts/syne/Syne-Medium.woff2") format("woff2"),
-		url("/fonts/syne/Syne-Medium.woff") format("woff");
-	font-weight: 500;
-	font-display: swap;
-}
-@font-face {
-	font-family: "Syne";
-	src:
-		url("/fonts/syne/Syne-Regular.ttf") format("truetype"),
-		url("/fonts/syne/Syne-Regular.woff2") format("woff2"),
-		url("/fonts/syne/Syne-Regular.woff") format("woff");
-	font-weight: 400;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Syne";
-	src:
-		url("/fonts/syne/Syne-ExtraBold.ttf") format("truetype"),
-		url("/fonts/syne/Syne-ExtraBold.woff2") format("woff2"),
-		url("/fonts/syne/Syne-ExtraBold.woff") format("woff");
-	font-weight: 800;
-	font-display: swap;
-}
 
 @font-face {
 	font-family: "SpaceMono";
@@ -152,7 +97,7 @@
 
 		--fill-accent-secondary: rgba(202, 255, 148, 0.15);
 		--border-secondary: rgba(229, 238, 255, 0.6);
-		--fill-quaternary: rgba(229, 238, 255, 0.10);
+		--fill-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-elevated: rgba(229, 238, 255, 0.1);
 		--overlay: rgba(64, 64, 64, 0.4);
 		--secondary-bg: rgba(229, 238, 255, 0.15);

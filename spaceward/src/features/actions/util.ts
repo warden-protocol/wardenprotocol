@@ -3,7 +3,7 @@ import { env } from "@/env";
 import type { getClient } from "@/hooks/useClient";
 import type { QueuedAction } from "./hooks";
 
-type GetStatus = (client: Awaited<ReturnType<typeof getClient>>) => Promise<{
+export type GetStatus = (client: Awaited<ReturnType<typeof getClient>>) => Promise<{
 	pending: boolean;
 	error: boolean;
 	done: boolean;

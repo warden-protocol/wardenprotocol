@@ -101,7 +101,7 @@ export default function SendAssetsModal({
 					(item) => item.chainName === chainName,
 				);
 
-				let rpc = chain?.rpc;
+				let rpc = chain?.rpc?.[0];
 
 				if (!rpc) {
 					const repo = walletManager.getWalletRepo(chainName);

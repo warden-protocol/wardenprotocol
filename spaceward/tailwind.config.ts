@@ -13,8 +13,8 @@ const config = {
 		fontFamily: {
 			display: "Syne, Arial, sans-serif",
 			sans: "Syne, Arial, sans-serif",
-			mono: "monospace",
-			spacemono: "SpaceMono",
+			mono: "Space Mono, monospace",
+			spacemono: "Space Mono, monospace",
 		},
 		container: {
 			center: true,
@@ -30,7 +30,6 @@ const config = {
 				"fill-accent-secondary": "var(--fill-accent-secondary)",
 				"fill-primary": "var(--fill-primary)",
 				"fill-gray": "#9EA4AE",
-				"fill-primary": "var(--fill-primary)",
 				"fill-quaternary": "var(--fill-quaternary)",
 				"fill-elevated": "var(--fill-elevated)",
 				"fill-accent-hover": "#F478DB",

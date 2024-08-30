@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Added new Description field instead of replaced one
   * Added Url field
   * Added Keybase Id field (16 symbols)
+* (x/warden) Make `KeychainFees` fields non-nullable, use an empty list of coins to indicate no fees
 
 ### Features (non-breaking)
 

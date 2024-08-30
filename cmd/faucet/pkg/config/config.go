@@ -34,6 +34,7 @@ type Config struct {
 	DailyLimit     int           `env:"DAILY_LIMIT" envDefault:"100000000" mapstructure:"DAILY_LIMIT"`
 	BatchLimit     int           `env:"BATCH_LIMIT" envDefault:"10" mapstructure:"BATCH_LIMIT"`
 	TXRetry        int           `env:"TX_RETRY" envDefault:"10" mapstructure:"TX_RETRY"`
+	Chain          string        `env:"CHAIN" envDefault:"Buenavista" mapstructure:"CHAIN"`
 }
 
 func LoadConfig() (Config, error) {

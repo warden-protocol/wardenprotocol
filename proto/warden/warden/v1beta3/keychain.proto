@@ -38,7 +38,7 @@ message Keychain {
   reserved 6;
 
   // Fees for creating and signing Keys.
-  KeychainFees fees = 7 [(gogoproto.nullable) = true];
+  KeychainFees fees = 7 [(gogoproto.nullable) = false];
 }
 
 // Fees for creating and signing Keys.

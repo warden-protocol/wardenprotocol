@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/warden) Make `KeychainFees` fields non-nullable, use an empty list of coins to indicate no fees
+
 ### Features (non-breaking)
 
 ### Bug Fixes

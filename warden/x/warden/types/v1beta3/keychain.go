@@ -49,7 +49,7 @@ func (k *Keychain) RemoveAdmin(address string) {
 	}
 }
 
-func (k *Keychain) SetFees(fees *KeychainFees) {
+func (k *Keychain) SetFees(fees KeychainFees) {
 	k.Fees = fees
 }
 
@@ -57,7 +57,7 @@ func (k *Keychain) SetDescription(description string) {
 	k.Description = description
 }
 
-func (kf *KeychainFees) EnsureValid() error {
+func (kf KeychainFees) EnsureValid() error {
 	if err := kf.KeyReq.Validate(); err != nil {
 		return fmt.Errorf("key req is invalid: %w", err)
 	}

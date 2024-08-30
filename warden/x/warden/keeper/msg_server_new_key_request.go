@@ -23,16 +23,12 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		return nil, err
 	}
 
-	if keychain.Fees != nil {
-		err := k.bankKeeper.SendCoins(
-			ctx,
-			sdk.MustAccAddressFromBech32(creator),
-			keychain.AccAddress(),
-			keychain.Fees.KeyReq,
-		)
-		if err != nil {
-			return nil, err
-		}
+	if err := k.deductKeychainFees(
+		ctx,
+		keychain.AccAddress(),
+		keychain.Fees.KeyReq,
+		sdk.MustAccAddressFromBech32(creator)); err != nil {
+		return nil, err
 	}
 
 	req := &types.KeyRequest{

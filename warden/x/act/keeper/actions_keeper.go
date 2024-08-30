@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/types/query"
 	"time"
 
 	"cosmossdk.io/collections"
@@ -16,8 +15,9 @@ import (
 )
 
 type ActionKeeper struct {
-	actions         repo.SeqCollection[types.Action]
-	actionByAddress collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64]
+	actions                  repo.SeqCollection[types.Action]
+	actionByAddress          collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64]
+	previousPruneBlockHeight collections.Item[int64]
 }
 
 func newActionKeeper(storeService store.KVStoreService, cdc codec.BinaryCodec) ActionKeeper {
@@ -102,7 +102,7 @@ func (k ActionKeeper) Coll() repo.SeqCollection[types.Action] {
 	return k.actions
 }
 
-func (k ActionKeeper) PruneAction(ctx context.Context, action types.Action) error {
+func (k ActionKeeper) PruneAction(ctx context.Context, action types.Action, blockHeight int64) error {
 	if err := k.actions.Remove(ctx, action.Id); err != nil {
 		return err
 	}
@@ -114,22 +114,62 @@ func (k ActionKeeper) PruneAction(ctx context.Context, action types.Action) erro
 		}
 	}
 
+	if err := k.previousPruneBlockHeight.Set(ctx, blockHeight); err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (k ActionKeeper) ExpiredActions(ctx context.Context, statuses map[types.ActionStatus]struct{}, blockTime time.Time, timeout time.Duration) ([]types.Action, error) {
-	isExceededTimeout := func(key uint64, value types.Action) (include bool, err error) {
-		_, isCompletedStatus := statuses[value.Status]
-		isKeepTimeExceeded := blockTime.After(value.UpdatedAt.Add(timeout))
-		return isCompletedStatus && isKeepTimeExceeded, nil
+func (k ActionKeeper) GetLatestPruneHeight(ctx context.Context) (int64, error) {
+	hasItem, err := k.previousPruneBlockHeight.Has(ctx)
+	if err != nil {
+		return 0, err
 	}
 
-	id := func(key uint64, value types.Action) (types.Action, error) {
-		return value, nil
+	if !hasItem {
+		return 0, nil
 	}
 
-	actions, _, err := query.CollectionFilteredPaginate[uint64, types.Action, repo.SeqCollection[types.Action], types.Action](
-		ctx, k.Coll(), nil, isExceededTimeout, id)
+	return k.previousPruneBlockHeight.Get(ctx)
+}
 
-	return actions, err
+func (k ActionKeeper) ExpiredActions(ctx context.Context, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) ([]types.Action, error) {
+	it, err := k.Coll().Iterate(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer it.Close()
+
+	var actions []types.Action
+	for ; it.Valid(); it.Next() {
+		act, err := it.Value()
+		if err != nil {
+			return nil, err
+		}
+		if isExpired(act, blockTime, pendingTimeout, completedTimeout) {
+			actions = append(actions, act)
+		}
+	}
+
+	return actions, nil
+}
+
+func isExpired(action types.Action, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) bool {
+	if action.Status == types.ActionStatus_ACTION_STATUS_TIMEOUT {
+		return true
+	}
+
+	if action.Status == types.ActionStatus_ACTION_STATUS_PENDING &&
+		action.UpdatedAt.Add(pendingTimeout).Before(blockTime) {
+		return true
+	}
+
+	isCompletedStatus := action.Status == types.ActionStatus_ACTION_STATUS_COMPLETED ||
+		action.Status == types.ActionStatus_ACTION_STATUS_REVOKED
+	if isCompletedStatus && action.UpdatedAt.Add(completedTimeout).Before(blockTime) {
+		return true
+	}
+
+	return false
 }

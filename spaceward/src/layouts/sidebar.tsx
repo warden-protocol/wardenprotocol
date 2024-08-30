@@ -24,27 +24,27 @@ import ActionSidebar from "@/features/actions/Sidebar";
 const spaceNavItems = [
 	{
 		label: "Dashboard",
-		icon: <HomeIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <HomeIcon strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/",
 	},
 	{
 		label: "Keys",
-		icon: <Key strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <Key strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/keys",
 	},
 	{
 		label: "Assets",
-		icon: <Coins strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <Coins strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/assets",
 	},
 	{
 		label: "Owners",
-		icon: <User2Icon strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <User2Icon strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/owners",
 	},
 	{
 		label: "Rules",
-		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <FileCheckIcon strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/rules",
 	},
 ];
@@ -52,32 +52,39 @@ const spaceNavItems = [
 const globalNavItems = [
 	{
 		label: "Staking",
-		icon: <Layers3 strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: (
+			<AssetIcons.stakingMenu strokeWidth={1} className="h-5 w-5 mr-5" />
+		),
 		url: "/staking",
 	},
 	{
 		label: "Governance",
-		icon: <CircleCheckBig strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: (
+			<AssetIcons.governanceMenu
+				strokeWidth={1}
+				className="h-5 w-5 mr-5"
+			/>
+		),
 		url: "/governance",
 	},
 	{
 		label: "Actions",
-		icon: <ArrowLeftRight strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <ArrowLeftRight strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/actions",
 	},
 	{
 		label: "Keychains",
-		icon: <FolderKey strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <FolderKey strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/keychains",
 	},
 	{
 		label: "Explorer",
-		icon: <Grid2X2 strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <Grid2X2 strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/explorer",
 	},
 	{
 		label: "dApps",
-		icon: <AppWindow strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: <AppWindow strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/apps",
 	},
 ];

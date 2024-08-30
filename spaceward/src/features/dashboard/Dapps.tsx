@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function DappsDashboard() {
 	return (
 		<div>
-			<div className="py-5 px-6 border-[1px] border-bg-secondary rounded-2xl">
+			<div className="py-[14px] px-[10px] border-[1px] border-quaternary rounded-2xl">
 				<div className="flex justify-between items-center gap-2 mb-3">
 					<div className="font-bold text-2xl flex items-center justify-between tracking-[0.12px]">
 						Top dApps
@@ -28,8 +28,8 @@ export default function DappsDashboard() {
 					<div>
 						<div>Uniswap</div>
 						<div className="text-xs text-muted-foreground">
-						The most popular DEX
-					</div>
+							The most popular DEX
+						</div>
 					</div>
 				</Link>
 
@@ -45,8 +45,8 @@ export default function DappsDashboard() {
 					<div>
 						<div>Squid</div>
 						<div className="text-xs text-muted-foreground">
-						Cross-chain DEX
-					</div>
+							Cross-chain DEX
+						</div>
 					</div>
 				</Link>
 
@@ -62,8 +62,8 @@ export default function DappsDashboard() {
 					<div>
 						<div>Osmosis</div>
 						<div className="text-xs text-muted-foreground">
-						The premier DEX
-					</div>
+							The premier DEX
+						</div>
 					</div>
 				</Link>
 			</div>

@@ -27,6 +27,14 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 				return fmt.Errorf("cannot unmarshal keychain fees JSON: %w", err)
 			}
 
+			if err := keychainFees.KeyReq.Validate(); err != nil {
+				return fmt.Errorf("invalid keychain fees: %w", err)
+			}
+
+			if err := keychainFees.SigReq.Validate(); err != nil {
+				return fmt.Errorf("invalid keychain fees: %w", err)
+			}
+
 			return updateGenesisState(
 				genesisFileURL,
 				func(appState map[string]json.RawMessage) error {

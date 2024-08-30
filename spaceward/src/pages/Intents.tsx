@@ -160,7 +160,7 @@ export const useRules = () => {
 
 	const rules = useRules({
 		request: {
-			pagination: PageRequest.fromPartial({ limit: BigInt(100) }),
+			pagination: PageRequest.fromPartial({ limit: BigInt(100000) }),
 		},
 	});
 

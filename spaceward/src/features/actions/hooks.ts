@@ -46,7 +46,8 @@ export interface QueuedAction {
 	/** @deprecated fix naming */
 	signDoc?: StdSignDoc;
 	pubkey?: Uint8Array;
-
+	title?: string;
+	keyThemeIndex?: number;
 	walletConnectRequestId?: number;
 	walletConnectTopic?: string;
 	snapRequestId?: string;
@@ -73,6 +74,8 @@ export function useEnqueueAction<Data>(
 			tx?: TransactionLike;
 			signDoc?: StdSignDoc;
 			pubkey?: Uint8Array;
+			title?: string;
+			keyThemeIndex?: number;
 			walletConnectRequestId?: number;
 			walletConnectTopic?: string;
 			snapRequestId?: string;
@@ -84,7 +87,9 @@ export function useEnqueueAction<Data>(
 			tx,
 			pubkey,
 			signDoc,
+			title,
 			snapRequestId,
+			keyThemeIndex,
 			walletConnectRequestId,
 			walletConnectTopic,
 			...opts
@@ -111,8 +116,10 @@ export function useEnqueueAction<Data>(
 				chainName,
 				pubkey,
 				signDoc,
+				title,
 				snapRequestId,
 				tx,
+				keyThemeIndex,
 				walletConnectRequestId,
 				walletConnectTopic,
 			},

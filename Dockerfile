@@ -18,11 +18,11 @@ WORKDIR /warden
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build wardend
+    OUTPUT_DIR=/build just wardend build
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build faucet
+    OUTPUT_DIR=/build just wardend build faucet
 
 FROM debian:bookworm-slim AS wardend
 RUN apt update && \
@@ -69,7 +69,7 @@ WORKDIR /warden
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build wardenkms 
+    OUTPUT_DIR=/build just wardend build wardenkms
 
 
 FROM debian:bookworm-slim AS wardenkms

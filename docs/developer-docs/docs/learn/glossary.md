@@ -164,7 +164,7 @@ A Keychain Writer is an account that publishes signatures and public keys on beh
 
 ## Keychain SDK
 
-The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain). You can find the available functions here: [Keychain SDK functions](/build-a-keychain/keychain-sdk).
+The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain). You can find the available functions here: [Keychain SDK functions](/build-a-keychain/sdk/keychain-sdk).
 
 ---
 

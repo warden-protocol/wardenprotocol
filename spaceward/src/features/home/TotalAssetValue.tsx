@@ -9,7 +9,7 @@ import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1be
 import { getProvider } from "@/lib/eth";
 
 const chainId = 11155111;
-const provider = getProvider("sepolia");
+const { provider } = getProvider("sepolia");
 
 async function getEthBalance(address: string) {
 	const balance = await provider.getBalance(address);

@@ -46,7 +46,7 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 						Name:    name,
 						Admins:  []string{creator},
 						Writers: []string{creator},
-						Fees:    &keychainFees,
+						Fees:    keychainFees,
 					})
 
 					wardenGenStateBz, err := cdc.MarshalJSON(wardenGenState)

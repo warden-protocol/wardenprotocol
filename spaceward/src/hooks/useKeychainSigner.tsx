@@ -17,6 +17,7 @@ export function useKeychainSigner() {
 		key: Pick<QueryKeyResponse, "key">,
 		signDoc: StdSignDoc,
 		chainName: string,
+		title: string,
 		wc?: {
 			requestId: number;
 			topic: string;
@@ -51,6 +52,7 @@ export function useKeychainSigner() {
 				signDoc,
 				walletConnectRequestId: wc?.requestId,
 				walletConnectTopic: wc?.topic,
+				title
 			},
 		);
 	}

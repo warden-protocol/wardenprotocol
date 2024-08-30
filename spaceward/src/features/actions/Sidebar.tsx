@@ -1,48 +1,52 @@
 import clsx from "clsx";
-import { useEffect } from "react";
-import { useChain } from "@cosmos-kit/react-lite";
-import { env } from "@/env";
-import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
-import { getClient, getSigningClient } from "@/hooks/useClient";
-import { cosmos, warden } from "@wardenprotocol/wardenjs";
-import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
-import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { hexlify, Transaction } from "ethers";
-import { getProvider, isSupportedNetwork } from "@/lib/eth";
+import { useContext, useEffect } from "react";
+import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
+import { useChain, walletContext } from "@cosmos-kit/react-lite";
+import { KeyringSnapRpcClient } from "@metamask/keyring-api";
+import { cosmos, warden } from "@wardenprotocol/wardenjs";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { useToast } from "@/components/ui/use-toast";
+
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import "./animate.css";
-import { isUint8Array } from "@/lib/utils";
-import { prepareTx } from "../modals/util";
+
 import { COSMOS_CHAINS } from "@/config/tokens";
+import { env } from "@/env";
+import { getClient, getSigningClient } from "@/hooks/useClient";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
-import { useToast } from "@/components/ui/use-toast";
-import { KeyringSnapRpcClient } from "@metamask/keyring-api";
+import { getProvider, isSupportedNetwork } from "@/lib/eth";
+import { isUint8Array } from "@/lib/utils";
+import "./animate.css";
+import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
+import { getActionHandler, GetStatus } from "./util";
+import { prepareTx } from "../modals/util";
+import { TEMP_KEY, useKeySettingsState } from "../keys/state";
+import Assets from "../keys/assets";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
 }
 
-type GetStatus = (client: Awaited<ReturnType<typeof getClient>>) => Promise<{
-	pending: boolean;
-	error: boolean;
-	done: boolean;
-	next?: "eth" | "eth-raw" | "cosmos";
-	value?: any;
-}>;
-
 function ActionItem({ single, ...item }: ItemProps) {
-	const { toast } = useToast();
+	const { walletManager } = useContext(walletContext);
+	const { data: ks, setData: setKeySettings } = useKeySettingsState();
+	const { toast } = useToast()
 	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
 	const { setData } = useActionsState();
 
 	const { getOfflineSignerDirect: getOfflineSigner } = useChain(
 		env.cosmoskitChainName,
 	);
+
+	const type = typeof item.keyThemeIndex !== "undefined" ?
+		"key" : (["walletConnectRequestId", "walletConnectTopic"] as const).every(key => typeof item[key] !== "undefined") ?
+			"wc" : typeof item.snapRequestId ?
+				"snap" : undefined
 
 	useEffect(() => {
 		if (item.status === QueuedActionStatus.Signed) {
@@ -174,6 +178,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 					) as unknown as number;
 				} else {
 					console.error("action failed", res);
+
 					toast({
 						title: "Failed",
 						description: "Unexpected action status",
@@ -200,70 +205,25 @@ function ActionItem({ single, ...item }: ItemProps) {
 			let timeout: number | undefined;
 			let getStatus: GetStatus | undefined;
 
-			switch (item.action?.result?.typeUrl) {
-				case warden.warden.v1beta3.MsgNewSignRequestResponse.typeUrl: {
-					const { id } =
-						warden.warden.v1beta3.MsgNewSignRequestResponse.decode(
-							item.action.result.value,
-						);
+			try {
+				getStatus = getActionHandler(item).getStatus;
+			} catch (e) {
+				console.error(e);
 
-					getStatus = (client) =>
-						client.warden.warden.v1beta3
-							.signRequestById({ id })
-							.then(({ signRequest }) => {
-								switch (signRequest?.status) {
-									case warden.warden.v1beta3.SignRequestStatus
-										.SIGN_REQUEST_STATUS_PENDING:
-										return {
-											pending: true,
-											error: false,
-											done: false,
-										};
-									case warden.warden.v1beta3.SignRequestStatus
-										.SIGN_REQUEST_STATUS_FULFILLED:
-										const analyzers = (
-											item.data as Parameters<
-												typeof warden.warden.v1beta3.MsgNewSignRequest.encode
-											>[0]
-										).analyzers;
-										const {
-											walletConnectRequestId,
-											walletConnectTopic,
-											snapRequestId
-										} = item;
+				toast({
+					title: "Failed",
+					description: (e as Error)?.message ?? "Action failed",
+					duration: 10000,
+				});
 
-										return {
-											pending: false,
-											error: false,
-											done: true,
-											next: analyzers.includes(
-												env.ethereumAnalyzerContract,
-											)
-												? "eth"
-												: analyzers.includes(
-													env.aminoAnalyzerContract,
-												)
-													? "cosmos"
-													: // fixme
-													(walletConnectRequestId &&
-														walletConnectTopic) || snapRequestId
-														? "eth-raw"
-														: undefined,
-											value: signRequest?.signedData,
-										};
-									default:
-										return {
-											pending: false,
-											error: true,
-											done: true,
-										};
-								}
-							});
+				setData({
+					[item.id]: {
+						...item,
+						status: QueuedActionStatus.Failed,
+					},
+				});
 
-					break;
-				}
-				default:
-					console.warn("unknown action", item.action);
+				return;
 			}
 
 			async function checkResult() {
@@ -273,7 +233,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 				const client = await getClient();
 				const status = await getStatus(client);
-
+				// TMP_KEY to key Id
 				if (status.error) {
 					toast({
 						title: "Failed",
@@ -296,6 +256,14 @@ function ActionItem({ single, ...item }: ItemProps) {
 							duration: 10000,
 						});
 					}
+
+					if (type === "key" && typeof status.value === "bigint") {
+						const keyId = status.value;
+						const settings = { ...ks?.settings, [keyId.toString()]: ks?.settings?.[TEMP_KEY] };
+						delete settings[TEMP_KEY];
+						setKeySettings({ settings })
+					}
+
 					setData({
 						[item.id]: status.next
 							? {
@@ -334,8 +302,6 @@ function ActionItem({ single, ...item }: ItemProps) {
 						console.error("missing value");
 						return;
 					}
-
-					const type = snapRequestId ? "snap" : (walletConnectRequestId && walletConnectTopic) ? "wc" : undefined
 
 					switch (type) {
 						case "wc": {
@@ -426,7 +392,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 							}).then(() => true);
 						}
 					} else {
-						const provider = getProvider(chainName);
+						const { provider } = getProvider(chainName);
 
 						promise = provider
 							.broadcastTransaction(signedTx.serialized)
@@ -541,13 +507,22 @@ function ActionItem({ single, ...item }: ItemProps) {
 							signatures: [sig],
 						});
 
-						promise = StargateClient.connect(chain.rpc)
+						let getRpc: Promise<string>;
+
+						if (chain.rpc) {
+							getRpc = Promise.resolve(chain.rpc[0]);
+						} else {
+							const repo = walletManager.getWalletRepo(chainName);
+							repo.activate();
+							getRpc = repo.getRpcEndpoint().then(endpoint => endpoint ? typeof endpoint === "string" ? endpoint : endpoint.url : "https://rpc.cosmos.directory/" + chainName);
+						}
+
+						promise = getRpc.then(rpc => StargateClient.connect(rpc))
 							.then((client) => {
 								return client.broadcastTx(
 									cosmos.tx.v1beta1.TxRaw.encode(
 										txRaw,
 									).finish(),
-									// fixme
 								);
 							})
 							.then((res) => {
@@ -627,7 +602,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 				"mx-2 p-3 rounded-lg": !single,
 			})}
 		>
-			<p className="text-lg font-semibold">Action</p>
+			<div className="flex items-center">
+				{type === "key" ? <Assets.themeSelector className="w-8 h-5 mr-2" themeIndex={item.keyThemeIndex ?? 0} /> : null}
+				<p className="text-lg font-semibold">{item.title ?? "Action"}</p>
+			</div>
 
 			<p className="text-sm text-gray-500 mb-2">
 				{item.status === QueuedActionStatus.Signed
@@ -665,7 +643,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 					/>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 }
 

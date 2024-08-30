@@ -49,10 +49,7 @@ func (k *Keychain) RemoveAdmin(address string) {
 	}
 }
 
-func (k *Keychain) SetFees(fees *KeychainFees) {
-	fees.SigReq = sdk.NewCoins(fees.SigReq...)
-	fees.KeyReq = sdk.NewCoins(fees.KeyReq...)
-
+func (k *Keychain) SetFees(fees KeychainFees) {
 	k.Fees = fees
 }
 
@@ -78,11 +75,7 @@ func (k *Keychain) SetKeybaseId(keybaseId *KeybaseId) {
 	k.KeybaseId = keybaseId
 }
 
-func (kf *KeychainFees) EnsureValid() error {
-	if kf == nil {
-		return fmt.Errorf("nil KeychainFees. Use empty fees instead")
-	}
-
+func (kf KeychainFees) EnsureValid() error {
 	if err := kf.KeyReq.Validate(); err != nil {
 		return fmt.Errorf("key req is invalid: %w", err)
 	}
@@ -115,12 +108,9 @@ func (k *Keychain) EnsureSufficientSignFees(fees sdk.Coins) error {
 }
 
 func ensureSufficientFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
-	if maxFees.Empty() {
-		return fmt.Errorf("fees cannot be empty")
-	}
-
-	if !wantedFees.DenomsSubsetOf(maxFees) {
-		return fmt.Errorf("fee denominations do not match: wanted %s", wantedFees)
+	if wantedFees.Empty() {
+		// no fees to deduct
+		return nil
 	}
 
 	if wantedFees.IsAllLTE(maxFees) {

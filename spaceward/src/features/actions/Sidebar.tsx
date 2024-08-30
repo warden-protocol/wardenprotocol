@@ -23,7 +23,7 @@ import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { isUint8Array } from "@/lib/utils";
 import "./animate.css";
 import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
-import { getActionHandler } from "./util";
+import { getActionHandler, GetStatus } from "./util";
 import { prepareTx } from "../modals/util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
@@ -203,11 +203,34 @@ function ActionItem({ single, ...item }: ItemProps) {
 		} else if (item.status === QueuedActionStatus.ActionReady) {
 			let cancel = false;
 			let timeout: number | undefined;
-			const { getStatus } = getActionHandler(item);
+
+			let getStatus: GetStatus | undefined;
+
+			try {
+				getStatus = getActionHandler(item).getStatus;
+			} catch (e) {
+				console.error(e)
+			}
 
 			async function checkResult() {
-				if (cancel || !getStatus) {
+				if (cancel) {
 					return;
+				}
+
+				if (!getStatus) {
+					toast({
+						title: "Failed",
+						description: "Action failed",
+						duration: 10000,
+					});
+					setData({
+						[item.id]: {
+							...item,
+							status: QueuedActionStatus.Failed,
+						},
+					});
+
+					return
 				}
 
 				const client = await getClient();
@@ -371,7 +394,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 							}).then(() => true);
 						}
 					} else {
-						const  { provider } = getProvider(chainName);
+						const { provider } = getProvider(chainName);
 
 						promise = provider
 							.broadcastTransaction(signedTx.serialized)

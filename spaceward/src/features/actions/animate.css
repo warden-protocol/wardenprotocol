@@ -9,13 +9,18 @@
 	inset: -1px;
 	border: inherit;
 	border-radius: inherit;
-	background-image: conic-gradient(from var(--angle), #381D6A 80%, #E0D1FF 88%, #E0D1FF 92%, #381D6A 100%);
+	background-image: conic-gradient(
+		from var(--angle),
+		rgba(202, 255, 148, 0.5) 65%,
+		var(--border-edge) 75%,
+		var(--border-edge) 90%,
+		rgba(202, 255, 148, 0.5) 100%
+	);
 	background-origin: border-box;
 	-webkit-mask:
-	  linear-gradient(black, black) content-box,
-	  linear-gradient(black, black);
-	mask: linear-gradient(black, black),
-		  linear-gradient(black, black);
+		linear-gradient(black, black) content-box,
+		linear-gradient(black, black);
+	mask: linear-gradient(black, black), linear-gradient(black, black);
 	-webkit-mask-clip: content-box, border-box;
 	mask-clip: content-box, border-box;
 	-webkit-mask-composite: xor;

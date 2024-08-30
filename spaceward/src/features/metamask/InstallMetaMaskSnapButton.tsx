@@ -30,8 +30,13 @@ export function InstallMetaMaskSnapButton() {
 						);
 					}
 				}}
+				className="!mt-0 flex gap-2 g-10 items-center bg-fill-primary rounded font-semibold font-sans text-label-invert focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0"
 			>
-				Install MetaMask
+				<img
+					src="/logos/metamask.svg"
+					className="object-fill w-6 h-6 aspect-square"
+				/>
+				Install Snap
 			</Button>
 		);
 	}

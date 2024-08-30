@@ -27,7 +27,7 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		return nil, err
 	}
 
-	if err := k.DeductKeychainFees(
+	if err := k.deductKeychainFees(
 		ctx,
 		sdk.MustAccAddressFromBech32(creator),
 		keychain.Fees.KeyReq); err != nil {

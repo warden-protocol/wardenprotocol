@@ -498,7 +498,7 @@ const IntentComponent = ({
 											}
 										}}
 										className={clsx(
-											`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
+											`rounded-lg bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
 											(result.isUpdated ||
 												isWhitelistUpdated) &&
 												!result.error
@@ -616,7 +616,7 @@ const IntentComponent = ({
 								}
 							}}
 							className={clsx(
-								`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
+								`rounded-lg bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
 								(isUpdated || isWhitelistUpdated) &&
 									!hasEntries(state.errors)
 									? ``

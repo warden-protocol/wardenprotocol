@@ -189,7 +189,7 @@ export function AssetsPage() {
 
 			{/* <div className="grid grid-cols-[320px_1fr] gap-[24px]"> */}
 			<div className="">
-				<div className="before:content-[' '] before:bg-contain before:bg-right before:bg-no-repeat before:bg-[url('/images/asset-decor-light.png')] before:h-full before:w-[171px] before:z-[-5] before:absolute before:right-0 before:top-0 bg-fill-accent-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
+				<div className="before:content-[' '] before:bg-contain before:bg-right-bottom before:bg-no-repeat before:bg-[url('/images/asset-decor-light.png')] before:h-full before:w-[367px] before:z-[-5] before:absolute before:right-0 before:bottom-0 bg-fill-accent-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
 					<div className="flex items-baseline gap-[6px]">
 						<div className="text-2xl font-bold">
 							{formatter.format(

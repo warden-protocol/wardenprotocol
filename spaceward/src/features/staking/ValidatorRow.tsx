@@ -92,7 +92,7 @@ export default function ValidatorRow(props: ValidatorProps) {
 						onClick={() =>
 							props.openStakeModal(props.operatorAddress)
 						}
-						className="cursor-pointer bg-fill-quaternary py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100 font-semibold"
+						className="cursor-pointer bg-fill-quaternary py-[6px] px-4 rounded hover:bg-fill-accent-secondary ease-in duration-100 font-semibold"
 					>
 						Stake
 					</button>

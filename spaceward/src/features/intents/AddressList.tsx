@@ -65,7 +65,7 @@ export default function AddressList({
 				onClick={onAdd}
 				className={clsx(
 					"text-sm flex w-fit items-center gap-[10px] h-12",
-					warning ? "text-[#E54545]" : "text-[#FFAEEE]",
+					warning ? "text-[#E54545]" : "text-label-accent",
 				)}
 			>
 				{warning ? <Icons.alertTriangle /> : <Icons.plus />}

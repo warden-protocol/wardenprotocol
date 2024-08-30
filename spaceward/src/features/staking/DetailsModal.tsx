@@ -68,7 +68,7 @@ export default function DetailsModal({
 						onClick={() =>
 							dispatch({ type: "modal", payload: "redelegate" })
 						}
-						className="rounded bg-secondary-bg font-semibold py-[6px] px-4 hover:bg-hover-bg transition-all duration-300"
+						className="rounded bg-secondary-bg font-semibold py-[6px] px-4 hover:bg-fill-accent-secondary transition-all duration-300"
 					>
 						Redelegate
 					</button>
@@ -83,7 +83,7 @@ export default function DetailsModal({
 					</div>
 					<button
 						onClick={submitClaim}
-						className="rounded bg-secondary-bg font-semibold py-[6px] px-4 hover:bg-hover-bg transition-all duration-300"
+						className="rounded bg-secondary-bg font-semibold py-[6px] px-4 hover:bg-fill-accent-secondary transition-all duration-300"
 					>
 						Claim
 					</button>
@@ -99,7 +99,7 @@ export default function DetailsModal({
 
 			<button
 				onClick={submitUnstake}
-				className="rounded-lg mt-4 bg-secondary-bg h-14 flex items-center justify-center w-full font-semibold  hover:bg-hover-bg transition-all duration-300 text-white"
+				className="rounded-lg mt-4 bg-secondary-bg h-14 flex items-center justify-center w-full font-semibold  hover:bg-fill-accent-secondary transition-all duration-300 text-white"
 			>
 				Unstake
 			</button>

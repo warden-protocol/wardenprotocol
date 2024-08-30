@@ -6,8 +6,8 @@
 	font-family: "Syne";
 	src:
 		url("/fonts/syne/Syne-Bold.ttf") format("truetype"),
-		url("/fonts//syne/Syne-Bold.woff2") format("woff2"),
-		url("/fonts//syne/Syne-Bold.woff") format("woff");
+		url("/fonts/syne/Syne-Bold.woff2") format("woff2"),
+		url("/fonts/syne/Syne-Bold.woff") format("woff");
 	font-weight: 700;
 	font-display: swap;
 }
@@ -16,8 +16,8 @@
 	font-family: "Syne";
 	src:
 		url("/fonts/syne/Syne-Bold.ttf") format("truetype"),
-		url("/fonts//syne/Syne-Bold.woff2") format("woff2"),
-		url("/fonts//syne/Syne-Bold.woff") format("woff");
+		url("/fonts/syne/Syne-Bold.woff2") format("woff2"),
+		url("/fonts/syne/Syne-Bold.woff") format("woff");
 	font-weight: 700;
 	font-display: swap;
 }
@@ -25,8 +25,8 @@
 	font-family: "Syne";
 	src:
 		url("/fonts/syne/Syne-SemiBold.ttf") format("truetype"),
-		url("/fonts//syne/Syne-SemiBold.woff2") format("woff2"),
-		url("/fonts//syne/Syne-SemiBold.woff") format("woff");
+		url("/fonts/syne/Syne-SemiBold.woff2") format("woff2"),
+		url("/fonts/syne/Syne-SemiBold.woff") format("woff");
 	font-weight: 600;
 	font-display: swap;
 }
@@ -34,8 +34,8 @@
 	font-family: "Syne";
 	src:
 		url("/fonts/syne/Syne-Medium.ttf") format("truetype"),
-		url("/fonts//syne/Syne-Medium.woff2") format("woff2"),
-		url("/fonts//syne/Syne-Medium.woff") format("woff");
+		url("/fonts/syne/Syne-Medium.woff2") format("woff2"),
+		url("/fonts/syne/Syne-Medium.woff") format("woff");
 	font-weight: 500;
 	font-display: swap;
 }
@@ -43,8 +43,28 @@
 	font-family: "Syne";
 	src:
 		url("/fonts/syne/Syne-Regular.ttf") format("truetype"),
-		url("/fonts//syne/Syne-Regular.woff2") format("woff2"),
-		url("/fonts//syne/Syne-Regular.woff") format("woff");
+		url("/fonts/syne/Syne-Regular.woff2") format("woff2"),
+		url("/fonts/syne/Syne-Regular.woff") format("woff");
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Syne";
+	src:
+		url("/fonts/syne/Syne-ExtraBold.ttf") format("truetype"),
+		url("/fonts/syne/Syne-ExtraBold.woff2") format("woff2"),
+		url("/fonts/syne/Syne-ExtraBold.woff") format("woff");
+	font-weight: 800;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "SpaceMono";
+	src:
+		url("/fonts/SpaceMono-Regular.ttf") format("truetype"),
+		url("/fonts/SpaceMono-Regular.woff2") format("woff2"),
+		url("/fonts/SpaceMono-Regular.woff") format("woff");
 	font-weight: 400;
 	font-display: swap;
 }
@@ -81,6 +101,7 @@
 
 		--radius: 0.5rem;
 
+		--fill-accent-primary: #caff94;
 		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 		--border-secondary: rgba(136, 126, 120, 0.15);
 		--fill-quaternary: rgba(136, 126, 120, 0.15);
@@ -113,7 +134,7 @@
 		--primary: 0 0% 98%;
 		--primary-foreground: 0 0% 9%;
 
-		--secondary: 0 0% 14.9%;
+		--secondary: 24, 19%, 10%;
 		--secondary-foreground: 0 0% 98%;
 
 		--muted: 0 0% 14.9%;
@@ -131,10 +152,11 @@
 
 		--fill-accent-secondary: rgba(202, 255, 148, 0.15);
 		--border-secondary: rgba(229, 238, 255, 0.6);
-		--fill-quaternary: rgba(229, 238, 255, 0.1);
+		--fill-quaternary: rgba(229, 238, 255, 0.10);
 		--fill-elevated: rgba(229, 238, 255, 0.1);
 		--overlay: rgba(64, 64, 64, 0.4);
 		--secondary-bg: rgba(229, 238, 255, 0.15);
+		--label-primary: #fff;
 		--label-secondary: rgba(229, 238, 255, 0.6);
 		--label-tertiary: rgba(229, 238, 255, 0.3);
 		--border-quaternary: rgba(229, 238, 255, 0.1);
@@ -146,6 +168,7 @@
 		--fill-primary: #fff;
 		--border-accent: #caff94;
 		--label-accent: #caff94;
+		--label-on-light: #140901;
 	}
 }
 
@@ -157,9 +180,14 @@
 	body {
 		/* @apply bg-background text-foreground font-sans bg-cover bg-fixed dark:bg-[url("/bg.svg")]; */
 		/* @apply bg-background text-foreground font-sans bg-cover bg-center bg-fixed dark:bg-[url("/no-space-bg.svg")]; */
-		@apply text-foreground font-sans;
+		@apply text-foreground font-sans font-normal;
 		font-variant-numeric: lining-nums proportional-nums;
 		background: var(--background);
+	}
+
+	input,
+	textarea {
+		font-variant-numeric: lining-nums proportional-nums;
 	}
 
 	h1,
@@ -173,7 +201,7 @@
 }
 
 .no-space {
-	@apply bg-background text-foreground font-sans bg-cover bg-no-repeat bg-center dark:bg-[url("/no-space-bg.svg")];
+	@apply bg-background text-foreground font-sans bg-contain bg-no-repeat bg-center dark:bg-[url("/glitch.svg")];
 }
 
 .svg-animation {

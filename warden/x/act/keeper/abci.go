@@ -27,7 +27,7 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 	}
 
 	for _, act := range expiredActions {
-		if err := k.ActionKeeper.PruneAction(ctx, act, blockHeight); err != nil {
+		if err := k.ActionKeeper.pruneAction(ctx, act, blockHeight); err != nil {
 			return err
 		}
 		if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventActionPruned{Id: act.Id}); err != nil {

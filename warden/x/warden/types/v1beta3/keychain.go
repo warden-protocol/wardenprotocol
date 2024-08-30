@@ -108,11 +108,6 @@ func (k *Keychain) EnsureSufficientSignFees(fees sdk.Coins) error {
 }
 
 func ensureSufficientFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
-	if wantedFees.Empty() {
-		// no fees to deduct
-		return nil
-	}
-
 	if wantedFees.IsAllLTE(maxFees) {
 		return nil
 	}

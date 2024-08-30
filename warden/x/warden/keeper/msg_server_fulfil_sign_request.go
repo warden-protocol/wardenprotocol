@@ -35,11 +35,11 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		if err := k.fullfilSignRequest(msg, key, req, ctx); err != nil {
+		if err := k.fullfilSignRequest(ctx, msg, key, req); err != nil {
 			return nil, err
 		}
 
-		if err := k.ReleaseKeychainFees(ctx, keychain, req.DeductedKeychainFees); err != nil {
+		if err := k.releaseKeychainFees(ctx, keychain, req.DeductedKeychainFees); err != nil {
 			return nil, err
 		}
 
@@ -50,11 +50,11 @@ func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfil
 		}
 
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
-		if err := k.rejectSignRequest(req, msg, ctx); err != nil {
+		if err := k.rejectSignRequest(ctx, req, msg); err != nil {
 			return nil, err
 		}
 
-		err := k.RefundKeychainFees(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
+		err := k.refundKeychainFees(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
 		if err != nil {
 			return nil, err
 		}

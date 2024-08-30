@@ -8,7 +8,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func (k Keeper) fulfillKeyRequest(msg *types.MsgFulfilKeyRequest, req types.KeyRequest, ctx sdk.Context) (*types.Key, error) {
+func (k Keeper) fulfillKeyRequest(ctx sdk.Context, msg *types.MsgFulfilKeyRequest, req types.KeyRequest) (*types.Key, error) {
 	pubKey := (msg.Result.(*types.MsgFulfilKeyRequest_Key)).Key.PublicKey
 
 	err := ensureKeyFormatting(req, pubKey)
@@ -53,7 +53,7 @@ func ensureKeyFormatting(req types.KeyRequest, pubKey []byte) error {
 	return nil
 }
 
-func (k Keeper) rejectKeyRequest(msg *types.MsgFulfilKeyRequest, req types.KeyRequest, ctx sdk.Context) error {
+func (k Keeper) rejectKeyRequest(ctx sdk.Context, msg *types.MsgFulfilKeyRequest, req types.KeyRequest) error {
 	req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
 	req.RejectReason = msg.Result.(*types.MsgFulfilKeyRequest_RejectReason).RejectReason
 

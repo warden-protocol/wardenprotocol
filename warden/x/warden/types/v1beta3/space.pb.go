@@ -52,7 +52,7 @@ type Space struct {
 	// The default Rule is to allow any operation when at least one of its
 	// owner approves it.
 	SignRuleId uint64 `protobuf:"varint,6,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
-	// Version of the space
+	// Version of the space. Every time the Space is updated, this number gets increasead by one.
 	Nonce uint64 `protobuf:"varint,7,opt,name=nonce,proto3" json:"nonce,omitempty"`
 }
 

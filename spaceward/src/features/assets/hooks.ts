@@ -90,7 +90,7 @@ export const useAssetQueries = (spaceId?: string | null) => {
 					repo.activate();
 					promise = repo.getRpcEndpoint();
 				} else {
-					promise = Promise.resolve(rpc);
+					promise = Promise.resolve(rpc[0]);
 				}
 
 				return promise

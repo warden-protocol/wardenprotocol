@@ -23,7 +23,7 @@ import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { isUint8Array } from "@/lib/utils";
 import "./animate.css";
 import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
-import { getActionHandler } from "./util";
+import { getActionHandler, GetStatus } from "./util";
 import { prepareTx } from "../modals/util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
@@ -203,7 +203,28 @@ function ActionItem({ single, ...item }: ItemProps) {
 		} else if (item.status === QueuedActionStatus.ActionReady) {
 			let cancel = false;
 			let timeout: number | undefined;
-			const { getStatus } = getActionHandler(item);
+			let getStatus: GetStatus | undefined;
+
+			try {
+				getStatus = getActionHandler(item).getStatus;
+			} catch (e) {
+				console.error(e);
+
+				toast({
+					title: "Failed",
+					description: (e as Error)?.message ?? "Action failed",
+					duration: 10000,
+				});
+
+				setData({
+					[item.id]: {
+						...item,
+						status: QueuedActionStatus.Failed,
+					},
+				});
+
+				return;
+			}
 
 			async function checkResult() {
 				if (cancel || !getStatus) {
@@ -371,7 +392,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 							}).then(() => true);
 						}
 					} else {
-						const  { provider } = getProvider(chainName);
+						const { provider } = getProvider(chainName);
 
 						promise = provider
 							.broadcastTransaction(signedTx.serialized)
@@ -489,7 +510,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 						let getRpc: Promise<string>;
 
 						if (chain.rpc) {
-							getRpc = Promise.resolve(chain.rpc);
+							getRpc = Promise.resolve(chain.rpc[0]);
 						} else {
 							const repo = walletManager.getWalletRepo(chainName);
 							repo.activate();

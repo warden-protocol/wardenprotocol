@@ -243,7 +243,7 @@ export const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS.filter(({ testnet }) =>
 const _COSMOS_CHAINS: {
 	chainName: string;
 	feeAmount?: string;
-	rpc?: string;
+	rpc?: string[]; // todo support multiple rpc
 	testnet?: boolean;
 }[] = [
 	{
@@ -270,13 +270,17 @@ const _COSMOS_CHAINS: {
 	{
 		chainName: "cosmoshubtestnet",
 		feeAmount: "1000",
-		rpc: "https://rpc.sentry-01.theta-testnet.polypore.xyz",
+		rpc: [
+			"https://cosmoshub-testnet.rpc.kjnodes.com",
+			"https://rpc.sentry-01.theta-testnet.polypore.xyz",
+		],
+
 		testnet: true,
 	},
 	{
 		chainName: "osmosistestnet",
 		feeAmount: "1500",
-		rpc: "https://rpc.testnet.osmosis.zone",
+		rpc: ["https://rpc.testnet.osmosis.zone"],
 		testnet: true,
 	},
 ];

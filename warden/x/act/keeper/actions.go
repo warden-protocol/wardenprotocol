@@ -110,11 +110,11 @@ func safeExecuteHandler(ctx sdk.Context, msg sdk.Msg, handler baseapp.MsgService
 }
 
 func prepareHandlerContext(ctx sdk.Context, actionCreator string) (sdk.Context, func()) {
-	return sdk.UnwrapSDKContext(ctxWithActionCreator(ctx, actionCreator)).CacheContext()
+	return ctxWithActionCreator(ctx, actionCreator).CacheContext()
 }
 
-func ctxWithActionCreator(ctx context.Context, actionCreator string) context.Context {
-	return context.WithValue(ctx, actionCreatorKey{}, actionCreator)
+func ctxWithActionCreator(ctx sdk.Context, actionCreator string) sdk.Context {
+	return ctx.WithValue(actionCreatorKey{}, actionCreator)
 }
 
 // GetActionCreator returns the original address of the creator of the Action.
@@ -138,7 +138,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, err
 	}
 
-	ctx = ctxWithActionCreator(ctx, creator)
+	ctx = ctxWithActionCreator(sdk.UnwrapSDKContext(ctx), creator)
 	ctx, rule, err := k.rulesRegistry.Get(ctx, msg)
 	if err != nil {
 		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)

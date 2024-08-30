@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+* (x/act) Fix bug where the address of the creator of an Action was not set correctly in the context
+
 ### Misc
 
 ## [v0.4.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.1) - 2024-08-07

@@ -179,7 +179,7 @@ const DetailsModal = ({
 				<button
 					onClick={() => dispatch({ type: "step", payload: "vote" })}
 					className={clsx(
-						`mt-12 bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+						`mt-12 rounded-lg bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
 					)}
 				>
 					Vote

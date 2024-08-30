@@ -28,7 +28,9 @@ export function KeychainsPage() {
 				<div className="grid grid-cols-2 gap-6">
 					{keychains.map((item) => {
 						const desc = DESCRIPTIONS.find(
-							({ key }) => key === item.description,
+							({ key }) =>
+								// key === item.description,
+								key === item.name,
 						);
 
 						if (desc && !desc.disabled) {

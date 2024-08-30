@@ -3,6 +3,7 @@ import AddressAvatar from "@/components/AddressAvatar";
 import { useQuery } from "@tanstack/react-query";
 import { isValidEth } from "@/utils/validate";
 import { queryEthAddress } from "./util/query";
+import { Icons } from "@/components/ui/icons";
 
 const PersonSelect = ({
 	address,
@@ -26,7 +27,7 @@ const PersonSelect = ({
 
 	return (
 		<div
-			className="flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-[rgba(229,238,255,0.15)] transition-all duration-200"
+			className="flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-[rgba(229,238,255,0.15)] transition-all duration-200 rounded-lg"
 			onClick={() => {
 				setIsSelected(!isSelected);
 			}}
@@ -41,9 +42,9 @@ const PersonSelect = ({
 			<div className="">{"..." + address.slice(-8)}</div>
 			<div className="ml-auto">
 				{isSelected ? (
-					<img src="/images/checkbox.svg" alt="" />
+					<Icons.checkbox />
 				) : (
-					<div className="w-6 h-6 rounded-full border-[1px] border-[#E5EEFF] opacity-[0.6]"></div>
+					<div className="w-5 h-5 rounded border-[1px] border-[#E5EEFF] opacity-[0.6]"></div>
 				)}
 			</div>
 		</div>

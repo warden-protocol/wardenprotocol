@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -12,12 +13,9 @@ func (k Keeper) deductKeychainFees(
 	keychainAccAddress sdk.AccAddress,
 	keychainFees sdk.Coins,
 	creator sdk.AccAddress) error {
-	if maxKeychainFee.Empty() || keychainFees.Empty() {
-		return fmt.Errorf("fees cannot be empty")
-	}
-
-	if !keychainFees.DenomsSubsetOf(maxKeychainFee) {
-		return fmt.Errorf("fee denominations do not match: wanted %s", keychainFees)
+	if keychainFees.Empty() {
+		// no fees to deduct
+		return nil
 	}
 
 	if keychainFees.IsAllLTE(maxKeychainFee) {

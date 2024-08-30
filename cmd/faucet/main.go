@@ -37,6 +37,7 @@ type Data struct {
 	TokenSupply            float64
 	Denom                  string
 	TXHash                 string
+	Chain                  string
 }
 
 func newData() Data {
@@ -96,6 +97,7 @@ func main() {
 		TokensAvailablePercent: totalPercent,
 		TokenSupply:            f.TokensAvailable,
 		Denom:                  f.config.Denom,
+		Chain:                  f.config.Chain,
 	}
 	amount, err := strconv.Atoi(f.config.Amount)
 	if err != nil {
@@ -118,7 +120,6 @@ func main() {
 		csrfToken, _ := c.Get(middleware.DefaultCSRFConfig.ContextKey).(string)
 		page.Form.CSRFToken = csrfToken
 		page.Form.Address = c.QueryParam("addr")
-		logger.Info().Msgf("page.Form.Address: %s", page.Form.Address)
 		return c.Render(http.StatusOK, "index", page)
 	})
 

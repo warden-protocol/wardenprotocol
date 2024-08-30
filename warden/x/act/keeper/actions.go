@@ -110,10 +110,10 @@ func safeExecuteHandler(ctx sdk.Context, msg sdk.Msg, handler baseapp.MsgService
 }
 
 func prepareHandlerContext(ctx sdk.Context, actionCreator string) (sdk.Context, func()) {
-	return sdk.UnwrapSDKContext(ctxWithActionCreator(ctx, actionCreator)).CacheContext()
+	return ctxWithActionCreator(ctx, actionCreator).CacheContext()
 }
 
-func ctxWithActionCreator(ctx sdk.Context, actionCreator string) context.Context {
+func ctxWithActionCreator(ctx sdk.Context, actionCreator string) sdk.Context {
 	return ctx.WithValue(actionCreatorKey{}, actionCreator)
 }
 

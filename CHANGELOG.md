@@ -42,13 +42,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/warden) Keychain fees are deducted with escrow account
 * (wardend) Bump Cosmos SDK to v0.50.9
+* (wardend) Bump ibc-go to v8.4.0
 
 * (x/warden) [#570](https://github.com/warden-protocol/wardenprotocol/570) Added more metadata to Keychain
   * Replaced Description by Name field (required, non-empty)
   * Added new Description field instead of replaced one
   * Added Url field
   * Added Keybase Id field (16 symbols)
+* (x/warden) Make `KeychainFees` fields non-nullable, use an empty list of coins to indicate no fees
 
 ### Features (non-breaking)
 

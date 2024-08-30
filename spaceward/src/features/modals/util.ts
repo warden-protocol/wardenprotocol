@@ -2,6 +2,7 @@ import { assets } from "chain-registry";
 import {
 	AbiCoder,
 	concat,
+	ethers,
 	keccak256,
 	parseUnits,
 	toUtf8Bytes,
@@ -71,7 +72,7 @@ export async function buildTransaction({
 		}
 
 		const amount = parseUnits(_amount, item.decimals);
-		const provider = getProvider(item.chainName);
+		const { provider } = getProvider(item.chainName);
 		const nonce = await provider.getTransactionCount(from);
 		const feeData = await provider.getFeeData();
 		const gasLimit = BigInt(21000);
@@ -92,6 +93,12 @@ export async function buildTransaction({
 			if (!item.erc20Token) {
 				throw new Error("missing token contract address");
 			}
+
+			const contract = new ethers.Contract(
+				item.erc20Token,
+				erc20Abi,
+				provider,
+			);
 
 			const abiItem = getAbiItem(erc20Abi, "transfer")!;
 			const signature = `${abiItem.name}(${abiItem.inputs.map((x) => x.type).join(",")})`;
@@ -115,9 +122,13 @@ export async function buildTransaction({
 				...feeData,
 			};
 
-			const gasLimit = await provider.estimateGas({ ...tx, from });
 			// fixme gas limit
-			tx.gasLimit = gasLimit * BigInt(2);
+			const gasLimit = await provider.estimateGas({
+				...(await contract.transfer.populateTransaction(to, amount)),
+				from,
+			}) * BigInt(2);
+
+			tx.gasLimit = gasLimit;
 			return { tx, type: "eth" } as TxBuild<"eth">;
 		} else {
 			throw new Error(`unsupported type: ${item.type}`);

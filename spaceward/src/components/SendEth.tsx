@@ -8,7 +8,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { getProvider } from "@/lib/eth";
 
-const provider = getProvider("sepolia");
+const { provider } = getProvider("sepolia");
 
 async function buildEthTransaction(
 	chainId: string | number,

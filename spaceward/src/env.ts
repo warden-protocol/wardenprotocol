@@ -22,6 +22,8 @@ const aminoAnalyzerContract =
 const p2pRelayURL =
 	import.meta.env.VITE_P2P_RELAY_URL ||
 	"https://relay.devnet.wardenprotocol.org:443";
+const networkVisibility: "testnet" | "mainnet" | "all" =
+	import.meta.env.VITE_WARDEN_NETWORK_VISIBILITY || "testnet";
 
 export const env = {
 	apiURL,
@@ -38,4 +40,5 @@ export const env = {
 	ethereumAnalyzerContract,
 	aminoAnalyzerContract,
 	p2pRelayURL,
+	networkVisibility,
 };

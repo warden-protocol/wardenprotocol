@@ -30,6 +30,9 @@ type (
 		// should be the x/act module account.
 		actAuthority string
 
+		// the address of the module
+		wardenAuthority sdk.AccAddress
+
 		keychains repo.SeqCollection[v1beta3.Keychain]
 
 		keyRequests  repo.SeqCollection[v1beta3.KeyRequest]
@@ -64,7 +67,7 @@ func NewKeeper(
 	logger log.Logger,
 	authority string,
 	actAuthority string,
-
+	wardenAuthority sdk.AccAddress,
 	bankKeeper types.BankKeeper,
 	actKeeper types.ActKeeper,
 	getWasmKeeper func() wasmkeeper.Keeper,
@@ -96,11 +99,12 @@ func NewKeeper(
 	}
 
 	k := Keeper{
-		cdc:          cdc,
-		storeService: storeService,
-		authority:    authority,
-		actAuthority: actAuthority,
-		logger:       logger,
+		cdc:             cdc,
+		storeService:    storeService,
+		authority:       authority,
+		actAuthority:    actAuthority,
+		wardenAuthority: wardenAuthority,
+		logger:          logger,
 
 		keychains: keychains,
 

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -22,25 +23,25 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		return nil, err
 	}
 
-	if keychain.Fees != nil {
-		err := k.deductKeychainFees(
-			ctx,
-			msg.MaxKeychainFees,
-			keychain.AccAddress(),
-			keychain.Fees.KeyReq,
-			sdk.MustAccAddressFromBech32(creator))
-		if err != nil {
-			return nil, err
-		}
+	if err := keychain.EnsureSufficientKeyFees(msg.MaxKeychainFees); err != nil {
+		return nil, err
+	}
+
+	if err := k.deductKeychainFees(
+		ctx,
+		sdk.MustAccAddressFromBech32(creator),
+		keychain.Fees.KeyReq); err != nil {
+		return nil, err
 	}
 
 	req := &types.KeyRequest{
-		Creator:    creator,
-		SpaceId:    msg.SpaceId,
-		KeychainId: msg.KeychainId,
-		KeyType:    msg.KeyType,
-		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-		RuleId:     msg.RuleId,
+		Creator:              creator,
+		SpaceId:              msg.SpaceId,
+		KeychainId:           msg.KeychainId,
+		KeyType:              msg.KeyType,
+		Status:               types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		RuleId:               msg.RuleId,
+		DeductedKeychainFees: keychain.Fees.KeyReq,
 	}
 
 	id, err := k.keyRequests.Append(ctx, req)

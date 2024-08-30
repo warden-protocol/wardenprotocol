@@ -114,11 +114,11 @@ export function Root() {
 									<div className="hidden w-1/2 lg:w-auto rounded-xl md:flex flex-col justify-between relative overflow-clip">
 										<Icons.logoHello />
 										<h1 className="text-[52px] font-extrabold tracking-[0.24px] leading-[120%] uppercase">
-											Welcome to&nbsp;Warden protocol
+											Welcome to SpaceWard
 										</h1>
 										<div className="text-label-accent text-xl uppercase font-spacemono">
 											[&nbsp;.&nbsp;Unlock the Potential
-											of Warden&nbsp;.&nbsp;]
+											of Warden Protocol&nbsp;.&nbsp;]
 										</div>
 									</div>
 									<div className="w-full md:w-1/2 lg:w-auto p-8 flex flex-col place-content-center bg-fill-accent-primary rounded-2xl	text-label-on-light">

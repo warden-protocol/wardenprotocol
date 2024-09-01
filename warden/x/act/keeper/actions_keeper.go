@@ -33,14 +33,22 @@ func newActionKeeper(storeService store.KVStoreService, cdc codec.BinaryCodec) A
 		collections.Uint64Value,
 	)
 
+	latestPrunedBlock := collections.NewItem(
+		sb,
+		PreviousPruneBlockHeightPrefix,
+		"previous_prune_block_height",
+		collections.Int64Value,
+	)
+
 	_, err := sb.Build()
 	if err != nil {
 		panic(fmt.Sprintf("failed to build schema: %s", err))
 	}
 
 	return ActionKeeper{
-		actions:         actions,
-		actionByAddress: actionByAddress,
+		actions:                  actions,
+		actionByAddress:          actionByAddress,
+		previousPruneBlockHeight: latestPrunedBlock,
 	}
 }
 

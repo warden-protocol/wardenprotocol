@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Added new Description field instead of replaced one
   * Added Url field
   * Added Keybase Id field (16 symbols)
+* (x/act) [#631](https://github.com/warden-protocol/wardenprotocol/631) Add pruning of timed-out actions
 
 ### Features (non-breaking)
 

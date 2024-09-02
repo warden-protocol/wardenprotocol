@@ -36,7 +36,7 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 	writer := exec.NewWardend(c.w, "writer")
 	client := TestGRPCClient(*c.w.GRPCClient(t))
 	wardenAddress := "warden130djg732wmskv3gwryl3shcdam8wmmn9p704s5"
-	balance := client.GetBalanceAmount(t, ctx, wardenAddress, "uward")
+	balance := client.GetBalanceAmount(t, ctx, wardenAddress, "award")
 
 	t.Run("create key request", func(t *testing.T) {
 		// create a KeyRequest
@@ -53,7 +53,7 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 		// try to fulfill it from an address that's not one of the Keychain's writers
 		bobFulfilTx := bob.Tx(t, "warden fulfill-key-request 1 'A93VNAt/SYLw61VYTAhYO0pMJUqjnKKT2owP7HjGNRoK'")
 		checks.FailTx(t, bobFulfilTx)
-		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("uward", math.NewInt(2))))
+		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("award", math.NewInt(2))))
 
 		// try to fulfill it from one of the Keychain's writers
 		writerFulfilTx := writer.Tx(t, "warden fulfill-key-request 1 'A93VNAt/SYLw61VYTAhYO0pMJUqjnKKT2owP7HjGNRoK'")
@@ -88,7 +88,7 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 		// try to fulfill it from an address that's not one of the Keychain's writers
 		bobFulfilTx := bob.Tx(t, "warden fulfill-sign-request 1 'LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA='")
 		checks.FailTx(t, bobFulfilTx)
-		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("uward", math.NewInt(2))))
+		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("award", math.NewInt(2))))
 
 		// try to fulfill it from one of the Keychain's writers
 		writerFulfilTx := writer.Tx(t, "warden fulfill-sign-request 1 'LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA='")

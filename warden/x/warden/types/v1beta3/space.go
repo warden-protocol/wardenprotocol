@@ -44,7 +44,7 @@ func (w *Space) RemoveOwner(address string, nonce uint64) error {
 
 func (w *Space) EnsureNonce(nonce uint64) error {
 	if w.Nonce != nonce {
-		return fmt.Errorf("space nonce does not match expected nonce: %d", w.Nonce)
+		return fmt.Errorf("%w: %d", ErrInvalidNonce, w.Nonce)
 	}
 
 	return nil

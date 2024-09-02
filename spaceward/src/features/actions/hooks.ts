@@ -16,7 +16,7 @@ const getActionId = () =>
 
 const defaultFee: StdFee = {
 	gas: "200000",
-	amount: [{ denom: "uward", amount: "250" }],
+	amount: [{ denom: "award", amount: "250000000000000" }],
 };
 
 export enum QueuedActionStatus {

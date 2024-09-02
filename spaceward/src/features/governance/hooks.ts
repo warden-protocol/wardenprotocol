@@ -101,7 +101,7 @@ export const useGovernanceTx = (dispatch: GovernanceDispatch) => {
 
 		const res = await tx([submitProposal({
 			messages: [],
-			initialDeposit: [{ denom: "uward", amount: "10000000" }],
+			initialDeposit: [{ denom: "award", amount: "10000000000000000000" }],
 			proposer: address,
 			metadata: JSON.stringify({
 				title: "New Proposal",

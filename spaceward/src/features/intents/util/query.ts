@@ -1,6 +1,6 @@
 import { KNOWN_ADDRESSES, compareAddress, getProvider } from "@/lib/eth";
 
-const provider = getProvider("mainnet");
+const { provider } = getProvider("mainnet");
 
 const resolveEns = async (address: `0x${string}`) => {
 	try {

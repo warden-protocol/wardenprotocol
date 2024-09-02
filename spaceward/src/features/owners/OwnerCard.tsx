@@ -46,7 +46,7 @@ export default function OwnerCard({
 		<div className="relative flipper-container h-60 w-full flex">
 			<div
 				className={clsx(
-					"absolute flipper-frontface bg-fill-quaternary w-full h-full rounded-xl transition-transform overflow-hidden flex flex-column",
+					"absolute flipper-frontface bg-secondary w-full h-full rounded-xl transition-transform overflow-hidden flex flex-column",
 					{ flipped },
 				)}
 			>
@@ -69,7 +69,7 @@ export default function OwnerCard({
 			</div>
 			<div
 				className={clsx(
-					"absolute flipper-backface bg-fill-quaternary w-full h-full rounded-xl transition-transform overflow-hidden",
+					"absolute flipper-backface bg-secondary w-full h-full rounded-xl transition-transform overflow-hidden",
 					{ flipped: !flipped },
 				)}
 			>
@@ -81,7 +81,7 @@ export default function OwnerCard({
 						onClick={setFlipped.bind(null, false)}
 					/>
 				</div>
-				<div className="flex justify-center items-center text-wrap overflow-hidden bg-fill-quaternary rounded-lg mx-2 px-4 py-2">
+				<div className="flex justify-center items-center text-wrap overflow-hidden bg-fill-elevated rounded-lg mx-2 px-4 py-2">
 					<p className="text-center">
 						<span className="inline font-mono break-all text-base leading-[20px]">
 							{owner}

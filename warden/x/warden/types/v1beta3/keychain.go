@@ -49,7 +49,7 @@ func (k *Keychain) RemoveAdmin(address string) {
 	}
 }
 
-func (k *Keychain) SetFees(fees *KeychainFees) {
+func (k *Keychain) SetFees(fees KeychainFees) {
 	k.Fees = fees
 }
 
@@ -75,7 +75,7 @@ func (k *Keychain) SetKeybaseId(keybaseId *KeybaseId) {
 	k.KeybaseId = keybaseId
 }
 
-func (kf *KeychainFees) EnsureValid() error {
+func (kf KeychainFees) EnsureValid() error {
 	if err := kf.KeyReq.Validate(); err != nil {
 		return fmt.Errorf("key req is invalid: %w", err)
 	}
@@ -97,4 +97,20 @@ func NewKeybaseId(value string) (*KeybaseId, error) {
 	}
 
 	return &KeybaseId{Value: value}, nil
+}
+
+func (k *Keychain) EnsureSufficientKeyFees(fees sdk.Coins) error {
+	return ensureSufficientFees(k.Fees.KeyReq, fees)
+}
+
+func (k *Keychain) EnsureSufficientSignFees(fees sdk.Coins) error {
+	return ensureSufficientFees(k.Fees.SigReq, fees)
+}
+
+func ensureSufficientFees(wantedFees sdk.Coins, maxFees sdk.Coins) error {
+	if wantedFees.IsAllLTE(maxFees) {
+		return nil
+	}
+
+	return fmt.Errorf("keychain fees are not sufficient: wanted %s", wantedFees)
 }

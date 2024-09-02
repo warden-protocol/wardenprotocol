@@ -9,18 +9,13 @@ import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import {
 	COSMOS_PRICES,
 	EIP_155_NATIVE_PRICE_FEEDS,
-	ENABLED_ETH_CHAINS as _ENABLED_ETH_CHAINS,
+	ENABLED_ETH_CHAINS,
 	ERC20_TOKENS,
 	MULTICALL3_ADDRESS,
 } from "@/config/tokens";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
 import { getAbiItem, getCosmosChain, getInterface } from "./util";
-
-// fixme
-const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS
-	.filter(({ testnet }) => /* !testnet */ true)
-	.map(({ chainName }) => chainName);
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -195,7 +190,7 @@ const eip155NativeBalanceQuery = ({
 				? new ethers.Contract(
 						priceFeed,
 						aggregatorV3InterfaceABI,
-						getProvider(chainName),
+						provider,
 					)
 				: undefined;
 
@@ -350,7 +345,7 @@ const eip155ERC20BalanceQuery = ({
 					? new ethers.Contract(
 							priceFeed,
 							aggregatorV3InterfaceABI,
-							getProvider(chainName),
+							provider,
 						)
 					: undefined;
 
@@ -497,7 +492,7 @@ export const balancesQueryEth = (
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
 	// debug
-	const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
+	// const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
 
 	const eth =
 		keys?.flatMap((key) =>
@@ -513,7 +508,7 @@ export const balancesQueryEth = (
 		) ?? [];
 
 	// debug
-	if (keys?.length) {
+	/* if (keys?.length) {
 		byAddress[debugAddress] = {
 			key: keys?.[0].key,
 			addresses: [
@@ -525,7 +520,7 @@ export const balancesQueryEth = (
 		};
 
 		eth.push(debugAddress);
-	}
+	} */
 
 	const select = (result: BalanceEntry) => ({
 		results: [result],
@@ -533,7 +528,7 @@ export const balancesQueryEth = (
 	});
 
 	const queries = [
-		...ENABLED_ETH_CHAINS.flatMap((chainName) => {
+		...ENABLED_ETH_CHAINS.flatMap(({ chainName }) => {
 			return eth.map((address) => ({
 				...eip155NativeBalanceQuery({
 					enabled,
@@ -545,7 +540,8 @@ export const balancesQueryEth = (
 			}));
 		}),
 		...ERC20_TOKENS.filter(({ chainName }) =>
-			ENABLED_ETH_CHAINS.includes(chainName),
+			// fixme not optimal
+			ENABLED_ETH_CHAINS.find((x) => x.chainName === chainName),
 		).flatMap(({ chainName, address: token, priceFeed, stablecoin }) =>
 			eth.map((address) => ({
 				...eip155ERC20BalanceQuery({
@@ -578,7 +574,7 @@ const fiatPriceQuery = (enabled: boolean, name: string) => {
 		throw new Error("Invalid fiat currency");
 	}
 
-	const provider = getProvider("mainnet");
+	const { provider } = getProvider("mainnet");
 
 	const priceFeedContract = new ethers.Contract(
 		FIAT_PRICE_FEEDS[name],

@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import { getProvider } from "../lib/eth";
 
 type ChainName = Parameters<typeof getProvider>[0];
@@ -222,20 +223,27 @@ Binance Coin	native	BNB
 Ethereum Classic	native	ETC
 Polygon	native	MATIC
 */
-export const ENABLED_ETH_CHAINS: { chainName: ChainName; testnet?: boolean }[] =
-	[
-		{ chainName: "arbitrum" },
-		{ chainName: "base" },
-		{ chainName: "bsc" },
-		{ chainName: "mainnet" },
-		{ chainName: "optimism" },
-		{ chainName: "sepolia", testnet: true },
-	];
+const _ENABLED_ETH_CHAINS: { chainName: ChainName; testnet?: boolean }[] = [
+	{ chainName: "arbitrum" },
+	{ chainName: "base" },
+	{ chainName: "bsc" },
+	{ chainName: "mainnet" },
+	{ chainName: "optimism" },
+	{ chainName: "sepolia", testnet: true },
+];
 
-export const COSMOS_CHAINS: {
+export const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS.filter(({ testnet }) =>
+	env.networkVisibility === "all"
+		? true
+		: env.networkVisibility === "mainnet"
+			? !testnet
+			: Boolean(testnet),
+);
+
+const _COSMOS_CHAINS: {
 	chainName: string;
 	feeAmount?: string;
-	rpc?: string;
+	rpc?: string[]; // todo support multiple rpc
 	testnet?: boolean;
 }[] = [
 	{
@@ -262,13 +270,25 @@ export const COSMOS_CHAINS: {
 	{
 		chainName: "cosmoshubtestnet",
 		feeAmount: "1000",
-		rpc: "https://rpc.sentry-01.theta-testnet.polypore.xyz",
+		rpc: [
+			"https://cosmoshub-testnet.rpc.kjnodes.com",
+			"https://rpc.sentry-01.theta-testnet.polypore.xyz",
+		],
+
 		testnet: true,
 	},
 	{
 		chainName: "osmosistestnet",
 		feeAmount: "1500",
-		rpc: "https://rpc.testnet.osmosis.zone",
+		rpc: ["https://rpc.testnet.osmosis.zone"],
 		testnet: true,
 	},
 ];
+
+export const COSMOS_CHAINS = _COSMOS_CHAINS.filter(({ testnet }) =>
+	env.networkVisibility === "all"
+		? true
+		: env.networkVisibility === "mainnet"
+			? !testnet
+			: Boolean(testnet),
+);

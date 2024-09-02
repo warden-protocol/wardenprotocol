@@ -160,7 +160,7 @@ export const useRules = () => {
 
 	const rules = useRules({
 		request: {
-			pagination: PageRequest.fromPartial({ limit: BigInt(100) }),
+			pagination: PageRequest.fromPartial({ limit: BigInt(100000) }),
 		},
 	});
 
@@ -324,7 +324,7 @@ export function IntentsPage() {
 					<div className="w-full flex flex-col space-y-4">
 						<div className="bg-card rounded-xl p-8">
 							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 dark:bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-accent text-xl">
+								<div className="w-10 h-10 bg-fill-accent-secondary rounded-full flex items-center justify-center text-label-accent text-xl">
 									1
 								</div>
 								<p className="flex items-center gap-2">
@@ -334,7 +334,7 @@ export function IntentsPage() {
 							</div>
 
 							<div className="flex items-center gap-3 mt-10">
-								<div className="w-10 h-10 dark:bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-accent text-xl">
+								<div className="w-10 h-10 bg-fill-accent-secondary rounded-full flex items-center justify-center text-label-accent text-xl">
 									2
 								</div>
 								<p className="flex items-center gap-2">
@@ -343,7 +343,7 @@ export function IntentsPage() {
 							</div>
 
 							<div className="flex items-center gap-3 mt-10">
-								<div className="w-10 h-10 dark:bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-accent text-xl">
+								<div className="w-10 h-10 bg-fill-accent-secondary rounded-full flex items-center justify-center text-label-accent text-xl">
 									3
 								</div>
 								<p className="flex items-center gap-2">

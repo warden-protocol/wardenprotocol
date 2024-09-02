@@ -109,21 +109,23 @@ export function Root() {
 				<div className={cn("min-h-screen flex flex-row")}>
 					{!address ? (
 						<>
-							<main className="pt-10 pb-10 h-screen">
-								<div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full">
-									<div className="hidden w-1/2 xl:w-4/12 rounded-xl bg-[url(/landing-bg.svg)] border-2 border-border-accent bg-background dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
-										<div className="">
-											<h1 className="text-5xl text-label-accent font-bold tracking-[0.24px] leading-[120%]">
-												Welcome to SpaceWard. Unlock the
-												Potential of Warden Protocol.
-											</h1>
+							<main className="pt-10 pb-10 h-screen  bg-[url(/rail.png)] dark:bg-[url(/rail.png)] bg-cover bg-no-repeat">
+								<div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full lg:grid lg:grid-cols-[1fr_556px]">
+									<div className="hidden w-1/2 lg:w-auto rounded-xl md:flex flex-col justify-between relative overflow-clip">
+										<Icons.logoHello />
+										<h1 className="text-[52px] font-extrabold tracking-[0.24px] leading-[120%] uppercase">
+											Welcome to SpaceWard
+										</h1>
+										<div className="text-label-accent text-xl uppercase font-spacemono">
+											[&nbsp;.&nbsp;Unlock the Potential
+											of Warden Protocol&nbsp;.&nbsp;]
 										</div>
 									</div>
-									<div className="w-full md:w-1/2 xl:w-8/12 p-8 flex flex-col place-content-center">
+									<div className="w-full md:w-1/2 lg:w-auto p-8 flex flex-col place-content-center bg-fill-accent-primary rounded-2xl	text-label-on-light">
 										<div className="flex items-center place-content-center pb-12">
-											<Icons.logo className="h-6 w-auto" />
+											<Icons.logo className="h-8 w-auto invert" />
 										</div>
-										<div className="flex items-center place-content-center pb-4">
+										<div className="flex items-center place-content-center pb-6">
 											<h1 className="text-3xl md:text-5xl font-bold tracking-[0.24px] leading-[120%] text-center">
 												Connect Wallet
 											</h1>
@@ -138,8 +140,8 @@ export function Root() {
 											<Wallet />
 										</div>
 									</div>
-									<Toaster />
 								</div>
+								<Toaster />
 							</main>
 						</>
 					) : (
@@ -147,7 +149,7 @@ export function Root() {
 							{spaceCount !== 0 && <Sidebar />}
 							<main
 								className={cn(
-									"pb-2 pt-0 md:pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
+									"pb-2 pt-0 md:pt-[60px] max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
 									spaceCount === 0 && "mx-2",
 								)}
 							>

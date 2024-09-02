@@ -1,9 +1,10 @@
 syntax = "proto3";
 package warden.warden.v1beta3;
 
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
-import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
 
@@ -148,7 +149,7 @@ message EventNewKeychain {
   string creator = 2;
 
   // amount of charging fees for key and signature requests
-  KeychainFees keychain_fees = 3;
+  KeychainFees keychain_fees = 3 [(gogoproto.nullable) = false];
 }
 
 // EventUpdateKeychain is emitted when a Keychain is updated
@@ -157,7 +158,7 @@ message EventUpdateKeychain {
   uint64 id = 1;
 
   // amount of charging fees for key and signature requests
-  KeychainFees keychain_fees = 2;
+  KeychainFees keychain_fees = 2 [(gogoproto.nullable) = false];
 }
 
 // EventAddKeychainWriter is emitted when a new writer address is added to a Keychain

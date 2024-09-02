@@ -97,7 +97,7 @@ const ChangeAddressesModal = ({
 						onChange?.(nextUsers);
 						onClose();
 					}}
-					className="bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200"
+					className="bg-[#FFF] rounded-lg  h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-fill-accent-primary transition-all duration-200"
 				>
 					Done
 				</button>

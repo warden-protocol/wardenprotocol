@@ -115,7 +115,7 @@ export function Actions() {
 												className={`py-3`}
 											>
 												<div className="flex flex-row hover:no-underline">
-													<div className="grid gap-x-2 gap-y-5 grid-cols-[70px_174px_1fr_0.5fr] w-full text-sm">
+													<div className="grid gap-x-2 gap-y-5 grid-cols-[60px_174px_1fr_0.85fr] w-full">
 														<div className="text-left">
 															#
 															{action.id.toString()}

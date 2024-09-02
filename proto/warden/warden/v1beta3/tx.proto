@@ -119,7 +119,7 @@ message MsgNewKeychain {
   string creator = 1;
   string name = 2;
   reserved 3;
-  KeychainFees keychain_fees = 4;
+  KeychainFees keychain_fees = 4 [(gogoproto.nullable) = false];
   string description = 5;
   string url = 6;
   string keybase_id = 7;
@@ -152,7 +152,7 @@ message MsgUpdateKeychain {
   uint64 keychain_id = 2;
   string name = 3;
   reserved 4;
-  KeychainFees keychain_fees = 5;
+  KeychainFees keychain_fees = 5 [(gogoproto.nullable) = false];
   string description = 6;
   string url = 7;
   string keybase_id = 8;

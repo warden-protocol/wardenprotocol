@@ -28,7 +28,7 @@ export function AppsOpenPage() {
 		<div className="max-w-full px-4 pt-4">
 			<div className="flex items-center justify-between pb-4 space-y-2 px-4">
 				<div>
-					<h2 className="text-5xl">dApps</h2>
+					<h2 className="text-5xl font-sans font-bold">dApps</h2>
 					<p className="text-muted-foreground"></p>
 				</div>
 			</div>

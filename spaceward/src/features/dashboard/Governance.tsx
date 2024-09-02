@@ -41,7 +41,7 @@ export default function GovernanceDashboard() {
 		<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 			<Link
 				to="/governance"
-				className="cursor-pointer group bg-pink-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
+				className="cursor-pointer group bg-fill-accent-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 			>
 				<img
 					src="/images/dashboard-governance.png"
@@ -66,13 +66,13 @@ export default function GovernanceDashboard() {
 					<LoaderCircle className="animate-spin mt-2" />
 				) : proposalsVoting ? (
 					<div className="flex gap-3 items-center">
-						<div className="rounded-full w-10 h-10 flex items-center justify-center text-pixel-pink text-xl	bg-pink-secondary">
+						<div className="rounded-full w-10 h-10 flex items-center justify-center text-pixel-pink text-xl	bg-fill-accent-secondary">
 							{proposalsVoting}
 						</div>
 						Active votes
 					</div>
 				) : (
-					<button className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-pink-secondary">
+					<button className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-fill-accent-secondary">
 						Vote
 					</button>
 				)}

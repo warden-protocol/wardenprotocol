@@ -1,5 +1,5 @@
 chain_id := "warden_1337-1"
-shulgin := "warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4"
+shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 
 # run a single-node chain locally, use "bin" to specify the binary name

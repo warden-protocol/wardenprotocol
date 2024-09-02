@@ -136,16 +136,11 @@ func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action, bloc
 }
 
 func (k ActionKeeper) GetLatestPruneHeight(ctx context.Context) (int64, error) {
-	hasItem, err := k.previousPruneBlockHeight.Has(ctx)
-	if err != nil {
-		return 0, err
-	}
-
-	if !hasItem {
-		return 0, nil
-	}
-
-	return k.previousPruneBlockHeight.Get(ctx)
+    h, err := k.previousPruneBlockHeight.Get(ctx)
+    if errors.Is(err, collections.ErrNotFound) {
+        return 0, nil
+    }
+    return h, err
 }
 
 func (k ActionKeeper) ExpiredActions(ctx context.Context, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) ([]types.Action, error) {

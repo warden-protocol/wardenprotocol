@@ -32,7 +32,7 @@ const config = {
 				"fill-gray": "#9EA4AE",
 				"fill-quaternary": "var(--fill-quaternary)",
 				"fill-elevated": "var(--fill-elevated)",
-				"fill-accent-hover": "#F478DB",
+				"fill-accent-hover": "#BDFF00",
 				"bg-elevated": "var(--bg-elevated)",
 				"border-edge": "var(--border-edge)",
 				"secondary-text": "rgba(229,238,255,0.60)",

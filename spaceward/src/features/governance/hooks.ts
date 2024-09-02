@@ -39,15 +39,17 @@ export const useGovernance = ({ filter }: { filter: ProposalStatus }) => {
 				status,
 				votingStartTime,
 				votingEndTime,
+				summary,
+				title
 			} = proposal;
 
 			const id = proposalId.toString(10);
-			const { summary, title: name, forum } = parseMetadata(metadata);
+			const { summary: _summary, title: _title, forum } = parseMetadata(metadata);
 
 			return {
 				id,
-				description: summary,
-				name,
+				description: _summary || summary,
+				name: _title || title,
 				status,
 				link: forum,
 				votingStart: new Date(parseTimestamp(votingStartTime)),

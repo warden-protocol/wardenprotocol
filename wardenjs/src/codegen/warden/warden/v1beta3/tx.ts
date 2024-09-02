@@ -2,6 +2,7 @@
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
 import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key.js";
+import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin.js";
 import { SignRequestStatus, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
@@ -177,8 +178,11 @@ export interface MsgRemoveSpaceOwnerResponseAminoMsg {
 export interface MsgRemoveSpaceOwnerResponseSDKType {}
 export interface MsgNewKeychain {
   creator: string;
+  name: string;
+  keychainFees: KeychainFees;
   description: string;
-  keychainFees?: KeychainFees;
+  url: string;
+  keybaseId: string;
 }
 export interface MsgNewKeychainProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewKeychain";
@@ -186,8 +190,11 @@ export interface MsgNewKeychainProtoMsg {
 }
 export interface MsgNewKeychainAmino {
   creator?: string;
-  description?: string;
+  name?: string;
   keychain_fees?: KeychainFeesAmino;
+  description?: string;
+  url?: string;
+  keybase_id?: string;
 }
 export interface MsgNewKeychainAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewKeychain";
@@ -195,8 +202,11 @@ export interface MsgNewKeychainAminoMsg {
 }
 export interface MsgNewKeychainSDKType {
   creator: string;
+  name: string;
+  keychain_fees: KeychainFeesSDKType;
   description: string;
-  keychain_fees?: KeychainFeesSDKType;
+  url: string;
+  keybase_id: string;
 }
 export interface MsgNewKeychainResponse {
   id: bigint;
@@ -289,8 +299,11 @@ export interface MsgUpdateSpaceResponseSDKType {}
 export interface MsgUpdateKeychain {
   creator: string;
   keychainId: bigint;
+  name: string;
+  keychainFees: KeychainFees;
   description: string;
-  keychainFees?: KeychainFees;
+  url: string;
+  keybaseId: string;
 }
 export interface MsgUpdateKeychainProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgUpdateKeychain";
@@ -299,8 +312,11 @@ export interface MsgUpdateKeychainProtoMsg {
 export interface MsgUpdateKeychainAmino {
   creator?: string;
   keychain_id?: string;
-  description?: string;
+  name?: string;
   keychain_fees?: KeychainFeesAmino;
+  description?: string;
+  url?: string;
+  keybase_id?: string;
 }
 export interface MsgUpdateKeychainAminoMsg {
   type: "/warden.warden.v1beta3.MsgUpdateKeychain";
@@ -309,8 +325,11 @@ export interface MsgUpdateKeychainAminoMsg {
 export interface MsgUpdateKeychainSDKType {
   creator: string;
   keychain_id: bigint;
+  name: string;
+  keychain_fees: KeychainFeesSDKType;
   description: string;
-  keychain_fees?: KeychainFeesSDKType;
+  url: string;
+  keybase_id: string;
 }
 export interface MsgUpdateKeychainResponse {}
 export interface MsgUpdateKeychainResponseProtoMsg {
@@ -397,6 +416,7 @@ export interface MsgNewKeyRequest {
   keychainId: bigint;
   keyType: KeyType;
   ruleId: bigint;
+  maxKeychainFees: Coin[];
 }
 export interface MsgNewKeyRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequest";
@@ -408,6 +428,7 @@ export interface MsgNewKeyRequestAmino {
   keychain_id?: string;
   key_type?: KeyType;
   rule_id?: string;
+  max_keychain_fees: CoinAmino[];
 }
 export interface MsgNewKeyRequestAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewKeyRequest";
@@ -419,6 +440,7 @@ export interface MsgNewKeyRequestSDKType {
   keychain_id: bigint;
   key_type: KeyType;
   rule_id: bigint;
+  max_keychain_fees: CoinSDKType[];
 }
 export interface MsgNewKeyRequestResponse {
   id: bigint;
@@ -534,6 +556,7 @@ export interface MsgNewSignRequest {
   input: Uint8Array;
   analyzers: string[];
   encryptionKey: Uint8Array;
+  maxKeychainFees: Coin[];
 }
 export interface MsgNewSignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewSignRequest";
@@ -545,6 +568,7 @@ export interface MsgNewSignRequestAmino {
   input?: string;
   analyzers?: string[];
   encryption_key?: string;
+  max_keychain_fees: CoinAmino[];
 }
 export interface MsgNewSignRequestAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewSignRequest";
@@ -556,6 +580,7 @@ export interface MsgNewSignRequestSDKType {
   input: Uint8Array;
   analyzers: string[];
   encryption_key: Uint8Array;
+  max_keychain_fees: CoinSDKType[];
 }
 export interface MsgNewSignRequestResponse {
   id: bigint;
@@ -1294,8 +1319,11 @@ export const MsgRemoveSpaceOwnerResponse = {
 function createBaseMsgNewKeychain(): MsgNewKeychain {
   return {
     creator: "",
+    name: "",
+    keychainFees: KeychainFees.fromPartial({}),
     description: "",
-    keychainFees: undefined
+    url: "",
+    keybaseId: ""
   };
 }
 export const MsgNewKeychain = {
@@ -1304,11 +1332,20 @@ export const MsgNewKeychain = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.description !== "") {
-      writer.uint32(18).string(message.description);
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
     }
     if (message.keychainFees !== undefined) {
       KeychainFees.encode(message.keychainFees, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.description !== "") {
+      writer.uint32(42).string(message.description);
+    }
+    if (message.url !== "") {
+      writer.uint32(50).string(message.url);
+    }
+    if (message.keybaseId !== "") {
+      writer.uint32(58).string(message.keybaseId);
     }
     return writer;
   },
@@ -1323,10 +1360,19 @@ export const MsgNewKeychain = {
           message.creator = reader.string();
           break;
         case 2:
-          message.description = reader.string();
+          message.name = reader.string();
           break;
         case 4:
           message.keychainFees = KeychainFees.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.description = reader.string();
+          break;
+        case 6:
+          message.url = reader.string();
+          break;
+        case 7:
+          message.keybaseId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1338,22 +1384,31 @@ export const MsgNewKeychain = {
   fromJSON(object: any): MsgNewKeychain {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      keychainFees: isSet(object.keychainFees) ? KeychainFees.fromJSON(object.keychainFees) : undefined,
       description: isSet(object.description) ? String(object.description) : "",
-      keychainFees: isSet(object.keychainFees) ? KeychainFees.fromJSON(object.keychainFees) : undefined
+      url: isSet(object.url) ? String(object.url) : "",
+      keybaseId: isSet(object.keybaseId) ? String(object.keybaseId) : ""
     };
   },
   toJSON(message: MsgNewKeychain): JsonSafe<MsgNewKeychain> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.description !== undefined && (obj.description = message.description);
+    message.name !== undefined && (obj.name = message.name);
     message.keychainFees !== undefined && (obj.keychainFees = message.keychainFees ? KeychainFees.toJSON(message.keychainFees) : undefined);
+    message.description !== undefined && (obj.description = message.description);
+    message.url !== undefined && (obj.url = message.url);
+    message.keybaseId !== undefined && (obj.keybaseId = message.keybaseId);
     return obj;
   },
   fromPartial(object: Partial<MsgNewKeychain>): MsgNewKeychain {
     const message = createBaseMsgNewKeychain();
     message.creator = object.creator ?? "";
-    message.description = object.description ?? "";
+    message.name = object.name ?? "";
     message.keychainFees = object.keychainFees !== undefined && object.keychainFees !== null ? KeychainFees.fromPartial(object.keychainFees) : undefined;
+    message.description = object.description ?? "";
+    message.url = object.url ?? "";
+    message.keybaseId = object.keybaseId ?? "";
     return message;
   },
   fromAmino(object: MsgNewKeychainAmino): MsgNewKeychain {
@@ -1361,19 +1416,31 @@ export const MsgNewKeychain = {
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
-    if (object.description !== undefined && object.description !== null) {
-      message.description = object.description;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
     }
     if (object.keychain_fees !== undefined && object.keychain_fees !== null) {
       message.keychainFees = KeychainFees.fromAmino(object.keychain_fees);
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.url !== undefined && object.url !== null) {
+      message.url = object.url;
+    }
+    if (object.keybase_id !== undefined && object.keybase_id !== null) {
+      message.keybaseId = object.keybase_id;
     }
     return message;
   },
   toAmino(message: MsgNewKeychain): MsgNewKeychainAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.description = message.description === "" ? undefined : message.description;
+    obj.name = message.name === "" ? undefined : message.name;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
+    obj.description = message.description === "" ? undefined : message.description;
+    obj.url = message.url === "" ? undefined : message.url;
+    obj.keybase_id = message.keybaseId === "" ? undefined : message.keybaseId;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeychainAminoMsg): MsgNewKeychain {
@@ -1799,8 +1866,11 @@ function createBaseMsgUpdateKeychain(): MsgUpdateKeychain {
   return {
     creator: "",
     keychainId: BigInt(0),
+    name: "",
+    keychainFees: KeychainFees.fromPartial({}),
     description: "",
-    keychainFees: undefined
+    url: "",
+    keybaseId: ""
   };
 }
 export const MsgUpdateKeychain = {
@@ -1812,11 +1882,20 @@ export const MsgUpdateKeychain = {
     if (message.keychainId !== BigInt(0)) {
       writer.uint32(16).uint64(message.keychainId);
     }
-    if (message.description !== "") {
-      writer.uint32(26).string(message.description);
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
     }
     if (message.keychainFees !== undefined) {
       KeychainFees.encode(message.keychainFees, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.description !== "") {
+      writer.uint32(50).string(message.description);
+    }
+    if (message.url !== "") {
+      writer.uint32(58).string(message.url);
+    }
+    if (message.keybaseId !== "") {
+      writer.uint32(66).string(message.keybaseId);
     }
     return writer;
   },
@@ -1834,10 +1913,19 @@ export const MsgUpdateKeychain = {
           message.keychainId = reader.uint64();
           break;
         case 3:
-          message.description = reader.string();
+          message.name = reader.string();
           break;
         case 5:
           message.keychainFees = KeychainFees.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.description = reader.string();
+          break;
+        case 7:
+          message.url = reader.string();
+          break;
+        case 8:
+          message.keybaseId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1850,24 +1938,33 @@ export const MsgUpdateKeychain = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
+      name: isSet(object.name) ? String(object.name) : "",
+      keychainFees: isSet(object.keychainFees) ? KeychainFees.fromJSON(object.keychainFees) : undefined,
       description: isSet(object.description) ? String(object.description) : "",
-      keychainFees: isSet(object.keychainFees) ? KeychainFees.fromJSON(object.keychainFees) : undefined
+      url: isSet(object.url) ? String(object.url) : "",
+      keybaseId: isSet(object.keybaseId) ? String(object.keybaseId) : ""
     };
   },
   toJSON(message: MsgUpdateKeychain): JsonSafe<MsgUpdateKeychain> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
-    message.description !== undefined && (obj.description = message.description);
+    message.name !== undefined && (obj.name = message.name);
     message.keychainFees !== undefined && (obj.keychainFees = message.keychainFees ? KeychainFees.toJSON(message.keychainFees) : undefined);
+    message.description !== undefined && (obj.description = message.description);
+    message.url !== undefined && (obj.url = message.url);
+    message.keybaseId !== undefined && (obj.keybaseId = message.keybaseId);
     return obj;
   },
   fromPartial(object: Partial<MsgUpdateKeychain>): MsgUpdateKeychain {
     const message = createBaseMsgUpdateKeychain();
     message.creator = object.creator ?? "";
     message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
-    message.description = object.description ?? "";
+    message.name = object.name ?? "";
     message.keychainFees = object.keychainFees !== undefined && object.keychainFees !== null ? KeychainFees.fromPartial(object.keychainFees) : undefined;
+    message.description = object.description ?? "";
+    message.url = object.url ?? "";
+    message.keybaseId = object.keybaseId ?? "";
     return message;
   },
   fromAmino(object: MsgUpdateKeychainAmino): MsgUpdateKeychain {
@@ -1878,11 +1975,20 @@ export const MsgUpdateKeychain = {
     if (object.keychain_id !== undefined && object.keychain_id !== null) {
       message.keychainId = BigInt(object.keychain_id);
     }
-    if (object.description !== undefined && object.description !== null) {
-      message.description = object.description;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
     }
     if (object.keychain_fees !== undefined && object.keychain_fees !== null) {
       message.keychainFees = KeychainFees.fromAmino(object.keychain_fees);
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.url !== undefined && object.url !== null) {
+      message.url = object.url;
+    }
+    if (object.keybase_id !== undefined && object.keybase_id !== null) {
+      message.keybaseId = object.keybase_id;
     }
     return message;
   },
@@ -1890,8 +1996,11 @@ export const MsgUpdateKeychain = {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
-    obj.description = message.description === "" ? undefined : message.description;
+    obj.name = message.name === "" ? undefined : message.name;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
+    obj.description = message.description === "" ? undefined : message.description;
+    obj.url = message.url === "" ? undefined : message.url;
+    obj.keybase_id = message.keybaseId === "" ? undefined : message.keybaseId;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateKeychainAminoMsg): MsgUpdateKeychain {
@@ -2289,7 +2398,8 @@ function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
     spaceId: BigInt(0),
     keychainId: BigInt(0),
     keyType: 0,
-    ruleId: BigInt(0)
+    ruleId: BigInt(0),
+    maxKeychainFees: []
   };
 }
 export const MsgNewKeyRequest = {
@@ -2309,6 +2419,9 @@ export const MsgNewKeyRequest = {
     }
     if (message.ruleId !== BigInt(0)) {
       writer.uint32(40).uint64(message.ruleId);
+    }
+    for (const v of message.maxKeychainFees) {
+      Coin.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -2334,6 +2447,9 @@ export const MsgNewKeyRequest = {
         case 5:
           message.ruleId = reader.uint64();
           break;
+        case 6:
+          message.maxKeychainFees.push(Coin.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2347,7 +2463,8 @@ export const MsgNewKeyRequest = {
       spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
-      ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0)
+      ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0),
+      maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
   toJSON(message: MsgNewKeyRequest): JsonSafe<MsgNewKeyRequest> {
@@ -2357,6 +2474,11 @@ export const MsgNewKeyRequest = {
     message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.keyType !== undefined && (obj.keyType = keyTypeToJSON(message.keyType));
     message.ruleId !== undefined && (obj.ruleId = (message.ruleId || BigInt(0)).toString());
+    if (message.maxKeychainFees) {
+      obj.maxKeychainFees = message.maxKeychainFees.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.maxKeychainFees = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<MsgNewKeyRequest>): MsgNewKeyRequest {
@@ -2366,6 +2488,7 @@ export const MsgNewKeyRequest = {
     message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.keyType = object.keyType ?? 0;
     message.ruleId = object.ruleId !== undefined && object.ruleId !== null ? BigInt(object.ruleId.toString()) : BigInt(0);
+    message.maxKeychainFees = object.maxKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: MsgNewKeyRequestAmino): MsgNewKeyRequest {
@@ -2385,6 +2508,7 @@ export const MsgNewKeyRequest = {
     if (object.rule_id !== undefined && object.rule_id !== null) {
       message.ruleId = BigInt(object.rule_id);
     }
+    message.maxKeychainFees = object.max_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: MsgNewKeyRequest): MsgNewKeyRequestAmino {
@@ -2394,6 +2518,11 @@ export const MsgNewKeyRequest = {
     obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
     obj.rule_id = message.ruleId !== BigInt(0) ? message.ruleId.toString() : undefined;
+    if (message.maxKeychainFees) {
+      obj.max_keychain_fees = message.maxKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.max_keychain_fees = message.maxKeychainFees;
+    }
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestAminoMsg): MsgNewKeyRequest {
@@ -2908,7 +3037,8 @@ function createBaseMsgNewSignRequest(): MsgNewSignRequest {
     keyId: BigInt(0),
     input: new Uint8Array(),
     analyzers: [],
-    encryptionKey: new Uint8Array()
+    encryptionKey: new Uint8Array(),
+    maxKeychainFees: []
   };
 }
 export const MsgNewSignRequest = {
@@ -2928,6 +3058,9 @@ export const MsgNewSignRequest = {
     }
     if (message.encryptionKey.length !== 0) {
       writer.uint32(42).bytes(message.encryptionKey);
+    }
+    for (const v of message.maxKeychainFees) {
+      Coin.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -2953,6 +3086,9 @@ export const MsgNewSignRequest = {
         case 5:
           message.encryptionKey = reader.bytes();
           break;
+        case 6:
+          message.maxKeychainFees.push(Coin.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2966,7 +3102,8 @@ export const MsgNewSignRequest = {
       keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
       input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array(),
       analyzers: Array.isArray(object?.analyzers) ? object.analyzers.map((e: any) => String(e)) : [],
-      encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array()
+      encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array(),
+      maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
   toJSON(message: MsgNewSignRequest): JsonSafe<MsgNewSignRequest> {
@@ -2980,6 +3117,11 @@ export const MsgNewSignRequest = {
       obj.analyzers = [];
     }
     message.encryptionKey !== undefined && (obj.encryptionKey = base64FromBytes(message.encryptionKey !== undefined ? message.encryptionKey : new Uint8Array()));
+    if (message.maxKeychainFees) {
+      obj.maxKeychainFees = message.maxKeychainFees.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.maxKeychainFees = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<MsgNewSignRequest>): MsgNewSignRequest {
@@ -2989,6 +3131,7 @@ export const MsgNewSignRequest = {
     message.input = object.input ?? new Uint8Array();
     message.analyzers = object.analyzers?.map(e => e) || [];
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
+    message.maxKeychainFees = object.maxKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: MsgNewSignRequestAmino): MsgNewSignRequest {
@@ -3006,6 +3149,7 @@ export const MsgNewSignRequest = {
     if (object.encryption_key !== undefined && object.encryption_key !== null) {
       message.encryptionKey = bytesFromBase64(object.encryption_key);
     }
+    message.maxKeychainFees = object.max_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: MsgNewSignRequest): MsgNewSignRequestAmino {
@@ -3019,6 +3163,11 @@ export const MsgNewSignRequest = {
       obj.analyzers = message.analyzers;
     }
     obj.encryption_key = message.encryptionKey ? base64FromBytes(message.encryptionKey) : undefined;
+    if (message.maxKeychainFees) {
+      obj.max_keychain_fees = message.maxKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.max_keychain_fees = message.maxKeychainFees;
+    }
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestAminoMsg): MsgNewSignRequest {

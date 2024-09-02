@@ -221,7 +221,7 @@ export default function CreateKeyModal({
 					)}
 				>
 					{keychainsQuery.data?.keychains.map((item, i) => {
-						const desc = DESCRIPTION_MAP[item.description];
+						const desc = DESCRIPTION_MAP[item.name];
 
 						if (desc && !desc.disabled) {
 							return (

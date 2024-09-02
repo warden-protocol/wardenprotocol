@@ -9,6 +9,8 @@ export * from "./amino/bundle.js";
 export * from "./cosmos_proto/bundle.js";
 export * from "./cosmos/bundle.js";
 export * from "./cosmos/client.js";
+export * from "./ethermint/bundle.js";
+export * from "./ethermint/client.js";
 export * from "./gogoproto/bundle.js";
 export * from "./google/bundle.js";
 export * from "./slinky/bundle.js";

@@ -112,6 +112,7 @@ export interface MsgAddSpaceOwner {
   authority: string;
   spaceId: bigint;
   newOwner: string;
+  nonce: bigint;
 }
 export interface MsgAddSpaceOwnerProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgAddSpaceOwner";
@@ -121,6 +122,7 @@ export interface MsgAddSpaceOwnerAmino {
   authority?: string;
   space_id?: string;
   new_owner?: string;
+  nonce?: string;
 }
 export interface MsgAddSpaceOwnerAminoMsg {
   type: "/warden.warden.v1beta3.MsgAddSpaceOwner";
@@ -130,6 +132,7 @@ export interface MsgAddSpaceOwnerSDKType {
   authority: string;
   space_id: bigint;
   new_owner: string;
+  nonce: bigint;
 }
 export interface MsgAddSpaceOwnerResponse {}
 export interface MsgAddSpaceOwnerResponseProtoMsg {
@@ -146,6 +149,7 @@ export interface MsgRemoveSpaceOwner {
   authority: string;
   spaceId: bigint;
   owner: string;
+  nonce: bigint;
 }
 export interface MsgRemoveSpaceOwnerProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgRemoveSpaceOwner";
@@ -155,6 +159,7 @@ export interface MsgRemoveSpaceOwnerAmino {
   authority?: string;
   space_id?: string;
   owner?: string;
+  nonce?: string;
 }
 export interface MsgRemoveSpaceOwnerAminoMsg {
   type: "/warden.warden.v1beta3.MsgRemoveSpaceOwner";
@@ -164,6 +169,7 @@ export interface MsgRemoveSpaceOwnerSDKType {
   authority: string;
   space_id: bigint;
   owner: string;
+  nonce: bigint;
 }
 export interface MsgRemoveSpaceOwnerResponse {}
 export interface MsgRemoveSpaceOwnerResponseProtoMsg {
@@ -264,6 +270,7 @@ export interface MsgUpdateSpace {
   spaceId: bigint;
   adminRuleId: bigint;
   signRuleId: bigint;
+  nonce: bigint;
 }
 export interface MsgUpdateSpaceProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgUpdateSpace";
@@ -274,6 +281,7 @@ export interface MsgUpdateSpaceAmino {
   space_id?: string;
   admin_rule_id?: string;
   sign_rule_id?: string;
+  nonce?: string;
 }
 export interface MsgUpdateSpaceAminoMsg {
   type: "/warden.warden.v1beta3.MsgUpdateSpace";
@@ -284,6 +292,7 @@ export interface MsgUpdateSpaceSDKType {
   space_id: bigint;
   admin_rule_id: bigint;
   sign_rule_id: bigint;
+  nonce: bigint;
 }
 export interface MsgUpdateSpaceResponse {}
 export interface MsgUpdateSpaceResponseProtoMsg {
@@ -417,6 +426,7 @@ export interface MsgNewKeyRequest {
   keyType: KeyType;
   ruleId: bigint;
   maxKeychainFees: Coin[];
+  nonce: bigint;
 }
 export interface MsgNewKeyRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewKeyRequest";
@@ -429,6 +439,7 @@ export interface MsgNewKeyRequestAmino {
   key_type?: KeyType;
   rule_id?: string;
   max_keychain_fees: CoinAmino[];
+  nonce?: string;
 }
 export interface MsgNewKeyRequestAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewKeyRequest";
@@ -441,6 +452,7 @@ export interface MsgNewKeyRequestSDKType {
   key_type: KeyType;
   rule_id: bigint;
   max_keychain_fees: CoinSDKType[];
+  nonce: bigint;
 }
 export interface MsgNewKeyRequestResponse {
   id: bigint;
@@ -557,6 +569,7 @@ export interface MsgNewSignRequest {
   analyzers: string[];
   encryptionKey: Uint8Array;
   maxKeychainFees: Coin[];
+  nonce: bigint;
 }
 export interface MsgNewSignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewSignRequest";
@@ -569,6 +582,7 @@ export interface MsgNewSignRequestAmino {
   analyzers?: string[];
   encryption_key?: string;
   max_keychain_fees: CoinAmino[];
+  nonce?: string;
 }
 export interface MsgNewSignRequestAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewSignRequest";
@@ -581,6 +595,7 @@ export interface MsgNewSignRequestSDKType {
   analyzers: string[];
   encryption_key: Uint8Array;
   max_keychain_fees: CoinSDKType[];
+  nonce: bigint;
 }
 export interface MsgNewSignRequestResponse {
   id: bigint;
@@ -1004,7 +1019,8 @@ function createBaseMsgAddSpaceOwner(): MsgAddSpaceOwner {
   return {
     authority: "",
     spaceId: BigInt(0),
-    newOwner: ""
+    newOwner: "",
+    nonce: BigInt(0)
   };
 }
 export const MsgAddSpaceOwner = {
@@ -1018,6 +1034,9 @@ export const MsgAddSpaceOwner = {
     }
     if (message.newOwner !== "") {
       writer.uint32(26).string(message.newOwner);
+    }
+    if (message.nonce !== BigInt(0)) {
+      writer.uint32(32).uint64(message.nonce);
     }
     return writer;
   },
@@ -1037,6 +1056,9 @@ export const MsgAddSpaceOwner = {
         case 3:
           message.newOwner = reader.string();
           break;
+        case 4:
+          message.nonce = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1048,7 +1070,8 @@ export const MsgAddSpaceOwner = {
     return {
       authority: isSet(object.authority) ? String(object.authority) : "",
       spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
-      newOwner: isSet(object.newOwner) ? String(object.newOwner) : ""
+      newOwner: isSet(object.newOwner) ? String(object.newOwner) : "",
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgAddSpaceOwner): JsonSafe<MsgAddSpaceOwner> {
@@ -1056,6 +1079,7 @@ export const MsgAddSpaceOwner = {
     message.authority !== undefined && (obj.authority = message.authority);
     message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
     message.newOwner !== undefined && (obj.newOwner = message.newOwner);
+    message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgAddSpaceOwner>): MsgAddSpaceOwner {
@@ -1063,6 +1087,7 @@ export const MsgAddSpaceOwner = {
     message.authority = object.authority ?? "";
     message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
     message.newOwner = object.newOwner ?? "";
+    message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgAddSpaceOwnerAmino): MsgAddSpaceOwner {
@@ -1076,6 +1101,9 @@ export const MsgAddSpaceOwner = {
     if (object.new_owner !== undefined && object.new_owner !== null) {
       message.newOwner = object.new_owner;
     }
+    if (object.nonce !== undefined && object.nonce !== null) {
+      message.nonce = BigInt(object.nonce);
+    }
     return message;
   },
   toAmino(message: MsgAddSpaceOwner): MsgAddSpaceOwnerAmino {
@@ -1083,6 +1111,7 @@ export const MsgAddSpaceOwner = {
     obj.authority = message.authority === "" ? undefined : message.authority;
     obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.new_owner = message.newOwner === "" ? undefined : message.newOwner;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgAddSpaceOwnerAminoMsg): MsgAddSpaceOwner {
@@ -1162,7 +1191,8 @@ function createBaseMsgRemoveSpaceOwner(): MsgRemoveSpaceOwner {
   return {
     authority: "",
     spaceId: BigInt(0),
-    owner: ""
+    owner: "",
+    nonce: BigInt(0)
   };
 }
 export const MsgRemoveSpaceOwner = {
@@ -1176,6 +1206,9 @@ export const MsgRemoveSpaceOwner = {
     }
     if (message.owner !== "") {
       writer.uint32(26).string(message.owner);
+    }
+    if (message.nonce !== BigInt(0)) {
+      writer.uint32(32).uint64(message.nonce);
     }
     return writer;
   },
@@ -1195,6 +1228,9 @@ export const MsgRemoveSpaceOwner = {
         case 3:
           message.owner = reader.string();
           break;
+        case 4:
+          message.nonce = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1206,7 +1242,8 @@ export const MsgRemoveSpaceOwner = {
     return {
       authority: isSet(object.authority) ? String(object.authority) : "",
       spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
-      owner: isSet(object.owner) ? String(object.owner) : ""
+      owner: isSet(object.owner) ? String(object.owner) : "",
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgRemoveSpaceOwner): JsonSafe<MsgRemoveSpaceOwner> {
@@ -1214,6 +1251,7 @@ export const MsgRemoveSpaceOwner = {
     message.authority !== undefined && (obj.authority = message.authority);
     message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
     message.owner !== undefined && (obj.owner = message.owner);
+    message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgRemoveSpaceOwner>): MsgRemoveSpaceOwner {
@@ -1221,6 +1259,7 @@ export const MsgRemoveSpaceOwner = {
     message.authority = object.authority ?? "";
     message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
     message.owner = object.owner ?? "";
+    message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgRemoveSpaceOwnerAmino): MsgRemoveSpaceOwner {
@@ -1234,6 +1273,9 @@ export const MsgRemoveSpaceOwner = {
     if (object.owner !== undefined && object.owner !== null) {
       message.owner = object.owner;
     }
+    if (object.nonce !== undefined && object.nonce !== null) {
+      message.nonce = BigInt(object.nonce);
+    }
     return message;
   },
   toAmino(message: MsgRemoveSpaceOwner): MsgRemoveSpaceOwnerAmino {
@@ -1241,6 +1283,7 @@ export const MsgRemoveSpaceOwner = {
     obj.authority = message.authority === "" ? undefined : message.authority;
     obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.owner = message.owner === "" ? undefined : message.owner;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgRemoveSpaceOwnerAminoMsg): MsgRemoveSpaceOwner {
@@ -1695,7 +1738,8 @@ function createBaseMsgUpdateSpace(): MsgUpdateSpace {
     authority: "",
     spaceId: BigInt(0),
     adminRuleId: BigInt(0),
-    signRuleId: BigInt(0)
+    signRuleId: BigInt(0),
+    nonce: BigInt(0)
   };
 }
 export const MsgUpdateSpace = {
@@ -1712,6 +1756,9 @@ export const MsgUpdateSpace = {
     }
     if (message.signRuleId !== BigInt(0)) {
       writer.uint32(32).uint64(message.signRuleId);
+    }
+    if (message.nonce !== BigInt(0)) {
+      writer.uint32(40).uint64(message.nonce);
     }
     return writer;
   },
@@ -1734,6 +1781,9 @@ export const MsgUpdateSpace = {
         case 4:
           message.signRuleId = reader.uint64();
           break;
+        case 5:
+          message.nonce = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1746,7 +1796,8 @@ export const MsgUpdateSpace = {
       authority: isSet(object.authority) ? String(object.authority) : "",
       spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
       adminRuleId: isSet(object.adminRuleId) ? BigInt(object.adminRuleId.toString()) : BigInt(0),
-      signRuleId: isSet(object.signRuleId) ? BigInt(object.signRuleId.toString()) : BigInt(0)
+      signRuleId: isSet(object.signRuleId) ? BigInt(object.signRuleId.toString()) : BigInt(0),
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgUpdateSpace): JsonSafe<MsgUpdateSpace> {
@@ -1755,6 +1806,7 @@ export const MsgUpdateSpace = {
     message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
     message.adminRuleId !== undefined && (obj.adminRuleId = (message.adminRuleId || BigInt(0)).toString());
     message.signRuleId !== undefined && (obj.signRuleId = (message.signRuleId || BigInt(0)).toString());
+    message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgUpdateSpace>): MsgUpdateSpace {
@@ -1763,6 +1815,7 @@ export const MsgUpdateSpace = {
     message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
     message.adminRuleId = object.adminRuleId !== undefined && object.adminRuleId !== null ? BigInt(object.adminRuleId.toString()) : BigInt(0);
     message.signRuleId = object.signRuleId !== undefined && object.signRuleId !== null ? BigInt(object.signRuleId.toString()) : BigInt(0);
+    message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgUpdateSpaceAmino): MsgUpdateSpace {
@@ -1779,6 +1832,9 @@ export const MsgUpdateSpace = {
     if (object.sign_rule_id !== undefined && object.sign_rule_id !== null) {
       message.signRuleId = BigInt(object.sign_rule_id);
     }
+    if (object.nonce !== undefined && object.nonce !== null) {
+      message.nonce = BigInt(object.nonce);
+    }
     return message;
   },
   toAmino(message: MsgUpdateSpace): MsgUpdateSpaceAmino {
@@ -1787,6 +1843,7 @@ export const MsgUpdateSpace = {
     obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.admin_rule_id = message.adminRuleId !== BigInt(0) ? message.adminRuleId.toString() : undefined;
     obj.sign_rule_id = message.signRuleId !== BigInt(0) ? message.signRuleId.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateSpaceAminoMsg): MsgUpdateSpace {
@@ -2399,7 +2456,8 @@ function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
     keychainId: BigInt(0),
     keyType: 0,
     ruleId: BigInt(0),
-    maxKeychainFees: []
+    maxKeychainFees: [],
+    nonce: BigInt(0)
   };
 }
 export const MsgNewKeyRequest = {
@@ -2422,6 +2480,9 @@ export const MsgNewKeyRequest = {
     }
     for (const v of message.maxKeychainFees) {
       Coin.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.nonce !== BigInt(0)) {
+      writer.uint32(56).uint64(message.nonce);
     }
     return writer;
   },
@@ -2450,6 +2511,9 @@ export const MsgNewKeyRequest = {
         case 6:
           message.maxKeychainFees.push(Coin.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.nonce = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2464,7 +2528,8 @@ export const MsgNewKeyRequest = {
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
       ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0),
-      maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
+      maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : [],
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgNewKeyRequest): JsonSafe<MsgNewKeyRequest> {
@@ -2479,6 +2544,7 @@ export const MsgNewKeyRequest = {
     } else {
       obj.maxKeychainFees = [];
     }
+    message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewKeyRequest>): MsgNewKeyRequest {
@@ -2489,6 +2555,7 @@ export const MsgNewKeyRequest = {
     message.keyType = object.keyType ?? 0;
     message.ruleId = object.ruleId !== undefined && object.ruleId !== null ? BigInt(object.ruleId.toString()) : BigInt(0);
     message.maxKeychainFees = object.maxKeychainFees?.map(e => Coin.fromPartial(e)) || [];
+    message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgNewKeyRequestAmino): MsgNewKeyRequest {
@@ -2509,6 +2576,9 @@ export const MsgNewKeyRequest = {
       message.ruleId = BigInt(object.rule_id);
     }
     message.maxKeychainFees = object.max_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
+    if (object.nonce !== undefined && object.nonce !== null) {
+      message.nonce = BigInt(object.nonce);
+    }
     return message;
   },
   toAmino(message: MsgNewKeyRequest): MsgNewKeyRequestAmino {
@@ -2523,6 +2593,7 @@ export const MsgNewKeyRequest = {
     } else {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestAminoMsg): MsgNewKeyRequest {
@@ -3038,7 +3109,8 @@ function createBaseMsgNewSignRequest(): MsgNewSignRequest {
     input: new Uint8Array(),
     analyzers: [],
     encryptionKey: new Uint8Array(),
-    maxKeychainFees: []
+    maxKeychainFees: [],
+    nonce: BigInt(0)
   };
 }
 export const MsgNewSignRequest = {
@@ -3061,6 +3133,9 @@ export const MsgNewSignRequest = {
     }
     for (const v of message.maxKeychainFees) {
       Coin.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.nonce !== BigInt(0)) {
+      writer.uint32(56).uint64(message.nonce);
     }
     return writer;
   },
@@ -3089,6 +3164,9 @@ export const MsgNewSignRequest = {
         case 6:
           message.maxKeychainFees.push(Coin.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.nonce = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3103,7 +3181,8 @@ export const MsgNewSignRequest = {
       input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array(),
       analyzers: Array.isArray(object?.analyzers) ? object.analyzers.map((e: any) => String(e)) : [],
       encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array(),
-      maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
+      maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : [],
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgNewSignRequest): JsonSafe<MsgNewSignRequest> {
@@ -3122,6 +3201,7 @@ export const MsgNewSignRequest = {
     } else {
       obj.maxKeychainFees = [];
     }
+    message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewSignRequest>): MsgNewSignRequest {
@@ -3132,6 +3212,7 @@ export const MsgNewSignRequest = {
     message.analyzers = object.analyzers?.map(e => e) || [];
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
     message.maxKeychainFees = object.maxKeychainFees?.map(e => Coin.fromPartial(e)) || [];
+    message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgNewSignRequestAmino): MsgNewSignRequest {
@@ -3150,6 +3231,9 @@ export const MsgNewSignRequest = {
       message.encryptionKey = bytesFromBase64(object.encryption_key);
     }
     message.maxKeychainFees = object.max_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
+    if (object.nonce !== undefined && object.nonce !== null) {
+      message.nonce = BigInt(object.nonce);
+    }
     return message;
   },
   toAmino(message: MsgNewSignRequest): MsgNewSignRequestAmino {
@@ -3168,6 +3252,7 @@ export const MsgNewSignRequest = {
     } else {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestAminoMsg): MsgNewSignRequest {

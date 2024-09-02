@@ -36,6 +36,8 @@ export interface Space {
    * owner approves it.
    */
   signRuleId: bigint;
+  /** Version of the space. Every time the Space is updated, this number gets increasead by one. */
+  nonce: bigint;
 }
 export interface SpaceProtoMsg {
   typeUrl: "/warden.warden.v1beta3.Space";
@@ -75,6 +77,8 @@ export interface SpaceAmino {
    * owner approves it.
    */
   sign_rule_id?: string;
+  /** Version of the space. Every time the Space is updated, this number gets increasead by one. */
+  nonce?: string;
 }
 export interface SpaceAminoMsg {
   type: "/warden.warden.v1beta3.Space";
@@ -87,6 +91,7 @@ export interface SpaceSDKType {
   owners: string[];
   admin_rule_id: bigint;
   sign_rule_id: bigint;
+  nonce: bigint;
 }
 function createBaseSpace(): Space {
   return {
@@ -94,7 +99,8 @@ function createBaseSpace(): Space {
     creator: "",
     owners: [],
     adminRuleId: BigInt(0),
-    signRuleId: BigInt(0)
+    signRuleId: BigInt(0),
+    nonce: BigInt(0)
   };
 }
 export const Space = {
@@ -114,6 +120,9 @@ export const Space = {
     }
     if (message.signRuleId !== BigInt(0)) {
       writer.uint32(48).uint64(message.signRuleId);
+    }
+    if (message.nonce !== BigInt(0)) {
+      writer.uint32(56).uint64(message.nonce);
     }
     return writer;
   },
@@ -139,6 +148,9 @@ export const Space = {
         case 6:
           message.signRuleId = reader.uint64();
           break;
+        case 7:
+          message.nonce = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -152,7 +164,8 @@ export const Space = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       owners: Array.isArray(object?.owners) ? object.owners.map((e: any) => String(e)) : [],
       adminRuleId: isSet(object.adminRuleId) ? BigInt(object.adminRuleId.toString()) : BigInt(0),
-      signRuleId: isSet(object.signRuleId) ? BigInt(object.signRuleId.toString()) : BigInt(0)
+      signRuleId: isSet(object.signRuleId) ? BigInt(object.signRuleId.toString()) : BigInt(0),
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
   },
   toJSON(message: Space): JsonSafe<Space> {
@@ -166,6 +179,7 @@ export const Space = {
     }
     message.adminRuleId !== undefined && (obj.adminRuleId = (message.adminRuleId || BigInt(0)).toString());
     message.signRuleId !== undefined && (obj.signRuleId = (message.signRuleId || BigInt(0)).toString());
+    message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<Space>): Space {
@@ -175,6 +189,7 @@ export const Space = {
     message.owners = object.owners?.map(e => e) || [];
     message.adminRuleId = object.adminRuleId !== undefined && object.adminRuleId !== null ? BigInt(object.adminRuleId.toString()) : BigInt(0);
     message.signRuleId = object.signRuleId !== undefined && object.signRuleId !== null ? BigInt(object.signRuleId.toString()) : BigInt(0);
+    message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: SpaceAmino): Space {
@@ -192,6 +207,9 @@ export const Space = {
     if (object.sign_rule_id !== undefined && object.sign_rule_id !== null) {
       message.signRuleId = BigInt(object.sign_rule_id);
     }
+    if (object.nonce !== undefined && object.nonce !== null) {
+      message.nonce = BigInt(object.nonce);
+    }
     return message;
   },
   toAmino(message: Space): SpaceAmino {
@@ -205,6 +223,7 @@ export const Space = {
     }
     obj.admin_rule_id = message.adminRuleId !== BigInt(0) ? message.adminRuleId.toString() : undefined;
     obj.sign_rule_id = message.signRuleId !== BigInt(0) ? message.signRuleId.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SpaceAminoMsg): Space {

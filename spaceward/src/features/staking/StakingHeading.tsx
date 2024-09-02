@@ -24,7 +24,8 @@ export default function StakingHeading(props: HeadingProps) {
 				</div>
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
-					<Icons.logoPink />
+					<Icons.wardPink className="w-6 h-6" />
+
 					{bigintToFixed(props.availableWard ?? BigInt(0), {
 						decimals: 6,
 						format: true,

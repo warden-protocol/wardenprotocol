@@ -73,7 +73,7 @@ const StakeModal = ({
 						{ "border-negative border-[1px]": isInputError },
 					)}
 				>
-					<Icons.logoWhite />
+					<Icons.wardPink className="w-6 h-6" />
 					<input
 						className="block w-full h-[60px] bg-transparent outline-none foces:outline-none"
 						id="amount"

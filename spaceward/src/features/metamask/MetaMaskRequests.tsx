@@ -106,7 +106,12 @@ export function MetaMaskRequests() {
 					ethers.getBytes(msgHex as string),
 				);
 
-				const storeId = await signRaw(keyId, ethers.getBytes(msg), undefined, { requestId: req.id });
+				const storeId = await signRaw(
+					keyId,
+					ethers.getBytes(msg),
+					undefined,
+					{ requestId: req.id },
+				);
 
 				if (!storeId) {
 					throw new Error(
@@ -130,10 +135,17 @@ export function MetaMaskRequests() {
 				const chainName = REVERSE_ETH_CHAINID_MAP[chainId];
 
 				if (!chainName) {
-					throw new Error(`chainId not supported: ${chainId}`)
+					throw new Error(`chainId not supported: ${chainId}`);
 				}
 				const tx = await buildSignTransaction(txParam);
-				const storeId = await signEthereumTx(keyId, tx, chainName, undefined, { requestId: req.id });
+				const storeId = await signEthereumTx(
+					keyId,
+					tx,
+					chainName,
+					"Approve snap transaction",
+					undefined,
+					{ requestId: req.id },
+				);
 
 				if (!storeId) {
 					throw new Error(
@@ -157,7 +169,12 @@ export function MetaMaskRequests() {
 					SignTypedDataVersion.V4,
 				);
 
-				const storeId = await signRaw(keyId, ethers.getBytes(toSign), undefined, { requestId: req.id });
+				const storeId = await signRaw(
+					keyId,
+					ethers.getBytes(toSign),
+					undefined,
+					{ requestId: req.id },
+				);
 
 				if (!storeId) {
 					throw new Error(
@@ -206,31 +223,24 @@ export function MetaMaskRequests() {
 					className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
 				>
 					<div
-						className="inset-0 bg-card/40 backdrop-blur-md absolute"
+						className="inset-0  absolute"
 						onClick={() => setOpen(false)}
 					></div>
-					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] top-2 rounded-xl right-0">
-						<div className="flex flex-col space-y-4">
-							<div className="text-center pt-6 flex items-center place-content-center">
-								<img
-									src="/logos/metamask.svg"
-									className="w-12 h-12"
-								/>
-							</div>
-							<div className="text-center pt-0">
-								<p className="text-4xl font-display pb-2">
-									MetaMask Snap
-								</p>
-							</div>
-						</div>
+					<div className="p-3 md:p-6 pt-0 flex flex-col border-[1px] border-border-edge w-[340px] max-w-full bg-card fixed top-[96px]  rounded-xl right-0">
+						<p className="text-xl font-sans pb-2 font-bold">
+							Install Metamask Snap
+						</p>
+						<p className="text-label-secondary mb-6">
+							To open access for SpaceWard to dApps
+						</p>
 
 						<InstallMetaMaskSnapButton />
 
-						<hr />
+						{/* <hr /> */}
 
 						<div className="text-center">
 							{requestsQ.isLoading ? (
-								<div>Loading...</div>
+								<div></div>
 							) : requestsQ.isError ? (
 								<div>
 									Error: {JSON.stringify(requestsQ.error)}
@@ -255,7 +265,9 @@ export function MetaMaskRequests() {
 											<Button
 												size="sm"
 												onClick={() =>
-													handleApproveRequest(req).then(() => setOpen(false))
+													handleApproveRequest(
+														req,
+													).then(() => setOpen(false))
 												}
 											>
 												Approve

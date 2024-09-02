@@ -235,6 +235,7 @@ var (
 		{Account: icatypes.ModuleName},
 		{Account: actmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
+		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

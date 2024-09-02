@@ -44,7 +44,7 @@ export default function StakingCard(props: CardProps) {
 					{props.total ? (
 						formatReward(props.total)
 					) : (
-						<div className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-pink-secondary text-foreground flex items-center justify-center">
+						<div className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-fill-accent-secondary text-foreground flex items-center justify-center">
 							Stake
 						</div>
 					)}

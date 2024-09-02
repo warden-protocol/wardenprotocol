@@ -79,7 +79,7 @@ const AddAddressModal = ({
 
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
-			<div className="font-display text-5xl mb-6 leading-[56px]">
+			<div className="text-5xl mb-6 leading-[56px] font-bold">
 				Add {type === "person" ? "an approver" : "a whitelist address"}
 			</div>
 
@@ -88,7 +88,7 @@ const AddAddressModal = ({
 			<form
 				action=""
 				className={clsx(
-					`mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] px-4 h-[60px]`,
+					`rounded-lg mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] px-4 h-[60px]`,
 					!validation.ok && addPersonValue
 						? "border-[#E54545]"
 						: "border-white",
@@ -110,7 +110,7 @@ const AddAddressModal = ({
 						Address
 					</label>
 					<input
-						className="block w-full bg-transparent outline-none foces:outline-none"
+						className="rounded-lg block w-full bg-transparent outline-none foces:outline-none"
 						id="address"
 						onChange={(e) => setAddPersonValue(e.target.value)}
 						value={addPersonValue}
@@ -161,7 +161,7 @@ const AddAddressModal = ({
 						(enabled ? info.isLoading : false)
 					}
 					className={clsx(
-						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+						`rounded-lg bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
 						!addPersonValue ||
 							!validation.ok ||
 							// fixme

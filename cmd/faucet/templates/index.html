@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Buenavista Faucet</title>
+    <title>{{ .Data.Chain }} Faucet</title>
     <link href="css/style.css" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap"
@@ -33,7 +33,7 @@
   <body>
     <div class="container" hx-swap="innerHTML">
       <div class="content">
-        <h1>Buenavista Faucet</h1>
+        <h1>{{ .Data.Chain }} Faucet</h1>
         {{ template "tokens-section" .Data }} <br />
         {{ template "form" .Form }}
         <div id="spinner" class="htmx-indicator">

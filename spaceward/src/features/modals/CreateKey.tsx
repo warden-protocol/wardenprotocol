@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import { warden } from "@wardenprotocol/wardenjs";
 import { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
 import { Button } from "@/components/ui/button";
 import { useQueryHooks } from "@/hooks/useClient";
@@ -8,11 +9,13 @@ import { pasteFromClipboard } from "@/utils/browser";
 import type { CreateKeyParams, ModalParams } from "./types";
 import Assets, { KEY_THEMES } from "../keys/assets";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
-import useRequestKey from "@/hooks/useRequestKey";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
 import { Icons } from "@/components/ui/icons-assets";
 import descriptions from "../keychains/description";
+import { useNewAction } from "@/hooks/useAction";
+import { useEnqueueAction } from "../actions/hooks";
+import { set } from "react-hook-form";
 
 const DESCRIPTION_MAP = Object.fromEntries(descriptions.map((d) => [d.key, d]));
 const THEME_DISPLAY_COUNT = 4;
@@ -26,9 +29,31 @@ export default function CreateKeyModal({
 	const { useKeychains, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { setData: setModal } = useModalState();
-	const { requestKey } = useRequestKey();
 	const { spaceId: _spaceId } = useSpaceId();
 	const spaceId = selectedSpaceId ?? _spaceId;
+	const { getMessage, authority } = useNewAction(warden.warden.v1beta3.MsgNewKeyRequest);
+	const { addAction } = useEnqueueAction(getMessage);
+	const [pending, setPending] = useState(false);
+
+	function requestKey(keychainId: bigint, spaceId: bigint, themeIndex: number) {
+		if (!authority) {
+			throw new Error("no authority");
+		}
+
+		return addAction(
+			{
+				spaceId,
+				keychainId,
+				ruleId: BigInt(0),
+				keyType: warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
+				authority,
+			},
+			{
+				keyThemeIndex: themeIndex,
+				title: "Creating key"
+			},
+		);
+	}
 
 	const keychainsQuery = useKeychains({
 		options: {
@@ -67,27 +92,29 @@ export default function CreateKeyModal({
 		};
 
 		setKeySettings({ settings: { ...ks.settings, [TEMP_KEY]: settings } });
+		setPending(true);
 
 		try {
-			setModal({
-				background: { "create-key": { next } },
-				type: next,
-				params: {},
-			});
+			const storeId = await requestKey(keychain.id, BigInt(spaceId), themeIndex);
 
-			await requestKey(keychain.id, BigInt(spaceId));
+			if (storeId) {
+				setModal({
+					type: undefined,
+					params: undefined
+				});
+			}
 		} catch (e) {
 			console.error(e);
 		}
 
-		setModal({ background: {} });
+		setPending(false);
 	}
 
 	const desc =
 		selected >= 0
 			? DESCRIPTION_MAP[
-					keychainsQuery.data?.keychains[selected]?.description ?? ""
-				]
+			keychainsQuery.data?.keychains[selected]?.description ?? ""
+			]
 			: undefined;
 
 	return hidden ? null : isDetails ? (
@@ -188,9 +215,9 @@ export default function CreateKeyModal({
 				<div
 					className={clsx(
 						"mt-12 text-left flex flex-col gap-4 max-h-[400px] relative",
-						// (keychainsQuery.data?.keychains.length ?? 0) >= 3
-						// 	? "before:content-[''] before:absolute no-scrollbar overflow-scroll before:left-0 before:bottom-0 before:w-full before:h-[90px] before:z-20 before:bg-gradient-to-b before:from-[transparent] before:to-[#222]"
-						// 	: "",
+						(keychainsQuery.data?.keychains.length ?? 0) >= 3
+							? "before:content-[''] before:fixed no-scrollbar overflow-scroll before:left-0 before:bottom-0 before:w-full before:h-[0] before:z-20 before:bg-gradient-to-b before:from-[transparent] before:to-[#222]"
+							: "",
 					)}
 				>
 					{keychainsQuery.data?.keychains.map((item, i) => {
@@ -413,7 +440,7 @@ export default function CreateKeyModal({
 				<div className="mt-12 flex flex-col gap-2">
 					<Button
 						onClick={create}
-						className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-pixel-pink duration-200 hover:text-background"
+						className={clsx({ "pointer-events-none bg-fill-quaternary text-gray-400": pending }, "flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-pixel-pink duration-200 hover:text-background")}
 					>
 						Create key
 					</Button>

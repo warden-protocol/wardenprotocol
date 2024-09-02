@@ -90,7 +90,7 @@ export function OwnersPage() {
 					))}
 					<div className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4">
 						<div
-							className="rounded-xl border-[1px] border-solid border-border-edge h-60 w-full cursor-pointer flex flex-col bg-fill-quaternary"
+							className="rounded-xl border-[1px] border-solid border-border-edge h-60 w-full cursor-pointer flex flex-col bg-secondary"
 							onClick={setModal.bind(null, {
 								type: "add-owner",
 								params: {},
@@ -107,7 +107,7 @@ export function OwnersPage() {
 								</div>
 							</div>
 							<div className="mt-auto mb-8 mx-6">
-								<p className="text-muted-foreground hidden xl:block text-sm">
+								<p className="text-label-secondary hidden xl:block text-xs">
 									With default rules, owners will be able to
 									perform actions such as adding other owners
 									or signing transactions.

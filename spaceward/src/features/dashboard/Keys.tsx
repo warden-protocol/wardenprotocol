@@ -47,7 +47,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 			{isEmpty ? (
 				<div className="relative min-h-72 isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl overflow-hidden">
 					<img
-						className="absolute left-0 top-0 z-[-1] w-full h-full object-cover invert dark:invert-0"
+						className="absolute blur-[12px] left-0 top-0 z-[-1] w-full h-full object-cover invert dark:invert-0"
 						src="/images/nokeys.png"
 						alt=""
 					/>

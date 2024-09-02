@@ -89,7 +89,7 @@
 		"dayjs": "^1.11.10",
 		"emoji-hash-gen": "^1.0.3",
 		"esbuild-plugin-polyfill-node": "^0.3.0",
-		"ethers": "^6.9.2",
+		"ethers": "6.13.2",
 		"js-sha256": "^0.10.1",
 		"jsqr": "^1.4.0",
 		"libp2p": "^1.0.8",

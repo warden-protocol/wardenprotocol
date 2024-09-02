@@ -36,8 +36,8 @@ const CreateIntentModal = ({
 					<XIcon className="h-6 w-6" />
 				</button>
 
-				<div className="max-w-[520px] text-center tracking-wide px-5 pb-5">
-					<div className="font-display text-5xl mb-6">
+				<div className="max-w-[520px] text-center tracking-wide pb-5">
+					<div className="font-bold text-5xl mb-6">
 						Select an approval condition
 					</div>
 					<div>How will transactions be approved</div>
@@ -52,8 +52,8 @@ const CreateIntentModal = ({
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
-							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
-								<img src="/images/user-group.svg" alt="" />
+							<div className="flex items-center justify-center w-10 h-10 rounded bg-fill-accent-secondary">
+								<Icons.userGroup />
 							</div>
 							<div>
 								<p className="font-semibold">Joint approval</p>
@@ -75,8 +75,8 @@ const CreateIntentModal = ({
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
-							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
-								<img src="/images/users-2.svg" alt="" />
+							<div className="flex items-center justify-center w-10 h-10 rounded bg-fill-accent-secondary">
+								<Icons.usersAmount />
 							</div>
 							<div>
 								<p className="font-semibold">
@@ -101,8 +101,8 @@ const CreateIntentModal = ({
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
-							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
-								<img src="/images/user-check-2.svg" alt="" />
+							<div className="flex items-center justify-center w-10 h-10 rounded bg-fill-accent-secondary">
+								<Icons.usersCheck />
 							</div>
 							<div>
 								<p className="font-semibold">
@@ -126,7 +126,7 @@ const CreateIntentModal = ({
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
-							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
+							<div className="flex items-center justify-center w-10 h-10 rounded bg-fill-accent-secondary">
 								<Icons.userCog />
 							</div>
 

@@ -2,12 +2,11 @@ package keeper
 
 import (
 	"context"
-
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/codec"
 
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-	v1beta3 "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 type KeysKeeper struct {

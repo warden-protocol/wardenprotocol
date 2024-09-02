@@ -34,6 +34,7 @@ func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
 	actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
+	wardenAuthority := authtypes.NewModuleAddress(types.ModuleName)
 
 	actKeeper, _ := ActKeeper(t)
 
@@ -43,6 +44,7 @@ func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		log.NewNopLogger(),
 		authority.String(),
 		actAuthority.String(),
+		wardenAuthority,
 		nil,
 		actKeeper,
 		nil,

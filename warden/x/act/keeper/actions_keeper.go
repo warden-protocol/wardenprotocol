@@ -126,6 +126,12 @@ func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action, bloc
 		return err
 	}
 
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventActionPruned{Id: action.Id}); err != nil {
+		return err
+	}
+
 	return nil
 }
 

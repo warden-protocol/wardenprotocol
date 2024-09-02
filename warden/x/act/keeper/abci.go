@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k Keeper) EndBlocker(ctx context.Context) error {
@@ -28,9 +27,6 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 
 	for _, act := range expiredActions {
 		if err := k.ActionKeeper.pruneAction(ctx, act, blockHeight); err != nil {
-			return err
-		}
-		if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventActionPruned{Id: act.Id}); err != nil {
 			return err
 		}
 	}

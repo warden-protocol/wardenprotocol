@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -81,6 +82,8 @@ export interface SignRequest {
   signedData?: Uint8Array;
   rejectReason?: string;
   encryptionKey: Uint8Array;
+  /** Amount of fees deducted during new sign request */
+  deductedKeychainFees: Coin[];
 }
 export interface SignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.SignRequest";
@@ -107,6 +110,8 @@ export interface SignRequestAmino {
   signed_data?: string;
   reject_reason?: string;
   encryption_key?: string;
+  /** Amount of fees deducted during new sign request */
+  deducted_keychain_fees: CoinAmino[];
 }
 export interface SignRequestAminoMsg {
   type: "/warden.warden.v1beta3.SignRequest";
@@ -128,6 +133,7 @@ export interface SignRequestSDKType {
   signed_data?: Uint8Array;
   reject_reason?: string;
   encryption_key: Uint8Array;
+  deducted_keychain_fees: CoinSDKType[];
 }
 function createBaseSignRequest(): SignRequest {
   return {
@@ -138,7 +144,8 @@ function createBaseSignRequest(): SignRequest {
     status: 0,
     signedData: undefined,
     rejectReason: undefined,
-    encryptionKey: new Uint8Array()
+    encryptionKey: new Uint8Array(),
+    deductedKeychainFees: []
   };
 }
 export const SignRequest = {
@@ -167,6 +174,9 @@ export const SignRequest = {
     }
     if (message.encryptionKey.length !== 0) {
       writer.uint32(66).bytes(message.encryptionKey);
+    }
+    for (const v of message.deductedKeychainFees) {
+      Coin.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -201,6 +211,9 @@ export const SignRequest = {
         case 8:
           message.encryptionKey = reader.bytes();
           break;
+        case 9:
+          message.deductedKeychainFees.push(Coin.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -217,7 +230,8 @@ export const SignRequest = {
       status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : -1,
       signedData: isSet(object.signedData) ? bytesFromBase64(object.signedData) : undefined,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined,
-      encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array()
+      encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array(),
+      deductedKeychainFees: Array.isArray(object?.deductedKeychainFees) ? object.deductedKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
   toJSON(message: SignRequest): JsonSafe<SignRequest> {
@@ -230,6 +244,11 @@ export const SignRequest = {
     message.signedData !== undefined && (obj.signedData = message.signedData !== undefined ? base64FromBytes(message.signedData) : undefined);
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
     message.encryptionKey !== undefined && (obj.encryptionKey = base64FromBytes(message.encryptionKey !== undefined ? message.encryptionKey : new Uint8Array()));
+    if (message.deductedKeychainFees) {
+      obj.deductedKeychainFees = message.deductedKeychainFees.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.deductedKeychainFees = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<SignRequest>): SignRequest {
@@ -242,6 +261,7 @@ export const SignRequest = {
     message.signedData = object.signedData ?? undefined;
     message.rejectReason = object.rejectReason ?? undefined;
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
+    message.deductedKeychainFees = object.deductedKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: SignRequestAmino): SignRequest {
@@ -270,6 +290,7 @@ export const SignRequest = {
     if (object.encryption_key !== undefined && object.encryption_key !== null) {
       message.encryptionKey = bytesFromBase64(object.encryption_key);
     }
+    message.deductedKeychainFees = object.deducted_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: SignRequest): SignRequestAmino {
@@ -282,6 +303,11 @@ export const SignRequest = {
     obj.signed_data = message.signedData ? base64FromBytes(message.signedData) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
     obj.encryption_key = message.encryptionKey ? base64FromBytes(message.encryptionKey) : undefined;
+    if (message.deductedKeychainFees) {
+      obj.deducted_keychain_fees = message.deductedKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.deducted_keychain_fees = message.deductedKeychainFees;
+    }
     return obj;
   },
   fromAminoMsg(object: SignRequestAminoMsg): SignRequest {

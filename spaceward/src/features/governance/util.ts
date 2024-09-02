@@ -21,8 +21,8 @@ export function parseMetadata(metadata: string): MetadataJSON {
 		throw new Error("Unexpected metadata format");
 	} catch (e) {
 		return {
-			title: "Unexpected metadata",
-			summary: hasKey("message", e) ? e.message : "No description",
+			title: "", // "Unexpected metadata",
+			summary: "", // hasKey("message", e) ? e.message : "No description",
 			forum: "",
 			other: "",
 		};

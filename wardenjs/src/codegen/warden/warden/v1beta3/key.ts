@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -171,6 +172,8 @@ export interface KeyRequest {
   rejectReason: string;
   /** ID of the Rule that the resulting Key will use. */
   ruleId: bigint;
+  /** Amount of fees deducted during new key request */
+  deductedKeychainFees: Coin[];
 }
 export interface KeyRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.KeyRequest";
@@ -204,6 +207,8 @@ export interface KeyRequestAmino {
   reject_reason?: string;
   /** ID of the Rule that the resulting Key will use. */
   rule_id?: string;
+  /** Amount of fees deducted during new key request */
+  deducted_keychain_fees: CoinAmino[];
 }
 export interface KeyRequestAminoMsg {
   type: "/warden.warden.v1beta3.KeyRequest";
@@ -226,6 +231,7 @@ export interface KeyRequestSDKType {
   status: KeyRequestStatus;
   reject_reason: string;
   rule_id: bigint;
+  deducted_keychain_fees: CoinSDKType[];
 }
 /** Key is a public key that can be used to sign data. */
 export interface Key {
@@ -297,7 +303,8 @@ function createBaseKeyRequest(): KeyRequest {
     keyType: 0,
     status: 0,
     rejectReason: "",
-    ruleId: BigInt(0)
+    ruleId: BigInt(0),
+    deductedKeychainFees: []
   };
 }
 export const KeyRequest = {
@@ -326,6 +333,9 @@ export const KeyRequest = {
     }
     if (message.ruleId !== BigInt(0)) {
       writer.uint32(64).uint64(message.ruleId);
+    }
+    for (const v of message.deductedKeychainFees) {
+      Coin.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -360,6 +370,9 @@ export const KeyRequest = {
         case 8:
           message.ruleId = reader.uint64();
           break;
+        case 9:
+          message.deductedKeychainFees.push(Coin.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -376,7 +389,8 @@ export const KeyRequest = {
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : -1,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : "",
-      ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0)
+      ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0),
+      deductedKeychainFees: Array.isArray(object?.deductedKeychainFees) ? object.deductedKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
   toJSON(message: KeyRequest): JsonSafe<KeyRequest> {
@@ -389,6 +403,11 @@ export const KeyRequest = {
     message.status !== undefined && (obj.status = keyRequestStatusToJSON(message.status));
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
     message.ruleId !== undefined && (obj.ruleId = (message.ruleId || BigInt(0)).toString());
+    if (message.deductedKeychainFees) {
+      obj.deductedKeychainFees = message.deductedKeychainFees.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.deductedKeychainFees = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<KeyRequest>): KeyRequest {
@@ -401,6 +420,7 @@ export const KeyRequest = {
     message.status = object.status ?? 0;
     message.rejectReason = object.rejectReason ?? "";
     message.ruleId = object.ruleId !== undefined && object.ruleId !== null ? BigInt(object.ruleId.toString()) : BigInt(0);
+    message.deductedKeychainFees = object.deductedKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: KeyRequestAmino): KeyRequest {
@@ -429,6 +449,7 @@ export const KeyRequest = {
     if (object.rule_id !== undefined && object.rule_id !== null) {
       message.ruleId = BigInt(object.rule_id);
     }
+    message.deductedKeychainFees = object.deducted_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: KeyRequest): KeyRequestAmino {
@@ -441,6 +462,11 @@ export const KeyRequest = {
     obj.status = message.status === 0 ? undefined : message.status;
     obj.reject_reason = message.rejectReason === "" ? undefined : message.rejectReason;
     obj.rule_id = message.ruleId !== BigInt(0) ? message.ruleId.toString() : undefined;
+    if (message.deductedKeychainFees) {
+      obj.deducted_keychain_fees = message.deductedKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.deducted_keychain_fees = message.deductedKeychainFees;
+    }
     return obj;
   },
   fromAminoMsg(object: KeyRequestAminoMsg): KeyRequest {

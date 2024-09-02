@@ -363,7 +363,7 @@ export interface EventNewKeychain {
   /** address of the account that created the keychain */
   creator: string;
   /** amount of charging fees for key and signature requests */
-  keychainFees?: KeychainFees;
+  keychainFees: KeychainFees;
 }
 export interface EventNewKeychainProtoMsg {
   typeUrl: "/warden.warden.v1beta3.EventNewKeychain";
@@ -386,14 +386,14 @@ export interface EventNewKeychainAminoMsg {
 export interface EventNewKeychainSDKType {
   id: bigint;
   creator: string;
-  keychain_fees?: KeychainFeesSDKType;
+  keychain_fees: KeychainFeesSDKType;
 }
 /** EventUpdateKeychain is emitted when a Keychain is updated */
 export interface EventUpdateKeychain {
   /** id of the keychain */
   id: bigint;
   /** amount of charging fees for key and signature requests */
-  keychainFees?: KeychainFees;
+  keychainFees: KeychainFees;
 }
 export interface EventUpdateKeychainProtoMsg {
   typeUrl: "/warden.warden.v1beta3.EventUpdateKeychain";
@@ -413,7 +413,7 @@ export interface EventUpdateKeychainAminoMsg {
 /** EventUpdateKeychain is emitted when a Keychain is updated */
 export interface EventUpdateKeychainSDKType {
   id: bigint;
-  keychain_fees?: KeychainFeesSDKType;
+  keychain_fees: KeychainFeesSDKType;
 }
 /** EventAddKeychainWriter is emitted when a new writer address is added to a Keychain */
 export interface EventAddKeychainWriter {
@@ -1626,7 +1626,7 @@ function createBaseEventNewKeychain(): EventNewKeychain {
   return {
     id: BigInt(0),
     creator: "",
-    keychainFees: undefined
+    keychainFees: KeychainFees.fromPartial({})
   };
 }
 export const EventNewKeychain = {
@@ -1726,7 +1726,7 @@ export const EventNewKeychain = {
 function createBaseEventUpdateKeychain(): EventUpdateKeychain {
   return {
     id: BigInt(0),
-    keychainFees: undefined
+    keychainFees: KeychainFees.fromPartial({})
   };
 }
 export const EventUpdateKeychain = {

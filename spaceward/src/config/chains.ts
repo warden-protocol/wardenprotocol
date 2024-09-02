@@ -6,16 +6,16 @@ export const wardenprotocollocal: Chain = {
 	status: "live",
 	network_type: "testnet",
 	pretty_name: "Warden Protocol (local)",
-	chain_id: "warden",
+	chain_id: "warden_1337-1",
 	bech32_prefix: "warden",
 	daemon_name: "wardend",
 	node_home: "$HOME/.warden",
-	key_algos: ["secp256k1"],
-	slip44: 118,
+	key_algos: ["ethsecp256k1"],
+	slip44: 60,
 	fees: {
 		fee_tokens: [
 			{
-				denom: "uward",
+				denom: "award",
 				fixed_min_gas_price: 0.005,
 				low_gas_price: 0.01,
 				average_gas_price: 0.025,
@@ -26,7 +26,7 @@ export const wardenprotocollocal: Chain = {
 	staking: {
 		staking_tokens: [
 			{
-				denom: "uward",
+				denom: "award",
 			},
 		],
 	},
@@ -91,15 +91,15 @@ export const wardenprotocollocalAssets: AssetList = {
 			description: "The native token of Warden Protocol Testnet",
 			denom_units: [
 				{
-					denom: "uward",
+					denom: "award",
 					exponent: 0,
 				},
 				{
 					denom: "ward",
-					exponent: 6,
+					exponent: 18,
 				},
 			],
-			base: "uward",
+			base: "award",
 			name: "Ward",
 			display: "ward",
 			symbol: "WARD",
@@ -126,12 +126,12 @@ export const wardenprotocoldevnet: Chain = {
 	bech32_prefix: "warden",
 	daemon_name: "wardend",
 	node_home: "$HOME/.warden",
-	key_algos: ["secp256k1"],
-	slip44: 118,
+	key_algos: ["secp256k1", "ethsecp256k1"],
+	slip44: 60,
 	fees: {
 		fee_tokens: [
 			{
-				denom: "uward",
+				denom: "award",
 				fixed_min_gas_price: 0.005,
 				low_gas_price: 0.01,
 				average_gas_price: 0.025,
@@ -142,7 +142,7 @@ export const wardenprotocoldevnet: Chain = {
 	staking: {
 		staking_tokens: [
 			{
-				denom: "uward",
+				denom: "award",
 			},
 		],
 	},
@@ -207,15 +207,15 @@ export const wardenprotocoldevnetAssets: AssetList = {
 			description: "The native token of Warden Protocol Testnet",
 			denom_units: [
 				{
-					denom: "uward",
+					denom: "award",
 					exponent: 0,
 				},
 				{
 					denom: "ward",
-					exponent: 6,
+					exponent: 18,
 				},
 			],
-			base: "uward",
+			base: "award",
 			name: "Ward",
 			display: "ward",
 			symbol: "WARD",

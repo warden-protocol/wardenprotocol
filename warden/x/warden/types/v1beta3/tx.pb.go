@@ -512,13 +512,6 @@ func (m *MsgNewKeychain) GetKeychainFees() KeychainFees {
 	return KeychainFees{}
 }
 
-func (m *MsgNewKeychain) GetDescription() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
 func (m *MsgNewKeychain) GetUrl() string {
 	if m != nil {
 		return m.Url
@@ -536,20 +529,6 @@ func (m *MsgNewKeychain) GetKeybaseId() string {
 func (m *MsgNewKeychain) GetDescription() string {
 	if m != nil {
 		return m.Description
-	}
-	return ""
-}
-
-func (m *MsgNewKeychain) GetUrl() string {
-	if m != nil {
-		return m.Url
-	}
-	return ""
-}
-
-func (m *MsgNewKeychain) GetKeybaseId() string {
-	if m != nil {
-		return m.KeybaseId
 	}
 	return ""
 }
@@ -877,13 +856,6 @@ func (m *MsgUpdateKeychain) GetKeychainFees() KeychainFees {
 	return KeychainFees{}
 }
 
-func (m *MsgUpdateKeychain) GetDescription() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
 func (m *MsgUpdateKeychain) GetUrl() string {
 	if m != nil {
 		return m.Url
@@ -901,20 +873,6 @@ func (m *MsgUpdateKeychain) GetKeybaseId() string {
 func (m *MsgUpdateKeychain) GetDescription() string {
 	if m != nil {
 		return m.Description
-	}
-	return ""
-}
-
-func (m *MsgUpdateKeychain) GetUrl() string {
-	if m != nil {
-		return m.Url
-	}
-	return ""
-}
-
-func (m *MsgUpdateKeychain) GetKeybaseId() string {
-	if m != nil {
-		return m.KeybaseId
 	}
 	return ""
 }

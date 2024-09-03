@@ -542,31 +542,6 @@ func (m *KeybaseId) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKeychain(uint64(l))
 	}
-	l = len(m.Description)
-	if l > 0 {
-		n += 1 + l + sovKeychain(uint64(l))
-	}
-	l = len(m.Url)
-	if l > 0 {
-		n += 1 + l + sovKeychain(uint64(l))
-	}
-	if m.KeybaseId != nil {
-		l = m.KeybaseId.Size()
-		n += 1 + l + sovKeychain(uint64(l))
-	}
-	return n
-}
-
-func (m *KeybaseId) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Value)
-	if l > 0 {
-		n += 1 + l + sovKeychain(uint64(l))
-	}
 	return n
 }
 

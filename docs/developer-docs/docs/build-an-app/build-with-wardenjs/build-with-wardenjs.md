@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview of WardenJS
 
-[WardenJS](../../../../../wardenjs) is a powerful JavaScript library designed to streamline and enhance the development process for blockchain-based applications. It provides a comprehensive set of tools and modules that allow developers to implement complex cryptographic operations, manage spaces and keychains, handle upgrades, and more, all within a well-structured and easy-to-use framework.
+[WardenJS](https://github.com/warden-protocol/wardenprotocol/tree/main/wardenjs) is a powerful JavaScript library designed to streamline and enhance the development process for blockchain-based applications. It provides a comprehensive set of tools and modules that allow developers to implement complex cryptographic operations, manage spaces and keychains, handle upgrades, and more, all within a well-structured and easy-to-use framework.
 
 **WardenJS** is particularly valuable for developers working within the Cosmos / EVM ecosystem, offering extensive support for Cosmos SDK modules, transaction handling, and various blockchain protocols. By leveraging WardenJS, developers can focus on building their application logic without getting bogged down by the intricacies of blockchain integration and cryptography.
 

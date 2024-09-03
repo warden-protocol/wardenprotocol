@@ -12,7 +12,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 
 - The chain ID in queries: `buenavista-1`
 - Endpoints: [networks repository > buenavista](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista)
-- The current `wardend` version: **v0.3.1**
+- The current `wardend` version: **v0.4.2**
 
 ## Version history
 

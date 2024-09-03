@@ -20,6 +20,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 | ------- | -------------------- | ------------ |
 | v0.3.0  | genesis              |              |
 | v0.4.1  | 1675700              | Aug 13, 2024 |
+| v0.4.2  | 1965400              | Sep 2, 2024  |
 
 ## Prerequisites
 
@@ -29,7 +30,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
   - 32GB of RAM
   - 300GB of disk space
 
-- You'll also need to [install Go](https://golang.org/doc/install).
+- You also need to [install Go](https://golang.org/doc/install).
 
 ## 1. Install
 
@@ -50,8 +51,8 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 Build the `wardend` binary and initialize the chain home folder:
 
 ```bash
-git clone --depth 1 --branch v0.3.0 https://github.com/warden-protocol/wardenprotocol/
-just build
+git clone --depth 1 --branch v0.4.0 https://github.com/warden-protocol/wardenprotocol/
+just wardend build
 
 build/wardend init my-chain-moniker
 ```

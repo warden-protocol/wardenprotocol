@@ -24,7 +24,7 @@ export default function VotesChart(props: VotesChartProps) {
 				},
 				{
 					percent: props.result?.noWithVetoPercent ?? 0,
-					className: "text-pixel-pink",
+					className: "text-label-accent",
 				},
 			]}
 		/>

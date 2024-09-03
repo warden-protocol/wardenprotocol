@@ -14,7 +14,7 @@ export function NoSpaces() {
 
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 	return (
-		<div className="relative w-full min-h-[calc(100vh-20px)] bg-[url(/landing-bg-light.svg)] dark:bg-transparent  rounded-xl -mt-[48px] flex flex-col gap-4 items-center place-content-center text-center no-space">
+		<div className="relative w-full min-h-[calc(100vh-20px)] dark:bg-transparent  rounded-xl -mt-[48px] flex flex-col gap-4 items-center place-content-center text-center no-space">
 			<Icons.corner className="absolute top-0 left-0" />
 			<Icons.corner className="absolute top-0 right-0 rotate-90" />
 			<Icons.corner className="absolute bottom-0 right-0 rotate-180" />
@@ -29,7 +29,7 @@ export function NoSpaces() {
 						of keys, assets and rules.
 					</p>
 					<Button
-						className="bg-fill-primary h-[56px] px-8 rounded-xl font-semibold"
+						className="bg-fill-accent-primary hover:bg-fill-accent-hover h-[56px] px-8 rounded-xl font-semibold text-label-on-light"
 						onClick={() => {
 							tx(
 								[

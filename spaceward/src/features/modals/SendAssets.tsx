@@ -263,7 +263,7 @@ export default function SendAssetsModal({
 								className={clsx(
 									"text-xs cursor-pointer",
 									amountWarning && "text-negative",
-									!amountWarning && "text-pixel-pink",
+									!amountWarning && "text-label-accent",
 								)}
 							>
 								Max:{maxAmount}{" "}

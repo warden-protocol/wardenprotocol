@@ -14,11 +14,16 @@ export default function StakingCard(props: CardProps) {
 	return (
 		<Link
 			to="/staking"
-			className="cursor-pointer group bg-staking-bg overflow-hidden rounded-2xl py-5 px-6 relative isolate"
+			className="cursor-pointer group border-[1px] border-solid border-border-edge bg-staking-bg overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 		>
 			<img
 				src="/images/staking-bg.png"
-				className="absolute right-0 bottom-0 h-full object-contain z-[-1]"
+				className="absolute right-0 bottom-0 h-full object-contain z-[-1] opacity-0 dark:opacity-100"
+				alt=""
+			/>
+			<img
+				src="/images/staking-light.png"
+				className="absolute right-0 bottom-0 h-full object-contain z-[-1] dark:opacity-0"
 				alt=""
 			/>
 			<div className="font-bold text-2xl mb-4 flex items-center justify-between">
@@ -40,7 +45,7 @@ export default function StakingCard(props: CardProps) {
 						<LoaderCircle className="animate-spin" />
 					)}
 				</div>
-				<div className="text-pixel-pink">
+				<div className="text-label-accent">
 					{props.total ? (
 						formatReward(props.total)
 					) : (

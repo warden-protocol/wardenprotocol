@@ -39,12 +39,12 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 
 	t.Run("create key request", func(t *testing.T) {
 		// create a KeyRequest
-		newReqTx := bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1uward\" --rule-id 0")
+		newReqTx := bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1uward\" --rule-id 0 --nonce 0")
 		checks.SuccessTx(t, newReqTx)
 		client.EnsureActionStatus(t, ctx, 1, v1beta1.ActionStatus_ACTION_STATUS_REVOKED)
 		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance)
 
-		newReqTx = bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"3uward\" --rule-id 0")
+		newReqTx = bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"3uward\" --rule-id 0 --nonce 0")
 		checks.SuccessTx(t, newReqTx)
 		client.EnsureActionStatus(t, ctx, 2, v1beta1.ActionStatus_ACTION_STATUS_COMPLETED)
 		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("uward", math.NewInt(2))))
@@ -73,13 +73,13 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 
 	t.Run("create signature request", func(t *testing.T) {
 		// create a SignRequest with not enough fee
-		newReqTx := bob.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1uward\"")
+		newReqTx := bob.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1uward\" --nonce 0")
 		checks.SuccessTx(t, newReqTx)
 		client.EnsureActionStatus(t, ctx, 3, v1beta1.ActionStatus_ACTION_STATUS_REVOKED)
 		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance)
 
 		// create a SignRequest with enough fee
-		newReqTx = bob.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"3uward\"")
+		newReqTx = bob.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"3uward\" --nonce 0")
 		checks.SuccessTx(t, newReqTx)
 		client.EnsureActionStatus(t, ctx, 4, v1beta1.ActionStatus_ACTION_STATUS_COMPLETED)
 		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("uward", math.NewInt(2))))

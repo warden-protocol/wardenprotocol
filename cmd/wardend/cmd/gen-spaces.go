@@ -31,6 +31,7 @@ func AddGenesisSpaceCmd(defaultNodeHome string) *cobra.Command {
 						Owners:      []string{creator},
 						AdminRuleId: 0,
 						SignRuleId:  0,
+						Nonce:       0,
 					})
 
 					wardenGenStateBz, err := cdc.MarshalJSON(wardenGenState)

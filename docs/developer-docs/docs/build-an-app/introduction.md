@@ -18,8 +18,6 @@ The main part of any Omnichain Application is an **Omnichain Contract**: a smart
 
 To learn more, check our list of CosmWasm resources in the [Useful links](useful-links) section.
 
-*Please note that this section is under construction. More information is coming soon.*
-
 <!--- Contents:
 
 - What is an OApp and how is it built? (briefly)

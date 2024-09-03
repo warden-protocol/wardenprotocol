@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import AddOwnerModal from "./AddOwner";
 import ApproveModal from "./ApproveActionModal";
+import ApproveSnapModal from "./ApproveSnapModal";
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
 import ReceiveAssetsModal from "./ReceiveAssets";
@@ -38,9 +39,10 @@ export default function ModalRoot() {
 			</button>
 
 			{data.type === "approve-action" ||
-			data.background["approve-action"] ? (
+				data.background["approve-action"] ? (
 				<ApproveModal hidden={data.type !== "approve-action"} />
 			) : null}
+
 			{data.type === "add-owner" || data.background["add-owner"] ? (
 				<AddOwnerModal hidden={data.type !== "add-owner"} />
 			) : null}
@@ -52,8 +54,11 @@ export default function ModalRoot() {
 				/>
 			) : null}
 			{data.type === "walletconnect" ||
-			data.background["walletconnect"] ? (
+				data.background["walletconnect"] ? (
 				<WalletConnectModal hidden={data.type !== "walletconnect"} />
+			) : null}
+			{data.type === "approve-snap" ? (
+				<ApproveSnapModal hidden={data.type !== "approve-snap"} />
 			) : null}
 			{data.type === "dapps-modal" ? (
 				<ConnectedModal />

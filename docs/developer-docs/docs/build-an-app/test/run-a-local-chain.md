@@ -12,7 +12,7 @@ This guide explains how to run a local chain for development and testing purpose
 
 Before you start, complete following prerequisites:
 
-- [Install Go](https://golang.org/doc/install) 1.22.5 or later.
+- [Install Go](https://golang.org/doc/install) 1.22.3 or later.
 - Install [just](https://just.systems/man/en/chapter_4.html).
 
 :::tip

@@ -155,6 +155,8 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		Amount:          float64(amount),
 	}
 
+	dailySupply.Set(f.DailySupply)
+
 	if f.config.Mnemonic != "" {
 		if err = f.setupNewAccount(); err != nil {
 			return Faucet{}, err
@@ -278,6 +280,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 
 	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount/uwardConversion)
 	f.log.Info().Msgf("tokens available: %f", f.TokensAvailable)
+	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}
 	return result.TxHash, http.StatusOK, nil

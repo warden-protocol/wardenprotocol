@@ -6,10 +6,10 @@
 
 @layer base {
 	:root {
-		--background: 30 11.1% 92.9%;
+		--background: #f5f6e9;
 		--foreground: 0 0% 3.9%;
 
-		--card: 0 0% 96%;
+		--card: 0 0% 100%;
 		--card-foreground: 0 0% 3.9%;
 
 		--popover: 0 0% 100%;
@@ -36,11 +36,12 @@
 
 		--radius: 0.5rem;
 
-		--fill-accent-primary: #caff94;
-		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
-		--border-secondary: rgba(136, 126, 120, 0.15);
+		--fill-accent-primary: #acd782;
+		--fill-accent-secondary: rgba(107, 174, 0, 0.15);
+		--fill-accent-hover: #70b501;
+		--border-secondary: rgba(84, 78, 74, 0.7);
 		--fill-quaternary: rgba(136, 126, 120, 0.15);
-		--fill-elevated: rgba(229, 238, 255, 0.1);
+		--fill-elevated: #fff;
 		--overlay: rgba(237, 231, 230, 0.8);
 		--secondary-bg: #fff;
 		--label-secondary: rgba(84, 78, 74, 0.7);
@@ -51,9 +52,11 @@
 		--fill-negative-secondary: rgba(229, 69, 69, 0.15);
 		--label-invert: #fff;
 		--border-edge: rgba(136, 126, 120, 0.15);
-		--fill-primary: #171717;
+		--fill-primary: #fff;
 		--border-accent: #f34ad5;
-		--label-accent: #f34ad5;
+		--label-accent: #70b501;
+		--staking-bg: rgba(182, 182, 182, 0.15);
+		--label-on-light: #140901;
 	}
 
 	.dark {
@@ -85,7 +88,9 @@
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
 
+		--fill-accent-primary: #caff94;
 		--fill-accent-secondary: rgba(202, 255, 148, 0.15);
+		--fill-accent-hover: #70b501;
 		--border-secondary: rgba(229, 238, 255, 0.6);
 		--fill-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-elevated: rgba(229, 238, 255, 0.1);
@@ -104,6 +109,8 @@
 		--border-accent: #caff94;
 		--label-accent: #caff94;
 		--label-on-light: #140901;
+
+		--staking-bg: rgba(228, 230, 224, 0.15);
 	}
 }
 

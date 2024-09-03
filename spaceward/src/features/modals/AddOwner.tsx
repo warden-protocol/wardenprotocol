@@ -138,7 +138,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 					<Button
 						onClick={create}
 						disabled={!name || !address}
-						className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-pixel-pink duration-200 hover:text-background"
+						className="flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-fill-accent-primary duration-200 hover:text-background"
 					>
 						{pending
 							? "Waiting for tx..."

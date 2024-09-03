@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 5
+sidebar_position: 3
 ---
 
 # Build a custom smart contract

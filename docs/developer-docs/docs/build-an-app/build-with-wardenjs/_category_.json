@@ -1,0 +1,11 @@
+{
+    "position": 4,
+    "label": "Build with WardenJS",
+    "collapsible": true,
+    "collapsed": true,
+    "link": {
+      "type": "generated-index",
+      "title": "Build with WardenJS"
+    },
+    "customProps": {}
+  }

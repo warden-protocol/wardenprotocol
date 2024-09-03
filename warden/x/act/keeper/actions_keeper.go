@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -136,11 +137,11 @@ func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action, bloc
 }
 
 func (k ActionKeeper) GetLatestPruneHeight(ctx context.Context) (int64, error) {
-    h, err := k.previousPruneBlockHeight.Get(ctx)
-    if errors.Is(err, collections.ErrNotFound) {
-        return 0, nil
-    }
-    return h, err
+	h, err := k.previousPruneBlockHeight.Get(ctx)
+	if errors.Is(err, collections.ErrNotFound) {
+		return 0, nil
+	}
+	return h, err
 }
 
 func (k ActionKeeper) ExpiredActions(ctx context.Context, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) ([]types.Action, error) {

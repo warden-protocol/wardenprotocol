@@ -57,7 +57,7 @@ In the output, you'll see a list of available subcommands and flags. You can que
 
 ## Examples
 
-This section contains useful examples of `wardend` commands. You'll learn how to query the node, manage keys, and initiate transactions. However, note that there are much more commands available.
+This section contains useful examples of `wardend` commands. You'll learn how to query the node, manage keys, and initiate transactions. However, note that there are many more commands available.
 
 ### `query`: Query the node
 

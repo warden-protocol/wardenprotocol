@@ -12,16 +12,13 @@ This guide explains how to create and deploy a simple "Hello World" smart contra
 
 Before you start, complete following prerequisites:
 
-- [Install Rust](https://www.rust-lang.org/tools/install).
+- Install Rust by running the following:
 
-   :::tip
-   You can run this: 
     ```bash
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     ```
-   :::
 
-- Set up the CosmWasm development environment. You will need the following tools:
+- Set up the CosmWasm development environment:
 
    - [CosmWasm](https://book.cosmwasm.com/setting-up-env.html): The CosmWasm binary and its dependencies.
 
@@ -29,15 +26,13 @@ Before you start, complete following prerequisites:
 
    - [wasm-opt](https://docs.rs/wasm-opt/latest/wasm_opt/index.html): A tool for optimizing the compiled WebAssembly (Wasm) code.
    
-   :::tip
-   To install these tools, you can just run the following:
+   To install these tools, run the following commands:
 
    ```bash
    rustup target add wasm32-unknown-unknown
    cargo install cargo-generate --features vendored-openssl
    brew install binaryen
    ```
-   :::
 
 - [Run a local chain](test/run-a-local-chain) and make sure you have `wardend` correctly installed. You can stop the chain for now if you wish.
 

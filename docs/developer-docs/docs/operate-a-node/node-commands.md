@@ -68,13 +68,13 @@ For example, the `warden` command allows you to query the [Warden](/learn/warden
 
 Here are some of the available `wardend query warden` subcommands with examples:
 
-- `keychains`: This command returns a list of your [Keychain](/learn/glossary#keychain).
+- `keychains`: This command returns a list of your [Keychains](/learn/glossary#keychain).
 
    ```bash
    wardend query warden keychains --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
-- `spaces`: This command a list of your [Spaces](/learn/glossary#space).
+- `spaces`: This command returns a list of your [Spaces](/learn/glossary#space).
    
    ```bash
    wardend query warden spaces --node https://rpc.buenavista.wardenprotocol.org:443

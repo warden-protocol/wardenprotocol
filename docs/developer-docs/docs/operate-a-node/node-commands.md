@@ -18,28 +18,29 @@ These commands allow you to do the following:
 
 ## Execute `wardend` commands
 
-1. To start using `wardend` commands, first make sure that the node is running. You have two options:
-   
-   - [Run a local chain](/build-an-app/test/run-a-local-chain)
-   - [Join Buenavista](buenavista-testnet/join-buenavista)
-   
-2. In a separate terminal window, run `wardend`, followed by a command. If needed, add subcommands and flags.
-   
-   For example, to check the `wardend` version and status, run these commands:
+To execute a node command, just run `wardend`, followed by the command. Add the `--node` flag with the RPC endpoint of your node.
 
-   ```
-   wardend version
-   ```
-   ```
-   wardend status
-   ```
+For example, to check the `wardend` version and status, run this:
+
+```bash
+wardend version --node https://rpc.buenavista.wardenprotocol.org:443
+```
+```bash
+wardend status --node https://rpc.buenavista.wardenprotocol.org:443
+```
+
+:::tip
+Here and the following examples, replace the URL following the `--node` flag by your node URL.
+
+If you're running a local chain, you can skip the `--node` flag and just execute the commands while the node is running.
+:::
 
 ## Get a list of commands
 
 To get a full list of available `wardend` commands and flags, run `wardend` with the `--help` flag:
 
-```
-wardend --help
+```bash
+wardend --help --node https://rpc.buenavista.wardenprotocol.org:443
 ```
 
 ## Get details of a command
@@ -48,8 +49,8 @@ To learn more about a command, run `wardend`, followed by the command name and t
 
 For example, you can execute this to learn more about querying the node with the `query` command:
 
-```
-wardend query --help
+```bash
+wardend query --help --node https://rpc.buenavista.wardenprotocol.org:443
 ```
 
 In the output, you'll see a list of available subcommands and flags. You can query subcommands the same way.
@@ -62,8 +63,8 @@ This section contains useful examples of `wardend` commands. You'll learn how to
 
 To get a full list of commands for querying a node, run this:
 
-```
-wardend query --help
+```bash
+wardend query --help --node https://rpc.buenavista.wardenprotocol.org:443
 ```
 
 For example, the `warden` command allows you to query the [Warden](/learn/warden-protocol-modules/x-warden) module.
@@ -72,14 +73,14 @@ Here are some of the available `wardend query warden` subcommands with examples:
 
 - `keychains`: This command a list of your [Keychain](/learn/glossary#keychain).
 
-   ```
-   wardend query warden keychains
+   ```bash
+   wardend query warden keychains --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 - `spaces`: This command a list of your [Spaces](/learn/glossary#space).
    
-   ```
-   wardend query warden spaces
+   ```bash
+   wardend query warden spaces --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 ### `keys`: Manage keys
@@ -87,7 +88,7 @@ Here are some of the available `wardend query warden` subcommands with examples:
 To get a full list of commands for managing your keys, run this:
 
 ```
-wardend keys --help
+wardend keys --help --node https://rpc.buenavista.wardenprotocol.org:443
 ```
 
 Here are some examples of `wardend keys` commands:
@@ -101,20 +102,20 @@ Here are some examples of `wardend keys` commands:
 - `add`: This is command adds a key – you executed it when setting up your node. It requires specifying an arbitrary key name.
       
    ```
-   wardend keys add my-key-name
+   wardend keys add my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 - `delete`: This command deletes a key, identified by its name.
       
    ```
-   wardend keys delete my-key-name
+   wardend keys delete my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
 
    ```
 
 - `add-keychain-writer`: This command adds a new [Keychain Writer](/learn/glossary#keychain-writer). It requires specifying an arbitrary Keychain Writer name.
    
    ```
-   wardend keys add my-keychain-writer-name
+   wardend keys add my-keychain-writer-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 ### `tx`: Initiate transactions
@@ -122,7 +123,7 @@ Here are some examples of `wardend keys` commands:
 To get a full list of commands for initiating transactions, run this:
 
 ```
-wardend tx --help
+wardend tx --help --node https://rpc.buenavista.wardenprotocol.org:443
 ```
 
 For example, the `warden` command allows you to initiate [Warden](/learn/warden-protocol-modules/x-warden) transactions. Here are some of the available `wardend tx warden` subcommands with examples:
@@ -133,7 +134,8 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    wardend tx warden new-keychain \
      --description 'my-description' \
      --from my-key-name \
-     --chain-id my-chain-id
+     --chain-id my-chain-id \
+     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 - `new-space`: This command creates a new [Space](/learn/glossary#space). It requires specifying your key name and the chain ID.
@@ -141,5 +143,6 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    ```
    wardend tx warden new-space \
      --from my-key-name \
-     --chain-id my-chain-id
+     --chain-id my-chain-id \
+     --node https://rpc.buenavista.wardenprotocol.org:443
    ```

@@ -21,7 +21,7 @@ These commands allow you to do the following:
 1. To start using `wardend` commands, first make sure that the node is running. You have two options:
    
    - [Run a local chain](/build-an-app/test/run-a-local-chain)
-   - [Join Buenavista](/buenavista-testnet/join-buenavista)
+   - [Join Buenavista](buenavista-testnet/join-buenavista)
    
 2. In a separate terminal window, run `wardend`, followed by a command. If needed, add subcommands and flags.
    

@@ -3,6 +3,7 @@ syntax = "proto3";
 package warden.act.v1beta1;
 
 import "warden/act/v1beta1/action.proto";
+import "warden/act/v1beta1/action_vote.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -37,6 +38,18 @@ message EventApproveAction {
 
   // address of the account that approved the action
   string approver = 2;
+}
+
+// EventActionVoted is emitted when an Action is voted on
+message EventActionVoted {
+  // id of action
+  uint64 id = 1;
+
+  // address of the account that participated in voting
+  string participant = 2;
+
+  // type of the vote
+  ActionVoteType vote = 3;
 }
 
 // EventActionStateChange is emitted when an Action is in a new state

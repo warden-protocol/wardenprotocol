@@ -8,6 +8,7 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "warden/act/v1beta1/params.proto";
+import "warden/act/v1beta1/action_vote.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -25,7 +26,7 @@ service Msg {
   // Add an approval to an existing Action.
   rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
 
-  // Add an approval to an existing Action.
+  // Checks a pending action and executes it if its in a valid state.
   rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
 
   // Create a new Rule.
@@ -36,6 +37,9 @@ service Msg {
 
   // Revoke an existing Action while in pending state.
   rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
+
+  // Vote for or against a particular Action.
+  rpc VoteForAction (MsgVoteForAction) returns (MsgVoteForActionResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -117,5 +121,16 @@ message MsgCheckAction {
 }
 
 message MsgCheckActionResponse {
+  string status = 1;
+}
+
+message MsgVoteForAction {
+  option (cosmos.msg.v1.signer) = "participant";
+  string participant = 1;
+  uint64 action_id = 2;
+  ActionVoteType vote = 3;
+}
+
+message MsgVoteForActionResponse {
   string status = 1;
 }

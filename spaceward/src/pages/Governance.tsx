@@ -127,7 +127,12 @@ export function GovernancePage() {
 				<img
 					src="/images/bnr-governance.png"
 					alt=""
-					className="absolute right-0 bottom-0 h-full object-contain z-[-1]"
+					className="absolute right-0 bottom-0 h-full object-contain z-[-1] opacity-0 dark:opacity-100"
+				/>
+				<img
+					src="/images/bnr-governance-light.png"
+					alt=""
+					className="absolute right-0 bottom-0 h-full object-contain z-[-1] dark:opacity-0"
 				/>
 				<div>
 					<div className="text-xl font-bold">
@@ -167,7 +172,7 @@ export function GovernancePage() {
 									payload: !state.proposalDropdown,
 								})
 							}
-							className="cursor-pointer group relative h-8 rounded-2xl bg-card py-2 px-3 text-xs  flex items-center gap-[2px]"
+							className="cursor-pointer group relative h-8 rounded-2xl bg-fill-quaternary py-2 px-3 text-xs  flex items-center gap-[2px]"
 						>
 							{state.filterStatus ===
 							ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED
@@ -189,7 +194,7 @@ export function GovernancePage() {
 								stroke="currentColor"
 							/>
 							{state.proposalDropdown ? (
-								<div className="w-[248px] bg-card text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
+								<div className="w-[248px] bg-fill-quaternary text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
 										onClick={() =>
@@ -268,7 +273,7 @@ export function GovernancePage() {
 						</div>
 					</div>
 
-					<div className="h-8 rounded-2xl bg-card py-[2px] px-[2px] text-xs flex items-center gap-1 ">
+					<div className="h-8 rounded-2xl bg-fill-quaternary py-[2px] px-[2px] text-xs flex items-center gap-1 ">
 						<div
 							onClick={() =>
 								dispatch({ type: "layout", payload: "list" })
@@ -276,7 +281,7 @@ export function GovernancePage() {
 							className={clsx(
 								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer p-[2px]",
 								{
-									"bg-primary": state.layout === "list",
+									"bg-fill-primary": state.layout === "list",
 								},
 							)}
 						>
@@ -294,7 +299,7 @@ export function GovernancePage() {
 							className={clsx(
 								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer p-[2px]",
 								{
-									"bg-primary": state.layout === "grid",
+									"bg-fill-primary": state.layout === "grid",
 								},
 							)}
 						>

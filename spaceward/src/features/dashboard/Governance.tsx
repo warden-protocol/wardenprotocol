@@ -66,7 +66,7 @@ export default function GovernanceDashboard() {
 					<LoaderCircle className="animate-spin mt-2" />
 				) : proposalsVoting ? (
 					<div className="flex gap-3 items-center">
-						<div className="rounded-full w-10 h-10 flex items-center justify-center text-pixel-pink text-xl	bg-fill-accent-secondary">
+						<div className="rounded-full w-10 h-10 flex items-center justify-center text-label-accent text-xl	bg-fill-accent-secondary">
 							{proposalsVoting}
 						</div>
 						Active votes

@@ -276,7 +276,7 @@ export function AssetsPage() {
 							<div
 								onClick={() => setGraphInterval(7)}
 								className={clsx(
-									"text-xs text-pixel-pink py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
+									"text-xs text-label-accent py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
 									graphInterval == 7 &&
 										"bg-fill-accent-secondary pointer-events-none",
 								)}
@@ -286,7 +286,7 @@ export function AssetsPage() {
 							<div
 								onClick={() => setGraphInterval(30)}
 								className={clsx(
-									"text-xs text-pixel-pink py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
+									"text-xs text-label-accent py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
 									graphInterval == 30 &&
 										"bg-fill-accent-secondary pointer-events-none",
 								)}
@@ -296,7 +296,7 @@ export function AssetsPage() {
 							<div
 								onClick={() => setGraphInterval(90)}
 								className={clsx(
-									"text-xs text-pixel-pink py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
+									"text-xs text-label-accent py-1 px-2 rounded-3xl cursor-pointer ease-out duration-200",
 									graphInterval == 90 &&
 										"bg-fill-accent-secondary pointer-events-none",
 								)}
@@ -324,7 +324,7 @@ export function AssetsPage() {
 							Deposit assets to SpaceWard
 						</div>
 						<button
-							className="text-black mt-6 bg-fill-primary h-[40px] text-label-invert rounded justify-center text-base font-semibold py-1 px-5 duration-300 ease-out hover:bg-pixel-pink"
+							className="text-black mt-6 bg-fill-primary h-[40px] text-label-invert rounded justify-center text-base font-semibold py-1 px-5 duration-300 ease-out hover:bg-fill-accent-primary"
 							onClick={setModal.bind(null, {
 								type: "receive",
 								params: {},

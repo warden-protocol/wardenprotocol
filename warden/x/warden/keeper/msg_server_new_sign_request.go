@@ -20,8 +20,12 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 		return nil, err
 	}
 
-	_, err = k.SpacesKeeper.Get(ctx, key.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := space.EnsureNonce(msg.Nonce); err != nil {
 		return nil, err
 	}
 

@@ -70,7 +70,7 @@ export default function StakingHeading(props: HeadingProps) {
 					{formatReward(props.total)}
 					{props.reward ? (
 						<button
-							className="ml-auto font-semibold text-pixel-pink text-base	"
+							className="ml-auto font-semibold text-label-accent text-base	"
 							onClick={() => {
 								if (props.reward) {
 									// fixme need validator select modal

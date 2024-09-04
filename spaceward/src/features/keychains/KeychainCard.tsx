@@ -51,7 +51,7 @@ const KeychainCard = (props: KeychainProps) => {
 				<div className="bg-fill-quaternary rounded-lg	p-3">
 					<div className="flex gap-1 items-center font-semibold">
 						<span>
-							Keys · <span className="text-pixel-pink">X.XK</span>
+							Keys · <span className="text-label-accent">X.XK</span>
 						</span>
 						<Icons.key />
 					</div>
@@ -65,7 +65,7 @@ const KeychainCard = (props: KeychainProps) => {
 					<div className="flex gap-1 items-center font-semibold">
 						<span>
 							Sign price ·{" "}
-							<span className="text-pixel-pink">$X.XX</span>
+							<span className="text-label-accent">$X.XX</span>
 						</span>
 					</div>
 
@@ -89,7 +89,7 @@ const KeychainCard = (props: KeychainProps) => {
 			<div className="bg-border-quaternary h-[1px] mb-2 mt-4" />
 
 			<button
-				className="focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 flex items-center justify-center gap-2 h-14 font-semibold duration-300 text-pixel-pink hover:text-foreground w-full"
+				className="focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 flex items-center justify-center gap-2 h-14 font-semibold duration-300 text-label-accent hover:text-foreground w-full"
 				onClick={setModal.bind(null, {
 					type: "create-key",
 					params: { keychainId: props.id },

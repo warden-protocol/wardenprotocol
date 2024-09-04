@@ -15,6 +15,6 @@ An example of an OApp is [SpaceWard](https://help.wardenprotocol.org) – our ap
 
 The main part of any Omnichain Application is an **Omnichain Contract**. To get started with OApps, follow this guide: [Build a custom smart contract](build-a-custom-smart-contract)
 
-In the [Build with WardenJS](category/build-with-wardenjs) section, you'll find information on WardenJS – a tool used for building the frontend.
+In the [Build with WardenJS](/category/build-with-wardenjs) section, you'll find information on WardenJS – a tool used for building the frontend.
 
 To learn more, check our list of CosmWasm resources in [Useful links](useful-links) section.

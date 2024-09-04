@@ -31,7 +31,8 @@ RUN apt update && \
     useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
     install -o 1000 -g 1000 -d /data
 COPY --from=wardend-build --chown=warden:warden /build/wardend /usr/bin/wardend
-ADD --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 --chown=warden:warden https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+ADD --chmod=444 --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 --chown=warden:warden https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+
 USER warden
 CMD ["wardend", "start"]
 
@@ -50,8 +51,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=wardend-build --chown=warden:warden /build/wardend /usr/bin/wardend
 COPY --from=wardend-build --chown=warden:warden /build/faucet /usr/bin/faucet
-ADD --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
-RUN chmod 444 /lib/libwasmvm.x86_64.so
+ADD --chmod=444 --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 
 USER warden
 
@@ -74,7 +74,8 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 
 FROM debian:bookworm-slim AS wardenkms
 COPY --chown=nobody:nogroup --from=wardenkms-build /build/wardenkms /
-ADD --chown=nobody:nogroup --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+ADD --chmod=444 --chown=nobody:nogroup --checksum=sha256:015bdae5e70304f1e487981f90e3956754718fe7bdac4446aab0838fcb8b33e0 https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+
 USER nobody
 ENTRYPOINT ["/wardenkms"]
 

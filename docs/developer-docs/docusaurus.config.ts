@@ -81,7 +81,7 @@ const config: Config = {
                 {
                     type: "docSidebar",
                     sidebarId: "buildApp",
-                    label: "Build an App",
+                    label: "Build an app",
                     position: "left",
                 },
                 {

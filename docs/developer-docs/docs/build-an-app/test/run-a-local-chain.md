@@ -150,10 +150,6 @@ which wardend
 wardend version
 ```
 
-:::tip
-The second line, `wardend version`, is a command for interacting with the chain. In the next steps, you'll see more commands like this, starting with `wardend`. To learn more, see [Node commands](/operate-a-node/node-commands).
-:::
-
 ### 3. Create and configure a chain
 
 In this flow, you'll create and configure your chain manually.

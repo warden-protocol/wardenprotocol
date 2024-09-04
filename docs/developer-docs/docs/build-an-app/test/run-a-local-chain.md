@@ -8,6 +8,17 @@ sidebar_position: 1
 
 This guide explains how to run a local chain for development and testing purposes.
 
+There are three ways to run a node:
+
+- **Option 1: Run a `just` script**  
+It's the simplest way to run a local chain. Initiate a `just` script that builds the chain binary and then creates, configures, and runs a new chain.
+
+- **Option 2: Use a devnet snapshot**  
+You can use a devnet snapshot with prebuilt node settings.
+
+- **Option 3. Configure manually**  
+We recommend this option if you wish to run a node with custom settings and learn the basics of interacting with a node.
+
 ## Prerequisites
 
 Before you start, complete following prerequisites:
@@ -111,6 +122,8 @@ You can check the settings of your node in the genesis file: `$HOME/.warden/conf
 
 ## Option 3. Configure manually
 
+We recommend this option if you wish to run a node with custom settings and learn the basics of interacting with a node.
+
 ### 1. Clone the repository
 
 Clone the Warden Protocol repository and navigate to the root directory:
@@ -136,6 +149,10 @@ You can check the binary location and version with these commands:
 which wardend
 wardend version
 ```
+
+:::tip
+The second line, `wardend version`, is a command for interacting with the chain. In the next steps, you'll see more commands like this, starting with `wardend`. To learn more, see [Node commands](/operate-a-node/node-commands).
+:::
 
 ### 3. Create and configure a chain
 
@@ -257,8 +274,7 @@ In the previous steps, you configured your node with the minimum settings requir
    
    ```bash
    wardend tx warden new-space \
-     --from my-key-name \
-     --chain-id my-chain-id
+     --from my-key-name      --chain-id my-chain-id
    ```
 
 2. Enter your passphrase and confirm the transaction.
@@ -335,7 +351,7 @@ The output should contain status information about your node:
 ```
 
 :::tip
-You can use other `wardend` commands to interact with the node. Just run `wardend` to see a list of available commands.
+To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
 :::
 
 :::tip

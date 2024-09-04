@@ -168,6 +168,15 @@ export default function SendAssetsModal({
 						currentKey={key}
 						token={selectedToken?.token}
 						className="relative mb-8 z-50"
+						onKeyChange={k => {
+							setModal({
+								params: {
+									chainName,
+									token,
+									keyResponse: k
+								},
+							});
+						}}
 					/>
 
 					{noAssets && (

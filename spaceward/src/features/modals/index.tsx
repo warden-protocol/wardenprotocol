@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import AddOwnerModal from "./AddOwner";
 import ApproveModal from "./ApproveActionModal";
+import ApproveSnapModal from "./ApproveSnapModal";
 import CreateKeyModal from "./CreateKey";
 import ConnectedModal from "./ConnectedModal";
 import ReceiveAssetsModal from "./ReceiveAssets";
@@ -65,6 +66,9 @@ export default function ModalRoot() {
 				{data.type === "approve-action" ||
 					data.background["approve-action"] ? (
 					<ApproveModal hidden={data.type !== "approve-action"} />
+				) : null}
+				{data.type === "approve-snap" ? (
+					<ApproveSnapModal hidden={data.type !== "approve-snap"} />
 				) : null}
 				{data.type === "add-owner" || data.background["add-owner"] ? (
 					<AddOwnerModal hidden={data.type !== "add-owner"} />

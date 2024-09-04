@@ -50,3 +50,10 @@ message EventActionStateChange {
   // new_status is the new status of the action
   ActionStatus new_status = 3;
 }
+
+// EventActionPruned is emitted when an Action is pruned in `Completed`, `Revoked`, `Pending` or `Timeout`
+// states and won't be processed further
+message EventActionPruned {
+  // id of action
+  uint64 id = 1;
+}

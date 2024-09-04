@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Added Keybase Id field (16 symbols)
 * (x/act) [#631](https://github.com/warden-protocol/wardenprotocol/631) Add pruning of timed-out actions
 * (x/warden) Make `KeychainFees` fields non-nullable, use an empty list of coins to indicate no fees
+* (x/act) Introduce Votes and Approve/Reject expressions for Actions
 
 ### Features (non-breaking)
 

@@ -7,6 +7,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "shield/ast/ast.proto";
 import "warden/act/v1beta1/rule.proto";
+import "warden/act/v1beta1/action_vote.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -48,6 +49,8 @@ message Action {
   .shield.ast.Expression approve_expression = 13 [(gogoproto.nullable) = false];
   // The expression to be evaluated for rejection.
   .shield.ast.Expression reject_expression = 14 [(gogoproto.nullable) = false];
+  // The votes accepted from the voting participants.
+  repeated ActionVote votes = 15;
 }
 
 // Current status of an action.

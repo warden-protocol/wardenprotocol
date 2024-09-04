@@ -17,7 +17,11 @@ func (k msgServer) AddSpaceOwner(ctx context.Context, msg *types.MsgAddSpaceOwne
 		return nil, err
 	}
 
-	if err := space.AddOwner(msg.NewOwner); err != nil {
+	if err := space.AddOwner(msg.NewOwner, msg.Nonce); err != nil {
+		return nil, err
+	}
+
+	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
 		return nil, err
 	}
 

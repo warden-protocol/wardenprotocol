@@ -31,7 +31,7 @@ func (c *Test_AddRemoveOwner) Run(t *testing.T, ctx context.Context, build frame
 	res := alice.Tx(t, "warden new-space")
 	checks.SuccessTx(t, res)
 
-	resAddOwner := alice.Tx(t, "warden new-action add-space-owner --space-id 1 --new-owner warden10zm6farjqffkadjx8v0znx67x6a26f36p020td")
+	resAddOwner := alice.Tx(t, "warden new-action add-space-owner --space-id 1 --new-owner warden10zm6farjqffkadjx8v0znx67x6a26f36p020td --nonce 0")
 	checks.SuccessTx(t, resAddOwner)
 
 	client := c.w.GRPCClient(t)
@@ -41,7 +41,7 @@ func (c *Test_AddRemoveOwner) Run(t *testing.T, ctx context.Context, build frame
 	require.NoError(t, err)
 	require.Equal(t, 1, len(spacesByOwnerRes.Spaces))
 
-	resRemoveOwner := alice.Tx(t, "warden new-action remove-space-owner --space-id 1 --owner warden10zm6farjqffkadjx8v0znx67x6a26f36p020td")
+	resRemoveOwner := alice.Tx(t, "warden new-action remove-space-owner --space-id 1 --owner warden10zm6farjqffkadjx8v0znx67x6a26f36p020td --nonce 1")
 	checks.SuccessTx(t, resRemoveOwner)
 
 	spacesByOwnerRes2, err := client.Warden.SpacesByOwner(ctx, &types.QuerySpacesByOwnerRequest{

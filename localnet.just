@@ -1,5 +1,5 @@
-chain_id := "warden"
-shulgin := "warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4"
+chain_id := "warden_1337-1"
+shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 
 # run a single-node chain locally, use "bin" to specify the binary name
@@ -20,21 +20,23 @@ start bin="wardend" install="true":
     }
 
     rm -rf ~/.warden
-    {{bin}} init localnet --chain-id {{chain_id}} --default-denom uward > /dev/null
+    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set client chain-id {{chain_id}}
     {{bin}} config set client keyring-backend test
-    {{bin}} config set app minimum-gas-prices 0uward
+    {{bin}} config set app minimum-gas-prices 0award
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
-    {{bin}} genesis add-genesis-account val 10000000000000000000000000uward
-    {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000uward
+    {{bin}} genesis add-genesis-account val 10000000000000000000000000award
+    {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
-    {{bin}} genesis gentx val 1000000000uward
+    replace 's/aevmos/award/' ~/.warden/config/genesis.json
+    jq '.app_state.evm.params.active_precompiles = []' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
+    {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
     GENESIS="$HOME/.warden/config/genesis.json"

@@ -20,11 +20,8 @@ These commands allow you to do the following:
 
 To execute a node command, just run `wardend`, followed by the command. Add the `--node` flag with the RPC endpoint of your node.
 
-For example, to check the `wardend` version and status, run this:
+For example, to check the node status, run this:
 
-```bash
-wardend version --node https://rpc.buenavista.wardenprotocol.org:443
-```
 ```bash
 wardend status --node https://rpc.buenavista.wardenprotocol.org:443
 ```

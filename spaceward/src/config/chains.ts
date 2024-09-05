@@ -122,11 +122,11 @@ export const wardenprotocoldevnet: Chain = {
 	status: "live",
 	network_type: "testnet",
 	pretty_name: "Warden Protocol (devnet)",
-	chain_id: "warden",
+	chain_id: "devnet_12345-1",
 	bech32_prefix: "warden",
 	daemon_name: "wardend",
 	node_home: "$HOME/.warden",
-	key_algos: ["secp256k1", "ethsecp256k1"],
+	key_algos: ["ethsecp256k1"],
 	slip44: 60,
 	fees: {
 		fee_tokens: [

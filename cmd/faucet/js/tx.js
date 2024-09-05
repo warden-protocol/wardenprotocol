@@ -6,7 +6,7 @@ function startPolling() {
       .then((response) => response.text())
       .then((html) => {
         document.getElementById("tx-status").innerHTML = html;
-        if (html.includes('id="tx-result"')) {
+        if (html.includes('class="tx-result"')) {
           clearInterval(pollingInterval);
         }
       });

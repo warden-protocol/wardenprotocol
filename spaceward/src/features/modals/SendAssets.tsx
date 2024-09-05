@@ -168,6 +168,15 @@ export default function SendAssetsModal({
 						currentKey={key}
 						token={selectedToken?.token}
 						className="relative mb-8 z-50"
+						onKeyChange={k => {
+							setModal({
+								params: {
+									chainName,
+									token,
+									keyResponse: k
+								},
+							});
+						}}
 					/>
 
 					{noAssets && (
@@ -263,7 +272,7 @@ export default function SendAssetsModal({
 								className={clsx(
 									"text-xs cursor-pointer",
 									amountWarning && "text-negative",
-									!amountWarning && "text-pixel-pink",
+									!amountWarning && "text-label-accent",
 								)}
 							>
 								Max:{maxAmount}{" "}

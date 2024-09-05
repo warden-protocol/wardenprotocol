@@ -8,7 +8,7 @@
 # The minimum gas prices a validator is willing to accept for processing a
 # transaction. A transaction's fees must meet the minimum of any denomination
 # specified in this config (e.g. 0.25token1,0.0001token2).
-minimum-gas-prices = "0uward"
+minimum-gas-prices = "0award"
 
 # The maximum gas a query coming over rest/grpc may consume.
 # If this is set to zero, the query can consume an unbounded amount of gas.
@@ -268,3 +268,141 @@ price_ttl = "0s"
 # is the block time of the chain. Otherwise, 1.5 seconds (1500ms) is a good default. If this
 # is greater than 1 minute (1m), the app will not start.
 interval = "0s"
+
+###############################################################################
+###                             EVM Configuration                           ###
+###############################################################################
+
+[evm]
+
+# Tracer defines the 'vm.Tracer' type that the EVM will use when the node is run in
+# debug mode. To enable tracing use the '--evm.tracer' flag when starting your node.
+# Valid types are: json|struct|access_list|markdown
+tracer = ""
+
+# MaxTxGasWanted defines the gas wanted for each eth tx returned in ante handler in check tx mode.
+max-tx-gas-wanted = 0
+
+###############################################################################
+###                           JSON RPC Configuration                        ###
+###############################################################################
+
+[json-rpc]
+
+# Enable defines if the JSONRPC server should be enabled.
+enable = true
+
+# Address defines the EVM RPC HTTP server address to bind to.
+address = "127.0.0.1:8545"
+
+# Address defines the EVM WebSocket server address to bind to.
+ws-address = "127.0.0.1:8546"
+
+# API defines a list of JSON-RPC namespaces that should be enabled
+# Example: "eth,txpool,personal,net,debug,web3"
+api = "eth,net,web3"
+
+# GasCap sets a cap on gas that can be used in eth_call/estimateGas (0=infinite). Default: 25,000,000.
+gas-cap = 25000000
+
+# Allow insecure account unlocking when account-related RPCs are exposed by http
+allow-insecure-unlock = true
+
+# EVMTimeout is the global timeout for eth_call. Default: 5s.
+evm-timeout = "5s"
+
+# TxFeeCap is the global tx-fee cap for send transaction. Default: 1eth.
+txfee-cap = 1
+
+# FilterCap sets the global cap for total number of filters that can be created
+filter-cap = 200
+
+# FeeHistoryCap sets the global cap for total number of blocks that can be fetched
+feehistory-cap = 100
+
+# LogsCap defines the max number of results can be returned from single 'eth_getLogs' query.
+logs-cap = 10000
+
+# BlockRangeCap defines the max block range allowed for 'eth_getLogs' query.
+block-range-cap = 10000
+
+# HTTPTimeout is the read/write timeout of http json-rpc server.
+http-timeout = "30s"
+
+# HTTPIdleTimeout is the idle timeout of http json-rpc server.
+http-idle-timeout = "2m0s"
+
+# AllowUnprotectedTxs restricts unprotected (non EIP155 signed) transactions to be submitted via
+# the node's RPC when the global parameter is disabled.
+allow-unprotected-txs = false
+
+# MaxOpenConnections sets the maximum number of simultaneous connections
+# for the server listener.
+max-open-connections = 0
+
+# EnableIndexer enables the custom transaction indexer for the EVM (ethereum transactions).
+enable-indexer = false
+
+# MetricsAddress defines the EVM Metrics server address to bind to. Pass --metrics in CLI to enable
+# Prometheus metrics path: /debug/metrics/prometheus
+metrics-address = "127.0.0.1:6065"
+
+# Upgrade height for fix of revert gas refund logic when transaction reverted.
+fix-revert-gas-refund-height = 0
+
+###############################################################################
+###                             TLS Configuration                           ###
+###############################################################################
+
+[tls]
+
+# Certificate path defines the cert.pem file path for the TLS configuration.
+certificate-path = ""
+
+# Key path defines the key.pem file path for the TLS configuration.
+key-path = ""
+
+###############################################################################
+###                           Rosetta Configuration                         ###
+###############################################################################
+
+[rosetta]
+
+# Enable defines if the Rosetta API server should be enabled.
+enable = false
+
+# Address defines the Rosetta API server to listen on.
+address = ":8080"
+
+# Network defines the name of the blockchain that will be returned by Rosetta.
+blockchain = "evmos"
+
+# Network defines the name of the network that will be returned by Rosetta.
+network = "evmos"
+
+# TendermintRPC defines the endpoint to connect to CometBFT RPC,
+# specifying 'tcp://' before is not required, usually it's at port 26657
+tendermint-rpc = "localhost:26657"
+
+# GRPCEndpoint defines the cosmos application gRPC endpoint
+# usually it is located at 9090 port
+grpc-endpoint = "localhost:{{ .GRPCPort }}"
+
+# Retries defines the number of retries when connecting to the node before failing.
+retries = 5
+
+# Offline defines if Rosetta server should run in offline mode.
+offline = false
+
+# EnableFeeSuggestion indicates to use fee suggestion when 'construction/metadata' is called without gas limit and price.
+enable-fee-suggestion = false
+
+# GasToSuggest defines gas limit when calculating the fee
+gas-to-suggest = 300000
+
+# DenomToSuggest defines the defult denom for fee suggestion.
+# Price must be in minimum-gas-prices.
+denom-to-suggest = "aevmos"
+
+# GasPrices defines the gas prices for fee suggestion
+gas-prices = "4000000.000000000000000000aevmos"

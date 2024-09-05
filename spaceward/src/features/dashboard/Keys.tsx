@@ -58,7 +58,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						First add a key to start receiving assets
 					</div>
 
-					<NewKeyButton className="mt-4 text-background bg-foreground rounded-lg font-semibold hover:bg-pixel-pink duration-200" />
+					<NewKeyButton className="mt-4 text-background bg-foreground rounded-lg font-semibold hover:bg-fill-accent-primary duration-200" />
 				</div>
 			) : (
 				<DashboardGraph addresses={addresses} />
@@ -146,7 +146,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					{activeRuleId ? (
 						<Intent activeIntentId={activeRuleId} />
 					) : (
-						<div className="text-pixel-pink flex items-center">
+						<div className="text-label-accent flex items-center">
 							Add
 							<Icons.chevronPink stroke="currentColor" />
 						</div>

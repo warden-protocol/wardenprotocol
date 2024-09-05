@@ -20,10 +20,10 @@ import (
 )
 
 type Config struct {
-	ChainID        string `env:"CHAIN_ID, default=warden"`
+	ChainID        string `env:"CHAIN_ID, default=warden_1337-1"`
 	GRPCURL        string `env:"GRPC_URL, default=localhost:9090"`
 	GRPCInsecure   bool   `env:"GRPC_INSECURE, default=true"`
-	DerivationPath string `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
+	DerivationPath string `env:"DERIVATION_PATH, default=m/44'/60'/0'/0/0"`
 	Mnemonic       string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
 	KeychainId     uint64 `env:"KEYCHAIN_ID, default=1"`
 
@@ -69,7 +69,7 @@ func main() {
 		BatchInterval:  cfg.BatchInterval,
 		BatchSize:      cfg.BatchSize,
 		TxTimeout:      cfg.TxTimeout,
-		TxFees:         sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
+		TxFees:         sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

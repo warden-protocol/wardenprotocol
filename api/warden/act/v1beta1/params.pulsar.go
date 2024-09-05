@@ -9,18 +9,25 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	io "io"
 	reflect "reflect"
 	sync "sync"
 )
 
 var (
-	md_Params protoreflect.MessageDescriptor
+	md_Params                             protoreflect.MessageDescriptor
+	fd_Params_max_pending_time            protoreflect.FieldDescriptor
+	fd_Params_max_completed_time          protoreflect.FieldDescriptor
+	fd_Params_prune_check_block_frequency protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_act_v1beta1_params_proto_init()
 	md_Params = File_warden_act_v1beta1_params_proto.Messages().ByName("Params")
+	fd_Params_max_pending_time = md_Params.Fields().ByName("max_pending_time")
+	fd_Params_max_completed_time = md_Params.Fields().ByName("max_completed_time")
+	fd_Params_prune_check_block_frequency = md_Params.Fields().ByName("prune_check_block_frequency")
 }
 
 var _ protoreflect.Message = (*fastReflection_Params)(nil)
@@ -88,6 +95,24 @@ func (x *fastReflection_Params) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.MaxPendingTime != nil {
+		value := protoreflect.ValueOfMessage(x.MaxPendingTime.ProtoReflect())
+		if !f(fd_Params_max_pending_time, value) {
+			return
+		}
+	}
+	if x.MaxCompletedTime != nil {
+		value := protoreflect.ValueOfMessage(x.MaxCompletedTime.ProtoReflect())
+		if !f(fd_Params_max_completed_time, value) {
+			return
+		}
+	}
+	if x.PruneCheckBlockFrequency != int64(0) {
+		value := protoreflect.ValueOfInt64(x.PruneCheckBlockFrequency)
+		if !f(fd_Params_prune_check_block_frequency, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -103,6 +128,12 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
+	case "warden.act.v1beta1.Params.max_pending_time":
+		return x.MaxPendingTime != nil
+	case "warden.act.v1beta1.Params.max_completed_time":
+		return x.MaxCompletedTime != nil
+	case "warden.act.v1beta1.Params.prune_check_block_frequency":
+		return x.PruneCheckBlockFrequency != int64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.Params"))
@@ -119,6 +150,12 @@ func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
+	case "warden.act.v1beta1.Params.max_pending_time":
+		x.MaxPendingTime = nil
+	case "warden.act.v1beta1.Params.max_completed_time":
+		x.MaxCompletedTime = nil
+	case "warden.act.v1beta1.Params.prune_check_block_frequency":
+		x.PruneCheckBlockFrequency = int64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.Params"))
@@ -135,6 +172,15 @@ func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
+	case "warden.act.v1beta1.Params.max_pending_time":
+		value := x.MaxPendingTime
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.act.v1beta1.Params.max_completed_time":
+		value := x.MaxCompletedTime
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.act.v1beta1.Params.prune_check_block_frequency":
+		value := x.PruneCheckBlockFrequency
+		return protoreflect.ValueOfInt64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.Params"))
@@ -155,6 +201,12 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
+	case "warden.act.v1beta1.Params.max_pending_time":
+		x.MaxPendingTime = value.Message().Interface().(*durationpb.Duration)
+	case "warden.act.v1beta1.Params.max_completed_time":
+		x.MaxCompletedTime = value.Message().Interface().(*durationpb.Duration)
+	case "warden.act.v1beta1.Params.prune_check_block_frequency":
+		x.PruneCheckBlockFrequency = value.Int()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.Params"))
@@ -175,6 +227,18 @@ func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "warden.act.v1beta1.Params.max_pending_time":
+		if x.MaxPendingTime == nil {
+			x.MaxPendingTime = new(durationpb.Duration)
+		}
+		return protoreflect.ValueOfMessage(x.MaxPendingTime.ProtoReflect())
+	case "warden.act.v1beta1.Params.max_completed_time":
+		if x.MaxCompletedTime == nil {
+			x.MaxCompletedTime = new(durationpb.Duration)
+		}
+		return protoreflect.ValueOfMessage(x.MaxCompletedTime.ProtoReflect())
+	case "warden.act.v1beta1.Params.prune_check_block_frequency":
+		panic(fmt.Errorf("field prune_check_block_frequency of message warden.act.v1beta1.Params is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.Params"))
@@ -188,6 +252,14 @@ func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protore
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "warden.act.v1beta1.Params.max_pending_time":
+		m := new(durationpb.Duration)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.act.v1beta1.Params.max_completed_time":
+		m := new(durationpb.Duration)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.act.v1beta1.Params.prune_check_block_frequency":
+		return protoreflect.ValueOfInt64(int64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.Params"))
@@ -257,6 +329,17 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
+		if x.MaxPendingTime != nil {
+			l = options.Size(x.MaxPendingTime)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.MaxCompletedTime != nil {
+			l = options.Size(x.MaxCompletedTime)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.PruneCheckBlockFrequency != 0 {
+			n += 1 + runtime.Sov(uint64(x.PruneCheckBlockFrequency))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -285,6 +368,39 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.PruneCheckBlockFrequency != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.PruneCheckBlockFrequency))
+			i--
+			dAtA[i] = 0x18
+		}
+		if x.MaxCompletedTime != nil {
+			encoded, err := options.Marshal(x.MaxCompletedTime)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if x.MaxPendingTime != nil {
+			encoded, err := options.Marshal(x.MaxPendingTime)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0xa
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -335,6 +451,97 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: Params: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MaxPendingTime", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.MaxPendingTime == nil {
+					x.MaxPendingTime = &durationpb.Duration{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.MaxPendingTime); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MaxCompletedTime", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.MaxCompletedTime == nil {
+					x.MaxCompletedTime = &durationpb.Duration{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.MaxCompletedTime); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 3:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PruneCheckBlockFrequency", wireType)
+				}
+				x.PruneCheckBlockFrequency = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.PruneCheckBlockFrequency |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -388,6 +595,10 @@ type Params struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	MaxPendingTime           *durationpb.Duration `protobuf:"bytes,1,opt,name=max_pending_time,json=maxPendingTime,proto3" json:"max_pending_time,omitempty"`
+	MaxCompletedTime         *durationpb.Duration `protobuf:"bytes,2,opt,name=max_completed_time,json=maxCompletedTime,proto3" json:"max_completed_time,omitempty"`
+	PruneCheckBlockFrequency int64                `protobuf:"varint,3,opt,name=prune_check_block_frequency,json=pruneCheckBlockFrequency,proto3" json:"prune_check_block_frequency,omitempty"`
 }
 
 func (x *Params) Reset() {
@@ -410,6 +621,27 @@ func (*Params) Descriptor() ([]byte, []int) {
 	return file_warden_act_v1beta1_params_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *Params) GetMaxPendingTime() *durationpb.Duration {
+	if x != nil {
+		return x.MaxPendingTime
+	}
+	return nil
+}
+
+func (x *Params) GetMaxCompletedTime() *durationpb.Duration {
+	if x != nil {
+		return x.MaxCompletedTime
+	}
+	return nil
+}
+
+func (x *Params) GetPruneCheckBlockFrequency() int64 {
+	if x != nil {
+		return x.PruneCheckBlockFrequency
+	}
+	return 0
+}
+
 var File_warden_act_v1beta1_params_proto protoreflect.FileDescriptor
 
 var file_warden_act_v1beta1_params_proto_rawDesc = []byte{
@@ -418,24 +650,41 @@ var file_warden_act_v1beta1_params_proto_rawDesc = []byte{
 	0x6f, 0x12, 0x12, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31,
 	0x62, 0x65, 0x74, 0x61, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69,
 	0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x26,
-	0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x3a, 0x1c, 0xe8, 0xa0, 0x1f, 0x01, 0x8a, 0xe7,
-	0xb0, 0x2a, 0x13, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x78, 0x2f, 0x61, 0x63, 0x74, 0x2f,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0xdc, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x42, 0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
-	0x5a, 0x4b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x3b, 0x61, 0x63, 0x74, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03,
-	0x57, 0x41, 0x58, 0xaa, 0x02, 0x12, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x63, 0x74,
-	0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x12, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x5c, 0x41, 0x63, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x1e,
-	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x63, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
-	0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x63, 0x74, 0x3a, 0x3a, 0x56, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
+	0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x91,
+	0x02, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x52, 0x0a, 0x10, 0x6d, 0x61, 0x78,
+	0x5f, 0x70, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x0d,
+	0xc8, 0xde, 0x1f, 0x00, 0x98, 0xdf, 0x1f, 0x01, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x0e, 0x6d,
+	0x61, 0x78, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x56, 0x0a,
+	0x12, 0x6d, 0x61, 0x78, 0x5f, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x5f, 0x74,
+	0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44, 0x75, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x42, 0x0d, 0xc8, 0xde, 0x1f, 0x00, 0x98, 0xdf, 0x1f, 0x01, 0xa8, 0xe7,
+	0xb0, 0x2a, 0x01, 0x52, 0x10, 0x6d, 0x61, 0x78, 0x43, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65,
+	0x64, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x3d, 0x0a, 0x1b, 0x70, 0x72, 0x75, 0x6e, 0x65, 0x5f, 0x63,
+	0x68, 0x65, 0x63, 0x6b, 0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x66, 0x72, 0x65, 0x71, 0x75,
+	0x65, 0x6e, 0x63, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x18, 0x70, 0x72, 0x75, 0x6e,
+	0x65, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x46, 0x72, 0x65, 0x71, 0x75,
+	0x65, 0x6e, 0x63, 0x79, 0x3a, 0x1c, 0xe8, 0xa0, 0x1f, 0x01, 0x8a, 0xe7, 0xb0, 0x2a, 0x13, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x78, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x42, 0xdc, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0b, 0x50,
+	0x61, 0x72, 0x61, 0x6d, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4b, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61,
+	0x63, 0x74, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa,
+	0x02, 0x12, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x2e, 0x56, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x12, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x63,
+	0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x1e, 0x57, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x5c, 0x41, 0x63, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47,
+	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x14, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x63, 0x74, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -452,14 +701,17 @@ func file_warden_act_v1beta1_params_proto_rawDescGZIP() []byte {
 
 var file_warden_act_v1beta1_params_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_warden_act_v1beta1_params_proto_goTypes = []interface{}{
-	(*Params)(nil), // 0: warden.act.v1beta1.Params
+	(*Params)(nil),              // 0: warden.act.v1beta1.Params
+	(*durationpb.Duration)(nil), // 1: google.protobuf.Duration
 }
 var file_warden_act_v1beta1_params_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: warden.act.v1beta1.Params.max_pending_time:type_name -> google.protobuf.Duration
+	1, // 1: warden.act.v1beta1.Params.max_completed_time:type_name -> google.protobuf.Duration
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_warden_act_v1beta1_params_proto_init() }

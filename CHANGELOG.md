@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (evm) Introduce award denomination to adjust units with Ethereum
 * (evm) Using ethsecp256k1 signature for all transactions. Users should reimport their seeds to get new addresses.
 * (x/act) Introduce Votes and Approve/Reject expressions for Actions
+* (x/act) Add expected expressions to MsgAddAction
 
 ### Features (non-breaking)
 

@@ -28,7 +28,7 @@ func (k msgServer) VoteForAction(goCtx context.Context, msg *types.MsgVoteForAct
 		}, nil
 	}
 
-	if err := act.AddVote(ctx, msg.Participant, msg.Vote); err != nil {
+	if err := act.AddVote(ctx, msg.Participant, msg.VoteType); err != nil {
 		return nil, err
 	}
 

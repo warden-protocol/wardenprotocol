@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	time "time"
+	"time"
 
 	"cosmossdk.io/errors"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -15,11 +15,11 @@ func NewApprover(address string, timestamp time.Time) *Approver {
 	}
 }
 
-func NewVote(participant string, vote ActionVoteType, timestamp time.Time) *ActionVote {
+func NewVote(participant string, voteType ActionVoteType, timestamp time.Time) *ActionVote {
 	return &ActionVote{
 		Participant: participant,
 		VotedAt:     timestamp,
-		Vote:        vote,
+		VoteType:    voteType,
 	}
 }
 
@@ -72,24 +72,24 @@ func (a *Action) AddApprover(ctx sdk.Context, address string) error {
 	return nil
 }
 
-func (a *Action) AddVote(ctx sdk.Context, participant string, vote ActionVoteType) error {
+func (a *Action) AddVote(ctx sdk.Context, participant string, voteType ActionVoteType) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
 		return errors.Wrapf(ErrInvalidActionStatus, "can't add a vote to an action that's not pending")
 	}
 
 	for _, v := range a.Votes {
 		if v.Participant == participant {
-			return ErrActionVoteAlreadyExists
+			return ErrAlreadyParticipatedInVoting
 		}
 	}
 
 	a.UpdatedAt = ctx.BlockTime()
-	a.Votes = append(a.Votes, NewVote(participant, vote, a.UpdatedAt))
+	a.Votes = append(a.Votes, NewVote(participant, voteType, a.UpdatedAt))
 
 	if err := ctx.EventManager().EmitTypedEvent(&EventActionVoted{
 		Id:          a.Id,
 		Participant: participant,
-		Vote:        vote,
+		VoteType:    voteType,
 	}); err != nil {
 		return err
 	}

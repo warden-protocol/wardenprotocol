@@ -128,7 +128,7 @@ message MsgVoteForAction {
   option (cosmos.msg.v1.signer) = "participant";
   string participant = 1;
   uint64 action_id = 2;
-  ActionVoteType vote = 3;
+  ActionVoteType vote_type = 3;
 }
 
 message MsgVoteForActionResponse {

@@ -8,6 +8,7 @@ import (
 	_ "github.com/cosmos/cosmos-proto"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
+	ast "github.com/warden-protocol/wardenprotocol/api/shield/ast"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -873,10 +874,12 @@ func (x *fastReflection_MsgUpdateParamsResponse) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_MsgNewAction                       protoreflect.MessageDescriptor
-	fd_MsgNewAction_creator               protoreflect.FieldDescriptor
-	fd_MsgNewAction_message               protoreflect.FieldDescriptor
-	fd_MsgNewAction_action_timeout_height protoreflect.FieldDescriptor
+	md_MsgNewAction                             protoreflect.MessageDescriptor
+	fd_MsgNewAction_creator                     protoreflect.FieldDescriptor
+	fd_MsgNewAction_message                     protoreflect.FieldDescriptor
+	fd_MsgNewAction_action_timeout_height       protoreflect.FieldDescriptor
+	fd_MsgNewAction_expected_approve_expression protoreflect.FieldDescriptor
+	fd_MsgNewAction_expected_reject_expression  protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -885,6 +888,8 @@ func init() {
 	fd_MsgNewAction_creator = md_MsgNewAction.Fields().ByName("creator")
 	fd_MsgNewAction_message = md_MsgNewAction.Fields().ByName("message")
 	fd_MsgNewAction_action_timeout_height = md_MsgNewAction.Fields().ByName("action_timeout_height")
+	fd_MsgNewAction_expected_approve_expression = md_MsgNewAction.Fields().ByName("expected_approve_expression")
+	fd_MsgNewAction_expected_reject_expression = md_MsgNewAction.Fields().ByName("expected_reject_expression")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgNewAction)(nil)
@@ -970,6 +975,18 @@ func (x *fastReflection_MsgNewAction) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
+	if x.ExpectedApproveExpression != nil {
+		value := protoreflect.ValueOfMessage(x.ExpectedApproveExpression.ProtoReflect())
+		if !f(fd_MsgNewAction_expected_approve_expression, value) {
+			return
+		}
+	}
+	if x.ExpectedRejectExpression != nil {
+		value := protoreflect.ValueOfMessage(x.ExpectedRejectExpression.ProtoReflect())
+		if !f(fd_MsgNewAction_expected_reject_expression, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -991,6 +1008,10 @@ func (x *fastReflection_MsgNewAction) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.Message != nil
 	case "warden.act.v1beta1.MsgNewAction.action_timeout_height":
 		return x.ActionTimeoutHeight != uint64(0)
+	case "warden.act.v1beta1.MsgNewAction.expected_approve_expression":
+		return x.ExpectedApproveExpression != nil
+	case "warden.act.v1beta1.MsgNewAction.expected_reject_expression":
+		return x.ExpectedRejectExpression != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.MsgNewAction"))
@@ -1013,6 +1034,10 @@ func (x *fastReflection_MsgNewAction) Clear(fd protoreflect.FieldDescriptor) {
 		x.Message = nil
 	case "warden.act.v1beta1.MsgNewAction.action_timeout_height":
 		x.ActionTimeoutHeight = uint64(0)
+	case "warden.act.v1beta1.MsgNewAction.expected_approve_expression":
+		x.ExpectedApproveExpression = nil
+	case "warden.act.v1beta1.MsgNewAction.expected_reject_expression":
+		x.ExpectedRejectExpression = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.MsgNewAction"))
@@ -1038,6 +1063,12 @@ func (x *fastReflection_MsgNewAction) Get(descriptor protoreflect.FieldDescripto
 	case "warden.act.v1beta1.MsgNewAction.action_timeout_height":
 		value := x.ActionTimeoutHeight
 		return protoreflect.ValueOfUint64(value)
+	case "warden.act.v1beta1.MsgNewAction.expected_approve_expression":
+		value := x.ExpectedApproveExpression
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.act.v1beta1.MsgNewAction.expected_reject_expression":
+		value := x.ExpectedRejectExpression
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.MsgNewAction"))
@@ -1064,6 +1095,10 @@ func (x *fastReflection_MsgNewAction) Set(fd protoreflect.FieldDescriptor, value
 		x.Message = value.Message().Interface().(*anypb.Any)
 	case "warden.act.v1beta1.MsgNewAction.action_timeout_height":
 		x.ActionTimeoutHeight = value.Uint()
+	case "warden.act.v1beta1.MsgNewAction.expected_approve_expression":
+		x.ExpectedApproveExpression = value.Message().Interface().(*ast.Expression)
+	case "warden.act.v1beta1.MsgNewAction.expected_reject_expression":
+		x.ExpectedRejectExpression = value.Message().Interface().(*ast.Expression)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.MsgNewAction"))
@@ -1089,6 +1124,16 @@ func (x *fastReflection_MsgNewAction) Mutable(fd protoreflect.FieldDescriptor) p
 			x.Message = new(anypb.Any)
 		}
 		return protoreflect.ValueOfMessage(x.Message.ProtoReflect())
+	case "warden.act.v1beta1.MsgNewAction.expected_approve_expression":
+		if x.ExpectedApproveExpression == nil {
+			x.ExpectedApproveExpression = new(ast.Expression)
+		}
+		return protoreflect.ValueOfMessage(x.ExpectedApproveExpression.ProtoReflect())
+	case "warden.act.v1beta1.MsgNewAction.expected_reject_expression":
+		if x.ExpectedRejectExpression == nil {
+			x.ExpectedRejectExpression = new(ast.Expression)
+		}
+		return protoreflect.ValueOfMessage(x.ExpectedRejectExpression.ProtoReflect())
 	case "warden.act.v1beta1.MsgNewAction.creator":
 		panic(fmt.Errorf("field creator of message warden.act.v1beta1.MsgNewAction is not mutable"))
 	case "warden.act.v1beta1.MsgNewAction.action_timeout_height":
@@ -1113,6 +1158,12 @@ func (x *fastReflection_MsgNewAction) NewField(fd protoreflect.FieldDescriptor) 
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "warden.act.v1beta1.MsgNewAction.action_timeout_height":
 		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.act.v1beta1.MsgNewAction.expected_approve_expression":
+		m := new(ast.Expression)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.act.v1beta1.MsgNewAction.expected_reject_expression":
+		m := new(ast.Expression)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.MsgNewAction"))
@@ -1193,6 +1244,14 @@ func (x *fastReflection_MsgNewAction) ProtoMethods() *protoiface.Methods {
 		if x.ActionTimeoutHeight != 0 {
 			n += 1 + runtime.Sov(uint64(x.ActionTimeoutHeight))
 		}
+		if x.ExpectedApproveExpression != nil {
+			l = options.Size(x.ExpectedApproveExpression)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.ExpectedRejectExpression != nil {
+			l = options.Size(x.ExpectedRejectExpression)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -1221,6 +1280,34 @@ func (x *fastReflection_MsgNewAction) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.ExpectedRejectExpression != nil {
+			encoded, err := options.Marshal(x.ExpectedRejectExpression)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x2a
+		}
+		if x.ExpectedApproveExpression != nil {
+			encoded, err := options.Marshal(x.ExpectedApproveExpression)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x22
 		}
 		if x.ActionTimeoutHeight != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.ActionTimeoutHeight))
@@ -1384,6 +1471,78 @@ func (x *fastReflection_MsgNewAction) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExpectedApproveExpression", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.ExpectedApproveExpression == nil {
+					x.ExpectedApproveExpression = &ast.Expression{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ExpectedApproveExpression); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 5:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExpectedRejectExpression", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.ExpectedRejectExpression == nil {
+					x.ExpectedRejectExpression = &ast.Expression{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ExpectedRejectExpression); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -7361,6 +7520,10 @@ type MsgNewAction struct {
 	Message *anypb.Any `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// action_timeout_height is the block height up until this action can be executed.
 	ActionTimeoutHeight uint64 `protobuf:"varint,3,opt,name=action_timeout_height,json=actionTimeoutHeight,proto3" json:"action_timeout_height,omitempty"`
+	// expected_approve_expression is the expected approval expression the action is created with
+	ExpectedApproveExpression *ast.Expression `protobuf:"bytes,4,opt,name=expected_approve_expression,json=expectedApproveExpression,proto3" json:"expected_approve_expression,omitempty"`
+	// expected_reject_expression is the expected reject expression the action is created with
+	ExpectedRejectExpression *ast.Expression `protobuf:"bytes,5,opt,name=expected_reject_expression,json=expectedRejectExpression,proto3" json:"expected_reject_expression,omitempty"`
 }
 
 func (x *MsgNewAction) Reset() {
@@ -7402,6 +7565,20 @@ func (x *MsgNewAction) GetActionTimeoutHeight() uint64 {
 		return x.ActionTimeoutHeight
 	}
 	return 0
+}
+
+func (x *MsgNewAction) GetExpectedApproveExpression() *ast.Expression {
+	if x != nil {
+		return x.ExpectedApproveExpression
+	}
+	return nil
+}
+
+func (x *MsgNewAction) GetExpectedRejectExpression() *ast.Expression {
+	if x != nil {
+		return x.ExpectedRejectExpression
+	}
+	return nil
 }
 
 type MsgNewActionResponse struct {
@@ -7940,29 +8117,42 @@ var file_warden_act_v1beta1_tx_proto_rawDesc = []byte{
 	0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x24, 0x77, 0x61, 0x72, 0x64,
 	0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x61,
 	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x76, 0x6f, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x22, 0xb9, 0x01, 0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x12, 0x36, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74,
-	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73,
-	0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e,
-	0x67, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x3d, 0x0a, 0x06,
-	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7,
-	0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x3a, 0x2f, 0x82, 0xe7, 0xb0,
-	0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x8a, 0xe7, 0xb0, 0x2a, 0x1c,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x78, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x4d, 0x73, 0x67,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x19, 0x0a, 0x17,
-	0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x9a, 0x01, 0x0a, 0x0c, 0x4d, 0x73, 0x67, 0x4e,
-	0x65, 0x77, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61,
-	0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x6f, 0x72, 0x12, 0x2e, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x12, 0x32, 0x0a, 0x15, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x69, 0x6d,
-	0x65, 0x6f, 0x75, 0x74, 0x5f, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x13, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x69, 0x6d, 0x65, 0x6f, 0x75, 0x74,
-	0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65,
+	0x1a, 0x14, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2f, 0x61, 0x73, 0x74, 0x2f, 0x61, 0x73, 0x74,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xb9, 0x01, 0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x36, 0x0a, 0x09, 0x61, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2,
+	0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
+	0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69,
+	0x74, 0x79, 0x12, 0x3d, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09,
+	0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x3a, 0x2f, 0x82, 0xe7, 0xb0, 0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74,
+	0x79, 0x8a, 0xe7, 0xb0, 0x2a, 0x1c, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x78, 0x2f, 0x61,
+	0x63, 0x74, 0x2f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50,
+	0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xd4, 0x02,
+	0x0a, 0x0c, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18,
+	0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x2e, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79, 0x52,
+	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x32, 0x0a, 0x15, 0x61, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x6f, 0x75, 0x74, 0x5f, 0x68, 0x65, 0x69, 0x67, 0x68,
+	0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x54,
+	0x69, 0x6d, 0x65, 0x6f, 0x75, 0x74, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x5c, 0x0a, 0x1b,
+	0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65,
+	0x5f, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45,
+	0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
+	0x19, 0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65,
+	0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x5a, 0x0a, 0x1a, 0x65, 0x78,
+	0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x65, 0x78,
+	0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16,
+	0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x18, 0x65, 0x78,
+	0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x52, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x45, 0x78, 0x70, 0x72,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65,
 	0x61, 0x74, 0x6f, 0x72, 0x22, 0x26, 0x0a, 0x14, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x41, 0x63,
 	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02,
 	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x57, 0x0a, 0x10,
@@ -8119,33 +8309,36 @@ var file_warden_act_v1beta1_tx_proto_goTypes = []interface{}{
 	(*MsgVoteForActionResponse)(nil), // 15: warden.act.v1beta1.MsgVoteForActionResponse
 	(*Params)(nil),                   // 16: warden.act.v1beta1.Params
 	(*anypb.Any)(nil),                // 17: google.protobuf.Any
-	(ActionVoteType)(0),              // 18: warden.act.v1beta1.ActionVoteType
+	(*ast.Expression)(nil),           // 18: shield.ast.Expression
+	(ActionVoteType)(0),              // 19: warden.act.v1beta1.ActionVoteType
 }
 var file_warden_act_v1beta1_tx_proto_depIdxs = []int32{
 	16, // 0: warden.act.v1beta1.MsgUpdateParams.params:type_name -> warden.act.v1beta1.Params
 	17, // 1: warden.act.v1beta1.MsgNewAction.message:type_name -> google.protobuf.Any
-	18, // 2: warden.act.v1beta1.MsgVoteForAction.vote_type:type_name -> warden.act.v1beta1.ActionVoteType
-	0,  // 3: warden.act.v1beta1.Msg.UpdateParams:input_type -> warden.act.v1beta1.MsgUpdateParams
-	2,  // 4: warden.act.v1beta1.Msg.NewAction:input_type -> warden.act.v1beta1.MsgNewAction
-	4,  // 5: warden.act.v1beta1.Msg.ApproveAction:input_type -> warden.act.v1beta1.MsgApproveAction
-	12, // 6: warden.act.v1beta1.Msg.CheckAction:input_type -> warden.act.v1beta1.MsgCheckAction
-	6,  // 7: warden.act.v1beta1.Msg.NewRule:input_type -> warden.act.v1beta1.MsgNewRule
-	8,  // 8: warden.act.v1beta1.Msg.UpdateRule:input_type -> warden.act.v1beta1.MsgUpdateRule
-	10, // 9: warden.act.v1beta1.Msg.RevokeAction:input_type -> warden.act.v1beta1.MsgRevokeAction
-	14, // 10: warden.act.v1beta1.Msg.VoteForAction:input_type -> warden.act.v1beta1.MsgVoteForAction
-	1,  // 11: warden.act.v1beta1.Msg.UpdateParams:output_type -> warden.act.v1beta1.MsgUpdateParamsResponse
-	3,  // 12: warden.act.v1beta1.Msg.NewAction:output_type -> warden.act.v1beta1.MsgNewActionResponse
-	5,  // 13: warden.act.v1beta1.Msg.ApproveAction:output_type -> warden.act.v1beta1.MsgApproveActionResponse
-	13, // 14: warden.act.v1beta1.Msg.CheckAction:output_type -> warden.act.v1beta1.MsgCheckActionResponse
-	7,  // 15: warden.act.v1beta1.Msg.NewRule:output_type -> warden.act.v1beta1.MsgNewRuleResponse
-	9,  // 16: warden.act.v1beta1.Msg.UpdateRule:output_type -> warden.act.v1beta1.MsgUpdateRuleResponse
-	11, // 17: warden.act.v1beta1.Msg.RevokeAction:output_type -> warden.act.v1beta1.MsgRevokeActionResponse
-	15, // 18: warden.act.v1beta1.Msg.VoteForAction:output_type -> warden.act.v1beta1.MsgVoteForActionResponse
-	11, // [11:19] is the sub-list for method output_type
-	3,  // [3:11] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	18, // 2: warden.act.v1beta1.MsgNewAction.expected_approve_expression:type_name -> shield.ast.Expression
+	18, // 3: warden.act.v1beta1.MsgNewAction.expected_reject_expression:type_name -> shield.ast.Expression
+	19, // 4: warden.act.v1beta1.MsgVoteForAction.vote_type:type_name -> warden.act.v1beta1.ActionVoteType
+	0,  // 5: warden.act.v1beta1.Msg.UpdateParams:input_type -> warden.act.v1beta1.MsgUpdateParams
+	2,  // 6: warden.act.v1beta1.Msg.NewAction:input_type -> warden.act.v1beta1.MsgNewAction
+	4,  // 7: warden.act.v1beta1.Msg.ApproveAction:input_type -> warden.act.v1beta1.MsgApproveAction
+	12, // 8: warden.act.v1beta1.Msg.CheckAction:input_type -> warden.act.v1beta1.MsgCheckAction
+	6,  // 9: warden.act.v1beta1.Msg.NewRule:input_type -> warden.act.v1beta1.MsgNewRule
+	8,  // 10: warden.act.v1beta1.Msg.UpdateRule:input_type -> warden.act.v1beta1.MsgUpdateRule
+	10, // 11: warden.act.v1beta1.Msg.RevokeAction:input_type -> warden.act.v1beta1.MsgRevokeAction
+	14, // 12: warden.act.v1beta1.Msg.VoteForAction:input_type -> warden.act.v1beta1.MsgVoteForAction
+	1,  // 13: warden.act.v1beta1.Msg.UpdateParams:output_type -> warden.act.v1beta1.MsgUpdateParamsResponse
+	3,  // 14: warden.act.v1beta1.Msg.NewAction:output_type -> warden.act.v1beta1.MsgNewActionResponse
+	5,  // 15: warden.act.v1beta1.Msg.ApproveAction:output_type -> warden.act.v1beta1.MsgApproveActionResponse
+	13, // 16: warden.act.v1beta1.Msg.CheckAction:output_type -> warden.act.v1beta1.MsgCheckActionResponse
+	7,  // 17: warden.act.v1beta1.Msg.NewRule:output_type -> warden.act.v1beta1.MsgNewRuleResponse
+	9,  // 18: warden.act.v1beta1.Msg.UpdateRule:output_type -> warden.act.v1beta1.MsgUpdateRuleResponse
+	11, // 19: warden.act.v1beta1.Msg.RevokeAction:output_type -> warden.act.v1beta1.MsgRevokeActionResponse
+	15, // 20: warden.act.v1beta1.Msg.VoteForAction:output_type -> warden.act.v1beta1.MsgVoteForActionResponse
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_warden_act_v1beta1_tx_proto_init() }

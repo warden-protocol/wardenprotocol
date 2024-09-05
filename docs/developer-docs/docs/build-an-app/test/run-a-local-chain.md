@@ -270,7 +270,8 @@ In the previous steps, you configured your node with the minimum settings requir
    
    ```bash
    wardend tx warden new-space \
-     --from my-key-name      --chain-id my-chain-id
+     --from my-key-name \
+     --chain-id my-chain-id
    ```
 
 2. Enter your passphrase and confirm the transaction.

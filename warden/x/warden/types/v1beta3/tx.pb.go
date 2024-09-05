@@ -512,13 +512,6 @@ func (m *MsgNewKeychain) GetKeychainFees() KeychainFees {
 	return KeychainFees{}
 }
 
-func (m *MsgNewKeychain) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
 func (m *MsgNewKeychain) GetUrl() string {
 	if m != nil {
 		return m.Url
@@ -529,6 +522,13 @@ func (m *MsgNewKeychain) GetUrl() string {
 func (m *MsgNewKeychain) GetKeybaseId() string {
 	if m != nil {
 		return m.KeybaseId
+	}
+	return ""
+}
+
+func (m *MsgNewKeychain) GetDescription() string {
+	if m != nil {
+		return m.Description
 	}
 	return ""
 }
@@ -856,13 +856,6 @@ func (m *MsgUpdateKeychain) GetKeychainFees() KeychainFees {
 	return KeychainFees{}
 }
 
-func (m *MsgUpdateKeychain) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
 func (m *MsgUpdateKeychain) GetUrl() string {
 	if m != nil {
 		return m.Url
@@ -873,6 +866,13 @@ func (m *MsgUpdateKeychain) GetUrl() string {
 func (m *MsgUpdateKeychain) GetKeybaseId() string {
 	if m != nil {
 		return m.KeybaseId
+	}
+	return ""
+}
+
+func (m *MsgUpdateKeychain) GetDescription() string {
+	if m != nil {
+		return m.Description
 	}
 	return ""
 }
@@ -2853,10 +2853,10 @@ func (m *MsgNewKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x32
 	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -3087,10 +3087,10 @@ func (m *MsgUpdateKeychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x3a
 	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x32
 	}
@@ -3982,6 +3982,18 @@ func (m *MsgNewKeychain) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Url)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.KeybaseId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	return n
 }
 
@@ -4079,6 +4091,18 @@ func (m *MsgUpdateKeychain) Size() (n int) {
 	}
 	l = m.KeychainFees.Size()
 	n += 1 + l + sovTx(uint64(l))
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Url)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.KeybaseId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	l = len(m.Description)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))

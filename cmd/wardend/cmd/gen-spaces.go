@@ -7,6 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -19,6 +20,10 @@ func AddGenesisSpaceCmd(defaultNodeHome string) *cobra.Command {
 			cdc, genesisFileURL := setupGenCommand(cmd)
 
 			creator := args[0]
+			_, err := sdk.AccAddressFromBech32(creator)
+			if err != nil {
+				return err
+			}
 
 			return updateGenesisState(
 				genesisFileURL,

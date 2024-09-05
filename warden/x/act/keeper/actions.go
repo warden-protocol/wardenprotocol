@@ -55,7 +55,7 @@ func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
 	return object.FALSE, true
 }
 
-// TryExecuteVotedAction checks if the action's intent is satisfied and stores the
+// TryExecuteVotedAction checks if the action's expression is satisfied and stores the
 // result in the database.
 func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)

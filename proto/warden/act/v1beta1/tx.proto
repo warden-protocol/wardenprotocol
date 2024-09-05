@@ -70,9 +70,9 @@ message MsgNewAction {
   // action_timeout_height is the block height up until this action can be executed.
   uint64 action_timeout_height = 3;
   // expected_approval_expression is the expected approval expression the action is created with
-  .shield.ast.Expression expected_approval_expression = 4;
+  .shield.ast.Expression expected_approval_expression = 4 [(gogoproto.nullable) = false];
   // expected_reject_expression is the expected reject expression the action is created with
-  .shield.ast.Expression expected_reject_expression = 5;
+  .shield.ast.Expression expected_reject_expression = 5 [(gogoproto.nullable) = false];
 }
 
 message MsgNewActionResponse {

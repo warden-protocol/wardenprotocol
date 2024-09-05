@@ -27,7 +27,7 @@ wardend status --node https://rpc.buenavista.wardenprotocol.org:443
 ```
 
 :::tip
-You can exclude the `--node` flag if you're running a chain on the same machine at moment when you're executing `wardend` commands.
+You can exclude the `--node` flag if you're running a chain on the same machine at moment when you're executing `wardend` commands. If not specified, `--node` defaults to the localhost.
 :::
 
 ## Get a list of commands

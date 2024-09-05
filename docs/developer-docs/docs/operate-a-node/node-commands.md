@@ -16,6 +16,10 @@ These commands allow you to do the following:
 - Edit the genesis file
 - and much more
 
+## Prerequisites
+
+To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
+
 ## Execute `wardend` commands
 
 To execute a node command, just run `wardend`, followed by the command. Include the `--node` flag with the node endpoint.

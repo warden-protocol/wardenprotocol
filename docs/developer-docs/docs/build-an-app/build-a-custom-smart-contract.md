@@ -177,7 +177,7 @@ Note down `code_id` from the output.
 
 You can instantiate the contract by using the command below.
 
-Before you should replace replace `1` with the actual code ID you retrieved in previous step and replace `my-key-name` with your key name. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
+Before you proceed, should replace replace `1` with the actual code ID you retrieved in previous step and replace `my-key-name` with your key name. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
 ```bash
 wardend tx wasm instantiate 1 '{}' --from my-key-name /

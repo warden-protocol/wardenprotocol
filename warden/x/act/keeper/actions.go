@@ -10,6 +10,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
@@ -133,7 +134,7 @@ type actionCreatorKey struct{}
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64) (*types.Action, error) {
+func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64, expectedApprovalExpression ast.Expression, expectedRejectExpression ast.Expression) (*types.Action, error) {
 	if err := k.validateActionMsgSigners(msg); err != nil {
 		return nil, err
 	}
@@ -143,6 +144,8 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	if err != nil {
 		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)
 	}
+
+	// todo: check that expressions from rulesRegistry (templateRegistry) match with expected
 
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {

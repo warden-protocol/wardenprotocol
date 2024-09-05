@@ -15,7 +15,7 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 		return nil, fmt.Errorf("can't unpack any: %w", err)
 	}
 
-	act, err := k.AddAction(ctx, msg.Creator, message, msg.ActionTimeoutHeight)
+	act, err := k.AddAction(ctx, msg.Creator, message, msg.ActionTimeoutHeight, *msg.ExpectedApprovalExpression, *msg.ExpectedRejectExpression)
 	if err != nil {
 		return nil, err
 	}

@@ -10,7 +10,7 @@ This guide explains how to create and deploy a simple "Hello World" smart contra
 
 ## Prerequisites
 
-Before you start, complete following prerequisites:
+Before you start, complete the following prerequisites:
 
 - Install Rust by running the following:
 
@@ -20,11 +20,11 @@ Before you start, complete following prerequisites:
 
 - Set up the CosmWasm development environment:
 
-   - [CosmWasm](https://book.cosmwasm.com/setting-up-env.html): The CosmWasm binary and its dependencies.
+  - [CosmWasm](https://book.cosmwasm.com/setting-up-env.html): The CosmWasm binary and its dependencies.
 
-   - [cargo-generate](https://cargo-generate.github.io/cargo-generate/installation.html): A tool to help you get up and running quickly with a new Rust project by leveraging a pre-existing git repository as a template.
+  - [cargo-generate](https://cargo-generate.github.io/cargo-generate/installation.html): A tool to help you get up and running quickly with a new Rust project by leveraging a pre-existing git repository as a template.
 
-   - [wasm-opt](https://docs.rs/wasm-opt/latest/wasm_opt/index.html): A tool for optimizing the compiled WebAssembly (Wasm) code.
+  - [wasm-opt](https://docs.rs/wasm-opt/latest/wasm_opt/index.html): A tool for optimizing the compiled WebAssembly (Wasm) code.
    
    To install these tools, run the following commands:
 
@@ -38,7 +38,7 @@ Before you start, complete following prerequisites:
 
    The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command (while the node is running):
 
-   ```
+   ```bash
    wardend keys list
    ```
    :::tip

@@ -134,7 +134,7 @@ type actionCreatorKey struct{}
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64, expectedApprovalExpression ast.Expression, expectedRejectExpression ast.Expression) (*types.Action, error) {
+func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64, expectedApproveExpression ast.Expression, expectedRejectExpression ast.Expression) (*types.Action, error) {
 	if err := k.validateActionMsgSigners(msg); err != nil {
 		return nil, err
 	}

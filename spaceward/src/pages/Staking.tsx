@@ -48,7 +48,7 @@ export function StakingPage() {
 		[queryDelegations.data?.delegationResponses],
 	);
 
-	const { balance: availableWard } = useAsset("uward");
+	const { balance: availableWard } = useAsset("award");
 
 	const { bondedTokens, apr } = useMemo(
 		() =>

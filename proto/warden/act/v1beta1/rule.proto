@@ -14,4 +14,3 @@ message Rule {
   // The expression to be evaluated for this rule.
   .shield.ast.Expression expression = 4;
 }
-

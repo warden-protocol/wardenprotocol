@@ -1,8 +1,8 @@
 {
   "app_name": "wardend",
-  "app_version": "v0.4.1-15-gde31a024-dirty",
-  "genesis_time": "2024-08-13T22:44:04.520400588Z",
-  "chain_id": "warden",
+  "app_version": "v0.4.1-69-g6035cc48-dirty",
+  "genesis_time": "2024-08-28T15:50:59.332693Z",
+  "chain_id": "warden_1337-1",
   "initial_height": 1,
   "app_hash": null,
   "app_state": {
@@ -24,21 +24,21 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1ja3g9zysr3p7qhzl7xcpw5fews60ax2tkagwdq",
+          "address": "warden1fk8kcn2jjg6g75dcxv6hce2y6edwnfh59dl3a2",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1fznczn09y6jhe8mcuus4aafd9v9prrjr0g24df",
+          "address": "warden1nusjj7fawxr75q85j4p250jg0n2g4vhhcegy5c",
           "pub_key": null,
           "account_number": "1",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1qkzw3hf9ll9x6ytvwtgpt604m2m7wmu5fp30r4",
+          "address": "warden18w9sk4xtv856a9hcx25p9useqcq044cgsf7p9t",
           "pub_key": null,
           "account_number": "2",
           "sequence": "0"
@@ -55,37 +55,37 @@
       },
       "balances": [
         {
-          "address": "warden1qkzw3hf9ll9x6ytvwtgpt604m2m7wmu5fp30r4",
+          "address": "warden18w9sk4xtv856a9hcx25p9useqcq044cgsf7p9t",
           "coins": [
             {
-              "denom": "uward",
-              "amount": "10000000000000000000000000"
+              "denom": "award",
+              "amount": "10000000000000000000000000000000000000"
             }
           ]
         },
         {
-          "address": "warden1fznczn09y6jhe8mcuus4aafd9v9prrjr0g24df",
+          "address": "warden1fk8kcn2jjg6g75dcxv6hce2y6edwnfh59dl3a2",
           "coins": [
             {
-              "denom": "uward",
-              "amount": "10000000000000000000000000"
+              "denom": "award",
+              "amount": "10000000000000000000000000000000000000"
             }
           ]
         },
         {
-          "address": "warden1ja3g9zysr3p7qhzl7xcpw5fews60ax2tkagwdq",
+          "address": "warden1nusjj7fawxr75q85j4p250jg0n2g4vhhcegy5c",
           "coins": [
             {
-              "denom": "uward",
-              "amount": "10000000000000000000000000"
+              "denom": "award",
+              "amount": "10000000000000000000000000000000000000"
             }
           ]
         }
       ],
       "supply": [
         {
-          "denom": "uward",
-          "amount": "30000000000000000000000000"
+          "denom": "award",
+          "amount": "30000000000000000000000000000000000000"
         }
       ],
       "denom_metadata": [],
@@ -102,7 +102,7 @@
     "consensus": null,
     "crisis": {
       "constant_fee": {
-        "denom": "uward",
+        "denom": "award",
         "amount": "1000"
       }
     },
@@ -128,6 +128,53 @@
     "evidence": {
       "evidence": []
     },
+    "evm": {
+      "accounts": [],
+      "params": {
+        "evm_denom": "aevmos",
+        "enable_create": true,
+        "enable_call": true,
+        "extra_eips": [
+          "3855"
+        ],
+        "chain_config": {
+          "homestead_block": "0",
+          "dao_fork_block": "0",
+          "dao_fork_support": true,
+          "eip150_block": "0",
+          "eip150_hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "eip155_block": "0",
+          "eip158_block": "0",
+          "byzantium_block": "0",
+          "constantinople_block": "0",
+          "petersburg_block": "0",
+          "istanbul_block": "0",
+          "muir_glacier_block": "0",
+          "berlin_block": "0",
+          "london_block": "0",
+          "arrow_glacier_block": "0",
+          "gray_glacier_block": "0",
+          "merge_netsplit_block": "0",
+          "shanghai_block": "0",
+          "cancun_block": "0"
+        },
+        "allow_unprotected_txs": false,
+        "active_precompiles": [
+          "0x0000000000000000000000000000000000000100",
+          "0x0000000000000000000000000000000000000400",
+          "0x0000000000000000000000000000000000000800",
+          "0x0000000000000000000000000000000000000801",
+          "0x0000000000000000000000000000000000000802",
+          "0x0000000000000000000000000000000000000803",
+          "0x0000000000000000000000000000000000000804"
+        ],
+        "evm_channels": [
+          "channel-10",
+          "channel-31",
+          "channel-83"
+        ]
+      }
+    },
     "feegrant": {
       "allowances": []
     },
@@ -137,6 +184,18 @@
       "registered_payees": [],
       "registered_counterparty_payees": [],
       "forward_relayers": []
+    },
+    "feemarket": {
+      "params": {
+        "no_base_fee": false,
+        "base_fee_change_denominator": 8,
+        "elasticity_multiplier": 2,
+        "enable_height": "0",
+        "base_fee": "1000000000",
+        "min_gas_price": "0.000000000000000000",
+        "min_gas_multiplier": "0.500000000000000000"
+      },
+      "block_gas": "0"
     },
     "genutil": {
       "gen_txs": [
@@ -159,18 +218,18 @@
                 },
                 "min_self_delegation": "1",
                 "delegator_address": "",
-                "validator_address": "wardenvaloper1ja3g9zysr3p7qhzl7xcpw5fews60ax2t8x2tz3",
+                "validator_address": "wardenvaloper1fk8kcn2jjg6g75dcxv6hce2y6edwnfh55ka5jm",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "2PbRI/6f1Ss7xKRvhonr9SCp6o/9BnjcaPJYNDwW9/Y="
+                  "key": "aLhCwTSYNK+GM9o3f2xZO5D4Eu90ZjqQNyKef8w9nSw="
                 },
                 "value": {
-                  "denom": "uward",
-                  "amount": "1000000000"
+                  "denom": "award",
+                  "amount": "1000000000000000000000"
                 }
               }
             ],
-            "memo": "ddf8fa75c9baf73c00db1b864d6e5fd42e09b36d@172.17.0.2:26656",
+            "memo": "3086b01687ba4f1cb68973bab49dc5c04355b751@192.168.88.206:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -179,8 +238,8 @@
             "signer_infos": [
               {
                 "public_key": {
-                  "@type": "/cosmos.crypto.secp256k1.PubKey",
-                  "key": "A0uATptC8pEHpxnMaaX8Mcr0GFETkAIMAAeF39CLUEEP"
+                  "@type": "/ethermint.crypto.v1.ethsecp256k1.PubKey",
+                  "key": "A+jgSO+SwQeV6YP64g8RqcxAh7nQP0gphHZT41Se6zTk"
                 },
                 "mode_info": {
                   "single": {
@@ -199,7 +258,7 @@
             "tip": null
           },
           "signatures": [
-            "9pOft/EH1pNX0TH9Hxu6tMgGhM3BiLS+xNP65yOG7W1/5kNM9iTuP0p4fbyPRGsbDIXIWf1yuWciPN7DsSIU7A=="
+            "QZemtdT9KKwMANV6OUBFKtQWtGNz+zDce0R4SKZxVIJhgB/4ve4a/ftNf+72AzEk8O3GhJkjEyabLUSl+9sViwA="
           ]
         }
       ]
@@ -223,7 +282,7 @@
       "params": {
         "min_deposit": [
           {
-            "denom": "uward",
+            "denom": "award",
             "amount": "10000000"
           }
         ],
@@ -239,7 +298,7 @@
         "expedited_threshold": "0.667000000000000000",
         "expedited_min_deposit": [
           {
-            "denom": "uward",
+            "denom": "award",
             "amount": "50000000"
           }
         ],
@@ -340,7 +399,7 @@
         "annual_provisions": "0.000000000000000000"
       },
       "params": {
-        "mint_denom": "uward",
+        "mint_denom": "award",
         "inflation_rate_change": "0.130000000000000000",
         "inflation_max": "0.200000000000000000",
         "inflation_min": "0.070000000000000000",
@@ -371,8 +430,8 @@
         "max_validators": 100,
         "max_entries": 7,
         "historical_entries": 10000,
-        "bond_denom": "uward",
-        "min_commission_rate": "0.000000000000000000"
+        "bond_denom": "award",
+        "min_commission_rate": "0.050000000000000000"
       },
       "last_total_power": "0",
       "last_validator_powers": [],
@@ -398,36 +457,39 @@
       "keychains": [
         {
           "id": "1",
-          "creator": "warden1fznczn09y6jhe8mcuus4aafd9v9prrjr0g24df",
-          "description": "Test Keychain",
+          "creator": "warden1nusjj7fawxr75q85j4p250jg0n2g4vhhcegy5c",
+          "name": "Test Keychain",
           "admins": [
-            "warden1fznczn09y6jhe8mcuus4aafd9v9prrjr0g24df"
+            "warden1nusjj7fawxr75q85j4p250jg0n2g4vhhcegy5c"
           ],
           "writers": [
-            "warden1fznczn09y6jhe8mcuus4aafd9v9prrjr0g24df"
+            "warden1nusjj7fawxr75q85j4p250jg0n2g4vhhcegy5c"
           ],
           "fees": {
             "key_req": [
               {
-                "denom": "uward",
+                "denom": "award",
                 "amount": "2"
               }
             ],
             "sig_req": [
               {
-                "denom": "uward",
+                "denom": "award",
                 "amount": "2"
               }
             ]
-          }
+          },
+          "description": "",
+          "url": "",
+          "keybase_id": null
         }
       ],
       "spaces": [
         {
           "id": "1",
-          "creator": "warden1qkzw3hf9ll9x6ytvwtgpt604m2m7wmu5fp30r4",
+          "creator": "warden18w9sk4xtv856a9hcx25p9useqcq044cgsf7p9t",
           "owners": [
-            "warden1qkzw3hf9ll9x6ytvwtgpt604m2m7wmu5fp30r4"
+            "warden18w9sk4xtv856a9hcx25p9useqcq044cgsf7p9t"
           ],
           "admin_rule_id": "0",
           "sign_rule_id": "0"

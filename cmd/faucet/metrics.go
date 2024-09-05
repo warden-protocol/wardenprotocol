@@ -35,4 +35,10 @@ var (
 		Name:      "req_error_count",
 		Help:      "The total number of failed requests for errors during send",
 	})
+
+	dailySupply = promauto.NewGauge(prometheus.GaugeOpts{
+		Namespace: "faucet",
+		Name:      "daily_limit",
+		Help:      "The total amount left of tokens available per day",
+	})
 )

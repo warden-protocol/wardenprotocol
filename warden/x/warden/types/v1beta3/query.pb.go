@@ -1855,6 +1855,7 @@ func _Query_SignRequestById_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+var Query_serviceDesc = _Query_serviceDesc
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "warden.warden.v1beta3.Query",
 	HandlerType: (*QueryServer)(nil),

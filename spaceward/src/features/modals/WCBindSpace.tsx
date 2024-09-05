@@ -117,7 +117,7 @@ export default function WCBindSpace({
 					placeholder="Space to connect"
 					value={pairedSpace}
 					className={clsx(
-						"h-[60px] pointer-events-none  !opacity-100 pr-[90px] pl-[68px] text-left bg-border-quaternary border-transparent rounded-lg focus-visible:!ring-0 focus-visible:!ring-offset-0 ring-0 focus-visible:border-2 border-2 focus-visible:border-pixel-pink border-solid",
+						"h-[60px] pointer-events-none  !opacity-100 pr-[90px] pl-[68px] text-left bg-fill-elevated border-transparent rounded-lg focus-visible:!ring-0 focus-visible:!ring-offset-0 ring-0 focus-visible:border-2 border-2 focus-visible:border-border-secondary border-solid",
 						{
 							"pt-6 pb-1": pairedSpace,
 							"py-3": !pairedSpace,
@@ -180,7 +180,7 @@ export default function WCBindSpace({
 									spaceId: pairedSpace,
 								},
 							})}
-							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-fill-accent-primary rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
 						>
 							Create key
 						</Button>
@@ -196,7 +196,7 @@ export default function WCBindSpace({
 							pairedSpace,
 							addresses,
 						)}
-						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-fill-accent-primary hover:text-background rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
 					>
 						{loading ? "Loading..." : "Approve"}
 					</Button>
@@ -205,7 +205,7 @@ export default function WCBindSpace({
 				<Button
 					disabled={!_enabled}
 					onClick={onReject.bind(null, proposal)}
-					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-pixel-pink hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-fill-accent-primary hover:text-background rounded-lg h-[56px] bg-fill-quaternary text-display font-semibold shrink-0 "
 				>
 					Cancel
 				</Button>

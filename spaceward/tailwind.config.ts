@@ -62,7 +62,7 @@ const config = {
 				"border-secondary": "var(--border-secondary)",
 				orange: "#E57F45",
 				"orange-secondary": "rgba(229, 127, 69, 0.15)",
-				"staking-bg": "rgba(228, 230, 224, 0.15)",
+				"staking-bg": "var(--staking-bg)",
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",

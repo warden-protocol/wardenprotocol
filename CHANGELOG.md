@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) [#660](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to Space to avoid race conditions
 * (x/warden) Keychain fees are deducted with escrow account
 * (wardend) Bump Cosmos SDK to v0.50.9
-* (wardend) Bump ibc-go to v8.4.0
+* (wardend) Bump ibc-go to v8.5.0
 * (wardend) Bump slinky to v1.0.10
 * (x/warden) [#570](https://github.com/warden-protocol/wardenprotocol/570) Added more metadata to Keychain
   * Replaced Description by Name field (required, non-empty)

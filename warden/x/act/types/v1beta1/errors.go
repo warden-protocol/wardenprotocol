@@ -23,4 +23,5 @@ var (
 	ErrInvalidRuleDefinition     = sdkerrors.Register(ModuleName, 1112, "invalid rule definition")
 	ErrInvalidRevoker            = sdkerrors.Register(ModuleName, 1113, "this account can't revoke this action")
 	ErrInvalidUpdateRuleAccount  = sdkerrors.Register(ModuleName, 1114, "this account can't update this rule")
+	ErrActionVoteAlreadyExists   = sdkerrors.Register(ModuleName, 1115, "vote already exists")
 )

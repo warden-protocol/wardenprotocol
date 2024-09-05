@@ -30,6 +30,73 @@ func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
 
 var _ shield.Environment = ApproversEnv{}
 
+// ActionApprovedVotesEnv is an environment that resolves action positive votes addresses to true.
+type ActionApprovedVotesEnv []*types.ActionVote
+
+// Get implements positive action vote evaluator.Environment.
+func (votes ActionApprovedVotesEnv) Get(name string) (object.Object, bool) {
+	for _, s := range votes {
+		if s.Participant == name && s.Vote == types.ActionVoteType_VOTE_TYPE_APPROVED {
+			return object.TRUE, true
+		}
+	}
+	return object.FALSE, true
+}
+
+var _ shield.Environment = ActionApprovedVotesEnv{}
+
+// ActionRejectedVotesEnv is an environment that resolves action negative votes addresses to true.
+type ActionRejectedVotesEnv []*types.ActionVote
+
+// Get implements negative action vote evaluator.Environment.
+func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
+	for _, s := range votes {
+		if s.Participant == name && s.Vote == types.ActionVoteType_VOTE_TYPE_REJECTED {
+			return object.TRUE, true
+		}
+	}
+	return object.FALSE, true
+}
+
+var _ shield.Environment = ActionRejectedVotesEnv{}
+
+// TryExecuteVotedAction checks if the action's intent is satisfied and stores the
+// result in the database.
+func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	approved, err := act.Rule.Eval(ctx, ActionApprovedVotesEnv(act.Votes))
+
+	if err != nil {
+		return err
+	}
+
+	if approved {
+		if err := k.executeAction(ctx, act); err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	rejected, err := act.Rule.Eval(ctx, ActionRejectedVotesEnv(act.Votes))
+
+	if err != nil {
+		return err
+	}
+
+	if rejected {
+		if err := act.SetStatus(sdkCtx, types.ActionStatus_ACTION_STATUS_REVOKED); err != nil {
+			return err
+		}
+		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // TryExecuteAction checks if the action's intent is satisfied and stores the
 // result in the database.
 func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {

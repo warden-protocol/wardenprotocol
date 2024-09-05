@@ -1,9 +1,21 @@
-import { warden } from "@wardenprotocol/wardenjs";
+import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { env } from "@/env";
 import type { getClient } from "@/hooks/useClient";
 import type { QueuedAction } from "./hooks";
+import { IWeb3Wallet } from "@walletconnect/web3wallet";
+import { hexlify, Transaction } from "ethers";
+import { KeyringSnapRpcClient } from "@metamask/keyring-api";
+import { getProvider, isSupportedNetwork } from "@/lib/eth";
+import { COSMOS_CHAINS } from "@/config/tokens";
+import { isUint8Array } from "@/lib/utils";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
+import { prepareTx } from "../modals/util";
+import { WalletManager } from "@cosmos-kit/core";
+import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 
-export type GetStatus = (client: Awaited<ReturnType<typeof getClient>>) => Promise<{
+export type GetStatus = (
+	client: Awaited<ReturnType<typeof getClient>>,
+) => Promise<{
 	pending: boolean;
 	error: boolean;
 	done: boolean;
@@ -123,4 +135,251 @@ export const getActionHandler = ({
 	}
 
 	return { getStatus };
+};
+
+export const handleEthRaw = async ({
+	action,
+	w,
+}: {
+	action: QueuedAction;
+	w: IWeb3Wallet | null;
+}) => {
+	const { value } = action;
+
+	if (!value) {
+		throw new Error("missing value");
+	}
+
+	// fixme
+	const type =
+		typeof action.keyThemeIndex !== "undefined"
+			? "key"
+			: (["walletConnectRequestId", "walletConnectTopic"] as const).every(
+						(key) => typeof action[key] !== "undefined",
+				  )
+				? "wc"
+				: typeof action.snapRequestId
+					? "snap"
+					: undefined;
+
+	switch (type) {
+		case "wc":
+			if (!w) {
+				throw new Error("walletconnect not initialized");
+			}
+
+			return await w
+				.respondSessionRequest({
+					topic: action.walletConnectTopic!,
+					response: {
+						jsonrpc: "2.0",
+						id: action.walletConnectRequestId!,
+						result: hexlify(value),
+					},
+					// fixme
+				})
+				.then(() => true);
+		case "snap":
+			const keyringSnapClient = new KeyringSnapRpcClient(
+				env.snapOrigin,
+				window.ethereum,
+			);
+
+			return await keyringSnapClient
+				.approveRequest(
+					action.snapRequestId!,
+					{
+						result: hexlify(value),
+					},
+					// fixme
+				)
+				.then(() => true);
+		case "key": // should never happen in this case
+		default:
+			throw new Error(`action type not implemented: ${type}`);
+	}
+};
+
+export const handleEth = async ({
+	action,
+	w,
+}: {
+	action: QueuedAction;
+	w: IWeb3Wallet | null;
+}) => {
+	const {
+		chainName,
+		value,
+		snapRequestId,
+		walletConnectRequestId,
+		walletConnectTopic,
+		tx,
+	} = action;
+
+	if (!tx || !value) {
+		throw new Error("missing tx or value");
+	}
+
+	if (!isSupportedNetwork(chainName)) {
+		throw new Error("unsupported network");
+	}
+
+	const signedTx = Transaction.from({ ...tx });
+	signedTx.signature = hexlify(value);
+
+	if (snapRequestId) {
+		const keyringSnapClient = new KeyringSnapRpcClient(
+			env.snapOrigin,
+			window.ethereum,
+		);
+
+		const { r, s, yParity } = signedTx.signature!;
+		const req = await keyringSnapClient.getRequest(snapRequestId);
+
+		return await keyringSnapClient
+			.approveRequest(req.id, {
+				result: {
+					r,
+					s,
+					v: `0x${yParity}`,
+				},
+			})
+			// fixme
+			.then(() => true);
+	}
+
+	const { provider } = getProvider(chainName);
+	const res = await provider.broadcastTransaction(signedTx.serialized);
+
+	if (walletConnectRequestId && walletConnectTopic) {
+		if (!w) {
+			throw new Error("walletconnect not initialized");
+		}
+
+		return await w
+			.respondSessionRequest({
+				topic: walletConnectTopic,
+				response: {
+					jsonrpc: "2.0",
+					id: walletConnectRequestId,
+					result: res.hash,
+				},
+			})
+			// fixme
+			.then(() => true);
+	}
+
+	return (
+		provider
+			.waitForTransaction(res.hash)
+			// fixme
+			.then(() => true)
+	);
+};
+
+export const handleCosmos = async ({
+	action,
+	w,
+	walletManager,
+}: {
+	action: QueuedAction;
+	w: IWeb3Wallet | null;
+	walletManager: WalletManager;
+}) => {
+	const {
+		chainName,
+		value,
+		signDoc,
+		pubkey,
+		walletConnectRequestId,
+		walletConnectTopic,
+	} = action;
+
+	if (!chainName || !signDoc || !pubkey) {
+		throw new Error("missing chainName, signDoc, pubkey");
+	}
+
+	const chain = COSMOS_CHAINS.find((item) => item.chainName === chainName);
+
+	if (!chain) {
+		throw new Error("chain not found");
+	}
+
+	if (!isUint8Array(value)) {
+		throw new Error("value is not Uint8Array");
+	}
+
+	let sig = value;
+
+	if (sig.length === 65) {
+		sig = sig.slice(0, -1);
+	}
+
+	if (sig.length !== 64) {
+		throw new Error("unexpected signature length");
+	}
+
+	if (walletConnectRequestId && walletConnectTopic) {
+		if (!w) {
+			throw new Error("walletconnect not initialized");
+		}
+
+		return await w
+			.respondSessionRequest({
+				topic: walletConnectTopic,
+				response: {
+					jsonrpc: "2.0",
+					id: walletConnectRequestId,
+					result: {
+						signed: signDoc,
+						signature: {
+							signature: base64FromBytes(sig),
+							pub_key: {
+								type: "tendermint/PubKeySecp256k1",
+								value: base64FromBytes(pubkey),
+							},
+						},
+					},
+				},
+			})
+			// fixme
+			.then(() => true);
+	}
+
+	const { signedTxBodyBytes, signedAuthInfoBytes } = prepareTx(
+		signDoc,
+		pubkey,
+	);
+
+	const txRaw = cosmos.tx.v1beta1.TxRaw.fromPartial({
+		bodyBytes: signedTxBodyBytes,
+		authInfoBytes: signedAuthInfoBytes,
+		signatures: [sig],
+	});
+
+	let rpc: string;
+	if (chain.rpc) {
+		[rpc] = chain.rpc;
+	} else {
+		const repo = walletManager.getWalletRepo(chainName);
+		repo.activate();
+		const endpoint = await repo.getRpcEndpoint();
+
+		rpc = endpoint
+			? typeof endpoint === "string"
+				? endpoint
+				: endpoint.url
+			: "https://rpc.cosmos.directory/" + chainName;
+	}
+
+	const client = await StargateClient.connect(rpc);
+	const res = await client.broadcastTx(
+		cosmos.tx.v1beta1.TxRaw.encode(txRaw).finish(),
+	);
+
+	if (!isDeliverTxSuccess(res)) {
+		throw new Error("broadcast failed");
+	}
+
+	return true;
 };

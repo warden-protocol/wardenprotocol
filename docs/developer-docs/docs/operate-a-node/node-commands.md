@@ -26,15 +26,11 @@ For example, to check the node status, run this:
 wardend status
 ```
 
-If XXX, add the `--node` flag with XXX:
+If you're interacting with a node that is running on a different machine, add the `--node` flag with the node endpoint. For example, it can look like this:
 
 ```bash
---node https://rpc.buenavista.wardenprotocol.org:443
+wardend status --node https://rpc.buenavista.wardenprotocol.org:443
 ```
-
-:::tip
-Note that some of the commands require the node to be up.
-:::
 
 ## Get a list of commands
 

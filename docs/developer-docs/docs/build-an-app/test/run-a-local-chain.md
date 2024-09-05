@@ -21,7 +21,7 @@ We recommend this option if you wish to run a node with custom settings and lear
 
 ## Prerequisites
 
-Before you start, complete following prerequisites:
+Before you start, complete the following prerequisites:
 
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
 - Install [just](https://just.systems/man/en/chapter_4.html).

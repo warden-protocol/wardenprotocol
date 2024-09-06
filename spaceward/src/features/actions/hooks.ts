@@ -3,7 +3,7 @@ import { useChain } from "@cosmos-kit/react";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import { createPersistantState } from "../../hooks/state";
 import { useNewAction } from "../../hooks/useAction";
-import { getSigningClient, TxOptions } from "../../hooks/useClient";
+import { TxOptions, useTx } from "../../hooks/useClient";
 import { env } from "../../env";
 import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { TransactionLike } from "ethers";
@@ -60,11 +60,9 @@ export const useActionsState = createPersistantState<
 export function useEnqueueAction<Data>(
 	getMessage: ReturnType<typeof useNewAction<Data>>["getMessage"],
 ) {
-	const { address, getOfflineSignerDirect: getOfflineSigner } = useChain(
-		env.cosmoskitChainName,
-	);
-
+	const { address } = useChain(env.cosmoskitChainName);
 	const { setData } = useActionsState();
+	const { sign } = useTx();
 
 	async function addAction(
 		data: Parameters<typeof getMessage>[0],
@@ -100,11 +98,9 @@ export function useEnqueueAction<Data>(
 		}
 
 		const storeId = getActionId();
-		const signer = getOfflineSigner();
-		const client = await getSigningClient(signer);
 		const msg = getMessage(data, actionTimeoutHeight);
 		const fee = opts.fee || defaultFee;
-		const signedTx = await client.sign(address, [msg], fee, "");
+		const signedTx = await sign([msg], { fee });
 
 		setData({
 			[storeId]: {

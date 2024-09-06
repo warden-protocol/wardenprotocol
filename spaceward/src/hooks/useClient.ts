@@ -43,6 +43,19 @@ export function useTx() {
 	const { address, getOfflineSignerDirect: getOfflineSigner, chain } = useChain(env.cosmoskitChainName);
 	const { toast } = useToast();
 
+	const sign = async (msgs: EncodeObject[], options: TxOptions) => {
+		const signer = getOfflineSigner();
+		const client = await getSigningClient(signer);
+
+		const fee = options.fee || defaultFee;
+		const txBody = TxBody.fromPartial({
+			messages: msgs,
+			memo: '',
+		});
+
+		return await buildTxRaw(chain.chain_id, client, signer, txBody, fee);
+	}
+
 	const tx = async (msgs: EncodeObject[], options: TxOptions) => {
 		if (!address) {
 			toast({
@@ -52,17 +65,13 @@ export function useTx() {
 			return;
 		}
 
-		let signed: Uint8Array;
 		const signer = getOfflineSigner();
 		const client = await getSigningClient(signer);
 
+		let signed: Uint8Array;
 		try {
-			const fee = options.fee || defaultFee;
-			const txBody = TxBody.fromPartial({
-				messages: msgs,
-				memo: '',
-			});
-			signed = await buildTxRaw(chain.chain_id, client, signer, txBody, fee);
+			const txRaw = await sign(msgs, options);
+			signed = TxRaw.encode(txRaw).finish();
 		} catch (e: unknown) {
 			console.error(e);
 			toast({
@@ -79,7 +88,7 @@ export function useTx() {
 			duration: 999999,
 		});
 
-		if (client && signed) {
+		if (signed) {
 			try {
 				const res = await client.broadcastTx(signed);
 				if (isDeliverTxSuccess(res)) {
@@ -122,7 +131,7 @@ export function useTx() {
 		}
 	};
 
-	return { tx };
+	return { tx, sign };
 }
 
 export function useQueryHooks() {
@@ -176,11 +185,11 @@ async function buildTxRaw(
 	const signDoc = makeSignDoc(txBodyBytes, authInfoBytes, chainId, Number(account.accountNumber));
 	const { signature, signed } = await signer.signDirect(signerAddress, signDoc);
 
-	return TxRaw.encode({
+	return TxRaw.fromPartial({
 		bodyBytes: signed.bodyBytes,
 		authInfoBytes: signed.authInfoBytes,
 		signatures: [fromBase64(signature.signature)],
-	}).finish();
+	});
 }
 
 async function fetchAccount(address: string) {

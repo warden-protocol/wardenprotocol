@@ -148,7 +148,7 @@ target/wasm32-unknown-unknown/release/hello_world.wasm
 
 If your local chain isn't running, start it:
    
-```
+```bash
 wardend start
 ```
 

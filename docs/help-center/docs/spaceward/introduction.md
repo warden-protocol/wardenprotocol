@@ -8,7 +8,7 @@ slug: /
 
 ## Overview
 
-👉 [Try SpaceWard on Buenavista testnet](https://spaceward.buenavista.wardenprotocol.org)
+👉 [Try SpaceWard on Chiado testnet](https://spaceward.chiado.wardenprotocol.org)
 
 **SpaceWard** is the front-end interface for the Warden Protocol, enabling account aggregation and modularly secure omnichain operations.
 

@@ -14,7 +14,7 @@ Your [voting power](#voting-power) depends on the total amount of staked WARD. T
 
 To cast a vote, take these steps:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 2. In the left menu, navigate to **Governance**. You'll see a list of proposals.
 4. Click an active proposal you wish to vote on to open its details.
 5. Click **Vote** and then select the option you wish to vote for.
@@ -24,7 +24,7 @@ To cast a vote, take these steps:
 
 Your **voting power** depends on the total amount of staked WARD. To view it, do this:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Staking**
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and navigate to **Staking**
 2. Navigate to the **My staking** tab with the list of your stakes.
 3. Check the **Voting power** column in the table.
 

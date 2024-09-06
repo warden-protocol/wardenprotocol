@@ -1,12 +1,12 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
-# Build a custom smart contract
+# Build a CosmWasm contract
 
 ## Overview
 
-This guide explains how to create and deploy a simple "Hello World" smart contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
+This guide explains how to create and deploy a simple "Hello World" CosmWasm contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
 
 ## Prerequisites
 

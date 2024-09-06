@@ -34,9 +34,9 @@ Before you start, complete the following prerequisites:
    brew install binaryen
    ```
 
-- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed. You can stop the chain for now if you wish.
+- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-   The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command (while the node is running):
+   The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command:
 
    ```bash
    wardend keys list

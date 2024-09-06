@@ -1,4 +1,4 @@
-FROM golang:1.22.5
+FROM golang:1.22.7
 
 # Install dependencies
 RUN apt-get update && \

@@ -293,10 +293,10 @@ max-tx-gas-wanted = 0
 enable = true
 
 # Address defines the EVM RPC HTTP server address to bind to.
-address = "127.0.0.1:8545"
+address = "127.0.0.1:{{ .JSONRPCPort }}"
 
 # Address defines the EVM WebSocket server address to bind to.
-ws-address = "127.0.0.1:8546"
+ws-address = "127.0.0.1:{{ .JSONRPCWSPort }}"
 
 # API defines a list of JSON-RPC namespaces that should be enabled
 # Example: "eth,txpool,personal,net,debug,web3"

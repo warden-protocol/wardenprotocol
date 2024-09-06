@@ -9,7 +9,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
@@ -58,17 +57,8 @@ func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
 // TryExecuteVotedAction checks if the action's expression is satisfied and stores the
 // result in the database.
 func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	approved, err := act.Rule.Eval(ctx, ActionApprovedVotesEnv(act.Votes))
 
-	evaluateVotes := func(env shield.Environment) (bool, error) {
-		ready, err := act.Rule.Eval(ctx, env)
-		if err != nil {
-			return false, fmt.Errorf("failed to evaluate votes: %w", err)
-		}
-		return ready, nil
-	}
-
-	approved, err := evaluateVotes(ActionApprovedVotesEnv(act.Votes))
 	if err != nil {
 		return err
 	}
@@ -77,7 +67,16 @@ func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) er
 		return k.executeAction(ctx, act)
 	}
 
-	rejected, err := evaluateVotes(ActionRejectedVotesEnv(act.Votes))
+	return nil
+}
+
+// TryRejectVotedAction checks if the action's reject expression is satisfied and updates its
+// status revoked.
+func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) error {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	rejected, err := act.Rule.Eval(ctx, ActionRejectedVotesEnv(act.Votes))
+
 	if err != nil {
 		return err
 	}

@@ -12,7 +12,6 @@ This section explains how WARP is distributed, where to get it, and other detail
 
 ## Tokenomics
 
-
 |Property|Details|
 |-|--|
 | Token | WARP |
@@ -23,7 +22,6 @@ This section explains how WARP is distributed, where to get it, and other detail
 | Coingecko | https://www.coingecko.com/en/coins/warden-protocol-warp |
 | DEX Tools | https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 |
 | MEXC | https://www.mexc.com/exchange/WARP_USDT |
-
 
 *98.14% of the supply was burned*
 
@@ -44,7 +42,6 @@ During the airdrop period, as tracked via the Warden Airdrop website, there will
 
 ## Where to get WARP
 
-
 WARP tokens are available in the following way:
 
 - Swappable in a Liquidity Bootstrapping Pool for USDC
@@ -60,15 +57,13 @@ WARP evolves alongside the Warden Protocol, adapting to its milestones and commu
 
 The phases will be split into:
 
-1. The LBP Phase: [Get early access to WARP](https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585) and start to accumulate points (WARP) ahead of the Warden Protocol mainnet. The more WARP, the more WARD!  
-
-   **Note**: This phase started on 30/04/2024 and **is over now**.
+1. **The LBP Phase**: [Get early access to WARP](https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585) and start to accumulate points (WARP) ahead of the Warden Protocol mainnet. The more WARP, the more WARD!  Note that this phase started on 30/04/2024 and **is over now**.
 
 2. You can now acquire WARP on [DEXes](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823) and on [MEXC](https://www.mexc.com/exchange/WARP_USDT).
 
-3. Farming Phase: Accumulate WARP through on-chain and off-chain activities, as well as providing liquidity for WARP-USDC LP tokens.
+3. **The Farming Phase**: Accumulate WARP through on-chain and off-chain activities, as well as providing liquidity for WARP-USDC LP tokens.
 
-4. Redeeming Phase: Get WARD tokens based on your WARP amount - and join Warden Mainnet.
+4. **The Redeeming Phase**: Get WARD tokens based on your WARP amount - and join Warden Mainnet.
 
 
 

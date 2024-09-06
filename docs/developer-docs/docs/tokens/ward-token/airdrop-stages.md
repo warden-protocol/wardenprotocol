@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # Airdrop stages
@@ -11,8 +11,6 @@ The first snapshot for a portion of the airdrop of $WARD has been completed. Thi
 **Subsequent stages** will also encompass participants in the Incentivized Testnet, On-chain and Off-chain Campaign, and Active Contributors (Stage 2), as well as $TIA, $DYM, and $ATOM stakers, $OPEN holders, NFT communities, and other ecosystems.
 
 ### Snapshot 1 - OPEN token holders OG Snapshot
-
-**TL;DR**
 
 -   Snapshot date: March 22, 2024, 1pm UTC
 -   Eligibility Criteria: Active participation in Public Goods within the OPEN ecosystem

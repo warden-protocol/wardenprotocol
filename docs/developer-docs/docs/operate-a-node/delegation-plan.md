@@ -10,9 +10,9 @@ The primary objective of this delegation plan is to promote a robust, secure, an
 
 See the sections below to learn the details of the plan.
 
-## Buenavista performance
+## Testnet stage
 
-During Buenavista, the Warden Protocol team will be running a series of exercises with validators. The aim of these exercises is to test and prepare for a future mainnet event where the team will be delegating a portion of its token supply to qualifying validators.
+During the testnet stage, the Warden Protocol team will be running a series of exercises with validators. The aim of these exercises is to test and prepare for a future mainnet event where the team will be delegating a portion of its token supply to qualifying validators.
 
 ## Delegation criteria
 
@@ -23,7 +23,7 @@ These metrics are, to name a few:
 - Activity, Community engagement, blog posts
 - Uptime
 - Services provided
-- Buenavista performance
+- Testnet performance
 
 ## Amount of tokens
 

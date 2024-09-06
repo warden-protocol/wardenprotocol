@@ -20,6 +20,7 @@
         {"source":"/learn/spaceward/tutorial-warden-metamask-snap","destination":"https://help.wardenprotocol.org/spaceward/use-dapps#use-metamask-snap", "statusCode": 301},
         {"source":"/learn/spaceward/Setting-Intents","destination":"https://help.wardenprotocol.org/spaceward/manage-rules", "statusCode": 301},
         {"source":"/ward","destination":"/tokens/ward-token/ward", "statusCode": 301},
+        {"source":"/ward/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
         {"source":"/ward/airdrop-stages","destination":"/tokens/ward-token/airdrop-stages", "statusCode": 301},
         {"source":"/ward/demand","destination":"/tokens/ward-token/demand", "statusCode": 301},
         {"source":"/ward/distribution","destination":"/tokens/ward-token/distribution", "statusCode": 301},
@@ -57,6 +58,7 @@
         {"source":"/build-an-oapp/introduction","destination":"/build-an-app/introduction", "statusCode": 301},
         {"source":"/build-an-oapp/useful-links","destination":"/build-an-app/useful-links", "statusCode": 301},
         {"source":"/build-an-oapp/test/run-a-local-chain","destination":"/build-an-app/test/run-a-local-chain", "statusCode": 301},
-        {"source":"/build-an-oapp","destination":"/build-an-app/test/run-a-keychain-from-cli", "statusCode": 301}
+        {"source":"/build-an-oapp","destination":"/build-an-app/test/run-a-keychain-from-cli", "statusCode": 301},
+        {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301}
     ]
 }

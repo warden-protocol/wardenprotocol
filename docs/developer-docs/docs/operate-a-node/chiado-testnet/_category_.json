@@ -1,11 +1,11 @@
 {
-  "position": 2,
-  "label": "Buenavista testnet",
+  "position": 3,
+  "label": "Chiado testnet",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Buenavista testnet"
+    "title": "Chiado testnet"
   },
   "customProps": {}
 }

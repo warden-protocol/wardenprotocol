@@ -1,14 +1,19 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Create a validator
 
-This is a simple step-by-step guide for setting up a validator on Buenavista testnet. It's not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on one of the Warden testnets. It's not a guide on validator architecture or security features.
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Buenavista](buenavista-testnet/join-buenavista) instructions.
+The following instructions assume you have already set up a full-node and are synchronized to the latest block height.
+
+If you haven’t done so, follow the instructions for joining one of the available Warden testnets:
+
+- [Join Buenavista](buenavista-testnet/join-buenavista)
+- [Join Chiado](chiado-testnet/join-chiado)
 
 ## 1. Create/restore a key pair
 
@@ -38,10 +43,13 @@ After creating a new key, you'll see its information and its seed phrase. It's e
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet tokens from our **WARD faucet**:
+You can obtain testnet tokens from our **WARD faucets** – **Buenavista** or **Chiado**:
 
 ```bash
 curl -XPOST -d '{"address": "my-address"}' https://faucet.buenavista.wardenprotocol.org
+```
+```bash
+curl -XPOST -d '{"address": "my-address"}' https://faucet.chiado.wardenprotocol.org
 ```
 
 To verify your balance, use this command:

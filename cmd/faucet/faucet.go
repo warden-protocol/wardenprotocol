@@ -35,10 +35,9 @@ type Faucet struct {
 }
 
 const (
-	mutexLocked     = 1
-	workers         = 2
-	uwardConversion = 1000000
-	dailyHours      = 24
+	mutexLocked = 1
+	workers     = 2
+	dailyHours  = 24
 )
 
 func execute(cmdString string) (Out, error) {
@@ -150,10 +149,12 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		Mutex:           &sync.Mutex{},
 		Batch:           []string{},
 		log:             logger,
-		TokensAvailable: float64(cfg.DailyLimit) / uwardConversion,
-		DailySupply:     float64(cfg.DailyLimit) / uwardConversion,
+		TokensAvailable: float64(cfg.DailyLimit),
+		DailySupply:     float64(cfg.DailyLimit),
 		Amount:          float64(amount),
 	}
+
+	dailySupply.Set(f.DailySupply)
 
 	if f.config.Mnemonic != "" {
 		if err = f.setupNewAccount(); err != nil {
@@ -229,9 +230,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Info().Msgf("sending %s%s to %v", f.config.Amount, f.config.Denom, f.Batch)
+	f.log.Info().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
 
-	amount := f.config.Amount + f.config.Denom
+	amount := f.config.Amount + strings.Repeat("0", f.config.Decimals) + f.config.Denom
+	f.log.Info().Msg(amount)
 
 	cmd := strings.Join([]string{
 		f.config.CliName,
@@ -253,6 +255,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		"-o",
 		"json",
 	}, " ")
+	f.log.Info().Msg(cmd)
 
 	out, err := execute(cmd)
 	if err != nil {
@@ -276,8 +279,9 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		)
 	}
 
-	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount/uwardConversion)
+	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount)
 	f.log.Info().Msgf("tokens available: %f", f.TokensAvailable)
+	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}
 	return result.TxHash, http.StatusOK, nil

@@ -1,5 +1,4 @@
 import {
-	cosmos,
 	createRpcQueryHooks,
 	getSigningWardenClient,
 	useRpcClient,
@@ -7,9 +6,14 @@ import {
 } from "@wardenprotocol/wardenjs";
 import { env } from "../env";
 import { useChain } from "@cosmos-kit/react";
-import { EncodeObject, OfflineSigner } from "@cosmjs/proto-signing";
+import { EncodeObject, OfflineDirectSigner, OfflineSigner, TxBodyEncodeObject, makeAuthInfoBytes, makeSignDoc } from "@cosmjs/proto-signing";
 import { ToasterToast, useToast } from "@/components/ui/use-toast";
-import { DeliverTxResponse, StdFee, isDeliverTxSuccess } from "@cosmjs/stargate";
+import { DeliverTxResponse, SigningStargateClient, StdFee, isDeliverTxSuccess } from "@cosmjs/stargate";
+import { TxBody, TxRaw } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/v1beta1/tx";
+import { Any } from "@wardenprotocol/wardenjs/codegen/google/protobuf/any";
+import { Int53 } from "@cosmjs/math";
+import { PubKey } from "@wardenprotocol/wardenjs/codegen/ethermint/crypto/v1/ethsecp256k1/keys";
+import { fromBase64 } from "@cosmjs/encoding";
 
 export async function getSigningClient(signer: OfflineSigner) {
 	return await getSigningWardenClient({
@@ -18,11 +22,9 @@ export async function getSigningClient(signer: OfflineSigner) {
 	});
 }
 
-const txRaw = cosmos.tx.v1beta1.TxRaw;
-
 const defaultFee: StdFee = {
 	gas: '200000',
-	amount: [{ denom: 'uward', amount: '250' }],
+	amount: [{ denom: 'award', amount: '250000000000000' }],
 };
 
 export interface TxOptions {
@@ -38,8 +40,21 @@ export enum TxStatus {
 }
 
 export function useTx() {
-	const { address, getOfflineSignerDirect: getOfflineSigner } = useChain(env.cosmoskitChainName);
+	const { address, getOfflineSignerDirect: getOfflineSigner, chain } = useChain(env.cosmoskitChainName);
 	const { toast } = useToast();
+
+	const sign = async (msgs: EncodeObject[], options: TxOptions) => {
+		const signer = getOfflineSigner();
+		const client = await getSigningClient(signer);
+
+		const fee = options.fee || defaultFee;
+		const txBody = TxBody.fromPartial({
+			messages: msgs,
+			memo: '',
+		});
+
+		return await buildTxRaw(chain.chain_id, client, signer, txBody, fee);
+	}
 
 	const tx = async (msgs: EncodeObject[], options: TxOptions) => {
 		if (!address) {
@@ -50,13 +65,13 @@ export function useTx() {
 			return;
 		}
 
-		let signed: Parameters<typeof txRaw.encode>['0'];
 		const signer = getOfflineSigner();
 		const client = await getSigningClient(signer);
 
+		let signed: Uint8Array;
 		try {
-			const fee = options.fee || defaultFee;
-			signed = await client.sign(address, msgs, fee, '');
+			const txRaw = await sign(msgs, options);
+			signed = TxRaw.encode(txRaw).finish();
 		} catch (e: unknown) {
 			console.error(e);
 			toast({
@@ -73,9 +88,9 @@ export function useTx() {
 			duration: 999999,
 		});
 
-		if (client && signed) {
+		if (signed) {
 			try {
-				const res = await client.broadcastTx(Uint8Array.from(txRaw.encode(signed).finish()));
+				const res = await client.broadcastTx(signed);
 				if (isDeliverTxSuccess(res)) {
 					if (options.onSuccess) options.onSuccess(res);
 
@@ -116,7 +131,7 @@ export function useTx() {
 		}
 	};
 
-	return { tx };
+	return { tx, sign };
 }
 
 export function useQueryHooks() {
@@ -134,4 +149,54 @@ export function getClient() {
 	return warden.ClientFactory.createRPCQueryClient({
 		rpcEndpoint: env.rpcURL,
 	});
+}
+
+async function buildTxRaw(
+	chainId: string,
+	client: SigningStargateClient,
+	signer: OfflineDirectSigner,
+	txBody: TxBody,
+	fee: StdFee,
+) {
+	const walletAccounts = await signer.getAccounts();
+	const signerAddress = walletAccounts[0].address;
+	const account = await fetchAccount(signerAddress);
+
+	const pubk = Any.fromPartial({
+		typeUrl: PubKey.typeUrl,
+		value: PubKey.encode({
+			key: walletAccounts[0].pubkey,
+		}).finish(),
+	});
+
+	const txBodyEncodeObject: TxBodyEncodeObject = {
+		typeUrl: "/cosmos.tx.v1beta1.TxBody",
+		value: txBody,
+	};
+	const txBodyBytes = client.registry.encode(txBodyEncodeObject);
+	const gasLimit = Int53.fromString(fee.gas).toNumber();
+	const authInfoBytes = makeAuthInfoBytes(
+		[{ pubkey: pubk, sequence: account.sequence }],
+		fee.amount,
+		gasLimit,
+		fee.granter,
+		fee.payer,
+	);
+	const signDoc = makeSignDoc(txBodyBytes, authInfoBytes, chainId, Number(account.accountNumber));
+	const { signature, signed } = await signer.signDirect(signerAddress, signDoc);
+
+	return TxRaw.fromPartial({
+		bodyBytes: signed.bodyBytes,
+		authInfoBytes: signed.authInfoBytes,
+		signatures: [fromBase64(signature.signature)],
+	});
+}
+
+async function fetchAccount(address: string) {
+	const rpcClient = await getClient();
+	const { account } = await rpcClient.cosmos.auth.v1beta1.account({ address });
+	if (!account) {
+		throw new Error("Failed to retrieve account from chain", account);
+	}
+	return account;
 }

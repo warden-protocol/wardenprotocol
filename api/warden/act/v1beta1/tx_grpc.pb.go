@@ -26,6 +26,7 @@ const (
 	Msg_NewRule_FullMethodName       = "/warden.act.v1beta1.Msg/NewRule"
 	Msg_UpdateRule_FullMethodName    = "/warden.act.v1beta1.Msg/UpdateRule"
 	Msg_RevokeAction_FullMethodName  = "/warden.act.v1beta1.Msg/RevokeAction"
+	Msg_VoteForAction_FullMethodName = "/warden.act.v1beta1.Msg/VoteForAction"
 )
 
 // MsgClient is the client API for Msg service.
@@ -39,7 +40,7 @@ type MsgClient interface {
 	NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error)
 	// Add an approval to an existing Action.
 	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
-	// Add an approval to an existing Action.
+	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error)
 	// Create a new Rule.
 	NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error)
@@ -47,6 +48,8 @@ type MsgClient interface {
 	UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(ctx context.Context, in *MsgRevokeAction, opts ...grpc.CallOption) (*MsgRevokeActionResponse, error)
+	// Vote for or against a particular Action.
+	VoteForAction(ctx context.Context, in *MsgVoteForAction, opts ...grpc.CallOption) (*MsgVoteForActionResponse, error)
 }
 
 type msgClient struct {
@@ -120,6 +123,15 @@ func (c *msgClient) RevokeAction(ctx context.Context, in *MsgRevokeAction, opts 
 	return out, nil
 }
 
+func (c *msgClient) VoteForAction(ctx context.Context, in *MsgVoteForAction, opts ...grpc.CallOption) (*MsgVoteForActionResponse, error) {
+	out := new(MsgVoteForActionResponse)
+	err := c.cc.Invoke(ctx, Msg_VoteForAction_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -131,7 +143,7 @@ type MsgServer interface {
 	NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error)
 	// Add an approval to an existing Action.
 	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
-	// Add an approval to an existing Action.
+	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error)
 	// Create a new Rule.
 	NewRule(context.Context, *MsgNewRule) (*MsgNewRuleResponse, error)
@@ -139,6 +151,8 @@ type MsgServer interface {
 	UpdateRule(context.Context, *MsgUpdateRule) (*MsgUpdateRuleResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error)
+	// Vote for or against a particular Action.
+	VoteForAction(context.Context, *MsgVoteForAction) (*MsgVoteForActionResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -166,6 +180,9 @@ func (UnimplementedMsgServer) UpdateRule(context.Context, *MsgUpdateRule) (*MsgU
 }
 func (UnimplementedMsgServer) RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeAction not implemented")
+}
+func (UnimplementedMsgServer) VoteForAction(context.Context, *MsgVoteForAction) (*MsgVoteForActionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoteForAction not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -306,6 +323,24 @@ func _Msg_RevokeAction_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_VoteForAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgVoteForAction)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).VoteForAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_VoteForAction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).VoteForAction(ctx, req.(*MsgVoteForAction))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -340,6 +375,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RevokeAction",
 			Handler:    _Msg_RevokeAction_Handler,
+		},
+		{
+			MethodName: "VoteForAction",
+			Handler:    _Msg_VoteForAction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

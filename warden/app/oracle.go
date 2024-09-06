@@ -238,6 +238,7 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			if err != nil {
 				return nil, fmt.Errorf("failed to set x/marketmap params: %w", err)
 			}
+
 			return migrations, nil
 		},
 		StoreUpgrade: storetypes.StoreUpgrades{

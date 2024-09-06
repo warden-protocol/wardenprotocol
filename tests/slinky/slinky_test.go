@@ -59,7 +59,7 @@ var (
 		},
 	}
 
-	denom = "uward"
+	denom = "award"
 	spec  = &interchaintest.ChainSpec{
 		ChainName:     "slinky",
 		Name:          "slinky",

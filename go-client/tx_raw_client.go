@@ -23,8 +23,8 @@ import (
 )
 
 var (
-	DefaultGasLimit = uint64(300000)
-	DefaultFees     = types.NewCoins(types.NewCoin("uward", math.NewInt(1000)))
+	DefaultGasLimit = uint64(300000000000000000)
+	DefaultFees     = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
 
 	queryTimeout = 250 * time.Millisecond
 )

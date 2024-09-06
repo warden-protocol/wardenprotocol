@@ -15,7 +15,6 @@ import { Icons } from "@/components/ui/icons-assets";
 import descriptions from "../keychains/description";
 import { useNewAction } from "@/hooks/useAction";
 import { useEnqueueAction } from "../actions/hooks";
-import { set } from "react-hook-form";
 
 const DESCRIPTION_MAP = Object.fromEntries(descriptions.map((d) => [d.key, d]));
 const THEME_DISPLAY_COUNT = 4;
@@ -184,7 +183,7 @@ export default function CreateKeyModal({
 				className={clsx(
 					"flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-12 duration-200 hover:text-background",
 					{
-						"hover:bg-pixel-pink hover:text-background":
+						"hover:bg-fill-accent-primary hover:text-background":
 							!desc?.disabled,
 					},
 					{
@@ -221,7 +220,7 @@ export default function CreateKeyModal({
 					)}
 				>
 					{keychainsQuery.data?.keychains.map((item, i) => {
-						const desc = DESCRIPTION_MAP[item.description];
+						const desc = DESCRIPTION_MAP[item.name];
 
 						if (desc && !desc.disabled) {
 							return (
@@ -273,7 +272,7 @@ export default function CreateKeyModal({
 											setSelected(i);
 											setIsDetails(true);
 										}}
-										className="mt-2 duration-300 transition-all hover:text-pixel-pink font-semibold"
+										className="mt-2 duration-300 transition-all hover:text-label-accent font-semibold"
 									>
 										Learn more
 									</a> */}
@@ -425,7 +424,7 @@ export default function CreateKeyModal({
 					className={clsx(
 						"flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full mt-5 duration-200",
 						{
-							"hover:bg-pixel-pink hover:text-background":
+							"hover:bg-fill-accent-primary hover:text-background":
 								!desc?.disabled,
 						},
 						{
@@ -440,7 +439,7 @@ export default function CreateKeyModal({
 				<div className="mt-12 flex flex-col gap-2">
 					<Button
 						onClick={create}
-						className={clsx({ "pointer-events-none bg-fill-quaternary text-gray-400": pending }, "flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-pixel-pink duration-200 hover:text-background")}
+						className={clsx({ "pointer-events-none bg-fill-quaternary text-gray-400": pending }, "flex items-center rounded-lg justify-center gap-2 h-[56px] font-semibold w-full hover:bg-fill-accent-primary duration-200 hover:text-background")}
 					>
 						Create key
 					</Button>

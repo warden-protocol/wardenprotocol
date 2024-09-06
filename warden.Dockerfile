@@ -1,4 +1,4 @@
-FROM golang:1.22.5
+FROM golang:1.22.7
 
 # Install dependencies
 RUN apt-get update && \
@@ -10,7 +10,7 @@ RUN apt-get update && \
 COPY . .
 
 # Install the binary
-RUN just install
+RUN just wardend install
 
 # Command to run the app
 CMD ["just", "localnet"]

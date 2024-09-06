@@ -53,7 +53,7 @@ export default function WCPair(props: WCPairProps) {
 					placeholder="Pairing code"
 					value={props.wcUri}
 					className={clsx(
-						"h-[60px]  pr-[90px] pl-5 text-left bg-border-quaternary border-transparent rounded-lg focus-visible:!ring-0 focus-visible:!ring-offset-0 ring-0 focus-visible:border-2 border-2 focus-visible:border-pixel-pink border-solid",
+						"h-[60px]  pr-[90px] pl-5 text-left bg-fill-elevated border-transparent rounded-lg focus-visible:!ring-0 focus-visible:!ring-offset-0 ring-0 focus-visible:border-2 border-2 focus-visible:border-border-secondary border-solid",
 						{
 							"pt-6 pb-1": props.wcUri,
 							"py-3": !props.wcUri,

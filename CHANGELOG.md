@@ -42,16 +42,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/warden) [#660](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to Space to avoid race conditions
 * (x/warden) Keychain fees are deducted with escrow account
 * (wardend) Bump Cosmos SDK to v0.50.9
-* (wardend) Bump ibc-go to v8.4.0
+* (wardend) Bump ibc-go to v8.5.0
 * (wardend) Bump slinky to v1.0.10
 * (x/warden) [#570](https://github.com/warden-protocol/wardenprotocol/570) Added more metadata to Keychain
   * Replaced Description by Name field (required, non-empty)
   * Added new Description field instead of replaced one
   * Added Url field
   * Added Keybase Id field (16 symbols)
+* (x/act) [#631](https://github.com/warden-protocol/wardenprotocol/631) Add pruning of timed-out actions
 * (x/warden) Make `KeychainFees` fields non-nullable, use an empty list of coins to indicate no fees
+* (evm) Resolve dependencies issues. For go-ethereum use [evmos fork](https://github.com/evmos/go-ethereum/releases/tag/v1.10.26-evmos-rc2) patched with [c1b68f1d05a7ee8eee1bde3c4054f49f5d3e3b9f](https://github.com/ethereum/go-ethereum/pull/24911) from original repository to support slinky.
+* (evm) To adopt ethsecp256k1 use fork of evmos's cosmos-sdk. Fork patched runtime/module adding into ProvideApp two arguments to customize registering interface registry and legacy amino codec.
+* (evm) Introduce award denomination to adjust units with Ethereum
+* (evm) Using ethsecp256k1 signature for all transactions. Users should reimport their seeds to get new addresses.
+* (x/act) Introduce Votes and Approve/Reject expressions for Actions
+* (x/act) Add expected expressions to MsgAddAction
 
 ### Features (non-breaking)
 
@@ -59,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Add the ability for the user to specify the maximum keychain fee size to be deducted
 * (x/warden) Return error if analyzer's address is not bench32
 * (x/act) [724](https://github.com/warden-protocol/wardenprotocol/issues/724) Add `creator` filter param to `Rules` query
+* (wardend) Validate bech32 format in add-genesis-keychain and add-genesis-space
 
 ### Bug Fixes
 * (x/gmp) Remove the GMP default params from genesis

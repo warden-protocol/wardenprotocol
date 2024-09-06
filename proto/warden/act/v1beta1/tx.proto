@@ -8,46 +8,51 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "warden/act/v1beta1/params.proto";
+import "warden/act/v1beta1/action_vote.proto";
+import "shield/ast/ast.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
 // Msg defines the Msg service.
 service Msg {
   option (cosmos.msg.v1.service) = true;
-  
+
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams (MsgUpdateParams) returns (MsgUpdateParamsResponse);
 
   // NewAction creates a new Action.
   rpc NewAction (MsgNewAction) returns (MsgNewActionResponse);
-  
+
   // Add an approval to an existing Action.
   rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
 
-  // Add an approval to an existing Action.
+  // Checks a pending action and executes it if its in a valid state.
   rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
-  
+
   // Create a new Rule.
   rpc NewRule (MsgNewRule) returns (MsgNewRuleResponse);
 
   // Update an existing act name and definition.
   rpc UpdateRule (MsgUpdateRule) returns (MsgUpdateRuleResponse);
-  
+
   // Revoke an existing Action while in pending state.
   rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
+
+  // Vote for or against a particular Action.
+  rpc VoteForAction (MsgVoteForAction) returns (MsgVoteForActionResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
-  option (cosmos.msg.v1.signer) =                       "authority";
+  option (cosmos.msg.v1.signer) = "authority";
   option           (amino.name) = "warden/x/act/MsgUpdateParams";
-  
+
   // authority is the address that controls the module (defaults to x/gov unless overwritten).
   string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 
   // params defines the module parameters to update.
-  
+
   // NOTE: All parameters must be supplied.
   Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
@@ -64,6 +69,10 @@ message MsgNewAction {
   google.protobuf.Any message = 2;
   // action_timeout_height is the block height up until this action can be executed.
   uint64 action_timeout_height = 3;
+  // expected_approve_expression is the expected approval expression the action is created with
+  .shield.ast.Expression expected_approve_expression = 4 [(gogoproto.nullable) = false];
+  // expected_reject_expression is the expected reject expression the action is created with
+  .shield.ast.Expression expected_reject_expression = 5 [(gogoproto.nullable) = false];
 }
 
 message MsgNewActionResponse {
@@ -73,8 +82,8 @@ message MsgNewActionResponse {
 
 message MsgApproveAction {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  uint64 action_id   = 2;
+  string creator = 1;
+  uint64 action_id = 2;
 }
 
 message MsgApproveActionResponse {
@@ -83,9 +92,9 @@ message MsgApproveActionResponse {
 
 message MsgNewRule {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  string name        = 2;
-  string definition  = 3;
+  string creator = 1;
+  string name = 2;
+  string definition = 3;
 }
 
 message MsgNewRuleResponse {
@@ -94,28 +103,39 @@ message MsgNewRuleResponse {
 
 message MsgUpdateRule {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  uint64 id          = 2;
-  string name        = 3;
-  string definition  = 4;
+  string creator = 1;
+  uint64 id = 2;
+  string name = 3;
+  string definition = 4;
 }
 
 message MsgUpdateRuleResponse {}
 
 message MsgRevokeAction {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  uint64 action_id   = 2;
+  string creator = 1;
+  uint64 action_id = 2;
 }
 
 message MsgRevokeActionResponse {}
 
 message MsgCheckAction {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  uint64 action_id   = 2;
+  string creator = 1;
+  uint64 action_id = 2;
 }
 
 message MsgCheckActionResponse {
+  string status = 1;
+}
+
+message MsgVoteForAction {
+  option (cosmos.msg.v1.signer) = "participant";
+  string participant = 1;
+  uint64 action_id = 2;
+  ActionVoteType vote = 3;
+}
+
+message MsgVoteForActionResponse {
   string status = 1;
 }

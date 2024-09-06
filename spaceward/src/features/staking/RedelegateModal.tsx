@@ -129,7 +129,7 @@ export default function RedelegateModal(
 						{ "border-negative border-[1px]": isInputError },
 					)}
 				>
-					<Icons.logoWhite />
+					<Icons.logoPink />
 
 					<input
 						className={clsx(

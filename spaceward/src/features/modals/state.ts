@@ -9,6 +9,7 @@ import type {
 export type ModalType =
 	| "add-owner"
 	| "approve-action"
+	| "approve-snap"
 	| "create-key"
 	| "dapps-modal"
 	| "receive"
@@ -19,6 +20,7 @@ export type ModalType =
 interface ModalParams {
 	"add-owner": {};
 	"approve-action": {};
+	"approve-snap": {};
 	"create-key": CreateKeyParams;
 	"dapps-modal": {};
 	receive: TransferParams;

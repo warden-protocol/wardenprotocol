@@ -12,7 +12,7 @@ import (
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-// SignaResponseWriter is the interface for writing responses to sign requests.
+// SignResponseWriter is the interface for writing responses to sign requests.
 type SignResponseWriter interface {
 	// Fulfil writes the signature to the sign request.
 	Fulfil(signature []byte) error
@@ -68,23 +68,30 @@ func (w *signResponseWriter) Reject(reason string) error {
 	return err
 }
 
-func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
+func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest, appClient *AppClient) {
+	ingestRequest := func(signRequest *wardentypes.SignRequest) {
+		if !a.signRequestTracker.IsNew(signRequest.Id, appClient.grpcUrl) {
+			a.logger().Debug("skipping sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl)
+			return
+		}
+
+		a.logger().Info("got sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl)
+		a.signRequestTracker.Ingested(signRequest.Id, appClient.grpcUrl)
+
+		if a.signRequestTracker.HasReachedConsensus(signRequest.Id, a.config.ConsensusNodeThreshold) {
+			signRequestsCh <- signRequest
+		}
+	}
+
 	for {
 		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		signRequests, err := a.signRequests(reqCtx)
+		signRequests, err := appClient.signRequests(reqCtx)
 		cancel()
 		if err != nil {
 			a.logger().Error("failed to get sign requests", "error", err)
 		} else {
 			for _, signRequest := range signRequests {
-				if !a.signRequestTracker.IsNew(signRequest.Id) {
-					a.logger().Debug("skipping sign request", "id", signRequest.Id)
-					continue
-				}
-
-				a.logger().Info("got sign request", "id", signRequest.Id)
-				a.signRequestTracker.Ingested(signRequest.Id)
-				signRequestsCh <- signRequest
+				ingestRequest(signRequest)
 			}
 		}
 
@@ -129,6 +136,6 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 	}()
 }
 
-func (a *App) signRequests(ctx context.Context) ([]*wardentypes.SignRequest, error) {
-	return a.query.PendingSignRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainID)
+func (a *AppClient) signRequests(ctx context.Context) ([]*wardentypes.SignRequest, error) {
+	return a.query.PendingSignRequests(ctx, &client.PageRequest{Limit: uint64(a.batchSize)}, a.keychainId)
 }

@@ -27,10 +27,19 @@ type App struct {
 	keyRequestHandler  KeyRequestHandler
 	signRequestHandler SignRequestHandler
 
-	query              *client.QueryClient
 	txWriter           *writer.W
 	keyRequestTracker  *tracker.T
 	signRequestTracker *tracker.T
+
+	clients []*AppClient
+}
+
+type AppClient struct {
+	grpcUrl    string
+	batchSize  int
+	keychainId uint64
+	query      *client.QueryClient
+	txClient   *client.TxClient
 }
 
 // NewApp creates a new Keychain application, using the given configuration.
@@ -39,6 +48,7 @@ func NewApp(config Config) *App {
 		config:             config,
 		keyRequestTracker:  tracker.New(),
 		signRequestTracker: tracker.New(),
+		clients:            []*AppClient{},
 	}
 }
 
@@ -71,16 +81,20 @@ func (a *App) Start(ctx context.Context) error {
 
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
 	defer close(keyRequestsCh)
-	go a.ingestKeyRequests(keyRequestsCh)
+	for _, appClient := range a.clients {
+		go a.ingestKeyRequests(keyRequestsCh, appClient)
+	}
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
 	defer close(signRequestsCh)
-	go a.ingestSignRequests(signRequestsCh)
+	for _, appClient := range a.clients {
+		go a.ingestSignRequests(signRequestsCh, appClient)
+	}
 
 	flushErrors := make(chan error)
 	defer close(flushErrors)
 	go func() {
-		if err := a.txWriter.Start(ctx, flushErrors); err != nil {
+		if err := a.txWriter.Start(ctx, a.liveTxClient, flushErrors); err != nil {
 			a.logger().Error("tx writer exited with error", "error", err)
 		}
 	}()
@@ -99,30 +113,68 @@ func (a *App) Start(ctx context.Context) error {
 	}
 }
 
+func (a *App) liveTxClient() (*client.TxClient, error) {
+	for _, appClient := range a.clients {
+		if state := appClient.query.Conn().GetState(); state == connectivity.Ready || state == connectivity.Idle {
+			return appClient.txClient, nil
+		}
+	}
+
+	return nil, fmt.Errorf("all node clients are down")
+}
+
 // ConnectionState returns the current state of the gRPC connection.
-func (a *App) ConnectionState() connectivity.State {
-	return a.query.Conn().GetState()
+func (a *App) ConnectionState() map[string]connectivity.State {
+	statuses := make(map[string]connectivity.State)
+
+	for _, appClient := range a.clients {
+		state := appClient.query.Conn().GetState()
+		statuses[appClient.grpcUrl] = state
+	}
+
+	return statuses
 }
 
 func (a *App) initConnections() error {
-	a.logger().Info("connecting to Warden Protocol using gRPC", "url", a.config.GRPCURL, "insecure", a.config.GRPCInsecure)
-	query, err := client.NewQueryClient(a.config.GRPCURL, a.config.GRPCInsecure)
-	if err != nil {
-		return fmt.Errorf("failed to create query client: %w", err)
+	initConnection := func(logger *slog.Logger, grpcUlr string, config BasicConfig) (*AppClient, error) {
+		appClient := &AppClient{
+			batchSize:  config.BatchSize,
+			keychainId: config.KeychainID,
+			grpcUrl:    grpcUlr,
+		}
+
+		logger.Info("connecting to Warden Protocol using gRPC", "url", grpcUlr, "insecure", config.GRPCInsecure)
+
+		query, err := client.NewQueryClient(grpcUlr, config.GRPCInsecure)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create query client: %w", err)
+		}
+		appClient.query = query
+
+		conn := query.Conn()
+
+		identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create identity: %w", err)
+		}
+
+		logger.Info("keychain writer identity", "address", identity.Address.String())
+
+		appClient.txClient = client.NewTxClient(identity, config.ChainID, conn, query)
+
+		return appClient, nil
 	}
-	a.query = query
 
-	conn := query.Conn()
+	for _, grpcUrl := range a.config.GRPCURLs {
+		appClient, err := initConnection(a.logger(), grpcUrl, a.config.BasicConfig)
+		if err != nil {
+			return err
+		}
 
-	identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
-	if err != nil {
-		return fmt.Errorf("failed to create identity: %w", err)
+		a.clients = append(a.clients, appClient)
 	}
 
-	a.logger().Info("keychain writer identity", "address", identity.Address.String())
-
-	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
-	a.txWriter = writer.New(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
+	a.txWriter = writer.New(a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
 	a.txWriter.Fees = a.config.TxFees
 	a.txWriter.GasLimit = a.config.GasLimit
 

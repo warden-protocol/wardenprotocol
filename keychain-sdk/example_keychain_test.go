@@ -24,8 +24,6 @@ func Main() {
 			// setup the connection to the Warden Protocol node
 			ChainID: "warden",
 
-			GRPCInsecure: true,
-
 			// setup the account used to write txs
 			KeychainID: 1,
 			Mnemonic:   "virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick",
@@ -36,7 +34,7 @@ func Main() {
 			BatchSize:     10,
 		},
 
-		GRPCURLs:               []string{"localhost:9090"},
+		GRPCConfigs:            []keychain.GrpcNodeConfig{{GRPCURL: "localhost:9090", GRPCInsecure: false}},
 		ConsensusNodeThreshold: 1,
 	})
 

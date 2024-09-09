@@ -12,13 +12,13 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 
 - The chain ID in queries: `chiado_1234-1`
 - Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
-- The current `wardend` version: **v0.4.2**
+- The current `wardend` version: **v0.5.0**
 
 ## Version history
 
-| Release | Upgrade block height | Upgrade date |
-| ------- | -------------------- | ------------ |
-|         |                      |              |
+| Release |
+| ------- |
+| v0.5.0  |
 
 ## Prerequisites
 

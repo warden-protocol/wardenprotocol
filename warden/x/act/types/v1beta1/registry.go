@@ -8,10 +8,10 @@ import (
 )
 
 // RulesRegistry stores the mapping between Msg types and the function the
-// provides the Rule for them.
+// provides the approve and reject Rules for them.
 //
-// The registered Rule is fetched only once during Action creation. (The
-// provider function is not called every time the Action is re-evaluated).
+// The registered Rules is fetched only once during Action creation. (The
+// provider function is not called every time a new vote is added to an Action).
 //
 // The provider function receives the context.Context of the current execution.
 // Optionally, it can return a new context.Context that will be used further
@@ -21,8 +21,8 @@ type RulesRegistry struct {
 	p map[string]ProviderFnWithCtx
 }
 
-type ProviderFnG[T sdk.Msg] func(context.Context, T) (Rule, error)
-type ProviderFnWithCtxG[T sdk.Msg] func(context.Context, T) (context.Context, Rule, error)
+type ProviderFnG[T sdk.Msg] func(context.Context, T) (Rule, Rule, error)
+type ProviderFnWithCtxG[T sdk.Msg] func(context.Context, T) (context.Context, Rule, Rule, error)
 
 type registry interface {
 	Register(typeUrl string, fn ProviderFn)
@@ -34,7 +34,7 @@ type registry interface {
 func Register[T sdk.Msg](reg registry, fn ProviderFnG[T]) {
 	var msg T
 	typeUrl := sdk.MsgTypeURL(msg)
-	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Rule, error) {
+	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Rule, Rule, error) {
 		return fn(ctx, m.(T))
 	})
 }
@@ -49,13 +49,13 @@ type registryWithCtx interface {
 func RegisterCtx[T sdk.Msg](reg registryWithCtx, fn ProviderFnWithCtxG[T]) {
 	var msg T
 	typeUrl := sdk.MsgTypeURL(msg)
-	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Rule, error) {
+	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Rule, Rule, error) {
 		return fn(ctx, m.(T))
 	})
 }
 
-type ProviderFn func(context.Context, sdk.Msg) (Rule, error)
-type ProviderFnWithCtx func(context.Context, sdk.Msg) (context.Context, Rule, error)
+type ProviderFn func(context.Context, sdk.Msg) (Rule, Rule, error)
+type ProviderFnWithCtx func(context.Context, sdk.Msg) (context.Context, Rule, Rule, error)
 
 // NewRulesRegistry returns an empty initialized *RulesRegistry.
 func NewRulesRegistry() *RulesRegistry {
@@ -68,9 +68,9 @@ func NewRulesRegistry() *RulesRegistry {
 // ProviderMsg can be registered for each typeUrl, attempting to register
 // a provider for the same typeUrl twice will panic.
 func (p *RulesRegistry) Register(typeUrl string, fn ProviderFn) {
-	p.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Rule, error) {
-		i, err := fn(ctx, m)
-		return ctx, i, err
+	p.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Rule, Rule, error) {
+		approve, reject, err := fn(ctx, m)
+		return ctx, approve, reject, err
 	})
 }
 
@@ -97,10 +97,10 @@ func (p *RulesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
 //
 // An error is returned if there are no provider functions registered for the
 // sdk.Msg type.
-func (p *RulesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Context, Rule, error) {
+func (p *RulesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Context, Rule, Rule, error) {
 	typeUrl := sdk.MsgTypeURL(msg)
 	if fn, found := p.p[typeUrl]; found {
 		return fn(ctx, msg)
 	}
-	return nil, Rule{}, fmt.Errorf("no rule provider registered for %s", typeUrl)
+	return nil, Rule{}, Rule{}, fmt.Errorf("no rule provider registered for %s", typeUrl)
 }

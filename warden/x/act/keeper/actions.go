@@ -208,12 +208,18 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctx = ctxWithActionCreator(sdk.UnwrapSDKContext(ctx), creator)
-	ctx, rule, err := k.rulesRegistry.Get(ctx, msg)
+	ctx, approveRule, rejectRule, err := k.rulesRegistry.Get(ctx, msg)
 	if err != nil {
 		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)
 	}
 
-	// todo: check that expressions from rulesRegistry (templateRegistry) match with expected
+	if *approveRule.Expression != expectedApproveExpression {
+		return nil, types.ErrApproveExpressionNotMatched
+	}
+
+	if *rejectRule.Expression != expectedRejectExpression {
+		return nil, types.ErrRejectExpressionNotMatched
+	}
 
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
@@ -221,26 +227,36 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
-	preprocessedExpr, mentions, err := k.preprocessRule(ctxWithMsg, rule)
+	preprocessedApproveExpr, approveMentions, err := k.preprocessRule(ctxWithMsg, approveRule)
 	if err != nil {
 		return nil, err
 	}
 
+	preprocessedRejectExpr, rejectMentions, err := k.preprocessRule(ctxWithMsg, rejectRule)
+	if err != nil {
+		return nil, err
+	}
+
+	mentions := append(approveMentions, rejectMentions...)
+
 	// update the rule of this Action with the preprocessed expression
-	rule.Expression = preprocessedExpr
+	// todo: should be removed with removing Rule field in Action
+	approveRule.Expression = preprocessedApproveExpr
 
 	// create action object
 	timestamp := k.getBlockTime(ctx)
 	act := &types.Action{
-		Status:        types.ActionStatus_ACTION_STATUS_PENDING,
-		Approvers:     nil,
-		Rule:          rule,
-		Mentions:      mentions,
-		Msg:           wrappedMsg,
-		Creator:       creator,
-		TimeoutHeight: timeoutHeight,
-		CreatedAt:     timestamp,
-		UpdatedAt:     timestamp,
+		Status:            types.ActionStatus_ACTION_STATUS_PENDING,
+		Approvers:         nil,
+		Rule:              approveRule,
+		Mentions:          mentions,
+		Msg:               wrappedMsg,
+		Creator:           creator,
+		TimeoutHeight:     timeoutHeight,
+		CreatedAt:         timestamp,
+		UpdatedAt:         timestamp,
+		ApproveExpression: *preprocessedApproveExpr,
+		RejectExpression:  *preprocessedRejectExpr,
 	}
 
 	// add initial approver

@@ -2,6 +2,7 @@ package v1beta3
 
 import (
 	"fmt"
+
 	"github.com/warden-protocol/wardenprotocol/shield"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -60,31 +61,51 @@ func (w *Space) IncrementNonce(nonce uint64) (uint64, error) {
 	return w.Nonce, nil
 }
 
-func (w *Space) RuleAddOwner() acttypes.Rule {
+func (w *Space) RuleApproveAddOwner() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleRemoveOwner() acttypes.Rule {
+func (w *Space) RuleRejectAddOwner() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleAppendChild() acttypes.Rule {
+func (w *Space) RuleApproveRemoveOwner() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleNewKeyRequest() acttypes.Rule {
+func (w *Space) RuleRejectRemoveOwner() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleUpdateKey() acttypes.Rule {
+func (w *Space) RuleApproveNewKeyRequest() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleNewSignRequest() acttypes.Rule {
+func (w *Space) RuleRejectNewKeyRequest() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleUpdateSpace() acttypes.Rule {
+func (w *Space) RuleApproveUpdateKey() acttypes.Rule {
+	return w.AnyOwnerRule()
+}
+
+func (w *Space) RuleRejectUpdateKey() acttypes.Rule {
+	return w.AnyOwnerRule()
+}
+
+func (w *Space) RuleApproveNewSignRequest() acttypes.Rule {
+	return w.AnyOwnerRule()
+}
+
+func (w *Space) RuleRejectNewSignRequest() acttypes.Rule {
+	return w.AnyOwnerRule()
+}
+
+func (w *Space) RuleApproveUpdateSpace() acttypes.Rule {
+	return w.AnyOwnerRule()
+}
+
+func (w *Space) RuleRejectUpdateSpace() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 

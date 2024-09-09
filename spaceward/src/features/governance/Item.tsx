@@ -98,7 +98,7 @@ function GovernanceItemRow({
 	const enabled = Boolean(proposal && tally && votes);
 
 	return (
-		<div className="grid grid-cols-[24px_1fr_125px_140px_140px_140px_90px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
+		<div className="grid grid-cols-[24px_180px_0.8fr_1.1fr_1fr_1fr_90px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary-bg text-xs">
 					{proposal.id}

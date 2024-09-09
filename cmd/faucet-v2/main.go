@@ -19,14 +19,14 @@ import (
 
 type Config struct {
 	CliName        string `env:"CLI_NAME, default=wardend"`
-	ChainID        string `env:"CHAIN_ID, default=warden"`
+	ChainID        string `env:"CHAIN_ID, default=warden_1337-1"`
 	KeyringBackend string `env:"KEYRING_BACKEND, default=test"`
 	Node           string `env:"NODE, default=http://localhost:26657"`
-	SendDenom      string `env:"DENOM, default=10000000uward"`
+	SendDenom      string `env:"DENOM, default=10000000000000000000award"`
 	AccountName    string `env:"ACCOUNT_NAME, default=shulgin"`
 	Mnemonic       string `env:"MNEMONIC"`
-	HDPath         string `env:"HD_PATH, default=m/44'/118'/0'/0/0"`
-	Fees           string `env:"FEES, default=1uward"`
+	HDPath         string `env:"HD_PATH, default=m/44'/60'/0'/0/0"`
+	Fees           string `env:"FEES, default=1award"`
 	OtherFlags     string `env:"OTHER_FLAGS"`
 
 	Cooldown      time.Duration `env:"COOLDOWN, default=12h"`

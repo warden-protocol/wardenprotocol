@@ -1,16 +1,9 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 3
 ---
 
 # Build with WardenJS
 
-*Coming soon*
+**WardenJS** is a tool helping you to build the frontend part of your application. It makes it easy to compose and broadcast messages, with all of the proto and amino encoding handled for you.
 
-<!---
-
-- An overview of functions related to different modules
-- Implement Spaces, implement Keychains, etc.
-
-**Note**: In this section, we'll show how to use WardenJS using SpaceWard as an example.
-
---->
+You can find basic WardenJS documentation here: [WardenJS](https://www.npmjs.com/package/@wardenprotocol/wardenjs)

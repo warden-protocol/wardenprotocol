@@ -1,11 +1,11 @@
 //@ts-nocheck
-import * as _94 from "./ast/ast.js";
-import * as _95 from "./token/token.js";
+import * as _108 from "./ast/ast.js";
+import * as _109 from "./token/token.js";
 export namespace shield {
   export const ast = {
-    ..._94
+    ..._108
   };
   export const token = {
-    ..._95
+    ..._109
   };
 }

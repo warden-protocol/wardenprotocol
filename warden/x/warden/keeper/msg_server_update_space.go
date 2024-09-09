@@ -31,6 +31,10 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		space.SignRuleId = msg.SignRuleId
 	}
 
+	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
+		return nil, err
+	}
+
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
 		return nil, err
 	}

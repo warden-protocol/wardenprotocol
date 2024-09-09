@@ -324,7 +324,7 @@ export function GovernancePage() {
 				)}
 			>
 				{state.layout === "list" && (
-					<div className="grid grid-cols-[24px_1fr_125px_140px_140px_140px_90px] gap-3 pb-2">
+					<div className="grid grid-cols-[24px_180px_0.8fr_1.1fr_1fr_1fr_90px] gap-2 pb-2">
 						<div className="text-sm	text-muted-foreground">#</div>
 						<div className="text-sm w-fit text-muted-foreground">
 							Title

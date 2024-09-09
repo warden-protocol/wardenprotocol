@@ -24,6 +24,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
+	evmoskr "github.com/evmos/evmos/v18/crypto/keyring"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -80,7 +81,7 @@ func NewRootCmd() *cobra.Command {
 			txConfigOpts.EnabledSignModes = append(txConfigOpts.EnabledSignModes, signing.SignMode_SIGN_MODE_TEXTUAL)
 			txConfigOpts.TextualCoinMetadataQueryFn = txmodule.NewGRPCCoinMetadataQueryFn(clientCtx)
 			txConfigWithTextual, err := tx.NewTxConfigWithOptions(
-				codec.NewProtoCodec(clientCtx.InterfaceRegistry),
+				clientCtx.Codec,
 				txConfigOpts,
 			)
 			if err != nil {
@@ -88,9 +89,6 @@ func NewRootCmd() *cobra.Command {
 			}
 
 			clientCtx = clientCtx.WithTxConfig(txConfigWithTextual)
-			if err := client.SetCmdClientContextHandler(clientCtx, cmd); err != nil {
-				return err
-			}
 
 			if err := client.SetCmdClientContextHandler(clientCtx, cmd); err != nil {
 				return err
@@ -157,6 +155,7 @@ func ProvideClientContext(
 		WithInput(os.Stdin).
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithHomeDir(app.DefaultNodeHome).
+		WithKeyringOptions(evmoskr.Option()).
 		WithViper(app.Name) // env variable prefix
 
 	// Read the config again to overwrite the default values with the values from the config file

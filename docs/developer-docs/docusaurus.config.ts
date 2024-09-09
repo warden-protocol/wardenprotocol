@@ -81,7 +81,7 @@ const config: Config = {
                 {
                     type: "docSidebar",
                     sidebarId: "buildApp",
-                    label: "Build an App",
+                    label: "Build an app",
                     position: "left",
                 },
                 {
@@ -101,33 +101,6 @@ const config: Config = {
                     sidebarId: "tokens",
                     label: "Tokens",
                     position: "left",
-                },
-                {
-                    type: "dropdown",
-                    label: "Tools",
-                    position: "left",
-                    items: [
-                        {
-                            type: "doc",
-                            label: "Smart contract API",
-                            docId: "build-an-app/smart-contract-api-reference",
-                        },
-                        {
-                            type: "doc",
-                            label: "WardenJS",
-                            docId: "build-an-app/build-the-frontend/wardenjs-functions",
-                        },
-                        {
-                            type: "doc",
-                            label: "Keychain SDK",
-                            docId: "build-a-keychain/sdk/keychain-sdk",
-                        },
-                        {
-                            type: "doc",
-                            label: "Node API",
-                            docId: "operate-a-node/node-api-reference",
-                        },
-                    ],
                 },
                 {
                     href: "https://discord.com/invite/warden",

@@ -32,7 +32,8 @@ import (
 	evidencetypes "cosmossdk.io/x/evidence/types"
 	"cosmossdk.io/x/feegrant"
 	_ "cosmossdk.io/x/feegrant/module" // import for side-effects
-	_ "cosmossdk.io/x/upgrade"         // import for side-effects
+	"cosmossdk.io/x/tx/signing"
+	_ "cosmossdk.io/x/upgrade" // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -92,6 +93,9 @@ import (
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
+
+	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 )
 
 func init() {
@@ -108,6 +112,11 @@ func init() {
 	config.SetBech32PrefixForValidator(validatorAddressPrefix, validatorPubKeyPrefix)
 	config.SetBech32PrefixForConsensusNode(consNodeAddressPrefix, consNodePubKeyPrefix)
 	config.Seal()
+}
+
+// ProvideMsgEthereumTxCustomGetSigner provides the CustomGetSigners method for the EthereumTx.
+func ProvideMsgEthereumTxCustomGetSigner() signing.CustomGetSigner {
+	return evmtypes.MsgEthereumTxCustomGetSigner
 }
 
 var (
@@ -131,6 +140,12 @@ var (
 		minttypes.ModuleName,
 		crisistypes.ModuleName,
 		ibcexported.ModuleName,
+		// evmOS modules
+		evmtypes.ModuleName,
+		// NOTE: feemarket module needs to be initialized before genutil module:
+		// gentx transactions use MinGasPriceDecorator.AnteHandle
+		feemarkettypes.ModuleName,
+
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		authz.ModuleName,
@@ -156,6 +171,7 @@ var (
 		oracletypes.ModuleName,
 		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
 		marketmaptypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -188,6 +204,10 @@ var (
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
+
+		// evmOS modules
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -214,6 +234,10 @@ var (
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
+
+		// evmOS modules
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -236,6 +260,7 @@ var (
 		{Account: actmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
+		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

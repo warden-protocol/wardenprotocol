@@ -39,9 +39,10 @@ type (
 )
 
 var (
-	ActionPrefix          = collections.NewPrefix(0)
-	RulePrefix            = collections.NewPrefix(1)
-	ActionByAddressPrefix = collections.NewPrefix(2)
+	ActionPrefix                   = collections.NewPrefix(0)
+	RulePrefix                     = collections.NewPrefix(1)
+	ActionByAddressPrefix          = collections.NewPrefix(2)
+	PreviousPruneBlockHeightPrefix = collections.NewPrefix(3)
 )
 
 func NewKeeper(

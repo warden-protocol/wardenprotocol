@@ -1,73 +1,73 @@
 //@ts-nocheck
-import * as _72 from "./marketmap/module/v1/module.js";
-import * as _73 from "./marketmap/v1/genesis.js";
-import * as _74 from "./marketmap/v1/market.js";
-import * as _75 from "./marketmap/v1/params.js";
-import * as _76 from "./marketmap/v1/query.js";
-import * as _77 from "./marketmap/v1/tx.js";
-import * as _78 from "./oracle/module/v1/module.js";
-import * as _79 from "./oracle/v1/genesis.js";
-import * as _80 from "./oracle/v1/query.js";
-import * as _81 from "./oracle/v1/tx.js";
-import * as _82 from "./types/v1/currency_pair.js";
-import * as _176 from "./marketmap/v1/tx.amino.js";
-import * as _177 from "./oracle/v1/tx.amino.js";
-import * as _178 from "./marketmap/v1/tx.registry.js";
-import * as _179 from "./oracle/v1/tx.registry.js";
-import * as _180 from "./marketmap/v1/query.lcd.js";
-import * as _181 from "./oracle/v1/query.lcd.js";
-import * as _182 from "./marketmap/v1/query.rpc.Query.js";
-import * as _183 from "./oracle/v1/query.rpc.Query.js";
-import * as _184 from "./marketmap/v1/tx.rpc.msg.js";
-import * as _185 from "./oracle/v1/tx.rpc.msg.js";
-import * as _204 from "./lcd.js";
-import * as _205 from "./rpc.query.js";
-import * as _206 from "./rpc.tx.js";
+import * as _86 from "./marketmap/module/v1/module.js";
+import * as _87 from "./marketmap/v1/genesis.js";
+import * as _88 from "./marketmap/v1/market.js";
+import * as _89 from "./marketmap/v1/params.js";
+import * as _90 from "./marketmap/v1/query.js";
+import * as _91 from "./marketmap/v1/tx.js";
+import * as _92 from "./oracle/module/v1/module.js";
+import * as _93 from "./oracle/v1/genesis.js";
+import * as _94 from "./oracle/v1/query.js";
+import * as _95 from "./oracle/v1/tx.js";
+import * as _96 from "./types/v1/currency_pair.js";
+import * as _200 from "./marketmap/v1/tx.amino.js";
+import * as _201 from "./oracle/v1/tx.amino.js";
+import * as _202 from "./marketmap/v1/tx.registry.js";
+import * as _203 from "./oracle/v1/tx.registry.js";
+import * as _204 from "./marketmap/v1/query.lcd.js";
+import * as _205 from "./oracle/v1/query.lcd.js";
+import * as _206 from "./marketmap/v1/query.rpc.Query.js";
+import * as _207 from "./oracle/v1/query.rpc.Query.js";
+import * as _208 from "./marketmap/v1/tx.rpc.msg.js";
+import * as _209 from "./oracle/v1/tx.rpc.msg.js";
+import * as _231 from "./lcd.js";
+import * as _232 from "./rpc.query.js";
+import * as _233 from "./rpc.tx.js";
 export namespace slinky {
   export namespace marketmap {
     export namespace module {
       export const v1 = {
-        ..._72
+        ..._86
       };
     }
     export const v1 = {
-      ..._73,
-      ..._74,
-      ..._75,
-      ..._76,
-      ..._77,
-      ..._176,
-      ..._178,
-      ..._180,
-      ..._182,
-      ..._184
+      ..._87,
+      ..._88,
+      ..._89,
+      ..._90,
+      ..._91,
+      ..._200,
+      ..._202,
+      ..._204,
+      ..._206,
+      ..._208
     };
   }
   export namespace oracle {
     export namespace module {
       export const v1 = {
-        ..._78
+        ..._92
       };
     }
     export const v1 = {
-      ..._79,
-      ..._80,
-      ..._81,
-      ..._177,
-      ..._179,
-      ..._181,
-      ..._183,
-      ..._185
+      ..._93,
+      ..._94,
+      ..._95,
+      ..._201,
+      ..._203,
+      ..._205,
+      ..._207,
+      ..._209
     };
   }
   export namespace types {
     export const v1 = {
-      ..._82
+      ..._96
     };
   }
   export const ClientFactory = {
-    ..._204,
-    ..._205,
-    ..._206
+    ..._231,
+    ..._232,
+    ..._233
   };
 }

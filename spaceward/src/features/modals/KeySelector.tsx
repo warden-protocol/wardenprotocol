@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { shapes } from "@dicebear/collection";
@@ -9,7 +9,6 @@ import { Icons } from "@/components/ui/icons-assets";
 import AddressAvatar from "@/components/AddressAvatar";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useModalState } from "./state";
 import { bigintToFloat } from "@/lib/math";
 import { useKeySettingsState } from "../keys/state";
 import { KEY_THEMES } from "../keys/assets";
@@ -17,14 +16,29 @@ import { isOsmosis } from "@/features/assets/util";
 
 const KeySelector = ({
 	className,
-	currentKey,
+	currentKey: _currentKey,
+	dropdownClassName,
 	token,
+	onKeyChange
 }: {
 	className?: string;
 	currentKey?: QueryKeyResponse;
+	dropdownClassName?: string;
 	token?: string;
+	onKeyChange?: (key: QueryKeyResponse) => void;
 }) => {
-	const { setData: setModal, data } = useModalState();
+	const { spaceId } = useSpaceId();
+	const { queryBalances, queryKeys } = useAssetQueries(spaceId?.toString());
+	const refIsReady = useRef(false);
+	const currentKey = _currentKey ?? queryKeys.data?.keys[0];
+	if (!refIsReady.current) {
+		if (currentKey && !_currentKey) {
+			onKeyChange?.(currentKey);
+		}
+
+		refIsReady.current = true;
+	}
+
 	const { data: ks } = useKeySettingsState();
 	// fixme undefined type not resolved
 	const addresses = currentKey?.addresses;
@@ -32,9 +46,6 @@ const KeySelector = ({
 	const settings = ks?.settings[key?.id.toString() ?? ""];
 	const [keyDropdown, setKeyDropdown] = useState(false);
 	const seed = Buffer.from(key?.publicKey ?? []).toString("base64");
-
-	const { spaceId } = useSpaceId();
-	const { queryBalances, queryKeys } = useAssetQueries(spaceId?.toString());
 
 	const balances = queryBalances
 		.flatMap(({ data }) =>
@@ -111,7 +122,7 @@ const KeySelector = ({
 			</div>
 
 			{keyDropdown && (
-				<div className="absolute no-scrollbar overflow-scroll max-h-[200px] z-30 left-0 -bottom-2 translate-y-full w-full rounded-lg bg-card border-[1px] border-solid border-border-quaternary py-2">
+				<div className={clsx(dropdownClassName, "absolute no-scrollbar overflow-scroll max-h-[200px] z-30 left-0 -bottom-2 translate-y-full w-full rounded-lg bg-card border-[1px] border-solid border-border-quaternary py-2")}>
 					{queryKeys.data?.keys.map((item) => {
 						const keySettings =
 							ks?.settings[item.key.id.toString()];
@@ -141,10 +152,10 @@ const KeySelector = ({
 							(acc, result) =>
 								result.keyId === item.key.id
 									? acc +
-										bigintToFloat(
-											result.balance,
-											result.decimals,
-										)
+									bigintToFloat(
+										result.balance,
+										result.decimals,
+									)
 									: acc,
 							0,
 						);
@@ -154,12 +165,15 @@ const KeySelector = ({
 								className="flex items-center gap-4 py-4 px-5 cursor-pointer hover:bg-fill-quaternary duration-200"
 								key={item.key.id.toString()}
 								onClick={() => {
+									onKeyChange?.(item);
+									/*
 									setModal({
 										params: {
 											...data?.params,
 											keyResponse: item,
 										},
 									});
+									*/
 
 									setKeyDropdown(false);
 								}}

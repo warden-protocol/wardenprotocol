@@ -233,6 +233,70 @@ func (m *EventApproveAction) GetApprover() string {
 	return ""
 }
 
+// EventActionVoted is emitted when an Action is voted on
+type EventActionVoted struct {
+	// id of action
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// address of the account that participated in voting
+	Participant string `protobuf:"bytes,2,opt,name=participant,proto3" json:"participant,omitempty"`
+	// type of the vote
+	Vote ActionVoteType `protobuf:"varint,3,opt,name=vote,proto3,enum=warden.act.v1beta1.ActionVoteType" json:"vote,omitempty"`
+}
+
+func (m *EventActionVoted) Reset()         { *m = EventActionVoted{} }
+func (m *EventActionVoted) String() string { return proto.CompactTextString(m) }
+func (*EventActionVoted) ProtoMessage()    {}
+func (*EventActionVoted) Descriptor() ([]byte, []int) {
+	return fileDescriptor_912b51dfb11e99b6, []int{4}
+}
+func (m *EventActionVoted) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EventActionVoted) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EventActionVoted.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EventActionVoted) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventActionVoted.Merge(m, src)
+}
+func (m *EventActionVoted) XXX_Size() int {
+	return m.Size()
+}
+func (m *EventActionVoted) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventActionVoted.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EventActionVoted proto.InternalMessageInfo
+
+func (m *EventActionVoted) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *EventActionVoted) GetParticipant() string {
+	if m != nil {
+		return m.Participant
+	}
+	return ""
+}
+
+func (m *EventActionVoted) GetVote() ActionVoteType {
+	if m != nil {
+		return m.Vote
+	}
+	return ActionVoteType_VOTE_TYPE_UNSPECIFIED
+}
+
 // EventActionStateChange is emitted when an Action is in a new state
 type EventActionStateChange struct {
 	// id of action
@@ -247,7 +311,7 @@ func (m *EventActionStateChange) Reset()         { *m = EventActionStateChange{}
 func (m *EventActionStateChange) String() string { return proto.CompactTextString(m) }
 func (*EventActionStateChange) ProtoMessage()    {}
 func (*EventActionStateChange) Descriptor() ([]byte, []int) {
-	return fileDescriptor_912b51dfb11e99b6, []int{4}
+	return fileDescriptor_912b51dfb11e99b6, []int{5}
 }
 func (m *EventActionStateChange) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -297,38 +361,92 @@ func (m *EventActionStateChange) GetNewStatus() ActionStatus {
 	return ActionStatus_ACTION_STATUS_UNSPECIFIED
 }
 
+// EventActionPruned is emitted when an Action is pruned in `Completed`, `Revoked`, `Pending` or `Timeout`
+// states and won't be processed further
+type EventActionPruned struct {
+	// id of action
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *EventActionPruned) Reset()         { *m = EventActionPruned{} }
+func (m *EventActionPruned) String() string { return proto.CompactTextString(m) }
+func (*EventActionPruned) ProtoMessage()    {}
+func (*EventActionPruned) Descriptor() ([]byte, []int) {
+	return fileDescriptor_912b51dfb11e99b6, []int{6}
+}
+func (m *EventActionPruned) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EventActionPruned) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EventActionPruned.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EventActionPruned) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventActionPruned.Merge(m, src)
+}
+func (m *EventActionPruned) XXX_Size() int {
+	return m.Size()
+}
+func (m *EventActionPruned) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventActionPruned.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EventActionPruned proto.InternalMessageInfo
+
+func (m *EventActionPruned) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*EventCreateRule)(nil), "warden.act.v1beta1.EventCreateRule")
 	proto.RegisterType((*EventUpdateRule)(nil), "warden.act.v1beta1.EventUpdateRule")
 	proto.RegisterType((*EventCreateAction)(nil), "warden.act.v1beta1.EventCreateAction")
 	proto.RegisterType((*EventApproveAction)(nil), "warden.act.v1beta1.EventApproveAction")
+	proto.RegisterType((*EventActionVoted)(nil), "warden.act.v1beta1.EventActionVoted")
 	proto.RegisterType((*EventActionStateChange)(nil), "warden.act.v1beta1.EventActionStateChange")
+	proto.RegisterType((*EventActionPruned)(nil), "warden.act.v1beta1.EventActionPruned")
 }
 
 func init() { proto.RegisterFile("warden/act/v1beta1/events.proto", fileDescriptor_912b51dfb11e99b6) }
 
 var fileDescriptor_912b51dfb11e99b6 = []byte{
-	// 319 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0xb1, 0x4e, 0xeb, 0x30,
-	0x14, 0x86, 0xeb, 0xde, 0x2b, 0xa0, 0x1e, 0x5a, 0x91, 0x01, 0x55, 0x1d, 0x42, 0xc9, 0xd4, 0x05,
-	0x47, 0x85, 0x11, 0x21, 0x28, 0x85, 0x81, 0x35, 0x88, 0x85, 0x01, 0xe4, 0x3a, 0x47, 0x6d, 0xa4,
-	0x62, 0x5b, 0xf6, 0x49, 0x0a, 0x6f, 0xc1, 0xc3, 0xf0, 0x10, 0x8c, 0x1d, 0x19, 0x51, 0xfb, 0x22,
-	0xa8, 0x76, 0x03, 0x88, 0x52, 0x09, 0xb6, 0xfc, 0xca, 0xff, 0x7d, 0x47, 0xf6, 0x31, 0xdd, 0x9d,
-	0x70, 0x93, 0x82, 0x8c, 0xb9, 0xc0, 0xb8, 0xe8, 0x0e, 0x00, 0x79, 0x37, 0x86, 0x02, 0x24, 0x5a,
-	0xa6, 0x8d, 0x42, 0x15, 0x04, 0xbe, 0xc0, 0xb8, 0x40, 0xb6, 0x2c, 0xb4, 0x7e, 0x82, 0xb8, 0xc0,
-	0x4c, 0x49, 0x0f, 0x45, 0x47, 0xb4, 0x71, 0xb1, 0x90, 0xf4, 0x0d, 0x70, 0x84, 0x24, 0x1f, 0x43,
-	0x50, 0xa7, 0xd5, 0x2c, 0x6d, 0x92, 0x36, 0xe9, 0xfc, 0x4f, 0xaa, 0x59, 0x1a, 0x34, 0xe9, 0xa6,
-	0x58, 0xfc, 0x55, 0xa6, 0x59, 0x6d, 0x93, 0x4e, 0x2d, 0x29, 0x63, 0xb4, 0xb7, 0x84, 0xaf, 0x75,
-	0xba, 0x06, 0x8e, 0x8e, 0xe9, 0xf6, 0x17, 0x7f, 0xcf, 0x8d, 0xfe, 0xc3, 0x84, 0x53, 0x1a, 0x38,
-	0xbc, 0xa7, 0xb5, 0x51, 0xc5, 0x3a, 0xbe, 0x45, 0xb7, 0xb8, 0x2f, 0x94, 0x82, 0x8f, 0x1c, 0x3d,
-	0x13, 0xba, 0xe3, 0x15, 0x8e, 0xbd, 0x42, 0x8e, 0xd0, 0x1f, 0x71, 0x39, 0x5c, 0x3d, 0xe8, 0x25,
-	0x6d, 0x68, 0x03, 0x45, 0xa6, 0x72, 0x7b, 0x67, 0x91, 0x63, 0x6e, 0x9d, 0xad, 0x7e, 0xd0, 0x66,
-	0xab, 0x57, 0xcb, 0x3e, 0x7d, 0xb9, 0x4d, 0xea, 0x25, 0xe8, 0x73, 0x70, 0x42, 0xa9, 0x84, 0x49,
-	0x69, 0xf9, 0xf7, 0x4b, 0x4b, 0x4d, 0xc2, 0xc4, 0x7f, 0x9e, 0xdd, 0xbe, 0xcc, 0x42, 0x32, 0x9d,
-	0x85, 0xe4, 0x6d, 0x16, 0x92, 0xa7, 0x79, 0x58, 0x99, 0xce, 0xc3, 0xca, 0xeb, 0x3c, 0xac, 0xdc,
-	0x9c, 0x0f, 0x33, 0x1c, 0xe5, 0x03, 0x26, 0xd4, 0x7d, 0xec, 0x85, 0xfb, 0x6e, 0x95, 0x42, 0x8d,
-	0x97, 0xf9, 0x5b, 0x8c, 0x1f, 0xdc, 0xfa, 0xf1, 0x51, 0x83, 0x2d, 0x1f, 0xc1, 0x60, 0xc3, 0x95,
-	0x0e, 0xdf, 0x03, 0x00, 0x00, 0xff, 0xff, 0x18, 0xdf, 0x8c, 0x8d, 0x56, 0x02, 0x00, 0x00,
+	// 395 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0xb1, 0x4e, 0xdb, 0x40,
+	0x1c, 0xc6, 0x73, 0x49, 0xd4, 0x36, 0x57, 0xc9, 0x69, 0x3d, 0x54, 0x56, 0x06, 0xd7, 0x75, 0x3b,
+	0x64, 0xa9, 0xad, 0xa4, 0x52, 0x97, 0xaa, 0x6a, 0x43, 0x60, 0x60, 0x43, 0x0e, 0x30, 0x30, 0x10,
+	0x5d, 0xec, 0x53, 0x62, 0x29, 0xdc, 0x9d, 0xce, 0x7f, 0x3b, 0x44, 0xe2, 0x21, 0x78, 0x18, 0x1e,
+	0x82, 0x31, 0x23, 0x23, 0x4a, 0x5e, 0x04, 0xe5, 0xce, 0x86, 0x08, 0x63, 0x09, 0x36, 0x7f, 0xbe,
+	0xef, 0xf7, 0x7d, 0xa7, 0xff, 0xfd, 0xf1, 0xd7, 0x05, 0x91, 0x11, 0x65, 0x3e, 0x09, 0xc1, 0xcf,
+	0x7a, 0x13, 0x0a, 0xa4, 0xe7, 0xd3, 0x8c, 0x32, 0x48, 0x3c, 0x21, 0x39, 0x70, 0xd3, 0xd4, 0x06,
+	0x8f, 0x84, 0xe0, 0xe5, 0x86, 0xce, 0x4b, 0x10, 0x09, 0x21, 0xe6, 0x4c, 0x43, 0x9d, 0x1f, 0x95,
+	0x86, 0x71, 0xc6, 0x81, 0x6a, 0x97, 0xfb, 0x07, 0xb7, 0x0f, 0xb6, 0x55, 0x43, 0x49, 0x09, 0xd0,
+	0x20, 0x9d, 0x53, 0xd3, 0xc0, 0xf5, 0x38, 0xb2, 0x90, 0x83, 0xba, 0xcd, 0xa0, 0x1e, 0x47, 0xa6,
+	0x85, 0xdf, 0x87, 0xdb, 0x53, 0x2e, 0xad, 0xba, 0x83, 0xba, 0xad, 0xa0, 0x90, 0xee, 0xb7, 0x1c,
+	0x3e, 0x11, 0x51, 0x05, 0xec, 0xfe, 0xc5, 0x9f, 0x77, 0xf2, 0x07, 0xaa, 0xff, 0x0d, 0x0d, 0xff,
+	0xb1, 0xa9, 0xf0, 0x81, 0x10, 0x92, 0x67, 0x55, 0x7c, 0x07, 0x7f, 0x20, 0xda, 0x50, 0x04, 0x3c,
+	0x6a, 0xf7, 0x0a, 0x7f, 0xd2, 0x09, 0x0a, 0x3d, 0xe5, 0x40, 0xa3, 0x12, 0xef, 0xe0, 0x8f, 0x82,
+	0x48, 0x88, 0xc3, 0x58, 0x10, 0x06, 0x79, 0xc4, 0xee, 0x2f, 0xf3, 0x37, 0x6e, 0x6e, 0x87, 0x66,
+	0x35, 0x1c, 0xd4, 0x35, 0xfa, 0xae, 0x57, 0x7e, 0x10, 0xef, 0xa9, 0xe0, 0x78, 0x29, 0x68, 0xa0,
+	0xfc, 0xee, 0x0d, 0xc2, 0x5f, 0x76, 0xea, 0x47, 0x40, 0x80, 0x0e, 0x67, 0x84, 0x4d, 0xcb, 0x63,
+	0x3e, 0xc4, 0x6d, 0x21, 0x69, 0x16, 0xf3, 0x34, 0x19, 0x27, 0x40, 0x20, 0x4d, 0xd4, 0x45, 0x8c,
+	0xbe, 0x53, 0xdd, 0x36, 0x52, 0xbe, 0xc0, 0x28, 0x40, 0xad, 0xcd, 0x7f, 0x18, 0x33, 0xba, 0x28,
+	0x52, 0x1a, 0xaf, 0x4c, 0x69, 0x31, 0xba, 0xd0, 0x9f, 0xee, 0xf7, 0xfc, 0xd5, 0xf4, 0xf9, 0x91,
+	0x4c, 0x59, 0x79, 0x6a, 0x7b, 0xe7, 0xb7, 0x6b, 0x1b, 0xad, 0xd6, 0x36, 0xba, 0x5f, 0xdb, 0xe8,
+	0x7a, 0x63, 0xd7, 0x56, 0x1b, 0xbb, 0x76, 0xb7, 0xb1, 0x6b, 0x67, 0xfb, 0xd3, 0x18, 0x66, 0xe9,
+	0xc4, 0x0b, 0xf9, 0x85, 0xaf, 0x5b, 0x7f, 0xaa, 0x6d, 0x0b, 0xf9, 0x3c, 0xd7, 0xcf, 0xa4, 0x7f,
+	0xa9, 0xd6, 0x14, 0x96, 0x82, 0x26, 0xc5, 0xb2, 0x4e, 0xde, 0x29, 0xd3, 0xaf, 0x87, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0x67, 0x98, 0x13, 0xcb, 0x1f, 0x03, 0x00, 0x00,
 }
 
 func (m *EventCreateRule) Marshal() (dAtA []byte, err error) {
@@ -464,6 +582,46 @@ func (m *EventApproveAction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *EventActionVoted) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EventActionVoted) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *EventActionVoted) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.Vote))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Participant) > 0 {
+		i -= len(m.Participant)
+		copy(dAtA[i:], m.Participant)
+		i = encodeVarintEvents(dAtA, i, uint64(len(m.Participant)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Id != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *EventActionStateChange) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -494,6 +652,34 @@ func (m *EventActionStateChange) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 		i--
 		dAtA[i] = 0x10
 	}
+	if m.Id != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EventActionPruned) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EventActionPruned) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *EventActionPruned) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
 	if m.Id != 0 {
 		i = encodeVarintEvents(dAtA, i, uint64(m.Id))
 		i--
@@ -573,6 +759,25 @@ func (m *EventApproveAction) Size() (n int) {
 	return n
 }
 
+func (m *EventActionVoted) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovEvents(uint64(m.Id))
+	}
+	l = len(m.Participant)
+	if l > 0 {
+		n += 1 + l + sovEvents(uint64(l))
+	}
+	if m.Vote != 0 {
+		n += 1 + sovEvents(uint64(m.Vote))
+	}
+	return n
+}
+
 func (m *EventActionStateChange) Size() (n int) {
 	if m == nil {
 		return 0
@@ -587,6 +792,18 @@ func (m *EventActionStateChange) Size() (n int) {
 	}
 	if m.NewStatus != 0 {
 		n += 1 + sovEvents(uint64(m.NewStatus))
+	}
+	return n
+}
+
+func (m *EventActionPruned) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovEvents(uint64(m.Id))
 	}
 	return n
 }
@@ -969,6 +1186,126 @@ func (m *EventApproveAction) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *EventActionVoted) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowEvents
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EventActionVoted: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EventActionVoted: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Participant", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthEvents
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEvents
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Participant = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
+			}
+			m.Vote = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Vote |= ActionVoteType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipEvents(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthEvents
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *EventActionStateChange) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1051,6 +1388,75 @@ func (m *EventActionStateChange) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.NewStatus |= ActionStatus(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipEvents(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthEvents
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *EventActionPruned) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowEvents
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EventActionPruned: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EventActionPruned: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

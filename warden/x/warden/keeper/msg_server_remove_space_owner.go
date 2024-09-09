@@ -22,7 +22,13 @@ func (k msgServer) RemoveSpaceOwner(ctx context.Context, msg *types.MsgRemoveSpa
 		return nil, errors.Wrapf(types.ErrNotSpaceOwner, "%s is not an owner of the space", msg.Owner)
 	}
 
-	space.RemoveOwner(msg.Owner)
+	if err := space.RemoveOwner(msg.Owner, msg.Nonce); err != nil {
+		return nil, err
+	}
+
+	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
+		return nil, err
+	}
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
 		return nil, err

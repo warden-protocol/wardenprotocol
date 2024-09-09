@@ -20,9 +20,9 @@ This section explains how to run a node and become a validator.
 
 These are the basic steps to get started:
 
-- Download the [wardend binary](https://github.com/warden-protocol/wardenprotocol/releases) or run it in a container and [join Buenavista](buenavista-testnet/join-buenavista).
+- Download the [wardend binary](https://github.com/warden-protocol/wardenprotocol/releases) or run it in a container and [join Buenavista](buenavista-testnet/join-buenavista).  
 - To become a validator, follow this guide: [Create a validator](create-a-validator).
-- To interact with a node, use the [Node API](node-api-reference).
+- To interact with a node, use the [Node API](node-api-reference) and [node commands](node-commands).
 
 :::tip
 We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-node/cosmovisor) – a utility for managing binary versions of Cosmos SDK-based chains. Its primary function is to enable binary upgrades without manual intervention.

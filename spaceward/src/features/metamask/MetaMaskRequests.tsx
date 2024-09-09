@@ -1,24 +1,20 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { InstallMetaMaskSnapButton } from "@/features/metamask";
-import {
-	KeyringAccount,
-	KeyringRequest,
-	KeyringSnapRpcClient,
-} from "@metamask/keyring-api";
+import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import { env } from "@/env";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
-import {
-	TypedDataUtils,
-	SignTypedDataVersion,
-	TypedMessage,
-} from "@metamask/eth-sig-util";
 import { useMetaMask } from "@/hooks/useMetaMask";
-import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
+import { isLocalSnap, shouldDisplayReconnectButton } from "@/lib/metamask";
+import { querySnapRequests } from "./queries";
+import KeySelector from "../modals/KeySelector";
+import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
+import { toast } from "@/components/ui/use-toast";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import { useModalState } from "../modals/state";
 
 interface SignTransactionParams {
 	chainId: string;
@@ -48,156 +44,53 @@ async function buildSignTransaction(data: SignTransactionParams) {
 }
 
 export function MetaMaskRequests() {
-	const { signRaw, signEthereumTx } = useEthereumTx();
-	const { installedSnap } = useMetaMask();
+	const { setData: setModal, data: modal } = useModalState();
+	const { isFlask, snapsDetected, installedSnap } = useMetaMask();
+	const [currentKey, setCurrentKey] = useState<QueryKeyResponse>();
 
-	const keyringSnapClient = new KeyringSnapRpcClient(
+	const isMetaMaskReady = isLocalSnap(env.snapOrigin)
+		? isFlask
+		: snapsDetected;
+
+	const isReconnect = Boolean(shouldDisplayReconnectButton(installedSnap));
+
+	const keyringSnapClient = useMemo(() => new KeyringSnapRpcClient(
 		env.snapOrigin,
 		window.ethereum,
-	);
+	), []);
 
 	const requestsQ = useQuery(
-		["metamask-keyring-requests"],
-		() => keyringSnapClient.listRequests(),
-		{
-			refetchInterval: 1000,
-			enabled: !!installedSnap,
-		},
+		querySnapRequests(keyringSnapClient, !!installedSnap)
 	);
 
-	const accountsQ = useQueries({
-		queries:
-			requestsQ.data?.map((req) => ({
-				queryKey: ["metamask-keyring-account", req.account],
-				queryFn: () => keyringSnapClient.getAccount(req.account),
-				refetchInterval: Infinity,
-			})) ?? [],
-	});
+	const reqCount = requestsQ.data?.length;
+	const prevRC = useRef(reqCount);
 
-	const accountsQLoading = accountsQ.some((q) => q.isLoading);
-
-	const accounts = accountsQ.reduce(
-		(acc, q) => {
-			if (q.data) {
-				acc[q.data.id] = q.data;
-			}
-			return acc;
-		},
-		{} as Record<string, KeyringAccount>,
-	);
-
-	const handleApproveRequest = async (req: KeyringRequest) => {
-		const account = await keyringSnapClient.getAccount(req.account);
-		const keyId = BigInt(account.options.keyId?.valueOf() as string);
-
-		switch (req.request.method) {
-			case "personal_sign": {
-				if (
-					!(req.request.params instanceof Array) ||
-					req.request.params?.length !== 2
-				) {
-					throw new Error("wrong params length");
-				}
-				const msgHex = req.request.params?.[0];
-				if (!msgHex) {
-					throw new Error("Request has no message");
-				}
-				const msg = ethers.hashMessage(
-					ethers.getBytes(msgHex as string),
-				);
-
-				const storeId = await signRaw(
-					keyId,
-					ethers.getBytes(msg),
-					undefined,
-					{ requestId: req.id },
-				);
-
-				if (!storeId) {
-					throw new Error(
-						"Something went wrong waiting for signature request to complete",
-					);
-				}
-
-				break;
-			}
-			case "eth_signTransaction": {
-				if (
-					!(req.request.params instanceof Array) ||
-					req.request.params?.length !== 1
-				) {
-					throw new Error("wrong params length");
-				}
-				const txParam =
-					req.request.params[0]?.valueOf() as SignTransactionParams;
-
-				const chainId = parseInt(txParam.chainId.slice(2), 16);
-				const chainName = REVERSE_ETH_CHAINID_MAP[chainId];
-
-				if (!chainName) {
-					throw new Error(`chainId not supported: ${chainId}`);
-				}
-				const tx = await buildSignTransaction(txParam);
-				const storeId = await signEthereumTx(
-					keyId,
-					tx,
-					chainName,
-					"Approve snap transaction",
-					undefined,
-					{ requestId: req.id },
-				);
-
-				if (!storeId) {
-					throw new Error(
-						"Something went wrong waiting for signature request to complete",
-					);
-				}
-
-				break;
-			}
-			case "eth_signTypedData_v4": {
-				if (
-					!(req.request.params instanceof Array) ||
-					req.request.params?.length !== 2
-				) {
-					throw new Error("wrong params length");
-				}
-				const data =
-					req.request.params[1]?.valueOf() as TypedMessage<never>;
-				const toSign = TypedDataUtils.eip712Hash(
-					data,
-					SignTypedDataVersion.V4,
-				);
-
-				const storeId = await signRaw(
-					keyId,
-					ethers.getBytes(toSign),
-					undefined,
-					{ requestId: req.id },
-				);
-
-				if (!storeId) {
-					throw new Error(
-						"Something went wrong waiting for signature request to complete",
-					);
-				}
-
-				break;
-			}
-		}
-	};
-
-	const handleRejectRequest = async (req: KeyringRequest) => {
-		await keyringSnapClient.rejectRequest(req.id);
-	};
+	if (
+		reqCount &&
+		!prevRC.current &&
+		modal?.type !== "approve-snap"
+	) {
+		setModal({ type: "approve-snap", params: {} });
+	}
 
 	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		prevRC.current = reqCount;
+	}, [reqCount]);
 
 	return (
 		<Popover.Root
 			modal={true}
 			open={open}
-			onOpenChange={() => setOpen(!open)}
+			onOpenChange={() => {
+				if (!reqCount) {
+					setOpen(!open)
+				} else {
+					setModal({ type: "approve-snap", params: {} })
+				}
+			}}
 		>
 			<Popover.Trigger asChild>
 				<Button
@@ -206,6 +99,7 @@ export function MetaMaskRequests() {
 					aria-label="Update dimensions"
 					className={cn(
 						"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
+						{ "animate-pulse": reqCount }
 					)}
 				>
 					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
@@ -227,68 +121,79 @@ export function MetaMaskRequests() {
 						onClick={() => setOpen(false)}
 					></div>
 					<div className="p-3 md:p-6 pt-0 flex flex-col border-[1px] border-border-edge w-[340px] max-w-full bg-card fixed top-[96px]  rounded-xl right-0">
-						<p className="text-xl font-sans pb-2 font-bold">
-							Install Metamask Snap
-						</p>
-						<p className="text-label-secondary mb-6">
-							To open access for SpaceWard to dApps
-						</p>
+						{!isMetaMaskReady ? <>
+							<p className="text-xl font-sans pb-2 font-bold">
+								Install Metamask Snap
+							</p>
+							<p className="text-label-secondary mb-6">
+								To open access for SpaceWard to dApps
+							</p>
+						</> : <>
+							<p className="text-xl font-sans pb-2 font-bold">
+								Select key
+							</p>
+							<p className="text-label-secondary mb-6">
+								To add account in Metamask Snap
+							</p>
 
-						<InstallMetaMaskSnapButton />
+							<KeySelector
+								onKeyChange={k => {
+									setCurrentKey(k);
+								}}
+								className="mb-2 relative"
+								dropdownClassName="bottom-2"
+								currentKey={currentKey}
+							/>
 
-						{/* <hr /> */}
+							<Button
+								className="my-4 flex gap-2 g-10 items-center bg-fill-primary rounded font-semibold font-sans text-label-invert focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0"
+								size="sm"
+								variant="outline"
+								onClick={async () => {
+									if (currentKey) {
+										const address = currentKey.addresses.find(a => a.type === AddressType.ADDRESS_TYPE_ETHEREUM)?.address;
 
-						<div className="text-center">
-							{requestsQ.isLoading ? (
-								<div></div>
-							) : requestsQ.isError ? (
-								<div>
-									Error: {JSON.stringify(requestsQ.error)}
-								</div>
-							) : requestsQ.data?.length === 0 ? (
-								<div>No pending requests</div>
-							) : (
-								requestsQ.data?.map((req) => (
-									<div
-										key={req.id}
-										className="flex flex-col gap-4"
-									>
-										<p>
-											{accounts[req.account]?.address
-												? `For ${accounts[req.account].address}`
-												: accountsQLoading
-													? "Loading info from MetaMask"
-													: "Error fetching account details from MetaMask"}
-										</p>
-										<p>{req.request.method}</p>
-										<div className="flex flex-row gap-4">
-											<Button
-												size="sm"
-												onClick={() =>
-													handleApproveRequest(
-														req,
-													).then(() => setOpen(false))
-												}
-											>
-												Approve
-											</Button>
-											<Button
-												size="sm"
-												variant="destructive"
-												onClick={() =>
-													handleRejectRequest(req)
-												}
-											>
-												Reject
-											</Button>
-										</div>
-									</div>
-								))
-							)}
-						</div>
+										const { update, id } = toast({
+											title: "Confirm account creation in MetaMask...",
+											duration: 0,
+										});
+
+										try {
+											if (!address) {
+												throw new Error("No Ethereum address found");
+											}
+
+											await keyringSnapClient.createAccount({
+												origin: window.location.origin,
+												keyId: currentKey.key.id.toString(),
+												address
+											});
+
+											update({
+												id,
+												title: "Added to MetaMask",
+												duration: 5000,
+											});
+										} catch (error) {
+											console.error("error adding account to MetaMask", error);
+											update({
+												id,
+												title: "Error",
+												description: (error as Error)?.message ?? "An error occurred while adding to MetaMask",
+												duration: 5000,
+											});
+										}
+									}
+								}}
+							>
+								Select key
+							</Button>
+						</>}
+
+						<InstallMetaMaskSnapButton isReady={isMetaMaskReady} isReconnect={isReconnect} />
 					</div>
 				</Popover.Content>
 			</Popover.Portal>
-		</Popover.Root>
+		</Popover.Root >
 	);
 }

@@ -203,7 +203,7 @@ func main() {
         // setup the account used to write txs
         KeychainId:     <your-keychain-id>,
         Mnemonic:       "virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick",
-        DerivationPath: "m/44'/118'/0'/0/0",
+        DerivationPath: "m/44'/60'/0'/0/0",
 
         // setup throughput for batching responses
         GasLimit:     400000,

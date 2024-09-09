@@ -8,9 +8,20 @@ sidebar_position: 1
 
 This guide explains how to run a local chain for development and testing purposes.
 
+There are three ways to run a node:
+
+- **Option 1: Run a `just` script**  
+It's the simplest way to run a local chain. Initiate a `just` script that builds the chain binary and then creates, configures, and runs a new chain.
+
+- **Option 2: Use a devnet snapshot**  
+You can use a devnet snapshot with prebuilt node settings.
+
+- **Option 3. Configure manually**  
+We recommend this option if you wish to run a node with custom settings and learn the basics of interacting with a node.
+
 ## Prerequisites
 
-Before you start, complete following prerequisites:
+Before you start, complete the following prerequisites:
 
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
 - Install [just](https://just.systems/man/en/chapter_4.html).
@@ -110,6 +121,8 @@ You can check the settings of your node in the genesis file: `$HOME/.warden/conf
 :::
 
 ## Option 3. Configure manually
+
+We recommend this option if you wish to run a node with custom settings and learn the basics of interacting with a node.
 
 ### 1. Clone the repository
 
@@ -335,7 +348,7 @@ The output should contain status information about your node:
 ```
 
 :::tip
-You can use other `wardend` commands to interact with the node. Just run `wardend` to see a list of available commands.
+To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
 :::
 
 :::tip

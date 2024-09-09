@@ -8,11 +8,11 @@ import { Icons } from "@/components/ui/icons";
 
 export function NoSpaces() {
 	const { address } = useAddressContext();
-	const { balance } = useAsset("uward");
+	const { balance } = useAsset("award");
 	const { tx } = useTx();
 	const { newSpace } = warden.warden.v1beta3.MessageComposer.withTypeUrl;
 
-	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
+	const ward = parseInt(balance?.amount || "0") / 10 ** 18;
 	return (
 		<div className="relative w-full min-h-[calc(100vh-20px)] dark:bg-transparent  rounded-xl -mt-[48px] flex flex-col gap-4 items-center place-content-center text-center no-space">
 			<Icons.corner className="absolute top-0 left-0" />

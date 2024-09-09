@@ -15,6 +15,7 @@ import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1be
 import { getCosmosChain, isOsmosis } from "../assets/util";
 import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { fromBech32, toBech32 } from "@cosmjs/encoding";
+import { useModalState } from "./state";
 
 const TokenSelect = ({
 	chainName,
@@ -101,6 +102,7 @@ export const fixAddress = (
 };
 
 export default function ReceiveAssetsModal(props: TransferParams) {
+	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const { queryBalances } = useAssetQueries(spaceId);
 	const [isSelectAsset, setSelectAsset] = useState(false);
@@ -133,6 +135,16 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 					className="relative flex z-20 items-center mb-8"
 					currentKey={key}
 					token={token}
+					onKeyChange={(k) => {
+						setModal({
+							params: {
+								...props,
+								keyResponse: k
+							},
+						});
+					}
+
+					}
 				/>
 
 				<div className="mb-5 font-bold text-xl">Asset</div>

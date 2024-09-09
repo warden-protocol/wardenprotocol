@@ -80,7 +80,7 @@ export default function ValidatorRow(props: ValidatorProps) {
 					onClick={() => props.openStakeModal(props.operatorAddress)}
 				>
 					<div>
-						{(Number(props.stakedAmount.amount) / 10 ** 6).toFixed(
+						{(Number(props.stakedAmount.amount) / 10 ** 18).toFixed(
 							6,
 						)}
 					</div>

@@ -19,7 +19,7 @@ export const getDelegationsData = (delegations?: DelegationResponse[]) => {
 		const delegation = delegations![i];
 		delegationsByAddress[delegation.delegation.validatorAddress] = i;
 
-		if (delegation.balance.denom === "uward") {
+		if (delegation.balance.denom === "award") {
 			availableWard += BigInt(delegation.balance.amount);
 		}
 	}
@@ -53,7 +53,7 @@ export const getParamData = ({
 	let total = BigInt(0);
 
 	for (const supply of totalSupply ?? []) {
-		if (supply.denom === "uward") {
+		if (supply.denom === "award") {
 			total += BigInt(supply.amount);
 		}
 	}
@@ -88,7 +88,7 @@ export const getParamData = ({
 export const formatReward = (reward?: DecCoin[]) => {
 	const rewardNum =
 		reward?.reduce((total, item) => {
-			return item.denom === "uward" ? total + BigInt(item.amount) : total;
+			return item.denom === "award" ? total + BigInt(item.amount) : total;
 		}, BigInt(0)) ?? BigInt(0);
 
 	// fixme

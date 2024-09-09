@@ -43,6 +43,7 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
+	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cast"
 
 	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
@@ -56,6 +57,15 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/module"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+
+	// evmos
+	srvflags "github.com/evmos/evmos/v18/server/flags"
+	"github.com/evmos/evmos/v18/x/evm"
+	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
+	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	"github.com/evmos/evmos/v18/x/feemarket"
+	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 	// this line is used by starport scaffolding # ibc/app/import
 )
 
@@ -75,6 +85,12 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		storetypes.NewTransientStoreKey(paramstypes.TStoreKey),
 		// wasm kv store
 		storetypes.NewKVStoreKey(wasmtypes.StoreKey),
+		// evm kv store
+		storetypes.NewKVStoreKey(evmtypes.StoreKey),
+		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
+		// feemarket kv store
+		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
+		storetypes.NewTransientStoreKey(feemarkettypes.TransientKey),
 	); err != nil {
 		panic(err)
 	}
@@ -86,6 +102,9 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ParamsKeeper.Subspace(ibctransfertypes.ModuleName).WithKeyTable(ibctransfertypes.ParamKeyTable())
 	app.ParamsKeeper.Subspace(icacontrollertypes.SubModuleName).WithKeyTable(icacontrollertypes.ParamKeyTable())
 	app.ParamsKeeper.Subspace(icahosttypes.SubModuleName).WithKeyTable(icahosttypes.ParamKeyTable())
+	// evmOS subspaces
+	app.ParamsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint:staticcheck
+	app.ParamsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
 
 	// add capability keeper and ScopeToModule for ibc module
 	app.CapabilityKeeper = capabilitykeeper.NewKeeper(
@@ -240,6 +259,35 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	)
 
 	app.ContractKeeper = wasmkeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
+	// evmOS keepers
+	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
+		app.appCodec,
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.GetKey(feemarkettypes.StoreKey),
+		app.GetTransientKey(feemarkettypes.TransientKey),
+		app.GetSubspace(feemarkettypes.ModuleName),
+	)
+
+	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
+
+	app.EvmKeeper = evmkeeper.NewKeeper(
+		app.appCodec,
+		app.GetKey(evmtypes.StoreKey),
+		app.GetTransientKey(evmtypes.TransientKey),
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		app.FeeMarketKeeper,
+		tracer,
+		app.GetSubspace(evmtypes.ModuleName),
+	)
+
+	// NOTE: we are just adding the default Ethereum precompiles here.
+	// Additional precompiles could be added if desired.
+	app.EvmKeeper.WithPrecompiles(
+		vm.PrecompiledContractsBerlin,
+	)
 
 	// integration point for custom authentication modules
 	var noAuthzModule porttypes.IBCModule
@@ -294,6 +342,9 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		ibchooks.NewAppModule(app.AccountKeeper),
 		//wasm module
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
+		// evmOS modules
+		feemarket.NewAppModule(app.FeeMarketKeeper, app.GetSubspace(feemarkettypes.ModuleName)),
+		evm.NewAppModule(app.EvmKeeper, &app.AccountKeeper, app.GetSubspace(evmtypes.ModuleName)),
 	); err != nil {
 		panic(err)
 	}
@@ -314,6 +365,8 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		solomachine.ModuleName:      solomachine.AppModule{},
 		gmptypes.ModuleName:         gmpmodule.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
+		evmtypes.ModuleName:         evm.AppModule{},
+		feemarkettypes.ModuleName:   feemarket.AppModule{},
 	}
 
 	for _, module := range modules {

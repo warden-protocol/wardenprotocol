@@ -14,13 +14,14 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 		Creator:     msg.Creator,
 		AdminRuleId: msg.AdminRuleId,
 		SignRuleId:  msg.SignRuleId,
+		Nonce:       0,
 	}
 
-	if err := space.AddOwner(msg.Creator); err != nil {
+	if err := space.AddOwner(msg.Creator, space.Nonce); err != nil {
 		return nil, err
 	}
 	for _, owner := range msg.AdditionalOwners {
-		if err := space.AddOwner(owner); err != nil {
+		if err := space.AddOwner(owner, space.Nonce); err != nil {
 			return nil, err
 		}
 	}

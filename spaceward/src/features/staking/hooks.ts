@@ -154,7 +154,7 @@ export const useStakingTx = (dispatch: Dispatch) => {
 						validatorAddress,
 						amount: {
 							amount: amount.toString(),
-							denom: "uward",
+							denom: "award",
 						},
 					}),
 				],
@@ -189,7 +189,7 @@ export const useStakingTx = (dispatch: Dispatch) => {
 						validatorAddress,
 						amount: {
 							amount: amount.toString(),
-							denom: "uward",
+							denom: "award",
 						},
 					}),
 				],
@@ -225,7 +225,7 @@ export const useStakingTx = (dispatch: Dispatch) => {
 						validatorDstAddress: to,
 						amount: {
 							amount: amount.toString(),
-							denom: "uward",
+							denom: "award",
 						},
 					}),
 				],

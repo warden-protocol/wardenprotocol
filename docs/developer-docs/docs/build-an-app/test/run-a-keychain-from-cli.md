@@ -18,7 +18,7 @@ If running locally, you can skip this step and assume an initial Keychain was se
 ```
 KEYCHAIN_ID:           1
 KEYCHAIN_WRITER_NAME:  shulgin
-KEYCHAIN_WRITER:       warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4
+KEYCHAIN_WRITER:       warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
 ```
 
 Otherwise, you can create a new Keychain with the following command:

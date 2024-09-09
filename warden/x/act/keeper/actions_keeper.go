@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
@@ -14,8 +16,9 @@ import (
 )
 
 type ActionKeeper struct {
-	actions         repo.SeqCollection[types.Action]
-	actionByAddress collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64]
+	actions                  repo.SeqCollection[types.Action]
+	actionByAddress          collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64]
+	previousPruneBlockHeight collections.Item[int64]
 }
 
 func newActionKeeper(storeService store.KVStoreService, cdc codec.BinaryCodec) ActionKeeper {
@@ -31,14 +34,22 @@ func newActionKeeper(storeService store.KVStoreService, cdc codec.BinaryCodec) A
 		collections.Uint64Value,
 	)
 
+	latestPrunedBlock := collections.NewItem(
+		sb,
+		PreviousPruneBlockHeightPrefix,
+		"previous_prune_block_height",
+		collections.Int64Value,
+	)
+
 	_, err := sb.Build()
 	if err != nil {
 		panic(fmt.Sprintf("failed to build schema: %s", err))
 	}
 
 	return ActionKeeper{
-		actions:         actions,
-		actionByAddress: actionByAddress,
+		actions:                  actions,
+		actionByAddress:          actionByAddress,
+		previousPruneBlockHeight: latestPrunedBlock,
 	}
 }
 
@@ -98,4 +109,77 @@ func (k ActionKeeper) Import(ctx sdk.Context, actions []types.Action) error {
 
 func (k ActionKeeper) Coll() repo.SeqCollection[types.Action] {
 	return k.actions
+}
+
+func (k ActionKeeper) pruneAction(ctx context.Context, action types.Action, blockHeight int64) error {
+	if err := k.actions.Remove(ctx, action.Id); err != nil {
+		return err
+	}
+
+	for _, addr := range action.Mentions {
+		key := collections.Join(sdk.MustAccAddressFromBech32(addr), action.Id)
+		if err := k.actionByAddress.Remove(ctx, key); err != nil {
+			return err
+		}
+	}
+
+	if err := k.previousPruneBlockHeight.Set(ctx, blockHeight); err != nil {
+		return err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventActionPruned{Id: action.Id}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (k ActionKeeper) GetLatestPruneHeight(ctx context.Context) (int64, error) {
+	h, err := k.previousPruneBlockHeight.Get(ctx)
+	if errors.Is(err, collections.ErrNotFound) {
+		return 0, nil
+	}
+	return h, err
+}
+
+func (k ActionKeeper) ExpiredActions(ctx context.Context, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) ([]types.Action, error) {
+	it, err := k.Coll().Iterate(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer it.Close()
+
+	var actions []types.Action
+	for ; it.Valid(); it.Next() {
+		act, err := it.Value()
+		if err != nil {
+			return nil, err
+		}
+		if isExpired(act, blockTime, pendingTimeout, completedTimeout) {
+			actions = append(actions, act)
+		}
+	}
+
+	return actions, nil
+}
+
+func isExpired(action types.Action, blockTime time.Time, pendingTimeout, completedTimeout time.Duration) bool {
+	if action.Status == types.ActionStatus_ACTION_STATUS_TIMEOUT {
+		return true
+	}
+
+	if action.Status == types.ActionStatus_ACTION_STATUS_PENDING &&
+		action.UpdatedAt.Add(pendingTimeout).Before(blockTime) {
+		return true
+	}
+
+	isCompletedStatus := action.Status == types.ActionStatus_ACTION_STATUS_COMPLETED ||
+		action.Status == types.ActionStatus_ACTION_STATUS_REVOKED
+	if isCompletedStatus && action.UpdatedAt.Add(completedTimeout).Before(blockTime) {
+		return true
+	}
+
+	return false
 }

@@ -21,8 +21,8 @@ const StakeModal = ({
 	const { submitStakeTx } = useStakingTx(dispatch);
 	const isInactive = BondStatus.BOND_STATUS_BONDED !== validator.status;
 
-	const { balance } = useAsset("uward");
-	const ward = parseInt(balance?.amount ?? "0") / 10 ** 6;
+	const { balance } = useAsset("award");
+	const ward = parseInt(balance?.amount ?? "0") / 10 ** 18;
 
 	let maxAmount = ward - 1;
 	const isInputError = Number(amount) > maxAmount;
@@ -39,7 +39,7 @@ const StakeModal = ({
 			return;
 		}
 
-		const rawAmount = BigInt((10 ** 6 * numAmount).toFixed(0));
+		const rawAmount = BigInt((10 ** 18 * numAmount).toFixed(0));
 		const res = await submitStakeTx(rawAmount, validator.operatorAddress);
 		dispatch({ type: "set", payload: { modal: undefined, tab: "my" } });
 	}

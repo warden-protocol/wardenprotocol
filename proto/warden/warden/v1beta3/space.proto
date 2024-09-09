@@ -37,5 +37,8 @@ message Space {
   // The default Rule is to allow any operation when at least one of its
   // owner approves it.
   uint64 sign_rule_id = 6;
+
+  // Version of the space. Every time the Space is updated, this number gets increasead by one.
+  uint64 nonce = 7;
 }
 

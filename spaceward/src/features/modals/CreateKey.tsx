@@ -15,7 +15,6 @@ import { Icons } from "@/components/ui/icons-assets";
 import descriptions from "../keychains/description";
 import { useNewAction } from "@/hooks/useAction";
 import { useEnqueueAction } from "../actions/hooks";
-import { set } from "react-hook-form";
 
 const DESCRIPTION_MAP = Object.fromEntries(descriptions.map((d) => [d.key, d]));
 const THEME_DISPLAY_COUNT = 4;

@@ -27,7 +27,7 @@ func NewWardend(node *WardenNode, name string) *Wardend {
 	return &Wardend{
 		BinPath:     node.BinPath,
 		QueryAppend: fmt.Sprintf("--node tcp://127.0.0.1:%d -o json", node.CometPortRPC()),
-		TxAppend:    fmt.Sprintf("--from %s --yes --node tcp://127.0.0.1:%d --home %s --chain-id warden --keyring-backend test --keyring-dir %s", name, node.CometPortRPC(), node.Home, node.Home),
+		TxAppend:    fmt.Sprintf("--from %s --yes --node tcp://127.0.0.1:%d --home %s --chain-id warden_1337-1 --keyring-backend test --keyring-dir %s", name, node.CometPortRPC(), node.Home, node.Home),
 		Node:        node,
 		Name:        name,
 	}

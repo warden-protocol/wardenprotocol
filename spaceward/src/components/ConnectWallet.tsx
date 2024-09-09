@@ -30,8 +30,8 @@ export function ConnectWallet() {
 	const [showTooltip, setShowTooltip] = useState<Boolean>(false);
 	const [currentWallet, setCurrentWallet] = useState("");
 
-	const { balance } = useAsset("uward");
-	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
+	const { balance } = useAsset("award");
+	const ward = parseInt(balance?.amount || "0") / 10 ** 18;
 
 	useEffect(() => {
 		typeof window !== undefined &&

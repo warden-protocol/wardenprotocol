@@ -25,4 +25,5 @@ var (
 	ErrNotSpaceOwner                    = sdkerrors.Register(ModuleName, 1115, "this account is not a Space Owner")
 	ErrAnalyzer                         = sdkerrors.Register(ModuleName, 1116, "analyzer error")
 	ErrDuplicateAnalyzersDataForSigning = sdkerrors.Register(ModuleName, 1117, "two or more contracts tried to set DataForSigning. Only one analyzer contract can return DataForSigning")
+	ErrInvalidNonce                     = sdkerrors.Register(ModuleName, 1118, "space nonce does not match expected")
 )

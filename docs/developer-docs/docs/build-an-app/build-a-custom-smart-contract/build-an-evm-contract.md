@@ -12,33 +12,27 @@ This guide explains how to create and deploy a simple **Hello World** Solidity s
 
 Before you start, complete the following prerequisites:
 
-- Install Node.js and npm by running the following commands:
+- Install Node.js and npm by running the following command:
 
-    ```bash
-    brew install node
-    ```
+  ```bash
+  brew install node
+  ```
 
-    This will install both Node.js and npm.
+- Install Truffle globally:
 
-- Next, you need to install Truffle globally:
+  ```bash
+  npm install -g truffle
+  ```
 
-    ```bash
-    npm install -g truffle
-    ```
+- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed. You can stop the chain for now if you wish.
+  In step 3, you'll need your Warden private key. You can get it by executing this command:
 
-    The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command (while the node is running):
+  ```bash
+  wardend keys list
+  ```
 
-    ```bash
-    wardend keys list
-    ```
-
-    :::tip
-    In development genesis files, you'll typically find an account named shulgin that is preconfigured and ready for use.
-    :::
-
-## 1. Create a new EVM project
+## 1. Create a EVM project
 
 1. Create a new directory for your project:
 
@@ -46,38 +40,38 @@ Before you start, complete the following prerequisites:
     mkdir warden-smart-contract && cd warden-smart-contract
     ```
 
-2. Initialize a new Truffle project
+2. Initialize a new Truffle project:
 
     ```bash
     truffle init
     ```
 
-## 2. Create a new smart contract
+## 2. Create a smart contract
 
-1. Create a new file `contracts/HelloWarden.sol`:
+Create a new file `contracts/HelloWarden.sol`:
 
-    ```solidity
-    // SPDX-License-Identifier: MIT
-    pragma solidity ^0.8.0;
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-    contract HelloWarden {
-        string public message;
+contract HelloWarden {
+    string public message;
 
-        constructor() {
-            message = "Hello, Warden!";
-        }
-
-        function setMessage(string memory newMessage) public {
-            message = newMessage;
-        }
-
-        function getMessage() public view returns (string memory) {
-            return message;
-        }
+    constructor() {
+        message = "Hello, Warden!";
     }
-    ```
 
-## 3. Configure Truffle for Warden
+    function setMessage(string memory newMessage) public {
+        message = newMessage;
+    }
+
+    function getMessage() public view returns (string memory) {
+        return message;
+    }
+}
+```
+
+## 3. Configure Truffle
 
 1. Install HDWalletProvider:
 
@@ -85,13 +79,13 @@ Before you start, complete the following prerequisites:
     npm install @truffle/hdwallet-provider
     ```
 
-2. Update truffle-config.js:
+2. Update `truffle-config.js` with the code below. Replace `your_private_key` with your actual private key (see [Prerequisites](#prerequisites)).
 
     ```javascript
     const HDWalletProvider = require('@truffle/hdwallet-provider');
 
     // Your private key (keep this secret and never commit it to version control!)
-    const PRIVATE_KEY = 'your_private_key_here';
+    const PRIVATE_KEY = 'your_private_key';
 
     module.exports = {
     networks: {
@@ -114,33 +108,27 @@ Before you start, complete the following prerequisites:
     };
     ```
 
-Replace `your_private_key_here` with your actual private key.
-
-:::tip
-To get your warden private key, you can use the command `wardend keys export my-key-name --unarmored-hex --unsafe` from the command line.
-:::
-
 ## 4. Create a migration script
 
-1. Create a new file `migrations/2_deploy_hello_warden.js`:
+Create a new file `migrations/2_deploy_hello_warden.js` with the following content:
 
-    ```javascript
-    const HelloWarden = artifacts.require("HelloWarden");
+```javascript
+const HelloWarden = artifacts.require("HelloWarden");
 
-    module.exports = function(deployer) {
-    deployer.deploy(HelloWarden);
-    };
-    ```
+module.exports = function(deployer) {
+deployer.deploy(HelloWarden);
+};
+```
 
 ## 5. Compile the contract
 
-Run:
+To compile your contract, run this command:
 
 ```bash
 truffle compile
 ```
 
-You will see an output similar to the following:
+You'll see an output similar to the following:
 
 ```bash
 Compiling your contracts...
@@ -153,7 +141,7 @@ Compiling your contracts...
 
 ## 6. Deploy the contract
 
-Run:
+To deploy the contract, run this:
 
 ```bash
 truffle migrate --network warden
@@ -201,25 +189,27 @@ Summary
 > Final cost:          0.055 ETH
 ```
 
-## 7. Interact with the smart contract
+## 7. Interact with the contract
 
 1. Open the Truffle console:
-
-```bash
-truffle console --network warden
-```
-
+   
+   ```bash
+   truffle console --network warden
+   ```
+   
 2. In the console, interact with your contract:
+   
+   ```javascript
+   let instance = await HelloWarden.deployed()
+   let message = await instance.getMessage()
+   console.log(message) // Should print "Hello, Warden!"
+   await instance.setMessage("Hello, EVM on Warden!")
+   message = await instance.getMessage()
+   console.log(message) // Should print "Hello, EVM on Warden!"
+   ```
 
-```javascript
-let instance = await HelloWarden.deployed()
-let message = await instance.getMessage()
-console.log(message) // Should print "Hello, Warden!"
-await instance.setMessage("Hello, EVM on Warden!")
-message = await instance.getMessage()
-console.log(message) // Should print "Hello, EVM on Warden!"
-```
+   The console log should first print `Hello, Warden!` and then `Hello, EVM on Warden!`
 
-If you encounter any issues, please reach out to us via [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
+   If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 
-Happy Coding! 🚀
+   Happy coding! 🚀

@@ -44,6 +44,8 @@ func (k msgServer) VoteForAction(goCtx context.Context, msg *types.MsgVoteForAct
 		if err := k.TryRejectVotedAction(ctx, &act); err != nil {
 			return nil, err
 		}
+	} else {
+		return nil, fmt.Errorf("unhandled VoteType value: %v", msg.VoteType)
 	}
 
 	return &types.MsgVoteForActionResponse{Status: act.Status.String()}, nil

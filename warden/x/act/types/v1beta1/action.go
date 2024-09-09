@@ -82,6 +82,7 @@ func (a *Action) AddOrUpdateVote(ctx sdk.Context, participant string, voteType A
 	for i, v := range a.Votes {
 		if v.Participant == participant {
 			a.Votes[i].VoteType = voteType
+			a.Votes[i].VotedAt = ctx.BlockTime()
 			updated = true
 			break
 		}

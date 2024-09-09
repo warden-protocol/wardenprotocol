@@ -56,23 +56,30 @@ func (w *keyResponseWriter) Reject(reason string) error {
 	return err
 }
 
-func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {
+func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest, client *AppClient) {
+	ingestRequest := func(keyRequest *wardentypes.KeyRequest) {
+		if !a.keyRequestTracker.IsNew(keyRequest.Id, client.grpcUrl) {
+			a.logger().Debug("skipping key request", "id", keyRequest.Id, "grpcUrl", client.grpcUrl)
+			return
+		}
+
+		a.logger().Info("got key request", "id", keyRequest.Id, "grpcUrl", client.grpcUrl)
+		a.keyRequestTracker.Ingested(keyRequest.Id, client.grpcUrl)
+
+		if a.keyRequestTracker.HasReachedConsensus(keyRequest.Id, a.config.ConsensusNodeThreshold) {
+			keyRequestsCh <- keyRequest
+		}
+	}
+
 	for {
 		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		keyRequests, err := a.keyRequests(reqCtx)
+		keyRequests, err := client.keyRequests(reqCtx)
 		cancel()
 		if err != nil {
 			a.logger().Error("failed to get key requests", "error", err)
 		} else {
 			for _, keyRequest := range keyRequests {
-				if !a.keyRequestTracker.IsNew(keyRequest.Id) {
-					a.logger().Debug("skipping key request", "id", keyRequest.Id)
-					continue
-				}
-
-				a.logger().Info("got key request", "id", keyRequest.Id)
-				a.keyRequestTracker.Ingested(keyRequest.Id)
-				keyRequestsCh <- keyRequest
+				ingestRequest(keyRequest)
 			}
 		}
 
@@ -109,6 +116,6 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 	}()
 }
 
-func (a *App) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
-	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainID)
+func (a *AppClient) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
+	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.batchSize)}, a.keychainId)
 }

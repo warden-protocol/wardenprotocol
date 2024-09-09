@@ -20,12 +20,12 @@ import (
 )
 
 type Config struct {
-	ChainID        string `env:"CHAIN_ID, default=warden"`
-	GRPCURL        string `env:"GRPC_URL, default=localhost:9090"`
-	GRPCInsecure   bool   `env:"GRPC_INSECURE, default=true"`
-	DerivationPath string `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
-	Mnemonic       string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
-	KeychainId     uint64 `env:"KEYCHAIN_ID, default=1"`
+	ChainID        string   `env:"CHAIN_ID, default=warden"`
+	GRPCURLs       []string `env:"GRPC_URLS, default=localhost:9090"`
+	GRPCInsecure   bool     `env:"GRPC_INSECURE, default=true"`
+	DerivationPath string   `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
+	Mnemonic       string   `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
+	KeychainId     uint64   `env:"KEYCHAIN_ID, default=1"`
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
@@ -39,6 +39,8 @@ type Config struct {
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
 	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
+
+	ConsensusNodeThreshold uint `env:"CONSENSUS_NODE_THRESHOLD, default=1"`
 }
 
 func main() {
@@ -58,18 +60,21 @@ func main() {
 	}
 
 	app := keychain.NewApp(keychain.Config{
-		Logger:         logger,
-		ChainID:        cfg.ChainID,
-		GRPCURL:        cfg.GRPCURL,
-		GRPCInsecure:   cfg.GRPCInsecure,
-		DerivationPath: cfg.DerivationPath,
-		Mnemonic:       cfg.Mnemonic,
-		KeychainID:     cfg.KeychainId,
-		GasLimit:       cfg.GasLimit,
-		BatchInterval:  cfg.BatchInterval,
-		BatchSize:      cfg.BatchSize,
-		TxTimeout:      cfg.TxTimeout,
-		TxFees:         sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
+		BasicConfig: keychain.BasicConfig{
+			Logger:         logger,
+			ChainID:        cfg.ChainID,
+			GRPCInsecure:   cfg.GRPCInsecure,
+			DerivationPath: cfg.DerivationPath,
+			Mnemonic:       cfg.Mnemonic,
+			KeychainID:     cfg.KeychainId,
+			GasLimit:       cfg.GasLimit,
+			BatchInterval:  cfg.BatchInterval,
+			BatchSize:      cfg.BatchSize,
+			TxTimeout:      cfg.TxTimeout,
+			TxFees:         sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
+		},
+		GRPCURLs:               cfg.GRPCURLs,
+		ConsensusNodeThreshold: cfg.ConsensusNodeThreshold,
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
@@ -122,11 +127,14 @@ func main() {
 	if cfg.HttpAddr != "" {
 		logger.Info("starting HTTP server", "addr", cfg.HttpAddr)
 		http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
-			if app.ConnectionState() == connectivity.Ready {
-				w.WriteHeader(http.StatusOK)
-			} else {
-				w.WriteHeader(http.StatusServiceUnavailable)
+			for _, state := range app.ConnectionState() {
+				if state == connectivity.Ready {
+					w.WriteHeader(http.StatusOK)
+					return
+				}
 			}
+
+			w.WriteHeader(http.StatusServiceUnavailable)
 		})
 		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}

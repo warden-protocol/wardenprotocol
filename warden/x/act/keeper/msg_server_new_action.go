@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/warden-protocol/wardenprotocol/shield"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -15,7 +17,17 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 		return nil, fmt.Errorf("can't unpack any: %w", err)
 	}
 
-	act, err := k.AddAction(ctx, msg.Creator, message, msg.ActionTimeoutHeight, msg.ExpectedApproveExpression, msg.ExpectedRejectExpression)
+	expectedApproveExpression, err := shield.Parse(msg.ExpectedApproveExpression)
+	if err != nil {
+		return nil, errors.Wrapf(types.ErrInvalidRuleDefinition, "%v", err)
+	}
+
+	expectedRejectExpression, err := shield.Parse(msg.ExpectedRejectExpression)
+	if err != nil {
+		return nil, errors.Wrapf(types.ErrInvalidRuleDefinition, "%v", err)
+	}
+
+	act, err := k.AddAction(ctx, msg.Creator, message, msg.ActionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 	if err != nil {
 		return nil, err
 	}

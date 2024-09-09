@@ -162,10 +162,10 @@ In this flow, you'll create and configure your chain manually.
 
    You can find your new node in the `$HOME/.warden/config` directory. For the genesis file, see `$HOME/.warden/config/genesis.json.`
 
-2. Set the correct denomination in `uward` across the genesis file:
+2. Set the correct denomination in `award` across the genesis file:
 
    ```
-   sed -i 's/stake/uward/g' ../.warden/config/genesis.json
+   sed -i 's/stake/award/g' ../.warden/config/genesis.json
    ```
 
 3. Create a key pair, specifying a custom key (validator account) name:
@@ -183,7 +183,7 @@ In this flow, you'll create and configure your chain manually.
 4. Add a genesis (validator) account. Specify your key name and the number of tokens staked:
 
    ```bash
-   wardend genesis add-genesis-account my-key-name 250000000000000uward
+   wardend genesis add-genesis-account my-key-name 25000000000000000000000award
    ```
 
    This will add your address to the `accounts` section of the genesis file.
@@ -191,7 +191,7 @@ In this flow, you'll create and configure your chain manually.
 5. Generate a genesis transaction. Specify your key name, the amount to stake, and the chain ID:
    
    ```bash
-   wardend genesis gentx my-key-name 1000000000000uward --chain-id my-chain-id
+   wardend genesis gentx my-key-name 100000000000000000000award --chain-id my-chain-id
    ```
 
 6. Collect genesis transactions:
@@ -213,7 +213,7 @@ In this flow, you'll create and configure your chain manually.
 8. Set the minimum gas price:
 
    ```
-   wardend config set app minimum-gas-prices 0uward
+   wardend config set app minimum-gas-prices 0award
    ```
 
    This command will update the `minimum-gas-prices` field in `$HOME/.warden/config/app.toml`. For testing purposes, we recommend setting the gas price to 0. Otherwise, you'll have to add a `--fee` flag to all transactions, such as creating a Keychain or a Space.

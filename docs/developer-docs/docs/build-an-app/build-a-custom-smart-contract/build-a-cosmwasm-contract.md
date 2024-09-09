@@ -158,7 +158,7 @@ To store your contract on the Warden chain, run the command below. Replace `my-k
    
    ```bash
    wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm /
-   --from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 0.1uward -y
+   --from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
    ```
    
    The transaction should be successful without any errors.
@@ -182,7 +182,7 @@ Before you proceed, should replace replace `1` with the actual code ID you retri
 ```bash
 wardend tx wasm instantiate 1 '{}' --from my-key-name /
 --label "Hello World" --gas auto --gas-adjustment 1.3 /
---gas-prices 0.1uward --no-admin -y 
+--gas-prices 100000000000award --no-admin -y 
 ```
 
 ## 10. Get the contract address
@@ -201,7 +201,7 @@ Use the command below to exectute your contract. Replace `my-contract-address` w
 
 ```bash
 wardend tx wasm execute my-contract-address '{"say_hello":{}}' /
---from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 0.1uward -y
+--from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
 ```
 
 ## Result

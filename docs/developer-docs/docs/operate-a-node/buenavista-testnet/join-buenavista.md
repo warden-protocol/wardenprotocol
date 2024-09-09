@@ -8,6 +8,10 @@ import PersistentPeers from "@site/src/components/PersistentPeers";
 
 ## Overview
 
+:::warning
+We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). Right now, both networks are running simultaneously, but we'll sunset Buenavista in **September 2024**. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+:::
+
 This tutorial explains how to run the Warden binary, `wardend`, and join the **Buenavista testnet**:
 
 - The chain ID in queries: `buenavista-1`

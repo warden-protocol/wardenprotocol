@@ -10,7 +10,7 @@ This is a simple step-by-step guide for setting up a validator on one of the War
 
 The following instructions assume you have already set up a full-node and are synchronized to the latest block height.
 
-If you haven’t done so, join the Buenavista testnet by following these instructions: [Join Chiado](chiado-testnet/join-chiado).
+If you haven’t done so, join the Chiado testnet by following these instructions: [Join Chiado](chiado-testnet/join-chiado).
 
 ## 1. Create/restore a key pair
 
@@ -75,7 +75,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
    ```json
    {    
        "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
-       "amount": "1000000uward",
+       "amount": "1000000000000000000award",
        "moniker": "your validator human-readable name (moniker)",
        "identity": "your validator identity signature",
        "website": "(optional) your validator website",
@@ -95,8 +95,8 @@ To create a validator and initialize it with a self-delegation, you need to crea
    ```bash
    wardend tx staking create-validator validator.json \
        --from=my-key-name \
-       --chain-id=buenavista-1 \
-       --fees=500uward
+       --chain-id=chiado_1234-1 \
+       --fees=500"amount": "1000000000000000000award"award
    ```
     
 **✏️ CAUTION**

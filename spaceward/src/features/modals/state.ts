@@ -1,6 +1,7 @@
 import { createGlobalState } from "@/hooks/state";
 
 import type {
+	ConfirmParams,
 	CreateKeyParams,
 	SelectAssetParams,
 	TransferParams,
@@ -11,6 +12,7 @@ export type ModalType =
 	| "approve-action"
 	| "approve-snap"
 	| "create-key"
+	| "confirm"
 	| "dapps-modal"
 	| "receive"
 	| "select-asset"
@@ -22,6 +24,7 @@ interface ModalParams {
 	"approve-action": {};
 	"approve-snap": {};
 	"create-key": CreateKeyParams;
+	"confirm": ConfirmParams;
 	"dapps-modal": {};
 	receive: TransferParams;
 	"select-asset": SelectAssetParams;

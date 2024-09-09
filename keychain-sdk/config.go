@@ -28,11 +28,6 @@ type Config struct {
 	// for.
 	KeychainID uint64
 
-	// DerivationPath is the derivation path to use in combination with the
-	// [Mnemonic] to derive this Keychain's writer private key.
-	// e.g. "m/44'/60'/0'/0/0"
-	DerivationPath string
-
 	// Mnemonic is the mnemonic to use to derive this Keychain's writer private
 	// key.
 	Mnemonic string

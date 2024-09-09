@@ -114,7 +114,7 @@ func (a *App) initConnections() error {
 
 	conn := query.Conn()
 
-	identity, err := client.NewIdentityFromSeed(a.config.DerivationPath, a.config.Mnemonic)
+	identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
 	if err != nil {
 		return fmt.Errorf("failed to create identity: %w", err)
 	}

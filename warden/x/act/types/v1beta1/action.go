@@ -72,19 +72,26 @@ func (a *Action) AddApprover(ctx sdk.Context, address string) error {
 	return nil
 }
 
-func (a *Action) AddVote(ctx sdk.Context, participant string, voteType ActionVoteType) error {
+func (a *Action) AddOrUpdateVote(ctx sdk.Context, participant string, voteType ActionVoteType) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
 		return errors.Wrapf(ErrInvalidActionStatus, "can't add a vote to an action that's not pending")
 	}
 
-	for _, v := range a.Votes {
+	updated := false
+
+	for i, v := range a.Votes {
 		if v.Participant == participant {
-			return ErrAlreadyParticipatedInVoting
+			a.Votes[i].VoteType = voteType
+			updated = true
+			break
 		}
 	}
 
+	if !updated {
+		a.Votes = append(a.Votes, NewVote(participant, voteType, ctx.BlockTime()))
+	}
+
 	a.UpdatedAt = ctx.BlockTime()
-	a.Votes = append(a.Votes, NewVote(participant, voteType, a.UpdatedAt))
 
 	if err := ctx.EventManager().EmitTypedEvent(&EventActionVoted{
 		Id:          a.Id,

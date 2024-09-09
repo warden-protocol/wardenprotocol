@@ -239,7 +239,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 
 	// add initial approver
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	if err := act.AddApprover(sdkCtx, creator); err != nil {
+	if err := act.AddOrUpdateVote(sdkCtx, creator, types.ActionVoteType_VOTE_TYPE_APPROVED); err != nil {
 		return nil, err
 	}
 

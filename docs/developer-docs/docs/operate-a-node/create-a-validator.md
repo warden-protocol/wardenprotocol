@@ -10,7 +10,7 @@ This is a simple step-by-step guide for setting up a validator on one of the War
 
 The following instructions assume you have already set up a full-node and are synchronized to the latest block height.
 
-If you haven’t done so, join the Buenavista testnet by following these instructions: [Join Buenavista](buenavista-testnet/join-buenavista).
+If you haven’t done so, join the Buenavista testnet by following these instructions: [Join Chiado](buenavista-testnet/join-chiado).
 
 ## 1. Create/restore a key pair
 

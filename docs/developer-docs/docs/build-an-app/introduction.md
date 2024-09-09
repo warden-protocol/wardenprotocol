@@ -24,7 +24,6 @@ The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden mod
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They are written in **Solidity**.
 
-
 ## Section overview
 
 - [Build a custom smart contract](/category/build-a-custom-smart-contract)  

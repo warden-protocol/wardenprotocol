@@ -6,6 +6,8 @@ sidebar_position: 1
 
 ## Overview
 
+The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
+
 This guide explains how to create and deploy a simple "Hello World" CosmWasm contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
 
 ## Prerequisites

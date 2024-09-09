@@ -59,13 +59,17 @@ func (x *_Space_3_list) IsValid() bool {
 }
 
 var (
-	md_Space               protoreflect.MessageDescriptor
-	fd_Space_id            protoreflect.FieldDescriptor
-	fd_Space_creator       protoreflect.FieldDescriptor
-	fd_Space_owners        protoreflect.FieldDescriptor
-	fd_Space_admin_rule_id protoreflect.FieldDescriptor
-	fd_Space_sign_rule_id  protoreflect.FieldDescriptor
-	fd_Space_nonce         protoreflect.FieldDescriptor
+	md_Space                       protoreflect.MessageDescriptor
+	fd_Space_id                    protoreflect.FieldDescriptor
+	fd_Space_creator               protoreflect.FieldDescriptor
+	fd_Space_owners                protoreflect.FieldDescriptor
+	fd_Space_admin_rule_id         protoreflect.FieldDescriptor
+	fd_Space_sign_rule_id          protoreflect.FieldDescriptor
+	fd_Space_nonce                 protoreflect.FieldDescriptor
+	fd_Space_approve_admin_rule_id protoreflect.FieldDescriptor
+	fd_Space_reject_admin_rule_id  protoreflect.FieldDescriptor
+	fd_Space_approve_sign_rule_id  protoreflect.FieldDescriptor
+	fd_Space_reject_sign_rule_id   protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -77,6 +81,10 @@ func init() {
 	fd_Space_admin_rule_id = md_Space.Fields().ByName("admin_rule_id")
 	fd_Space_sign_rule_id = md_Space.Fields().ByName("sign_rule_id")
 	fd_Space_nonce = md_Space.Fields().ByName("nonce")
+	fd_Space_approve_admin_rule_id = md_Space.Fields().ByName("approve_admin_rule_id")
+	fd_Space_reject_admin_rule_id = md_Space.Fields().ByName("reject_admin_rule_id")
+	fd_Space_approve_sign_rule_id = md_Space.Fields().ByName("approve_sign_rule_id")
+	fd_Space_reject_sign_rule_id = md_Space.Fields().ByName("reject_sign_rule_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_Space)(nil)
@@ -180,6 +188,30 @@ func (x *fastReflection_Space) Range(f func(protoreflect.FieldDescriptor, protor
 			return
 		}
 	}
+	if x.ApproveAdminRuleId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ApproveAdminRuleId)
+		if !f(fd_Space_approve_admin_rule_id, value) {
+			return
+		}
+	}
+	if x.RejectAdminRuleId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.RejectAdminRuleId)
+		if !f(fd_Space_reject_admin_rule_id, value) {
+			return
+		}
+	}
+	if x.ApproveSignRuleId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ApproveSignRuleId)
+		if !f(fd_Space_approve_sign_rule_id, value) {
+			return
+		}
+	}
+	if x.RejectSignRuleId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.RejectSignRuleId)
+		if !f(fd_Space_reject_sign_rule_id, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -207,6 +239,14 @@ func (x *fastReflection_Space) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.SignRuleId != uint64(0)
 	case "warden.warden.v1beta3.Space.nonce":
 		return x.Nonce != uint64(0)
+	case "warden.warden.v1beta3.Space.approve_admin_rule_id":
+		return x.ApproveAdminRuleId != uint64(0)
+	case "warden.warden.v1beta3.Space.reject_admin_rule_id":
+		return x.RejectAdminRuleId != uint64(0)
+	case "warden.warden.v1beta3.Space.approve_sign_rule_id":
+		return x.ApproveSignRuleId != uint64(0)
+	case "warden.warden.v1beta3.Space.reject_sign_rule_id":
+		return x.RejectSignRuleId != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -235,6 +275,14 @@ func (x *fastReflection_Space) Clear(fd protoreflect.FieldDescriptor) {
 		x.SignRuleId = uint64(0)
 	case "warden.warden.v1beta3.Space.nonce":
 		x.Nonce = uint64(0)
+	case "warden.warden.v1beta3.Space.approve_admin_rule_id":
+		x.ApproveAdminRuleId = uint64(0)
+	case "warden.warden.v1beta3.Space.reject_admin_rule_id":
+		x.RejectAdminRuleId = uint64(0)
+	case "warden.warden.v1beta3.Space.approve_sign_rule_id":
+		x.ApproveSignRuleId = uint64(0)
+	case "warden.warden.v1beta3.Space.reject_sign_rule_id":
+		x.RejectSignRuleId = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -272,6 +320,18 @@ func (x *fastReflection_Space) Get(descriptor protoreflect.FieldDescriptor) prot
 	case "warden.warden.v1beta3.Space.nonce":
 		value := x.Nonce
 		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.approve_admin_rule_id":
+		value := x.ApproveAdminRuleId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.reject_admin_rule_id":
+		value := x.RejectAdminRuleId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.approve_sign_rule_id":
+		value := x.ApproveSignRuleId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.reject_sign_rule_id":
+		value := x.RejectSignRuleId
+		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -306,6 +366,14 @@ func (x *fastReflection_Space) Set(fd protoreflect.FieldDescriptor, value protor
 		x.SignRuleId = value.Uint()
 	case "warden.warden.v1beta3.Space.nonce":
 		x.Nonce = value.Uint()
+	case "warden.warden.v1beta3.Space.approve_admin_rule_id":
+		x.ApproveAdminRuleId = value.Uint()
+	case "warden.warden.v1beta3.Space.reject_admin_rule_id":
+		x.RejectAdminRuleId = value.Uint()
+	case "warden.warden.v1beta3.Space.approve_sign_rule_id":
+		x.ApproveSignRuleId = value.Uint()
+	case "warden.warden.v1beta3.Space.reject_sign_rule_id":
+		x.RejectSignRuleId = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -342,6 +410,14 @@ func (x *fastReflection_Space) Mutable(fd protoreflect.FieldDescriptor) protoref
 		panic(fmt.Errorf("field sign_rule_id of message warden.warden.v1beta3.Space is not mutable"))
 	case "warden.warden.v1beta3.Space.nonce":
 		panic(fmt.Errorf("field nonce of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.approve_admin_rule_id":
+		panic(fmt.Errorf("field approve_admin_rule_id of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.reject_admin_rule_id":
+		panic(fmt.Errorf("field reject_admin_rule_id of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.approve_sign_rule_id":
+		panic(fmt.Errorf("field approve_sign_rule_id of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.reject_sign_rule_id":
+		panic(fmt.Errorf("field reject_sign_rule_id of message warden.warden.v1beta3.Space is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -367,6 +443,14 @@ func (x *fastReflection_Space) NewField(fd protoreflect.FieldDescriptor) protore
 	case "warden.warden.v1beta3.Space.sign_rule_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.v1beta3.Space.nonce":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.approve_admin_rule_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.reject_admin_rule_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.approve_sign_rule_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.reject_sign_rule_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
@@ -459,6 +543,18 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 		if x.Nonce != 0 {
 			n += 1 + runtime.Sov(uint64(x.Nonce))
 		}
+		if x.ApproveAdminRuleId != 0 {
+			n += 1 + runtime.Sov(uint64(x.ApproveAdminRuleId))
+		}
+		if x.RejectAdminRuleId != 0 {
+			n += 1 + runtime.Sov(uint64(x.RejectAdminRuleId))
+		}
+		if x.ApproveSignRuleId != 0 {
+			n += 1 + runtime.Sov(uint64(x.ApproveSignRuleId))
+		}
+		if x.RejectSignRuleId != 0 {
+			n += 1 + runtime.Sov(uint64(x.RejectSignRuleId))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -487,6 +583,26 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.RejectSignRuleId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.RejectSignRuleId))
+			i--
+			dAtA[i] = 0x58
+		}
+		if x.ApproveSignRuleId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ApproveSignRuleId))
+			i--
+			dAtA[i] = 0x50
+		}
+		if x.RejectAdminRuleId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.RejectAdminRuleId))
+			i--
+			dAtA[i] = 0x48
+		}
+		if x.ApproveAdminRuleId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ApproveAdminRuleId))
+			i--
+			dAtA[i] = 0x40
 		}
 		if x.Nonce != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.Nonce))
@@ -713,6 +829,82 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
+			case 8:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ApproveAdminRuleId", wireType)
+				}
+				x.ApproveAdminRuleId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ApproveAdminRuleId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 9:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RejectAdminRuleId", wireType)
+				}
+				x.RejectAdminRuleId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.RejectAdminRuleId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 10:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ApproveSignRuleId", wireType)
+				}
+				x.ApproveSignRuleId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ApproveSignRuleId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 11:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RejectSignRuleId", wireType)
+				}
+				x.RejectSignRuleId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.RejectSignRuleId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -797,6 +989,50 @@ type Space struct {
 	SignRuleId uint64 `protobuf:"varint,6,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
 	// Version of the space. Every time the Space is updated, this number gets increasead by one.
 	Nonce uint64 `protobuf:"varint,7,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	// Optional ID of the Rule to be applied to every approve vote on *admin* operation.
+	// If not specified, the default Rule is used.
+	//
+	// Admin operations are:
+	// - warden.warden.Msg.AddSpaceOwner
+	// - warden.warden.Msg.RemoveSpaceOwner
+	// - warden.warden.Msg.UpdateSpace
+	//
+	// The default Rule is to allow any operation when at least one of its
+	// owner approves it.
+	ApproveAdminRuleId uint64 `protobuf:"varint,8,opt,name=approve_admin_rule_id,json=approveAdminRuleId,proto3" json:"approve_admin_rule_id,omitempty"`
+	// Optional ID of the Rule to be applied to every reject vote on *admin* operation.
+	// If not specified, the default Rule is used.
+	//
+	// Admin operations are:
+	// - warden.warden.Msg.AddSpaceOwner
+	// - warden.warden.Msg.RemoveSpaceOwner
+	// - warden.warden.Msg.UpdateSpace
+	//
+	// The default Rule is to allow any operation when at least one of its
+	// owner approves it.
+	RejectAdminRuleId uint64 `protobuf:"varint,9,opt,name=reject_admin_rule_id,json=rejectAdminRuleId,proto3" json:"reject_admin_rule_id,omitempty"`
+	// Optional ID of the Rule to be applied to every approve vote on *sign* operation.
+	// If not specified, the default Rule is used.
+	//
+	// Sign operations are:
+	// - warden.warden.Msg.NewKeyRequest
+	// - warden.warden.Msg.NewSignRequest
+	// - warden.warden.Msg.UpdateKey
+	//
+	// The default Rule is to allow any operation when at least one of its
+	// owner approves it.
+	ApproveSignRuleId uint64 `protobuf:"varint,10,opt,name=approve_sign_rule_id,json=approveSignRuleId,proto3" json:"approve_sign_rule_id,omitempty"`
+	// Optional ID of the Rule to be applied to every reject vote on *sign* operation.
+	// If not specified, the default Rule is used.
+	//
+	// Sign operations are:
+	// - warden.warden.Msg.NewKeyRequest
+	// - warden.warden.Msg.NewSignRequest
+	// - warden.warden.Msg.UpdateKey
+	//
+	// The default Rule is to allow any operation when at least one of its
+	// owner approves it.
+	RejectSignRuleId uint64 `protobuf:"varint,11,opt,name=reject_sign_rule_id,json=rejectSignRuleId,proto3" json:"reject_sign_rule_id,omitempty"`
 }
 
 func (x *Space) Reset() {
@@ -861,13 +1097,41 @@ func (x *Space) GetNonce() uint64 {
 	return 0
 }
 
+func (x *Space) GetApproveAdminRuleId() uint64 {
+	if x != nil {
+		return x.ApproveAdminRuleId
+	}
+	return 0
+}
+
+func (x *Space) GetRejectAdminRuleId() uint64 {
+	if x != nil {
+		return x.RejectAdminRuleId
+	}
+	return 0
+}
+
+func (x *Space) GetApproveSignRuleId() uint64 {
+	if x != nil {
+		return x.ApproveSignRuleId
+	}
+	return 0
+}
+
+func (x *Space) GetRejectSignRuleId() uint64 {
+	if x != nil {
+		return x.RejectSignRuleId
+	}
+	return 0
+}
+
 var File_warden_warden_v1beta3_space_proto protoreflect.FileDescriptor
 
 var file_warden_warden_v1beta3_space_proto_rawDesc = []byte{
 	0x0a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
 	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2f, 0x73, 0x70, 0x61, 0x63, 0x65, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x12, 0x15, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x22, 0xa5, 0x01, 0x0a, 0x05, 0x53,
+	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x22, 0xe9, 0x02, 0x0a, 0x05, 0x53,
 	0x70, 0x61, 0x63, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04,
 	0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18,
 	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16,
@@ -878,22 +1142,35 @@ var file_warden_warden_v1beta3_space_proto_rawDesc = []byte{
 	0x67, 0x6e, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04,
 	0x52, 0x0a, 0x73, 0x69, 0x67, 0x6e, 0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05,
 	0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6e, 0x6f, 0x6e,
-	0x63, 0x65, 0x42, 0xf0, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33,
-	0x42, 0x0a, 0x53, 0x70, 0x61, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51,
-	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x33, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xca,
-	0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
-	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x5c,
-	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x63, 0x65, 0x12, 0x31, 0x0a, 0x15, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x5f, 0x61, 0x64,
+	0x6d, 0x69, 0x6e, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28,
+	0x04, 0x52, 0x12, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52,
+	0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x2f, 0x0a, 0x14, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x5f,
+	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x09, 0x20,
+	0x01, 0x28, 0x04, 0x52, 0x11, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x64, 0x6d, 0x69, 0x6e,
+	0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x2f, 0x0a, 0x14, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76,
+	0x65, 0x5f, 0x73, 0x69, 0x67, 0x6e, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x0a,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x11, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x53, 0x69, 0x67,
+	0x6e, 0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x2d, 0x0a, 0x13, 0x72, 0x65, 0x6a, 0x65, 0x63,
+	0x74, 0x5f, 0x73, 0x69, 0x67, 0x6e, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x0b,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x10, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x69, 0x67, 0x6e,
+	0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x42, 0xf0, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x33, 0x42, 0x0a, 0x53, 0x70, 0x61, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f,
+	0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x33, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x33, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x33, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
+	0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (

@@ -71,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 * (x/gmp) Remove the GMP default params from genesis
+* (go-client) Use ethsecp256k1 instead of Cosmos secp256k1
 
 ### Misc
 

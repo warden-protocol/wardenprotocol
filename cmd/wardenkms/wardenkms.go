@@ -58,11 +58,18 @@ func main() {
 		return
 	}
 
+	grpcConfigs := make([]keychain.GrpcNodeConfig, 0)
+	for url, grpcInsecure := range cfg.GRPCURLs {
+		grpcConfigs = append(grpcConfigs, keychain.GrpcNodeConfig{
+			GRPCInsecure: grpcInsecure,
+			GRPCURL:      url,
+		})
+	}
+
 	app := keychain.NewApp(keychain.Config{
 		BasicConfig: keychain.BasicConfig{
 			Logger:        logger,
 			ChainID:       cfg.ChainID,
-			GRPCInsecure:  cfg.GRPCInsecure,
 			Mnemonic:      cfg.Mnemonic,
 			KeychainID:    cfg.KeychainId,
 			GasLimit:      cfg.GasLimit,
@@ -71,7 +78,7 @@ func main() {
 			TxTimeout:     cfg.TxTimeout,
 			TxFees:        sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
 		},
-		GRPCURLs:               cfg.GRPCURLs,
+		GRPCConfigs:            grpcConfigs,
 		ConsensusNodeThreshold: cfg.ConsensusNodeThreshold,
 	})
 

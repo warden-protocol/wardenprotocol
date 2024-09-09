@@ -35,11 +35,12 @@ type App struct {
 }
 
 type AppClient struct {
-	grpcUrl    string
-	batchSize  int
-	keychainId uint64
-	query      *client.QueryClient
-	txClient   *client.TxClient
+	grpcUrl      string
+	grpcInsecure bool
+	batchSize    int
+	keychainId   uint64
+	query        *client.QueryClient
+	txClient     *client.TxClient
 }
 
 // NewApp creates a new Keychain application, using the given configuration.
@@ -136,16 +137,17 @@ func (a *App) ConnectionState() map[string]connectivity.State {
 }
 
 func (a *App) initConnections() error {
-	initConnection := func(logger *slog.Logger, grpcUlr string, config BasicConfig) (*AppClient, error) {
+	initConnection := func(logger *slog.Logger, grpcNodeConfig GrpcNodeConfig, config BasicConfig) (*AppClient, error) {
 		appClient := &AppClient{
-			batchSize:  config.BatchSize,
-			keychainId: config.KeychainID,
-			grpcUrl:    grpcUlr,
+			batchSize:    config.BatchSize,
+			keychainId:   config.KeychainID,
+			grpcUrl:      grpcNodeConfig.GRPCURL,
+			grpcInsecure: grpcNodeConfig.GRPCInsecure,
 		}
 
-		logger.Info("connecting to Warden Protocol using gRPC", "url", grpcUlr, "insecure", config.GRPCInsecure)
+		logger.Info("connecting to Warden Protocol using gRPC", "url", grpcNodeConfig, "insecure", grpcNodeConfig.GRPCInsecure)
 
-		query, err := client.NewQueryClient(grpcUlr, config.GRPCInsecure)
+		query, err := client.NewQueryClient(grpcNodeConfig.GRPCURL, grpcNodeConfig.GRPCInsecure)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create query client: %w", err)
 		}
@@ -165,7 +167,7 @@ func (a *App) initConnections() error {
 		return appClient, nil
 	}
 
-	for _, grpcUrl := range a.config.GRPCURLs {
+	for _, grpcUrl := range a.config.GRPCConfigs {
 		appClient, err := initConnection(a.logger(), grpcUrl, a.config.BasicConfig)
 		if err != nil {
 			return err

@@ -15,10 +15,6 @@ type BasicConfig struct {
 	// ChainID is the chain ID of the chain to connect to.
 	ChainID string
 
-	// GRPCInsecure determines whether to allow an insecure connection to the
-	// gRPC server.
-	GRPCInsecure bool
-
 	// KeychainID is the ID of the keychain this instance will fetch requests
 	// for.
 	KeychainID uint64
@@ -63,5 +59,15 @@ type Config struct {
 
 	// GRPCURLs is the list of URLs of the gRPC server to connect to.
 	// e.g. "localhost:9090"
-	GRPCURLs []string
+	GRPCConfigs []GrpcNodeConfig
+}
+
+type GrpcNodeConfig struct {
+	// GRPCInsecure determines whether to allow an insecure connection to the
+	// gRPC server.
+	GRPCInsecure bool
+
+	// GRPCURLs is the list of URLs of the gRPC server to connect to.
+	// e.g. "localhost:9090"
+	GRPCURL string
 }

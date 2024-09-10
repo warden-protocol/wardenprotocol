@@ -62,7 +62,7 @@ export const useAssetQueries = (spaceId?: string | null) => {
 					token: pair.token,
 				},
 			};
-		}, {} as PriceMapSlinky);
+		}, {} as PriceMapSlinky) ?? {};
 
 		if (!priceMap) {
 			return;

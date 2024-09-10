@@ -239,8 +239,20 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, err
 	}
 
-	// todo: make set of uniques
-	mentions := append(approveMentions, rejectMentions...)
+	mentions := approveMentions
+
+	approveMentionsSet := make(map[string]struct{})
+
+	for _, approveMention := range approveMentions {
+		approveMentionsSet[approveMention] = struct{}{}
+	}
+
+	for _, rejectMention := range rejectMentions {
+		_, exists := approveMentionsSet[rejectMention]
+		if !exists {
+			mentions = append(mentions, rejectMention)
+		}
+	}
 
 	// update the rule of this Action with the preprocessed expression
 	// todo: should be removed with removing Rule field in Action

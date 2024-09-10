@@ -45,7 +45,7 @@ func (t *T) Ingested(id uint64, nodeUrl string) {
 	defer t.rw.Unlock()
 
 	value, ok := t.ingested[id]
-	if ok == false {
+	if !ok {
 		t.ingested[id] = make(hashSet)
 		value = t.ingested[id]
 	}

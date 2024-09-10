@@ -10,26 +10,47 @@ import SendAssetsModal from "./SendAssets";
 import WalletConnectModal from "./WalletConnect";
 import { useModalState } from "./state";
 import type {
+	ConfirmParams,
 	CreateKeyParams,
 	SelectAssetParams,
 	TransferParams,
 } from "./types";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import ConfirmModal from "./Confirm";
+
+function hasEntry<T extends {}, K extends string>(key: K, obj?: T): obj is T & { [key in K]: any } {
+	return Boolean(obj && (key in obj));
+}
 
 export default function ModalRoot() {
 	const { data, setData } = useModalState();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
+	// fixme
+	async function _cancel() {
+		setData({ type: undefined, params: undefined });
+
+		if (hasEntry("onCancel", data?.params)) {
+			data.params.onCancel?.();
+		}
+	}
+
+	const cancel = useRef(_cancel);
+	cancel.current = _cancel;
+
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
-				setData({ type: undefined, params: undefined });
+				cancel.current();
 			}
 		};
 
 		window.addEventListener("keydown", handleKeyDown);
-		return () => window.removeEventListener("keydown", handleKeyDown);
+
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown)
+		};
 	}, []);
 
 	if (!data) {
@@ -46,7 +67,7 @@ export default function ModalRoot() {
 			<div className="bg-overlay fixed left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
 			{!isDesktop ? (
 				<button
-					onClick={() => setData({ type: undefined, params: undefined })}
+					onClick={_cancel}
 					className="absolute top-8 invert dark:invert-0 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
 				>
 					<img src="/images/button-close.svg" alt="" />
@@ -56,7 +77,7 @@ export default function ModalRoot() {
 			<div className="flex flex-col relative">
 				{isDesktop ? (
 					<button
-						onClick={() => setData({ type: undefined, params: undefined })}
+						onClick={_cancel}
 						className="absolute -top-16 invert dark:invert-0 -right-16 opacity-[0.5] hover:opacity-[100%] transition-all"
 					>
 						<img src="/images/button-close.svg" alt="" />
@@ -72,6 +93,9 @@ export default function ModalRoot() {
 				) : null}
 				{data.type === "add-owner" || data.background["add-owner"] ? (
 					<AddOwnerModal hidden={data.type !== "add-owner"} />
+				) : null}
+				{data.type === "confirm" ? (
+					<ConfirmModal hidden={data.type !== "confirm"} {...(data.params as (ConfirmParams | undefined))} />
 				) : null}
 				{data.type === "create-key" || data.background["create-key"] ? (
 					<CreateKeyModal

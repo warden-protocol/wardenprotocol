@@ -93,7 +93,7 @@ export const formatReward = (reward?: DecCoin[]) => {
 
 	// fixme
 	return bigintToFixed(rewardNum, {
-		decimals: 6 + 18,
+		decimals: 18 + 18,
 		display: 6,
 		format: true,
 	});

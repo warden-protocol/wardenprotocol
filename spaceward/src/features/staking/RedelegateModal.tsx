@@ -23,7 +23,7 @@ export default function RedelegateModal(
 	const [isDropdown, setIsDropdown] = useState(false);
 
 	const [amountValue, setAmountValue] = useState(
-		bigintToFixed(maxAmount, { decimals: 6 }),
+		bigintToFixed(maxAmount, { decimals: 18 }),
 	);
 
 	const amount = strToBigint(amountValue);
@@ -152,7 +152,7 @@ export default function RedelegateModal(
 				{isInputError && (
 					<div className="mt-[2px] text-negative text-xs">
 						You can redelegate not more than{" "}
-						{bigintToFixed(maxAmount, { decimals: 6 })} WARD
+						{bigintToFixed(maxAmount, { decimals: 18 })} WARD
 					</div>
 				)}
 

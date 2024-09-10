@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+	"log"
 	"net/http"
 	"os"
 	"time"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 var c = &http.Client{
@@ -81,6 +83,8 @@ func Verify(
 	if err != nil {
 		return err
 	}
+
+	log.Println(string(jsonBz))
 
 	res, err := c.Post(verifyURL(), "application/json", bytes.NewReader(jsonBz))
 	if err != nil {

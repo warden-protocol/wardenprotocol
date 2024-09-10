@@ -2,11 +2,13 @@
 sidebar_position: 2
 ---
 
-# Build a custom smart contract
+# Build a CosmWasm contract
 
 ## Overview
 
-This guide explains how to create and deploy a simple "Hello World" smart contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
+The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
+
+This guide explains how to create and deploy a simple "Hello World" CosmWasm contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
 
 ## Prerequisites
 
@@ -14,9 +16,9 @@ Before you start, complete the following prerequisites:
 
 - Install Rust by running the following:
 
-    ```bash
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    ```
+  ```bash
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  ```
 
 - Set up the CosmWasm development environment:
 
@@ -34,18 +36,18 @@ Before you start, complete the following prerequisites:
    brew install binaryen
    ```
 
-- [Run a local chain](test/run-a-local-chain) and make sure you have `wardend` correctly installed. You can stop the chain for now if you wish.
+- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-   The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command (while the node is running):
+  The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command:
 
-   ```bash
-   wardend keys list
-   ```
-   :::tip
-   In development genesis files, you'll typically find an account named shulgin that is preconfigured and ready for use.
-   :::
+  ```bash
+  wardend keys list
+  ```
+  :::tip
+  In development genesis files, you'll typically find an account named shulgin that is preconfigured and ready for use.
+  :::
 
-## 1. Create a new CosmWasm project
+## 1. Create a CosmWasm project
 
 Create a new CosmWasm project by running the following:
 
@@ -125,7 +127,7 @@ cd hello-world
    }
    ```
 
-## 4. Compile the contract
+## 3. Compile the contract
 
 To compile the contract, run the following:
 
@@ -135,7 +137,7 @@ cargo wasm
 
 The contract should be compiled without any errors.
 
-## 5. Optimize the compiled Wasm code
+## 4. Optimize the code
 
 Now you need to optimize your compiled Wasm code:
 
@@ -144,7 +146,7 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm /
 target/wasm32-unknown-unknown/release/hello_world.wasm
 ```
 
-## 6. Run the chain
+## 5. Run the chain
 
 If your local chain isn't running, start it:
    
@@ -152,18 +154,18 @@ If your local chain isn't running, start it:
 wardend start
 ```
 
-## 7. Store the contract on-chain
+## 6. Store the contract on-chain
 
-To store your contract on the Warden chain, run the command below. Replace `my-key-name` with your key name (typically `shulgin`).
+To store your contract on the Warden chain, run the command below. Replace `my-key-name` with your key name from [Prerequisites](#prerequisites) (typically `shulgin`).
    
-   ```bash
-   wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm /
-   --from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 0.1uward -y
-   ```
-   
-   The transaction should be successful without any errors.
+```bash
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm /
+--from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
+```
 
-## 8. Get the code ID
+The transaction should be successful without any errors.
+
+## 7. Get the code ID
 
 Get the code ID, which identifies your Wasm code:
 
@@ -173,7 +175,7 @@ wardend query wasm list-code
 
 Note down `code_id` from the output.
 
-## 9. Instantiate the contract
+## 8. Instantiate the contract
 
 You can instantiate the contract by using the command below.
 
@@ -182,10 +184,10 @@ Before you proceed, should replace replace `1` with the actual code ID you retri
 ```bash
 wardend tx wasm instantiate 1 '{}' --from my-key-name /
 --label "Hello World" --gas auto --gas-adjustment 1.3 /
---gas-prices 0.1uward --no-admin -y 
+--gas-prices 100000000000award --no-admin -y 
 ```
 
-## 10. Get the contract address
+## 9. Get the contract address
 
 To get the contract address, run the following command. Replace `1` with the actual code ID:
 
@@ -195,27 +197,25 @@ wardend query wasm list-contract-by-code 1
 
 Note down the contract address.
 
-## 11. Execute the contract
+## 10. Execute the contract
 
 Use the command below to exectute your contract. Replace `my-contract-address` with your contract address and `my-key-name` with your key name.
 
 ```bash
 wardend tx wasm execute my-contract-address '{"say_hello":{}}' /
---from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 0.1uward -y
+--from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
 ```
 
-## Result
+## 11. Query the contract
 
-Now your contract is ready!
-
-You can query it with the following command. Replace `my-contract-address` with your contract address.
+You can query your contract with the following command. Replace `my-contract-address` with your contract address.
 
 ```bash
 wardend query wasm contract-state smart my-contract-address '{"get_greeting":{}}'
 ```
 
-In the output, you should see `data: Hello, World!`
+In the output, you should see this: `data: Hello, World!`
 
-If you encounter any issues, please reach out to us via [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 
-Happy Coding! 🚀
+Happy coding! 🚀

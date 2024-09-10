@@ -6,27 +6,36 @@ sidebar_position: 3
 
 ## Overview
 
-This section contains useful links useful links to docs and resources you can use for building your Omnichain Applications.
+The main part of any Omnichain Application is a smart contract that allows signing transactions and messages at any destination chain. This section contains links to resources you can use for deploying Omnichain Contracts of two types:
 
-## CosmWasm documentation
+- **EVM** contracts written in **Solidity**, charged by Evmos
+- **CosmWasm** contracts written in **Rust**
 
-- [Documentation for the core contract libraries](https://docs.rs/cosmwasm-std/latest/cosmwasm_std/index.html)
-- [Documentation for the storage helpers](https://docs.rs/cosmwasm-storage/latest/cosmwasm_storage/index.html)
+## EVM contracts
 
-## CosmWasm guides
+- **`x/evm` resources**
+    - [The `evm` module by Evmos](https://docs.evmos.org/protocol/modules/evm)
+- **Solidity resources**
+    - [Solidity documentation](https://docs.soliditylang.org/en/v0.8.26/)
+    - [Awesome Solidity: a collection of resources](https://github.com/bkrem/awesome-solidity)
+    - [Solidity by example: a collection of simple examples](https://solidity-by-example.org)
 
-- [Archway](https://docs.archway.io/developers/cosmwasm-documentation/introduction)
-- [Awesome](https://github.com/CosmWasm/awesome-cosmwasm)
-- [Sylvia Book](https://cosmwasm.github.io/sylvia-book/basics/create-project.html)
-- [Area-52](https://area-52.io/)
+## CosmWasm contracts
 
-## CosmWasm examples
+- **CosmWasm documentation**
+    - [Documentation for the core contract libraries](https://docs.rs/cosmwasm-std/latest/cosmwasm_std/index.html)
+    - [Documentation for the storage helpers](https://docs.rs/cosmwasm-storage/latest/cosmwasm_storage/index.html)
+- **CosmWasm guides and examples**
+    - [Awesome CosmWasm: a collection of resources](https://github.com/CosmWasm/awesome-cosmwasm)
+    - [Guides by Archway](https://docs.archway.io/developers/cosmwasm-documentation/introduction)
+    - [Creating CosmWasm contracts with sylvia](https://cosmwasm.github.io/sylvia-book/)
+    - [Area-52: CosmWasm courses](https://area-52.io/)
+    - [Examples of CosmWasm contracts by Deus Labs](https://github.com/deus-labs/cw-contracts)
+- **Rust resources**
+    - [Rust documentation](https://doc.rust-lang.org/book/)
+    - [Tour of Rust](https://tourofrust.com)
 
-- [Deus Labs](https://github.com/deus-labs/cw-contracts)
+## General resources
 
-## General developer guides
-
-- [Cosmos: Builders Knowledge Hub](https://hub.join.builders)
+- [Cosmos: Builders knowledge hub](https://hub.join.builders)
 - [IBC-Go documentation](https://ibc.cosmos.network/main)
-- [Rust documentation](https://doc.rust-lang.org/book/)
-- [Tour of Rust](https://tourofrust.com)

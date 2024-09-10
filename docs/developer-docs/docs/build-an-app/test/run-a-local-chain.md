@@ -157,7 +157,7 @@ In this flow, you'll create and configure your chain manually.
 1. Initialize a local node. Specify a human-readable name (moniker) and ID for your chain:
    
    ```bash
-   wardend init my-chain-moniker --chain-id my-chain_123-1
+   wardend init my-chain-moniker --chain-id chain_123-1
    ```
 
    :::tip
@@ -166,10 +166,10 @@ In this flow, you'll create and configure your chain manually.
 
    You can find your new node in the `$HOME/.warden/config` directory. For the genesis file, see `$HOME/.warden/config/genesis.json.`
 
-2. Set the correct denomination in `uward` across the genesis file:
+2. Set the correct denomination in `award` across the genesis file:
 
    ```
-   sed -i 's/stake/uward/g' ../.warden/config/genesis.json
+   sed -i 's/stake/award/g' ../.warden/config/genesis.json
    ```
 
 3. Create a key pair, specifying a custom key (validator account) name:
@@ -187,7 +187,7 @@ In this flow, you'll create and configure your chain manually.
 4. Add a genesis (validator) account. Specify your key name and the number of tokens staked:
 
    ```bash
-   wardend genesis add-genesis-account my-key-name 250000000000000uward
+   wardend genesis add-genesis-account my-key-name 25000000000000000000000award
    ```
 
    This will add your address to the `accounts` section of the genesis file.
@@ -195,7 +195,7 @@ In this flow, you'll create and configure your chain manually.
 5. Generate a genesis transaction. Specify your key name, the amount to stake, and the chain ID:
    
    ```bash
-   wardend genesis gentx my-key-name 1000000000000uward --chain-id my-chain_123-1
+   wardend genesis gentx my-key-name 100000000000000000000award  --chain-id chain_123-1
    ```
 
 6. Collect genesis transactions:
@@ -217,7 +217,7 @@ In this flow, you'll create and configure your chain manually.
 8. Set the minimum gas price:
 
    ```
-   wardend config set app minimum-gas-prices 0uward
+   wardend config set app minimum-gas-prices 0award
    ```
 
    This command will update the `minimum-gas-prices` field in `$HOME/.warden/config/app.toml`. For testing purposes, we recommend setting the gas price to 0. Otherwise, you'll have to add a `--fee` flag to all transactions, such as creating a Keychain or a Space.
@@ -244,7 +244,7 @@ In the previous steps, you configured your node with the minimum settings requir
    wardend tx warden new-keychain \
      --description 'my-description' \
      --from my-key-name \
-     --chain-id my-chain_123-1
+     --chain-id chain_123-1
    ```
 
 2. Enter your passphrase and confirm the transaction.
@@ -275,7 +275,7 @@ In the previous steps, you configured your node with the minimum settings requir
    ```bash
    wardend tx warden new-space \
      --from my-key-name \
-     --chain-id my-chain_123-1
+     --chain-id chain_123-1
    ```
 
 2. Enter your passphrase and confirm the transaction.
@@ -320,7 +320,7 @@ The output should contain status information about your node:
     },
     "id": "7165651eb07db46b86694db04bc29a83b682981f",
     "listen_addr": "tcp://0.0.0.0:26656",
-    "network": "my-chain_123-1",
+    "network": "chain_123-1",
     "version": "0.38.7",
     "channels": "40202122233038606100",
     "moniker": "my-chain-moniker",

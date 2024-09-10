@@ -8,8 +8,17 @@ sidebar_position: 3
 
 The main part of any Omnichain Application is a smart contract that allows signing transactions and messages at any destination chain. This section contains links to resources you can use for deploying Omnichain Contracts of two types:
 
-- **CosmWasm** contracts written in **Rust**
 - **EVM** contracts written in **Solidity**, charged by Evmos
+- **CosmWasm** contracts written in **Rust**
+
+## EVM contracts
+
+- **`x/evm` resources**
+    - [The `evm` module by Evmos](https://docs.evmos.org/protocol/modules/evm)
+- **Solidity resources**
+    - [Solidity documentation](https://docs.soliditylang.org/en/v0.8.26/)
+    - [Awesome Solidity: a collection of resources](https://github.com/bkrem/awesome-solidity)
+    - [Solidity by example: a collection of simple examples](https://solidity-by-example.org)
 
 ## CosmWasm contracts
 
@@ -25,15 +34,6 @@ The main part of any Omnichain Application is a smart contract that allows signi
 - **Rust resources**
     - [Rust documentation](https://doc.rust-lang.org/book/)
     - [Tour of Rust](https://tourofrust.com)
-
-## EVM contracts
-
-- **`x/evm` resources**
-    - [The `evm` module by Evmos](https://docs.evmos.org/protocol/modules/evm)
-- **Solidity resources**
-    - [Solidity documentation](https://docs.soliditylang.org/en/v0.8.26/)
-    - [Awesome Solidity: a collection of resources](https://github.com/bkrem/awesome-solidity)
-    - [Solidity by example: a collection of simple examples](https://solidity-by-example.org)
 
 ## General resources
 

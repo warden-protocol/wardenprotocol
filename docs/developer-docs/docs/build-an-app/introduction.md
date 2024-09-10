@@ -16,13 +16,15 @@ The main part of any Omnichain Application is an **Omnichain Contract**: a smart
 
 As shown below, the Warden Protocol integrates with two external modules allowing you to execute two types of smart contracts.
 
-### CosmWasm contracts
-
-The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
-
 ### EVM contracts
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They are written in **Solidity**.
+
+Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users.
+
+### CosmWasm contracts
+
+The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
 ## Section overview
 

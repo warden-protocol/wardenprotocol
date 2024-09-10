@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Build an EVM contract
@@ -7,8 +7,6 @@ sidebar_position: 2
 ## Overview
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They are written in **Solidity**.
-
-
 
 This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
 

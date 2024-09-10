@@ -36,6 +36,18 @@ message EventUpdateSpace {
 
   // id of the rule to be applied to every sign operation
   uint64 sign_rule_id = 3;
+
+  // id of the rule to be applied to every approve admin operation
+  uint64 approve_admin_rule_id = 4;
+
+  // id of the rule to be applied to every reject admin operation
+  uint64 reject_admin_rule_id = 5;
+
+  // id of the rule to be applied to every approve sign operation
+  uint64 approve_sign_rule_id = 6;
+
+  // id of the rule to be applied to every reject sign operation
+  uint64 reject_sign_rule_id = 7;
 }
 
 // EventAddSpaceOwner is emitted when a new owner is added
@@ -114,6 +126,12 @@ message EventUpdateKey {
 
   // id of the rule to be applied to every sign operation
   uint64 rule_id = 2;
+
+  // id of the rule to be applied to every approve sign operation
+  uint64 approve_rule_id = 3;
+
+  // id of the rule to be applied to every reject sign operation
+  uint64 reject_rule_id = 4;
 }
 
 // EventNewSignRequest is emitted on new signature requests

@@ -24,7 +24,7 @@ We recommend this option if you wish to run a node with custom settings and lear
 Before you start, complete the following prerequisites:
 
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
-- Install [just](https://just.systems/man/en/chapter_4.html).
+- Install [just](https://just.systems/man/en/chapter_4.html) 1.34.0 or later.
 
 :::tip
 You can install `just` it using `brew`:
@@ -157,8 +157,12 @@ In this flow, you'll create and configure your chain manually.
 1. Initialize a local node. Specify a human-readable name (moniker) and ID for your chain:
    
    ```bash
-   wardend init my-chain-moniker --chain-id my-chain-id
+   wardend init my-chain-moniker --chain-id my-chain_123-1
    ```
+
+   :::tip
+   The correct format for your chain ID is `name_number-number`. You can choose any name and numbers you wish.
+   :::
 
    You can find your new node in the `$HOME/.warden/config` directory. For the genesis file, see `$HOME/.warden/config/genesis.json.`
 
@@ -191,7 +195,7 @@ In this flow, you'll create and configure your chain manually.
 5. Generate a genesis transaction. Specify your key name, the amount to stake, and the chain ID:
    
    ```bash
-   wardend genesis gentx my-key-name 1000000000000uward --chain-id my-chain-id
+   wardend genesis gentx my-key-name 1000000000000uward --chain-id my-chain_123-1
    ```
 
 6. Collect genesis transactions:
@@ -240,7 +244,7 @@ In the previous steps, you configured your node with the minimum settings requir
    wardend tx warden new-keychain \
      --description 'my-description' \
      --from my-key-name \
-     --chain-id my-chain-id
+     --chain-id my-chain_123-1
    ```
 
 2. Enter your passphrase and confirm the transaction.
@@ -271,7 +275,7 @@ In the previous steps, you configured your node with the minimum settings requir
    ```bash
    wardend tx warden new-space \
      --from my-key-name \
-     --chain-id my-chain-id
+     --chain-id my-chain_123-1
    ```
 
 2. Enter your passphrase and confirm the transaction.
@@ -316,7 +320,7 @@ The output should contain status information about your node:
     },
     "id": "7165651eb07db46b86694db04bc29a83b682981f",
     "listen_addr": "tcp://0.0.0.0:26656",
-    "network": "my-chain-id",
+    "network": "my-chain_123-1",
     "version": "0.38.7",
     "channels": "40202122233038606100",
     "moniker": "my-chain-moniker",

@@ -32,7 +32,7 @@ First, you should get some ETH for future transactions on Base. Base fees are ve
    If you're using a Cosmos chain (ATOM, Osmosis), you'll be able to connect a Keplr wallet. If you select an EVM chain (Ethereum, Optimism), you'll be able to connect a MetaMask wallet.
    :::
 
-3. In **TO**, select select the **Base** chain and the **ETH** token.
+3. In **TO**, select the **Base** chain and the **ETH** token.
 
 ![Get ETH in Squid Router: select the destination chain](https://i.ibb.co/HpY6P3L/unnamed-8.png)
 
@@ -61,7 +61,7 @@ Then you should get some USDC for the WARP-USDC trading pair:
    If you're using a Cosmos chain (ATOM, Osmosis), you'll be able to connect a Keplr wallet. If you select an EVM chain (Ethereum, Optimism), you'll be able to connect a MetaMask wallet.
    :::
 
-3. In **TO**, select select the **Base** chain and the **USDC** token.
+3. In **TO**, select the **Base** chain and the **USDC** token.
 
 ![Get USDC in Squid Router: select the destination chain](https://i.ibb.co/4p48qwp/unnamed-6.png)
 

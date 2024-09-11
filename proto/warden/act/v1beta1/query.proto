@@ -72,6 +72,7 @@ message QueryActionsResponse {
 
 message QueryRulesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string creator = 2 [ (gogoproto.nullable) = true ];
 }
 
 message QueryRulesResponse {

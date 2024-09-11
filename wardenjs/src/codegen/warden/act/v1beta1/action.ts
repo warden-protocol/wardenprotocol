@@ -2,6 +2,8 @@
 import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
 import { Rule, RuleAmino, RuleSDKType } from "./rule.js";
+import { Expression, ExpressionAmino, ExpressionSDKType } from "../../../shield/ast/ast.js";
+import { ActionVote, ActionVoteAmino, ActionVoteSDKType } from "./action_vote.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -115,6 +117,12 @@ export interface Action {
   rule: Rule;
   /** mentions is a list of addresses that are mentioned in the rule. */
   mentions: string[];
+  /** The expression to be evaluated for approval. */
+  approveExpression: Expression;
+  /** The expression to be evaluated for rejection. */
+  rejectExpression: Expression;
+  /** The votes accepted from the voting participants. */
+  votes: ActionVote[];
 }
 export interface ActionProtoMsg {
   typeUrl: "/warden.act.v1beta1.Action";
@@ -150,6 +158,12 @@ export interface ActionAmino {
   rule?: RuleAmino;
   /** mentions is a list of addresses that are mentioned in the rule. */
   mentions?: string[];
+  /** The expression to be evaluated for approval. */
+  approve_expression?: ExpressionAmino;
+  /** The expression to be evaluated for rejection. */
+  reject_expression?: ExpressionAmino;
+  /** The votes accepted from the voting participants. */
+  votes?: ActionVoteAmino[];
 }
 export interface ActionAminoMsg {
   type: "/warden.act.v1beta1.Action";
@@ -171,6 +185,9 @@ export interface ActionSDKType {
   updated_at: TimestampSDKType;
   rule: RuleSDKType;
   mentions: string[];
+  approve_expression: ExpressionSDKType;
+  reject_expression: ExpressionSDKType;
+  votes: ActionVoteSDKType[];
 }
 function createBaseApprover(): Approver {
   return {
@@ -271,7 +288,10 @@ function createBaseAction(): Action {
     createdAt: Timestamp.fromPartial({}),
     updatedAt: Timestamp.fromPartial({}),
     rule: Rule.fromPartial({}),
-    mentions: []
+    mentions: [],
+    approveExpression: Expression.fromPartial({}),
+    rejectExpression: Expression.fromPartial({}),
+    votes: []
   };
 }
 export const Action = {
@@ -309,6 +329,15 @@ export const Action = {
     }
     for (const v of message.mentions) {
       writer.uint32(98).string(v!);
+    }
+    if (message.approveExpression !== undefined) {
+      Expression.encode(message.approveExpression, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.rejectExpression !== undefined) {
+      Expression.encode(message.rejectExpression, writer.uint32(114).fork()).ldelim();
+    }
+    for (const v of message.votes) {
+      ActionVote.encode(v!, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -352,6 +381,15 @@ export const Action = {
         case 12:
           message.mentions.push(reader.string());
           break;
+        case 13:
+          message.approveExpression = Expression.decode(reader, reader.uint32());
+          break;
+        case 14:
+          message.rejectExpression = Expression.decode(reader, reader.uint32());
+          break;
+        case 15:
+          message.votes.push(ActionVote.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -371,7 +409,10 @@ export const Action = {
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
       rule: isSet(object.rule) ? Rule.fromJSON(object.rule) : undefined,
-      mentions: Array.isArray(object?.mentions) ? object.mentions.map((e: any) => String(e)) : []
+      mentions: Array.isArray(object?.mentions) ? object.mentions.map((e: any) => String(e)) : [],
+      approveExpression: isSet(object.approveExpression) ? Expression.fromJSON(object.approveExpression) : undefined,
+      rejectExpression: isSet(object.rejectExpression) ? Expression.fromJSON(object.rejectExpression) : undefined,
+      votes: Array.isArray(object?.votes) ? object.votes.map((e: any) => ActionVote.fromJSON(e)) : []
     };
   },
   toJSON(message: Action): JsonSafe<Action> {
@@ -395,6 +436,13 @@ export const Action = {
     } else {
       obj.mentions = [];
     }
+    message.approveExpression !== undefined && (obj.approveExpression = message.approveExpression ? Expression.toJSON(message.approveExpression) : undefined);
+    message.rejectExpression !== undefined && (obj.rejectExpression = message.rejectExpression ? Expression.toJSON(message.rejectExpression) : undefined);
+    if (message.votes) {
+      obj.votes = message.votes.map(e => e ? ActionVote.toJSON(e) : undefined);
+    } else {
+      obj.votes = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<Action>): Action {
@@ -410,6 +458,9 @@ export const Action = {
     message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Timestamp.fromPartial(object.updatedAt) : undefined;
     message.rule = object.rule !== undefined && object.rule !== null ? Rule.fromPartial(object.rule) : undefined;
     message.mentions = object.mentions?.map(e => e) || [];
+    message.approveExpression = object.approveExpression !== undefined && object.approveExpression !== null ? Expression.fromPartial(object.approveExpression) : undefined;
+    message.rejectExpression = object.rejectExpression !== undefined && object.rejectExpression !== null ? Expression.fromPartial(object.rejectExpression) : undefined;
+    message.votes = object.votes?.map(e => ActionVote.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: ActionAmino): Action {
@@ -443,6 +494,13 @@ export const Action = {
       message.rule = Rule.fromAmino(object.rule);
     }
     message.mentions = object.mentions?.map(e => e) || [];
+    if (object.approve_expression !== undefined && object.approve_expression !== null) {
+      message.approveExpression = Expression.fromAmino(object.approve_expression);
+    }
+    if (object.reject_expression !== undefined && object.reject_expression !== null) {
+      message.rejectExpression = Expression.fromAmino(object.reject_expression);
+    }
+    message.votes = object.votes?.map(e => ActionVote.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: Action): ActionAmino {
@@ -465,6 +523,13 @@ export const Action = {
       obj.mentions = message.mentions.map(e => e);
     } else {
       obj.mentions = message.mentions;
+    }
+    obj.approve_expression = message.approveExpression ? Expression.toAmino(message.approveExpression) : undefined;
+    obj.reject_expression = message.rejectExpression ? Expression.toAmino(message.rejectExpression) : undefined;
+    if (message.votes) {
+      obj.votes = message.votes.map(e => e ? ActionVote.toAmino(e) : undefined);
+    } else {
+      obj.votes = message.votes;
     }
     return obj;
   },

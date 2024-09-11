@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"strings"
 	"testing"
 	"time"
+
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
@@ -27,10 +28,12 @@ type WardenNode struct {
 	Stdout  *iowriter.IOWriter
 	Stderr  *iowriter.IOWriter
 
-	apiPort      int
-	grpcPort     int
-	cometPortRPC int
-	cometP2PRPC  int
+	apiPort       int
+	grpcPort      int
+	cometPortRPC  int
+	cometP2PRPC   int
+	jsonRPCPort   int
+	jsonRPCWSPort int
 }
 
 func NewWardenNode(t *testing.T, binPath string) *WardenNode {
@@ -54,24 +57,30 @@ func (w *WardenNode) run(ctx context.Context, args ...string) error {
 }
 
 func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
-	p := ports.ReservePorts(t, 4)
+	p := ports.ReservePorts(t, 6)
 
 	w.apiPort = p.Port(t, 0)
 	w.grpcPort = p.Port(t, 1)
 	w.cometPortRPC = p.Port(t, 2)
 	w.cometP2PRPC = p.Port(t, 3)
+	w.jsonRPCPort = p.Port(t, 4)
+	w.jsonRPCWSPort = p.Port(t, 5)
 
 	err := files.CloneDir(w.Home, snapshot, struct {
-		APIPort      int
-		GRPCPort     int
-		CometPortRPC int
-		CometP2PRPC  int
+		APIPort       int
+		GRPCPort      int
+		CometPortRPC  int
+		CometP2PRPC   int
+		JSONRPCPort   int
+		JSONRPCWSPort int
 	}{
 
-		APIPort:      w.apiPort,
-		GRPCPort:     w.grpcPort,
-		CometPortRPC: w.cometPortRPC,
-		CometP2PRPC:  w.cometP2PRPC,
+		APIPort:       w.apiPort,
+		GRPCPort:      w.grpcPort,
+		CometPortRPC:  w.cometPortRPC,
+		CometP2PRPC:   w.cometP2PRPC,
+		JSONRPCPort:   w.jsonRPCPort,
+		JSONRPCWSPort: w.jsonRPCWSPort,
 	})
 	require.NoError(t, err)
 

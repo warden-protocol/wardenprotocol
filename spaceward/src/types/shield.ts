@@ -1,21 +1,4 @@
-enum Type {
-	ILLEGAL = "ILLEGAL",
-	EOF = "EOF",
-	IDENT = "IDENT",
-	INT = "INT",
-	COMMA = "COMMA",
-	SEMICOLON = "SEMICOLON",
-	LPAREN = "LPAREN",
-	RPAREN = "RPAREN",
-	LBRACKET = "LBRACKET",
-	RBRACKET = "RBRACKET",
-	AND = "AND",
-	OR = "OR",
-	TRUE = "TRUE",
-	FALSE = "FALSE",
-	UNRECOGNIZED = "UNRECOGNIZED",
-	STRING = "STRING"
-}
+import type { Type } from "@wardenprotocol/wardenjs/codegen/shield/token/token";
 
 export interface Token {
 	type: Type;
@@ -39,7 +22,7 @@ export interface Identifier {
 
 export interface IntegerLiteral {
 	token: Token | undefined;
-	value: number;
+	value: string;
 }
 
 export interface BooleanLiteral {
@@ -59,13 +42,13 @@ export interface StringLiteral {
 
 export interface CallExpression {
 	token: Token | undefined;
-	function: Identifier | undefined;
+	function?: Identifier;
 	arguments: Expression[];
 }
 
 export interface InfixExpression {
 	token: Token | undefined;
-	left: Expression | undefined;
+	left?: Expression;
 	operator: string;
-	right: Expression | undefined;
+	right?: Expression;
 }

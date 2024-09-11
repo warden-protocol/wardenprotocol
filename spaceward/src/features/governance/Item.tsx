@@ -155,7 +155,7 @@ function GovernanceItemRow({
 
 					{bigintToFixed(result?.total ?? BigInt(0), {
 						compact: true,
-						decimals: 6,
+						decimals: 18,
 						display: 0,
 					})}
 				</div>
@@ -268,7 +268,7 @@ function GovernanceItemCard({
 					) : null}
 					{bigintToFixed(result?.total ?? BigInt(0), {
 						compact: true,
-						decimals: 6,
+						decimals: 18,
 						display: 0,
 					})}{" "}
 					votes

@@ -37,7 +37,7 @@ Before you start, complete the following prerequisites:
    In development genesis files, you'll typically find an account named `shulgin` that is preconfigured and ready for use. You can check the names of available keys by running `wardend keys list`.
    :::
 
-## 1. Create a EVM project
+## 1. Create an EVM project
 
 1. Create a new directory `/warden-smart-contract` for your project and navigate there:
 

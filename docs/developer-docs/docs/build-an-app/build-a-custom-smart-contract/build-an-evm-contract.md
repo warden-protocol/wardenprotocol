@@ -28,7 +28,7 @@ Before you start, complete the following prerequisites:
 
 - [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-  In step 3, you'll need your Warden private key. You can get it by executing this command:
+  In Step 3, you'll need your Warden private key. You can get it by executing this command:
 
   ```bash
   wardend keys list

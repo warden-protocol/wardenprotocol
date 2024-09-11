@@ -25,6 +25,7 @@
         {"source":"/ward/distribution","destination":"/tokens/ward-token/distribution", "statusCode": 301},
         {"source":"/ward/incentives","destination":"/tokens/ward-token/incentives", "statusCode": 301},
         {"source":"/ward/supply","destination":"/tokens/ward-token/supply", "statusCode": 301},
+        {"source":"/ward/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
         {"source":"/warp","destination":"/tokens/warp-token/warp", "statusCode": 301},
         {"source":"/warp/bridge-base","destination":"/tokens/warp-token/bridge-base", "statusCode": 301},
         {"source":"/developers","destination":"/build-an-app/introduction", "statusCode": 301},
@@ -57,6 +58,7 @@
         {"source":"/build-an-oapp/introduction","destination":"/build-an-app/introduction", "statusCode": 301},
         {"source":"/build-an-oapp/useful-links","destination":"/build-an-app/useful-links", "statusCode": 301},
         {"source":"/build-an-oapp/test/run-a-local-chain","destination":"/build-an-app/test/run-a-local-chain", "statusCode": 301},
-        {"source":"/build-an-oapp","destination":"/build-an-app/test/run-a-keychain-from-cli", "statusCode": 301}
+        {"source":"/build-an-oapp","destination":"/build-an-app/test/run-a-keychain-from-cli", "statusCode": 301},
+        {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301}
     ]
 }

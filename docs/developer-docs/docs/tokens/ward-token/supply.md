@@ -30,7 +30,7 @@ As above, the Warden Protocol adjusts the WARD **issuance rate** based on the ac
 
 - **Below target staking**: If the percentage of staked WARD is less than the target of 65%, the issuance rate will incrementally increase. This adjustment continues until it reaches the maximum rate of 10% or until the staking target is met.
 
-- **At target sStaking**: When the staking ratio aligns with the 65% target, the current issuance rate remains unchanged.
+- **At target staking**: When the staking ratio aligns with the 65% target, the current issuance rate remains unchanged.
 
 - **Above target staking**: If the percentage of staked WARD is greater than the target of 65%, the issuance rate will incrementally decrease. This adjustment continues until it reaches the minimum rate of 1% or until the staking target is met.
 

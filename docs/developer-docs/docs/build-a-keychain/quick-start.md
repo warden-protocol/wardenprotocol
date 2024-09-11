@@ -22,7 +22,7 @@ You need to install the following:
 You can:
 
 - [Run a local chain](/build-an-app/test/run-a-local-chain)
-- [Connect to our Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista)
+- [Connect to our Chiado testnet](/operate-a-node/chiado-testnet/join-chiado)
 
 For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain and its Writers and referenced as `<your-key>` in the following commands.
 
@@ -53,7 +53,7 @@ You need to register your Keychain entity on-chain.
     ```bash
     wardend tx warden new-keychain \
       --description 'My Keychain' \
-     --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"uward\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"uward\"}]}" \
+     --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}" \
       --from <your-key> \
       --chain-id warden
     ```
@@ -62,10 +62,12 @@ You need to register your Keychain entity on-chain.
 
     - `description` (optional): The Keychain description
     - `keychainFees`(optional):
-         - `key_req`: A fee in uWARD for creating a key pair
-         - `key_req`: A fee in uWARD for signing a transaction
+         - `key_req`: A fee in aWARD for creating a key pair
+         - `key_req`: A fee in aWARD for signing a transaction
     - `from`: Your local account
     - `chain-id`: The chain ID – `warden`
+
+    **Note**: aWARD equals 0.000000000000000001 WARD.
 
 3. A new Keychain object will be created on-chain with its dedicated [Keychain ID](/learn/glossary#keychain-id). Get the ID:
     
@@ -111,7 +113,7 @@ To add a Keychain Writer, take these steps:
     ```bash
     wardend tx bank send <your-key> \
       $(wardend keys show -a my-keychain-writer) \
-      1000000uward \
+      1000000000000000000award \
       --chain-id warden
     ```
 ## 2. Build a Go app
@@ -333,7 +335,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
     import (
         ...
         "github.com/ethereum/go-ethereum/crypto"
-    	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+        "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
     )
     
     func main() {
@@ -406,7 +408,6 @@ func main() {
     // ...
 }
 ```
-
 
 ## 4. Result
 

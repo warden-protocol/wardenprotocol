@@ -138,7 +138,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ## Key request fee
 
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collects fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collects fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD (0.000001 WARD).
 
 ---
 
@@ -219,7 +219,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Signature request fee
 
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collects fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD.
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collects fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD (0.000001 WARD).
 
 ---
 

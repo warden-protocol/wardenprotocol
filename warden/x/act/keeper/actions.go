@@ -266,11 +266,6 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, err
 	}
 
-	// TODO AT: Remove after full switch to Votes
-	if err := act.AddApprover(sdkCtx, creator); err != nil {
-		return nil, err
-	}
-
 	// persist action
 	if _, err := k.ActionKeeper.New(ctx, act); err != nil {
 		return nil, err

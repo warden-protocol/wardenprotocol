@@ -89,12 +89,12 @@ func (k Keeper) newSignRequestRule(ctx context.Context, msg *v1beta3.MsgNewSignR
 		return nil, acttypes.Rule{}, acttypes.Rule{}, err
 	}
 
-	approveRule, err := k.getApproveKeyRule(ctx, space, key)
+	approveRule, err := k.getApproveSignRule(ctx, space, key)
 	if err != nil {
 		return nil, acttypes.Rule{}, acttypes.Rule{}, err
 	}
 
-	rejectRule, err := k.getRejectKeyRule(ctx, space, key)
+	rejectRule, err := k.getRejectSignRule(ctx, space, key)
 	if err != nil {
 		return nil, acttypes.Rule{}, acttypes.Rule{}, err
 	}
@@ -155,7 +155,7 @@ func (k Keeper) updateSpaceRule(ctx context.Context, msg *v1beta3.MsgUpdateSpace
 	return approveRule, rejectRule, nil
 }
 
-func (k Keeper) getApproveKeyRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
+func (k Keeper) getApproveSignRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
 	if key.ApproveRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, key.ApproveRuleId)
 	} else if space.ApproveSignRuleId > 0 {
@@ -165,7 +165,7 @@ func (k Keeper) getApproveKeyRule(ctx context.Context, space v1beta3.Space, key 
 	}
 }
 
-func (k Keeper) getRejectKeyRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
+func (k Keeper) getRejectSignRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
 	if key.RejectRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, key.RejectRuleId)
 	} else if space.RejectSignRuleId > 0 {

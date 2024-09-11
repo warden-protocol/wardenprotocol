@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"log"
+	"reflect"
 	"runtime/debug"
 
 	"cosmossdk.io/errors"
@@ -103,7 +103,6 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 // result in the database.
 func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
 	ready, err := k.checkActionReady(ctx, *act)
-	log.Printf("\nready %v\n", ready)
 	if err != nil {
 		return err
 	}
@@ -215,11 +214,11 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)
 	}
 
-	if approveRule.Expression.String() != expectedApproveExpression.String() {
+	if !reflect.DeepEqual(approveRule.Expression, expectedApproveExpression) {
 		return nil, types.ErrApproveExpressionNotMatched
 	}
 
-	if rejectRule.Expression.String() != expectedRejectExpression.String() {
+	if !reflect.DeepEqual(rejectRule.Expression, expectedRejectExpression) {
 		return nil, types.ErrRejectExpressionNotMatched
 	}
 
@@ -239,20 +238,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, err
 	}
 
-	mentions := approveMentions
-
-	approveMentionsSet := make(map[string]struct{})
-
-	for _, approveMention := range approveMentions {
-		approveMentionsSet[approveMention] = struct{}{}
-	}
-
-	for _, rejectMention := range rejectMentions {
-		_, exists := approveMentionsSet[rejectMention]
-		if !exists {
-			mentions = append(mentions, rejectMention)
-		}
-	}
+	mentions := mergeMentions(approveMentions, rejectMentions)
 
 	// update the rule of this Action with the preprocessed expression
 	// todo: should be removed with removing Rule field in Action
@@ -313,4 +299,23 @@ func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	}
 
 	return nil
+}
+
+func mergeMentions(approveMentions []string, rejectMentions []string) []string {
+	mentions := approveMentions
+
+	approveMentionsSet := make(map[string]struct{})
+
+	for _, approveMention := range approveMentions {
+		approveMentionsSet[approveMention] = struct{}{}
+	}
+
+	for _, rejectMention := range rejectMentions {
+		_, exists := approveMentionsSet[rejectMention]
+		if !exists {
+			mentions = append(mentions, rejectMention)
+		}
+	}
+
+	return mentions
 }

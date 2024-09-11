@@ -224,7 +224,9 @@ func (k Keeper) getRejectNewKeyRequestRule(ctx context.Context, space v1beta3.Sp
 }
 
 func (k Keeper) getApproveUpdateKeyRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
-	if space.ApproveSignRuleId > 0 {
+	if key.ApproveRuleId > 0 {
+		return k.actKeeper.GetRule(ctx, key.ApproveRuleId)
+	} else if space.ApproveSignRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, space.ApproveSignRuleId)
 	} else {
 		return space.RuleApproveUpdateKey(), nil
@@ -232,7 +234,9 @@ func (k Keeper) getApproveUpdateKeyRule(ctx context.Context, space v1beta3.Space
 }
 
 func (k Keeper) getRejectUpdateKeyRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
-	if space.RejectSignRuleId > 0 {
+	if key.ApproveRuleId > 0 {
+		return k.actKeeper.GetRule(ctx, key.RejectRuleId)
+	} else if space.RejectSignRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, space.RejectSignRuleId)
 	} else {
 		return space.RuleRejectUpdateKey(), nil

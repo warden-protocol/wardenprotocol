@@ -1,6 +1,8 @@
 //@ts-nocheck
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { Expression, ExpressionAmino, ExpressionSDKType } from "../../../shield/ast/ast.js";
+import { ActionVoteType, actionVoteTypeFromJSON, actionVoteTypeToJSON } from "./action_vote.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -61,6 +63,10 @@ export interface MsgNewAction {
   message?: Any;
   /** action_timeout_height is the block height up until this action can be executed. */
   actionTimeoutHeight: bigint;
+  /** expected_approve_expression is the expected approval expression the action is created with */
+  expectedApproveExpression: Expression;
+  /** expected_reject_expression is the expected reject expression the action is created with */
+  expectedRejectExpression: Expression;
 }
 export interface MsgNewActionProtoMsg {
   typeUrl: "/warden.act.v1beta1.MsgNewAction";
@@ -73,6 +79,10 @@ export interface MsgNewActionAmino {
   message?: AnyAmino;
   /** action_timeout_height is the block height up until this action can be executed. */
   action_timeout_height?: string;
+  /** expected_approve_expression is the expected approval expression the action is created with */
+  expected_approve_expression?: ExpressionAmino;
+  /** expected_reject_expression is the expected reject expression the action is created with */
+  expected_reject_expression?: ExpressionAmino;
 }
 export interface MsgNewActionAminoMsg {
   type: "/warden.act.v1beta1.MsgNewAction";
@@ -82,6 +92,8 @@ export interface MsgNewActionSDKType {
   creator: string;
   message?: AnySDKType;
   action_timeout_height: bigint;
+  expected_approve_expression: ExpressionSDKType;
+  expected_reject_expression: ExpressionSDKType;
 }
 export interface MsgNewActionResponse {
   /** id is the unique id of the action. */
@@ -284,6 +296,46 @@ export interface MsgCheckActionResponseAminoMsg {
 export interface MsgCheckActionResponseSDKType {
   status: string;
 }
+export interface MsgVoteForAction {
+  participant: string;
+  actionId: bigint;
+  vote: ActionVoteType;
+}
+export interface MsgVoteForActionProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgVoteForAction";
+  value: Uint8Array;
+}
+export interface MsgVoteForActionAmino {
+  participant?: string;
+  action_id?: string;
+  vote?: ActionVoteType;
+}
+export interface MsgVoteForActionAminoMsg {
+  type: "/warden.act.v1beta1.MsgVoteForAction";
+  value: MsgVoteForActionAmino;
+}
+export interface MsgVoteForActionSDKType {
+  participant: string;
+  action_id: bigint;
+  vote: ActionVoteType;
+}
+export interface MsgVoteForActionResponse {
+  status: string;
+}
+export interface MsgVoteForActionResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgVoteForActionResponse";
+  value: Uint8Array;
+}
+export interface MsgVoteForActionResponseAmino {
+  status?: string;
+}
+export interface MsgVoteForActionResponseAminoMsg {
+  type: "/warden.act.v1beta1.MsgVoteForActionResponse";
+  value: MsgVoteForActionResponseAmino;
+}
+export interface MsgVoteForActionResponseSDKType {
+  status: string;
+}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -438,7 +490,9 @@ function createBaseMsgNewAction(): MsgNewAction {
   return {
     creator: "",
     message: undefined,
-    actionTimeoutHeight: BigInt(0)
+    actionTimeoutHeight: BigInt(0),
+    expectedApproveExpression: Expression.fromPartial({}),
+    expectedRejectExpression: Expression.fromPartial({})
   };
 }
 export const MsgNewAction = {
@@ -452,6 +506,12 @@ export const MsgNewAction = {
     }
     if (message.actionTimeoutHeight !== BigInt(0)) {
       writer.uint32(24).uint64(message.actionTimeoutHeight);
+    }
+    if (message.expectedApproveExpression !== undefined) {
+      Expression.encode(message.expectedApproveExpression, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.expectedRejectExpression !== undefined) {
+      Expression.encode(message.expectedRejectExpression, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -471,6 +531,12 @@ export const MsgNewAction = {
         case 3:
           message.actionTimeoutHeight = reader.uint64();
           break;
+        case 4:
+          message.expectedApproveExpression = Expression.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.expectedRejectExpression = Expression.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -482,7 +548,9 @@ export const MsgNewAction = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       message: isSet(object.message) ? Any.fromJSON(object.message) : undefined,
-      actionTimeoutHeight: isSet(object.actionTimeoutHeight) ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0)
+      actionTimeoutHeight: isSet(object.actionTimeoutHeight) ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0),
+      expectedApproveExpression: isSet(object.expectedApproveExpression) ? Expression.fromJSON(object.expectedApproveExpression) : undefined,
+      expectedRejectExpression: isSet(object.expectedRejectExpression) ? Expression.fromJSON(object.expectedRejectExpression) : undefined
     };
   },
   toJSON(message: MsgNewAction): JsonSafe<MsgNewAction> {
@@ -490,6 +558,8 @@ export const MsgNewAction = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.message !== undefined && (obj.message = message.message ? Any.toJSON(message.message) : undefined);
     message.actionTimeoutHeight !== undefined && (obj.actionTimeoutHeight = (message.actionTimeoutHeight || BigInt(0)).toString());
+    message.expectedApproveExpression !== undefined && (obj.expectedApproveExpression = message.expectedApproveExpression ? Expression.toJSON(message.expectedApproveExpression) : undefined);
+    message.expectedRejectExpression !== undefined && (obj.expectedRejectExpression = message.expectedRejectExpression ? Expression.toJSON(message.expectedRejectExpression) : undefined);
     return obj;
   },
   fromPartial(object: Partial<MsgNewAction>): MsgNewAction {
@@ -497,6 +567,8 @@ export const MsgNewAction = {
     message.creator = object.creator ?? "";
     message.message = object.message !== undefined && object.message !== null ? Any.fromPartial(object.message) : undefined;
     message.actionTimeoutHeight = object.actionTimeoutHeight !== undefined && object.actionTimeoutHeight !== null ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0);
+    message.expectedApproveExpression = object.expectedApproveExpression !== undefined && object.expectedApproveExpression !== null ? Expression.fromPartial(object.expectedApproveExpression) : undefined;
+    message.expectedRejectExpression = object.expectedRejectExpression !== undefined && object.expectedRejectExpression !== null ? Expression.fromPartial(object.expectedRejectExpression) : undefined;
     return message;
   },
   fromAmino(object: MsgNewActionAmino): MsgNewAction {
@@ -510,6 +582,12 @@ export const MsgNewAction = {
     if (object.action_timeout_height !== undefined && object.action_timeout_height !== null) {
       message.actionTimeoutHeight = BigInt(object.action_timeout_height);
     }
+    if (object.expected_approve_expression !== undefined && object.expected_approve_expression !== null) {
+      message.expectedApproveExpression = Expression.fromAmino(object.expected_approve_expression);
+    }
+    if (object.expected_reject_expression !== undefined && object.expected_reject_expression !== null) {
+      message.expectedRejectExpression = Expression.fromAmino(object.expected_reject_expression);
+    }
     return message;
   },
   toAmino(message: MsgNewAction): MsgNewActionAmino {
@@ -517,6 +595,8 @@ export const MsgNewAction = {
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.message = message.message ? Any.toAmino(message.message) : undefined;
     obj.action_timeout_height = message.actionTimeoutHeight !== BigInt(0) ? message.actionTimeoutHeight.toString() : undefined;
+    obj.expected_approve_expression = message.expectedApproveExpression ? Expression.toAmino(message.expectedApproveExpression) : undefined;
+    obj.expected_reject_expression = message.expectedRejectExpression ? Expression.toAmino(message.expectedRejectExpression) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewActionAminoMsg): MsgNewAction {
@@ -1415,6 +1495,180 @@ export const MsgCheckActionResponse = {
     return {
       typeUrl: "/warden.act.v1beta1.MsgCheckActionResponse",
       value: MsgCheckActionResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgVoteForAction(): MsgVoteForAction {
+  return {
+    participant: "",
+    actionId: BigInt(0),
+    vote: 0
+  };
+}
+export const MsgVoteForAction = {
+  typeUrl: "/warden.act.v1beta1.MsgVoteForAction",
+  encode(message: MsgVoteForAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.participant !== "") {
+      writer.uint32(10).string(message.participant);
+    }
+    if (message.actionId !== BigInt(0)) {
+      writer.uint32(16).uint64(message.actionId);
+    }
+    if (message.vote !== 0) {
+      writer.uint32(24).int32(message.vote);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgVoteForAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgVoteForAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.participant = reader.string();
+          break;
+        case 2:
+          message.actionId = reader.uint64();
+          break;
+        case 3:
+          message.vote = (reader.int32() as any);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgVoteForAction {
+    return {
+      participant: isSet(object.participant) ? String(object.participant) : "",
+      actionId: isSet(object.actionId) ? BigInt(object.actionId.toString()) : BigInt(0),
+      vote: isSet(object.vote) ? actionVoteTypeFromJSON(object.vote) : -1
+    };
+  },
+  toJSON(message: MsgVoteForAction): JsonSafe<MsgVoteForAction> {
+    const obj: any = {};
+    message.participant !== undefined && (obj.participant = message.participant);
+    message.actionId !== undefined && (obj.actionId = (message.actionId || BigInt(0)).toString());
+    message.vote !== undefined && (obj.vote = actionVoteTypeToJSON(message.vote));
+    return obj;
+  },
+  fromPartial(object: Partial<MsgVoteForAction>): MsgVoteForAction {
+    const message = createBaseMsgVoteForAction();
+    message.participant = object.participant ?? "";
+    message.actionId = object.actionId !== undefined && object.actionId !== null ? BigInt(object.actionId.toString()) : BigInt(0);
+    message.vote = object.vote ?? 0;
+    return message;
+  },
+  fromAmino(object: MsgVoteForActionAmino): MsgVoteForAction {
+    const message = createBaseMsgVoteForAction();
+    if (object.participant !== undefined && object.participant !== null) {
+      message.participant = object.participant;
+    }
+    if (object.action_id !== undefined && object.action_id !== null) {
+      message.actionId = BigInt(object.action_id);
+    }
+    if (object.vote !== undefined && object.vote !== null) {
+      message.vote = object.vote;
+    }
+    return message;
+  },
+  toAmino(message: MsgVoteForAction): MsgVoteForActionAmino {
+    const obj: any = {};
+    obj.participant = message.participant === "" ? undefined : message.participant;
+    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
+    obj.vote = message.vote === 0 ? undefined : message.vote;
+    return obj;
+  },
+  fromAminoMsg(object: MsgVoteForActionAminoMsg): MsgVoteForAction {
+    return MsgVoteForAction.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgVoteForActionProtoMsg): MsgVoteForAction {
+    return MsgVoteForAction.decode(message.value);
+  },
+  toProto(message: MsgVoteForAction): Uint8Array {
+    return MsgVoteForAction.encode(message).finish();
+  },
+  toProtoMsg(message: MsgVoteForAction): MsgVoteForActionProtoMsg {
+    return {
+      typeUrl: "/warden.act.v1beta1.MsgVoteForAction",
+      value: MsgVoteForAction.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgVoteForActionResponse(): MsgVoteForActionResponse {
+  return {
+    status: ""
+  };
+}
+export const MsgVoteForActionResponse = {
+  typeUrl: "/warden.act.v1beta1.MsgVoteForActionResponse",
+  encode(message: MsgVoteForActionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.status !== "") {
+      writer.uint32(10).string(message.status);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgVoteForActionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgVoteForActionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.status = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgVoteForActionResponse {
+    return {
+      status: isSet(object.status) ? String(object.status) : ""
+    };
+  },
+  toJSON(message: MsgVoteForActionResponse): JsonSafe<MsgVoteForActionResponse> {
+    const obj: any = {};
+    message.status !== undefined && (obj.status = message.status);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgVoteForActionResponse>): MsgVoteForActionResponse {
+    const message = createBaseMsgVoteForActionResponse();
+    message.status = object.status ?? "";
+    return message;
+  },
+  fromAmino(object: MsgVoteForActionResponseAmino): MsgVoteForActionResponse {
+    const message = createBaseMsgVoteForActionResponse();
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    return message;
+  },
+  toAmino(message: MsgVoteForActionResponse): MsgVoteForActionResponseAmino {
+    const obj: any = {};
+    obj.status = message.status === "" ? undefined : message.status;
+    return obj;
+  },
+  fromAminoMsg(object: MsgVoteForActionResponseAminoMsg): MsgVoteForActionResponse {
+    return MsgVoteForActionResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgVoteForActionResponseProtoMsg): MsgVoteForActionResponse {
+    return MsgVoteForActionResponse.decode(message.value);
+  },
+  toProto(message: MsgVoteForActionResponse): Uint8Array {
+    return MsgVoteForActionResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgVoteForActionResponse): MsgVoteForActionResponseProtoMsg {
+    return {
+      typeUrl: "/warden.act.v1beta1.MsgVoteForActionResponse",
+      value: MsgVoteForActionResponse.encode(message).finish()
     };
   }
 };

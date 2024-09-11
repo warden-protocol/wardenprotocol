@@ -28,18 +28,22 @@ Before you start, complete the following prerequisites:
 
 - [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-  In Step 3, you'll need your Warden private key. You can get it by executing this command:
+  In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
 
   ```bash
-  wardend keys list
+  wardend keys export my-key-name --unarmored-hex --unsafe
   ```
+   :::tip
+   In development genesis files, you'll typically find an account named `shulgin` that is preconfigured and ready for use. You can check the names of available keys by running `wardend keys list`.
+   :::
 
 ## 1. Create a EVM project
 
-1. Create a new directory for your project:
+1. Create a new directory `/warden-smart-contract` for your project and navigate there:
 
     ```bash
-    mkdir warden-smart-contract && cd warden-smart-contract
+    mkdir warden-smart-contract
+    cd warden-smart-contract
     ```
 
 2. Initialize a new Truffle project:
@@ -50,7 +54,7 @@ Before you start, complete the following prerequisites:
 
 ## 2. Create a smart contract
 
-Create a new file `contracts/HelloWarden.sol`:
+In the `/warden-smart-contract/contracts` directory, create a new file `HelloWarden.sol` with the following content:
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -81,38 +85,40 @@ contract HelloWarden {
     npm install @truffle/hdwallet-provider
     ```
 
-2. Update `truffle-config.js` with the code below. Replace `your_private_key` with your actual private key (see [Prerequisites](#prerequisites)).
+2. In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
 
-    ```javascript
-    const HDWalletProvider = require('@truffle/hdwallet-provider');
+   Replace `your_private_key` with your actual private key (see [Prerequisites](#prerequisites)).
 
-    // Your private key (keep this secret and never commit it to version control!)
-    const PRIVATE_KEY = 'your_private_key';
+   ```javascript
+   const HDWalletProvider = require('@truffle/hdwallet-provider');
 
-    module.exports = {
-    networks: {
-        warden: {
-        provider: function() {
-            return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
-        },
-        network_id: 1337, // Match any network id
-        host: "127.0.0.1",
-        port: 8545,
-        gas: 5500000,
-        gasPrice: 20000000000,  // 20 gwei
-        },
-    },
-    compilers: {
-        solc: {
-        version: "0.8.0",
-        }
-    }
-    };
-    ```
+   // Your private key (keep this secret and never commit it to version control!)
+   const PRIVATE_KEY = 'your_private_key';
+
+   module.exports = {
+   networks: {
+       warden: {
+       provider: function() {
+           return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
+       },
+       network_id: 1337, // Match any network id
+       host: "127.0.0.1",
+       port: 8545,
+       gas: 5500000,
+       gasPrice: 20000000000,  // 20 gwei
+       },
+   },
+   compilers: {
+       solc: {
+       version: "0.8.0",
+       }
+   }
+   };
+   ```
 
 ## 4. Create a migration script
 
-Create a new file `migrations/2_deploy_hello_warden.js` with the following content:
+In `/warden-smart-contract/migrations`, create a new file `2_deploy_hello_warden.js` with the following content:
 
 ```javascript
 const HelloWarden = artifacts.require("HelloWarden");

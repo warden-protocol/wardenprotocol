@@ -140,7 +140,7 @@ func migrateKeyRequest(kr v1beta2.KeyRequest) v1beta3.KeyRequest {
 		KeyType:      v1beta3.KeyType(kr.KeyType),
 		Status:       v1beta3.KeyRequestStatus(kr.Status),
 		RejectReason: kr.RejectReason,
-		RuleId:       kr.IntentId,
+		TemplateId:   kr.IntentId,
 	}
 }
 
@@ -165,11 +165,11 @@ func migrateKeychain(kc v1beta2.Keychain) v1beta3.Keychain {
 
 func migrateSpace(spc v1beta2.Space) v1beta3.Space {
 	return v1beta3.Space{
-		Id:          spc.Id,
-		Creator:     spc.Creator,
-		Owners:      spc.Owners,
-		AdminRuleId: spc.AdminIntentId,
-		SignRuleId:  spc.SignIntentId,
+		Id:              spc.Id,
+		Creator:         spc.Creator,
+		Owners:          spc.Owners,
+		AdminTemplateId: spc.AdminIntentId,
+		SignTemplateId:  spc.SignIntentId,
 	}
 }
 
@@ -217,7 +217,7 @@ func migrateKey(key v1beta2.Key) v1beta3.Key {
 		KeychainId: key.KeychainId,
 		Type:       v1beta3.KeyType(key.Type),
 		PublicKey:  key.PublicKey,
-		RuleId:     key.IntentId,
+		TemplateId: key.IntentId,
 	}
 }
 

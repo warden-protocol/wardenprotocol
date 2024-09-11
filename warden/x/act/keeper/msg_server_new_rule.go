@@ -9,37 +9,37 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-func (k msgServer) NewRule(goCtx context.Context, msg *types.MsgNewRule) (*types.MsgNewRuleResponse, error) {
+func (k msgServer) NewTemplate(goCtx context.Context, msg *types.MsgNewTemplate) (*types.MsgNewTemplateResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	expr, err := shield.Parse(msg.Definition)
 	if err != nil {
-		return nil, errors.Wrapf(types.ErrInvalidRuleDefinition, "%v", err)
+		return nil, errors.Wrapf(types.ErrInvalidExpressionDefinition, "%v", err)
 	}
 
-	rule := types.Rule{
+	template := types.Template{
 		Creator:    msg.Creator,
 		Name:       msg.Name,
 		Expression: expr,
 	}
 
-	if err := rule.Validate(); err != nil {
+	if err := template.Validate(); err != nil {
 		return nil, err
 	}
 
-	id, err := k.rules.Append(ctx, &rule)
+	id, err := k.templates.Append(ctx, &template)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = ctx.EventManager().EmitTypedEvent(&types.EventCreateRule{
+	if err = ctx.EventManager().EmitTypedEvent(&types.EventCreateTemplate{
 		Id:      id,
 		Creator: msg.Creator,
 	}); err != nil {
 		return nil, err
 	}
 
-	return &types.MsgNewRuleResponse{
+	return &types.MsgNewTemplateResponse{
 		Id: id,
 	}, nil
 }

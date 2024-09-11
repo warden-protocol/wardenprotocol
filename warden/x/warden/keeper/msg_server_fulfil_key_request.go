@@ -45,7 +45,7 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 			KeyType:    key.Type,
 			SpaceId:    key.SpaceId,
 			KeychainId: key.KeychainId,
-			RuleId:     key.RuleId,
+			TemplateId: key.TemplateId,
 		}); err != nil {
 			return nil, err
 		}

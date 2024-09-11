@@ -8,7 +8,7 @@ import "google/protobuf/any.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "warden/act/v1beta1/params.proto";
 import "warden/act/v1beta1/action.proto";
-import "warden/act/v1beta1/rule.proto";
+import "warden/act/v1beta1/template.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -24,19 +24,19 @@ service Query {
     option (google.api.http).get = "/wardenprotocol/warden/act/actions";
   }
 
-  // Queries a list of Rules items.
-  rpc Rules(QueryRulesRequest) returns (QueryRulesResponse) {
-    option (google.api.http).get = "/wardenprotocol/warden/act/rules";
+  // Queries a list of Templates items.
+  rpc Templates(QueryTemplatesRequest) returns (QueryTemplatesResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/templates";
   }
 
-  // Queries to simulate a Rule
-  rpc SimulateRule(QuerySimulateRuleRequest) returns (QuerySimulateRuleResponse) {
+  // Queries to simulate a Template
+  rpc SimulateTemplate(QuerySimulateTemplateRequest) returns (QuerySimulateTemplateResponse) {
     option (google.api.http).get = "/wardenprotocol/warden/act/simulate";
   }
 
-  // Queries a list of RuleById items.
-  rpc RuleById(QueryRuleByIdRequest) returns (QueryRuleByIdResponse) {
-    option (google.api.http).get = "/wardenprotocol/warden/act/rule_by_id";
+  // Queries a list of TemplateById items.
+  rpc TemplateById(QueryTemplateByIdRequest) returns (QueryTemplateByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/template_by_id";
   }
 
   // Queries a list of Actions items by one participant address.
@@ -70,27 +70,27 @@ message QueryActionsResponse {
   repeated Action actions = 2 [ (gogoproto.nullable) = false ];
 }
 
-message QueryRulesRequest {
+message QueryTemplatesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryRulesResponse {
+message QueryTemplatesResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Rule rules = 2 [ (gogoproto.nullable) = false ];
+  repeated Template templates = 2 [ (gogoproto.nullable) = false ];
 }
 
-message QuerySimulateRuleRequest {
+message QuerySimulateTemplateRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string definition = 2;
 }
 
-message QuerySimulateRuleResponse {
+message QuerySimulateTemplateResponse {
   string evaluation = 1;
 }
 
-message QueryRuleByIdRequest { uint64 id = 1; }
+message QueryTemplateByIdRequest { uint64 id = 1; }
 
-message QueryRuleByIdResponse { Rule rule = 1; }
+message QueryTemplateByIdResponse { Template template = 1; }
 
 message QueryActionsByAddressRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;

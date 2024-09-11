@@ -32,10 +32,10 @@ type EventCreateSpace struct {
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	// owners_count is the count of the space owners
 	OwnersCount uint64 `protobuf:"varint,3,opt,name=owners_count,json=ownersCount,proto3" json:"owners_count,omitempty"`
-	// id of the rule to be applied to every admin operation
-	AdminRuleId uint64 `protobuf:"varint,4,opt,name=admin_rule_id,json=adminRuleId,proto3" json:"admin_rule_id,omitempty"`
-	// id of the rule to be applied to every sign operation
-	SignRuleId uint64 `protobuf:"varint,5,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
+	// id of the template to be applied to every admin operation
+	AdminTemplateId uint64 `protobuf:"varint,4,opt,name=admin_template_id,json=adminTemplateId,proto3" json:"admin_template_id,omitempty"`
+	// id of the template to be applied to every sign operation
+	SignTemplateId uint64 `protobuf:"varint,5,opt,name=sign_template_id,json=signTemplateId,proto3" json:"sign_template_id,omitempty"`
 }
 
 func (m *EventCreateSpace) Reset()         { *m = EventCreateSpace{} }
@@ -92,16 +92,16 @@ func (m *EventCreateSpace) GetOwnersCount() uint64 {
 	return 0
 }
 
-func (m *EventCreateSpace) GetAdminRuleId() uint64 {
+func (m *EventCreateSpace) GetAdminTemplateId() uint64 {
 	if m != nil {
-		return m.AdminRuleId
+		return m.AdminTemplateId
 	}
 	return 0
 }
 
-func (m *EventCreateSpace) GetSignRuleId() uint64 {
+func (m *EventCreateSpace) GetSignTemplateId() uint64 {
 	if m != nil {
-		return m.SignRuleId
+		return m.SignTemplateId
 	}
 	return 0
 }
@@ -110,18 +110,18 @@ func (m *EventCreateSpace) GetSignRuleId() uint64 {
 type EventUpdateSpace struct {
 	// id of the space being updated
 	SpaceId uint64 `protobuf:"varint,1,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	// id of the rule to be applied to every admin operation
-	AdminRuleId uint64 `protobuf:"varint,2,opt,name=admin_rule_id,json=adminRuleId,proto3" json:"admin_rule_id,omitempty"`
-	// id of the rule to be applied to every sign operation
-	SignRuleId uint64 `protobuf:"varint,3,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
-	// id of the rule to be applied to every approve admin operation
-	ApproveAdminRuleId uint64 `protobuf:"varint,4,opt,name=approve_admin_rule_id,json=approveAdminRuleId,proto3" json:"approve_admin_rule_id,omitempty"`
-	// id of the rule to be applied to every reject admin operation
-	RejectAdminRuleId uint64 `protobuf:"varint,5,opt,name=reject_admin_rule_id,json=rejectAdminRuleId,proto3" json:"reject_admin_rule_id,omitempty"`
-	// id of the rule to be applied to every approve sign operation
-	ApproveSignRuleId uint64 `protobuf:"varint,6,opt,name=approve_sign_rule_id,json=approveSignRuleId,proto3" json:"approve_sign_rule_id,omitempty"`
-	// id of the rule to be applied to every reject sign operation
-	RejectSignRuleId uint64 `protobuf:"varint,7,opt,name=reject_sign_rule_id,json=rejectSignRuleId,proto3" json:"reject_sign_rule_id,omitempty"`
+	// id of the template to be applied to every admin operation
+	AdminTemplateId uint64 `protobuf:"varint,2,opt,name=admin_template_id,json=adminTemplateId,proto3" json:"admin_template_id,omitempty"`
+	// id of the template to be applied to every sign operation
+	SignTemplateId uint64 `protobuf:"varint,3,opt,name=sign_template_id,json=signTemplateId,proto3" json:"sign_template_id,omitempty"`
+	// id of the template to be applied to every approve admin operation
+	ApproveAdminTemplateId uint64 `protobuf:"varint,4,opt,name=approve_admin_template_id,json=approveAdminTemplateId,proto3" json:"approve_admin_template_id,omitempty"`
+	// id of the template to be applied to every reject admin operation
+	RejectAdminTemplateId uint64 `protobuf:"varint,5,opt,name=reject_admin_template_id,json=rejectAdminTemplateId,proto3" json:"reject_admin_template_id,omitempty"`
+	// id of the template to be applied to every approve sign operation
+	ApproveSignTemplateId uint64 `protobuf:"varint,6,opt,name=approve_sign_template_id,json=approveSignTemplateId,proto3" json:"approve_sign_template_id,omitempty"`
+	// id of the template to be applied to every reject sign operation
+	RejectSignTemplateId uint64 `protobuf:"varint,7,opt,name=reject_sign_template_id,json=rejectSignTemplateId,proto3" json:"reject_sign_template_id,omitempty"`
 }
 
 func (m *EventUpdateSpace) Reset()         { *m = EventUpdateSpace{} }
@@ -164,44 +164,44 @@ func (m *EventUpdateSpace) GetSpaceId() uint64 {
 	return 0
 }
 
-func (m *EventUpdateSpace) GetAdminRuleId() uint64 {
+func (m *EventUpdateSpace) GetAdminTemplateId() uint64 {
 	if m != nil {
-		return m.AdminRuleId
+		return m.AdminTemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateSpace) GetSignRuleId() uint64 {
+func (m *EventUpdateSpace) GetSignTemplateId() uint64 {
 	if m != nil {
-		return m.SignRuleId
+		return m.SignTemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateSpace) GetApproveAdminRuleId() uint64 {
+func (m *EventUpdateSpace) GetApproveAdminTemplateId() uint64 {
 	if m != nil {
-		return m.ApproveAdminRuleId
+		return m.ApproveAdminTemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateSpace) GetRejectAdminRuleId() uint64 {
+func (m *EventUpdateSpace) GetRejectAdminTemplateId() uint64 {
 	if m != nil {
-		return m.RejectAdminRuleId
+		return m.RejectAdminTemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateSpace) GetApproveSignRuleId() uint64 {
+func (m *EventUpdateSpace) GetApproveSignTemplateId() uint64 {
 	if m != nil {
-		return m.ApproveSignRuleId
+		return m.ApproveSignTemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateSpace) GetRejectSignRuleId() uint64 {
+func (m *EventUpdateSpace) GetRejectSignTemplateId() uint64 {
 	if m != nil {
-		return m.RejectSignRuleId
+		return m.RejectSignTemplateId
 	}
 	return 0
 }
@@ -342,8 +342,8 @@ type EventNewKeyRequest struct {
 	SpaceId uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
 	// keychain_id associated with the key request
 	KeychainId uint64 `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	// id of the rule to be applied to every sign operation for this key
-	RuleId uint64 `protobuf:"varint,4,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	// id of the template to be applied to every sign operation for this key
+	TemplateId uint64 `protobuf:"varint,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
 	// the crypto scheme requested for this key
 	KeyType KeyType `protobuf:"varint,5,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta3.KeyType" json:"key_type,omitempty"`
 	// address of the account that requested the key
@@ -404,9 +404,9 @@ func (m *EventNewKeyRequest) GetKeychainId() uint64 {
 	return 0
 }
 
-func (m *EventNewKeyRequest) GetRuleId() uint64 {
+func (m *EventNewKeyRequest) GetTemplateId() uint64 {
 	if m != nil {
-		return m.RuleId
+		return m.TemplateId
 	}
 	return 0
 }
@@ -435,8 +435,8 @@ type EventNewKey struct {
 	SpaceId uint64 `protobuf:"varint,3,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
 	// keychain_id associated with the key request
 	KeychainId uint64 `protobuf:"varint,4,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	// id of the rule to be applied to every sign operation for this key
-	RuleId uint64 `protobuf:"varint,5,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	// id of the template to be applied to every sign operation for this key
+	TemplateId uint64 `protobuf:"varint,5,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
 }
 
 func (m *EventNewKey) Reset()         { *m = EventNewKey{} }
@@ -500,9 +500,9 @@ func (m *EventNewKey) GetKeychainId() uint64 {
 	return 0
 }
 
-func (m *EventNewKey) GetRuleId() uint64 {
+func (m *EventNewKey) GetTemplateId() uint64 {
 	if m != nil {
-		return m.RuleId
+		return m.TemplateId
 	}
 	return 0
 }
@@ -557,12 +557,12 @@ func (m *EventRejectKeyRequest) GetId() uint64 {
 type EventUpdateKey struct {
 	// id of the key
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	// id of the rule to be applied to every sign operation
-	RuleId uint64 `protobuf:"varint,2,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
-	// id of the rule to be applied to every approve sign operation
-	ApproveRuleId uint64 `protobuf:"varint,3,opt,name=approve_rule_id,json=approveRuleId,proto3" json:"approve_rule_id,omitempty"`
-	// id of the rule to be applied to every reject sign operation
-	RejectRuleId uint64 `protobuf:"varint,4,opt,name=reject_rule_id,json=rejectRuleId,proto3" json:"reject_rule_id,omitempty"`
+	// id of the template to be applied to every sign operation
+	TemplateId uint64 `protobuf:"varint,2,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	// id of the template to be applied to every approve sign operation
+	ApproveTemplateId uint64 `protobuf:"varint,3,opt,name=approve_template_id,json=approveTemplateId,proto3" json:"approve_template_id,omitempty"`
+	// id of the template to be applied to every reject sign operation
+	RejectTemplateId uint64 `protobuf:"varint,4,opt,name=reject_template_id,json=rejectTemplateId,proto3" json:"reject_template_id,omitempty"`
 }
 
 func (m *EventUpdateKey) Reset()         { *m = EventUpdateKey{} }
@@ -605,23 +605,23 @@ func (m *EventUpdateKey) GetId() uint64 {
 	return 0
 }
 
-func (m *EventUpdateKey) GetRuleId() uint64 {
+func (m *EventUpdateKey) GetTemplateId() uint64 {
 	if m != nil {
-		return m.RuleId
+		return m.TemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateKey) GetApproveRuleId() uint64 {
+func (m *EventUpdateKey) GetApproveTemplateId() uint64 {
 	if m != nil {
-		return m.ApproveRuleId
+		return m.ApproveTemplateId
 	}
 	return 0
 }
 
-func (m *EventUpdateKey) GetRejectRuleId() uint64 {
+func (m *EventUpdateKey) GetRejectTemplateId() uint64 {
 	if m != nil {
-		return m.RejectRuleId
+		return m.RejectTemplateId
 	}
 	return 0
 }
@@ -1117,59 +1117,59 @@ func init() {
 }
 
 var fileDescriptor_322e8707aae1015e = []byte{
-	// 820 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xcb, 0x6e, 0xd3, 0x40,
-	0x14, 0x8d, 0x9d, 0x57, 0x7b, 0xf3, 0xa0, 0xb8, 0x0d, 0xa4, 0x45, 0xa4, 0xad, 0x5b, 0x41, 0x37,
-	0x4d, 0xd4, 0x56, 0x2c, 0x58, 0xa6, 0x15, 0x45, 0x51, 0xa5, 0x22, 0xb9, 0x3c, 0x24, 0x36, 0x96,
-	0xeb, 0xb9, 0x4d, 0x4d, 0x12, 0x3b, 0xd8, 0x4e, 0x43, 0x90, 0x58, 0xb0, 0x62, 0xc3, 0x82, 0x9f,
-	0x60, 0xc9, 0x0e, 0x89, 0x5f, 0xe8, 0x0a, 0x55, 0xac, 0x58, 0x21, 0xd4, 0xfe, 0x08, 0xf2, 0xcc,
-	0xd8, 0xb1, 0xf3, 0x6a, 0x2a, 0x56, 0x99, 0xb9, 0xf7, 0xcc, 0x9c, 0x33, 0xf7, 0x15, 0x83, 0xdc,
-	0xd5, 0x6c, 0x82, 0x66, 0x85, 0xff, 0x9c, 0x6d, 0x1d, 0xa3, 0xab, 0xed, 0x54, 0xf0, 0x0c, 0x4d,
-	0xd7, 0x29, 0xb7, 0x6d, 0xcb, 0xb5, 0xa4, 0x02, 0x73, 0x96, 0xf9, 0x0f, 0xc7, 0x2c, 0x2d, 0xea,
-	0x96, 0xd3, 0xb2, 0x1c, 0x95, 0x82, 0x2a, 0x6c, 0xc3, 0x4e, 0x2c, 0x2d, 0xd4, 0xad, 0xba, 0xc5,
-	0xec, 0xde, 0x8a, 0x5b, 0x97, 0x47, 0x73, 0x35, 0xb0, 0xc7, 0x01, 0xeb, 0x63, 0x01, 0xfa, 0xa9,
-	0x66, 0x98, 0x0c, 0x25, 0x7f, 0x15, 0x60, 0xee, 0x89, 0xa7, 0x6f, 0xcf, 0x46, 0xcd, 0xc5, 0xa3,
-	0xb6, 0xa6, 0xa3, 0x94, 0x07, 0xd1, 0x20, 0x45, 0x61, 0x45, 0xd8, 0x48, 0x28, 0xa2, 0x41, 0xa4,
-	0x22, 0xa4, 0x75, 0xcf, 0x6d, 0xd9, 0x45, 0x71, 0x45, 0xd8, 0x98, 0x55, 0xfc, 0xad, 0xb4, 0x0a,
-	0x59, 0xab, 0x6b, 0xa2, 0xed, 0xa8, 0xba, 0xd5, 0x31, 0xdd, 0x62, 0x9c, 0x9e, 0xc9, 0x30, 0xdb,
-	0x9e, 0x67, 0x92, 0x64, 0xc8, 0x69, 0xa4, 0x65, 0x98, 0xaa, 0xdd, 0x69, 0xa2, 0x6a, 0x90, 0x62,
-	0x82, 0x61, 0xa8, 0x51, 0xe9, 0x34, 0xb1, 0x46, 0xa4, 0x15, 0xc8, 0x3a, 0x46, 0xbd, 0x0f, 0x49,
-	0x52, 0x08, 0x78, 0x36, 0x86, 0x90, 0x7f, 0x88, 0x5c, 0xe7, 0x8b, 0x36, 0x09, 0x74, 0x2e, 0xc2,
-	0x8c, 0xe3, 0x2d, 0xd4, 0x40, 0x6d, 0x9a, 0xee, 0x6b, 0x64, 0x98, 0x55, 0xbc, 0x9e, 0x35, 0x3e,
-	0xc8, 0x2a, 0x6d, 0x41, 0x41, 0x6b, 0xb7, 0x6d, 0xeb, 0x0c, 0xd5, 0x51, 0x6f, 0x90, 0xb8, 0xb3,
-	0x1a, 0xba, 0xb4, 0x02, 0x0b, 0x36, 0xbe, 0x41, 0xdd, 0x1d, 0x38, 0xc1, 0x9e, 0x74, 0x9b, 0xf9,
-	0x06, 0x0e, 0xf8, 0x1c, 0x11, 0x35, 0x29, 0x76, 0x80, 0xfb, 0x8e, 0xfa, 0xa2, 0x36, 0x61, 0x9e,
-	0x33, 0x44, 0xf0, 0x69, 0x8a, 0x9f, 0x63, 0xae, 0x3e, 0x5c, 0xb6, 0x40, 0xa2, 0x81, 0xab, 0x12,
-	0x42, 0xa3, 0xf6, 0xcc, 0xcb, 0xcd, 0xa4, 0xd0, 0xdd, 0x83, 0x59, 0x13, 0xbb, 0x2a, 0xcd, 0x21,
-	0xcf, 0xf7, 0x8c, 0x89, 0x5d, 0x76, 0xee, 0xfa, 0x84, 0xcb, 0xef, 0xa1, 0x40, 0x09, 0x15, 0x6c,
-	0x79, 0xc2, 0xa7, 0xe2, 0x5c, 0x83, 0x9c, 0x4d, 0xe1, 0x24, 0xc2, 0x9b, 0xe5, 0xc6, 0xa9, 0xb9,
-	0x7f, 0x0a, 0xfc, 0xb5, 0x87, 0xd8, 0x3d, 0xc0, 0x9e, 0x82, 0x6f, 0x3b, 0xe8, 0xb8, 0x43, 0x05,
-	0x1d, 0x56, 0x22, 0x46, 0x95, 0x2c, 0x43, 0xc6, 0x6f, 0x91, 0x50, 0x4d, 0xf8, 0xa6, 0x1a, 0x91,
-	0xee, 0x42, 0x3a, 0x5a, 0x05, 0x29, 0x9b, 0xe5, 0xe5, 0x31, 0xcc, 0x34, 0xb0, 0xa7, 0xba, 0xbd,
-	0x36, 0xd2, 0x6c, 0xe7, 0xb7, 0x4b, 0xe5, 0x91, 0xcd, 0x5e, 0x3e, 0xc0, 0xde, 0xf3, 0x5e, 0x1b,
-	0x95, 0x74, 0x83, 0x2d, 0xc2, 0x0d, 0x96, 0x8a, 0x34, 0x98, 0xfc, 0x4d, 0x80, 0x4c, 0xe8, 0x41,
-	0x43, 0x2f, 0x09, 0x93, 0x8a, 0x37, 0x23, 0x0d, 0x07, 0x21, 0x3e, 0x31, 0x08, 0x89, 0x49, 0x41,
-	0x48, 0x86, 0x83, 0x20, 0x3f, 0x0c, 0x92, 0xef, 0x95, 0xe1, 0xf8, 0x14, 0xc8, 0x9f, 0x04, 0xc8,
-	0x87, 0x1a, 0x7a, 0xd4, 0xdb, 0x42, 0x24, 0x62, 0x24, 0xd2, 0x0f, 0xe0, 0x96, 0xdf, 0x32, 0xd1,
-	0xde, 0xcd, 0x71, 0x33, 0xef, 0x94, 0x75, 0xc8, 0xf3, 0x4e, 0x89, 0x66, 0x2c, 0xcb, 0xac, 0xbc,
-	0x41, 0x5e, 0xc2, 0xbc, 0x1f, 0x61, 0xda, 0x36, 0x63, 0x6a, 0xa6, 0x00, 0x29, 0x2f, 0xd2, 0x81,
-	0x98, 0x64, 0x03, 0x7b, 0xb5, 0xc8, 0x6c, 0x8c, 0x47, 0x53, 0xb7, 0x01, 0x77, 0xe8, 0xbd, 0xfb,
-	0x9d, 0xe6, 0x89, 0xd1, 0x9c, 0x70, 0x75, 0x80, 0x54, 0xfa, 0xbd, 0x3b, 0x06, 0xf9, 0xd9, 0x1f,
-	0xd7, 0xac, 0x1c, 0x68, 0x3a, 0x6e, 0x30, 0xae, 0x0f, 0x21, 0x17, 0xe4, 0xf5, 0x04, 0xd1, 0xa1,
-	0x92, 0x33, 0xdb, 0x6b, 0xe3, 0x4b, 0x86, 0x62, 0xf7, 0x11, 0x9d, 0xdd, 0xc4, 0xf9, 0x9f, 0xe5,
-	0x98, 0x92, 0x6d, 0x84, 0x6c, 0x72, 0x87, 0x87, 0x2e, 0xc8, 0xe1, 0x68, 0x41, 0x43, 0xb4, 0xe2,
-	0xff, 0xd1, 0x36, 0x79, 0xbc, 0xaa, 0x84, 0xf8, 0xd8, 0x57, 0xb6, 0xe1, 0xa2, 0x3d, 0xc4, 0x7c,
-	0x1f, 0xc0, 0x9b, 0x65, 0x5d, 0xea, 0xe5, 0xd1, 0xf0, 0xa6, 0x1b, 0x87, 0xaf, 0x41, 0x8e, 0xb9,
-	0xa2, 0x23, 0x25, 0xcb, 0x8d, 0x6c, 0xa6, 0x7c, 0x14, 0x78, 0x4d, 0x87, 0xe8, 0xe8, 0x00, 0x1f,
-	0x62, 0x7b, 0xc4, 0x26, 0x27, 0x1d, 0xfc, 0x8c, 0x6c, 0xb7, 0xf8, 0xeb, 0xfb, 0xe6, 0x02, 0xff,
-	0x3b, 0xaf, 0x12, 0x62, 0xa3, 0xe3, 0x1c, 0xb9, 0xb6, 0x61, 0xd6, 0xe9, 0x4c, 0x65, 0xd7, 0xac,
-	0x42, 0x96, 0x1e, 0x19, 0x98, 0x6b, 0xcc, 0xc6, 0x34, 0x7c, 0x80, 0x62, 0x68, 0xa6, 0x4e, 0x56,
-	0x51, 0x86, 0xe4, 0x74, 0x0a, 0x18, 0x6c, 0x0a, 0xfa, 0x5d, 0xed, 0xfc, 0xb2, 0x24, 0x5c, 0x5c,
-	0x96, 0x84, 0xbf, 0x97, 0x25, 0xe1, 0xcb, 0x55, 0x29, 0x76, 0x71, 0x55, 0x8a, 0xfd, 0xbe, 0x2a,
-	0xc5, 0x5e, 0x3f, 0xad, 0x1b, 0xee, 0x69, 0xe7, 0xb8, 0xac, 0x5b, 0x2d, 0xfe, 0xa5, 0xb1, 0x49,
-	0x3f, 0x2c, 0x74, 0xab, 0xc9, 0xf7, 0x03, 0xdb, 0xca, 0x3b, 0x7f, 0xe1, 0xcd, 0x2c, 0xc7, 0xff,
-	0x2e, 0x39, 0x4e, 0x51, 0xdc, 0xce, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xa7, 0x73, 0x7d, 0xf3,
-	0x44, 0x09, 0x00, 0x00,
+	// 826 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xcd, 0x4e, 0xdb, 0x58,
+	0x14, 0x8e, 0x9d, 0x3f, 0x38, 0x09, 0x19, 0x30, 0x84, 0x31, 0x8c, 0x26, 0x80, 0x19, 0x69, 0xa2,
+	0xaa, 0x24, 0x2a, 0x08, 0x55, 0x5d, 0x06, 0x54, 0x2a, 0x84, 0x44, 0xa5, 0x40, 0x5b, 0xa9, 0x1b,
+	0xcb, 0xd8, 0x87, 0xe0, 0x26, 0xb1, 0x5d, 0xdb, 0x21, 0x4d, 0xa5, 0x2e, 0xba, 0xef, 0xa2, 0x6f,
+	0xd0, 0x97, 0x68, 0xdf, 0x81, 0x25, 0xea, 0xa2, 0xea, 0xaa, 0xaa, 0x60, 0xd1, 0xd7, 0xa8, 0x7c,
+	0xef, 0xb5, 0xb1, 0x63, 0x27, 0x04, 0x75, 0x15, 0xdf, 0x73, 0xbe, 0x93, 0xef, 0xbb, 0xe7, 0xcf,
+	0x06, 0xa9, 0xaf, 0xd8, 0x1a, 0x1a, 0x75, 0xf6, 0x73, 0xfe, 0xe0, 0x04, 0x5d, 0x65, 0xab, 0x8e,
+	0xe7, 0x68, 0xb8, 0x4e, 0xcd, 0xb2, 0x4d, 0xd7, 0x14, 0xca, 0xd4, 0x59, 0x63, 0x3f, 0x0c, 0xb3,
+	0xbc, 0xa4, 0x9a, 0x4e, 0xd7, 0x74, 0x64, 0x02, 0xaa, 0xd3, 0x03, 0x8d, 0x58, 0x5e, 0x68, 0x99,
+	0x2d, 0x93, 0xda, 0xbd, 0x27, 0x66, 0x5d, 0x49, 0xe6, 0x6a, 0xe3, 0x80, 0x01, 0xfe, 0x1b, 0x09,
+	0x50, 0xcf, 0x14, 0xdd, 0xa0, 0x28, 0xe9, 0x0b, 0x07, 0xb3, 0x8f, 0x3d, 0x7d, 0xbb, 0x36, 0x2a,
+	0x2e, 0x1e, 0x59, 0x8a, 0x8a, 0x42, 0x09, 0x78, 0x5d, 0x13, 0xb9, 0x55, 0xae, 0x9a, 0x69, 0xf2,
+	0xba, 0x26, 0x88, 0x90, 0x57, 0x3d, 0xb7, 0x69, 0x8b, 0xfc, 0x2a, 0x57, 0x9d, 0x6e, 0xfa, 0x47,
+	0x61, 0x0d, 0x8a, 0x66, 0xdf, 0x40, 0xdb, 0x91, 0x55, 0xb3, 0x67, 0xb8, 0x62, 0x9a, 0xc4, 0x14,
+	0xa8, 0x6d, 0xd7, 0x33, 0x09, 0xf7, 0x60, 0x4e, 0xd1, 0xba, 0xba, 0x21, 0xbb, 0xd8, 0xb5, 0x3a,
+	0x8a, 0x8b, 0xb2, 0xae, 0x89, 0x19, 0x82, 0xfb, 0x8b, 0x38, 0x8e, 0x99, 0x7d, 0x5f, 0x13, 0xaa,
+	0x30, 0xeb, 0xe8, 0xad, 0x28, 0x34, 0x4b, 0xa0, 0x25, 0xcf, 0x7e, 0x83, 0x94, 0x7e, 0xf1, 0x4c,
+	0xf7, 0x33, 0x4b, 0x0b, 0x74, 0x2f, 0xc1, 0x94, 0xe3, 0x3d, 0xc8, 0x81, 0xfa, 0x3c, 0x39, 0xef,
+	0x6b, 0xc9, 0x2a, 0xf8, 0xc9, 0x55, 0xa4, 0x93, 0x54, 0x08, 0x8f, 0x60, 0x49, 0xb1, 0x2c, 0xdb,
+	0x3c, 0x47, 0x79, 0xd4, 0x1d, 0x17, 0x19, 0xa0, 0x31, 0x44, 0xf2, 0x10, 0x44, 0x1b, 0x5f, 0xa1,
+	0xea, 0x26, 0x44, 0xd2, 0x2b, 0x97, 0xa9, 0x3f, 0x21, 0xd0, 0xe7, 0x8c, 0xa9, 0xcc, 0xd1, 0x40,
+	0xe6, 0x3f, 0x8a, 0x8a, 0xdd, 0x86, 0xbf, 0x19, 0x63, 0x2c, 0x2e, 0x4f, 0xe2, 0x16, 0xa8, 0x3b,
+	0x1a, 0x26, 0x99, 0x20, 0x90, 0x44, 0x37, 0x34, 0x8d, 0x64, 0xf9, 0xa9, 0x57, 0xdb, 0x71, 0xa9,
+	0xfe, 0x07, 0xa6, 0x0d, 0xec, 0xcb, 0xa4, 0x07, 0x58, 0xbf, 0x4c, 0x19, 0xd8, 0xa7, 0x71, 0xb7,
+	0x37, 0x8c, 0xf4, 0x16, 0xca, 0x84, 0xb0, 0x89, 0x5d, 0xef, 0x12, 0x13, 0x71, 0xae, 0xc3, 0x8c,
+	0x4d, 0xe0, 0x5a, 0x84, 0xb7, 0xc8, 0x8c, 0x13, 0x73, 0x7f, 0xe3, 0xd8, 0x6d, 0x0f, 0xb1, 0x7f,
+	0x80, 0x83, 0x26, 0xbe, 0xee, 0xa1, 0xe3, 0xc6, 0x06, 0x22, 0xac, 0x84, 0x8f, 0x2a, 0x59, 0x81,
+	0x82, 0x3f, 0x62, 0x37, 0x7d, 0x03, 0xbe, 0x89, 0x02, 0xe2, 0x5d, 0x02, 0x6e, 0xb8, 0xa9, 0xa6,
+	0xda, 0x38, 0x90, 0xdd, 0x81, 0x85, 0xa4, 0x13, 0x4a, 0x9b, 0x95, 0x5a, 0xe2, 0xd2, 0xa8, 0x1d,
+	0xe0, 0xe0, 0x78, 0x60, 0x61, 0x33, 0xdf, 0xa6, 0x0f, 0xe1, 0x41, 0xcd, 0x45, 0x06, 0xd5, 0x9b,
+	0xf3, 0x42, 0xe8, 0x62, 0xb1, 0x1b, 0x85, 0x49, 0xf9, 0xbb, 0x91, 0x86, 0x93, 0x91, 0x1e, 0x9b,
+	0x8c, 0xcc, 0x6d, 0xc9, 0xc8, 0x0e, 0x27, 0x43, 0xfa, 0x3f, 0x68, 0x06, 0xaf, 0x35, 0x47, 0x97,
+	0x44, 0xfa, 0xc4, 0x41, 0x29, 0xb4, 0x10, 0x92, 0xee, 0x38, 0x44, 0xc6, 0xc7, 0x32, 0x5f, 0x83,
+	0x79, 0x7f, 0xb4, 0xe2, 0xb3, 0x3f, 0xc7, 0x5c, 0xa1, 0x89, 0xba, 0x0f, 0x02, 0x9b, 0xa8, 0x78,
+	0x45, 0x67, 0xa9, 0x27, 0x34, 0x48, 0xcf, 0x61, 0xde, 0xaf, 0x80, 0x37, 0x62, 0xa3, 0x7a, 0xab,
+	0x0c, 0x39, 0xaf, 0x12, 0x81, 0xc0, 0x6c, 0x1b, 0x07, 0xfb, 0x91, 0x1d, 0x9c, 0x8e, 0x96, 0xb6,
+	0x0a, 0x8b, 0xe4, 0x7f, 0xf7, 0x7a, 0x9d, 0x53, 0xbd, 0x33, 0xe6, 0xaf, 0x03, 0x64, 0x33, 0x98,
+	0xf3, 0x51, 0xc8, 0x0f, 0xfe, 0x6b, 0x81, 0xb6, 0x0b, 0x29, 0xd7, 0x1d, 0x5e, 0x0b, 0x87, 0x30,
+	0x13, 0xd4, 0xfd, 0x14, 0xd1, 0x21, 0x92, 0x0b, 0x9b, 0xeb, 0xa3, 0x5b, 0x8a, 0x60, 0xf7, 0x10,
+	0x9d, 0x9d, 0xcc, 0xc5, 0x8f, 0x95, 0x54, 0xb3, 0xd8, 0x0e, 0xd9, 0xa4, 0x1e, 0x4b, 0x5d, 0x50,
+	0xdb, 0x64, 0x41, 0x31, 0x5a, 0xfe, 0xcf, 0x68, 0x3b, 0x2c, 0x5f, 0x0d, 0x4d, 0xf3, 0xb1, 0x2f,
+	0x6c, 0xdd, 0x45, 0x3b, 0xc6, 0xfc, 0x2f, 0x80, 0xb7, 0xf3, 0xfa, 0xc4, 0xcb, 0xb2, 0xe1, 0x6d,
+	0x41, 0x06, 0x5f, 0x87, 0x19, 0xea, 0x8a, 0xae, 0x9e, 0x22, 0x33, 0xd2, 0xdd, 0xf3, 0x9e, 0x63,
+	0xbd, 0x1e, 0xa2, 0x23, 0xcb, 0x3f, 0xc6, 0xb6, 0x4d, 0x37, 0x2c, 0x79, 0x71, 0x50, 0xb2, 0x1d,
+	0xf1, 0xeb, 0xe7, 0x8d, 0x05, 0xf6, 0xd9, 0xd0, 0xd0, 0x34, 0x1b, 0x1d, 0xe7, 0xc8, 0xb5, 0x75,
+	0xa3, 0x45, 0x76, 0x2f, 0xfd, 0x9b, 0x35, 0x28, 0x92, 0x90, 0xa1, 0xfd, 0x47, 0x6d, 0x54, 0xc3,
+	0x3b, 0x10, 0x43, 0xbb, 0x77, 0xbc, 0x8a, 0x1a, 0x64, 0x27, 0x53, 0x40, 0x61, 0x13, 0xd0, 0xef,
+	0x28, 0x17, 0x57, 0x15, 0xee, 0xf2, 0xaa, 0xc2, 0xfd, 0xbc, 0xaa, 0x70, 0x1f, 0xaf, 0x2b, 0xa9,
+	0xcb, 0xeb, 0x4a, 0xea, 0xfb, 0x75, 0x25, 0xf5, 0xf2, 0x49, 0x4b, 0x77, 0xcf, 0x7a, 0x27, 0x35,
+	0xd5, 0xec, 0xb2, 0x2f, 0x9a, 0x0d, 0xf2, 0x01, 0xa3, 0x9a, 0x1d, 0x76, 0x1e, 0x3a, 0xd6, 0xdf,
+	0xf8, 0x0f, 0xde, 0x4e, 0x73, 0xfc, 0xef, 0x9f, 0x93, 0x1c, 0xc1, 0x6d, 0xfd, 0x0e, 0x00, 0x00,
+	0xff, 0xff, 0x47, 0x38, 0xc7, 0xe9, 0xac, 0x09, 0x00, 0x00,
 }
 
 func (m *EventCreateSpace) Marshal() (dAtA []byte, err error) {
@@ -1192,13 +1192,13 @@ func (m *EventCreateSpace) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.SignRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.SignRuleId))
+	if m.SignTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.SignTemplateId))
 		i--
 		dAtA[i] = 0x28
 	}
-	if m.AdminRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.AdminRuleId))
+	if m.AdminTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.AdminTemplateId))
 		i--
 		dAtA[i] = 0x20
 	}
@@ -1242,33 +1242,33 @@ func (m *EventUpdateSpace) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.RejectSignRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.RejectSignRuleId))
+	if m.RejectSignTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.RejectSignTemplateId))
 		i--
 		dAtA[i] = 0x38
 	}
-	if m.ApproveSignRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.ApproveSignRuleId))
+	if m.ApproveSignTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.ApproveSignTemplateId))
 		i--
 		dAtA[i] = 0x30
 	}
-	if m.RejectAdminRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.RejectAdminRuleId))
+	if m.RejectAdminTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.RejectAdminTemplateId))
 		i--
 		dAtA[i] = 0x28
 	}
-	if m.ApproveAdminRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.ApproveAdminRuleId))
+	if m.ApproveAdminTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.ApproveAdminTemplateId))
 		i--
 		dAtA[i] = 0x20
 	}
-	if m.SignRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.SignRuleId))
+	if m.SignTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.SignTemplateId))
 		i--
 		dAtA[i] = 0x18
 	}
-	if m.AdminRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.AdminRuleId))
+	if m.AdminTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.AdminTemplateId))
 		i--
 		dAtA[i] = 0x10
 	}
@@ -1392,8 +1392,8 @@ func (m *EventNewKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x28
 	}
-	if m.RuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.RuleId))
+	if m.TemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.TemplateId))
 		i--
 		dAtA[i] = 0x20
 	}
@@ -1435,8 +1435,8 @@ func (m *EventNewKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.RuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.RuleId))
+	if m.TemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.TemplateId))
 		i--
 		dAtA[i] = 0x28
 	}
@@ -1511,18 +1511,18 @@ func (m *EventUpdateKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.RejectRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.RejectRuleId))
+	if m.RejectTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.RejectTemplateId))
 		i--
 		dAtA[i] = 0x20
 	}
-	if m.ApproveRuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.ApproveRuleId))
+	if m.ApproveTemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.ApproveTemplateId))
 		i--
 		dAtA[i] = 0x18
 	}
-	if m.RuleId != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.RuleId))
+	if m.TemplateId != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.TemplateId))
 		i--
 		dAtA[i] = 0x10
 	}
@@ -1860,11 +1860,11 @@ func (m *EventCreateSpace) Size() (n int) {
 	if m.OwnersCount != 0 {
 		n += 1 + sovEvents(uint64(m.OwnersCount))
 	}
-	if m.AdminRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.AdminRuleId))
+	if m.AdminTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.AdminTemplateId))
 	}
-	if m.SignRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.SignRuleId))
+	if m.SignTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.SignTemplateId))
 	}
 	return n
 }
@@ -1878,23 +1878,23 @@ func (m *EventUpdateSpace) Size() (n int) {
 	if m.SpaceId != 0 {
 		n += 1 + sovEvents(uint64(m.SpaceId))
 	}
-	if m.AdminRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.AdminRuleId))
+	if m.AdminTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.AdminTemplateId))
 	}
-	if m.SignRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.SignRuleId))
+	if m.SignTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.SignTemplateId))
 	}
-	if m.ApproveAdminRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.ApproveAdminRuleId))
+	if m.ApproveAdminTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.ApproveAdminTemplateId))
 	}
-	if m.RejectAdminRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.RejectAdminRuleId))
+	if m.RejectAdminTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.RejectAdminTemplateId))
 	}
-	if m.ApproveSignRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.ApproveSignRuleId))
+	if m.ApproveSignTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.ApproveSignTemplateId))
 	}
-	if m.RejectSignRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.RejectSignRuleId))
+	if m.RejectSignTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.RejectSignTemplateId))
 	}
 	return n
 }
@@ -1952,8 +1952,8 @@ func (m *EventNewKeyRequest) Size() (n int) {
 	if m.KeychainId != 0 {
 		n += 1 + sovEvents(uint64(m.KeychainId))
 	}
-	if m.RuleId != 0 {
-		n += 1 + sovEvents(uint64(m.RuleId))
+	if m.TemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.TemplateId))
 	}
 	if m.KeyType != 0 {
 		n += 1 + sovEvents(uint64(m.KeyType))
@@ -1983,8 +1983,8 @@ func (m *EventNewKey) Size() (n int) {
 	if m.KeychainId != 0 {
 		n += 1 + sovEvents(uint64(m.KeychainId))
 	}
-	if m.RuleId != 0 {
-		n += 1 + sovEvents(uint64(m.RuleId))
+	if m.TemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.TemplateId))
 	}
 	return n
 }
@@ -2010,14 +2010,14 @@ func (m *EventUpdateKey) Size() (n int) {
 	if m.Id != 0 {
 		n += 1 + sovEvents(uint64(m.Id))
 	}
-	if m.RuleId != 0 {
-		n += 1 + sovEvents(uint64(m.RuleId))
+	if m.TemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.TemplateId))
 	}
-	if m.ApproveRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.ApproveRuleId))
+	if m.ApproveTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.ApproveTemplateId))
 	}
-	if m.RejectRuleId != 0 {
-		n += 1 + sovEvents(uint64(m.RejectRuleId))
+	if m.RejectTemplateId != 0 {
+		n += 1 + sovEvents(uint64(m.RejectTemplateId))
 	}
 	return n
 }
@@ -2261,9 +2261,9 @@ func (m *EventCreateSpace) Unmarshal(dAtA []byte) error {
 			}
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AdminRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AdminTemplateId", wireType)
 			}
-			m.AdminRuleId = 0
+			m.AdminTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2273,16 +2273,16 @@ func (m *EventCreateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.AdminRuleId |= uint64(b&0x7F) << shift
+				m.AdminTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 5:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SignRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SignTemplateId", wireType)
 			}
-			m.SignRuleId = 0
+			m.SignTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2292,7 +2292,7 @@ func (m *EventCreateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SignRuleId |= uint64(b&0x7F) << shift
+				m.SignTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2368,9 +2368,9 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 			}
 		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AdminRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AdminTemplateId", wireType)
 			}
-			m.AdminRuleId = 0
+			m.AdminTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2380,16 +2380,16 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.AdminRuleId |= uint64(b&0x7F) << shift
+				m.AdminTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SignRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SignTemplateId", wireType)
 			}
-			m.SignRuleId = 0
+			m.SignTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2399,16 +2399,16 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SignRuleId |= uint64(b&0x7F) << shift
+				m.SignTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ApproveAdminRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ApproveAdminTemplateId", wireType)
 			}
-			m.ApproveAdminRuleId = 0
+			m.ApproveAdminTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2418,16 +2418,16 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApproveAdminRuleId |= uint64(b&0x7F) << shift
+				m.ApproveAdminTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 5:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RejectAdminRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RejectAdminTemplateId", wireType)
 			}
-			m.RejectAdminRuleId = 0
+			m.RejectAdminTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2437,16 +2437,16 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RejectAdminRuleId |= uint64(b&0x7F) << shift
+				m.RejectAdminTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 6:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ApproveSignRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ApproveSignTemplateId", wireType)
 			}
-			m.ApproveSignRuleId = 0
+			m.ApproveSignTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2456,16 +2456,16 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApproveSignRuleId |= uint64(b&0x7F) << shift
+				m.ApproveSignTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 7:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RejectSignRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RejectSignTemplateId", wireType)
 			}
-			m.RejectSignRuleId = 0
+			m.RejectSignTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2475,7 +2475,7 @@ func (m *EventUpdateSpace) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RejectSignRuleId |= uint64(b&0x7F) << shift
+				m.RejectSignTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2829,9 +2829,9 @@ func (m *EventNewKeyRequest) Unmarshal(dAtA []byte) error {
 			}
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TemplateId", wireType)
 			}
-			m.RuleId = 0
+			m.TemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -2841,7 +2841,7 @@ func (m *EventNewKeyRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RuleId |= uint64(b&0x7F) << shift
+				m.TemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -3025,9 +3025,9 @@ func (m *EventNewKey) Unmarshal(dAtA []byte) error {
 			}
 		case 5:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TemplateId", wireType)
 			}
-			m.RuleId = 0
+			m.TemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -3037,7 +3037,7 @@ func (m *EventNewKey) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RuleId |= uint64(b&0x7F) << shift
+				m.TemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -3182,9 +3182,9 @@ func (m *EventUpdateKey) Unmarshal(dAtA []byte) error {
 			}
 		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TemplateId", wireType)
 			}
-			m.RuleId = 0
+			m.TemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -3194,16 +3194,16 @@ func (m *EventUpdateKey) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RuleId |= uint64(b&0x7F) << shift
+				m.TemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ApproveRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ApproveTemplateId", wireType)
 			}
-			m.ApproveRuleId = 0
+			m.ApproveTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -3213,16 +3213,16 @@ func (m *EventUpdateKey) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApproveRuleId |= uint64(b&0x7F) << shift
+				m.ApproveTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RejectRuleId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RejectTemplateId", wireType)
 			}
-			m.RejectRuleId = 0
+			m.RejectTemplateId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -3232,7 +3232,7 @@ func (m *EventUpdateKey) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RejectRuleId |= uint64(b&0x7F) << shift
+				m.RejectTemplateId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

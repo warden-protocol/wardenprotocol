@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/act) Introduce Votes and Approve/Reject expressions for Actions
 * (x/act) Add expected expressions to MsgAddAction
 * (x/act) Set approve/reject expressions in MsgNewAction. Change rules registry to keep approve/reject expressions.
+* (x/act) Rename `Rule` to `Template`
 
 ### Features (non-breaking)
 

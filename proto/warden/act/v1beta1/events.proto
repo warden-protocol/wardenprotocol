@@ -7,8 +7,8 @@ import "warden/act/v1beta1/action_vote.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
-// EventCreateRule is emitted on Rule creation
-message EventCreateRule {
+// EventCreateTemplate is emitted on Template creation
+message EventCreateTemplate {
   // id of the new intent
   uint64 id = 1;
 
@@ -16,8 +16,8 @@ message EventCreateRule {
   string creator = 2;
 }
 
-// EventUpdateRule is emitted when Rule is updated
-message EventUpdateRule {
+// EventUpdateTemplate is emitted when Template is updated
+message EventUpdateTemplate {
   // id of updated intent
   uint64 id = 1;
 }

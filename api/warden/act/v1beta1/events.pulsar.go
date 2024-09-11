@@ -13,27 +13,27 @@ import (
 )
 
 var (
-	md_EventCreateRule         protoreflect.MessageDescriptor
-	fd_EventCreateRule_id      protoreflect.FieldDescriptor
-	fd_EventCreateRule_creator protoreflect.FieldDescriptor
+	md_EventCreateTemplate         protoreflect.MessageDescriptor
+	fd_EventCreateTemplate_id      protoreflect.FieldDescriptor
+	fd_EventCreateTemplate_creator protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_act_v1beta1_events_proto_init()
-	md_EventCreateRule = File_warden_act_v1beta1_events_proto.Messages().ByName("EventCreateRule")
-	fd_EventCreateRule_id = md_EventCreateRule.Fields().ByName("id")
-	fd_EventCreateRule_creator = md_EventCreateRule.Fields().ByName("creator")
+	md_EventCreateTemplate = File_warden_act_v1beta1_events_proto.Messages().ByName("EventCreateTemplate")
+	fd_EventCreateTemplate_id = md_EventCreateTemplate.Fields().ByName("id")
+	fd_EventCreateTemplate_creator = md_EventCreateTemplate.Fields().ByName("creator")
 }
 
-var _ protoreflect.Message = (*fastReflection_EventCreateRule)(nil)
+var _ protoreflect.Message = (*fastReflection_EventCreateTemplate)(nil)
 
-type fastReflection_EventCreateRule EventCreateRule
+type fastReflection_EventCreateTemplate EventCreateTemplate
 
-func (x *EventCreateRule) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EventCreateRule)(x)
+func (x *EventCreateTemplate) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_EventCreateTemplate)(x)
 }
 
-func (x *EventCreateRule) slowProtoReflect() protoreflect.Message {
+func (x *EventCreateTemplate) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_act_v1beta1_events_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -45,43 +45,43 @@ func (x *EventCreateRule) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EventCreateRule_messageType fastReflection_EventCreateRule_messageType
-var _ protoreflect.MessageType = fastReflection_EventCreateRule_messageType{}
+var _fastReflection_EventCreateTemplate_messageType fastReflection_EventCreateTemplate_messageType
+var _ protoreflect.MessageType = fastReflection_EventCreateTemplate_messageType{}
 
-type fastReflection_EventCreateRule_messageType struct{}
+type fastReflection_EventCreateTemplate_messageType struct{}
 
-func (x fastReflection_EventCreateRule_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EventCreateRule)(nil)
+func (x fastReflection_EventCreateTemplate_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_EventCreateTemplate)(nil)
 }
-func (x fastReflection_EventCreateRule_messageType) New() protoreflect.Message {
-	return new(fastReflection_EventCreateRule)
+func (x fastReflection_EventCreateTemplate_messageType) New() protoreflect.Message {
+	return new(fastReflection_EventCreateTemplate)
 }
-func (x fastReflection_EventCreateRule_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventCreateRule
+func (x fastReflection_EventCreateTemplate_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventCreateTemplate
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EventCreateRule) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventCreateRule
+func (x *fastReflection_EventCreateTemplate) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventCreateTemplate
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EventCreateRule) Type() protoreflect.MessageType {
-	return _fastReflection_EventCreateRule_messageType
+func (x *fastReflection_EventCreateTemplate) Type() protoreflect.MessageType {
+	return _fastReflection_EventCreateTemplate_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EventCreateRule) New() protoreflect.Message {
-	return new(fastReflection_EventCreateRule)
+func (x *fastReflection_EventCreateTemplate) New() protoreflect.Message {
+	return new(fastReflection_EventCreateTemplate)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EventCreateRule) Interface() protoreflect.ProtoMessage {
-	return (*EventCreateRule)(x)
+func (x *fastReflection_EventCreateTemplate) Interface() protoreflect.ProtoMessage {
+	return (*EventCreateTemplate)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -89,16 +89,16 @@ func (x *fastReflection_EventCreateRule) Interface() protoreflect.ProtoMessage {
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EventCreateRule) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_EventCreateTemplate) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_EventCreateRule_id, value) {
+		if !f(fd_EventCreateTemplate_id, value) {
 			return
 		}
 	}
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_EventCreateRule_creator, value) {
+		if !f(fd_EventCreateTemplate_creator, value) {
 			return
 		}
 	}
@@ -115,17 +115,17 @@ func (x *fastReflection_EventCreateRule) Range(f func(protoreflect.FieldDescript
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EventCreateRule) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_EventCreateTemplate) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventCreateRule.id":
+	case "warden.act.v1beta1.EventCreateTemplate.id":
 		return x.Id != uint64(0)
-	case "warden.act.v1beta1.EventCreateRule.creator":
+	case "warden.act.v1beta1.EventCreateTemplate.creator":
 		return x.Creator != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -135,17 +135,17 @@ func (x *fastReflection_EventCreateRule) Has(fd protoreflect.FieldDescriptor) bo
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateRule) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_EventCreateTemplate) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventCreateRule.id":
+	case "warden.act.v1beta1.EventCreateTemplate.id":
 		x.Id = uint64(0)
-	case "warden.act.v1beta1.EventCreateRule.creator":
+	case "warden.act.v1beta1.EventCreateTemplate.creator":
 		x.Creator = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -155,19 +155,19 @@ func (x *fastReflection_EventCreateRule) Clear(fd protoreflect.FieldDescriptor) 
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EventCreateRule) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventCreateTemplate) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.act.v1beta1.EventCreateRule.id":
+	case "warden.act.v1beta1.EventCreateTemplate.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
-	case "warden.act.v1beta1.EventCreateRule.creator":
+	case "warden.act.v1beta1.EventCreateTemplate.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateRule does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateTemplate does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -181,17 +181,17 @@ func (x *fastReflection_EventCreateRule) Get(descriptor protoreflect.FieldDescri
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateRule) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_EventCreateTemplate) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventCreateRule.id":
+	case "warden.act.v1beta1.EventCreateTemplate.id":
 		x.Id = value.Uint()
-	case "warden.act.v1beta1.EventCreateRule.creator":
+	case "warden.act.v1beta1.EventCreateTemplate.creator":
 		x.Creator = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -205,44 +205,44 @@ func (x *fastReflection_EventCreateRule) Set(fd protoreflect.FieldDescriptor, va
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateRule) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventCreateTemplate) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventCreateRule.id":
-		panic(fmt.Errorf("field id of message warden.act.v1beta1.EventCreateRule is not mutable"))
-	case "warden.act.v1beta1.EventCreateRule.creator":
-		panic(fmt.Errorf("field creator of message warden.act.v1beta1.EventCreateRule is not mutable"))
+	case "warden.act.v1beta1.EventCreateTemplate.id":
+		panic(fmt.Errorf("field id of message warden.act.v1beta1.EventCreateTemplate is not mutable"))
+	case "warden.act.v1beta1.EventCreateTemplate.creator":
+		panic(fmt.Errorf("field creator of message warden.act.v1beta1.EventCreateTemplate is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EventCreateRule) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventCreateTemplate) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventCreateRule.id":
+	case "warden.act.v1beta1.EventCreateTemplate.id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.act.v1beta1.EventCreateRule.creator":
+	case "warden.act.v1beta1.EventCreateTemplate.creator":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventCreateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventCreateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EventCreateRule) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_EventCreateTemplate) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.act.v1beta1.EventCreateRule", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.act.v1beta1.EventCreateTemplate", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -250,7 +250,7 @@ func (x *fastReflection_EventCreateRule) WhichOneof(d protoreflect.OneofDescript
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EventCreateRule) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_EventCreateTemplate) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -261,7 +261,7 @@ func (x *fastReflection_EventCreateRule) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateRule) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_EventCreateTemplate) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -273,7 +273,7 @@ func (x *fastReflection_EventCreateRule) SetUnknown(fields protoreflect.RawField
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EventCreateRule) IsValid() bool {
+func (x *fastReflection_EventCreateTemplate) IsValid() bool {
 	return x != nil
 }
 
@@ -283,9 +283,9 @@ func (x *fastReflection_EventCreateRule) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EventCreateRule) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_EventCreateTemplate) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EventCreateRule)
+		x := input.Message.Interface().(*EventCreateTemplate)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -314,7 +314,7 @@ func (x *fastReflection_EventCreateRule) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EventCreateRule)
+		x := input.Message.Interface().(*EventCreateTemplate)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -356,7 +356,7 @@ func (x *fastReflection_EventCreateRule) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EventCreateRule)
+		x := input.Message.Interface().(*EventCreateTemplate)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -388,10 +388,10 @@ func (x *fastReflection_EventCreateRule) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateRule: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateTemplate: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateRule: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -481,25 +481,25 @@ func (x *fastReflection_EventCreateRule) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_EventUpdateRule    protoreflect.MessageDescriptor
-	fd_EventUpdateRule_id protoreflect.FieldDescriptor
+	md_EventUpdateTemplate    protoreflect.MessageDescriptor
+	fd_EventUpdateTemplate_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_act_v1beta1_events_proto_init()
-	md_EventUpdateRule = File_warden_act_v1beta1_events_proto.Messages().ByName("EventUpdateRule")
-	fd_EventUpdateRule_id = md_EventUpdateRule.Fields().ByName("id")
+	md_EventUpdateTemplate = File_warden_act_v1beta1_events_proto.Messages().ByName("EventUpdateTemplate")
+	fd_EventUpdateTemplate_id = md_EventUpdateTemplate.Fields().ByName("id")
 }
 
-var _ protoreflect.Message = (*fastReflection_EventUpdateRule)(nil)
+var _ protoreflect.Message = (*fastReflection_EventUpdateTemplate)(nil)
 
-type fastReflection_EventUpdateRule EventUpdateRule
+type fastReflection_EventUpdateTemplate EventUpdateTemplate
 
-func (x *EventUpdateRule) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EventUpdateRule)(x)
+func (x *EventUpdateTemplate) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_EventUpdateTemplate)(x)
 }
 
-func (x *EventUpdateRule) slowProtoReflect() protoreflect.Message {
+func (x *EventUpdateTemplate) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_act_v1beta1_events_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -511,43 +511,43 @@ func (x *EventUpdateRule) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EventUpdateRule_messageType fastReflection_EventUpdateRule_messageType
-var _ protoreflect.MessageType = fastReflection_EventUpdateRule_messageType{}
+var _fastReflection_EventUpdateTemplate_messageType fastReflection_EventUpdateTemplate_messageType
+var _ protoreflect.MessageType = fastReflection_EventUpdateTemplate_messageType{}
 
-type fastReflection_EventUpdateRule_messageType struct{}
+type fastReflection_EventUpdateTemplate_messageType struct{}
 
-func (x fastReflection_EventUpdateRule_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EventUpdateRule)(nil)
+func (x fastReflection_EventUpdateTemplate_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_EventUpdateTemplate)(nil)
 }
-func (x fastReflection_EventUpdateRule_messageType) New() protoreflect.Message {
-	return new(fastReflection_EventUpdateRule)
+func (x fastReflection_EventUpdateTemplate_messageType) New() protoreflect.Message {
+	return new(fastReflection_EventUpdateTemplate)
 }
-func (x fastReflection_EventUpdateRule_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventUpdateRule
+func (x fastReflection_EventUpdateTemplate_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventUpdateTemplate
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EventUpdateRule) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventUpdateRule
+func (x *fastReflection_EventUpdateTemplate) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventUpdateTemplate
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EventUpdateRule) Type() protoreflect.MessageType {
-	return _fastReflection_EventUpdateRule_messageType
+func (x *fastReflection_EventUpdateTemplate) Type() protoreflect.MessageType {
+	return _fastReflection_EventUpdateTemplate_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EventUpdateRule) New() protoreflect.Message {
-	return new(fastReflection_EventUpdateRule)
+func (x *fastReflection_EventUpdateTemplate) New() protoreflect.Message {
+	return new(fastReflection_EventUpdateTemplate)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EventUpdateRule) Interface() protoreflect.ProtoMessage {
-	return (*EventUpdateRule)(x)
+func (x *fastReflection_EventUpdateTemplate) Interface() protoreflect.ProtoMessage {
+	return (*EventUpdateTemplate)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -555,10 +555,10 @@ func (x *fastReflection_EventUpdateRule) Interface() protoreflect.ProtoMessage {
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EventUpdateRule) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_EventUpdateTemplate) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_EventUpdateRule_id, value) {
+		if !f(fd_EventUpdateTemplate_id, value) {
 			return
 		}
 	}
@@ -575,15 +575,15 @@ func (x *fastReflection_EventUpdateRule) Range(f func(protoreflect.FieldDescript
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EventUpdateRule) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_EventUpdateTemplate) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventUpdateRule.id":
+	case "warden.act.v1beta1.EventUpdateTemplate.id":
 		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -593,15 +593,15 @@ func (x *fastReflection_EventUpdateRule) Has(fd protoreflect.FieldDescriptor) bo
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventUpdateRule) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_EventUpdateTemplate) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventUpdateRule.id":
+	case "warden.act.v1beta1.EventUpdateTemplate.id":
 		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -611,16 +611,16 @@ func (x *fastReflection_EventUpdateRule) Clear(fd protoreflect.FieldDescriptor) 
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EventUpdateRule) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventUpdateTemplate) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.act.v1beta1.EventUpdateRule.id":
+	case "warden.act.v1beta1.EventUpdateTemplate.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateRule does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateTemplate does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -634,15 +634,15 @@ func (x *fastReflection_EventUpdateRule) Get(descriptor protoreflect.FieldDescri
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventUpdateRule) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_EventUpdateTemplate) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventUpdateRule.id":
+	case "warden.act.v1beta1.EventUpdateTemplate.id":
 		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -656,40 +656,40 @@ func (x *fastReflection_EventUpdateRule) Set(fd protoreflect.FieldDescriptor, va
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventUpdateRule) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventUpdateTemplate) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventUpdateRule.id":
-		panic(fmt.Errorf("field id of message warden.act.v1beta1.EventUpdateRule is not mutable"))
+	case "warden.act.v1beta1.EventUpdateTemplate.id":
+		panic(fmt.Errorf("field id of message warden.act.v1beta1.EventUpdateTemplate is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EventUpdateRule) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventUpdateTemplate) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.act.v1beta1.EventUpdateRule.id":
+	case "warden.act.v1beta1.EventUpdateTemplate.id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateRule"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.EventUpdateTemplate"))
 		}
-		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateRule does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.act.v1beta1.EventUpdateTemplate does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EventUpdateRule) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_EventUpdateTemplate) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.act.v1beta1.EventUpdateRule", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.act.v1beta1.EventUpdateTemplate", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -697,7 +697,7 @@ func (x *fastReflection_EventUpdateRule) WhichOneof(d protoreflect.OneofDescript
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EventUpdateRule) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_EventUpdateTemplate) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -708,7 +708,7 @@ func (x *fastReflection_EventUpdateRule) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventUpdateRule) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_EventUpdateTemplate) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -720,7 +720,7 @@ func (x *fastReflection_EventUpdateRule) SetUnknown(fields protoreflect.RawField
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EventUpdateRule) IsValid() bool {
+func (x *fastReflection_EventUpdateTemplate) IsValid() bool {
 	return x != nil
 }
 
@@ -730,9 +730,9 @@ func (x *fastReflection_EventUpdateRule) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EventUpdateRule) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_EventUpdateTemplate) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EventUpdateRule)
+		x := input.Message.Interface().(*EventUpdateTemplate)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -757,7 +757,7 @@ func (x *fastReflection_EventUpdateRule) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EventUpdateRule)
+		x := input.Message.Interface().(*EventUpdateTemplate)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -792,7 +792,7 @@ func (x *fastReflection_EventUpdateRule) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EventUpdateRule)
+		x := input.Message.Interface().(*EventUpdateTemplate)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -824,10 +824,10 @@ func (x *fastReflection_EventUpdateRule) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventUpdateRule: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventUpdateTemplate: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventUpdateRule: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventUpdateTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -3253,8 +3253,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// EventCreateRule is emitted on Rule creation
-type EventCreateRule struct {
+// EventCreateTemplate is emitted on Template creation
+type EventCreateTemplate struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -3265,8 +3265,8 @@ type EventCreateRule struct {
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
-func (x *EventCreateRule) Reset() {
-	*x = EventCreateRule{}
+func (x *EventCreateTemplate) Reset() {
+	*x = EventCreateTemplate{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_act_v1beta1_events_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3274,33 +3274,33 @@ func (x *EventCreateRule) Reset() {
 	}
 }
 
-func (x *EventCreateRule) String() string {
+func (x *EventCreateTemplate) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventCreateRule) ProtoMessage() {}
+func (*EventCreateTemplate) ProtoMessage() {}
 
-// Deprecated: Use EventCreateRule.ProtoReflect.Descriptor instead.
-func (*EventCreateRule) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventCreateTemplate.ProtoReflect.Descriptor instead.
+func (*EventCreateTemplate) Descriptor() ([]byte, []int) {
 	return file_warden_act_v1beta1_events_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *EventCreateRule) GetId() uint64 {
+func (x *EventCreateTemplate) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *EventCreateRule) GetCreator() string {
+func (x *EventCreateTemplate) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-// EventUpdateRule is emitted when Rule is updated
-type EventUpdateRule struct {
+// EventUpdateTemplate is emitted when Template is updated
+type EventUpdateTemplate struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -3309,8 +3309,8 @@ type EventUpdateRule struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (x *EventUpdateRule) Reset() {
-	*x = EventUpdateRule{}
+func (x *EventUpdateTemplate) Reset() {
+	*x = EventUpdateTemplate{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_act_v1beta1_events_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3318,18 +3318,18 @@ func (x *EventUpdateRule) Reset() {
 	}
 }
 
-func (x *EventUpdateRule) String() string {
+func (x *EventUpdateTemplate) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventUpdateRule) ProtoMessage() {}
+func (*EventUpdateTemplate) ProtoMessage() {}
 
-// Deprecated: Use EventUpdateRule.ProtoReflect.Descriptor instead.
-func (*EventUpdateRule) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventUpdateTemplate.ProtoReflect.Descriptor instead.
+func (*EventUpdateTemplate) Descriptor() ([]byte, []int) {
 	return file_warden_act_v1beta1_events_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *EventUpdateRule) GetId() uint64 {
+func (x *EventUpdateTemplate) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -3586,57 +3586,58 @@ var file_warden_act_v1beta1_events_proto_rawDesc = []byte{
 	0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x24, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61,
 	0x63, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x61, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x5f, 0x76, 0x6f, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3b, 0x0a, 0x0f,
-	0x45, 0x76, 0x65, 0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x75, 0x6c, 0x65, 0x12,
-	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12,
-	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x21, 0x0a, 0x0f, 0x45, 0x76, 0x65,
-	0x6e, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x75, 0x6c, 0x65, 0x12, 0x0e, 0x0a, 0x02,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x3d, 0x0a, 0x11,
-	0x45, 0x76, 0x65, 0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x40, 0x0a, 0x12, 0x45,
-	0x76, 0x65, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x1a, 0x0a, 0x08, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x72, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x08, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x72, 0x22, 0x7c, 0x0a,
-	0x10, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x6f, 0x74, 0x65,
-	0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x20, 0x0a, 0x0b, 0x70, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70,
-	0x61, 0x6e, 0x74, 0x12, 0x36, 0x0a, 0x04, 0x76, 0x6f, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x0e, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x6f, 0x74,
-	0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x76, 0x6f, 0x74, 0x65, 0x22, 0xb4, 0x01, 0x0a, 0x16,
-	0x45, 0x76, 0x65, 0x6e, 0x74, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x65,
-	0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x49, 0x0a, 0x0f, 0x70, 0x72, 0x65, 0x76, 0x69, 0x6f,
-	0x75, 0x73, 0x5f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32,
-	0x20, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x75,
-	0x73, 0x52, 0x0e, 0x70, 0x72, 0x65, 0x76, 0x69, 0x6f, 0x75, 0x73, 0x53, 0x74, 0x61, 0x74, 0x75,
-	0x73, 0x12, 0x3f, 0x0a, 0x0a, 0x6e, 0x65, 0x77, 0x5f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x20, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
-	0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x09, 0x6e, 0x65, 0x77, 0x53, 0x74, 0x61, 0x74,
-	0x75, 0x73, 0x22, 0x23, 0x0a, 0x11, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x41, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x50, 0x72, 0x75, 0x6e, 0x65, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x42, 0xdc, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e,
+	0x6e, 0x5f, 0x76, 0x6f, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3f, 0x0a, 0x13,
+	0x45, 0x76, 0x65, 0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x65, 0x6d, 0x70, 0x6c,
+	0x61, 0x74, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x25, 0x0a,
+	0x13, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x54, 0x65, 0x6d, 0x70,
+	0x6c, 0x61, 0x74, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04,
+	0x52, 0x02, 0x69, 0x64, 0x22, 0x3d, 0x0a, 0x11, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x6f, 0x72, 0x22, 0x40, 0x0a, 0x12, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x72,
+	0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x61, 0x70, 0x70,
+	0x72, 0x6f, 0x76, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x61, 0x70, 0x70,
+	0x72, 0x6f, 0x76, 0x65, 0x72, 0x22, 0x7c, 0x0a, 0x10, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x41, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x56, 0x6f, 0x74, 0x65, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x70, 0x61, 0x72,
+	0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b,
+	0x70, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x12, 0x36, 0x0a, 0x04, 0x76,
+	0x6f, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x6f, 0x74, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x76,
+	0x6f, 0x74, 0x65, 0x22, 0xb4, 0x01, 0x0a, 0x16, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x41, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x65, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x49,
+	0x0a, 0x0f, 0x70, 0x72, 0x65, 0x76, 0x69, 0x6f, 0x75, 0x73, 0x5f, 0x73, 0x74, 0x61, 0x74, 0x75,
+	0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x20, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x0e, 0x70, 0x72, 0x65, 0x76, 0x69,
+	0x6f, 0x75, 0x73, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x3f, 0x0a, 0x0a, 0x6e, 0x65, 0x77,
+	0x5f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x20, 0x2e,
 	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x42, 0x0b, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
-	0x01, 0x5a, 0x4b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69,
-	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x3b, 0x61, 0x63, 0x74, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02,
-	0x03, 0x57, 0x41, 0x58, 0xaa, 0x02, 0x12, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x63,
-	0x74, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x12, 0x57, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x5c, 0x41, 0x63, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02,
-	0x1e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x63, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x63, 0x74, 0x3a, 0x3a, 0x56,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52,
+	0x09, 0x6e, 0x65, 0x77, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x23, 0x0a, 0x11, 0x45, 0x76,
+	0x65, 0x6e, 0x74, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x75, 0x6e, 0x65, 0x64, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x42,
+	0xdc, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
+	0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0b, 0x45, 0x76, 0x65, 0x6e,
+	0x74, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4b, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
+	0x61, 0x63, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x63, 0x74, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa, 0x02, 0x12, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0xca, 0x02, 0x12, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x63, 0x74, 0x5c, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x1e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
+	0x41, 0x63, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x3a, 0x3a, 0x41, 0x63, 0x74, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3653,8 +3654,8 @@ func file_warden_act_v1beta1_events_proto_rawDescGZIP() []byte {
 
 var file_warden_act_v1beta1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_warden_act_v1beta1_events_proto_goTypes = []interface{}{
-	(*EventCreateRule)(nil),        // 0: warden.act.v1beta1.EventCreateRule
-	(*EventUpdateRule)(nil),        // 1: warden.act.v1beta1.EventUpdateRule
+	(*EventCreateTemplate)(nil),    // 0: warden.act.v1beta1.EventCreateTemplate
+	(*EventUpdateTemplate)(nil),    // 1: warden.act.v1beta1.EventUpdateTemplate
 	(*EventCreateAction)(nil),      // 2: warden.act.v1beta1.EventCreateAction
 	(*EventApproveAction)(nil),     // 3: warden.act.v1beta1.EventApproveAction
 	(*EventActionVoted)(nil),       // 4: warden.act.v1beta1.EventActionVoted
@@ -3683,7 +3684,7 @@ func file_warden_act_v1beta1_events_proto_init() {
 	file_warden_act_v1beta1_action_vote_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_warden_act_v1beta1_events_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EventCreateRule); i {
+			switch v := v.(*EventCreateTemplate); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3695,7 +3696,7 @@ func file_warden_act_v1beta1_events_proto_init() {
 			}
 		}
 		file_warden_act_v1beta1_events_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EventUpdateRule); i {
+			switch v := v.(*EventUpdateTemplate); i {
 			case 0:
 				return &v.state
 			case 1:

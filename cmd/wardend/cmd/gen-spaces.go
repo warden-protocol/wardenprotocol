@@ -31,12 +31,12 @@ func AddGenesisSpaceCmd(defaultNodeHome string) *cobra.Command {
 					wardenGenState := wardentypes.GetGenesisStateFromAppState(cdc, appState)
 
 					wardenGenState.Spaces = append(wardenGenState.Spaces, wardentypes.Space{
-						Id:          1 + uint64(len(wardenGenState.Spaces)),
-						Creator:     creator,
-						Owners:      []string{creator},
-						AdminRuleId: 0,
-						SignRuleId:  0,
-						Nonce:       0,
+						Id:              1 + uint64(len(wardenGenState.Spaces)),
+						Creator:         creator,
+						Owners:          []string{creator},
+						AdminTemplateId: 0,
+						SignTemplateId:  0,
+						Nonce:           0,
 					})
 
 					wardenGenStateBz, err := cdc.MarshalJSON(wardenGenState)

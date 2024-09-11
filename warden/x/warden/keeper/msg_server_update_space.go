@@ -17,46 +17,46 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		return nil, err
 	}
 
-	if msg.AdminRuleId != space.AdminRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.AdminRuleId); err != nil {
+	if msg.AdminTemplateId != space.AdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.AdminTemplateId); err != nil {
 			return nil, err
 		}
-		space.AdminRuleId = msg.AdminRuleId
+		space.AdminTemplateId = msg.AdminTemplateId
 	}
 
-	if msg.SignRuleId != space.SignRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.SignRuleId); err != nil {
+	if msg.SignTemplateId != space.SignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.SignTemplateId); err != nil {
 			return nil, err
 		}
-		space.SignRuleId = msg.SignRuleId
+		space.SignTemplateId = msg.SignTemplateId
 	}
 
-	if msg.ApproveAdminRuleId != space.ApproveAdminRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.ApproveAdminRuleId); err != nil {
+	if msg.ApproveAdminTemplateId != space.ApproveAdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveAdminTemplateId); err != nil {
 			return nil, err
 		}
-		space.ApproveAdminRuleId = msg.ApproveAdminRuleId
+		space.ApproveAdminTemplateId = msg.ApproveAdminTemplateId
 	}
 
-	if msg.RejectAdminRuleId != space.RejectAdminRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.RejectAdminRuleId); err != nil {
+	if msg.RejectAdminTemplateId != space.RejectAdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectAdminTemplateId); err != nil {
 			return nil, err
 		}
-		space.RejectAdminRuleId = msg.RejectAdminRuleId
+		space.RejectAdminTemplateId = msg.RejectAdminTemplateId
 	}
 
-	if msg.ApproveSignRuleId != space.ApproveSignRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.ApproveSignRuleId); err != nil {
+	if msg.ApproveSignTemplateId != space.ApproveSignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveSignTemplateId); err != nil {
 			return nil, err
 		}
-		space.ApproveSignRuleId = msg.ApproveSignRuleId
+		space.ApproveSignTemplateId = msg.ApproveSignTemplateId
 	}
 
-	if msg.RejectSignRuleId != space.RejectSignRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.RejectSignRuleId); err != nil {
+	if msg.RejectSignTemplateId != space.RejectSignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectSignTemplateId); err != nil {
 			return nil, err
 		}
-		space.RejectSignRuleId = msg.RejectSignRuleId
+		space.RejectSignTemplateId = msg.RejectSignTemplateId
 	}
 
 	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
@@ -69,9 +69,9 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateSpace{
-		SpaceId:     space.Id,
-		AdminRuleId: space.AdminRuleId,
-		SignRuleId:  space.SignRuleId,
+		SpaceId:         space.Id,
+		AdminTemplateId: space.AdminTemplateId,
+		SignTemplateId:  space.SignTemplateId,
 	}); err != nil {
 		return nil, err
 	}

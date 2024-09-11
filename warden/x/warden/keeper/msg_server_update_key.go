@@ -17,25 +17,25 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 		return nil, err
 	}
 
-	if key.RuleId != msg.RuleId {
-		if err = k.actKeeper.IsValidRule(ctx, msg.RuleId); err != nil {
+	if key.TemplateId != msg.TemplateId {
+		if err = k.actKeeper.IsValidTemplate(ctx, msg.TemplateId); err != nil {
 			return nil, err
 		}
-		key.RuleId = msg.RuleId
+		key.TemplateId = msg.TemplateId
 	}
 
-	if key.ApproveRuleId != msg.ApproveRuleId {
-		if err = k.actKeeper.IsValidRule(ctx, msg.ApproveRuleId); err != nil {
+	if key.ApproveTemplateId != msg.ApproveTemplateId {
+		if err = k.actKeeper.IsValidTemplate(ctx, msg.ApproveTemplateId); err != nil {
 			return nil, err
 		}
-		key.ApproveRuleId = msg.ApproveRuleId
+		key.ApproveTemplateId = msg.ApproveTemplateId
 	}
 
-	if key.RejectRuleId != msg.RejectRuleId {
-		if err = k.actKeeper.IsValidRule(ctx, msg.RejectRuleId); err != nil {
+	if key.RejectTemplateId != msg.RejectTemplateId {
+		if err = k.actKeeper.IsValidTemplate(ctx, msg.RejectTemplateId); err != nil {
 			return nil, err
 		}
-		key.RejectRuleId = msg.RejectRuleId
+		key.RejectTemplateId = msg.RejectTemplateId
 	}
 
 	if err := k.KeysKeeper.Set(ctx, key); err != nil {
@@ -44,10 +44,10 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateKey{
-		Id:            key.Id,
-		RuleId:        key.RuleId,
-		ApproveRuleId: key.ApproveRuleId,
-		RejectRuleId:  key.RejectRuleId,
+		Id:                key.Id,
+		TemplateId:        key.TemplateId,
+		ApproveTemplateId: key.ApproveTemplateId,
+		RejectTemplateId:  key.RejectTemplateId,
 	}); err != nil {
 		return nil, err
 	}

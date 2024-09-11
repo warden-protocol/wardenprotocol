@@ -7,34 +7,34 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// RulesRegistry stores the mapping between Msg types and the function the
-// provides the approve and reject Rules for them.
+// TemplatesRegistry stores the mapping between Msg types and the function the
+// provides the approve and reject Templates for them.
 //
-// The registered Rules is fetched only once during Action creation. (The
+// The registered Templates is fetched only once during Action creation. (The
 // provider function is not called every time a new vote is added to an Action).
 //
 // The provider function receives the context.Context of the current execution.
 // Optionally, it can return a new context.Context that will be used further
-// during the Rule evaluation. This is especially useful for modules that
+// during the Expression evaluation. This is especially useful for modules that
 // want to enrich the context for their Expanders.
-type RulesRegistry struct {
+type TemplatesRegistry struct {
 	p map[string]ProviderFnWithCtx
 }
 
-type ProviderFnG[T sdk.Msg] func(context.Context, T) (Rule, Rule, error)
-type ProviderFnWithCtxG[T sdk.Msg] func(context.Context, T) (context.Context, Rule, Rule, error)
+type ProviderFnG[T sdk.Msg] func(context.Context, T) (Template, Template, error)
+type ProviderFnWithCtxG[T sdk.Msg] func(context.Context, T) (context.Context, Template, Template, error)
 
 type registry interface {
 	Register(typeUrl string, fn ProviderFn)
 }
 
-// Register is a type-safe version of RulesRegistry.Register that uses
+// Register is a type-safe version of TemplatesRegistry.Register that uses
 // generics to ensure that the callback function accepts a sdk.Msg of the
 // correct type.
 func Register[T sdk.Msg](reg registry, fn ProviderFnG[T]) {
 	var msg T
 	typeUrl := sdk.MsgTypeURL(msg)
-	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Rule, Rule, error) {
+	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Template, Template, error) {
 		return fn(ctx, m.(T))
 	})
 }
@@ -43,23 +43,23 @@ type registryWithCtx interface {
 	RegisterCtx(typeUrl string, fn ProviderFnWithCtx)
 }
 
-// RegisterCtx is a type-safe version of RulesRegistry.RegisterCtx that uses
+// RegisterCtx is a type-safe version of TemplatesRegistry.RegisterCtx that uses
 // generics to ensure that the callback function accepts a sdk.Msg of the
 // correct type.
 func RegisterCtx[T sdk.Msg](reg registryWithCtx, fn ProviderFnWithCtxG[T]) {
 	var msg T
 	typeUrl := sdk.MsgTypeURL(msg)
-	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Rule, Rule, error) {
+	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, error) {
 		return fn(ctx, m.(T))
 	})
 }
 
-type ProviderFn func(context.Context, sdk.Msg) (Rule, Rule, error)
-type ProviderFnWithCtx func(context.Context, sdk.Msg) (context.Context, Rule, Rule, error)
+type ProviderFn func(context.Context, sdk.Msg) (Template, Template, error)
+type ProviderFnWithCtx func(context.Context, sdk.Msg) (context.Context, Template, Template, error)
 
-// NewRulesRegistry returns an empty initialized *RulesRegistry.
-func NewRulesRegistry() *RulesRegistry {
-	return &RulesRegistry{
+// NewTemplatesRegistry returns an empty initialized *TemplatesRegistry.
+func NewTemplatesRegistry() *TemplatesRegistry {
+	return &TemplatesRegistry{
 		p: make(map[string]ProviderFnWithCtx),
 	}
 }
@@ -67,8 +67,8 @@ func NewRulesRegistry() *RulesRegistry {
 // Register registers the ProviderFn for the typeUrl. Only one
 // ProviderMsg can be registered for each typeUrl, attempting to register
 // a provider for the same typeUrl twice will panic.
-func (p *RulesRegistry) Register(typeUrl string, fn ProviderFn) {
-	p.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Rule, Rule, error) {
+func (p *TemplatesRegistry) Register(typeUrl string, fn ProviderFn) {
+	p.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, error) {
 		approve, reject, err := fn(ctx, m)
 		return ctx, approve, reject, err
 	})
@@ -77,7 +77,7 @@ func (p *RulesRegistry) Register(typeUrl string, fn ProviderFn) {
 // RegisterCtx registers the ProviderFnWithCtx for the typeUrl. Only one
 // ProviderMsg can be registered for each typeUrl, attempting to register
 // a provider for the same typeUrl twice will panic.
-func (p *RulesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
+func (p *TemplatesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
 	if len(typeUrl) == 0 {
 		panic(fmt.Errorf("typeUrl cannot be empty"))
 	}
@@ -87,7 +87,7 @@ func (p *RulesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
 	}
 
 	if _, found := p.p[typeUrl]; found {
-		panic(fmt.Errorf("RuleRegistry already has a handler for %s", typeUrl))
+		panic(fmt.Errorf("TemplateRegistry already has a handler for %s", typeUrl))
 	}
 
 	p.p[typeUrl] = fn
@@ -97,10 +97,10 @@ func (p *RulesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
 //
 // An error is returned if there are no provider functions registered for the
 // sdk.Msg type.
-func (p *RulesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Context, Rule, Rule, error) {
+func (p *TemplatesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Context, Template, Template, error) {
 	typeUrl := sdk.MsgTypeURL(msg)
 	if fn, found := p.p[typeUrl]; found {
 		return fn(ctx, msg)
 	}
-	return nil, Rule{}, Rule{}, fmt.Errorf("no rule provider registered for %s", typeUrl)
+	return nil, Template{}, Template{}, fmt.Errorf("no Template provider registered for %s", typeUrl)
 }

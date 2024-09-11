@@ -348,24 +348,24 @@ func (m *MsgApproveActionResponse) GetStatus() string {
 	return ""
 }
 
-type MsgNewRule struct {
+type MsgNewTemplate struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Name       string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Definition string `protobuf:"bytes,3,opt,name=definition,proto3" json:"definition,omitempty"`
 }
 
-func (m *MsgNewRule) Reset()         { *m = MsgNewRule{} }
-func (m *MsgNewRule) String() string { return proto.CompactTextString(m) }
-func (*MsgNewRule) ProtoMessage()    {}
-func (*MsgNewRule) Descriptor() ([]byte, []int) {
+func (m *MsgNewTemplate) Reset()         { *m = MsgNewTemplate{} }
+func (m *MsgNewTemplate) String() string { return proto.CompactTextString(m) }
+func (*MsgNewTemplate) ProtoMessage()    {}
+func (*MsgNewTemplate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f059980976488200, []int{6}
 }
-func (m *MsgNewRule) XXX_Unmarshal(b []byte) error {
+func (m *MsgNewTemplate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgNewRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNewTemplate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgNewRule.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNewTemplate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -375,55 +375,55 @@ func (m *MsgNewRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgNewRule) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgNewRule.Merge(m, src)
+func (m *MsgNewTemplate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNewTemplate.Merge(m, src)
 }
-func (m *MsgNewRule) XXX_Size() int {
+func (m *MsgNewTemplate) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgNewRule) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgNewRule.DiscardUnknown(m)
+func (m *MsgNewTemplate) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNewTemplate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgNewRule proto.InternalMessageInfo
+var xxx_messageInfo_MsgNewTemplate proto.InternalMessageInfo
 
-func (m *MsgNewRule) GetCreator() string {
+func (m *MsgNewTemplate) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgNewRule) GetName() string {
+func (m *MsgNewTemplate) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *MsgNewRule) GetDefinition() string {
+func (m *MsgNewTemplate) GetDefinition() string {
 	if m != nil {
 		return m.Definition
 	}
 	return ""
 }
 
-type MsgNewRuleResponse struct {
+type MsgNewTemplateResponse struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *MsgNewRuleResponse) Reset()         { *m = MsgNewRuleResponse{} }
-func (m *MsgNewRuleResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgNewRuleResponse) ProtoMessage()    {}
-func (*MsgNewRuleResponse) Descriptor() ([]byte, []int) {
+func (m *MsgNewTemplateResponse) Reset()         { *m = MsgNewTemplateResponse{} }
+func (m *MsgNewTemplateResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgNewTemplateResponse) ProtoMessage()    {}
+func (*MsgNewTemplateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f059980976488200, []int{7}
 }
-func (m *MsgNewRuleResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgNewTemplateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgNewRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNewTemplateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgNewRuleResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNewTemplateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -433,44 +433,44 @@ func (m *MsgNewRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgNewRuleResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgNewRuleResponse.Merge(m, src)
+func (m *MsgNewTemplateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNewTemplateResponse.Merge(m, src)
 }
-func (m *MsgNewRuleResponse) XXX_Size() int {
+func (m *MsgNewTemplateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgNewRuleResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgNewRuleResponse.DiscardUnknown(m)
+func (m *MsgNewTemplateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNewTemplateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgNewRuleResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgNewTemplateResponse proto.InternalMessageInfo
 
-func (m *MsgNewRuleResponse) GetId() uint64 {
+func (m *MsgNewTemplateResponse) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-type MsgUpdateRule struct {
+type MsgUpdateTemplate struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Id         uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 	Name       string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Definition string `protobuf:"bytes,4,opt,name=definition,proto3" json:"definition,omitempty"`
 }
 
-func (m *MsgUpdateRule) Reset()         { *m = MsgUpdateRule{} }
-func (m *MsgUpdateRule) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateRule) ProtoMessage()    {}
-func (*MsgUpdateRule) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateTemplate) Reset()         { *m = MsgUpdateTemplate{} }
+func (m *MsgUpdateTemplate) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateTemplate) ProtoMessage()    {}
+func (*MsgUpdateTemplate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f059980976488200, []int{8}
 }
-func (m *MsgUpdateRule) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateTemplate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateTemplate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateRule.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateTemplate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -480,61 +480,61 @@ func (m *MsgUpdateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateRule) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateRule.Merge(m, src)
+func (m *MsgUpdateTemplate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateTemplate.Merge(m, src)
 }
-func (m *MsgUpdateRule) XXX_Size() int {
+func (m *MsgUpdateTemplate) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateRule) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateRule.DiscardUnknown(m)
+func (m *MsgUpdateTemplate) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateTemplate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateRule proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateTemplate proto.InternalMessageInfo
 
-func (m *MsgUpdateRule) GetCreator() string {
+func (m *MsgUpdateTemplate) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgUpdateRule) GetId() uint64 {
+func (m *MsgUpdateTemplate) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-func (m *MsgUpdateRule) GetName() string {
+func (m *MsgUpdateTemplate) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *MsgUpdateRule) GetDefinition() string {
+func (m *MsgUpdateTemplate) GetDefinition() string {
 	if m != nil {
 		return m.Definition
 	}
 	return ""
 }
 
-type MsgUpdateRuleResponse struct {
+type MsgUpdateTemplateResponse struct {
 }
 
-func (m *MsgUpdateRuleResponse) Reset()         { *m = MsgUpdateRuleResponse{} }
-func (m *MsgUpdateRuleResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateRuleResponse) ProtoMessage()    {}
-func (*MsgUpdateRuleResponse) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateTemplateResponse) Reset()         { *m = MsgUpdateTemplateResponse{} }
+func (m *MsgUpdateTemplateResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateTemplateResponse) ProtoMessage()    {}
+func (*MsgUpdateTemplateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f059980976488200, []int{9}
 }
-func (m *MsgUpdateRuleResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateTemplateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateTemplateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateRuleResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateTemplateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -544,17 +544,17 @@ func (m *MsgUpdateRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateRuleResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateRuleResponse.Merge(m, src)
+func (m *MsgUpdateTemplateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateTemplateResponse.Merge(m, src)
 }
-func (m *MsgUpdateRuleResponse) XXX_Size() int {
+func (m *MsgUpdateTemplateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateRuleResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateRuleResponse.DiscardUnknown(m)
+func (m *MsgUpdateTemplateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateTemplateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateRuleResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateTemplateResponse proto.InternalMessageInfo
 
 type MsgRevokeAction struct {
 	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -851,10 +851,10 @@ func init() {
 	proto.RegisterType((*MsgNewActionResponse)(nil), "warden.act.v1beta1.MsgNewActionResponse")
 	proto.RegisterType((*MsgApproveAction)(nil), "warden.act.v1beta1.MsgApproveAction")
 	proto.RegisterType((*MsgApproveActionResponse)(nil), "warden.act.v1beta1.MsgApproveActionResponse")
-	proto.RegisterType((*MsgNewRule)(nil), "warden.act.v1beta1.MsgNewRule")
-	proto.RegisterType((*MsgNewRuleResponse)(nil), "warden.act.v1beta1.MsgNewRuleResponse")
-	proto.RegisterType((*MsgUpdateRule)(nil), "warden.act.v1beta1.MsgUpdateRule")
-	proto.RegisterType((*MsgUpdateRuleResponse)(nil), "warden.act.v1beta1.MsgUpdateRuleResponse")
+	proto.RegisterType((*MsgNewTemplate)(nil), "warden.act.v1beta1.MsgNewTemplate")
+	proto.RegisterType((*MsgNewTemplateResponse)(nil), "warden.act.v1beta1.MsgNewTemplateResponse")
+	proto.RegisterType((*MsgUpdateTemplate)(nil), "warden.act.v1beta1.MsgUpdateTemplate")
+	proto.RegisterType((*MsgUpdateTemplateResponse)(nil), "warden.act.v1beta1.MsgUpdateTemplateResponse")
 	proto.RegisterType((*MsgRevokeAction)(nil), "warden.act.v1beta1.MsgRevokeAction")
 	proto.RegisterType((*MsgRevokeActionResponse)(nil), "warden.act.v1beta1.MsgRevokeActionResponse")
 	proto.RegisterType((*MsgCheckAction)(nil), "warden.act.v1beta1.MsgCheckAction")
@@ -868,62 +868,62 @@ func init() { proto.RegisterFile("warden/act/v1beta1/tx.proto", fileDescriptor_f
 var fileDescriptor_f059980976488200 = []byte{
 	// 909 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0x4f, 0x6f, 0xe3, 0x44,
-	0x14, 0xaf, 0xd3, 0x6c, 0x4b, 0x5e, 0xbb, 0x65, 0x31, 0xdd, 0x6d, 0xea, 0x22, 0x6f, 0x30, 0xd5,
-	0xaa, 0x14, 0xd6, 0xa6, 0x41, 0xda, 0x43, 0x05, 0x48, 0x2d, 0x7f, 0x04, 0x87, 0x20, 0x30, 0xfb,
-	0x47, 0x5a, 0x09, 0xb2, 0x53, 0x7b, 0xd6, 0x19, 0xb6, 0xf6, 0x58, 0x9e, 0x49, 0xb6, 0x11, 0x17,
-	0xe0, 0xc8, 0x89, 0x23, 0x12, 0x5f, 0x80, 0x63, 0x0f, 0x5c, 0xf8, 0x06, 0x7b, 0x5c, 0x71, 0xe2,
-	0x84, 0x50, 0x7b, 0xe8, 0xd7, 0x40, 0x9e, 0x19, 0x3b, 0x76, 0x36, 0x8e, 0xf7, 0xd0, 0x43, 0x12,
-	0xbf, 0x79, 0xbf, 0xf7, 0xde, 0xef, 0xfd, 0x99, 0x17, 0xc3, 0xd6, 0x53, 0x94, 0xf8, 0x38, 0x72,
-	0x90, 0xc7, 0x9d, 0xd1, 0xde, 0x11, 0xe6, 0x68, 0xcf, 0xe1, 0x27, 0x76, 0x9c, 0x50, 0x4e, 0x75,
-	0x5d, 0x2a, 0x6d, 0xe4, 0x71, 0x5b, 0x29, 0x8d, 0xd7, 0x50, 0x48, 0x22, 0xea, 0x88, 0x6f, 0x09,
-	0x33, 0x36, 0x3c, 0xca, 0x42, 0xca, 0x9c, 0x90, 0x05, 0xce, 0x68, 0x2f, 0xfd, 0x51, 0x8a, 0x4d,
-	0xa9, 0xe8, 0x0b, 0xc9, 0x91, 0x82, 0x52, 0xad, 0x07, 0x34, 0xa0, 0xf2, 0x3c, 0x7d, 0xca, 0x0c,
-	0x02, 0x4a, 0x83, 0x63, 0xec, 0x08, 0xe9, 0x68, 0xf8, 0xd8, 0x41, 0xd1, 0x58, 0xa9, 0x6e, 0xce,
-	0x20, 0x1a, 0xa3, 0x04, 0x85, 0x99, 0xc7, 0xed, 0x19, 0x00, 0xe4, 0x71, 0x42, 0xa3, 0xfe, 0x88,
-	0x72, 0x9c, 0xc5, 0x65, 0x03, 0x82, 0x8f, 0x7d, 0x07, 0x31, 0x9e, 0x7e, 0xe4, 0xa9, 0xf5, 0x97,
-	0x06, 0xaf, 0xf6, 0x58, 0x70, 0x2f, 0xf6, 0x11, 0xc7, 0x5f, 0x09, 0xaf, 0xfa, 0x1d, 0x68, 0xa1,
-	0x21, 0x1f, 0xd0, 0x84, 0xf0, 0x71, 0x5b, 0xeb, 0x68, 0x3b, 0xad, 0xc3, 0xf6, 0xdf, 0x7f, 0xde,
-	0x5e, 0x57, 0x69, 0x1c, 0xf8, 0x7e, 0x82, 0x19, 0xfb, 0x86, 0x27, 0x24, 0x0a, 0xdc, 0x09, 0x54,
-	0xff, 0x10, 0x96, 0x24, 0xaf, 0x76, 0xa3, 0xa3, 0xed, 0xac, 0x74, 0x0d, 0xfb, 0xc5, 0x2a, 0xda,
-	0x32, 0xc6, 0x61, 0xeb, 0xd9, 0xbf, 0x37, 0x17, 0xfe, 0xb8, 0x38, 0xdd, 0xd5, 0x5c, 0x65, 0xb4,
-	0xef, 0xfc, 0x7c, 0x71, 0xba, 0x3b, 0x71, 0xf7, 0xcb, 0xc5, 0xe9, 0xee, 0x1b, 0x2a, 0xb3, 0x13,
-	0x91, 0xdb, 0x14, 0x4f, 0x6b, 0x13, 0x36, 0xa6, 0x8e, 0x5c, 0xcc, 0x62, 0x1a, 0x31, 0x6c, 0xfd,
-	0xd6, 0x80, 0xd5, 0x1e, 0x0b, 0xbe, 0xc4, 0x4f, 0x0f, 0x44, 0x21, 0xf4, 0x36, 0x2c, 0x7b, 0x09,
-	0x46, 0x9c, 0x26, 0x32, 0x23, 0x37, 0x13, 0x75, 0x1b, 0x96, 0x43, 0xcc, 0x18, 0x0a, 0xb0, 0xa2,
-	0xbd, 0x6e, 0xcb, 0x5e, 0xd8, 0x59, 0x2f, 0xec, 0x83, 0x68, 0xec, 0x66, 0x20, 0xbd, 0x0b, 0xd7,
-	0x55, 0x71, 0x39, 0x09, 0x31, 0x1d, 0xf2, 0xfe, 0x00, 0x93, 0x60, 0xc0, 0xdb, 0x8b, 0x1d, 0x6d,
-	0xa7, 0xe9, 0xbe, 0x2e, 0x95, 0x77, 0xa5, 0xee, 0x73, 0xa1, 0xd2, 0x3f, 0x82, 0x2d, 0x7c, 0x12,
-	0x63, 0x8f, 0x63, 0xbf, 0x8f, 0xe2, 0x38, 0xa1, 0x23, 0xdc, 0xc7, 0x27, 0x71, 0x5a, 0x46, 0x42,
-	0xa3, 0x76, 0x53, 0x30, 0xda, 0xcc, 0x20, 0x07, 0x12, 0xf1, 0x69, 0x0e, 0xd0, 0x3f, 0x00, 0x23,
-	0xb7, 0x4f, 0xf0, 0xf7, 0xd8, 0xe3, 0x45, 0xf3, 0x2b, 0xc2, 0xbc, 0x9d, 0x21, 0x5c, 0x01, 0x98,
-	0x58, 0xef, 0xaf, 0xa6, 0x85, 0xcd, 0xf2, 0xb5, 0x6e, 0xc1, 0x7a, 0xb1, 0x32, 0x59, 0xc9, 0xf4,
-	0x35, 0x68, 0x10, 0x5f, 0x14, 0xa7, 0xe9, 0x36, 0x88, 0x6f, 0x3d, 0x80, 0x6b, 0x3d, 0x16, 0x28,
-	0x2e, 0xb5, 0x55, 0xdc, 0x82, 0x96, 0xaa, 0x0a, 0xf1, 0x45, 0x1d, 0x9b, 0xee, 0x2b, 0xf2, 0xe0,
-	0x0b, 0x7f, 0x8a, 0x40, 0x17, 0xda, 0xd3, 0x8e, 0x73, 0x12, 0x37, 0x60, 0x89, 0x71, 0xc4, 0x87,
-	0x4c, 0xf9, 0x57, 0x92, 0x35, 0x00, 0x90, 0xa4, 0xdd, 0xe1, 0x31, 0x9e, 0x43, 0x43, 0x87, 0x66,
-	0x84, 0x42, 0xd9, 0xc9, 0x96, 0x2b, 0x9e, 0x75, 0x13, 0xc0, 0xc7, 0x8f, 0x49, 0x44, 0xd2, 0x48,
-	0xa2, 0x4b, 0x2d, 0xb7, 0x70, 0x32, 0xc5, 0x6e, 0x1b, 0xf4, 0x49, 0xa4, 0xca, 0xe2, 0xfc, 0x00,
-	0x57, 0xf3, 0xd1, 0xab, 0xa1, 0x24, 0x4d, 0x1b, 0x99, 0x69, 0x4e, 0x71, 0xb1, 0x92, 0x62, 0xb3,
-	0x86, 0xe2, 0x06, 0x5c, 0x2f, 0x05, 0xcf, 0xa7, 0xfe, 0xbe, 0xb8, 0xcb, 0x2e, 0x1e, 0xd1, 0x27,
-	0x97, 0xda, 0x31, 0x79, 0xd1, 0x8a, 0x7e, 0xf3, 0x90, 0xf7, 0x60, 0xad, 0xc7, 0x82, 0x8f, 0x07,
-	0xd8, 0x7b, 0x72, 0x99, 0x11, 0xdf, 0x83, 0x1b, 0x65, 0xb7, 0xb5, 0x13, 0xf2, 0xbb, 0x26, 0xe6,
-	0xf5, 0x3e, 0xe5, 0xf8, 0x33, 0x9a, 0x28, 0x2e, 0x1d, 0x58, 0x89, 0x51, 0xc2, 0x89, 0x47, 0x62,
-	0x14, 0x71, 0x65, 0x51, 0x3c, 0x9a, 0xcb, 0x49, 0xbf, 0x03, 0xcd, 0x74, 0x81, 0x8a, 0x56, 0xad,
-	0x75, 0xad, 0x59, 0xeb, 0x4c, 0x06, 0x4a, 0xa3, 0xde, 0x1d, 0xc7, 0xd8, 0x15, 0xf8, 0xfd, 0x6b,
-	0x69, 0x2e, 0xc5, 0x30, 0x6a, 0xe6, 0x4b, 0xe4, 0xea, 0x32, 0xea, 0xfe, 0xb4, 0x04, 0x8b, 0x3d,
-	0x16, 0xe8, 0x8f, 0x60, 0xb5, 0xb4, 0x9e, 0xdf, 0x9a, 0xc5, 0x63, 0x6a, 0x11, 0x1a, 0xef, 0xbc,
-	0x04, 0x28, 0x67, 0xf0, 0x00, 0x5a, 0x93, 0x4d, 0xd9, 0xa9, 0xb0, 0xcc, 0x11, 0xc6, 0x4e, 0x1d,
-	0x22, 0x77, 0xec, 0xc1, 0xd5, 0xf2, 0x02, 0xd9, 0xae, 0x30, 0x2d, 0xa1, 0x8c, 0x77, 0x5f, 0x06,
-	0x95, 0x07, 0xf9, 0x16, 0x56, 0x8a, 0xf3, 0x67, 0x55, 0x18, 0x17, 0x30, 0xc6, 0x6e, 0x3d, 0x26,
-	0x77, 0xff, 0x35, 0x2c, 0x67, 0x7b, 0xc7, 0xac, 0x4e, 0x3c, 0xd5, 0x1b, 0xb7, 0xe6, 0xeb, 0x73,
-	0x97, 0x0f, 0x01, 0x0a, 0xab, 0xe3, 0xcd, 0xb9, 0xad, 0x12, 0x8e, 0xdf, 0xae, 0x85, 0xe4, 0xbe,
-	0x1f, 0xc1, 0x6a, 0x69, 0x01, 0x54, 0x4d, 0x4b, 0x11, 0x54, 0x39, 0x2d, 0xb3, 0xae, 0x7c, 0xda,
-	0xd4, 0xf2, 0x2d, 0xab, 0x6a, 0x6a, 0x09, 0x55, 0xd9, 0xd4, 0x99, 0x97, 0xc2, 0xb8, 0xf2, 0x63,
-	0xfa, 0x6e, 0x70, 0xf8, 0xdd, 0xb3, 0x33, 0x53, 0x7b, 0x7e, 0x66, 0x6a, 0xff, 0x9d, 0x99, 0xda,
-	0xaf, 0xe7, 0xe6, 0xc2, 0xf3, 0x73, 0x73, 0xe1, 0x9f, 0x73, 0x73, 0xe1, 0xe1, 0x27, 0x01, 0xe1,
-	0x83, 0xe1, 0x91, 0xed, 0xd1, 0xd0, 0x91, 0x8e, 0x6f, 0x8b, 0xff, 0x6b, 0x8f, 0x1e, 0x2b, 0x79,
-	0x4a, 0x54, 0x2f, 0x11, 0x7c, 0x1c, 0x63, 0x96, 0xbd, 0x26, 0x1d, 0x2d, 0x09, 0xd0, 0xfb, 0xff,
-	0x07, 0x00, 0x00, 0xff, 0xff, 0xb1, 0xb0, 0xa7, 0x02, 0x0d, 0x0a, 0x00, 0x00,
+	0x14, 0xaf, 0xd3, 0x6c, 0x97, 0xbc, 0x96, 0xb2, 0x6b, 0xca, 0xae, 0xeb, 0xa2, 0x6c, 0x64, 0x16,
+	0x14, 0x15, 0x6a, 0xd3, 0x20, 0xed, 0xa1, 0x02, 0xa4, 0x96, 0x3f, 0x82, 0x43, 0x11, 0x32, 0xdd,
+	0x5d, 0x09, 0x09, 0xb2, 0x53, 0x7b, 0xea, 0x0c, 0x1b, 0x7b, 0x2c, 0xcf, 0x24, 0xdb, 0x9c, 0x40,
+	0x1c, 0x39, 0x71, 0x04, 0xf1, 0x05, 0x38, 0xf6, 0xc0, 0x85, 0x6f, 0xb0, 0xc7, 0x15, 0x27, 0x4e,
+	0x08, 0xb5, 0x87, 0x7e, 0x8d, 0x95, 0x67, 0xc6, 0x8e, 0xed, 0x8d, 0x9b, 0x1c, 0xf6, 0x90, 0xc4,
+	0x6f, 0xde, 0xef, 0xbd, 0xf7, 0x7b, 0xef, 0xcd, 0x7b, 0x31, 0x6c, 0x3d, 0x41, 0x89, 0x8f, 0x23,
+	0x07, 0x79, 0xdc, 0x19, 0xef, 0x1e, 0x63, 0x8e, 0x76, 0x1d, 0x7e, 0x6a, 0xc7, 0x09, 0xe5, 0x54,
+	0xd7, 0xa5, 0xd2, 0x46, 0x1e, 0xb7, 0x95, 0xd2, 0xbc, 0x89, 0x42, 0x12, 0x51, 0x47, 0x7c, 0x4b,
+	0x98, 0x79, 0xdb, 0xa3, 0x2c, 0xa4, 0xcc, 0x09, 0x59, 0xe0, 0x8c, 0x77, 0xd3, 0x1f, 0xa5, 0xd8,
+	0x94, 0x8a, 0xbe, 0x90, 0x1c, 0x29, 0x28, 0xd5, 0x46, 0x40, 0x03, 0x2a, 0xcf, 0xd3, 0xa7, 0xcc,
+	0x20, 0xa0, 0x34, 0x18, 0x62, 0x47, 0x48, 0xc7, 0xa3, 0x13, 0x07, 0x45, 0x13, 0xa5, 0xba, 0x33,
+	0x83, 0x68, 0x8c, 0x12, 0x14, 0x66, 0x1e, 0xef, 0xce, 0x00, 0x20, 0x8f, 0x13, 0x1a, 0xf5, 0xc7,
+	0x94, 0xe3, 0x2c, 0x2e, 0x1b, 0x10, 0x3c, 0xf4, 0x1d, 0xc4, 0x78, 0xfa, 0x91, 0xa7, 0xd6, 0xdf,
+	0x1a, 0xbc, 0x76, 0xc8, 0x82, 0xfb, 0xb1, 0x8f, 0x38, 0xfe, 0x5a, 0x78, 0xd5, 0xef, 0x41, 0x0b,
+	0x8d, 0xf8, 0x80, 0x26, 0x84, 0x4f, 0x0c, 0xad, 0xa3, 0x75, 0x5b, 0x07, 0xc6, 0x3f, 0x7f, 0xed,
+	0x6c, 0xa8, 0x34, 0xf6, 0x7d, 0x3f, 0xc1, 0x8c, 0x7d, 0xc3, 0x13, 0x12, 0x05, 0xee, 0x14, 0xaa,
+	0x7f, 0x04, 0x2b, 0x92, 0x97, 0xd1, 0xe8, 0x68, 0xdd, 0xd5, 0x9e, 0x69, 0xbf, 0x58, 0x45, 0x5b,
+	0xc6, 0x38, 0x68, 0x3d, 0xfd, 0xef, 0xce, 0xd2, 0x9f, 0x97, 0x67, 0xdb, 0x9a, 0xab, 0x8c, 0xf6,
+	0x9c, 0x9f, 0x2f, 0xcf, 0xb6, 0xa7, 0xee, 0x7e, 0xb9, 0x3c, 0xdb, 0x7e, 0x53, 0x65, 0x76, 0x2a,
+	0x72, 0xab, 0xf0, 0xb4, 0x36, 0xe1, 0x76, 0xe5, 0xc8, 0xc5, 0x2c, 0xa6, 0x11, 0xc3, 0xd6, 0x6f,
+	0x0d, 0x58, 0x3b, 0x64, 0xc1, 0x57, 0xf8, 0xc9, 0xbe, 0x28, 0x84, 0x6e, 0xc0, 0x75, 0x2f, 0xc1,
+	0x88, 0xd3, 0x44, 0x66, 0xe4, 0x66, 0xa2, 0x6e, 0xc3, 0xf5, 0x10, 0x33, 0x86, 0x02, 0xac, 0x68,
+	0x6f, 0xd8, 0xb2, 0x17, 0x76, 0xd6, 0x0b, 0x7b, 0x3f, 0x9a, 0xb8, 0x19, 0x48, 0xef, 0xc1, 0x1b,
+	0xaa, 0xb8, 0x9c, 0x84, 0x98, 0x8e, 0x78, 0x7f, 0x80, 0x49, 0x30, 0xe0, 0xc6, 0x72, 0x47, 0xeb,
+	0x36, 0xdd, 0xd7, 0xa5, 0xf2, 0x48, 0xea, 0xbe, 0x10, 0x2a, 0xfd, 0x63, 0xd8, 0xc2, 0xa7, 0x31,
+	0xf6, 0x38, 0xf6, 0xfb, 0x28, 0x8e, 0x13, 0x3a, 0xc6, 0x7d, 0x7c, 0x1a, 0xa7, 0x65, 0x24, 0x34,
+	0x32, 0x9a, 0x82, 0xd1, 0x66, 0x06, 0xd9, 0x97, 0x88, 0xcf, 0x72, 0x80, 0xfe, 0x21, 0x98, 0xb9,
+	0x7d, 0x82, 0x7f, 0xc0, 0x1e, 0x2f, 0x9a, 0x5f, 0x13, 0xe6, 0x46, 0x86, 0x70, 0x05, 0x60, 0x6a,
+	0xbd, 0xb7, 0x96, 0x16, 0x36, 0xcb, 0xd7, 0x7a, 0x07, 0x36, 0x8a, 0x95, 0xc9, 0x4a, 0xa6, 0xaf,
+	0x43, 0x83, 0xf8, 0xa2, 0x38, 0x4d, 0xb7, 0x41, 0x7c, 0xeb, 0x21, 0xdc, 0x38, 0x64, 0x81, 0xe2,
+	0x32, 0xb7, 0x8a, 0x5b, 0xd0, 0x52, 0x55, 0x21, 0xbe, 0xa8, 0x63, 0xd3, 0x7d, 0x45, 0x1e, 0x7c,
+	0xe9, 0x57, 0x08, 0xf4, 0xc0, 0xa8, 0x3a, 0xce, 0x49, 0xdc, 0x82, 0x15, 0xc6, 0x11, 0x1f, 0x31,
+	0xe5, 0x5f, 0x49, 0xd6, 0x10, 0xd6, 0x25, 0xe9, 0x23, 0x1c, 0xc6, 0x43, 0xc4, 0xf1, 0x15, 0x54,
+	0x74, 0x68, 0x46, 0x28, 0x94, 0xdd, 0x6c, 0xb9, 0xe2, 0x59, 0x6f, 0x03, 0xf8, 0xf8, 0x84, 0x44,
+	0x24, 0x8d, 0x26, 0x3a, 0xd5, 0x72, 0x0b, 0x27, 0x15, 0x86, 0x5d, 0xb8, 0x55, 0x8e, 0x56, 0x5b,
+	0xa4, 0x1f, 0xe1, 0x66, 0x7e, 0x05, 0x17, 0xa0, 0x26, 0xcd, 0x1b, 0x99, 0x79, 0x4e, 0x75, 0xb9,
+	0x96, 0x6a, 0x73, 0x0e, 0xd5, 0x2d, 0xd8, 0x7c, 0x81, 0x40, 0x3e, 0x05, 0x0f, 0xc4, 0x6c, 0xbb,
+	0x78, 0x4c, 0x1f, 0xbf, 0xd4, 0x0e, 0xca, 0xc1, 0x2b, 0xfa, 0xcd, 0x43, 0xde, 0x17, 0x8d, 0xfa,
+	0x64, 0x80, 0xbd, 0xc7, 0x2f, 0x33, 0xe2, 0xfb, 0xa2, 0x23, 0x05, 0xb7, 0x73, 0x6f, 0xcc, 0x1f,
+	0x9a, 0xb8, 0xbf, 0x0f, 0x28, 0xc7, 0x9f, 0xd3, 0x44, 0x71, 0xe9, 0xc0, 0x6a, 0x8c, 0x12, 0x4e,
+	0x3c, 0x12, 0xa3, 0x88, 0x2b, 0x8b, 0xe2, 0xd1, 0x95, 0x9c, 0xf4, 0x7b, 0xd0, 0x4c, 0x17, 0xaa,
+	0x68, 0xd7, 0x7a, 0xcf, 0x9a, 0xb5, 0xde, 0x64, 0xa0, 0x34, 0xea, 0xd1, 0x24, 0xc6, 0xae, 0xc0,
+	0xef, 0xdd, 0x48, 0x73, 0x29, 0x86, 0x51, 0x33, 0x50, 0x22, 0x37, 0x2f, 0xa3, 0xde, 0xef, 0x2b,
+	0xb0, 0x7c, 0xc8, 0x02, 0xfd, 0x11, 0xac, 0x95, 0xd6, 0xf5, 0x5b, 0xb3, 0x78, 0x54, 0x16, 0xa3,
+	0xf9, 0xee, 0x02, 0xa0, 0x9c, 0xc1, 0x43, 0x68, 0x4d, 0x37, 0x67, 0xa7, 0xc6, 0x32, 0x47, 0x98,
+	0xdd, 0x79, 0x88, 0xdc, 0xb1, 0x07, 0xaf, 0x96, 0x17, 0xca, 0xdd, 0x1a, 0xd3, 0x12, 0xca, 0x7c,
+	0x6f, 0x11, 0x54, 0x1e, 0xe4, 0x3b, 0x58, 0x2d, 0xde, 0x3f, 0xab, 0xc6, 0xb8, 0x80, 0x31, 0xb7,
+	0xe7, 0x63, 0x8a, 0xee, 0x8b, 0x7b, 0xc8, 0xaa, 0x4f, 0x3e, 0xc3, 0xd4, 0xba, 0x9f, 0xb5, 0x61,
+	0x4e, 0x60, 0xbd, 0xb2, 0x4e, 0xde, 0xbe, 0xb2, 0x75, 0x79, 0x90, 0x9d, 0x85, 0x60, 0x79, 0x9c,
+	0x47, 0xb0, 0x56, 0x5a, 0x0c, 0x75, 0xb7, 0xa8, 0x08, 0xaa, 0xbd, 0x45, 0xb3, 0x56, 0x41, 0xda,
+	0xec, 0xf2, 0xf4, 0xd5, 0x35, 0xbb, 0x84, 0xaa, 0x6d, 0xf6, 0xcc, 0x61, 0x31, 0xaf, 0xfd, 0x94,
+	0xbe, 0x43, 0x1c, 0x7c, 0xff, 0xf4, 0xbc, 0xad, 0x3d, 0x3b, 0x6f, 0x6b, 0xff, 0x9f, 0xb7, 0xb5,
+	0x5f, 0x2f, 0xda, 0x4b, 0xcf, 0x2e, 0xda, 0x4b, 0xff, 0x5e, 0xb4, 0x97, 0xbe, 0xfd, 0x34, 0x20,
+	0x7c, 0x30, 0x3a, 0xb6, 0x3d, 0x1a, 0x3a, 0xd2, 0xf1, 0x8e, 0xf8, 0x5f, 0xf7, 0xe8, 0x50, 0xc9,
+	0x15, 0x51, 0xbd, 0x6c, 0xf0, 0x49, 0x8c, 0x59, 0xf6, 0x3a, 0x75, 0xbc, 0x22, 0x40, 0x1f, 0x3c,
+	0x0f, 0x00, 0x00, 0xff, 0xff, 0x95, 0x5f, 0x23, 0xbf, 0x35, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -947,10 +947,10 @@ type MsgClient interface {
 	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error)
-	// Create a new Rule.
-	NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error)
+	// Create a new Template.
+	NewTemplate(ctx context.Context, in *MsgNewTemplate, opts ...grpc.CallOption) (*MsgNewTemplateResponse, error)
 	// Update an existing act name and definition.
-	UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error)
+	UpdateTemplate(ctx context.Context, in *MsgUpdateTemplate, opts ...grpc.CallOption) (*MsgUpdateTemplateResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(ctx context.Context, in *MsgRevokeAction, opts ...grpc.CallOption) (*MsgRevokeActionResponse, error)
 	// Vote for or against a particular Action.
@@ -1001,18 +1001,18 @@ func (c *msgClient) CheckAction(ctx context.Context, in *MsgCheckAction, opts ..
 	return out, nil
 }
 
-func (c *msgClient) NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error) {
-	out := new(MsgNewRuleResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/NewRule", in, out, opts...)
+func (c *msgClient) NewTemplate(ctx context.Context, in *MsgNewTemplate, opts ...grpc.CallOption) (*MsgNewTemplateResponse, error) {
+	out := new(MsgNewTemplateResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/NewTemplate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error) {
-	out := new(MsgUpdateRuleResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/UpdateRule", in, out, opts...)
+func (c *msgClient) UpdateTemplate(ctx context.Context, in *MsgUpdateTemplate, opts ...grpc.CallOption) (*MsgUpdateTemplateResponse, error) {
+	out := new(MsgUpdateTemplateResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/UpdateTemplate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1048,10 +1048,10 @@ type MsgServer interface {
 	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error)
-	// Create a new Rule.
-	NewRule(context.Context, *MsgNewRule) (*MsgNewRuleResponse, error)
+	// Create a new Template.
+	NewTemplate(context.Context, *MsgNewTemplate) (*MsgNewTemplateResponse, error)
 	// Update an existing act name and definition.
-	UpdateRule(context.Context, *MsgUpdateRule) (*MsgUpdateRuleResponse, error)
+	UpdateTemplate(context.Context, *MsgUpdateTemplate) (*MsgUpdateTemplateResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error)
 	// Vote for or against a particular Action.
@@ -1074,11 +1074,11 @@ func (*UnimplementedMsgServer) ApproveAction(ctx context.Context, req *MsgApprov
 func (*UnimplementedMsgServer) CheckAction(ctx context.Context, req *MsgCheckAction) (*MsgCheckActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckAction not implemented")
 }
-func (*UnimplementedMsgServer) NewRule(ctx context.Context, req *MsgNewRule) (*MsgNewRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewRule not implemented")
+func (*UnimplementedMsgServer) NewTemplate(ctx context.Context, req *MsgNewTemplate) (*MsgNewTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewTemplate not implemented")
 }
-func (*UnimplementedMsgServer) UpdateRule(ctx context.Context, req *MsgUpdateRule) (*MsgUpdateRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateRule not implemented")
+func (*UnimplementedMsgServer) UpdateTemplate(ctx context.Context, req *MsgUpdateTemplate) (*MsgUpdateTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTemplate not implemented")
 }
 func (*UnimplementedMsgServer) RevokeAction(ctx context.Context, req *MsgRevokeAction) (*MsgRevokeActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeAction not implemented")
@@ -1163,38 +1163,38 @@ func _Msg_CheckAction_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_NewRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgNewRule)
+func _Msg_NewTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).NewRule(ctx, in)
+		return srv.(MsgServer).NewTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Msg/NewRule",
+		FullMethod: "/warden.act.v1beta1.Msg/NewTemplate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).NewRule(ctx, req.(*MsgNewRule))
+		return srv.(MsgServer).NewTemplate(ctx, req.(*MsgNewTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateRule)
+func _Msg_UpdateTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateRule(ctx, in)
+		return srv.(MsgServer).UpdateTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Msg/UpdateRule",
+		FullMethod: "/warden.act.v1beta1.Msg/UpdateTemplate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateRule(ctx, req.(*MsgUpdateRule))
+		return srv.(MsgServer).UpdateTemplate(ctx, req.(*MsgUpdateTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1257,12 +1257,12 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CheckAction_Handler,
 		},
 		{
-			MethodName: "NewRule",
-			Handler:    _Msg_NewRule_Handler,
+			MethodName: "NewTemplate",
+			Handler:    _Msg_NewTemplate_Handler,
 		},
 		{
-			MethodName: "UpdateRule",
-			Handler:    _Msg_UpdateRule_Handler,
+			MethodName: "UpdateTemplate",
+			Handler:    _Msg_UpdateTemplate_Handler,
 		},
 		{
 			MethodName: "RevokeAction",
@@ -1494,7 +1494,7 @@ func (m *MsgApproveActionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgNewRule) Marshal() (dAtA []byte, err error) {
+func (m *MsgNewTemplate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1504,12 +1504,12 @@ func (m *MsgNewRule) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgNewRule) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNewTemplate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgNewRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNewTemplate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1538,7 +1538,7 @@ func (m *MsgNewRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgNewRuleResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgNewTemplateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1548,12 +1548,12 @@ func (m *MsgNewRuleResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgNewRuleResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNewTemplateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgNewRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNewTemplateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1566,7 +1566,7 @@ func (m *MsgNewRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateRule) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateTemplate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1576,12 +1576,12 @@ func (m *MsgUpdateRule) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateRule) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1615,7 +1615,7 @@ func (m *MsgUpdateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateRuleResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateTemplateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1625,12 +1625,12 @@ func (m *MsgUpdateRuleResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateRuleResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1935,7 +1935,7 @@ func (m *MsgApproveActionResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgNewRule) Size() (n int) {
+func (m *MsgNewTemplate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1956,7 +1956,7 @@ func (m *MsgNewRule) Size() (n int) {
 	return n
 }
 
-func (m *MsgNewRuleResponse) Size() (n int) {
+func (m *MsgNewTemplateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1968,7 +1968,7 @@ func (m *MsgNewRuleResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateRule) Size() (n int) {
+func (m *MsgUpdateTemplate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1992,7 +1992,7 @@ func (m *MsgUpdateRule) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateRuleResponse) Size() (n int) {
+func (m *MsgUpdateTemplateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2711,7 +2711,7 @@ func (m *MsgApproveActionResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgNewRule) Unmarshal(dAtA []byte) error {
+func (m *MsgNewTemplate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2734,10 +2734,10 @@ func (m *MsgNewRule) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgNewRule: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNewTemplate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgNewRule: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNewTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2857,7 +2857,7 @@ func (m *MsgNewRule) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgNewRuleResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgNewTemplateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2880,10 +2880,10 @@ func (m *MsgNewRuleResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgNewRuleResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNewTemplateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgNewRuleResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNewTemplateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2926,7 +2926,7 @@ func (m *MsgNewRuleResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateRule) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateTemplate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2949,10 +2949,10 @@ func (m *MsgUpdateRule) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateRule: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateTemplate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateRule: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3091,7 +3091,7 @@ func (m *MsgUpdateRule) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateRuleResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateTemplateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3114,10 +3114,10 @@ func (m *MsgUpdateRuleResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateRuleResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateTemplateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateRuleResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateTemplateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

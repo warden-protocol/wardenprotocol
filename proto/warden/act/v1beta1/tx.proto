@@ -30,11 +30,11 @@ service Msg {
   // Checks a pending action and executes it if its in a valid state.
   rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
 
-  // Create a new Rule.
-  rpc NewRule (MsgNewRule) returns (MsgNewRuleResponse);
+  // Create a new Template.
+  rpc NewTemplate (MsgNewTemplate) returns (MsgNewTemplateResponse);
 
   // Update an existing act name and definition.
-  rpc UpdateRule (MsgUpdateRule) returns (MsgUpdateRuleResponse);
+  rpc UpdateTemplate (MsgUpdateTemplate) returns (MsgUpdateTemplateResponse);
 
   // Revoke an existing Action while in pending state.
   rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
@@ -90,18 +90,18 @@ message MsgApproveActionResponse {
   string status = 1;
 }
 
-message MsgNewRule {
+message MsgNewTemplate {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string name = 2;
   string definition = 3;
 }
 
-message MsgNewRuleResponse {
+message MsgNewTemplateResponse {
   uint64 id = 1;
 }
 
-message MsgUpdateRule {
+message MsgUpdateTemplate {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 id = 2;
@@ -109,7 +109,7 @@ message MsgUpdateRule {
   string definition = 4;
 }
 
-message MsgUpdateRuleResponse {}
+message MsgUpdateTemplateResponse {}
 
 message MsgRevokeAction {
   option (cosmos.msg.v1.signer) = "creator";

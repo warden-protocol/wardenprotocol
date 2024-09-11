@@ -51,7 +51,7 @@ func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
 }
 
 func (k Keeper) checkActionReady(ctx context.Context, act types.Action) (bool, error) {
-	return act.Rule.Eval(ctx, ApproversEnv(act.Approvers))
+	return act.Template.Eval(ctx, ApproversEnv(act.Approvers))
 }
 
 func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
@@ -142,16 +142,16 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctx = ctxWithActionCreator(sdk.UnwrapSDKContext(ctx), creator)
-	ctx, approveRule, rejectRule, err := k.rulesRegistry.Get(ctx, msg)
+	ctx, approveTemplate, rejectTemplate, err := k.templatesRegistry.Get(ctx, msg)
 	if err != nil {
-		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)
+		return nil, errors.Wrapf(types.ErrNoTemplateRegistryHandler, "%v", err)
 	}
 
-	if approveRule.Expression.String() != expectedApproveExpression.String() {
+	if approveTemplate.Expression.String() != expectedApproveExpression.String() {
 		return nil, types.ErrApproveExpressionNotMatched
 	}
 
-	if rejectRule.Expression.String() != expectedRejectExpression.String() {
+	if rejectTemplate.Expression.String() != expectedRejectExpression.String() {
 		return nil, types.ErrRejectExpressionNotMatched
 	}
 
@@ -161,12 +161,12 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
-	preprocessedApproveExpr, approveMentions, err := k.preprocessRule(ctxWithMsg, approveRule)
+	preprocessedApproveExpr, approveMentions, err := k.preprocessTemplate(ctxWithMsg, approveTemplate)
 	if err != nil {
 		return nil, err
 	}
 
-	preprocessedRejectExpr, rejectMentions, err := k.preprocessRule(ctxWithMsg, rejectRule)
+	preprocessedRejectExpr, rejectMentions, err := k.preprocessTemplate(ctxWithMsg, rejectTemplate)
 	if err != nil {
 		return nil, err
 	}
@@ -186,16 +186,16 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		}
 	}
 
-	// update the rule of this Action with the preprocessed expression
-	// todo: should be removed with removing Rule field in Action
-	approveRule.Expression = preprocessedApproveExpr
+	// update the template of this Action with the preprocessed expression
+	// todo: should be removed with removing Template field in Action
+	approveTemplate.Expression = preprocessedApproveExpr
 
 	// create action object
 	timestamp := k.getBlockTime(ctx)
 	act := &types.Action{
 		Status:            types.ActionStatus_ACTION_STATUS_PENDING,
 		Approvers:         nil,
-		Rule:              approveRule,
+		Template:          approveTemplate,
 		Mentions:          mentions,
 		Msg:               wrappedMsg,
 		Creator:           creator,

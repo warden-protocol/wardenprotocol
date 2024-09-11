@@ -21,7 +21,7 @@ func (k Keeper) fulfillKeyRequest(ctx sdk.Context, msg *types.MsgFulfilKeyReques
 		KeychainId: req.KeychainId,
 		Type:       req.KeyType,
 		PublicKey:  pubKey,
-		RuleId:     req.RuleId,
+		TemplateId: req.TemplateId,
 	}
 
 	if err := k.KeysKeeper.New(ctx, key, req); err != nil {

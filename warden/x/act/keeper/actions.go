@@ -277,7 +277,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	// try executing the action immediately
-	if err := k.TryExecuteAction(ctx, act); err != nil {
+	if err := k.TryExecuteVotedAction(ctx, act); err != nil {
 		return nil, err
 	}
 

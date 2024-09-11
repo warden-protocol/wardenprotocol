@@ -28,6 +28,7 @@ This section explains how WARP is distributed, where to get it, and other detail
 ## Distribution
 
 The distribution of WARP is aiming at giving the community a head start to get a chance to accumulate the future WARD tokens.
+
 During the airdrop period, as tracked via the Warden Airdrop website, there will be a leaderboard tracking accrued airdrop points (we call these “WARP Points”) which can be redeemed for $WARP tokens.
 
 |Allocation|No (%)|

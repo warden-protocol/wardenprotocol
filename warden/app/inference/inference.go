@@ -7,8 +7,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
+	"strconv"
 	"time"
 
+	"cosmossdk.io/math"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -21,6 +24,37 @@ func solveURL() string {
 		return os.Getenv("INFERENCE_URL") + "/job/solve"
 	}
 	return "http://localhost:9001/job/solve"
+}
+
+type solveResponse struct {
+	SolverOutput struct {
+		Forecasts map[string]float64 `json:"forecasts"`
+	} `json:"solverOutput"`
+	SolverReceipt []byte `json:"solverReceipt"`
+}
+
+func (s *solveResponse) ToSolverResponse() types.SolverResponse {
+	forecasts := make([]types.Forecast, 0, len(s.SolverOutput.Forecasts))
+	for k, v := range s.SolverOutput.Forecasts {
+		dec, err := math.LegacyNewDecFromStr(strconv.FormatFloat(v, 'f', -1, 64))
+		if err != nil {
+			panic(err)
+		}
+
+		forecasts = append(forecasts, types.Forecast{
+			Key:   k,
+			Value: dec,
+		})
+	}
+	sort.Slice(forecasts, func(i, j int) bool {
+		return forecasts[i].Key < forecasts[j].Key
+	})
+	return types.SolverResponse{
+		SolverOutput: types.SolverOutput{
+			Forecasts: forecasts,
+		},
+		SolverReceipt: s.SolverReceipt,
+	}
 }
 
 func Solve(input types.SolverInput, falsePositiveRate float64) (types.SolverResponse, error) {
@@ -45,13 +79,13 @@ func Solve(input types.SolverInput, falsePositiveRate float64) (types.SolverResp
 		return types.SolverResponse{}, fmt.Errorf("inference endpoint returned non-200 status code: %d", res.StatusCode)
 	}
 
-	var resp types.SolverResponse
+	var resp solveResponse
 	err = json.NewDecoder(res.Body).Decode(&resp)
 	if err != nil {
 		return types.SolverResponse{}, err
 	}
 
-	return resp, nil
+	return resp.ToSolverResponse(), nil
 }
 
 var ErrVerifyFailed = fmt.Errorf("verify failed")

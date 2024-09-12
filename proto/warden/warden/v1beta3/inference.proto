@@ -2,6 +2,8 @@ syntax = "proto3";
 package warden.warden.v1beta3;
 
 import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "amino/amino.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
 
@@ -49,5 +51,10 @@ message SolverOutput {
 
 message Forecast {
   string key = 1;
-  float value = 2;
+  string value = 2 [
+    (cosmos_proto.scalar)  = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (amino.dont_omitempty) = true,
+    (gogoproto.nullable)   = false
+  ];
 }

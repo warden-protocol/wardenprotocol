@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) SimulateRule(goCtx context.Context, req *types.QuerySimulateRuleRequest) (*types.QuerySimulateRuleResponse, error) {
+func (k Keeper) SimulateTemplate(goCtx context.Context, req *types.QuerySimulateTemplateRequest) (*types.QuerySimulateTemplateResponse, error) {
 	expr, err := shield.Parse(req.Definition)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to parse input definition: %s", err))
@@ -24,7 +24,7 @@ func (k Keeper) SimulateRule(goCtx context.Context, req *types.QuerySimulateRule
 		return nil, status.Error(codes.InvalidArgument, evaluated.Inspect())
 	}
 
-	return &types.QuerySimulateRuleResponse{
+	return &types.QuerySimulateTemplateResponse{
 		Evaluation: evaluated.Inspect(),
 	}, nil
 }

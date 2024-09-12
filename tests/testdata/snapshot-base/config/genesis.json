@@ -15,7 +15,7 @@
         "prune_check_block_frequency": "10000"
       },
       "actions": [],
-      "rules": []
+      "templates": []
     },
     "auth": {
       "params": {

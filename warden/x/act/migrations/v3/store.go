@@ -86,8 +86,8 @@ func migrate(ctx sdk.Context, ns NewStore, os OldStore) error {
 		if err != nil {
 			return fmt.Errorf("failed to get intent: %w", err)
 		}
-		newRule := migrateIntentToRule(intent)
-		if err := ns.Rules.Set(ctx, newRule.Id, newRule); err != nil {
+		newTemplate := migrateIntentToTemplate(intent)
+		if err := ns.Templates.Set(ctx, newTemplate.Id, newTemplate); err != nil {
 			return fmt.Errorf("failed to set intent: %w", err)
 		}
 	}
@@ -117,13 +117,13 @@ func migrateAction(a v1beta0.Action) v1beta1.Action {
 		TimeoutHeight: a.Btl,
 		CreatedAt:     a.CreatedAt,
 		UpdatedAt:     a.UpdatedAt,
-		Rule:          migrateIntentToRule(a.Intent),
+		Template:      migrateIntentToTemplate(a.Intent),
 		Mentions:      a.Mentions,
 	}
 }
 
-func migrateIntentToRule(i v1beta0.Intent) v1beta1.Rule {
-	return v1beta1.Rule{
+func migrateIntentToTemplate(i v1beta0.Intent) v1beta1.Template {
+	return v1beta1.Template{
 		Id:         i.Id,
 		Creator:    i.Creator,
 		Name:       i.Name,
@@ -224,14 +224,14 @@ func migrateToken(t v1beta0.Token) token.Token {
 
 type NewStore struct {
 	Actions         repo.SeqCollection[v1beta1.Action]
-	Rules           repo.SeqCollection[v1beta1.Rule]
+	Templates       repo.SeqCollection[v1beta1.Template]
 	ActionByAddress collections.Map[collections.Pair[sdk.AccAddress, uint64], uint64]
 }
 
 func newStore(storeService store.KVStoreService, cdc codec.BinaryCodec) (NewStore, error) {
 	var (
 		ActionPrefix          = collections.NewPrefix(0)
-		RulePrefix            = collections.NewPrefix(1)
+		TemplatePrefix        = collections.NewPrefix(1)
 		ActionByAddressPrefix = collections.NewPrefix(2)
 	)
 
@@ -241,9 +241,9 @@ func newStore(storeService store.KVStoreService, cdc codec.BinaryCodec) (NewStor
 	actionsCount := collections.NewSequence(sb, v1beta1.KeyPrefix(v1beta1.ActionCountKey), "actions_count")
 	actions := repo.NewSeqCollection(actionsCount, actionsStore, func(i *v1beta1.Action, u uint64) { i.Id = u })
 
-	rulesStore := collections.NewMap(sb, RulePrefix, "rules", collections.Uint64Key, codec.CollValue[v1beta1.Rule](cdc))
-	rulesCount := collections.NewSequence(sb, v1beta1.KeyPrefix(v1beta1.RuleCountKey), "rules_count")
-	rules := repo.NewSeqCollection(rulesCount, rulesStore, func(i *v1beta1.Rule, u uint64) { i.Id = u })
+	templatesStore := collections.NewMap(sb, TemplatePrefix, "templates", collections.Uint64Key, codec.CollValue[v1beta1.Template](cdc))
+	templatesCount := collections.NewSequence(sb, v1beta1.KeyPrefix(v1beta1.TemplateCountKey), "templates_count")
+	templates := repo.NewSeqCollection(templatesCount, templatesStore, func(i *v1beta1.Template, u uint64) { i.Id = u })
 
 	actionByAddress := collections.NewMap(
 		sb, ActionByAddressPrefix, "action_by_address",
@@ -253,7 +253,7 @@ func newStore(storeService store.KVStoreService, cdc codec.BinaryCodec) (NewStor
 
 	return NewStore{
 		Actions:         actions,
-		Rules:           rules,
+		Templates:       templates,
 		ActionByAddress: actionByAddress,
 	}, nil
 }

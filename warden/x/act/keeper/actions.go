@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"runtime/debug"
 
 	"cosmossdk.io/errors"
@@ -117,7 +118,7 @@ func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
 
 // TODO: Remove when Approve/Reject expressions ready
 func (k Keeper) checkActionReady(ctx context.Context, act types.Action) (bool, error) {
-	return act.Rule.Eval(ctx, ApproversEnv(act.Approvers))
+	return act.Template.Eval(ctx, ApproversEnv(act.Approvers))
 }
 
 func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
@@ -202,18 +203,24 @@ type actionCreatorKey struct{}
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64, expectedApproveExpression ast.Expression, expectedRejectExpression ast.Expression) (*types.Action, error) {
+func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64, expectedApproveExpression *ast.Expression, expectedRejectExpression *ast.Expression) (*types.Action, error) {
 	if err := k.validateActionMsgSigners(msg); err != nil {
 		return nil, err
 	}
 
 	ctx = ctxWithActionCreator(sdk.UnwrapSDKContext(ctx), creator)
-	ctx, rule, err := k.rulesRegistry.Get(ctx, msg)
+	ctx, approveTemplate, rejectTemplate, err := k.templatesRegistry.Get(ctx, msg)
 	if err != nil {
-		return nil, errors.Wrapf(types.ErrNoRuleRegistryHandler, "%v", err)
+		return nil, errors.Wrapf(types.ErrNoTemplateRegistryHandler, "%v", err)
 	}
 
-	// todo: check that expressions from rulesRegistry (templateRegistry) match with expected
+	if !reflect.DeepEqual(approveTemplate.Expression, expectedApproveExpression) {
+		return nil, types.ErrApproveExpressionNotMatched
+	}
+
+	if !reflect.DeepEqual(rejectTemplate.Expression, expectedRejectExpression) {
+		return nil, types.ErrRejectExpressionNotMatched
+	}
 
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
@@ -221,36 +228,41 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
-	preprocessedExpr, mentions, err := k.preprocessRule(ctxWithMsg, rule)
+	preprocessedApproveExpr, approveMentions, err := k.preprocessTemplate(ctxWithMsg, approveTemplate)
 	if err != nil {
 		return nil, err
 	}
 
-	// update the rule of this Action with the preprocessed expression
-	rule.Expression = preprocessedExpr
+	preprocessedRejectExpr, rejectMentions, err := k.preprocessTemplate(ctxWithMsg, rejectTemplate)
+	if err != nil {
+		return nil, err
+	}
+
+	mentions := mergeMentions(approveMentions, rejectMentions)
+
+	// update the template of this Action with the preprocessed expression
+	// todo: should be removed with removing Template field in Action
+	approveTemplate.Expression = preprocessedApproveExpr
 
 	// create action object
 	timestamp := k.getBlockTime(ctx)
 	act := &types.Action{
-		Status:        types.ActionStatus_ACTION_STATUS_PENDING,
-		Approvers:     nil,
-		Rule:          rule,
-		Mentions:      mentions,
-		Msg:           wrappedMsg,
-		Creator:       creator,
-		TimeoutHeight: timeoutHeight,
-		CreatedAt:     timestamp,
-		UpdatedAt:     timestamp,
+		Status:            types.ActionStatus_ACTION_STATUS_PENDING,
+		Approvers:         nil,
+		Template:          approveTemplate,
+		Mentions:          mentions,
+		Msg:               wrappedMsg,
+		Creator:           creator,
+		TimeoutHeight:     timeoutHeight,
+		CreatedAt:         timestamp,
+		UpdatedAt:         timestamp,
+		ApproveExpression: *preprocessedApproveExpr,
+		RejectExpression:  *preprocessedRejectExpr,
 	}
 
 	// add initial approver
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := act.AddOrUpdateVote(sdkCtx, creator, types.ActionVoteType_VOTE_TYPE_APPROVED); err != nil {
-		return nil, err
-	}
-
-	// TODO AT: Remove after full switch to Votes
-	if err := act.AddApprover(sdkCtx, creator); err != nil {
 		return nil, err
 	}
 
@@ -260,7 +272,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	// try executing the action immediately
-	if err := k.TryExecuteAction(ctx, act); err != nil {
+	if err := k.TryExecuteVotedAction(ctx, act); err != nil {
 		return nil, err
 	}
 
@@ -282,4 +294,23 @@ func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	}
 
 	return nil
+}
+
+func mergeMentions(approveMentions []string, rejectMentions []string) []string {
+	mentions := approveMentions
+
+	approveMentionsSet := make(map[string]struct{})
+
+	for _, approveMention := range approveMentions {
+		approveMentionsSet[approveMention] = struct{}{}
+	}
+
+	for _, rejectMention := range rejectMentions {
+		_, exists := approveMentionsSet[rejectMention]
+		if !exists {
+			mentions = append(mentions, rejectMention)
+		}
+	}
+
+	return mentions
 }

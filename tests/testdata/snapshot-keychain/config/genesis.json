@@ -15,7 +15,7 @@
         "prune_check_block_frequency": "10000"
       },
       "actions": [],
-      "rules": []
+      "templates": []
     },
     "auth": {
       "params": {
@@ -495,8 +495,8 @@
           "owners": [
             "warden1l4tcq95pcut9rlr8wkyehm6t4w43a504mf80tf"
           ],
-          "admin_rule_id": "0",
-          "sign_rule_id": "0",
+          "admin_template_id": "0",
+          "sign_template_id": "0",
           "nonce": "0"
         }
       ],

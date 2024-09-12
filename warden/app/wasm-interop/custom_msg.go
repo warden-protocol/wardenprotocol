@@ -20,7 +20,7 @@ type WardenMsg struct {
 }
 
 type NewKeyRequest struct {
-	RuleId        uint64        `json:"rule_id"`
+	TemplateId    uint64        `json:"template_id"`
 	KeyType       types.KeyType `json:"key_type"`
 	KeychainID    uint64        `json:"keychain_id"`
 	SpaceID       uint64        `json:"space_id"`
@@ -59,7 +59,7 @@ func handleNewKeyRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.Ms
 		SpaceId:    newKeyRequest.SpaceID,
 		KeychainId: newKeyRequest.KeychainID,
 		KeyType:    newKeyRequest.KeyType,
-		RuleId:     newKeyRequest.RuleId,
+		TemplateId: newKeyRequest.TemplateId,
 	}
 	msgAny, err := codectypes.NewAnyWithValue(newKeyMsg)
 	if err != nil {

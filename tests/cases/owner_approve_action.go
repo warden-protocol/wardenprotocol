@@ -3,10 +3,11 @@ package cases
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	"testing"
 
 	"github.com/stretchr/testify/require"
 
@@ -45,44 +46,49 @@ func (c *Test_OwnerApproveAction) Run(t *testing.T, ctx context.Context, _ frame
 	checks.SuccessTx(t, resAddOwner)
 	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 0)
 
-	resApproveBob := alice.Tx(t, "act approve-action --action-id 1")
+	resApproveBob := alice.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 1")
 	checks.SuccessTx(t, resApproveBob)
 	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 1)
 
-	resNewRule := alice.Tx(t, "act new-rule --name approve_requires_two --definition \"any(2, warden.space.owners)\"")
-	checks.SuccessTx(t, resNewRule)
+	newApproveTemplateDefinition := "\"any(2, warden.space.owners)\""
+	resNewTemplate := alice.Tx(t, "act new-template --name approve_requires_two --definition "+newApproveTemplateDefinition)
+	checks.SuccessTx(t, resNewTemplate)
 
-	resUpdateSpaceAdminRuleByCharlie := charlie.Tx(t, "warden new-action update-space --space-id 1 --admin-rule-id 1 --nonce 1")
-	checks.SuccessTx(t, resUpdateSpaceAdminRuleByCharlie)
+	updateSpaceApproveAdminTemplateIdCommand := "warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1"
+
+	resUpdateSpaceAdminTemplateByCharlie := charlie.Tx(t, updateSpaceApproveAdminTemplateIdCommand)
+	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByCharlie)
 
 	spaceAfterInvalidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
 		Id: 1,
 	})
 	require.NoError(t, err)
-	require.Equal(t, uint64(0), spaceAfterInvalidApprove.Space.AdminRuleId)
+	require.Equal(t, uint64(0), spaceAfterInvalidApprove.Space.ApproveAdminTemplateId)
 
-	resUpdateSpaceAdminRuleByAlice := alice.Tx(t, "warden new-action update-space --space-id 1 --admin-rule-id 1 --nonce 1")
-	checks.SuccessTx(t, resUpdateSpaceAdminRuleByAlice)
+	resUpdateSpaceAdminTemplateByAlice := alice.Tx(t, updateSpaceApproveAdminTemplateIdCommand)
+	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByAlice)
 
 	spaceAfterValidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
 		Id: 1,
 	})
 	require.NoError(t, err)
-	require.Equal(t, uint64(1), spaceAfterValidApprove.Space.AdminRuleId)
+	require.Equal(t, uint64(1), spaceAfterValidApprove.Space.ApproveAdminTemplateId)
 
-	resAliceAddOwnerCharlie := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, charlie.Address(t), 2))
+	addNewOwnerCommandTemplate = "warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression %s"
+
+	resAliceAddOwnerCharlie := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, charlie.Address(t), 2, newApproveTemplateDefinition))
 	checks.SuccessTx(t, resAliceAddOwnerCharlie)
 	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 0)
 
-	resApproveCharlie := bob.Tx(t, "act approve-action --action-id 4")
+	resApproveCharlie := bob.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 4")
 	checks.SuccessTx(t, resApproveCharlie)
 	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 1)
 
-	resCharlieAddOwnerDave := charlie.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3))
+	resCharlieAddOwnerDave := charlie.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3, newApproveTemplateDefinition))
 	checks.SuccessTx(t, resCharlieAddOwnerDave)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 
-	resApproveDaveByBob := bob.Tx(t, "act approve-action --action-id 5")
+	resApproveDaveByBob := bob.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 5")
 	checks.SuccessTx(t, resApproveDaveByBob)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 1)
 }

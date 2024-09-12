@@ -10,21 +10,21 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) Rules(goCtx context.Context, req *types.QueryRulesRequest) (*types.QueryRulesResponse, error) {
+func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesRequest) (*types.QueryTemplatesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	rules, pageRes, err := query.CollectionFilteredPaginate(
+	templates, pageRes, err := query.CollectionFilteredPaginate(
 		ctx,
-		k.rules,
+		k.templates,
 		req.Pagination,
-		func(key uint64, value types.Rule) (bool, error) {
+		func(key uint64, value types.Template) (bool, error) {
 			return req.Creator == "" || value.Creator == req.Creator, nil
 		},
-		func(key uint64, value types.Rule) (types.Rule, error) {
+		func(key uint64, value types.Template) (types.Template, error) {
 			return value, nil
 		})
 
@@ -32,8 +32,8 @@ func (k Keeper) Rules(goCtx context.Context, req *types.QueryRulesRequest) (*typ
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryRulesResponse{
-		Rules:      rules,
+	return &types.QueryTemplatesResponse{
+		Templates:  templates,
 		Pagination: pageRes,
 	}, nil
 }

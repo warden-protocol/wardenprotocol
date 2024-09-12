@@ -118,7 +118,7 @@ func NewKeeper(
 		actKeeper:     actKeeper,
 		getWasmKeeper: getWasmKeeper,
 	}
-	k.RegisterRules(actKeeper.RulesRegistry())
+	k.RegisterTemplates(actKeeper.TemplatesRegistry())
 
 	return k
 }

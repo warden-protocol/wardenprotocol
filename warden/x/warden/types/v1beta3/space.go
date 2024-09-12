@@ -2,6 +2,7 @@ package v1beta3
 
 import (
 	"fmt"
+
 	"github.com/warden-protocol/wardenprotocol/shield"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -60,42 +61,62 @@ func (w *Space) IncrementNonce(nonce uint64) (uint64, error) {
 	return w.Nonce, nil
 }
 
-func (w *Space) RuleAddOwner() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveAddOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRemoveOwner() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectAddOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleAppendChild() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveRemoveOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleNewKeyRequest() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectRemoveOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleUpdateKey() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveNewKeyRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleNewSignRequest() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectNewKeyRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleUpdateSpace() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveUpdateKey() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-// AnyOwnerRule returns a rule that is satisfied when at least one of the owners of the space approves.
-func (w *Space) AnyOwnerRule() acttypes.Rule {
+func (w *Space) TemplateRejectUpdateKey() acttypes.Template {
+	return w.AnyOwnerTemplate()
+}
+
+func (w *Space) TemplateApproveNewSignRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
+}
+
+func (w *Space) TemplateRejectNewSignRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
+}
+
+func (w *Space) TemplateApproveUpdateSpace() acttypes.Template {
+	return w.AnyOwnerTemplate()
+}
+
+func (w *Space) TemplateRejectUpdateSpace() acttypes.Template {
+	return w.AnyOwnerTemplate()
+}
+
+// AnyOwnerTemplate returns a template that is satisfied when at least one of the owners of the space approves.
+func (w *Space) AnyOwnerTemplate() acttypes.Template {
 	expr, err := shield.Parse("any(1, warden.space.owners)")
 	if err != nil {
 		panic(err)
 	}
 
-	return acttypes.Rule{
+	return acttypes.Template{
 		Name:       "AnyOwner",
 		Expression: expr,
 	}

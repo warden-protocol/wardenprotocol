@@ -6,7 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "shield/ast/ast.proto";
-import "warden/act/v1beta1/rule.proto";
+import "warden/act/v1beta1/template.proto";
 import "warden/act/v1beta1/action_vote.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
@@ -19,14 +19,14 @@ message Approver {
       [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
 }
 
-// Action wraps a message that will be executed when its associated rule is
+// Action wraps a message that will be executed when its associated template is
 // satisfied.
 message Action {
   uint64 id = 1;
   repeated Approver approvers = 2;
   ActionStatus status = 3;
   // Original message that started the action, it will be executed when the
-  // rule is satisfied.
+  // template is satisfied.
   google.protobuf.Any msg = 5;
   // Result of the action, it will be set when the action is completed.
   google.protobuf.Any result = 6;
@@ -39,11 +39,11 @@ message Action {
   // updated_at is a timestamp specifying when the action's status was updated
   google.protobuf.Timestamp updated_at = 10
       [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
-  // rule is the condition that this action is associated with. Instead of
-  // storing the rule ID, we store the entire Rule object so that is immutable
+  // template is the condition that this action is associated with. Instead of
+  // storing the template ID, we store the entire Template object so that is immutable
   // and cannot be changed later.
-  warden.act.v1beta1.Rule rule = 11 [(gogoproto.nullable) = false];
-  // mentions is a list of addresses that are mentioned in the rule.
+  warden.act.v1beta1.Template template = 11 [(gogoproto.nullable) = false];
+  // mentions is a list of addresses that are mentioned in the template.
   repeated string mentions = 12;
   // The expression to be evaluated for approval.
   .shield.ast.Expression approve_expression = 13 [(gogoproto.nullable) = false];
@@ -61,7 +61,7 @@ enum ActionStatus {
   // Action is pending approval. This is the initial status.
   ACTION_STATUS_PENDING = 1;
 
-  // Rule has been satified, action has been executed.
+  // Template has been satified, action has been executed.
   ACTION_STATUS_COMPLETED = 2;
 
   // Action has been revoked by its creator.

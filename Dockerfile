@@ -103,6 +103,9 @@ RUN pnpm run build
 ## spaceward
 FROM node-build-env AS spaceward-builder
 WORKDIR /wardenprotocol
+# hotfix CVE-2024-45490..CVE-2024-45492
+RUN apk update && apk add --upgrade libexpat
+# hotfix end
 COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward
 COPY spaceward/package*.json spaceward/pnpm-lock.yaml spaceward/.npmrc spaceward/

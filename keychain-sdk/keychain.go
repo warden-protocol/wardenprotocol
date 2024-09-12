@@ -136,7 +136,7 @@ func (a *App) ConnectionState() map[string]connectivity.State {
 }
 
 func (a *App) initConnections() error {
-	initConnection := func(logger *slog.Logger, grpcNodeConfig GrpcNodeConfig, config BasicConfig) (*AppClient, error) {
+	initConnection := func(logger *slog.Logger, grpcNodeConfig GrpcNodeConfig, config BasicConfig, identity client.Identity) (*AppClient, error) {
 		appClient := &AppClient{
 			batchSize:    config.BatchSize,
 			keychainId:   config.KeychainID,
@@ -154,11 +154,6 @@ func (a *App) initConnections() error {
 
 		conn := query.Conn()
 
-	identity, err := client.NewIdentityFromSeed(config.Mnemonic)
-	if err != nil {
-		return fmt.Errorf("failed to create identity: %w", err)
-	}
-
 		logger.Info("keychain writer identity", "address", identity.Address.String())
 
 		appClient.txClient = client.NewTxClient(identity, config.ChainID, conn, query)
@@ -166,8 +161,13 @@ func (a *App) initConnections() error {
 		return appClient, nil
 	}
 
+	identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
+	if err != nil {
+		return fmt.Errorf("failed to create identity: %w", err)
+	}
+
 	for _, grpcUrl := range a.config.GRPCConfigs {
-		appClient, err := initConnection(a.logger(), grpcUrl, a.config.BasicConfig)
+		appClient, err := initConnection(a.logger(), grpcUrl, a.config.BasicConfig, identity)
 		if err != nil {
 			return err
 		}

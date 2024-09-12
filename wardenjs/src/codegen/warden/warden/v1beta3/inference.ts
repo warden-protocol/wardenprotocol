@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
+import { Decimal } from "@cosmjs/math";
 export interface InferenceRequest {
   id: bigint;
   creator: string;
@@ -165,7 +166,7 @@ export interface SolverOutputSDKType {
 }
 export interface Forecast {
   key: string;
-  value: number;
+  value: string;
 }
 export interface ForecastProtoMsg {
   typeUrl: "/warden.warden.v1beta3.Forecast";
@@ -173,7 +174,7 @@ export interface ForecastProtoMsg {
 }
 export interface ForecastAmino {
   key?: string;
-  value?: number;
+  value: string;
 }
 export interface ForecastAminoMsg {
   type: "/warden.warden.v1beta3.Forecast";
@@ -181,7 +182,7 @@ export interface ForecastAminoMsg {
 }
 export interface ForecastSDKType {
   key: string;
-  value: number;
+  value: string;
 }
 function createBaseInferenceRequest(): InferenceRequest {
   return {
@@ -911,7 +912,7 @@ export const SolverOutput = {
 function createBaseForecast(): Forecast {
   return {
     key: "",
-    value: 0
+    value: ""
   };
 }
 export const Forecast = {
@@ -920,8 +921,8 @@ export const Forecast = {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
-    if (message.value !== 0) {
-      writer.uint32(21).float(message.value);
+    if (message.value !== "") {
+      writer.uint32(18).string(Decimal.fromUserInput(message.value, 18).atomics);
     }
     return writer;
   },
@@ -936,7 +937,7 @@ export const Forecast = {
           message.key = reader.string();
           break;
         case 2:
-          message.value = reader.float();
+          message.value = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -948,7 +949,7 @@ export const Forecast = {
   fromJSON(object: any): Forecast {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      value: isSet(object.value) ? Number(object.value) : 0
+      value: isSet(object.value) ? String(object.value) : ""
     };
   },
   toJSON(message: Forecast): JsonSafe<Forecast> {
@@ -960,7 +961,7 @@ export const Forecast = {
   fromPartial(object: Partial<Forecast>): Forecast {
     const message = createBaseForecast();
     message.key = object.key ?? "";
-    message.value = object.value ?? 0;
+    message.value = object.value ?? "";
     return message;
   },
   fromAmino(object: ForecastAmino): Forecast {
@@ -976,7 +977,7 @@ export const Forecast = {
   toAmino(message: Forecast): ForecastAmino {
     const obj: any = {};
     obj.key = message.key === "" ? undefined : message.key;
-    obj.value = message.value === 0 ? undefined : message.value;
+    obj.value = message.value ?? "";
     return obj;
   },
   fromAminoMsg(object: ForecastAminoMsg): Forecast {

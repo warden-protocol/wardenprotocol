@@ -8,7 +8,6 @@ import {
 import { env } from "../env";
 import { useChain } from "@cosmos-kit/react";
 import { EncodeObject, OfflineSigner } from "@cosmjs/proto-signing";
-// import { ToasterToast, useToast } from "@/components/ui/use-toast";
 import {
     DeliverTxResponse,
     StdFee,
@@ -31,7 +30,6 @@ const defaultFee: StdFee = {
 
 export interface TxOptions {
     fee?: StdFee | null;
-    // toast?: Partial<ToasterToast>;
     onSuccess?: (res: DeliverTxResponse) => void;
 }
 
@@ -41,19 +39,19 @@ export enum TxStatus {
     Broadcasting = "Transaction confirmation in progress",
 }
 
-export function useTx() {
+export function useTx(): {
+    tx: (
+        msgs: EncodeObject[],
+        options: TxOptions
+    ) => Promise<DeliverTxResponse | undefined>;
+} {
     const { address, getOfflineSignerDirect: getOfflineSigner } = useChain(
         env.cosmoskitChainName
     );
-    // const { toast } = useToast();
 
     const tx = async (msgs: EncodeObject[], options: TxOptions) => {
         if (!address) {
-            // toast({
-            //     title: "Wallet not connected",
-            //     description: "Please connect the wallet",
-            // });
-            return;
+            throw new Error("No address found. Please connect your wallet.");
         }
 
         let signed: Parameters<typeof txRaw.encode>["0"];
@@ -65,20 +63,8 @@ export function useTx() {
             signed = await client.sign(address, msgs, fee, "");
         } catch (e: unknown) {
             console.error(e);
-            // toast({
-            //     title: TxStatus.Failed,
-            //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            //     description:
-            //         (e as any)?.message || "An unexpected error has occured",
-            // });
             return;
         }
-
-        // const { id, update } = toast({
-        //     title: TxStatus.Broadcasting,
-        //     description: "Waiting for transaction to be included in the block",
-        //     duration: 999999,
-        // });
 
         if (client && signed) {
             try {
@@ -88,41 +74,13 @@ export function useTx() {
                 if (isDeliverTxSuccess(res)) {
                     if (options.onSuccess) options.onSuccess(res);
 
-                    // update({
-                    //     id,
-                    //     title: options.toast?.title || TxStatus.Successful,
-                    //     description: options.toast?.description,
-                    // });
-
                     return res;
                 } else {
-                    // update({
-                    //     id,
-                    //     title: TxStatus.Failed,
-                    //     description:
-                    //         res?.rawLog ?? "An unexpected error has occured",
-                    //     duration: 10000,
-                    // });
-
                     return res;
                 }
             } catch (err) {
-                // update({
-                //     id,
-                //     title: TxStatus.Failed,
-                //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //     // @ts-ignore
-                //     description: err?.message,
-                //     duration: 10000,
-                // });
+                console.error(err);
             }
-        } else {
-            // update({
-            //     id,
-            //     title: TxStatus.Failed,
-            //     description: "The transaction could't be signed or broadcasted",
-            //     duration: 10000,
-            // });
         }
     };
 

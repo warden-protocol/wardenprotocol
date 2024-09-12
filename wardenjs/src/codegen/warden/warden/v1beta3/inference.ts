@@ -93,9 +93,9 @@ export interface SolverRequestProtoMsg {
   value: Uint8Array;
 }
 export interface SolverRequestAmino {
-  solver_input?: SolverInputAmino;
-  ExpectedItems?: string;
-  FalsePositiveRate?: number;
+  solver_input: SolverInputAmino;
+  ExpectedItems: string;
+  FalsePositiveRate: number;
 }
 export interface SolverRequestAminoMsg {
   type: "/warden.warden.v1beta3.SolverRequest";
@@ -116,7 +116,7 @@ export interface SolverInputProtoMsg {
 }
 export interface SolverInputAmino {
   tokens?: string[];
-  adversary_mode?: boolean;
+  adversary_mode: boolean;
 }
 export interface SolverInputAminoMsg {
   type: "/warden.warden.v1beta3.SolverInput";
@@ -135,8 +135,8 @@ export interface SolverResponseProtoMsg {
   value: Uint8Array;
 }
 export interface SolverResponseAmino {
-  solver_output?: SolverOutputAmino;
-  solver_receipt?: string;
+  solver_output: SolverOutputAmino;
+  solver_receipt: string;
 }
 export interface SolverResponseAminoMsg {
   type: "/warden.warden.v1beta3.SolverResponse";
@@ -628,9 +628,9 @@ export const SolverRequest = {
   },
   toAmino(message: SolverRequest): SolverRequestAmino {
     const obj: any = {};
-    obj.solver_input = message.solverInput ? SolverInput.toAmino(message.solverInput) : undefined;
-    obj.ExpectedItems = message.ExpectedItems !== BigInt(0) ? message.ExpectedItems.toString() : undefined;
-    obj.FalsePositiveRate = message.FalsePositiveRate === 0 ? undefined : message.FalsePositiveRate;
+    obj.solver_input = message.solverInput ? SolverInput.toAmino(message.solverInput) : SolverInput.toAmino(SolverInput.fromPartial({}));
+    obj.ExpectedItems = message.ExpectedItems ? message.ExpectedItems.toString() : "0";
+    obj.FalsePositiveRate = message.FalsePositiveRate ?? 0;
     return obj;
   },
   fromAminoMsg(object: SolverRequestAminoMsg): SolverRequest {
@@ -723,7 +723,7 @@ export const SolverInput = {
     } else {
       obj.tokens = message.tokens;
     }
-    obj.adversary_mode = message.adversaryMode === false ? undefined : message.adversaryMode;
+    obj.adversary_mode = message.adversaryMode ?? false;
     return obj;
   },
   fromAminoMsg(object: SolverInputAminoMsg): SolverInput {
@@ -809,8 +809,8 @@ export const SolverResponse = {
   },
   toAmino(message: SolverResponse): SolverResponseAmino {
     const obj: any = {};
-    obj.solver_output = message.solverOutput ? SolverOutput.toAmino(message.solverOutput) : undefined;
-    obj.solver_receipt = message.solverReceipt ? base64FromBytes(message.solverReceipt) : undefined;
+    obj.solver_output = message.solverOutput ? SolverOutput.toAmino(message.solverOutput) : SolverOutput.toAmino(SolverOutput.fromPartial({}));
+    obj.solver_receipt = message.solverReceipt ? base64FromBytes(message.solverReceipt) : "";
     return obj;
   },
   fromAminoMsg(object: SolverResponseAminoMsg): SolverResponse {

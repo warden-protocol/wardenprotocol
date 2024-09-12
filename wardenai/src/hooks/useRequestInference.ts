@@ -64,54 +64,12 @@ export default function useRequestInference() {
                 const InferenceRequest = result.inferenceRequest;
 
                 console.log(InferenceRequest);
-                // setData({ InferenceRequest });
 
-                // if (
-                //     InferenceRequest?.status ===
-                //     InferenceRequest.KEY_REQUEST_STATUS_PENDING
-                // ) {
-                //     await sleep(1000);
-                //     continue;
-                // }
-
-                // if (
-                //     InferenceRequest?.status ===
-                //     InferenceRequestStatus.KEY_REQUEST_STATUS_FULFILLED
-                // ) {
-                //     setKeySettings({
-                //         settings: {
-                //             ...ksRef.current?.settings,
-                //             [InferenceRequest.id.toString()]:
-                //                 ksRef.current?.settings[TEMP_KEY],
-                //             [TEMP_KEY]: undefined,
-                //         },
-                //     });
-
-                //     setData({
-                //         state: InferenceRequesterState.KEY_FULFILLED,
-                //     });
-                //     return;
-                // }
-
-                // throw new Error(
-                //     `key request rejected with reason: ${InferenceRequest?.rejectReason}`
-                // );
-                // }
+                return InferenceRequest;
             } catch (e) {
-                // setData({
-                //     state: InferenceRequesterState.ERROR,
-                //     error: `${e}`,
-                // });
+                console.error(e);
             }
         },
-        reset: () => {
-            // if (
-            //     data?.state === InferenceRequesterState.KEY_FULFILLED ||
-            //     data?.state === InferenceRequesterState.ERROR ||
-            //     data?.state === InferenceRequesterState.AWAITING_APPROVALS
-            // ) {
-            //     resetData();
-            // }
-        },
+        reset: () => {},
     };
 }

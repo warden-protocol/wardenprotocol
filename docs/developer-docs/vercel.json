@@ -37,7 +37,7 @@
         {"source":"/developers/contributing/shorthand","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/5-shorthands.md", "statusCode": 301},
         {"source":"/developers/contributing/documentation","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/docs/README.md", "statusCode": 301},
         {"source":"/developers/runbooks","destination":"/category/test", "statusCode": 301},
-        {"source":"/developers/runbooks/run-cli-keychain","destination":"/build-a-keychain/operate-a-keychain/run-a-keychain-from-cli", "statusCode": 301},
+        {"source":"/developers/runbooks/run-cli-keychain","destination":"/build-a-keychain/operate-a-keychain/fulfill-requests-from-cli", "statusCode": 301},
         {"source":"/developers/runbooks/run-local-chain","destination":"/operate-a-node/run-a-local-chain", "statusCode": 301},
         {"source":"/developers/architecture/","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/architectural-decision-records/README.md", "statusCode": 301},
         {"source":"/developers/architecture/PROCESS","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/architectural-decision-records/1-create-an-adr.md", "statusCode": 301},
@@ -58,7 +58,7 @@
         {"source":"/build-an-oapp/introduction","destination":"/build-an-app/introduction", "statusCode": 301},
         {"source":"/build-an-oapp/useful-links","destination":"/build-an-app/useful-links", "statusCode": 301},
         {"source":"/build-an-oapp/test/run-a-local-chain","destination":"/operate-a-node/run-a-local-chain", "statusCode": 301},
-        {"source":"/build-an-oapp","destination":"/build-an-app/test/run-a-keychain-from-cli", "statusCode": 301},
+        {"source":"/build-an-oapp","destination":"/build-an-app/test/fulfill-requests-from-cli", "statusCode": 301},
         {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301}
     ]
 }

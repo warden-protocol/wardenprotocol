@@ -145,6 +145,10 @@ message MsgUpdateSpace {
   uint64 admin_rule_id = 3;
   uint64 sign_rule_id = 4;
   uint64 nonce = 5;
+  uint64 approve_admin_rule_id = 6;
+  uint64 reject_admin_rule_id = 7;
+  uint64 approve_sign_rule_id = 8;
+  uint64 reject_sign_rule_id = 9;
 }
 
 message MsgUpdateSpaceResponse {}
@@ -220,6 +224,8 @@ message MsgUpdateKey {
   string authority = 1;
   uint64 key_id = 2;
   uint64 rule_id = 3;
+  uint64 approve_rule_id = 4;
+  uint64 reject_rule_id = 5;
 }
 
 message MsgUpdateKeyResponse {}

@@ -24,14 +24,30 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 		key.RuleId = msg.RuleId
 	}
 
+	if key.ApproveRuleId != msg.ApproveRuleId {
+		if err = k.actKeeper.IsValidRule(ctx, msg.ApproveRuleId); err != nil {
+			return nil, err
+		}
+		key.ApproveRuleId = msg.ApproveRuleId
+	}
+
+	if key.RejectRuleId != msg.RejectRuleId {
+		if err = k.actKeeper.IsValidRule(ctx, msg.RejectRuleId); err != nil {
+			return nil, err
+		}
+		key.RejectRuleId = msg.RejectRuleId
+	}
+
 	if err := k.KeysKeeper.Set(ctx, key); err != nil {
 		return nil, err
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateKey{
-		Id:     key.Id,
-		RuleId: key.RuleId,
+		Id:            key.Id,
+		RuleId:        key.RuleId,
+		ApproveRuleId: key.ApproveRuleId,
+		RejectRuleId:  key.RejectRuleId,
 	}); err != nil {
 		return nil, err
 	}

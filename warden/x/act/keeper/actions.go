@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"log"
 	"reflect"
 	"runtime/debug"
 
@@ -104,7 +103,6 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 // result in the database.
 func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
 	ready, err := k.checkActionReady(ctx, *act)
-	log.Printf("\nready %v\n", ready)
 	if err != nil {
 		return err
 	}

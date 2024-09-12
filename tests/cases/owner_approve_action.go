@@ -46,7 +46,7 @@ func (c *Test_OwnerApproveAction) Run(t *testing.T, ctx context.Context, _ frame
 	checks.SuccessTx(t, resAddOwner)
 	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 0)
 
-	resApproveBob := alice.Tx(t, "act approve-action --action-id 1")
+	resApproveBob := alice.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 1")
 	checks.SuccessTx(t, resApproveBob)
 	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 1)
 
@@ -80,7 +80,7 @@ func (c *Test_OwnerApproveAction) Run(t *testing.T, ctx context.Context, _ frame
 	checks.SuccessTx(t, resAliceAddOwnerCharlie)
 	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 0)
 
-	resApproveCharlie := bob.Tx(t, "act approve-action --action-id 4")
+	resApproveCharlie := bob.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 4")
 	checks.SuccessTx(t, resApproveCharlie)
 	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 1)
 
@@ -88,7 +88,7 @@ func (c *Test_OwnerApproveAction) Run(t *testing.T, ctx context.Context, _ frame
 	checks.SuccessTx(t, resCharlieAddOwnerDave)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 
-	resApproveDaveByBob := bob.Tx(t, "act approve-action --action-id 5")
+	resApproveDaveByBob := bob.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 5")
 	checks.SuccessTx(t, resApproveDaveByBob)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 1)
 }

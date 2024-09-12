@@ -21,7 +21,7 @@ func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesReques
 		ctx,
 		k.templates,
 		req.Pagination,
-		func(key uint64, value types.Rule) (bool, error) {
+		func(key uint64, value types.Template) (bool, error) {
 			return req.Creator == "" || value.Creator == req.Creator, nil
 		},
 		func(key uint64, value types.Template) (types.Template, error) {

@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-This guide explains how to build a Keychain application using the [Keychain SDK](../implementations/keychain-sdk).
+This guide explains how to build a basic Keychain application using the [Keychain SDK](../implementations/keychain-sdk).
 
 ## Prerequisites
 
@@ -300,7 +300,7 @@ func main() {
 
 ## Result
 
-You have built a simple Keychain in Go using the Keychain SDK. This Keychain stores ECDSA private keys in-memory and uses them to sign data. You can now run the app again and interact with it using the SpaceWard UI or the CLI.
+You've built a simple Keychain in Go using the Keychain SDK. This Keychain stores ECDSA private keys in-memory and uses them to sign data. You can now run the app again and interact with it using the SpaceWard UI or the CLI.
 
 By implementing request handlers, you can plug in any key generation and signing logic you need. Your Keychain can interact with external APIs, hardware security modules, or other key management systems such as MPC networks.
 

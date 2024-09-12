@@ -64,13 +64,11 @@ func (k Keeper) newKeyRequestRule(ctx context.Context, msg *v1beta3.MsgNewKeyReq
 	}
 
 	approveRule, err := k.getApproveNewKeyRequestRule(ctx, space)
-
 	if err != nil {
 		return acttypes.Rule{}, acttypes.Rule{}, err
 	}
 
 	rejectRule, err := k.getRejectNewKeyRequestRule(ctx, space)
-
 	if err != nil {
 		return acttypes.Rule{}, acttypes.Rule{}, err
 	}

@@ -15,9 +15,11 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
+// TODO: Remove when Approve/Reject expressions ready
 // ApproversEnv is an environment that resolves approvers' addresses to true.
 type ApproversEnv []*types.Approver
 
+// TODO: Remove when Approve/Reject expressions ready
 // Get implements evaluator.Environment.
 func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
 	for _, s := range approvers {
@@ -57,7 +59,8 @@ func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
 // TryExecuteVotedAction checks if the action's expression is satisfied and stores the
 // result in the database.
 func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
-	approved, err := act.Rule.Eval(ctx, ActionApprovedVotesEnv(act.Votes))
+	actExpression := types.ActExpression(act.ApproveExpression)
+	approved, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
 
 	if err != nil {
 		return err
@@ -75,7 +78,8 @@ func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) er
 func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	rejected, err := act.Rule.Eval(ctx, ActionRejectedVotesEnv(act.Votes))
+	actExpression := types.ActExpression(act.RejectExpression)
+	rejected, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
 
 	if err != nil {
 		return err
@@ -93,6 +97,7 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	return nil
 }
 
+// TODO: Remove when Approve/Reject expressions ready
 // TryExecuteAction checks if the action's intent is satisfied and stores the
 // result in the database.
 func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
@@ -110,6 +115,7 @@ func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
 	return nil
 }
 
+// TODO: Remove when Approve/Reject expressions ready
 func (k Keeper) checkActionReady(ctx context.Context, act types.Action) (bool, error) {
 	return act.Rule.Eval(ctx, ApproversEnv(act.Approvers))
 }
@@ -240,6 +246,11 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	// add initial approver
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := act.AddOrUpdateVote(sdkCtx, creator, types.ActionVoteType_VOTE_TYPE_APPROVED); err != nil {
+		return nil, err
+	}
+
+	// TODO AT: Remove after full switch to Votes
+	if err := act.AddApprover(sdkCtx, creator); err != nil {
 		return nil, err
 	}
 

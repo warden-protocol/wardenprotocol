@@ -130,6 +130,6 @@ wardend start
 
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
 
-## 5. Create a validator
+## Next steps
 
 If you want to create a validator in the testnet, follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.

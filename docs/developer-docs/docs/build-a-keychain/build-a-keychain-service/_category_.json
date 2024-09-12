@@ -1,11 +1,11 @@
 {
-  "position": 3,
-  "label": "Examples",
+  "position": 2,
+  "label": "Build a Keychain service",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Examples"
+    "title": "Build a Keychain service"
   },
   "customProps": {}
 }

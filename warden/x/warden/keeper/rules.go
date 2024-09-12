@@ -234,7 +234,7 @@ func (k Keeper) getApproveUpdateKeyRule(ctx context.Context, space v1beta3.Space
 }
 
 func (k Keeper) getRejectUpdateKeyRule(ctx context.Context, space v1beta3.Space, key v1beta3.Key) (acttypes.Rule, error) {
-	if key.ApproveRuleId > 0 {
+	if key.RejectRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, key.RejectRuleId)
 	} else if space.RejectSignRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, space.RejectSignRuleId)

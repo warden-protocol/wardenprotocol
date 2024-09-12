@@ -7,10 +7,10 @@ import { NewKeyButton } from "@/features/keys";
 import { useQueryHooks } from "@/hooks/useClient";
 import Key from "./Key";
 import DashboardGraph from "./DashboardGraph";
-import { useRules } from "@/pages";
 import Intent from "./Intent";
 import { useAssetQueries } from "../assets/hooks";
 import { useModalState } from "../modals/state";
+import { useRules } from "../intents/hooks";
 
 interface CurrentSpaceProps {
 	spaceId: bigint;

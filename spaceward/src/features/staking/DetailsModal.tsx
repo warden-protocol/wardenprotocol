@@ -51,7 +51,7 @@ export default function DetailsModal({
 			<div className="bg-secondary-bg rounded-lg py-4 px-6">
 				<div className="font-bold text-xl mb-4">
 					{bigintToFixed(stakedWard, {
-						decimals: 6,
+						decimals: 18,
 						format: true,
 					})}{" "}
 					WARD staked

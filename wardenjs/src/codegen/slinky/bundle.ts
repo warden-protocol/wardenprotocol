@@ -10,19 +10,19 @@ import * as _93 from "./oracle/v1/genesis.js";
 import * as _94 from "./oracle/v1/query.js";
 import * as _95 from "./oracle/v1/tx.js";
 import * as _96 from "./types/v1/currency_pair.js";
-import * as _200 from "./marketmap/v1/tx.amino.js";
-import * as _201 from "./oracle/v1/tx.amino.js";
-import * as _202 from "./marketmap/v1/tx.registry.js";
-import * as _203 from "./oracle/v1/tx.registry.js";
-import * as _204 from "./marketmap/v1/query.lcd.js";
-import * as _205 from "./oracle/v1/query.lcd.js";
-import * as _206 from "./marketmap/v1/query.rpc.Query.js";
-import * as _207 from "./oracle/v1/query.rpc.Query.js";
-import * as _208 from "./marketmap/v1/tx.rpc.msg.js";
-import * as _209 from "./oracle/v1/tx.rpc.msg.js";
-import * as _231 from "./lcd.js";
-import * as _232 from "./rpc.query.js";
-import * as _233 from "./rpc.tx.js";
+import * as _201 from "./marketmap/v1/tx.amino.js";
+import * as _202 from "./oracle/v1/tx.amino.js";
+import * as _203 from "./marketmap/v1/tx.registry.js";
+import * as _204 from "./oracle/v1/tx.registry.js";
+import * as _205 from "./marketmap/v1/query.lcd.js";
+import * as _206 from "./oracle/v1/query.lcd.js";
+import * as _207 from "./marketmap/v1/query.rpc.Query.js";
+import * as _208 from "./oracle/v1/query.rpc.Query.js";
+import * as _209 from "./marketmap/v1/tx.rpc.msg.js";
+import * as _210 from "./oracle/v1/tx.rpc.msg.js";
+import * as _232 from "./lcd.js";
+import * as _233 from "./rpc.query.js";
+import * as _234 from "./rpc.tx.js";
 export namespace slinky {
   export namespace marketmap {
     export namespace module {
@@ -36,11 +36,11 @@ export namespace slinky {
       ..._89,
       ..._90,
       ..._91,
-      ..._200,
-      ..._202,
-      ..._204,
-      ..._206,
-      ..._208
+      ..._201,
+      ..._203,
+      ..._205,
+      ..._207,
+      ..._209
     };
   }
   export namespace oracle {
@@ -53,11 +53,11 @@ export namespace slinky {
       ..._93,
       ..._94,
       ..._95,
-      ..._201,
-      ..._203,
-      ..._205,
-      ..._207,
-      ..._209
+      ..._202,
+      ..._204,
+      ..._206,
+      ..._208,
+      ..._210
     };
   }
   export namespace types {
@@ -66,8 +66,8 @@ export namespace slinky {
     };
   }
   export const ClientFactory = {
-    ..._231,
     ..._232,
-    ..._233
+    ..._233,
+    ..._234
   };
 }

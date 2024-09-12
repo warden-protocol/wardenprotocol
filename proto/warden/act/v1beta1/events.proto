@@ -49,7 +49,7 @@ message EventActionVoted {
   string participant = 2;
 
   // type of the vote
-  ActionVoteType vote = 3;
+  ActionVoteType vote_type = 3;
 }
 
 // EventActionStateChange is emitted when an Action is in a new state

@@ -1,0 +1,11 @@
+{
+  "position": 2,
+  "label": "Build a custom smart contract",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Build a custom smart contract"
+  },
+  "customProps": {}
+}

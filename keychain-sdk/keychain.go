@@ -154,10 +154,10 @@ func (a *App) initConnections() error {
 
 		conn := query.Conn()
 
-		identity, err := client.NewIdentityFromSeed(config.DerivationPath, config.Mnemonic)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create identity: %w", err)
-		}
+	identity, err := client.NewIdentityFromSeed(config.Mnemonic)
+	if err != nil {
+		return fmt.Errorf("failed to create identity: %w", err)
+	}
 
 		logger.Info("keychain writer identity", "address", identity.Address.String())
 

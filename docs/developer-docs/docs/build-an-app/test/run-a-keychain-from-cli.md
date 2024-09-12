@@ -50,7 +50,7 @@ export KEYCHAIN_WRITER=$(wardend keys show -a $KEYCHAIN_WRITER_NAME)
 And fund it with some tokens:
 
 ```bash
-wardend tx bank send shulgin $KEYCHAIN_WRITER 10000uward --chain-id wardenprotocol
+wardend tx bank send shulgin $KEYCHAIN_WRITER 1000000000000award --chain-id wardenprotocol
 ```
 
 Finally, let's add the address as a Keychain Writer:

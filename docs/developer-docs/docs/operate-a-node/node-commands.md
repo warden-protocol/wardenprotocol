@@ -132,7 +132,7 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    wardend tx warden new-keychain \
      --description 'my-description' \
      --from my-key-name \
-     --chain-id my-chain-id \
+     --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
@@ -141,6 +141,6 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    ```bash
    wardend tx warden new-space \
      --from my-key-name \
-     --chain-id my-chain-id \
+     --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```

@@ -38,7 +38,7 @@ export default function StakingCard(props: CardProps) {
 
 					{props.stakedWard ? (
 						bigintToFixed(props.stakedWard ?? BigInt(0), {
-							decimals: 6,
+							decimals: 18,
 							format: true,
 						})
 					) : (

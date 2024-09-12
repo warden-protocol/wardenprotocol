@@ -16,7 +16,7 @@ message ActionVote {
   [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
 
   // vote is the type of the vote.
-  ActionVoteType vote = 3;
+  ActionVoteType vote_type = 3;
 }
 
 //  Type of a vote.

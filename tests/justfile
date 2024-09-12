@@ -66,6 +66,8 @@ snapshot-base:
 
   replace 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/127\.0\.0\.1\:8545/127.0.0.1:{{{{ .JSONRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/127\.0\.0\.1\:8546/127.0.0.1:{{{{ .JSONRPCWSPort }}/' $WARDEND_HOME/config/app.toml
 
   replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
@@ -123,6 +125,8 @@ snapshot-keychain:
 
   replace 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/127\.0\.0\.1\:8545/127.0.0.1:{{{{ .JSONRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/127\.0\.0\.1\:8546/127.0.0.1:{{{{ .JSONRPCWSPort }}/' $WARDEND_HOME/config/app.toml
 
   replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
@@ -183,6 +187,8 @@ snapshot-many-users:
 
   replace 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
   replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/127\.0\.0\.1\:8545/127.0.0.1:{{{{ .JSONRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/127\.0\.0\.1\:8546/127.0.0.1:{{{{ .JSONRPCWSPort }}/' $WARDEND_HOME/config/app.toml
 
   replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
   replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml

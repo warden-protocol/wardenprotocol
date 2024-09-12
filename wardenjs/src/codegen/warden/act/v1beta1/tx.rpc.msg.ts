@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewAction, MsgNewActionResponse, MsgApproveAction, MsgApproveActionResponse, MsgCheckAction, MsgCheckActionResponse, MsgNewRule, MsgNewRuleResponse, MsgUpdateRule, MsgUpdateRuleResponse, MsgRevokeAction, MsgRevokeActionResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewAction, MsgNewActionResponse, MsgApproveAction, MsgApproveActionResponse, MsgCheckAction, MsgCheckActionResponse, MsgNewRule, MsgNewRuleResponse, MsgUpdateRule, MsgUpdateRuleResponse, MsgRevokeAction, MsgRevokeActionResponse, MsgVoteForAction, MsgVoteForActionResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -13,7 +13,7 @@ export interface Msg {
   newAction(request: MsgNewAction): Promise<MsgNewActionResponse>;
   /** Add an approval to an existing Action. */
   approveAction(request: MsgApproveAction): Promise<MsgApproveActionResponse>;
-  /** Add an approval to an existing Action. */
+  /** Checks a pending action and executes it if its in a valid state. */
   checkAction(request: MsgCheckAction): Promise<MsgCheckActionResponse>;
   /** Create a new Rule. */
   newRule(request: MsgNewRule): Promise<MsgNewRuleResponse>;
@@ -21,6 +21,8 @@ export interface Msg {
   updateRule(request: MsgUpdateRule): Promise<MsgUpdateRuleResponse>;
   /** Revoke an existing Action while in pending state. */
   revokeAction(request: MsgRevokeAction): Promise<MsgRevokeActionResponse>;
+  /** Vote for or against a particular Action. */
+  voteForAction(request: MsgVoteForAction): Promise<MsgVoteForActionResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -33,6 +35,7 @@ export class MsgClientImpl implements Msg {
     this.newRule = this.newRule.bind(this);
     this.updateRule = this.updateRule.bind(this);
     this.revokeAction = this.revokeAction.bind(this);
+    this.voteForAction = this.voteForAction.bind(this);
   }
   updateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -68,5 +71,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgRevokeAction.encode(request).finish();
     const promise = this.rpc.request("warden.act.v1beta1.Msg", "RevokeAction", data);
     return promise.then(data => MsgRevokeActionResponse.decode(new BinaryReader(data)));
+  }
+  voteForAction(request: MsgVoteForAction): Promise<MsgVoteForActionResponse> {
+    const data = MsgVoteForAction.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Msg", "VoteForAction", data);
+    return promise.then(data => MsgVoteForActionResponse.decode(new BinaryReader(data)));
   }
 }

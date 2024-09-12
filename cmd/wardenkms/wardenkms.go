@@ -23,7 +23,7 @@ import (
 type Config struct {
 	ChainID        string                `env:"CHAIN_ID, default=warden_1337-1"`
 	GRPCURLs       GrpcNodeConfigDecoder `env:"GRPC_URLS, default=[{\"GRPCUrl\":\"localhost:9090\",\"GRPCInsecure\":true}] "`
-	DerivationPath string                `env:"DERIVATION_PATH, default=m/44'/60'/0'/0/0"`
+
 	Mnemonic       string                `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
 	KeychainId     uint64                `env:"KEYCHAIN_ID, default=1"`
 
@@ -88,7 +88,6 @@ func main() {
 		BasicConfig: keychain.BasicConfig{
 			Logger:         logger,
 			ChainID:        cfg.ChainID,
-			DerivationPath: cfg.DerivationPath,
 			Mnemonic:       cfg.Mnemonic,
 			KeychainID:     cfg.KeychainId,
 			GasLimit:       cfg.GasLimit,

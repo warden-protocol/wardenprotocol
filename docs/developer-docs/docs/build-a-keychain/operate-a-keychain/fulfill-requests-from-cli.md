@@ -40,7 +40,7 @@ In the next steps, you'll use the following values:
 
 Export them as environment variables:
 
-```
+```bash
 export KEYCHAIN_ID=my-keychain-id
 export KEYCHAIN_WRITER_NAME=my-keychain-writer-name  
 ```

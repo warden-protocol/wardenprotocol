@@ -1819,12 +1819,14 @@ func (x *fastReflection_QueryActionsResponse) ProtoMethods() *protoiface.Methods
 var (
 	md_QueryTemplatesRequest            protoreflect.MessageDescriptor
 	fd_QueryTemplatesRequest_pagination protoreflect.FieldDescriptor
+	fd_QueryTemplatesRequest_creator    protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_act_v1beta1_query_proto_init()
 	md_QueryTemplatesRequest = File_warden_act_v1beta1_query_proto.Messages().ByName("QueryTemplatesRequest")
 	fd_QueryTemplatesRequest_pagination = md_QueryTemplatesRequest.Fields().ByName("pagination")
+	fd_QueryTemplatesRequest_creator = md_QueryTemplatesRequest.Fields().ByName("creator")
 }
 
 var _ protoreflect.Message = (*fastReflection_QueryTemplatesRequest)(nil)
@@ -1898,6 +1900,12 @@ func (x *fastReflection_QueryTemplatesRequest) Range(f func(protoreflect.FieldDe
 			return
 		}
 	}
+	if x.Creator != "" {
+		value := protoreflect.ValueOfString(x.Creator)
+		if !f(fd_QueryTemplatesRequest_creator, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -1915,6 +1923,8 @@ func (x *fastReflection_QueryTemplatesRequest) Has(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.act.v1beta1.QueryTemplatesRequest.pagination":
 		return x.Pagination != nil
+	case "warden.act.v1beta1.QueryTemplatesRequest.creator":
+		return x.Creator != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryTemplatesRequest"))
@@ -1933,6 +1943,8 @@ func (x *fastReflection_QueryTemplatesRequest) Clear(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	case "warden.act.v1beta1.QueryTemplatesRequest.pagination":
 		x.Pagination = nil
+	case "warden.act.v1beta1.QueryTemplatesRequest.creator":
+		x.Creator = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryTemplatesRequest"))
@@ -1952,6 +1964,9 @@ func (x *fastReflection_QueryTemplatesRequest) Get(descriptor protoreflect.Field
 	case "warden.act.v1beta1.QueryTemplatesRequest.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.act.v1beta1.QueryTemplatesRequest.creator":
+		value := x.Creator
+		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryTemplatesRequest"))
@@ -1974,6 +1989,8 @@ func (x *fastReflection_QueryTemplatesRequest) Set(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.act.v1beta1.QueryTemplatesRequest.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageRequest)
+	case "warden.act.v1beta1.QueryTemplatesRequest.creator":
+		x.Creator = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryTemplatesRequest"))
@@ -1999,6 +2016,8 @@ func (x *fastReflection_QueryTemplatesRequest) Mutable(fd protoreflect.FieldDesc
 			x.Pagination = new(v1beta1.PageRequest)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
+	case "warden.act.v1beta1.QueryTemplatesRequest.creator":
+		panic(fmt.Errorf("field creator of message warden.act.v1beta1.QueryTemplatesRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryTemplatesRequest"))
@@ -2015,6 +2034,8 @@ func (x *fastReflection_QueryTemplatesRequest) NewField(fd protoreflect.FieldDes
 	case "warden.act.v1beta1.QueryTemplatesRequest.pagination":
 		m := new(v1beta1.PageRequest)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.act.v1beta1.QueryTemplatesRequest.creator":
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.QueryTemplatesRequest"))
@@ -2088,6 +2109,10 @@ func (x *fastReflection_QueryTemplatesRequest) ProtoMethods() *protoiface.Method
 			l = options.Size(x.Pagination)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		l = len(x.Creator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -2116,6 +2141,13 @@ func (x *fastReflection_QueryTemplatesRequest) ProtoMethods() *protoiface.Method
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Creator) > 0 {
+			i -= len(x.Creator)
+			copy(dAtA[i:], x.Creator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Creator)))
+			i--
+			dAtA[i] = 0x12
 		}
 		if x.Pagination != nil {
 			encoded, err := options.Marshal(x.Pagination)
@@ -2215,6 +2247,38 @@ func (x *fastReflection_QueryTemplatesRequest) ProtoMethods() *protoiface.Method
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Pagination); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -6702,6 +6766,7 @@ type QueryTemplatesRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	Pagination *v1beta1.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	Creator    string               `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
 func (x *QueryTemplatesRequest) Reset() {
@@ -6729,6 +6794,13 @@ func (x *QueryTemplatesRequest) GetPagination() *v1beta1.PageRequest {
 		return x.Pagination
 	}
 	return nil
+}
+
+func (x *QueryTemplatesRequest) GetCreator() string {
+	if x != nil {
+		return x.Creator
+	}
+	return ""
 }
 
 type QueryTemplatesResponse struct {
@@ -7129,13 +7201,15 @@ var file_warden_act_v1beta1_query_proto_rawDesc = []byte{
 	0x3a, 0x0a, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
 	0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31,
 	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x04, 0xc8, 0xde,
-	0x1f, 0x00, 0x52, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x5f, 0x0a, 0x15, 0x51,
+	0x1f, 0x00, 0x52, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x7f, 0x0a, 0x15, 0x51,
 	0x75, 0x65, 0x72, 0x79, 0x54, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x73, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
 	0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62,
 	0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xa3, 0x01, 0x0a,
+	0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x07,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x04, 0xc8,
+	0xde, 0x1f, 0x01, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xa3, 0x01, 0x0a,
 	0x16, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x73, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e,
 	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f,

@@ -386,6 +386,10 @@ To run the tests:
    
 ## Result
 
-This tutorial has walked you through creating a basic Keychain service using the Warden Protocol. You've set up the main application, implemented placeholder handlers for key and sign requests, and created tests to verify the basic functionality.
+You've built a Keychain in Go using the Keychain SDK. This Keychain stores ECDSA private keys in-memory and uses them to sign data. You can now run the app again and interact with it using the SpaceWard UI or the CLI.
+
+By implementing request handlers, you can plug in any key generation and signing logic you need. Your Keychain can interact with external APIs, hardware security modules, or other key management systems such as MPC networks.
+
+If you have any questions or need help, feel free to ask in the [#keychain-operators channel](https://discord.gg/wardenprotocol) on Discord.
 
 Happy coding! 🚀

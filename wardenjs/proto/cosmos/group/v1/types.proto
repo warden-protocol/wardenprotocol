@@ -209,7 +209,7 @@ message Proposal {
   // as `status` and `result` fields will be accordingly updated.
   google.protobuf.Timestamp voting_period_end = 11 [(gogoproto.nullable) = false, (gogoproto.stdtime) = true];
 
-  // executor_result is the final result based on the votes and election template. Initial value is NotRun.
+  // executor_result is the final result based on the votes and election rule. Initial value is NotRun.
   ProposalExecutorResult executor_result = 12;
 
   // messages is a list of Msgs that will be executed if the proposal passes.

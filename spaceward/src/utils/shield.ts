@@ -2,6 +2,7 @@ import { SimpleIntent } from "@/types/intent";
 import type { Expression } from "@/types/shield";
 
 const cp: Record<string, string | undefined> = {
+	"": "",
 	"(": ")",
 	"[": "]",
 	"{": "}",
@@ -123,13 +124,15 @@ export const shieldStringify = (
 
 		const open = token?.literal;
 
-		if (!open) {
+		// todo maybe an error
+		if (typeof open === "undefined") {
+			console.log({ expression, opts, parent });
 			throw new Error("incorrect open token");
 		}
 
 		const close = cp[open];
 
-		if (!close) {
+		if (typeof close === "undefined") {
 			throw new Error("incorrect close token");
 		}
 

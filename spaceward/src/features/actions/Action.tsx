@@ -10,11 +10,12 @@ import { Copy } from "@/components/ui/copy";
 import { warden } from "@wardenprotocol/wardenjs";
 import { useTx } from "@/hooks/useClient";
 import { timestampToDate } from "@/lib/datetime";
+import { ActionVoteType } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action_vote";
 
 export function Action({ action }: { action: ActionModel }) {
 	const { address } = useAddressContext();
 	const { tx } = useTx();
-	const { approveAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
+	const { voteForAction: approveAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 	if (!action.msg) {
 		return <p>Missing action msg</p>;
@@ -32,8 +33,8 @@ export function Action({ action }: { action: ActionModel }) {
 				</div>
 				<div className="w-full lg:w-5/12 px-4 flex flex-col space-y-3">
 					<span className="font-bold">Approvals</span>
-					{action.approvers.map((approval) => {
-						const date = timestampToDate(approval.approvedAt);
+					{action.votes.map((vote) => {
+						const date = timestampToDate(vote.votedAt);
 						const shortTime = new Intl.DateTimeFormat("en", {
 							timeStyle: "short",
 						});
@@ -41,12 +42,12 @@ export function Action({ action }: { action: ActionModel }) {
 							<div className="flex flex-row space-x-2 items-center">
 								<div className="flex flex-col items-center">
 									<AddressAvatar
-										seed={approval.address || ""}
+										seed={vote.participant || ""}
 									/>
 								</div>
 								<div className="flex flex-col">
 									<span>
-										<Copy value={approval.address} split />
+										<Copy value={vote.participant} split />
 									</span>
 									<span className="text-muted-foreground">
 										{date.toLocaleDateString() +
@@ -67,7 +68,8 @@ export function Action({ action }: { action: ActionModel }) {
 							tx(
 								[
 									approveAction({
-										creator: address,
+										participant: address,
+										voteType: ActionVoteType.VOTE_TYPE_APPROVED,
 										actionId: action.id,
 									}),
 								],

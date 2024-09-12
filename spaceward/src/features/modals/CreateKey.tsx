@@ -25,11 +25,12 @@ export default function CreateKeyModal({
 	spaceId: selectedSpaceId,
 	keychainId,
 }: ModalParams<CreateKeyParams>) {
-	const { useKeychains, isReady } = useQueryHooks();
+	const { useKeychains, useSpaceById, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { setData: setModal } = useModalState();
 	const { spaceId: _spaceId } = useSpaceId();
 	const spaceId = selectedSpaceId ?? _spaceId;
+	const { data: space } = useSpaceById({ request: { id: BigInt(spaceId ?? 0) }, options: { enabled: !!spaceId && isReady } });
 	const { getMessage, authority } = useNewAction(warden.warden.v1beta3.MsgNewKeyRequest);
 	const { addAction } = useEnqueueAction(getMessage);
 	const [pending, setPending] = useState(false);
@@ -39,13 +40,18 @@ export default function CreateKeyModal({
 			throw new Error("no authority");
 		}
 
+		if (!space?.space) {
+			throw new Error("no space");
+		}
+
 		return addAction(
 			{
 				spaceId,
 				keychainId,
-				ruleId: BigInt(0),
+				templateId: BigInt(0),
 				keyType: warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
 				authority,
+				nonce: space.space.nonce,
 			},
 			{
 				keyThemeIndex: themeIndex,

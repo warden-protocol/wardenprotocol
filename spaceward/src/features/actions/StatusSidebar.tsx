@@ -175,6 +175,22 @@ function ActionItem({ single, ...item }: ItemProps) {
 								checkAction,
 								1000,
 							) as unknown as number;
+						} else if (res.action?.status === ActionStatus.ACTION_STATUS_REVOKED) {
+							console.error("action revoked", res);
+
+							toast({
+								title: "Failed",
+								description: "Action revoked",
+								duration: 10000,
+							});
+
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Failed,
+									action: res.action,
+								}
+							})
 						} else {
 							console.error("action failed", res);
 
@@ -413,7 +429,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 	);
 }
 
-export default function ActionSidebar() {
+export default function StatusSidebar() {
 	const { data } = useActionsState();
 	const storeIds = Object.keys(data ?? {});
 

@@ -10,7 +10,7 @@ This guide explains how to build an advanced version of a Keychain app using the
 
 ## Prerequisites
 
-- `Go` 1.23 or later
+- [Go](https://golang.org/dl/) 1.23 or later
 
 ## 1. Set up the project
 

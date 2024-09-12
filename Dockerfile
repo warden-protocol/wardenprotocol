@@ -128,7 +128,7 @@ COPY --from=snap-builder /snap/snap.manifest.json /wardenprotocol/spaceward/dist
 COPY --from=snap-builder /snap/images /wardenprotocol/spaceward/dist/images
 COPY --from=snap-builder /snap/dist /wardenprotocol/spaceward/dist/dist
 
-FROM nginx:1.25.3-alpine3.18-perl AS spaceward
+FROM nginx:stable-alpine AS spaceward
 WORKDIR /var/www/app
 EXPOSE 8080
 

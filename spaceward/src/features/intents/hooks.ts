@@ -5,7 +5,6 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import type { IntentParams, SimpleIntent } from "@/types/intent";
 import { shieldStringify, validateAddressNumber } from "@/utils/shield";
 import { warden } from "@wardenprotocol/wardenjs";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { Rule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/rule";
 import { useCallback, useMemo } from "react";
 import { useModalState } from "../modals/state";
@@ -136,24 +135,24 @@ export const useRules = () => {
 
 	const rules = useRules({
 		request: {
-			pagination: PageRequest.fromPartial({ limit: BigInt(100000) }),
+			creator: space?.creator,
+		},
+		options: {
+			enabled: Boolean(space?.creator),
 		},
 	});
 
-	/** @deprecated would be nice to query intent by creator or space */
-	const { rulesBySpace, rulesById } = useMemo(() => {
-		const rulesBySpace: Rule[] = [];
+	const rulesBySpace = rules.data?.rules ?? [];
+
+	const rulesById = useMemo(() => {
 		const rulesById: Record<string, Rule> = {};
 
 		for (const rule of rules.data?.rules ?? []) {
-			if (rule.creator === space?.creator) {
-				rulesBySpace.push(rule);
-				rulesById[rule.id.toString()] = rule;
-			}
+			rulesById[rule.id.toString()] = rule;
 		}
 
-		return { rulesBySpace, rulesById };
-	}, [rules.data, space?.creator]);
+		return rulesById;
+	}, [rules.data]);
 
 	const setActiveRule = useCallback(
 		async (id: number) => {
@@ -201,6 +200,7 @@ export const useRules = () => {
 					spaceId: BigInt(space.id),
 					adminRuleId: BigInt(0),
 					signRuleId: BigInt(id),
+					nonce: space.nonce + BigInt(1)
 				},
 				{},
 			);

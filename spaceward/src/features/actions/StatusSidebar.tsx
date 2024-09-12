@@ -413,7 +413,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 	);
 }
 
-export default function ActionSidebar() {
+export default function StatusSidebar() {
 	const { data } = useActionsState();
 	const storeIds = Object.keys(data ?? {});
 

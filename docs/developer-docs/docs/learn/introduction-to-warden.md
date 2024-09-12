@@ -45,17 +45,17 @@ Warden provides operator sets and integrations with leading wallets, explorers, 
 
 Here is what you can do with Warden:
 
+- **Bring AI to your app**  
+Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract.
+
 - **Build an application**  
-You can build EVM-compatible [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) with [CosmWasm](https://cosmwasm.com). OApps are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for the protocol.
+[Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.
 
 - **Operate a Keychain**  
-[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination.
+[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination. You can become a Keychain operator or build a custom Keychain.
 
 - **Run a validator node**  
 You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden’s network.
-
-- **Bring AI to your app**  
-Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract.
 
 ## Documentation overview
 

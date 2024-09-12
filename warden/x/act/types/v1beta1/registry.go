@@ -34,7 +34,7 @@ type registry interface {
 func Register[T sdk.Msg](reg registry, fn ProviderFnG[T]) {
 	var msg T
 	typeUrl := sdk.MsgTypeURL(msg)
-	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Template, Template, error) {
+	reg.Register(typeUrl, func(ctx context.Context, m sdk.Msg) (Template, Template, Rule, error) {
 		return fn(ctx, m.(T))
 	})
 }
@@ -49,7 +49,7 @@ type registryWithCtx interface {
 func RegisterCtx[T sdk.Msg](reg registryWithCtx, fn ProviderFnWithCtxG[T]) {
 	var msg T
 	typeUrl := sdk.MsgTypeURL(msg)
-	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, error) {
+	reg.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, Rule, error) {
 		return fn(ctx, m.(T))
 	})
 }
@@ -68,7 +68,7 @@ func NewTemplatesRegistry() *TemplatesRegistry {
 // ProviderMsg can be registered for each typeUrl, attempting to register
 // a provider for the same typeUrl twice will panic.
 func (p *TemplatesRegistry) Register(typeUrl string, fn ProviderFn) {
-	p.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, error) {
+	p.RegisterCtx(typeUrl, func(ctx context.Context, m sdk.Msg) (context.Context, Template, Template, Rule, error) {
 		approve, reject, err := fn(ctx, m)
 		return ctx, approve, reject, err
 	})
@@ -97,10 +97,10 @@ func (p *TemplatesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
 //
 // An error is returned if there are no provider functions registered for the
 // sdk.Msg type.
-func (p *TemplatesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Context, Template, Template, error) {
+func (p *TemplatesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Context, Template, Template, Rule, error) {
 	typeUrl := sdk.MsgTypeURL(msg)
 	if fn, found := p.p[typeUrl]; found {
 		return fn(ctx, msg)
 	}
-	return nil, Template{}, Template{}, fmt.Errorf("no Template provider registered for %s", typeUrl)
+	return nil, Template{}, Template{}, Rule{}, fmt.Errorf("no Template provider registered for %s", typeUrl)
 }

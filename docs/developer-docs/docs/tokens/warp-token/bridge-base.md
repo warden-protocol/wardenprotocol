@@ -22,42 +22,59 @@ In short? Transfer your assets from any EVM or Cosmos chain towards any EVM chai
 
 ## 1. Get ETH
 
-First, you should get some ETH for future transitions on Base. Base fees are very low, so you don't need to bridge a big amount of ETH in USDC value.
+First, you should get some ETH for future transactions on Base. Base fees are very low, so you don't need to bridge a big amount of ETH in the USDC value.
 
-1. Go to https://app.squidrouter.com/.
-2. In **FROM** select the chain which you want to bridge / swap from, and the token you want to use (note: depending on if you use a Cosmos Chain - such as ATOM or Osmosis, or an EVM chain, such as Ethereum or Optimism, you'll be able to connect either Keplr Wallet or MetaMask as your origin wallet).
-3. In **TO** select the chain to which you want to bridge / swap to (here **select Base**) and the token you want to use (here **select ETH**).
+1. Go to [Squid Router](https://app.squidrouter.com/).
 
-![enter image description here](https://i.ibb.co/HpY6P3L/unnamed-8.png)
+2. In **FROM**, select the preferred source chain and token.
 
-5. In **TO**, click **Add address** and provide a destination address and past your Base chain destination address (your EVM address - CEX addresses are **NOT** supported) .
+   :::note  
+   If you're using a Cosmos chain (ATOM, Osmosis), you'll be able to connect a Keplr wallet. If you select an EVM chain (Ethereum, Optimism), you'll be able to connect a MetaMask wallet.
+   :::
 
-![enter image description here](https://i.ibb.co/8bkBKx6/unnamed-7.png)
+3. In **TO**, select the **Base** chain and the **ETH** token.
+
+![Get ETH in Squid Router: select the destination chain](https://i.ibb.co/HpY6P3L/unnamed-8.png)
+
+5. Then add your Base chain EVM address as the destination address. Note that CEX addresses are **NOT** supported.
+
+![Get ETH in Squid Router: enter the destination address](https://i.ibb.co/8bkBKx6/unnamed-7.png)
 
 6. Initiate and approve the transaction.
-7. Verify the transaction on https://axelarscan.io.
-8. Once the transaction and verification is complete, you'll receive your assets on Base chain
-9. You can add Base chain RPC to your MetaMask or wallet supporting EVM chains using chainlist, https://chainlist.org/chain/8453, just by clicking on **Add to MetaMask**.
+
+7. Verify the transaction on [Axelarscan](https://axelarscan.io).
+
+8. Once the transaction and verification is complete, you'll receive your assets on Base chain.
+
+9. Add a Base chain RPC to your MetaMask: just click **Connect Wallet** on [ChainList](https://chainlist.org/chain/8453). Alternatively, you can add a Base RPC to any other wallet that that supports EVM chains using ChainList.
 
 
 ## 2. Get USDC
 
 Then you should get some USDC for the WARP-USDC trading pair:
 
-1. Go to https://app.squidrouter.com/.
-2. In **FROM** select the chain which you want to bridge / swap from, and the token you want to use (note: depending on if you use a Cosmos Chain - such as ATOM or Osmosis, or an EVM chain, such as Ethereum or Optimism, you'll be able to connect either Keplr Wallet or MetaMask as your origin wallet).
-3. In **TO** select the chain to which you want to bridge / swap to (here **select Base**) and the token you want to use (here **select USDC**).
+1. Go to [Squid Router](https://app.squidrouter.com/).
 
-![enter image description here](https://i.ibb.co/4p48qwp/unnamed-6.png)
+2. In **FROM**, select the preferred source chain and token.
 
-5. In **TO**, click **Add address** and provide a destination address and past your Base chain destination address (your EVM address - CEX addresses are **NOT** supported).
+   :::note  
+   If you're using a Cosmos chain (ATOM, Osmosis), you'll be able to connect a Keplr wallet. If you select an EVM chain (Ethereum, Optimism), you'll be able to connect a MetaMask wallet.
+   :::
 
-![enter image description here](https://i.ibb.co/8bkBKx6/unnamed-7.png)
+3. In **TO**, select the **Base** chain and the **USDC** token.
+
+![Get USDC in Squid Router: select the destination chain](https://i.ibb.co/4p48qwp/unnamed-6.png)
+
+5. Then add your Base chain EVM address as the destination address. Note that CEX addresses are **NOT** supported.
+
+![Get USDC in Squid Router: enter the destination address](https://i.ibb.co/8bkBKx6/unnamed-7.png)
 
 6. Initiate and approve the transaction.
-7. Verify the transaction on https://axelarscan.i.
+
+7. Verify the transaction on [Axelarscan](https://axelarscan.io).
+
 8. Once the transaction and verification is complete, you'll receive your USDC on Base chain.
 
 ## 3. Get WARP
 
-You are now all set! You can acquire and accumulate WARP on the Base chain's DEXes – see the [WARP-USDC pair](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823).
+You're now all set! You can acquire and accumulate WARP on the Base chain's DEXes – see the [WARP-USDC pair](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823).

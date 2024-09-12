@@ -17,9 +17,16 @@ func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesReques
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	templates, pageRes, err := query.CollectionPaginate(ctx, k.templates, req.Pagination, func(key uint64, value types.Template) (types.Template, error) {
-		return value, nil
-	})
+	templates, pageRes, err := query.CollectionFilteredPaginate(
+		ctx,
+		k.templates,
+		req.Pagination,
+		func(key uint64, value types.Rule) (bool, error) {
+			return req.Creator == "" || value.Creator == req.Creator, nil
+		},
+		func(key uint64, value types.Template) (types.Template, error) {
+			return value, nil
+		})
 
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())

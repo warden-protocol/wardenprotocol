@@ -4,22 +4,24 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"reflect"
 	"runtime/debug"
 
 	"cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
+// TODO: Remove when Approve/Reject expressions ready
 // ApproversEnv is an environment that resolves approvers' addresses to true.
 type ApproversEnv []*types.Approver
 
+// TODO: Remove when Approve/Reject expressions ready
 // Get implements evaluator.Environment.
 func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
 	for _, s := range approvers {
@@ -30,8 +32,74 @@ func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
 	return object.FALSE, true
 }
 
-var _ shield.Environment = ApproversEnv{}
+// ActionApprovedVotesEnv is an environment that resolves action positive votes addresses to true.
+type ActionApprovedVotesEnv []*types.ActionVote
 
+// Get implements positive action vote evaluator.Environment.
+func (votes ActionApprovedVotesEnv) Get(name string) (object.Object, bool) {
+	for _, s := range votes {
+		if s.Participant == name && s.VoteType == types.ActionVoteType_VOTE_TYPE_APPROVED {
+			return object.TRUE, true
+		}
+	}
+	return object.FALSE, true
+}
+
+// ActionRejectedVotesEnv is an environment that resolves action negative votes addresses to true.
+type ActionRejectedVotesEnv []*types.ActionVote
+
+// Get implements negative action vote evaluator.Environment.
+func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
+	for _, s := range votes {
+		if s.Participant == name && s.VoteType == types.ActionVoteType_VOTE_TYPE_REJECTED {
+			return object.TRUE, true
+		}
+	}
+	return object.FALSE, true
+}
+
+// TryExecuteVotedAction checks if the action's expression is satisfied and stores the
+// result in the database.
+func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
+	actExpression := types.ActExpression(act.ApproveExpression)
+	approved, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
+
+	if err != nil {
+		return err
+	}
+
+	if approved {
+		return k.executeAction(ctx, act)
+	}
+
+	return nil
+}
+
+// TryRejectVotedAction checks if the action's reject expression is satisfied and updates its
+// status revoked.
+func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) error {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	actExpression := types.ActExpression(act.RejectExpression)
+	rejected, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
+
+	if err != nil {
+		return err
+	}
+
+	if rejected {
+		if err := act.SetStatus(sdkCtx, types.ActionStatus_ACTION_STATUS_REVOKED); err != nil {
+			return err
+		}
+		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// TODO: Remove when Approve/Reject expressions ready
 // TryExecuteAction checks if the action's intent is satisfied and stores the
 // result in the database.
 func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
@@ -50,6 +118,7 @@ func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
 	return nil
 }
 
+// TODO: Remove when Approve/Reject expressions ready
 func (k Keeper) checkActionReady(ctx context.Context, act types.Action) (bool, error) {
 	return act.Template.Eval(ctx, ApproversEnv(act.Approvers))
 }
@@ -147,11 +216,11 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, errors.Wrapf(types.ErrNoTemplateRegistryHandler, "%v", err)
 	}
 
-	if approveTemplate.Expression.String() != expectedApproveExpression.String() {
+	if !reflect.DeepEqual(approveTemplate.Expression, expectedApproveExpression) {
 		return nil, types.ErrApproveExpressionNotMatched
 	}
 
-	if rejectTemplate.Expression.String() != expectedRejectExpression.String() {
+	if !reflect.DeepEqual(rejectTemplate.Expression, expectedRejectExpression) {
 		return nil, types.ErrRejectExpressionNotMatched
 	}
 
@@ -171,20 +240,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, err
 	}
 
-	mentions := approveMentions
-
-	approveMentionsSet := make(map[string]struct{})
-
-	for _, approveMention := range approveMentions {
-		approveMentionsSet[approveMention] = struct{}{}
-	}
-
-	for _, rejectMention := range rejectMentions {
-		_, exists := approveMentionsSet[rejectMention]
-		if !exists {
-			mentions = append(mentions, rejectMention)
-		}
-	}
+	mentions := mergeMentions(approveMentions, rejectMentions)
 
 	// update the template of this Action with the preprocessed expression
 	// todo: should be removed with removing Template field in Action
@@ -208,7 +264,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 
 	// add initial approver
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	if err := act.AddApprover(sdkCtx, creator); err != nil {
+	if err := act.AddOrUpdateVote(sdkCtx, creator, types.ActionVoteType_VOTE_TYPE_APPROVED); err != nil {
 		return nil, err
 	}
 
@@ -218,7 +274,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	// try executing the action immediately
-	if err := k.TryExecuteAction(ctx, act); err != nil {
+	if err := k.TryExecuteVotedAction(ctx, act); err != nil {
 		return nil, err
 	}
 
@@ -240,4 +296,23 @@ func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	}
 
 	return nil
+}
+
+func mergeMentions(approveMentions []string, rejectMentions []string) []string {
+	mentions := approveMentions
+
+	approveMentionsSet := make(map[string]struct{})
+
+	for _, approveMention := range approveMentions {
+		approveMentionsSet[approveMention] = struct{}{}
+	}
+
+	for _, rejectMention := range rejectMentions {
+		_, exists := approveMentionsSet[rejectMention]
+		if !exists {
+			mentions = append(mentions, rejectMention)
+		}
+	}
+
+	return mentions
 }

@@ -16,7 +16,7 @@ sidebar_position: 1
 
 ## Phases
 
-The Warden Protocol will operate based on a number of phases, which denote the progress of Warden and its various milestones. These Phases will be used to detail the incentives available to various participants and the optimal monetary policy. 
+The Warden Protocol will operate based on a number of phases, which denote the progress of Warden and its various milestones. These phases will be used to detail the incentives available to various participants and the optimal monetary policy. 
 
 The phases will be split into:
 

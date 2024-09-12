@@ -21,9 +21,9 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Query_Params_FullMethodName           = "/warden.act.v1beta1.Query/Params"
 	Query_Actions_FullMethodName          = "/warden.act.v1beta1.Query/Actions"
-	Query_Rules_FullMethodName            = "/warden.act.v1beta1.Query/Rules"
-	Query_SimulateRule_FullMethodName     = "/warden.act.v1beta1.Query/SimulateRule"
-	Query_RuleById_FullMethodName         = "/warden.act.v1beta1.Query/RuleById"
+	Query_Templates_FullMethodName        = "/warden.act.v1beta1.Query/Templates"
+	Query_SimulateTemplate_FullMethodName = "/warden.act.v1beta1.Query/SimulateTemplate"
+	Query_TemplateById_FullMethodName     = "/warden.act.v1beta1.Query/TemplateById"
 	Query_ActionsByAddress_FullMethodName = "/warden.act.v1beta1.Query/ActionsByAddress"
 	Query_ActionById_FullMethodName       = "/warden.act.v1beta1.Query/ActionById"
 )
@@ -36,12 +36,12 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a list of Actions items.
 	Actions(ctx context.Context, in *QueryActionsRequest, opts ...grpc.CallOption) (*QueryActionsResponse, error)
-	// Queries a list of Rules items.
-	Rules(ctx context.Context, in *QueryRulesRequest, opts ...grpc.CallOption) (*QueryRulesResponse, error)
-	// Queries to simulate a Rule
-	SimulateRule(ctx context.Context, in *QuerySimulateRuleRequest, opts ...grpc.CallOption) (*QuerySimulateRuleResponse, error)
-	// Queries a list of RuleById items.
-	RuleById(ctx context.Context, in *QueryRuleByIdRequest, opts ...grpc.CallOption) (*QueryRuleByIdResponse, error)
+	// Queries a list of Templates items.
+	Templates(ctx context.Context, in *QueryTemplatesRequest, opts ...grpc.CallOption) (*QueryTemplatesResponse, error)
+	// Queries to simulate a Template
+	SimulateTemplate(ctx context.Context, in *QuerySimulateTemplateRequest, opts ...grpc.CallOption) (*QuerySimulateTemplateResponse, error)
+	// Queries a list of TemplateById items.
+	TemplateById(ctx context.Context, in *QueryTemplateByIdRequest, opts ...grpc.CallOption) (*QueryTemplateByIdResponse, error)
 	// Queries a list of Actions items by one participant address.
 	ActionsByAddress(ctx context.Context, in *QueryActionsByAddressRequest, opts ...grpc.CallOption) (*QueryActionsByAddressResponse, error)
 	ActionById(ctx context.Context, in *QueryActionByIdRequest, opts ...grpc.CallOption) (*QueryActionByIdResponse, error)
@@ -73,27 +73,27 @@ func (c *queryClient) Actions(ctx context.Context, in *QueryActionsRequest, opts
 	return out, nil
 }
 
-func (c *queryClient) Rules(ctx context.Context, in *QueryRulesRequest, opts ...grpc.CallOption) (*QueryRulesResponse, error) {
-	out := new(QueryRulesResponse)
-	err := c.cc.Invoke(ctx, Query_Rules_FullMethodName, in, out, opts...)
+func (c *queryClient) Templates(ctx context.Context, in *QueryTemplatesRequest, opts ...grpc.CallOption) (*QueryTemplatesResponse, error) {
+	out := new(QueryTemplatesResponse)
+	err := c.cc.Invoke(ctx, Query_Templates_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) SimulateRule(ctx context.Context, in *QuerySimulateRuleRequest, opts ...grpc.CallOption) (*QuerySimulateRuleResponse, error) {
-	out := new(QuerySimulateRuleResponse)
-	err := c.cc.Invoke(ctx, Query_SimulateRule_FullMethodName, in, out, opts...)
+func (c *queryClient) SimulateTemplate(ctx context.Context, in *QuerySimulateTemplateRequest, opts ...grpc.CallOption) (*QuerySimulateTemplateResponse, error) {
+	out := new(QuerySimulateTemplateResponse)
+	err := c.cc.Invoke(ctx, Query_SimulateTemplate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) RuleById(ctx context.Context, in *QueryRuleByIdRequest, opts ...grpc.CallOption) (*QueryRuleByIdResponse, error) {
-	out := new(QueryRuleByIdResponse)
-	err := c.cc.Invoke(ctx, Query_RuleById_FullMethodName, in, out, opts...)
+func (c *queryClient) TemplateById(ctx context.Context, in *QueryTemplateByIdRequest, opts ...grpc.CallOption) (*QueryTemplateByIdResponse, error) {
+	out := new(QueryTemplateByIdResponse)
+	err := c.cc.Invoke(ctx, Query_TemplateById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,12 +126,12 @@ type QueryServer interface {
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a list of Actions items.
 	Actions(context.Context, *QueryActionsRequest) (*QueryActionsResponse, error)
-	// Queries a list of Rules items.
-	Rules(context.Context, *QueryRulesRequest) (*QueryRulesResponse, error)
-	// Queries to simulate a Rule
-	SimulateRule(context.Context, *QuerySimulateRuleRequest) (*QuerySimulateRuleResponse, error)
-	// Queries a list of RuleById items.
-	RuleById(context.Context, *QueryRuleByIdRequest) (*QueryRuleByIdResponse, error)
+	// Queries a list of Templates items.
+	Templates(context.Context, *QueryTemplatesRequest) (*QueryTemplatesResponse, error)
+	// Queries to simulate a Template
+	SimulateTemplate(context.Context, *QuerySimulateTemplateRequest) (*QuerySimulateTemplateResponse, error)
+	// Queries a list of TemplateById items.
+	TemplateById(context.Context, *QueryTemplateByIdRequest) (*QueryTemplateByIdResponse, error)
 	// Queries a list of Actions items by one participant address.
 	ActionsByAddress(context.Context, *QueryActionsByAddressRequest) (*QueryActionsByAddressResponse, error)
 	ActionById(context.Context, *QueryActionByIdRequest) (*QueryActionByIdResponse, error)
@@ -148,14 +148,14 @@ func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*Q
 func (UnimplementedQueryServer) Actions(context.Context, *QueryActionsRequest) (*QueryActionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Actions not implemented")
 }
-func (UnimplementedQueryServer) Rules(context.Context, *QueryRulesRequest) (*QueryRulesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Rules not implemented")
+func (UnimplementedQueryServer) Templates(context.Context, *QueryTemplatesRequest) (*QueryTemplatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Templates not implemented")
 }
-func (UnimplementedQueryServer) SimulateRule(context.Context, *QuerySimulateRuleRequest) (*QuerySimulateRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SimulateRule not implemented")
+func (UnimplementedQueryServer) SimulateTemplate(context.Context, *QuerySimulateTemplateRequest) (*QuerySimulateTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SimulateTemplate not implemented")
 }
-func (UnimplementedQueryServer) RuleById(context.Context, *QueryRuleByIdRequest) (*QueryRuleByIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RuleById not implemented")
+func (UnimplementedQueryServer) TemplateById(context.Context, *QueryTemplateByIdRequest) (*QueryTemplateByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TemplateById not implemented")
 }
 func (UnimplementedQueryServer) ActionsByAddress(context.Context, *QueryActionsByAddressRequest) (*QueryActionsByAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActionsByAddress not implemented")
@@ -212,56 +212,56 @@ func _Query_Actions_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Rules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRulesRequest)
+func _Query_Templates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTemplatesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Rules(ctx, in)
+		return srv.(QueryServer).Templates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_Rules_FullMethodName,
+		FullMethod: Query_Templates_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Rules(ctx, req.(*QueryRulesRequest))
+		return srv.(QueryServer).Templates(ctx, req.(*QueryTemplatesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_SimulateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QuerySimulateRuleRequest)
+func _Query_SimulateTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySimulateTemplateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).SimulateRule(ctx, in)
+		return srv.(QueryServer).SimulateTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_SimulateRule_FullMethodName,
+		FullMethod: Query_SimulateTemplate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).SimulateRule(ctx, req.(*QuerySimulateRuleRequest))
+		return srv.(QueryServer).SimulateTemplate(ctx, req.(*QuerySimulateTemplateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_RuleById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRuleByIdRequest)
+func _Query_TemplateById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTemplateByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).RuleById(ctx, in)
+		return srv.(QueryServer).TemplateById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_RuleById_FullMethodName,
+		FullMethod: Query_TemplateById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).RuleById(ctx, req.(*QueryRuleByIdRequest))
+		return srv.(QueryServer).TemplateById(ctx, req.(*QueryTemplateByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -318,16 +318,16 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Actions_Handler,
 		},
 		{
-			MethodName: "Rules",
-			Handler:    _Query_Rules_Handler,
+			MethodName: "Templates",
+			Handler:    _Query_Templates_Handler,
 		},
 		{
-			MethodName: "SimulateRule",
-			Handler:    _Query_SimulateRule_Handler,
+			MethodName: "SimulateTemplate",
+			Handler:    _Query_SimulateTemplate_Handler,
 		},
 		{
-			MethodName: "RuleById",
-			Handler:    _Query_RuleById_Handler,
+			MethodName: "TemplateById",
+			Handler:    _Query_TemplateById_Handler,
 		},
 		{
 			MethodName: "ActionsByAddress",

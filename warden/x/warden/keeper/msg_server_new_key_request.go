@@ -45,7 +45,7 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		KeychainId:           msg.KeychainId,
 		KeyType:              msg.KeyType,
 		Status:               types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-		RuleId:               msg.RuleId,
+		TemplateId:           msg.TemplateId,
 		DeductedKeychainFees: keychain.Fees.KeyReq,
 	}
 
@@ -59,7 +59,7 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		Id:         id,
 		SpaceId:    req.SpaceId,
 		KeychainId: req.KeychainId,
-		RuleId:     req.RuleId,
+		TemplateId: req.TemplateId,
 		KeyType:    req.KeyType,
 		Creator:    req.Creator,
 	}); err != nil {

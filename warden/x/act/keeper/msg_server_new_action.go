@@ -19,12 +19,12 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 
 	expectedApproveExpression, err := shield.Parse(msg.ExpectedApproveExpression)
 	if err != nil {
-		return nil, errors.Wrapf(types.ErrInvalidRuleDefinition, "%v", err)
+		return nil, errors.Wrapf(types.ErrInvalidExpressionDefinition, "%v", err)
 	}
 
 	expectedRejectExpression, err := shield.Parse(msg.ExpectedRejectExpression)
 	if err != nil {
-		return nil, errors.Wrapf(types.ErrInvalidRuleDefinition, "%v", err)
+		return nil, errors.Wrapf(types.ErrInvalidExpressionDefinition, "%v", err)
 	}
 
 	act, err := k.AddAction(ctx, msg.Creator, message, msg.ActionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)

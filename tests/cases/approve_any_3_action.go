@@ -50,22 +50,22 @@ func (c *Test_ApproveAny3Action) Run(t *testing.T, ctx context.Context, _ framew
 	checks.SuccessTx(t, resAddOwner2)
 	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 1)
 
-	newApproveRuleDefinition := "\"any(3, warden.space.owners)\""
-	resNewRule := alice.Tx(t, "act new-rule --name approve_requires_three --definition "+newApproveRuleDefinition)
-	checks.SuccessTx(t, resNewRule)
+	newApproveTemplateDefinition := "\"any(3, warden.space.owners)\""
+	resNewTemplate := alice.Tx(t, "act new-template --name approve_requires_three --definition "+newApproveTemplateDefinition)
+	checks.SuccessTx(t, resNewTemplate)
 
-	resUpdateSpaceAdminRuleByAlice := alice.Tx(t, "warden new-action update-space --space-id 1 --approve-admin-rule-id 1 --nonce 2") //3
-	checks.SuccessTx(t, resUpdateSpaceAdminRuleByAlice)
+	resUpdateSpaceAdminTemplateByAlice := alice.Tx(t, "warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 2") //3
+	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByAlice)
 
 	spaceAfterValidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
 		Id: 1,
 	})
 	require.NoError(t, err)
-	require.Equal(t, uint64(1), spaceAfterValidApprove.Space.ApproveAdminRuleId)
+	require.Equal(t, uint64(1), spaceAfterValidApprove.Space.ApproveAdminTemplateId)
 
 	addNewOwnerCommandTemplate = "warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression %s"
 
-	resAliceAddOwnerDave := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3, newApproveRuleDefinition)) //4
+	resAliceAddOwnerDave := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3, newApproveTemplateDefinition)) //4
 	checks.SuccessTx(t, resAliceAddOwnerDave)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 

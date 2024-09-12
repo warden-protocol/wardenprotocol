@@ -61,62 +61,62 @@ func (w *Space) IncrementNonce(nonce uint64) (uint64, error) {
 	return w.Nonce, nil
 }
 
-func (w *Space) RuleApproveAddOwner() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveAddOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRejectAddOwner() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectAddOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleApproveRemoveOwner() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveRemoveOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRejectRemoveOwner() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectRemoveOwner() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleApproveNewKeyRequest() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveNewKeyRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRejectNewKeyRequest() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectNewKeyRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleApproveUpdateKey() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveUpdateKey() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRejectUpdateKey() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectUpdateKey() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleApproveNewSignRequest() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveNewSignRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRejectNewSignRequest() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectNewSignRequest() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleApproveUpdateSpace() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateApproveUpdateSpace() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-func (w *Space) RuleRejectUpdateSpace() acttypes.Rule {
-	return w.AnyOwnerRule()
+func (w *Space) TemplateRejectUpdateSpace() acttypes.Template {
+	return w.AnyOwnerTemplate()
 }
 
-// AnyOwnerRule returns a rule that is satisfied when at least one of the owners of the space approves.
-func (w *Space) AnyOwnerRule() acttypes.Rule {
+// AnyOwnerTemplate returns a template that is satisfied when at least one of the owners of the space approves.
+func (w *Space) AnyOwnerTemplate() acttypes.Template {
 	expr, err := shield.Parse("any(1, warden.space.owners)")
 	if err != nil {
 		panic(err)
 	}
 
-	return acttypes.Rule{
+	return acttypes.Template{
 		Name:       "AnyOwner",
 		Expression: expr,
 	}

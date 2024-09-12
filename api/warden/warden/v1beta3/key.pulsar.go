@@ -75,7 +75,7 @@ var (
 	fd_KeyRequest_key_type               protoreflect.FieldDescriptor
 	fd_KeyRequest_status                 protoreflect.FieldDescriptor
 	fd_KeyRequest_reject_reason          protoreflect.FieldDescriptor
-	fd_KeyRequest_rule_id                protoreflect.FieldDescriptor
+	fd_KeyRequest_template_id            protoreflect.FieldDescriptor
 	fd_KeyRequest_deducted_keychain_fees protoreflect.FieldDescriptor
 )
 
@@ -89,7 +89,7 @@ func init() {
 	fd_KeyRequest_key_type = md_KeyRequest.Fields().ByName("key_type")
 	fd_KeyRequest_status = md_KeyRequest.Fields().ByName("status")
 	fd_KeyRequest_reject_reason = md_KeyRequest.Fields().ByName("reject_reason")
-	fd_KeyRequest_rule_id = md_KeyRequest.Fields().ByName("rule_id")
+	fd_KeyRequest_template_id = md_KeyRequest.Fields().ByName("template_id")
 	fd_KeyRequest_deducted_keychain_fees = md_KeyRequest.Fields().ByName("deducted_keychain_fees")
 }
 
@@ -200,9 +200,9 @@ func (x *fastReflection_KeyRequest) Range(f func(protoreflect.FieldDescriptor, p
 			return
 		}
 	}
-	if x.RuleId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.RuleId)
-		if !f(fd_KeyRequest_rule_id, value) {
+	if x.TemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.TemplateId)
+		if !f(fd_KeyRequest_template_id, value) {
 			return
 		}
 	}
@@ -241,8 +241,8 @@ func (x *fastReflection_KeyRequest) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Status != 0
 	case "warden.warden.v1beta3.KeyRequest.reject_reason":
 		return x.RejectReason != ""
-	case "warden.warden.v1beta3.KeyRequest.rule_id":
-		return x.RuleId != uint64(0)
+	case "warden.warden.v1beta3.KeyRequest.template_id":
+		return x.TemplateId != uint64(0)
 	case "warden.warden.v1beta3.KeyRequest.deducted_keychain_fees":
 		return len(x.DeductedKeychainFees) != 0
 	default:
@@ -275,8 +275,8 @@ func (x *fastReflection_KeyRequest) Clear(fd protoreflect.FieldDescriptor) {
 		x.Status = 0
 	case "warden.warden.v1beta3.KeyRequest.reject_reason":
 		x.RejectReason = ""
-	case "warden.warden.v1beta3.KeyRequest.rule_id":
-		x.RuleId = uint64(0)
+	case "warden.warden.v1beta3.KeyRequest.template_id":
+		x.TemplateId = uint64(0)
 	case "warden.warden.v1beta3.KeyRequest.deducted_keychain_fees":
 		x.DeductedKeychainFees = nil
 	default:
@@ -316,8 +316,8 @@ func (x *fastReflection_KeyRequest) Get(descriptor protoreflect.FieldDescriptor)
 	case "warden.warden.v1beta3.KeyRequest.reject_reason":
 		value := x.RejectReason
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.v1beta3.KeyRequest.rule_id":
-		value := x.RuleId
+	case "warden.warden.v1beta3.KeyRequest.template_id":
+		value := x.TemplateId
 		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.v1beta3.KeyRequest.deducted_keychain_fees":
 		if len(x.DeductedKeychainFees) == 0 {
@@ -359,8 +359,8 @@ func (x *fastReflection_KeyRequest) Set(fd protoreflect.FieldDescriptor, value p
 		x.Status = (KeyRequestStatus)(value.Enum())
 	case "warden.warden.v1beta3.KeyRequest.reject_reason":
 		x.RejectReason = value.Interface().(string)
-	case "warden.warden.v1beta3.KeyRequest.rule_id":
-		x.RuleId = value.Uint()
+	case "warden.warden.v1beta3.KeyRequest.template_id":
+		x.TemplateId = value.Uint()
 	case "warden.warden.v1beta3.KeyRequest.deducted_keychain_fees":
 		lv := value.List()
 		clv := lv.(*_KeyRequest_9_list)
@@ -405,8 +405,8 @@ func (x *fastReflection_KeyRequest) Mutable(fd protoreflect.FieldDescriptor) pro
 		panic(fmt.Errorf("field status of message warden.warden.v1beta3.KeyRequest is not mutable"))
 	case "warden.warden.v1beta3.KeyRequest.reject_reason":
 		panic(fmt.Errorf("field reject_reason of message warden.warden.v1beta3.KeyRequest is not mutable"))
-	case "warden.warden.v1beta3.KeyRequest.rule_id":
-		panic(fmt.Errorf("field rule_id of message warden.warden.v1beta3.KeyRequest is not mutable"))
+	case "warden.warden.v1beta3.KeyRequest.template_id":
+		panic(fmt.Errorf("field template_id of message warden.warden.v1beta3.KeyRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.KeyRequest"))
@@ -434,7 +434,7 @@ func (x *fastReflection_KeyRequest) NewField(fd protoreflect.FieldDescriptor) pr
 		return protoreflect.ValueOfEnum(0)
 	case "warden.warden.v1beta3.KeyRequest.reject_reason":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.v1beta3.KeyRequest.rule_id":
+	case "warden.warden.v1beta3.KeyRequest.template_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.v1beta3.KeyRequest.deducted_keychain_fees":
 		list := []*v1beta1.Coin{}
@@ -531,8 +531,8 @@ func (x *fastReflection_KeyRequest) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.RuleId != 0 {
-			n += 1 + runtime.Sov(uint64(x.RuleId))
+		if x.TemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.TemplateId))
 		}
 		if len(x.DeductedKeychainFees) > 0 {
 			for _, e := range x.DeductedKeychainFees {
@@ -585,8 +585,8 @@ func (x *fastReflection_KeyRequest) ProtoMethods() *protoiface.Methods {
 				dAtA[i] = 0x4a
 			}
 		}
-		if x.RuleId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.RuleId))
+		if x.TemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.TemplateId))
 			i--
 			dAtA[i] = 0x40
 		}
@@ -839,9 +839,9 @@ func (x *fastReflection_KeyRequest) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 8:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TemplateId", wireType)
 				}
-				x.RuleId = 0
+				x.TemplateId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -851,7 +851,7 @@ func (x *fastReflection_KeyRequest) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.RuleId |= uint64(b&0x7F) << shift
+					x.TemplateId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -926,15 +926,15 @@ func (x *fastReflection_KeyRequest) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_Key                 protoreflect.MessageDescriptor
-	fd_Key_id              protoreflect.FieldDescriptor
-	fd_Key_space_id        protoreflect.FieldDescriptor
-	fd_Key_keychain_id     protoreflect.FieldDescriptor
-	fd_Key_type            protoreflect.FieldDescriptor
-	fd_Key_public_key      protoreflect.FieldDescriptor
-	fd_Key_rule_id         protoreflect.FieldDescriptor
-	fd_Key_approve_rule_id protoreflect.FieldDescriptor
-	fd_Key_reject_rule_id  protoreflect.FieldDescriptor
+	md_Key                     protoreflect.MessageDescriptor
+	fd_Key_id                  protoreflect.FieldDescriptor
+	fd_Key_space_id            protoreflect.FieldDescriptor
+	fd_Key_keychain_id         protoreflect.FieldDescriptor
+	fd_Key_type                protoreflect.FieldDescriptor
+	fd_Key_public_key          protoreflect.FieldDescriptor
+	fd_Key_template_id         protoreflect.FieldDescriptor
+	fd_Key_approve_template_id protoreflect.FieldDescriptor
+	fd_Key_reject_template_id  protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -945,9 +945,9 @@ func init() {
 	fd_Key_keychain_id = md_Key.Fields().ByName("keychain_id")
 	fd_Key_type = md_Key.Fields().ByName("type")
 	fd_Key_public_key = md_Key.Fields().ByName("public_key")
-	fd_Key_rule_id = md_Key.Fields().ByName("rule_id")
-	fd_Key_approve_rule_id = md_Key.Fields().ByName("approve_rule_id")
-	fd_Key_reject_rule_id = md_Key.Fields().ByName("reject_rule_id")
+	fd_Key_template_id = md_Key.Fields().ByName("template_id")
+	fd_Key_approve_template_id = md_Key.Fields().ByName("approve_template_id")
+	fd_Key_reject_template_id = md_Key.Fields().ByName("reject_template_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_Key)(nil)
@@ -1045,21 +1045,21 @@ func (x *fastReflection_Key) Range(f func(protoreflect.FieldDescriptor, protoref
 			return
 		}
 	}
-	if x.RuleId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.RuleId)
-		if !f(fd_Key_rule_id, value) {
+	if x.TemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.TemplateId)
+		if !f(fd_Key_template_id, value) {
 			return
 		}
 	}
-	if x.ApproveRuleId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.ApproveRuleId)
-		if !f(fd_Key_approve_rule_id, value) {
+	if x.ApproveTemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ApproveTemplateId)
+		if !f(fd_Key_approve_template_id, value) {
 			return
 		}
 	}
-	if x.RejectRuleId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.RejectRuleId)
-		if !f(fd_Key_reject_rule_id, value) {
+	if x.RejectTemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.RejectTemplateId)
+		if !f(fd_Key_reject_template_id, value) {
 			return
 		}
 	}
@@ -1088,12 +1088,12 @@ func (x *fastReflection_Key) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Type_ != 0
 	case "warden.warden.v1beta3.Key.public_key":
 		return len(x.PublicKey) != 0
-	case "warden.warden.v1beta3.Key.rule_id":
-		return x.RuleId != uint64(0)
-	case "warden.warden.v1beta3.Key.approve_rule_id":
-		return x.ApproveRuleId != uint64(0)
-	case "warden.warden.v1beta3.Key.reject_rule_id":
-		return x.RejectRuleId != uint64(0)
+	case "warden.warden.v1beta3.Key.template_id":
+		return x.TemplateId != uint64(0)
+	case "warden.warden.v1beta3.Key.approve_template_id":
+		return x.ApproveTemplateId != uint64(0)
+	case "warden.warden.v1beta3.Key.reject_template_id":
+		return x.RejectTemplateId != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Key"))
@@ -1120,12 +1120,12 @@ func (x *fastReflection_Key) Clear(fd protoreflect.FieldDescriptor) {
 		x.Type_ = 0
 	case "warden.warden.v1beta3.Key.public_key":
 		x.PublicKey = nil
-	case "warden.warden.v1beta3.Key.rule_id":
-		x.RuleId = uint64(0)
-	case "warden.warden.v1beta3.Key.approve_rule_id":
-		x.ApproveRuleId = uint64(0)
-	case "warden.warden.v1beta3.Key.reject_rule_id":
-		x.RejectRuleId = uint64(0)
+	case "warden.warden.v1beta3.Key.template_id":
+		x.TemplateId = uint64(0)
+	case "warden.warden.v1beta3.Key.approve_template_id":
+		x.ApproveTemplateId = uint64(0)
+	case "warden.warden.v1beta3.Key.reject_template_id":
+		x.RejectTemplateId = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Key"))
@@ -1157,14 +1157,14 @@ func (x *fastReflection_Key) Get(descriptor protoreflect.FieldDescriptor) protor
 	case "warden.warden.v1beta3.Key.public_key":
 		value := x.PublicKey
 		return protoreflect.ValueOfBytes(value)
-	case "warden.warden.v1beta3.Key.rule_id":
-		value := x.RuleId
+	case "warden.warden.v1beta3.Key.template_id":
+		value := x.TemplateId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta3.Key.approve_rule_id":
-		value := x.ApproveRuleId
+	case "warden.warden.v1beta3.Key.approve_template_id":
+		value := x.ApproveTemplateId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta3.Key.reject_rule_id":
-		value := x.RejectRuleId
+	case "warden.warden.v1beta3.Key.reject_template_id":
+		value := x.RejectTemplateId
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
@@ -1196,12 +1196,12 @@ func (x *fastReflection_Key) Set(fd protoreflect.FieldDescriptor, value protoref
 		x.Type_ = (KeyType)(value.Enum())
 	case "warden.warden.v1beta3.Key.public_key":
 		x.PublicKey = value.Bytes()
-	case "warden.warden.v1beta3.Key.rule_id":
-		x.RuleId = value.Uint()
-	case "warden.warden.v1beta3.Key.approve_rule_id":
-		x.ApproveRuleId = value.Uint()
-	case "warden.warden.v1beta3.Key.reject_rule_id":
-		x.RejectRuleId = value.Uint()
+	case "warden.warden.v1beta3.Key.template_id":
+		x.TemplateId = value.Uint()
+	case "warden.warden.v1beta3.Key.approve_template_id":
+		x.ApproveTemplateId = value.Uint()
+	case "warden.warden.v1beta3.Key.reject_template_id":
+		x.RejectTemplateId = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Key"))
@@ -1232,12 +1232,12 @@ func (x *fastReflection_Key) Mutable(fd protoreflect.FieldDescriptor) protorefle
 		panic(fmt.Errorf("field type of message warden.warden.v1beta3.Key is not mutable"))
 	case "warden.warden.v1beta3.Key.public_key":
 		panic(fmt.Errorf("field public_key of message warden.warden.v1beta3.Key is not mutable"))
-	case "warden.warden.v1beta3.Key.rule_id":
-		panic(fmt.Errorf("field rule_id of message warden.warden.v1beta3.Key is not mutable"))
-	case "warden.warden.v1beta3.Key.approve_rule_id":
-		panic(fmt.Errorf("field approve_rule_id of message warden.warden.v1beta3.Key is not mutable"))
-	case "warden.warden.v1beta3.Key.reject_rule_id":
-		panic(fmt.Errorf("field reject_rule_id of message warden.warden.v1beta3.Key is not mutable"))
+	case "warden.warden.v1beta3.Key.template_id":
+		panic(fmt.Errorf("field template_id of message warden.warden.v1beta3.Key is not mutable"))
+	case "warden.warden.v1beta3.Key.approve_template_id":
+		panic(fmt.Errorf("field approve_template_id of message warden.warden.v1beta3.Key is not mutable"))
+	case "warden.warden.v1beta3.Key.reject_template_id":
+		panic(fmt.Errorf("field reject_template_id of message warden.warden.v1beta3.Key is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Key"))
@@ -1261,11 +1261,11 @@ func (x *fastReflection_Key) NewField(fd protoreflect.FieldDescriptor) protorefl
 		return protoreflect.ValueOfEnum(0)
 	case "warden.warden.v1beta3.Key.public_key":
 		return protoreflect.ValueOfBytes(nil)
-	case "warden.warden.v1beta3.Key.rule_id":
+	case "warden.warden.v1beta3.Key.template_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta3.Key.approve_rule_id":
+	case "warden.warden.v1beta3.Key.approve_template_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta3.Key.reject_rule_id":
+	case "warden.warden.v1beta3.Key.reject_template_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
@@ -1352,14 +1352,14 @@ func (x *fastReflection_Key) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.RuleId != 0 {
-			n += 1 + runtime.Sov(uint64(x.RuleId))
+		if x.TemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.TemplateId))
 		}
-		if x.ApproveRuleId != 0 {
-			n += 1 + runtime.Sov(uint64(x.ApproveRuleId))
+		if x.ApproveTemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.ApproveTemplateId))
 		}
-		if x.RejectRuleId != 0 {
-			n += 1 + runtime.Sov(uint64(x.RejectRuleId))
+		if x.RejectTemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.RejectTemplateId))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -1390,18 +1390,18 @@ func (x *fastReflection_Key) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.RejectRuleId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.RejectRuleId))
+		if x.RejectTemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.RejectTemplateId))
 			i--
 			dAtA[i] = 0x40
 		}
-		if x.ApproveRuleId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.ApproveRuleId))
+		if x.ApproveTemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ApproveTemplateId))
 			i--
 			dAtA[i] = 0x38
 		}
-		if x.RuleId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.RuleId))
+		if x.TemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.TemplateId))
 			i--
 			dAtA[i] = 0x30
 		}
@@ -1593,9 +1593,9 @@ func (x *fastReflection_Key) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 6:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RuleId", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TemplateId", wireType)
 				}
-				x.RuleId = 0
+				x.TemplateId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1605,16 +1605,16 @@ func (x *fastReflection_Key) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.RuleId |= uint64(b&0x7F) << shift
+					x.TemplateId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
 			case 7:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ApproveRuleId", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ApproveTemplateId", wireType)
 				}
-				x.ApproveRuleId = 0
+				x.ApproveTemplateId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1624,16 +1624,16 @@ func (x *fastReflection_Key) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.ApproveRuleId |= uint64(b&0x7F) << shift
+					x.ApproveTemplateId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
 			case 8:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RejectRuleId", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RejectTemplateId", wireType)
 				}
-				x.RejectRuleId = 0
+				x.RejectTemplateId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1643,7 +1643,7 @@ func (x *fastReflection_Key) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.RejectRuleId |= uint64(b&0x7F) << shift
+					x.RejectTemplateId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -1889,8 +1889,8 @@ type KeyRequest struct {
 	Status KeyRequestStatus `protobuf:"varint,6,opt,name=status,proto3,enum=warden.warden.v1beta3.KeyRequestStatus" json:"status,omitempty"`
 	// If the request is rejected, this field will contain the reason.
 	RejectReason string `protobuf:"bytes,7,opt,name=reject_reason,json=rejectReason,proto3" json:"reject_reason,omitempty"`
-	// ID of the Rule that the resulting Key will use.
-	RuleId uint64 `protobuf:"varint,8,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	// ID of the Template that the resulting Key will use.
+	TemplateId uint64 `protobuf:"varint,8,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
 	// Amount of fees deducted during new key request
 	DeductedKeychainFees []*v1beta1.Coin `protobuf:"bytes,9,rep,name=deducted_keychain_fees,json=deductedKeychainFees,proto3" json:"deducted_keychain_fees,omitempty"`
 }
@@ -1964,9 +1964,9 @@ func (x *KeyRequest) GetRejectReason() string {
 	return ""
 }
 
-func (x *KeyRequest) GetRuleId() uint64 {
+func (x *KeyRequest) GetTemplateId() uint64 {
 	if x != nil {
-		return x.RuleId
+		return x.TemplateId
 	}
 	return 0
 }
@@ -1995,18 +1995,18 @@ type Key struct {
 	// Public key of the key. The private key is only known to the Keychain that
 	// generated it.
 	PublicKey []byte `protobuf:"bytes,5,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
-	// ID of the Rule that will need to be satisfied for using this key to sign
+	// ID of the Template that will need to be satisfied for using this key to sign
 	// data.
-	// If this is not set, the key will use the signing Rule of the Space.
-	RuleId uint64 `protobuf:"varint,6,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
-	// ID of the Rule that will need to be satisfied for using this key to sign
+	// If this is not set, the key will use the signing Template of the Space.
+	TemplateId uint64 `protobuf:"varint,6,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	// ID of the Template that will need to be satisfied for using this key to sign
 	// data.
-	// If this is not set, the key will use the approve signing Rule of the Space.
-	ApproveRuleId uint64 `protobuf:"varint,7,opt,name=approve_rule_id,json=approveRuleId,proto3" json:"approve_rule_id,omitempty"`
-	// ID of the Rule that will need to be satisfied for rejecting using this key to sign
+	// If this is not set, the key will use the approve signing Template of the Space.
+	ApproveTemplateId uint64 `protobuf:"varint,7,opt,name=approve_template_id,json=approveTemplateId,proto3" json:"approve_template_id,omitempty"`
+	// ID of the Template that will need to be satisfied for rejecting using this key to sign
 	// data.
-	// If this is not set, the key will use the reject signing Rule of the Space.
-	RejectRuleId uint64 `protobuf:"varint,8,opt,name=reject_rule_id,json=rejectRuleId,proto3" json:"reject_rule_id,omitempty"`
+	// If this is not set, the key will use the reject signing Template of the Space.
+	RejectTemplateId uint64 `protobuf:"varint,8,opt,name=reject_template_id,json=rejectTemplateId,proto3" json:"reject_template_id,omitempty"`
 }
 
 func (x *Key) Reset() {
@@ -2064,23 +2064,23 @@ func (x *Key) GetPublicKey() []byte {
 	return nil
 }
 
-func (x *Key) GetRuleId() uint64 {
+func (x *Key) GetTemplateId() uint64 {
 	if x != nil {
-		return x.RuleId
+		return x.TemplateId
 	}
 	return 0
 }
 
-func (x *Key) GetApproveRuleId() uint64 {
+func (x *Key) GetApproveTemplateId() uint64 {
 	if x != nil {
-		return x.ApproveRuleId
+		return x.ApproveTemplateId
 	}
 	return 0
 }
 
-func (x *Key) GetRejectRuleId() uint64 {
+func (x *Key) GetRejectTemplateId() uint64 {
 	if x != nil {
-		return x.RejectRuleId
+		return x.RejectTemplateId
 	}
 	return 0
 }
@@ -2096,7 +2096,7 @@ var file_warden_warden_v1beta3_key_proto_rawDesc = []byte{
 	0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
 	0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67,
 	0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x22, 0xc6, 0x03, 0x0a, 0x0a, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x6f, 0x22, 0xce, 0x03, 0x0a, 0x0a, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64,
 	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x19, 0x0a, 0x08, 0x73, 0x70,
@@ -2113,35 +2113,37 @@ var file_warden_warden_v1beta3_key_proto_rawDesc = []byte{
 	0x75, 0x65, 0x73, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74,
 	0x75, 0x73, 0x12, 0x23, 0x0a, 0x0d, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x72, 0x65, 0x61,
 	0x73, 0x6f, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x72, 0x65, 0x6a, 0x65, 0x63,
-	0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x17, 0x0a, 0x07, 0x72, 0x75, 0x6c, 0x65, 0x5f,
-	0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x72, 0x75, 0x6c, 0x65, 0x49, 0x64,
-	0x12, 0x97, 0x01, 0x0a, 0x16, 0x64, 0x65, 0x64, 0x75, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65,
-	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x09, 0x20, 0x03, 0x28,
-	0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde,
-	0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73,
-	0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7,
-	0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8,
-	0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x14, 0x64, 0x65, 0x64, 0x75, 0x63, 0x74, 0x65, 0x64, 0x4b, 0x65,
-	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x22, 0x8b, 0x02, 0x0a, 0x03, 0x4b,
-	0x65, 0x79, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02,
-	0x69, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x04, 0x52, 0x07, 0x73, 0x70, 0x61, 0x63, 0x65, 0x49, 0x64, 0x12, 0x1f, 0x0a,
-	0x0b, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x0a, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x49, 0x64, 0x12, 0x32,
-	0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1e, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x33, 0x2e, 0x4b, 0x65, 0x79, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x74, 0x79,
-	0x70, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79,
-	0x18, 0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65,
-	0x79, 0x12, 0x17, 0x0a, 0x07, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x06, 0x72, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x61, 0x70,
-	0x70, 0x72, 0x6f, 0x76, 0x65, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x07, 0x20,
-	0x01, 0x28, 0x04, 0x52, 0x0d, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x52, 0x75, 0x6c, 0x65,
-	0x49, 0x64, 0x12, 0x24, 0x0a, 0x0e, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x72, 0x75, 0x6c,
-	0x65, 0x5f, 0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x72, 0x65, 0x6a, 0x65,
-	0x63, 0x74, 0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x2a, 0x99, 0x01, 0x0a, 0x10, 0x4b, 0x65, 0x79,
+	0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x1f, 0x0a, 0x0b, 0x74, 0x65, 0x6d, 0x70, 0x6c,
+	0x61, 0x74, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x74, 0x65,
+	0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64, 0x12, 0x97, 0x01, 0x0a, 0x16, 0x64, 0x65, 0x64,
+	0x75, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x66,
+	0x65, 0x65, 0x73, 0x18, 0x09, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
+	0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73,
+	0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63,
+	0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x14, 0x64, 0x65,
+	0x64, 0x75, 0x63, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x46, 0x65,
+	0x65, 0x73, 0x22, 0xa3, 0x02, 0x0a, 0x03, 0x4b, 0x65, 0x79, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x73, 0x70,
+	0x61, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x07, 0x73, 0x70,
+	0x61, 0x63, 0x65, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x6b, 0x65, 0x79, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x49, 0x64, 0x12, 0x32, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x0e, 0x32, 0x1e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2e, 0x4b, 0x65, 0x79,
+	0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75,
+	0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09,
+	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x1f, 0x0a, 0x0b, 0x74, 0x65, 0x6d,
+	0x70, 0x6c, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a,
+	0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64, 0x12, 0x2e, 0x0a, 0x13, 0x61, 0x70,
+	0x70, 0x72, 0x6f, 0x76, 0x65, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x5f, 0x69,
+	0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x11, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65,
+	0x54, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64, 0x12, 0x2c, 0x0a, 0x12, 0x72, 0x65,
+	0x6a, 0x65, 0x63, 0x74, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x64,
+	0x18, 0x08, 0x20, 0x01, 0x28, 0x04, 0x52, 0x10, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x65,
+	0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64, 0x2a, 0x99, 0x01, 0x0a, 0x10, 0x4b, 0x65, 0x79,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x22, 0x0a,
 	0x1e, 0x4b, 0x45, 0x59, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x5f, 0x53, 0x54, 0x41,
 	0x54, 0x55, 0x53, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10,

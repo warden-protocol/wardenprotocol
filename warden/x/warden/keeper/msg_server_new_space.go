@@ -11,10 +11,10 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	space := &types.Space{
-		Creator:     msg.Creator,
-		AdminRuleId: msg.AdminRuleId,
-		SignRuleId:  msg.SignRuleId,
-		Nonce:       0,
+		Creator:         msg.Creator,
+		AdminTemplateId: msg.AdminTemplateId,
+		SignTemplateId:  msg.SignTemplateId,
+		Nonce:           0,
 	}
 
 	if err := space.AddOwner(msg.Creator, space.Nonce); err != nil {
@@ -32,11 +32,11 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 	}
 
 	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateSpace{
-		Id:          space.Id,
-		Creator:     space.Creator,
-		OwnersCount: uint64(len(space.Owners)),
-		AdminRuleId: space.AdminRuleId,
-		SignRuleId:  space.SignRuleId,
+		Id:              space.Id,
+		Creator:         space.Creator,
+		OwnersCount:     uint64(len(space.Owners)),
+		AdminTemplateId: space.AdminTemplateId,
+		SignTemplateId:  space.SignTemplateId,
 	}); err != nil {
 		return nil, err
 	}

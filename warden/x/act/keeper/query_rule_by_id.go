@@ -11,17 +11,17 @@ import (
 
 // nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
-func (k Keeper) RuleById(goCtx context.Context, req *types.QueryRuleByIdRequest) (*types.QueryRuleByIdResponse, error) {
+func (k Keeper) TemplateById(goCtx context.Context, req *types.QueryTemplateByIdRequest) (*types.QueryTemplateByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	rulePb, err := k.GetRule(ctx, req.Id)
+	templatePb, err := k.GetTemplate(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.QueryRuleByIdResponse{Rule: &rulePb}, nil
+	return &types.QueryTemplateByIdResponse{Template: &templatePb}, nil
 }

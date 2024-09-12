@@ -14,79 +14,79 @@ message Space {
   // List of owners of the space.
   repeated string owners = 3;
 
-  // Optional ID of the Rule to be applied to every *admin* operation.
-  // If not specified, the default Rule is used.
+  // Optional ID of the Template to be applied to every *admin* operation.
+  // If not specified, the default Template is used.
   //
   // Admin operations are:
   // - warden.warden.Msg.AddSpaceOwner
   // - warden.warden.Msg.RemoveSpaceOwner
   // - warden.warden.Msg.UpdateSpace
   //
-  // The default Rule is to allow any operation when at least one of its
+  // The default Template is to allow any operation when at least one of its
   // owner approves it.
-  uint64 admin_rule_id = 5;
+  uint64 admin_template_id = 5;
 
-  // Optional ID of the Rule to be applied to every *sign* operation.
-  // If not specified, the default Rule is used.
+  // Optional ID of the Template to be applied to every *sign* operation.
+  // If not specified, the default Template is used.
   //
   // Sign operations are:
   // - warden.warden.Msg.NewKeyRequest
   // - warden.warden.Msg.NewSignRequest
   // - warden.warden.Msg.UpdateKey
   //
-  // The default Rule is to allow any operation when at least one of its
+  // The default Template is to allow any operation when at least one of its
   // owner approves it.
-  uint64 sign_rule_id = 6;
+  uint64 sign_template_id = 6;
 
   // Version of the space. Every time the Space is updated, this number gets increasead by one.
   uint64 nonce = 7;
 
-  // Optional ID of the Rule to be applied to every approve vote on *admin* operation.
-  // If not specified, the default Rule is used.
+  // Optional ID of the Template to be applied to every approve vote on *admin* operation.
+  // If not specified, the default Template is used.
   //
   // Admin operations are:
   // - warden.warden.Msg.AddSpaceOwner
   // - warden.warden.Msg.RemoveSpaceOwner
   // - warden.warden.Msg.UpdateSpace
   //
-  // The default Rule is to allow any operation when at least one of its
+  // The default Template is to allow any operation when at least one of its
   // owner approves it.
-  uint64 approve_admin_rule_id = 8;
+  uint64 approve_admin_template_id = 8;
 
-  // Optional ID of the Rule to be applied to every reject vote on *admin* operation.
-  // If not specified, the default Rule is used.
+  // Optional ID of the Template to be applied to every reject vote on *admin* operation.
+  // If not specified, the default Template is used.
   //
   // Admin operations are:
   // - warden.warden.Msg.AddSpaceOwner
   // - warden.warden.Msg.RemoveSpaceOwner
   // - warden.warden.Msg.UpdateSpace
   //
-  // The default Rule is to allow any operation when at least one of its
+  // The default Template is to allow any operation when at least one of its
   // owner approves it.
-  uint64 reject_admin_rule_id = 9;
+  uint64 reject_admin_template_id = 9;
 
-  // Optional ID of the Rule to be applied to every approve vote on *sign* operation.
-  // If not specified, the default Rule is used.
+  // Optional ID of the Template to be applied to every approve vote on *sign* operation.
+  // If not specified, the default Template is used.
   //
   // Sign operations are:
   // - warden.warden.Msg.NewKeyRequest
   // - warden.warden.Msg.NewSignRequest
   // - warden.warden.Msg.UpdateKey
   //
-  // The default Rule is to allow any operation when at least one of its
+  // The default Template is to allow any operation when at least one of its
   // owner approves it.
-  uint64 approve_sign_rule_id = 10;
+  uint64 approve_sign_template_id = 10;
 
-  // Optional ID of the Rule to be applied to every reject vote on *sign* operation.
-  // If not specified, the default Rule is used.
+  // Optional ID of the Template to be applied to every reject vote on *sign* operation.
+  // If not specified, the default Template is used.
   //
   // Sign operations are:
   // - warden.warden.Msg.NewKeyRequest
   // - warden.warden.Msg.NewSignRequest
   // - warden.warden.Msg.UpdateKey
   //
-  // The default Rule is to allow any operation when at least one of its
+  // The default Template is to allow any operation when at least one of its
   // owner approves it.
-  uint64 reject_sign_rule_id = 11;
+  uint64 reject_sign_template_id = 11;
 }
 

@@ -19,11 +19,11 @@ message EventCreateSpace {
   // owners_count is the count of the space owners
   uint64 owners_count = 3;
 
-  // id of the rule to be applied to every admin operation
-  uint64 admin_rule_id = 4;
+  // id of the template to be applied to every admin operation
+  uint64 admin_template_id = 4;
 
-  // id of the rule to be applied to every sign operation
-  uint64 sign_rule_id = 5;
+  // id of the template to be applied to every sign operation
+  uint64 sign_template_id = 5;
 }
 
 // EventUpdateSpace is emitted when Space is updated
@@ -31,23 +31,23 @@ message EventUpdateSpace {
   // id of the space being updated
   uint64 space_id = 1;
 
-  // id of the rule to be applied to every admin operation
-  uint64 admin_rule_id = 2;
+  // id of the template to be applied to every admin operation
+  uint64 admin_template_id = 2;
 
-  // id of the rule to be applied to every sign operation
-  uint64 sign_rule_id = 3;
+  // id of the template to be applied to every sign operation
+  uint64 sign_template_id = 3;
 
-  // id of the rule to be applied to every approve admin operation
-  uint64 approve_admin_rule_id = 4;
+  // id of the template to be applied to every approve admin operation
+  uint64 approve_admin_template_id = 4;
 
-  // id of the rule to be applied to every reject admin operation
-  uint64 reject_admin_rule_id = 5;
+  // id of the template to be applied to every reject admin operation
+  uint64 reject_admin_template_id = 5;
 
-  // id of the rule to be applied to every approve sign operation
-  uint64 approve_sign_rule_id = 6;
+  // id of the template to be applied to every approve sign operation
+  uint64 approve_sign_template_id = 6;
 
-  // id of the rule to be applied to every reject sign operation
-  uint64 reject_sign_rule_id = 7;
+  // id of the template to be applied to every reject sign operation
+  uint64 reject_sign_template_id = 7;
 }
 
 // EventAddSpaceOwner is emitted when a new owner is added
@@ -85,8 +85,8 @@ message EventNewKeyRequest {
   // keychain_id associated with the key request
   uint64 keychain_id = 3;
 
-  // id of the rule to be applied to every sign operation for this key
-  uint64 rule_id = 4;
+  // id of the template to be applied to every sign operation for this key
+  uint64 template_id = 4;
 
   // the crypto scheme requested for this key
   KeyType key_type = 5;
@@ -109,8 +109,8 @@ message EventNewKey {
   // keychain_id associated with the key request
   uint64 keychain_id = 4;
 
-  // id of the rule to be applied to every sign operation for this key
-  uint64 rule_id = 5;
+  // id of the template to be applied to every sign operation for this key
+  uint64 template_id = 5;
 }
 
 // EventRejectKeyRequest is emitted when a Key request is rejected
@@ -124,14 +124,14 @@ message EventUpdateKey {
   // id of the key
   uint64 id = 1;
 
-  // id of the rule to be applied to every sign operation
-  uint64 rule_id = 2;
+  // id of the template to be applied to every sign operation
+  uint64 template_id = 2;
 
-  // id of the rule to be applied to every approve sign operation
-  uint64 approve_rule_id = 3;
+  // id of the template to be applied to every approve sign operation
+  uint64 approve_template_id = 3;
 
-  // id of the rule to be applied to every reject sign operation
-  uint64 reject_rule_id = 4;
+  // id of the template to be applied to every reject sign operation
+  uint64 reject_template_id = 4;
 }
 
 // EventNewSignRequest is emitted on new signature requests

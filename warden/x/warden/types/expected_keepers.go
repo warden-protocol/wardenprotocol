@@ -22,10 +22,10 @@ type BankKeeper interface {
 
 // ActKeeper defined the expected interface for the Act module.
 type ActKeeper interface {
-	IsValidRule(ctx context.Context, id uint64) error
-	GetRule(ctx context.Context, id uint64) (acttypes.Rule, error)
+	IsValidTemplate(ctx context.Context, id uint64) error
+	GetTemplate(ctx context.Context, id uint64) (acttypes.Template, error)
 	GetActionCreator(ctx context.Context) string
-	RulesRegistry() *acttypes.RulesRegistry
+	TemplatesRegistry() *acttypes.TemplatesRegistry
 }
 
 // ParamSubspace defines the expected Subspace interface for parameters.

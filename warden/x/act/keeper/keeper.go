@@ -26,10 +26,10 @@ type (
 
 		// shieldExpanderFunc returns an injected AST expander
 		shieldExpanderFunc func() ast.Expander
-		rulesRegistry      *types.RulesRegistry
+		templatesRegistry  *types.TemplatesRegistry
 
 		ActionKeeper ActionKeeper
-		rules        repo.SeqCollection[types.Rule]
+		templates    repo.SeqCollection[types.Template]
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
@@ -40,7 +40,7 @@ type (
 
 var (
 	ActionPrefix                   = collections.NewPrefix(0)
-	RulePrefix                     = collections.NewPrefix(1)
+	TemplatePrefix                 = collections.NewPrefix(1)
 	ActionByAddressPrefix          = collections.NewPrefix(2)
 	PreviousPruneBlockHeightPrefix = collections.NewPrefix(3)
 )
@@ -53,7 +53,7 @@ func NewKeeper(
 	authority string,
 	actModuleAddress string,
 	shieldExpanderFunc func() ast.Expander,
-	rulesRegistry *types.RulesRegistry,
+	templatesRegistry *types.TemplatesRegistry,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -65,9 +65,9 @@ func NewKeeper(
 
 	sb := collections.NewSchemaBuilder(storeService)
 
-	rulesStore := collections.NewMap(sb, RulePrefix, "rule", collections.Uint64Key, codec.CollValue[types.Rule](cdc))
-	rulesCount := collections.NewSequence(sb, types.KeyPrefix(types.RuleCountKey), "rules_count")
-	rules := repo.NewSeqCollection(rulesCount, rulesStore, func(i *types.Rule, u uint64) { i.Id = u })
+	templatesStore := collections.NewMap(sb, TemplatePrefix, "template", collections.Uint64Key, codec.CollValue[types.Template](cdc))
+	templatesCount := collections.NewSequence(sb, types.KeyPrefix(types.TemplateCountKey), "templates_count")
+	templates := repo.NewSeqCollection(templatesCount, templatesStore, func(i *types.Template, u uint64) { i.Id = u })
 
 	_, err := sb.Build()
 	if err != nil {
@@ -83,10 +83,10 @@ func NewKeeper(
 		router:           router,
 
 		shieldExpanderFunc: shieldExpanderFunc,
-		rulesRegistry:      rulesRegistry,
+		templatesRegistry:  templatesRegistry,
 
 		ActionKeeper: newActionKeeper(storeService, cdc),
-		rules:        rules,
+		templates:    templates,
 	}
 }
 
@@ -108,6 +108,6 @@ func (k Keeper) getBlockTime(ctx context.Context) time.Time {
 	return sdk.UnwrapSDKContext(ctx).HeaderInfo().Time
 }
 
-func (k Keeper) RulesRegistry() *types.RulesRegistry {
-	return k.rulesRegistry
+func (k Keeper) TemplatesRegistry() *types.TemplatesRegistry {
+	return k.templatesRegistry
 }

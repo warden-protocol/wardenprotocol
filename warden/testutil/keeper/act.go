@@ -33,7 +33,7 @@ func ActKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
 	actAuthority := authtypes.NewModuleAddress(types.ModuleName)
-	rulesRegistry := types.NewRulesRegistry()
+	templatesRegistry := types.NewTemplatesRegistry()
 
 	k := keeper.NewKeeper(
 		cdc,
@@ -43,7 +43,7 @@ func ActKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		authority.String(),
 		actAuthority.String(),
 		nil,
-		rulesRegistry,
+		templatesRegistry,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

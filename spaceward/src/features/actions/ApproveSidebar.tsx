@@ -12,7 +12,7 @@ import { ActionVoteType } from "@wardenprotocol/wardenjs/codegen/warden/act/v1be
 const { voteForAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 export default function ApproveSidebar() {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 	const { address } = useAddressContext();
 	const { tx } = useTx();
 	const { isReady, useActionsByAddress } = useQueryHooks();
@@ -28,8 +28,14 @@ export default function ApproveSidebar() {
 		},
 	});
 
-	const hidden = !data?.actions.length;
-	const action = data?.actions[0];
+	const actions = data?.actions.filter(
+		action => !action.votes.find(
+			vote => vote.participant === address
+		)
+	);
+
+	const hidden = !actions?.length;
+	const action = actions?.[0];
 
 	const title = action?.msg?.typeUrl
 		?.replace(
@@ -49,7 +55,7 @@ export default function ApproveSidebar() {
 	return (
 		<div
 			className={clsx(
-				"flex flex-col mx-2 p-3 rounded-lg bg-fill-quaternary relative select-none",
+				"flex flex-col mx-2 p-3 rounded-lg bg-fill-quaternary relative select-none mb-2",
 				{
 					hidden,
 					"border-progress": !hidden,

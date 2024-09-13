@@ -131,7 +131,7 @@ export const useRules = () => {
 		?.space;
 
 	const { MsgUpdateSpace } = warden.warden.v1beta3;
-	const { newAction, authority } = useNewAction(MsgUpdateSpace);
+	const { newAction, authority } = useNewAction(MsgUpdateSpace, true);
 
 	const rules = useRules({
 		request: {
@@ -168,7 +168,10 @@ export const useRules = () => {
 				const rule = rulesById[id.toString()];
 				validateAddressNumber(rule.expression);
 
-				if (space.signTemplateId && space.signTemplateId !== BigInt(id)) {
+				if (
+					space.approveSignTemplateId &&
+					space.approveSignTemplateId !== BigInt(id)
+				) {
 					let resolve: undefined | (() => void);
 					let reject: undefined | ((e: Error) => void);
 
@@ -199,12 +202,12 @@ export const useRules = () => {
 					authority,
 					spaceId: BigInt(space.id),
 					adminTemplateId: BigInt(0),
-					signTemplateId: BigInt(id),
+					signTemplateId: BigInt(0),
 					approveAdminTemplateId: BigInt(0),
-					approveSignTemplateId: BigInt(0),
+					approveSignTemplateId: BigInt(id),
 					rejectAdminTemplateId: BigInt(0),
 					rejectSignTemplateId: BigInt(0),
-					nonce: space.nonce + BigInt(1)
+					nonce: space.nonce,
 				},
 				{},
 			);
@@ -217,6 +220,8 @@ export const useRules = () => {
 		updateRule,
 		setActiveRule,
 		rulesBySpace,
-		activeRuleId: space?.signTemplateId ? Number(space.signTemplateId) : undefined,
+		activeRuleId: space?.approveSignTemplateId
+			? Number(space.approveSignTemplateId)
+			: undefined,
 	};
 };

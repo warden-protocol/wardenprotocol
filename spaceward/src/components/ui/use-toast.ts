@@ -141,7 +141,6 @@ function toast({ ...props }: Toast) {
 	const id = genId();
 
 	const update = (props: ToasterToast) => {
-		console.warn({ props });
 		dispatch({
 			type: "UPDATE_TOAST",
 			toast: { ...props, id },

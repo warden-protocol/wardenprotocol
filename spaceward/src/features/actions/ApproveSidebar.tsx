@@ -1,29 +1,50 @@
 import clsx from "clsx";
-import * as Popover from "@radix-ui/react-popover";
-
-import "./animate.css";
-import { QueuedActionStatus, useActionsState } from "./hooks";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import * as Popover from "@radix-ui/react-popover";
+import { warden } from "@wardenprotocol/wardenjs";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { Button } from "@/components/ui/button";
+import { useQueryHooks, useTx } from "@/hooks/useClient";
+import { useAddressContext } from "@/hooks/useAddressContext";
+import "./animate.css";
+import { ActionVoteType } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action_vote";
+
+const { voteForAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 export default function ApproveSidebar() {
 	const [open, setOpen] = useState(true);
-	const { data } = useActionsState();
-	const storeIds = Object.keys(data ?? {});
+	const { address } = useAddressContext();
+	const { tx } = useTx();
+	const { isReady, useActionsByAddress } = useQueryHooks();
 
-	const filtered = storeIds.filter((id) => {
-		const action = data?.[id];
-		return (
-			action &&
-			action.status !== QueuedActionStatus.Failed &&
-			action.status !== QueuedActionStatus.Success
-		);
+	const { data } = useActionsByAddress({
+		request: {
+			address: address,
+			// status: ActionStatus.ACTION_STATUS_UNSPECIFIED
+			status: ActionStatus.ACTION_STATUS_PENDING
+		},
+		options: {
+			enabled: isReady,
+		},
 	});
 
-	const total = filtered.length;
-	const hidden = false;// !total;
-	const first = data?.[filtered[0]];
+	const hidden = !data?.actions.length;
+	const action = data?.actions[0];
 
+	const title = action?.msg?.typeUrl
+		?.replace(
+			"/warden.warden.v1beta2.Msg",
+			"",
+		)
+		.replace(
+			"/warden.warden.v1beta3.Msg",
+			"",
+		)
+		.replace(
+			/([A-Z])/g,
+			" $1",
+		)
+		.trim();
 
 	return (
 		<div
@@ -36,14 +57,14 @@ export default function ApproveSidebar() {
 			)}
 		>
 			<div>
-				<Popover.Root open={open} modal={true}
+				<Popover.Root open={!hidden && open} modal={true}
 					onOpenChange={() => setOpen(v => !v)}
 				>
 					<div
 						className={clsx("flex flex-col")}
 					>
 						<div className="flex items-center">
-							<p className="text-lg font-semibold">___---___</p>
+							<p className="text-lg font-semibold">{title}</p>
 						</div>
 
 						<p className="text-sm text-gray-500 mb-2">
@@ -72,11 +93,43 @@ export default function ApproveSidebar() {
 						<Popover.Content
 							side="left"
 							sideOffset={20}
-							className="p-0"
+							className="p-0 select-none"
 						>
-							<div className="bg-fill-quaternary">
-								TODO
+							<div className="flex flex-col p-2 w-96 bg-secondary m-2 rounded-lg border-border-edge border-2">
+								<p className="text-lg font-semibold">{title}</p>
+								<p className="text-sm text-gray-500">From {action?.creator.slice(0, 12)}...{action?.creator.slice(-8)}</p>
+								<Button
+									className="w-full flex items-center justify-center gap-2 rounded-lg my-2 font-semibold hover:text-background"
+									onClick={() => {
+										if (!action) {
+											return;
+										}
 
+										tx([voteForAction({
+											actionId: action.id,
+											participant: address,
+											voteType: ActionVoteType.VOTE_TYPE_APPROVED,
+										})], {});
+									}}
+								>
+									Approve
+								</Button>
+								<Button
+									className="w-full flex items-center justify-center gap-2 rounded-lg bg-negative font-semibold text-primary hover:bg-destructive"
+									onClick={() => {
+										if (!action) {
+											return;
+										}
+
+										tx([voteForAction({
+											actionId: action.id,
+											participant: address,
+											voteType: ActionVoteType.VOTE_TYPE_REJECTED,
+										})], {});
+									}}
+								>
+									Reject
+								</Button>
 							</div>
 						</Popover.Content>
 					</Popover.Portal>

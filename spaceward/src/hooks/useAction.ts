@@ -7,6 +7,8 @@ import { warden } from "@wardenprotocol/wardenjs";
 const { newAction: newActionMsg } =
 	warden.act.v1beta1.MessageComposer.withTypeUrl;
 
+const defaultExpression = "any(1, warden.space.owners)";
+
 export function useNewAction<Data>(msg: Msg<Data>) {
 	const { address } = useAddressContext();
 	const { tx } = useTx();
@@ -19,8 +21,9 @@ export function useNewAction<Data>(msg: Msg<Data>) {
 			creator: address,
 			message: packAny(msg, data),
 			actionTimeoutHeight: BigInt(actionTimeoutHeight),
-			expectedApproveExpression: "any(1, warden.space.owners)",
-			expectedRejectExpression: "any(1, warden.space.owners)",
+			// todo if space.templateId !== 0, fetch and stringify according rule
+			expectedApproveExpression: defaultExpression,
+			expectedRejectExpression: defaultExpression,
 		});
 
 	async function newAction(

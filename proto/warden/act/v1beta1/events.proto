@@ -31,6 +31,15 @@ message EventCreateAction {
   string creator = 2;
 }
 
+// EventApproveAction is emitted when an Action is approved
+message EventApproveAction {
+  // id of action
+  uint64 id = 1;
+
+  // address of the account that approved the action
+  string approver = 2;
+}
+
 // EventActionVoted is emitted when an Action is voted on
 message EventActionVoted {
   // id of action

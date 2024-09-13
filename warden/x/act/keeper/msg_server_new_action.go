@@ -39,7 +39,6 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 	}); err != nil {
 		return nil, err
 	}
-
 	return &types.MsgNewActionResponse{
 		Id: act.Id,
 	}, nil

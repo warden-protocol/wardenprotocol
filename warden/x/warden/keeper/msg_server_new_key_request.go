@@ -45,7 +45,8 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		KeychainId:           msg.KeychainId,
 		KeyType:              msg.KeyType,
 		Status:               types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-		TemplateId:           msg.TemplateId,
+		ApproveTemplateId:    msg.ApproveTemplateId,
+		RejectTemplateId:     msg.RejectTemplateId,
 		DeductedKeychainFees: keychain.Fees.KeyReq,
 	}
 
@@ -56,12 +57,13 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewKeyRequest{
-		Id:         id,
-		SpaceId:    req.SpaceId,
-		KeychainId: req.KeychainId,
-		TemplateId: req.TemplateId,
-		KeyType:    req.KeyType,
-		Creator:    req.Creator,
+		Id:                id,
+		SpaceId:           req.SpaceId,
+		KeychainId:        req.KeychainId,
+		ApproveTemplateId: req.ApproveTemplateId,
+		RejectTemplateId:  req.RejectTemplateId,
+		KeyType:           req.KeyType,
+		Creator:           req.Creator,
 	}); err != nil {
 		return nil, err
 	}

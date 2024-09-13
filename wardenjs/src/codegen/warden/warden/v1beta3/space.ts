@@ -10,32 +10,6 @@ export interface Space {
   creator: string;
   /** List of owners of the space. */
   owners: string[];
-  /**
-   * Optional ID of the Template to be applied to every *admin* operation.
-   * If not specified, the default Template is used.
-   * 
-   * Admin operations are:
-   * - warden.warden.Msg.AddSpaceOwner
-   * - warden.warden.Msg.RemoveSpaceOwner
-   * - warden.warden.Msg.UpdateSpace
-   * 
-   * The default Template is to allow any operation when at least one of its
-   * owner approves it.
-   */
-  adminTemplateId: bigint;
-  /**
-   * Optional ID of the Template to be applied to every *sign* operation.
-   * If not specified, the default Template is used.
-   * 
-   * Sign operations are:
-   * - warden.warden.Msg.NewKeyRequest
-   * - warden.warden.Msg.NewSignRequest
-   * - warden.warden.Msg.UpdateKey
-   * 
-   * The default Template is to allow any operation when at least one of its
-   * owner approves it.
-   */
-  signTemplateId: bigint;
   /** Version of the space. Every time the Space is updated, this number gets increasead by one. */
   nonce: bigint;
   /**
@@ -103,32 +77,6 @@ export interface SpaceAmino {
   creator?: string;
   /** List of owners of the space. */
   owners?: string[];
-  /**
-   * Optional ID of the Template to be applied to every *admin* operation.
-   * If not specified, the default Template is used.
-   * 
-   * Admin operations are:
-   * - warden.warden.Msg.AddSpaceOwner
-   * - warden.warden.Msg.RemoveSpaceOwner
-   * - warden.warden.Msg.UpdateSpace
-   * 
-   * The default Template is to allow any operation when at least one of its
-   * owner approves it.
-   */
-  admin_template_id?: string;
-  /**
-   * Optional ID of the Template to be applied to every *sign* operation.
-   * If not specified, the default Template is used.
-   * 
-   * Sign operations are:
-   * - warden.warden.Msg.NewKeyRequest
-   * - warden.warden.Msg.NewSignRequest
-   * - warden.warden.Msg.UpdateKey
-   * 
-   * The default Template is to allow any operation when at least one of its
-   * owner approves it.
-   */
-  sign_template_id?: string;
   /** Version of the space. Every time the Space is updated, this number gets increasead by one. */
   nonce?: string;
   /**
@@ -193,8 +141,6 @@ export interface SpaceSDKType {
   id: bigint;
   creator: string;
   owners: string[];
-  admin_template_id: bigint;
-  sign_template_id: bigint;
   nonce: bigint;
   approve_admin_template_id: bigint;
   reject_admin_template_id: bigint;
@@ -206,8 +152,6 @@ function createBaseSpace(): Space {
     id: BigInt(0),
     creator: "",
     owners: [],
-    adminTemplateId: BigInt(0),
-    signTemplateId: BigInt(0),
     nonce: BigInt(0),
     approveAdminTemplateId: BigInt(0),
     rejectAdminTemplateId: BigInt(0),
@@ -227,26 +171,20 @@ export const Space = {
     for (const v of message.owners) {
       writer.uint32(26).string(v!);
     }
-    if (message.adminTemplateId !== BigInt(0)) {
-      writer.uint32(40).uint64(message.adminTemplateId);
-    }
-    if (message.signTemplateId !== BigInt(0)) {
-      writer.uint32(48).uint64(message.signTemplateId);
-    }
     if (message.nonce !== BigInt(0)) {
-      writer.uint32(56).uint64(message.nonce);
+      writer.uint32(32).uint64(message.nonce);
     }
     if (message.approveAdminTemplateId !== BigInt(0)) {
-      writer.uint32(64).uint64(message.approveAdminTemplateId);
+      writer.uint32(40).uint64(message.approveAdminTemplateId);
     }
     if (message.rejectAdminTemplateId !== BigInt(0)) {
-      writer.uint32(72).uint64(message.rejectAdminTemplateId);
+      writer.uint32(48).uint64(message.rejectAdminTemplateId);
     }
     if (message.approveSignTemplateId !== BigInt(0)) {
-      writer.uint32(80).uint64(message.approveSignTemplateId);
+      writer.uint32(56).uint64(message.approveSignTemplateId);
     }
     if (message.rejectSignTemplateId !== BigInt(0)) {
-      writer.uint32(88).uint64(message.rejectSignTemplateId);
+      writer.uint32(64).uint64(message.rejectSignTemplateId);
     }
     return writer;
   },
@@ -266,25 +204,19 @@ export const Space = {
         case 3:
           message.owners.push(reader.string());
           break;
-        case 5:
-          message.adminTemplateId = reader.uint64();
-          break;
-        case 6:
-          message.signTemplateId = reader.uint64();
-          break;
-        case 7:
+        case 4:
           message.nonce = reader.uint64();
           break;
-        case 8:
+        case 5:
           message.approveAdminTemplateId = reader.uint64();
           break;
-        case 9:
+        case 6:
           message.rejectAdminTemplateId = reader.uint64();
           break;
-        case 10:
+        case 7:
           message.approveSignTemplateId = reader.uint64();
           break;
-        case 11:
+        case 8:
           message.rejectSignTemplateId = reader.uint64();
           break;
         default:
@@ -299,8 +231,6 @@ export const Space = {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
       owners: Array.isArray(object?.owners) ? object.owners.map((e: any) => String(e)) : [],
-      adminTemplateId: isSet(object.adminTemplateId) ? BigInt(object.adminTemplateId.toString()) : BigInt(0),
-      signTemplateId: isSet(object.signTemplateId) ? BigInt(object.signTemplateId.toString()) : BigInt(0),
       nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0),
       approveAdminTemplateId: isSet(object.approveAdminTemplateId) ? BigInt(object.approveAdminTemplateId.toString()) : BigInt(0),
       rejectAdminTemplateId: isSet(object.rejectAdminTemplateId) ? BigInt(object.rejectAdminTemplateId.toString()) : BigInt(0),
@@ -317,8 +247,6 @@ export const Space = {
     } else {
       obj.owners = [];
     }
-    message.adminTemplateId !== undefined && (obj.adminTemplateId = (message.adminTemplateId || BigInt(0)).toString());
-    message.signTemplateId !== undefined && (obj.signTemplateId = (message.signTemplateId || BigInt(0)).toString());
     message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     message.approveAdminTemplateId !== undefined && (obj.approveAdminTemplateId = (message.approveAdminTemplateId || BigInt(0)).toString());
     message.rejectAdminTemplateId !== undefined && (obj.rejectAdminTemplateId = (message.rejectAdminTemplateId || BigInt(0)).toString());
@@ -331,8 +259,6 @@ export const Space = {
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.owners = object.owners?.map(e => e) || [];
-    message.adminTemplateId = object.adminTemplateId !== undefined && object.adminTemplateId !== null ? BigInt(object.adminTemplateId.toString()) : BigInt(0);
-    message.signTemplateId = object.signTemplateId !== undefined && object.signTemplateId !== null ? BigInt(object.signTemplateId.toString()) : BigInt(0);
     message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     message.approveAdminTemplateId = object.approveAdminTemplateId !== undefined && object.approveAdminTemplateId !== null ? BigInt(object.approveAdminTemplateId.toString()) : BigInt(0);
     message.rejectAdminTemplateId = object.rejectAdminTemplateId !== undefined && object.rejectAdminTemplateId !== null ? BigInt(object.rejectAdminTemplateId.toString()) : BigInt(0);
@@ -349,12 +275,6 @@ export const Space = {
       message.creator = object.creator;
     }
     message.owners = object.owners?.map(e => e) || [];
-    if (object.admin_template_id !== undefined && object.admin_template_id !== null) {
-      message.adminTemplateId = BigInt(object.admin_template_id);
-    }
-    if (object.sign_template_id !== undefined && object.sign_template_id !== null) {
-      message.signTemplateId = BigInt(object.sign_template_id);
-    }
     if (object.nonce !== undefined && object.nonce !== null) {
       message.nonce = BigInt(object.nonce);
     }
@@ -374,20 +294,18 @@ export const Space = {
   },
   toAmino(message: Space): SpaceAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     if (message.owners) {
       obj.owners = message.owners.map(e => e);
     } else {
       obj.owners = message.owners;
     }
-    obj.admin_template_id = message.adminTemplateId !== BigInt(0) ? message.adminTemplateId.toString() : undefined;
-    obj.sign_template_id = message.signTemplateId !== BigInt(0) ? message.signTemplateId.toString() : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: SpaceAminoMsg): Space {

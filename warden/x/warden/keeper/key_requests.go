@@ -1,8 +1,9 @@
 package keeper
 
 import (
-	"cosmossdk.io/errors"
 	"crypto/ed25519"
+
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -17,11 +18,12 @@ func (k Keeper) fulfillKeyRequest(ctx sdk.Context, msg *types.MsgFulfilKeyReques
 	}
 	// setup new key
 	key := types.Key{
-		SpaceId:    req.SpaceId,
-		KeychainId: req.KeychainId,
-		Type:       req.KeyType,
-		PublicKey:  pubKey,
-		TemplateId: req.TemplateId,
+		SpaceId:           req.SpaceId,
+		KeychainId:        req.KeychainId,
+		Type:              req.KeyType,
+		PublicKey:         pubKey,
+		ApproveTemplateId: req.ApproveTemplateId,
+		RejectTemplateId:  req.RejectTemplateId,
 	}
 
 	if err := k.KeysKeeper.New(ctx, key, req); err != nil {

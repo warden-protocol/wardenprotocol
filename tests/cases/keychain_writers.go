@@ -40,12 +40,12 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 
 	t.Run("create key request", func(t *testing.T) {
 		// create a KeyRequest
-		newReqTx := bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1award\" --template-id 0 --nonce 0")
+		newReqTx := bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newReqTx)
 		client.EnsureActionStatus(t, ctx, 1, v1beta1.ActionStatus_ACTION_STATUS_REVOKED)
 		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance)
 
-		newReqTx = bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"3award\" --template-id 0 --nonce 0")
+		newReqTx = bob.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"3award\" --nonce 0")
 		checks.SuccessTx(t, newReqTx)
 		client.EnsureActionStatus(t, ctx, 2, v1beta1.ActionStatus_ACTION_STATUS_COMPLETED)
 		client.EnsureBalanceAmount(t, ctx, wardenAddress, balance.Add(sdk.NewCoin("award", math.NewInt(2))))

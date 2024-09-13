@@ -1,6 +1,6 @@
 {
   "name": "@wardenprotocol/wardenjs",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Warden Protocol JavaScript client",
   "author": "Warden Protocol",
   "homepage": "https://github.com/warden-protocol/wardenprotocol",

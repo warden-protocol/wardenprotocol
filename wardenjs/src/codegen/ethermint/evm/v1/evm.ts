@@ -1664,11 +1664,11 @@ export const Log = {
       obj.topics = message.topics;
     }
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.block_number = message.blockNumber ? message.blockNumber.toString() : "0";
+    obj.block_number = message.blockNumber ? (message.blockNumber?.toString)() : "0";
     obj.tx_hash = message.txHash ?? "";
-    obj.tx_index = message.txIndex ? message.txIndex.toString() : "0";
+    obj.tx_index = message.txIndex ? (message.txIndex?.toString)() : "0";
     obj.block_hash = message.blockHash ?? "";
-    obj.index = message.index ? message.index.toString() : "0";
+    obj.index = message.index ? (message.index?.toString)() : "0";
     obj.removed = message.removed === false ? undefined : message.removed;
     return obj;
   },
@@ -1812,7 +1812,7 @@ export const TxResult = {
     obj.tx_logs = message.txLogs ? TransactionLogs.toAmino(message.txLogs) : undefined;
     obj.ret = message.ret ? base64FromBytes(message.ret) : undefined;
     obj.reverted = message.reverted === false ? undefined : message.reverted;
-    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? (message.gasUsed?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: TxResultAminoMsg): TxResult {
@@ -2110,7 +2110,7 @@ export const TraceConfig = {
     const obj: any = {};
     obj.tracer = message.tracer === "" ? undefined : message.tracer;
     obj.timeout = message.timeout === "" ? undefined : message.timeout;
-    obj.reexec = message.reexec !== BigInt(0) ? message.reexec.toString() : undefined;
+    obj.reexec = message.reexec !== BigInt(0) ? (message.reexec?.toString)() : undefined;
     obj.disable_stack = message.disableStack ?? false;
     obj.disable_storage = message.disableStorage ?? false;
     obj.debug = message.debug === false ? undefined : message.debug;

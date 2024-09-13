@@ -556,7 +556,7 @@ export const MsgNewAction = {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.message = message.message ? Any.toAmino(message.message) : undefined;
-    obj.action_timeout_height = message.actionTimeoutHeight !== BigInt(0) ? message.actionTimeoutHeight.toString() : undefined;
+    obj.action_timeout_height = message.actionTimeoutHeight !== BigInt(0) ? (message.actionTimeoutHeight?.toString)() : undefined;
     obj.expected_approve_expression = message.expectedApproveExpression === "" ? undefined : message.expectedApproveExpression;
     obj.expected_reject_expression = message.expectedRejectExpression === "" ? undefined : message.expectedRejectExpression;
     return obj;
@@ -631,7 +631,7 @@ export const MsgNewActionResponse = {
   },
   toAmino(message: MsgNewActionResponse): MsgNewActionResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewActionResponseAminoMsg): MsgNewActionResponse {
@@ -805,7 +805,7 @@ export const MsgNewTemplateResponse = {
   },
   toAmino(message: MsgNewTemplateResponse): MsgNewTemplateResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewTemplateResponseAminoMsg): MsgNewTemplateResponse {
@@ -918,7 +918,7 @@ export const MsgUpdateTemplate = {
   toAmino(message: MsgUpdateTemplate): MsgUpdateTemplateAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.name = message.name === "" ? undefined : message.name;
     obj.definition = message.definition === "" ? undefined : message.definition;
     return obj;
@@ -1064,7 +1064,7 @@ export const MsgRevokeAction = {
   toAmino(message: MsgRevokeAction): MsgRevokeActionAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
+    obj.action_id = message.actionId !== BigInt(0) ? (message.actionId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgRevokeActionAminoMsg): MsgRevokeAction {
@@ -1208,7 +1208,7 @@ export const MsgCheckAction = {
   toAmino(message: MsgCheckAction): MsgCheckActionAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
+    obj.action_id = message.actionId !== BigInt(0) ? (message.actionId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCheckActionAminoMsg): MsgCheckAction {
@@ -1381,7 +1381,7 @@ export const MsgVoteForAction = {
   toAmino(message: MsgVoteForAction): MsgVoteForActionAmino {
     const obj: any = {};
     obj.participant = message.participant === "" ? undefined : message.participant;
-    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
+    obj.action_id = message.actionId !== BigInt(0) ? (message.actionId?.toString)() : undefined;
     obj.vote_type = message.voteType === 0 ? undefined : message.voteType;
     return obj;
   },

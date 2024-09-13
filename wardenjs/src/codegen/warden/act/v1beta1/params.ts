@@ -111,7 +111,7 @@ export const Params = {
     const obj: any = {};
     obj.max_pending_time = message.maxPendingTime ? Duration.toAmino(message.maxPendingTime) : Duration.toAmino(Duration.fromPartial({}));
     obj.max_completed_time = message.maxCompletedTime ? Duration.toAmino(message.maxCompletedTime) : Duration.toAmino(Duration.fromPartial({}));
-    obj.prune_check_block_frequency = message.pruneCheckBlockFrequency !== BigInt(0) ? message.pruneCheckBlockFrequency.toString() : undefined;
+    obj.prune_check_block_frequency = message.pruneCheckBlockFrequency !== BigInt(0) ? (message.pruneCheckBlockFrequency?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

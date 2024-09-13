@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Action, ActionAmino, ActionSDKType } from "./action.js";
-import { Rule, RuleAmino, RuleSDKType } from "./rule.js";
+import { Template, TemplateAmino, TemplateSDKType } from "./template.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -10,7 +10,7 @@ export interface GenesisState {
   /** params defines all the parameters of the module. */
   params: Params;
   actions: Action[];
-  rules: Rule[];
+  templates: Template[];
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/warden.act.v1beta1.GenesisState";
@@ -21,7 +21,7 @@ export interface GenesisStateAmino {
   /** params defines all the parameters of the module. */
   params: ParamsAmino;
   actions: ActionAmino[];
-  rules: RuleAmino[];
+  templates: TemplateAmino[];
 }
 export interface GenesisStateAminoMsg {
   type: "/warden.act.v1beta1.GenesisState";
@@ -31,13 +31,13 @@ export interface GenesisStateAminoMsg {
 export interface GenesisStateSDKType {
   params: ParamsSDKType;
   actions: ActionSDKType[];
-  rules: RuleSDKType[];
+  templates: TemplateSDKType[];
 }
 function createBaseGenesisState(): GenesisState {
   return {
     params: Params.fromPartial({}),
     actions: [],
-    rules: []
+    templates: []
   };
 }
 export const GenesisState = {
@@ -49,8 +49,8 @@ export const GenesisState = {
     for (const v of message.actions) {
       Action.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    for (const v of message.rules) {
-      Rule.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.templates) {
+      Template.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -68,7 +68,7 @@ export const GenesisState = {
           message.actions.push(Action.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.rules.push(Rule.decode(reader, reader.uint32()));
+          message.templates.push(Template.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -81,7 +81,7 @@ export const GenesisState = {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => Action.fromJSON(e)) : [],
-      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rule.fromJSON(e)) : []
+      templates: Array.isArray(object?.templates) ? object.templates.map((e: any) => Template.fromJSON(e)) : []
     };
   },
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
@@ -92,10 +92,10 @@ export const GenesisState = {
     } else {
       obj.actions = [];
     }
-    if (message.rules) {
-      obj.rules = message.rules.map(e => e ? Rule.toJSON(e) : undefined);
+    if (message.templates) {
+      obj.templates = message.templates.map(e => e ? Template.toJSON(e) : undefined);
     } else {
-      obj.rules = [];
+      obj.templates = [];
     }
     return obj;
   },
@@ -103,7 +103,7 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     message.actions = object.actions?.map(e => Action.fromPartial(e)) || [];
-    message.rules = object.rules?.map(e => Rule.fromPartial(e)) || [];
+    message.templates = object.templates?.map(e => Template.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -112,7 +112,7 @@ export const GenesisState = {
       message.params = Params.fromAmino(object.params);
     }
     message.actions = object.actions?.map(e => Action.fromAmino(e)) || [];
-    message.rules = object.rules?.map(e => Rule.fromAmino(e)) || [];
+    message.templates = object.templates?.map(e => Template.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
@@ -123,10 +123,10 @@ export const GenesisState = {
     } else {
       obj.actions = message.actions;
     }
-    if (message.rules) {
-      obj.rules = message.rules.map(e => e ? Rule.toAmino(e) : undefined);
+    if (message.templates) {
+      obj.templates = message.templates.map(e => e ? Template.toAmino(e) : undefined);
     } else {
-      obj.rules = message.rules;
+      obj.templates = message.templates;
     }
     return obj;
   },

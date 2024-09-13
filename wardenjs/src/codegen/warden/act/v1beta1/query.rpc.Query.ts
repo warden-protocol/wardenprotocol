@@ -4,19 +4,19 @@ import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryRulesRequest, QueryRulesResponse, QuerySimulateRuleRequest, QuerySimulateRuleResponse, QueryRuleByIdRequest, QueryRuleByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryTemplatesRequest, QueryTemplatesResponse, QuerySimulateTemplateRequest, QuerySimulateTemplateResponse, QueryTemplateByIdRequest, QueryTemplateByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of Actions items. */
   actions(request?: QueryActionsRequest): Promise<QueryActionsResponse>;
-  /** Queries a list of Rules items. */
-  rules(request?: QueryRulesRequest): Promise<QueryRulesResponse>;
-  /** Queries to simulate a Rule */
-  simulateRule(request: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponse>;
-  /** Queries a list of RuleById items. */
-  ruleById(request: QueryRuleByIdRequest): Promise<QueryRuleByIdResponse>;
+  /** Queries a list of Templates items. */
+  templates(request: QueryTemplatesRequest): Promise<QueryTemplatesResponse>;
+  /** Queries to simulate a Template */
+  simulateTemplate(request: QuerySimulateTemplateRequest): Promise<QuerySimulateTemplateResponse>;
+  /** Queries a list of TemplateById items. */
+  templateById(request: QueryTemplateByIdRequest): Promise<QueryTemplateByIdResponse>;
   /** Queries a list of Actions items by one participant address. */
   actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse>;
   actionById(request: QueryActionByIdRequest): Promise<QueryActionByIdResponse>;
@@ -27,9 +27,9 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.params = this.params.bind(this);
     this.actions = this.actions.bind(this);
-    this.rules = this.rules.bind(this);
-    this.simulateRule = this.simulateRule.bind(this);
-    this.ruleById = this.ruleById.bind(this);
+    this.templates = this.templates.bind(this);
+    this.simulateTemplate = this.simulateTemplate.bind(this);
+    this.templateById = this.templateById.bind(this);
     this.actionsByAddress = this.actionsByAddress.bind(this);
     this.actionById = this.actionById.bind(this);
   }
@@ -45,22 +45,20 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("warden.act.v1beta1.Query", "Actions", data);
     return promise.then(data => QueryActionsResponse.decode(new BinaryReader(data)));
   }
-  rules(request: QueryRulesRequest = {
-    pagination: undefined
-  }): Promise<QueryRulesResponse> {
-    const data = QueryRulesRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.act.v1beta1.Query", "Rules", data);
-    return promise.then(data => QueryRulesResponse.decode(new BinaryReader(data)));
+  templates(request: QueryTemplatesRequest): Promise<QueryTemplatesResponse> {
+    const data = QueryTemplatesRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "Templates", data);
+    return promise.then(data => QueryTemplatesResponse.decode(new BinaryReader(data)));
   }
-  simulateRule(request: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponse> {
-    const data = QuerySimulateRuleRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.act.v1beta1.Query", "SimulateRule", data);
-    return promise.then(data => QuerySimulateRuleResponse.decode(new BinaryReader(data)));
+  simulateTemplate(request: QuerySimulateTemplateRequest): Promise<QuerySimulateTemplateResponse> {
+    const data = QuerySimulateTemplateRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "SimulateTemplate", data);
+    return promise.then(data => QuerySimulateTemplateResponse.decode(new BinaryReader(data)));
   }
-  ruleById(request: QueryRuleByIdRequest): Promise<QueryRuleByIdResponse> {
-    const data = QueryRuleByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.act.v1beta1.Query", "RuleById", data);
-    return promise.then(data => QueryRuleByIdResponse.decode(new BinaryReader(data)));
+  templateById(request: QueryTemplateByIdRequest): Promise<QueryTemplateByIdResponse> {
+    const data = QueryTemplateByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "TemplateById", data);
+    return promise.then(data => QueryTemplateByIdResponse.decode(new BinaryReader(data)));
   }
   actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse> {
     const data = QueryActionsByAddressRequest.encode(request).finish();
@@ -83,14 +81,14 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     actions(request?: QueryActionsRequest): Promise<QueryActionsResponse> {
       return queryService.actions(request);
     },
-    rules(request?: QueryRulesRequest): Promise<QueryRulesResponse> {
-      return queryService.rules(request);
+    templates(request: QueryTemplatesRequest): Promise<QueryTemplatesResponse> {
+      return queryService.templates(request);
     },
-    simulateRule(request: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponse> {
-      return queryService.simulateRule(request);
+    simulateTemplate(request: QuerySimulateTemplateRequest): Promise<QuerySimulateTemplateResponse> {
+      return queryService.simulateTemplate(request);
     },
-    ruleById(request: QueryRuleByIdRequest): Promise<QueryRuleByIdResponse> {
-      return queryService.ruleById(request);
+    templateById(request: QueryTemplateByIdRequest): Promise<QueryTemplateByIdResponse> {
+      return queryService.templateById(request);
     },
     actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse> {
       return queryService.actionsByAddress(request);
@@ -106,14 +104,14 @@ export interface UseParamsQuery<TData> extends ReactQueryParams<QueryParamsRespo
 export interface UseActionsQuery<TData> extends ReactQueryParams<QueryActionsResponse, TData> {
   request?: QueryActionsRequest;
 }
-export interface UseRulesQuery<TData> extends ReactQueryParams<QueryRulesResponse, TData> {
-  request?: QueryRulesRequest;
+export interface UseTemplatesQuery<TData> extends ReactQueryParams<QueryTemplatesResponse, TData> {
+  request: QueryTemplatesRequest;
 }
-export interface UseSimulateRuleQuery<TData> extends ReactQueryParams<QuerySimulateRuleResponse, TData> {
-  request: QuerySimulateRuleRequest;
+export interface UseSimulateTemplateQuery<TData> extends ReactQueryParams<QuerySimulateTemplateResponse, TData> {
+  request: QuerySimulateTemplateRequest;
 }
-export interface UseRuleByIdQuery<TData> extends ReactQueryParams<QueryRuleByIdResponse, TData> {
-  request: QueryRuleByIdRequest;
+export interface UseTemplateByIdQuery<TData> extends ReactQueryParams<QueryTemplateByIdResponse, TData> {
+  request: QueryTemplateByIdRequest;
 }
 export interface UseActionsByAddressQuery<TData> extends ReactQueryParams<QueryActionsByAddressResponse, TData> {
   request: QueryActionsByAddressRequest;
@@ -151,31 +149,31 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.actions(request);
     }, options);
   };
-  const useRules = <TData = QueryRulesResponse,>({
+  const useTemplates = <TData = QueryTemplatesResponse,>({
     request,
     options
-  }: UseRulesQuery<TData>) => {
-    return useQuery<QueryRulesResponse, Error, TData>(["rulesQuery", request], () => {
+  }: UseTemplatesQuery<TData>) => {
+    return useQuery<QueryTemplatesResponse, Error, TData>(["templatesQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.rules(request);
+      return queryService.templates(request);
     }, options);
   };
-  const useSimulateRule = <TData = QuerySimulateRuleResponse,>({
+  const useSimulateTemplate = <TData = QuerySimulateTemplateResponse,>({
     request,
     options
-  }: UseSimulateRuleQuery<TData>) => {
-    return useQuery<QuerySimulateRuleResponse, Error, TData>(["simulateRuleQuery", request], () => {
+  }: UseSimulateTemplateQuery<TData>) => {
+    return useQuery<QuerySimulateTemplateResponse, Error, TData>(["simulateTemplateQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.simulateRule(request);
+      return queryService.simulateTemplate(request);
     }, options);
   };
-  const useRuleById = <TData = QueryRuleByIdResponse,>({
+  const useTemplateById = <TData = QueryTemplateByIdResponse,>({
     request,
     options
-  }: UseRuleByIdQuery<TData>) => {
-    return useQuery<QueryRuleByIdResponse, Error, TData>(["ruleByIdQuery", request], () => {
+  }: UseTemplateByIdQuery<TData>) => {
+    return useQuery<QueryTemplateByIdResponse, Error, TData>(["templateByIdQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.ruleById(request);
+      return queryService.templateById(request);
     }, options);
   };
   const useActionsByAddress = <TData = QueryActionsByAddressResponse,>({
@@ -199,9 +197,9 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
   return {
     /** Parameters queries the parameters of the module. */useParams,
     /** Queries a list of Actions items. */useActions,
-    /** Queries a list of Rules items. */useRules,
-    /** Queries to simulate a Rule */useSimulateRule,
-    /** Queries a list of RuleById items. */useRuleById,
+    /** Queries a list of Templates items. */useTemplates,
+    /** Queries to simulate a Template */useSimulateTemplate,
+    /** Queries a list of TemplateById items. */useTemplateById,
     /** Queries a list of Actions items by one participant address. */useActionsByAddress,
     useActionById
   };

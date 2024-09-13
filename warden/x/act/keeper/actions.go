@@ -65,7 +65,7 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
 	actExpression := types.ActExpression(act.RejectExpression)
-	rejected, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
+	rejected, err := actExpression.EvalExpression(ctx, ActionRejectedVotesEnv(act.Votes))
 
 	if err != nil {
 		return err

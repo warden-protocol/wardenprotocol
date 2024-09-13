@@ -170,8 +170,10 @@ export interface KeyRequest {
   status: KeyRequestStatus;
   /** If the request is rejected, this field will contain the reason. */
   rejectReason: string;
-  /** ID of the Template that the resulting Key will use. */
-  templateId: bigint;
+  /** ID of the Template that the resulting Key will use with approve. */
+  approveTemplateId: bigint;
+  /** ID of the Template that the resulting Key will use with reject. */
+  rejectTemplateId: bigint;
   /** Amount of fees deducted during new key request */
   deductedKeychainFees: Coin[];
 }
@@ -205,8 +207,10 @@ export interface KeyRequestAmino {
   status?: KeyRequestStatus;
   /** If the request is rejected, this field will contain the reason. */
   reject_reason?: string;
-  /** ID of the Template that the resulting Key will use. */
-  template_id?: string;
+  /** ID of the Template that the resulting Key will use with approve. */
+  approve_template_id?: string;
+  /** ID of the Template that the resulting Key will use with reject. */
+  reject_template_id?: string;
   /** Amount of fees deducted during new key request */
   deducted_keychain_fees: CoinAmino[];
 }
@@ -230,7 +234,8 @@ export interface KeyRequestSDKType {
   key_type: KeyType;
   status: KeyRequestStatus;
   reject_reason: string;
-  template_id: bigint;
+  approve_template_id: bigint;
+  reject_template_id: bigint;
   deducted_keychain_fees: CoinSDKType[];
 }
 /** Key is a public key that can be used to sign data. */
@@ -248,12 +253,6 @@ export interface Key {
    * generated it.
    */
   publicKey: Uint8Array;
-  /**
-   * ID of the Template that will need to be satisfied for using this key to sign
-   * data.
-   * If this is not set, the key will use the signing Template of the Space.
-   */
-  templateId: bigint;
   /**
    * ID of the Template that will need to be satisfied for using this key to sign
    * data.
@@ -289,12 +288,6 @@ export interface KeyAmino {
   /**
    * ID of the Template that will need to be satisfied for using this key to sign
    * data.
-   * If this is not set, the key will use the signing Template of the Space.
-   */
-  template_id?: string;
-  /**
-   * ID of the Template that will need to be satisfied for using this key to sign
-   * data.
    * If this is not set, the key will use the approve signing Template of the Space.
    */
   approve_template_id?: string;
@@ -316,7 +309,6 @@ export interface KeySDKType {
   keychain_id: bigint;
   type: KeyType;
   public_key: Uint8Array;
-  template_id: bigint;
   approve_template_id: bigint;
   reject_template_id: bigint;
 }
@@ -329,7 +321,8 @@ function createBaseKeyRequest(): KeyRequest {
     keyType: 0,
     status: 0,
     rejectReason: "",
-    templateId: BigInt(0),
+    approveTemplateId: BigInt(0),
+    rejectTemplateId: BigInt(0),
     deductedKeychainFees: []
   };
 }
@@ -357,11 +350,14 @@ export const KeyRequest = {
     if (message.rejectReason !== "") {
       writer.uint32(58).string(message.rejectReason);
     }
-    if (message.templateId !== BigInt(0)) {
-      writer.uint32(64).uint64(message.templateId);
+    if (message.approveTemplateId !== BigInt(0)) {
+      writer.uint32(64).uint64(message.approveTemplateId);
+    }
+    if (message.rejectTemplateId !== BigInt(0)) {
+      writer.uint32(72).uint64(message.rejectTemplateId);
     }
     for (const v of message.deductedKeychainFees) {
-      Coin.encode(v!, writer.uint32(74).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -394,9 +390,12 @@ export const KeyRequest = {
           message.rejectReason = reader.string();
           break;
         case 8:
-          message.templateId = reader.uint64();
+          message.approveTemplateId = reader.uint64();
           break;
         case 9:
+          message.rejectTemplateId = reader.uint64();
+          break;
+        case 10:
           message.deductedKeychainFees.push(Coin.decode(reader, reader.uint32()));
           break;
         default:
@@ -415,7 +414,8 @@ export const KeyRequest = {
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : -1,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : "",
-      templateId: isSet(object.templateId) ? BigInt(object.templateId.toString()) : BigInt(0),
+      approveTemplateId: isSet(object.approveTemplateId) ? BigInt(object.approveTemplateId.toString()) : BigInt(0),
+      rejectTemplateId: isSet(object.rejectTemplateId) ? BigInt(object.rejectTemplateId.toString()) : BigInt(0),
       deductedKeychainFees: Array.isArray(object?.deductedKeychainFees) ? object.deductedKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
@@ -428,7 +428,8 @@ export const KeyRequest = {
     message.keyType !== undefined && (obj.keyType = keyTypeToJSON(message.keyType));
     message.status !== undefined && (obj.status = keyRequestStatusToJSON(message.status));
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
-    message.templateId !== undefined && (obj.templateId = (message.templateId || BigInt(0)).toString());
+    message.approveTemplateId !== undefined && (obj.approveTemplateId = (message.approveTemplateId || BigInt(0)).toString());
+    message.rejectTemplateId !== undefined && (obj.rejectTemplateId = (message.rejectTemplateId || BigInt(0)).toString());
     if (message.deductedKeychainFees) {
       obj.deductedKeychainFees = message.deductedKeychainFees.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
@@ -445,7 +446,8 @@ export const KeyRequest = {
     message.keyType = object.keyType ?? 0;
     message.status = object.status ?? 0;
     message.rejectReason = object.rejectReason ?? "";
-    message.templateId = object.templateId !== undefined && object.templateId !== null ? BigInt(object.templateId.toString()) : BigInt(0);
+    message.approveTemplateId = object.approveTemplateId !== undefined && object.approveTemplateId !== null ? BigInt(object.approveTemplateId.toString()) : BigInt(0);
+    message.rejectTemplateId = object.rejectTemplateId !== undefined && object.rejectTemplateId !== null ? BigInt(object.rejectTemplateId.toString()) : BigInt(0);
     message.deductedKeychainFees = object.deductedKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
@@ -472,22 +474,26 @@ export const KeyRequest = {
     if (object.reject_reason !== undefined && object.reject_reason !== null) {
       message.rejectReason = object.reject_reason;
     }
-    if (object.template_id !== undefined && object.template_id !== null) {
-      message.templateId = BigInt(object.template_id);
+    if (object.approve_template_id !== undefined && object.approve_template_id !== null) {
+      message.approveTemplateId = BigInt(object.approve_template_id);
+    }
+    if (object.reject_template_id !== undefined && object.reject_template_id !== null) {
+      message.rejectTemplateId = BigInt(object.reject_template_id);
     }
     message.deductedKeychainFees = object.deducted_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: KeyRequest): KeyRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.reject_reason = message.rejectReason === "" ? undefined : message.rejectReason;
-    obj.template_id = message.templateId !== BigInt(0) ? message.templateId.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
     if (message.deductedKeychainFees) {
       obj.deducted_keychain_fees = message.deductedKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
@@ -518,7 +524,6 @@ function createBaseKey(): Key {
     keychainId: BigInt(0),
     type: 0,
     publicKey: new Uint8Array(),
-    templateId: BigInt(0),
     approveTemplateId: BigInt(0),
     rejectTemplateId: BigInt(0)
   };
@@ -541,14 +546,11 @@ export const Key = {
     if (message.publicKey.length !== 0) {
       writer.uint32(42).bytes(message.publicKey);
     }
-    if (message.templateId !== BigInt(0)) {
-      writer.uint32(48).uint64(message.templateId);
-    }
     if (message.approveTemplateId !== BigInt(0)) {
-      writer.uint32(56).uint64(message.approveTemplateId);
+      writer.uint32(48).uint64(message.approveTemplateId);
     }
     if (message.rejectTemplateId !== BigInt(0)) {
-      writer.uint32(64).uint64(message.rejectTemplateId);
+      writer.uint32(56).uint64(message.rejectTemplateId);
     }
     return writer;
   },
@@ -575,12 +577,9 @@ export const Key = {
           message.publicKey = reader.bytes();
           break;
         case 6:
-          message.templateId = reader.uint64();
-          break;
-        case 7:
           message.approveTemplateId = reader.uint64();
           break;
-        case 8:
+        case 7:
           message.rejectTemplateId = reader.uint64();
           break;
         default:
@@ -597,7 +596,6 @@ export const Key = {
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       type: isSet(object.type) ? keyTypeFromJSON(object.type) : -1,
       publicKey: isSet(object.publicKey) ? bytesFromBase64(object.publicKey) : new Uint8Array(),
-      templateId: isSet(object.templateId) ? BigInt(object.templateId.toString()) : BigInt(0),
       approveTemplateId: isSet(object.approveTemplateId) ? BigInt(object.approveTemplateId.toString()) : BigInt(0),
       rejectTemplateId: isSet(object.rejectTemplateId) ? BigInt(object.rejectTemplateId.toString()) : BigInt(0)
     };
@@ -609,7 +607,6 @@ export const Key = {
     message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.type !== undefined && (obj.type = keyTypeToJSON(message.type));
     message.publicKey !== undefined && (obj.publicKey = base64FromBytes(message.publicKey !== undefined ? message.publicKey : new Uint8Array()));
-    message.templateId !== undefined && (obj.templateId = (message.templateId || BigInt(0)).toString());
     message.approveTemplateId !== undefined && (obj.approveTemplateId = (message.approveTemplateId || BigInt(0)).toString());
     message.rejectTemplateId !== undefined && (obj.rejectTemplateId = (message.rejectTemplateId || BigInt(0)).toString());
     return obj;
@@ -621,7 +618,6 @@ export const Key = {
     message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.type = object.type ?? 0;
     message.publicKey = object.publicKey ?? new Uint8Array();
-    message.templateId = object.templateId !== undefined && object.templateId !== null ? BigInt(object.templateId.toString()) : BigInt(0);
     message.approveTemplateId = object.approveTemplateId !== undefined && object.approveTemplateId !== null ? BigInt(object.approveTemplateId.toString()) : BigInt(0);
     message.rejectTemplateId = object.rejectTemplateId !== undefined && object.rejectTemplateId !== null ? BigInt(object.rejectTemplateId.toString()) : BigInt(0);
     return message;
@@ -643,9 +639,6 @@ export const Key = {
     if (object.public_key !== undefined && object.public_key !== null) {
       message.publicKey = bytesFromBase64(object.public_key);
     }
-    if (object.template_id !== undefined && object.template_id !== null) {
-      message.templateId = BigInt(object.template_id);
-    }
     if (object.approve_template_id !== undefined && object.approve_template_id !== null) {
       message.approveTemplateId = BigInt(object.approve_template_id);
     }
@@ -656,14 +649,13 @@ export const Key = {
   },
   toAmino(message: Key): KeyAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.type = message.type === 0 ? undefined : message.type;
     obj.public_key = message.publicKey ? base64FromBytes(message.publicKey) : undefined;
-    obj.template_id = message.templateId !== BigInt(0) ? message.templateId.toString() : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: KeyAminoMsg): Key {

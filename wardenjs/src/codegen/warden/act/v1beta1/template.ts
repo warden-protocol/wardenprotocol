@@ -124,7 +124,7 @@ export const Template = {
   },
   toAmino(message: Template): TemplateAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.name = message.name === "" ? undefined : message.name;
     obj.expression = message.expression ? Expression.toAmino(message.expression) : undefined;

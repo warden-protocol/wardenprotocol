@@ -140,10 +140,6 @@ export interface GetPriceResponseSDKType {
  * in the format base/quote.
  */
 export interface GetPricesRequest {
-  /**
-   * GetPricesRequest takes an identifier for the CurrencyPair
-   * in the format base/quote.
-   */
   currencyPairIds: string[];
 }
 export interface GetPricesRequestProtoMsg {
@@ -155,10 +151,6 @@ export interface GetPricesRequestProtoMsg {
  * in the format base/quote.
  */
 export interface GetPricesRequestAmino {
-  /**
-   * GetPricesRequest takes an identifier for the CurrencyPair
-   * in the format base/quote.
-   */
   currency_pair_ids?: string[];
 }
 export interface GetPricesRequestAminoMsg {
@@ -572,9 +564,9 @@ export const GetPriceResponse = {
   toAmino(message: GetPriceResponse): GetPriceResponseAmino {
     const obj: any = {};
     obj.price = message.price ? QuotePrice.toAmino(message.price) : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
-    obj.decimals = message.decimals !== BigInt(0) ? message.decimals.toString() : undefined;
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.decimals = message.decimals !== BigInt(0) ? (message.decimals?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: GetPriceResponseAminoMsg): GetPriceResponse {
@@ -874,7 +866,7 @@ export const GetCurrencyPairMappingResponse_CurrencyPairMappingEntry = {
   },
   toAmino(message: GetCurrencyPairMappingResponse_CurrencyPairMappingEntry): GetCurrencyPairMappingResponse_CurrencyPairMappingEntryAmino {
     const obj: any = {};
-    obj.key = message.key !== BigInt(0) ? message.key.toString() : undefined;
+    obj.key = message.key !== BigInt(0) ? (message.key?.toString)() : undefined;
     obj.value = message.value ? CurrencyPair.toAmino(message.value) : undefined;
     return obj;
   },

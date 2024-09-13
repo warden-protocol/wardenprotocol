@@ -131,7 +131,7 @@ export const GenesisState = {
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     obj.market_map = message.marketMap ? MarketMap.toAmino(message.marketMap) : undefined;
-    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated.toString() : undefined;
+    obj.last_updated = message.lastUpdated !== BigInt(0) ? (message.lastUpdated?.toString)() : undefined;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },

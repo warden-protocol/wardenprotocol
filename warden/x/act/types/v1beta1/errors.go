@@ -9,9 +9,11 @@ import (
 // x/act module sentinel errors
 var (
 	ErrInvalidSigner                = sdkerrors.Register(ModuleName, 1100, "expected gov account as only signer for proposal message")
+	ErrSample                       = sdkerrors.Register(ModuleName, 1101, "sample error")
 	ErrInvalidActionMsgSigner       = sdkerrors.Register(ModuleName, 1102, "expected x/act account as only signer for action message")
 	ErrInvalidActionStatus          = sdkerrors.Register(ModuleName, 1103, "invalid action status")
 	ErrInvalidActionStatusChange    = sdkerrors.Register(ModuleName, 1104, "invalid status change")
+	ErrApproverExists               = sdkerrors.Register(ModuleName, 1105, "approver already exists")
 	ErrTemplateEvaluationFailed     = sdkerrors.Register(ModuleName, 1106, "template evaluation failed")
 	ErrTemplateNotBoolean           = sdkerrors.Register(ModuleName, 1107, "template must evaluate to a boolean")
 	ErrInvalidTemplate              = sdkerrors.Register(ModuleName, 1108, "template is invalid")

@@ -8,6 +8,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+func NewApprover(address string, timestamp time.Time) *Approver {
+	return &Approver{
+		Address:    address,
+		ApprovedAt: timestamp,
+	}
+}
+
 func NewVote(participant string, voteType ActionVoteType, timestamp time.Time) *ActionVote {
 	return &ActionVote{
 		Participant: participant,
@@ -39,6 +46,30 @@ func (a *Action) SetStatus(ctx sdk.Context, status ActionStatus) error {
 		PreviousStatus: prevStatus,
 		NewStatus:      status,
 	})
+}
+
+func (a *Action) AddApprover(ctx sdk.Context, address string) error {
+	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
+		return errors.Wrapf(ErrInvalidActionStatus, "can't add approver to an action that's not pending")
+	}
+
+	for _, a := range a.Approvers {
+		if a.Address == address {
+			return ErrApproverExists
+		}
+	}
+
+	a.UpdatedAt = ctx.BlockTime()
+	a.Approvers = append(a.Approvers, NewApprover(address, a.UpdatedAt))
+
+	if err := ctx.EventManager().EmitTypedEvent(&EventApproveAction{
+		Id:       a.Id,
+		Approver: address,
+	}); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (a *Action) AddOrUpdateVote(ctx sdk.Context, participant string, voteType ActionVoteType) error {

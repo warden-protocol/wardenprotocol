@@ -70,38 +70,97 @@ func (ActionStatus) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_ed852fba5dd71480, []int{0}
 }
 
+type Approver struct {
+	// address is the address of the approver
+	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	// approved_at is a timestamp specifying when the approver approved an action
+	ApprovedAt time.Time `protobuf:"bytes,2,opt,name=approved_at,json=approvedAt,proto3,stdtime" json:"approved_at"`
+}
+
+func (m *Approver) Reset()         { *m = Approver{} }
+func (m *Approver) String() string { return proto.CompactTextString(m) }
+func (*Approver) ProtoMessage()    {}
+func (*Approver) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ed852fba5dd71480, []int{0}
+}
+func (m *Approver) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Approver) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Approver.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Approver) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Approver.Merge(m, src)
+}
+func (m *Approver) XXX_Size() int {
+	return m.Size()
+}
+func (m *Approver) XXX_DiscardUnknown() {
+	xxx_messageInfo_Approver.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Approver proto.InternalMessageInfo
+
+func (m *Approver) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *Approver) GetApprovedAt() time.Time {
+	if m != nil {
+		return m.ApprovedAt
+	}
+	return time.Time{}
+}
+
 // Action wraps a message that will be executed when its associated template is
 // satisfied.
 type Action struct {
-	Id     uint64       `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Status ActionStatus `protobuf:"varint,2,opt,name=status,proto3,enum=warden.act.v1beta1.ActionStatus" json:"status,omitempty"`
+	Id        uint64       `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Approvers []*Approver  `protobuf:"bytes,2,rep,name=approvers,proto3" json:"approvers,omitempty"`
+	Status    ActionStatus `protobuf:"varint,3,opt,name=status,proto3,enum=warden.act.v1beta1.ActionStatus" json:"status,omitempty"`
 	// Original message that started the action, it will be executed when the
 	// template is satisfied.
-	Msg *types.Any `protobuf:"bytes,3,opt,name=msg,proto3" json:"msg,omitempty"`
+	Msg *types.Any `protobuf:"bytes,5,opt,name=msg,proto3" json:"msg,omitempty"`
 	// Result of the action, it will be set when the action is completed.
-	Result  *types.Any `protobuf:"bytes,4,opt,name=result,proto3" json:"result,omitempty"`
-	Creator string     `protobuf:"bytes,5,opt,name=creator,proto3" json:"creator,omitempty"`
+	Result  *types.Any `protobuf:"bytes,6,opt,name=result,proto3" json:"result,omitempty"`
+	Creator string     `protobuf:"bytes,7,opt,name=creator,proto3" json:"creator,omitempty"`
 	// TimeoutHeight is the block height up until this action can be executed.
-	TimeoutHeight uint64 `protobuf:"varint,6,opt,name=timeout_height,json=timeoutHeight,proto3" json:"timeout_height,omitempty"`
+	TimeoutHeight uint64 `protobuf:"varint,8,opt,name=timeout_height,json=timeoutHeight,proto3" json:"timeout_height,omitempty"`
 	// created_at is a timestamp specifying when the action was created
-	CreatedAt time.Time `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at"`
+	CreatedAt time.Time `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at"`
 	// updated_at is a timestamp specifying when the action's status was updated
-	UpdatedAt time.Time `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at"`
+	UpdatedAt time.Time `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at"`
+	// template is the condition that this action is associated with. Instead of
+	// storing the template ID, we store the entire Template object so that is immutable
+	// and cannot be changed later.
+	Template Template `protobuf:"bytes,11,opt,name=template,proto3" json:"template"`
 	// mentions is a list of addresses that are mentioned in the template.
-	Mentions []string `protobuf:"bytes,9,rep,name=mentions,proto3" json:"mentions,omitempty"`
+	Mentions []string `protobuf:"bytes,12,rep,name=mentions,proto3" json:"mentions,omitempty"`
 	// The expression to be evaluated for approval.
-	ApproveExpression ast.Expression `protobuf:"bytes,10,opt,name=approve_expression,json=approveExpression,proto3" json:"approve_expression"`
+	ApproveExpression ast.Expression `protobuf:"bytes,13,opt,name=approve_expression,json=approveExpression,proto3" json:"approve_expression"`
 	// The expression to be evaluated for rejection.
-	RejectExpression ast.Expression `protobuf:"bytes,11,opt,name=reject_expression,json=rejectExpression,proto3" json:"reject_expression"`
+	RejectExpression ast.Expression `protobuf:"bytes,14,opt,name=reject_expression,json=rejectExpression,proto3" json:"reject_expression"`
 	// The votes accepted from the voting participants.
-	Votes []*ActionVote `protobuf:"bytes,12,rep,name=votes,proto3" json:"votes,omitempty"`
+	Votes []*ActionVote `protobuf:"bytes,15,rep,name=votes,proto3" json:"votes,omitempty"`
 }
 
 func (m *Action) Reset()         { *m = Action{} }
 func (m *Action) String() string { return proto.CompactTextString(m) }
 func (*Action) ProtoMessage()    {}
 func (*Action) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed852fba5dd71480, []int{0}
+	return fileDescriptor_ed852fba5dd71480, []int{1}
 }
 func (m *Action) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -135,6 +194,13 @@ func (m *Action) GetId() uint64 {
 		return m.Id
 	}
 	return 0
+}
+
+func (m *Action) GetApprovers() []*Approver {
+	if m != nil {
+		return m.Approvers
+	}
+	return nil
 }
 
 func (m *Action) GetStatus() ActionStatus {
@@ -186,6 +252,13 @@ func (m *Action) GetUpdatedAt() time.Time {
 	return time.Time{}
 }
 
+func (m *Action) GetTemplate() Template {
+	if m != nil {
+		return m.Template
+	}
+	return Template{}
+}
+
 func (m *Action) GetMentions() []string {
 	if m != nil {
 		return m.Mentions
@@ -216,51 +289,95 @@ func (m *Action) GetVotes() []*ActionVote {
 
 func init() {
 	proto.RegisterEnum("warden.act.v1beta1.ActionStatus", ActionStatus_name, ActionStatus_value)
+	proto.RegisterType((*Approver)(nil), "warden.act.v1beta1.Approver")
 	proto.RegisterType((*Action)(nil), "warden.act.v1beta1.Action")
 }
 
 func init() { proto.RegisterFile("warden/act/v1beta1/action.proto", fileDescriptor_ed852fba5dd71480) }
 
 var fileDescriptor_ed852fba5dd71480 = []byte{
-	// 603 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x4f, 0x53, 0xd3, 0x40,
-	0x14, 0xef, 0xb6, 0xa5, 0xd0, 0xe5, 0xcf, 0x94, 0x1d, 0xd4, 0x50, 0xc7, 0x34, 0x3a, 0xea, 0x74,
-	0x18, 0x4d, 0x06, 0xf4, 0xe0, 0xb5, 0xd0, 0x28, 0x1d, 0xa4, 0x65, 0xd2, 0xc0, 0xc1, 0x83, 0x9d,
-	0x6d, 0xb2, 0xa6, 0x71, 0x9a, 0x6c, 0x26, 0xbb, 0x41, 0xf8, 0x16, 0xdc, 0xfd, 0x02, 0x1e, 0xfd,
-	0x18, 0x1c, 0x39, 0x7a, 0x52, 0x07, 0x0e, 0x7c, 0x0d, 0x27, 0x9b, 0x0d, 0x16, 0x2a, 0x8e, 0x1e,
-	0xda, 0xd9, 0xf7, 0x7e, 0x7f, 0x5e, 0xde, 0xdb, 0xb7, 0xb0, 0xf1, 0x09, 0xc7, 0x2e, 0x09, 0x0d,
-	0xec, 0x70, 0xe3, 0x70, 0x7d, 0x48, 0x38, 0x5e, 0x4f, 0xcf, 0x3e, 0x0d, 0xf5, 0x28, 0xa6, 0x9c,
-	0x22, 0x94, 0x11, 0x74, 0xec, 0x70, 0x5d, 0x12, 0xea, 0xcb, 0x38, 0xf0, 0x43, 0x6a, 0x88, 0xff,
-	0x8c, 0x56, 0x5f, 0xf1, 0xa8, 0x47, 0xc5, 0xd1, 0x48, 0x4f, 0x32, 0xbb, 0xea, 0x51, 0xea, 0x8d,
-	0x89, 0x21, 0xa2, 0x61, 0xf2, 0xc1, 0xc0, 0xe1, 0xb1, 0x84, 0x1a, 0x37, 0x21, 0xee, 0x07, 0x84,
-	0x71, 0x1c, 0x44, 0xb9, 0x23, 0x1b, 0xf9, 0x64, 0xec, 0x1a, 0x98, 0xf1, 0xf4, 0x27, 0xb3, 0x0f,
-	0xff, 0xf0, 0xbd, 0x9c, 0x04, 0xd1, 0x18, 0x73, 0x22, 0x29, 0x8f, 0x6f, 0x6d, 0x69, 0x70, 0x48,
-	0x73, 0xd6, 0xa3, 0xcb, 0x32, 0xac, 0xb4, 0x44, 0x16, 0x2d, 0xc1, 0xa2, 0xef, 0x2a, 0x40, 0x03,
-	0xcd, 0xb2, 0x55, 0xf4, 0x5d, 0xf4, 0x0a, 0x56, 0x18, 0xc7, 0x3c, 0x61, 0x4a, 0x51, 0x03, 0xcd,
-	0xa5, 0x0d, 0x4d, 0x9f, 0x9e, 0x81, 0x9e, 0x69, 0xfb, 0x82, 0x67, 0x49, 0x3e, 0x7a, 0x0a, 0x4b,
-	0x01, 0xf3, 0x94, 0x92, 0x06, 0x9a, 0xf3, 0x1b, 0x2b, 0x7a, 0xd6, 0xa2, 0x9e, 0xb7, 0xa8, 0xb7,
-	0xc2, 0x63, 0x2b, 0x25, 0xa0, 0x67, 0xb0, 0x12, 0x13, 0x96, 0x8c, 0xb9, 0x52, 0xfe, 0x0b, 0x55,
-	0x72, 0x90, 0x02, 0x67, 0x9d, 0x98, 0x60, 0x4e, 0x63, 0x65, 0x46, 0x03, 0xcd, 0xaa, 0x95, 0x87,
-	0xe8, 0x09, 0x5c, 0x4a, 0xc7, 0x46, 0x13, 0x3e, 0x18, 0x11, 0xdf, 0x1b, 0x71, 0xa5, 0x22, 0xba,
-	0x58, 0x94, 0xd9, 0x6d, 0x91, 0x44, 0xdb, 0x10, 0x0a, 0x05, 0x71, 0x07, 0x98, 0x2b, 0xb3, 0xa2,
-	0x64, 0x7d, 0xaa, 0xa4, 0x9d, 0x5f, 0xc0, 0xe6, 0xe2, 0xe9, 0xf7, 0x46, 0xe1, 0xe4, 0x47, 0x03,
-	0x7c, 0xb9, 0xfc, 0xba, 0x06, 0xac, 0xaa, 0x14, 0xb7, 0x84, 0x53, 0x12, 0xb9, 0xb9, 0xd3, 0xdc,
-	0x7f, 0x3b, 0x49, 0x71, 0x8b, 0xa3, 0x3a, 0x9c, 0x0b, 0x48, 0x98, 0xce, 0x90, 0x29, 0x55, 0xad,
-	0xd4, 0xac, 0x5a, 0x57, 0x31, 0xda, 0x81, 0x08, 0x47, 0x51, 0x4c, 0x0f, 0xc9, 0x80, 0x1c, 0x45,
-	0x31, 0x61, 0xcc, 0xa7, 0xa1, 0x02, 0x45, 0xb5, 0xbb, 0x7a, 0xb6, 0x17, 0x7a, 0xba, 0x13, 0xe6,
-	0x15, 0xba, 0x59, 0x4e, 0x2b, 0x59, 0xcb, 0x52, 0xf7, 0x1b, 0x40, 0x1d, 0xb8, 0x1c, 0x93, 0x8f,
-	0xc4, 0xe1, 0x93, 0x5e, 0xf3, 0xff, 0xe0, 0x55, 0xcb, 0x64, 0x13, 0x56, 0x2f, 0xe1, 0x4c, 0xba,
-	0x41, 0x4c, 0x59, 0xd0, 0x4a, 0xcd, 0xf9, 0x0d, 0xf5, 0xf6, 0xbd, 0x38, 0xa0, 0x9c, 0x58, 0x19,
-	0x79, 0xed, 0x33, 0x80, 0x0b, 0x93, 0xdb, 0x82, 0x1e, 0xc0, 0xd5, 0xd6, 0x96, 0xdd, 0xe9, 0x75,
-	0x07, 0x7d, 0xbb, 0x65, 0xef, 0xf7, 0x07, 0xfb, 0xdd, 0xfe, 0x9e, 0xb9, 0xd5, 0x79, 0xdd, 0x31,
-	0xdb, 0xb5, 0x02, 0x5a, 0x85, 0x77, 0xae, 0xc3, 0x7b, 0x66, 0xb7, 0xdd, 0xe9, 0xbe, 0xa9, 0x01,
-	0x74, 0x1f, 0xde, 0xbb, 0x0e, 0x6d, 0xf5, 0x76, 0xf7, 0xde, 0x9a, 0xb6, 0xd9, 0xae, 0x15, 0xa7,
-	0x75, 0x96, 0x79, 0xd0, 0xdb, 0x31, 0xdb, 0xb5, 0xd2, 0x34, 0x64, 0x77, 0x76, 0xcd, 0xde, 0xbe,
-	0x5d, 0x2b, 0x6f, 0xbe, 0x3f, 0x3d, 0x57, 0xc1, 0xd9, 0xb9, 0x0a, 0x7e, 0x9e, 0xab, 0xe0, 0xe4,
-	0x42, 0x2d, 0x9c, 0x5d, 0xa8, 0x85, 0x6f, 0x17, 0x6a, 0xe1, 0x5d, 0xdb, 0xf3, 0xf9, 0x28, 0x19,
-	0xea, 0x0e, 0x0d, 0x8c, 0xac, 0xd1, 0xe7, 0xe2, 0x86, 0x1d, 0x3a, 0x96, 0xf1, 0x8d, 0xd0, 0x38,
-	0x12, 0x6f, 0x8e, 0x1f, 0x47, 0x84, 0xe5, 0x2f, 0x6f, 0x58, 0x11, 0xa4, 0x17, 0xbf, 0x02, 0x00,
-	0x00, 0xff, 0xff, 0x6c, 0x25, 0x0c, 0xad, 0x69, 0x04, 0x00, 0x00,
+	// 673 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0x4d, 0x53, 0xd3, 0x40,
+	0x18, 0x6e, 0x5a, 0x28, 0xed, 0x16, 0x6a, 0xd9, 0x41, 0x5d, 0xaa, 0xb6, 0x95, 0x51, 0xa7, 0xc3,
+	0x68, 0x32, 0xa0, 0x07, 0xc7, 0x83, 0x33, 0x81, 0x46, 0xa9, 0x48, 0xcb, 0xa4, 0x81, 0x83, 0x07,
+	0x3b, 0xdb, 0x66, 0x4d, 0xe3, 0x34, 0xd9, 0x4c, 0x76, 0x8b, 0xf0, 0x2f, 0xb8, 0xfb, 0x07, 0x3c,
+	0xfa, 0x33, 0x38, 0x72, 0xf4, 0xa4, 0x0e, 0x3d, 0xf8, 0x37, 0x9c, 0x6c, 0x36, 0x7c, 0x15, 0x1c,
+	0x39, 0xb4, 0xb3, 0xef, 0xfb, 0x3e, 0xcf, 0xb3, 0xef, 0xd7, 0x06, 0x54, 0xbf, 0xe0, 0xd0, 0x26,
+	0xbe, 0x86, 0xfb, 0x5c, 0xdb, 0x5b, 0xe9, 0x11, 0x8e, 0x57, 0xa2, 0xb3, 0x4b, 0x7d, 0x35, 0x08,
+	0x29, 0xa7, 0x10, 0xc6, 0x00, 0x15, 0xf7, 0xb9, 0x2a, 0x01, 0xe5, 0x79, 0xec, 0xb9, 0x3e, 0xd5,
+	0xc4, 0x7f, 0x0c, 0x2b, 0x2f, 0x38, 0xd4, 0xa1, 0xe2, 0xa8, 0x45, 0x27, 0xe9, 0x5d, 0x74, 0x28,
+	0x75, 0x86, 0x44, 0x13, 0x56, 0x6f, 0xf4, 0x49, 0xc3, 0xfe, 0x81, 0x0c, 0x55, 0x2f, 0x87, 0xb8,
+	0xeb, 0x11, 0xc6, 0xb1, 0x17, 0x24, 0x8a, 0x6c, 0xe0, 0x92, 0xa1, 0xad, 0x61, 0xc6, 0xa3, 0x9f,
+	0xf4, 0x3e, 0xbc, 0x22, 0x5f, 0x4e, 0xbc, 0x60, 0x88, 0x39, 0x91, 0x90, 0x47, 0xd7, 0x96, 0xd4,
+	0xdd, 0xa3, 0x09, 0x6a, 0x29, 0x00, 0x39, 0x3d, 0x08, 0x42, 0xba, 0x47, 0x42, 0x88, 0xc0, 0x0c,
+	0xb6, 0xed, 0x90, 0x30, 0x86, 0x94, 0x9a, 0x52, 0xcf, 0x9b, 0x89, 0x09, 0xdf, 0x81, 0x02, 0x8e,
+	0x51, 0x76, 0x17, 0x73, 0x94, 0xae, 0x29, 0xf5, 0xc2, 0x6a, 0x59, 0x8d, 0x73, 0x57, 0x93, 0xdc,
+	0x55, 0x2b, 0xc9, 0x7d, 0x6d, 0xee, 0xe8, 0x67, 0x35, 0x75, 0xf8, 0xab, 0xaa, 0x7c, 0xfb, 0xf3,
+	0x7d, 0x59, 0x31, 0x41, 0xc2, 0xd6, 0xf9, 0xd2, 0x78, 0x1a, 0x64, 0x75, 0x91, 0x07, 0x2c, 0x82,
+	0xb4, 0x6b, 0x8b, 0xbb, 0xa6, 0xcc, 0xb4, 0x6b, 0xc3, 0x57, 0x20, 0x2f, 0x81, 0x21, 0x43, 0xe9,
+	0x5a, 0xa6, 0x5e, 0x58, 0xbd, 0xaf, 0x4e, 0x36, 0x5e, 0x4d, 0x32, 0x36, 0xcf, 0xe0, 0xf0, 0x25,
+	0xc8, 0x32, 0x8e, 0xf9, 0x88, 0xa1, 0x4c, 0x4d, 0xa9, 0x17, 0x57, 0x6b, 0x57, 0x12, 0xc5, 0xbd,
+	0x1d, 0x81, 0x33, 0x25, 0x1e, 0x3e, 0x01, 0x19, 0x8f, 0x39, 0x68, 0x5a, 0x14, 0xb5, 0x30, 0x51,
+	0x94, 0xee, 0x1f, 0x98, 0x11, 0x00, 0x3e, 0x05, 0xd9, 0x90, 0xb0, 0xd1, 0x90, 0xa3, 0xec, 0x3f,
+	0xa0, 0x12, 0x13, 0x35, 0xb3, 0x1f, 0x12, 0xcc, 0x69, 0x88, 0x66, 0xe2, 0x66, 0x4a, 0x13, 0x3e,
+	0x06, 0xc5, 0x68, 0xc8, 0x74, 0xc4, 0xbb, 0x03, 0xe2, 0x3a, 0x03, 0x8e, 0x72, 0xa2, 0x03, 0x73,
+	0xd2, 0xbb, 0x21, 0x9c, 0x70, 0x03, 0x00, 0xc1, 0x88, 0x5b, 0x9e, 0xbf, 0x69, 0xcb, 0xf3, 0x92,
+	0xac, 0x0b, 0xa5, 0x51, 0x60, 0x27, 0x4a, 0xe0, 0xc6, 0x4a, 0x92, 0xac, 0x73, 0xf8, 0x1a, 0xe4,
+	0x92, 0x2d, 0x43, 0x05, 0xa1, 0x73, 0xe5, 0x7c, 0x2c, 0x89, 0x59, 0x9b, 0x8a, 0x94, 0xcc, 0x53,
+	0x0e, 0x2c, 0x83, 0x9c, 0x47, 0xfc, 0x68, 0x06, 0x0c, 0xcd, 0xd6, 0x32, 0xf5, 0xbc, 0x79, 0x6a,
+	0xc3, 0x4d, 0x00, 0xe5, 0x34, 0xbb, 0x64, 0x3f, 0x88, 0xd6, 0xce, 0xa5, 0x3e, 0x9a, 0x13, 0xb7,
+	0xdc, 0x51, 0xe3, 0x57, 0xa0, 0x46, 0x2f, 0xc0, 0x38, 0x8d, 0x4a, 0xfd, 0x79, 0xc9, 0x3b, 0x0b,
+	0xc0, 0x26, 0x98, 0x0f, 0xc9, 0x67, 0xd2, 0xe7, 0xe7, 0xb5, 0x8a, 0xff, 0xa1, 0x55, 0x8a, 0x69,
+	0xe7, 0xa4, 0x5e, 0x80, 0xe9, 0xe8, 0xbd, 0x30, 0x74, 0x4b, 0x2c, 0x64, 0xe5, 0xfa, 0xbd, 0xda,
+	0xa5, 0x9c, 0x98, 0x31, 0x78, 0xf9, 0xab, 0x02, 0x66, 0xcf, 0x6f, 0x1b, 0x7c, 0x00, 0x16, 0xf5,
+	0x75, 0xab, 0xd9, 0x6e, 0x75, 0x3b, 0x96, 0x6e, 0xed, 0x74, 0xba, 0x3b, 0xad, 0xce, 0xb6, 0xb1,
+	0xde, 0x7c, 0xd3, 0x34, 0x1a, 0xa5, 0x14, 0x5c, 0x04, 0xb7, 0x2f, 0x86, 0xb7, 0x8d, 0x56, 0xa3,
+	0xd9, 0x7a, 0x5b, 0x52, 0xe0, 0x3d, 0x70, 0xf7, 0x62, 0x68, 0xbd, 0xbd, 0xb5, 0xfd, 0xde, 0xb0,
+	0x8c, 0x46, 0x29, 0x3d, 0xc9, 0x33, 0x8d, 0xdd, 0xf6, 0xa6, 0xd1, 0x28, 0x65, 0x26, 0x43, 0x56,
+	0x73, 0xcb, 0x68, 0xef, 0x58, 0xa5, 0xa9, 0xb5, 0x8f, 0x47, 0x27, 0x15, 0xe5, 0xf8, 0xa4, 0xa2,
+	0xfc, 0x3e, 0xa9, 0x28, 0x87, 0xe3, 0x4a, 0xea, 0x78, 0x5c, 0x49, 0xfd, 0x18, 0x57, 0x52, 0x1f,
+	0x1a, 0x8e, 0xcb, 0x07, 0xa3, 0x9e, 0xda, 0xa7, 0x9e, 0x16, 0x17, 0xfa, 0x4c, 0x6c, 0x48, 0x9f,
+	0x0e, 0xa5, 0x7d, 0xc9, 0xd4, 0xf6, 0xc5, 0x17, 0x86, 0x1f, 0x04, 0x84, 0x25, 0xdf, 0x99, 0x5e,
+	0x56, 0x80, 0x9e, 0xff, 0x0d, 0x00, 0x00, 0xff, 0xff, 0x36, 0x81, 0x3d, 0xa3, 0x57, 0x05, 0x00,
+	0x00,
+}
+
+func (m *Approver) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Approver) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Approver) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	n1, err1 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.ApprovedAt, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.ApprovedAt):])
+	if err1 != nil {
+		return 0, err1
+	}
+	i -= n1
+	i = encodeVarintAction(dAtA, i, uint64(n1))
+	i--
+	dAtA[i] = 0x12
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintAction(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *Action) Marshal() (dAtA []byte, err error) {
@@ -294,7 +411,7 @@ func (m *Action) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintAction(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x62
+			dAtA[i] = 0x7a
 		}
 	}
 	{
@@ -306,7 +423,7 @@ func (m *Action) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintAction(dAtA, i, uint64(size))
 	}
 	i--
-	dAtA[i] = 0x5a
+	dAtA[i] = 0x72
 	{
 		size, err := m.ApproveExpression.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -316,43 +433,53 @@ func (m *Action) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintAction(dAtA, i, uint64(size))
 	}
 	i--
-	dAtA[i] = 0x52
+	dAtA[i] = 0x6a
 	if len(m.Mentions) > 0 {
 		for iNdEx := len(m.Mentions) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Mentions[iNdEx])
 			copy(dAtA[i:], m.Mentions[iNdEx])
 			i = encodeVarintAction(dAtA, i, uint64(len(m.Mentions[iNdEx])))
 			i--
-			dAtA[i] = 0x4a
+			dAtA[i] = 0x62
 		}
 	}
-	n3, err3 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.UpdatedAt, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.UpdatedAt):])
-	if err3 != nil {
-		return 0, err3
+	{
+		size, err := m.Template.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintAction(dAtA, i, uint64(size))
 	}
-	i -= n3
-	i = encodeVarintAction(dAtA, i, uint64(n3))
 	i--
-	dAtA[i] = 0x42
-	n4, err4 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.CreatedAt, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.CreatedAt):])
-	if err4 != nil {
-		return 0, err4
+	dAtA[i] = 0x5a
+	n5, err5 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.UpdatedAt, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.UpdatedAt):])
+	if err5 != nil {
+		return 0, err5
 	}
-	i -= n4
-	i = encodeVarintAction(dAtA, i, uint64(n4))
+	i -= n5
+	i = encodeVarintAction(dAtA, i, uint64(n5))
 	i--
-	dAtA[i] = 0x3a
+	dAtA[i] = 0x52
+	n6, err6 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.CreatedAt, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.CreatedAt):])
+	if err6 != nil {
+		return 0, err6
+	}
+	i -= n6
+	i = encodeVarintAction(dAtA, i, uint64(n6))
+	i--
+	dAtA[i] = 0x4a
 	if m.TimeoutHeight != 0 {
 		i = encodeVarintAction(dAtA, i, uint64(m.TimeoutHeight))
 		i--
-		dAtA[i] = 0x30
+		dAtA[i] = 0x40
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintAction(dAtA, i, uint64(len(m.Creator)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x3a
 	}
 	if m.Result != nil {
 		{
@@ -364,7 +491,7 @@ func (m *Action) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintAction(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x32
 	}
 	if m.Msg != nil {
 		{
@@ -376,12 +503,26 @@ func (m *Action) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintAction(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x2a
 	}
 	if m.Status != 0 {
 		i = encodeVarintAction(dAtA, i, uint64(m.Status))
 		i--
-		dAtA[i] = 0x10
+		dAtA[i] = 0x18
+	}
+	if len(m.Approvers) > 0 {
+		for iNdEx := len(m.Approvers) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Approvers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintAction(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
 	}
 	if m.Id != 0 {
 		i = encodeVarintAction(dAtA, i, uint64(m.Id))
@@ -402,6 +543,21 @@ func encodeVarintAction(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *Approver) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovAction(uint64(l))
+	}
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.ApprovedAt)
+	n += 1 + l + sovAction(uint64(l))
+	return n
+}
+
 func (m *Action) Size() (n int) {
 	if m == nil {
 		return 0
@@ -410,6 +566,12 @@ func (m *Action) Size() (n int) {
 	_ = l
 	if m.Id != 0 {
 		n += 1 + sovAction(uint64(m.Id))
+	}
+	if len(m.Approvers) > 0 {
+		for _, e := range m.Approvers {
+			l = e.Size()
+			n += 1 + l + sovAction(uint64(l))
+		}
 	}
 	if m.Status != 0 {
 		n += 1 + sovAction(uint64(m.Status))
@@ -432,6 +594,8 @@ func (m *Action) Size() (n int) {
 	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.CreatedAt)
 	n += 1 + l + sovAction(uint64(l))
 	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.UpdatedAt)
+	n += 1 + l + sovAction(uint64(l))
+	l = m.Template.Size()
 	n += 1 + l + sovAction(uint64(l))
 	if len(m.Mentions) > 0 {
 		for _, s := range m.Mentions {
@@ -457,6 +621,121 @@ func sovAction(x uint64) (n int) {
 }
 func sozAction(x uint64) (n int) {
 	return sovAction(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Approver) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAction
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Approver: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Approver: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAction
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAction
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ApprovedAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAction
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAction
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.ApprovedAt, dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAction(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthAction
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *Action) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -507,6 +786,40 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Approvers", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAction
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAction
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Approvers = append(m.Approvers, &Approver{})
+			if err := m.Approvers[len(m.Approvers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
@@ -525,7 +838,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 3:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
 			}
@@ -561,7 +874,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 4:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
 			}
@@ -597,7 +910,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 5:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
@@ -629,7 +942,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 8:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TimeoutHeight", wireType)
 			}
@@ -648,7 +961,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 7:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
 			}
@@ -681,7 +994,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 8:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UpdatedAt", wireType)
 			}
@@ -714,7 +1027,40 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 9:
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Template", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAction
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAction
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Template.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Mentions", wireType)
 			}
@@ -746,7 +1092,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 			}
 			m.Mentions = append(m.Mentions, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
-		case 10:
+		case 13:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ApproveExpression", wireType)
 			}
@@ -779,7 +1125,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 11:
+		case 14:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RejectExpression", wireType)
 			}
@@ -812,7 +1158,7 @@ func (m *Action) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 12:
+		case 15:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Votes", wireType)
 			}

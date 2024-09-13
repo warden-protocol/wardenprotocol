@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Msg_UpdateParams_FullMethodName   = "/warden.act.v1beta1.Msg/UpdateParams"
 	Msg_NewAction_FullMethodName      = "/warden.act.v1beta1.Msg/NewAction"
+	Msg_ApproveAction_FullMethodName  = "/warden.act.v1beta1.Msg/ApproveAction"
 	Msg_CheckAction_FullMethodName    = "/warden.act.v1beta1.Msg/CheckAction"
 	Msg_NewTemplate_FullMethodName    = "/warden.act.v1beta1.Msg/NewTemplate"
 	Msg_UpdateTemplate_FullMethodName = "/warden.act.v1beta1.Msg/UpdateTemplate"
@@ -37,6 +38,8 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// NewAction creates a new Action.
 	NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error)
+	// Add an approval to an existing Action.
+	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error)
 	// Create a new Template.
@@ -69,6 +72,15 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 func (c *msgClient) NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error) {
 	out := new(MsgNewActionResponse)
 	err := c.cc.Invoke(ctx, Msg_NewAction_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error) {
+	out := new(MsgApproveActionResponse)
+	err := c.cc.Invoke(ctx, Msg_ApproveAction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -129,6 +141,8 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// NewAction creates a new Action.
 	NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error)
+	// Add an approval to an existing Action.
+	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error)
 	// Create a new Template.
@@ -151,6 +165,9 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 }
 func (UnimplementedMsgServer) NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewAction not implemented")
+}
+func (UnimplementedMsgServer) ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApproveAction not implemented")
 }
 func (UnimplementedMsgServer) CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckAction not implemented")
@@ -212,6 +229,24 @@ func _Msg_NewAction_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).NewAction(ctx, req.(*MsgNewAction))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_ApproveAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgApproveAction)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).ApproveAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_ApproveAction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).ApproveAction(ctx, req.(*MsgApproveAction))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -320,6 +355,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "NewAction",
 			Handler:    _Msg_NewAction_Handler,
+		},
+		{
+			MethodName: "ApproveAction",
+			Handler:    _Msg_ApproveAction_Handler,
 		},
 		{
 			MethodName: "CheckAction",

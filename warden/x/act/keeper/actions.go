@@ -16,6 +16,21 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
+// TODO: Remove when Approve/Reject expressions ready
+// ApproversEnv is an environment that resolves approvers' addresses to true.
+type ApproversEnv []*types.Approver
+
+// TODO: Remove when Approve/Reject expressions ready
+// Get implements evaluator.Environment.
+func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
+	for _, s := range approvers {
+		if s.Address == name {
+			return object.TRUE, true
+		}
+	}
+	return object.FALSE, true
+}
+
 // ActionApprovedVotesEnv is an environment that resolves action positive votes addresses to true.
 type ActionApprovedVotesEnv []*types.ActionVote
 
@@ -81,6 +96,29 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	}
 
 	return nil
+}
+
+// TODO: Remove when Approve/Reject expressions ready
+// TryExecuteAction checks if the action's intent is satisfied and stores the
+// result in the database.
+func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
+	ready, err := k.checkActionReady(ctx, *act)
+	if err != nil {
+		return err
+	}
+
+	if ready {
+		if err := k.executeAction(ctx, act); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// TODO: Remove when Approve/Reject expressions ready
+func (k Keeper) checkActionReady(ctx context.Context, act types.Action) (bool, error) {
+	return act.Template.Eval(ctx, ApproversEnv(act.Approvers))
 }
 
 func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
@@ -202,10 +240,16 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 
 	mentions := mergeMentions(approveMentions, rejectMentions)
 
+	// update the template of this Action with the preprocessed expression
+	// todo: should be removed with removing Template field in Action
+	approveTemplate.Expression = preprocessedApproveExpr
+
 	// create action object
 	timestamp := k.getBlockTime(ctx)
 	act := &types.Action{
 		Status:            types.ActionStatus_ACTION_STATUS_PENDING,
+		Approvers:         nil,
+		Template:          approveTemplate,
 		Mentions:          mentions,
 		Msg:               wrappedMsg,
 		Creator:           creator,

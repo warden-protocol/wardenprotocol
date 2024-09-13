@@ -24,6 +24,9 @@ service Msg {
   // NewAction creates a new Action.
   rpc NewAction (MsgNewAction) returns (MsgNewActionResponse);
 
+  // Add an approval to an existing Action.
+  rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
+
   // Checks a pending action and executes it if its in a valid state.
   rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
 
@@ -75,6 +78,16 @@ message MsgNewAction {
 message MsgNewActionResponse {
   // id is the unique id of the action.
   uint64 id = 1;
+}
+
+message MsgApproveAction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 action_id = 2;
+}
+
+message MsgApproveActionResponse {
+  string status = 1;
 }
 
 message MsgNewTemplate {

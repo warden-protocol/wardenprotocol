@@ -123,6 +123,16 @@ func NewAppModule(
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	v1beta3.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	v1beta3.RegisterQueryServer(cfg.QueryServer(), am.keeper)
+
+	m := keeper.NewMigrator(am.keeper)
+	if err := cfg.RegisterMigration(v1beta3.ModuleName, 1, func(ctx sdk.Context) error {
+		return nil
+	}); err != nil {
+		panic(fmt.Sprintf("failed to migrate x/warden from version 1 to 2: %v", err))
+	}
+	if err := cfg.RegisterMigration(v1beta3.ModuleName, 2, m.Migrate2to3); err != nil {
+		panic(fmt.Sprintf("failed to migrate x/warden from version 2 to 3: %v", err))
+	}
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)

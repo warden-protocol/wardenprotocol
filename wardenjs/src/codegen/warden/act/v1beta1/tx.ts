@@ -1,7 +1,6 @@
 //@ts-nocheck
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
-import { Expression, ExpressionAmino, ExpressionSDKType } from "../../../shield/ast/ast.js";
 import { ActionVoteType, actionVoteTypeFromJSON, actionVoteTypeToJSON } from "./action_vote.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
@@ -63,10 +62,10 @@ export interface MsgNewAction {
   message?: Any;
   /** action_timeout_height is the block height up until this action can be executed. */
   actionTimeoutHeight: bigint;
-  /** expected_approve_expression is the expected approval expression the action is created with */
-  expectedApproveExpression: Expression;
-  /** expected_reject_expression is the expected reject expression the action is created with */
-  expectedRejectExpression: Expression;
+  /** expected_approve_expression is the definition of expected approval expression the action is created with */
+  expectedApproveExpression: string;
+  /** expected_reject_expression is the definition of expected reject expression the action is created with */
+  expectedRejectExpression: string;
 }
 export interface MsgNewActionProtoMsg {
   typeUrl: "/warden.act.v1beta1.MsgNewAction";
@@ -79,10 +78,10 @@ export interface MsgNewActionAmino {
   message?: AnyAmino;
   /** action_timeout_height is the block height up until this action can be executed. */
   action_timeout_height?: string;
-  /** expected_approve_expression is the expected approval expression the action is created with */
-  expected_approve_expression?: ExpressionAmino;
-  /** expected_reject_expression is the expected reject expression the action is created with */
-  expected_reject_expression?: ExpressionAmino;
+  /** expected_approve_expression is the definition of expected approval expression the action is created with */
+  expected_approve_expression?: string;
+  /** expected_reject_expression is the definition of expected reject expression the action is created with */
+  expected_reject_expression?: string;
 }
 export interface MsgNewActionAminoMsg {
   type: "/warden.act.v1beta1.MsgNewAction";
@@ -92,8 +91,8 @@ export interface MsgNewActionSDKType {
   creator: string;
   message?: AnySDKType;
   action_timeout_height: bigint;
-  expected_approve_expression: ExpressionSDKType;
-  expected_reject_expression: ExpressionSDKType;
+  expected_approve_expression: string;
+  expected_reject_expression: string;
 }
 export interface MsgNewActionResponse {
   /** id is the unique id of the action. */
@@ -114,120 +113,83 @@ export interface MsgNewActionResponseAminoMsg {
 export interface MsgNewActionResponseSDKType {
   id: bigint;
 }
-export interface MsgApproveAction {
-  creator: string;
-  actionId: bigint;
-}
-export interface MsgApproveActionProtoMsg {
-  typeUrl: "/warden.act.v1beta1.MsgApproveAction";
-  value: Uint8Array;
-}
-export interface MsgApproveActionAmino {
-  creator?: string;
-  action_id?: string;
-}
-export interface MsgApproveActionAminoMsg {
-  type: "/warden.act.v1beta1.MsgApproveAction";
-  value: MsgApproveActionAmino;
-}
-export interface MsgApproveActionSDKType {
-  creator: string;
-  action_id: bigint;
-}
-export interface MsgApproveActionResponse {
-  status: string;
-}
-export interface MsgApproveActionResponseProtoMsg {
-  typeUrl: "/warden.act.v1beta1.MsgApproveActionResponse";
-  value: Uint8Array;
-}
-export interface MsgApproveActionResponseAmino {
-  status?: string;
-}
-export interface MsgApproveActionResponseAminoMsg {
-  type: "/warden.act.v1beta1.MsgApproveActionResponse";
-  value: MsgApproveActionResponseAmino;
-}
-export interface MsgApproveActionResponseSDKType {
-  status: string;
-}
-export interface MsgNewRule {
+export interface MsgNewTemplate {
   creator: string;
   name: string;
   definition: string;
 }
-export interface MsgNewRuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.MsgNewRule";
+export interface MsgNewTemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgNewTemplate";
   value: Uint8Array;
 }
-export interface MsgNewRuleAmino {
+export interface MsgNewTemplateAmino {
   creator?: string;
   name?: string;
   definition?: string;
 }
-export interface MsgNewRuleAminoMsg {
-  type: "/warden.act.v1beta1.MsgNewRule";
-  value: MsgNewRuleAmino;
+export interface MsgNewTemplateAminoMsg {
+  type: "/warden.act.v1beta1.MsgNewTemplate";
+  value: MsgNewTemplateAmino;
 }
-export interface MsgNewRuleSDKType {
+export interface MsgNewTemplateSDKType {
   creator: string;
   name: string;
   definition: string;
 }
-export interface MsgNewRuleResponse {
+export interface MsgNewTemplateResponse {
   id: bigint;
 }
-export interface MsgNewRuleResponseProtoMsg {
-  typeUrl: "/warden.act.v1beta1.MsgNewRuleResponse";
+export interface MsgNewTemplateResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgNewTemplateResponse";
   value: Uint8Array;
 }
-export interface MsgNewRuleResponseAmino {
+export interface MsgNewTemplateResponseAmino {
   id?: string;
 }
-export interface MsgNewRuleResponseAminoMsg {
-  type: "/warden.act.v1beta1.MsgNewRuleResponse";
-  value: MsgNewRuleResponseAmino;
+export interface MsgNewTemplateResponseAminoMsg {
+  type: "/warden.act.v1beta1.MsgNewTemplateResponse";
+  value: MsgNewTemplateResponseAmino;
 }
-export interface MsgNewRuleResponseSDKType {
+export interface MsgNewTemplateResponseSDKType {
   id: bigint;
 }
-export interface MsgUpdateRule {
+export interface MsgUpdateTemplate {
   creator: string;
   id: bigint;
   name: string;
   definition: string;
 }
-export interface MsgUpdateRuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.MsgUpdateRule";
+export interface MsgUpdateTemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgUpdateTemplate";
   value: Uint8Array;
 }
-export interface MsgUpdateRuleAmino {
+export interface MsgUpdateTemplateAmino {
   creator?: string;
   id?: string;
   name?: string;
   definition?: string;
 }
-export interface MsgUpdateRuleAminoMsg {
-  type: "/warden.act.v1beta1.MsgUpdateRule";
-  value: MsgUpdateRuleAmino;
+export interface MsgUpdateTemplateAminoMsg {
+  type: "/warden.act.v1beta1.MsgUpdateTemplate";
+  value: MsgUpdateTemplateAmino;
 }
-export interface MsgUpdateRuleSDKType {
+export interface MsgUpdateTemplateSDKType {
   creator: string;
   id: bigint;
   name: string;
   definition: string;
 }
-export interface MsgUpdateRuleResponse {}
-export interface MsgUpdateRuleResponseProtoMsg {
-  typeUrl: "/warden.act.v1beta1.MsgUpdateRuleResponse";
+export interface MsgUpdateTemplateResponse {}
+export interface MsgUpdateTemplateResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.MsgUpdateTemplateResponse";
   value: Uint8Array;
 }
-export interface MsgUpdateRuleResponseAmino {}
-export interface MsgUpdateRuleResponseAminoMsg {
-  type: "/warden.act.v1beta1.MsgUpdateRuleResponse";
-  value: MsgUpdateRuleResponseAmino;
+export interface MsgUpdateTemplateResponseAmino {}
+export interface MsgUpdateTemplateResponseAminoMsg {
+  type: "/warden.act.v1beta1.MsgUpdateTemplateResponse";
+  value: MsgUpdateTemplateResponseAmino;
 }
-export interface MsgUpdateRuleResponseSDKType {}
+export interface MsgUpdateTemplateResponseSDKType {}
 export interface MsgRevokeAction {
   creator: string;
   actionId: bigint;
@@ -299,7 +261,7 @@ export interface MsgCheckActionResponseSDKType {
 export interface MsgVoteForAction {
   participant: string;
   actionId: bigint;
-  vote: ActionVoteType;
+  voteType: ActionVoteType;
 }
 export interface MsgVoteForActionProtoMsg {
   typeUrl: "/warden.act.v1beta1.MsgVoteForAction";
@@ -308,7 +270,7 @@ export interface MsgVoteForActionProtoMsg {
 export interface MsgVoteForActionAmino {
   participant?: string;
   action_id?: string;
-  vote?: ActionVoteType;
+  vote_type?: ActionVoteType;
 }
 export interface MsgVoteForActionAminoMsg {
   type: "/warden.act.v1beta1.MsgVoteForAction";
@@ -317,7 +279,7 @@ export interface MsgVoteForActionAminoMsg {
 export interface MsgVoteForActionSDKType {
   participant: string;
   action_id: bigint;
-  vote: ActionVoteType;
+  vote_type: ActionVoteType;
 }
 export interface MsgVoteForActionResponse {
   status: string;
@@ -491,8 +453,8 @@ function createBaseMsgNewAction(): MsgNewAction {
     creator: "",
     message: undefined,
     actionTimeoutHeight: BigInt(0),
-    expectedApproveExpression: Expression.fromPartial({}),
-    expectedRejectExpression: Expression.fromPartial({})
+    expectedApproveExpression: "",
+    expectedRejectExpression: ""
   };
 }
 export const MsgNewAction = {
@@ -507,11 +469,11 @@ export const MsgNewAction = {
     if (message.actionTimeoutHeight !== BigInt(0)) {
       writer.uint32(24).uint64(message.actionTimeoutHeight);
     }
-    if (message.expectedApproveExpression !== undefined) {
-      Expression.encode(message.expectedApproveExpression, writer.uint32(34).fork()).ldelim();
+    if (message.expectedApproveExpression !== "") {
+      writer.uint32(34).string(message.expectedApproveExpression);
     }
-    if (message.expectedRejectExpression !== undefined) {
-      Expression.encode(message.expectedRejectExpression, writer.uint32(42).fork()).ldelim();
+    if (message.expectedRejectExpression !== "") {
+      writer.uint32(42).string(message.expectedRejectExpression);
     }
     return writer;
   },
@@ -532,10 +494,10 @@ export const MsgNewAction = {
           message.actionTimeoutHeight = reader.uint64();
           break;
         case 4:
-          message.expectedApproveExpression = Expression.decode(reader, reader.uint32());
+          message.expectedApproveExpression = reader.string();
           break;
         case 5:
-          message.expectedRejectExpression = Expression.decode(reader, reader.uint32());
+          message.expectedRejectExpression = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -549,8 +511,8 @@ export const MsgNewAction = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       message: isSet(object.message) ? Any.fromJSON(object.message) : undefined,
       actionTimeoutHeight: isSet(object.actionTimeoutHeight) ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0),
-      expectedApproveExpression: isSet(object.expectedApproveExpression) ? Expression.fromJSON(object.expectedApproveExpression) : undefined,
-      expectedRejectExpression: isSet(object.expectedRejectExpression) ? Expression.fromJSON(object.expectedRejectExpression) : undefined
+      expectedApproveExpression: isSet(object.expectedApproveExpression) ? String(object.expectedApproveExpression) : "",
+      expectedRejectExpression: isSet(object.expectedRejectExpression) ? String(object.expectedRejectExpression) : ""
     };
   },
   toJSON(message: MsgNewAction): JsonSafe<MsgNewAction> {
@@ -558,8 +520,8 @@ export const MsgNewAction = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.message !== undefined && (obj.message = message.message ? Any.toJSON(message.message) : undefined);
     message.actionTimeoutHeight !== undefined && (obj.actionTimeoutHeight = (message.actionTimeoutHeight || BigInt(0)).toString());
-    message.expectedApproveExpression !== undefined && (obj.expectedApproveExpression = message.expectedApproveExpression ? Expression.toJSON(message.expectedApproveExpression) : undefined);
-    message.expectedRejectExpression !== undefined && (obj.expectedRejectExpression = message.expectedRejectExpression ? Expression.toJSON(message.expectedRejectExpression) : undefined);
+    message.expectedApproveExpression !== undefined && (obj.expectedApproveExpression = message.expectedApproveExpression);
+    message.expectedRejectExpression !== undefined && (obj.expectedRejectExpression = message.expectedRejectExpression);
     return obj;
   },
   fromPartial(object: Partial<MsgNewAction>): MsgNewAction {
@@ -567,8 +529,8 @@ export const MsgNewAction = {
     message.creator = object.creator ?? "";
     message.message = object.message !== undefined && object.message !== null ? Any.fromPartial(object.message) : undefined;
     message.actionTimeoutHeight = object.actionTimeoutHeight !== undefined && object.actionTimeoutHeight !== null ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0);
-    message.expectedApproveExpression = object.expectedApproveExpression !== undefined && object.expectedApproveExpression !== null ? Expression.fromPartial(object.expectedApproveExpression) : undefined;
-    message.expectedRejectExpression = object.expectedRejectExpression !== undefined && object.expectedRejectExpression !== null ? Expression.fromPartial(object.expectedRejectExpression) : undefined;
+    message.expectedApproveExpression = object.expectedApproveExpression ?? "";
+    message.expectedRejectExpression = object.expectedRejectExpression ?? "";
     return message;
   },
   fromAmino(object: MsgNewActionAmino): MsgNewAction {
@@ -583,10 +545,10 @@ export const MsgNewAction = {
       message.actionTimeoutHeight = BigInt(object.action_timeout_height);
     }
     if (object.expected_approve_expression !== undefined && object.expected_approve_expression !== null) {
-      message.expectedApproveExpression = Expression.fromAmino(object.expected_approve_expression);
+      message.expectedApproveExpression = object.expected_approve_expression;
     }
     if (object.expected_reject_expression !== undefined && object.expected_reject_expression !== null) {
-      message.expectedRejectExpression = Expression.fromAmino(object.expected_reject_expression);
+      message.expectedRejectExpression = object.expected_reject_expression;
     }
     return message;
   },
@@ -595,8 +557,8 @@ export const MsgNewAction = {
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.message = message.message ? Any.toAmino(message.message) : undefined;
     obj.action_timeout_height = message.actionTimeoutHeight !== BigInt(0) ? message.actionTimeoutHeight.toString() : undefined;
-    obj.expected_approve_expression = message.expectedApproveExpression ? Expression.toAmino(message.expectedApproveExpression) : undefined;
-    obj.expected_reject_expression = message.expectedRejectExpression ? Expression.toAmino(message.expectedRejectExpression) : undefined;
+    obj.expected_approve_expression = message.expectedApproveExpression === "" ? undefined : message.expectedApproveExpression;
+    obj.expected_reject_expression = message.expectedRejectExpression === "" ? undefined : message.expectedRejectExpression;
     return obj;
   },
   fromAminoMsg(object: MsgNewActionAminoMsg): MsgNewAction {
@@ -688,176 +650,16 @@ export const MsgNewActionResponse = {
     };
   }
 };
-function createBaseMsgApproveAction(): MsgApproveAction {
-  return {
-    creator: "",
-    actionId: BigInt(0)
-  };
-}
-export const MsgApproveAction = {
-  typeUrl: "/warden.act.v1beta1.MsgApproveAction",
-  encode(message: MsgApproveAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.actionId !== BigInt(0)) {
-      writer.uint32(16).uint64(message.actionId);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgApproveAction {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgApproveAction();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.actionId = reader.uint64();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MsgApproveAction {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      actionId: isSet(object.actionId) ? BigInt(object.actionId.toString()) : BigInt(0)
-    };
-  },
-  toJSON(message: MsgApproveAction): JsonSafe<MsgApproveAction> {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.actionId !== undefined && (obj.actionId = (message.actionId || BigInt(0)).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<MsgApproveAction>): MsgApproveAction {
-    const message = createBaseMsgApproveAction();
-    message.creator = object.creator ?? "";
-    message.actionId = object.actionId !== undefined && object.actionId !== null ? BigInt(object.actionId.toString()) : BigInt(0);
-    return message;
-  },
-  fromAmino(object: MsgApproveActionAmino): MsgApproveAction {
-    const message = createBaseMsgApproveAction();
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator;
-    }
-    if (object.action_id !== undefined && object.action_id !== null) {
-      message.actionId = BigInt(object.action_id);
-    }
-    return message;
-  },
-  toAmino(message: MsgApproveAction): MsgApproveActionAmino {
-    const obj: any = {};
-    obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: MsgApproveActionAminoMsg): MsgApproveAction {
-    return MsgApproveAction.fromAmino(object.value);
-  },
-  fromProtoMsg(message: MsgApproveActionProtoMsg): MsgApproveAction {
-    return MsgApproveAction.decode(message.value);
-  },
-  toProto(message: MsgApproveAction): Uint8Array {
-    return MsgApproveAction.encode(message).finish();
-  },
-  toProtoMsg(message: MsgApproveAction): MsgApproveActionProtoMsg {
-    return {
-      typeUrl: "/warden.act.v1beta1.MsgApproveAction",
-      value: MsgApproveAction.encode(message).finish()
-    };
-  }
-};
-function createBaseMsgApproveActionResponse(): MsgApproveActionResponse {
-  return {
-    status: ""
-  };
-}
-export const MsgApproveActionResponse = {
-  typeUrl: "/warden.act.v1beta1.MsgApproveActionResponse",
-  encode(message: MsgApproveActionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.status !== "") {
-      writer.uint32(10).string(message.status);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgApproveActionResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgApproveActionResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.status = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MsgApproveActionResponse {
-    return {
-      status: isSet(object.status) ? String(object.status) : ""
-    };
-  },
-  toJSON(message: MsgApproveActionResponse): JsonSafe<MsgApproveActionResponse> {
-    const obj: any = {};
-    message.status !== undefined && (obj.status = message.status);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgApproveActionResponse>): MsgApproveActionResponse {
-    const message = createBaseMsgApproveActionResponse();
-    message.status = object.status ?? "";
-    return message;
-  },
-  fromAmino(object: MsgApproveActionResponseAmino): MsgApproveActionResponse {
-    const message = createBaseMsgApproveActionResponse();
-    if (object.status !== undefined && object.status !== null) {
-      message.status = object.status;
-    }
-    return message;
-  },
-  toAmino(message: MsgApproveActionResponse): MsgApproveActionResponseAmino {
-    const obj: any = {};
-    obj.status = message.status === "" ? undefined : message.status;
-    return obj;
-  },
-  fromAminoMsg(object: MsgApproveActionResponseAminoMsg): MsgApproveActionResponse {
-    return MsgApproveActionResponse.fromAmino(object.value);
-  },
-  fromProtoMsg(message: MsgApproveActionResponseProtoMsg): MsgApproveActionResponse {
-    return MsgApproveActionResponse.decode(message.value);
-  },
-  toProto(message: MsgApproveActionResponse): Uint8Array {
-    return MsgApproveActionResponse.encode(message).finish();
-  },
-  toProtoMsg(message: MsgApproveActionResponse): MsgApproveActionResponseProtoMsg {
-    return {
-      typeUrl: "/warden.act.v1beta1.MsgApproveActionResponse",
-      value: MsgApproveActionResponse.encode(message).finish()
-    };
-  }
-};
-function createBaseMsgNewRule(): MsgNewRule {
+function createBaseMsgNewTemplate(): MsgNewTemplate {
   return {
     creator: "",
     name: "",
     definition: ""
   };
 }
-export const MsgNewRule = {
-  typeUrl: "/warden.act.v1beta1.MsgNewRule",
-  encode(message: MsgNewRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgNewTemplate = {
+  typeUrl: "/warden.act.v1beta1.MsgNewTemplate",
+  encode(message: MsgNewTemplate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -869,10 +671,10 @@ export const MsgNewRule = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewRule {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewTemplate {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewRule();
+    const message = createBaseMsgNewTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -892,29 +694,29 @@ export const MsgNewRule = {
     }
     return message;
   },
-  fromJSON(object: any): MsgNewRule {
+  fromJSON(object: any): MsgNewTemplate {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       name: isSet(object.name) ? String(object.name) : "",
       definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
-  toJSON(message: MsgNewRule): JsonSafe<MsgNewRule> {
+  toJSON(message: MsgNewTemplate): JsonSafe<MsgNewTemplate> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.name !== undefined && (obj.name = message.name);
     message.definition !== undefined && (obj.definition = message.definition);
     return obj;
   },
-  fromPartial(object: Partial<MsgNewRule>): MsgNewRule {
-    const message = createBaseMsgNewRule();
+  fromPartial(object: Partial<MsgNewTemplate>): MsgNewTemplate {
+    const message = createBaseMsgNewTemplate();
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
     message.definition = object.definition ?? "";
     return message;
   },
-  fromAmino(object: MsgNewRuleAmino): MsgNewRule {
-    const message = createBaseMsgNewRule();
+  fromAmino(object: MsgNewTemplateAmino): MsgNewTemplate {
+    const message = createBaseMsgNewTemplate();
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
@@ -926,46 +728,46 @@ export const MsgNewRule = {
     }
     return message;
   },
-  toAmino(message: MsgNewRule): MsgNewRuleAmino {
+  toAmino(message: MsgNewTemplate): MsgNewTemplateAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.name = message.name === "" ? undefined : message.name;
     obj.definition = message.definition === "" ? undefined : message.definition;
     return obj;
   },
-  fromAminoMsg(object: MsgNewRuleAminoMsg): MsgNewRule {
-    return MsgNewRule.fromAmino(object.value);
+  fromAminoMsg(object: MsgNewTemplateAminoMsg): MsgNewTemplate {
+    return MsgNewTemplate.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgNewRuleProtoMsg): MsgNewRule {
-    return MsgNewRule.decode(message.value);
+  fromProtoMsg(message: MsgNewTemplateProtoMsg): MsgNewTemplate {
+    return MsgNewTemplate.decode(message.value);
   },
-  toProto(message: MsgNewRule): Uint8Array {
-    return MsgNewRule.encode(message).finish();
+  toProto(message: MsgNewTemplate): Uint8Array {
+    return MsgNewTemplate.encode(message).finish();
   },
-  toProtoMsg(message: MsgNewRule): MsgNewRuleProtoMsg {
+  toProtoMsg(message: MsgNewTemplate): MsgNewTemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.MsgNewRule",
-      value: MsgNewRule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.MsgNewTemplate",
+      value: MsgNewTemplate.encode(message).finish()
     };
   }
 };
-function createBaseMsgNewRuleResponse(): MsgNewRuleResponse {
+function createBaseMsgNewTemplateResponse(): MsgNewTemplateResponse {
   return {
     id: BigInt(0)
   };
 }
-export const MsgNewRuleResponse = {
-  typeUrl: "/warden.act.v1beta1.MsgNewRuleResponse",
-  encode(message: MsgNewRuleResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgNewTemplateResponse = {
+  typeUrl: "/warden.act.v1beta1.MsgNewTemplateResponse",
+  encode(message: MsgNewTemplateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewRuleResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewTemplateResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewRuleResponse();
+    const message = createBaseMsgNewTemplateResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -979,50 +781,50 @@ export const MsgNewRuleResponse = {
     }
     return message;
   },
-  fromJSON(object: any): MsgNewRuleResponse {
+  fromJSON(object: any): MsgNewTemplateResponse {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: MsgNewRuleResponse): JsonSafe<MsgNewRuleResponse> {
+  toJSON(message: MsgNewTemplateResponse): JsonSafe<MsgNewTemplateResponse> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<MsgNewRuleResponse>): MsgNewRuleResponse {
-    const message = createBaseMsgNewRuleResponse();
+  fromPartial(object: Partial<MsgNewTemplateResponse>): MsgNewTemplateResponse {
+    const message = createBaseMsgNewTemplateResponse();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: MsgNewRuleResponseAmino): MsgNewRuleResponse {
-    const message = createBaseMsgNewRuleResponse();
+  fromAmino(object: MsgNewTemplateResponseAmino): MsgNewTemplateResponse {
+    const message = createBaseMsgNewTemplateResponse();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: MsgNewRuleResponse): MsgNewRuleResponseAmino {
+  toAmino(message: MsgNewTemplateResponse): MsgNewTemplateResponseAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: MsgNewRuleResponseAminoMsg): MsgNewRuleResponse {
-    return MsgNewRuleResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgNewTemplateResponseAminoMsg): MsgNewTemplateResponse {
+    return MsgNewTemplateResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgNewRuleResponseProtoMsg): MsgNewRuleResponse {
-    return MsgNewRuleResponse.decode(message.value);
+  fromProtoMsg(message: MsgNewTemplateResponseProtoMsg): MsgNewTemplateResponse {
+    return MsgNewTemplateResponse.decode(message.value);
   },
-  toProto(message: MsgNewRuleResponse): Uint8Array {
-    return MsgNewRuleResponse.encode(message).finish();
+  toProto(message: MsgNewTemplateResponse): Uint8Array {
+    return MsgNewTemplateResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgNewRuleResponse): MsgNewRuleResponseProtoMsg {
+  toProtoMsg(message: MsgNewTemplateResponse): MsgNewTemplateResponseProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.MsgNewRuleResponse",
-      value: MsgNewRuleResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.MsgNewTemplateResponse",
+      value: MsgNewTemplateResponse.encode(message).finish()
     };
   }
 };
-function createBaseMsgUpdateRule(): MsgUpdateRule {
+function createBaseMsgUpdateTemplate(): MsgUpdateTemplate {
   return {
     creator: "",
     id: BigInt(0),
@@ -1030,9 +832,9 @@ function createBaseMsgUpdateRule(): MsgUpdateRule {
     definition: ""
   };
 }
-export const MsgUpdateRule = {
-  typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
-  encode(message: MsgUpdateRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgUpdateTemplate = {
+  typeUrl: "/warden.act.v1beta1.MsgUpdateTemplate",
+  encode(message: MsgUpdateTemplate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -1047,10 +849,10 @@ export const MsgUpdateRule = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateRule {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateTemplate {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgUpdateRule();
+    const message = createBaseMsgUpdateTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1073,7 +875,7 @@ export const MsgUpdateRule = {
     }
     return message;
   },
-  fromJSON(object: any): MsgUpdateRule {
+  fromJSON(object: any): MsgUpdateTemplate {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
@@ -1081,7 +883,7 @@ export const MsgUpdateRule = {
       definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
-  toJSON(message: MsgUpdateRule): JsonSafe<MsgUpdateRule> {
+  toJSON(message: MsgUpdateTemplate): JsonSafe<MsgUpdateTemplate> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
@@ -1089,16 +891,16 @@ export const MsgUpdateRule = {
     message.definition !== undefined && (obj.definition = message.definition);
     return obj;
   },
-  fromPartial(object: Partial<MsgUpdateRule>): MsgUpdateRule {
-    const message = createBaseMsgUpdateRule();
+  fromPartial(object: Partial<MsgUpdateTemplate>): MsgUpdateTemplate {
+    const message = createBaseMsgUpdateTemplate();
     message.creator = object.creator ?? "";
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.name = object.name ?? "";
     message.definition = object.definition ?? "";
     return message;
   },
-  fromAmino(object: MsgUpdateRuleAmino): MsgUpdateRule {
-    const message = createBaseMsgUpdateRule();
+  fromAmino(object: MsgUpdateTemplateAmino): MsgUpdateTemplate {
+    const message = createBaseMsgUpdateTemplate();
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
@@ -1113,7 +915,7 @@ export const MsgUpdateRule = {
     }
     return message;
   },
-  toAmino(message: MsgUpdateRule): MsgUpdateRuleAmino {
+  toAmino(message: MsgUpdateTemplate): MsgUpdateTemplateAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
@@ -1121,34 +923,34 @@ export const MsgUpdateRule = {
     obj.definition = message.definition === "" ? undefined : message.definition;
     return obj;
   },
-  fromAminoMsg(object: MsgUpdateRuleAminoMsg): MsgUpdateRule {
-    return MsgUpdateRule.fromAmino(object.value);
+  fromAminoMsg(object: MsgUpdateTemplateAminoMsg): MsgUpdateTemplate {
+    return MsgUpdateTemplate.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgUpdateRuleProtoMsg): MsgUpdateRule {
-    return MsgUpdateRule.decode(message.value);
+  fromProtoMsg(message: MsgUpdateTemplateProtoMsg): MsgUpdateTemplate {
+    return MsgUpdateTemplate.decode(message.value);
   },
-  toProto(message: MsgUpdateRule): Uint8Array {
-    return MsgUpdateRule.encode(message).finish();
+  toProto(message: MsgUpdateTemplate): Uint8Array {
+    return MsgUpdateTemplate.encode(message).finish();
   },
-  toProtoMsg(message: MsgUpdateRule): MsgUpdateRuleProtoMsg {
+  toProtoMsg(message: MsgUpdateTemplate): MsgUpdateTemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
-      value: MsgUpdateRule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.MsgUpdateTemplate",
+      value: MsgUpdateTemplate.encode(message).finish()
     };
   }
 };
-function createBaseMsgUpdateRuleResponse(): MsgUpdateRuleResponse {
+function createBaseMsgUpdateTemplateResponse(): MsgUpdateTemplateResponse {
   return {};
 }
-export const MsgUpdateRuleResponse = {
-  typeUrl: "/warden.act.v1beta1.MsgUpdateRuleResponse",
-  encode(_: MsgUpdateRuleResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgUpdateTemplateResponse = {
+  typeUrl: "/warden.act.v1beta1.MsgUpdateTemplateResponse",
+  encode(_: MsgUpdateTemplateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateRuleResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateTemplateResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgUpdateRuleResponse();
+    const message = createBaseMsgUpdateTemplateResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1159,38 +961,38 @@ export const MsgUpdateRuleResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgUpdateRuleResponse {
+  fromJSON(_: any): MsgUpdateTemplateResponse {
     return {};
   },
-  toJSON(_: MsgUpdateRuleResponse): JsonSafe<MsgUpdateRuleResponse> {
+  toJSON(_: MsgUpdateTemplateResponse): JsonSafe<MsgUpdateTemplateResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial(_: Partial<MsgUpdateRuleResponse>): MsgUpdateRuleResponse {
-    const message = createBaseMsgUpdateRuleResponse();
+  fromPartial(_: Partial<MsgUpdateTemplateResponse>): MsgUpdateTemplateResponse {
+    const message = createBaseMsgUpdateTemplateResponse();
     return message;
   },
-  fromAmino(_: MsgUpdateRuleResponseAmino): MsgUpdateRuleResponse {
-    const message = createBaseMsgUpdateRuleResponse();
+  fromAmino(_: MsgUpdateTemplateResponseAmino): MsgUpdateTemplateResponse {
+    const message = createBaseMsgUpdateTemplateResponse();
     return message;
   },
-  toAmino(_: MsgUpdateRuleResponse): MsgUpdateRuleResponseAmino {
+  toAmino(_: MsgUpdateTemplateResponse): MsgUpdateTemplateResponseAmino {
     const obj: any = {};
     return obj;
   },
-  fromAminoMsg(object: MsgUpdateRuleResponseAminoMsg): MsgUpdateRuleResponse {
-    return MsgUpdateRuleResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgUpdateTemplateResponseAminoMsg): MsgUpdateTemplateResponse {
+    return MsgUpdateTemplateResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgUpdateRuleResponseProtoMsg): MsgUpdateRuleResponse {
-    return MsgUpdateRuleResponse.decode(message.value);
+  fromProtoMsg(message: MsgUpdateTemplateResponseProtoMsg): MsgUpdateTemplateResponse {
+    return MsgUpdateTemplateResponse.decode(message.value);
   },
-  toProto(message: MsgUpdateRuleResponse): Uint8Array {
-    return MsgUpdateRuleResponse.encode(message).finish();
+  toProto(message: MsgUpdateTemplateResponse): Uint8Array {
+    return MsgUpdateTemplateResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgUpdateRuleResponse): MsgUpdateRuleResponseProtoMsg {
+  toProtoMsg(message: MsgUpdateTemplateResponse): MsgUpdateTemplateResponseProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.MsgUpdateRuleResponse",
-      value: MsgUpdateRuleResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.MsgUpdateTemplateResponse",
+      value: MsgUpdateTemplateResponse.encode(message).finish()
     };
   }
 };
@@ -1502,7 +1304,7 @@ function createBaseMsgVoteForAction(): MsgVoteForAction {
   return {
     participant: "",
     actionId: BigInt(0),
-    vote: 0
+    voteType: 0
   };
 }
 export const MsgVoteForAction = {
@@ -1514,8 +1316,8 @@ export const MsgVoteForAction = {
     if (message.actionId !== BigInt(0)) {
       writer.uint32(16).uint64(message.actionId);
     }
-    if (message.vote !== 0) {
-      writer.uint32(24).int32(message.vote);
+    if (message.voteType !== 0) {
+      writer.uint32(24).int32(message.voteType);
     }
     return writer;
   },
@@ -1533,7 +1335,7 @@ export const MsgVoteForAction = {
           message.actionId = reader.uint64();
           break;
         case 3:
-          message.vote = (reader.int32() as any);
+          message.voteType = (reader.int32() as any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1546,21 +1348,21 @@ export const MsgVoteForAction = {
     return {
       participant: isSet(object.participant) ? String(object.participant) : "",
       actionId: isSet(object.actionId) ? BigInt(object.actionId.toString()) : BigInt(0),
-      vote: isSet(object.vote) ? actionVoteTypeFromJSON(object.vote) : -1
+      voteType: isSet(object.voteType) ? actionVoteTypeFromJSON(object.voteType) : -1
     };
   },
   toJSON(message: MsgVoteForAction): JsonSafe<MsgVoteForAction> {
     const obj: any = {};
     message.participant !== undefined && (obj.participant = message.participant);
     message.actionId !== undefined && (obj.actionId = (message.actionId || BigInt(0)).toString());
-    message.vote !== undefined && (obj.vote = actionVoteTypeToJSON(message.vote));
+    message.voteType !== undefined && (obj.voteType = actionVoteTypeToJSON(message.voteType));
     return obj;
   },
   fromPartial(object: Partial<MsgVoteForAction>): MsgVoteForAction {
     const message = createBaseMsgVoteForAction();
     message.participant = object.participant ?? "";
     message.actionId = object.actionId !== undefined && object.actionId !== null ? BigInt(object.actionId.toString()) : BigInt(0);
-    message.vote = object.vote ?? 0;
+    message.voteType = object.voteType ?? 0;
     return message;
   },
   fromAmino(object: MsgVoteForActionAmino): MsgVoteForAction {
@@ -1571,8 +1373,8 @@ export const MsgVoteForAction = {
     if (object.action_id !== undefined && object.action_id !== null) {
       message.actionId = BigInt(object.action_id);
     }
-    if (object.vote !== undefined && object.vote !== null) {
-      message.vote = object.vote;
+    if (object.vote_type !== undefined && object.vote_type !== null) {
+      message.voteType = object.vote_type;
     }
     return message;
   },
@@ -1580,7 +1382,7 @@ export const MsgVoteForAction = {
     const obj: any = {};
     obj.participant = message.participant === "" ? undefined : message.participant;
     obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
-    obj.vote = message.vote === 0 ? undefined : message.vote;
+    obj.vote_type = message.voteType === 0 ? undefined : message.voteType;
     return obj;
   },
   fromAminoMsg(object: MsgVoteForActionAminoMsg): MsgVoteForAction {

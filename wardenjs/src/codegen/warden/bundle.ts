@@ -6,7 +6,7 @@ import * as _113 from "./act/v1beta1/events.js";
 import * as _114 from "./act/v1beta1/genesis.js";
 import * as _115 from "./act/v1beta1/params.js";
 import * as _116 from "./act/v1beta1/query.js";
-import * as _117 from "./act/v1beta1/rule.js";
+import * as _117 from "./act/v1beta1/template.js";
 import * as _118 from "./act/v1beta1/tx.js";
 import * as _119 from "./gmp/genesis.js";
 import * as _120 from "./gmp/gmp.js";

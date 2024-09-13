@@ -2,7 +2,7 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination.js";
 import { ActionStatus, Action, ActionAmino, ActionSDKType, actionStatusFromJSON, actionStatusToJSON } from "./action.js";
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
-import { Rule, RuleAmino, RuleSDKType } from "./rule.js";
+import { Template, TemplateAmino, TemplateSDKType } from "./template.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { JsonSafe } from "../../../json-safe.js";
 import { isSet } from "../../../helpers.js";
@@ -79,113 +79,116 @@ export interface QueryActionsResponseSDKType {
   pagination?: PageResponseSDKType;
   actions: ActionSDKType[];
 }
-export interface QueryRulesRequest {
+export interface QueryTemplatesRequest {
   pagination?: PageRequest;
+  creator?: string;
 }
-export interface QueryRulesRequestProtoMsg {
-  typeUrl: "/warden.act.v1beta1.QueryRulesRequest";
+export interface QueryTemplatesRequestProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryTemplatesRequest";
   value: Uint8Array;
 }
-export interface QueryRulesRequestAmino {
+export interface QueryTemplatesRequestAmino {
   pagination?: PageRequestAmino;
+  creator?: string;
 }
-export interface QueryRulesRequestAminoMsg {
-  type: "/warden.act.v1beta1.QueryRulesRequest";
-  value: QueryRulesRequestAmino;
+export interface QueryTemplatesRequestAminoMsg {
+  type: "/warden.act.v1beta1.QueryTemplatesRequest";
+  value: QueryTemplatesRequestAmino;
 }
-export interface QueryRulesRequestSDKType {
+export interface QueryTemplatesRequestSDKType {
   pagination?: PageRequestSDKType;
+  creator?: string;
 }
-export interface QueryRulesResponse {
+export interface QueryTemplatesResponse {
   pagination?: PageResponse;
-  rules: Rule[];
+  templates: Template[];
 }
-export interface QueryRulesResponseProtoMsg {
-  typeUrl: "/warden.act.v1beta1.QueryRulesResponse";
+export interface QueryTemplatesResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryTemplatesResponse";
   value: Uint8Array;
 }
-export interface QueryRulesResponseAmino {
+export interface QueryTemplatesResponseAmino {
   pagination?: PageResponseAmino;
-  rules?: RuleAmino[];
+  templates?: TemplateAmino[];
 }
-export interface QueryRulesResponseAminoMsg {
-  type: "/warden.act.v1beta1.QueryRulesResponse";
-  value: QueryRulesResponseAmino;
+export interface QueryTemplatesResponseAminoMsg {
+  type: "/warden.act.v1beta1.QueryTemplatesResponse";
+  value: QueryTemplatesResponseAmino;
 }
-export interface QueryRulesResponseSDKType {
+export interface QueryTemplatesResponseSDKType {
   pagination?: PageResponseSDKType;
-  rules: RuleSDKType[];
+  templates: TemplateSDKType[];
 }
-export interface QuerySimulateRuleRequest {
+export interface QuerySimulateTemplateRequest {
   pagination?: PageRequest;
   definition: string;
 }
-export interface QuerySimulateRuleRequestProtoMsg {
-  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleRequest";
+export interface QuerySimulateTemplateRequestProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateTemplateRequest";
   value: Uint8Array;
 }
-export interface QuerySimulateRuleRequestAmino {
+export interface QuerySimulateTemplateRequestAmino {
   pagination?: PageRequestAmino;
   definition?: string;
 }
-export interface QuerySimulateRuleRequestAminoMsg {
-  type: "/warden.act.v1beta1.QuerySimulateRuleRequest";
-  value: QuerySimulateRuleRequestAmino;
+export interface QuerySimulateTemplateRequestAminoMsg {
+  type: "/warden.act.v1beta1.QuerySimulateTemplateRequest";
+  value: QuerySimulateTemplateRequestAmino;
 }
-export interface QuerySimulateRuleRequestSDKType {
+export interface QuerySimulateTemplateRequestSDKType {
   pagination?: PageRequestSDKType;
   definition: string;
 }
-export interface QuerySimulateRuleResponse {
+export interface QuerySimulateTemplateResponse {
   evaluation: string;
 }
-export interface QuerySimulateRuleResponseProtoMsg {
-  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleResponse";
+export interface QuerySimulateTemplateResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateTemplateResponse";
   value: Uint8Array;
 }
-export interface QuerySimulateRuleResponseAmino {
+export interface QuerySimulateTemplateResponseAmino {
   evaluation?: string;
 }
-export interface QuerySimulateRuleResponseAminoMsg {
-  type: "/warden.act.v1beta1.QuerySimulateRuleResponse";
-  value: QuerySimulateRuleResponseAmino;
+export interface QuerySimulateTemplateResponseAminoMsg {
+  type: "/warden.act.v1beta1.QuerySimulateTemplateResponse";
+  value: QuerySimulateTemplateResponseAmino;
 }
-export interface QuerySimulateRuleResponseSDKType {
+export interface QuerySimulateTemplateResponseSDKType {
   evaluation: string;
 }
-export interface QueryRuleByIdRequest {
+export interface QueryTemplateByIdRequest {
   id: bigint;
 }
-export interface QueryRuleByIdRequestProtoMsg {
-  typeUrl: "/warden.act.v1beta1.QueryRuleByIdRequest";
+export interface QueryTemplateByIdRequestProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryTemplateByIdRequest";
   value: Uint8Array;
 }
-export interface QueryRuleByIdRequestAmino {
+export interface QueryTemplateByIdRequestAmino {
   id?: string;
 }
-export interface QueryRuleByIdRequestAminoMsg {
-  type: "/warden.act.v1beta1.QueryRuleByIdRequest";
-  value: QueryRuleByIdRequestAmino;
+export interface QueryTemplateByIdRequestAminoMsg {
+  type: "/warden.act.v1beta1.QueryTemplateByIdRequest";
+  value: QueryTemplateByIdRequestAmino;
 }
-export interface QueryRuleByIdRequestSDKType {
+export interface QueryTemplateByIdRequestSDKType {
   id: bigint;
 }
-export interface QueryRuleByIdResponse {
-  rule?: Rule;
+export interface QueryTemplateByIdResponse {
+  template?: Template;
 }
-export interface QueryRuleByIdResponseProtoMsg {
-  typeUrl: "/warden.act.v1beta1.QueryRuleByIdResponse";
+export interface QueryTemplateByIdResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryTemplateByIdResponse";
   value: Uint8Array;
 }
-export interface QueryRuleByIdResponseAmino {
-  rule?: RuleAmino;
+export interface QueryTemplateByIdResponseAmino {
+  template?: TemplateAmino;
 }
-export interface QueryRuleByIdResponseAminoMsg {
-  type: "/warden.act.v1beta1.QueryRuleByIdResponse";
-  value: QueryRuleByIdResponseAmino;
+export interface QueryTemplateByIdResponseAminoMsg {
+  type: "/warden.act.v1beta1.QueryTemplateByIdResponse";
+  value: QueryTemplateByIdResponseAmino;
 }
-export interface QueryRuleByIdResponseSDKType {
-  rule?: RuleSDKType;
+export interface QueryTemplateByIdResponseSDKType {
+  template?: TemplateSDKType;
 }
 export interface QueryActionsByAddressRequest {
   pagination?: PageRequest;
@@ -560,28 +563,35 @@ export const QueryActionsResponse = {
     };
   }
 };
-function createBaseQueryRulesRequest(): QueryRulesRequest {
+function createBaseQueryTemplatesRequest(): QueryTemplatesRequest {
   return {
-    pagination: undefined
+    pagination: undefined,
+    creator: undefined
   };
 }
-export const QueryRulesRequest = {
-  typeUrl: "/warden.act.v1beta1.QueryRulesRequest",
-  encode(message: QueryRulesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryTemplatesRequest = {
+  typeUrl: "/warden.act.v1beta1.QueryTemplatesRequest",
+  encode(message: QueryTemplatesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
+    if (message.creator !== undefined) {
+      writer.uint32(18).string(message.creator);
+    }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryRulesRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTemplatesRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryRulesRequest();
+    const message = createBaseQueryTemplatesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.creator = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -590,70 +600,77 @@ export const QueryRulesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryRulesRequest {
+  fromJSON(object: any): QueryTemplatesRequest {
     return {
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      creator: isSet(object.creator) ? String(object.creator) : undefined
     };
   },
-  toJSON(message: QueryRulesRequest): JsonSafe<QueryRulesRequest> {
+  toJSON(message: QueryTemplatesRequest): JsonSafe<QueryTemplatesRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
-  fromPartial(object: Partial<QueryRulesRequest>): QueryRulesRequest {
-    const message = createBaseQueryRulesRequest();
+  fromPartial(object: Partial<QueryTemplatesRequest>): QueryTemplatesRequest {
+    const message = createBaseQueryTemplatesRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.creator = object.creator ?? undefined;
     return message;
   },
-  fromAmino(object: QueryRulesRequestAmino): QueryRulesRequest {
-    const message = createBaseQueryRulesRequest();
+  fromAmino(object: QueryTemplatesRequestAmino): QueryTemplatesRequest {
+    const message = createBaseQueryTemplatesRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
     return message;
   },
-  toAmino(message: QueryRulesRequest): QueryRulesRequestAmino {
+  toAmino(message: QueryTemplatesRequest): QueryTemplatesRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    obj.creator = message.creator === null ? undefined : message.creator;
     return obj;
   },
-  fromAminoMsg(object: QueryRulesRequestAminoMsg): QueryRulesRequest {
-    return QueryRulesRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryTemplatesRequestAminoMsg): QueryTemplatesRequest {
+    return QueryTemplatesRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryRulesRequestProtoMsg): QueryRulesRequest {
-    return QueryRulesRequest.decode(message.value);
+  fromProtoMsg(message: QueryTemplatesRequestProtoMsg): QueryTemplatesRequest {
+    return QueryTemplatesRequest.decode(message.value);
   },
-  toProto(message: QueryRulesRequest): Uint8Array {
-    return QueryRulesRequest.encode(message).finish();
+  toProto(message: QueryTemplatesRequest): Uint8Array {
+    return QueryTemplatesRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryRulesRequest): QueryRulesRequestProtoMsg {
+  toProtoMsg(message: QueryTemplatesRequest): QueryTemplatesRequestProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.QueryRulesRequest",
-      value: QueryRulesRequest.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryTemplatesRequest",
+      value: QueryTemplatesRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryRulesResponse(): QueryRulesResponse {
+function createBaseQueryTemplatesResponse(): QueryTemplatesResponse {
   return {
     pagination: undefined,
-    rules: []
+    templates: []
   };
 }
-export const QueryRulesResponse = {
-  typeUrl: "/warden.act.v1beta1.QueryRulesResponse",
-  encode(message: QueryRulesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryTemplatesResponse = {
+  typeUrl: "/warden.act.v1beta1.QueryTemplatesResponse",
+  encode(message: QueryTemplatesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.rules) {
-      Rule.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.templates) {
+      Template.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryRulesResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTemplatesResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryRulesResponse();
+    const message = createBaseQueryTemplatesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -661,7 +678,7 @@ export const QueryRulesResponse = {
           message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         case 2:
-          message.rules.push(Rule.decode(reader, reader.uint32()));
+          message.templates.push(Template.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -670,71 +687,71 @@ export const QueryRulesResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryRulesResponse {
+  fromJSON(object: any): QueryTemplatesResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rule.fromJSON(e)) : []
+      templates: Array.isArray(object?.templates) ? object.templates.map((e: any) => Template.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryRulesResponse): JsonSafe<QueryRulesResponse> {
+  toJSON(message: QueryTemplatesResponse): JsonSafe<QueryTemplatesResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    if (message.rules) {
-      obj.rules = message.rules.map(e => e ? Rule.toJSON(e) : undefined);
+    if (message.templates) {
+      obj.templates = message.templates.map(e => e ? Template.toJSON(e) : undefined);
     } else {
-      obj.rules = [];
+      obj.templates = [];
     }
     return obj;
   },
-  fromPartial(object: Partial<QueryRulesResponse>): QueryRulesResponse {
-    const message = createBaseQueryRulesResponse();
+  fromPartial(object: Partial<QueryTemplatesResponse>): QueryTemplatesResponse {
+    const message = createBaseQueryTemplatesResponse();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    message.rules = object.rules?.map(e => Rule.fromPartial(e)) || [];
+    message.templates = object.templates?.map(e => Template.fromPartial(e)) || [];
     return message;
   },
-  fromAmino(object: QueryRulesResponseAmino): QueryRulesResponse {
-    const message = createBaseQueryRulesResponse();
+  fromAmino(object: QueryTemplatesResponseAmino): QueryTemplatesResponse {
+    const message = createBaseQueryTemplatesResponse();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
-    message.rules = object.rules?.map(e => Rule.fromAmino(e)) || [];
+    message.templates = object.templates?.map(e => Template.fromAmino(e)) || [];
     return message;
   },
-  toAmino(message: QueryRulesResponse): QueryRulesResponseAmino {
+  toAmino(message: QueryTemplatesResponse): QueryTemplatesResponseAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
-    if (message.rules) {
-      obj.rules = message.rules.map(e => e ? Rule.toAmino(e) : undefined);
+    if (message.templates) {
+      obj.templates = message.templates.map(e => e ? Template.toAmino(e) : undefined);
     } else {
-      obj.rules = message.rules;
+      obj.templates = message.templates;
     }
     return obj;
   },
-  fromAminoMsg(object: QueryRulesResponseAminoMsg): QueryRulesResponse {
-    return QueryRulesResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryTemplatesResponseAminoMsg): QueryTemplatesResponse {
+    return QueryTemplatesResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryRulesResponseProtoMsg): QueryRulesResponse {
-    return QueryRulesResponse.decode(message.value);
+  fromProtoMsg(message: QueryTemplatesResponseProtoMsg): QueryTemplatesResponse {
+    return QueryTemplatesResponse.decode(message.value);
   },
-  toProto(message: QueryRulesResponse): Uint8Array {
-    return QueryRulesResponse.encode(message).finish();
+  toProto(message: QueryTemplatesResponse): Uint8Array {
+    return QueryTemplatesResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryRulesResponse): QueryRulesResponseProtoMsg {
+  toProtoMsg(message: QueryTemplatesResponse): QueryTemplatesResponseProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.QueryRulesResponse",
-      value: QueryRulesResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryTemplatesResponse",
+      value: QueryTemplatesResponse.encode(message).finish()
     };
   }
 };
-function createBaseQuerySimulateRuleRequest(): QuerySimulateRuleRequest {
+function createBaseQuerySimulateTemplateRequest(): QuerySimulateTemplateRequest {
   return {
     pagination: undefined,
     definition: ""
   };
 }
-export const QuerySimulateRuleRequest = {
-  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleRequest",
-  encode(message: QuerySimulateRuleRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QuerySimulateTemplateRequest = {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateTemplateRequest",
+  encode(message: QuerySimulateTemplateRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -743,10 +760,10 @@ export const QuerySimulateRuleRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateRuleRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateTemplateRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySimulateRuleRequest();
+    const message = createBaseQuerySimulateTemplateRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -763,26 +780,26 @@ export const QuerySimulateRuleRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QuerySimulateRuleRequest {
+  fromJSON(object: any): QuerySimulateTemplateRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
-  toJSON(message: QuerySimulateRuleRequest): JsonSafe<QuerySimulateRuleRequest> {
+  toJSON(message: QuerySimulateTemplateRequest): JsonSafe<QuerySimulateTemplateRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.definition !== undefined && (obj.definition = message.definition);
     return obj;
   },
-  fromPartial(object: Partial<QuerySimulateRuleRequest>): QuerySimulateRuleRequest {
-    const message = createBaseQuerySimulateRuleRequest();
+  fromPartial(object: Partial<QuerySimulateTemplateRequest>): QuerySimulateTemplateRequest {
+    const message = createBaseQuerySimulateTemplateRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.definition = object.definition ?? "";
     return message;
   },
-  fromAmino(object: QuerySimulateRuleRequestAmino): QuerySimulateRuleRequest {
-    const message = createBaseQuerySimulateRuleRequest();
+  fromAmino(object: QuerySimulateTemplateRequestAmino): QuerySimulateTemplateRequest {
+    const message = createBaseQuerySimulateTemplateRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
@@ -791,45 +808,45 @@ export const QuerySimulateRuleRequest = {
     }
     return message;
   },
-  toAmino(message: QuerySimulateRuleRequest): QuerySimulateRuleRequestAmino {
+  toAmino(message: QuerySimulateTemplateRequest): QuerySimulateTemplateRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     obj.definition = message.definition === "" ? undefined : message.definition;
     return obj;
   },
-  fromAminoMsg(object: QuerySimulateRuleRequestAminoMsg): QuerySimulateRuleRequest {
-    return QuerySimulateRuleRequest.fromAmino(object.value);
+  fromAminoMsg(object: QuerySimulateTemplateRequestAminoMsg): QuerySimulateTemplateRequest {
+    return QuerySimulateTemplateRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QuerySimulateRuleRequestProtoMsg): QuerySimulateRuleRequest {
-    return QuerySimulateRuleRequest.decode(message.value);
+  fromProtoMsg(message: QuerySimulateTemplateRequestProtoMsg): QuerySimulateTemplateRequest {
+    return QuerySimulateTemplateRequest.decode(message.value);
   },
-  toProto(message: QuerySimulateRuleRequest): Uint8Array {
-    return QuerySimulateRuleRequest.encode(message).finish();
+  toProto(message: QuerySimulateTemplateRequest): Uint8Array {
+    return QuerySimulateTemplateRequest.encode(message).finish();
   },
-  toProtoMsg(message: QuerySimulateRuleRequest): QuerySimulateRuleRequestProtoMsg {
+  toProtoMsg(message: QuerySimulateTemplateRequest): QuerySimulateTemplateRequestProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.QuerySimulateRuleRequest",
-      value: QuerySimulateRuleRequest.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QuerySimulateTemplateRequest",
+      value: QuerySimulateTemplateRequest.encode(message).finish()
     };
   }
 };
-function createBaseQuerySimulateRuleResponse(): QuerySimulateRuleResponse {
+function createBaseQuerySimulateTemplateResponse(): QuerySimulateTemplateResponse {
   return {
     evaluation: ""
   };
 }
-export const QuerySimulateRuleResponse = {
-  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleResponse",
-  encode(message: QuerySimulateRuleResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QuerySimulateTemplateResponse = {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateTemplateResponse",
+  encode(message: QuerySimulateTemplateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.evaluation !== "") {
       writer.uint32(10).string(message.evaluation);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateRuleResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateTemplateResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySimulateRuleResponse();
+    const message = createBaseQuerySimulateTemplateResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -843,66 +860,66 @@ export const QuerySimulateRuleResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QuerySimulateRuleResponse {
+  fromJSON(object: any): QuerySimulateTemplateResponse {
     return {
       evaluation: isSet(object.evaluation) ? String(object.evaluation) : ""
     };
   },
-  toJSON(message: QuerySimulateRuleResponse): JsonSafe<QuerySimulateRuleResponse> {
+  toJSON(message: QuerySimulateTemplateResponse): JsonSafe<QuerySimulateTemplateResponse> {
     const obj: any = {};
     message.evaluation !== undefined && (obj.evaluation = message.evaluation);
     return obj;
   },
-  fromPartial(object: Partial<QuerySimulateRuleResponse>): QuerySimulateRuleResponse {
-    const message = createBaseQuerySimulateRuleResponse();
+  fromPartial(object: Partial<QuerySimulateTemplateResponse>): QuerySimulateTemplateResponse {
+    const message = createBaseQuerySimulateTemplateResponse();
     message.evaluation = object.evaluation ?? "";
     return message;
   },
-  fromAmino(object: QuerySimulateRuleResponseAmino): QuerySimulateRuleResponse {
-    const message = createBaseQuerySimulateRuleResponse();
+  fromAmino(object: QuerySimulateTemplateResponseAmino): QuerySimulateTemplateResponse {
+    const message = createBaseQuerySimulateTemplateResponse();
     if (object.evaluation !== undefined && object.evaluation !== null) {
       message.evaluation = object.evaluation;
     }
     return message;
   },
-  toAmino(message: QuerySimulateRuleResponse): QuerySimulateRuleResponseAmino {
+  toAmino(message: QuerySimulateTemplateResponse): QuerySimulateTemplateResponseAmino {
     const obj: any = {};
     obj.evaluation = message.evaluation === "" ? undefined : message.evaluation;
     return obj;
   },
-  fromAminoMsg(object: QuerySimulateRuleResponseAminoMsg): QuerySimulateRuleResponse {
-    return QuerySimulateRuleResponse.fromAmino(object.value);
+  fromAminoMsg(object: QuerySimulateTemplateResponseAminoMsg): QuerySimulateTemplateResponse {
+    return QuerySimulateTemplateResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QuerySimulateRuleResponseProtoMsg): QuerySimulateRuleResponse {
-    return QuerySimulateRuleResponse.decode(message.value);
+  fromProtoMsg(message: QuerySimulateTemplateResponseProtoMsg): QuerySimulateTemplateResponse {
+    return QuerySimulateTemplateResponse.decode(message.value);
   },
-  toProto(message: QuerySimulateRuleResponse): Uint8Array {
-    return QuerySimulateRuleResponse.encode(message).finish();
+  toProto(message: QuerySimulateTemplateResponse): Uint8Array {
+    return QuerySimulateTemplateResponse.encode(message).finish();
   },
-  toProtoMsg(message: QuerySimulateRuleResponse): QuerySimulateRuleResponseProtoMsg {
+  toProtoMsg(message: QuerySimulateTemplateResponse): QuerySimulateTemplateResponseProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.QuerySimulateRuleResponse",
-      value: QuerySimulateRuleResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QuerySimulateTemplateResponse",
+      value: QuerySimulateTemplateResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryRuleByIdRequest(): QueryRuleByIdRequest {
+function createBaseQueryTemplateByIdRequest(): QueryTemplateByIdRequest {
   return {
     id: BigInt(0)
   };
 }
-export const QueryRuleByIdRequest = {
-  typeUrl: "/warden.act.v1beta1.QueryRuleByIdRequest",
-  encode(message: QueryRuleByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryTemplateByIdRequest = {
+  typeUrl: "/warden.act.v1beta1.QueryTemplateByIdRequest",
+  encode(message: QueryTemplateByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryRuleByIdRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTemplateByIdRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryRuleByIdRequest();
+    const message = createBaseQueryTemplateByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -916,71 +933,71 @@ export const QueryRuleByIdRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryRuleByIdRequest {
+  fromJSON(object: any): QueryTemplateByIdRequest {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryRuleByIdRequest): JsonSafe<QueryRuleByIdRequest> {
+  toJSON(message: QueryTemplateByIdRequest): JsonSafe<QueryTemplateByIdRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<QueryRuleByIdRequest>): QueryRuleByIdRequest {
-    const message = createBaseQueryRuleByIdRequest();
+  fromPartial(object: Partial<QueryTemplateByIdRequest>): QueryTemplateByIdRequest {
+    const message = createBaseQueryTemplateByIdRequest();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: QueryRuleByIdRequestAmino): QueryRuleByIdRequest {
-    const message = createBaseQueryRuleByIdRequest();
+  fromAmino(object: QueryTemplateByIdRequestAmino): QueryTemplateByIdRequest {
+    const message = createBaseQueryTemplateByIdRequest();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: QueryRuleByIdRequest): QueryRuleByIdRequestAmino {
+  toAmino(message: QueryTemplateByIdRequest): QueryTemplateByIdRequestAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryRuleByIdRequestAminoMsg): QueryRuleByIdRequest {
-    return QueryRuleByIdRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryTemplateByIdRequestAminoMsg): QueryTemplateByIdRequest {
+    return QueryTemplateByIdRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryRuleByIdRequestProtoMsg): QueryRuleByIdRequest {
-    return QueryRuleByIdRequest.decode(message.value);
+  fromProtoMsg(message: QueryTemplateByIdRequestProtoMsg): QueryTemplateByIdRequest {
+    return QueryTemplateByIdRequest.decode(message.value);
   },
-  toProto(message: QueryRuleByIdRequest): Uint8Array {
-    return QueryRuleByIdRequest.encode(message).finish();
+  toProto(message: QueryTemplateByIdRequest): Uint8Array {
+    return QueryTemplateByIdRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryRuleByIdRequest): QueryRuleByIdRequestProtoMsg {
+  toProtoMsg(message: QueryTemplateByIdRequest): QueryTemplateByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.QueryRuleByIdRequest",
-      value: QueryRuleByIdRequest.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryTemplateByIdRequest",
+      value: QueryTemplateByIdRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryRuleByIdResponse(): QueryRuleByIdResponse {
+function createBaseQueryTemplateByIdResponse(): QueryTemplateByIdResponse {
   return {
-    rule: undefined
+    template: undefined
   };
 }
-export const QueryRuleByIdResponse = {
-  typeUrl: "/warden.act.v1beta1.QueryRuleByIdResponse",
-  encode(message: QueryRuleByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.rule !== undefined) {
-      Rule.encode(message.rule, writer.uint32(10).fork()).ldelim();
+export const QueryTemplateByIdResponse = {
+  typeUrl: "/warden.act.v1beta1.QueryTemplateByIdResponse",
+  encode(message: QueryTemplateByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.template !== undefined) {
+      Template.encode(message.template, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryRuleByIdResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTemplateByIdResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryRuleByIdResponse();
+    const message = createBaseQueryTemplateByIdResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.rule = Rule.decode(reader, reader.uint32());
+          message.template = Template.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -989,46 +1006,46 @@ export const QueryRuleByIdResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryRuleByIdResponse {
+  fromJSON(object: any): QueryTemplateByIdResponse {
     return {
-      rule: isSet(object.rule) ? Rule.fromJSON(object.rule) : undefined
+      template: isSet(object.template) ? Template.fromJSON(object.template) : undefined
     };
   },
-  toJSON(message: QueryRuleByIdResponse): JsonSafe<QueryRuleByIdResponse> {
+  toJSON(message: QueryTemplateByIdResponse): JsonSafe<QueryTemplateByIdResponse> {
     const obj: any = {};
-    message.rule !== undefined && (obj.rule = message.rule ? Rule.toJSON(message.rule) : undefined);
+    message.template !== undefined && (obj.template = message.template ? Template.toJSON(message.template) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryRuleByIdResponse>): QueryRuleByIdResponse {
-    const message = createBaseQueryRuleByIdResponse();
-    message.rule = object.rule !== undefined && object.rule !== null ? Rule.fromPartial(object.rule) : undefined;
+  fromPartial(object: Partial<QueryTemplateByIdResponse>): QueryTemplateByIdResponse {
+    const message = createBaseQueryTemplateByIdResponse();
+    message.template = object.template !== undefined && object.template !== null ? Template.fromPartial(object.template) : undefined;
     return message;
   },
-  fromAmino(object: QueryRuleByIdResponseAmino): QueryRuleByIdResponse {
-    const message = createBaseQueryRuleByIdResponse();
-    if (object.rule !== undefined && object.rule !== null) {
-      message.rule = Rule.fromAmino(object.rule);
+  fromAmino(object: QueryTemplateByIdResponseAmino): QueryTemplateByIdResponse {
+    const message = createBaseQueryTemplateByIdResponse();
+    if (object.template !== undefined && object.template !== null) {
+      message.template = Template.fromAmino(object.template);
     }
     return message;
   },
-  toAmino(message: QueryRuleByIdResponse): QueryRuleByIdResponseAmino {
+  toAmino(message: QueryTemplateByIdResponse): QueryTemplateByIdResponseAmino {
     const obj: any = {};
-    obj.rule = message.rule ? Rule.toAmino(message.rule) : undefined;
+    obj.template = message.template ? Template.toAmino(message.template) : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryRuleByIdResponseAminoMsg): QueryRuleByIdResponse {
-    return QueryRuleByIdResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryTemplateByIdResponseAminoMsg): QueryTemplateByIdResponse {
+    return QueryTemplateByIdResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryRuleByIdResponseProtoMsg): QueryRuleByIdResponse {
-    return QueryRuleByIdResponse.decode(message.value);
+  fromProtoMsg(message: QueryTemplateByIdResponseProtoMsg): QueryTemplateByIdResponse {
+    return QueryTemplateByIdResponse.decode(message.value);
   },
-  toProto(message: QueryRuleByIdResponse): Uint8Array {
-    return QueryRuleByIdResponse.encode(message).finish();
+  toProto(message: QueryTemplateByIdResponse): Uint8Array {
+    return QueryTemplateByIdResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryRuleByIdResponse): QueryRuleByIdResponseProtoMsg {
+  toProtoMsg(message: QueryTemplateByIdResponse): QueryTemplateByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.QueryRuleByIdResponse",
-      value: QueryRuleByIdResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryTemplateByIdResponse",
+      value: QueryTemplateByIdResponse.encode(message).finish()
     };
   }
 };

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryRulesRequest, QueryRulesResponseSDKType, QuerySimulateRuleRequest, QuerySimulateRuleResponseSDKType, QueryRuleByIdRequest, QueryRuleByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryTemplatesRequest, QueryTemplatesResponseSDKType, QuerySimulateTemplateRequest, QuerySimulateTemplateResponseSDKType, QueryTemplateByIdRequest, QueryTemplateByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -12,9 +12,9 @@ export class LCDQueryClient {
     this.req = requestClient;
     this.params = this.params.bind(this);
     this.actions = this.actions.bind(this);
-    this.rules = this.rules.bind(this);
-    this.simulateRule = this.simulateRule.bind(this);
-    this.ruleById = this.ruleById.bind(this);
+    this.templates = this.templates.bind(this);
+    this.simulateTemplate = this.simulateTemplate.bind(this);
+    this.templateById = this.templateById.bind(this);
     this.actionsByAddress = this.actionsByAddress.bind(this);
     this.actionById = this.actionById.bind(this);
   }
@@ -36,21 +36,22 @@ export class LCDQueryClient {
     const endpoint = `wardenprotocol/warden/act/actions`;
     return await this.req.get<QueryActionsResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of Rules items. */
-  async rules(params: QueryRulesRequest = {
-    pagination: undefined
-  }): Promise<QueryRulesResponseSDKType> {
+  /* Queries a list of Templates items. */
+  async templates(params: QueryTemplatesRequest): Promise<QueryTemplatesResponseSDKType> {
     const options: any = {
       params: {}
     };
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `wardenprotocol/warden/act/rules`;
-    return await this.req.get<QueryRulesResponseSDKType>(endpoint, options);
+    if (typeof params?.creator !== "undefined") {
+      options.params.creator = params.creator;
+    }
+    const endpoint = `wardenprotocol/warden/act/templates`;
+    return await this.req.get<QueryTemplatesResponseSDKType>(endpoint, options);
   }
-  /* Queries to simulate a Rule */
-  async simulateRule(params: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponseSDKType> {
+  /* Queries to simulate a Template */
+  async simulateTemplate(params: QuerySimulateTemplateRequest): Promise<QuerySimulateTemplateResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -61,18 +62,18 @@ export class LCDQueryClient {
       options.params.definition = params.definition;
     }
     const endpoint = `wardenprotocol/warden/act/simulate`;
-    return await this.req.get<QuerySimulateRuleResponseSDKType>(endpoint, options);
+    return await this.req.get<QuerySimulateTemplateResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of RuleById items. */
-  async ruleById(params: QueryRuleByIdRequest): Promise<QueryRuleByIdResponseSDKType> {
+  /* Queries a list of TemplateById items. */
+  async templateById(params: QueryTemplateByIdRequest): Promise<QueryTemplateByIdResponseSDKType> {
     const options: any = {
       params: {}
     };
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `wardenprotocol/warden/act/rule_by_id`;
-    return await this.req.get<QueryRuleByIdResponseSDKType>(endpoint, options);
+    const endpoint = `wardenprotocol/warden/act/template_by_id`;
+    return await this.req.get<QueryTemplateByIdResponseSDKType>(endpoint, options);
   }
   /* Queries a list of Actions items by one participant address. */
   async actionsByAddress(params: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponseSDKType> {

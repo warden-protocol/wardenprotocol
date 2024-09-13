@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/act) Set approve/reject expressions in MsgNewAction. Change rules registry to keep approve/reject expressions.
 * (x/act) Rename `Rule` to `Template`
 * (x/act) Remove Template and Approvers from Action.
+* (x/act) Remove TemplateId from Key, AdminTemplateId and SignTemplateId from Space
 
 ### Features (non-breaking)
 

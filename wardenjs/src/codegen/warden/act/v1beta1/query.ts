@@ -957,7 +957,7 @@ export const QueryTemplateByIdRequest = {
   },
   toAmino(message: QueryTemplateByIdRequest): QueryTemplateByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryTemplateByIdRequestAminoMsg): QueryTemplateByIdRequest {
@@ -1297,7 +1297,7 @@ export const QueryActionByIdRequest = {
   },
   toAmino(message: QueryActionByIdRequest): QueryActionByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryActionByIdRequestAminoMsg): QueryActionByIdRequest {

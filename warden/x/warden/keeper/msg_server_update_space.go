@@ -17,20 +17,6 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		return nil, err
 	}
 
-	if msg.AdminTemplateId != space.AdminTemplateId {
-		if err := k.actKeeper.IsValidTemplate(ctx, msg.AdminTemplateId); err != nil {
-			return nil, err
-		}
-		space.AdminTemplateId = msg.AdminTemplateId
-	}
-
-	if msg.SignTemplateId != space.SignTemplateId {
-		if err := k.actKeeper.IsValidTemplate(ctx, msg.SignTemplateId); err != nil {
-			return nil, err
-		}
-		space.SignTemplateId = msg.SignTemplateId
-	}
-
 	if msg.ApproveAdminTemplateId != space.ApproveAdminTemplateId {
 		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveAdminTemplateId); err != nil {
 			return nil, err
@@ -69,9 +55,11 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateSpace{
-		SpaceId:         space.Id,
-		AdminTemplateId: space.AdminTemplateId,
-		SignTemplateId:  space.SignTemplateId,
+		SpaceId:                space.Id,
+		ApproveAdminTemplateId: space.ApproveAdminTemplateId,
+		RejectAdminTemplateId:  space.RejectAdminTemplateId,
+		ApproveSignTemplateId:  space.ApproveSignTemplateId,
+		RejectSignTemplateId:   space.RejectSignTemplateId,
 	}); err != nil {
 		return nil, err
 	}

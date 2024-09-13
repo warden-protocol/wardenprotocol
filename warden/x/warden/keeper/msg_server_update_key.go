@@ -17,13 +17,6 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 		return nil, err
 	}
 
-	if key.TemplateId != msg.TemplateId {
-		if err = k.actKeeper.IsValidTemplate(ctx, msg.TemplateId); err != nil {
-			return nil, err
-		}
-		key.TemplateId = msg.TemplateId
-	}
-
 	if key.ApproveTemplateId != msg.ApproveTemplateId {
 		if err = k.actKeeper.IsValidTemplate(ctx, msg.ApproveTemplateId); err != nil {
 			return nil, err
@@ -45,7 +38,6 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateKey{
 		Id:                key.Id,
-		TemplateId:        key.TemplateId,
 		ApproveTemplateId: key.ApproveTemplateId,
 		RejectTemplateId:  key.RejectTemplateId,
 	}); err != nil {

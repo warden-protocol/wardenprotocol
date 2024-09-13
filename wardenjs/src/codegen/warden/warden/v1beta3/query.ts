@@ -1089,7 +1089,7 @@ export const QuerySpaceByIdRequest = {
   },
   toAmino(message: QuerySpaceByIdRequest): QuerySpaceByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuerySpaceByIdRequestAminoMsg): QuerySpaceByIdRequest {
@@ -1235,7 +1235,7 @@ export const QueryKeychainByIdRequest = {
   },
   toAmino(message: QueryKeychainByIdRequest): QueryKeychainByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryKeychainByIdRequestAminoMsg): QueryKeychainByIdRequest {
@@ -1425,9 +1425,9 @@ export const QueryKeyRequestsRequest = {
   toAmino(message: QueryKeyRequestsRequest): QueryKeyRequestsRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.status = message.status === null ? undefined : message.status;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryKeyRequestsRequestAminoMsg): QueryKeyRequestsRequest {
@@ -1593,7 +1593,7 @@ export const QueryKeyRequestByIdRequest = {
   },
   toAmino(message: QueryKeyRequestByIdRequest): QueryKeyRequestByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryKeyRequestByIdRequestAminoMsg): QueryKeyRequestByIdRequest {
@@ -1972,7 +1972,7 @@ export const QueryKeysBySpaceIdRequest = {
   toAmino(message: QueryKeysBySpaceIdRequest): QueryKeysBySpaceIdRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
     if (message.deriveAddresses) {
       obj.derive_addresses = message.deriveAddresses.map(e => e);
     } else {
@@ -2074,7 +2074,7 @@ export const QueryKeyByIdRequest = {
   },
   toAmino(message: QueryKeyByIdRequest): QueryKeyByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     if (message.deriveAddresses) {
       obj.derive_addresses = message.deriveAddresses.map(e => e);
     } else {
@@ -2359,7 +2359,7 @@ export const QuerySignRequestsRequest = {
   toAmino(message: QuerySignRequestsRequest): QuerySignRequestsRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.status = message.status === null ? undefined : message.status;
     return obj;
   },
@@ -2526,7 +2526,7 @@ export const QuerySignRequestByIdRequest = {
   },
   toAmino(message: QuerySignRequestByIdRequest): QuerySignRequestByIdRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuerySignRequestByIdRequestAminoMsg): QuerySignRequestByIdRequest {

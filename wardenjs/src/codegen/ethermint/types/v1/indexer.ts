@@ -204,13 +204,13 @@ export const TxResult = {
   },
   toAmino(message: TxResult): TxResultAmino {
     const obj: any = {};
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? (message.height?.toString)() : undefined;
     obj.tx_index = message.txIndex === 0 ? undefined : message.txIndex;
     obj.msg_index = message.msgIndex === 0 ? undefined : message.msgIndex;
     obj.eth_tx_index = message.ethTxIndex === 0 ? undefined : message.ethTxIndex;
     obj.failed = message.failed === false ? undefined : message.failed;
-    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed.toString() : undefined;
-    obj.cumulative_gas_used = message.cumulativeGasUsed !== BigInt(0) ? message.cumulativeGasUsed.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? (message.gasUsed?.toString)() : undefined;
+    obj.cumulative_gas_used = message.cumulativeGasUsed !== BigInt(0) ? (message.cumulativeGasUsed?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: TxResultAminoMsg): TxResult {

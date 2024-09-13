@@ -445,8 +445,8 @@ export const Ticker = {
   toAmino(message: Ticker): TickerAmino {
     const obj: any = {};
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
-    obj.decimals = message.decimals !== BigInt(0) ? message.decimals.toString() : undefined;
-    obj.min_provider_count = message.minProviderCount !== BigInt(0) ? message.minProviderCount.toString() : undefined;
+    obj.decimals = message.decimals !== BigInt(0) ? (message.decimals?.toString)() : undefined;
+    obj.min_provider_count = message.minProviderCount !== BigInt(0) ? (message.minProviderCount?.toString)() : undefined;
     obj.enabled = message.enabled === false ? undefined : message.enabled;
     obj.metadata_JSON = message.metadataJSON === "" ? undefined : message.metadataJSON;
     return obj;

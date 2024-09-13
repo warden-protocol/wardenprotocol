@@ -67,8 +67,10 @@ export interface MsgUpdateParamsResponseAminoMsg {
 export interface MsgUpdateParamsResponseSDKType {}
 export interface MsgNewSpace {
   creator: string;
-  adminTemplateId: bigint;
-  signTemplateId: bigint;
+  approveAdminTemplateId: bigint;
+  rejectAdminTemplateId: bigint;
+  approveSignTemplateId: bigint;
+  rejectSignTemplateId: bigint;
   additionalOwners: string[];
 }
 export interface MsgNewSpaceProtoMsg {
@@ -77,8 +79,10 @@ export interface MsgNewSpaceProtoMsg {
 }
 export interface MsgNewSpaceAmino {
   creator?: string;
-  admin_template_id?: string;
-  sign_template_id?: string;
+  approve_admin_template_id?: string;
+  reject_admin_template_id?: string;
+  approve_sign_template_id?: string;
+  reject_sign_template_id?: string;
   additional_owners?: string[];
 }
 export interface MsgNewSpaceAminoMsg {
@@ -87,8 +91,10 @@ export interface MsgNewSpaceAminoMsg {
 }
 export interface MsgNewSpaceSDKType {
   creator: string;
-  admin_template_id: bigint;
-  sign_template_id: bigint;
+  approve_admin_template_id: bigint;
+  reject_admin_template_id: bigint;
+  approve_sign_template_id: bigint;
+  reject_sign_template_id: bigint;
   additional_owners: string[];
 }
 export interface MsgNewSpaceResponse {
@@ -268,8 +274,6 @@ export interface MsgAddKeychainWriterResponseSDKType {}
 export interface MsgUpdateSpace {
   authority: string;
   spaceId: bigint;
-  adminTemplateId: bigint;
-  signTemplateId: bigint;
   nonce: bigint;
   approveAdminTemplateId: bigint;
   rejectAdminTemplateId: bigint;
@@ -283,8 +287,6 @@ export interface MsgUpdateSpaceProtoMsg {
 export interface MsgUpdateSpaceAmino {
   authority?: string;
   space_id?: string;
-  admin_template_id?: string;
-  sign_template_id?: string;
   nonce?: string;
   approve_admin_template_id?: string;
   reject_admin_template_id?: string;
@@ -298,8 +300,6 @@ export interface MsgUpdateSpaceAminoMsg {
 export interface MsgUpdateSpaceSDKType {
   authority: string;
   space_id: bigint;
-  admin_template_id: bigint;
-  sign_template_id: bigint;
   nonce: bigint;
   approve_admin_template_id: bigint;
   reject_admin_template_id: bigint;
@@ -436,7 +436,8 @@ export interface MsgNewKeyRequest {
   spaceId: bigint;
   keychainId: bigint;
   keyType: KeyType;
-  templateId: bigint;
+  approveTemplateId: bigint;
+  rejectTemplateId: bigint;
   maxKeychainFees: Coin[];
   nonce: bigint;
 }
@@ -449,7 +450,8 @@ export interface MsgNewKeyRequestAmino {
   space_id?: string;
   keychain_id?: string;
   key_type?: KeyType;
-  template_id?: string;
+  approve_template_id?: string;
+  reject_template_id?: string;
   max_keychain_fees: CoinAmino[];
   nonce?: string;
 }
@@ -462,7 +464,8 @@ export interface MsgNewKeyRequestSDKType {
   space_id: bigint;
   keychain_id: bigint;
   key_type: KeyType;
-  template_id: bigint;
+  approve_template_id: bigint;
+  reject_template_id: bigint;
   max_keychain_fees: CoinSDKType[];
   nonce: bigint;
 }
@@ -543,7 +546,6 @@ export interface MsgFulfilKeyRequestResponseSDKType {}
 export interface MsgUpdateKey {
   authority: string;
   keyId: bigint;
-  templateId: bigint;
   approveTemplateId: bigint;
   rejectTemplateId: bigint;
 }
@@ -554,7 +556,6 @@ export interface MsgUpdateKeyProtoMsg {
 export interface MsgUpdateKeyAmino {
   authority?: string;
   key_id?: string;
-  template_id?: string;
   approve_template_id?: string;
   reject_template_id?: string;
 }
@@ -565,7 +566,6 @@ export interface MsgUpdateKeyAminoMsg {
 export interface MsgUpdateKeySDKType {
   authority: string;
   key_id: bigint;
-  template_id: bigint;
   approve_template_id: bigint;
   reject_template_id: bigint;
 }
@@ -842,8 +842,10 @@ export const MsgUpdateParamsResponse = {
 function createBaseMsgNewSpace(): MsgNewSpace {
   return {
     creator: "",
-    adminTemplateId: BigInt(0),
-    signTemplateId: BigInt(0),
+    approveAdminTemplateId: BigInt(0),
+    rejectAdminTemplateId: BigInt(0),
+    approveSignTemplateId: BigInt(0),
+    rejectSignTemplateId: BigInt(0),
     additionalOwners: []
   };
 }
@@ -853,14 +855,20 @@ export const MsgNewSpace = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.adminTemplateId !== BigInt(0)) {
-      writer.uint32(16).uint64(message.adminTemplateId);
+    if (message.approveAdminTemplateId !== BigInt(0)) {
+      writer.uint32(16).uint64(message.approveAdminTemplateId);
     }
-    if (message.signTemplateId !== BigInt(0)) {
-      writer.uint32(24).uint64(message.signTemplateId);
+    if (message.rejectAdminTemplateId !== BigInt(0)) {
+      writer.uint32(24).uint64(message.rejectAdminTemplateId);
+    }
+    if (message.approveSignTemplateId !== BigInt(0)) {
+      writer.uint32(32).uint64(message.approveSignTemplateId);
+    }
+    if (message.rejectSignTemplateId !== BigInt(0)) {
+      writer.uint32(40).uint64(message.rejectSignTemplateId);
     }
     for (const v of message.additionalOwners) {
-      writer.uint32(34).string(v!);
+      writer.uint32(50).string(v!);
     }
     return writer;
   },
@@ -875,12 +883,18 @@ export const MsgNewSpace = {
           message.creator = reader.string();
           break;
         case 2:
-          message.adminTemplateId = reader.uint64();
+          message.approveAdminTemplateId = reader.uint64();
           break;
         case 3:
-          message.signTemplateId = reader.uint64();
+          message.rejectAdminTemplateId = reader.uint64();
           break;
         case 4:
+          message.approveSignTemplateId = reader.uint64();
+          break;
+        case 5:
+          message.rejectSignTemplateId = reader.uint64();
+          break;
+        case 6:
           message.additionalOwners.push(reader.string());
           break;
         default:
@@ -893,16 +907,20 @@ export const MsgNewSpace = {
   fromJSON(object: any): MsgNewSpace {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      adminTemplateId: isSet(object.adminTemplateId) ? BigInt(object.adminTemplateId.toString()) : BigInt(0),
-      signTemplateId: isSet(object.signTemplateId) ? BigInt(object.signTemplateId.toString()) : BigInt(0),
+      approveAdminTemplateId: isSet(object.approveAdminTemplateId) ? BigInt(object.approveAdminTemplateId.toString()) : BigInt(0),
+      rejectAdminTemplateId: isSet(object.rejectAdminTemplateId) ? BigInt(object.rejectAdminTemplateId.toString()) : BigInt(0),
+      approveSignTemplateId: isSet(object.approveSignTemplateId) ? BigInt(object.approveSignTemplateId.toString()) : BigInt(0),
+      rejectSignTemplateId: isSet(object.rejectSignTemplateId) ? BigInt(object.rejectSignTemplateId.toString()) : BigInt(0),
       additionalOwners: Array.isArray(object?.additionalOwners) ? object.additionalOwners.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: MsgNewSpace): JsonSafe<MsgNewSpace> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.adminTemplateId !== undefined && (obj.adminTemplateId = (message.adminTemplateId || BigInt(0)).toString());
-    message.signTemplateId !== undefined && (obj.signTemplateId = (message.signTemplateId || BigInt(0)).toString());
+    message.approveAdminTemplateId !== undefined && (obj.approveAdminTemplateId = (message.approveAdminTemplateId || BigInt(0)).toString());
+    message.rejectAdminTemplateId !== undefined && (obj.rejectAdminTemplateId = (message.rejectAdminTemplateId || BigInt(0)).toString());
+    message.approveSignTemplateId !== undefined && (obj.approveSignTemplateId = (message.approveSignTemplateId || BigInt(0)).toString());
+    message.rejectSignTemplateId !== undefined && (obj.rejectSignTemplateId = (message.rejectSignTemplateId || BigInt(0)).toString());
     if (message.additionalOwners) {
       obj.additionalOwners = message.additionalOwners.map(e => e);
     } else {
@@ -913,8 +931,10 @@ export const MsgNewSpace = {
   fromPartial(object: Partial<MsgNewSpace>): MsgNewSpace {
     const message = createBaseMsgNewSpace();
     message.creator = object.creator ?? "";
-    message.adminTemplateId = object.adminTemplateId !== undefined && object.adminTemplateId !== null ? BigInt(object.adminTemplateId.toString()) : BigInt(0);
-    message.signTemplateId = object.signTemplateId !== undefined && object.signTemplateId !== null ? BigInt(object.signTemplateId.toString()) : BigInt(0);
+    message.approveAdminTemplateId = object.approveAdminTemplateId !== undefined && object.approveAdminTemplateId !== null ? BigInt(object.approveAdminTemplateId.toString()) : BigInt(0);
+    message.rejectAdminTemplateId = object.rejectAdminTemplateId !== undefined && object.rejectAdminTemplateId !== null ? BigInt(object.rejectAdminTemplateId.toString()) : BigInt(0);
+    message.approveSignTemplateId = object.approveSignTemplateId !== undefined && object.approveSignTemplateId !== null ? BigInt(object.approveSignTemplateId.toString()) : BigInt(0);
+    message.rejectSignTemplateId = object.rejectSignTemplateId !== undefined && object.rejectSignTemplateId !== null ? BigInt(object.rejectSignTemplateId.toString()) : BigInt(0);
     message.additionalOwners = object.additionalOwners?.map(e => e) || [];
     return message;
   },
@@ -923,11 +943,17 @@ export const MsgNewSpace = {
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
-    if (object.admin_template_id !== undefined && object.admin_template_id !== null) {
-      message.adminTemplateId = BigInt(object.admin_template_id);
+    if (object.approve_admin_template_id !== undefined && object.approve_admin_template_id !== null) {
+      message.approveAdminTemplateId = BigInt(object.approve_admin_template_id);
     }
-    if (object.sign_template_id !== undefined && object.sign_template_id !== null) {
-      message.signTemplateId = BigInt(object.sign_template_id);
+    if (object.reject_admin_template_id !== undefined && object.reject_admin_template_id !== null) {
+      message.rejectAdminTemplateId = BigInt(object.reject_admin_template_id);
+    }
+    if (object.approve_sign_template_id !== undefined && object.approve_sign_template_id !== null) {
+      message.approveSignTemplateId = BigInt(object.approve_sign_template_id);
+    }
+    if (object.reject_sign_template_id !== undefined && object.reject_sign_template_id !== null) {
+      message.rejectSignTemplateId = BigInt(object.reject_sign_template_id);
     }
     message.additionalOwners = object.additional_owners?.map(e => e) || [];
     return message;
@@ -935,8 +961,10 @@ export const MsgNewSpace = {
   toAmino(message: MsgNewSpace): MsgNewSpaceAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.admin_template_id = message.adminTemplateId !== BigInt(0) ? message.adminTemplateId.toString() : undefined;
-    obj.sign_template_id = message.signTemplateId !== BigInt(0) ? message.signTemplateId.toString() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
     if (message.additionalOwners) {
       obj.additional_owners = message.additionalOwners.map(e => e);
     } else {
@@ -1014,7 +1042,7 @@ export const MsgNewSpaceResponse = {
   },
   toAmino(message: MsgNewSpaceResponse): MsgNewSpaceResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSpaceResponseAminoMsg): MsgNewSpaceResponse {
@@ -1127,9 +1155,9 @@ export const MsgAddSpaceOwner = {
   toAmino(message: MsgAddSpaceOwner): MsgAddSpaceOwnerAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
     obj.new_owner = message.newOwner === "" ? undefined : message.newOwner;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgAddSpaceOwnerAminoMsg): MsgAddSpaceOwner {
@@ -1299,9 +1327,9 @@ export const MsgRemoveSpaceOwner = {
   toAmino(message: MsgRemoveSpaceOwner): MsgRemoveSpaceOwnerAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
     obj.owner = message.owner === "" ? undefined : message.owner;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgRemoveSpaceOwnerAminoMsg): MsgRemoveSpaceOwner {
@@ -1574,7 +1602,7 @@ export const MsgNewKeychainResponse = {
   },
   toAmino(message: MsgNewKeychainResponse): MsgNewKeychainResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeychainResponseAminoMsg): MsgNewKeychainResponse {
@@ -1674,7 +1702,7 @@ export const MsgAddKeychainWriter = {
   toAmino(message: MsgAddKeychainWriter): MsgAddKeychainWriterAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.writer = message.writer === "" ? undefined : message.writer;
     return obj;
   },
@@ -1755,8 +1783,6 @@ function createBaseMsgUpdateSpace(): MsgUpdateSpace {
   return {
     authority: "",
     spaceId: BigInt(0),
-    adminTemplateId: BigInt(0),
-    signTemplateId: BigInt(0),
     nonce: BigInt(0),
     approveAdminTemplateId: BigInt(0),
     rejectAdminTemplateId: BigInt(0),
@@ -1773,26 +1799,20 @@ export const MsgUpdateSpace = {
     if (message.spaceId !== BigInt(0)) {
       writer.uint32(16).uint64(message.spaceId);
     }
-    if (message.adminTemplateId !== BigInt(0)) {
-      writer.uint32(24).uint64(message.adminTemplateId);
-    }
-    if (message.signTemplateId !== BigInt(0)) {
-      writer.uint32(32).uint64(message.signTemplateId);
-    }
     if (message.nonce !== BigInt(0)) {
-      writer.uint32(40).uint64(message.nonce);
+      writer.uint32(24).uint64(message.nonce);
     }
     if (message.approveAdminTemplateId !== BigInt(0)) {
-      writer.uint32(48).uint64(message.approveAdminTemplateId);
+      writer.uint32(32).uint64(message.approveAdminTemplateId);
     }
     if (message.rejectAdminTemplateId !== BigInt(0)) {
-      writer.uint32(56).uint64(message.rejectAdminTemplateId);
+      writer.uint32(40).uint64(message.rejectAdminTemplateId);
     }
     if (message.approveSignTemplateId !== BigInt(0)) {
-      writer.uint32(64).uint64(message.approveSignTemplateId);
+      writer.uint32(48).uint64(message.approveSignTemplateId);
     }
     if (message.rejectSignTemplateId !== BigInt(0)) {
-      writer.uint32(72).uint64(message.rejectSignTemplateId);
+      writer.uint32(56).uint64(message.rejectSignTemplateId);
     }
     return writer;
   },
@@ -1810,24 +1830,18 @@ export const MsgUpdateSpace = {
           message.spaceId = reader.uint64();
           break;
         case 3:
-          message.adminTemplateId = reader.uint64();
-          break;
-        case 4:
-          message.signTemplateId = reader.uint64();
-          break;
-        case 5:
           message.nonce = reader.uint64();
           break;
-        case 6:
+        case 4:
           message.approveAdminTemplateId = reader.uint64();
           break;
-        case 7:
+        case 5:
           message.rejectAdminTemplateId = reader.uint64();
           break;
-        case 8:
+        case 6:
           message.approveSignTemplateId = reader.uint64();
           break;
-        case 9:
+        case 7:
           message.rejectSignTemplateId = reader.uint64();
           break;
         default:
@@ -1841,8 +1855,6 @@ export const MsgUpdateSpace = {
     return {
       authority: isSet(object.authority) ? String(object.authority) : "",
       spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
-      adminTemplateId: isSet(object.adminTemplateId) ? BigInt(object.adminTemplateId.toString()) : BigInt(0),
-      signTemplateId: isSet(object.signTemplateId) ? BigInt(object.signTemplateId.toString()) : BigInt(0),
       nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0),
       approveAdminTemplateId: isSet(object.approveAdminTemplateId) ? BigInt(object.approveAdminTemplateId.toString()) : BigInt(0),
       rejectAdminTemplateId: isSet(object.rejectAdminTemplateId) ? BigInt(object.rejectAdminTemplateId.toString()) : BigInt(0),
@@ -1854,8 +1866,6 @@ export const MsgUpdateSpace = {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
-    message.adminTemplateId !== undefined && (obj.adminTemplateId = (message.adminTemplateId || BigInt(0)).toString());
-    message.signTemplateId !== undefined && (obj.signTemplateId = (message.signTemplateId || BigInt(0)).toString());
     message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
     message.approveAdminTemplateId !== undefined && (obj.approveAdminTemplateId = (message.approveAdminTemplateId || BigInt(0)).toString());
     message.rejectAdminTemplateId !== undefined && (obj.rejectAdminTemplateId = (message.rejectAdminTemplateId || BigInt(0)).toString());
@@ -1867,8 +1877,6 @@ export const MsgUpdateSpace = {
     const message = createBaseMsgUpdateSpace();
     message.authority = object.authority ?? "";
     message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
-    message.adminTemplateId = object.adminTemplateId !== undefined && object.adminTemplateId !== null ? BigInt(object.adminTemplateId.toString()) : BigInt(0);
-    message.signTemplateId = object.signTemplateId !== undefined && object.signTemplateId !== null ? BigInt(object.signTemplateId.toString()) : BigInt(0);
     message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     message.approveAdminTemplateId = object.approveAdminTemplateId !== undefined && object.approveAdminTemplateId !== null ? BigInt(object.approveAdminTemplateId.toString()) : BigInt(0);
     message.rejectAdminTemplateId = object.rejectAdminTemplateId !== undefined && object.rejectAdminTemplateId !== null ? BigInt(object.rejectAdminTemplateId.toString()) : BigInt(0);
@@ -1883,12 +1891,6 @@ export const MsgUpdateSpace = {
     }
     if (object.space_id !== undefined && object.space_id !== null) {
       message.spaceId = BigInt(object.space_id);
-    }
-    if (object.admin_template_id !== undefined && object.admin_template_id !== null) {
-      message.adminTemplateId = BigInt(object.admin_template_id);
-    }
-    if (object.sign_template_id !== undefined && object.sign_template_id !== null) {
-      message.signTemplateId = BigInt(object.sign_template_id);
     }
     if (object.nonce !== undefined && object.nonce !== null) {
       message.nonce = BigInt(object.nonce);
@@ -1910,14 +1912,12 @@ export const MsgUpdateSpace = {
   toAmino(message: MsgUpdateSpace): MsgUpdateSpaceAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
-    obj.admin_template_id = message.adminTemplateId !== BigInt(0) ? message.adminTemplateId.toString() : undefined;
-    obj.sign_template_id = message.signTemplateId !== BigInt(0) ? message.signTemplateId.toString() : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateSpaceAminoMsg): MsgUpdateSpace {
@@ -2126,7 +2126,7 @@ export const MsgUpdateKeychain = {
   toAmino(message: MsgUpdateKeychain): MsgUpdateKeychainAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.name = message.name === "" ? undefined : message.name;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
     obj.description = message.description === "" ? undefined : message.description;
@@ -2288,7 +2288,7 @@ export const MsgAddKeychainAdminRequest = {
   toAmino(message: MsgAddKeychainAdminRequest): MsgAddKeychainAdminRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.new_admin = message.newAdmin === "" ? undefined : message.newAdmin;
     return obj;
   },
@@ -2446,7 +2446,7 @@ export const MsgRemoveKeychainAdminRequest = {
   toAmino(message: MsgRemoveKeychainAdminRequest): MsgRemoveKeychainAdminRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.admin = message.admin === "" ? undefined : message.admin;
     return obj;
   },
@@ -2529,7 +2529,8 @@ function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
     spaceId: BigInt(0),
     keychainId: BigInt(0),
     keyType: 0,
-    templateId: BigInt(0),
+    approveTemplateId: BigInt(0),
+    rejectTemplateId: BigInt(0),
     maxKeychainFees: [],
     nonce: BigInt(0)
   };
@@ -2549,14 +2550,17 @@ export const MsgNewKeyRequest = {
     if (message.keyType !== 0) {
       writer.uint32(32).int32(message.keyType);
     }
-    if (message.templateId !== BigInt(0)) {
-      writer.uint32(40).uint64(message.templateId);
+    if (message.approveTemplateId !== BigInt(0)) {
+      writer.uint32(40).uint64(message.approveTemplateId);
+    }
+    if (message.rejectTemplateId !== BigInt(0)) {
+      writer.uint32(48).uint64(message.rejectTemplateId);
     }
     for (const v of message.maxKeychainFees) {
-      Coin.encode(v!, writer.uint32(50).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     if (message.nonce !== BigInt(0)) {
-      writer.uint32(56).uint64(message.nonce);
+      writer.uint32(64).uint64(message.nonce);
     }
     return writer;
   },
@@ -2580,12 +2584,15 @@ export const MsgNewKeyRequest = {
           message.keyType = (reader.int32() as any);
           break;
         case 5:
-          message.templateId = reader.uint64();
+          message.approveTemplateId = reader.uint64();
           break;
         case 6:
-          message.maxKeychainFees.push(Coin.decode(reader, reader.uint32()));
+          message.rejectTemplateId = reader.uint64();
           break;
         case 7:
+          message.maxKeychainFees.push(Coin.decode(reader, reader.uint32()));
+          break;
+        case 8:
           message.nonce = reader.uint64();
           break;
         default:
@@ -2601,7 +2608,8 @@ export const MsgNewKeyRequest = {
       spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
-      templateId: isSet(object.templateId) ? BigInt(object.templateId.toString()) : BigInt(0),
+      approveTemplateId: isSet(object.approveTemplateId) ? BigInt(object.approveTemplateId.toString()) : BigInt(0),
+      rejectTemplateId: isSet(object.rejectTemplateId) ? BigInt(object.rejectTemplateId.toString()) : BigInt(0),
       maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : [],
       nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
     };
@@ -2612,7 +2620,8 @@ export const MsgNewKeyRequest = {
     message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
     message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.keyType !== undefined && (obj.keyType = keyTypeToJSON(message.keyType));
-    message.templateId !== undefined && (obj.templateId = (message.templateId || BigInt(0)).toString());
+    message.approveTemplateId !== undefined && (obj.approveTemplateId = (message.approveTemplateId || BigInt(0)).toString());
+    message.rejectTemplateId !== undefined && (obj.rejectTemplateId = (message.rejectTemplateId || BigInt(0)).toString());
     if (message.maxKeychainFees) {
       obj.maxKeychainFees = message.maxKeychainFees.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
@@ -2627,7 +2636,8 @@ export const MsgNewKeyRequest = {
     message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
     message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.keyType = object.keyType ?? 0;
-    message.templateId = object.templateId !== undefined && object.templateId !== null ? BigInt(object.templateId.toString()) : BigInt(0);
+    message.approveTemplateId = object.approveTemplateId !== undefined && object.approveTemplateId !== null ? BigInt(object.approveTemplateId.toString()) : BigInt(0);
+    message.rejectTemplateId = object.rejectTemplateId !== undefined && object.rejectTemplateId !== null ? BigInt(object.rejectTemplateId.toString()) : BigInt(0);
     message.maxKeychainFees = object.maxKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
     return message;
@@ -2646,8 +2656,11 @@ export const MsgNewKeyRequest = {
     if (object.key_type !== undefined && object.key_type !== null) {
       message.keyType = object.key_type;
     }
-    if (object.template_id !== undefined && object.template_id !== null) {
-      message.templateId = BigInt(object.template_id);
+    if (object.approve_template_id !== undefined && object.approve_template_id !== null) {
+      message.approveTemplateId = BigInt(object.approve_template_id);
+    }
+    if (object.reject_template_id !== undefined && object.reject_template_id !== null) {
+      message.rejectTemplateId = BigInt(object.reject_template_id);
     }
     message.maxKeychainFees = object.max_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
     if (object.nonce !== undefined && object.nonce !== null) {
@@ -2658,16 +2671,17 @@ export const MsgNewKeyRequest = {
   toAmino(message: MsgNewKeyRequest): MsgNewKeyRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
-    obj.template_id = message.templateId !== BigInt(0) ? message.templateId.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
     if (message.maxKeychainFees) {
       obj.max_keychain_fees = message.maxKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestAminoMsg): MsgNewKeyRequest {
@@ -2740,7 +2754,7 @@ export const MsgNewKeyRequestResponse = {
   },
   toAmino(message: MsgNewKeyRequestResponse): MsgNewKeyRequestResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestResponseAminoMsg): MsgNewKeyRequestResponse {
@@ -2939,7 +2953,7 @@ export const MsgFulfilKeyRequest = {
   toAmino(message: MsgFulfilKeyRequest): MsgFulfilKeyRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
+    obj.request_id = message.requestId !== BigInt(0) ? (message.requestId?.toString)() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.key = message.key ? MsgNewKey.toAmino(message.key) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
@@ -3022,7 +3036,6 @@ function createBaseMsgUpdateKey(): MsgUpdateKey {
   return {
     authority: "",
     keyId: BigInt(0),
-    templateId: BigInt(0),
     approveTemplateId: BigInt(0),
     rejectTemplateId: BigInt(0)
   };
@@ -3035,9 +3048,6 @@ export const MsgUpdateKey = {
     }
     if (message.keyId !== BigInt(0)) {
       writer.uint32(16).uint64(message.keyId);
-    }
-    if (message.templateId !== BigInt(0)) {
-      writer.uint32(24).uint64(message.templateId);
     }
     if (message.approveTemplateId !== BigInt(0)) {
       writer.uint32(32).uint64(message.approveTemplateId);
@@ -3060,9 +3070,6 @@ export const MsgUpdateKey = {
         case 2:
           message.keyId = reader.uint64();
           break;
-        case 3:
-          message.templateId = reader.uint64();
-          break;
         case 4:
           message.approveTemplateId = reader.uint64();
           break;
@@ -3080,7 +3087,6 @@ export const MsgUpdateKey = {
     return {
       authority: isSet(object.authority) ? String(object.authority) : "",
       keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
-      templateId: isSet(object.templateId) ? BigInt(object.templateId.toString()) : BigInt(0),
       approveTemplateId: isSet(object.approveTemplateId) ? BigInt(object.approveTemplateId.toString()) : BigInt(0),
       rejectTemplateId: isSet(object.rejectTemplateId) ? BigInt(object.rejectTemplateId.toString()) : BigInt(0)
     };
@@ -3089,7 +3095,6 @@ export const MsgUpdateKey = {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
-    message.templateId !== undefined && (obj.templateId = (message.templateId || BigInt(0)).toString());
     message.approveTemplateId !== undefined && (obj.approveTemplateId = (message.approveTemplateId || BigInt(0)).toString());
     message.rejectTemplateId !== undefined && (obj.rejectTemplateId = (message.rejectTemplateId || BigInt(0)).toString());
     return obj;
@@ -3098,7 +3103,6 @@ export const MsgUpdateKey = {
     const message = createBaseMsgUpdateKey();
     message.authority = object.authority ?? "";
     message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
-    message.templateId = object.templateId !== undefined && object.templateId !== null ? BigInt(object.templateId.toString()) : BigInt(0);
     message.approveTemplateId = object.approveTemplateId !== undefined && object.approveTemplateId !== null ? BigInt(object.approveTemplateId.toString()) : BigInt(0);
     message.rejectTemplateId = object.rejectTemplateId !== undefined && object.rejectTemplateId !== null ? BigInt(object.rejectTemplateId.toString()) : BigInt(0);
     return message;
@@ -3111,9 +3115,6 @@ export const MsgUpdateKey = {
     if (object.key_id !== undefined && object.key_id !== null) {
       message.keyId = BigInt(object.key_id);
     }
-    if (object.template_id !== undefined && object.template_id !== null) {
-      message.templateId = BigInt(object.template_id);
-    }
     if (object.approve_template_id !== undefined && object.approve_template_id !== null) {
       message.approveTemplateId = BigInt(object.approve_template_id);
     }
@@ -3125,10 +3126,9 @@ export const MsgUpdateKey = {
   toAmino(message: MsgUpdateKey): MsgUpdateKeyAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
-    obj.template_id = message.templateId !== BigInt(0) ? message.templateId.toString() : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateKeyAminoMsg): MsgUpdateKey {
@@ -3341,7 +3341,7 @@ export const MsgNewSignRequest = {
   toAmino(message: MsgNewSignRequest): MsgNewSignRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
     obj.input = message.input ? base64FromBytes(message.input) : undefined;
     if (message.analyzers) {
       obj.analyzers = message.analyzers.map(e => e);
@@ -3354,7 +3354,7 @@ export const MsgNewSignRequest = {
     } else {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestAminoMsg): MsgNewSignRequest {
@@ -3427,7 +3427,7 @@ export const MsgNewSignRequestResponse = {
   },
   toAmino(message: MsgNewSignRequestResponse): MsgNewSignRequestResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestResponseAminoMsg): MsgNewSignRequestResponse {
@@ -3626,7 +3626,7 @@ export const MsgFulfilSignRequest = {
   toAmino(message: MsgFulfilSignRequest): MsgFulfilSignRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
+    obj.request_id = message.requestId !== BigInt(0) ? (message.requestId?.toString)() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.payload = message.payload ? MsgSignedData.toAmino(message.payload) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;

@@ -2,8 +2,14 @@ import { warden } from "@wardenprotocol/wardenjs";
 import { MsgNewInferenceRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
 import { SolverInput } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/inference";
 import { getClient, useTx } from "./useClient";
+import { useResponse } from "./useResponse";
+
+function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export default function useRequestInference() {
+    const response = useResponse();
     const { tx } = useTx();
     const { newInferenceRequest } =
         warden.warden.v1beta3.MessageComposer.withTypeUrl;
@@ -31,6 +37,7 @@ export default function useRequestInference() {
             contractCallback: string,
             input: SolverInput
         ) => {
+            response.setState("pending");
             try {
                 const client = await getClient();
 
@@ -39,6 +46,7 @@ export default function useRequestInference() {
                     contractCallback,
                     input
                 );
+
                 if (!res) {
                     console.error("failed to broadcast tx");
                     throw new Error("failed to broadcast tx");
@@ -56,18 +64,33 @@ export default function useRequestInference() {
 
                 const inferenceRequestId = inferenceRequestCreated.id;
 
-                const result =
-                    await client.warden.warden.v1beta3.inferenceRequestById({
-                        id: inferenceRequestId,
-                    });
+                // fixme: sending an additional request to trigger the result of the first request
+                sendRequestInference(creator, contractCallback, input);
 
-                const InferenceRequest = result.inferenceRequest;
+                // eslint-disable-next-line no-constant-condition
+                while (true) {
+                    response.setState("processing");
+                    const result =
+                        await client.warden.warden.v1beta3.inferenceRequestById(
+                            {
+                                id: inferenceRequestId,
+                            }
+                        );
 
-                console.log(InferenceRequest);
+                    const InferenceRequest = result.inferenceRequest;
 
-                return InferenceRequest;
+                    if (InferenceRequest.response !== undefined) {
+                        response.setResponse(InferenceRequest.response);
+                        response.setState("completed");
+                        console.log(InferenceRequest.response);
+                        break;
+                    }
+
+                    await sleep(1000);
+                }
             } catch (e) {
                 console.error(e);
+                response.setState("failed");
             }
         },
         reset: () => {},

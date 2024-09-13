@@ -13,7 +13,7 @@ const config = {
 		fontFamily: {
 			display: "Alliance Neue Regular, Arial, sans-serif",
 			sans: "Inter, Arial, sans-serif",
-			mono: "monospace"
+			mono: "monospace",
 		},
 		container: {
 			center: true,

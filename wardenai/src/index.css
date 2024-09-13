@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+html {
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: "Syne", sans-serif;
+  font-optical-sizing: auto;
+}
+
 @layer base {
   :root {
     --background: 25, 90%, 4%;
@@ -16,7 +23,7 @@
     --secondary-foreground: 80, 11%, 89%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 0, 0%, 70%;
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 90, 100%, 79%;
     --accent-foreground: 80, 11%, 89%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 80, 11%, 89%;

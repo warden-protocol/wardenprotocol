@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgCheckAction, MsgNewTemplate, MsgUpdateTemplate, MsgRevokeAction, MsgVoteForAction } from "./tx.js";
+import { MsgUpdateParams, MsgNewAction, MsgCheckAction, MsgNewTemplate, MsgUpdateTemplate, MsgRevokeAction, MsgVoteForAction } from "./tx.js";
 export const AminoConverter = {
   "/warden.act.v1beta1.MsgUpdateParams": {
     aminoType: "warden/x/act/MsgUpdateParams",
@@ -10,11 +10,6 @@ export const AminoConverter = {
     aminoType: "/warden.act.v1beta1.MsgNewAction",
     toAmino: MsgNewAction.toAmino,
     fromAmino: MsgNewAction.fromAmino
-  },
-  "/warden.act.v1beta1.MsgApproveAction": {
-    aminoType: "/warden.act.v1beta1.MsgApproveAction",
-    toAmino: MsgApproveAction.toAmino,
-    fromAmino: MsgApproveAction.fromAmino
   },
   "/warden.act.v1beta1.MsgCheckAction": {
     aminoType: "/warden.act.v1beta1.MsgCheckAction",

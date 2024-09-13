@@ -80,33 +80,6 @@ export interface EventCreateActionSDKType {
   id: bigint;
   creator: string;
 }
-/** EventApproveAction is emitted when an Action is approved */
-export interface EventApproveAction {
-  /** id of action */
-  id: bigint;
-  /** address of the account that approved the action */
-  approver: string;
-}
-export interface EventApproveActionProtoMsg {
-  typeUrl: "/warden.act.v1beta1.EventApproveAction";
-  value: Uint8Array;
-}
-/** EventApproveAction is emitted when an Action is approved */
-export interface EventApproveActionAmino {
-  /** id of action */
-  id?: string;
-  /** address of the account that approved the action */
-  approver?: string;
-}
-export interface EventApproveActionAminoMsg {
-  type: "/warden.act.v1beta1.EventApproveAction";
-  value: EventApproveActionAmino;
-}
-/** EventApproveAction is emitted when an Action is approved */
-export interface EventApproveActionSDKType {
-  id: bigint;
-  approver: string;
-}
 /** EventActionVoted is emitted when an Action is voted on */
 export interface EventActionVoted {
   /** id of action */
@@ -446,93 +419,6 @@ export const EventCreateAction = {
     return {
       typeUrl: "/warden.act.v1beta1.EventCreateAction",
       value: EventCreateAction.encode(message).finish()
-    };
-  }
-};
-function createBaseEventApproveAction(): EventApproveAction {
-  return {
-    id: BigInt(0),
-    approver: ""
-  };
-}
-export const EventApproveAction = {
-  typeUrl: "/warden.act.v1beta1.EventApproveAction",
-  encode(message: EventApproveAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
-      writer.uint32(8).uint64(message.id);
-    }
-    if (message.approver !== "") {
-      writer.uint32(18).string(message.approver);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventApproveAction {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventApproveAction();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.uint64();
-          break;
-        case 2:
-          message.approver = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): EventApproveAction {
-    return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
-      approver: isSet(object.approver) ? String(object.approver) : ""
-    };
-  },
-  toJSON(message: EventApproveAction): JsonSafe<EventApproveAction> {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
-    message.approver !== undefined && (obj.approver = message.approver);
-    return obj;
-  },
-  fromPartial(object: Partial<EventApproveAction>): EventApproveAction {
-    const message = createBaseEventApproveAction();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
-    message.approver = object.approver ?? "";
-    return message;
-  },
-  fromAmino(object: EventApproveActionAmino): EventApproveAction {
-    const message = createBaseEventApproveAction();
-    if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
-    }
-    if (object.approver !== undefined && object.approver !== null) {
-      message.approver = object.approver;
-    }
-    return message;
-  },
-  toAmino(message: EventApproveAction): EventApproveActionAmino {
-    const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
-    obj.approver = message.approver === "" ? undefined : message.approver;
-    return obj;
-  },
-  fromAminoMsg(object: EventApproveActionAminoMsg): EventApproveAction {
-    return EventApproveAction.fromAmino(object.value);
-  },
-  fromProtoMsg(message: EventApproveActionProtoMsg): EventApproveAction {
-    return EventApproveAction.decode(message.value);
-  },
-  toProto(message: EventApproveAction): Uint8Array {
-    return EventApproveAction.encode(message).finish();
-  },
-  toProtoMsg(message: EventApproveAction): EventApproveActionProtoMsg {
-    return {
-      typeUrl: "/warden.act.v1beta1.EventApproveAction",
-      value: EventApproveAction.encode(message).finish()
     };
   }
 };

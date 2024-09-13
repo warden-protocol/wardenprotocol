@@ -107,20 +107,20 @@ export const createRpcQueryHooks = ({
      */
     useActions: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useActions,
     /**
-     * warden.act.v1beta1.useRules
-     * Queries a list of Rules items.
+     * warden.act.v1beta1.useTemplates
+     * Queries a list of Templates items.
      */
-    useRules: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useRules,
+    useTemplates: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useTemplates,
     /**
-     * warden.act.v1beta1.useSimulateRule
-     * Queries to simulate a Rule
+     * warden.act.v1beta1.useSimulateTemplate
+     * Queries to simulate a Template
      */
-    useSimulateRule: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useSimulateRule,
+    useSimulateTemplate: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useSimulateTemplate,
     /**
-     * warden.act.v1beta1.useRuleById
-     * Queries a list of RuleById items.
+     * warden.act.v1beta1.useTemplateById
+     * Queries a list of TemplateById items.
      */
-    useRuleById: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useRuleById,
+    useTemplateById: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useTemplateById,
     /**
      * warden.act.v1beta1.useActionsByAddress
      * Queries a list of Actions items by one participant address.

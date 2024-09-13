@@ -3,35 +3,35 @@ import { Expression, ExpressionAmino, ExpressionSDKType } from "../../../shield/
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
-export interface Rule {
+export interface Template {
   id: bigint;
   creator: string;
   name: string;
-  /** The expression to be evaluated for this rule. */
+  /** The expression to be evaluated for this template. */
   expression?: Expression;
 }
-export interface RuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.Rule";
+export interface TemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.Template";
   value: Uint8Array;
 }
-export interface RuleAmino {
+export interface TemplateAmino {
   id?: string;
   creator?: string;
   name?: string;
-  /** The expression to be evaluated for this rule. */
+  /** The expression to be evaluated for this template. */
   expression?: ExpressionAmino;
 }
-export interface RuleAminoMsg {
-  type: "/warden.act.v1beta1.Rule";
-  value: RuleAmino;
+export interface TemplateAminoMsg {
+  type: "/warden.act.v1beta1.Template";
+  value: TemplateAmino;
 }
-export interface RuleSDKType {
+export interface TemplateSDKType {
   id: bigint;
   creator: string;
   name: string;
   expression?: ExpressionSDKType;
 }
-function createBaseRule(): Rule {
+function createBaseTemplate(): Template {
   return {
     id: BigInt(0),
     creator: "",
@@ -39,9 +39,9 @@ function createBaseRule(): Rule {
     expression: undefined
   };
 }
-export const Rule = {
-  typeUrl: "/warden.act.v1beta1.Rule",
-  encode(message: Rule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const Template = {
+  typeUrl: "/warden.act.v1beta1.Template",
+  encode(message: Template, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
@@ -56,10 +56,10 @@ export const Rule = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Rule {
+  decode(input: BinaryReader | Uint8Array, length?: number): Template {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRule();
+    const message = createBaseTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -82,7 +82,7 @@ export const Rule = {
     }
     return message;
   },
-  fromJSON(object: any): Rule {
+  fromJSON(object: any): Template {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
@@ -90,7 +90,7 @@ export const Rule = {
       expression: isSet(object.expression) ? Expression.fromJSON(object.expression) : undefined
     };
   },
-  toJSON(message: Rule): JsonSafe<Rule> {
+  toJSON(message: Template): JsonSafe<Template> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
@@ -98,16 +98,16 @@ export const Rule = {
     message.expression !== undefined && (obj.expression = message.expression ? Expression.toJSON(message.expression) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<Rule>): Rule {
-    const message = createBaseRule();
+  fromPartial(object: Partial<Template>): Template {
+    const message = createBaseTemplate();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
     message.expression = object.expression !== undefined && object.expression !== null ? Expression.fromPartial(object.expression) : undefined;
     return message;
   },
-  fromAmino(object: RuleAmino): Rule {
-    const message = createBaseRule();
+  fromAmino(object: TemplateAmino): Template {
+    const message = createBaseTemplate();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
@@ -122,7 +122,7 @@ export const Rule = {
     }
     return message;
   },
-  toAmino(message: Rule): RuleAmino {
+  toAmino(message: Template): TemplateAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
@@ -130,19 +130,19 @@ export const Rule = {
     obj.expression = message.expression ? Expression.toAmino(message.expression) : undefined;
     return obj;
   },
-  fromAminoMsg(object: RuleAminoMsg): Rule {
-    return Rule.fromAmino(object.value);
+  fromAminoMsg(object: TemplateAminoMsg): Template {
+    return Template.fromAmino(object.value);
   },
-  fromProtoMsg(message: RuleProtoMsg): Rule {
-    return Rule.decode(message.value);
+  fromProtoMsg(message: TemplateProtoMsg): Template {
+    return Template.decode(message.value);
   },
-  toProto(message: Rule): Uint8Array {
-    return Rule.encode(message).finish();
+  toProto(message: Template): Uint8Array {
+    return Template.encode(message).finish();
   },
-  toProtoMsg(message: Rule): RuleProtoMsg {
+  toProtoMsg(message: Template): TemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.Rule",
-      value: Rule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.Template",
+      value: Template.encode(message).finish()
     };
   }
 };

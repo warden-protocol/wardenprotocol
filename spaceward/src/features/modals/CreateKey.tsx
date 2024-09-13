@@ -40,7 +40,7 @@ export default function CreateKeyModal({
 			throw new Error("no authority");
 		}
 
-		if (!space) {
+		if (!space?.space) {
 			throw new Error("no space");
 		}
 
@@ -51,7 +51,7 @@ export default function CreateKeyModal({
 				templateId: BigInt(0),
 				keyType: warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
 				authority,
-				nonce: space.space?.nonce + BigInt(1),
+				nonce: space.space.nonce,
 			},
 			{
 				keyThemeIndex: themeIndex,

@@ -11,7 +11,7 @@ import AddressAvatar from "./AddressAvatar";
 import { MsgSend } from "@wardenprotocol/wardenjs/codegen/cosmos/bank/v1beta1/tx";
 import {
 	MsgApproveAction,
-	MsgNewRule,
+	MsgNewTemplate as MsgNewRule,
 } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
 import {
 	MsgAddSpaceOwner,
@@ -111,10 +111,10 @@ function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
 				<CardRow label="Admin intent">
-					{msg.adminRuleId.toString()}
+					{msg.adminTemplateId.toString()}
 				</CardRow>
 				<CardRow label="Sign intent">
-					{msg.signRuleId.toString()}
+					{msg.signTemplateId.toString()}
 				</CardRow>
 			</CardContent>
 		</Card>

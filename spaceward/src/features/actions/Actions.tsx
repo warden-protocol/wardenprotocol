@@ -122,10 +122,10 @@ export function Actions() {
 																.trim()}
 														</div>
 														<div>
-															{action.rule.id.toString() ==
+															{action.template.id.toString() ==
 															"0"
 																? `Default intent`
-																: `Intent #${action.rule.id}`}
+																: `Intent #${action.template.id}`}
 														</div>
 														<div>
 															{shortTime.format(

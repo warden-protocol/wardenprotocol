@@ -1,9 +1,5 @@
 import clsx from "clsx";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
+import * as Popover from "@radix-ui/react-popover";
 
 import "./animate.css";
 import { QueuedActionStatus, useActionsState } from "./hooks";
@@ -28,10 +24,11 @@ export default function ApproveSidebar() {
 	const hidden = false;// !total;
 	const first = data?.[filtered[0]];
 
+
 	return (
 		<div
 			className={clsx(
-				"flex flex-col mx-2 p-3 rounded-lg bg-fill-quaternary",
+				"flex flex-col mx-2 p-3 rounded-lg bg-fill-quaternary relative select-none",
 				{
 					hidden,
 					"border-progress": !hidden,
@@ -39,26 +36,24 @@ export default function ApproveSidebar() {
 			)}
 		>
 			<div>
-				<Popover open={open} modal={true}>
-					<PopoverTrigger asChild>
-						<div
-							className={clsx("flex flex-col")}
-						>
-							<div className="flex items-center">
-								<p className="text-lg font-semibold">___---___</p>
-							</div>
+				<Popover.Root open={open} modal={true}
+					onOpenChange={() => setOpen(v => !v)}
+				>
+					<div
+						className={clsx("flex flex-col")}
+					>
+						<div className="flex items-center">
+							<p className="text-lg font-semibold">___---___</p>
+						</div>
 
-							<p className="text-sm text-gray-500 mb-2">
-								Awaiting your approval
-							</p>
-							{/* progress bar */}
+						<p className="text-sm text-gray-500 mb-2">
+							Awaiting your approval
+						</p>
+						{/* progress bar */}
+						<Popover.Trigger asChild>
 							<Button
-								onClick={() => {
-									console.log("WTF?")
-									setOpen(v => !v);
-								}}
 								className={clsx(
-									"flex items-center rounded-lg justify-center gap-2 h-10 font-semibold w-full duration-200 hover:text-background",
+									"flex items-center rounded-lg justify-center gap-2 h-10 font-semibold w-full duration-200 hover:text-background z-10",
 									{
 										"hover:bg-fill-accent-primary hover:text-background":
 											true,
@@ -71,19 +66,21 @@ export default function ApproveSidebar() {
 							>
 								View
 							</Button>
-						</div >
-					</PopoverTrigger>
-					<PopoverContent
-						side="left"
-						sideOffset={20}
-						className="p-0"
-					>
-						<div className="bg-fill-quaternary">
-							TODO
+						</Popover.Trigger>
+					</div >
+					<Popover.Portal>
+						<Popover.Content
+							side="left"
+							sideOffset={20}
+							className="p-0"
+						>
+							<div className="bg-fill-quaternary">
+								TODO
 
-						</div>
-					</PopoverContent>
-				</Popover>
+							</div>
+						</Popover.Content>
+					</Popover.Portal>
+				</Popover.Root>
 			</div>
 		</div>
 	);

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
-import { Rule, RuleAmino, RuleSDKType } from "./rule.js";
+import { Template, TemplateAmino, TemplateSDKType } from "./template.js";
 import { Expression, ExpressionAmino, ExpressionSDKType } from "../../../shield/ast/ast.js";
 import { ActionVote, ActionVoteAmino, ActionVoteSDKType } from "./action_vote.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
@@ -13,7 +13,7 @@ export enum ActionStatus {
   ACTION_STATUS_UNSPECIFIED = 0,
   /** ACTION_STATUS_PENDING - Action is pending approval. This is the initial status. */
   ACTION_STATUS_PENDING = 1,
-  /** ACTION_STATUS_COMPLETED - Rule has been satified, action has been executed. */
+  /** ACTION_STATUS_COMPLETED - Template has been satified, action has been executed. */
   ACTION_STATUS_COMPLETED = 2,
   /** ACTION_STATUS_REVOKED - Action has been revoked by its creator. */
   ACTION_STATUS_REVOKED = 3,
@@ -88,7 +88,7 @@ export interface ApproverSDKType {
   approved_at: TimestampSDKType;
 }
 /**
- * Action wraps a message that will be executed when its associated rule is
+ * Action wraps a message that will be executed when its associated template is
  * satisfied.
  */
 export interface Action {
@@ -97,7 +97,7 @@ export interface Action {
   status: ActionStatus;
   /**
    * Original message that started the action, it will be executed when the
-   * rule is satisfied.
+   * template is satisfied.
    */
   msg?: Any;
   /** Result of the action, it will be set when the action is completed. */
@@ -110,12 +110,12 @@ export interface Action {
   /** updated_at is a timestamp specifying when the action's status was updated */
   updatedAt: Timestamp;
   /**
-   * rule is the condition that this action is associated with. Instead of
-   * storing the rule ID, we store the entire Rule object so that is immutable
+   * template is the condition that this action is associated with. Instead of
+   * storing the template ID, we store the entire Template object so that is immutable
    * and cannot be changed later.
    */
-  rule: Rule;
-  /** mentions is a list of addresses that are mentioned in the rule. */
+  template: Template;
+  /** mentions is a list of addresses that are mentioned in the template. */
   mentions: string[];
   /** The expression to be evaluated for approval. */
   approveExpression: Expression;
@@ -129,7 +129,7 @@ export interface ActionProtoMsg {
   value: Uint8Array;
 }
 /**
- * Action wraps a message that will be executed when its associated rule is
+ * Action wraps a message that will be executed when its associated template is
  * satisfied.
  */
 export interface ActionAmino {
@@ -138,7 +138,7 @@ export interface ActionAmino {
   status?: ActionStatus;
   /**
    * Original message that started the action, it will be executed when the
-   * rule is satisfied.
+   * template is satisfied.
    */
   msg?: AnyAmino;
   /** Result of the action, it will be set when the action is completed. */
@@ -151,12 +151,12 @@ export interface ActionAmino {
   /** updated_at is a timestamp specifying when the action's status was updated */
   updated_at: string;
   /**
-   * rule is the condition that this action is associated with. Instead of
-   * storing the rule ID, we store the entire Rule object so that is immutable
+   * template is the condition that this action is associated with. Instead of
+   * storing the template ID, we store the entire Template object so that is immutable
    * and cannot be changed later.
    */
-  rule?: RuleAmino;
-  /** mentions is a list of addresses that are mentioned in the rule. */
+  template?: TemplateAmino;
+  /** mentions is a list of addresses that are mentioned in the template. */
   mentions?: string[];
   /** The expression to be evaluated for approval. */
   approve_expression?: ExpressionAmino;
@@ -170,7 +170,7 @@ export interface ActionAminoMsg {
   value: ActionAmino;
 }
 /**
- * Action wraps a message that will be executed when its associated rule is
+ * Action wraps a message that will be executed when its associated template is
  * satisfied.
  */
 export interface ActionSDKType {
@@ -183,7 +183,7 @@ export interface ActionSDKType {
   timeout_height: bigint;
   created_at: TimestampSDKType;
   updated_at: TimestampSDKType;
-  rule: RuleSDKType;
+  template: TemplateSDKType;
   mentions: string[];
   approve_expression: ExpressionSDKType;
   reject_expression: ExpressionSDKType;
@@ -287,7 +287,7 @@ function createBaseAction(): Action {
     timeoutHeight: BigInt(0),
     createdAt: Timestamp.fromPartial({}),
     updatedAt: Timestamp.fromPartial({}),
-    rule: Rule.fromPartial({}),
+    template: Template.fromPartial({}),
     mentions: [],
     approveExpression: Expression.fromPartial({}),
     rejectExpression: Expression.fromPartial({}),
@@ -324,8 +324,8 @@ export const Action = {
     if (message.updatedAt !== undefined) {
       Timestamp.encode(message.updatedAt, writer.uint32(82).fork()).ldelim();
     }
-    if (message.rule !== undefined) {
-      Rule.encode(message.rule, writer.uint32(90).fork()).ldelim();
+    if (message.template !== undefined) {
+      Template.encode(message.template, writer.uint32(90).fork()).ldelim();
     }
     for (const v of message.mentions) {
       writer.uint32(98).string(v!);
@@ -376,7 +376,7 @@ export const Action = {
           message.updatedAt = Timestamp.decode(reader, reader.uint32());
           break;
         case 11:
-          message.rule = Rule.decode(reader, reader.uint32());
+          message.template = Template.decode(reader, reader.uint32());
           break;
         case 12:
           message.mentions.push(reader.string());
@@ -408,7 +408,7 @@ export const Action = {
       timeoutHeight: isSet(object.timeoutHeight) ? BigInt(object.timeoutHeight.toString()) : BigInt(0),
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
-      rule: isSet(object.rule) ? Rule.fromJSON(object.rule) : undefined,
+      template: isSet(object.template) ? Template.fromJSON(object.template) : undefined,
       mentions: Array.isArray(object?.mentions) ? object.mentions.map((e: any) => String(e)) : [],
       approveExpression: isSet(object.approveExpression) ? Expression.fromJSON(object.approveExpression) : undefined,
       rejectExpression: isSet(object.rejectExpression) ? Expression.fromJSON(object.rejectExpression) : undefined,
@@ -430,7 +430,7 @@ export const Action = {
     message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || BigInt(0)).toString());
     message.createdAt !== undefined && (obj.createdAt = fromTimestamp(message.createdAt).toISOString());
     message.updatedAt !== undefined && (obj.updatedAt = fromTimestamp(message.updatedAt).toISOString());
-    message.rule !== undefined && (obj.rule = message.rule ? Rule.toJSON(message.rule) : undefined);
+    message.template !== undefined && (obj.template = message.template ? Template.toJSON(message.template) : undefined);
     if (message.mentions) {
       obj.mentions = message.mentions.map(e => e);
     } else {
@@ -456,7 +456,7 @@ export const Action = {
     message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? BigInt(object.timeoutHeight.toString()) : BigInt(0);
     message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
     message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Timestamp.fromPartial(object.updatedAt) : undefined;
-    message.rule = object.rule !== undefined && object.rule !== null ? Rule.fromPartial(object.rule) : undefined;
+    message.template = object.template !== undefined && object.template !== null ? Template.fromPartial(object.template) : undefined;
     message.mentions = object.mentions?.map(e => e) || [];
     message.approveExpression = object.approveExpression !== undefined && object.approveExpression !== null ? Expression.fromPartial(object.approveExpression) : undefined;
     message.rejectExpression = object.rejectExpression !== undefined && object.rejectExpression !== null ? Expression.fromPartial(object.rejectExpression) : undefined;
@@ -490,8 +490,8 @@ export const Action = {
     if (object.updated_at !== undefined && object.updated_at !== null) {
       message.updatedAt = Timestamp.fromAmino(object.updated_at);
     }
-    if (object.rule !== undefined && object.rule !== null) {
-      message.rule = Rule.fromAmino(object.rule);
+    if (object.template !== undefined && object.template !== null) {
+      message.template = Template.fromAmino(object.template);
     }
     message.mentions = object.mentions?.map(e => e) || [];
     if (object.approve_expression !== undefined && object.approve_expression !== null) {
@@ -518,7 +518,7 @@ export const Action = {
     obj.timeout_height = message.timeoutHeight !== BigInt(0) ? message.timeoutHeight.toString() : undefined;
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.updated_at = message.updatedAt ? Timestamp.toAmino(message.updatedAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
-    obj.rule = message.rule ? Rule.toAmino(message.rule) : undefined;
+    obj.template = message.template ? Template.toAmino(message.template) : undefined;
     if (message.mentions) {
       obj.mentions = message.mentions.map(e => e);
     } else {

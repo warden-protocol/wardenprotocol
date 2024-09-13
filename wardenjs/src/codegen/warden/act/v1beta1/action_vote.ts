@@ -51,7 +51,7 @@ export interface ActionVote {
   /** voted_at is a timestamp specifying when the voter voted on the action. */
   votedAt: Timestamp;
   /** vote is the type of the vote. */
-  vote: ActionVoteType;
+  voteType: ActionVoteType;
 }
 export interface ActionVoteProtoMsg {
   typeUrl: "/warden.act.v1beta1.ActionVote";
@@ -63,7 +63,7 @@ export interface ActionVoteAmino {
   /** voted_at is a timestamp specifying when the voter voted on the action. */
   voted_at: string;
   /** vote is the type of the vote. */
-  vote?: ActionVoteType;
+  vote_type?: ActionVoteType;
 }
 export interface ActionVoteAminoMsg {
   type: "/warden.act.v1beta1.ActionVote";
@@ -72,13 +72,13 @@ export interface ActionVoteAminoMsg {
 export interface ActionVoteSDKType {
   participant: string;
   voted_at: TimestampSDKType;
-  vote: ActionVoteType;
+  vote_type: ActionVoteType;
 }
 function createBaseActionVote(): ActionVote {
   return {
     participant: "",
     votedAt: Timestamp.fromPartial({}),
-    vote: 0
+    voteType: 0
   };
 }
 export const ActionVote = {
@@ -90,8 +90,8 @@ export const ActionVote = {
     if (message.votedAt !== undefined) {
       Timestamp.encode(message.votedAt, writer.uint32(18).fork()).ldelim();
     }
-    if (message.vote !== 0) {
-      writer.uint32(24).int32(message.vote);
+    if (message.voteType !== 0) {
+      writer.uint32(24).int32(message.voteType);
     }
     return writer;
   },
@@ -109,7 +109,7 @@ export const ActionVote = {
           message.votedAt = Timestamp.decode(reader, reader.uint32());
           break;
         case 3:
-          message.vote = (reader.int32() as any);
+          message.voteType = (reader.int32() as any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -122,21 +122,21 @@ export const ActionVote = {
     return {
       participant: isSet(object.participant) ? String(object.participant) : "",
       votedAt: isSet(object.votedAt) ? fromJsonTimestamp(object.votedAt) : undefined,
-      vote: isSet(object.vote) ? actionVoteTypeFromJSON(object.vote) : -1
+      voteType: isSet(object.voteType) ? actionVoteTypeFromJSON(object.voteType) : -1
     };
   },
   toJSON(message: ActionVote): JsonSafe<ActionVote> {
     const obj: any = {};
     message.participant !== undefined && (obj.participant = message.participant);
     message.votedAt !== undefined && (obj.votedAt = fromTimestamp(message.votedAt).toISOString());
-    message.vote !== undefined && (obj.vote = actionVoteTypeToJSON(message.vote));
+    message.voteType !== undefined && (obj.voteType = actionVoteTypeToJSON(message.voteType));
     return obj;
   },
   fromPartial(object: Partial<ActionVote>): ActionVote {
     const message = createBaseActionVote();
     message.participant = object.participant ?? "";
     message.votedAt = object.votedAt !== undefined && object.votedAt !== null ? Timestamp.fromPartial(object.votedAt) : undefined;
-    message.vote = object.vote ?? 0;
+    message.voteType = object.voteType ?? 0;
     return message;
   },
   fromAmino(object: ActionVoteAmino): ActionVote {
@@ -147,8 +147,8 @@ export const ActionVote = {
     if (object.voted_at !== undefined && object.voted_at !== null) {
       message.votedAt = Timestamp.fromAmino(object.voted_at);
     }
-    if (object.vote !== undefined && object.vote !== null) {
-      message.vote = object.vote;
+    if (object.vote_type !== undefined && object.vote_type !== null) {
+      message.voteType = object.vote_type;
     }
     return message;
   },
@@ -156,7 +156,7 @@ export const ActionVote = {
     const obj: any = {};
     obj.participant = message.participant === "" ? undefined : message.participant;
     obj.voted_at = message.votedAt ? Timestamp.toAmino(message.votedAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
-    obj.vote = message.vote === 0 ? undefined : message.vote;
+    obj.vote_type = message.voteType === 0 ? undefined : message.voteType;
     return obj;
   },
   fromAminoMsg(object: ActionVoteAminoMsg): ActionVote {

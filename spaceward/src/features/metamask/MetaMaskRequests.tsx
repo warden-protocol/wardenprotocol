@@ -92,7 +92,7 @@ export function MetaMaskRequests() {
 				}
 			}}
 		>
-			<Popover.Trigger asChild>
+			<Popover.Trigger>
 				<Button
 					variant="ghost"
 					size="icon"

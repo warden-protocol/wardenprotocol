@@ -5,7 +5,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import type { IntentParams, SimpleIntent } from "@/types/intent";
 import { shieldStringify, validateAddressNumber } from "@/utils/shield";
 import { warden } from "@wardenprotocol/wardenjs";
-import { Rule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/rule";
+import { Template } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/template";
 import { useCallback, useMemo } from "react";
 import { useModalState } from "../modals/state";
 
@@ -47,10 +47,10 @@ export const useRules = () => {
 	const { spaceId } = useSpaceId();
 	const queryHooks = useQueryHooks();
 	const useSpaceById = queryHooks.warden.warden.v1beta3.useSpaceById;
-	const useRules = queryHooks.warden.act.v1beta1.useRules;
+	const useRules = queryHooks.warden.act.v1beta1.useTemplates;
 	const { tx } = useTx();
 
-	const { newRule: msgNewRule, updateRule: msgUpdateRule } =
+	const { newTemplate: msgNewRule, updateTemplate: msgUpdateRule } =
 		warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 	const newRule = useCallback(
@@ -142,12 +142,12 @@ export const useRules = () => {
 		},
 	});
 
-	const rulesBySpace = rules.data?.rules ?? [];
+	const rulesBySpace = rules.data?.templates ?? [];
 
 	const rulesById = useMemo(() => {
-		const rulesById: Record<string, Rule> = {};
+		const rulesById: Record<string, Template> = {};
 
-		for (const rule of rules.data?.rules ?? []) {
+		for (const rule of rules.data?.templates ?? []) {
 			rulesById[rule.id.toString()] = rule;
 		}
 
@@ -168,7 +168,7 @@ export const useRules = () => {
 				const rule = rulesById[id.toString()];
 				validateAddressNumber(rule.expression);
 
-				if (space.signRuleId && space.signRuleId !== BigInt(id)) {
+				if (space.signTemplateId && space.signTemplateId !== BigInt(id)) {
 					let resolve: undefined | (() => void);
 					let reject: undefined | ((e: Error) => void);
 
@@ -198,8 +198,12 @@ export const useRules = () => {
 				{
 					authority,
 					spaceId: BigInt(space.id),
-					adminRuleId: BigInt(0),
-					signRuleId: BigInt(id),
+					adminTemplateId: BigInt(0),
+					signTemplateId: BigInt(id),
+					approveAdminTemplateId: BigInt(0),
+					approveSignTemplateId: BigInt(0),
+					rejectAdminTemplateId: BigInt(0),
+					rejectSignTemplateId: BigInt(0),
 					nonce: space.nonce + BigInt(1)
 				},
 				{},
@@ -213,6 +217,6 @@ export const useRules = () => {
 		updateRule,
 		setActiveRule,
 		rulesBySpace,
-		activeRuleId: space?.signRuleId ? Number(space.signRuleId) : undefined,
+		activeRuleId: space?.signTemplateId ? Number(space.signTemplateId) : undefined,
 	};
 };

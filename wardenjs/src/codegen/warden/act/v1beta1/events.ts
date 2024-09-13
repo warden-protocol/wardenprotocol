@@ -4,53 +4,53 @@ import { ActionStatus, actionStatusFromJSON, actionStatusToJSON } from "./action
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
-/** EventCreateRule is emitted on Rule creation */
-export interface EventCreateRule {
+/** EventCreateTemplate is emitted on Template creation */
+export interface EventCreateTemplate {
   /** id of the new intent */
   id: bigint;
   /** creator is the address that created the intent */
   creator: string;
 }
-export interface EventCreateRuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.EventCreateRule";
+export interface EventCreateTemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.EventCreateTemplate";
   value: Uint8Array;
 }
-/** EventCreateRule is emitted on Rule creation */
-export interface EventCreateRuleAmino {
+/** EventCreateTemplate is emitted on Template creation */
+export interface EventCreateTemplateAmino {
   /** id of the new intent */
   id?: string;
   /** creator is the address that created the intent */
   creator?: string;
 }
-export interface EventCreateRuleAminoMsg {
-  type: "/warden.act.v1beta1.EventCreateRule";
-  value: EventCreateRuleAmino;
+export interface EventCreateTemplateAminoMsg {
+  type: "/warden.act.v1beta1.EventCreateTemplate";
+  value: EventCreateTemplateAmino;
 }
-/** EventCreateRule is emitted on Rule creation */
-export interface EventCreateRuleSDKType {
+/** EventCreateTemplate is emitted on Template creation */
+export interface EventCreateTemplateSDKType {
   id: bigint;
   creator: string;
 }
-/** EventUpdateRule is emitted when Rule is updated */
-export interface EventUpdateRule {
+/** EventUpdateTemplate is emitted when Template is updated */
+export interface EventUpdateTemplate {
   /** id of updated intent */
   id: bigint;
 }
-export interface EventUpdateRuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.EventUpdateRule";
+export interface EventUpdateTemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.EventUpdateTemplate";
   value: Uint8Array;
 }
-/** EventUpdateRule is emitted when Rule is updated */
-export interface EventUpdateRuleAmino {
+/** EventUpdateTemplate is emitted when Template is updated */
+export interface EventUpdateTemplateAmino {
   /** id of updated intent */
   id?: string;
 }
-export interface EventUpdateRuleAminoMsg {
-  type: "/warden.act.v1beta1.EventUpdateRule";
-  value: EventUpdateRuleAmino;
+export interface EventUpdateTemplateAminoMsg {
+  type: "/warden.act.v1beta1.EventUpdateTemplate";
+  value: EventUpdateTemplateAmino;
 }
-/** EventUpdateRule is emitted when Rule is updated */
-export interface EventUpdateRuleSDKType {
+/** EventUpdateTemplate is emitted when Template is updated */
+export interface EventUpdateTemplateSDKType {
   id: bigint;
 }
 /** EventCreateAction is emitted when an Action is created */
@@ -114,7 +114,7 @@ export interface EventActionVoted {
   /** address of the account that participated in voting */
   participant: string;
   /** type of the vote */
-  vote: ActionVoteType;
+  voteType: ActionVoteType;
 }
 export interface EventActionVotedProtoMsg {
   typeUrl: "/warden.act.v1beta1.EventActionVoted";
@@ -127,7 +127,7 @@ export interface EventActionVotedAmino {
   /** address of the account that participated in voting */
   participant?: string;
   /** type of the vote */
-  vote?: ActionVoteType;
+  vote_type?: ActionVoteType;
 }
 export interface EventActionVotedAminoMsg {
   type: "/warden.act.v1beta1.EventActionVoted";
@@ -137,7 +137,7 @@ export interface EventActionVotedAminoMsg {
 export interface EventActionVotedSDKType {
   id: bigint;
   participant: string;
-  vote: ActionVoteType;
+  vote_type: ActionVoteType;
 }
 /** EventActionStateChange is emitted when an Action is in a new state */
 export interface EventActionStateChange {
@@ -202,15 +202,15 @@ export interface EventActionPrunedAminoMsg {
 export interface EventActionPrunedSDKType {
   id: bigint;
 }
-function createBaseEventCreateRule(): EventCreateRule {
+function createBaseEventCreateTemplate(): EventCreateTemplate {
   return {
     id: BigInt(0),
     creator: ""
   };
 }
-export const EventCreateRule = {
-  typeUrl: "/warden.act.v1beta1.EventCreateRule",
-  encode(message: EventCreateRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventCreateTemplate = {
+  typeUrl: "/warden.act.v1beta1.EventCreateTemplate",
+  encode(message: EventCreateTemplate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
@@ -219,10 +219,10 @@ export const EventCreateRule = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateRule {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateTemplate {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventCreateRule();
+    const message = createBaseEventCreateTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -239,26 +239,26 @@ export const EventCreateRule = {
     }
     return message;
   },
-  fromJSON(object: any): EventCreateRule {
+  fromJSON(object: any): EventCreateTemplate {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : ""
     };
   },
-  toJSON(message: EventCreateRule): JsonSafe<EventCreateRule> {
+  toJSON(message: EventCreateTemplate): JsonSafe<EventCreateTemplate> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
-  fromPartial(object: Partial<EventCreateRule>): EventCreateRule {
-    const message = createBaseEventCreateRule();
+  fromPartial(object: Partial<EventCreateTemplate>): EventCreateTemplate {
+    const message = createBaseEventCreateTemplate();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     return message;
   },
-  fromAmino(object: EventCreateRuleAmino): EventCreateRule {
-    const message = createBaseEventCreateRule();
+  fromAmino(object: EventCreateTemplateAmino): EventCreateTemplate {
+    const message = createBaseEventCreateTemplate();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
@@ -267,45 +267,45 @@ export const EventCreateRule = {
     }
     return message;
   },
-  toAmino(message: EventCreateRule): EventCreateRuleAmino {
+  toAmino(message: EventCreateTemplate): EventCreateTemplateAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
-  fromAminoMsg(object: EventCreateRuleAminoMsg): EventCreateRule {
-    return EventCreateRule.fromAmino(object.value);
+  fromAminoMsg(object: EventCreateTemplateAminoMsg): EventCreateTemplate {
+    return EventCreateTemplate.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventCreateRuleProtoMsg): EventCreateRule {
-    return EventCreateRule.decode(message.value);
+  fromProtoMsg(message: EventCreateTemplateProtoMsg): EventCreateTemplate {
+    return EventCreateTemplate.decode(message.value);
   },
-  toProto(message: EventCreateRule): Uint8Array {
-    return EventCreateRule.encode(message).finish();
+  toProto(message: EventCreateTemplate): Uint8Array {
+    return EventCreateTemplate.encode(message).finish();
   },
-  toProtoMsg(message: EventCreateRule): EventCreateRuleProtoMsg {
+  toProtoMsg(message: EventCreateTemplate): EventCreateTemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.EventCreateRule",
-      value: EventCreateRule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.EventCreateTemplate",
+      value: EventCreateTemplate.encode(message).finish()
     };
   }
 };
-function createBaseEventUpdateRule(): EventUpdateRule {
+function createBaseEventUpdateTemplate(): EventUpdateTemplate {
   return {
     id: BigInt(0)
   };
 }
-export const EventUpdateRule = {
-  typeUrl: "/warden.act.v1beta1.EventUpdateRule",
-  encode(message: EventUpdateRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventUpdateTemplate = {
+  typeUrl: "/warden.act.v1beta1.EventUpdateTemplate",
+  encode(message: EventUpdateTemplate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateRule {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateTemplate {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventUpdateRule();
+    const message = createBaseEventUpdateTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -319,46 +319,46 @@ export const EventUpdateRule = {
     }
     return message;
   },
-  fromJSON(object: any): EventUpdateRule {
+  fromJSON(object: any): EventUpdateTemplate {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: EventUpdateRule): JsonSafe<EventUpdateRule> {
+  toJSON(message: EventUpdateTemplate): JsonSafe<EventUpdateTemplate> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<EventUpdateRule>): EventUpdateRule {
-    const message = createBaseEventUpdateRule();
+  fromPartial(object: Partial<EventUpdateTemplate>): EventUpdateTemplate {
+    const message = createBaseEventUpdateTemplate();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: EventUpdateRuleAmino): EventUpdateRule {
-    const message = createBaseEventUpdateRule();
+  fromAmino(object: EventUpdateTemplateAmino): EventUpdateTemplate {
+    const message = createBaseEventUpdateTemplate();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: EventUpdateRule): EventUpdateRuleAmino {
+  toAmino(message: EventUpdateTemplate): EventUpdateTemplateAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: EventUpdateRuleAminoMsg): EventUpdateRule {
-    return EventUpdateRule.fromAmino(object.value);
+  fromAminoMsg(object: EventUpdateTemplateAminoMsg): EventUpdateTemplate {
+    return EventUpdateTemplate.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventUpdateRuleProtoMsg): EventUpdateRule {
-    return EventUpdateRule.decode(message.value);
+  fromProtoMsg(message: EventUpdateTemplateProtoMsg): EventUpdateTemplate {
+    return EventUpdateTemplate.decode(message.value);
   },
-  toProto(message: EventUpdateRule): Uint8Array {
-    return EventUpdateRule.encode(message).finish();
+  toProto(message: EventUpdateTemplate): Uint8Array {
+    return EventUpdateTemplate.encode(message).finish();
   },
-  toProtoMsg(message: EventUpdateRule): EventUpdateRuleProtoMsg {
+  toProtoMsg(message: EventUpdateTemplate): EventUpdateTemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.EventUpdateRule",
-      value: EventUpdateRule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.EventUpdateTemplate",
+      value: EventUpdateTemplate.encode(message).finish()
     };
   }
 };
@@ -540,7 +540,7 @@ function createBaseEventActionVoted(): EventActionVoted {
   return {
     id: BigInt(0),
     participant: "",
-    vote: 0
+    voteType: 0
   };
 }
 export const EventActionVoted = {
@@ -552,8 +552,8 @@ export const EventActionVoted = {
     if (message.participant !== "") {
       writer.uint32(18).string(message.participant);
     }
-    if (message.vote !== 0) {
-      writer.uint32(24).int32(message.vote);
+    if (message.voteType !== 0) {
+      writer.uint32(24).int32(message.voteType);
     }
     return writer;
   },
@@ -571,7 +571,7 @@ export const EventActionVoted = {
           message.participant = reader.string();
           break;
         case 3:
-          message.vote = (reader.int32() as any);
+          message.voteType = (reader.int32() as any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -584,21 +584,21 @@ export const EventActionVoted = {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       participant: isSet(object.participant) ? String(object.participant) : "",
-      vote: isSet(object.vote) ? actionVoteTypeFromJSON(object.vote) : -1
+      voteType: isSet(object.voteType) ? actionVoteTypeFromJSON(object.voteType) : -1
     };
   },
   toJSON(message: EventActionVoted): JsonSafe<EventActionVoted> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.participant !== undefined && (obj.participant = message.participant);
-    message.vote !== undefined && (obj.vote = actionVoteTypeToJSON(message.vote));
+    message.voteType !== undefined && (obj.voteType = actionVoteTypeToJSON(message.voteType));
     return obj;
   },
   fromPartial(object: Partial<EventActionVoted>): EventActionVoted {
     const message = createBaseEventActionVoted();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.participant = object.participant ?? "";
-    message.vote = object.vote ?? 0;
+    message.voteType = object.voteType ?? 0;
     return message;
   },
   fromAmino(object: EventActionVotedAmino): EventActionVoted {
@@ -609,8 +609,8 @@ export const EventActionVoted = {
     if (object.participant !== undefined && object.participant !== null) {
       message.participant = object.participant;
     }
-    if (object.vote !== undefined && object.vote !== null) {
-      message.vote = object.vote;
+    if (object.vote_type !== undefined && object.vote_type !== null) {
+      message.voteType = object.vote_type;
     }
     return message;
   },
@@ -618,7 +618,7 @@ export const EventActionVoted = {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.participant = message.participant === "" ? undefined : message.participant;
-    obj.vote = message.vote === 0 ? undefined : message.vote;
+    obj.vote_type = message.voteType === 0 ? undefined : message.voteType;
     return obj;
   },
   fromAminoMsg(object: EventActionVotedAminoMsg): EventActionVoted {

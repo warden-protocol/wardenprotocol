@@ -19,6 +19,8 @@ export function useNewAction<Data>(msg: Msg<Data>) {
 			creator: address,
 			message: packAny(msg, data),
 			actionTimeoutHeight: BigInt(actionTimeoutHeight),
+			expectedApproveExpression: "any(1, warden.space.owners)",
+			expectedRejectExpression: "any(1, warden.space.owners)",
 		});
 
 	async function newAction(

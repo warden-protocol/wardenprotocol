@@ -69,7 +69,7 @@ The following steps show how to register a new Keychain entity on-chain.
          - `key_req`: A fee in aWARD for creating a key pair
          - `key_req`: A fee in aWARD for signing a transaction
     - `from`: Your local account name (key name)
-    - `chain-id`: The the ID of the chain you're running
+    - `chain-id`: The ID of the chain you're running
 
     **Note**: aWARD equals 0.000000000000000001 WARD.
 
@@ -116,7 +116,7 @@ To add a Keychain Writer, take these steps:
     virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick
     ```
 
-2. Note down the **mnemonic phrase** and the **address** of the new account. You'll need this information to to interact with the chain.
+2. Note down the **mnemonic phrase** and the **address** of the new account. You'll need this information to interact with the chain.
 
    :::tip
    Only the Keychain Writer address will be able to publish signatures and public keys on behalf of the Keychain.

@@ -59,7 +59,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
 
    Your key request ID will be returned in the `id` field of the output:
 
-   ```
+   ```bash
    id=1
    ```
 
@@ -109,7 +109,7 @@ When a user requests a new key, the Keychain signs a message with the private ke
 
 3. Export your signature request data:
 
-   ```   
+   ```bash
    export DATA=rx3uiUeGwwRgSgObBBRjyauN77OTQD6gPPLIWx64y/0= # replace with the actual data
    export SIGN_REQUEST_ID=1  # replace with the actual signature request ID
    ``` 

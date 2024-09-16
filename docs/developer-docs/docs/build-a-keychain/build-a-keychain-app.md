@@ -1,19 +1,19 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
-# Set up a basic Go app
+# Build a Keychain app
 
 ## Overview
 
-This guide explains how to build a basic Keychain application using the [Keychain SDK](../implementations/keychain-sdk).
+This guide explains how to build a basic Keychain application using the [Keychain SDK](implementations/keychain-sdk).
 
 ## Prerequisites
 
 - [Go](https://golang.org/dl/) 1.23 or later
 - `make`
 
-Before starting, you should also take the steps from this guide: [Create a Keychain](../operate-a-keychain/create-a-keychain).
+Before starting, you should also take the steps from this guide: [Create a Keychain](operate-a-keychain/create-a-keychain).
 
 ## 1. Scaffold a Go app
 
@@ -71,9 +71,9 @@ Before starting the app, you need to configure it. You'll find a basic configura
 
 Make the following adjustments in the code:
 
-- Replace `my-chain-id` with the chain ID you used when [running a node](../operate-a-keychain/create-a-keychain#1-run-a-node).
-- Replace `my-keychain-id` with your Keychain ID obtained when [registering a Keychain](../operate-a-keychain/create-a-keychain#2-register-a-keychain).
-- Replace `my-mnemonic-phrase` with the mnemonic phrase obtained when [adding a Keychain Writer](../operate-a-keychain/create-a-keychain#3-add-a-keychain-writer).
+- Replace `my-chain-id` with the chain ID you used when [running a node](operate-a-keychain/create-a-keychain#1-run-a-node).
+- Replace `my-keychain-id` with your Keychain ID obtained when [registering a Keychain](operate-a-keychain/create-a-keychain#2-register-a-keychain).
+- Replace `my-mnemonic-phrase` with the mnemonic phrase obtained when [adding a Keychain Writer](operate-a-keychain/create-a-keychain#3-add-a-keychain-writer).
 
 ```go
 package main

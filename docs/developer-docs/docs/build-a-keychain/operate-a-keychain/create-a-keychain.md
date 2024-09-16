@@ -144,4 +144,4 @@ The next steps depend on your goals:
 
 - To become an actual Keychain operator, [join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista) and create a Keychain there.
 - To start fulfilling key and signature requests, follow this guide: [Fulfill requests from CLI](fulfill-requests-from-cli).
-- To start building a Keychain service, follow [Set up a basic Go app](../build-a-keychain-service/set-up-a-basic-go-app).
+- To start building a Keychain service, follow [Build a Keychain app](../build-a-keychain-app).

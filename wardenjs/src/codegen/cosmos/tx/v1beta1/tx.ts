@@ -1742,7 +1742,7 @@ export const ModeInfo_Single = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.mode = (reader.int32() as any);
+          message.mode = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -2164,7 +2164,7 @@ export const AuxSignerData = {
           message.signDoc = SignDocDirectAux.decode(reader, reader.uint32());
           break;
         case 3:
-          message.mode = (reader.int32() as any);
+          message.mode = reader.int32() as any;
           break;
         case 4:
           message.sig = reader.bytes();

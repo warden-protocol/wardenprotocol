@@ -890,7 +890,7 @@ export const GetCurrencyPairMappingResponse = {
   encode(message: GetCurrencyPairMappingResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.currencyPairMapping).forEach(([key, value]) => {
       GetCurrencyPairMappingResponse_CurrencyPairMappingEntry.encode({
-        key: (key as any),
+        key: key as any,
         value
       }, writer.uint32(10).fork()).ldelim();
     });

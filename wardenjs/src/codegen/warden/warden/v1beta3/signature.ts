@@ -200,7 +200,7 @@ export const SignRequest = {
           message.dataForSigning = reader.bytes();
           break;
         case 5:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 6:
           message.signedData = reader.bytes();

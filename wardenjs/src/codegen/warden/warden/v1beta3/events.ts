@@ -1094,7 +1094,7 @@ export const EventNewKeyRequest = {
           message.rejectTemplateId = reader.uint64();
           break;
         case 6:
-          message.keyType = (reader.int32() as any);
+          message.keyType = reader.int32() as any;
           break;
         case 7:
           message.creator = reader.string();
@@ -1235,7 +1235,7 @@ export const EventNewKey = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.keyType = (reader.int32() as any);
+          message.keyType = reader.int32() as any;
           break;
         case 3:
           message.spaceId = reader.uint64();

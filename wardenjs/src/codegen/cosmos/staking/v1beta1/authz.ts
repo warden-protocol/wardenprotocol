@@ -182,7 +182,7 @@ export const StakeAuthorization = {
           message.denyList = StakeAuthorization_Validators.decode(reader, reader.uint32());
           break;
         case 4:
-          message.authorizationType = (reader.int32() as any);
+          message.authorizationType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);

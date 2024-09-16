@@ -22,9 +22,9 @@ export function useNewAction<Data>(msg: Msg<Data>, admin?: boolean) {
 
 	const approveSignTemplate = useTemplateById({
 		request: {
-			id: !admin
+			id: (!admin
 				? space?.approveSignTemplateId
-				: space?.approveAdminTemplateId,
+				: space?.approveAdminTemplateId)!,
 		},
 		options: {
 			enabled:

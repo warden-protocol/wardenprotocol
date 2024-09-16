@@ -1,12 +1,14 @@
 import type { StdSignDoc } from "@keplr-wallet/types";
 import { env } from "@/env";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
-import { useNewAction } from "./useAction";
 import { warden } from "@wardenprotocol/wardenjs";
 import { useEnqueueAction } from "@/features/actions/hooks";
+import { useNewAction } from "./useAction";
+import { useNonce } from "./useNonce";
 
 /** @deprecated todo rename */
 export function useKeychainSigner() {
+	const nonce = useNonce();
 	const { getMessage, authority } = useNewAction(
 		warden.warden.v1beta3.MsgNewSignRequest,
 	);
@@ -43,8 +45,10 @@ export function useKeychainSigner() {
 						.split("")
 						.map((c) => c.charCodeAt(0)),
 				),
-				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-				encryptionKey: undefined,
+				// fixme
+				encryptionKey: undefined as any,
+				maxKeychainFees: undefined as any,
+				nonce
 			},
 			{
 				pubkey: key.key.publicKey,

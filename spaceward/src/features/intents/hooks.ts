@@ -201,8 +201,6 @@ export const useRules = () => {
 				{
 					authority,
 					spaceId: BigInt(space.id),
-					adminTemplateId: BigInt(0),
-					signTemplateId: BigInt(0),
 					approveAdminTemplateId: BigInt(0),
 					approveSignTemplateId: BigInt(id),
 					rejectAdminTemplateId: BigInt(0),

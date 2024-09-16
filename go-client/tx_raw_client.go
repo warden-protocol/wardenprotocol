@@ -119,7 +119,11 @@ func (c *RawTxClient) BuildTx(
 		msgs[i] = m.Msg(c.Identity.Address.String())
 	}
 
-	gasLimit, err = c.EstimateGas(txBuilder, app, autoEstimateGas, gasAdjustmentFactor, gasLimit)
+	if err = txBuilder.SetMsgs(msgs...); err != nil {
+		return nil, fmt.Errorf("set msgs: %w", err)
+	}
+
+	gasLimit, err = c.EstimateGas(ctx, txBuilder, app, autoEstimateGas, gasAdjustmentFactor, gasLimit)
 	if err != nil {
 		return nil, fmt.Errorf("estimage gas: %w", err)
 	}
@@ -127,10 +131,6 @@ func (c *RawTxClient) BuildTx(
 	// build unsigned tx
 	txBuilder.SetGasLimit(gasLimit)
 	txBuilder.SetFeeAmount(fees)
-
-	if err = txBuilder.SetMsgs(msgs...); err != nil {
-		return nil, fmt.Errorf("set msgs: %w", err)
-	}
 
 	// First round: we gather all the signer infos. We use the "set empty
 	// signature" hack to do that.
@@ -229,6 +229,7 @@ func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
 // EstimateGas estimates gas by simulating the transaction when autoEstimateGas is set to true.
 // Otherwise, GasLimit is used.
 func (c *RawTxClient) EstimateGas(
+	ctx context.Context,
 	txBuilder client.TxBuilder,
 	app *app.App,
 	autoEstimateGas bool,
@@ -244,12 +245,14 @@ func (c *RawTxClient) EstimateGas(
 		return 0, fmt.Errorf("estimate gas, encode tx: %w", err)
 	}
 
-	gasInfo, _, err := app.Simulate(txBytes)
+	gasInfo, err := c.client.Simulate(ctx, &txtypes.SimulateRequest{
+		TxBytes: txBytes,
+	})
 	if err != nil {
 		return 0, fmt.Errorf("estimate gas, simulate tx: %w", err)
 	}
 
-	estimatedGas := uint64(float64(gasInfo.GasUsed) * gasAdjustmentFactor)
+	estimatedGas := uint64(float64(gasInfo.GasInfo.GasUsed) * gasAdjustmentFactor)
 
 	return min(estimatedGas, gasLimit), nil
 }

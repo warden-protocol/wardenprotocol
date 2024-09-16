@@ -9,14 +9,14 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-func TestSimulateRuleQuery(t *testing.T) {
+func TestSimulateTemplateQuery(t *testing.T) {
 	keeper, ctx := keepertest.ActKeeper(t)
 
-	response, err := keeper.SimulateRule(ctx, &types.QuerySimulateRuleRequest{Definition: "1 + 2 * 2 <= 5"})
+	response, err := keeper.SimulateTemplate(ctx, &types.QuerySimulateTemplateRequest{Definition: "1 + 2 * 2 <= 5"})
 
 	require.NoError(t, err)
-	require.Equal(t, &types.QuerySimulateRuleResponse{Evaluation: "true"}, response)
+	require.Equal(t, &types.QuerySimulateTemplateResponse{Evaluation: "true"}, response)
 
-	_, err = keeper.SimulateRule(ctx, &types.QuerySimulateRuleRequest{Definition: "1 + 2 * 2 <="})
+	_, err = keeper.SimulateTemplate(ctx, &types.QuerySimulateTemplateRequest{Definition: "1 + 2 * 2 <="})
 	require.Error(t, err)
 }

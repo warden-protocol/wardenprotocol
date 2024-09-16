@@ -211,23 +211,23 @@ func (m *QueryActionsResponse) GetActions() []Action {
 	return nil
 }
 
-type QueryRulesRequest struct {
+type QueryTemplatesRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	Creator    string             `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
-func (m *QueryRulesRequest) Reset()         { *m = QueryRulesRequest{} }
-func (m *QueryRulesRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryRulesRequest) ProtoMessage()    {}
-func (*QueryRulesRequest) Descriptor() ([]byte, []int) {
+func (m *QueryTemplatesRequest) Reset()         { *m = QueryTemplatesRequest{} }
+func (m *QueryTemplatesRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryTemplatesRequest) ProtoMessage()    {}
+func (*QueryTemplatesRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f7ace4ffc8dacc6b, []int{4}
 }
-func (m *QueryRulesRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryTemplatesRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRulesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryTemplatesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRulesRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryTemplatesRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -237,49 +237,49 @@ func (m *QueryRulesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *QueryRulesRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRulesRequest.Merge(m, src)
+func (m *QueryTemplatesRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryTemplatesRequest.Merge(m, src)
 }
-func (m *QueryRulesRequest) XXX_Size() int {
+func (m *QueryTemplatesRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRulesRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRulesRequest.DiscardUnknown(m)
+func (m *QueryTemplatesRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryTemplatesRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRulesRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryTemplatesRequest proto.InternalMessageInfo
 
-func (m *QueryRulesRequest) GetPagination() *query.PageRequest {
+func (m *QueryTemplatesRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QueryRulesRequest) GetCreator() string {
+func (m *QueryTemplatesRequest) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-type QueryRulesResponse struct {
+type QueryTemplatesResponse struct {
 	Pagination *query.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Rules      []Rule              `protobuf:"bytes,2,rep,name=rules,proto3" json:"rules"`
+	Templates  []Template          `protobuf:"bytes,2,rep,name=templates,proto3" json:"templates"`
 }
 
-func (m *QueryRulesResponse) Reset()         { *m = QueryRulesResponse{} }
-func (m *QueryRulesResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryRulesResponse) ProtoMessage()    {}
-func (*QueryRulesResponse) Descriptor() ([]byte, []int) {
+func (m *QueryTemplatesResponse) Reset()         { *m = QueryTemplatesResponse{} }
+func (m *QueryTemplatesResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryTemplatesResponse) ProtoMessage()    {}
+func (*QueryTemplatesResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f7ace4ffc8dacc6b, []int{5}
 }
-func (m *QueryRulesResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryTemplatesResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRulesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryTemplatesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRulesResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryTemplatesResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -289,49 +289,49 @@ func (m *QueryRulesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *QueryRulesResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRulesResponse.Merge(m, src)
+func (m *QueryTemplatesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryTemplatesResponse.Merge(m, src)
 }
-func (m *QueryRulesResponse) XXX_Size() int {
+func (m *QueryTemplatesResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRulesResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRulesResponse.DiscardUnknown(m)
+func (m *QueryTemplatesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryTemplatesResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRulesResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryTemplatesResponse proto.InternalMessageInfo
 
-func (m *QueryRulesResponse) GetPagination() *query.PageResponse {
+func (m *QueryTemplatesResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QueryRulesResponse) GetRules() []Rule {
+func (m *QueryTemplatesResponse) GetTemplates() []Template {
 	if m != nil {
-		return m.Rules
+		return m.Templates
 	}
 	return nil
 }
 
-type QuerySimulateRuleRequest struct {
+type QuerySimulateTemplateRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	Definition string             `protobuf:"bytes,2,opt,name=definition,proto3" json:"definition,omitempty"`
 }
 
-func (m *QuerySimulateRuleRequest) Reset()         { *m = QuerySimulateRuleRequest{} }
-func (m *QuerySimulateRuleRequest) String() string { return proto.CompactTextString(m) }
-func (*QuerySimulateRuleRequest) ProtoMessage()    {}
-func (*QuerySimulateRuleRequest) Descriptor() ([]byte, []int) {
+func (m *QuerySimulateTemplateRequest) Reset()         { *m = QuerySimulateTemplateRequest{} }
+func (m *QuerySimulateTemplateRequest) String() string { return proto.CompactTextString(m) }
+func (*QuerySimulateTemplateRequest) ProtoMessage()    {}
+func (*QuerySimulateTemplateRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f7ace4ffc8dacc6b, []int{6}
 }
-func (m *QuerySimulateRuleRequest) XXX_Unmarshal(b []byte) error {
+func (m *QuerySimulateTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QuerySimulateRuleRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QuerySimulateTemplateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QuerySimulateRuleRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QuerySimulateTemplateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -341,48 +341,48 @@ func (m *QuerySimulateRuleRequest) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QuerySimulateRuleRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QuerySimulateRuleRequest.Merge(m, src)
+func (m *QuerySimulateTemplateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QuerySimulateTemplateRequest.Merge(m, src)
 }
-func (m *QuerySimulateRuleRequest) XXX_Size() int {
+func (m *QuerySimulateTemplateRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QuerySimulateRuleRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QuerySimulateRuleRequest.DiscardUnknown(m)
+func (m *QuerySimulateTemplateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QuerySimulateTemplateRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QuerySimulateRuleRequest proto.InternalMessageInfo
+var xxx_messageInfo_QuerySimulateTemplateRequest proto.InternalMessageInfo
 
-func (m *QuerySimulateRuleRequest) GetPagination() *query.PageRequest {
+func (m *QuerySimulateTemplateRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QuerySimulateRuleRequest) GetDefinition() string {
+func (m *QuerySimulateTemplateRequest) GetDefinition() string {
 	if m != nil {
 		return m.Definition
 	}
 	return ""
 }
 
-type QuerySimulateRuleResponse struct {
+type QuerySimulateTemplateResponse struct {
 	Evaluation string `protobuf:"bytes,1,opt,name=evaluation,proto3" json:"evaluation,omitempty"`
 }
 
-func (m *QuerySimulateRuleResponse) Reset()         { *m = QuerySimulateRuleResponse{} }
-func (m *QuerySimulateRuleResponse) String() string { return proto.CompactTextString(m) }
-func (*QuerySimulateRuleResponse) ProtoMessage()    {}
-func (*QuerySimulateRuleResponse) Descriptor() ([]byte, []int) {
+func (m *QuerySimulateTemplateResponse) Reset()         { *m = QuerySimulateTemplateResponse{} }
+func (m *QuerySimulateTemplateResponse) String() string { return proto.CompactTextString(m) }
+func (*QuerySimulateTemplateResponse) ProtoMessage()    {}
+func (*QuerySimulateTemplateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f7ace4ffc8dacc6b, []int{7}
 }
-func (m *QuerySimulateRuleResponse) XXX_Unmarshal(b []byte) error {
+func (m *QuerySimulateTemplateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QuerySimulateRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QuerySimulateTemplateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QuerySimulateRuleResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QuerySimulateTemplateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -392,41 +392,41 @@ func (m *QuerySimulateRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *QuerySimulateRuleResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QuerySimulateRuleResponse.Merge(m, src)
+func (m *QuerySimulateTemplateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QuerySimulateTemplateResponse.Merge(m, src)
 }
-func (m *QuerySimulateRuleResponse) XXX_Size() int {
+func (m *QuerySimulateTemplateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QuerySimulateRuleResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QuerySimulateRuleResponse.DiscardUnknown(m)
+func (m *QuerySimulateTemplateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QuerySimulateTemplateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QuerySimulateRuleResponse proto.InternalMessageInfo
+var xxx_messageInfo_QuerySimulateTemplateResponse proto.InternalMessageInfo
 
-func (m *QuerySimulateRuleResponse) GetEvaluation() string {
+func (m *QuerySimulateTemplateResponse) GetEvaluation() string {
 	if m != nil {
 		return m.Evaluation
 	}
 	return ""
 }
 
-type QueryRuleByIdRequest struct {
+type QueryTemplateByIdRequest struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *QueryRuleByIdRequest) Reset()         { *m = QueryRuleByIdRequest{} }
-func (m *QueryRuleByIdRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryRuleByIdRequest) ProtoMessage()    {}
-func (*QueryRuleByIdRequest) Descriptor() ([]byte, []int) {
+func (m *QueryTemplateByIdRequest) Reset()         { *m = QueryTemplateByIdRequest{} }
+func (m *QueryTemplateByIdRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryTemplateByIdRequest) ProtoMessage()    {}
+func (*QueryTemplateByIdRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f7ace4ffc8dacc6b, []int{8}
 }
-func (m *QueryRuleByIdRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryTemplateByIdRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRuleByIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryTemplateByIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRuleByIdRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryTemplateByIdRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -436,41 +436,41 @@ func (m *QueryRuleByIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *QueryRuleByIdRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRuleByIdRequest.Merge(m, src)
+func (m *QueryTemplateByIdRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryTemplateByIdRequest.Merge(m, src)
 }
-func (m *QueryRuleByIdRequest) XXX_Size() int {
+func (m *QueryTemplateByIdRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRuleByIdRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRuleByIdRequest.DiscardUnknown(m)
+func (m *QueryTemplateByIdRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryTemplateByIdRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRuleByIdRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryTemplateByIdRequest proto.InternalMessageInfo
 
-func (m *QueryRuleByIdRequest) GetId() uint64 {
+func (m *QueryTemplateByIdRequest) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-type QueryRuleByIdResponse struct {
-	Rule *Rule `protobuf:"bytes,1,opt,name=rule,proto3" json:"rule,omitempty"`
+type QueryTemplateByIdResponse struct {
+	Template *Template `protobuf:"bytes,1,opt,name=template,proto3" json:"template,omitempty"`
 }
 
-func (m *QueryRuleByIdResponse) Reset()         { *m = QueryRuleByIdResponse{} }
-func (m *QueryRuleByIdResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryRuleByIdResponse) ProtoMessage()    {}
-func (*QueryRuleByIdResponse) Descriptor() ([]byte, []int) {
+func (m *QueryTemplateByIdResponse) Reset()         { *m = QueryTemplateByIdResponse{} }
+func (m *QueryTemplateByIdResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryTemplateByIdResponse) ProtoMessage()    {}
+func (*QueryTemplateByIdResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f7ace4ffc8dacc6b, []int{9}
 }
-func (m *QueryRuleByIdResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryTemplateByIdResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRuleByIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryTemplateByIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRuleByIdResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryTemplateByIdResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -480,21 +480,21 @@ func (m *QueryRuleByIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *QueryRuleByIdResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRuleByIdResponse.Merge(m, src)
+func (m *QueryTemplateByIdResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryTemplateByIdResponse.Merge(m, src)
 }
-func (m *QueryRuleByIdResponse) XXX_Size() int {
+func (m *QueryTemplateByIdResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRuleByIdResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRuleByIdResponse.DiscardUnknown(m)
+func (m *QueryTemplateByIdResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryTemplateByIdResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRuleByIdResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryTemplateByIdResponse proto.InternalMessageInfo
 
-func (m *QueryRuleByIdResponse) GetRule() *Rule {
+func (m *QueryTemplateByIdResponse) GetTemplate() *Template {
 	if m != nil {
-		return m.Rule
+		return m.Template
 	}
 	return nil
 }
@@ -704,12 +704,12 @@ func init() {
 	proto.RegisterType((*QueryParamsResponse)(nil), "warden.act.v1beta1.QueryParamsResponse")
 	proto.RegisterType((*QueryActionsRequest)(nil), "warden.act.v1beta1.QueryActionsRequest")
 	proto.RegisterType((*QueryActionsResponse)(nil), "warden.act.v1beta1.QueryActionsResponse")
-	proto.RegisterType((*QueryRulesRequest)(nil), "warden.act.v1beta1.QueryRulesRequest")
-	proto.RegisterType((*QueryRulesResponse)(nil), "warden.act.v1beta1.QueryRulesResponse")
-	proto.RegisterType((*QuerySimulateRuleRequest)(nil), "warden.act.v1beta1.QuerySimulateRuleRequest")
-	proto.RegisterType((*QuerySimulateRuleResponse)(nil), "warden.act.v1beta1.QuerySimulateRuleResponse")
-	proto.RegisterType((*QueryRuleByIdRequest)(nil), "warden.act.v1beta1.QueryRuleByIdRequest")
-	proto.RegisterType((*QueryRuleByIdResponse)(nil), "warden.act.v1beta1.QueryRuleByIdResponse")
+	proto.RegisterType((*QueryTemplatesRequest)(nil), "warden.act.v1beta1.QueryTemplatesRequest")
+	proto.RegisterType((*QueryTemplatesResponse)(nil), "warden.act.v1beta1.QueryTemplatesResponse")
+	proto.RegisterType((*QuerySimulateTemplateRequest)(nil), "warden.act.v1beta1.QuerySimulateTemplateRequest")
+	proto.RegisterType((*QuerySimulateTemplateResponse)(nil), "warden.act.v1beta1.QuerySimulateTemplateResponse")
+	proto.RegisterType((*QueryTemplateByIdRequest)(nil), "warden.act.v1beta1.QueryTemplateByIdRequest")
+	proto.RegisterType((*QueryTemplateByIdResponse)(nil), "warden.act.v1beta1.QueryTemplateByIdResponse")
 	proto.RegisterType((*QueryActionsByAddressRequest)(nil), "warden.act.v1beta1.QueryActionsByAddressRequest")
 	proto.RegisterType((*QueryActionsByAddressResponse)(nil), "warden.act.v1beta1.QueryActionsByAddressResponse")
 	proto.RegisterType((*QueryActionByIdRequest)(nil), "warden.act.v1beta1.QueryActionByIdRequest")
@@ -719,61 +719,61 @@ func init() {
 func init() { proto.RegisterFile("warden/act/v1beta1/query.proto", fileDescriptor_f7ace4ffc8dacc6b) }
 
 var fileDescriptor_f7ace4ffc8dacc6b = []byte{
-	// 849 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x56, 0xcf, 0x6b, 0x1b, 0x47,
-	0x14, 0xd6, 0xc8, 0xb6, 0x64, 0xbf, 0x16, 0x53, 0x4f, 0xdd, 0x56, 0x5e, 0xec, 0xb5, 0xba, 0xae,
-	0x25, 0xf9, 0x87, 0x76, 0x6b, 0xb5, 0x85, 0xd2, 0x42, 0xc1, 0xa6, 0x3f, 0xe8, 0xa1, 0x34, 0x59,
-	0xdf, 0x02, 0x89, 0x19, 0x69, 0xc7, 0xca, 0x82, 0xb4, 0x2b, 0xef, 0x0f, 0x27, 0x22, 0x97, 0x60,
-	0x72, 0xc8, 0x29, 0x84, 0x18, 0x42, 0x20, 0xd7, 0x9c, 0xf3, 0x37, 0xe4, 0xe8, 0xa3, 0x21, 0x97,
-	0x9c, 0x42, 0xb0, 0xf3, 0x87, 0x84, 0x9d, 0x79, 0x1b, 0xad, 0x65, 0x49, 0xeb, 0x80, 0x0e, 0xb9,
-	0x88, 0xdd, 0x99, 0xef, 0x7d, 0xef, 0x7b, 0xdf, 0xbc, 0x79, 0x2b, 0x50, 0xef, 0x30, 0xcf, 0xe2,
-	0x8e, 0xc1, 0x1a, 0x81, 0x71, 0xb8, 0x55, 0xe7, 0x01, 0xdb, 0x32, 0x0e, 0x42, 0xee, 0x75, 0xf5,
-	0x8e, 0xe7, 0x06, 0x2e, 0xa5, 0x72, 0x5f, 0x67, 0x8d, 0x40, 0xc7, 0x7d, 0x65, 0x8e, 0xb5, 0x6d,
-	0xc7, 0x35, 0xc4, 0xaf, 0x84, 0x29, 0xf3, 0x4d, 0xb7, 0xe9, 0x8a, 0x47, 0x23, 0x7a, 0xc2, 0xd5,
-	0xc5, 0xa6, 0xeb, 0x36, 0x5b, 0xdc, 0x60, 0x1d, 0xdb, 0x60, 0x8e, 0xe3, 0x06, 0x2c, 0xb0, 0x5d,
-	0xc7, 0xc7, 0xdd, 0x05, 0xdc, 0x15, 0x6f, 0xf5, 0x70, 0xdf, 0x60, 0x0e, 0x66, 0x55, 0xd6, 0x1b,
-	0xae, 0xdf, 0x76, 0x7d, 0xa3, 0xce, 0x7c, 0x2e, 0xe5, 0x7c, 0x14, 0xd7, 0x61, 0x4d, 0xdb, 0x11,
-	0x3c, 0x88, 0x5d, 0x1e, 0x50, 0x41, 0x87, 0x79, 0xac, 0xed, 0x8f, 0x00, 0xb0, 0x46, 0x82, 0x61,
-	0x69, 0x00, 0xc0, 0x0b, 0x5b, 0x5c, 0x6e, 0x6b, 0xf3, 0x40, 0xaf, 0x47, 0x12, 0xae, 0x09, 0x52,
-	0x93, 0x1f, 0x84, 0xdc, 0x0f, 0xb4, 0xff, 0xe1, 0xeb, 0x0b, 0xab, 0x7e, 0xc7, 0x75, 0x7c, 0x4e,
-	0x7f, 0x85, 0x9c, 0x4c, 0x5e, 0x20, 0x45, 0x52, 0xf9, 0xa2, 0xa6, 0xe8, 0x97, 0x0d, 0xd4, 0x65,
-	0xcc, 0xce, 0xe4, 0xc9, 0xdb, 0xe5, 0x8c, 0x89, 0x78, 0xed, 0x26, 0x12, 0x6e, 0x0b, 0x69, 0x71,
-	0x1e, 0xfa, 0x37, 0x40, 0xaf, 0x64, 0x24, 0x2d, 0xe9, 0xd2, 0x1f, 0x3d, 0xf2, 0x47, 0x97, 0xc7,
-	0xd5, 0xe3, 0x6e, 0x72, 0x8c, 0x35, 0x13, 0x91, 0xda, 0x73, 0x02, 0xf3, 0x17, 0xf9, 0x51, 0xf1,
-	0x3f, 0x03, 0x12, 0x94, 0x53, 0x13, 0xc8, 0xe0, 0x64, 0x06, 0xfa, 0x1b, 0xe4, 0xa5, 0xad, 0x7e,
-	0x21, 0x5b, 0x9c, 0x18, 0x56, 0xbb, 0x4c, 0x8f, 0xb5, 0xc7, 0x01, 0xda, 0x3d, 0x98, 0x13, 0xe2,
-	0xcc, 0xb0, 0xc5, 0xc7, 0x5d, 0x3a, 0x55, 0x21, 0xdf, 0xf0, 0x38, 0x0b, 0x5c, 0xaf, 0x90, 0x2d,
-	0x92, 0xca, 0x8c, 0x48, 0x4e, 0xcc, 0x78, 0x51, 0x3b, 0x26, 0x78, 0xc2, 0x98, 0x7d, 0xdc, 0xc6,
-	0xfc, 0x0c, 0x53, 0x51, 0x3b, 0xc5, 0xb6, 0x14, 0x06, 0xd9, 0x12, 0xa5, 0x46, 0x53, 0x24, 0x58,
-	0x3b, 0x22, 0x50, 0x10, 0xaa, 0x76, 0xed, 0x76, 0xd8, 0x62, 0x01, 0x8f, 0x20, 0xe3, 0xb7, 0x06,
-	0x2c, 0xbe, 0x6f, 0x3b, 0xb6, 0xe0, 0x11, 0xee, 0x98, 0x89, 0x15, 0xed, 0x77, 0x58, 0x18, 0xa0,
-	0x01, 0x0d, 0x52, 0x01, 0xf8, 0x21, 0x6b, 0x85, 0x3d, 0x11, 0x33, 0x66, 0x62, 0x45, 0x2b, 0x61,
-	0xc7, 0x89, 0xda, 0xba, 0xff, 0x5a, 0xb1, 0xf8, 0x59, 0xc8, 0xda, 0x96, 0xc0, 0x4f, 0x9a, 0x59,
-	0xdb, 0xd2, 0xfe, 0x82, 0x6f, 0xfa, 0x70, 0x98, 0x60, 0x13, 0x26, 0x23, 0x2f, 0xb0, 0xbe, 0xa1,
-	0xbe, 0x99, 0x02, 0xa5, 0xbd, 0x22, 0xb0, 0x98, 0xec, 0xf0, 0x9d, 0xee, 0xb6, 0x65, 0x79, 0xdc,
-	0x1f, 0x7b, 0x3f, 0x15, 0x20, 0xcf, 0x24, 0x33, 0x3a, 0x16, 0xbf, 0xd2, 0x3f, 0x20, 0xe7, 0x07,
-	0x2c, 0x08, 0xfd, 0xc2, 0x44, 0x91, 0x54, 0x66, 0x6b, 0xc5, 0xe1, 0x37, 0x60, 0x57, 0xe0, 0xb0,
-	0x15, 0x31, 0x4a, 0x7b, 0x41, 0x60, 0x69, 0x48, 0x09, 0x9f, 0xd3, 0x6d, 0xad, 0xc0, 0xb7, 0x09,
-	0x95, 0xa3, 0x8e, 0xf6, 0x3f, 0xf8, 0xee, 0x12, 0x12, 0x2b, 0xa9, 0x41, 0x4e, 0xf2, 0x8d, 0x9a,
-	0x94, 0x32, 0xce, 0x44, 0x64, 0xed, 0xc9, 0x34, 0x4c, 0x09, 0x3e, 0xfa, 0x80, 0x40, 0x4e, 0x8e,
-	0x51, 0x5a, 0x1a, 0x14, 0x78, 0x79, 0x62, 0x2b, 0xe5, 0x54, 0x9c, 0x54, 0xa6, 0xad, 0x1d, 0xbd,
-	0x7e, 0x7f, 0x9c, 0x5d, 0xa1, 0xdf, 0x1b, 0x32, 0x40, 0x7c, 0x06, 0x1a, 0x6e, 0xcb, 0x48, 0x7c,
-	0x27, 0xe4, 0xd0, 0xa6, 0x0f, 0x09, 0xe4, 0xf1, 0xac, 0xe8, 0x70, 0xfe, 0x8b, 0x23, 0x5d, 0xa9,
-	0xa4, 0x03, 0x51, 0xc9, 0xba, 0x50, 0xf2, 0x03, 0xd5, 0x46, 0x28, 0xc1, 0x43, 0xa1, 0xf7, 0x09,
-	0x4c, 0x89, 0x01, 0x46, 0x57, 0x87, 0xf2, 0x27, 0xc7, 0xab, 0x52, 0x4a, 0x83, 0xa1, 0x88, 0x8a,
-	0x10, 0xa1, 0xd1, 0xe2, 0x08, 0x11, 0x62, 0x64, 0xd1, 0x67, 0x04, 0xbe, 0x4c, 0x4e, 0x0a, 0xba,
-	0x39, 0x34, 0xc5, 0x80, 0xa1, 0xa6, 0x54, 0xaf, 0x88, 0x46, 0x5d, 0x1b, 0x42, 0xd7, 0x2a, 0x5d,
-	0x19, 0xa1, 0xcb, 0xc7, 0x40, 0xfa, 0x88, 0xc0, 0x74, 0x3c, 0x5f, 0x68, 0x65, 0x64, 0xe5, 0x89,
-	0x7e, 0x56, 0xd6, 0xae, 0x80, 0x44, 0x39, 0x55, 0x21, 0xa7, 0x4c, 0x57, 0x53, 0x6c, 0xda, 0xab,
-	0x77, 0xf7, 0x6c, 0x8b, 0xbe, 0x24, 0xf0, 0x55, 0xff, 0x2d, 0xa7, 0x3f, 0xa6, 0x75, 0x46, 0xff,
-	0x4c, 0x53, 0xb6, 0x3e, 0x21, 0x02, 0x85, 0xfe, 0x22, 0x84, 0x1a, 0xb4, 0x9a, 0xde, 0x54, 0x91,
-	0xd6, 0x78, 0xb6, 0x3d, 0x25, 0x00, 0xbd, 0x6b, 0x4c, 0xd7, 0x53, 0x12, 0x27, 0x5d, 0xdc, 0xb8,
-	0x12, 0x16, 0xe5, 0x19, 0x42, 0xde, 0x1a, 0x2d, 0xa7, 0xca, 0x93, 0x4e, 0xee, 0xdc, 0x3a, 0x39,
-	0x53, 0xc9, 0xe9, 0x99, 0x4a, 0xde, 0x9d, 0xa9, 0xe4, 0xf1, 0xb9, 0x9a, 0x39, 0x3d, 0x57, 0x33,
-	0x6f, 0xce, 0xd5, 0xcc, 0x8d, 0x3f, 0x9b, 0x76, 0x70, 0x3b, 0xac, 0xeb, 0x0d, 0xb7, 0x8d, 0xd1,
-	0xd5, 0x3e, 0xb6, 0x7e, 0xf2, 0xbb, 0x82, 0x3e, 0xe8, 0x76, 0xb8, 0x1f, 0xff, 0x15, 0xac, 0xe7,
-	0x04, 0xe8, 0xa7, 0x0f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x7e, 0xaf, 0x5f, 0xf1, 0x2b, 0x0b, 0x00,
-	0x00,
+	// 854 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x96, 0xcf, 0x6b, 0x1b, 0x47,
+	0x14, 0xc7, 0x35, 0xb2, 0x2b, 0x59, 0xaf, 0xc5, 0xb8, 0x53, 0xb7, 0x95, 0x17, 0x77, 0x2d, 0xaf,
+	0x5d, 0x5b, 0x92, 0xed, 0xdd, 0x4a, 0xa5, 0x50, 0x7a, 0x68, 0x6b, 0x51, 0x5a, 0x7a, 0x28, 0x6d,
+	0xd7, 0xed, 0xa5, 0xd0, 0x9a, 0x91, 0x76, 0xac, 0x2e, 0x48, 0xbb, 0xb2, 0x76, 0xe5, 0x56, 0xa7,
+	0x40, 0x08, 0x21, 0x47, 0x43, 0x20, 0x97, 0x40, 0x2e, 0xf1, 0x39, 0x7f, 0x42, 0xc8, 0xd1, 0x47,
+	0x43, 0x2e, 0x39, 0x85, 0x60, 0xe7, 0x0f, 0x09, 0x9a, 0x79, 0x2b, 0xad, 0x7e, 0xec, 0x4a, 0x01,
+	0x1d, 0x72, 0x31, 0xd2, 0xcc, 0xf7, 0xbd, 0xf7, 0x79, 0xdf, 0x99, 0x79, 0x32, 0xa8, 0xff, 0xb1,
+	0xb6, 0xc5, 0x1d, 0x83, 0xd5, 0x7c, 0xe3, 0xac, 0x54, 0xe5, 0x3e, 0x2b, 0x19, 0xa7, 0x1d, 0xde,
+	0xee, 0xea, 0xad, 0xb6, 0xeb, 0xbb, 0x94, 0xca, 0x7d, 0x9d, 0xd5, 0x7c, 0x1d, 0xf7, 0x95, 0x0f,
+	0x59, 0xd3, 0x76, 0x5c, 0x43, 0xfc, 0x95, 0x32, 0x65, 0xb5, 0xee, 0xd6, 0x5d, 0xf1, 0xd1, 0xe8,
+	0x7d, 0xc2, 0xd5, 0xf5, 0xba, 0xeb, 0xd6, 0x1b, 0xdc, 0x60, 0x2d, 0xdb, 0x60, 0x8e, 0xe3, 0xfa,
+	0xcc, 0xb7, 0x5d, 0xc7, 0xc3, 0xdd, 0x35, 0xdc, 0x15, 0xdf, 0xaa, 0x9d, 0x13, 0x83, 0x39, 0x58,
+	0x55, 0x29, 0xd6, 0x5c, 0xaf, 0xe9, 0x7a, 0x46, 0x95, 0x79, 0x5c, 0xe2, 0xf4, 0xe1, 0x5a, 0xac,
+	0x6e, 0x3b, 0x22, 0x0f, 0x6a, 0x37, 0x26, 0x74, 0xd0, 0x62, 0x6d, 0xd6, 0xf4, 0x62, 0x04, 0xac,
+	0x16, 0xca, 0xb0, 0x39, 0x41, 0xe0, 0xf3, 0x66, 0xab, 0xc1, 0x7c, 0x2e, 0x25, 0xda, 0x2a, 0xd0,
+	0xdf, 0x7b, 0x18, 0xbf, 0x89, 0xc4, 0x26, 0x3f, 0xed, 0x70, 0xcf, 0xd7, 0x7e, 0x85, 0x8f, 0x86,
+	0x56, 0xbd, 0x96, 0xeb, 0x78, 0x9c, 0x7e, 0x0d, 0x29, 0x09, 0x90, 0x25, 0x39, 0x92, 0x7f, 0xbf,
+	0xac, 0xe8, 0xe3, 0x26, 0xea, 0x32, 0xa6, 0xb2, 0x78, 0xf9, 0x72, 0x23, 0x61, 0xa2, 0x5e, 0xfb,
+	0x1b, 0x13, 0x1e, 0x0a, 0xbc, 0xa0, 0x0e, 0xfd, 0x11, 0x60, 0xd0, 0x36, 0x26, 0xdd, 0xd1, 0xa5,
+	0x47, 0x7a, 0xcf, 0x23, 0x5d, 0x1e, 0xd9, 0x20, 0x77, 0x9d, 0x63, 0xac, 0x19, 0x8a, 0xd4, 0x1e,
+	0x12, 0x58, 0x1d, 0xce, 0x8f, 0xc4, 0x3f, 0x4d, 0x28, 0xb0, 0x3b, 0xb5, 0x80, 0x0c, 0x0e, 0x57,
+	0xa0, 0xdf, 0x40, 0x5a, 0x5a, 0xeb, 0x65, 0x93, 0xb9, 0x85, 0xa8, 0xde, 0x65, 0x79, 0xec, 0x3d,
+	0x08, 0xd0, 0x6e, 0xc1, 0xc7, 0x02, 0xee, 0x0f, 0xb4, 0x7e, 0xde, 0xed, 0x53, 0x15, 0xd2, 0xb5,
+	0x36, 0x67, 0xbe, 0xdb, 0xce, 0x26, 0x73, 0x24, 0x9f, 0x11, 0x00, 0xc4, 0x0c, 0x16, 0xb5, 0xc7,
+	0x04, 0x3e, 0x19, 0x25, 0x98, 0xb7, 0x41, 0xdf, 0x43, 0x26, 0xb8, 0x5a, 0x81, 0x45, 0xeb, 0x93,
+	0x2c, 0x0a, 0x10, 0xd0, 0xa4, 0x41, 0x90, 0x76, 0x97, 0xc0, 0xba, 0xa0, 0x3c, 0xb2, 0x9b, 0x9d,
+	0xde, 0x52, 0x20, 0x9d, 0xbf, 0x5d, 0x60, 0xf1, 0x13, 0xdb, 0xb1, 0x45, 0x1e, 0xe1, 0x98, 0x19,
+	0x5a, 0xd1, 0xbe, 0x83, 0xcf, 0x22, 0x38, 0xd0, 0x34, 0x15, 0x80, 0x9f, 0xb1, 0x46, 0x67, 0x00,
+	0x92, 0x31, 0x43, 0x2b, 0x5a, 0x11, 0xb2, 0x43, 0x76, 0x57, 0xba, 0x3f, 0x5b, 0x41, 0x13, 0xcb,
+	0x90, 0xb4, 0x2d, 0x11, 0xb3, 0x68, 0x26, 0x6d, 0x4b, 0xfb, 0x13, 0xd6, 0x26, 0x68, 0xfb, 0x0f,
+	0x6e, 0x29, 0xf0, 0x07, 0xfb, 0x8d, 0xf5, 0xd4, 0xec, 0xab, 0xb5, 0x67, 0x81, 0x99, 0xf8, 0x22,
+	0x2a, 0xdd, 0x43, 0xcb, 0x6a, 0x73, 0x6f, 0xee, 0x77, 0x2f, 0x0b, 0x69, 0x26, 0x33, 0xa3, 0x93,
+	0xc1, 0x57, 0xfa, 0x2d, 0xa4, 0x3c, 0x9f, 0xf9, 0x1d, 0x2f, 0xbb, 0x90, 0x23, 0xf9, 0xe5, 0x72,
+	0x2e, 0xfa, 0xc5, 0x1c, 0x09, 0x1d, 0x5e, 0x5b, 0x8c, 0xd2, 0x2e, 0x08, 0x9e, 0xc3, 0x78, 0x0b,
+	0xef, 0xd2, 0xeb, 0xce, 0xe3, 0xdb, 0xc2, 0xdd, 0x98, 0xa3, 0xfe, 0x05, 0x3e, 0x1d, 0x53, 0x62,
+	0x27, 0x65, 0x48, 0xc9, 0x7c, 0x71, 0x93, 0x55, 0xc6, 0x99, 0xa8, 0x2c, 0x3f, 0x5d, 0x82, 0xf7,
+	0x44, 0x3e, 0x7a, 0x87, 0x40, 0x4a, 0x8e, 0x5d, 0xba, 0x33, 0x29, 0x70, 0x7c, 0xc2, 0x2b, 0xbb,
+	0x53, 0x75, 0x92, 0x4c, 0x2b, 0xdc, 0x7e, 0xfe, 0xfa, 0x7e, 0x72, 0x8b, 0x6e, 0x1a, 0x32, 0x40,
+	0xfc, 0x6c, 0xd4, 0xdc, 0x86, 0x11, 0xfa, 0x6d, 0x91, 0x43, 0x9e, 0xde, 0x23, 0x90, 0xc6, 0xb3,
+	0xa2, 0xd1, 0xf9, 0x87, 0x7f, 0x02, 0x94, 0xfc, 0x74, 0x21, 0x92, 0x14, 0x05, 0xc9, 0x36, 0xd5,
+	0x62, 0x48, 0xf0, 0x50, 0xe8, 0x39, 0x81, 0x4c, 0x7f, 0xd8, 0xd1, 0x42, 0x64, 0x8d, 0xd1, 0x91,
+	0xac, 0x14, 0x67, 0x91, 0x22, 0xd0, 0xbe, 0x00, 0xda, 0xa1, 0xdb, 0x31, 0x40, 0xfd, 0xf1, 0x46,
+	0x2f, 0x08, 0xac, 0x8c, 0x4e, 0x14, 0xfa, 0x45, 0x64, 0xb9, 0x88, 0x21, 0xa8, 0x94, 0xde, 0x22,
+	0x02, 0x39, 0xf7, 0x04, 0xe7, 0xe7, 0x74, 0x2b, 0x86, 0xd3, 0xc3, 0x60, 0xfa, 0x88, 0xc0, 0x07,
+	0xe1, 0x59, 0x44, 0xf7, 0xa7, 0x3a, 0x12, 0xba, 0xf3, 0xca, 0xc1, 0x8c, 0x6a, 0x44, 0x2b, 0x09,
+	0xb4, 0x3d, 0x5a, 0x98, 0xc1, 0xc2, 0xe3, 0x6a, 0xf7, 0xd8, 0xb6, 0xe8, 0x13, 0x02, 0x2b, 0xa3,
+	0x13, 0x21, 0xc6, 0xc7, 0x88, 0xf9, 0x17, 0xe3, 0x63, 0xd4, 0xb8, 0xd1, 0xbe, 0x12, 0xb0, 0x06,
+	0x3d, 0x98, 0x7e, 0x01, 0x7b, 0xac, 0xc1, 0x1c, 0x7c, 0x40, 0x00, 0x06, 0x4f, 0x9e, 0x16, 0xa7,
+	0x14, 0x0e, 0xbb, 0xb9, 0x37, 0x93, 0x16, 0xf1, 0x0c, 0x81, 0x57, 0xa0, 0xbb, 0x53, 0xf1, 0xa4,
+	0x93, 0x95, 0x7f, 0x2e, 0xaf, 0x55, 0x72, 0x75, 0xad, 0x92, 0x57, 0xd7, 0x2a, 0x39, 0xbf, 0x51,
+	0x13, 0x57, 0x37, 0x6a, 0xe2, 0xc5, 0x8d, 0x9a, 0xf8, 0xeb, 0x87, 0xba, 0xed, 0xff, 0xdb, 0xa9,
+	0xea, 0x35, 0xb7, 0x89, 0xd1, 0x07, 0x23, 0xd9, 0x46, 0x93, 0xff, 0x2f, 0x8f, 0xaa, 0xdb, 0xe2,
+	0x5e, 0xf0, 0xaf, 0x66, 0x35, 0x25, 0x44, 0x5f, 0xbe, 0x09, 0x00, 0x00, 0xff, 0xff, 0xf3, 0xb8,
+	0x8d, 0xac, 0x8b, 0x0b, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -792,12 +792,12 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a list of Actions items.
 	Actions(ctx context.Context, in *QueryActionsRequest, opts ...grpc.CallOption) (*QueryActionsResponse, error)
-	// Queries a list of Rules items.
-	Rules(ctx context.Context, in *QueryRulesRequest, opts ...grpc.CallOption) (*QueryRulesResponse, error)
-	// Queries to simulate a Rule
-	SimulateRule(ctx context.Context, in *QuerySimulateRuleRequest, opts ...grpc.CallOption) (*QuerySimulateRuleResponse, error)
-	// Queries a list of RuleById items.
-	RuleById(ctx context.Context, in *QueryRuleByIdRequest, opts ...grpc.CallOption) (*QueryRuleByIdResponse, error)
+	// Queries a list of Templates items.
+	Templates(ctx context.Context, in *QueryTemplatesRequest, opts ...grpc.CallOption) (*QueryTemplatesResponse, error)
+	// Queries to simulate a Template
+	SimulateTemplate(ctx context.Context, in *QuerySimulateTemplateRequest, opts ...grpc.CallOption) (*QuerySimulateTemplateResponse, error)
+	// Queries a list of TemplateById items.
+	TemplateById(ctx context.Context, in *QueryTemplateByIdRequest, opts ...grpc.CallOption) (*QueryTemplateByIdResponse, error)
 	// Queries a list of Actions items by one participant address.
 	ActionsByAddress(ctx context.Context, in *QueryActionsByAddressRequest, opts ...grpc.CallOption) (*QueryActionsByAddressResponse, error)
 	ActionById(ctx context.Context, in *QueryActionByIdRequest, opts ...grpc.CallOption) (*QueryActionByIdResponse, error)
@@ -829,27 +829,27 @@ func (c *queryClient) Actions(ctx context.Context, in *QueryActionsRequest, opts
 	return out, nil
 }
 
-func (c *queryClient) Rules(ctx context.Context, in *QueryRulesRequest, opts ...grpc.CallOption) (*QueryRulesResponse, error) {
-	out := new(QueryRulesResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Query/Rules", in, out, opts...)
+func (c *queryClient) Templates(ctx context.Context, in *QueryTemplatesRequest, opts ...grpc.CallOption) (*QueryTemplatesResponse, error) {
+	out := new(QueryTemplatesResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Query/Templates", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) SimulateRule(ctx context.Context, in *QuerySimulateRuleRequest, opts ...grpc.CallOption) (*QuerySimulateRuleResponse, error) {
-	out := new(QuerySimulateRuleResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Query/SimulateRule", in, out, opts...)
+func (c *queryClient) SimulateTemplate(ctx context.Context, in *QuerySimulateTemplateRequest, opts ...grpc.CallOption) (*QuerySimulateTemplateResponse, error) {
+	out := new(QuerySimulateTemplateResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Query/SimulateTemplate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) RuleById(ctx context.Context, in *QueryRuleByIdRequest, opts ...grpc.CallOption) (*QueryRuleByIdResponse, error) {
-	out := new(QueryRuleByIdResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Query/RuleById", in, out, opts...)
+func (c *queryClient) TemplateById(ctx context.Context, in *QueryTemplateByIdRequest, opts ...grpc.CallOption) (*QueryTemplateByIdResponse, error) {
+	out := new(QueryTemplateByIdResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Query/TemplateById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -880,12 +880,12 @@ type QueryServer interface {
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a list of Actions items.
 	Actions(context.Context, *QueryActionsRequest) (*QueryActionsResponse, error)
-	// Queries a list of Rules items.
-	Rules(context.Context, *QueryRulesRequest) (*QueryRulesResponse, error)
-	// Queries to simulate a Rule
-	SimulateRule(context.Context, *QuerySimulateRuleRequest) (*QuerySimulateRuleResponse, error)
-	// Queries a list of RuleById items.
-	RuleById(context.Context, *QueryRuleByIdRequest) (*QueryRuleByIdResponse, error)
+	// Queries a list of Templates items.
+	Templates(context.Context, *QueryTemplatesRequest) (*QueryTemplatesResponse, error)
+	// Queries to simulate a Template
+	SimulateTemplate(context.Context, *QuerySimulateTemplateRequest) (*QuerySimulateTemplateResponse, error)
+	// Queries a list of TemplateById items.
+	TemplateById(context.Context, *QueryTemplateByIdRequest) (*QueryTemplateByIdResponse, error)
 	// Queries a list of Actions items by one participant address.
 	ActionsByAddress(context.Context, *QueryActionsByAddressRequest) (*QueryActionsByAddressResponse, error)
 	ActionById(context.Context, *QueryActionByIdRequest) (*QueryActionByIdResponse, error)
@@ -901,14 +901,14 @@ func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsReq
 func (*UnimplementedQueryServer) Actions(ctx context.Context, req *QueryActionsRequest) (*QueryActionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Actions not implemented")
 }
-func (*UnimplementedQueryServer) Rules(ctx context.Context, req *QueryRulesRequest) (*QueryRulesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Rules not implemented")
+func (*UnimplementedQueryServer) Templates(ctx context.Context, req *QueryTemplatesRequest) (*QueryTemplatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Templates not implemented")
 }
-func (*UnimplementedQueryServer) SimulateRule(ctx context.Context, req *QuerySimulateRuleRequest) (*QuerySimulateRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SimulateRule not implemented")
+func (*UnimplementedQueryServer) SimulateTemplate(ctx context.Context, req *QuerySimulateTemplateRequest) (*QuerySimulateTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SimulateTemplate not implemented")
 }
-func (*UnimplementedQueryServer) RuleById(ctx context.Context, req *QueryRuleByIdRequest) (*QueryRuleByIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RuleById not implemented")
+func (*UnimplementedQueryServer) TemplateById(ctx context.Context, req *QueryTemplateByIdRequest) (*QueryTemplateByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TemplateById not implemented")
 }
 func (*UnimplementedQueryServer) ActionsByAddress(ctx context.Context, req *QueryActionsByAddressRequest) (*QueryActionsByAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActionsByAddress not implemented")
@@ -957,56 +957,56 @@ func _Query_Actions_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Rules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRulesRequest)
+func _Query_Templates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTemplatesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Rules(ctx, in)
+		return srv.(QueryServer).Templates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Query/Rules",
+		FullMethod: "/warden.act.v1beta1.Query/Templates",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Rules(ctx, req.(*QueryRulesRequest))
+		return srv.(QueryServer).Templates(ctx, req.(*QueryTemplatesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_SimulateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QuerySimulateRuleRequest)
+func _Query_SimulateTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySimulateTemplateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).SimulateRule(ctx, in)
+		return srv.(QueryServer).SimulateTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Query/SimulateRule",
+		FullMethod: "/warden.act.v1beta1.Query/SimulateTemplate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).SimulateRule(ctx, req.(*QuerySimulateRuleRequest))
+		return srv.(QueryServer).SimulateTemplate(ctx, req.(*QuerySimulateTemplateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_RuleById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRuleByIdRequest)
+func _Query_TemplateById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTemplateByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).RuleById(ctx, in)
+		return srv.(QueryServer).TemplateById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Query/RuleById",
+		FullMethod: "/warden.act.v1beta1.Query/TemplateById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).RuleById(ctx, req.(*QueryRuleByIdRequest))
+		return srv.(QueryServer).TemplateById(ctx, req.(*QueryTemplateByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1061,16 +1061,16 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Actions_Handler,
 		},
 		{
-			MethodName: "Rules",
-			Handler:    _Query_Rules_Handler,
+			MethodName: "Templates",
+			Handler:    _Query_Templates_Handler,
 		},
 		{
-			MethodName: "SimulateRule",
-			Handler:    _Query_SimulateRule_Handler,
+			MethodName: "SimulateTemplate",
+			Handler:    _Query_SimulateTemplate_Handler,
 		},
 		{
-			MethodName: "RuleById",
-			Handler:    _Query_RuleById_Handler,
+			MethodName: "TemplateById",
+			Handler:    _Query_TemplateById_Handler,
 		},
 		{
 			MethodName: "ActionsByAddress",
@@ -1225,7 +1225,7 @@ func (m *QueryActionsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRulesRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryTemplatesRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1235,12 +1235,12 @@ func (m *QueryRulesRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRulesRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryTemplatesRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRulesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryTemplatesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1267,7 +1267,7 @@ func (m *QueryRulesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRulesResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryTemplatesResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1277,20 +1277,20 @@ func (m *QueryRulesResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRulesResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryTemplatesResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRulesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryTemplatesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Rules) > 0 {
-		for iNdEx := len(m.Rules) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Templates) > 0 {
+		for iNdEx := len(m.Templates) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Rules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Templates[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1316,7 +1316,7 @@ func (m *QueryRulesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QuerySimulateRuleRequest) Marshal() (dAtA []byte, err error) {
+func (m *QuerySimulateTemplateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1326,12 +1326,12 @@ func (m *QuerySimulateRuleRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QuerySimulateRuleRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QuerySimulateTemplateRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QuerySimulateRuleRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QuerySimulateTemplateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1358,7 +1358,7 @@ func (m *QuerySimulateRuleRequest) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QuerySimulateRuleResponse) Marshal() (dAtA []byte, err error) {
+func (m *QuerySimulateTemplateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1368,12 +1368,12 @@ func (m *QuerySimulateRuleResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QuerySimulateRuleResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QuerySimulateTemplateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QuerySimulateRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QuerySimulateTemplateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1388,7 +1388,7 @@ func (m *QuerySimulateRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRuleByIdRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryTemplateByIdRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1398,12 +1398,12 @@ func (m *QueryRuleByIdRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRuleByIdRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryTemplateByIdRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRuleByIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryTemplateByIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1416,7 +1416,7 @@ func (m *QueryRuleByIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRuleByIdResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryTemplateByIdResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1426,19 +1426,19 @@ func (m *QueryRuleByIdResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRuleByIdResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryTemplateByIdResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRuleByIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryTemplateByIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Rule != nil {
+	if m.Template != nil {
 		{
-			size, err := m.Rule.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Template.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1673,7 +1673,7 @@ func (m *QueryActionsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryRulesRequest) Size() (n int) {
+func (m *QueryTemplatesRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1690,7 +1690,7 @@ func (m *QueryRulesRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryRulesResponse) Size() (n int) {
+func (m *QueryTemplatesResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1700,8 +1700,8 @@ func (m *QueryRulesResponse) Size() (n int) {
 		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	if len(m.Rules) > 0 {
-		for _, e := range m.Rules {
+	if len(m.Templates) > 0 {
+		for _, e := range m.Templates {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -1709,7 +1709,7 @@ func (m *QueryRulesResponse) Size() (n int) {
 	return n
 }
 
-func (m *QuerySimulateRuleRequest) Size() (n int) {
+func (m *QuerySimulateTemplateRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1726,7 +1726,7 @@ func (m *QuerySimulateRuleRequest) Size() (n int) {
 	return n
 }
 
-func (m *QuerySimulateRuleResponse) Size() (n int) {
+func (m *QuerySimulateTemplateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1739,7 +1739,7 @@ func (m *QuerySimulateRuleResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryRuleByIdRequest) Size() (n int) {
+func (m *QueryTemplateByIdRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1751,14 +1751,14 @@ func (m *QueryRuleByIdRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryRuleByIdResponse) Size() (n int) {
+func (m *QueryTemplateByIdResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Rule != nil {
-		l = m.Rule.Size()
+	if m.Template != nil {
+		l = m.Template.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
@@ -2173,7 +2173,7 @@ func (m *QueryActionsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRulesRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryTemplatesRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2196,10 +2196,10 @@ func (m *QueryRulesRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRulesRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryTemplatesRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRulesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryTemplatesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2291,7 +2291,7 @@ func (m *QueryRulesRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRulesResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryTemplatesResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2314,10 +2314,10 @@ func (m *QueryRulesResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRulesResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryTemplatesResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRulesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryTemplatesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2358,7 +2358,7 @@ func (m *QueryRulesResponse) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Rules", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Templates", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2385,8 +2385,8 @@ func (m *QueryRulesResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Rules = append(m.Rules, Rule{})
-			if err := m.Rules[len(m.Rules)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Templates = append(m.Templates, Template{})
+			if err := m.Templates[len(m.Templates)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -2411,7 +2411,7 @@ func (m *QueryRulesResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QuerySimulateRuleRequest) Unmarshal(dAtA []byte) error {
+func (m *QuerySimulateTemplateRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2434,10 +2434,10 @@ func (m *QuerySimulateRuleRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QuerySimulateRuleRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QuerySimulateTemplateRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QuerySimulateRuleRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QuerySimulateTemplateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2529,7 +2529,7 @@ func (m *QuerySimulateRuleRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QuerySimulateRuleResponse) Unmarshal(dAtA []byte) error {
+func (m *QuerySimulateTemplateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2552,10 +2552,10 @@ func (m *QuerySimulateRuleResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QuerySimulateRuleResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QuerySimulateTemplateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QuerySimulateRuleResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QuerySimulateTemplateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2611,7 +2611,7 @@ func (m *QuerySimulateRuleResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRuleByIdRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryTemplateByIdRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2634,10 +2634,10 @@ func (m *QueryRuleByIdRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRuleByIdRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryTemplateByIdRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRuleByIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryTemplateByIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2680,7 +2680,7 @@ func (m *QueryRuleByIdRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRuleByIdResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryTemplateByIdResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2703,15 +2703,15 @@ func (m *QueryRuleByIdResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRuleByIdResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryTemplateByIdResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRuleByIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryTemplateByIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Rule", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Template", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2738,10 +2738,10 @@ func (m *QueryRuleByIdResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Rule == nil {
-				m.Rule = &Rule{}
+			if m.Template == nil {
+				m.Template = &Template{}
 			}
-			if err := m.Rule.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Template.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

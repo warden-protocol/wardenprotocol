@@ -3,6 +3,7 @@ package wasm_interop
 import (
 	"encoding/json"
 	"fmt"
+
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -20,11 +21,12 @@ type WardenMsg struct {
 }
 
 type NewKeyRequest struct {
-	RuleId        uint64        `json:"rule_id"`
-	KeyType       types.KeyType `json:"key_type"`
-	KeychainID    uint64        `json:"keychain_id"`
-	SpaceID       uint64        `json:"space_id"`
-	TimeoutHeight uint64        `json:"timeout_height"`
+	ApproveTemplateId uint64        `json:"approve_template_id"`
+	RejectTemplateId  uint64        `json:"reject_template_id"`
+	KeyType           types.KeyType `json:"key_type"`
+	KeychainID        uint64        `json:"keychain_id"`
+	SpaceID           uint64        `json:"space_id"`
+	TimeoutHeight     uint64        `json:"timeout_height"`
 }
 
 type NewSignRequest struct {
@@ -55,11 +57,12 @@ func handleNewKeyRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.Ms
 	actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
 	newKeyRequest := msg.Warden.NewKeyRequest
 	newKeyMsg := &types.MsgNewKeyRequest{
-		Authority:  actAuthority.String(),
-		SpaceId:    newKeyRequest.SpaceID,
-		KeychainId: newKeyRequest.KeychainID,
-		KeyType:    newKeyRequest.KeyType,
-		RuleId:     newKeyRequest.RuleId,
+		Authority:         actAuthority.String(),
+		SpaceId:           newKeyRequest.SpaceID,
+		KeychainId:        newKeyRequest.KeychainID,
+		KeyType:           newKeyRequest.KeyType,
+		ApproveTemplateId: newKeyRequest.ApproveTemplateId,
+		RejectTemplateId:  newKeyRequest.RejectTemplateId,
 	}
 	msgAny, err := codectypes.NewAnyWithValue(newKeyMsg)
 	if err != nil {

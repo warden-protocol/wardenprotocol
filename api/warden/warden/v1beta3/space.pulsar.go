@@ -59,13 +59,15 @@ func (x *_Space_3_list) IsValid() bool {
 }
 
 var (
-	md_Space               protoreflect.MessageDescriptor
-	fd_Space_id            protoreflect.FieldDescriptor
-	fd_Space_creator       protoreflect.FieldDescriptor
-	fd_Space_owners        protoreflect.FieldDescriptor
-	fd_Space_admin_rule_id protoreflect.FieldDescriptor
-	fd_Space_sign_rule_id  protoreflect.FieldDescriptor
-	fd_Space_nonce         protoreflect.FieldDescriptor
+	md_Space                           protoreflect.MessageDescriptor
+	fd_Space_id                        protoreflect.FieldDescriptor
+	fd_Space_creator                   protoreflect.FieldDescriptor
+	fd_Space_owners                    protoreflect.FieldDescriptor
+	fd_Space_nonce                     protoreflect.FieldDescriptor
+	fd_Space_approve_admin_template_id protoreflect.FieldDescriptor
+	fd_Space_reject_admin_template_id  protoreflect.FieldDescriptor
+	fd_Space_approve_sign_template_id  protoreflect.FieldDescriptor
+	fd_Space_reject_sign_template_id   protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -74,9 +76,11 @@ func init() {
 	fd_Space_id = md_Space.Fields().ByName("id")
 	fd_Space_creator = md_Space.Fields().ByName("creator")
 	fd_Space_owners = md_Space.Fields().ByName("owners")
-	fd_Space_admin_rule_id = md_Space.Fields().ByName("admin_rule_id")
-	fd_Space_sign_rule_id = md_Space.Fields().ByName("sign_rule_id")
 	fd_Space_nonce = md_Space.Fields().ByName("nonce")
+	fd_Space_approve_admin_template_id = md_Space.Fields().ByName("approve_admin_template_id")
+	fd_Space_reject_admin_template_id = md_Space.Fields().ByName("reject_admin_template_id")
+	fd_Space_approve_sign_template_id = md_Space.Fields().ByName("approve_sign_template_id")
+	fd_Space_reject_sign_template_id = md_Space.Fields().ByName("reject_sign_template_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_Space)(nil)
@@ -162,21 +166,33 @@ func (x *fastReflection_Space) Range(f func(protoreflect.FieldDescriptor, protor
 			return
 		}
 	}
-	if x.AdminRuleId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.AdminRuleId)
-		if !f(fd_Space_admin_rule_id, value) {
-			return
-		}
-	}
-	if x.SignRuleId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.SignRuleId)
-		if !f(fd_Space_sign_rule_id, value) {
-			return
-		}
-	}
 	if x.Nonce != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Nonce)
 		if !f(fd_Space_nonce, value) {
+			return
+		}
+	}
+	if x.ApproveAdminTemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ApproveAdminTemplateId)
+		if !f(fd_Space_approve_admin_template_id, value) {
+			return
+		}
+	}
+	if x.RejectAdminTemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.RejectAdminTemplateId)
+		if !f(fd_Space_reject_admin_template_id, value) {
+			return
+		}
+	}
+	if x.ApproveSignTemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ApproveSignTemplateId)
+		if !f(fd_Space_approve_sign_template_id, value) {
+			return
+		}
+	}
+	if x.RejectSignTemplateId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.RejectSignTemplateId)
+		if !f(fd_Space_reject_sign_template_id, value) {
 			return
 		}
 	}
@@ -201,12 +217,16 @@ func (x *fastReflection_Space) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Creator != ""
 	case "warden.warden.v1beta3.Space.owners":
 		return len(x.Owners) != 0
-	case "warden.warden.v1beta3.Space.admin_rule_id":
-		return x.AdminRuleId != uint64(0)
-	case "warden.warden.v1beta3.Space.sign_rule_id":
-		return x.SignRuleId != uint64(0)
 	case "warden.warden.v1beta3.Space.nonce":
 		return x.Nonce != uint64(0)
+	case "warden.warden.v1beta3.Space.approve_admin_template_id":
+		return x.ApproveAdminTemplateId != uint64(0)
+	case "warden.warden.v1beta3.Space.reject_admin_template_id":
+		return x.RejectAdminTemplateId != uint64(0)
+	case "warden.warden.v1beta3.Space.approve_sign_template_id":
+		return x.ApproveSignTemplateId != uint64(0)
+	case "warden.warden.v1beta3.Space.reject_sign_template_id":
+		return x.RejectSignTemplateId != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -229,12 +249,16 @@ func (x *fastReflection_Space) Clear(fd protoreflect.FieldDescriptor) {
 		x.Creator = ""
 	case "warden.warden.v1beta3.Space.owners":
 		x.Owners = nil
-	case "warden.warden.v1beta3.Space.admin_rule_id":
-		x.AdminRuleId = uint64(0)
-	case "warden.warden.v1beta3.Space.sign_rule_id":
-		x.SignRuleId = uint64(0)
 	case "warden.warden.v1beta3.Space.nonce":
 		x.Nonce = uint64(0)
+	case "warden.warden.v1beta3.Space.approve_admin_template_id":
+		x.ApproveAdminTemplateId = uint64(0)
+	case "warden.warden.v1beta3.Space.reject_admin_template_id":
+		x.RejectAdminTemplateId = uint64(0)
+	case "warden.warden.v1beta3.Space.approve_sign_template_id":
+		x.ApproveSignTemplateId = uint64(0)
+	case "warden.warden.v1beta3.Space.reject_sign_template_id":
+		x.RejectSignTemplateId = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -263,14 +287,20 @@ func (x *fastReflection_Space) Get(descriptor protoreflect.FieldDescriptor) prot
 		}
 		listValue := &_Space_3_list{list: &x.Owners}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.warden.v1beta3.Space.admin_rule_id":
-		value := x.AdminRuleId
-		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta3.Space.sign_rule_id":
-		value := x.SignRuleId
-		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.v1beta3.Space.nonce":
 		value := x.Nonce
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.approve_admin_template_id":
+		value := x.ApproveAdminTemplateId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.reject_admin_template_id":
+		value := x.RejectAdminTemplateId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.approve_sign_template_id":
+		value := x.ApproveSignTemplateId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.v1beta3.Space.reject_sign_template_id":
+		value := x.RejectSignTemplateId
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
@@ -300,12 +330,16 @@ func (x *fastReflection_Space) Set(fd protoreflect.FieldDescriptor, value protor
 		lv := value.List()
 		clv := lv.(*_Space_3_list)
 		x.Owners = *clv.list
-	case "warden.warden.v1beta3.Space.admin_rule_id":
-		x.AdminRuleId = value.Uint()
-	case "warden.warden.v1beta3.Space.sign_rule_id":
-		x.SignRuleId = value.Uint()
 	case "warden.warden.v1beta3.Space.nonce":
 		x.Nonce = value.Uint()
+	case "warden.warden.v1beta3.Space.approve_admin_template_id":
+		x.ApproveAdminTemplateId = value.Uint()
+	case "warden.warden.v1beta3.Space.reject_admin_template_id":
+		x.RejectAdminTemplateId = value.Uint()
+	case "warden.warden.v1beta3.Space.approve_sign_template_id":
+		x.ApproveSignTemplateId = value.Uint()
+	case "warden.warden.v1beta3.Space.reject_sign_template_id":
+		x.RejectSignTemplateId = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -336,12 +370,16 @@ func (x *fastReflection_Space) Mutable(fd protoreflect.FieldDescriptor) protoref
 		panic(fmt.Errorf("field id of message warden.warden.v1beta3.Space is not mutable"))
 	case "warden.warden.v1beta3.Space.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.v1beta3.Space is not mutable"))
-	case "warden.warden.v1beta3.Space.admin_rule_id":
-		panic(fmt.Errorf("field admin_rule_id of message warden.warden.v1beta3.Space is not mutable"))
-	case "warden.warden.v1beta3.Space.sign_rule_id":
-		panic(fmt.Errorf("field sign_rule_id of message warden.warden.v1beta3.Space is not mutable"))
 	case "warden.warden.v1beta3.Space.nonce":
 		panic(fmt.Errorf("field nonce of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.approve_admin_template_id":
+		panic(fmt.Errorf("field approve_admin_template_id of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.reject_admin_template_id":
+		panic(fmt.Errorf("field reject_admin_template_id of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.approve_sign_template_id":
+		panic(fmt.Errorf("field approve_sign_template_id of message warden.warden.v1beta3.Space is not mutable"))
+	case "warden.warden.v1beta3.Space.reject_sign_template_id":
+		panic(fmt.Errorf("field reject_sign_template_id of message warden.warden.v1beta3.Space is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta3.Space"))
@@ -362,11 +400,15 @@ func (x *fastReflection_Space) NewField(fd protoreflect.FieldDescriptor) protore
 	case "warden.warden.v1beta3.Space.owners":
 		list := []string{}
 		return protoreflect.ValueOfList(&_Space_3_list{list: &list})
-	case "warden.warden.v1beta3.Space.admin_rule_id":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta3.Space.sign_rule_id":
-		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.v1beta3.Space.nonce":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.approve_admin_template_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.reject_admin_template_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.approve_sign_template_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.v1beta3.Space.reject_sign_template_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
@@ -450,14 +492,20 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if x.AdminRuleId != 0 {
-			n += 1 + runtime.Sov(uint64(x.AdminRuleId))
-		}
-		if x.SignRuleId != 0 {
-			n += 1 + runtime.Sov(uint64(x.SignRuleId))
-		}
 		if x.Nonce != 0 {
 			n += 1 + runtime.Sov(uint64(x.Nonce))
+		}
+		if x.ApproveAdminTemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.ApproveAdminTemplateId))
+		}
+		if x.RejectAdminTemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.RejectAdminTemplateId))
+		}
+		if x.ApproveSignTemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.ApproveSignTemplateId))
+		}
+		if x.RejectSignTemplateId != 0 {
+			n += 1 + runtime.Sov(uint64(x.RejectSignTemplateId))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -488,20 +536,30 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.Nonce != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.Nonce))
+		if x.RejectSignTemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.RejectSignTemplateId))
+			i--
+			dAtA[i] = 0x40
+		}
+		if x.ApproveSignTemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ApproveSignTemplateId))
 			i--
 			dAtA[i] = 0x38
 		}
-		if x.SignRuleId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.SignRuleId))
+		if x.RejectAdminTemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.RejectAdminTemplateId))
 			i--
 			dAtA[i] = 0x30
 		}
-		if x.AdminRuleId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.AdminRuleId))
+		if x.ApproveAdminTemplateId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ApproveAdminTemplateId))
 			i--
 			dAtA[i] = 0x28
+		}
+		if x.Nonce != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Nonce))
+			i--
+			dAtA[i] = 0x20
 		}
 		if len(x.Owners) > 0 {
 			for iNdEx := len(x.Owners) - 1; iNdEx >= 0; iNdEx-- {
@@ -656,45 +714,7 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 				}
 				x.Owners = append(x.Owners, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
-			case 5:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AdminRuleId", wireType)
-				}
-				x.AdminRuleId = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.AdminRuleId |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 6:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SignRuleId", wireType)
-				}
-				x.SignRuleId = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.SignRuleId |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 7:
+			case 4:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Nonce", wireType)
 				}
@@ -709,6 +729,82 @@ func (x *fastReflection_Space) ProtoMethods() *protoiface.Methods {
 					b := dAtA[iNdEx]
 					iNdEx++
 					x.Nonce |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 5:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ApproveAdminTemplateId", wireType)
+				}
+				x.ApproveAdminTemplateId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ApproveAdminTemplateId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 6:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RejectAdminTemplateId", wireType)
+				}
+				x.RejectAdminTemplateId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.RejectAdminTemplateId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 7:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ApproveSignTemplateId", wireType)
+				}
+				x.ApproveSignTemplateId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ApproveSignTemplateId |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 8:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RejectSignTemplateId", wireType)
+				}
+				x.RejectSignTemplateId = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.RejectSignTemplateId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -773,30 +869,52 @@ type Space struct {
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	// List of owners of the space.
 	Owners []string `protobuf:"bytes,3,rep,name=owners,proto3" json:"owners,omitempty"`
-	// Optional ID of the Rule to be applied to every *admin* operation.
-	// If not specified, the default Rule is used.
+	// Version of the space. Every time the Space is updated, this number gets increasead by one.
+	Nonce uint64 `protobuf:"varint,4,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	// Optional ID of the Template to be applied to every approve vote on *admin* operation.
+	// If not specified, the default Template is used.
 	//
 	// Admin operations are:
 	// - warden.warden.Msg.AddSpaceOwner
 	// - warden.warden.Msg.RemoveSpaceOwner
 	// - warden.warden.Msg.UpdateSpace
 	//
-	// The default Rule is to allow any operation when at least one of its
+	// The default Template is to allow any operation when at least one of its
 	// owner approves it.
-	AdminRuleId uint64 `protobuf:"varint,5,opt,name=admin_rule_id,json=adminRuleId,proto3" json:"admin_rule_id,omitempty"`
-	// Optional ID of the Rule to be applied to every *sign* operation.
-	// If not specified, the default Rule is used.
+	ApproveAdminTemplateId uint64 `protobuf:"varint,5,opt,name=approve_admin_template_id,json=approveAdminTemplateId,proto3" json:"approve_admin_template_id,omitempty"`
+	// Optional ID of the Template to be applied to every reject vote on *admin* operation.
+	// If not specified, the default Template is used.
+	//
+	// Admin operations are:
+	// - warden.warden.Msg.AddSpaceOwner
+	// - warden.warden.Msg.RemoveSpaceOwner
+	// - warden.warden.Msg.UpdateSpace
+	//
+	// The default Template is to allow any operation when at least one of its
+	// owner approves it.
+	RejectAdminTemplateId uint64 `protobuf:"varint,6,opt,name=reject_admin_template_id,json=rejectAdminTemplateId,proto3" json:"reject_admin_template_id,omitempty"`
+	// Optional ID of the Template to be applied to every approve vote on *sign* operation.
+	// If not specified, the default Template is used.
 	//
 	// Sign operations are:
 	// - warden.warden.Msg.NewKeyRequest
 	// - warden.warden.Msg.NewSignRequest
 	// - warden.warden.Msg.UpdateKey
 	//
-	// The default Rule is to allow any operation when at least one of its
+	// The default Template is to allow any operation when at least one of its
 	// owner approves it.
-	SignRuleId uint64 `protobuf:"varint,6,opt,name=sign_rule_id,json=signRuleId,proto3" json:"sign_rule_id,omitempty"`
-	// Version of the space. Every time the Space is updated, this number gets increasead by one.
-	Nonce uint64 `protobuf:"varint,7,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	ApproveSignTemplateId uint64 `protobuf:"varint,7,opt,name=approve_sign_template_id,json=approveSignTemplateId,proto3" json:"approve_sign_template_id,omitempty"`
+	// Optional ID of the Template to be applied to every reject vote on *sign* operation.
+	// If not specified, the default Template is used.
+	//
+	// Sign operations are:
+	// - warden.warden.Msg.NewKeyRequest
+	// - warden.warden.Msg.NewSignRequest
+	// - warden.warden.Msg.UpdateKey
+	//
+	// The default Template is to allow any operation when at least one of its
+	// owner approves it.
+	RejectSignTemplateId uint64 `protobuf:"varint,8,opt,name=reject_sign_template_id,json=rejectSignTemplateId,proto3" json:"reject_sign_template_id,omitempty"`
 }
 
 func (x *Space) Reset() {
@@ -840,23 +958,37 @@ func (x *Space) GetOwners() []string {
 	return nil
 }
 
-func (x *Space) GetAdminRuleId() uint64 {
-	if x != nil {
-		return x.AdminRuleId
-	}
-	return 0
-}
-
-func (x *Space) GetSignRuleId() uint64 {
-	if x != nil {
-		return x.SignRuleId
-	}
-	return 0
-}
-
 func (x *Space) GetNonce() uint64 {
 	if x != nil {
 		return x.Nonce
+	}
+	return 0
+}
+
+func (x *Space) GetApproveAdminTemplateId() uint64 {
+	if x != nil {
+		return x.ApproveAdminTemplateId
+	}
+	return 0
+}
+
+func (x *Space) GetRejectAdminTemplateId() uint64 {
+	if x != nil {
+		return x.RejectAdminTemplateId
+	}
+	return 0
+}
+
+func (x *Space) GetApproveSignTemplateId() uint64 {
+	if x != nil {
+		return x.ApproveSignTemplateId
+	}
+	return 0
+}
+
+func (x *Space) GetRejectSignTemplateId() uint64 {
+	if x != nil {
+		return x.RejectSignTemplateId
 	}
 	return 0
 }
@@ -867,33 +999,43 @@ var file_warden_warden_v1beta3_space_proto_rawDesc = []byte{
 	0x0a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
 	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x2f, 0x73, 0x70, 0x61, 0x63, 0x65, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x12, 0x15, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x22, 0xa5, 0x01, 0x0a, 0x05, 0x53,
+	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x22, 0xc3, 0x02, 0x0a, 0x05, 0x53,
 	0x70, 0x61, 0x63, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04,
 	0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18,
 	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16,
 	0x0a, 0x06, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06,
-	0x6f, 0x77, 0x6e, 0x65, 0x72, 0x73, 0x12, 0x22, 0x0a, 0x0d, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f,
-	0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x61,
-	0x64, 0x6d, 0x69, 0x6e, 0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x20, 0x0a, 0x0c, 0x73, 0x69,
-	0x67, 0x6e, 0x5f, 0x72, 0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04,
-	0x52, 0x0a, 0x73, 0x69, 0x67, 0x6e, 0x52, 0x75, 0x6c, 0x65, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05,
-	0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6e, 0x6f, 0x6e,
-	0x63, 0x65, 0x42, 0xf0, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33,
-	0x42, 0x0a, 0x53, 0x70, 0x61, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51,
-	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x33, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xca,
-	0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
-	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x5c,
-	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x77, 0x6e, 0x65, 0x72, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x12, 0x39, 0x0a, 0x19,
+	0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x5f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x74, 0x65,
+	0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x16, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x54, 0x65, 0x6d,
+	0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64, 0x12, 0x37, 0x0a, 0x18, 0x72, 0x65, 0x6a, 0x65, 0x63,
+	0x74, 0x5f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65,
+	0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x15, 0x72, 0x65, 0x6a, 0x65, 0x63,
+	0x74, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x54, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64,
+	0x12, 0x37, 0x0a, 0x18, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x5f, 0x73, 0x69, 0x67, 0x6e,
+	0x5f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x15, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x53, 0x69, 0x67, 0x6e, 0x54,
+	0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x17, 0x72, 0x65, 0x6a,
+	0x65, 0x63, 0x74, 0x5f, 0x73, 0x69, 0x67, 0x6e, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74,
+	0x65, 0x5f, 0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x04, 0x52, 0x14, 0x72, 0x65, 0x6a, 0x65,
+	0x63, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x54, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x49, 0x64,
+	0x42, 0xf0, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x42, 0x0a,
+	0x53, 0x70, 0x61, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x33, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xa2,
+	0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0xca, 0x02, 0x15,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x33, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x33, 0x5c, 0x47, 0x50,
+	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x33, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

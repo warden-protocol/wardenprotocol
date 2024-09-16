@@ -149,7 +149,6 @@ export interface ParamsRequestAminoMsg {
 export interface ParamsRequestSDKType {}
 /** ParamsResponse is the response type for the Query/Params RPC method. */
 export interface ParamsResponse {
-  /** ParamsResponse is the response type for the Query/Params RPC method. */
   params: Params;
 }
 export interface ParamsResponseProtoMsg {
@@ -158,7 +157,6 @@ export interface ParamsResponseProtoMsg {
 }
 /** ParamsResponse is the response type for the Query/Params RPC method. */
 export interface ParamsResponseAmino {
-  /** ParamsResponse is the response type for the Query/Params RPC method. */
   params?: ParamsAmino;
 }
 export interface ParamsResponseAminoMsg {
@@ -197,10 +195,6 @@ export interface LastUpdatedRequestSDKType {}
  * method.
  */
 export interface LastUpdatedResponse {
-  /**
-   * LastUpdatedResponse is the response type for the Query/LastUpdated RPC
-   * method.
-   */
   lastUpdated: bigint;
 }
 export interface LastUpdatedResponseProtoMsg {
@@ -212,10 +206,6 @@ export interface LastUpdatedResponseProtoMsg {
  * method.
  */
 export interface LastUpdatedResponseAmino {
-  /**
-   * LastUpdatedResponse is the response type for the Query/LastUpdated RPC
-   * method.
-   */
   last_updated?: string;
 }
 export interface LastUpdatedResponseAminoMsg {
@@ -367,7 +357,7 @@ export const MarketMapResponse = {
   toAmino(message: MarketMapResponse): MarketMapResponseAmino {
     const obj: any = {};
     obj.market_map = message.marketMap ? MarketMap.toAmino(message.marketMap) : undefined;
-    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated.toString() : undefined;
+    obj.last_updated = message.lastUpdated !== BigInt(0) ? (message.lastUpdated?.toString)() : undefined;
     obj.chain_id = message.chainId === "" ? undefined : message.chainId;
     return obj;
   },
@@ -774,7 +764,7 @@ export const LastUpdatedResponse = {
   },
   toAmino(message: LastUpdatedResponse): LastUpdatedResponseAmino {
     const obj: any = {};
-    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated.toString() : undefined;
+    obj.last_updated = message.lastUpdated !== BigInt(0) ? (message.lastUpdated?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: LastUpdatedResponseAminoMsg): LastUpdatedResponse {

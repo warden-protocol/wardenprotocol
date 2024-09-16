@@ -5,8 +5,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import type { IntentParams, SimpleIntent } from "@/types/intent";
 import { shieldStringify, validateAddressNumber } from "@/utils/shield";
 import { warden } from "@wardenprotocol/wardenjs";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { Rule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/rule";
+import { Template } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/template";
 import { useCallback, useMemo } from "react";
 import { useModalState } from "../modals/state";
 
@@ -48,10 +47,10 @@ export const useRules = () => {
 	const { spaceId } = useSpaceId();
 	const queryHooks = useQueryHooks();
 	const useSpaceById = queryHooks.warden.warden.v1beta3.useSpaceById;
-	const useRules = queryHooks.warden.act.v1beta1.useRules;
+	const useRules = queryHooks.warden.act.v1beta1.useTemplates;
 	const { tx } = useTx();
 
-	const { newRule: msgNewRule, updateRule: msgUpdateRule } =
+	const { newTemplate: msgNewRule, updateTemplate: msgUpdateRule } =
 		warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 	const newRule = useCallback(
@@ -132,28 +131,28 @@ export const useRules = () => {
 		?.space;
 
 	const { MsgUpdateSpace } = warden.warden.v1beta3;
-	const { newAction, authority } = useNewAction(MsgUpdateSpace);
+	const { newAction, authority } = useNewAction(MsgUpdateSpace, true);
 
 	const rules = useRules({
 		request: {
-			pagination: PageRequest.fromPartial({ limit: BigInt(100000) }),
+			creator: space?.creator,
+		},
+		options: {
+			enabled: Boolean(space?.creator),
 		},
 	});
 
-	/** @deprecated would be nice to query intent by creator or space */
-	const { rulesBySpace, rulesById } = useMemo(() => {
-		const rulesBySpace: Rule[] = [];
-		const rulesById: Record<string, Rule> = {};
+	const rulesBySpace = rules.data?.templates ?? [];
 
-		for (const rule of rules.data?.rules ?? []) {
-			if (rule.creator === space?.creator) {
-				rulesBySpace.push(rule);
-				rulesById[rule.id.toString()] = rule;
-			}
+	const rulesById = useMemo(() => {
+		const rulesById: Record<string, Template> = {};
+
+		for (const rule of rules.data?.templates ?? []) {
+			rulesById[rule.id.toString()] = rule;
 		}
 
-		return { rulesBySpace, rulesById };
-	}, [rules.data, space?.creator]);
+		return rulesById;
+	}, [rules.data]);
 
 	const setActiveRule = useCallback(
 		async (id: number) => {
@@ -169,7 +168,10 @@ export const useRules = () => {
 				const rule = rulesById[id.toString()];
 				validateAddressNumber(rule.expression);
 
-				if (space.signRuleId && space.signRuleId !== BigInt(id)) {
+				if (
+					space.approveSignTemplateId &&
+					space.approveSignTemplateId !== BigInt(id)
+				) {
 					let resolve: undefined | (() => void);
 					let reject: undefined | ((e: Error) => void);
 
@@ -199,8 +201,11 @@ export const useRules = () => {
 				{
 					authority,
 					spaceId: BigInt(space.id),
-					adminRuleId: BigInt(0),
-					signRuleId: BigInt(id),
+					approveAdminTemplateId: BigInt(0),
+					approveSignTemplateId: BigInt(id),
+					rejectAdminTemplateId: BigInt(0),
+					rejectSignTemplateId: BigInt(0),
+					nonce: space.nonce,
 				},
 				{},
 			);
@@ -213,6 +218,8 @@ export const useRules = () => {
 		updateRule,
 		setActiveRule,
 		rulesBySpace,
-		activeRuleId: space?.signRuleId ? Number(space.signRuleId) : undefined,
+		activeRuleId: space?.approveSignTemplateId
+			? Number(space.approveSignTemplateId)
+			: undefined,
 	};
 };

@@ -19,14 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName  = "/warden.act.v1beta1.Msg/UpdateParams"
-	Msg_NewAction_FullMethodName     = "/warden.act.v1beta1.Msg/NewAction"
-	Msg_ApproveAction_FullMethodName = "/warden.act.v1beta1.Msg/ApproveAction"
-	Msg_CheckAction_FullMethodName   = "/warden.act.v1beta1.Msg/CheckAction"
-	Msg_NewRule_FullMethodName       = "/warden.act.v1beta1.Msg/NewRule"
-	Msg_UpdateRule_FullMethodName    = "/warden.act.v1beta1.Msg/UpdateRule"
-	Msg_RevokeAction_FullMethodName  = "/warden.act.v1beta1.Msg/RevokeAction"
-	Msg_VoteForAction_FullMethodName = "/warden.act.v1beta1.Msg/VoteForAction"
+	Msg_UpdateParams_FullMethodName   = "/warden.act.v1beta1.Msg/UpdateParams"
+	Msg_NewAction_FullMethodName      = "/warden.act.v1beta1.Msg/NewAction"
+	Msg_CheckAction_FullMethodName    = "/warden.act.v1beta1.Msg/CheckAction"
+	Msg_NewTemplate_FullMethodName    = "/warden.act.v1beta1.Msg/NewTemplate"
+	Msg_UpdateTemplate_FullMethodName = "/warden.act.v1beta1.Msg/UpdateTemplate"
+	Msg_RevokeAction_FullMethodName   = "/warden.act.v1beta1.Msg/RevokeAction"
+	Msg_VoteForAction_FullMethodName  = "/warden.act.v1beta1.Msg/VoteForAction"
 )
 
 // MsgClient is the client API for Msg service.
@@ -38,14 +37,12 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// NewAction creates a new Action.
 	NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error)
-	// Add an approval to an existing Action.
-	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error)
-	// Create a new Rule.
-	NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error)
+	// Create a new Template.
+	NewTemplate(ctx context.Context, in *MsgNewTemplate, opts ...grpc.CallOption) (*MsgNewTemplateResponse, error)
 	// Update an existing act name and definition.
-	UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error)
+	UpdateTemplate(ctx context.Context, in *MsgUpdateTemplate, opts ...grpc.CallOption) (*MsgUpdateTemplateResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(ctx context.Context, in *MsgRevokeAction, opts ...grpc.CallOption) (*MsgRevokeActionResponse, error)
 	// Vote for or against a particular Action.
@@ -78,15 +75,6 @@ func (c *msgClient) NewAction(ctx context.Context, in *MsgNewAction, opts ...grp
 	return out, nil
 }
 
-func (c *msgClient) ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error) {
-	out := new(MsgApproveActionResponse)
-	err := c.cc.Invoke(ctx, Msg_ApproveAction_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *msgClient) CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error) {
 	out := new(MsgCheckActionResponse)
 	err := c.cc.Invoke(ctx, Msg_CheckAction_FullMethodName, in, out, opts...)
@@ -96,18 +84,18 @@ func (c *msgClient) CheckAction(ctx context.Context, in *MsgCheckAction, opts ..
 	return out, nil
 }
 
-func (c *msgClient) NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error) {
-	out := new(MsgNewRuleResponse)
-	err := c.cc.Invoke(ctx, Msg_NewRule_FullMethodName, in, out, opts...)
+func (c *msgClient) NewTemplate(ctx context.Context, in *MsgNewTemplate, opts ...grpc.CallOption) (*MsgNewTemplateResponse, error) {
+	out := new(MsgNewTemplateResponse)
+	err := c.cc.Invoke(ctx, Msg_NewTemplate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error) {
-	out := new(MsgUpdateRuleResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdateRule_FullMethodName, in, out, opts...)
+func (c *msgClient) UpdateTemplate(ctx context.Context, in *MsgUpdateTemplate, opts ...grpc.CallOption) (*MsgUpdateTemplateResponse, error) {
+	out := new(MsgUpdateTemplateResponse)
+	err := c.cc.Invoke(ctx, Msg_UpdateTemplate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -141,14 +129,12 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// NewAction creates a new Action.
 	NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error)
-	// Add an approval to an existing Action.
-	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error)
-	// Create a new Rule.
-	NewRule(context.Context, *MsgNewRule) (*MsgNewRuleResponse, error)
+	// Create a new Template.
+	NewTemplate(context.Context, *MsgNewTemplate) (*MsgNewTemplateResponse, error)
 	// Update an existing act name and definition.
-	UpdateRule(context.Context, *MsgUpdateRule) (*MsgUpdateRuleResponse, error)
+	UpdateTemplate(context.Context, *MsgUpdateTemplate) (*MsgUpdateTemplateResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error)
 	// Vote for or against a particular Action.
@@ -166,17 +152,14 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 func (UnimplementedMsgServer) NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewAction not implemented")
 }
-func (UnimplementedMsgServer) ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ApproveAction not implemented")
-}
 func (UnimplementedMsgServer) CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckAction not implemented")
 }
-func (UnimplementedMsgServer) NewRule(context.Context, *MsgNewRule) (*MsgNewRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewRule not implemented")
+func (UnimplementedMsgServer) NewTemplate(context.Context, *MsgNewTemplate) (*MsgNewTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewTemplate not implemented")
 }
-func (UnimplementedMsgServer) UpdateRule(context.Context, *MsgUpdateRule) (*MsgUpdateRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateRule not implemented")
+func (UnimplementedMsgServer) UpdateTemplate(context.Context, *MsgUpdateTemplate) (*MsgUpdateTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTemplate not implemented")
 }
 func (UnimplementedMsgServer) RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeAction not implemented")
@@ -233,24 +216,6 @@ func _Msg_NewAction_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_ApproveAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgApproveAction)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).ApproveAction(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_ApproveAction_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).ApproveAction(ctx, req.(*MsgApproveAction))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Msg_CheckAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgCheckAction)
 	if err := dec(in); err != nil {
@@ -269,38 +234,38 @@ func _Msg_CheckAction_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_NewRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgNewRule)
+func _Msg_NewTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).NewRule(ctx, in)
+		return srv.(MsgServer).NewTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_NewRule_FullMethodName,
+		FullMethod: Msg_NewTemplate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).NewRule(ctx, req.(*MsgNewRule))
+		return srv.(MsgServer).NewTemplate(ctx, req.(*MsgNewTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateRule)
+func _Msg_UpdateTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateRule(ctx, in)
+		return srv.(MsgServer).UpdateTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_UpdateRule_FullMethodName,
+		FullMethod: Msg_UpdateTemplate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateRule(ctx, req.(*MsgUpdateRule))
+		return srv.(MsgServer).UpdateTemplate(ctx, req.(*MsgUpdateTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -357,20 +322,16 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewAction_Handler,
 		},
 		{
-			MethodName: "ApproveAction",
-			Handler:    _Msg_ApproveAction_Handler,
-		},
-		{
 			MethodName: "CheckAction",
 			Handler:    _Msg_CheckAction_Handler,
 		},
 		{
-			MethodName: "NewRule",
-			Handler:    _Msg_NewRule_Handler,
+			MethodName: "NewTemplate",
+			Handler:    _Msg_NewTemplate_Handler,
 		},
 		{
-			MethodName: "UpdateRule",
-			Handler:    _Msg_UpdateRule_Handler,
+			MethodName: "UpdateTemplate",
+			Handler:    _Msg_UpdateTemplate_Handler,
 		},
 		{
 			MethodName: "RevokeAction",

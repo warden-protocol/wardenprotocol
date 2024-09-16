@@ -27,9 +27,6 @@ func Benchmark_QueryActionsByAddress(b *testing.B) {
 		_, err := k.ActionKeeper.New(
 			ctx,
 			&types.Action{
-				Rule: types.Rule{
-					Id: uint64(i),
-				},
 				Mentions: []string{
 					addr,
 				},

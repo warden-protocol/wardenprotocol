@@ -24,17 +24,14 @@ service Msg {
   // NewAction creates a new Action.
   rpc NewAction (MsgNewAction) returns (MsgNewActionResponse);
 
-  // Add an approval to an existing Action.
-  rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
-
   // Checks a pending action and executes it if its in a valid state.
   rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
 
-  // Create a new Rule.
-  rpc NewRule (MsgNewRule) returns (MsgNewRuleResponse);
+  // Create a new Template.
+  rpc NewTemplate (MsgNewTemplate) returns (MsgNewTemplateResponse);
 
   // Update an existing act name and definition.
-  rpc UpdateRule (MsgUpdateRule) returns (MsgUpdateRuleResponse);
+  rpc UpdateTemplate (MsgUpdateTemplate) returns (MsgUpdateTemplateResponse);
 
   // Revoke an existing Action while in pending state.
   rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
@@ -69,10 +66,10 @@ message MsgNewAction {
   google.protobuf.Any message = 2;
   // action_timeout_height is the block height up until this action can be executed.
   uint64 action_timeout_height = 3;
-  // expected_approve_expression is the expected approval expression the action is created with
-  .shield.ast.Expression expected_approve_expression = 4 [(gogoproto.nullable) = false];
-  // expected_reject_expression is the expected reject expression the action is created with
-  .shield.ast.Expression expected_reject_expression = 5 [(gogoproto.nullable) = false];
+  // expected_approve_expression is the definition of expected approval expression the action is created with
+  string expected_approve_expression = 4;
+  // expected_reject_expression is the definition of expected reject expression the action is created with
+  string expected_reject_expression = 5;
 }
 
 message MsgNewActionResponse {
@@ -80,28 +77,18 @@ message MsgNewActionResponse {
   uint64 id = 1;
 }
 
-message MsgApproveAction {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  uint64 action_id = 2;
-}
-
-message MsgApproveActionResponse {
-  string status = 1;
-}
-
-message MsgNewRule {
+message MsgNewTemplate {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string name = 2;
   string definition = 3;
 }
 
-message MsgNewRuleResponse {
+message MsgNewTemplateResponse {
   uint64 id = 1;
 }
 
-message MsgUpdateRule {
+message MsgUpdateTemplate {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 id = 2;
@@ -109,7 +96,7 @@ message MsgUpdateRule {
   string definition = 4;
 }
 
-message MsgUpdateRuleResponse {}
+message MsgUpdateTemplateResponse {}
 
 message MsgRevokeAction {
   option (cosmos.msg.v1.signer) = "creator";

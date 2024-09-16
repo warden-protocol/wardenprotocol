@@ -15,7 +15,7 @@ const getActionId = () =>
 	`${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
 
 const defaultFee: StdFee = {
-	gas: "200000",
+	gas: "220000",
 	amount: [{ denom: "award", amount: "250000000000000" }],
 };
 

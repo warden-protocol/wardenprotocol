@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useChain, walletContext } from "@cosmos-kit/react-lite";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
-import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { Action, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { useToast } from "@/components/ui/use-toast";
 
 import {
@@ -151,16 +151,21 @@ function ActionItem({ single, ...item }: ItemProps) {
 						}
 
 						const client = await getClient();
+						let action: Action | undefined;
 
-						const res = await client.warden.act.v1beta1.actionById({
-							id: item.actionId,
-						});
+						try {
+							const res = await client.warden.act.v1beta1.actionById({
+								id: item.actionId,
+							});
+
+							action = res.action;
+						} catch (e) {
+							console.error("failed to get action", e);
+						}
 
 						if (
-							res.action?.status === ActionStatus.ACTION_STATUS_COMPLETED
+							action?.status === ActionStatus.ACTION_STATUS_COMPLETED
 						) {
-							const { action } = res;
-
 							setData({
 								[item.id]: {
 									...item,
@@ -169,14 +174,30 @@ function ActionItem({ single, ...item }: ItemProps) {
 								},
 							});
 						} else if (
-							res.action?.status === ActionStatus.ACTION_STATUS_PENDING
+							action?.status === ActionStatus.ACTION_STATUS_PENDING
 						) {
 							timeout = setTimeout(
 								checkAction,
 								1000,
 							) as unknown as number;
+						} else if (action?.status === ActionStatus.ACTION_STATUS_REVOKED) {
+							console.error("action revoked", action);
+
+							toast({
+								title: "Failed",
+								description: "Action revoked",
+								duration: 10000,
+							});
+
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Failed,
+									action,
+								}
+							})
 						} else {
-							console.error("action failed", res);
+							console.error("action failed", action);
 
 							toast({
 								title: "Failed",
@@ -413,7 +434,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 	);
 }
 
-export default function ActionSidebar() {
+export default function StatusSidebar() {
 	const { data } = useActionsState();
 	const storeIds = Object.keys(data ?? {});
 

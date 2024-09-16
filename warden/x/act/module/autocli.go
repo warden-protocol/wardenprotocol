@@ -18,9 +18,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:     "Shows the parameters of the module",
 				},
 				{
-					RpcMethod: "Rules",
-					Use:       "rules",
-					Short:     "List all rules",
+					RpcMethod: "Templates",
+					Use:       "templates",
+					Short:     "List all templates",
 				},
 				// this line is used by ignite scaffolding # autocli/query
 			},

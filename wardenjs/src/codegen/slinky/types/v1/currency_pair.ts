@@ -7,8 +7,8 @@ import { JsonSafe } from "../../../json-safe.js";
  * (Base) is priced in terms of the other (Quote)
  */
 export interface CurrencyPair {
-  Base: string;
-  Quote: string;
+  base: string;
+  quote: string;
 }
 export interface CurrencyPairProtoMsg {
   typeUrl: "/slinky.types.v1.CurrencyPair";
@@ -36,18 +36,18 @@ export interface CurrencyPairSDKType {
 }
 function createBaseCurrencyPair(): CurrencyPair {
   return {
-    Base: "",
-    Quote: ""
+    base: "",
+    quote: ""
   };
 }
 export const CurrencyPair = {
   typeUrl: "/slinky.types.v1.CurrencyPair",
   encode(message: CurrencyPair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.Base !== "") {
-      writer.uint32(10).string(message.Base);
+    if (message.base !== "") {
+      writer.uint32(10).string(message.base);
     }
-    if (message.Quote !== "") {
-      writer.uint32(18).string(message.Quote);
+    if (message.quote !== "") {
+      writer.uint32(18).string(message.quote);
     }
     return writer;
   },
@@ -59,10 +59,10 @@ export const CurrencyPair = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.Base = reader.string();
+          message.base = reader.string();
           break;
         case 2:
-          message.Quote = reader.string();
+          message.quote = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -73,36 +73,36 @@ export const CurrencyPair = {
   },
   fromJSON(object: any): CurrencyPair {
     return {
-      Base: isSet(object.Base) ? String(object.Base) : "",
-      Quote: isSet(object.Quote) ? String(object.Quote) : ""
+      base: isSet(object.base) ? String(object.base) : "",
+      quote: isSet(object.quote) ? String(object.quote) : ""
     };
   },
   toJSON(message: CurrencyPair): JsonSafe<CurrencyPair> {
     const obj: any = {};
-    message.Base !== undefined && (obj.Base = message.Base);
-    message.Quote !== undefined && (obj.Quote = message.Quote);
+    message.base !== undefined && (obj.base = message.base);
+    message.quote !== undefined && (obj.quote = message.quote);
     return obj;
   },
   fromPartial(object: Partial<CurrencyPair>): CurrencyPair {
     const message = createBaseCurrencyPair();
-    message.Base = object.Base ?? "";
-    message.Quote = object.Quote ?? "";
+    message.base = object.base ?? "";
+    message.quote = object.quote ?? "";
     return message;
   },
   fromAmino(object: CurrencyPairAmino): CurrencyPair {
     const message = createBaseCurrencyPair();
     if (object.Base !== undefined && object.Base !== null) {
-      message.Base = object.Base;
+      message.base = object.Base;
     }
     if (object.Quote !== undefined && object.Quote !== null) {
-      message.Quote = object.Quote;
+      message.quote = object.Quote;
     }
     return message;
   },
   toAmino(message: CurrencyPair): CurrencyPairAmino {
     const obj: any = {};
-    obj.Base = message.Base === "" ? undefined : message.Base;
-    obj.Quote = message.Quote === "" ? undefined : message.Quote;
+    obj.Base = message.base === "" ? undefined : message.base;
+    obj.Quote = message.quote === "" ? undefined : message.quote;
     return obj;
   },
   fromAminoMsg(object: CurrencyPairAminoMsg): CurrencyPair {

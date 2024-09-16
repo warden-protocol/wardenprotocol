@@ -701,7 +701,7 @@ export const QueryProposalRequest = {
   },
   toAmino(message: QueryProposalRequest): QueryProposalRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryProposalRequestAminoMsg): QueryProposalRequest {
@@ -838,7 +838,7 @@ export const QueryProposalsRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalStatus = (reader.int32() as any);
+          message.proposalStatus = reader.int32() as any;
           break;
         case 2:
           message.voter = reader.string();
@@ -1092,7 +1092,7 @@ export const QueryVoteRequest = {
   },
   toAmino(message: QueryVoteRequest): QueryVoteRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     obj.voter = message.voter === "" ? undefined : message.voter;
     return obj;
   },
@@ -1264,7 +1264,7 @@ export const QueryVotesRequest = {
   },
   toAmino(message: QueryVotesRequest): QueryVotesRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1656,7 +1656,7 @@ export const QueryDepositRequest = {
   },
   toAmino(message: QueryDepositRequest): QueryDepositRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     obj.depositor = message.depositor === "" ? undefined : message.depositor;
     return obj;
   },
@@ -1828,7 +1828,7 @@ export const QueryDepositsRequest = {
   },
   toAmino(message: QueryDepositsRequest): QueryDepositsRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2007,7 +2007,7 @@ export const QueryTallyResultRequest = {
   },
   toAmino(message: QueryTallyResultRequest): QueryTallyResultRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryTallyResultRequestAminoMsg): QueryTallyResultRequest {

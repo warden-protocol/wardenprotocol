@@ -30,7 +30,7 @@ func (k msgServer) CheckAction(goCtx context.Context, msg *types.MsgCheckAction)
 		return &types.MsgCheckActionResponse{Status: act.Status.String()}, nil
 	}
 
-	if err := k.TryExecuteAction(ctx, &act); err != nil {
+	if err := k.TryExecuteVotedAction(ctx, &act); err != nil {
 		return nil, err
 	}
 

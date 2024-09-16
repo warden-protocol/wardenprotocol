@@ -96,7 +96,7 @@ When a user requests a new key, the Keychain signs a message with the private ke
 
 2. Get all signature requests:
 
-   ```
+   ```bash
    wardend q warden signature-requests --keychain-id $KEYCHAIN_ID
    ```
    

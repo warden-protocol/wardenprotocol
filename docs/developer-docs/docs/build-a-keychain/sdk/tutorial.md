@@ -144,16 +144,18 @@ Note that in a production environment, you'd need to implement actual logic for 
    }))
    
    app := keychain.NewApp(keychain.Config{
-       Logger:         logger,
-       ChainID:        "warden",
-       GRPCURL:        "localhost:9090",
-       GRPCInsecure:   true,
-       KeychainID:     1,
-       Mnemonic:       "zebra future seed foil jungle eyebrow rubber spatial measure auction unveil blue toy good lift audit    truth obvious voyage inspire gold rule year canyon",
-       DerivationPath: "m/44'/118'/0'/0/0",
-       GasLimit:       400000,
-       BatchInterval:  8 * time.Second,
-       BatchSize:      10,
+       Logger:              logger,
+       ChainID:             "warden",
+       GRPCURL:             "localhost:9090",
+       GRPCInsecure:        true,
+       KeychainID:          1,
+       Mnemonic:            "zebra future seed foil jungle eyebrow rubber spatial measure auction unveil blue toy good lift audit    truth obvious voyage inspire gold rule year canyon",
+       DerivationPath:      "m/44'/118'/0'/0/0",
+       GasLimit:            400000,
+       AutoEstimateGas:     false,
+       GasAdjustmentFactor: 1.2,
+       BatchInterval:       8 * time.Second,
+       BatchSize:           10,
    })
    
    app.SetKeyRequestHandler(handleKeyRequest)
@@ -297,15 +299,17 @@ Now, let us write a test to test our previously written function.
    mnemonic := "zebra future seed foil jungle eyebrow rubber spatial measure auction unveil blue toy good lift audit truth    obvious voyage inspire gold rule year canyon"
    
    app := keychain.NewApp(keychain.Config{
-       ChainID:        "warden",
-       GRPCURL:        "localhost:9090",
-       GRPCInsecure:   true,
-       KeychainID:     1,
-       Mnemonic:       mnemonic,
-       DerivationPath: "m/44'/118'/0'/0/0",
-       GasLimit:       400000,
-       BatchInterval:  8 * time.Second,
-       BatchSize:      10,
+       ChainID:             "warden",
+       GRPCURL:             "localhost:9090",
+       GRPCInsecure:        true,
+       KeychainID:          1,
+       Mnemonic:            mnemonic,
+       DerivationPath:      "m/44'/118'/0'/0/0",
+       GasLimit:            400000,
+       AutoEstimateGas:     false,
+       GasAdjustmentFactor: 1.2,
+       BatchInterval:       8 * time.Second,
+       BatchSize:           10,
    })
    
    t.Logf("Setting up the Keychain app with mnemonic: %s", mnemonic)

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client"
 	"os"
 	"strings"
 	"time"
@@ -23,8 +24,9 @@ import (
 )
 
 var (
-	DefaultGasLimit = uint64(300000000000000000)
-	DefaultFees     = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
+	DefaultGasLimit            = uint64(300000000000000000)
+	DefaultGasAdjustmentFactor = 1.2
+	DefaultFees                = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
 
 	queryTimeout = 250 * time.Millisecond
 )
@@ -73,7 +75,14 @@ type Msger interface {
 
 // Build a transaction with the given messages and sign it.
 // Sequence and account numbers will be fetched automatically from the chain.
-func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgers ...Msger) ([]byte, error) {
+func (c *RawTxClient) BuildTx(
+	ctx context.Context,
+	autoEstimateGas bool,
+	gasAdjustmentFactor float64,
+	gasLimit uint64,
+	fees types.Coins,
+	msgers ...Msger,
+) ([]byte, error) {
 	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
 		return nil, fmt.Errorf("fetch account: %w", err)
@@ -86,8 +95,10 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	if err != nil {
 		return nil, fmt.Errorf("create temp dir: %w", err)
 	}
+
 	defer os.RemoveAll(dname)
 	appConfig.Set(flags.FlagHome, dname)
+
 	app, err := app.New(
 		log.NewNopLogger(),
 		db.NewMemDB(),
@@ -103,14 +114,19 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	txBuilder := app.TxConfig().NewTxBuilder()
 	signMode := app.TxConfig().SignModeHandler().DefaultMode()
 
-	// build unsigned tx
-	txBuilder.SetGasLimit(gasLimit)
-	txBuilder.SetFeeAmount(fees)
-
 	msgs := make([]sdk.Msg, len(msgers))
 	for i, m := range msgers {
 		msgs[i] = m.Msg(c.Identity.Address.String())
 	}
+
+	gasLimit, err = c.EstimateGas(txBuilder, app, autoEstimateGas, gasAdjustmentFactor, gasLimit)
+	if err != nil {
+		return nil, fmt.Errorf("estimage gas: %w", err)
+	}
+
+	// build unsigned tx
+	txBuilder.SetGasLimit(gasLimit)
+	txBuilder.SetFeeAmount(fees)
 
 	if err = txBuilder.SetMsgs(msgs...); err != nil {
 		return nil, fmt.Errorf("set msgs: %w", err)
@@ -208,4 +224,32 @@ func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
 			}
 		}
 	}
+}
+
+// EstimateGas estimates gas by simulating the transaction when autoEstimateGas is set to true.
+// Otherwise, GasLimit is used.
+func (c *RawTxClient) EstimateGas(
+	txBuilder client.TxBuilder,
+	app *app.App,
+	autoEstimateGas bool,
+	gasAdjustmentFactor float64,
+	gasLimit uint64,
+) (uint64, error) {
+	if !autoEstimateGas {
+		return gasLimit, nil
+	}
+
+	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+	if err != nil {
+		return 0, fmt.Errorf("estimate gas, encode tx: %w", err)
+	}
+
+	gasInfo, _, err := app.Simulate(txBytes)
+	if err != nil {
+		return 0, fmt.Errorf("estimate gas, simulate tx: %w", err)
+	}
+
+	estimatedGas := uint64(float64(gasInfo.GasUsed) * gasAdjustmentFactor)
+
+	return min(estimatedGas, gasLimit), nil
 }

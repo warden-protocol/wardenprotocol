@@ -208,9 +208,11 @@ func main() {
         DerivationPath: "m/44'/60'/0'/0/0",
 
         // setup throughput for batching responses
-        GasLimit:     400000,
-        BatchTimeout: 8 * time.Second,
-        BatchSize:    10,
+        GasLimit:            400000,
+        AutoEstimateGas:     false,
+		GasAdjustmentFactor: 1.2,
+        BatchTimeout:        8 * time.Second,
+        BatchSize:           10,
     })
 }
 ```

@@ -59,7 +59,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
 
    Your key request ID will be returned in the `id` field of the output:
 
-   ```bash
+   ```json
    id=1
    ```
 

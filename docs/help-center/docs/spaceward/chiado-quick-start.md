@@ -2,15 +2,13 @@
 sidebar_position: 2
 ---
 
-# Buenavista quick start
+# Chiado quick start
 
 ## Overview
 
-Welcome to **SpaceWard**, your all-in-one platform for managing wallets, exploring Omnichain Applications (OApps) and decentralized applications (dApps), and navigating the vibrant world of blockchain. 
+Welcome to **SpaceWard**, your all-in-one platform for managing wallets and exploring decentralized applications (dApps).
 
-Operating on the **Buenavista Testnet**, SpaceWard offers users a streamlined experience to interact with the **Sepolia Network**. Buenavista Testnet provides a secure environment for testing SpaceWard functionality and unleashing the potential of blockchain technology without real-world risks.
-
-Get ready to embark on an exciting journey into the future of decentralized finance and innovation!
+SpaceWard operates on our new and improved testnet, **Chiado**. You can test SpaceWard functionality and interact with the **Sepolia** network in a secure environment, without real-world risks.
 
 :::warning
 - This is a **testnet environment**. It's aimed for testing and can break at any time due to unforeseen circumstances.
@@ -26,7 +24,7 @@ The following is a brief overview explaining how to start using SpaceWard. For m
     - 👉 [Keplr](https://www.keplr.app/download)
     - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension)
 
-2. 👉 [Connect your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/), click **Connect**, and follow the prompts.
+2. 👉 [Connect your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.chiado.wardenprotocol.org/), click **Connect**, and follow the prompts.
 
 3. 👉 [Get test WARD](get-test-ward): Click **Get WARD**. You'll be redirected to a faucet where you can get some WARD.
 

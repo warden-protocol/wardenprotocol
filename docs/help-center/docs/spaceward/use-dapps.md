@@ -54,7 +54,7 @@ The Warden Protocol is in the testnet phase, so you have to use MetaMask Flask. 
 
 ### Integrate
 
-1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org). If it's your first time, see the [Quick start guide](chiado-quick-start).
 2. On the right panel, click the MetaMask logo and then **Install Snap**.
 3. When your MetaMask Flask wallet opens, accept the installation prompt.
 4. In the left menu, navigate to **Keys**.

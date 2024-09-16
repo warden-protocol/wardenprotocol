@@ -6,7 +6,7 @@ sidebar_position: 4
 
 To conduct transactions on Warden using SpaceWard or any other wallet, get **test WARD tokens** from our faucet.
 
-After you connect a wallet for the first time, SpaceWard will prompt you to get some WARD, as shown in the [Quick start guide](buenavista-quick-start).
+After you connect a wallet for the first time, SpaceWard will prompt you to get some WARD, as shown in the [Quick start guide](chiado-quick-start).
 
 If you wish to get more WARD after that, take these steps:
 

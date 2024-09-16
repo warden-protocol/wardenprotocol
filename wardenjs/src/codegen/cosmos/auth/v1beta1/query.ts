@@ -142,7 +142,7 @@ export interface QueryParamsResponseSDKType {
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
 export interface QueryAccountResponse {
   /** account defines the account of the corresponding address. */
-  account?: (BaseAccount & Any) | undefined;
+  account?: BaseAccount & Any | undefined;
 }
 export interface QueryAccountResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse";
@@ -404,7 +404,7 @@ export const QueryAccountsResponse = {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse",
   encode(message: QueryAccountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.accounts) {
-      Any.encode((v! as Any), writer.uint32(10).fork()).ldelim();
+      Any.encode(v! as Any, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
@@ -419,7 +419,7 @@ export const QueryAccountsResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accounts.push((Any.decode(reader, reader.uint32()) as Any));
+          message.accounts.push(Any.decode(reader, reader.uint32()) as Any);
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -464,7 +464,7 @@ export const QueryAccountsResponse = {
   toAmino(message: QueryAccountsResponse): QueryAccountsResponseAmino {
     const obj: any = {};
     if (message.accounts) {
-      obj.accounts = message.accounts.map(e => e ? Cosmos_authAccountI_ToAmino((e as Any)) : undefined);
+      obj.accounts = message.accounts.map(e => e ? Cosmos_authAccountI_ToAmino(e as Any) : undefined);
     } else {
       obj.accounts = message.accounts;
     }
@@ -723,7 +723,7 @@ export const QueryAccountResponse = {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse",
   encode(message: QueryAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== undefined) {
-      Any.encode((message.account as Any), writer.uint32(10).fork()).ldelim();
+      Any.encode(message.account as Any, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -735,7 +735,7 @@ export const QueryAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.account = (Cosmos_authAccountI_InterfaceDecoder(reader) as Any);
+          message.account = Cosmos_authAccountI_InterfaceDecoder(reader) as Any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -768,7 +768,7 @@ export const QueryAccountResponse = {
   },
   toAmino(message: QueryAccountResponse): QueryAccountResponseAmino {
     const obj: any = {};
-    obj.account = message.account ? Cosmos_authAccountI_ToAmino((message.account as Any)) : undefined;
+    obj.account = message.account ? Cosmos_authAccountI_ToAmino(message.account as Any) : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryAccountResponseAminoMsg): QueryAccountResponse {
@@ -865,7 +865,7 @@ export const QueryModuleAccountsResponse = {
   typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsResponse",
   encode(message: QueryModuleAccountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.accounts) {
-      Any.encode((v! as Any), writer.uint32(10).fork()).ldelim();
+      Any.encode(v! as Any, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -877,7 +877,7 @@ export const QueryModuleAccountsResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accounts.push((Any.decode(reader, reader.uint32()) as Any));
+          message.accounts.push(Any.decode(reader, reader.uint32()) as Any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -913,7 +913,7 @@ export const QueryModuleAccountsResponse = {
   toAmino(message: QueryModuleAccountsResponse): QueryModuleAccountsResponseAmino {
     const obj: any = {};
     if (message.accounts) {
-      obj.accounts = message.accounts.map(e => e ? Cosmos_authModuleAccountI_ToAmino((e as Any)) : undefined);
+      obj.accounts = message.accounts.map(e => e ? Cosmos_authModuleAccountI_ToAmino(e as Any) : undefined);
     } else {
       obj.accounts = message.accounts;
     }

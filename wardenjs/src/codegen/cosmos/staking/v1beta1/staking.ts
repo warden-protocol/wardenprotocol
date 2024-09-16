@@ -221,7 +221,7 @@ export interface Validator {
   /** operator_address defines the address of the validator's operator; bech encoded in JSON. */
   operatorAddress: string;
   /** consensus_pubkey is the consensus public key of the validator, as a Protobuf Any. */
-  consensusPubkey?: (Any) | undefined;
+  consensusPubkey?: Any | undefined;
   /** jailed defined whether the validator has been jailed from bonded status or not. */
   jailed: boolean;
   /** status is the validator status (bonded/unbonding/unbonded). */
@@ -1287,7 +1287,7 @@ export const Validator = {
       writer.uint32(10).string(message.operatorAddress);
     }
     if (message.consensusPubkey !== undefined) {
-      Any.encode((message.consensusPubkey as Any), writer.uint32(18).fork()).ldelim();
+      Any.encode(message.consensusPubkey as Any, writer.uint32(18).fork()).ldelim();
     }
     if (message.jailed === true) {
       writer.uint32(24).bool(message.jailed);
@@ -1329,13 +1329,13 @@ export const Validator = {
           message.operatorAddress = reader.string();
           break;
         case 2:
-          message.consensusPubkey = (Cosmos_cryptoPubKey_InterfaceDecoder(reader) as Any);
+          message.consensusPubkey = Cosmos_cryptoPubKey_InterfaceDecoder(reader) as Any;
           break;
         case 3:
           message.jailed = reader.bool();
           break;
         case 4:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 5:
           message.tokens = reader.string();

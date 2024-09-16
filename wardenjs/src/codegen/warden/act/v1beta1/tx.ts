@@ -1335,7 +1335,7 @@ export const MsgVoteForAction = {
           message.actionId = reader.uint64();
           break;
         case 3:
-          message.voteType = (reader.int32() as any);
+          message.voteType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);

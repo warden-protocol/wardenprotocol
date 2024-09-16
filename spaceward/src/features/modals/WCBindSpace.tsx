@@ -10,8 +10,6 @@ import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import clsx from "clsx";
 import { Input } from "@/components/ui/input";
 import { useModalState } from "./state";
-import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
-import KeyRequestStatusbar from "../keys/KeyRequestStatus";
 import AddressAvatar from "@/components/AddressAvatar";
 
 interface WCBindSpaceProps {
@@ -33,7 +31,6 @@ export default function WCBindSpace({
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
-	const { state } = useRequestKey();
 	const { useSpacesByOwner, useKeysBySpaceId } = useQueryHooks();
 	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
@@ -169,24 +166,20 @@ export default function WCBindSpace({
 
 			<div className="flex flex-col gap-2">
 				{!keysQuery.data?.keys.length ? (
-					state === KeyRequesterState.IDLE ? (
-						<Button
-							disabled={loading || !pairedSpace}
-							onClick={setModal.bind(null, {
-								background: { walletconnect: {} },
-								type: "create-key",
-								params: {
-									next: "walletconnect",
-									spaceId: pairedSpace,
-								},
-							})}
-							className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-fill-accent-primary rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
-						>
-							Create key
-						</Button>
-					) : (
-						<KeyRequestStatusbar className="h-14 mx-0 px-4" />
-					)
+					<Button
+						disabled={loading || !pairedSpace}
+						onClick={setModal.bind(null, {
+							background: { walletconnect: {} },
+							type: "create-key",
+							params: {
+								next: "walletconnect",
+								spaceId: pairedSpace,
+							},
+						})}
+						className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-fill-accent-primary rounded-lg h-[56px] font-semibold shrink-0 bg-foreground text-background"
+					>
+						Create key
+					</Button>
 				) : (
 					<Button
 						disabled={!enabled || loading || !pairedSpace}

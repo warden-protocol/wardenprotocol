@@ -23,7 +23,7 @@ export async function getSigningClient(signer: OfflineSigner) {
 }
 
 const defaultFee: StdFee = {
-	gas: '200000',
+	gas: '220000',
 	amount: [{ denom: 'award', amount: '250000000000000' }],
 };
 

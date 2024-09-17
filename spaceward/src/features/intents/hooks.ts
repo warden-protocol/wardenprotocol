@@ -8,6 +8,7 @@ import { warden } from "@wardenprotocol/wardenjs";
 import { Template } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/template";
 import { useCallback, useMemo } from "react";
 import { useModalState } from "../modals/state";
+import { useEnqueueAction } from "../actions/hooks";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
@@ -131,7 +132,8 @@ export const useRules = () => {
 		?.space;
 
 	const { MsgUpdateSpace } = warden.warden.v1beta3;
-	const { newAction, authority } = useNewAction(MsgUpdateSpace, true);
+	const { getMessage, authority } = useNewAction(MsgUpdateSpace, true);
+	const { addAction } = useEnqueueAction(getMessage);
 
 	const rules = useRules({
 		request: {
@@ -164,8 +166,11 @@ export const useRules = () => {
 				throw new Error("authority is required");
 			}
 
+			let title = "Disabling current intent";
+
 			if (id) {
 				const rule = rulesById[id.toString()];
+				title = `Enabling intent ${rule.name}`;
 				validateAddressNumber(rule.expression);
 
 				if (
@@ -197,7 +202,7 @@ export const useRules = () => {
 				}
 			}
 
-			await newAction(
+			await addAction(
 				{
 					authority,
 					spaceId: BigInt(space.id),
@@ -207,10 +212,12 @@ export const useRules = () => {
 					rejectSignTemplateId: BigInt(0),
 					nonce: space.nonce,
 				},
-				{},
+				{
+					title,
+				},
 			);
 		},
-		[authority, newAction, space, rulesById],
+		[authority, addAction, space, rulesById],
 	);
 
 	return {

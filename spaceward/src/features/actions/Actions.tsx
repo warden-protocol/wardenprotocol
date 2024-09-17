@@ -9,7 +9,6 @@ import { useAddressContext } from "@/hooks/useAddressContext";
 import { useQueryHooks } from "@/hooks/useClient";
 import { timestampToDate } from "@/lib/datetime";
 import { prettyActionStatus } from "@/utils/formatting";
-import { shieldStringify } from "@/utils/shield";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import {
 	Action as ActionModel,
@@ -63,7 +62,7 @@ export function Actions() {
 	});
 
 	return (
-		<div className="flex items-center content-center place-content-center">
+		<div className="flex items-center content-center place-content-center min-w-fit">
 			{actionsArrays.length > 0 ? (
 				<Accordion
 					type="single"
@@ -87,6 +86,7 @@ export function Actions() {
 								</span>
 								<div>
 									{group.actions.map((action) => {
+										console.log(action.result)
 										const date = timestampToDate(
 											action.createdAt,
 										);
@@ -121,15 +121,6 @@ export function Actions() {
 																	" $1",
 																)
 																.trim()}
-														</div>
-														<div className="text-left">
-															Approve expression:<br />
-															{shieldStringify(action.approveExpression)}
-															<br />
-															Reject expression:<br />
-															{shieldStringify(
-																action.rejectExpression,
-															)}
 														</div>
 														<div>
 															{shortTime.format(

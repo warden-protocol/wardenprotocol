@@ -26,7 +26,7 @@ Before you start, complete the following prerequisites:
   npm install -g truffle
   ```
 
-- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
+- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
   In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
 

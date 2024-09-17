@@ -14,20 +14,19 @@ Reasons for running a node include the following:
 - Providing services: RPC, GRPC, API, etc.
 - Becoming a [validator](/learn/glossary#validator)
 
+## Section overview
+
 This section explains how to run a node and become a validator.
 
-## Get started
+Here are the main steps to take:
 
-These are the basic steps to get started:
-
-- Download the [wardend binary](https://github.com/warden-protocol/wardenprotocol/releases) or run it in a container and [join Buenavista](buenavista-testnet/join-buenavista).  
-- To become a validator, follow this guide: [Create a validator](create-a-validator).
-- To interact with a node, use the [Node API](node-api-reference) and [node commands](node-commands).
+1. If you wish to run a local chain for testing purposes, follow this guide: [Run a local chain](run-a-local-chain).
+2. To get started with our testnet, follow [Join Buenavista](buenavista-testnet/join-buenavista).
+3. After joining the network, you can become a validator: [Create a validator](create-a-validator).
+4. To run the oracle service integrated with Warden, follow [Operate Skip:Connect](operate-skip-connect).
+4. To interact with a node, use the [Node API](node-api-reference) and [node commands](node-commands).
+5. You can also learn about our [delegation plan](delegation-plan).
 
 :::tip
 We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-node/cosmovisor) – a utility for managing binary versions of Cosmos SDK-based chains. Its primary function is to enable binary upgrades without manual intervention.
-:::
-
-:::tip
-If you're [building an Omnichain Application](/build-an-app/introduction) and wish to run a node locally for testing purposes, check this guide: [Run a local chain](/build-an-app/test/run-a-local-chain).
 :::

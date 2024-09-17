@@ -85,7 +85,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
    
    ```bash
    wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY /
-     --from $KEYCHAIN_WRITER_NAME --chain-id wardenprotocol
+     --from $KEYCHAIN_WRITER_NAME --chain-id chain_123-1
    ```
 
 ## 4. Fulfill a signature request
@@ -124,5 +124,5 @@ When a user requests a new key, the Keychain signs a message with the private ke
    
    ```bash
    wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE \
-     --from $KEYCHAIN_WRITER_NAME --chain-id wardenprotocol
+     --from $KEYCHAIN_WRITER_NAME --chain-id chain_123-1
    ```

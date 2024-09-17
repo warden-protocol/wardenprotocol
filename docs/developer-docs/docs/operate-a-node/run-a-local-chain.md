@@ -77,20 +77,23 @@ cd wardenprotocol
 
 ### 2. Build the binary
 
-Then use `just` to build the chain binary:
+1. Then use `just` to build the chain binary called `wardend`:
+      
+   ```bash
+   just wardend build
+   ```
+
+2. To install the binary in your `$GOPATH`, run this command:
+
+   ```bash
+   just wardend install
+   ```
+3. You can check the binary location and version:
    
-```bash
-just wardend build
-```
-
-This will build the chain binary called `wardend` and install it in your `$GOPATH`.
-
-You can check the binary location and version with these commands:
-
-```bash
-which wardend
-wardend version
-```
+   ```bash
+   which wardend
+   wardend version
+   ```
 
 ### 3. Download the snapshot
 
@@ -135,20 +138,23 @@ cd wardenprotocol
 
 ### 2. Build the binary
 
-Then use `just` to build the chain binary:
-   
-```bash
-just wardend build
-```
-   
-This will build the chain binary called `wardend` and install it in your `$GOPATH`.
+1. Then use `just` to build the chain binary called `wardend`:
+      
+   ```bash
+   just wardend build
+   ```
 
-You can check the binary location and version with these commands:
+2. To install the binary in your `$GOPATH`, run this command:
 
-```bash
-which wardend
-wardend version
-```
+   ```bash
+   just wardend install
+   ```
+3. You can check the binary location and version:
+   
+   ```bash
+   which wardend
+   wardend version
+   ```
 
 ### 3. Create and configure a chain
 

@@ -25,7 +25,7 @@ Before you start, complete the following prerequisites:
 
 ## 1. Install CLIChain
 
-To install CLIChain, run this:
+To install CLIChain, navigate to the `wardenprotocol` directory and run this:
 
 ```bash
 go install ./cmd/clichain
@@ -35,13 +35,15 @@ go install ./cmd/clichain
 
 In the next steps, you'll use the following values:
 
+- Your chain ID you used when [running a node](operate-a-keychain/create-a-keychain#1-run-a-node).
 - Your Keychain ID obtained when [registering a Keychain](create-a-keychain#2-register-a-keychain).
 - Your Keychain Writer name you specified when [adding a Keychain Writer](create-a-keychain#3-add-a-keychain-writer).  
 
 Export them as environment variables:
 
 ```bash
-export KEYCHAIN_ID=my-keychain-id
+export CHAIN_ID=chain_123-1 
+export KEYCHAIN_ID=1
 export KEYCHAIN_WRITER_NAME=my-keychain-writer-name  
 ```
 
@@ -54,7 +56,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
 2. Get all key requests: 
 
    ```bash
-   wardend q warden key-requests --keychain-id $KEYCHAIN_ID
+   wardend query warden key-requests --keychain-id $KEYCHAIN_ID
    ```
 
    Your key request ID will be returned in the `id` field of the output:
@@ -85,7 +87,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
    
    ```bash
    wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY /
-     --from $KEYCHAIN_WRITER_NAME --chain-id chain_123-1
+     --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
    ```
 
 ## 4. Fulfill a signature request
@@ -97,10 +99,10 @@ When a user requests a new key, the Keychain signs a message with the private ke
 2. Get all signature requests:
 
    ```bash
-   wardend q warden signature-requests --keychain-id $KEYCHAIN_ID
+   wardend query warden sign-requests --keychain-id $KEYCHAIN_ID
    ```
    
-   Your signature request ID and data for signing will be returned in the `id`  and `data_for_signing` fields of the output:
+   Your signature request ID and data for signing will be returned in the `id` and `data_for_signing` fields of the output:
    
    ```bash
    id: 1
@@ -124,5 +126,5 @@ When a user requests a new key, the Keychain signs a message with the private ke
    
    ```bash
    wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE \
-     --from $KEYCHAIN_WRITER_NAME --chain-id chain_123-1
+     --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
    ```

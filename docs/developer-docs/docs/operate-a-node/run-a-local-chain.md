@@ -242,7 +242,7 @@ In the previous steps, you configured your node with the minimum settings requir
    
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-description' \
+     --name 'my-keychain-name' \
      --from my-key-name \
      --chain-id chain_123-1
    ```
@@ -262,8 +262,11 @@ In the previous steps, you configured your node with the minimum settings requir
    - admins:
      - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
      creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     description: my-description
+     fees:
+       key_req: []
+       sig_req: []
      id: "1"
+     name: my-keychain-name
    pagination:
      total: "1"
    ```

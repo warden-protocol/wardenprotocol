@@ -56,20 +56,22 @@ The following steps show how to register a new Keychain entity on-chain.
 
     ```bash
     wardend tx warden new-keychain \
-      --description 'my-keychain-description' \
-      --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}" \
+      --name 'my-keychain-name' \
       --from my-key-name \
-      --chain-id chain_123-1
+      --chain-id chain_123-1 \
+      --description 'my-keychain-description' \
+      --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}"
     ```
 
     Specify the following details:
 
+    - `name`: The Keychain name
+    - `from`: Your local account name (key name)
+    - `chain-id`: The ID of the chain you're running
     - `description` (optional): The Keychain description
     - `keychainFees`(optional):
          - `key_req`: A fee in aWARD for creating a key pair
          - `key_req`: A fee in aWARD for signing a transaction
-    - `from`: Your local account name (key name)
-    - `chain-id`: The ID of the chain you're running
 
     **Note**: aWARD equals 0.000000000000000001 WARD.
 
@@ -77,19 +79,27 @@ The following steps show how to register a new Keychain entity on-chain.
 
 3. Every Keychain is created with a **Keychain ID** that identifies it in key and signature requests and collects fees from users. You'll need this ID to operate your Keychain. Run the following command and check the `id` field in the output:
 
-    ```bash
-    wardend query warden keychains
-    ```
-    ```bash
-    keychains:
-    - admins:
-      - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      description: my-description
-      id: "1"
-    pagination:
-      total: "1"
-    ```
+   ```bash
+   wardend query warden keychains
+   ```
+   ```bash
+   keychains:
+   - admins:
+     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     description: my-keychain-description
+     fees:
+       key_req:
+      - amount: "100"
+        denom: award
+    sig_req:
+      - amount: "1"
+        denom: award
+     id: "1"
+     name: my-keychain-name
+   pagination:
+     total: "1"
+   ```
 
 ## 3. Add a Keychain Writer
 

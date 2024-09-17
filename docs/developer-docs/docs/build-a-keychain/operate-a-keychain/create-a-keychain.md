@@ -107,7 +107,7 @@ A Keychain Writer is an account that can write Keychain results (public keys and
 
 To add a Keychain Writer, take these steps:
 
-1. Initiate a `MsgAddKeychainWriter` transaction. Specify your Keychain Writer name:
+1. Run this command to add a Keychain Writer with a preferred name:
 
     ```bash
     wardend keys add my-keychain-writer-name

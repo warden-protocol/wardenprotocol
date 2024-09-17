@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/client"
 	"os"
 	"strings"
 	"time"
@@ -114,6 +113,12 @@ func (c *RawTxClient) BuildTx(
 	txBuilder := app.TxConfig().NewTxBuilder()
 	signMode := app.TxConfig().SignModeHandler().DefaultMode()
 
+	// build unsigned tx
+	if !autoEstimateGas {
+		txBuilder.SetGasLimit(gasLimit)
+	}
+	txBuilder.SetFeeAmount(fees)
+
 	msgs := make([]sdk.Msg, len(msgers))
 	for i, m := range msgers {
 		msgs[i] = m.Msg(c.Identity.Address.String())
@@ -122,15 +127,6 @@ func (c *RawTxClient) BuildTx(
 	if err = txBuilder.SetMsgs(msgs...); err != nil {
 		return nil, fmt.Errorf("set msgs: %w", err)
 	}
-
-	gasLimit, err = c.EstimateGas(ctx, txBuilder, app, autoEstimateGas, gasAdjustmentFactor, gasLimit)
-	if err != nil {
-		return nil, fmt.Errorf("estimage gas: %w", err)
-	}
-
-	// build unsigned tx
-	txBuilder.SetGasLimit(gasLimit)
-	txBuilder.SetFeeAmount(fees)
 
 	// First round: we gather all the signer infos. We use the "set empty
 	// signature" hack to do that.
@@ -145,6 +141,19 @@ func (c *RawTxClient) BuildTx(
 	err = txBuilder.SetSignatures(sigV2)
 	if err != nil {
 		return nil, fmt.Errorf("set empty signature: %w", err)
+	}
+
+	if autoEstimateGas {
+		txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+		if err != nil {
+			return nil, fmt.Errorf("encode tx: %w", err)
+		}
+
+		gasLimit, err = c.EstimateGas(ctx, txBytes, gasAdjustmentFactor, gasLimit)
+		if err != nil {
+			return nil, fmt.Errorf("estimage gas: %w", err)
+		}
+		txBuilder.SetGasLimit(gasLimit)
 	}
 
 	// Second round: all signer infos are set, so each signer can sign.
@@ -173,12 +182,12 @@ func (c *RawTxClient) BuildTx(
 		return nil, fmt.Errorf("set signature: %w", err)
 	}
 
-	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+	txBytesRes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
 	if err != nil {
 		return nil, fmt.Errorf("encode tx: %w", err)
 	}
 
-	return txBytes, nil
+	return txBytesRes, nil
 }
 
 // SendTx broadcasts a signed transaction and returns its hash.
@@ -230,21 +239,10 @@ func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
 // Otherwise, GasLimit is used.
 func (c *RawTxClient) EstimateGas(
 	ctx context.Context,
-	txBuilder client.TxBuilder,
-	app *app.App,
-	autoEstimateGas bool,
+	txBytes []byte,
 	gasAdjustmentFactor float64,
 	gasLimit uint64,
 ) (uint64, error) {
-	if !autoEstimateGas {
-		return gasLimit, nil
-	}
-
-	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
-	if err != nil {
-		return 0, fmt.Errorf("estimate gas, encode tx: %w", err)
-	}
-
 	gasInfo, err := c.client.Simulate(ctx, &txtypes.SimulateRequest{
 		TxBytes: txBytes,
 	})

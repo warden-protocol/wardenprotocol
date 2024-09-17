@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Build a CosmWasm contract
+# Deploy a CosmWasm contract
 
 ## Overview
 
@@ -36,7 +36,7 @@ Before you start, complete the following prerequisites:
    brew install binaryen
    ```
 
-- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
+- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
   The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command:
 
@@ -44,7 +44,7 @@ Before you start, complete the following prerequisites:
   wardend keys list
   ```
   :::tip
-  In development genesis files, you'll typically find an account named shulgin that is preconfigured and ready for use.
+  If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
   :::
 
 ## 1. Create a CosmWasm project

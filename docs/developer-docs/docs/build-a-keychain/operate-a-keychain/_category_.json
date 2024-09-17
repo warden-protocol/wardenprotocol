@@ -1,11 +1,11 @@
 {
-  "position": 9,
-  "label": "Test",
+  "position": 1,
+  "label": "Operate a Keychain",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Test"
+    "title": "Operate a Keychain"
   },
   "customProps": {}
 }

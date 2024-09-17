@@ -1,11 +1,11 @@
 {
-  "position": 2,
-  "label": "Build a custom smart contract",
+  "position": 4,
+  "label": "Implementations",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Build a custom smart contract"
+    "title": "Implementations"
   },
   "customProps": {}
 }

@@ -1,11 +1,11 @@
 {
-  "position": 3,
-  "label": "Examples",
+  "position": 2,
+  "label": "Deploy a smart contract on Warden",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Examples"
+    "title": "Deploy a smart contract on Warden"
   },
   "customProps": {}
 }

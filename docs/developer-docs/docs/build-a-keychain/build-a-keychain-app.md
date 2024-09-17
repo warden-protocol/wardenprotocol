@@ -1,124 +1,21 @@
-﻿---
-sidebar_position: 2
+---
+sidebar_position: 3
 ---
 
-# Quick start
+# Build a Keychain app
 
 ## Overview
 
-This guide will walk you through the process of building a [Keychain](/learn/glossary#keychain) in Go with the Keychain SDK.
+This guide explains how to build a basic Keychain application using the [Keychain SDK](implementations/keychain-sdk).
 
 ## Prerequisites
-
-You need to install the following:
 
 - [Go](https://golang.org/dl/) 1.23 or later
 - `make`
 
-## 1. Prepare the chain
+Before starting, you should also take the steps from this guide: [Create a Keychain](operate-a-keychain/create-a-keychain).
 
-### 1.1. Run a node
-
-You can:
-
-- [Run a local chain](/build-an-app/test/run-a-local-chain)
-- [Connect to our Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista)
-
-For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain and its Writers and referenced as `<your-key>` in the following commands.
-
-Check the list of available accounts by running this command:
-
-```bash
-wardend keys list
-```
-
-Check the local account balance:
-
-```bash
-wardend query bank balances <your-key>
-```
-
-:::tip
-
-In development genesis files, you'll typically find an account named `shulgin` that is ready to be used.
-
-:::
-
-### 1.2. Create a Keychain entity
-
-You need to register your Keychain entity on-chain.
-
-1. Initiate a `MsgNewKeychain` transaction by running this command:
-    
-    ```bash
-    wardend tx warden new-keychain \
-      --description 'My Keychain' \
-     --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}" \
-      --from <your-key> \
-      --chain-id warden
-    ```
-
-    Specify the following details:
-
-    - `description` (optional): The Keychain description
-    - `keychainFees`(optional):
-         - `key_req`: A fee in aWARD for creating a key pair
-         - `key_req`: A fee in aWARD for signing a transaction
-    - `from`: Your local account
-    - `chain-id`: The chain ID – `warden`
-
-    **Note**: aWARD equals 0.000000000000000001 WARD.
-
-3. A new Keychain object will be created on-chain with its dedicated [Keychain ID](/learn/glossary#keychain-id). Get the ID:
-    
-    ```bash
-    wardend query warden keychains
-    ```
-    This ID will be used in the next steps, referenced as `<keychain-id>`.
-
-### 1.3. Add a Keychain Writer
-
-A Keychain Writer is an account that can write Keychain results (public keys and signatures) to the chain. The Keychain Writers list is essentially an allowlist of accounts that can interact on behalf of the Keychain.
-
-To add a Keychain Writer, take these steps:
-
-1. Initiate a `MsgAddKeychainWriter` transaction by running the following command:
-
-    ```bash
-    wardend keys add my-keychain-writer
-    ```
-
-2. The output will be similar to the following:
-
-    ```bash
-    - address: warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
-      name: my-keychain-writer
-      pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A2cECb3ziw5/LzUBUZIChyek3bnGQv/PSXHAH28xd9/Q"}'
-      type: local
-    
-    
-    **Important** write this mnemonic phrase in a safe place. It is the only way to recover your account if you ever forget your password.
-    
-    virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick
-    ```
-
-    :::tip
-    Only the Keychain Writer address, returned as `address`, will be able to publish signatures and public keys on behalf of the Keychain.
-    :::
-
-3. Note down the mnemonic phrase and the address of the new account, it'll be needed to configure the Keychain SDK and interact with the chain using this account.
-
-4. Fund the new account with some tokens (1 WARD in this example):
-    
-    ```bash
-    wardend tx bank send <your-key> \
-      $(wardend keys show -a my-keychain-writer) \
-      1000000000000000000award \
-      --chain-id warden
-    ```
-## 2. Build a Go app
-
-### 2.1. Scaffold a Go app
+## 1. Scaffold a Go app
 
 1. Create a new Go app using the following command:
 
@@ -131,7 +28,7 @@ To add a Keychain Writer, take these steps:
     This will create a new Go module called `my-keychain`.
 
 2. Create a new Go file called `main.go` with the following content:
-    
+
     ```go
     // main.go
     
@@ -142,16 +39,16 @@ To add a Keychain Writer, take these steps:
     }
     ```
 
-### 2.2. Import the Keychain SDK
+## 2. Import the Keychain SDK
 
 1. Add the Keychain SDK to your Go module by running this:
-    
+
     ```bash
     go get github.com/warden-protocol/wardenprotocol/keychain-sdk
     ```
 
 2. Import and use the SDK in your `main.go` file to create an `App` instance:
-    
+
     ```go
     // main.go
     
@@ -168,14 +65,15 @@ To add a Keychain Writer, take these steps:
     }
     ```
 
-### 2.3. Configure the app
+### 2.1. Configure the app
 
-Before starting the app, you need to configure it with the necessary information.
+Before starting the app, you need to configure it. You'll find a basic configuration for connecting to a local Warden Protocol node below.
 
-You'll find a basic configuration for connecting to a local Warden Protocol node below. Make the following adjustments:
+Make the following adjustments in the code:
 
-- Replace `<your-keychain-id>` with the ID of the Keychain entity you created earlier
-- Replace the mnemonic phrase with the one for the Keychain Writer.
+- Replace `chain_123-1` with the chain ID you used when [running a node](operate-a-keychain/create-a-keychain#1-run-a-node).
+- Replace `my-keychain-id` with your Keychain ID obtained when [registering a Keychain](operate-a-keychain/create-a-keychain#2-register-a-keychain).
+- Replace `my-mnemonic-phrase` with the mnemonic phrase obtained when [adding a Keychain Writer](operate-a-keychain/create-a-keychain#3-add-a-keychain-writer).
 
 ```go
 package main
@@ -198,14 +96,14 @@ func main() {
         Logger: logger, // not required, but recommended
 
         // setup the connection to the Warden Protocol node
-        ChainID:      "warden",
+        ChainID:      "chain_123-1",
         GRPCURL:      "localhost:9090",
         GRPCInsecure: true,
 
         // setup the account used to write txs
-        KeychainId:     <your-keychain-id>,
-        Mnemonic:       "virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick",
-        DerivationPath: "m/44'/60'/0'/0/0",
+        KeychainId:     "my-keychain-id",
+        Mnemonic:       "my-mnemonic-phrase",
+        DerivationPath: "m/44'/118'/0'/0/0",
 
         // setup throughput for batching responses
         GasLimit:     400000,
@@ -215,7 +113,7 @@ func main() {
 }
 ```
 
-### 2.4. Start the app
+### 2.2. Start the app
 
 Finally, start the app by calling `app.Start`:
 
@@ -229,7 +127,7 @@ func main() {
 }
 ```
 
-### 2.5. Run the app
+### 2.3. Run the app
 
 You can try running the app using the following command:
 
@@ -237,9 +135,7 @@ You can try running the app using the following command:
 go run main.go
 ```
 
-If everything is set up correctly, you'll see the app connecting to the Warden Protocol node and starting to process incoming requests.
-
-The output will be similar to the following:
+If everything is set up correctly, you'll see the app connecting to the Warden Protocol node and starting to process incoming requests. The output will be similar to the following:
 
 ```bash
 time=2024-03-26T12:01:38.020+01:00 level=INFO msg="starting keychain" keychain_id=1
@@ -250,16 +146,14 @@ time=2024-03-26T12:01:38.027+01:00 level=INFO msg="starting tx writer"
 
 :::tip
 
-You can try to request a new ECDSA Key from SpaceWard of from the CLI.
-
-In the following command, replace `space-id` with the ID of the Space you want to use and `keychain-id` with the ID of the Keychain entity you created earlier:
+You can try to request a new ECDSA Key from SpaceWard of from the CLI. In the following command, specify your Space ID, Keychain ID, and key name:
 
 ```bash
 wardend tx warden new-key-request \
-  --space-id 1 \
-  --keychain-id 1 \
+  --space-id my-space-id \
+  --keychain-id my-keychain-id \
   --key-type ecdsa-secp256-k1 \
-  --from <your-key> \
+  --from my-key-name \
   --chain-id warden
 ```
 
@@ -280,7 +174,7 @@ You're only one step away from generating new keys and writing them back to the 
 In this example, the Keychain will generate ECDSA secp256k1 keys using the `github.com/ethereum/go-ethereum/crypto` package. Private keys will be stored in-memory.
 
 1. Add the following code to your `main.go` file:
-    
+
     ```go
     func main() {
         app := ...
@@ -291,17 +185,13 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
     }
     ```
 
-    :::tip
-    
     The `SetKeyRequestHandler()` function receives the following:
-    
+
     - `KeyResponseWriter` that can be used to write the response back to the chain
     - `KeyRequest` with the details of the request, such as the key type (for example, ECDSA secp256k1)
-    
-    :::
 
 2. Write a simple in-memory storage:
-    
+
     ```go
     import (
         ...
@@ -330,12 +220,11 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
     ```
 
 3. Implement a functioning `KeyRequestHandler`:
-    
+
     ```go
     import (
-        ...
-        "github.com/ethereum/go-ethereum/crypto"
-        "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+    "github.com/ethereum/go-ethereum/crypto"
+    "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
     )
     
     func main() {
@@ -376,7 +265,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
 
 Now you need to implement a `SignRequestHandler`. It functions similarly to the `KeyRequestHandler`, but instead of generating new keys, it signs data using the private key associated with the request.
 
-It's important to be able to recover the private key associated with a specific KeyRequest ID, so you should use the same `Store` you created earlier.
+It's important to be able to recover the private key associated with a specific `KeyRequest` ID, so you should use the same `Store` you created earlier.
 
 Add the following code to your `main.go` file:
 
@@ -409,9 +298,9 @@ func main() {
 }
 ```
 
-## 4. Result
+## Result
 
-You have now built a simple Keychain in Go using the Keychain SDK. This Keychain stores ECDSA private keys in-memory and uses them to sign data. You can now run the app again and interact with it using the SpaceWard UI or the CLI.
+You've built a basic Keychain in Go using the Keychain SDK. This Keychain stores ECDSA private keys in-memory and uses them to sign data. You can now run the app again and interact with it using the SpaceWard UI or the CLI.
 
 By implementing request handlers, you can plug in any key generation and signing logic you need. Your Keychain can interact with external APIs, hardware security modules, or other key management systems such as MPC networks.
 

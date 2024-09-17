@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Build an EVM contract
+# Deploy an EVM contract
 
 ## Overview
 
@@ -26,16 +26,16 @@ Before you start, complete the following prerequisites:
   npm install -g truffle
   ```
 
-- [Run a local chain](../test/run-a-local-chain) and make sure you have `wardend` correctly installed.
+- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
   In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
 
   ```bash
   wardend keys export my-key-name --unarmored-hex --unsafe
   ```
-   :::tip
-   In development genesis files, you'll typically find an account named `shulgin` that is preconfigured and ready for use. You can check the names of available keys by running `wardend keys list`.
-   :::
+  :::tip
+  If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
+  :::
 
 ## 1. Create an EVM project
 

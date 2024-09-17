@@ -5,7 +5,7 @@ import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "warden/act/v1beta1/params.proto";
 import "warden/act/v1beta1/action.proto";
-import "warden/act/v1beta1/rule.proto";
+import "warden/act/v1beta1/template.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -18,5 +18,5 @@ message GenesisState {
   ];
 
   repeated Action actions = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated Rule rules = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Template templates = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }

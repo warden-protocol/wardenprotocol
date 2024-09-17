@@ -29,7 +29,7 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 	const currencyPairs = useMemo(
 		() =>
-			pairs.data?.currencyPairs.map(({ Base, Quote }) => ({
+			pairs.data?.currencyPairs.map(({ base: Base, quote: Quote }) => ({
 				id: `${Base}/${Quote}`,
 				token: Base,
 			})) ?? [],
@@ -46,23 +46,26 @@ export const useAssetQueries = (spaceId?: string | null) => {
 	});
 
 	const priceMap = useMemo(() => {
-		const priceMap = prices.data?.prices.reduce((acc, price, i) => {
-			const pair = currencyPairs[i];
+		const priceMap =
+			prices.data?.prices.reduce((acc, price, i) => {
+				const pair = currencyPairs[i];
 
-			if (!pair) {
-				return acc;
-			}
+				if (!pair) {
+					return acc;
+				}
 
-			return {
-				...acc,
-				// assume all quotes are in USD
-				[pair.token]: {
-					...price,
-					ticker: pair.id,
-					token: pair.token,
-				},
-			};
-		}, {} as PriceMapSlinky);
+				return {
+					...acc,
+					// assume all quotes are in USD
+					[pair.token]: {
+						...price,
+						ticker: pair.id,
+						token: pair.token,
+					},
+				};
+			}, {} as PriceMapSlinky) ??
+			// fixme slinky not working
+			{};
 
 		if (!priceMap) {
 			return;

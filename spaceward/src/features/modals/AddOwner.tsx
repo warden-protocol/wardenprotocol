@@ -10,11 +10,13 @@ import { Icons } from "@/components/ui/icons-assets";
 import { useOwnerSettingsState } from "../owners/state";
 import { useNewAction } from "@/hooks/useAction";
 import { isValidBech32 } from "@/utils/validate";
+import { useNonce } from "@/hooks/useNonce";
 
 const { MsgAddSpaceOwner } = warden.warden.v1beta3;
 
 export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
-	const { newAction, authority } = useNewAction(MsgAddSpaceOwner);
+	const nonce = useNonce();
+	const { newAction, authority } = useNewAction(MsgAddSpaceOwner, true);
 	const { data, setData } = useOwnerSettingsState();
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
@@ -39,6 +41,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 					newOwner: address,
 					spaceId: BigInt(spaceId),
 					authority,
+					nonce,
 				},
 				{},
 			);

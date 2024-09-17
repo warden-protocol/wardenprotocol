@@ -7,11 +7,11 @@ import (
 )
 
 func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error {
-	err := k.rules.Import(ctx, genState.Rules, func(k types.Rule) uint64 {
+	err := k.templates.Import(ctx, genState.Templates, func(k types.Template) uint64 {
 		return k.Id
 	})
 	if err != nil {
-		return fmt.Errorf("failed to import rules: %w", err)
+		return fmt.Errorf("failed to import templates: %w", err)
 	}
 
 	err = k.ActionKeeper.Import(ctx, genState.Actions)
@@ -23,11 +23,11 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 }
 
 func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) error {
-	rules, err := k.rules.Export(ctx)
+	templates, err := k.templates.Export(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to export rules: %w", err)
+		return fmt.Errorf("failed to export templates: %w", err)
 	}
-	genState.Rules = rules
+	genState.Templates = templates
 
 	actions, err := k.ActionKeeper.Coll().Export(ctx)
 	if err != nil {

@@ -10,8 +10,8 @@ import { DecodeObject } from "@cosmjs/proto-signing";
 import AddressAvatar from "./AddressAvatar";
 import { MsgSend } from "@wardenprotocol/wardenjs/codegen/cosmos/bank/v1beta1/tx";
 import {
-	MsgApproveAction,
-	MsgNewRule,
+	MsgVoteForAction as MsgApproveAction,
+	MsgNewTemplate as MsgNewRule,
 } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
 import {
 	MsgAddSpaceOwner,
@@ -111,10 +111,10 @@ function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
 				<CardRow label="Admin intent">
-					{msg.adminRuleId.toString()}
+					{msg.adminTemplateId.toString()}
 				</CardRow>
 				<CardRow label="Sign intent">
-					{msg.signRuleId.toString()}
+					{msg.signTemplateId.toString()}
 				</CardRow>
 			</CardContent>
 		</Card>
@@ -216,7 +216,7 @@ function MsgApproveActionDetails({ msg }: { msg: MsgApproveAction }) {
 				<CardDescription>Approve an action</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<CardRow label="From">{msg.creator}</CardRow>
+				<CardRow label="From">{msg.participant}</CardRow>
 				<CardRow label="Action">{msg.actionId.toString()}</CardRow>
 			</CardContent>
 		</Card>

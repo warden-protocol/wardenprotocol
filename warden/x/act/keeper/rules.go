@@ -10,25 +10,25 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-func (k Keeper) IsValidRule(ctx context.Context, id uint64) error {
+func (k Keeper) IsValidTemplate(ctx context.Context, id uint64) error {
 	if id == 0 {
-		// we consider 0 as a valid rule id for the "default" rule
+		// we consider 0 as a valid template id for the "default" template
 		return nil
 	}
-	_, err := k.GetRule(ctx, id)
+	_, err := k.GetTemplate(ctx, id)
 	return err
 }
 
-func (k Keeper) GetRule(ctx context.Context, id uint64) (types.Rule, error) {
-	return k.rules.Get(ctx, id)
+func (k Keeper) GetTemplate(ctx context.Context, id uint64) (types.Template, error) {
+	return k.templates.Get(ctx, id)
 }
 
-// preprocessRule preprocesses an rule and returns the root AST and a list
+// preprocessTemplate preprocesses an template and returns the root AST and a list
 // of addresses that are referenced in the expression.
-func (k *Keeper) preprocessRule(ctx context.Context, rule types.Rule) (*ast.Expression, []string, error) {
+func (k *Keeper) preprocessTemplate(ctx context.Context, template types.Template) (*ast.Expression, []string, error) {
 	expander := k.shieldExpanderFunc()
 
-	rootAst, err := shield.Preprocess(ctx, rule.Expression, expander)
+	rootAst, err := shield.Preprocess(ctx, template.Expression, expander)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -120,11 +120,6 @@ func NewAppModule(
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
-
-	m := keeper.NewMigrator(am.keeper)
-	if err := cfg.RegisterMigration(types.ModuleName, 2, m.Migrate2to3); err != nil {
-		panic(fmt.Sprintf("failed to migrate x/act from version 2 to 3: %v", err))
-	}
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
@@ -201,9 +196,9 @@ type ModuleInputs struct {
 type ModuleOutputs struct {
 	depinject.Out
 
-	ActKeeper    keeper.Keeper
-	Module       appmodule.AppModule
-	RuleRegistry *types.RulesRegistry
+	ActKeeper        keeper.Keeper
+	Module           appmodule.AppModule
+	TemplateRegistry *types.TemplatesRegistry
 }
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
@@ -222,7 +217,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		shieldExpanderFunc = in.ShieldExpanderFunc
 	}
 
-	r := types.NewRulesRegistry()
+	r := types.NewTemplatesRegistry()
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
@@ -241,8 +236,8 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	)
 
 	return ModuleOutputs{
-		ActKeeper:    k,
-		Module:       m,
-		RuleRegistry: r,
+		ActKeeper:        k,
+		Module:           m,
+		TemplateRegistry: r,
 	}
 }

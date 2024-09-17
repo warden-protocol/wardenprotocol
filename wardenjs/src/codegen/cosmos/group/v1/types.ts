@@ -501,7 +501,7 @@ export interface GroupPolicyInfo {
    */
   version: bigint;
   /** decision_policy specifies the group policy's decision policy. */
-  decisionPolicy?: (ThresholdDecisionPolicy & PercentageDecisionPolicy & Any) | undefined;
+  decisionPolicy?: ThresholdDecisionPolicy & PercentageDecisionPolicy & Any | undefined;
   /** created_at is a timestamp specifying when a group policy was created. */
   createdAt: Timestamp;
 }
@@ -1368,10 +1368,10 @@ export const GroupInfo = {
   },
   toAmino(message: GroupInfo): GroupInfoAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.admin = message.admin === "" ? undefined : message.admin;
     obj.metadata = message.metadata === "" ? undefined : message.metadata;
-    obj.version = message.version !== BigInt(0) ? message.version.toString() : undefined;
+    obj.version = message.version !== BigInt(0) ? (message.version?.toString)() : undefined;
     obj.total_weight = message.totalWeight === "" ? undefined : message.totalWeight;
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : undefined;
     return obj;
@@ -1465,7 +1465,7 @@ export const GroupMember = {
   },
   toAmino(message: GroupMember): GroupMemberAmino {
     const obj: any = {};
-    obj.group_id = message.groupId !== BigInt(0) ? message.groupId.toString() : undefined;
+    obj.group_id = message.groupId !== BigInt(0) ? (message.groupId?.toString)() : undefined;
     obj.member = message.member ? Member.toAmino(message.member) : undefined;
     return obj;
   },
@@ -1521,7 +1521,7 @@ export const GroupPolicyInfo = {
       writer.uint32(40).uint64(message.version);
     }
     if (message.decisionPolicy !== undefined) {
-      Any.encode((message.decisionPolicy as Any), writer.uint32(50).fork()).ldelim();
+      Any.encode(message.decisionPolicy as Any, writer.uint32(50).fork()).ldelim();
     }
     if (message.createdAt !== undefined) {
       Timestamp.encode(message.createdAt, writer.uint32(58).fork()).ldelim();
@@ -1551,7 +1551,7 @@ export const GroupPolicyInfo = {
           message.version = reader.uint64();
           break;
         case 6:
-          message.decisionPolicy = (Cosmos_groupDecisionPolicy_InterfaceDecoder(reader) as Any);
+          message.decisionPolicy = Cosmos_groupDecisionPolicy_InterfaceDecoder(reader) as Any;
           break;
         case 7:
           message.createdAt = Timestamp.decode(reader, reader.uint32());
@@ -1624,11 +1624,11 @@ export const GroupPolicyInfo = {
   toAmino(message: GroupPolicyInfo): GroupPolicyInfoAmino {
     const obj: any = {};
     obj.address = message.address === "" ? undefined : message.address;
-    obj.group_id = message.groupId !== BigInt(0) ? message.groupId.toString() : undefined;
+    obj.group_id = message.groupId !== BigInt(0) ? (message.groupId?.toString)() : undefined;
     obj.admin = message.admin === "" ? undefined : message.admin;
     obj.metadata = message.metadata === "" ? undefined : message.metadata;
-    obj.version = message.version !== BigInt(0) ? message.version.toString() : undefined;
-    obj.decision_policy = message.decisionPolicy ? Cosmos_groupDecisionPolicy_ToAmino((message.decisionPolicy as Any)) : undefined;
+    obj.version = message.version !== BigInt(0) ? (message.version?.toString)() : undefined;
+    obj.decision_policy = message.decisionPolicy ? Cosmos_groupDecisionPolicy_ToAmino(message.decisionPolicy as Any) : undefined;
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : undefined;
     return obj;
   },
@@ -1744,10 +1744,10 @@ export const Proposal = {
           message.groupPolicyVersion = reader.uint64();
           break;
         case 8:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 9:
-          message.result = (reader.int32() as any);
+          message.result = reader.int32() as any;
           break;
         case 10:
           message.finalTallyResult = TallyResult.decode(reader, reader.uint32());
@@ -1756,7 +1756,7 @@ export const Proposal = {
           message.votingPeriodEnd = Timestamp.decode(reader, reader.uint32());
           break;
         case 12:
-          message.executorResult = (reader.int32() as any);
+          message.executorResult = reader.int32() as any;
           break;
         case 13:
           message.messages.push(Any.decode(reader, reader.uint32()));
@@ -1868,7 +1868,7 @@ export const Proposal = {
   },
   toAmino(message: Proposal): ProposalAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.address = message.address === "" ? undefined : message.address;
     obj.metadata = message.metadata === "" ? undefined : message.metadata;
     if (message.proposers) {
@@ -1877,8 +1877,8 @@ export const Proposal = {
       obj.proposers = message.proposers;
     }
     obj.submit_time = message.submitTime ? Timestamp.toAmino(message.submitTime) : undefined;
-    obj.group_version = message.groupVersion !== BigInt(0) ? message.groupVersion.toString() : undefined;
-    obj.group_policy_version = message.groupPolicyVersion !== BigInt(0) ? message.groupPolicyVersion.toString() : undefined;
+    obj.group_version = message.groupVersion !== BigInt(0) ? (message.groupVersion?.toString)() : undefined;
+    obj.group_policy_version = message.groupPolicyVersion !== BigInt(0) ? (message.groupPolicyVersion?.toString)() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.result = message.result === 0 ? undefined : message.result;
     obj.final_tally_result = message.finalTallyResult ? TallyResult.toAmino(message.finalTallyResult) : undefined;
@@ -2077,7 +2077,7 @@ export const Vote = {
           message.voter = reader.string();
           break;
         case 3:
-          message.option = (reader.int32() as any);
+          message.option = reader.int32() as any;
           break;
         case 4:
           message.metadata = reader.string();
@@ -2140,7 +2140,7 @@ export const Vote = {
   },
   toAmino(message: Vote): VoteAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? (message.proposalId?.toString)() : undefined;
     obj.voter = message.voter === "" ? undefined : message.voter;
     obj.option = message.option === 0 ? undefined : message.option;
     obj.metadata = message.metadata === "" ? undefined : message.metadata;

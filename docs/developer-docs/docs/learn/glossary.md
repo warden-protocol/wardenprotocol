@@ -138,7 +138,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ## Key request fee
 
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collect fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collects fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD (0.000001 WARD).
 
 ---
 
@@ -146,7 +146,9 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
 
-The Warden Protocol allows users or external organizations become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures. To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
+The Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
+
+Learn more: [Build a Keychain](/build-a-keychain/introduction)
 
 ---
 
@@ -164,7 +166,9 @@ A Keychain Writer is an account that publishes signatures and public keys on beh
 
 ## Keychain SDK
 
-The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain). You can find the available functions here: [Keychain SDK functions](/build-a-keychain/sdk/keychain-sdk).
+The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain).
+
+Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk)
 
 ---
 
@@ -219,7 +223,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Signature request fee
 
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collect fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD.
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collects fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD (0.000001 WARD).
 
 ---
 

@@ -16,8 +16,6 @@ export const wardenAminoConverters = {
 export const wardenProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...wardenActV1beta1TxRegistry.registry, ...wardenGmpTxRegistry.registry, ...wardenWardenV1beta3TxRegistry.registry];
 export const getSigningWardenClientOptions = ({
   defaultTypes = defaultRegistryTypes
-}: {
-  defaultTypes?: ReadonlyArray<[string, GeneratedType]>;
 } = {}): {
   registry: Registry;
   aminoTypes: AminoTypes;
@@ -47,7 +45,7 @@ export const getSigningWardenClient = async ({
     defaultTypes
   });
   const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, signer, {
-    registry: (registry as any),
+    registry: registry as any,
     aminoTypes
   });
   return client;

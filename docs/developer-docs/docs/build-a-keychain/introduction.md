@@ -6,18 +6,19 @@ sidebar_position: 1
 
 ## Keychains
 
-Every [Omnichain Application](/learn/glossary#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](/learn/glossary#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](/learn/glossary#modular-key-management) and [Modular Security](/learn/glossary#modular-security).
+Every [Omnichain Application](/learn/glossary#omnichain-application) has at least one **Keychain** – a custodian that generates and stores [keys](/learn/glossary#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](/learn/glossary#modular-key-management) and [Modular Security](/learn/glossary#modular-security).
 
-The Warden Protocol allows users or external organizations become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures. To learn more, see [Request flow](/learn/request-flow).
+The Warden Protocol allows users or external organizations to become **Keychain operators**. They can onboard their own Keychains and charge fees for [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures. To learn more, see [Request flow](/learn/request-flow).
 
-This section explains how to build a Keychain and operate it.
+## Section overview
 
-## Get started
+This section contains three main parts, each covering different aspects of Keychain usage and implementation: 
 
-To get started, follow the steps in the [Quick start](quick-start) guide. You can build a Keychain with our [Keychain SDK](sdk/keychain-sdk).
+- [Operate a Keychain](/category/operate-a-keychain)  
+Get started as a Keychain operator: create and configure a Keychain entity on-chain and then run a Keychain from CLI.
 
-In the future, we're going to provide off-chain infrastructure to facilitate Keychain deployment.
+- [Build a Keyhcain app](build-a-keychain-app)  
+Build a basic Keychain application in Go.
 
-:::tip
-If you're [building an Omnichain Application](/build-an-app/introduction) and wish to run a Keychain for testing purposes, check this guide: [Run a Keychain from CLI](/build-an-app/test/run-a-keychain-from-cli).
-:::
+- [Implementations](/category/implementations)  
+Here you'll find reference docs explaining how Keychains are implemented in Warden. See the detailed breakdown of three main Keychain components: [WardenKMS](implementations/wardenkms) , [CLIchain](implementations/clichain), and [Keychain SDK](implementations/keychain-sdk).

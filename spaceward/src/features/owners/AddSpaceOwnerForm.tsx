@@ -5,11 +5,13 @@ import { shapes } from "@dicebear/collection";
 import { fromBech32 } from "@cosmjs/encoding";
 import { useNewAction } from "@/hooks/useAction";
 import { warden } from "@wardenprotocol/wardenjs";
+import { useNonce } from "@/hooks/useNonce";
 
 const { MsgAddSpaceOwner } = warden.warden.v1beta3;
 
 export function AddSpaceOwnerForm({ spaceId }: { spaceId: string }) {
-	const { newAction, authority } = useNewAction(MsgAddSpaceOwner);
+	const { newAction, authority } = useNewAction(MsgAddSpaceOwner, true);
+	const nonce = useNonce();
 	const [newOwner, setNewOwner] = useState("");
 	const [avatar, setAvatar] = useState("");
 
@@ -38,6 +40,7 @@ export function AddSpaceOwnerForm({ spaceId }: { spaceId: string }) {
 			newOwner,
 			spaceId: BigInt(spaceId),
 			authority,
+			nonce
 		}, {});
 	}
 

@@ -92,7 +92,7 @@ const DetailsModal = ({
 					<div className="font-bold text-xl">
 						{bigintToFixed(result?.total, {
 							compact: true,
-							decimals: 6,
+							decimals: 18,
 							display: 2,
 						})}{" "}
 						votes

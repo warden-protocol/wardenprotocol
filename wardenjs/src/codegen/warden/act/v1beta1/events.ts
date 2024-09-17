@@ -1,55 +1,56 @@
 //@ts-nocheck
+import { ActionVoteType, actionVoteTypeFromJSON, actionVoteTypeToJSON } from "./action_vote.js";
 import { ActionStatus, actionStatusFromJSON, actionStatusToJSON } from "./action.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
-/** EventCreateRule is emitted on Rule creation */
-export interface EventCreateRule {
+/** EventCreateTemplate is emitted on Template creation */
+export interface EventCreateTemplate {
   /** id of the new intent */
   id: bigint;
   /** creator is the address that created the intent */
   creator: string;
 }
-export interface EventCreateRuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.EventCreateRule";
+export interface EventCreateTemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.EventCreateTemplate";
   value: Uint8Array;
 }
-/** EventCreateRule is emitted on Rule creation */
-export interface EventCreateRuleAmino {
+/** EventCreateTemplate is emitted on Template creation */
+export interface EventCreateTemplateAmino {
   /** id of the new intent */
   id?: string;
   /** creator is the address that created the intent */
   creator?: string;
 }
-export interface EventCreateRuleAminoMsg {
-  type: "/warden.act.v1beta1.EventCreateRule";
-  value: EventCreateRuleAmino;
+export interface EventCreateTemplateAminoMsg {
+  type: "/warden.act.v1beta1.EventCreateTemplate";
+  value: EventCreateTemplateAmino;
 }
-/** EventCreateRule is emitted on Rule creation */
-export interface EventCreateRuleSDKType {
+/** EventCreateTemplate is emitted on Template creation */
+export interface EventCreateTemplateSDKType {
   id: bigint;
   creator: string;
 }
-/** EventUpdateRule is emitted when Rule is updated */
-export interface EventUpdateRule {
+/** EventUpdateTemplate is emitted when Template is updated */
+export interface EventUpdateTemplate {
   /** id of updated intent */
   id: bigint;
 }
-export interface EventUpdateRuleProtoMsg {
-  typeUrl: "/warden.act.v1beta1.EventUpdateRule";
+export interface EventUpdateTemplateProtoMsg {
+  typeUrl: "/warden.act.v1beta1.EventUpdateTemplate";
   value: Uint8Array;
 }
-/** EventUpdateRule is emitted when Rule is updated */
-export interface EventUpdateRuleAmino {
+/** EventUpdateTemplate is emitted when Template is updated */
+export interface EventUpdateTemplateAmino {
   /** id of updated intent */
   id?: string;
 }
-export interface EventUpdateRuleAminoMsg {
-  type: "/warden.act.v1beta1.EventUpdateRule";
-  value: EventUpdateRuleAmino;
+export interface EventUpdateTemplateAminoMsg {
+  type: "/warden.act.v1beta1.EventUpdateTemplate";
+  value: EventUpdateTemplateAmino;
 }
-/** EventUpdateRule is emitted when Rule is updated */
-export interface EventUpdateRuleSDKType {
+/** EventUpdateTemplate is emitted when Template is updated */
+export interface EventUpdateTemplateSDKType {
   id: bigint;
 }
 /** EventCreateAction is emitted when an Action is created */
@@ -79,32 +80,37 @@ export interface EventCreateActionSDKType {
   id: bigint;
   creator: string;
 }
-/** EventApproveAction is emitted when an Action is approved */
-export interface EventApproveAction {
+/** EventActionVoted is emitted when an Action is voted on */
+export interface EventActionVoted {
   /** id of action */
   id: bigint;
-  /** address of the account that approved the action */
-  approver: string;
+  /** address of the account that participated in voting */
+  participant: string;
+  /** type of the vote */
+  voteType: ActionVoteType;
 }
-export interface EventApproveActionProtoMsg {
-  typeUrl: "/warden.act.v1beta1.EventApproveAction";
+export interface EventActionVotedProtoMsg {
+  typeUrl: "/warden.act.v1beta1.EventActionVoted";
   value: Uint8Array;
 }
-/** EventApproveAction is emitted when an Action is approved */
-export interface EventApproveActionAmino {
+/** EventActionVoted is emitted when an Action is voted on */
+export interface EventActionVotedAmino {
   /** id of action */
   id?: string;
-  /** address of the account that approved the action */
-  approver?: string;
+  /** address of the account that participated in voting */
+  participant?: string;
+  /** type of the vote */
+  vote_type?: ActionVoteType;
 }
-export interface EventApproveActionAminoMsg {
-  type: "/warden.act.v1beta1.EventApproveAction";
-  value: EventApproveActionAmino;
+export interface EventActionVotedAminoMsg {
+  type: "/warden.act.v1beta1.EventActionVoted";
+  value: EventActionVotedAmino;
 }
-/** EventApproveAction is emitted when an Action is approved */
-export interface EventApproveActionSDKType {
+/** EventActionVoted is emitted when an Action is voted on */
+export interface EventActionVotedSDKType {
   id: bigint;
-  approver: string;
+  participant: string;
+  vote_type: ActionVoteType;
 }
 /** EventActionStateChange is emitted when an Action is in a new state */
 export interface EventActionStateChange {
@@ -138,15 +144,46 @@ export interface EventActionStateChangeSDKType {
   previous_status: ActionStatus;
   new_status: ActionStatus;
 }
-function createBaseEventCreateRule(): EventCreateRule {
+/**
+ * EventActionPruned is emitted when an Action is pruned in `Completed`, `Revoked`, `Pending` or `Timeout`
+ * states and won't be processed further
+ */
+export interface EventActionPruned {
+  /** id of action */
+  id: bigint;
+}
+export interface EventActionPrunedProtoMsg {
+  typeUrl: "/warden.act.v1beta1.EventActionPruned";
+  value: Uint8Array;
+}
+/**
+ * EventActionPruned is emitted when an Action is pruned in `Completed`, `Revoked`, `Pending` or `Timeout`
+ * states and won't be processed further
+ */
+export interface EventActionPrunedAmino {
+  /** id of action */
+  id?: string;
+}
+export interface EventActionPrunedAminoMsg {
+  type: "/warden.act.v1beta1.EventActionPruned";
+  value: EventActionPrunedAmino;
+}
+/**
+ * EventActionPruned is emitted when an Action is pruned in `Completed`, `Revoked`, `Pending` or `Timeout`
+ * states and won't be processed further
+ */
+export interface EventActionPrunedSDKType {
+  id: bigint;
+}
+function createBaseEventCreateTemplate(): EventCreateTemplate {
   return {
     id: BigInt(0),
     creator: ""
   };
 }
-export const EventCreateRule = {
-  typeUrl: "/warden.act.v1beta1.EventCreateRule",
-  encode(message: EventCreateRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventCreateTemplate = {
+  typeUrl: "/warden.act.v1beta1.EventCreateTemplate",
+  encode(message: EventCreateTemplate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
@@ -155,10 +192,10 @@ export const EventCreateRule = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateRule {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateTemplate {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventCreateRule();
+    const message = createBaseEventCreateTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -175,26 +212,26 @@ export const EventCreateRule = {
     }
     return message;
   },
-  fromJSON(object: any): EventCreateRule {
+  fromJSON(object: any): EventCreateTemplate {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : ""
     };
   },
-  toJSON(message: EventCreateRule): JsonSafe<EventCreateRule> {
+  toJSON(message: EventCreateTemplate): JsonSafe<EventCreateTemplate> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
-  fromPartial(object: Partial<EventCreateRule>): EventCreateRule {
-    const message = createBaseEventCreateRule();
+  fromPartial(object: Partial<EventCreateTemplate>): EventCreateTemplate {
+    const message = createBaseEventCreateTemplate();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     return message;
   },
-  fromAmino(object: EventCreateRuleAmino): EventCreateRule {
-    const message = createBaseEventCreateRule();
+  fromAmino(object: EventCreateTemplateAmino): EventCreateTemplate {
+    const message = createBaseEventCreateTemplate();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
@@ -203,45 +240,45 @@ export const EventCreateRule = {
     }
     return message;
   },
-  toAmino(message: EventCreateRule): EventCreateRuleAmino {
+  toAmino(message: EventCreateTemplate): EventCreateTemplateAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
-  fromAminoMsg(object: EventCreateRuleAminoMsg): EventCreateRule {
-    return EventCreateRule.fromAmino(object.value);
+  fromAminoMsg(object: EventCreateTemplateAminoMsg): EventCreateTemplate {
+    return EventCreateTemplate.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventCreateRuleProtoMsg): EventCreateRule {
-    return EventCreateRule.decode(message.value);
+  fromProtoMsg(message: EventCreateTemplateProtoMsg): EventCreateTemplate {
+    return EventCreateTemplate.decode(message.value);
   },
-  toProto(message: EventCreateRule): Uint8Array {
-    return EventCreateRule.encode(message).finish();
+  toProto(message: EventCreateTemplate): Uint8Array {
+    return EventCreateTemplate.encode(message).finish();
   },
-  toProtoMsg(message: EventCreateRule): EventCreateRuleProtoMsg {
+  toProtoMsg(message: EventCreateTemplate): EventCreateTemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.EventCreateRule",
-      value: EventCreateRule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.EventCreateTemplate",
+      value: EventCreateTemplate.encode(message).finish()
     };
   }
 };
-function createBaseEventUpdateRule(): EventUpdateRule {
+function createBaseEventUpdateTemplate(): EventUpdateTemplate {
   return {
     id: BigInt(0)
   };
 }
-export const EventUpdateRule = {
-  typeUrl: "/warden.act.v1beta1.EventUpdateRule",
-  encode(message: EventUpdateRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventUpdateTemplate = {
+  typeUrl: "/warden.act.v1beta1.EventUpdateTemplate",
+  encode(message: EventUpdateTemplate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateRule {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateTemplate {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventUpdateRule();
+    const message = createBaseEventUpdateTemplate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -255,46 +292,46 @@ export const EventUpdateRule = {
     }
     return message;
   },
-  fromJSON(object: any): EventUpdateRule {
+  fromJSON(object: any): EventUpdateTemplate {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: EventUpdateRule): JsonSafe<EventUpdateRule> {
+  toJSON(message: EventUpdateTemplate): JsonSafe<EventUpdateTemplate> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<EventUpdateRule>): EventUpdateRule {
-    const message = createBaseEventUpdateRule();
+  fromPartial(object: Partial<EventUpdateTemplate>): EventUpdateTemplate {
+    const message = createBaseEventUpdateTemplate();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: EventUpdateRuleAmino): EventUpdateRule {
-    const message = createBaseEventUpdateRule();
+  fromAmino(object: EventUpdateTemplateAmino): EventUpdateTemplate {
+    const message = createBaseEventUpdateTemplate();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: EventUpdateRule): EventUpdateRuleAmino {
+  toAmino(message: EventUpdateTemplate): EventUpdateTemplateAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
-  fromAminoMsg(object: EventUpdateRuleAminoMsg): EventUpdateRule {
-    return EventUpdateRule.fromAmino(object.value);
+  fromAminoMsg(object: EventUpdateTemplateAminoMsg): EventUpdateTemplate {
+    return EventUpdateTemplate.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventUpdateRuleProtoMsg): EventUpdateRule {
-    return EventUpdateRule.decode(message.value);
+  fromProtoMsg(message: EventUpdateTemplateProtoMsg): EventUpdateTemplate {
+    return EventUpdateTemplate.decode(message.value);
   },
-  toProto(message: EventUpdateRule): Uint8Array {
-    return EventUpdateRule.encode(message).finish();
+  toProto(message: EventUpdateTemplate): Uint8Array {
+    return EventUpdateTemplate.encode(message).finish();
   },
-  toProtoMsg(message: EventUpdateRule): EventUpdateRuleProtoMsg {
+  toProtoMsg(message: EventUpdateTemplate): EventUpdateTemplateProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.EventUpdateRule",
-      value: EventUpdateRule.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.EventUpdateTemplate",
+      value: EventUpdateTemplate.encode(message).finish()
     };
   }
 };
@@ -365,7 +402,7 @@ export const EventCreateAction = {
   },
   toAmino(message: EventCreateAction): EventCreateActionAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
@@ -385,27 +422,31 @@ export const EventCreateAction = {
     };
   }
 };
-function createBaseEventApproveAction(): EventApproveAction {
+function createBaseEventActionVoted(): EventActionVoted {
   return {
     id: BigInt(0),
-    approver: ""
+    participant: "",
+    voteType: 0
   };
 }
-export const EventApproveAction = {
-  typeUrl: "/warden.act.v1beta1.EventApproveAction",
-  encode(message: EventApproveAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventActionVoted = {
+  typeUrl: "/warden.act.v1beta1.EventActionVoted",
+  encode(message: EventActionVoted, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
-    if (message.approver !== "") {
-      writer.uint32(18).string(message.approver);
+    if (message.participant !== "") {
+      writer.uint32(18).string(message.participant);
+    }
+    if (message.voteType !== 0) {
+      writer.uint32(24).int32(message.voteType);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventApproveAction {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventActionVoted {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventApproveAction();
+    const message = createBaseEventActionVoted();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -413,7 +454,10 @@ export const EventApproveAction = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.approver = reader.string();
+          message.participant = reader.string();
+          break;
+        case 3:
+          message.voteType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -422,53 +466,60 @@ export const EventApproveAction = {
     }
     return message;
   },
-  fromJSON(object: any): EventApproveAction {
+  fromJSON(object: any): EventActionVoted {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
-      approver: isSet(object.approver) ? String(object.approver) : ""
+      participant: isSet(object.participant) ? String(object.participant) : "",
+      voteType: isSet(object.voteType) ? actionVoteTypeFromJSON(object.voteType) : -1
     };
   },
-  toJSON(message: EventApproveAction): JsonSafe<EventApproveAction> {
+  toJSON(message: EventActionVoted): JsonSafe<EventActionVoted> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
-    message.approver !== undefined && (obj.approver = message.approver);
+    message.participant !== undefined && (obj.participant = message.participant);
+    message.voteType !== undefined && (obj.voteType = actionVoteTypeToJSON(message.voteType));
     return obj;
   },
-  fromPartial(object: Partial<EventApproveAction>): EventApproveAction {
-    const message = createBaseEventApproveAction();
+  fromPartial(object: Partial<EventActionVoted>): EventActionVoted {
+    const message = createBaseEventActionVoted();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
-    message.approver = object.approver ?? "";
+    message.participant = object.participant ?? "";
+    message.voteType = object.voteType ?? 0;
     return message;
   },
-  fromAmino(object: EventApproveActionAmino): EventApproveAction {
-    const message = createBaseEventApproveAction();
+  fromAmino(object: EventActionVotedAmino): EventActionVoted {
+    const message = createBaseEventActionVoted();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
-    if (object.approver !== undefined && object.approver !== null) {
-      message.approver = object.approver;
+    if (object.participant !== undefined && object.participant !== null) {
+      message.participant = object.participant;
+    }
+    if (object.vote_type !== undefined && object.vote_type !== null) {
+      message.voteType = object.vote_type;
     }
     return message;
   },
-  toAmino(message: EventApproveAction): EventApproveActionAmino {
+  toAmino(message: EventActionVoted): EventActionVotedAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
-    obj.approver = message.approver === "" ? undefined : message.approver;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.participant = message.participant === "" ? undefined : message.participant;
+    obj.vote_type = message.voteType === 0 ? undefined : message.voteType;
     return obj;
   },
-  fromAminoMsg(object: EventApproveActionAminoMsg): EventApproveAction {
-    return EventApproveAction.fromAmino(object.value);
+  fromAminoMsg(object: EventActionVotedAminoMsg): EventActionVoted {
+    return EventActionVoted.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventApproveActionProtoMsg): EventApproveAction {
-    return EventApproveAction.decode(message.value);
+  fromProtoMsg(message: EventActionVotedProtoMsg): EventActionVoted {
+    return EventActionVoted.decode(message.value);
   },
-  toProto(message: EventApproveAction): Uint8Array {
-    return EventApproveAction.encode(message).finish();
+  toProto(message: EventActionVoted): Uint8Array {
+    return EventActionVoted.encode(message).finish();
   },
-  toProtoMsg(message: EventApproveAction): EventApproveActionProtoMsg {
+  toProtoMsg(message: EventActionVoted): EventActionVotedProtoMsg {
     return {
-      typeUrl: "/warden.act.v1beta1.EventApproveAction",
-      value: EventApproveAction.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.EventActionVoted",
+      value: EventActionVoted.encode(message).finish()
     };
   }
 };
@@ -504,10 +555,10 @@ export const EventActionStateChange = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.previousStatus = (reader.int32() as any);
+          message.previousStatus = reader.int32() as any;
           break;
         case 3:
-          message.newStatus = (reader.int32() as any);
+          message.newStatus = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -552,7 +603,7 @@ export const EventActionStateChange = {
   },
   toAmino(message: EventActionStateChange): EventActionStateChangeAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.previous_status = message.previousStatus === 0 ? undefined : message.previousStatus;
     obj.new_status = message.newStatus === 0 ? undefined : message.newStatus;
     return obj;
@@ -570,6 +621,79 @@ export const EventActionStateChange = {
     return {
       typeUrl: "/warden.act.v1beta1.EventActionStateChange",
       value: EventActionStateChange.encode(message).finish()
+    };
+  }
+};
+function createBaseEventActionPruned(): EventActionPruned {
+  return {
+    id: BigInt(0)
+  };
+}
+export const EventActionPruned = {
+  typeUrl: "/warden.act.v1beta1.EventActionPruned",
+  encode(message: EventActionPruned, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): EventActionPruned {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventActionPruned();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventActionPruned {
+    return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: EventActionPruned): JsonSafe<EventActionPruned> {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<EventActionPruned>): EventActionPruned {
+    const message = createBaseEventActionPruned();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: EventActionPrunedAmino): EventActionPruned {
+    const message = createBaseEventActionPruned();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    return message;
+  },
+  toAmino(message: EventActionPruned): EventActionPrunedAmino {
+    const obj: any = {};
+    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventActionPrunedAminoMsg): EventActionPruned {
+    return EventActionPruned.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventActionPrunedProtoMsg): EventActionPruned {
+    return EventActionPruned.decode(message.value);
+  },
+  toProto(message: EventActionPruned): Uint8Array {
+    return EventActionPruned.encode(message).finish();
+  },
+  toProtoMsg(message: EventActionPruned): EventActionPrunedProtoMsg {
+    return {
+      typeUrl: "/warden.act.v1beta1.EventActionPruned",
+      value: EventActionPruned.encode(message).finish()
     };
   }
 };

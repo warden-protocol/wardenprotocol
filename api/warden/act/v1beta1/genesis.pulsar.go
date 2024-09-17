@@ -68,7 +68,7 @@ func (x *_GenesisState_2_list) IsValid() bool {
 var _ protoreflect.List = (*_GenesisState_3_list)(nil)
 
 type _GenesisState_3_list struct {
-	list *[]*Rule
+	list *[]*Template
 }
 
 func (x *_GenesisState_3_list) Len() int {
@@ -84,18 +84,18 @@ func (x *_GenesisState_3_list) Get(i int) protoreflect.Value {
 
 func (x *_GenesisState_3_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*Rule)
+	concreteValue := valueUnwrapped.Interface().(*Template)
 	(*x.list)[i] = concreteValue
 }
 
 func (x *_GenesisState_3_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*Rule)
+	concreteValue := valueUnwrapped.Interface().(*Template)
 	*x.list = append(*x.list, concreteValue)
 }
 
 func (x *_GenesisState_3_list) AppendMutable() protoreflect.Value {
-	v := new(Rule)
+	v := new(Template)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
@@ -108,7 +108,7 @@ func (x *_GenesisState_3_list) Truncate(n int) {
 }
 
 func (x *_GenesisState_3_list) NewElement() protoreflect.Value {
-	v := new(Rule)
+	v := new(Template)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
@@ -117,10 +117,10 @@ func (x *_GenesisState_3_list) IsValid() bool {
 }
 
 var (
-	md_GenesisState         protoreflect.MessageDescriptor
-	fd_GenesisState_params  protoreflect.FieldDescriptor
-	fd_GenesisState_actions protoreflect.FieldDescriptor
-	fd_GenesisState_rules   protoreflect.FieldDescriptor
+	md_GenesisState           protoreflect.MessageDescriptor
+	fd_GenesisState_params    protoreflect.FieldDescriptor
+	fd_GenesisState_actions   protoreflect.FieldDescriptor
+	fd_GenesisState_templates protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -128,7 +128,7 @@ func init() {
 	md_GenesisState = File_warden_act_v1beta1_genesis_proto.Messages().ByName("GenesisState")
 	fd_GenesisState_params = md_GenesisState.Fields().ByName("params")
 	fd_GenesisState_actions = md_GenesisState.Fields().ByName("actions")
-	fd_GenesisState_rules = md_GenesisState.Fields().ByName("rules")
+	fd_GenesisState_templates = md_GenesisState.Fields().ByName("templates")
 }
 
 var _ protoreflect.Message = (*fastReflection_GenesisState)(nil)
@@ -208,9 +208,9 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
-	if len(x.Rules) != 0 {
-		value := protoreflect.ValueOfList(&_GenesisState_3_list{list: &x.Rules})
-		if !f(fd_GenesisState_rules, value) {
+	if len(x.Templates) != 0 {
+		value := protoreflect.ValueOfList(&_GenesisState_3_list{list: &x.Templates})
+		if !f(fd_GenesisState_templates, value) {
 			return
 		}
 	}
@@ -233,8 +233,8 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.Params != nil
 	case "warden.act.v1beta1.GenesisState.actions":
 		return len(x.Actions) != 0
-	case "warden.act.v1beta1.GenesisState.rules":
-		return len(x.Rules) != 0
+	case "warden.act.v1beta1.GenesisState.templates":
+		return len(x.Templates) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.GenesisState"))
@@ -255,8 +255,8 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 		x.Params = nil
 	case "warden.act.v1beta1.GenesisState.actions":
 		x.Actions = nil
-	case "warden.act.v1beta1.GenesisState.rules":
-		x.Rules = nil
+	case "warden.act.v1beta1.GenesisState.templates":
+		x.Templates = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.GenesisState"))
@@ -282,11 +282,11 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 		}
 		listValue := &_GenesisState_2_list{list: &x.Actions}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.act.v1beta1.GenesisState.rules":
-		if len(x.Rules) == 0 {
+	case "warden.act.v1beta1.GenesisState.templates":
+		if len(x.Templates) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_3_list{})
 		}
-		listValue := &_GenesisState_3_list{list: &x.Rules}
+		listValue := &_GenesisState_3_list{list: &x.Templates}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
@@ -314,10 +314,10 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 		lv := value.List()
 		clv := lv.(*_GenesisState_2_list)
 		x.Actions = *clv.list
-	case "warden.act.v1beta1.GenesisState.rules":
+	case "warden.act.v1beta1.GenesisState.templates":
 		lv := value.List()
 		clv := lv.(*_GenesisState_3_list)
-		x.Rules = *clv.list
+		x.Templates = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.act.v1beta1.GenesisState"))
@@ -349,11 +349,11 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 		}
 		value := &_GenesisState_2_list{list: &x.Actions}
 		return protoreflect.ValueOfList(value)
-	case "warden.act.v1beta1.GenesisState.rules":
-		if x.Rules == nil {
-			x.Rules = []*Rule{}
+	case "warden.act.v1beta1.GenesisState.templates":
+		if x.Templates == nil {
+			x.Templates = []*Template{}
 		}
-		value := &_GenesisState_3_list{list: &x.Rules}
+		value := &_GenesisState_3_list{list: &x.Templates}
 		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
@@ -374,8 +374,8 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 	case "warden.act.v1beta1.GenesisState.actions":
 		list := []*Action{}
 		return protoreflect.ValueOfList(&_GenesisState_2_list{list: &list})
-	case "warden.act.v1beta1.GenesisState.rules":
-		list := []*Rule{}
+	case "warden.act.v1beta1.GenesisState.templates":
+		list := []*Template{}
 		return protoreflect.ValueOfList(&_GenesisState_3_list{list: &list})
 	default:
 		if fd.IsExtension() {
@@ -456,8 +456,8 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if len(x.Rules) > 0 {
-			for _, e := range x.Rules {
+		if len(x.Templates) > 0 {
+			for _, e := range x.Templates {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -491,9 +491,9 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Rules) > 0 {
-			for iNdEx := len(x.Rules) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.Rules[iNdEx])
+		if len(x.Templates) > 0 {
+			for iNdEx := len(x.Templates) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Templates[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -658,7 +658,7 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Rules", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Templates", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -685,8 +685,8 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Rules = append(x.Rules, &Rule{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Rules[len(x.Rules)-1]); err != nil {
+				x.Templates = append(x.Templates, &Template{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Templates[len(x.Templates)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -745,9 +745,9 @@ type GenesisState struct {
 	unknownFields protoimpl.UnknownFields
 
 	// params defines all the parameters of the module.
-	Params  *Params   `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
-	Actions []*Action `protobuf:"bytes,2,rep,name=actions,proto3" json:"actions,omitempty"`
-	Rules   []*Rule   `protobuf:"bytes,3,rep,name=rules,proto3" json:"rules,omitempty"`
+	Params    *Params     `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
+	Actions   []*Action   `protobuf:"bytes,2,rep,name=actions,proto3" json:"actions,omitempty"`
+	Templates []*Template `protobuf:"bytes,3,rep,name=templates,proto3" json:"templates,omitempty"`
 }
 
 func (x *GenesisState) Reset() {
@@ -784,9 +784,9 @@ func (x *GenesisState) GetActions() []*Action {
 	return nil
 }
 
-func (x *GenesisState) GetRules() []*Rule {
+func (x *GenesisState) GetTemplates() []*Template {
 	if x != nil {
-		return x.Rules
+		return x.Templates
 	}
 	return nil
 }
@@ -804,21 +804,22 @@ var file_warden_act_v1beta1_genesis_proto_rawDesc = []byte{
 	0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x1a, 0x1f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31, 0x62,
 	0x65, 0x74, 0x61, 0x31, 0x2f, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x1d, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x72, 0x75, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x22, 0xc9, 0x01, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74,
-	0x65, 0x12, 0x3d, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8,
-	0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x12, 0x3f, 0x0a, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28,
-	0x0b, 0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x09, 0xc8,
-	0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x73, 0x12, 0x39, 0x0a, 0x05, 0x72, 0x75, 0x6c, 0x65, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x18, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x52, 0x75, 0x6c, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00,
-	0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x05, 0x72, 0x75, 0x6c, 0x65, 0x73, 0x42, 0xdd, 0x01, 0x0a,
+	0x6f, 0x1a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x63, 0x74, 0x2f, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xd5, 0x01, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73,
+	0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x3d, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
+	0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x12, 0x3f, 0x0a, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
+	0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
+	0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x07, 0x61, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x45, 0x0a, 0x09, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74,
+	0x65, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54, 0x65,
+	0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a,
+	0x01, 0x52, 0x09, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x73, 0x42, 0xdd, 0x01, 0x0a,
 	0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x63, 0x74, 0x2e,
 	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73,
 	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
@@ -853,12 +854,12 @@ var file_warden_act_v1beta1_genesis_proto_goTypes = []interface{}{
 	(*GenesisState)(nil), // 0: warden.act.v1beta1.GenesisState
 	(*Params)(nil),       // 1: warden.act.v1beta1.Params
 	(*Action)(nil),       // 2: warden.act.v1beta1.Action
-	(*Rule)(nil),         // 3: warden.act.v1beta1.Rule
+	(*Template)(nil),     // 3: warden.act.v1beta1.Template
 }
 var file_warden_act_v1beta1_genesis_proto_depIdxs = []int32{
 	1, // 0: warden.act.v1beta1.GenesisState.params:type_name -> warden.act.v1beta1.Params
 	2, // 1: warden.act.v1beta1.GenesisState.actions:type_name -> warden.act.v1beta1.Action
-	3, // 2: warden.act.v1beta1.GenesisState.rules:type_name -> warden.act.v1beta1.Rule
+	3, // 2: warden.act.v1beta1.GenesisState.templates:type_name -> warden.act.v1beta1.Template
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -873,7 +874,7 @@ func file_warden_act_v1beta1_genesis_proto_init() {
 	}
 	file_warden_act_v1beta1_params_proto_init()
 	file_warden_act_v1beta1_action_proto_init()
-	file_warden_act_v1beta1_rule_proto_init()
+	file_warden_act_v1beta1_template_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_warden_act_v1beta1_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GenesisState); i {

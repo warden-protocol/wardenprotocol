@@ -1,0 +1,92 @@
+package cases
+
+import (
+	"context"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/require"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+
+	"github.com/warden-protocol/wardenprotocol/tests/framework"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
+)
+
+func init() {
+	Register(&Test_RejectAny3Action{})
+}
+
+type Test_RejectAny3Action struct {
+	w *exec.WardenNode
+}
+
+func (c *Test_RejectAny3Action) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+	c.w = exec.NewWardenNode(t, build.Wardend)
+
+	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	c.w.WaitRunnning(t)
+}
+
+func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
+	client := TestGRPCClient(*c.w.GRPCClient(t))
+
+	alice := exec.NewWardend(c.w, "alice")
+	bob := exec.NewWardend(c.w, "bob")
+	charlie := exec.NewWardend(c.w, "charlie")
+	dave := exec.NewWardend(c.w, "dave")
+
+	addNewOwnerCommandTemplate := "warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d"
+
+	resAddOwner := bob.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, bob.Address(t), 0)) //1
+	checks.SuccessTx(t, resAddOwner)
+	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 0)
+
+	resApproveBob := alice.Tx(t, "act vote-for-action --vote-type vote-type-approved --action-id 1")
+	checks.SuccessTx(t, resApproveBob)
+	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 1)
+
+	resAddOwner2 := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, charlie.Address(t), 1)) //2
+	checks.SuccessTx(t, resAddOwner2)
+	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 1)
+
+	newRejectTemplateDefinition := "\"any(3, warden.space.owners)\""
+	resNewTemplate := alice.Tx(t, "act new-template --name reject_requires_three --definition "+newRejectTemplateDefinition)
+	checks.SuccessTx(t, resNewTemplate)
+	newApproveTemplateDefinition := "\"any(2, warden.space.owners)\""
+	resNewTemplate2 := alice.Tx(t, "act new-template --name approve_requires_two --definition "+newApproveTemplateDefinition)
+	checks.SuccessTx(t, resNewTemplate2)
+
+	resUpdateSpaceAdminTemplateByAlice := alice.Tx(t, "warden new-action update-space --space-id 1 --reject-admin-template-id 1 --approve-admin-template-id 2 --nonce 2") //3
+	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByAlice)
+
+	spaceAfterValidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
+		Id: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, uint64(1), spaceAfterValidApprove.Space.RejectAdminTemplateId)
+	require.Equal(t, uint64(2), spaceAfterValidApprove.Space.ApproveAdminTemplateId)
+
+	addNewOwnerCommandTemplate = "warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-reject-expression %s --expected-approve-expression %s"
+
+	resAliceAddOwnerDave := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3, newRejectTemplateDefinition, newApproveTemplateDefinition)) //4
+	checks.SuccessTx(t, resAliceAddOwnerDave)
+	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+
+	resRejectDaveByAlice := alice.Tx(t, "act vote-for-action --vote-type vote-type-rejected --action-id 4")
+	checks.SuccessTx(t, resRejectDaveByAlice)
+	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+	client.EnsureActionStatus(t, ctx, 4, acttypes.ActionStatus_ACTION_STATUS_PENDING)
+
+	resRejectDaveByBob := bob.Tx(t, "act vote-for-action --vote-type vote-type-rejected --action-id 4")
+	checks.SuccessTx(t, resRejectDaveByBob)
+	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+	client.EnsureActionStatus(t, ctx, 4, acttypes.ActionStatus_ACTION_STATUS_PENDING)
+
+	resRejectDaveByCharlie := charlie.Tx(t, "act vote-for-action --vote-type vote-type-rejected --action-id 4")
+	checks.SuccessTx(t, resRejectDaveByCharlie)
+	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+	client.EnsureActionStatus(t, ctx, 4, acttypes.ActionStatus_ACTION_STATUS_REVOKED)
+
+}

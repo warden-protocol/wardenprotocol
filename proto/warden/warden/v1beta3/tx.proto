@@ -89,9 +89,11 @@ message MsgUpdateParamsResponse {}
 message MsgNewSpace {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  uint64 admin_rule_id = 2;
-  uint64 sign_rule_id = 3;
-  repeated string additional_owners = 4;
+  uint64 approve_admin_template_id = 2;
+  uint64 reject_admin_template_id = 3;
+  uint64 approve_sign_template_id = 4;
+  uint64 reject_sign_template_id = 5;
+  repeated string additional_owners = 6;
 }
 
 message MsgNewSpaceResponse { uint64 id = 1; }
@@ -142,9 +144,11 @@ message MsgUpdateSpace {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;
   uint64 space_id = 2;
-  uint64 admin_rule_id = 3;
-  uint64 sign_rule_id = 4;
-  uint64 nonce = 5;
+  uint64 nonce = 3;
+  uint64 approve_admin_template_id = 4;
+  uint64 reject_admin_template_id = 5;
+  uint64 approve_sign_template_id = 6;
+  uint64 reject_sign_template_id = 7;
 }
 
 message MsgUpdateSpaceResponse {}
@@ -187,14 +191,15 @@ message MsgNewKeyRequest {
   uint64 space_id = 2;
   uint64 keychain_id = 3;
   KeyType key_type = 4;
-  uint64 rule_id = 5;
-  repeated cosmos.base.v1beta1.Coin max_keychain_fees = 6 [
+  uint64 approve_template_id = 5;
+  uint64 reject_template_id = 6;
+  repeated cosmos.base.v1beta1.Coin max_keychain_fees = 7 [
     (gogoproto.nullable)     = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (amino.dont_omitempty)   = true,
     (amino.encoding)         = "legacy_coins"
   ];
-  uint64 nonce = 7;
+  uint64 nonce = 8;
 }
 
 message MsgNewKeyRequestResponse { uint64 id = 1; }
@@ -219,7 +224,8 @@ message MsgUpdateKey {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;
   uint64 key_id = 2;
-  uint64 rule_id = 3;
+  uint64 approve_template_id = 4;
+  uint64 reject_template_id = 5;
 }
 
 message MsgUpdateKeyResponse {}

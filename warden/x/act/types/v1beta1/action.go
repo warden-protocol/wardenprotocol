@@ -1,17 +1,18 @@
 package v1beta1
 
 import (
-	time "time"
+	"time"
 
 	"cosmossdk.io/errors"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func NewApprover(address string, timestamp time.Time) *Approver {
-	return &Approver{
-		Address:    address,
-		ApprovedAt: timestamp,
+func NewVote(participant string, voteType ActionVoteType, timestamp time.Time) *ActionVote {
+	return &ActionVote{
+		Participant: participant,
+		VotedAt:     timestamp,
+		VoteType:    voteType,
 	}
 }
 
@@ -40,23 +41,32 @@ func (a *Action) SetStatus(ctx sdk.Context, status ActionStatus) error {
 	})
 }
 
-func (a *Action) AddApprover(ctx sdk.Context, address string) error {
+func (a *Action) AddOrUpdateVote(ctx sdk.Context, participant string, voteType ActionVoteType) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
-		return errors.Wrapf(ErrInvalidActionStatus, "can't add approver to an action that's not pending")
+		return errors.Wrapf(ErrInvalidActionStatus, "can't add a vote to an action that's not pending")
 	}
 
-	for _, a := range a.Approvers {
-		if a.Address == address {
-			return ErrApproverExists
+	updated := false
+
+	for i, v := range a.Votes {
+		if v.Participant == participant {
+			a.Votes[i].VoteType = voteType
+			a.Votes[i].VotedAt = ctx.BlockTime()
+			updated = true
+			break
 		}
 	}
 
-	a.UpdatedAt = ctx.BlockTime()
-	a.Approvers = append(a.Approvers, NewApprover(address, a.UpdatedAt))
+	if !updated {
+		a.Votes = append(a.Votes, NewVote(participant, voteType, ctx.BlockTime()))
+	}
 
-	if err := ctx.EventManager().EmitTypedEvent(&EventApproveAction{
-		Id:       a.Id,
-		Approver: address,
+	a.UpdatedAt = ctx.BlockTime()
+
+	if err := ctx.EventManager().EmitTypedEvent(&EventActionVoted{
+		Id:          a.Id,
+		Participant: participant,
+		VoteType:    voteType,
 	}); err != nil {
 		return err
 	}

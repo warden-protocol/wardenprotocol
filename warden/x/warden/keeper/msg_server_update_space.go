@@ -17,18 +17,32 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		return nil, err
 	}
 
-	if msg.AdminRuleId != space.AdminRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.AdminRuleId); err != nil {
+	if msg.ApproveAdminTemplateId != space.ApproveAdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveAdminTemplateId); err != nil {
 			return nil, err
 		}
-		space.AdminRuleId = msg.AdminRuleId
+		space.ApproveAdminTemplateId = msg.ApproveAdminTemplateId
 	}
 
-	if msg.SignRuleId != space.SignRuleId {
-		if err := k.actKeeper.IsValidRule(ctx, msg.SignRuleId); err != nil {
+	if msg.RejectAdminTemplateId != space.RejectAdminTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectAdminTemplateId); err != nil {
 			return nil, err
 		}
-		space.SignRuleId = msg.SignRuleId
+		space.RejectAdminTemplateId = msg.RejectAdminTemplateId
+	}
+
+	if msg.ApproveSignTemplateId != space.ApproveSignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveSignTemplateId); err != nil {
+			return nil, err
+		}
+		space.ApproveSignTemplateId = msg.ApproveSignTemplateId
+	}
+
+	if msg.RejectSignTemplateId != space.RejectSignTemplateId {
+		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectSignTemplateId); err != nil {
+			return nil, err
+		}
+		space.RejectSignTemplateId = msg.RejectSignTemplateId
 	}
 
 	if _, err := space.IncrementNonce(msg.Nonce); err != nil {
@@ -41,9 +55,11 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateSpace{
-		SpaceId:     space.Id,
-		AdminRuleId: space.AdminRuleId,
-		SignRuleId:  space.SignRuleId,
+		SpaceId:                space.Id,
+		ApproveAdminTemplateId: space.ApproveAdminTemplateId,
+		RejectAdminTemplateId:  space.RejectAdminTemplateId,
+		ApproveSignTemplateId:  space.ApproveSignTemplateId,
+		RejectSignTemplateId:   space.RejectSignTemplateId,
 	}); err != nil {
 		return nil, err
 	}

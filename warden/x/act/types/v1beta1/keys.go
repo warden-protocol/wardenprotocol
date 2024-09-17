@@ -13,8 +13,8 @@ const (
 	ActionCountKey = "action/count"
 	ActionKey      = "action/value/"
 
-	RuleCountKey = "rule/count"
-	RuleKey      = "rule/value/"
+	TemplateCountKey = "template/count"
+	TemplateKey      = "template/value/"
 )
 
 var (

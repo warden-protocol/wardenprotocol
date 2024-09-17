@@ -2,6 +2,7 @@ import { SimpleIntent } from "@/types/intent";
 import type { Expression } from "@/types/shield";
 
 const cp: Record<string, string | undefined> = {
+	"": "",
 	"(": ")",
 	"[": "]",
 	"{": "}",
@@ -123,13 +124,15 @@ export const shieldStringify = (
 
 		const open = token?.literal;
 
-		if (!open) {
+		// todo maybe an error
+		if (typeof open === "undefined") {
+			console.log({ expression, opts, parent });
 			throw new Error("incorrect open token");
 		}
 
 		const close = cp[open];
 
-		if (!close) {
+		if (typeof close === "undefined") {
 			throw new Error("incorrect close token");
 		}
 
@@ -195,6 +198,83 @@ export const getAddressesFromExpression = (expression: Expression) => {
 	});
 
 	return Array.from(addresses);
+};
+
+export const validateAddressNumber = (expression?: Expression) => {
+	let error: string | undefined;
+
+	if (!expression) {
+		throw new Error("expression is required");
+	}
+
+	shieldStringify(expression, {
+		...defaultStringifyOpts,
+		callExpression: (_, raw) => {
+			const name = raw.function?.value;
+
+			switch (name) {
+				case "all": {
+					const {
+						arguments: [arr],
+					} = raw;
+
+					if (!arr.arrayLiteral) {
+						error = "Validation failed: expected array literal in 'all' clause";
+						break;
+					}
+
+					if ((arr.arrayLiteral?.elements.length ?? 0) < 1) {
+						error = "Validation failed: expected at least 1 element in 'all' clause";
+						break;
+					}
+
+					break;
+				}
+				case "any": {
+					const {
+						arguments: [thresholdExpr, arr],
+					} = raw;
+
+					if (!thresholdExpr.integerLiteral) {
+						error = "Validation failed: expected integer literal in 'any' clause";
+						break;
+					}
+
+					const threshold = Number(
+						thresholdExpr.integerLiteral.value,
+					);
+
+					if (threshold < 1) {
+						error = "Validation failed: expected threshold to be greater than 0 in `any` clause";
+						break;
+					}
+
+					if (!arr.arrayLiteral) {
+						error = "Validation failed: expected array literal in 'any' clause";
+						break;
+					}
+
+					if (arr.arrayLiteral.elements.length < threshold + 1) {
+						error = `Validation failed: expected at least ${threshold + 1} elements in 'any' clause`;
+						break;
+					}
+
+					break;
+				}
+				default:
+					error = `Validation failed: unknown function name: ${name}`;
+					break;
+			}
+
+			return "";
+		},
+	});
+
+	if (error) {
+		throw new Error(error);
+	}
+
+	return true;
 };
 
 /** @deprecated getting too hacky */
@@ -355,7 +435,7 @@ export const getSimpleIntent = (
 						);
 					}
 
-					const threshold = args[0].integerLiteral.value;
+					const threshold = Number(args[0].integerLiteral.value);
 					const group =
 						args[1].arrayLiteral.elements.map(handleAddress);
 

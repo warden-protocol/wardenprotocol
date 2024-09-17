@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -41,11 +42,12 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 		}
 
 		if err := ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
-			Id:         key.Id,
-			KeyType:    key.Type,
-			SpaceId:    key.SpaceId,
-			KeychainId: key.KeychainId,
-			RuleId:     key.RuleId,
+			Id:                key.Id,
+			KeyType:           key.Type,
+			SpaceId:           key.SpaceId,
+			KeychainId:        key.KeychainId,
+			ApproveTemplateId: key.ApproveTemplateId,
+			RejectTemplateId:  key.RejectTemplateId,
 		}); err != nil {
 			return nil, err
 		}

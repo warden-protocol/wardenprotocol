@@ -13,7 +13,7 @@ import (
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
-	ast "github.com/warden-protocol/wardenprotocol/shield/ast"
+	_ "github.com/warden-protocol/wardenprotocol/shield/ast"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -133,10 +133,10 @@ type MsgNewAction struct {
 	Message *types.Any `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// action_timeout_height is the block height up until this action can be executed.
 	ActionTimeoutHeight uint64 `protobuf:"varint,3,opt,name=action_timeout_height,json=actionTimeoutHeight,proto3" json:"action_timeout_height,omitempty"`
-	// expected_approve_expression is the expected approval expression the action is created with
-	ExpectedApproveExpression ast.Expression `protobuf:"bytes,4,opt,name=expected_approve_expression,json=expectedApproveExpression,proto3" json:"expected_approve_expression"`
-	// expected_reject_expression is the expected reject expression the action is created with
-	ExpectedRejectExpression ast.Expression `protobuf:"bytes,5,opt,name=expected_reject_expression,json=expectedRejectExpression,proto3" json:"expected_reject_expression"`
+	// expected_approve_expression is the definition of expected approval expression the action is created with
+	ExpectedApproveExpression string `protobuf:"bytes,4,opt,name=expected_approve_expression,json=expectedApproveExpression,proto3" json:"expected_approve_expression,omitempty"`
+	// expected_reject_expression is the definition of expected reject expression the action is created with
+	ExpectedRejectExpression string `protobuf:"bytes,5,opt,name=expected_reject_expression,json=expectedRejectExpression,proto3" json:"expected_reject_expression,omitempty"`
 }
 
 func (m *MsgNewAction) Reset()         { *m = MsgNewAction{} }
@@ -193,18 +193,18 @@ func (m *MsgNewAction) GetActionTimeoutHeight() uint64 {
 	return 0
 }
 
-func (m *MsgNewAction) GetExpectedApproveExpression() ast.Expression {
+func (m *MsgNewAction) GetExpectedApproveExpression() string {
 	if m != nil {
 		return m.ExpectedApproveExpression
 	}
-	return ast.Expression{}
+	return ""
 }
 
-func (m *MsgNewAction) GetExpectedRejectExpression() ast.Expression {
+func (m *MsgNewAction) GetExpectedRejectExpression() string {
 	if m != nil {
 		return m.ExpectedRejectExpression
 	}
-	return ast.Expression{}
+	return ""
 }
 
 type MsgNewActionResponse struct {
@@ -252,120 +252,24 @@ func (m *MsgNewActionResponse) GetId() uint64 {
 	return 0
 }
 
-type MsgApproveAction struct {
-	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ActionId uint64 `protobuf:"varint,2,opt,name=action_id,json=actionId,proto3" json:"action_id,omitempty"`
-}
-
-func (m *MsgApproveAction) Reset()         { *m = MsgApproveAction{} }
-func (m *MsgApproveAction) String() string { return proto.CompactTextString(m) }
-func (*MsgApproveAction) ProtoMessage()    {}
-func (*MsgApproveAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{4}
-}
-func (m *MsgApproveAction) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgApproveAction) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgApproveAction.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgApproveAction) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgApproveAction.Merge(m, src)
-}
-func (m *MsgApproveAction) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgApproveAction) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgApproveAction.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgApproveAction proto.InternalMessageInfo
-
-func (m *MsgApproveAction) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgApproveAction) GetActionId() uint64 {
-	if m != nil {
-		return m.ActionId
-	}
-	return 0
-}
-
-type MsgApproveActionResponse struct {
-	Status string `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
-}
-
-func (m *MsgApproveActionResponse) Reset()         { *m = MsgApproveActionResponse{} }
-func (m *MsgApproveActionResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgApproveActionResponse) ProtoMessage()    {}
-func (*MsgApproveActionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{5}
-}
-func (m *MsgApproveActionResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgApproveActionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgApproveActionResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgApproveActionResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgApproveActionResponse.Merge(m, src)
-}
-func (m *MsgApproveActionResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgApproveActionResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgApproveActionResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgApproveActionResponse proto.InternalMessageInfo
-
-func (m *MsgApproveActionResponse) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
-}
-
-type MsgNewRule struct {
+type MsgNewTemplate struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Name       string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Definition string `protobuf:"bytes,3,opt,name=definition,proto3" json:"definition,omitempty"`
 }
 
-func (m *MsgNewRule) Reset()         { *m = MsgNewRule{} }
-func (m *MsgNewRule) String() string { return proto.CompactTextString(m) }
-func (*MsgNewRule) ProtoMessage()    {}
-func (*MsgNewRule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{6}
+func (m *MsgNewTemplate) Reset()         { *m = MsgNewTemplate{} }
+func (m *MsgNewTemplate) String() string { return proto.CompactTextString(m) }
+func (*MsgNewTemplate) ProtoMessage()    {}
+func (*MsgNewTemplate) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f059980976488200, []int{4}
 }
-func (m *MsgNewRule) XXX_Unmarshal(b []byte) error {
+func (m *MsgNewTemplate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgNewRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNewTemplate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgNewRule.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNewTemplate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -375,55 +279,55 @@ func (m *MsgNewRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgNewRule) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgNewRule.Merge(m, src)
+func (m *MsgNewTemplate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNewTemplate.Merge(m, src)
 }
-func (m *MsgNewRule) XXX_Size() int {
+func (m *MsgNewTemplate) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgNewRule) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgNewRule.DiscardUnknown(m)
+func (m *MsgNewTemplate) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNewTemplate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgNewRule proto.InternalMessageInfo
+var xxx_messageInfo_MsgNewTemplate proto.InternalMessageInfo
 
-func (m *MsgNewRule) GetCreator() string {
+func (m *MsgNewTemplate) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgNewRule) GetName() string {
+func (m *MsgNewTemplate) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *MsgNewRule) GetDefinition() string {
+func (m *MsgNewTemplate) GetDefinition() string {
 	if m != nil {
 		return m.Definition
 	}
 	return ""
 }
 
-type MsgNewRuleResponse struct {
+type MsgNewTemplateResponse struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *MsgNewRuleResponse) Reset()         { *m = MsgNewRuleResponse{} }
-func (m *MsgNewRuleResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgNewRuleResponse) ProtoMessage()    {}
-func (*MsgNewRuleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{7}
+func (m *MsgNewTemplateResponse) Reset()         { *m = MsgNewTemplateResponse{} }
+func (m *MsgNewTemplateResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgNewTemplateResponse) ProtoMessage()    {}
+func (*MsgNewTemplateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f059980976488200, []int{5}
 }
-func (m *MsgNewRuleResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgNewTemplateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgNewRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNewTemplateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgNewRuleResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNewTemplateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -433,44 +337,44 @@ func (m *MsgNewRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgNewRuleResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgNewRuleResponse.Merge(m, src)
+func (m *MsgNewTemplateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNewTemplateResponse.Merge(m, src)
 }
-func (m *MsgNewRuleResponse) XXX_Size() int {
+func (m *MsgNewTemplateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgNewRuleResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgNewRuleResponse.DiscardUnknown(m)
+func (m *MsgNewTemplateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNewTemplateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgNewRuleResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgNewTemplateResponse proto.InternalMessageInfo
 
-func (m *MsgNewRuleResponse) GetId() uint64 {
+func (m *MsgNewTemplateResponse) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-type MsgUpdateRule struct {
+type MsgUpdateTemplate struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Id         uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 	Name       string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Definition string `protobuf:"bytes,4,opt,name=definition,proto3" json:"definition,omitempty"`
 }
 
-func (m *MsgUpdateRule) Reset()         { *m = MsgUpdateRule{} }
-func (m *MsgUpdateRule) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateRule) ProtoMessage()    {}
-func (*MsgUpdateRule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{8}
+func (m *MsgUpdateTemplate) Reset()         { *m = MsgUpdateTemplate{} }
+func (m *MsgUpdateTemplate) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateTemplate) ProtoMessage()    {}
+func (*MsgUpdateTemplate) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f059980976488200, []int{6}
 }
-func (m *MsgUpdateRule) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateTemplate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateTemplate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateRule.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateTemplate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -480,61 +384,61 @@ func (m *MsgUpdateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateRule) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateRule.Merge(m, src)
+func (m *MsgUpdateTemplate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateTemplate.Merge(m, src)
 }
-func (m *MsgUpdateRule) XXX_Size() int {
+func (m *MsgUpdateTemplate) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateRule) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateRule.DiscardUnknown(m)
+func (m *MsgUpdateTemplate) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateTemplate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateRule proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateTemplate proto.InternalMessageInfo
 
-func (m *MsgUpdateRule) GetCreator() string {
+func (m *MsgUpdateTemplate) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgUpdateRule) GetId() uint64 {
+func (m *MsgUpdateTemplate) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-func (m *MsgUpdateRule) GetName() string {
+func (m *MsgUpdateTemplate) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *MsgUpdateRule) GetDefinition() string {
+func (m *MsgUpdateTemplate) GetDefinition() string {
 	if m != nil {
 		return m.Definition
 	}
 	return ""
 }
 
-type MsgUpdateRuleResponse struct {
+type MsgUpdateTemplateResponse struct {
 }
 
-func (m *MsgUpdateRuleResponse) Reset()         { *m = MsgUpdateRuleResponse{} }
-func (m *MsgUpdateRuleResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateRuleResponse) ProtoMessage()    {}
-func (*MsgUpdateRuleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{9}
+func (m *MsgUpdateTemplateResponse) Reset()         { *m = MsgUpdateTemplateResponse{} }
+func (m *MsgUpdateTemplateResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateTemplateResponse) ProtoMessage()    {}
+func (*MsgUpdateTemplateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f059980976488200, []int{7}
 }
-func (m *MsgUpdateRuleResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateTemplateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateTemplateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateRuleResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateTemplateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -544,17 +448,17 @@ func (m *MsgUpdateRuleResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateRuleResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateRuleResponse.Merge(m, src)
+func (m *MsgUpdateTemplateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateTemplateResponse.Merge(m, src)
 }
-func (m *MsgUpdateRuleResponse) XXX_Size() int {
+func (m *MsgUpdateTemplateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateRuleResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateRuleResponse.DiscardUnknown(m)
+func (m *MsgUpdateTemplateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateTemplateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateRuleResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateTemplateResponse proto.InternalMessageInfo
 
 type MsgRevokeAction struct {
 	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -565,7 +469,7 @@ func (m *MsgRevokeAction) Reset()         { *m = MsgRevokeAction{} }
 func (m *MsgRevokeAction) String() string { return proto.CompactTextString(m) }
 func (*MsgRevokeAction) ProtoMessage()    {}
 func (*MsgRevokeAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{10}
+	return fileDescriptor_f059980976488200, []int{8}
 }
 func (m *MsgRevokeAction) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -615,7 +519,7 @@ func (m *MsgRevokeActionResponse) Reset()         { *m = MsgRevokeActionResponse
 func (m *MsgRevokeActionResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgRevokeActionResponse) ProtoMessage()    {}
 func (*MsgRevokeActionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{11}
+	return fileDescriptor_f059980976488200, []int{9}
 }
 func (m *MsgRevokeActionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -653,7 +557,7 @@ func (m *MsgCheckAction) Reset()         { *m = MsgCheckAction{} }
 func (m *MsgCheckAction) String() string { return proto.CompactTextString(m) }
 func (*MsgCheckAction) ProtoMessage()    {}
 func (*MsgCheckAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{12}
+	return fileDescriptor_f059980976488200, []int{10}
 }
 func (m *MsgCheckAction) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -704,7 +608,7 @@ func (m *MsgCheckActionResponse) Reset()         { *m = MsgCheckActionResponse{}
 func (m *MsgCheckActionResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCheckActionResponse) ProtoMessage()    {}
 func (*MsgCheckActionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{13}
+	return fileDescriptor_f059980976488200, []int{11}
 }
 func (m *MsgCheckActionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -743,14 +647,14 @@ func (m *MsgCheckActionResponse) GetStatus() string {
 type MsgVoteForAction struct {
 	Participant string         `protobuf:"bytes,1,opt,name=participant,proto3" json:"participant,omitempty"`
 	ActionId    uint64         `protobuf:"varint,2,opt,name=action_id,json=actionId,proto3" json:"action_id,omitempty"`
-	Vote        ActionVoteType `protobuf:"varint,3,opt,name=vote,proto3,enum=warden.act.v1beta1.ActionVoteType" json:"vote,omitempty"`
+	VoteType    ActionVoteType `protobuf:"varint,3,opt,name=vote_type,json=voteType,proto3,enum=warden.act.v1beta1.ActionVoteType" json:"vote_type,omitempty"`
 }
 
 func (m *MsgVoteForAction) Reset()         { *m = MsgVoteForAction{} }
 func (m *MsgVoteForAction) String() string { return proto.CompactTextString(m) }
 func (*MsgVoteForAction) ProtoMessage()    {}
 func (*MsgVoteForAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{14}
+	return fileDescriptor_f059980976488200, []int{12}
 }
 func (m *MsgVoteForAction) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -793,9 +697,9 @@ func (m *MsgVoteForAction) GetActionId() uint64 {
 	return 0
 }
 
-func (m *MsgVoteForAction) GetVote() ActionVoteType {
+func (m *MsgVoteForAction) GetVoteType() ActionVoteType {
 	if m != nil {
-		return m.Vote
+		return m.VoteType
 	}
 	return ActionVoteType_VOTE_TYPE_UNSPECIFIED
 }
@@ -808,7 +712,7 @@ func (m *MsgVoteForActionResponse) Reset()         { *m = MsgVoteForActionRespon
 func (m *MsgVoteForActionResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgVoteForActionResponse) ProtoMessage()    {}
 func (*MsgVoteForActionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f059980976488200, []int{15}
+	return fileDescriptor_f059980976488200, []int{13}
 }
 func (m *MsgVoteForActionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -849,12 +753,10 @@ func init() {
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "warden.act.v1beta1.MsgUpdateParamsResponse")
 	proto.RegisterType((*MsgNewAction)(nil), "warden.act.v1beta1.MsgNewAction")
 	proto.RegisterType((*MsgNewActionResponse)(nil), "warden.act.v1beta1.MsgNewActionResponse")
-	proto.RegisterType((*MsgApproveAction)(nil), "warden.act.v1beta1.MsgApproveAction")
-	proto.RegisterType((*MsgApproveActionResponse)(nil), "warden.act.v1beta1.MsgApproveActionResponse")
-	proto.RegisterType((*MsgNewRule)(nil), "warden.act.v1beta1.MsgNewRule")
-	proto.RegisterType((*MsgNewRuleResponse)(nil), "warden.act.v1beta1.MsgNewRuleResponse")
-	proto.RegisterType((*MsgUpdateRule)(nil), "warden.act.v1beta1.MsgUpdateRule")
-	proto.RegisterType((*MsgUpdateRuleResponse)(nil), "warden.act.v1beta1.MsgUpdateRuleResponse")
+	proto.RegisterType((*MsgNewTemplate)(nil), "warden.act.v1beta1.MsgNewTemplate")
+	proto.RegisterType((*MsgNewTemplateResponse)(nil), "warden.act.v1beta1.MsgNewTemplateResponse")
+	proto.RegisterType((*MsgUpdateTemplate)(nil), "warden.act.v1beta1.MsgUpdateTemplate")
+	proto.RegisterType((*MsgUpdateTemplateResponse)(nil), "warden.act.v1beta1.MsgUpdateTemplateResponse")
 	proto.RegisterType((*MsgRevokeAction)(nil), "warden.act.v1beta1.MsgRevokeAction")
 	proto.RegisterType((*MsgRevokeActionResponse)(nil), "warden.act.v1beta1.MsgRevokeActionResponse")
 	proto.RegisterType((*MsgCheckAction)(nil), "warden.act.v1beta1.MsgCheckAction")
@@ -866,65 +768,63 @@ func init() {
 func init() { proto.RegisterFile("warden/act/v1beta1/tx.proto", fileDescriptor_f059980976488200) }
 
 var fileDescriptor_f059980976488200 = []byte{
-	// 923 bytes of a gzipped FileDescriptorProto
+	// 883 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0x4f, 0x6f, 0xe3, 0x44,
-	0x14, 0xaf, 0xd3, 0x6c, 0x4b, 0x5e, 0xbb, 0x65, 0x31, 0xdd, 0x36, 0x75, 0x91, 0x37, 0x98, 0x6a,
-	0x55, 0x0a, 0x6b, 0xd3, 0x20, 0xed, 0xa1, 0x12, 0x87, 0x96, 0x3f, 0x82, 0x43, 0x10, 0x98, 0xfd,
-	0x23, 0x55, 0x40, 0x76, 0x6a, 0xcf, 0x3a, 0xc3, 0xd6, 0x1e, 0xcb, 0x33, 0xc9, 0x36, 0xe2, 0x02,
-	0x1c, 0x39, 0x71, 0xe7, 0x0b, 0x70, 0xec, 0x81, 0x0b, 0xdf, 0x60, 0x8f, 0x2b, 0xc4, 0x81, 0x13,
-	0x42, 0xed, 0xa1, 0x5f, 0x03, 0x79, 0x66, 0xec, 0xd8, 0x21, 0xae, 0x7b, 0xe8, 0x21, 0x89, 0x67,
-	0xde, 0xef, 0xfd, 0xde, 0x6f, 0xde, 0x7b, 0xf3, 0x62, 0xd8, 0x7c, 0x8e, 0x12, 0x1f, 0x47, 0x0e,
-	0xf2, 0xb8, 0x33, 0xda, 0x3d, 0xc2, 0x1c, 0xed, 0x3a, 0xfc, 0xc4, 0x8e, 0x13, 0xca, 0xa9, 0xae,
-	0x4b, 0xa3, 0x8d, 0x3c, 0x6e, 0x2b, 0xa3, 0xf1, 0x1a, 0x0a, 0x49, 0x44, 0x1d, 0xf1, 0x2d, 0x61,
-	0xc6, 0xba, 0x47, 0x59, 0x48, 0x99, 0x13, 0xb2, 0xc0, 0x19, 0xed, 0xa6, 0x3f, 0xca, 0xb0, 0x21,
-	0x0d, 0x7d, 0xb1, 0x72, 0xe4, 0x42, 0x99, 0x56, 0x03, 0x1a, 0x50, 0xb9, 0x9f, 0x3e, 0x65, 0x0e,
-	0x01, 0xa5, 0xc1, 0x31, 0x76, 0xc4, 0xea, 0x68, 0xf8, 0xd4, 0x41, 0xd1, 0x58, 0x99, 0xee, 0xcc,
-	0x10, 0x1a, 0xa3, 0x04, 0x85, 0x19, 0xe3, 0xd6, 0x0c, 0x00, 0xf2, 0x38, 0xa1, 0x51, 0x7f, 0x44,
-	0x39, 0xce, 0xe2, 0xb2, 0x01, 0xc1, 0xc7, 0xbe, 0x83, 0x18, 0x4f, 0x3f, 0x72, 0xd7, 0xfa, 0x43,
-	0x83, 0x57, 0x7b, 0x2c, 0x78, 0x18, 0xfb, 0x88, 0xe3, 0x2f, 0x04, 0xab, 0x7e, 0x1f, 0x5a, 0x68,
-	0xc8, 0x07, 0x34, 0x21, 0x7c, 0xdc, 0xd6, 0x3a, 0xda, 0x76, 0xeb, 0xa0, 0xfd, 0xe7, 0xef, 0xf7,
-	0x56, 0xd5, 0x31, 0xf6, 0x7d, 0x3f, 0xc1, 0x8c, 0x7d, 0xc5, 0x13, 0x12, 0x05, 0xee, 0x04, 0xaa,
-	0x7f, 0x00, 0x0b, 0x52, 0x57, 0xbb, 0xd1, 0xd1, 0xb6, 0x97, 0xba, 0x86, 0xfd, 0xff, 0x2c, 0xda,
-	0x32, 0xc6, 0x41, 0xeb, 0xc5, 0x3f, 0x77, 0xe6, 0x7e, 0xbb, 0x38, 0xdd, 0xd1, 0x5c, 0xe5, 0xb4,
-	0xe7, 0xfc, 0x74, 0x71, 0xba, 0x33, 0xa1, 0xfb, 0xf9, 0xe2, 0x74, 0xe7, 0x0d, 0x75, 0xb2, 0x13,
-	0x71, 0xb6, 0x29, 0x9d, 0xd6, 0x06, 0xac, 0x4f, 0x6d, 0xb9, 0x98, 0xc5, 0x34, 0x62, 0xd8, 0xfa,
-	0xab, 0x01, 0xcb, 0x3d, 0x16, 0x7c, 0x8e, 0x9f, 0xef, 0x8b, 0x44, 0xe8, 0x6d, 0x58, 0xf4, 0x12,
-	0x8c, 0x38, 0x4d, 0xe4, 0x89, 0xdc, 0x6c, 0xa9, 0xdb, 0xb0, 0x18, 0x62, 0xc6, 0x50, 0x80, 0x95,
-	0xec, 0x55, 0x5b, 0xd6, 0xc2, 0xce, 0x6a, 0x61, 0xef, 0x47, 0x63, 0x37, 0x03, 0xe9, 0x5d, 0xb8,
-	0xad, 0x92, 0xcb, 0x49, 0x88, 0xe9, 0x90, 0xf7, 0x07, 0x98, 0x04, 0x03, 0xde, 0x9e, 0xef, 0x68,
-	0xdb, 0x4d, 0xf7, 0x75, 0x69, 0x7c, 0x20, 0x6d, 0x9f, 0x0a, 0x93, 0xfe, 0x35, 0x6c, 0xe2, 0x93,
-	0x18, 0x7b, 0x1c, 0xfb, 0x7d, 0x14, 0xc7, 0x09, 0x1d, 0xe1, 0x3e, 0x3e, 0x89, 0xd3, 0x34, 0x12,
-	0x1a, 0xb5, 0x9b, 0x22, 0xee, 0x9a, 0x2d, 0x2b, 0x64, 0xa7, 0xd5, 0xf9, 0x38, 0xb7, 0x1e, 0x34,
-	0xd3, 0x54, 0xb9, 0x1b, 0x19, 0xc1, 0xbe, 0xf4, 0x9f, 0x00, 0xf4, 0x43, 0x30, 0x72, 0xf6, 0x04,
-	0x7f, 0x87, 0x3d, 0x5e, 0x24, 0xbf, 0x71, 0x05, 0xf2, 0x76, 0xe6, 0xef, 0x0a, 0xf7, 0x89, 0x7d,
-	0x6f, 0x39, 0x2d, 0x4a, 0x96, 0x2b, 0xeb, 0x2e, 0xac, 0x16, 0xb3, 0x9a, 0xa5, 0x5b, 0x5f, 0x81,
-	0x06, 0xf1, 0x45, 0x62, 0x9b, 0x6e, 0x83, 0xf8, 0xd6, 0x63, 0xb8, 0xd5, 0x63, 0x81, 0x52, 0x5a,
-	0x5b, 0x81, 0x4d, 0x68, 0xa9, 0x8c, 0x12, 0x5f, 0xd4, 0xa0, 0xe9, 0xbe, 0x22, 0x37, 0x3e, 0xf3,
-	0xa7, 0x04, 0x74, 0xa1, 0x3d, 0x4d, 0x9c, 0x8b, 0x58, 0x83, 0x05, 0xc6, 0x11, 0x1f, 0x32, 0xc5,
-	0xaf, 0x56, 0xd6, 0x00, 0x40, 0x8a, 0x76, 0x87, 0xc7, 0xf8, 0x12, 0x19, 0x3a, 0x34, 0x23, 0x14,
-	0xca, 0x2e, 0x68, 0xb9, 0xe2, 0x59, 0x37, 0x01, 0x7c, 0xfc, 0x94, 0x44, 0x24, 0x8d, 0x24, 0x2a,
-	0xdc, 0x72, 0x0b, 0x3b, 0x53, 0xea, 0xb6, 0x40, 0x9f, 0x44, 0xaa, 0x4c, 0xce, 0xf7, 0x70, 0x33,
-	0x6f, 0xdb, 0x1a, 0x49, 0xd2, 0xb5, 0x91, 0xb9, 0xe6, 0x12, 0xe7, 0x2b, 0x25, 0x36, 0x6b, 0x24,
-	0xae, 0xc3, 0xed, 0x52, 0xf0, 0xfc, 0xc6, 0x3c, 0x12, 0x73, 0xc0, 0xc5, 0x23, 0xfa, 0xec, 0x5a,
-	0x2b, 0x26, 0x2f, 0x69, 0x91, 0x37, 0x0f, 0xf9, 0x10, 0x56, 0x7a, 0x2c, 0xf8, 0x70, 0x80, 0xbd,
-	0x67, 0xd7, 0x19, 0xf1, 0x3d, 0x58, 0x2b, 0xd3, 0xd6, 0x76, 0xc8, 0xaf, 0x9a, 0xe8, 0xd7, 0x47,
-	0x94, 0xe3, 0x4f, 0x68, 0xa2, 0xb4, 0x74, 0x60, 0x29, 0x46, 0x09, 0x27, 0x1e, 0x89, 0x51, 0xc4,
-	0x95, 0x47, 0x71, 0xeb, 0x52, 0x4d, 0xfa, 0x7d, 0x68, 0xa6, 0xc3, 0x57, 0x94, 0x6a, 0xa5, 0x6b,
-	0xcd, 0x1a, 0x85, 0x32, 0x50, 0x1a, 0xf5, 0xc1, 0x38, 0xc6, 0xae, 0xc0, 0xef, 0xdd, 0x4a, 0xcf,
-	0x52, 0x0c, 0xa3, 0x7a, 0xbe, 0x24, 0xae, 0xee, 0x44, 0xdd, 0x1f, 0x17, 0x60, 0xbe, 0xc7, 0x02,
-	0xfd, 0x09, 0x2c, 0x97, 0x46, 0xfb, 0x5b, 0xb3, 0x74, 0x4c, 0x0d, 0x51, 0xe3, 0x9d, 0x2b, 0x80,
-	0x72, 0x05, 0x8f, 0xa1, 0x35, 0x99, 0xb2, 0x9d, 0x0a, 0xcf, 0x1c, 0x61, 0x6c, 0xd7, 0x21, 0x72,
-	0x62, 0x0f, 0x6e, 0x96, 0x07, 0xc8, 0x56, 0x85, 0x6b, 0x09, 0x65, 0xbc, 0x7b, 0x15, 0x54, 0x1e,
-	0xe4, 0x1b, 0x58, 0x2a, 0xf6, 0x9f, 0x55, 0xe1, 0x5c, 0xc0, 0x18, 0x3b, 0xf5, 0x98, 0x9c, 0xfe,
-	0x4b, 0x58, 0xcc, 0xe6, 0x8e, 0x59, 0x7d, 0xf0, 0xd4, 0x6e, 0xdc, 0xbd, 0xdc, 0x9e, 0x53, 0x1e,
-	0x02, 0x14, 0x46, 0xc7, 0x9b, 0x97, 0x96, 0x4a, 0x10, 0xbf, 0x5d, 0x0b, 0xc9, 0xb9, 0x9f, 0xc0,
-	0x72, 0x69, 0x00, 0x54, 0x75, 0x4b, 0x11, 0x54, 0xd9, 0x2d, 0xb3, 0xae, 0x7c, 0x5a, 0xd4, 0xf2,
-	0x2d, 0xab, 0x2a, 0x6a, 0x09, 0x55, 0x59, 0xd4, 0x99, 0x97, 0xc2, 0xb8, 0xf1, 0x43, 0xfa, 0x5e,
-	0x71, 0xf0, 0xed, 0x8b, 0x33, 0x53, 0x7b, 0x79, 0x66, 0x6a, 0xff, 0x9e, 0x99, 0xda, 0x2f, 0xe7,
-	0xe6, 0xdc, 0xcb, 0x73, 0x73, 0xee, 0xef, 0x73, 0x73, 0xee, 0xf0, 0xa3, 0x80, 0xf0, 0xc1, 0xf0,
-	0xc8, 0xf6, 0x68, 0xe8, 0x48, 0xe2, 0x7b, 0xe2, 0xbf, 0xde, 0xa3, 0xc7, 0x6a, 0x3d, 0xb5, 0x54,
-	0x2f, 0x20, 0x7c, 0x1c, 0x63, 0x96, 0xbd, 0x62, 0x1d, 0x2d, 0x08, 0xd0, 0xfb, 0xff, 0x05, 0x00,
-	0x00, 0xff, 0xff, 0x51, 0xa5, 0xc0, 0x5b, 0x49, 0x0a, 0x00, 0x00,
+	0x14, 0xaf, 0xd3, 0xb4, 0xbb, 0x7e, 0x2d, 0x65, 0xd7, 0x94, 0x5d, 0xd7, 0x45, 0xd9, 0xc8, 0x2c,
+	0x28, 0x2a, 0xd4, 0xa6, 0x41, 0xe2, 0x50, 0xf1, 0x47, 0x29, 0x7f, 0x04, 0x87, 0x20, 0x64, 0xba,
+	0x8b, 0x84, 0x04, 0xd9, 0x89, 0x3d, 0x75, 0xcc, 0xc6, 0x1e, 0xcb, 0x33, 0xc9, 0x26, 0x27, 0x10,
+	0x47, 0x4e, 0x1c, 0xf9, 0x00, 0x1c, 0x38, 0xf6, 0xb0, 0x17, 0xbe, 0xc1, 0x1e, 0x57, 0x9c, 0x38,
+	0x21, 0xd4, 0x1e, 0xfa, 0x35, 0x90, 0x67, 0xc6, 0x8e, 0xe3, 0x8d, 0x9b, 0x1c, 0x38, 0x24, 0xf1,
+	0xcc, 0xfb, 0xbd, 0xf7, 0xfb, 0xbd, 0xf7, 0x66, 0x9e, 0x03, 0xfb, 0x4f, 0x50, 0xe2, 0xe1, 0xc8,
+	0x46, 0x2e, 0xb3, 0xc7, 0x47, 0x7d, 0xcc, 0xd0, 0x91, 0xcd, 0x26, 0x56, 0x9c, 0x10, 0x46, 0x34,
+	0x4d, 0x18, 0x2d, 0xe4, 0x32, 0x4b, 0x1a, 0x8d, 0xdb, 0x28, 0x0c, 0x22, 0x62, 0xf3, 0x6f, 0x01,
+	0x33, 0xee, 0xba, 0x84, 0x86, 0x84, 0xda, 0x21, 0xf5, 0xed, 0xf1, 0x51, 0xfa, 0x23, 0x0d, 0x7b,
+	0xc2, 0xd0, 0xe3, 0x2b, 0x5b, 0x2c, 0xa4, 0x69, 0xd7, 0x27, 0x3e, 0x11, 0xfb, 0xe9, 0x53, 0xe6,
+	0xe0, 0x13, 0xe2, 0x0f, 0xb1, 0xcd, 0x57, 0xfd, 0xd1, 0x99, 0x8d, 0xa2, 0xa9, 0x34, 0xdd, 0x5b,
+	0x20, 0x34, 0x46, 0x09, 0x0a, 0xb3, 0x88, 0xf7, 0x17, 0x00, 0x90, 0xcb, 0x02, 0x12, 0xf5, 0xc6,
+	0x84, 0xe1, 0x8c, 0x97, 0x0e, 0x02, 0x3c, 0xf4, 0x6c, 0x44, 0x59, 0xfa, 0x11, 0xbb, 0xe6, 0x9f,
+	0x0a, 0xbc, 0xdc, 0xa5, 0xfe, 0x83, 0xd8, 0x43, 0x0c, 0x7f, 0xc5, 0xa3, 0x6a, 0xef, 0x81, 0x8a,
+	0x46, 0x6c, 0x40, 0x92, 0x80, 0x4d, 0x75, 0xa5, 0xa9, 0xb4, 0xd4, 0x13, 0xfd, 0xaf, 0xa7, 0x87,
+	0xbb, 0x32, 0x8d, 0x8e, 0xe7, 0x25, 0x98, 0xd2, 0xaf, 0x59, 0x12, 0x44, 0xbe, 0x33, 0x83, 0x6a,
+	0x1f, 0xc0, 0xa6, 0xd0, 0xa5, 0xd7, 0x9a, 0x4a, 0x6b, 0xab, 0x6d, 0x58, 0x2f, 0x56, 0xd1, 0x12,
+	0x1c, 0x27, 0xea, 0xb3, 0x7f, 0xee, 0xad, 0xfd, 0x71, 0x75, 0x7e, 0xa0, 0x38, 0xd2, 0xe9, 0xd8,
+	0xfe, 0xf9, 0xea, 0xfc, 0x60, 0x16, 0xee, 0x97, 0xab, 0xf3, 0x83, 0xd7, 0x64, 0x66, 0x13, 0x9e,
+	0x5b, 0x49, 0xa7, 0xb9, 0x07, 0x77, 0x4b, 0x5b, 0x0e, 0xa6, 0x31, 0x89, 0x28, 0x36, 0x7f, 0xab,
+	0xc1, 0x76, 0x97, 0xfa, 0x5f, 0xe2, 0x27, 0x1d, 0x5e, 0x08, 0x4d, 0x87, 0x1b, 0x6e, 0x82, 0x11,
+	0x23, 0x89, 0xc8, 0xc8, 0xc9, 0x96, 0x9a, 0x05, 0x37, 0x42, 0x4c, 0x29, 0xf2, 0xb1, 0x94, 0xbd,
+	0x6b, 0x89, 0x5e, 0x58, 0x59, 0x2f, 0xac, 0x4e, 0x34, 0x75, 0x32, 0x90, 0xd6, 0x86, 0x57, 0x65,
+	0x71, 0x59, 0x10, 0x62, 0x32, 0x62, 0xbd, 0x01, 0x0e, 0xfc, 0x01, 0xd3, 0xd7, 0x9b, 0x4a, 0xab,
+	0xee, 0xbc, 0x22, 0x8c, 0xa7, 0xc2, 0xf6, 0x39, 0x37, 0x69, 0x1f, 0xc2, 0x3e, 0x9e, 0xc4, 0xd8,
+	0x65, 0xd8, 0xeb, 0xa1, 0x38, 0x4e, 0xc8, 0x18, 0xf7, 0xf0, 0x24, 0x4e, 0xcb, 0x18, 0x90, 0x48,
+	0xaf, 0x73, 0x45, 0x7b, 0x19, 0xa4, 0x23, 0x10, 0x9f, 0xe6, 0x00, 0xed, 0x7d, 0x30, 0x72, 0xff,
+	0x04, 0xff, 0x80, 0x5d, 0x56, 0x74, 0xdf, 0xe0, 0xee, 0x7a, 0x86, 0x70, 0x38, 0x60, 0xe6, 0x7d,
+	0xbc, 0x9d, 0x16, 0x36, 0xcb, 0xd7, 0x7c, 0x13, 0x76, 0x8b, 0x95, 0xc9, 0x4a, 0xa6, 0xed, 0x40,
+	0x2d, 0xf0, 0x78, 0x71, 0xea, 0x4e, 0x2d, 0xf0, 0xcc, 0x21, 0xec, 0x08, 0xdc, 0x29, 0x0e, 0xe3,
+	0x21, 0x62, 0xf8, 0x9a, 0x1a, 0x6a, 0x50, 0x8f, 0x50, 0x28, 0x0a, 0xa8, 0x3a, 0xfc, 0x59, 0x6b,
+	0x00, 0x78, 0xf8, 0x2c, 0x88, 0x82, 0x94, 0x85, 0x17, 0x47, 0x75, 0x0a, 0x3b, 0x25, 0x55, 0x2d,
+	0xb8, 0x33, 0xcf, 0x56, 0xa9, 0xeb, 0x47, 0xb8, 0x9d, 0x77, 0x7d, 0x05, 0x69, 0xc2, 0xbd, 0x96,
+	0xb9, 0xe7, 0x52, 0xd7, 0x2b, 0xa5, 0xd6, 0x97, 0x48, 0xdd, 0x87, 0xbd, 0x17, 0x04, 0xe4, 0x07,
+	0xef, 0x21, 0xbf, 0x4e, 0x0e, 0x1e, 0x93, 0xc7, 0x78, 0xe9, 0xd1, 0xdb, 0x07, 0x55, 0x1e, 0xa5,
+	0x5c, 0xe2, 0x4d, 0xb1, 0xf1, 0x85, 0x57, 0x22, 0x15, 0x67, 0xbd, 0x18, 0x37, 0xa7, 0x7c, 0xc0,
+	0x1b, 0xf5, 0xf1, 0x00, 0xbb, 0x8f, 0xff, 0x4f, 0xc6, 0x77, 0x78, 0x47, 0x0a, 0x61, 0xf3, 0x8e,
+	0xdc, 0x81, 0x4d, 0xca, 0x10, 0x1b, 0x51, 0x19, 0x5d, 0xae, 0xcc, 0xdf, 0x15, 0xb8, 0xd5, 0xa5,
+	0xfe, 0x43, 0xc2, 0xf0, 0x67, 0x24, 0x91, 0x5a, 0x9a, 0xb0, 0x15, 0xa3, 0x84, 0x05, 0x6e, 0x10,
+	0xa3, 0x88, 0x49, 0x8f, 0xe2, 0xd6, 0xb5, 0x9a, 0xb4, 0x8f, 0x40, 0x4d, 0x67, 0x58, 0x8f, 0x4d,
+	0x63, 0xd1, 0xb3, 0x9d, 0xb6, 0xb9, 0x68, 0xac, 0x08, 0xb6, 0x94, 0xfa, 0x74, 0x1a, 0x63, 0xe7,
+	0xe6, 0x58, 0x3e, 0x1d, 0xdf, 0x4a, 0x93, 0x2a, 0xf2, 0x99, 0x6d, 0xd0, 0xcb, 0x2a, 0x97, 0xa5,
+	0xd6, 0x7e, 0xba, 0x01, 0xeb, 0x5d, 0xea, 0x6b, 0x8f, 0x60, 0x7b, 0x6e, 0x54, 0xbe, 0xbe, 0x48,
+	0x4b, 0x69, 0x28, 0x19, 0x6f, 0xad, 0x00, 0xca, 0x15, 0x7c, 0x03, 0xea, 0x6c, 0x6a, 0x35, 0x2b,
+	0x3c, 0x73, 0x84, 0xd1, 0x5a, 0x86, 0xc8, 0x03, 0x7f, 0x07, 0x5b, 0xc5, 0x33, 0x62, 0x56, 0x38,
+	0x16, 0x30, 0xc6, 0xc1, 0x72, 0x4c, 0x31, 0x7c, 0x71, 0x56, 0x98, 0xd5, 0xba, 0x32, 0x4c, 0x65,
+	0xf8, 0x45, 0x53, 0xe0, 0x0c, 0x76, 0x4a, 0x57, 0xfe, 0x8d, 0x6b, 0xab, 0x9a, 0x93, 0x1c, 0xae,
+	0x04, 0xcb, 0x79, 0x1e, 0xc1, 0xf6, 0xdc, 0xe5, 0xad, 0x6a, 0x70, 0x11, 0x54, 0xd9, 0xe0, 0x45,
+	0xd7, 0x55, 0x73, 0xe1, 0xa5, 0xf9, 0x1b, 0x72, 0xbf, 0xc2, 0x7b, 0x0e, 0x65, 0xbc, 0xbd, 0x0a,
+	0x2a, 0x23, 0x31, 0x36, 0x7e, 0x4a, 0x5f, 0xad, 0x27, 0xdf, 0x3f, 0xbb, 0x68, 0x28, 0xcf, 0x2f,
+	0x1a, 0xca, 0xbf, 0x17, 0x0d, 0xe5, 0xd7, 0xcb, 0xc6, 0xda, 0xf3, 0xcb, 0xc6, 0xda, 0xdf, 0x97,
+	0x8d, 0xb5, 0x6f, 0x3f, 0xf1, 0x03, 0x36, 0x18, 0xf5, 0x2d, 0x97, 0x84, 0xb6, 0x08, 0x7c, 0xc8,
+	0x5f, 0x77, 0x2e, 0x19, 0xca, 0x75, 0x69, 0x29, 0xdf, 0xc1, 0xe9, 0x3d, 0xa4, 0xd9, 0xbf, 0x8c,
+	0xfe, 0x26, 0x07, 0xbd, 0xfb, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x62, 0x05, 0x77, 0xb2, 0x4c,
+	0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -944,14 +844,12 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// NewAction creates a new Action.
 	NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error)
-	// Add an approval to an existing Action.
-	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error)
-	// Create a new Rule.
-	NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error)
+	// Create a new Template.
+	NewTemplate(ctx context.Context, in *MsgNewTemplate, opts ...grpc.CallOption) (*MsgNewTemplateResponse, error)
 	// Update an existing act name and definition.
-	UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error)
+	UpdateTemplate(ctx context.Context, in *MsgUpdateTemplate, opts ...grpc.CallOption) (*MsgUpdateTemplateResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(ctx context.Context, in *MsgRevokeAction, opts ...grpc.CallOption) (*MsgRevokeActionResponse, error)
 	// Vote for or against a particular Action.
@@ -984,15 +882,6 @@ func (c *msgClient) NewAction(ctx context.Context, in *MsgNewAction, opts ...grp
 	return out, nil
 }
 
-func (c *msgClient) ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error) {
-	out := new(MsgApproveActionResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/ApproveAction", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *msgClient) CheckAction(ctx context.Context, in *MsgCheckAction, opts ...grpc.CallOption) (*MsgCheckActionResponse, error) {
 	out := new(MsgCheckActionResponse)
 	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/CheckAction", in, out, opts...)
@@ -1002,18 +891,18 @@ func (c *msgClient) CheckAction(ctx context.Context, in *MsgCheckAction, opts ..
 	return out, nil
 }
 
-func (c *msgClient) NewRule(ctx context.Context, in *MsgNewRule, opts ...grpc.CallOption) (*MsgNewRuleResponse, error) {
-	out := new(MsgNewRuleResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/NewRule", in, out, opts...)
+func (c *msgClient) NewTemplate(ctx context.Context, in *MsgNewTemplate, opts ...grpc.CallOption) (*MsgNewTemplateResponse, error) {
+	out := new(MsgNewTemplateResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/NewTemplate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateRule(ctx context.Context, in *MsgUpdateRule, opts ...grpc.CallOption) (*MsgUpdateRuleResponse, error) {
-	out := new(MsgUpdateRuleResponse)
-	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/UpdateRule", in, out, opts...)
+func (c *msgClient) UpdateTemplate(ctx context.Context, in *MsgUpdateTemplate, opts ...grpc.CallOption) (*MsgUpdateTemplateResponse, error) {
+	out := new(MsgUpdateTemplateResponse)
+	err := c.cc.Invoke(ctx, "/warden.act.v1beta1.Msg/UpdateTemplate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1045,14 +934,12 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// NewAction creates a new Action.
 	NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error)
-	// Add an approval to an existing Action.
-	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
 	// Checks a pending action and executes it if its in a valid state.
 	CheckAction(context.Context, *MsgCheckAction) (*MsgCheckActionResponse, error)
-	// Create a new Rule.
-	NewRule(context.Context, *MsgNewRule) (*MsgNewRuleResponse, error)
+	// Create a new Template.
+	NewTemplate(context.Context, *MsgNewTemplate) (*MsgNewTemplateResponse, error)
 	// Update an existing act name and definition.
-	UpdateRule(context.Context, *MsgUpdateRule) (*MsgUpdateRuleResponse, error)
+	UpdateTemplate(context.Context, *MsgUpdateTemplate) (*MsgUpdateTemplateResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error)
 	// Vote for or against a particular Action.
@@ -1069,17 +956,14 @@ func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateP
 func (*UnimplementedMsgServer) NewAction(ctx context.Context, req *MsgNewAction) (*MsgNewActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewAction not implemented")
 }
-func (*UnimplementedMsgServer) ApproveAction(ctx context.Context, req *MsgApproveAction) (*MsgApproveActionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ApproveAction not implemented")
-}
 func (*UnimplementedMsgServer) CheckAction(ctx context.Context, req *MsgCheckAction) (*MsgCheckActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckAction not implemented")
 }
-func (*UnimplementedMsgServer) NewRule(ctx context.Context, req *MsgNewRule) (*MsgNewRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewRule not implemented")
+func (*UnimplementedMsgServer) NewTemplate(ctx context.Context, req *MsgNewTemplate) (*MsgNewTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewTemplate not implemented")
 }
-func (*UnimplementedMsgServer) UpdateRule(ctx context.Context, req *MsgUpdateRule) (*MsgUpdateRuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateRule not implemented")
+func (*UnimplementedMsgServer) UpdateTemplate(ctx context.Context, req *MsgUpdateTemplate) (*MsgUpdateTemplateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTemplate not implemented")
 }
 func (*UnimplementedMsgServer) RevokeAction(ctx context.Context, req *MsgRevokeAction) (*MsgRevokeActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeAction not implemented")
@@ -1128,24 +1012,6 @@ func _Msg_NewAction_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_ApproveAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgApproveAction)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).ApproveAction(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Msg/ApproveAction",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).ApproveAction(ctx, req.(*MsgApproveAction))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Msg_CheckAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgCheckAction)
 	if err := dec(in); err != nil {
@@ -1164,38 +1030,38 @@ func _Msg_CheckAction_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_NewRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgNewRule)
+func _Msg_NewTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).NewRule(ctx, in)
+		return srv.(MsgServer).NewTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Msg/NewRule",
+		FullMethod: "/warden.act.v1beta1.Msg/NewTemplate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).NewRule(ctx, req.(*MsgNewRule))
+		return srv.(MsgServer).NewTemplate(ctx, req.(*MsgNewTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateRule)
+func _Msg_UpdateTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateRule(ctx, in)
+		return srv.(MsgServer).UpdateTemplate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.act.v1beta1.Msg/UpdateRule",
+		FullMethod: "/warden.act.v1beta1.Msg/UpdateTemplate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateRule(ctx, req.(*MsgUpdateRule))
+		return srv.(MsgServer).UpdateTemplate(ctx, req.(*MsgUpdateTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1250,20 +1116,16 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewAction_Handler,
 		},
 		{
-			MethodName: "ApproveAction",
-			Handler:    _Msg_ApproveAction_Handler,
-		},
-		{
 			MethodName: "CheckAction",
 			Handler:    _Msg_CheckAction_Handler,
 		},
 		{
-			MethodName: "NewRule",
-			Handler:    _Msg_NewRule_Handler,
+			MethodName: "NewTemplate",
+			Handler:    _Msg_NewTemplate_Handler,
 		},
 		{
-			MethodName: "UpdateRule",
-			Handler:    _Msg_UpdateRule_Handler,
+			MethodName: "UpdateTemplate",
+			Handler:    _Msg_UpdateTemplate_Handler,
 		},
 		{
 			MethodName: "RevokeAction",
@@ -1361,26 +1223,20 @@ func (m *MsgNewAction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	{
-		size, err := m.ExpectedRejectExpression.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintTx(dAtA, i, uint64(size))
+	if len(m.ExpectedRejectExpression) > 0 {
+		i -= len(m.ExpectedRejectExpression)
+		copy(dAtA[i:], m.ExpectedRejectExpression)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ExpectedRejectExpression)))
+		i--
+		dAtA[i] = 0x2a
 	}
-	i--
-	dAtA[i] = 0x2a
-	{
-		size, err := m.ExpectedApproveExpression.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintTx(dAtA, i, uint64(size))
+	if len(m.ExpectedApproveExpression) > 0 {
+		i -= len(m.ExpectedApproveExpression)
+		copy(dAtA[i:], m.ExpectedApproveExpression)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ExpectedApproveExpression)))
+		i--
+		dAtA[i] = 0x22
 	}
-	i--
-	dAtA[i] = 0x22
 	if m.ActionTimeoutHeight != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.ActionTimeoutHeight))
 		i--
@@ -1436,7 +1292,7 @@ func (m *MsgNewActionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgApproveAction) Marshal() (dAtA []byte, err error) {
+func (m *MsgNewTemplate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1446,77 +1302,12 @@ func (m *MsgApproveAction) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgApproveAction) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNewTemplate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgApproveAction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.ActionId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ActionId))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgApproveActionResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgApproveActionResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgApproveActionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgNewRule) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgNewRule) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgNewRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNewTemplate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1545,7 +1336,7 @@ func (m *MsgNewRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgNewRuleResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgNewTemplateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1555,12 +1346,12 @@ func (m *MsgNewRuleResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgNewRuleResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNewTemplateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgNewRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNewTemplateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1573,7 +1364,7 @@ func (m *MsgNewRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateRule) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateTemplate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1583,12 +1374,12 @@ func (m *MsgUpdateRule) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateRule) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1622,7 +1413,7 @@ func (m *MsgUpdateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateRuleResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateTemplateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1632,12 +1423,12 @@ func (m *MsgUpdateRuleResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateRuleResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateRuleResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateTemplateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1788,8 +1579,8 @@ func (m *MsgVoteForAction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Vote != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Vote))
+	if m.VoteType != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.VoteType))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -1890,10 +1681,14 @@ func (m *MsgNewAction) Size() (n int) {
 	if m.ActionTimeoutHeight != 0 {
 		n += 1 + sovTx(uint64(m.ActionTimeoutHeight))
 	}
-	l = m.ExpectedApproveExpression.Size()
-	n += 1 + l + sovTx(uint64(l))
-	l = m.ExpectedRejectExpression.Size()
-	n += 1 + l + sovTx(uint64(l))
+	l = len(m.ExpectedApproveExpression)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.ExpectedRejectExpression)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	return n
 }
 
@@ -1909,36 +1704,7 @@ func (m *MsgNewActionResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgApproveAction) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.ActionId != 0 {
-		n += 1 + sovTx(uint64(m.ActionId))
-	}
-	return n
-}
-
-func (m *MsgApproveActionResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Status)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgNewRule) Size() (n int) {
+func (m *MsgNewTemplate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1959,7 +1725,7 @@ func (m *MsgNewRule) Size() (n int) {
 	return n
 }
 
-func (m *MsgNewRuleResponse) Size() (n int) {
+func (m *MsgNewTemplateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1971,7 +1737,7 @@ func (m *MsgNewRuleResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateRule) Size() (n int) {
+func (m *MsgUpdateTemplate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1995,7 +1761,7 @@ func (m *MsgUpdateRule) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateRuleResponse) Size() (n int) {
+func (m *MsgUpdateTemplateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2071,8 +1837,8 @@ func (m *MsgVoteForAction) Size() (n int) {
 	if m.ActionId != 0 {
 		n += 1 + sovTx(uint64(m.ActionId))
 	}
-	if m.Vote != 0 {
-		n += 1 + sovTx(uint64(m.Vote))
+	if m.VoteType != 0 {
+		n += 1 + sovTx(uint64(m.VoteType))
 	}
 	return n
 }
@@ -2381,7 +2147,7 @@ func (m *MsgNewAction) Unmarshal(dAtA []byte) error {
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ExpectedApproveExpression", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2391,30 +2157,29 @@ func (m *MsgNewAction) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.ExpectedApproveExpression.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.ExpectedApproveExpression = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ExpectedRejectExpression", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2424,24 +2189,23 @@ func (m *MsgNewAction) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.ExpectedRejectExpression.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.ExpectedRejectExpression = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2533,7 +2297,7 @@ func (m *MsgNewActionResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgApproveAction) Unmarshal(dAtA []byte) error {
+func (m *MsgNewTemplate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2556,193 +2320,10 @@ func (m *MsgApproveAction) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgApproveAction: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNewTemplate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgApproveAction: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActionId", wireType)
-			}
-			m.ActionId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ActionId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgApproveActionResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgApproveActionResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgApproveActionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Status = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgNewRule) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgNewRule: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgNewRule: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNewTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2862,7 +2443,7 @@ func (m *MsgNewRule) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgNewRuleResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgNewTemplateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2885,10 +2466,10 @@ func (m *MsgNewRuleResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgNewRuleResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNewTemplateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgNewRuleResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNewTemplateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2931,7 +2512,7 @@ func (m *MsgNewRuleResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateRule) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateTemplate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2954,10 +2535,10 @@ func (m *MsgUpdateRule) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateRule: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateTemplate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateRule: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3096,7 +2677,7 @@ func (m *MsgUpdateRule) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateRuleResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateTemplateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3119,10 +2700,10 @@ func (m *MsgUpdateRuleResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateRuleResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateTemplateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateRuleResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateTemplateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3562,9 +3143,9 @@ func (m *MsgVoteForAction) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field VoteType", wireType)
 			}
-			m.Vote = 0
+			m.VoteType = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -3574,7 +3155,7 @@ func (m *MsgVoteForAction) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Vote |= ActionVoteType(b&0x7F) << shift
+				m.VoteType |= ActionVoteType(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

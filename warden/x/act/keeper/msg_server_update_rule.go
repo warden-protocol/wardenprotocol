@@ -9,38 +9,38 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-func (k msgServer) UpdateRule(ctx context.Context, msg *types.MsgUpdateRule) (*types.MsgUpdateRuleResponse, error) {
+func (k msgServer) UpdateTemplate(ctx context.Context, msg *types.MsgUpdateTemplate) (*types.MsgUpdateTemplateResponse, error) {
 	expr, err := shield.Parse(msg.Definition)
 	if err != nil {
 		return nil, err
 	}
 
-	rule, err := k.rules.Get(ctx, msg.Id)
+	template, err := k.templates.Get(ctx, msg.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	if rule.Creator != msg.Creator {
-		return nil, types.ErrInvalidUpdateRuleAccount
+	if template.Creator != msg.Creator {
+		return nil, types.ErrInvalidUpdateTemplateAccount
 	}
 
-	rule.Expression = expr
-	rule.Name = msg.Name
+	template.Expression = expr
+	template.Name = msg.Name
 
-	if err := rule.Validate(); err != nil {
+	if err := template.Validate(); err != nil {
 		return nil, err
 	}
 
-	if err := k.rules.Set(ctx, rule.Id, rule); err != nil {
+	if err := k.templates.Set(ctx, template.Id, template); err != nil {
 		return nil, err
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateRule{
-		Id: rule.Id,
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateTemplate{
+		Id: template.Id,
 	}); err != nil {
 		return nil, err
 	}
 
-	return &types.MsgUpdateRuleResponse{}, nil
+	return &types.MsgUpdateTemplateResponse{}, nil
 }

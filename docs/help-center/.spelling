@@ -219,8 +219,8 @@ Tendermint
 struct
 preprocessing
 preprocessor
-MsgNewRule
-MsgUpdateRule
+MsgNewTemplate
+MsgUpdateTemplate
 MsgNewAction
 MsgApproveAction
 MsgRevokeAction

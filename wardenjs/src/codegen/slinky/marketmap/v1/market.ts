@@ -445,8 +445,8 @@ export const Ticker = {
   toAmino(message: Ticker): TickerAmino {
     const obj: any = {};
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
-    obj.decimals = message.decimals !== BigInt(0) ? message.decimals.toString() : undefined;
-    obj.min_provider_count = message.minProviderCount !== BigInt(0) ? message.minProviderCount.toString() : undefined;
+    obj.decimals = message.decimals !== BigInt(0) ? (message.decimals?.toString)() : undefined;
+    obj.min_provider_count = message.minProviderCount !== BigInt(0) ? (message.minProviderCount?.toString)() : undefined;
     obj.enabled = message.enabled === false ? undefined : message.enabled;
     obj.metadata_JSON = message.metadataJSON === "" ? undefined : message.metadataJSON;
     return obj;
@@ -686,7 +686,7 @@ export const MarketMap = {
   encode(message: MarketMap, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.markets).forEach(([key, value]) => {
       MarketMap_MarketsEntry.encode({
-        key: (key as any),
+        key: key as any,
         value
       }, writer.uint32(10).fork()).ldelim();
     });

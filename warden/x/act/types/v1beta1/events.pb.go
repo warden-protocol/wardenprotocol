@@ -22,26 +22,26 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// EventCreateRule is emitted on Rule creation
-type EventCreateRule struct {
+// EventCreateTemplate is emitted on Template creation
+type EventCreateTemplate struct {
 	// id of the new intent
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	// creator is the address that created the intent
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
-func (m *EventCreateRule) Reset()         { *m = EventCreateRule{} }
-func (m *EventCreateRule) String() string { return proto.CompactTextString(m) }
-func (*EventCreateRule) ProtoMessage()    {}
-func (*EventCreateRule) Descriptor() ([]byte, []int) {
+func (m *EventCreateTemplate) Reset()         { *m = EventCreateTemplate{} }
+func (m *EventCreateTemplate) String() string { return proto.CompactTextString(m) }
+func (*EventCreateTemplate) ProtoMessage()    {}
+func (*EventCreateTemplate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_912b51dfb11e99b6, []int{0}
 }
-func (m *EventCreateRule) XXX_Unmarshal(b []byte) error {
+func (m *EventCreateTemplate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EventCreateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *EventCreateTemplate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EventCreateRule.Marshal(b, m, deterministic)
+		return xxx_messageInfo_EventCreateTemplate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -51,50 +51,50 @@ func (m *EventCreateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *EventCreateRule) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EventCreateRule.Merge(m, src)
+func (m *EventCreateTemplate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventCreateTemplate.Merge(m, src)
 }
-func (m *EventCreateRule) XXX_Size() int {
+func (m *EventCreateTemplate) XXX_Size() int {
 	return m.Size()
 }
-func (m *EventCreateRule) XXX_DiscardUnknown() {
-	xxx_messageInfo_EventCreateRule.DiscardUnknown(m)
+func (m *EventCreateTemplate) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventCreateTemplate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EventCreateRule proto.InternalMessageInfo
+var xxx_messageInfo_EventCreateTemplate proto.InternalMessageInfo
 
-func (m *EventCreateRule) GetId() uint64 {
+func (m *EventCreateTemplate) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-func (m *EventCreateRule) GetCreator() string {
+func (m *EventCreateTemplate) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-// EventUpdateRule is emitted when Rule is updated
-type EventUpdateRule struct {
+// EventUpdateTemplate is emitted when Template is updated
+type EventUpdateTemplate struct {
 	// id of updated intent
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *EventUpdateRule) Reset()         { *m = EventUpdateRule{} }
-func (m *EventUpdateRule) String() string { return proto.CompactTextString(m) }
-func (*EventUpdateRule) ProtoMessage()    {}
-func (*EventUpdateRule) Descriptor() ([]byte, []int) {
+func (m *EventUpdateTemplate) Reset()         { *m = EventUpdateTemplate{} }
+func (m *EventUpdateTemplate) String() string { return proto.CompactTextString(m) }
+func (*EventUpdateTemplate) ProtoMessage()    {}
+func (*EventUpdateTemplate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_912b51dfb11e99b6, []int{1}
 }
-func (m *EventUpdateRule) XXX_Unmarshal(b []byte) error {
+func (m *EventUpdateTemplate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EventUpdateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *EventUpdateTemplate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EventUpdateRule.Marshal(b, m, deterministic)
+		return xxx_messageInfo_EventUpdateTemplate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -104,19 +104,19 @@ func (m *EventUpdateRule) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *EventUpdateRule) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EventUpdateRule.Merge(m, src)
+func (m *EventUpdateTemplate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventUpdateTemplate.Merge(m, src)
 }
-func (m *EventUpdateRule) XXX_Size() int {
+func (m *EventUpdateTemplate) XXX_Size() int {
 	return m.Size()
 }
-func (m *EventUpdateRule) XXX_DiscardUnknown() {
-	xxx_messageInfo_EventUpdateRule.DiscardUnknown(m)
+func (m *EventUpdateTemplate) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventUpdateTemplate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EventUpdateRule proto.InternalMessageInfo
+var xxx_messageInfo_EventUpdateTemplate proto.InternalMessageInfo
 
-func (m *EventUpdateRule) GetId() uint64 {
+func (m *EventUpdateTemplate) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
@@ -178,61 +178,6 @@ func (m *EventCreateAction) GetCreator() string {
 	return ""
 }
 
-// EventApproveAction is emitted when an Action is approved
-type EventApproveAction struct {
-	// id of action
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	// address of the account that approved the action
-	Approver string `protobuf:"bytes,2,opt,name=approver,proto3" json:"approver,omitempty"`
-}
-
-func (m *EventApproveAction) Reset()         { *m = EventApproveAction{} }
-func (m *EventApproveAction) String() string { return proto.CompactTextString(m) }
-func (*EventApproveAction) ProtoMessage()    {}
-func (*EventApproveAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_912b51dfb11e99b6, []int{3}
-}
-func (m *EventApproveAction) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *EventApproveAction) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_EventApproveAction.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *EventApproveAction) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EventApproveAction.Merge(m, src)
-}
-func (m *EventApproveAction) XXX_Size() int {
-	return m.Size()
-}
-func (m *EventApproveAction) XXX_DiscardUnknown() {
-	xxx_messageInfo_EventApproveAction.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_EventApproveAction proto.InternalMessageInfo
-
-func (m *EventApproveAction) GetId() uint64 {
-	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-func (m *EventApproveAction) GetApprover() string {
-	if m != nil {
-		return m.Approver
-	}
-	return ""
-}
-
 // EventActionVoted is emitted when an Action is voted on
 type EventActionVoted struct {
 	// id of action
@@ -240,14 +185,14 @@ type EventActionVoted struct {
 	// address of the account that participated in voting
 	Participant string `protobuf:"bytes,2,opt,name=participant,proto3" json:"participant,omitempty"`
 	// type of the vote
-	Vote ActionVoteType `protobuf:"varint,3,opt,name=vote,proto3,enum=warden.act.v1beta1.ActionVoteType" json:"vote,omitempty"`
+	VoteType ActionVoteType `protobuf:"varint,3,opt,name=vote_type,json=voteType,proto3,enum=warden.act.v1beta1.ActionVoteType" json:"vote_type,omitempty"`
 }
 
 func (m *EventActionVoted) Reset()         { *m = EventActionVoted{} }
 func (m *EventActionVoted) String() string { return proto.CompactTextString(m) }
 func (*EventActionVoted) ProtoMessage()    {}
 func (*EventActionVoted) Descriptor() ([]byte, []int) {
-	return fileDescriptor_912b51dfb11e99b6, []int{4}
+	return fileDescriptor_912b51dfb11e99b6, []int{3}
 }
 func (m *EventActionVoted) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -290,9 +235,9 @@ func (m *EventActionVoted) GetParticipant() string {
 	return ""
 }
 
-func (m *EventActionVoted) GetVote() ActionVoteType {
+func (m *EventActionVoted) GetVoteType() ActionVoteType {
 	if m != nil {
-		return m.Vote
+		return m.VoteType
 	}
 	return ActionVoteType_VOTE_TYPE_UNSPECIFIED
 }
@@ -311,7 +256,7 @@ func (m *EventActionStateChange) Reset()         { *m = EventActionStateChange{}
 func (m *EventActionStateChange) String() string { return proto.CompactTextString(m) }
 func (*EventActionStateChange) ProtoMessage()    {}
 func (*EventActionStateChange) Descriptor() ([]byte, []int) {
-	return fileDescriptor_912b51dfb11e99b6, []int{5}
+	return fileDescriptor_912b51dfb11e99b6, []int{4}
 }
 func (m *EventActionStateChange) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -372,7 +317,7 @@ func (m *EventActionPruned) Reset()         { *m = EventActionPruned{} }
 func (m *EventActionPruned) String() string { return proto.CompactTextString(m) }
 func (*EventActionPruned) ProtoMessage()    {}
 func (*EventActionPruned) Descriptor() ([]byte, []int) {
-	return fileDescriptor_912b51dfb11e99b6, []int{6}
+	return fileDescriptor_912b51dfb11e99b6, []int{5}
 }
 func (m *EventActionPruned) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -409,10 +354,9 @@ func (m *EventActionPruned) GetId() uint64 {
 }
 
 func init() {
-	proto.RegisterType((*EventCreateRule)(nil), "warden.act.v1beta1.EventCreateRule")
-	proto.RegisterType((*EventUpdateRule)(nil), "warden.act.v1beta1.EventUpdateRule")
+	proto.RegisterType((*EventCreateTemplate)(nil), "warden.act.v1beta1.EventCreateTemplate")
+	proto.RegisterType((*EventUpdateTemplate)(nil), "warden.act.v1beta1.EventUpdateTemplate")
 	proto.RegisterType((*EventCreateAction)(nil), "warden.act.v1beta1.EventCreateAction")
-	proto.RegisterType((*EventApproveAction)(nil), "warden.act.v1beta1.EventApproveAction")
 	proto.RegisterType((*EventActionVoted)(nil), "warden.act.v1beta1.EventActionVoted")
 	proto.RegisterType((*EventActionStateChange)(nil), "warden.act.v1beta1.EventActionStateChange")
 	proto.RegisterType((*EventActionPruned)(nil), "warden.act.v1beta1.EventActionPruned")
@@ -421,35 +365,34 @@ func init() {
 func init() { proto.RegisterFile("warden/act/v1beta1/events.proto", fileDescriptor_912b51dfb11e99b6) }
 
 var fileDescriptor_912b51dfb11e99b6 = []byte{
-	// 395 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0xb1, 0x4e, 0xdb, 0x40,
-	0x1c, 0xc6, 0x73, 0x49, 0xd4, 0x36, 0x57, 0xc9, 0x69, 0x3d, 0x54, 0x56, 0x06, 0xd7, 0x75, 0x3b,
-	0x64, 0xa9, 0xad, 0xa4, 0x52, 0x97, 0xaa, 0x6a, 0x43, 0x60, 0x60, 0x43, 0x0e, 0x30, 0x30, 0x10,
-	0x5d, 0xec, 0x53, 0x62, 0x29, 0xdc, 0x9d, 0xce, 0x7f, 0x3b, 0x44, 0xe2, 0x21, 0x78, 0x18, 0x1e,
-	0x82, 0x31, 0x23, 0x23, 0x4a, 0x5e, 0x04, 0xe5, 0xce, 0x86, 0x08, 0x63, 0x09, 0x36, 0x7f, 0xbe,
-	0xef, 0xf7, 0x7d, 0xa7, 0xff, 0xfd, 0xf1, 0xd7, 0x05, 0x91, 0x11, 0x65, 0x3e, 0x09, 0xc1, 0xcf,
-	0x7a, 0x13, 0x0a, 0xa4, 0xe7, 0xd3, 0x8c, 0x32, 0x48, 0x3c, 0x21, 0x39, 0x70, 0xd3, 0xd4, 0x06,
-	0x8f, 0x84, 0xe0, 0xe5, 0x86, 0xce, 0x4b, 0x10, 0x09, 0x21, 0xe6, 0x4c, 0x43, 0x9d, 0x1f, 0x95,
-	0x86, 0x71, 0xc6, 0x81, 0x6a, 0x97, 0xfb, 0x07, 0xb7, 0x0f, 0xb6, 0x55, 0x43, 0x49, 0x09, 0xd0,
-	0x20, 0x9d, 0x53, 0xd3, 0xc0, 0xf5, 0x38, 0xb2, 0x90, 0x83, 0xba, 0xcd, 0xa0, 0x1e, 0x47, 0xa6,
-	0x85, 0xdf, 0x87, 0xdb, 0x53, 0x2e, 0xad, 0xba, 0x83, 0xba, 0xad, 0xa0, 0x90, 0xee, 0xb7, 0x1c,
-	0x3e, 0x11, 0x51, 0x05, 0xec, 0xfe, 0xc5, 0x9f, 0x77, 0xf2, 0x07, 0xaa, 0xff, 0x0d, 0x0d, 0xff,
-	0xb1, 0xa9, 0xf0, 0x81, 0x10, 0x92, 0x67, 0x55, 0x7c, 0x07, 0x7f, 0x20, 0xda, 0x50, 0x04, 0x3c,
-	0x6a, 0xf7, 0x0a, 0x7f, 0xd2, 0x09, 0x0a, 0x3d, 0xe5, 0x40, 0xa3, 0x12, 0xef, 0xe0, 0x8f, 0x82,
-	0x48, 0x88, 0xc3, 0x58, 0x10, 0x06, 0x79, 0xc4, 0xee, 0x2f, 0xf3, 0x37, 0x6e, 0x6e, 0x87, 0x66,
-	0x35, 0x1c, 0xd4, 0x35, 0xfa, 0xae, 0x57, 0x7e, 0x10, 0xef, 0xa9, 0xe0, 0x78, 0x29, 0x68, 0xa0,
-	0xfc, 0xee, 0x0d, 0xc2, 0x5f, 0x76, 0xea, 0x47, 0x40, 0x80, 0x0e, 0x67, 0x84, 0x4d, 0xcb, 0x63,
-	0x3e, 0xc4, 0x6d, 0x21, 0x69, 0x16, 0xf3, 0x34, 0x19, 0x27, 0x40, 0x20, 0x4d, 0xd4, 0x45, 0x8c,
-	0xbe, 0x53, 0xdd, 0x36, 0x52, 0xbe, 0xc0, 0x28, 0x40, 0xad, 0xcd, 0x7f, 0x18, 0x33, 0xba, 0x28,
-	0x52, 0x1a, 0xaf, 0x4c, 0x69, 0x31, 0xba, 0xd0, 0x9f, 0xee, 0xf7, 0xfc, 0xd5, 0xf4, 0xf9, 0x91,
-	0x4c, 0x59, 0x79, 0x6a, 0x7b, 0xe7, 0xb7, 0x6b, 0x1b, 0xad, 0xd6, 0x36, 0xba, 0x5f, 0xdb, 0xe8,
-	0x7a, 0x63, 0xd7, 0x56, 0x1b, 0xbb, 0x76, 0xb7, 0xb1, 0x6b, 0x67, 0xfb, 0xd3, 0x18, 0x66, 0xe9,
-	0xc4, 0x0b, 0xf9, 0x85, 0xaf, 0x5b, 0x7f, 0xaa, 0x6d, 0x0b, 0xf9, 0x3c, 0xd7, 0xcf, 0xa4, 0x7f,
-	0xa9, 0xd6, 0x14, 0x96, 0x82, 0x26, 0xc5, 0xb2, 0x4e, 0xde, 0x29, 0xd3, 0xaf, 0x87, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0x67, 0x98, 0x13, 0xcb, 0x1f, 0x03, 0x00, 0x00,
+	// 381 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0xcd, 0x4e, 0xdb, 0x40,
+	0x10, 0xce, 0x26, 0x55, 0xdb, 0x6c, 0x25, 0xb7, 0x75, 0xa5, 0xca, 0xca, 0xc1, 0xb5, 0xdc, 0x56,
+	0xca, 0x05, 0x5b, 0x09, 0x67, 0x14, 0x41, 0xe0, 0xc0, 0x0d, 0x39, 0x81, 0x03, 0x07, 0xa2, 0x8d,
+	0x3d, 0x4a, 0x2c, 0x25, 0xbb, 0x2b, 0x7b, 0xec, 0x90, 0x07, 0xe0, 0xce, 0xc3, 0xf0, 0x10, 0x1c,
+	0x73, 0xe4, 0x88, 0x92, 0x17, 0x41, 0xf6, 0xda, 0x22, 0xc2, 0x04, 0xc1, 0x6d, 0x3e, 0xfb, 0xfb,
+	0x99, 0xfd, 0x34, 0xf4, 0xcf, 0x82, 0x45, 0x01, 0x70, 0x97, 0xf9, 0xe8, 0xa6, 0x9d, 0x31, 0x20,
+	0xeb, 0xb8, 0x90, 0x02, 0xc7, 0xd8, 0x91, 0x91, 0x40, 0xa1, 0xeb, 0x8a, 0xe0, 0x30, 0x1f, 0x9d,
+	0x82, 0xd0, 0x7a, 0x4d, 0xc4, 0x7c, 0x0c, 0x05, 0x57, 0xa2, 0xd6, 0xbf, 0x9d, 0x84, 0x51, 0x2a,
+	0x10, 0x14, 0xcb, 0xee, 0xd1, 0x5f, 0x27, 0x59, 0x54, 0x3f, 0x02, 0x86, 0x30, 0x84, 0xb9, 0x9c,
+	0x31, 0x04, 0x5d, 0xa3, 0xf5, 0x30, 0x30, 0x88, 0x45, 0xda, 0x9f, 0xbc, 0x7a, 0x18, 0xe8, 0x06,
+	0xfd, 0xe2, 0x67, 0x0c, 0x11, 0x19, 0x75, 0x8b, 0xb4, 0x9b, 0x5e, 0x09, 0xed, 0xff, 0x85, 0xc1,
+	0xb9, 0x0c, 0xde, 0x30, 0xb0, 0x0f, 0xe8, 0xcf, 0xad, 0x9c, 0xc3, 0x7c, 0x8f, 0x0f, 0xa4, 0xdc,
+	0x10, 0xfa, 0x23, 0xd7, 0x2b, 0xe5, 0x85, 0x40, 0x08, 0x2a, 0x72, 0x8b, 0x7e, 0x93, 0x2c, 0xc2,
+	0xd0, 0x0f, 0x25, 0xe3, 0x58, 0x58, 0x6c, 0x7f, 0xd2, 0x7b, 0xb4, 0x99, 0xbd, 0x7d, 0x84, 0x4b,
+	0x09, 0x46, 0xc3, 0x22, 0x6d, 0xad, 0x6b, 0x3b, 0xd5, 0x72, 0x9d, 0xe7, 0x94, 0xe1, 0x52, 0x82,
+	0xf7, 0x35, 0x2d, 0x26, 0xfb, 0x8e, 0xd0, 0xdf, 0x5b, 0x7b, 0x0c, 0x90, 0x21, 0xf4, 0xa7, 0x8c,
+	0x4f, 0xaa, 0x95, 0x9d, 0xd2, 0xef, 0x32, 0x82, 0x34, 0x14, 0x49, 0x3c, 0x8a, 0x91, 0x61, 0x12,
+	0xe7, 0x1b, 0x69, 0x5d, 0x6b, 0x77, 0xe2, 0x20, 0xe7, 0x79, 0x5a, 0x29, 0x54, 0x58, 0xef, 0x51,
+	0xca, 0x61, 0x51, 0xba, 0x34, 0xde, 0xe9, 0xd2, 0xe4, 0xb0, 0x50, 0xa3, 0xfd, 0xb7, 0x68, 0x5f,
+	0xfd, 0x3f, 0x8b, 0x12, 0x5e, 0xad, 0xef, 0xe8, 0xea, 0x7e, 0x6d, 0x92, 0xd5, 0xda, 0x24, 0x8f,
+	0x6b, 0x93, 0xdc, 0x6e, 0xcc, 0xda, 0x6a, 0x63, 0xd6, 0x1e, 0x36, 0x66, 0xed, 0xf2, 0x78, 0x12,
+	0xe2, 0x34, 0x19, 0x3b, 0xbe, 0x98, 0xbb, 0x2a, 0x75, 0x2f, 0xbf, 0x1e, 0x5f, 0xcc, 0x0a, 0xfc,
+	0x02, 0xba, 0xd7, 0xf9, 0xd9, 0x65, 0x35, 0xc7, 0xe5, 0xf1, 0x8d, 0x3f, 0xe7, 0xa4, 0xfd, 0xa7,
+	0x00, 0x00, 0x00, 0xff, 0xff, 0x6b, 0xfb, 0x84, 0x5f, 0xef, 0x02, 0x00, 0x00,
 }
 
-func (m *EventCreateRule) Marshal() (dAtA []byte, err error) {
+func (m *EventCreateTemplate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -459,12 +402,12 @@ func (m *EventCreateRule) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EventCreateRule) MarshalTo(dAtA []byte) (int, error) {
+func (m *EventCreateTemplate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EventCreateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *EventCreateTemplate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -484,7 +427,7 @@ func (m *EventCreateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *EventUpdateRule) Marshal() (dAtA []byte, err error) {
+func (m *EventUpdateTemplate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -494,12 +437,12 @@ func (m *EventUpdateRule) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EventUpdateRule) MarshalTo(dAtA []byte) (int, error) {
+func (m *EventUpdateTemplate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EventUpdateRule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *EventUpdateTemplate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -547,41 +490,6 @@ func (m *EventCreateAction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *EventApproveAction) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *EventApproveAction) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *EventApproveAction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Approver) > 0 {
-		i -= len(m.Approver)
-		copy(dAtA[i:], m.Approver)
-		i = encodeVarintEvents(dAtA, i, uint64(len(m.Approver)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Id != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.Id))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *EventActionVoted) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -602,8 +510,8 @@ func (m *EventActionVoted) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Vote != 0 {
-		i = encodeVarintEvents(dAtA, i, uint64(m.Vote))
+	if m.VoteType != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.VoteType))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -699,7 +607,7 @@ func encodeVarintEvents(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *EventCreateRule) Size() (n int) {
+func (m *EventCreateTemplate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -715,7 +623,7 @@ func (m *EventCreateRule) Size() (n int) {
 	return n
 }
 
-func (m *EventUpdateRule) Size() (n int) {
+func (m *EventUpdateTemplate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -743,22 +651,6 @@ func (m *EventCreateAction) Size() (n int) {
 	return n
 }
 
-func (m *EventApproveAction) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Id != 0 {
-		n += 1 + sovEvents(uint64(m.Id))
-	}
-	l = len(m.Approver)
-	if l > 0 {
-		n += 1 + l + sovEvents(uint64(l))
-	}
-	return n
-}
-
 func (m *EventActionVoted) Size() (n int) {
 	if m == nil {
 		return 0
@@ -772,8 +664,8 @@ func (m *EventActionVoted) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovEvents(uint64(l))
 	}
-	if m.Vote != 0 {
-		n += 1 + sovEvents(uint64(m.Vote))
+	if m.VoteType != 0 {
+		n += 1 + sovEvents(uint64(m.VoteType))
 	}
 	return n
 }
@@ -814,7 +706,7 @@ func sovEvents(x uint64) (n int) {
 func sozEvents(x uint64) (n int) {
 	return sovEvents(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *EventCreateRule) Unmarshal(dAtA []byte) error {
+func (m *EventCreateTemplate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -837,10 +729,10 @@ func (m *EventCreateRule) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EventCreateRule: wiretype end group for non-group")
+			return fmt.Errorf("proto: EventCreateTemplate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EventCreateRule: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: EventCreateTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -915,7 +807,7 @@ func (m *EventCreateRule) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *EventUpdateRule) Unmarshal(dAtA []byte) error {
+func (m *EventUpdateTemplate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -938,10 +830,10 @@ func (m *EventUpdateRule) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EventUpdateRule: wiretype end group for non-group")
+			return fmt.Errorf("proto: EventUpdateTemplate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EventUpdateRule: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: EventUpdateTemplate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1085,107 +977,6 @@ func (m *EventCreateAction) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *EventApproveAction) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowEvents
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: EventApproveAction: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EventApproveAction: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
-			}
-			m.Id = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowEvents
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Id |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Approver", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowEvents
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthEvents
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthEvents
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Approver = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipEvents(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthEvents
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *EventActionVoted) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1268,9 +1059,9 @@ func (m *EventActionVoted) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field VoteType", wireType)
 			}
-			m.Vote = 0
+			m.VoteType = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEvents
@@ -1280,7 +1071,7 @@ func (m *EventActionVoted) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Vote |= ActionVoteType(b&0x7F) << shift
+				m.VoteType |= ActionVoteType(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

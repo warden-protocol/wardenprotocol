@@ -21,6 +21,8 @@ import (
 )
 
 const actionTimeoutHeightFlag = "action-timeout-height"
+const expectedApproveExpressionFlag = "expected-approve-expression"
+const expectedRejectExpressionFlag = "expected-reject-expression"
 
 // RegisterActionCmd registers a CLI subcommand for the message of type T to be
 // wrapped inside a new Action.
@@ -51,10 +53,22 @@ func RegisterActionCmd[T sdk.Msg](msg T, short string) *cobra.Command {
 				return err
 			}
 
+			expectedApproveExpression, err := cmd.Flags().GetString(expectedApproveExpressionFlag)
+			if err != nil {
+				return err
+			}
+
+			expectedRejectExpression, err := cmd.Flags().GetString(expectedRejectExpressionFlag)
+			if err != nil {
+				return err
+			}
+
 			msg := &types.MsgNewAction{
-				Creator:             clientCtx.GetFromAddress().String(),
-				Message:             msgAny,
-				ActionTimeoutHeight: actionTimeout,
+				Creator:                   clientCtx.GetFromAddress().String(),
+				Message:                   msgAny,
+				ActionTimeoutHeight:       actionTimeout,
+				ExpectedApproveExpression: expectedApproveExpression,
+				ExpectedRejectExpression:  expectedRejectExpression,
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
@@ -64,6 +78,8 @@ func RegisterActionCmd[T sdk.Msg](msg T, short string) *cobra.Command {
 	flags.AddTxFlagsToCmd(cmd)
 	addFlagsFromMsg(msg, cmd)
 	cmd.Flags().Uint64(actionTimeoutHeightFlag, 0, "Maximum block height after which this action is considered expired.")
+	cmd.Flags().String(expectedApproveExpressionFlag, "any(1, warden.space.owners)", "The definition of expected approval expression the action is created with")
+	cmd.Flags().String(expectedRejectExpressionFlag, "any(1, warden.space.owners)", "The definition of expected reject expression the action is created with")
 
 	return cmd
 }

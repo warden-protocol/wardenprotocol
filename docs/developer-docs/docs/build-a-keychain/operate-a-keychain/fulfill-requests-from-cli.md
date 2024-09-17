@@ -35,7 +35,7 @@ go install ./cmd/clichain
 
 In the next steps, you'll use the following values:
 
-- Your chain ID you used when [running a node](operate-a-keychain/create-a-keychain#1-run-a-node).
+- Your chain ID you used when [running a node](create-a-keychain#1-run-a-node).
 - Your Keychain ID obtained when [registering a Keychain](create-a-keychain#2-register-a-keychain).
 - Your Keychain Writer name you specified when [adding a Keychain Writer](create-a-keychain#3-add-a-keychain-writer).  
 

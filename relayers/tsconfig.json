@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "strictNullChecks": true
+  },
+  "exclude": [
+    "dist"
+  ],
+  "references": [
+    {
+      "path": "./packages/wormhole-relayer-engine"
+    },
+    {
+      "path": "./packages/wormhole"
+    },
+  ],
+  "compileOnSave": true
+}

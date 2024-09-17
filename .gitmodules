@@ -1,0 +1,3 @@
+[submodule "relayers/packages/wormhole-relayer-engine"]
+	path = relayers/packages/wormhole-relayer-engine
+	url = git@github.com:warden-protocol/wormhole-relayer-engine.git

@@ -1,0 +1,25 @@
+# directories
+.yarn/
+**/dist
+**/node_modules
+**/types
+
+# files
+*.env
+*.log
+
+
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "removeComments": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true
+  },
+}

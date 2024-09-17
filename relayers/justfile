@@ -1,0 +1,13 @@
+@_default:
+  @just --list
+
+@build network:
+  (cd packages/wormhole/contracts/solana && anchor build --arch sbf -- --features {{network}})
+  yarn build
+
+@clean:
+  (cd packages/wormhole/contracts/solana && rm -rf node_modules target .anchor)
+  yarn clean
+
+@rebuild network: clean
+  @just build {{network}}

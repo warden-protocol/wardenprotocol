@@ -1,0 +1,20 @@
+[features]
+seeds = false
+skip-lint = false
+
+[workspace]
+members = [
+    "programs/gmp",
+    "programs/gmp_with_token",
+]
+
+[programs.localnet]
+gmp = "DMmiXQDrEwgmt8qHLoqekCRByqJdPn2mYFnfd56FWFE2"
+gmp_with_token = "DeUdMBvNmuQcZzNFtrCGb8jGUzdoc89djeTbfzuBPWjd"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"

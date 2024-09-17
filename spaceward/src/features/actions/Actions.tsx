@@ -86,7 +86,6 @@ export function Actions() {
 								</span>
 								<div>
 									{group.actions.map((action) => {
-										console.log(action.result)
 										const date = timestampToDate(
 											action.createdAt,
 										);

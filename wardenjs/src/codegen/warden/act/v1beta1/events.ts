@@ -457,7 +457,7 @@ export const EventActionVoted = {
           message.participant = reader.string();
           break;
         case 3:
-          message.voteType = (reader.int32() as any);
+          message.voteType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -555,10 +555,10 @@ export const EventActionStateChange = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.previousStatus = (reader.int32() as any);
+          message.previousStatus = reader.int32() as any;
           break;
         case 3:
-          message.newStatus = (reader.int32() as any);
+          message.newStatus = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);

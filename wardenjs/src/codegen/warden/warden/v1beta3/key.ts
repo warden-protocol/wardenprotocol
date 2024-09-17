@@ -381,10 +381,10 @@ export const KeyRequest = {
           message.keychainId = reader.uint64();
           break;
         case 5:
-          message.keyType = (reader.int32() as any);
+          message.keyType = reader.int32() as any;
           break;
         case 6:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 7:
           message.rejectReason = reader.string();
@@ -571,7 +571,7 @@ export const Key = {
           message.keychainId = reader.uint64();
           break;
         case 4:
-          message.type = (reader.int32() as any);
+          message.type = reader.int32() as any;
           break;
         case 5:
           message.publicKey = reader.bytes();

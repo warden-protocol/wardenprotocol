@@ -109,7 +109,7 @@ export const ActionVote = {
           message.votedAt = Timestamp.decode(reader, reader.uint32());
           break;
         case 3:
-          message.voteType = (reader.int32() as any);
+          message.voteType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);

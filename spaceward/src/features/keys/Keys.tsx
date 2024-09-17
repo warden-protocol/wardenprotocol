@@ -30,8 +30,6 @@ import { KEY_THEMES } from "./assets";
 import { useKeySettingsState } from "./state";
 import { useCallback, useMemo, useState } from "react";
 import { useModalState } from "../modals/state";
-import useRequestKey, { KeyRequesterState } from "@/hooks/useRequestKey";
-import KeyRequestStatusbar from "./KeyRequestStatus";
 import { Icons } from "@/components/ui/icons-assets";
 import useFiatConversion from "@/hooks/useFiatConversion";
 import { bigintToFloat } from "@/lib/math";
@@ -79,7 +77,7 @@ export const useKeyData = ({ key }: Pick<QueryKeyResponse, "key">) => {
 
 			const value = fiatConversion
 				? (usd * BigInt(10) ** BigInt(fiatConversion.decimals)) /
-					fiatConversion.value
+				fiatConversion.value
 				: BigInt(0);
 
 			return total + value;
@@ -445,7 +443,6 @@ export function Keys({
 	view: "list" | "card";
 }) {
 	const { useKeysBySpaceId, isReady } = useQueryHooks();
-	const { state } = useRequestKey();
 
 	const query = useKeysBySpaceId({
 		request: {
@@ -468,10 +465,6 @@ export function Keys({
 
 	return (
 		<>
-			{state === KeyRequesterState.IDLE ? null : (
-				<KeyRequestStatusbar className="p-6 h-20" />
-			)}
-
 			{query.data?.keys?.length === 0 ? (
 				<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
 					<KeyIcon className="h-10 w-10" />

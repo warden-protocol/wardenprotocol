@@ -29,7 +29,7 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 	const currencyPairs = useMemo(
 		() =>
-			pairs.data?.currencyPairs.map(({ Base, Quote }) => ({
+			pairs.data?.currencyPairs.map(({ base: Base, quote: Quote }) => ({
 				id: `${Base}/${Quote}`,
 				token: Base,
 			})) ?? [],

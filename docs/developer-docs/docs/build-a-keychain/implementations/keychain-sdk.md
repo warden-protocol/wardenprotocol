@@ -1,37 +1,37 @@
 ﻿---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # Keychain SDK
 
 ## Overview
 
-The **Keychain SDK** offers a robust framework for managing cryptographic operations on the Warden Protocol. It simplifies the development of applications that interact with the Warden Protocol, handling both key requests and sign requests with efficiency and security.
+The **Keychain SDK** offers a robust framework for managing cryptographic operations on the Warden Protocol. It simplifies the development of applications that interact with the Warden Protocol, handling both key requests and signature requests with efficiency and security.
 
 ## Module descriptions
 
 In this section, we will walk you through different modules of the **Keychain SDK.**
 
-### Sign requests (`sign_requests.go`)
+### Signature requests (`sign_requests.go`)
 
-**Purpose**: This module handles sign requests, allowing the application to process and respond to cryptographic signing operations.
+**Purpose**: This module handles signature requests, allowing the application to process and respond to cryptographic signing operations.
 
 **Key components:**
 
-- **SignResponseWriter interface**: Provides methods to fulfill or reject sign requests.
-  - `Fulfil(signature []byte) error`: Writes a signature to a sign request.
-  - `Reject(reason string) error`: Writes a rejection message to a sign request.
-- **SignRequestHandler**: A function type that processes individual sign requests.
+- **SignResponseWriter interface**: Provides methods to fulfill or reject signature requests.
+  - `Fulfil(signature []byte) error`: Writes a signature to a signature request.
+  - `Reject(reason string) error`: Writes a rejection message to a signature request.
+- **SignRequestHandler**: A function type that processes individual signature requests.
 - **signResponseWriter struct**: Implements the `SignResponseWriter` interface, managing encryption and transaction writing.
 
 **Functions:**
 
-- `handleSignRequest`: Processes a sign request using the provided `SignRequestHandler`.
-- `ingestSignRequests`: Continuously fetches and handles new sign requests.
+- `handleSignRequest`: Processes a signature request using the provided `SignRequestHandler`.
+- `ingestSignRequests`: Continuously fetches and handles new signature requests.
 
 ### Keychain (`keychain.go`)
 
-**Purpose**: Central application management, coordinating key and sign request handling.
+**Purpose**: Central application management, coordinating key and signature request handling.
 
 **Key components:**
 
@@ -40,7 +40,7 @@ In this section, we will walk you through different modules of the **Keychain SD
 - **NewApp function**: Initializes a new `App` instance with the provided configuration.
 - **Handlers**: These methods set the functions for processing requests.
   - `SetKeyRequestHandler`: Sets the handler for key requests.
-  - `SetSignRequestHandler`: Sets the handler for sign requests.
+  - `SetSignRequestHandler`: Sets the handler for signature requests.
 - **Start method**: Begins the Keychain application's operations, managing request channels and transaction writing.
 - `ConnectionState`: Returns the state of the gRPC connection.
 - `initConnections`: Establishes connections to the Warden Protocol via gRPC.
@@ -89,7 +89,7 @@ type Config struct {
 }
 ```
 
-### Transaction 2riter (`writer.go`)
+### Transaction writer (`writer.go`)
 
 **Purpose**: Manages transaction batching and sending operations.
 

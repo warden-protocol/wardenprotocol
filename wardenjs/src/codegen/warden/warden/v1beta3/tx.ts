@@ -2581,7 +2581,7 @@ export const MsgNewKeyRequest = {
           message.keychainId = reader.uint64();
           break;
         case 4:
-          message.keyType = (reader.int32() as any);
+          message.keyType = reader.int32() as any;
           break;
         case 5:
           message.approveTemplateId = reader.uint64();
@@ -2889,7 +2889,7 @@ export const MsgFulfilKeyRequest = {
           message.requestId = reader.uint64();
           break;
         case 3:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 4:
           message.key = MsgNewKey.decode(reader, reader.uint32());
@@ -3562,7 +3562,7 @@ export const MsgFulfilSignRequest = {
           message.requestId = reader.uint64();
           break;
         case 3:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 4:
           message.payload = MsgSignedData.decode(reader, reader.uint32());

@@ -1084,7 +1084,7 @@ export const QueryActionsByAddressRequest = {
           message.address = reader.string();
           break;
         case 3:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);

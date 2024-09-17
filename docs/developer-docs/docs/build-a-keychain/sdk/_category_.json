@@ -1,11 +1,11 @@
 {
   "position": 4,
-  "label": "Keychain SDK",
+  "label": "Implementations",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Keychain SDK"
+    "title": "Implementations"
   },
   "customProps": {}
 }

@@ -31,10 +31,10 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
     ```
     
     :::tip
-    In development genesis files, you'll typically find an account named `shulgin` that is preconfigured and ready for use.
+    If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
     :::
 
-3. In some of the commands, you'll also need to specify your **chain ID**, referenced as `my-chain-id`. The actual value depends on the configuration you used when running your node.
+3. In some of the commands, you'll also need to specify your **chain ID**. The actual value depends on the configuration you used when running your node.
 
     To check your chain ID, run this:
 
@@ -45,7 +45,7 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
     See the `network` field in the output.
 
     :::tip
-    In development genesis files, the chain ID is typically `warden`.
+    If you used a `just` script or a devnet snapshot to run your node, the chain ID is `warden_1337-1`.
     :::
 
 ## 2. Register a Keychain
@@ -56,20 +56,22 @@ The following steps show how to register a new Keychain entity on-chain.
 
     ```bash
     wardend tx warden new-keychain \
-      --description 'my-keychain-description' \
-      --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}" \
+      --name 'my-keychain-name' \
       --from my-key-name \
-      --chain-id my-chain-id
+      --chain-id chain_123-1 \
+      --description 'my-keychain-description' \
+      --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}"
     ```
 
     Specify the following details:
 
+    - `name`: The Keychain name
+    - `from`: Your local account name (key name)
+    - `chain-id`: The ID of the chain you're running
     - `description` (optional): The Keychain description
     - `keychainFees`(optional):
          - `key_req`: A fee in aWARD for creating a key pair
          - `key_req`: A fee in aWARD for signing a transaction
-    - `from`: Your local account name (key name)
-    - `chain-id`: The ID of the chain you're running
 
     **Note**: aWARD equals 0.000000000000000001 WARD.
 
@@ -77,19 +79,27 @@ The following steps show how to register a new Keychain entity on-chain.
 
 3. Every Keychain is created with a **Keychain ID** that identifies it in key and signature requests and collects fees from users. You'll need this ID to operate your Keychain. Run the following command and check the `id` field in the output:
 
-    ```bash
-    wardend query warden keychains
-    ```
-    ```bash
-    keychains:
-    - admins:
-      - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-      description: my-description
-      id: "1"
-    pagination:
-      total: "1"
-    ```
+   ```bash
+   wardend query warden keychains
+   ```
+   ```bash
+   keychains:
+   - admins:
+     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+     description: my-keychain-description
+     fees:
+       key_req:
+      - amount: "100"
+        denom: award
+    sig_req:
+      - amount: "1"
+        denom: award
+     id: "1"
+     name: my-keychain-name
+   pagination:
+     total: "1"
+   ```
 
 ## 3. Add a Keychain Writer
 
@@ -97,7 +107,7 @@ A Keychain Writer is an account that can write Keychain results (public keys and
 
 To add a Keychain Writer, take these steps:
 
-1. Initiate a `MsgAddKeychainWriter` transaction. Specify your Keychain Writer name:
+1. Run this command to add a Keychain Writer with a preferred name:
 
     ```bash
     wardend keys add my-keychain-writer-name
@@ -129,7 +139,7 @@ To add a Keychain Writer, take these steps:
     wardend tx bank send my-key-name \
       $(wardend keys show -a my-keychain-writer-name) \
       1000000000000000000award \
-      --chain-id my-chain-id
+      --chain-id chain_123-1
     ```
 
     To check the Keychain Writer balance, run this:

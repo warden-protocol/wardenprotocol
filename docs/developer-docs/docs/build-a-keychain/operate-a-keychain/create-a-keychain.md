@@ -34,7 +34,7 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
     If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
     :::
 
-3. In some of the commands, you'll also need to specify your **chain ID**, referenced as `my-chain-id`. The actual value depends on the configuration you used when running your node.
+3. In some of the commands, you'll also need to specify your **chain ID**. The actual value depends on the configuration you used when running your node.
 
     To check your chain ID, run this:
 
@@ -129,7 +129,7 @@ To add a Keychain Writer, take these steps:
     wardend tx bank send my-key-name \
       $(wardend keys show -a my-keychain-writer-name) \
       1000000000000000000award \
-      --chain-id my-chain-id
+      --chain-id chain_123-1
     ```
 
     To check the Keychain Writer balance, run this:

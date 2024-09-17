@@ -31,7 +31,7 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
     ```
     
     :::tip
-    In development genesis files, you'll typically find an account named `shulgin` that is preconfigured and ready for use.
+    If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
     :::
 
 3. In some of the commands, you'll also need to specify your **chain ID**, referenced as `my-chain-id`. The actual value depends on the configuration you used when running your node.
@@ -45,7 +45,7 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
     See the `network` field in the output.
 
     :::tip
-    In development genesis files, the chain ID is typically `warden`.
+    If you used a `just` script or a devnet snapshot to run your node, the chain ID is `warden_1337-1`.
     :::
 
 ## 2. Register a Keychain
@@ -59,7 +59,7 @@ The following steps show how to register a new Keychain entity on-chain.
       --description 'my-keychain-description' \
       --keychain-fees "{\"key_req\":[{\"amount\":\"100\",\"denom\":\"award\"}],\"sig_req\":[{\"amount\":\"1\",\"denom\":\"award\"}]}" \
       --from my-key-name \
-      --chain-id my-chain-id
+      --chain-id chain_123-1
     ```
 
     Specify the following details:

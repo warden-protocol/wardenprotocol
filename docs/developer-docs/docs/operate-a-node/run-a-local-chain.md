@@ -187,7 +187,7 @@ In this flow, you'll create and configure your chain manually.
 4. Add a genesis (validator) account. Specify your key name and the number of tokens staked:
 
    ```bash
-   wardend genesis add-genesis-account my-key-name 25000000000000000000000award
+   wardend genesis add-genesis-account my-key-name 20000000000000000000000000award
    ```
 
    This will add your address to the `accounts` section of the genesis file.
@@ -195,7 +195,7 @@ In this flow, you'll create and configure your chain manually.
 5. Generate a genesis transaction. Specify your key name, the amount to stake, and the chain ID:
    
    ```bash
-   wardend genesis gentx my-key-name 100000000000000000000award  --chain-id chain_123-1
+   wardend genesis gentx my-key-name 1000000000000000000000award --chain-id chain_123-1
    ```
 
 6. Collect genesis transactions:

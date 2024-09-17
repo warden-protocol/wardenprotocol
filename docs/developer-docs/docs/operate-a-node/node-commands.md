@@ -39,7 +39,7 @@ You can exclude the `--node` flag if you're running a chain on the same machine 
 To get a full list of available `wardend` commands and flags, run `wardend` with the `--help` flag:
 
 ```bash
-wardend --help --node https://rpc.buenavista.wardenprotocol.org:443
+wardend --help
 ```
 
 ## Get details of a command
@@ -49,7 +49,7 @@ To learn more about a command, run `wardend`, followed by the command name and t
 For example, you can execute this to learn more about querying the node with the `query` command:
 
 ```bash
-wardend query --help --node https://rpc.buenavista.wardenprotocol.org:443
+wardend query --help
 ```
 
 In the output, you'll see a list of available subcommands and flags. You can query subcommands the same way.
@@ -63,7 +63,7 @@ This section contains useful examples of `wardend` commands. You'll learn how to
 To get a full list of commands for querying a node, run this:
 
 ```bash
-wardend query --help --node https://rpc.buenavista.wardenprotocol.org:443
+wardend query --help
 ```
 
 For example, the `warden` command allows you to query the [Warden](/learn/warden-protocol-modules/x-warden) module.
@@ -87,7 +87,7 @@ Here are some of the available `wardend query warden` subcommands with examples:
 To get a full list of commands for managing your keys, run this:
 
 ```bash
-wardend keys --help --node https://rpc.buenavista.wardenprotocol.org:443
+wardend keys --help
 ```
 
 Here are some examples of `wardend keys` commands:
@@ -121,7 +121,7 @@ Here are some examples of `wardend keys` commands:
 To get a full list of commands for initiating transactions, run this:
 
 ```bash
-wardend tx --help --node https://rpc.buenavista.wardenprotocol.org:443
+wardend tx --help
 ```
 
 For example, the `warden` command allows you to initiate [Warden](/learn/warden-protocol-modules/x-warden) transactions. Here are some of the available `wardend tx warden` subcommands with examples:

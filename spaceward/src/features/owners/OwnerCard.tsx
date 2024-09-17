@@ -4,7 +4,6 @@ import "@/assets/animate.css";
 import { Edit2Icon, XIcon } from "lucide-react";
 import AddressAvatar from "@/components/AddressAvatar";
 import { useOwnerSettingsState } from "./state";
-import { Icons } from "@/components/ui/icons-assets";
 import { IconsOwner } from "./Icons";
 import { Copy } from "@/components/ui/copy";
 
@@ -81,7 +80,7 @@ export default function OwnerCard({
 						onClick={setFlipped.bind(null, false)}
 					/>
 				</div>
-				<div className="flex justify-center items-center text-wrap overflow-hidden bg-fill-elevated rounded-lg mx-2 px-4 py-2">
+				<div className="flex justify-center items-center text-wrap bg-fill-elevated rounded-lg mx-2 px-4 py-2">
 					<p className="text-center">
 						<span className="inline font-mono break-all text-base leading-[20px]">
 							{owner}

@@ -32,7 +32,7 @@ func (p Precompile) AddKeychainAdminMethod(
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgAddKeychainAdmin, err := newMsgAddKeychainAdmin(args)
+	msgAddKeychainAdmin, newAdmin, err := newMsgAddKeychainAdmin(args, origin)
 
 	if err != nil {
 		return nil, err
@@ -49,37 +49,37 @@ func (p Precompile) AddKeychainAdminMethod(
 		),
 	)
 
-	_, err = msgServer.AddKeychainAdmin(ctx, msgAddKeychainAdmin)
+	msgAddKeychainAdminResponse, err := msgServer.AddKeychainAdmin(ctx, msgAddKeychainAdmin)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// todo: emit event
-	// if err = p.EmitAddKeychainAdminEvent(ctx, stateDB, msgAddKeychainAdmin.KeychainId, msgAddKeychainAdmin.NewAdmin); err != nil {
-	// 	return nil, err
-	// }
+	if err = p.EmitAddKeychainAdminEvent(ctx, stateDB, msgAddKeychainAdmin.KeychainId, *newAdmin, msgAddKeychainAdminResponse.AdminsCount); err != nil {
+		return nil, err
+	}
 
-	return method.Outputs.Pack(true)
+	return method.Outputs.Pack(msgAddKeychainAdminResponse.AdminsCount)
 }
 
-func newMsgAddKeychainAdmin(args []interface{}) (*types.MsgAddKeychainAdminRequest, error) {
-	if len(args) != 3 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.MsgAddKeychainAdminRequest, *common.Address, error) {
+	if len(args) != 2 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
 	}
 
 	bech32StrFromAddress := func(address common.Address) string {
 		return sdk.AccAddress(address.Bytes()).String()
 	}
 
-	authority := bech32StrFromAddress(args[0].(common.Address))
-	newAdmin := bech32StrFromAddress(args[2].(common.Address))
+	newAdminAddress := args[1].(common.Address)
+	authority := bech32StrFromAddress(origin)
+	newAdmin := bech32StrFromAddress(newAdminAddress)
 
 	return &types.MsgAddKeychainAdminRequest{
 		Authority:  authority,
-		KeychainId: args[1].(uint64),
+		KeychainId: args[0].(uint64),
 		NewAdmin:   newAdmin,
-	}, nil
+	}, &newAdminAddress, nil
 }
 
 func (p Precompile) AddKeychainWriterMethod(

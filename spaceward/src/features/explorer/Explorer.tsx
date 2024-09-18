@@ -40,10 +40,10 @@ export function Explorer() {
 				<TableHeader>
 					<TableRow>
 						<TableHead className="w-[200px]">Block</TableHead>
-						<TableHead>Created at</TableHead>
+						<TableHead>Time</TableHead>
 						<TableHead>Proposer</TableHead>
 						<TableHead className="text-right">
-							Transactions count
+							Tx&nbsp;count
 						</TableHead>
 					</TableRow>
 				</TableHeader>

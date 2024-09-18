@@ -1,6 +1,6 @@
 {
   "position": 2,
-  "label": "Deploy a smart contract on Warden",
+  "label": "Deploy smart contracts on Warden",
   "collapsible": true,
   "collapsed": false,
   "link": {

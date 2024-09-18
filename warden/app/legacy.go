@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"maps"
 	"path/filepath"
 
 	"cosmossdk.io/core/appmodule"
@@ -46,9 +47,9 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cast"
 
-	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
+	wardenprecompile "github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
@@ -285,8 +286,15 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
+	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
+	wardenPrecompile, err := wardenprecompile.NewPrecompile(app.WardenKeeper)
+	if err != nil {
+		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
+	}
+
+	precompiles[wardenPrecompile.Address()] = wardenPrecompile
 	app.EvmKeeper.WithPrecompiles(
-		vm.PrecompiledContractsBerlin,
+		precompiles,
 	)
 
 	// integration point for custom authentication modules

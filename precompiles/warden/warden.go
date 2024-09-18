@@ -2,7 +2,6 @@ package warden
 
 import (
 	"embed"
-	"math"
 
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -67,7 +66,7 @@ func (p Precompile) RequiredGas(input []byte) uint64 {
 	method, err := p.MethodById(methodID)
 	if err != nil {
 		// This should never happen since this method is going to fail during Run
-		return math.MaxUint64
+		return 0
 	}
 
 	return p.Precompile.RequiredGas(input, p.IsTransaction(method.Name))

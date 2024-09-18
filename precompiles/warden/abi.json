@@ -10,15 +10,15 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
+				"internalType": "uint64",
 				"name": "id",
-				"type": "uint256"
+				"type": "uint64"
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
+				"internalType": "uint64",
 				"name": "adminsCount",
-				"type": "uint256"
+				"type": "uint64"
 			}
 		],
 		"name": "AddKeychainAdmin",
@@ -27,9 +27,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "uint64",
 				"name": "keychainId",
-				"type": "uint256"
+				"type": "uint64"
 			},
 			{
 				"internalType": "address",
@@ -40,9 +40,9 @@
 		"name": "addKeychainAdmin",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "uint64",
 				"name": "adminsCount",
-				"type": "uint256"
+				"type": "uint64"
 			}
 		],
 		"stateMutability": "nonpayable",

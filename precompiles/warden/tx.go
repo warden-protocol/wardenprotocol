@@ -74,10 +74,11 @@ func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.M
 	newAdminAddress := args[1].(common.Address)
 	authority := bech32StrFromAddress(origin)
 	newAdmin := bech32StrFromAddress(newAdminAddress)
+	keychainId := args[0].(uint64)
 
 	return &types.MsgAddKeychainAdminRequest{
 		Authority:  authority,
-		KeychainId: args[0].(uint64),
+		KeychainId: keychainId,
 		NewAdmin:   newAdmin,
 	}, &newAdminAddress, nil
 }

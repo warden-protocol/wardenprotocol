@@ -14,18 +14,18 @@ IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
  * @custom:address 0x0000000000000000000000000000000000000900
  */
 interface IWarden {
-    /// @dev Defines a method for addin a new admin to keychain.
+    /// @dev Defines a method for adding a new admin to keychain.
     /// @param keychainId The keychain id
     /// @param newAdmin The new admin's address
     /// @return adminsCount The new count of admins
     function addKeychainAdmin(
-        uint256 keychainId,
+        uint64 keychainId,
         address newAdmin
-    ) external returns (uint256 adminsCount);
+    ) external returns (uint64 adminsCount);
 
     /// @dev AddKeychainAdmin defines an Event emitted when add a new admin to keychain.
     /// @param NewAdmin The address of the admin
     /// @param id The keychain id
     /// @param adminsCount The new count of admins
-    event AddKeychainAdmin(address indexed NewAdmin, uint256 id, uint256 adminsCount);
+    event AddKeychainAdmin(address indexed NewAdmin, uint64 id, uint64 adminsCount);
 }

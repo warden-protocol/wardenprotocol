@@ -190,17 +190,17 @@ export function AssetsPage() {
 			{/* <div className="grid grid-cols-[320px_1fr] gap-[24px]"> */}
 			<div className="">
 				<div className="before:content-[' '] before:bg-contain before:bg-right-bottom before:bg-no-repeat before:bg-[url('/images/asset-decor-light.png')] before:h-full before:w-[367px] before:z-[-5] before:absolute before:right-0 before:bottom-0 bg-fill-accent-secondary relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl min-h-[220px]">
-					<div className="flex items-baseline gap-[6px]">
+					<div className="flex items-baseline gap-[6px] select-none">
 						<div className="text-2xl font-bold">
 							{formatter.format(
 								bigintToFloat(
 									fiatConversion
 										? (totalBalance *
-												BigInt(10) **
-													BigInt(
-														fiatConversion.decimals,
-													)) /
-												fiatConversion.value
+											BigInt(10) **
+											BigInt(
+												fiatConversion.decimals,
+											)) /
+										fiatConversion.value
 										: BigInt(0),
 									2,
 								),
@@ -212,13 +212,13 @@ export function AssetsPage() {
 								value={currency}
 								onValueChange={setCurrency}
 							>
-								<SelectTrigger className="flex gap-[4px] w-fit bg-[transparent] border-0 outline-none focus:!otline-none shadow-none focus:!shadow-none p-0 !shadow-transparent text-sm text-muted-foreground h-auto">
+								<SelectTrigger className="flex gap-[4px] w-fit bg-[transparent] border-0 outline-none focus:!otline-none shadow-none focus:!shadow-none p-0 !shadow-transparent text-sm text-muted-foreground h-auto select-none">
 									<SelectValue
 										placeholder="Currency"
 										className=""
 									/>
 								</SelectTrigger>
-								<SelectContent>
+								<SelectContent className="select-none" >
 									<SelectGroup>
 										<SelectItem value="usd">USD</SelectItem>
 										<SelectItem value="eur">EUR</SelectItem>
@@ -484,8 +484,8 @@ export function AssetsPage() {
 
 															{state.networkFilter ===
 																chainName && (
-																<Icons.check className="ml-auto" />
-															)}
+																	<Icons.check className="ml-auto" />
+																)}
 														</div>
 													);
 												})}
@@ -520,7 +520,7 @@ export function AssetsPage() {
 											key={p}
 										>
 											{i > 0 &&
-											p - 1 !== pagination[i - 1] ? (
+												p - 1 !== pagination[i - 1] ? (
 												<span className="px-1">
 													...
 												</span>

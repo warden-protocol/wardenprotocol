@@ -79,6 +79,7 @@ export default function GovernanceDashboard() {
 			</Link>
 
 			<StakingCard
+				isLoading={queryTotalRewards.isLoading}
 				total={queryTotalRewards.data?.total}
 				stakedWard={stakedWard}
 			/>

@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
-	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	cmn "github.com/evmos/evmos/v20/precompiles/common"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}

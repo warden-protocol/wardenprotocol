@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Build a CosmWasm contract
+# Deploy a CosmWasm contract
 
 ## Overview
 
@@ -44,7 +44,7 @@ Before you start, complete the following prerequisites:
   wardend keys list
   ```
   :::tip
-  In development genesis files, you'll typically find an account named shulgin that is preconfigured and ready for use.
+  If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
   :::
 
 ## 1. Create a CosmWasm project

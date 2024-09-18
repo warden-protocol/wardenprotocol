@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
 
 interface CardProps {
+	isLoading?: boolean;
 	stakedWard?: bigint;
 	total?: DecCoin[];
 }
@@ -41,9 +42,9 @@ export default function StakingCard(props: CardProps) {
 							decimals: 18,
 							format: true,
 						})
-					) : (
+					) : props.isLoading ? (
 						<LoaderCircle className="animate-spin" />
-					)}
+					) : null}
 				</div>
 				<div className="text-label-accent">
 					{props.total ? (

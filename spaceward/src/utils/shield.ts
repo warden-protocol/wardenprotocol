@@ -219,12 +219,14 @@ export const validateAddressNumber = (expression?: Expression) => {
 					} = raw;
 
 					if (!arr.arrayLiteral) {
-						error = "Validation failed: expected array literal in 'all' clause";
+						error =
+							"Validation failed: expected array literal in 'all' clause";
 						break;
 					}
 
 					if ((arr.arrayLiteral?.elements.length ?? 0) < 1) {
-						error = "Validation failed: expected at least 1 element in 'all' clause";
+						error =
+							"Validation failed: expected at least 1 element in 'all' clause";
 						break;
 					}
 
@@ -236,7 +238,8 @@ export const validateAddressNumber = (expression?: Expression) => {
 					} = raw;
 
 					if (!thresholdExpr.integerLiteral) {
-						error = "Validation failed: expected integer literal in 'any' clause";
+						error =
+							"Validation failed: expected integer literal in 'any' clause";
 						break;
 					}
 
@@ -245,12 +248,14 @@ export const validateAddressNumber = (expression?: Expression) => {
 					);
 
 					if (threshold < 1) {
-						error = "Validation failed: expected threshold to be greater than 0 in `any` clause";
+						error =
+							"Validation failed: expected threshold to be greater than 0 in `any` clause";
 						break;
 					}
 
 					if (!arr.arrayLiteral) {
-						error = "Validation failed: expected array literal in 'any' clause";
+						error =
+							"Validation failed: expected array literal in 'any' clause";
 						break;
 					}
 
@@ -564,5 +569,6 @@ export const createHumanReadableCondition = (expr: Expression) => {
 
 	return {
 		code: shieldStringify(expr, opts),
+		references,
 	};
 };

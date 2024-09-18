@@ -28,8 +28,8 @@ The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden mod
 
 ## Section overview
 
-- [Build a custom smart contract](/category/build-a-custom-smart-contract)  
-Get started with OApps: build a basic smart CosmWasm or EVM smart contract.
+- [Deploy a smart contract on Warden](/category/deploy-a-smart-contract-on-warden)  
+Get started with OApps: deploy a basic [CosmWasm](deploy-a-smart-contract-on-warden/deploy-a-cosmwasm-contract) or [EVM](deploy-a-smart-contract-on-warden/deploy-an-evm-contract) smart contract on Warden.
 
 - [Build with WardenJS](build-with-wardenjs)  
 Here you'll find information on WardenJS – a tool used for building the frontend part of your application. Stay tuned in for more frontend guides.

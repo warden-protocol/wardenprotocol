@@ -93,11 +93,7 @@ export default function CreateKeyModal({
 			return;
 		}
 
-		const settings = {
-			name,
-			themeIndex,
-		};
-
+		const settings = { name, themeIndex };
 		setKeySettings({ settings: { ...ks.settings, [TEMP_KEY]: settings } });
 		setPending(true);
 

@@ -71,7 +71,7 @@ Before starting the app, you need to configure it. You'll find a basic configura
 
 Make the following adjustments in the code:
 
-- Replace `my-chain-id` with the chain ID you used when [running a node](operate-a-keychain/create-a-keychain#1-run-a-node).
+- Replace `chain_123-1` with the chain ID you used when [running a node](operate-a-keychain/create-a-keychain#1-run-a-node).
 - Replace `my-keychain-id` with your Keychain ID obtained when [registering a Keychain](operate-a-keychain/create-a-keychain#2-register-a-keychain).
 - Replace `my-mnemonic-phrase` with the mnemonic phrase obtained when [adding a Keychain Writer](operate-a-keychain/create-a-keychain#3-add-a-keychain-writer).
 
@@ -96,7 +96,7 @@ func main() {
         Logger: logger, // not required, but recommended
 
         // setup the connection to the Warden Protocol node
-        ChainID:      "my-chain-id",
+        ChainID:      "chain_123-1",
         GRPCURL:      "localhost:9090",
         GRPCInsecure: true,
 

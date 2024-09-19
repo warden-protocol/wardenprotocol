@@ -77,7 +77,7 @@ The main use cases include the following:
   ```bash
   clichain sign --key mykey.pem --message message.txt --output base64
   ```
-  - Signs the content of `message.txt` using the private key in `mykey.pem`.
+  - Signs the contents of `message.txt` using the private key in `mykey.pem`.
   - Outputs the signature in the base64 format.
   - If no message file is specified, the message is read from `stdin`.
 

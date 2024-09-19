@@ -20,13 +20,16 @@ To learn more, see the following:
 
 ## x/gmp
 
-The `x/gmp` module is a Cosmos SDK module that enables **Axelar** General Message Passing: sending and receiving messages on EVM and Cosmos chains.
+The `x/gmp` module is a Cosmos SDK module that enables **Axelar GMP** (General Message Passing): sending and receiving messages on EVM and Cosmos chains.
+
+GMP allows smart contracts on one chain to send messages and data to smart contracts on another chain. This technology can be used for various purposes: token transfers, data sharing, or triggering actions across chains.
 
 To learn more, see the following:
 
 - [Cosmos GMP documentation](https://docs.axelar.dev/dev/cosmos-gmp)
 - [Axelar GMP SDK on GitHub](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity)
 - [Warden docs: Bridging](/learn/bridging)
+- [Warden docs: Deploy a cross-chain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
 
 ## x/oracle
 

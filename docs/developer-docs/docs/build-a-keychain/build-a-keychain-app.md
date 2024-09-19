@@ -27,7 +27,7 @@ Before starting, you should also take the steps from this guide: [Create a Keych
 
     This will create a new Go module called `my-keychain`.
 
-2. Create a new Go file called `main.go` with the following content:
+2. Create a new Go file called `main.go` with the following contents:
 
     ```go
     // main.go

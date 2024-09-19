@@ -68,7 +68,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
    {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
    ```
    
-2. Create a file named `validator.json` with the following content:
+2. Create a file named `validator.json` with the following contents:
 
    ```json
    {    

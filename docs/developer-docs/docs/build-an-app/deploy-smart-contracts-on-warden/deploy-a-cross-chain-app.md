@@ -10,7 +10,7 @@ This guide explains how to build a logic for a **cross-chain app**.
 
 You'll deploy two contracts:
 
-- An EVM contract on **Etherium Sepolia**
+- An EVM contract on **Ethereum Sepolia**
 - A WASM contract on **Warden** (**Buenavista testnet**)
 
 After you execute the WASM contract on Warden, it'll be able to burn tokens from the EVM contract on Sepolia. For cross-chain interaction, the contracts will use the [x/gmp module](/learn/warden-protocol-modules/external-modules#xgmp), which enables **Axelar GMP** (General Message Passing).
@@ -26,7 +26,7 @@ In this section, you'll deploy an EVM contract on Ethereum Sepolia.
 Here are the key features of this contract:
 
 - It'll function both as an ERC20 token and a cross-chain executable contract.
-- It'll be able receive burn instructions from other chains through the Axelar network.
+- It'll be able to receive burn instructions from other chains through the Axelar network.
 - The initial token supply will be minted to the contract itself, not to any external address.
 - Burning can only be done from the balance of the contract, not from user balances.
 
@@ -616,31 +616,32 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 
 1. Download Warden [v.0.4.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.1) and navigate to the root directory:
 
-   ```
+   ```bash
    git clone --depth 1 --branch v0.4.1 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
 2. Build the `wardend` binary and install it in your `$GOPATH`:
-   ```
+
+   ```bash
    just build
    just install
    ``` 
 3. Verify the installation:
 
-   ```
+   ```bash
    wardend version
    ```
 
    You should see the following output:
    
-   ```
+   ```bash
    v0.4.1
    ```
 
 4. Create a key, specifying a custom key (account) name::
 
-   ```
+   ```bash
    wardend keys add my-key-name
    ```
 
@@ -652,9 +653,9 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 
 5. Get some [WARD](/tokens/ward-token/ward) in the [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org): paste the address returned in the previous step.
 
-   You can verify that your account is funded by running the command below. Specify the custom key name your chose before.
+   You can verify that your account is funded by running the command below. Specify the custom key name you chose before.
 
-   ```
+   ```bash
    wardend query bank balances my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 

@@ -282,17 +282,17 @@ const AssetSelector = ({
 														bigintToFloat(
 															fiatConversion
 																? (item.balance *
-																		item.price *
-																		BigInt(
-																			10,
-																		) **
-																			BigInt(
-																				fiatConversion.decimals,
-																			)) /
-																		fiatConversion.value
+																	item.price *
+																	BigInt(
+																		10,
+																	) **
+																	BigInt(
+																		fiatConversion.decimals,
+																	)) /
+																fiatConversion.value
 																: BigInt(0),
 															item.decimals +
-																item.priceDecimals,
+															item.priceDecimals,
 														),
 													)}
 												</div>
@@ -303,10 +303,12 @@ const AssetSelector = ({
 													network={item.chainName}
 													className="invert dark:invert-0"
 												/>
-												{item.chainName
-													.charAt(0)
-													.toUpperCase() +
-													item.chainName.slice(1)}
+												<span className="max-w-14 text-ellipsis overflow-hidden">
+													{item.chainName
+														.charAt(0)
+														.toUpperCase() +
+														item.chainName.slice(1)}
+												</span>
 											</div>
 										</div>
 									);

@@ -1,17 +1,19 @@
-import { cosmos, warden } from "@wardenprotocol/wardenjs";
-import { env } from "@/env";
-import type { getClient } from "@/hooks/useClient";
-import type { QueuedAction } from "./hooks";
-import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import { hexlify, Transaction } from "ethers";
-import { KeyringSnapRpcClient } from "@metamask/keyring-api";
-import { getProvider, isSupportedNetwork } from "@/lib/eth";
-import { COSMOS_CHAINS } from "@/config/tokens";
-import { isUint8Array } from "@/lib/utils";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
-import { prepareTx } from "../modals/util";
 import { WalletManager } from "@cosmos-kit/core";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
+import { KeyringSnapRpcClient } from "@metamask/keyring-api";
+import type { QueryClient } from "@tanstack/react-query";
+import { IWeb3Wallet } from "@walletconnect/web3wallet";
+import { cosmos, warden } from "@wardenprotocol/wardenjs";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
+import { env } from "@/env";
+import { COSMOS_CHAINS } from "@/config/tokens";
+import type { getClient } from "@/hooks/useClient";
+import { getBalanceQueryKey } from "@/features/assets/queries";
+import { getProvider, isSupportedNetwork } from "@/lib/eth";
+import { isUint8Array } from "@/lib/utils";
+import type { QueuedAction } from "./hooks";
+import { prepareTx } from "../modals/util";
 
 export type GetStatus = (
 	client: Awaited<ReturnType<typeof getClient>>,
@@ -203,9 +205,11 @@ export const handleEthRaw = async ({
 export const handleEth = async ({
 	action,
 	w,
+	queryClient,
 }: {
 	action: QueuedAction;
 	w: IWeb3Wallet | null;
+	queryClient: QueryClient;
 }) => {
 	const {
 		chainName,
@@ -272,8 +276,16 @@ export const handleEth = async ({
 	return (
 		provider
 			.waitForTransaction(res.hash)
-			// fixme
-			.then(() => true)
+			.then(() => {
+				queryClient.invalidateQueries({
+					queryKey: getBalanceQueryKey("eip155", chainName, "").slice(
+						0,
+						-1,
+					),
+				});
+
+				return true;
+			})
 	);
 };
 
@@ -281,10 +293,12 @@ export const handleCosmos = async ({
 	action,
 	w,
 	walletManager,
+	queryClient,
 }: {
 	action: QueuedAction;
 	w: IWeb3Wallet | null;
 	walletManager: WalletManager;
+	queryClient: QueryClient;
 }) => {
 	const {
 		chainName,
@@ -343,7 +357,19 @@ export const handleCosmos = async ({
 				},
 			})
 			// fixme
-			.then(() => true);
+			.then(() => {
+				// todo
+				// possibly add a timeout, as walletconnect with cosmos does not wait for tx result
+
+				queryClient.invalidateQueries({
+					queryKey: getBalanceQueryKey("cosmos", chainName, "").slice(
+						0,
+						-1,
+					),
+				});
+
+				return true;
+			});
 	}
 
 	const { signedTxBodyBytes, signedAuthInfoBytes } = prepareTx(

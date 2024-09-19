@@ -231,7 +231,7 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 					Admin: authtypes.NewModuleAddress(govtypes.ModuleName).String(), // governance. allows gov to add or remove market authorities.
 					// market authority addresses may add and update markets to the x/marketmap module.
 					MarketAuthorities: []string{
-						"warden1ua63s43u2p4v38pxhcxmps0tj2gudyw2rctzk3",          // skip multisig
+						"warden1f8z70rnst5n6n29awlc9fzqq4hmtpn746tt40w",          // skip market map updater account.
 						authtypes.NewModuleAddress(govtypes.ModuleName).String(), // governance
 					}},
 			)

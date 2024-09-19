@@ -132,6 +132,15 @@ export const getActionHandler = ({
 			};
 			break;
 		}
+		case warden.warden.v1beta3.MsgUpdateSpaceResponse.typeUrl: {
+			getStatus = async () => ({
+				pending: false,
+				error: false,
+				done: true,
+			});
+
+			break;
+		}
 		default:
 			throw new Error(`action type not implemented: ${typeUrl}`);
 	}
@@ -273,20 +282,13 @@ export const handleEth = async ({
 			.then(() => true);
 	}
 
-	return (
-		provider
-			.waitForTransaction(res.hash)
-			.then(() => {
-				queryClient.invalidateQueries({
-					queryKey: getBalanceQueryKey("eip155", chainName, "").slice(
-						0,
-						-1,
-					),
-				});
+	return provider.waitForTransaction(res.hash).then(() => {
+		queryClient.invalidateQueries({
+			queryKey: getBalanceQueryKey("eip155", chainName, "").slice(0, -1),
+		});
 
-				return true;
-			})
-	);
+		return true;
+	});
 };
 
 export const handleCosmos = async ({

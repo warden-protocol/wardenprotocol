@@ -21,7 +21,7 @@ wardend keys add my-key-name
 Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following: 
 
 ```bash
-wardend keys add my-key-name --recover.
+wardend keys add my-key-name --recover
 ```
 
 Then get your public address:

@@ -20,6 +20,7 @@ import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
 import { getActionHandler, GetStatus, handleCosmos, handleEth, handleEthRaw } from "./util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -43,6 +44,7 @@ const waitForVisibility = () => {
 };
 
 function ActionItem({ single, ...item }: ItemProps) {
+	const queryClient = useQueryClient();
 	const { walletManager } = useContext(walletContext);
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
@@ -307,9 +309,9 @@ function ActionItem({ single, ...item }: ItemProps) {
 						if (item.networkType === "eth-raw") {
 							res = await handleEthRaw({ action: item, w });
 						} else if (item.networkType === "eth") {
-							res = await handleEth({ action: item, w });
+							res = await handleEth({ action: item, w, queryClient });
 						} else if (item.networkType === "cosmos") {
-							res = await handleCosmos({ action: item, w, walletManager });
+							res = await handleCosmos({ action: item, w, walletManager, queryClient });
 						}
 					} catch (e) {
 						console.error("broadcast failed", e);
@@ -484,7 +486,7 @@ export default function StatusSidebar() {
 							sideOffset={20}
 							className="p-0"
 						>
-							<div className="bg-fill-quaternary">
+							<div className="bg-fill-quaternary max-h-80 overflow-auto">
 								{filtered.map((id) => {
 									const action = data?.[id];
 

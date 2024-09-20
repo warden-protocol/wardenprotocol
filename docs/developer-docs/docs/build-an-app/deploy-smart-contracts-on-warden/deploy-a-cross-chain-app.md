@@ -655,7 +655,8 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    You can verify that your account is funded by running the command below. Specify the custom key name you chose before.
 
    ```bash
-   wardend query bank balances my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-key-name \
+     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 ### 2.5. Deploy on Buenavista
@@ -677,7 +678,8 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 2. Get the code ID that identifies your WASM contract:
    
    ```bash
-   wardend query wasm list-code --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query wasm list-code \
+     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
    Note down `code_id` from the output.

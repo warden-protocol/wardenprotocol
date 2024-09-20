@@ -30,6 +30,8 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const [showTooltip, setShowTooltip] = React.useState(false);
 		const onCopy = React.useCallback(() => {
 			setCopied(true);
+			setShowTooltip(true);
+
 			setTimeout(() => {
 				setCopied(false);
 				setShowTooltip(false);

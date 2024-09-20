@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { Copy } from "@/components/ui/copy";
 import { TransferParams } from "./types";
@@ -102,6 +102,7 @@ export const fixAddress = (
 };
 
 export default function ReceiveAssetsModal(props: TransferParams) {
+	const copyRef = useRef<HTMLButtonElement>(null);
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const { queryBalances } = useAssetQueries(spaceId);
@@ -200,14 +201,14 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 								address
 							</div>
 							<div>
-								<Copy value={address?.address} />
+								<Copy ref={copyRef} value={address?.address} />
 							</div>
 
-							<CopyToClipboard text={address?.address ?? ""}>
-								<button className="bg-pixel-pink cursor-pointer rounded px-5 h-10 flex items-center justify-center font-semibold text-black duration-300 hover:bg-fill-accent-hover mt-4">
-									Copy Address
-								</button>
-							</CopyToClipboard>
+							<button className="bg-pixel-pink cursor-pointer rounded px-5 h-10 flex items-center justify-center font-semibold text-black duration-300 hover:bg-fill-accent-hover mt-4" onClick={() => {
+								copyRef.current?.click();
+							}}>
+								Copy Address
+							</button>
 						</div>
 					</div>
 				)}

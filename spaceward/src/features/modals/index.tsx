@@ -25,7 +25,7 @@ function hasEntry<T extends {}, K extends string>(key: K, obj?: T): obj is T & {
 
 export default function ModalRoot() {
 	const { data, setData } = useModalState();
-	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const isLargeScreen = useMediaQuery("(min-width: 1280px) and (min-height: 800px)");
 
 	// fixme
 	async function _cancel() {
@@ -65,20 +65,20 @@ export default function ModalRoot() {
 			)}
 		>
 			<div className="bg-overlay fixed left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
-			{!isDesktop ? (
+			{!isLargeScreen ? (
 				<button
 					onClick={_cancel}
-					className="absolute top-8 invert dark:invert-0 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+					className="absolute top-8 invert dark:invert-0 right-8 opacity-[0.5] hover:opacity-[100%] transition-all z-10"
 				>
 					<img src="/images/button-close.svg" alt="" />
 				</button>
 			) : null}
 
 			<div className="flex flex-col relative">
-				{isDesktop ? (
+				{isLargeScreen ? (
 					<button
 						onClick={_cancel}
-						className="absolute -top-16 invert dark:invert-0 -right-16 opacity-[0.5] hover:opacity-[100%] transition-all"
+						className="absolute -top-12 invert dark:invert-0 -right-16 opacity-[0.5] hover:opacity-[100%] transition-all"
 					>
 						<img src="/images/button-close.svg" alt="" />
 					</button>

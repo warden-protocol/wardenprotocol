@@ -13,7 +13,7 @@ import useMetaMaskContext from "./useMetaMaskContext";
  */
 export const useMetaMaskRequestSnap = (
 	snapId = env.snapOrigin,
-	version?: string,
+	version = env.snapVersion,
 ) => {
 	const request = useMetaMaskRequest();
 	const { setInstalledSnap } = useMetaMaskContext();

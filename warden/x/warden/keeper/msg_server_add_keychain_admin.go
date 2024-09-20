@@ -28,16 +28,13 @@ func (k msgServer) AddKeychainAdmin(goCtx context.Context, msg *types.MsgAddKeyc
 		return nil, err
 	}
 
-	adminsCount := uint64(len(kr.Admins))
 	if err := ctx.EventManager().EmitTypedEvent(&types.EventAddKeychainAdmin{
 		Id:          kr.Id,
 		NewAdmin:    msg.NewAdmin,
-		AdminsCount: adminsCount,
+		AdminsCount: uint64(len(kr.Admins)),
 	}); err != nil {
 		return nil, err
 	}
 
-	return &types.MsgAddKeychainAdminResponse{
-		AdminsCount: adminsCount,
-	}, nil
+	return &types.MsgAddKeychainAdminResponse{}, nil
 }

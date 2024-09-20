@@ -2,20 +2,20 @@
 sidebar_position: 3
 ---
 
-# Deploy a cross-chain app
+# Deploy a cross-chain application using GMP
 
 ## Overview
 
-This guide explains how to build a logic for a **cross-chain app**.
+This guide explains how to build the logic for a **cross-chain app** using **Axelar GMP** (General Message Passing).
 
 You'll deploy two contracts:
 
 - An EVM contract on **Ethereum Sepolia**
 - A WASM contract on **Warden** (**Buenavista testnet**)
 
-After you execute the WASM contract on Warden, it'll be able to burn tokens from the EVM contract on Sepolia. For cross-chain interaction, the contracts will use the [x/gmp module](/learn/warden-protocol-modules/external-modules#xgmp), which enables **Axelar GMP** (General Message Passing).
+After you execute the WASM contract on Warden, it'll be able to burn tokens from the EVM contract on Sepolia. For cross-chain interaction, the contracts will use the [x/gmp module](/learn/warden-protocol-modules/external-modules#xgmp), which enables Axelar GMP.
 
-This guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
+Note that this guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
 
 ## 1. Deploy an EVM contract on Sepolia
 
@@ -204,7 +204,7 @@ truffle compile
 
 ### 1.6. Deploy the contract
 
-1. To deploy the contract, make sure your wallet has enough Sepolia ETH, Then run the migration script:
+1. To deploy the contract, make sure your wallet has enough Sepolia ETH. Then run the migration script:
 
    ```bash
    truffle migrate --network sepolia
@@ -401,7 +401,6 @@ In the following steps, you'll add files with supporting code for your contract 
    
    ```rust
    use cosmwasm_schema::cw_serde;
-   // use cosmwasm_std::Binary;
    use cosmwasm_std::Uint256;
    
    #[cw_serde]
@@ -664,10 +663,10 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 1. Now you can store your contract on Buenavista by running the following command. Replace `my-key-name` with your key name from the previous step.
    
    ```bash
-   wardend tx wasm store target/wasm32-unknown-unknown/release/burn_tokens.wasm /
-     --from my-key-name /
-     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward  -y /
-     --chain-id buenavista-1 /
+   wardend tx wasm store target/wasm32-unknown-unknown/release/burn_tokens.wasm \
+     --from my-key-name \
+     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward  -y \
+     --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
@@ -688,19 +687,19 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    Before you proceed, replace `1` with the actual code ID and `my-key-name` with your key name. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
    ```bash
-   wardend tx wasm instantiate 1 '{}' /
-     --from my-key-name --label "Burn Tokens" /
-     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward /
-     --no-admin -y /
-     --chain-id buenavista-1 /
+   wardend tx wasm instantiate 1 '{}' \
+     --from my-key-name --label "Burn Tokens" \
+     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward \
+     --no-admin -y \
+     --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 4. To get the contract address, run the following command. Replace `1` with the actual `code_id`.
    
    ```bash
-   wardend query wasm list-contract-by-code 1 /
-    --chain-id buenavista-1 /
+   wardend query wasm list-contract-by-code 1 \
+    --chain-id buenavista-1 \
     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
@@ -709,12 +708,12 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    Before you proceed, replace `my-contract-address` with your contract address and `my-key-name` with your key name. The `--amount` flag specifies the gas fee in the Axelar network – make sure you have enough AXL.
    
    ```bash
-   wardend tx wasm execute my-contract-address /
-    '{"send_message_evm": {"amount_to_burn": "1000000"}}' /
-    --from my-key-name /
-    --amount 3000000ibc/0E1517E2771CA7C03F2ED3F9BAECCAEADF0BFD79B89679E834933BC0F179AD98
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward -y /
-    --chain-id buenavista-1 /
+   wardend tx wasm execute my-contract-address \
+    '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
+    --from my-key-name \
+    --amount 3000000ibc/0E1517E2771CA7C03F2ED3F9BAECCAEADF0BFD79B89679E834933BC0F179AD98 \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward -y \
+    --chain-id buenavista-1 \
     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 

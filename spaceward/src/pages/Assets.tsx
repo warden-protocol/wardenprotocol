@@ -36,6 +36,7 @@ interface AssetPageState {
 }
 
 export function AssetsPage() {
+
 	const [state, dispatch] = useReducer(commonReducer<AssetPageState>, {
 		keyFilter: "",
 		networkFilter: "",
@@ -49,6 +50,8 @@ export function AssetsPage() {
 	const formatter = FIAT_FORMAT[currency];
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
+	// fixme we have a situation where balances did not fetch on this page but were ok in receive modal
+	// possible caused error did cancel query update?
 	const { queryKeys, queryBalances, queryPrices } = useAssetQueries(spaceId);
 
 	const _results = queryBalances

@@ -25,6 +25,87 @@
 		"type": "event"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "NewWriter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "adminsCount",
+				"type": "uint64"
+			}
+		],
+		"name": "AddKeychainWriter",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "int32",
+				"name": "key_type",
+				"type": "int32"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "space_id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "keychain_id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "approve_template_id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "reject_template_id",
+				"type": "uint64"
+			}
+		],
+		"name": "NewKey",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "RejectKeyRequest",
+		"type": "event"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint64",
@@ -40,9 +121,81 @@
 		"name": "addKeychainAdmin",
 		"outputs": [
 			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint64",
-				"name": "adminsCount",
+				"name": "keychainId",
 				"type": "uint64"
+			},
+			{
+				"internalType": "address",
+				"name": "newWriter",
+				"type": "address"
+			}
+		],
+		"name": "addKeychainWriter",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "requestId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "bytes",
+				"name": "pubKey",
+				"type": "bytes"
+			}
+		],
+		"name": "fulfilKeyRequest",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "requestId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "rejectReason",
+				"type": "string"
+			}
+		],
+		"name": "rejectKeyRequest",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "nonpayable",

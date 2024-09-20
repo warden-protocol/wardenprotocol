@@ -95,6 +95,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		bz, err = p.AddKeychainWriterMethod(ctx, evm.Origin, stateDB, method, args)
 	case FulfilKeyRequestMethod:
 		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+	case RejectKeyRequestMethod:
+		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
 	case FulfilSignRequestMethod:
 		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, stateDB, method, args)
 	case NewKeychainMethod:

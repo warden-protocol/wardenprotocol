@@ -486,7 +486,7 @@ export default function StatusSidebar() {
 							sideOffset={20}
 							className="p-0"
 						>
-							<div className="bg-fill-quaternary">
+							<div className="bg-fill-quaternary max-h-80 overflow-auto">
 								{filtered.map((id) => {
 									const action = data?.[id];
 

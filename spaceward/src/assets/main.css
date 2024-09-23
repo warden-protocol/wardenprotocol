@@ -6,7 +6,7 @@
 
 @layer base {
 	:root {
-		--background: #f5f6e9;
+		--background: #F3F3EF;
 		--foreground: 0 0% 3.9%;
 
 		--card: 0 0% 100%;
@@ -194,13 +194,12 @@
 .actions-trigger {
 	--grid-id: minmax(125px, 0.25fr);
 	--grid-type: minmax(150px, 3fr);
-	--grid-info: minmax(150px, 3fr);
 	--grid-date: minmax(200px, 3fr);
 	--grid-status: minmax(120px, 1fr);
 	grid-template-columns:
-		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date)
+		var(--grid-id) var(--grid-type) var(--grid-date)
 		var(--grid-status);
-	grid-template-areas: "id type info date status";
+	grid-template-areas: "id type date status";
 	width: 100%;
 	display: grid;
 	align-items: center;

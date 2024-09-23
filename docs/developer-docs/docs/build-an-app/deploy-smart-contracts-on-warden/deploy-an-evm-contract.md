@@ -54,7 +54,7 @@ Before you start, complete the following prerequisites:
 
 ## 2. Create a smart contract
 
-In the `/warden-smart-contract/contracts` directory, create a new file `HelloWarden.sol` with the following content:
+In the `/warden-smart-contract/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -118,7 +118,7 @@ contract HelloWarden {
 
 ## 4. Create a migration script
 
-In `/warden-smart-contract/migrations`, create a new file `2_deploy_hello_warden.js` with the following content:
+In `/warden-smart-contract/migrations`, create a new file `2_deploy_hello_warden.js` with the following s:
 
 ```javascript
 const HelloWarden = artifacts.require("HelloWarden");

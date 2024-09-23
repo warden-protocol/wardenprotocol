@@ -38,7 +38,7 @@ export function InstallMetaMaskSnapButton({ isReady, isReconnect }: InstallMetam
 				src="/logos/metamask.svg"
 				className="object-fill w-6 h-6 aspect-square"
 			/>
-			{isReconnect ? "Reinstall snap" : "Install snap"}
+			{isReconnect ? "Update snap" : "Install snap"}
 		</Button>
 	);
 }

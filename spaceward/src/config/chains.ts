@@ -348,3 +348,119 @@ export const wardenprotocolbuenavistaAssets: AssetList = {
 		},
 	],
 };
+
+export const wardenprotocolchiado: Chain = {
+	chain_name: "chiado",
+	status: "live",
+	network_type: "testnet",
+	pretty_name: "Warden Protocol Chiado",
+	chain_id: "chiado_10010-1",
+	bech32_prefix: "warden",
+	daemon_name: "wardend",
+	node_home: "$HOME/.warden",
+	key_algos: ["ethsecp256k1"],
+	slip44: 60,
+	fees: {
+		fee_tokens: [
+			{
+				denom: "award",
+				fixed_min_gas_price: 0.005,
+				low_gas_price: 0.01,
+				average_gas_price: 0.025,
+				high_gas_price: 0.03,
+			},
+		],
+	},
+	staking: {
+		staking_tokens: [
+			{
+				denom: "award",
+			},
+		],
+	},
+	codebase: {
+		git_repo: "https://github.com/warden-protocol/wardenprotocol",
+		recommended_version: "v0.1.0",
+		compatible_versions: ["v0.1.0"],
+		cosmos_sdk_version: "0.50",
+		consensus: {
+			type: "cometbft",
+			version: "0.38",
+		},
+		cosmwasm_enabled: false,
+		genesis: {
+			genesis_url:
+				"https://raw.githubusercontent.com/warden-protocol/networks/main/testnet-alfama/genesis.json",
+		},
+		versions: [
+			{
+				name: "v0.1.0",
+				recommended_version: "v0.1.0",
+				compatible_versions: ["v0.1.0"],
+				cosmos_sdk_version: "0.50",
+				consensus: {
+					type: "cometbft",
+					version: "0.38",
+				},
+				cosmwasm_enabled: false,
+			},
+		],
+	},
+	apis: {
+		rpc: [
+			{
+				address: env.rpcURL,
+				provider: "Warden Protocol",
+			},
+		],
+		rest: [
+			{
+				address: env.apiURL,
+				provider: "Warden Protocol",
+			},
+		],
+		grpc: [],
+	},
+	logo_URIs: {
+		png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/wardenprotocol/images/ward.png",
+	},
+	keywords: ["local"],
+	images: [
+		{
+			png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/wardenprotocol/images/ward.png",
+		},
+	],
+};
+
+export const wardenprotocolchiadoAssets: AssetList = {
+	chain_name: "chiado",
+	assets: [
+		{
+			description: "The native token of Warden Protocol Testnet",
+			denom_units: [
+				{
+					denom: "award",
+					exponent: 0,
+				},
+				{
+					denom: "ward",
+					exponent: 18,
+				},
+			],
+			base: "award",
+			name: "Ward",
+			display: "ward",
+			symbol: "WARD",
+			logo_URIs: {
+				png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/wardenprotocol/images/ward.png",
+				svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/wardenprotocol/images/ward.svg",
+			},
+			images: [
+				{
+					png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/wardenprotocol/images/ward.png",
+					svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/wardenprotocol/images/ward.svg",
+				},
+			],
+		},
+	],
+};

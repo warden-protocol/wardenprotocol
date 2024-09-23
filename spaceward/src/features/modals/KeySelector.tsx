@@ -13,6 +13,7 @@ import { bigintToFloat } from "@/lib/math";
 import { useKeySettingsState } from "../keys/state";
 import { KEY_THEMES } from "../keys/assets";
 import { isOsmosis } from "@/features/assets/util";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 const KeySelector = ({
 	className,
@@ -31,6 +32,7 @@ const KeySelector = ({
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId?.toString());
 	const refIsReady = useRef(false);
 	const currentKey = _currentKey ?? queryKeys.data?.keys[0];
+
 	if (!refIsReady.current) {
 		if (currentKey && !_currentKey) {
 			onKeyChange?.(currentKey);
@@ -39,6 +41,8 @@ const KeySelector = ({
 		refIsReady.current = true;
 	}
 
+	const ref = useRef<HTMLDivElement>(null);
+	useClickOutside(ref, () => setKeyDropdown(false));
 	const { data: ks } = useKeySettingsState();
 	// fixme undefined type not resolved
 	const addresses = currentKey?.addresses;
@@ -77,14 +81,14 @@ const KeySelector = ({
 	}, [seed, settings]);
 
 	return (
-		<div className={className}>
+		<div className={className} ref={ref}>
 			<div
 				onClick={() => {
-					setKeyDropdown(true);
+					setKeyDropdown(v => !v);
 				}}
 				className={clsx(
 					"rounded-lg z-20 py-3 px-4 flex text-left items-center gap-4 h-[72px] bg-fill-elevated border-[1px] border-solid border-border-quaternary w-full",
-					keyDropdown && "pointer-events-none opacity-30",
+					keyDropdown && "opacity-30",
 				)}
 			>
 				<div className="relative cursor-pointer min-w-12 h-8 max-h-8 border-[1px] border-border-secondary rounded overflow-hidden isolate">

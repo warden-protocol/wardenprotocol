@@ -10,7 +10,7 @@ dist: dist-linux-amd64
 before:
   hooks:
     # setup musl
-    - apk add gcc musl-dev
+    - apk add gcc musl-dev linux-headers
 
     # setup libwasmvm
     - wget https://github.com/CosmWasm/wasmvm/releases/download/v2.1.2/libwasmvm_muslc.x86_64.a -O /lib/libwasmvm_muslc.x86_64.a
@@ -53,4 +53,3 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
-

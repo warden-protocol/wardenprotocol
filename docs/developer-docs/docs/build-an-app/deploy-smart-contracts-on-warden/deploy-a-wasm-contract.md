@@ -2,13 +2,13 @@
 sidebar_position: 2
 ---
 
-# Deploy a CosmWasm contract
+# Deploy a WASM contract
 
 ## Overview
 
 The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
-This guide explains how to create and deploy a simple "Hello World" CosmWasm contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
+This guide explains how to create and deploy a simple "Hello World" WASM contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
 
 ## Prerequisites
 
@@ -167,7 +167,7 @@ The transaction should be successful without any errors.
 
 ## 7. Get the code ID
 
-Get the code ID, which identifies your Wasm code:
+Get the code ID that indentifies your Wasm code:
 
 ```bash
 wardend query wasm list-code
@@ -179,12 +179,13 @@ Note down `code_id` from the output.
 
 You can instantiate the contract by using the command below.
 
-Before you proceed, should replace replace `1` with the actual code ID you retrieved in previous step and replace `my-key-name` with your key name. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
+Before you proceed, replace `1` with the actual code ID you retrieved in previous step and replace `my-key-name` with your key name. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
 ```bash
-wardend tx wasm instantiate 1 '{}' --from my-key-name /
---label "Hello World" --gas auto --gas-adjustment 1.3 /
---gas-prices 100000000000award --no-admin -y 
+wardend tx wasm instantiate 1 '{}' /
+  --from my-key-name --label "Hello World" /
+  --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award /
+  --no-admin -y 
 ```
 
 ## 9. Get the contract address

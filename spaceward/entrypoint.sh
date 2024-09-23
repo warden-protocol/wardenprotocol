@@ -28,6 +28,7 @@ if [ "$1" = 'nginx-fe' ]; then
         replace_var WARDEN_COSMOSKIT_CHAIN_NAME "$filename"
         replace_var WARDEN_MAINTENANCE "$filename"
         replace_var WARDEN_SNAP_ORIGIN "$filename"
+        replace_var WARDEN_SNAP_VERSION "$filename"
         replace_var WARDEN_ENVIRONMENT "$filename"
         replace_var WARDEN_STORYBLOK_TOKEN "$filename"
         replace_var WARDEN_ETHEREUM_ANALYZER_CONTRACT "$filename"

@@ -29,6 +29,7 @@ export default function StakingHeading(props: HeadingProps) {
 					{bigintToFixed(props.availableWard ?? BigInt(0), {
 						decimals: 18,
 						format: true,
+						display: 2
 					})}
 				</div>
 			</div>

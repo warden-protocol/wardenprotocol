@@ -23,8 +23,7 @@ const StakeModal = ({
 
 	const { balance } = useAsset("award");
 	const ward = parseInt(balance?.amount ?? "0") / 10 ** 18;
-
-	let maxAmount = ward - 1;
+	const maxAmount = Math.max(ward - 1e-14 /* should be enough to pay fee */, 0);
 	const isInputError = Number(amount) > maxAmount;
 
 	async function submitTransaction() {
@@ -163,7 +162,7 @@ const StakeModal = ({
 							{(
 								Number(
 									validator.commission.commissionRates.rate ??
-										0,
+									0,
 								) * 100
 							).toFixed(1)}
 							%
@@ -188,8 +187,8 @@ const StakeModal = ({
 								<div>
 									{bigintToFixed(
 										(apr ?? BigInt(0)) *
-											// fixme maybe incorrect decimals
-											BigInt(100),
+										// fixme maybe incorrect decimals
+										BigInt(100),
 										{
 											decimals: 18,
 											format: true,

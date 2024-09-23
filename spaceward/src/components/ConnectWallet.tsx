@@ -22,6 +22,7 @@ import {
 } from "./ui/tooltip";
 import { Icons } from "@/layouts/icons";
 import { wallets } from "cosmos-kit";
+import { bigintToFixed } from "@/lib/math";
 
 export function ConnectWallet() {
 	const { wallet, disconnect, username } = useChain(env.cosmoskitChainName);
@@ -31,7 +32,11 @@ export function ConnectWallet() {
 	const [currentWallet, setCurrentWallet] = useState("");
 
 	const { balance } = useAsset("award");
-	const ward = parseInt(balance?.amount || "0") / 10 ** 18;
+	const wardAmount = BigInt(balance?.amount || "0");
+	const ward = bigintToFixed(wardAmount, {
+		decimals: 18,
+		display: 2,
+	});
 
 	useEffect(() => {
 		typeof window !== undefined &&
@@ -165,10 +170,10 @@ export function ConnectWallet() {
 								<div className="text-xs text-label-secondary">
 									Balance
 								</div>
-								<div>{ward.toFixed(2)} WARD</div>
+								<div>{ward}&nbsp;WARD</div>
 							</div>
 							<div className="ml-auto">
-								<FaucetButton />
+								<FaucetButton className="!px-5" />
 							</div>
 						</div>
 					</div>

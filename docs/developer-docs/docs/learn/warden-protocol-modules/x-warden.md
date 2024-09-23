@@ -146,7 +146,7 @@ This message is expected to fail in the following cases:
 
 - The request isn't found.
 - The creator isn't a [Writer](/learn/glossary#keychain-writer) of the Keychain.
-- The status field doesn't match the content of the result field.
+- The status field doesn't match the contents of the result field.
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 

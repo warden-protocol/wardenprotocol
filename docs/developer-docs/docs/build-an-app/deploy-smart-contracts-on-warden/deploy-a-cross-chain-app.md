@@ -98,7 +98,7 @@ Before you start, complete the following prerequisites:
 
         constructor(address gateway_, uint256 initialSupply) 
             AxelarExecutable(gateway_) 
-            ERC20("AliTokens", "AM") 
+            ERC20("WardenTokens", "AM") 
         {
             // Mint the initial supply to the contract address
             _mint(address(this), initialSupply);

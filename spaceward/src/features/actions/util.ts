@@ -269,17 +269,16 @@ export const handleEth = async ({
 			throw new Error("walletconnect not initialized");
 		}
 
-		return await w
-			.respondSessionRequest({
-				topic: walletConnectTopic,
-				response: {
-					jsonrpc: "2.0",
-					id: walletConnectRequestId,
-					result: res.hash,
-				},
-			})
-			// fixme
-			.then(() => true);
+		await w.respondSessionRequest({
+			topic: walletConnectTopic,
+			response: {
+				jsonrpc: "2.0",
+				id: walletConnectRequestId,
+				result: res.hash,
+			},
+		});
+
+		return true;
 	}
 
 	return provider.waitForTransaction(res.hash).then(() => {
@@ -401,6 +400,7 @@ export const handleCosmos = async ({
 	}
 
 	const client = await StargateClient.connect(rpc);
+
 	const res = await client.broadcastTx(
 		cosmos.tx.v1beta1.TxRaw.encode(txRaw).finish(),
 	);
@@ -408,6 +408,10 @@ export const handleCosmos = async ({
 	if (!isDeliverTxSuccess(res)) {
 		throw new Error("broadcast failed");
 	}
+
+	queryClient.invalidateQueries({
+		queryKey: getBalanceQueryKey("cosmos", chainName, "").slice(0, -1),
+	});
 
 	return true;
 };

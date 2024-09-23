@@ -1,80 +1,20 @@
 import { walletContext } from "@cosmos-kit/react-lite";
-import type { ExtendedHttpEndpoint, WalletManager } from "@cosmos-kit/core";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { cosmos } from "@wardenprotocol/wardenjs";
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { COSMOS_CHAINS } from "@/config/tokens";
+import { useContext, useMemo } from "react";
 import { useQueryHooks } from "@/hooks/useClient";
 import {
 	balancesQueryCosmos,
 	balancesQueryEth,
 	fiatPricesQuery,
+	queryCosmosClients,
 } from "./queries";
-import type { CosmosQueryClient, PriceMapSlinky } from "./types";
+import type { PriceMapSlinky } from "./types";
 
 const DERIVE_ADDRESSES = [
 	AddressType.ADDRESS_TYPE_ETHEREUM,
 	AddressType.ADDRESS_TYPE_OSMOSIS,
 ];
-
-const queryCosmosClients = (walletManager: WalletManager) => {
-	const rpcClients: Record<string, CosmosQueryClient | undefined> = {};
-	const rpcRetry: Record<string, number> = {};
-
-	return {
-		queryKey: ["cosmos", "rpcClients"],
-		queryFn: async () => {
-			const clients: [CosmosQueryClient, string][] = [];
-
-			for (let i = 0; i < COSMOS_CHAINS.length; i++) {
-				const { chainName, rpc } = COSMOS_CHAINS[i];
-				let client = rpcClients[chainName];
-
-				if (client) {
-					// todo implement client health check
-					clients.push([client, chainName]);
-					continue;
-				}
-
-				let endpoint: ExtendedHttpEndpoint | string;
-
-				if (rpc) {
-					const retry = rpcRetry[chainName] ?? 0;
-					endpoint = rpc[retry % rpc.length];
-					rpcRetry[chainName] = retry + 1;
-				} else {
-					const repo = walletManager.getWalletRepo(chainName);
-					repo.activate();
-
-					try {
-						endpoint = await repo.getRpcEndpoint();
-					} catch (e) {
-						console.error(e);
-						endpoint = `https://rpc.cosmos.directory/${chainName}`;
-					}
-				}
-
-				try {
-					const client =
-						await cosmos.ClientFactory.createRPCQueryClient({
-							rpcEndpoint:
-								typeof endpoint === "string"
-									? endpoint
-									: endpoint.url,
-						});
-
-					clients.push([client, chainName]);
-				} catch (e) {
-					console.error(e);
-					continue;
-				}
-			}
-
-			return clients;
-		},
-	} as const;
-};
 
 export const useAssetQueries = (spaceId?: string | null) => {
 	const { walletManager } = useContext(walletContext);

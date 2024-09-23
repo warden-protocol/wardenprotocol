@@ -102,7 +102,7 @@ const AssetSelector = ({
 	}, [_results, filterByChain, searchValue]);
 
 	return (
-		<div className="px-8 flex flex-col gap-6">
+		<div className="px-8 flex flex-col gap-6 max-h">
 			<div className="flex items-center justify-between relative z-30">
 				<button onClick={onClose} className="p-1 ">
 					<Icons.arrLeft className="invert dark:invert-0" />
@@ -144,7 +144,7 @@ const AssetSelector = ({
 						/>
 					</div>
 					{isNetworkDropdown && (
-						<div className="w-[248px] bg-fill-quaternary text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
+						<div className="w-60 bg-fill-quaternary text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
 							<div
 								onClick={() => {
 									setIsNetworkDropdown(false);
@@ -222,7 +222,7 @@ const AssetSelector = ({
 
 			<div>
 				{!searchValue && Object.keys(withBalance).length ? (
-					<div className="bg-fill-quaternary rounded-2xl p-4 no-scrollbar overflow-scroll max-h-[280px]">
+					<div className="bg-fill-quaternary rounded-2xl p-4 no-scrollbar overflow-scroll max-h-64">
 						<div className="font-bold mb-5 text-xl">
 							Your assets
 						</div>
@@ -282,17 +282,17 @@ const AssetSelector = ({
 														bigintToFloat(
 															fiatConversion
 																? (item.balance *
-																		item.price *
-																		BigInt(
-																			10,
-																		) **
-																			BigInt(
-																				fiatConversion.decimals,
-																			)) /
-																		fiatConversion.value
+																	item.price *
+																	BigInt(
+																		10,
+																	) **
+																	BigInt(
+																		fiatConversion.decimals,
+																	)) /
+																fiatConversion.value
 																: BigInt(0),
 															item.decimals +
-																item.priceDecimals,
+															item.priceDecimals,
 														),
 													)}
 												</div>
@@ -303,10 +303,12 @@ const AssetSelector = ({
 													network={item.chainName}
 													className="invert dark:invert-0"
 												/>
-												{item.chainName
-													.charAt(0)
-													.toUpperCase() +
-													item.chainName.slice(1)}
+												<span className="max-w-14 text-ellipsis overflow-hidden">
+													{item.chainName
+														.charAt(0)
+														.toUpperCase() +
+														item.chainName.slice(1)}
+												</span>
 											</div>
 										</div>
 									);
@@ -317,7 +319,7 @@ const AssetSelector = ({
 					<></>
 				)}
 
-				<div className="flex flex-col mt-4 no-scrollbar overflow-scroll max-h-[240px] -mb-4 pb-4">
+				<div className="flex flex-col mt-4 no-scrollbar overflow-scroll max-h-56 -mb-4 pb-4">
 					{results
 						.filter(
 							({ chainName, token }) =>

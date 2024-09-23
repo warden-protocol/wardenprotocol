@@ -266,6 +266,10 @@ export const validateAddressNumber = (expression?: Expression) => {
 
 					break;
 				}
+				// do not validate whitelist
+				case "contains": {
+					break;
+				}
 				default:
 					error = `Validation failed: unknown function name: ${name}`;
 					break;

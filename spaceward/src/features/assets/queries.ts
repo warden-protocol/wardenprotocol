@@ -52,6 +52,14 @@ const getAsset = (chainAssets: AssetList, denom: string) => {
 	return asset;
 };
 
+export const getBalanceQueryKey = (
+	chainType: "cosmos" | "eip155",
+	chainName: string,
+	address: string,
+) => {
+	return ["balance", chainType, chainName, address];
+};
+
 const cosmosBalancesQuery = (params: {
 	address?: string;
 	enabled: boolean;
@@ -60,7 +68,11 @@ const cosmosBalancesQuery = (params: {
 	prices?: PriceMapSlinky;
 }) => ({
 	enabled: params.enabled,
-	queryKey: ["cosmos", params.chainName, "balance", params.address],
+	queryKey: getBalanceQueryKey(
+		"cosmos",
+		params.chainName,
+		params.address ?? "",
+	),
 	queryFn: async () => {
 		if (!params.address) {
 			throw new Error("Address is required");
@@ -174,7 +186,10 @@ const eip155NativeBalanceQuery = ({
 	address?: `0x${string}`;
 	prices?: PriceMapSlinky;
 }) => ({
-	queryKey: ["eip155", chainName, "native", address],
+	queryKey: [
+		...getBalanceQueryKey("eip155", chainName, address ?? ""),
+		"native",
+	],
 	queryFn: async (): Promise<BalanceEntry> => {
 		if (!address) {
 			throw new Error("Address is required");
@@ -199,10 +214,10 @@ const eip155NativeBalanceQuery = ({
 
 		const price: bigint = slinkyPrice
 			? BigInt(slinkyPrice.price?.price ?? 0)
-			: (priceFeedContract
+			: ((priceFeedContract
 					? await priceFeedContract.latestRoundData()
 					: undefined
-				)?.answer ?? BigInt(0);
+				)?.answer ?? BigInt(0));
 
 		const priceDecimals = slinkyPrice ? Number(slinkyPrice.decimals) : 8;
 
@@ -255,7 +270,10 @@ const eip155ERC20BalanceQuery = ({
 	prices?: PriceMapSlinky;
 }) => ({
 	enabled: enabled && Boolean(address && token),
-	queryKey: ["eip155", chainName, "erc20", address, token],
+	queryKey: [
+		...getBalanceQueryKey("eip155", chainName, address ?? ""),
+		`erc20:${token}`,
+	],
 	queryFn: async (): Promise<BalanceEntry> => {
 		if (!address || !token) {
 			throw new Error("Address and token are required");
@@ -353,10 +371,10 @@ const eip155ERC20BalanceQuery = ({
 				? BigInt("100000000")
 				: slinkyPrice
 					? BigInt(slinkyPrice.price?.price ?? 0)
-					: (priceFeedContract
+					: ((priceFeedContract
 							? await priceFeedContract.latestRoundData()
 							: undefined
-						)?.answer ?? BigInt(0);
+						)?.answer ?? BigInt(0));
 
 			const priceDecimals = stablecoin
 				? 8

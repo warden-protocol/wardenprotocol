@@ -114,9 +114,6 @@ func (c *RawTxClient) BuildTx(
 	signMode := app.TxConfig().SignModeHandler().DefaultMode()
 
 	// build unsigned tx
-	if !autoEstimateGas {
-		txBuilder.SetGasLimit(gasLimit)
-	}
 	txBuilder.SetFeeAmount(fees)
 
 	msgs := make([]sdk.Msg, len(msgers))
@@ -151,10 +148,11 @@ func (c *RawTxClient) BuildTx(
 
 		gasLimit, err = c.EstimateGas(ctx, txBytes, gasAdjustmentFactor, gasLimit)
 		if err != nil {
-			return nil, fmt.Errorf("estimage gas: %w", err)
+			return nil, fmt.Errorf("estimate gas: %w", err)
 		}
-		txBuilder.SetGasLimit(gasLimit)
 	}
+
+	txBuilder.SetGasLimit(gasLimit)
 
 	// Second round: all signer infos are set, so each signer can sign.
 	signerData := xauthsigning.SignerData{
@@ -235,8 +233,8 @@ func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
 	}
 }
 
-// EstimateGas estimates gas by simulating the transaction when autoEstimateGas is set to true.
-// Otherwise, GasLimit is used.
+// EstimateGas estimates gas by simulating the transaction.
+// If the simulation exceeds gasLimit, gasLimit is returned.
 func (c *RawTxClient) EstimateGas(
 	ctx context.Context,
 	txBytes []byte,

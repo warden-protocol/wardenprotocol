@@ -32,7 +32,7 @@ type Config struct {
 	BatchInterval       time.Duration `env:"BATCH_INTERVAL, default=8s"`
 	BatchSize           int           `env:"BATCH_SIZE, default=7"`
 	GasLimit            uint64        `env:"GAS_LIMIT, default=400000"`
-	AutoEstimateGas     bool          `env:"AUTO_ESTIMATE_GAS, default=false"`
+	AutoEstimateGas     bool          `env:"AUTO_ESTIMATE_GAS, default=true"`
 	GasAdjustmentFactor float64       `env:"GAS_ADJUSTMENT_FACTOR, default=1.1"`
 	TxTimeout           time.Duration `env:"TX_TIMEOUT, default=120s"`
 	TxFee               int64         `env:"TX_FEE, default=400000"`

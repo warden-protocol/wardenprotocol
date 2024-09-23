@@ -10,6 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
@@ -27,6 +28,7 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000900"
 type Precompile struct {
 	cmn.Precompile
 	wardenkeeper wardenkeeper.Keeper
+	actkeeper    actkeeper.Keeper
 }
 
 // LoadABI loads the x/warden ABI from the embedded abi.json file
@@ -37,6 +39,7 @@ func LoadABI() (abi.ABI, error) {
 
 func NewPrecompile(
 	wardenkeeper wardenkeeper.Keeper,
+	actkeeper actkeeper.Keeper,
 ) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
@@ -50,6 +53,7 @@ func NewPrecompile(
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
 		wardenkeeper: wardenkeeper,
+		actkeeper:    actkeeper,
 	}, nil
 }
 

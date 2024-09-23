@@ -2,7 +2,6 @@ package warden
 
 import (
 	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -58,6 +57,45 @@ func (p Precompile) AddKeychainAdminMethod(
 	}
 
 	return method.Outputs.Pack(true)
+}
+
+func (p Precompile) AddSpaceOwnerMethod(
+	ctx sdk.Context,
+	origin common.Address,
+	stateDB vm.StateDB,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
+
+	msgAddKeychainAdmin, newAdmin, err := newMsgAddKeychainAdmin(args, origin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.Logger(ctx).Debug(
+		"tx called",
+		"method", method.Name,
+		"args", fmt.Sprintf(
+			"{ authority: %s, keyhcain_id: %d, new_admin: %s }",
+			msgAddKeychainAdmin.Authority,
+			msgAddKeychainAdmin.KeychainId,
+			msgAddKeychainAdmin.NewAdmin,
+		),
+	)
+
+	msgAddKeychainAdminResponse, err := msgServer.AddKeychainAdmin(ctx, msgAddKeychainAdmin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = p.EmitAddKeychainAdminEvent(ctx, stateDB, *newAdmin); err != nil {
+		return nil, err
+	}
+
+	return method.Outputs.Pack(msgAddKeychainAdminResponse)
 }
 
 func (p Precompile) AddKeychainWriterMethod(

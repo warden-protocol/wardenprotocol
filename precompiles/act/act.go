@@ -1,18 +1,21 @@
 package act
 
 import (
-	"embed"
-
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
+	"embed"
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
+
+const PrecompileAddress = "0x0000000000000000000000000000000000000901"
 
 // Embed abi json file to the executable binary. Needed when importing as dependency.
 //
@@ -22,6 +25,7 @@ var f embed.FS
 // Precompile defines the precompiled contract for x/act.
 type Precompile struct {
 	cmn.Precompile
+	actmodulekeeper actmodulekeeper.Keeper
 }
 
 // LoadABI loads the x/act ABI from the embedded abi.json file
@@ -30,7 +34,9 @@ func LoadABI() (abi.ABI, error) {
 	return cmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile() (*Precompile, error) {
+func NewPrecompile(
+	actkeeper actmodulekeeper.Keeper,
+) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -42,36 +48,110 @@ func NewPrecompile() (*Precompile, error) {
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
+		actmodulekeeper: actkeeper,
 	}, nil
 }
 
 // Address implements vm.PrecompiledContract.
 func (p *Precompile) Address() common.Address {
-	panic("unimplemented")
+	return common.HexToAddress(PrecompileAddress)
 }
 
 // RequiredGas implements vm.PrecompiledContract.
 // Subtle: this method shadows the method (Precompile).RequiredGas of Precompile.Precompile.
 func (p *Precompile) RequiredGas(input []byte) uint64 {
-	panic("unimplemented")
+	methodID := input[:4]
+
+	method, err := p.MethodById(methodID)
+	if err != nil {
+		// This should never happen since this method is going to fail during Run
+		return 0
+	}
+
+	return p.Precompile.RequiredGas(input, p.IsTransaction(method.Name))
 }
 
 // Run implements vm.PrecompiledContract.
-func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) ([]byte, error) {
-	panic("unimplemented")
+func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
+	ctx, stateDB, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+	if err != nil {
+		return nil, err
+	}
+
+	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
+	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
+	defer cmn.HandleGasError(ctx, contract, initialGas, &err)()
+
+	if err := stateDB.Commit(); err != nil {
+		return nil, err
+	}
+
+	switch method.Name {
+	// transactions
+	case CheckActionMethod:
+		bz, err = p.CheckActionMethod(ctx, evm.Origin, stateDB, method, args)
+	case NewTemplateMethod:
+		bz, err = p.NewTemplateMethod(ctx, evm.Origin, stateDB, method, args)
+	case RevokeActionMethod:
+		bz, err = p.RevokeActionMethod(ctx, evm.Origin, stateDB, method, args)
+	case UpdateTemplateMethod:
+		bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
+	case VoteForActionMethod:
+		bz, err = p.VoteForActionMethod(ctx, evm.Origin, stateDB, method, args)
+	// queries
+	case ActionsQuery:
+		panic("")
+	case ActionByIdQuery:
+		bz, err = p.ActionByIdQuery(ctx, contract, method, args)
+	case ActionsByAddressQuery:
+		panic("")
+	case TemplatesQuery:
+		panic("")
+	case TemplateByIdQuery:
+		panic("")
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	cost := ctx.GasMeter().GasConsumed() - initialGas
+
+	if !contract.UseGas(cost) {
+		return nil, vm.ErrOutOfGas
+	}
+
+	return bz, nil
 }
 
 // IsTransaction checks if the given method name corresponds to a transaction or query.
-//
-// Available staking transactions are:
-//
-//	-
 func (Precompile) IsTransaction(method string) bool {
 	switch method {
-	// TODO: split tx and queries
-	default:
+	// transactions
+	case CheckActionMethod:
+		return true
+	case NewTemplateMethod:
+		return true
+	case RevokeActionMethod:
+		return true
+	case UpdateTemplateMethod:
+		return true
+	case VoteForActionMethod:
+		return true
+	// queries
+	case ActionsQuery:
+		return false
+	case ActionByIdQuery:
+		return false
+	case ActionsByAddressQuery:
+		return false
+	case TemplatesQuery:
+		return false
+	case TemplateByIdQuery:
 		return false
 	}
+
+	panic(fmt.Errorf("invalid method name: %s", method))
 }
 
 // Logger returns a precompile-specific logger.

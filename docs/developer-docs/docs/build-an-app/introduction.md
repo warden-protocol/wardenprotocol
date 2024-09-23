@@ -22,14 +22,14 @@ The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden modul
 
 Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users.
 
-### CosmWasm contracts
+### WASM contracts
 
 The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
 ## Section overview
 
-- [Deploy a smart contract on Warden](/category/deploy-a-smart-contract-on-warden)  
-Get started with OApps: deploy a basic [CosmWasm](deploy-a-smart-contract-on-warden/deploy-a-cosmwasm-contract) or [EVM](deploy-a-smart-contract-on-warden/deploy-an-evm-contract) smart contract on Warden.
+- [Deploy smart contracts on Warden](/category/deploy-smart-contracts-on-warden)  
+Get started with OApps: deploy a basic [WASM](deploy-smart-contracts-on-warden/deploy-a-wasm-contract) or [EVM](deploy-smart-contracts-on-warden/deploy-an-evm-contract) smart contract on Warden. Then deploy a [cross-chain app](deploy-smart-contracts-on-warden/deploy-a-cross-chain-app) for burning tokens.
 
 - [Build with WardenJS](build-with-wardenjs)  
 Here you'll find information on WardenJS – a tool used for building the frontend part of your application. Stay tuned in for more frontend guides.

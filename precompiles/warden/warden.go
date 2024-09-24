@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	cmn "github.com/evmos/evmos/v18/precompiles/common"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
@@ -94,9 +95,9 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	case AddKeychainWriterMethod:
 		bz, err = p.AddKeychainWriterMethod(ctx, evm.Origin, stateDB, method, args)
 	case FulfilKeyRequestMethod:
-		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, stateDB, method, args)
 	case RejectKeyRequestMethod:
-		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED, stateDB, method, args)
 	case FulfilSignRequestMethod:
 		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, stateDB, method, args)
 	case NewKeychainMethod:

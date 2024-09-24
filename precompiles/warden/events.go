@@ -12,6 +12,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 const (
@@ -139,10 +140,7 @@ func (p Precompile) EmitNewKeyEvent(ctx sdk.Context, stateDB vm.StateDB) error {
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keyId)))
 		case "key_type":
-			keyType, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return fmt.Errorf("NewKeyEvent: invalid key type")
-			}
+			keyType := new(big.Int).SetInt64(int64(wardentypes.KeyType_value[val]))
 			b.Write(cmn.PackNum(reflect.ValueOf(keyType)))
 		case "space_id":
 			spaceId, success := new(big.Int).SetString(val, 10)

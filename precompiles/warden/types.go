@@ -43,14 +43,13 @@ func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.
 	}, &newAdminAddress, nil
 }
 
-func newMsgFulfilKeyRequest(args []interface{}, origin common.Address) (*types.MsgFulfilKeyRequest, error) {
-	if len(args) != 3 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyRequestStatus, origin common.Address) (*types.MsgFulfilKeyRequest, error) {
+	if len(args) != 2 {
+		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
 	requestId := args[0].(uint64)
-	keyRequestStatus := args[1].(types.KeyRequestStatus)
 	if keyRequestStatus == types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
 		key := args[1].([]byte)
 		result := &types.MsgFulfilKeyRequest_Key{

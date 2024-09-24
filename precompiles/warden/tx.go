@@ -100,13 +100,14 @@ func (p Precompile) AddKeychainWriterMethod(
 func (p Precompile) FulfilKeyRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	keyRequestStatus wardentypes.KeyRequestStatus,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
-	msgFulfilKeyRequest, err := newMsgFulfilKeyRequest(args, origin)
+	msgFulfilKeyRequest, err := newMsgFulfilKeyRequest(args, keyRequestStatus, origin)
 
 	if err != nil {
 		return nil, err

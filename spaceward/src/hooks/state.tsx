@@ -1,3 +1,4 @@
+import { extReplacer } from "@/utils/formatting";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -114,19 +115,7 @@ export function createPersistantState<T>(
 
 				window.localStorage.setItem(
 					lsKey,
-					JSON.stringify(_data, (_, v) =>
-						typeof v === "bigint"
-							? {
-								type: "bigint",
-								value: v.toString(),
-							}
-							: v instanceof Uint8Array
-								? {
-									type: "Uint8Array",
-									value: Array.from(v)
-								}
-								: v,
-					),
+					JSON.stringify(_data, extReplacer),
 				);
 				queryClient.setQueryData([prefix, queryKey], _data);
 			},

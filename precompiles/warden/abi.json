@@ -57,6 +57,19 @@
 				"internalType": "uint64",
 				"name": "id",
 				"type": "uint64"
+			}
+		],
+		"name": "FulfilSignRequest",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
 			},
 			{
 				"indexed": false,
@@ -103,6 +116,19 @@
 			}
 		],
 		"name": "RejectKeyRequest",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "RejectSignRequest",
 		"type": "event"
 	},
 	{
@@ -185,12 +211,60 @@
 				"type": "uint64"
 			},
 			{
+				"internalType": "bytes",
+				"name": "signedData",
+				"type": "bytes"
+			}
+		],
+		"name": "fulfilSignRequest",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "requestId",
+				"type": "uint64"
+			},
+			{
 				"internalType": "string",
 				"name": "rejectReason",
 				"type": "string"
 			}
 		],
 		"name": "rejectKeyRequest",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "requestId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "rejectReason",
+				"type": "string"
+			}
+		],
+		"name": "rejectSignRequest",
 		"outputs": [
 			{
 				"internalType": "bool",

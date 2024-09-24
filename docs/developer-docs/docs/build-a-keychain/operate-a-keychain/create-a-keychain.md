@@ -12,7 +12,7 @@ To become a **Keychain operator**, you need to create and configure a Keychain e
 
 1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain).
 
-    To become an actual Keychain operator, you need to [join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista) instead. However, we recommend running a local chain first to test your configuration.
+    To become an actual Keychain operator, you need to [join Chiado](/operate-a-node/chiado-testnet/join-chiado) instead. However, we recommend running a local chain first to test your configuration.
 
     For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account (key) that has a few [WARD tokens](/tokens/ward-token/ward). You'll use these tokens to fund the Keychain and its Writers.
 
@@ -152,6 +152,6 @@ To add a Keychain Writer, take these steps:
 
 The next steps depend on your goals:
 
-- To become an actual Keychain operator, [join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista) and create a Keychain there.
+- To become an actual Keychain operator, [join Chiado](/operate-a-node/chiado-testnet/join-chiado) and create a Keychain there.
 - To start fulfilling key and signature requests, follow this guide: [Fulfill requests from CLI](fulfill-requests-from-cli).
 - To start building a Keychain service, follow [Build a Keychain app](../build-a-keychain-app).

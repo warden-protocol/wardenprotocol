@@ -19,7 +19,7 @@ Learn more:
 
 Before you start, complete the following prerequisites:
 
-- [Run a local chain](/operate-a-node/run-a-local-chain) or [Join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista). Make sure the node is running.
+- [Run a local chain](/operate-a-node/run-a-local-chain) or [Join Chiado](/operate-a-node/chiado-testnet/join-chiado). Make sure the node is running.
 - Make sure you can request a new key – for example, from [SpaceWard](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key).
 - [Create a Keychain](create-a-keychain).
 

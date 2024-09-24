@@ -16,7 +16,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 - The current `wardend` version: **v0.5.0**
 
 :::tip
-Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Note that on Chiado you should use a new denomination, `award`.
+Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
 :::
 
 ## Version history

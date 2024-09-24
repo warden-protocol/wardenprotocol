@@ -6,6 +6,10 @@ sidebar_position: 5
 
 This is a simple step-by-step guide for setting up a validator on Chiado testnet. It's not a guide on validator architecture or security features.
 
+:::tip
+We're transitioning from [Buenavista](buenavista-testnet/join-buenavista) to our new and improved testnet, [Chiado](chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please [join Chiado](chiado-testnet/join-chiado) and set up your validator here – then you can safely shut down your validators on Buenavista.
+:::
+
 ## Prerequisites
 
 The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Chiado](chiado-testnet/join-chiado) instructions.

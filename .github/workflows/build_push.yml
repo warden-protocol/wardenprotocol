@@ -25,7 +25,7 @@ jobs:
     name: Build and Push ${{inputs.service_name }}
     runs-on: ubuntu-latest
     outputs:
-      tags: ${{ steps.meta.outputs.tags }}
+      image: ${{ vars.REGISTRY }}/${{ inputs.service_name }}:${{ steps.meta.outputs.version }}
     permissions:
       id-token: write
       contents: read
@@ -63,7 +63,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          image-ref: ${{ needs.build-and-push.outputs.tags }}
+          image-ref: ${{ needs.build-and-push.outputs.image }}
           output: "trivy.txt"
           # exit-code: "1"
           severity: "CRITICAL,HIGH"

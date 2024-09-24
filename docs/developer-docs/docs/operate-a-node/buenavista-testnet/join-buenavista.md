@@ -51,7 +51,7 @@ To join Buenavista, install `wardend` (the Warden binary) using the script below
 Build the `wardend` binary and initialize the chain home folder:
 
 ```bash
-git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol/
+git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
 just build
 
 build/wardend init my-chain-moniker
@@ -96,10 +96,10 @@ https://rpc.buenavista.wardenprotocol.org
 1. From this RPC endpoint, you can get the trusted block height and hash:
 
    ```bash
-   export SNAP_RPC_SERVERS="    https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
-   export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r     .result.block.header.height)
+   export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
+   export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
-   export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$    BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+   export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
    ```
 
 2. Check that all variables have been set correctly:

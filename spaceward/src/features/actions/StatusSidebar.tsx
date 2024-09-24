@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useChain, walletContext } from "@cosmos-kit/react-lite";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
@@ -20,7 +20,9 @@ import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
 import { getActionHandler, GetStatus, handleCosmos, handleEth, handleEthRaw } from "./util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { capitalize } from "../modals/util";
+import { queryCosmosClients } from "../assets/queries";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -46,6 +48,10 @@ const waitForVisibility = () => {
 function ActionItem({ single, ...item }: ItemProps) {
 	const queryClient = useQueryClient();
 	const { walletManager } = useContext(walletContext);
+	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
+	const clientsRef = useRef(cosmosClients);
+	clientsRef.current = cosmosClients;
+
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
 	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
@@ -311,7 +317,8 @@ function ActionItem({ single, ...item }: ItemProps) {
 						} else if (item.networkType === "eth") {
 							res = await handleEth({ action: item, w, queryClient });
 						} else if (item.networkType === "cosmos") {
-							res = await handleCosmos({ action: item, w, walletManager, queryClient });
+							const [, , rpcEndpoint] = clientsRef.current?.find((v) => v[1] === item?.chainName) ?? [];
+							res = await handleCosmos({ action: item, w, queryClient, rpcEndpoint });
 						}
 					} catch (e) {
 						console.error("broadcast failed", e);
@@ -407,7 +414,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 								? "Action ready"
 								: item.status ===
 									QueuedActionStatus.AwaitingBroadcast
-									? "Awaiting broadcast"
+									? `Awaiting broadcast on ${capitalize(item.chainName)}`
 									: item.status === QueuedActionStatus.Success
 										? "Success"
 										: item.status ===
@@ -437,6 +444,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 }
 
 export default function StatusSidebar() {
+	const [hide, setHide] = useState(true);
 	const { data } = useActionsState();
 	const storeIds = Object.keys(data ?? {});
 
@@ -469,7 +477,9 @@ export default function StatusSidebar() {
 						<ActionItem single {...data?.[filtered[0]]!} />
 					) : null
 				) : (
-					<Popover>
+					<Popover onOpenChange={open => {
+						setHide(!open);
+					}}>
 						<PopoverTrigger asChild>
 							<div className="flex flex-col relative cursor-pointer">
 								<p className="text-lg font-semibold">
@@ -484,9 +494,10 @@ export default function StatusSidebar() {
 						<PopoverContent
 							side="left"
 							sideOffset={20}
-							className="p-0"
+							className={clsx("p-0", { hidden: hide })}
+							forceMount={hide ? true : undefined}
 						>
-							<div className="bg-fill-quaternary max-h-80 overflow-auto">
+							<div className={"bg-fill-quaternary max-h-80 overflow-auto"}>
 								{filtered.map((id) => {
 									const action = data?.[id];
 

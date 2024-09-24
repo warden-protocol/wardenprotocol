@@ -293,12 +293,12 @@ export const handleEth = async ({
 export const handleCosmos = async ({
 	action,
 	w,
-	walletManager,
 	queryClient,
+	rpcEndpoint,
 }: {
 	action: QueuedAction;
 	w: IWeb3Wallet | null;
-	walletManager: WalletManager;
+	rpcEndpoint?: string;
 	queryClient: QueryClient;
 }) => {
 	const {
@@ -384,22 +384,11 @@ export const handleCosmos = async ({
 		signatures: [sig],
 	});
 
-	let rpc: string;
-	if (chain.rpc) {
-		[rpc] = chain.rpc;
-	} else {
-		const repo = walletManager.getWalletRepo(chainName);
-		repo.activate();
-		const endpoint = await repo.getRpcEndpoint();
-
-		rpc = endpoint
-			? typeof endpoint === "string"
-				? endpoint
-				: endpoint.url
-			: "https://rpc.cosmos.directory/" + chainName;
+	if (!rpcEndpoint) {
+		throw new Error("missing rpcEndpoint");
 	}
 
-	const client = await StargateClient.connect(rpc);
+	const client = await StargateClient.connect(rpcEndpoint);
 
 	const res = await client.broadcastTx(
 		cosmos.tx.v1beta1.TxRaw.encode(txRaw).finish(),

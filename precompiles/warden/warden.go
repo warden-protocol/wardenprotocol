@@ -99,7 +99,9 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	case RejectKeyRequestMethod:
 		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED, stateDB, method, args)
 	case FulfilSignRequestMethod:
-		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, stateDB, method, args)
+	case RejectSignRequestMethod:
+		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED, stateDB, method, args)
 	case NewKeychainMethod:
 		bz, err = p.NewKeychainMethod(ctx, evm.Origin, stateDB, method, args)
 	case NewSpaceMethod:

@@ -24,6 +24,10 @@ const (
 	EventTypeNewKey = "NewKey"
 	// EventRejectKeyRequest defines the event type for the reject branch of x/warden FulfilKeyRequest transaction.
 	EventRejectKeyRequest = "RejectKeyRequest"
+	// EventRejectSignRequest defines the event type for the fulfil branch of x/warden FulfilSignRequest transaction.
+	EventFulfilSignRequest = "FulfilSignRequest"
+	// EventRejectSignRequest defines the event type for the reject branch of x/warden FulfilSignRequest transaction.
+	EventRejectSignRequest = "RejectSignRequest"
 )
 
 func (p Precompile) EmitAddKeychainAdminEvent(ctx sdk.Context, stateDB vm.StateDB, adminAddress common.Address) error {
@@ -198,6 +202,74 @@ func (p Precompile) EmitRejectKeyRequestEvent(ctx sdk.Context, stateDB vm.StateD
 			requestId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return fmt.Errorf("RejectKeyRequestEvent: invalid request id type")
+			}
+			b.Write(cmn.PackNum(reflect.ValueOf(requestId)))
+		}
+	}
+
+	stateDB.AddLog(&ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	})
+
+	return nil
+}
+
+func (p Precompile) EmitFulfilSignRequestEvent(ctx sdk.Context, stateDB vm.StateDB) error {
+	// Prepare the event topics
+	event := p.ABI.Events[EventFulfilSignRequest]
+
+	topics := make([]common.Hash, 1)
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	sdkEvents := ctx.EventManager().Events()
+	eventNewKey := sdkEvents[len(sdkEvents)-1]
+	var b bytes.Buffer
+	for _, attr := range eventNewKey.Attributes {
+		key := attr.GetKey()
+		val := strings.Trim(attr.GetValue(), "\"")
+		switch key {
+		case "id":
+			requestId, success := new(big.Int).SetString(val, 10)
+			if !success {
+				return fmt.Errorf("FulfilSignRequestEvent: invalid request id type")
+			}
+			b.Write(cmn.PackNum(reflect.ValueOf(requestId)))
+		}
+	}
+
+	stateDB.AddLog(&ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	})
+
+	return nil
+}
+
+func (p Precompile) EmitRejectSignRequestEvent(ctx sdk.Context, stateDB vm.StateDB) error {
+	// Prepare the event topics
+	event := p.ABI.Events[EventRejectSignRequest]
+
+	topics := make([]common.Hash, 1)
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	sdkEvents := ctx.EventManager().Events()
+	eventNewKey := sdkEvents[len(sdkEvents)-1]
+	var b bytes.Buffer
+	for _, attr := range eventNewKey.Attributes {
+		key := attr.GetKey()
+		val := strings.Trim(attr.GetValue(), "\"")
+		switch key {
+		case "id":
+			requestId, success := new(big.Int).SetString(val, 10)
+			if !success {
+				return fmt.Errorf("RejectSignRequestEvent: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(requestId)))
 		}

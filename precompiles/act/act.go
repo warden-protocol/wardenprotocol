@@ -100,15 +100,15 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.VoteForActionMethod(ctx, evm.Origin, stateDB, method, args)
 	// queries
 	case ActionsQuery:
-		panic("")
+		bz, err = p.ActionsQuery(ctx, contract, method, args)
 	case ActionByIdQuery:
 		bz, err = p.ActionByIdQuery(ctx, contract, method, args)
 	case ActionsByAddressQuery:
-		panic("")
+		bz, err = p.ActionsByAddressQuery(ctx, contract, method, args)
 	case TemplatesQuery:
-		panic("")
+		bz, err = p.TemplatesQuery(ctx, contract, method, args)
 	case TemplateByIdQuery:
-		panic("")
+		bz, err = p.TemplateByIdQuery(ctx, contract, method, args)
 	}
 
 	if err != nil {

@@ -13,8 +13,7 @@ import (
 )
 
 const (
-	CheckActionMethod = "checkAction"
-	//NewActionMethod      = "newAction"
+	CheckActionMethod    = "checkAction"
 	NewTemplateMethod    = "newTemplate"
 	RevokeActionMethod   = "revokeAction"
 	UpdateTemplateMethod = "updateTemplate"
@@ -40,7 +39,7 @@ func (p Precompile) CheckActionMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ action_id: %d, Creator: %s }",
+			"{ action_id: %d, creator: %s }",
 			message.ActionId,
 			message.Creator,
 		),
@@ -70,63 +69,6 @@ func newMsgCheckAction(args []interface{}, origin common.Address) (*types.MsgChe
 	}, nil
 }
 
-//func (p Precompile) NewActionMethod(
-//	ctx sdk.Context,
-//	origin common.Address,
-//	stateDB vm.StateDB,
-//	method *abi.Method,
-//	args []interface{},
-//) ([]byte, error) {
-//	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
-//
-//	message, err := newMsgNewAction(args, origin)
-//
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	p.Logger(ctx).Debug(
-//		"tx called",
-//		"method", method.Name,
-//		"args", fmt.Sprintf(
-//			"{ Creator: %s }",
-//			message.Creator,
-//		),
-//	)
-//
-//	response, err := msgServer.NewAction(ctx, message)
-//
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	// TODO AT: Add event
-//
-//	return method.Outputs.Pack(response.Id)
-//}
-//
-//func newMsgNewAction(args []interface{}, origin common.Address) (*types.MsgNewAction, error) {
-//	if len(args) != 4 {
-//		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
-//	}
-//
-//	authority := precommon.Bech32StrFromAddress(origin)
-//	actionTimeoutHeight := args[0].(uint64)
-//	expectedApproveExpression := args[1].(string)
-//	expectedRejectExpression := args[2].(string)
-//
-//	// TODO AT: How to pass values here
-//	message := args[0].(*types2.Any)
-//
-//	return &types.MsgNewAction{
-//		Creator:                   authority,
-//		Message:                   message,
-//		ActionTimeoutHeight:       actionTimeoutHeight,
-//		ExpectedApproveExpression: expectedApproveExpression,
-//		ExpectedRejectExpression:  expectedRejectExpression,
-//	}, nil
-//}
-
 func (p Precompile) NewTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -146,7 +88,7 @@ func (p Precompile) NewTemplateMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ Creator: %d, name: %s, definition: %s }",
+			"{ creator: %d, name: %s, definition: %s }",
 			message.Creator,
 			message.Name,
 			message.Definition,
@@ -199,7 +141,7 @@ func (p Precompile) RevokeActionMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ action_id: %d, Creator: %s }",
+			"{ action_id: %d, creator: %s }",
 			message.ActionId,
 			message.Creator,
 		),
@@ -249,7 +191,7 @@ func (p Precompile) UpdateTemplateMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ Creator: %s, template_id: %s, name: %s, definition: %s }",
+			"{ creator: %s, template_id: %s, name: %s, definition: %s }",
 			message.Creator,
 			message.Id,
 			message.Name,
@@ -305,7 +247,7 @@ func (p Precompile) VoteForActionMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ Participant: %d, action_id: %s, vote_type: %v }",
+			"{ participant: %d, action_id: %s, vote_type: %v }",
 			message.Participant,
 			message.ActionId,
 			message.VoteType,

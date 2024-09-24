@@ -19,8 +19,13 @@
                 "type": "uint64"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "status",
+                "type": "int256"
+              },
+              {
+                "internalType": "string",
+                "name": "statusText",
                 "type": "string"
               },
               {
@@ -141,8 +146,13 @@
                     "type": "tuple"
                   },
                   {
-                    "internalType": "string",
+                    "internalType": "int32",
                     "name": "voteType",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "voteTypeText",
                     "type": "string"
                   }
                 ],
@@ -228,8 +238,13 @@
                 "type": "uint64"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "status",
+                "type": "int256"
+              },
+              {
+                "internalType": "string",
+                "name": "statusText",
                 "type": "string"
               },
               {
@@ -350,8 +365,13 @@
                     "type": "tuple"
                   },
                   {
-                    "internalType": "string",
+                    "internalType": "int32",
                     "name": "voteType",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "voteTypeText",
                     "type": "string"
                   }
                 ],
@@ -413,9 +433,9 @@
         "type": "string"
       },
       {
-        "internalType": "int256",
+        "internalType": "int32",
         "name": "status",
-        "type": "int256"
+        "type": "int32"
       }
     ],
     "name": "actionsByAddress",
@@ -447,8 +467,13 @@
                 "type": "uint64"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "status",
+                "type": "int256"
+              },
+              {
+                "internalType": "string",
+                "name": "statusText",
                 "type": "string"
               },
               {
@@ -569,8 +594,13 @@
                     "type": "tuple"
                   },
                   {
-                    "internalType": "string",
+                    "internalType": "int32",
                     "name": "voteType",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "voteTypeText",
                     "type": "string"
                   }
                 ],
@@ -819,9 +849,9 @@
         "type": "uint64"
       },
       {
-        "internalType": "uint64",
+        "internalType": "int32",
         "name": "voteType",
-        "type": "uint64"
+        "type": "int32"
       }
     ],
     "name": "voteForAction",

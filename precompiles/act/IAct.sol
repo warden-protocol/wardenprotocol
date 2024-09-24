@@ -22,12 +22,14 @@ IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
     struct ActionVote {
         string participant;
         Timestamp votedAt;
-        string voteType;
+        int32 voteType;
+        string voteTypeText;
     }
 
     struct Action {
         uint64 id;
-        string status;
+        int status;
+        string statusText;
         AnyType msg;
         AnyType result;
         string creator;
@@ -91,7 +93,7 @@ interface IAct {
 
     function actionById(uint64 actionId) external view returns (ActionByIdResponse memory response);
 
-    function actionsByAddress(Types.PageRequest calldata pagination, string calldata addr, int status)
+    function actionsByAddress(Types.PageRequest calldata pagination, string calldata addr, int32 status)
     external view returns (ActionsByAddressResponse memory response);
 
     function templates(Types.PageRequest calldata pagination)

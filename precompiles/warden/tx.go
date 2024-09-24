@@ -17,6 +17,7 @@ const (
 	FulfilKeyRequestMethod    = "fulfilKeyRequest"
 	RejectKeyRequestMethod    = "rejectKeyRequest"
 	FulfilSignRequestMethod   = "fulfilSignRequest"
+	RejectSignRequestMethod   = "rejectSignRequest"
 	NewKeychainMethod         = "newKeychain"
 	NewSpaceMethod            = "newSpace"
 	RemoveKeychainAdminMethod = "removeKeychainAdmin"
@@ -142,27 +143,49 @@ func (p Precompile) FulfilKeyRequestMethod(
 	return method.Outputs.Pack(true)
 }
 
-func (p Precompile) RejectKeyRequestMethod(
-	ctx sdk.Context,
-	origin common.Address,
-	stateDB vm.StateDB,
-	method *abi.Method,
-	args []interface{},
-) ([]byte, error) {
-	panic("Not implemented")
-	// msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
-
-	// msgFulfilKeyRequest, err := newMsgFulfilKeyRequest(args, origin)
-}
-
 func (p Precompile) FulfilSignRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	signRequestStatus wardentypes.SignRequestStatus,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	panic("Not implemented")
+	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
+
+	msgFulfilSignRequest, err := newMsgFulfilSignRequest(args, signRequestStatus, origin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.Logger(ctx).Debug(
+		"tx called",
+		"method", method.Name,
+		"args", fmt.Sprintf(
+			"{ authority: %s, request_id: %d, status: %s resul: %s }",
+			msgFulfilSignRequest.Creator,
+			msgFulfilSignRequest.RequestId,
+			msgFulfilSignRequest.Status,
+			msgFulfilSignRequest.Result,
+		),
+	)
+
+	if _, err = msgServer.FulfilSignRequest(ctx, msgFulfilSignRequest); err != nil {
+		return nil, err
+	}
+
+	if msgFulfilSignRequest.Status == wardentypes.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
+		if err = p.EmitFulfilSignRequestEvent(ctx, stateDB); err != nil {
+			return nil, err
+		}
+	} else {
+		if err = p.EmitRejectSignRequestEvent(ctx, stateDB); err != nil {
+			return nil, err
+		}
+	}
+
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) NewKeychainMethod(

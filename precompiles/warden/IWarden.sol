@@ -50,6 +50,24 @@ interface IWarden {
         string calldata rejectReason
     ) external returns (bool success);
 
+    /// @dev Defines a method to fulfil a sign request.
+    /// @param requestId The request id
+    /// @param signedData The signed data
+    /// @return success If execution was successful
+    function fulfilSignRequest(
+        uint64 requestId,
+        bytes calldata signedData
+    ) external returns (bool success);
+
+    /// @dev Defines a method to reject a sign request.
+    /// @param requestId The request id
+    /// @param rejectReason The reject reason
+    /// @return success If execution was successful
+    function rejectSignRequest(
+        uint64 requestId,
+        string calldata rejectReason
+    ) external returns (bool success);
+
     /// @dev AddKeychainAdmin defines an Event emitted when add a new admin to keychain.
     /// @param NewAdmin The address of the admin
     /// @param id The keychain id
@@ -74,4 +92,12 @@ interface IWarden {
     /// @dev RejectKeyRequest defines an Event emitted when a key request rejected.
     /// @param id The request id
     event RejectKeyRequest(uint64 id);
+
+    /// @dev FulfilSignRequest defines an Event emitted when a sign request fulfiled.
+    /// @param id The request id
+    event FulfilSignRequest(uint64 id);
+
+    /// @dev RejectSignRequest defines an Event emitted when a sign request rejected.
+    /// @param id The request id
+    event RejectSignRequest(uint64 id);
 }

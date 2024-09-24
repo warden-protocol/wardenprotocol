@@ -61,7 +61,7 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 		return &types.MsgFulfilKeyRequest{
 			Creator:   creator,
 			RequestId: requestId,
-			Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
+			Status:    keyRequestStatus,
 			Result:    result,
 		}, nil
 	} else {
@@ -73,7 +73,43 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 		return &types.MsgFulfilKeyRequest{
 			Creator:   creator,
 			RequestId: requestId,
-			Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
+			Status:    keyRequestStatus,
+			Result:    result,
+		}, nil
+	}
+}
+
+func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignRequestStatus, origin common.Address) (*types.MsgFulfilSignRequest, error) {
+	if len(args) != 2 {
+		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
+	}
+
+	creator := wardencommon.Bech32StrFromAddress(origin)
+	requestId := args[0].(uint64)
+	if signRequestStatus == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
+		signedData := args[1].([]byte)
+		result := &types.MsgFulfilSignRequest_Payload{
+			Payload: &types.MsgSignedData{
+				SignedData: signedData,
+			},
+		}
+
+		return &types.MsgFulfilSignRequest{
+			Creator:   creator,
+			RequestId: requestId,
+			Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+			Result:    result,
+		}, nil
+	} else {
+		rejectReason := args[1].(string)
+		result := &types.MsgFulfilSignRequest_RejectReason{
+			RejectReason: rejectReason,
+		}
+
+		return &types.MsgFulfilSignRequest{
+			Creator:   creator,
+			RequestId: requestId,
+			Status:    signRequestStatus,
 			Result:    result,
 		}, nil
 	}

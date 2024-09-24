@@ -219,7 +219,6 @@ export const COSMOS_PRICES: Record<string, bigint | undefined> = {
 const _ENABLED_ETH_CHAINS: {
 	chainName: ChainName;
 	testnet?: boolean;
-	title?: string;
 }[] = [
 	{ chainName: "arbitrum" },
 	{ chainName: "astar" },

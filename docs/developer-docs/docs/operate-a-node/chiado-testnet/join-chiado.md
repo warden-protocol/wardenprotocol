@@ -99,7 +99,7 @@ https://rpc.chiado.wardenprotocol.org
    export SNAP_RPC_SERVERS="https://rpc.chiado.wardenprotocol.org:443,https://rpc.chiado.wardenprotocol.org:443"
    export LATEST_HEIGHT=$(curl -s "https://rpc.chiado.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
-   export TRUST_HASH=$(curl -s "https://rpc.chiado.wardenprotocol.org/block?height=$ BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+   export TRUST_HASH=$(curl -s "https://rpc.chiado.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
    ```
 2. Check that all variables have been set correctly:
    ```bash

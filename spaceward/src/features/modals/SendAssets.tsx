@@ -15,9 +15,10 @@ import { validateAddress } from "../intents/AddAddressModal";
 import { StargateClient } from "@cosmjs/stargate";
 import { useModalState } from "./state";
 import KeySelector from "./KeySelector";
-import { COSMOS_CHAINS } from "@/config/tokens";
 import { walletContext } from "@cosmos-kit/react-lite";
 import { BalanceEntry } from "../assets/types";
+import { useQuery } from "@tanstack/react-query";
+import { queryCosmosClients } from "../assets/queries";
 
 export default function SendAssetsModal({
 	// address,
@@ -31,6 +32,7 @@ export default function SendAssetsModal({
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances } = useAssetQueries(spaceId);
+	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
 
 	const results: (BalanceEntry & { refetch: () => void })[] = queryBalances
 		.filter((result) => result.data?.key?.key?.id === key?.key?.id)
@@ -97,17 +99,12 @@ export default function SendAssetsModal({
 					setModal({ type: undefined });
 				}
 			} else if (txBuild.type === "cosmos") {
-				const chain = COSMOS_CHAINS.find(
-					(item) => item.chainName === chainName,
-				);
-
-				let rpc = chain?.rpc?.[0];
+				const [, , rpc] = cosmosClients?.find((item) => {
+					return item[1] === chainName
+				}) ?? [];
 
 				if (!rpc) {
-					const repo = walletManager.getWalletRepo(chainName);
-					repo.activate();
-					const endpoint = await repo.getRpcEndpoint();
-					rpc = endpoint ? typeof endpoint === "string" ? endpoint : endpoint.url : `https://rpc.cosmos.directory/${chainName}`;
+					throw new Error(`unable to find rpc for ${chainName}`);
 				}
 
 				const client = await StargateClient.connect(rpc);

@@ -24,6 +24,7 @@ export enum QueuedActionStatus {
 	Broadcast,
 	AwaitingApprovals,
 	ActionReady,
+	// fixme rename
 	AwaitingBroadcast,
 	Success = 0x99,
 	Failed = 0xff,

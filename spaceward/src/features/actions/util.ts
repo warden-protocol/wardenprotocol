@@ -269,17 +269,16 @@ export const handleEth = async ({
 			throw new Error("walletconnect not initialized");
 		}
 
-		return await w
-			.respondSessionRequest({
-				topic: walletConnectTopic,
-				response: {
-					jsonrpc: "2.0",
-					id: walletConnectRequestId,
-					result: res.hash,
-				},
-			})
-			// fixme
-			.then(() => true);
+		await w.respondSessionRequest({
+			topic: walletConnectTopic,
+			response: {
+				jsonrpc: "2.0",
+				id: walletConnectRequestId,
+				result: res.hash,
+			},
+		});
+
+		return true;
 	}
 
 	return provider.waitForTransaction(res.hash).then(() => {
@@ -294,12 +293,12 @@ export const handleEth = async ({
 export const handleCosmos = async ({
 	action,
 	w,
-	walletManager,
 	queryClient,
+	rpcEndpoint,
 }: {
 	action: QueuedAction;
 	w: IWeb3Wallet | null;
-	walletManager: WalletManager;
+	rpcEndpoint?: string;
 	queryClient: QueryClient;
 }) => {
 	const {
@@ -385,22 +384,12 @@ export const handleCosmos = async ({
 		signatures: [sig],
 	});
 
-	let rpc: string;
-	if (chain.rpc) {
-		[rpc] = chain.rpc;
-	} else {
-		const repo = walletManager.getWalletRepo(chainName);
-		repo.activate();
-		const endpoint = await repo.getRpcEndpoint();
-
-		rpc = endpoint
-			? typeof endpoint === "string"
-				? endpoint
-				: endpoint.url
-			: "https://rpc.cosmos.directory/" + chainName;
+	if (!rpcEndpoint) {
+		throw new Error("missing rpcEndpoint");
 	}
 
-	const client = await StargateClient.connect(rpc);
+	const client = await StargateClient.connect(rpcEndpoint);
+
 	const res = await client.broadcastTx(
 		cosmos.tx.v1beta1.TxRaw.encode(txRaw).finish(),
 	);
@@ -408,6 +397,10 @@ export const handleCosmos = async ({
 	if (!isDeliverTxSuccess(res)) {
 		throw new Error("broadcast failed");
 	}
+
+	queryClient.invalidateQueries({
+		queryKey: getBalanceQueryKey("cosmos", chainName, "").slice(0, -1),
+	});
 
 	return true;
 };

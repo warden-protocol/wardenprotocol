@@ -63,6 +63,10 @@ service Msg {
   // Fulfil or reject a SignRequest.
   rpc FulfilSignRequest(MsgFulfilSignRequest)
       returns (MsgFulfilSignRequestResponse);
+
+  // Add a new admin to a Keychain
+  rpc AddKeychainAdmin(MsgAddKeychainAdminRequest)
+      returns (MsgAddKeychainAdminResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.

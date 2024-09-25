@@ -83,9 +83,9 @@ interface IAct {
 
     function newTemplate(string calldata name, string calldata definition) external returns (uint64);
 
-    function revokeAction(uint64 actionId) external;
+    function revokeAction(uint64 actionId) external returns (bool);
 
-    function updateTemplate(uint64 templateId, string calldata name, string calldata definition) external;
+    function updateTemplate(uint64 templateId, string calldata name, string calldata definition) external returns (bool);
 
     function voteForAction(uint64 actionId, int32 voteType) external returns (string memory);
 

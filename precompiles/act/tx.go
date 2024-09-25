@@ -147,8 +147,7 @@ func (p Precompile) RevokeActionMethod(
 		),
 	)
 
-	response, err := msgServer.RevokeAction(ctx, message)
-
+	_, err = msgServer.RevokeAction(ctx, message)
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +155,7 @@ func (p Precompile) RevokeActionMethod(
 	// TODO AT: Add event
 
 	// TODO AT: What to return
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func newMsgRevokeAction(args []interface{}, origin common.Address) (*types.MsgRevokeAction, error) {
@@ -199,15 +198,14 @@ func (p Precompile) UpdateTemplateMethod(
 		),
 	)
 
-	response, err := msgServer.UpdateTemplate(ctx, message)
-
+	_, err = msgServer.UpdateTemplate(ctx, message)
 	if err != nil {
 		return nil, err
 	}
 
 	// TODO AT: Add event
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*types.MsgUpdateTemplate, error) {

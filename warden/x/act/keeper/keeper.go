@@ -40,9 +40,11 @@ type (
 
 var (
 	ActionPrefix                   = collections.NewPrefix(0)
-	TemplatePrefix                 = collections.NewPrefix(1)
-	ActionByAddressPrefix          = collections.NewPrefix(2)
-	PreviousPruneBlockHeightPrefix = collections.NewPrefix(3)
+	ActionsSeqPrefix               = collections.NewPrefix(1)
+	TemplatePrefix                 = collections.NewPrefix(2)
+	TemplateSeqPrefix              = collections.NewPrefix(3)
+	ActionByAddressPrefix          = collections.NewPrefix(4)
+	PreviousPruneBlockHeightPrefix = collections.NewPrefix(5)
 )
 
 func NewKeeper(
@@ -66,7 +68,7 @@ func NewKeeper(
 	sb := collections.NewSchemaBuilder(storeService)
 
 	templatesStore := collections.NewMap(sb, TemplatePrefix, "template", collections.Uint64Key, codec.CollValue[types.Template](cdc))
-	templatesCount := collections.NewSequence(sb, types.KeyPrefix(types.TemplateCountKey), "templates_count")
+	templatesCount := collections.NewSequence(sb, TemplateSeqPrefix, "templates_count")
 	templates := repo.NewSeqCollection(templatesCount, templatesStore, func(i *types.Template, u uint64) { i.Id = u })
 
 	_, err := sb.Build()

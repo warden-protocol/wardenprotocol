@@ -42,6 +42,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/act) Change keys prefix in database to avoid collisions
+
+### Features (non-breaking)
+
+### Bug Fixes
+
+### Misc
+
+## [v0.5.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.0) - 2024-09-20
+
+### Consensus Breaking Changes
+
 * (x/warden) [#660](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to Space to avoid race conditions
 * (x/warden) Keychain fees are deducted with escrow account
 * (wardend) Bump Cosmos SDK to v0.50.9

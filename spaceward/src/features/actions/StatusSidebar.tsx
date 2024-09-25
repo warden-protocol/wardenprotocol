@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useContext, useEffect, useRef, useState } from "react";
-import { isDeliverTxSuccess } from "@cosmjs/stargate";
+import { DeliverTxResponse, isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useChain, walletContext } from "@cosmos-kit/react-lite";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { Action, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
@@ -45,6 +45,21 @@ const waitForVisibility = () => {
 	});
 };
 
+class DetailedError<T> extends Error {
+	constructor(message: string, public detail: T) {
+		super(message);
+	}
+}
+
+function isDetailedError<T>(e?: unknown): e is DetailedError<T> {
+	if (!e) {
+		return false;
+	}
+
+	return "detail" in (e as {});
+}
+
+
 function ActionItem({ single, ...item }: ItemProps) {
 	const queryClient = useQueryClient();
 	const { walletManager } = useContext(walletContext);
@@ -88,32 +103,51 @@ function ActionItem({ single, ...item }: ItemProps) {
 					const signer = getOfflineSigner();
 					const client = await getSigningClient(signer);
 					const txRaw = cosmos.tx.v1beta1.TxRaw.encode(item.txRaw);
-					const res = await client.broadcastTx(Uint8Array.from(txRaw.finish()));
+					try {
+						const res = await client.broadcastTx(Uint8Array.from(txRaw.finish()));
 
-					if (isDeliverTxSuccess(res)) {
-						setData({
-							[item.id]: {
-								...item,
-								status: QueuedActionStatus.Broadcast,
-								response: res,
-							},
-						});
-					} else {
-						console.error("Failed to broadcast", res);
+						if (isDeliverTxSuccess(res)) {
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Broadcast,
+									response: res,
+								},
+							});
+						} else {
+							console.error("Failed to broadcast", res);
+							throw new DetailedError("Could not broadcast transaction", res);
 
-						toast({
-							title: "Failed",
-							description: "Could not broadcast transaction",
-							duration: 10000,
-						});
+						}
+					} catch (e) {
+						if (isDetailedError<DeliverTxResponse>(e)) {
+							toast({
+								title: "Failed",
+								description: "Could not broadcast transaction",
+								duration: 10000,
+							});
 
-						setData({
-							[item.id]: {
-								...item,
-								status: QueuedActionStatus.Failed,
-								response: res,
-							},
-						});
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Failed,
+									response: e.detail,
+								},
+							});
+						} else {
+							toast({
+								title: "Failed",
+								description: (e as Error)?.message ?? "Unexpected error",
+								duration: 10000,
+							});
+
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Failed,
+								},
+							});
+						}
 					}
 
 					break;

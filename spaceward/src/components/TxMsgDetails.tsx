@@ -26,6 +26,7 @@ import {
 	wardenProtoRegistry,
 } from "@wardenprotocol/wardenjs";
 import { useQueryHooks } from "@/hooks/useClient";
+import { extReplacer } from "@/utils/formatting";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
@@ -325,8 +326,8 @@ function MsgFallbackDetails({ type, msg }: { type: string; msg: any }) {
 			</CardHeader>
 			<CardContent>
 				{Object.entries(msg).map(([key, value]) => (
-					<CardRow label={key} key={key}>
-						{String(value)}
+					<CardRow labelClassName="!w-52" label={key} key={key}>
+						{JSON.stringify(value, extReplacer, 2)}
 					</CardRow>
 				))}
 			</CardContent>

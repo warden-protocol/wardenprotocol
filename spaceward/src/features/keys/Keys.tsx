@@ -336,7 +336,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 							) : (
 								<div className="flex justify-between items-center w-full">
 									<input
-										className="font-display text-xl font-bold tracking-[0.1px] focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0"
+										className="font-display text-xl font-bold tracking-[0.1px] focus-visible:!ring-0 focus-visible:!ring-offset-0 !ring-0 border-0 outline-0 max-w-[80%]"
 										value={nameInput}
 										onChange={(e) =>
 											setNameInput(e.target.value)

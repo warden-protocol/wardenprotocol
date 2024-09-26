@@ -49,7 +49,7 @@ func newActionsQuery(method *abi.Method, args []interface{}) (*types.QueryAction
 
 	var input ActionsInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to ValidatorsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to ActionsInput struct: %s", err)
 	}
 
 	if bytes.Equal(input.Pagination.Key, []byte{0}) {

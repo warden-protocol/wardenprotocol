@@ -5,7 +5,7 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "NewAdmin",
+				"name": "newAdmin",
 				"type": "address"
 			},
 			{
@@ -30,7 +30,7 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "NewWriter",
+				"name": "newWriter",
 				"type": "address"
 			},
 			{
@@ -74,35 +74,103 @@
 			{
 				"indexed": false,
 				"internalType": "int32",
-				"name": "key_type",
+				"name": "keyType",
 				"type": "int32"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint64",
-				"name": "space_id",
+				"name": "spaceId",
 				"type": "uint64"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint64",
-				"name": "keychain_id",
+				"name": "keychainId",
 				"type": "uint64"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint64",
-				"name": "approve_template_id",
+				"name": "approveTemplateId",
 				"type": "uint64"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint64",
-				"name": "reject_template_id",
+				"name": "rejectTemplateId",
 				"type": "uint64"
 			}
 		],
 		"name": "NewKey",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			}
+		],
+		"name": "NewKeychain",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "ownersCount",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "approveAdminTemplateId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "rejectAdminTemplateId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "approveSignTemplateId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "rejectSignTemplateId",
+				"type": "uint64"
+			}
+		],
+		"name": "NewSpace",
 		"type": "event"
 	},
 	{
@@ -129,6 +197,50 @@
 			}
 		],
 		"name": "RejectSignRequest",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "keychainId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "admin",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "adminsCount",
+				"type": "uint64"
+			}
+		],
+		"name": "RemoveKeychainAdmin",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			}
+		],
+		"name": "UpdateKeychain",
 		"type": "event"
 	},
 	{
@@ -177,6 +289,135 @@
 			}
 		],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			},
+			{
+				"internalType": "int32[]",
+				"name": "deriveAddresses",
+				"type": "int32[]"
+			}
+		],
+		"name": "allKeys",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "uint64",
+								"name": "Id",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "SpaceId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "KeychainId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "int32",
+								"name": "Type",
+								"type": "int32"
+							},
+							{
+								"internalType": "bytes",
+								"name": "PublicKey",
+								"type": "bytes"
+							},
+							{
+								"internalType": "uint64",
+								"name": "ApproveTemplateId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "RejectTemplateId",
+								"type": "uint64"
+							}
+						],
+						"internalType": "struct Key",
+						"name": "Key",
+						"type": "tuple"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "Address",
+								"type": "string"
+							},
+							{
+								"internalType": "int32",
+								"name": "Type",
+								"type": "int32"
+							}
+						],
+						"internalType": "struct AddressesResponse[]",
+						"name": "Addresses",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeyResponse[]",
+				"name": "keys",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -231,6 +472,812 @@
 		"inputs": [
 			{
 				"internalType": "uint64",
+				"name": "Id",
+				"type": "uint64"
+			},
+			{
+				"internalType": "int32[]",
+				"name": "deriveAddresses",
+				"type": "int32[]"
+			}
+		],
+		"name": "keyById",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "uint64",
+								"name": "Id",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "SpaceId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "KeychainId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "int32",
+								"name": "Type",
+								"type": "int32"
+							},
+							{
+								"internalType": "bytes",
+								"name": "PublicKey",
+								"type": "bytes"
+							},
+							{
+								"internalType": "uint64",
+								"name": "ApproveTemplateId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "RejectTemplateId",
+								"type": "uint64"
+							}
+						],
+						"internalType": "struct Key",
+						"name": "Key",
+						"type": "tuple"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "Address",
+								"type": "string"
+							},
+							{
+								"internalType": "int32",
+								"name": "Type",
+								"type": "int32"
+							}
+						],
+						"internalType": "struct AddressesResponse[]",
+						"name": "Addresses",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeyResponse",
+				"name": "key",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "Id",
+				"type": "uint64"
+			}
+		],
+		"name": "keyRequestById",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "SpaceId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "KeychainId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "int32",
+						"name": "KeyType",
+						"type": "int32"
+					},
+					{
+						"internalType": "int32",
+						"name": "Status",
+						"type": "int32"
+					},
+					{
+						"internalType": "string",
+						"name": "RejectReason",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectTemplateId",
+						"type": "uint64"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "DeductedKeychainFees",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeyRequest",
+				"name": "keyRequest",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			},
+			{
+				"internalType": "uint64",
+				"name": "keychainId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "int32",
+				"name": "status",
+				"type": "int32"
+			},
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			}
+		],
+		"name": "keyRequests",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "SpaceId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "KeychainId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "int32",
+						"name": "KeyType",
+						"type": "int32"
+					},
+					{
+						"internalType": "int32",
+						"name": "Status",
+						"type": "int32"
+					},
+					{
+						"internalType": "string",
+						"name": "RejectReason",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectTemplateId",
+						"type": "uint64"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "DeductedKeychainFees",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeyRequest[]",
+				"name": "keys",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "keychainById",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "Name",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Admins",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Writers",
+						"type": "string[]"
+					},
+					{
+						"components": [
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "denom",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "amount",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Coin[]",
+								"name": "KeyReq",
+								"type": "tuple[]"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "denom",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "amount",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Coin[]",
+								"name": "SigReq",
+								"type": "tuple[]"
+							}
+						],
+						"internalType": "struct KeychainFees",
+						"name": "Fees",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "Description",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "Url",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "KeybaseId",
+						"type": "string"
+					}
+				],
+				"internalType": "struct Keychain",
+				"name": "keychain",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			}
+		],
+		"name": "keychains",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "Name",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Admins",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Writers",
+						"type": "string[]"
+					},
+					{
+						"components": [
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "denom",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "amount",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Coin[]",
+								"name": "KeyReq",
+								"type": "tuple[]"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "denom",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "amount",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Coin[]",
+								"name": "SigReq",
+								"type": "tuple[]"
+							}
+						],
+						"internalType": "struct KeychainFees",
+						"name": "Fees",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "Description",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "Url",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "KeybaseId",
+						"type": "string"
+					}
+				],
+				"internalType": "struct Keychain[]",
+				"name": "keychain",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			},
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "int32[]",
+				"name": "deriveAddresses",
+				"type": "int32[]"
+			}
+		],
+		"name": "keysBySpaceId",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "uint64",
+								"name": "Id",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "SpaceId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "KeychainId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "int32",
+								"name": "Type",
+								"type": "int32"
+							},
+							{
+								"internalType": "bytes",
+								"name": "PublicKey",
+								"type": "bytes"
+							},
+							{
+								"internalType": "uint64",
+								"name": "ApproveTemplateId",
+								"type": "uint64"
+							},
+							{
+								"internalType": "uint64",
+								"name": "RejectTemplateId",
+								"type": "uint64"
+							}
+						],
+						"internalType": "struct Key",
+						"name": "Key",
+						"type": "tuple"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "Address",
+								"type": "string"
+							},
+							{
+								"internalType": "int32",
+								"name": "Type",
+								"type": "int32"
+							}
+						],
+						"internalType": "struct AddressesResponse[]",
+						"name": "Addresses",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeyResponse[]",
+				"name": "keys",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "KeyReq",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "SigReq",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeychainFees",
+				"name": "keychainFees",
+				"type": "tuple"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "url",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "keybaseId",
+				"type": "string"
+			}
+		],
+		"name": "newKeychain",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "approveAdminTemplateId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "rejectAdminTemplateId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "approveSignTemplateId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "rejectSignTemplateId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "address[]",
+				"name": "additionalOwners",
+				"type": "address[]"
+			}
+		],
+		"name": "newSpace",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
 				"name": "requestId",
 				"type": "uint64"
 			},
@@ -265,6 +1312,586 @@
 			}
 		],
 		"name": "rejectSignRequest",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "keychainId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "address",
+				"name": "admin",
+				"type": "address"
+			}
+		],
+		"name": "removeKeychainAdmin",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "signRequestById",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "KeyId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bytes",
+						"name": "DataForSigning",
+						"type": "bytes"
+					},
+					{
+						"internalType": "int32",
+						"name": "Status",
+						"type": "int32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "Result",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "EncryptionKey",
+						"type": "bytes"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "DeductedKeychainFees",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct SignRequest",
+				"name": "signRequest",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			},
+			{
+				"internalType": "uint64",
+				"name": "keychainId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "int32",
+				"name": "status",
+				"type": "int32"
+			}
+		],
+		"name": "signRequests",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "KeyId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bytes",
+						"name": "DataForSigning",
+						"type": "bytes"
+					},
+					{
+						"internalType": "int32",
+						"name": "Status",
+						"type": "int32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "Result",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "EncryptionKey",
+						"type": "bytes"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "DeductedKeychainFees",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct SignRequest[]",
+				"name": "signRequests",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "spaceById",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Owners",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint64",
+						"name": "Nonce",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveAdminTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectAdminTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveSignTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectSignTemplateId",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct Space",
+				"name": "space",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			}
+		],
+		"name": "spaces",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Owners",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint64",
+						"name": "Nonce",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveAdminTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectAdminTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveSignTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectSignTemplateId",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct Space[]",
+				"name": "spaces",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "offset",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limit",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bool",
+						"name": "countTotal",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reverse",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct PageRequest",
+				"name": "pageRequest",
+				"type": "tuple"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "spacesByOwner",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "Id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "Creator",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "Owners",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint64",
+						"name": "Nonce",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveAdminTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectAdminTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "ApproveSignTemplateId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint64",
+						"name": "RejectSignTemplateId",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct Space[]",
+				"name": "spaces",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "nextKey",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "total",
+						"type": "uint64"
+					}
+				],
+				"internalType": "struct PageResponse",
+				"name": "pageResponse",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "keychainId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "KeyReq",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "denom",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Coin[]",
+						"name": "SigReq",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct KeychainFees",
+				"name": "keychainFees",
+				"type": "tuple"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "url",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "keybaseId",
+				"type": "string"
+			}
+		],
+		"name": "updateKeychain",
 		"outputs": [
 			{
 				"internalType": "bool",

@@ -89,8 +89,10 @@ func newActionByIdQuery(args []interface{}) (*types.QueryActionByIdRequest, erro
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
 	}
 
-	actionId := args[0].(uint64)
-
+	actionId, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for actionId, got %T", args[0])
+	}
 	return &types.QueryActionByIdRequest{
 		Id: actionId,
 	}, nil

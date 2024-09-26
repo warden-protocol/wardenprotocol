@@ -34,6 +34,7 @@ import (
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	evmosclient "github.com/evmos/evmos/v18/client"
 	"github.com/evmos/evmos/v18/client/debug"
+
 	evmosserver "github.com/evmos/evmos/v18/server"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
@@ -53,9 +54,10 @@ func initRootCmd(
 		snapshot.Cmd(newApp),
 	)
 
-	evmosserver.AddCommands(
+	server.AddCommands(
 		rootCmd,
-		evmosserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+		app.DefaultNodeHome,
+		newApp,
 		appExport,
 		addModuleInitFlags,
 	)
@@ -74,6 +76,7 @@ func initRootCmd(
 		queryCommand(),
 		txCommand(),
 		evmosclient.KeyCommands(app.DefaultNodeHome),
+		evmosserver.NewIndexTxCmd(),
 	)
 }
 

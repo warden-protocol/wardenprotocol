@@ -19,20 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName      = "/warden.warden.v1beta3.Msg/UpdateParams"
-	Msg_NewSpace_FullMethodName          = "/warden.warden.v1beta3.Msg/NewSpace"
-	Msg_AddSpaceOwner_FullMethodName     = "/warden.warden.v1beta3.Msg/AddSpaceOwner"
-	Msg_RemoveSpaceOwner_FullMethodName  = "/warden.warden.v1beta3.Msg/RemoveSpaceOwner"
-	Msg_NewKeychain_FullMethodName       = "/warden.warden.v1beta3.Msg/NewKeychain"
-	Msg_AddKeychainWriter_FullMethodName = "/warden.warden.v1beta3.Msg/AddKeychainWriter"
-	Msg_UpdateSpace_FullMethodName       = "/warden.warden.v1beta3.Msg/UpdateSpace"
-	Msg_UpdateKeychain_FullMethodName    = "/warden.warden.v1beta3.Msg/UpdateKeychain"
-	Msg_NewKeyRequest_FullMethodName     = "/warden.warden.v1beta3.Msg/NewKeyRequest"
-	Msg_FulfilKeyRequest_FullMethodName  = "/warden.warden.v1beta3.Msg/FulfilKeyRequest"
-	Msg_UpdateKey_FullMethodName         = "/warden.warden.v1beta3.Msg/UpdateKey"
-	Msg_NewSignRequest_FullMethodName    = "/warden.warden.v1beta3.Msg/NewSignRequest"
-	Msg_FulfilSignRequest_FullMethodName = "/warden.warden.v1beta3.Msg/FulfilSignRequest"
-	Msg_AddKeychainAdmin_FullMethodName  = "/warden.warden.v1beta3.Msg/AddKeychainAdmin"
+	Msg_UpdateParams_FullMethodName        = "/warden.warden.v1beta3.Msg/UpdateParams"
+	Msg_NewSpace_FullMethodName            = "/warden.warden.v1beta3.Msg/NewSpace"
+	Msg_AddSpaceOwner_FullMethodName       = "/warden.warden.v1beta3.Msg/AddSpaceOwner"
+	Msg_RemoveSpaceOwner_FullMethodName    = "/warden.warden.v1beta3.Msg/RemoveSpaceOwner"
+	Msg_NewKeychain_FullMethodName         = "/warden.warden.v1beta3.Msg/NewKeychain"
+	Msg_AddKeychainWriter_FullMethodName   = "/warden.warden.v1beta3.Msg/AddKeychainWriter"
+	Msg_UpdateSpace_FullMethodName         = "/warden.warden.v1beta3.Msg/UpdateSpace"
+	Msg_UpdateKeychain_FullMethodName      = "/warden.warden.v1beta3.Msg/UpdateKeychain"
+	Msg_NewKeyRequest_FullMethodName       = "/warden.warden.v1beta3.Msg/NewKeyRequest"
+	Msg_FulfilKeyRequest_FullMethodName    = "/warden.warden.v1beta3.Msg/FulfilKeyRequest"
+	Msg_UpdateKey_FullMethodName           = "/warden.warden.v1beta3.Msg/UpdateKey"
+	Msg_NewSignRequest_FullMethodName      = "/warden.warden.v1beta3.Msg/NewSignRequest"
+	Msg_FulfilSignRequest_FullMethodName   = "/warden.warden.v1beta3.Msg/FulfilSignRequest"
+	Msg_AddKeychainAdmin_FullMethodName    = "/warden.warden.v1beta3.Msg/AddKeychainAdmin"
+	Msg_RemoveKeychainAdmin_FullMethodName = "/warden.warden.v1beta3.Msg/RemoveKeychainAdmin"
 )
 
 // MsgClient is the client API for Msg service.
@@ -68,6 +69,8 @@ type MsgClient interface {
 	FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequest, opts ...grpc.CallOption) (*MsgFulfilSignRequestResponse, error)
 	// Add a new admin to a Keychain
 	AddKeychainAdmin(ctx context.Context, in *MsgAddKeychainAdminRequest, opts ...grpc.CallOption) (*MsgAddKeychainAdminResponse, error)
+	// / Remove admin from a Keychain
+	RemoveKeychainAdmin(ctx context.Context, in *MsgRemoveKeychainAdminRequest, opts ...grpc.CallOption) (*MsgRemoveKeychainAdminResponse, error)
 }
 
 type msgClient struct {
@@ -204,6 +207,15 @@ func (c *msgClient) AddKeychainAdmin(ctx context.Context, in *MsgAddKeychainAdmi
 	return out, nil
 }
 
+func (c *msgClient) RemoveKeychainAdmin(ctx context.Context, in *MsgRemoveKeychainAdminRequest, opts ...grpc.CallOption) (*MsgRemoveKeychainAdminResponse, error) {
+	out := new(MsgRemoveKeychainAdminResponse)
+	err := c.cc.Invoke(ctx, Msg_RemoveKeychainAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -237,6 +249,8 @@ type MsgServer interface {
 	FulfilSignRequest(context.Context, *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error)
 	// Add a new admin to a Keychain
 	AddKeychainAdmin(context.Context, *MsgAddKeychainAdminRequest) (*MsgAddKeychainAdminResponse, error)
+	// / Remove admin from a Keychain
+	RemoveKeychainAdmin(context.Context, *MsgRemoveKeychainAdminRequest) (*MsgRemoveKeychainAdminResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -285,6 +299,9 @@ func (UnimplementedMsgServer) FulfilSignRequest(context.Context, *MsgFulfilSignR
 }
 func (UnimplementedMsgServer) AddKeychainAdmin(context.Context, *MsgAddKeychainAdminRequest) (*MsgAddKeychainAdminResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddKeychainAdmin not implemented")
+}
+func (UnimplementedMsgServer) RemoveKeychainAdmin(context.Context, *MsgRemoveKeychainAdminRequest) (*MsgRemoveKeychainAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveKeychainAdmin not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -551,6 +568,24 @@ func _Msg_AddKeychainAdmin_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RemoveKeychainAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRemoveKeychainAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RemoveKeychainAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_RemoveKeychainAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RemoveKeychainAdmin(ctx, req.(*MsgRemoveKeychainAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -613,6 +648,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddKeychainAdmin",
 			Handler:    _Msg_AddKeychainAdmin_Handler,
+		},
+		{
+			MethodName: "RemoveKeychainAdmin",
+			Handler:    _Msg_RemoveKeychainAdmin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

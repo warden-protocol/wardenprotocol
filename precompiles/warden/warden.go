@@ -110,7 +110,31 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		bz, err = p.RemoveKeychainAdminMethod(ctx, evm.Origin, stateDB, method, args)
 	case UpdateKeychainMethod:
 		bz, err = p.UpdateKeychainMethod(ctx, evm.Origin, stateDB, method, args)
-		// queries
+	// queries
+	case AllKeysMethod:
+		bz, err = p.AllKeysMethod(ctx, evm.Origin, stateDB, method, args)
+	case KeyByIdMethod:
+		bz, err = p.KeyByIdMethod(ctx, evm.Origin, stateDB, method, args)
+	case KeysBySpaceIdMethod:
+		bz, err = p.KeysBySpaceIdMethod(ctx, evm.Origin, stateDB, method, args)
+	case KeyRequestMethod:
+		bz, err = p.KeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+	case KeyRequestsMethod:
+		bz, err = p.KeyRequestsMethod(ctx, evm.Origin, stateDB, method, args)
+	case KeychainMethod:
+		bz, err = p.KeychainMethod(ctx, evm.Origin, stateDB, method, args)
+	case KeychainsMethod:
+		bz, err = p.KeychainsMethod(ctx, evm.Origin, stateDB, method, args)
+	case SignRequestByIdMethod:
+		bz, err = p.SignRequestByIdMethod(ctx, evm.Origin, stateDB, method, args)
+	case SignRequestsMethod:
+		bz, err = p.SignRequestsMethod(ctx, evm.Origin, stateDB, method, args)
+	case SpaceByIdMethod:
+		bz, err = p.SpaceByIdMethod(ctx, evm.Origin, stateDB, method, args)
+	case SpacesMethodMethod:
+		bz, err = p.SpacesMethod(ctx, evm.Origin, stateDB, method, args)
+	case SpacesByOwnerMethod:
+		bz, err = p.SpacesByOwnerMethod(ctx, evm.Origin, stateDB, method, args)
 	}
 
 	if err != nil {

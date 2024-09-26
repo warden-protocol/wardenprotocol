@@ -118,7 +118,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ authority: %s, request_id: %d, status: %s resul: %s }",
+			"{ authority: %s, request_id: %d, status: %s, resul: %s }",
 			msgFulfilKeyRequest.Creator,
 			msgFulfilKeyRequest.RequestId,
 			msgFulfilKeyRequest.Status,
@@ -163,7 +163,7 @@ func (p Precompile) FulfilSignRequestMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ authority: %s, request_id: %d, status: %s resul: %s }",
+			"{ authority: %s, request_id: %d, status: %s, resul: %s }",
 			msgFulfilSignRequest.Creator,
 			msgFulfilSignRequest.RequestId,
 			msgFulfilSignRequest.Status,
@@ -195,7 +195,40 @@ func (p Precompile) NewKeychainMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	panic("Not implemented")
+	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
+
+	msgNewKeychain, err := newMsgNewKeychain(method, args, origin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.Logger(ctx).Debug(
+		"tx called",
+		"method", method.Name,
+		"args", fmt.Sprintf(
+			"{ creator: %s, name: %s, keychain_fees: %v, description: %s, url: %s, keybaseId: %s }",
+			msgNewKeychain.Creator,
+			msgNewKeychain.Name,
+			msgNewKeychain.KeychainFees,
+			msgNewKeychain.Description,
+			msgNewKeychain.Url,
+			msgNewKeychain.KeybaseId,
+		),
+	)
+
+	msgNewKeychainResponse, err := msgServer.NewKeychain(ctx, msgNewKeychain)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// emit event
+	if err = p.EmitNewKeychainEvent(ctx, origin, stateDB); err != nil {
+		return nil, err
+	}
+
+	return method.Outputs.Pack(msgNewKeychainResponse.Id)
 }
 
 func (p Precompile) NewSpaceMethod(
@@ -205,7 +238,40 @@ func (p Precompile) NewSpaceMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	panic("Not implemented")
+	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
+
+	msgNewSpace, err := newMsgNewSpace(args, origin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.Logger(ctx).Debug(
+		"tx called",
+		"method", method.Name,
+		"args", fmt.Sprintf(
+			"{ creator: %s, approve_admin_template_id: %d, reject_admin_template_id: %d, approve_sign_template_id: %d, reject_sign_template_id: %d, additional_owners: %v }",
+			msgNewSpace.Creator,
+			msgNewSpace.ApproveAdminTemplateId,
+			msgNewSpace.RejectAdminTemplateId,
+			msgNewSpace.ApproveSignTemplateId,
+			msgNewSpace.RejectSignTemplateId,
+			msgNewSpace.AdditionalOwners,
+		),
+	)
+
+	msgNewSpaceResponse, err := msgServer.NewSpace(ctx, msgNewSpace)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// emit event
+	if err = p.EmitNewSpaceEvent(ctx, origin, stateDB); err != nil {
+		return nil, err
+	}
+
+	return method.Outputs.Pack(msgNewSpaceResponse.Id)
 }
 
 func (p Precompile) RemoveKeychainAdminMethod(
@@ -215,7 +281,35 @@ func (p Precompile) RemoveKeychainAdminMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	panic("Not implemented")
+	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
+
+	msgRemoveKeychainAdmin, admin, err := newMsgRemoveKeychainAdmin(args, origin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.Logger(ctx).Debug(
+		"tx called",
+		"method", method.Name,
+		"args", fmt.Sprintf(
+			"{ authority: %s, keychain_id: %d, admin: %s }",
+			msgRemoveKeychainAdmin.Authority,
+			msgRemoveKeychainAdmin.KeychainId,
+			msgRemoveKeychainAdmin.Admin,
+		),
+	)
+
+	if _, err := msgServer.RemoveKeychainAdmin(ctx, msgRemoveKeychainAdmin); err != nil {
+		return nil, err
+	}
+
+	// emit event
+	if err = p.EmitRemoveKeychainAdmin(ctx, *admin, stateDB); err != nil {
+		return nil, err
+	}
+
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) UpdateKeychainMethod(
@@ -225,5 +319,37 @@ func (p Precompile) UpdateKeychainMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	panic("Not implemented")
+	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
+
+	msgUpdateKeychain, err := newMsgUpdateKeychain(method, args, origin)
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.Logger(ctx).Debug(
+		"tx called",
+		"method", method.Name,
+		"args", fmt.Sprintf(
+			"{ creator: %s, keychain_id: %d, name: %s, keychain_fees: %v, description: %s, url: %s, keybaseId: %s }",
+			msgUpdateKeychain.Creator,
+			msgUpdateKeychain.KeychainId,
+			msgUpdateKeychain.Name,
+			msgUpdateKeychain.KeychainFees,
+			msgUpdateKeychain.Description,
+			msgUpdateKeychain.Url,
+			msgUpdateKeychain.KeybaseId,
+		),
+	)
+
+	if _, err = msgServer.UpdateKeychain(ctx, msgUpdateKeychain); err != nil {
+		return nil, err
+	}
+
+	// emit event
+	if err = p.EmitUpdateKeychainEvent(ctx, origin, stateDB); err != nil {
+		return nil, err
+	}
+
+	return method.Outputs.Pack(true)
 }

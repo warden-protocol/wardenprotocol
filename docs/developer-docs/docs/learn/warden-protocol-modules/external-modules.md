@@ -33,11 +33,11 @@ To learn more, see the following:
 
 ## x/oracle
 
-The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices on-chain in **Slinky** (an oracle service).
+The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices on-chain in **Skip:Connect** (an oracle service).
 
 To learn more, see the following:
 
-- [Slinky documentation](https://docs.skip.money/slinky/overview)
+- [Connect documentation](https://docs.skip.build/connect/introduction)
 - [`x/oracle` on GitHub](https://github.com/skip-mev/slinky/tree/main/x/oracle)
 - [Warden docs: Oracle services](/learn/oracle-services)
 

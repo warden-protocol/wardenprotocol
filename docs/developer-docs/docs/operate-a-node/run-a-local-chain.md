@@ -244,7 +244,7 @@ In the previous steps, you configured your node with the minimum settings requir
 
 #### Create a Keychain
 
-1. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name, and the chain ID:
+1. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name and the chain ID:
    
    ```bash
    wardend tx warden new-keychain \
@@ -279,7 +279,7 @@ In the previous steps, you configured your node with the minimum settings requir
    
 #### Create a Space
 
-1. To create a Space, run the following command. Specify your key name, and the chain ID:
+1. To create a Space, run the following command. Specify your key name and the chain ID:
    
    ```bash
    wardend tx warden new-space \
@@ -295,7 +295,7 @@ In the previous steps, you configured your node with the minimum settings requir
    wardend query warden spaces
    ```
    
-   The output should look like this::
+   The output should look like this:
    
    ```bash
    pagination:

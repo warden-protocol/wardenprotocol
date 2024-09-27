@@ -17,12 +17,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 
-	evmoskr "github.com/evmos/evmos/v18/crypto/keyring"
+	evmoskr "github.com/evmos/evmos/v20/crypto/keyring"
 
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	authvestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
-	vestingcli "github.com/evmos/evmos/v18/x/vesting/client/cli"
-	vestingtypes "github.com/evmos/evmos/v18/x/vesting/types"
+	vestingcli "github.com/evmos/evmos/v20/x/vesting/client/cli"
+	vestingtypes "github.com/evmos/evmos/v20/x/vesting/types"
 )
 
 const (

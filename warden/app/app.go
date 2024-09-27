@@ -78,13 +78,13 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
-	evmosante "github.com/evmos/evmos/v18/app/ante"
-	ethante "github.com/evmos/evmos/v18/app/ante/evm"
-	srvflags "github.com/evmos/evmos/v18/server/flags"
-	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
-	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
+	evmosante "github.com/evmos/evmos/v20/app/ante"
+	ethante "github.com/evmos/evmos/v20/app/ante/evm"
+	srvflags "github.com/evmos/evmos/v20/server/flags"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 
-	evmosencodingcodec "github.com/evmos/evmos/v18/encoding/codec"
+	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"

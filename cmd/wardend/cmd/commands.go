@@ -32,9 +32,9 @@ import (
 
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	evmosclient "github.com/evmos/evmos/v18/client"
-	"github.com/evmos/evmos/v18/client/debug"
-	evmosserver "github.com/evmos/evmos/v18/server"
+	evmosclient "github.com/evmos/evmos/v20/client"
+	"github.com/evmos/evmos/v20/client/debug"
+	evmosserver "github.com/evmos/evmos/v20/server"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 

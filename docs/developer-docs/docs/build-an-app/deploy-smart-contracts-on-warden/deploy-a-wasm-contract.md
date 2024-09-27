@@ -197,7 +197,7 @@ wardend start
 
 ## 6. Store the contract on-chain
 
-To store your contract on the Warden chain, run the command below. Replace `my-key-name` and `chain_123-1` with correct values from [Prerequisites](#prerequisites) (typically `shulgin`):
+To store your contract on the Warden chain, run the command below. Replace `my-key-name` and `chain_123-1` with correct values from [Prerequisites](#prerequisites):
 
 ```bash
 wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \

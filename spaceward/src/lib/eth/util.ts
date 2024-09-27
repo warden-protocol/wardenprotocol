@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { ETH_CHAINID_MAP, ETH_CHAIN_CONFIG } from "./constants";
+import { capitalize } from "@/features/modals/util";
 
 export const REVERSE_ETH_CHAINID_MAP = Object.fromEntries(
 	Object.entries(ETH_CHAINID_MAP).map(([k, v]) => [v, k]),
@@ -16,7 +17,9 @@ export const isSupportedNetwork = (
 export const getProvider = (type: SupportedNetwork) => {
 	const chainId = ETH_CHAINID_MAP[type];
 	const config = ETH_CHAIN_CONFIG[chainId];
-	const token = config?.token ?? "ETH";
+	const tokenSymbol = config?.token?.symbol ?? "ETH";
+	const tokenName = config?.token?.name ?? "Ethereum";
+	const title = config?.title ?? capitalize(type);
 
 	if (!providers[type]) {
 		if (!chainId || !config) {
@@ -53,7 +56,7 @@ export const getProvider = (type: SupportedNetwork) => {
 	}
 
 	const provider = providers[type];
-	return { provider, token };
+	return { provider, tokenSymbol, tokenName, title };
 };
 
 export const getProviderByChainId = (chainId: string) => {

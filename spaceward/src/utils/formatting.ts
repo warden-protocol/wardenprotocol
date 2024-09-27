@@ -1,5 +1,5 @@
 import { KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action"
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 
 export function prettyKeyType(type: KeyType | string) {
 	switch (type) {
@@ -28,3 +28,16 @@ export function prettyActionStatus(s: ActionStatus | string) {
 export function prettyBytes(b: Uint8Array) {
 	return b.reduce((s, v) => s + v.toString(16).padStart(2, "0"), "");
 }
+
+export const extReplacer = (_: any, v: any) =>
+	typeof v === "bigint"
+		? {
+				type: "bigint",
+				value: v.toString(),
+			}
+		: v instanceof Uint8Array
+			? {
+					type: "Uint8Array",
+					value: Array.from(v),
+				}
+			: v;

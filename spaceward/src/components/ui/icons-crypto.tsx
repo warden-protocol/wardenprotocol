@@ -292,9 +292,9 @@ export const NetworkIcons: Record<
 					gradientUnits="userSpaceOnUse"
 					gradientTransform="translate(22.1185 3.26671) scale(7.79125 7.93393)"
 				>
-					<stop stop-color="#FBEAF3" stop-opacity="0.6" />
-					<stop offset="0.6807" stop-color="#A087BF" />
-					<stop offset="1" stop-color="#17102E" />
+					<stop stopColor="#FBEAF3" stopOpacity="0.6" />
+					<stop offset="0.6807" stopColor="#A087BF" />
+					<stop offset="1" stopColor="#17102E" />
 				</radialGradient>
 				<radialGradient
 					id="paint1_radial_4125_12557"
@@ -304,9 +304,9 @@ export const NetworkIcons: Record<
 					gradientUnits="userSpaceOnUse"
 					gradientTransform="translate(17.7838 6.64925) scale(19.0623 19.4114)"
 				>
-					<stop stop-color="#FBEAF3" stop-opacity="0.6" />
-					<stop offset="0.6807" stop-color="#A087BF" />
-					<stop offset="1" stop-color="#17102E" />
+					<stop stopColor="#FBEAF3" stopOpacity="0.6" />
+					<stop offset="0.6807" stopColor="#A087BF" />
+					<stop offset="1" stopColor="#17102E" />
 				</radialGradient>
 				<linearGradient
 					id="paint2_linear_4125_12557"
@@ -316,8 +316,8 @@ export const NetworkIcons: Record<
 					y2="3.70373"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop stop-color="#9AD9E5" />
-					<stop offset="0.6202" stop-color="white" stop-opacity="0" />
+					<stop stopColor="#9AD9E5" />
+					<stop offset="0.6202" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint3_linear_4125_12557"
@@ -327,8 +327,8 @@ export const NetworkIcons: Record<
 					y2="14.2314"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint4_linear_4125_12557"
@@ -338,8 +338,8 @@ export const NetworkIcons: Record<
 					y2="18.1153"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop stop-color="#384EA2" />
-					<stop offset="0.9952" stop-color="#D54799" />
+					<stop stopColor="#384EA2" />
+					<stop offset="0.9952" stopColor="#D54799" />
 				</linearGradient>
 				<linearGradient
 					id="paint5_linear_4125_12557"
@@ -349,8 +349,8 @@ export const NetworkIcons: Record<
 					y2="23.7993"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint6_linear_4125_12557"
@@ -360,8 +360,8 @@ export const NetworkIcons: Record<
 					y2="18.1153"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop stop-color="#2B2F82" />
-					<stop offset="0.9952" stop-color="#72439A" />
+					<stop stopColor="#2B2F82" />
+					<stop offset="0.9952" stopColor="#72439A" />
 				</linearGradient>
 				<linearGradient
 					id="paint7_linear_4125_12557"
@@ -371,8 +371,8 @@ export const NetworkIcons: Record<
 					y2="14.2684"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop stop-color="#2B2F82" />
-					<stop offset="0.9952" stop-color="#A14298" />
+					<stop stopColor="#2B2F82" />
+					<stop offset="0.9952" stopColor="#A14298" />
 				</linearGradient>
 				<linearGradient
 					id="paint8_linear_4125_12557"
@@ -382,8 +382,8 @@ export const NetworkIcons: Record<
 					y2="6.36639"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint9_linear_4125_12557"
@@ -393,8 +393,8 @@ export const NetworkIcons: Record<
 					y2="20.4008"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint10_linear_4125_12557"
@@ -404,8 +404,8 @@ export const NetworkIcons: Record<
 					y2="20.1522"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint11_linear_4125_12557"
@@ -415,8 +415,8 @@ export const NetworkIcons: Record<
 					y2="21.4365"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint12_linear_4125_12557"
@@ -426,8 +426,8 @@ export const NetworkIcons: Record<
 					y2="21.1703"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint13_linear_4125_12557"
@@ -437,8 +437,8 @@ export const NetworkIcons: Record<
 					y2="19.9226"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					id="paint14_linear_4125_12557"
@@ -448,8 +448,8 @@ export const NetworkIcons: Record<
 					y2="17.9167"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.2888" stop-color="white" />
-					<stop offset="0.7796" stop-color="white" stop-opacity="0" />
+					<stop offset="0.2888" stopColor="white" />
+					<stop offset="0.7796" stopColor="white" stopOpacity="0" />
 				</linearGradient>
 			</defs>
 		</svg>

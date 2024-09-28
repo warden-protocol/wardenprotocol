@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"path/filepath"
 
 	"cosmossdk.io/core/appmodule"
@@ -19,6 +20,8 @@ import (
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
+	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
+	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/types"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -43,7 +46,6 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
-	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cast"
 
 	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
@@ -59,13 +61,17 @@ import (
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 
 	// evmos
-	srvflags "github.com/evmos/evmos/v18/server/flags"
-	"github.com/evmos/evmos/v18/x/evm"
-	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
-	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
-	"github.com/evmos/evmos/v18/x/feemarket"
-	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
-	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
+	srvflags "github.com/evmos/evmos/v20/server/flags"
+	"github.com/evmos/evmos/v20/x/evm"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
+	"github.com/evmos/evmos/v20/x/feemarket"
+	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
+	evmtransferkeeper "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
+	evmstaking "github.com/evmos/evmos/v20/x/staking/keeper"
+	evmvesting "github.com/evmos/evmos/v20/x/vesting/keeper"
+	vestingtypes "github.com/evmos/evmos/v20/x/vesting/types"
 	// this line is used by starport scaffolding # ibc/app/import
 )
 
@@ -88,6 +94,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		// evm kv store
 		storetypes.NewKVStoreKey(evmtypes.StoreKey),
 		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
+		storetypes.NewKVStoreKey(stakingtypes.StoreKey),
+		storetypes.NewKVStoreKey(vestingtypes.StoreKey),
 		// feemarket kv store
 		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
 		storetypes.NewTransientStoreKey(feemarkettypes.TransientKey),
@@ -119,6 +127,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
 
+	authAddr := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
 		app.appCodec,
@@ -127,7 +137,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.StakingKeeper,
 		app.UpgradeKeeper,
 		scopedIBCKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	// Register the proposal types
@@ -147,7 +157,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.GmpKeeper = gmpkeeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(gmptypes.ModuleName),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 		app.TransferKeeper,
 	)
 
@@ -162,7 +172,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.AccountKeeper,
 		app.BankKeeper,
 		scopedIBCTransferKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.IBCHooksKeeper = ibchookskeeper.NewKeeper(
@@ -204,7 +214,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.AccountKeeper,
 		scopedICAHostKeeper,
 		app.MsgServiceRouter(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 	app.ICAHostKeeper.WithQueryRouter(app.GRPCQueryRouter())
 
@@ -217,7 +227,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.IBCKeeper.PortKeeper,
 		scopedICAControllerKeeper,
 		app.MsgServiceRouter(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 	app.GovKeeper.SetLegacyRouter(govRouter)
 
@@ -279,14 +289,9 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.BankKeeper,
 		app.StakingKeeper,
 		app.FeeMarketKeeper,
+		app.Erc20Keeper,
 		tracer,
 		app.GetSubspace(evmtypes.ModuleName),
-	)
-
-	// NOTE: we are just adding the default Ethereum precompiles here.
-	// Additional precompiles could be added if desired.
-	app.EvmKeeper.WithPrecompiles(
-		vm.PrecompiledContractsBerlin,
 	)
 
 	// integration point for custom authentication modules
@@ -328,6 +333,58 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
 	app.Ics20WasmHooks.ContractKeeper = &app.WasmKeeper
+
+	app.VestingKeeper = evmvesting.NewKeeper(
+		app.GetKey(vestingtypes.StoreKey),
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.appCodec,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.DistrKeeper,
+		app.StakingKeeper,
+		*app.GovKeeper,
+	)
+
+	// Create the rate limit keeper
+	app.RateLimitKeeper = *ratelimitkeeper.NewKeeper(
+		app.appCodec,
+		runtime.NewKVStoreService(app.GetKey(ratelimittypes.StoreKey)),
+		app.GetSubspace(ratelimittypes.ModuleName),
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		app.BankKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper, // ICS4Wrapper
+	)
+
+	app.EvmTransferKeeper = evmtransferkeeper.NewKeeper(
+		app.appCodec, app.GetKey(ibctransfertypes.StoreKey), app.GetSubspace(ibctransfertypes.ModuleName),
+		app.RateLimitKeeper, // ICS4 Wrapper: ratelimit IBC middleware
+		app.IBCKeeper.ChannelKeeper, app.IBCKeeper.PortKeeper,
+		app.AccountKeeper, app.BankKeeper, scopedIBCTransferKeeper,
+		app.Erc20Keeper, // Add ERC20 Keeper for ERC20 transfers
+		authAddr,
+	)
+
+	// We call this after setting the hooks to ensure that the hooks are set on the keeper
+	evmStaking := &evmstaking.Keeper{
+		app.StakingKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+	}
+
+	app.EvmKeeper.WithStaticPrecompiles(
+		evmkeeper.NewAvailableStaticPrecompiles(
+			*evmStaking,
+			app.DistrKeeper,
+			app.BankKeeper,
+			app.Erc20Keeper,
+			app.VestingKeeper,
+			app.AuthzKeeper,
+			app.EvmTransferKeeper,
+			app.IBCKeeper.ChannelKeeper,
+			*app.GovKeeper,
+		),
+	)
 
 	// register IBC modules
 	if err := app.RegisterModules(

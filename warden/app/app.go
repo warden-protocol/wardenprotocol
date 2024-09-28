@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
 	"io"
 	"os"
 	"path/filepath"
@@ -78,13 +79,16 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
-	evmosante "github.com/evmos/evmos/v18/app/ante"
-	ethante "github.com/evmos/evmos/v18/app/ante/evm"
-	srvflags "github.com/evmos/evmos/v18/server/flags"
-	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
-	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
+	evmosante "github.com/evmos/evmos/v20/app/ante"
+	ethante "github.com/evmos/evmos/v20/app/ante/evm"
+	srvflags "github.com/evmos/evmos/v20/server/flags"
+	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
+	evmtransferkeeper "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
+	vestingkeeper "github.com/evmos/evmos/v20/x/vesting/keeper"
 
-	evmosencodingcodec "github.com/evmos/evmos/v18/encoding/codec"
+	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
@@ -162,8 +166,12 @@ type App struct {
 	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// evmOS
-	EvmKeeper       *evmkeeper.Keeper
-	FeeMarketKeeper feemarketkeeper.Keeper
+	EvmKeeper         *evmkeeper.Keeper
+	FeeMarketKeeper   feemarketkeeper.Keeper
+	Erc20Keeper       erc20keeper.Keeper
+	VestingKeeper     vestingkeeper.Keeper
+	EvmTransferKeeper evmtransferkeeper.Keeper
+	RateLimitKeeper   ratelimitkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager

@@ -385,7 +385,7 @@ func New(
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
 
 	// oracle initialization
-	app.initializeOracle(appOpts)
+	// app.initializeOracle(appOpts)
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)

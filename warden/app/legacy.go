@@ -2,8 +2,9 @@ package app
 
 import (
 	"fmt"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"path/filepath"
+
+	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
@@ -69,7 +70,6 @@ import (
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 	evmtransferkeeper "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
-	evmstaking "github.com/evmos/evmos/v20/x/staking/keeper"
 	evmvesting "github.com/evmos/evmos/v20/x/vesting/keeper"
 	vestingtypes "github.com/evmos/evmos/v20/x/vesting/types"
 	// this line is used by starport scaffolding # ibc/app/import
@@ -94,7 +94,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		// evm kv store
 		storetypes.NewKVStoreKey(evmtypes.StoreKey),
 		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
-		storetypes.NewKVStoreKey(stakingtypes.StoreKey),
 		storetypes.NewKVStoreKey(vestingtypes.StoreKey),
 		// feemarket kv store
 		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
@@ -365,26 +364,25 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		authAddr,
 	)
 
-	// We call this after setting the hooks to ensure that the hooks are set on the keeper
-	evmStaking := &evmstaking.Keeper{
-		app.StakingKeeper,
-		app.AccountKeeper,
-		app.BankKeeper,
-	}
-
+	// NOTE: we are just adding the default Ethereum precompiles here.
+	// Additional precompiles could be added if desired.
 	app.EvmKeeper.WithStaticPrecompiles(
-		evmkeeper.NewAvailableStaticPrecompiles(
-			*evmStaking,
-			app.DistrKeeper,
-			app.BankKeeper,
-			app.Erc20Keeper,
-			app.VestingKeeper,
-			app.AuthzKeeper,
-			app.EvmTransferKeeper,
-			app.IBCKeeper.ChannelKeeper,
-			*app.GovKeeper,
-		),
+		vm.PrecompiledContractsBerlin,
 	)
+
+	// app.EvmKeeper.WithStaticPrecompiles(
+	// 	evmkeeper.NewAvailableStaticPrecompiles(
+	// 		*evmStaking,
+	// 		app.DistrKeeper,
+	// 		app.BankKeeper,
+	// 		app.Erc20Keeper,
+	// 		app.VestingKeeper,
+	// 		app.AuthzKeeper,
+	// 		app.EvmTransferKeeper,
+	// 		app.IBCKeeper.ChannelKeeper,
+	// 		*app.GovKeeper,
+	// 	),
+	// )
 
 	// register IBC modules
 	if err := app.RegisterModules(

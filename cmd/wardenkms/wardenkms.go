@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"log"
 	"log/slog"
@@ -20,11 +21,11 @@ import (
 )
 
 type Config struct {
-	ChainID      string `env:"CHAIN_ID, default=warden_1337-1"`
-	GRPCURL      string `env:"GRPC_URL, default=localhost:9090"`
-	GRPCInsecure bool   `env:"GRPC_INSECURE, default=true"`
-	Mnemonic     string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
-	KeychainId   uint64 `env:"KEYCHAIN_ID, default=1"`
+	ChainID        string                `env:"CHAIN_ID, default=warden_1337-1"`
+	GRPCURLs       GrpcNodeConfigDecoder `env:"GRPC_URLS, default=[{\"GRPCUrl\":\"localhost:9090\",\"GRPCInsecure\":true}] "`
+
+	Mnemonic       string                `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
+	KeychainId     uint64                `env:"KEYCHAIN_ID, default=1"`
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
@@ -38,6 +39,27 @@ type Config struct {
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
 	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
+
+	ConsensusNodeThreshold uint `env:"CONSENSUS_NODE_THRESHOLD, default=1"`
+}
+
+type GrpcNodeConfig struct {
+	GRPCUrl      string
+	GRPCInsecure bool
+}
+
+type GrpcNodeConfigDecoder []GrpcNodeConfig
+
+func (sd *GrpcNodeConfigDecoder) Decode(value string) error {
+	smsProvider := make([]GrpcNodeConfig, 0)
+
+	if err := json.Unmarshal([]byte(value), &smsProvider); err != nil {
+		return fmt.Errorf("invalid map json: %w", err)
+	}
+
+	*sd = smsProvider
+
+	return nil
 }
 
 func main() {
@@ -56,18 +78,26 @@ func main() {
 		return
 	}
 
+	grpcConfigs, err := mapGrpcConfig(cfg.GRPCURLs)
+	if err != nil {
+		logger.Error("failed to initialize grpc configs", "error", err)
+		return
+	}
+
 	app := keychain.NewApp(keychain.Config{
-		Logger:        logger,
-		ChainID:       cfg.ChainID,
-		GRPCURL:       cfg.GRPCURL,
-		GRPCInsecure:  cfg.GRPCInsecure,
-		Mnemonic:      cfg.Mnemonic,
-		KeychainID:    cfg.KeychainId,
-		GasLimit:      cfg.GasLimit,
-		BatchInterval: cfg.BatchInterval,
-		BatchSize:     cfg.BatchSize,
-		TxTimeout:     cfg.TxTimeout,
-		TxFees:        sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
+		BasicConfig: keychain.BasicConfig{
+			Logger:         logger,
+			ChainID:        cfg.ChainID,
+			Mnemonic:       cfg.Mnemonic,
+			KeychainID:     cfg.KeychainId,
+			GasLimit:       cfg.GasLimit,
+			BatchInterval:  cfg.BatchInterval,
+			BatchSize:      cfg.BatchSize,
+			TxTimeout:      cfg.TxTimeout,
+			TxFees:         sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
+		},
+		GRPCConfigs:            grpcConfigs,
+		ConsensusNodeThreshold: cfg.ConsensusNodeThreshold,
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
@@ -120,11 +150,14 @@ func main() {
 	if cfg.HttpAddr != "" {
 		logger.Info("starting HTTP server", "addr", cfg.HttpAddr)
 		http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
-			if app.ConnectionState() == connectivity.Ready {
-				w.WriteHeader(http.StatusOK)
-			} else {
-				w.WriteHeader(http.StatusServiceUnavailable)
+			for _, state := range app.ConnectionState() {
+				if state == connectivity.Ready {
+					w.WriteHeader(http.StatusOK)
+					return
+				}
 			}
+
+			w.WriteHeader(http.StatusServiceUnavailable)
 		})
 		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}
@@ -143,4 +176,20 @@ func bigEndianBytesFromUint32(n uint64) ([4]byte, error) {
 	b := make([]byte, 4)
 	binary.BigEndian.PutUint32(b, uint32(n))
 	return [4]byte(b), nil
+}
+
+func mapGrpcConfig(value GrpcNodeConfigDecoder) ([]keychain.GrpcNodeConfig, error) {
+	if len(value) == 0 {
+		return nil, fmt.Errorf("GRPCUrls must be specified")
+	}
+
+	result := make([]keychain.GrpcNodeConfig, 0)
+	for _, item := range value {
+		result = append(result, keychain.GrpcNodeConfig{
+			GRPCInsecure: item.GRPCInsecure,
+			GRPCURL:      item.GRPCUrl,
+		})
+	}
+
+	return result, nil
 }

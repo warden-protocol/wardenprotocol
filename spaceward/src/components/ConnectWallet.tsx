@@ -34,6 +34,7 @@ export function ConnectWallet() {
 	const { balance } = useAsset("award");
 	const wardAmount = BigInt(balance?.amount || "0");
 	const ward = bigintToFixed(wardAmount, {
+		ceil: true,
 		decimals: 18,
 		display: 2,
 	});

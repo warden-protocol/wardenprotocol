@@ -16,14 +16,14 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
-	evmante "github.com/evmos/evmos/v18/app/ante/evm"
+	evmante "github.com/evmos/evmos/v20/app/ante/evm"
 
 	errorsmod "cosmossdk.io/errors"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
-	cosmosante "github.com/evmos/evmos/v18/app/ante/cosmos"
-	anteutils "github.com/evmos/evmos/v18/app/ante/utils"
-	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	cosmosante "github.com/evmos/evmos/v20/app/ante/cosmos"
+	anteutils "github.com/evmos/evmos/v20/app/ante/utils"
+	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
@@ -40,7 +40,7 @@ type HandlerOptions struct {
 	// evmos
 	FeeMarketKeeper    evmante.FeeMarketKeeper
 	EvmKeeper          evmante.EVMKeeper
-	TxFeeChecker       anteutils.TxFeeChecker
+	TxFeeChecker       ante.TxFeeChecker
 	AccountKeeper      evmtypes.AccountKeeper
 	BankKeeper         evmtypes.BankKeeper
 	DistributionKeeper anteutils.DistributionKeeper

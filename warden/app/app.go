@@ -7,8 +7,6 @@ import (
 	"os"
 	"path/filepath"
 
-	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
-
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -169,7 +167,6 @@ type App struct {
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
 	Erc20Keeper     erc20keeper.Keeper
-	RateLimitKeeper ratelimitkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager

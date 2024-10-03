@@ -21,8 +21,6 @@ import (
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
-	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
-	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/types"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -63,7 +61,6 @@ import (
 
 	// evmos
 	srvflags "github.com/evmos/evmos/v20/server/flags"
-	"github.com/evmos/evmos/v20/x/erc20"
 	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
 	erc20types "github.com/evmos/evmos/v20/x/erc20/types"
 	"github.com/evmos/evmos/v20/x/evm"
@@ -339,17 +336,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
 	app.Ics20WasmHooks.ContractKeeper = &app.WasmKeeper
 
-	// Create the rate limit keeper
-	app.RateLimitKeeper = *ratelimitkeeper.NewKeeper(
-		app.appCodec,
-		runtime.NewKVStoreService(app.GetKey(ratelimittypes.StoreKey)),
-		app.GetSubspace(ratelimittypes.ModuleName),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
-		app.BankKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper, // ICS4Wrapper
-	)
-
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
 	app.EvmKeeper.WithStaticPrecompiles(
@@ -393,7 +379,6 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		gmptypes.ModuleName:         gmpmodule.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
 		evmtypes.ModuleName:         evm.AppModule{},
-		erc20types.ModuleName:       erc20.AppModule{},
 		feemarkettypes.ModuleName:   feemarket.AppModule{},
 	}
 

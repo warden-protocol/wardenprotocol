@@ -3,7 +3,9 @@ package app
 import (
 	"context"
 	"fmt"
-	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
+	evmstaking "github.com/evmos/evmos/v20/x/staking"
+	evmstakingkeeper "github.com/evmos/evmos/v20/x/staking/keeper"
+	"github.com/warden-protocol/wardenprotocol/warden/app/evmos"
 	"io"
 	"os"
 	"path/filepath"
@@ -59,6 +61,7 @@ import (
 	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
 	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
+	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
@@ -81,14 +84,13 @@ import (
 
 	evmosante "github.com/evmos/evmos/v20/app/ante"
 	ethante "github.com/evmos/evmos/v20/app/ante/evm"
+	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	srvflags "github.com/evmos/evmos/v20/server/flags"
 	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
-	evmtransferkeeper "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
-	vestingkeeper "github.com/evmos/evmos/v20/x/vesting/keeper"
-
-	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
+	evmtransfer "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
+	evmvestingkeeper "github.com/evmos/evmos/v20/x/vesting/keeper"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
@@ -169,9 +171,11 @@ type App struct {
 	EvmKeeper         *evmkeeper.Keeper
 	FeeMarketKeeper   feemarketkeeper.Keeper
 	Erc20Keeper       erc20keeper.Keeper
-	VestingKeeper     vestingkeeper.Keeper
-	EvmTransferKeeper evmtransferkeeper.Keeper
+	VestingKeeper     evmvestingkeeper.Keeper
+	EvmTransferKeeper evmtransfer.Keeper
 	RateLimitKeeper   ratelimitkeeper.Keeper
+	EvmStaking        evmstakingkeeper.Keeper
+	evmStakingModule  evmstaking.AppModule
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -220,7 +224,7 @@ func AppConfig() depinject.Config {
 		// used in runtime.ProvideApp to register eth signing types
 		depinject.Provide(ProvideCustomRegisterCrypto),
 		depinject.Provide(ProvideCustomRegisterInterfaces),
-
+		depinject.Provide(evmos.ProvideEvmosStaking),
 		moduleConfig(),
 		// will be used inside runtime.ProvideInterfaceRegistry
 		depinject.Provide(ProvideMsgEthereumTxCustomGetSigner),
@@ -296,6 +300,7 @@ func New(
 				// By default the auth module uses authtypes.ProtoBaseAccount().
 				//
 				// func() sdk.AccountI { return authtypes.ProtoBaseAccount() },
+				// evmostypes.ProtoAccount, TODO AT: Do we need this?
 				//
 				// For providing a different address codec, add it below.
 				// By default the auth module uses a Bech32 address codec,
@@ -351,6 +356,7 @@ func New(
 		&app.ActKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
+		&app.EvmStaking,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

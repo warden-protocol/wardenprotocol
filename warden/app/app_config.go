@@ -1,6 +1,8 @@
 package app
 
 import (
+	"github.com/evmos/evmos/v20/utils"
+	"github.com/evmos/evmos/v20/x/evm/core/vm"
 	"time"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
@@ -20,7 +22,6 @@ import (
 	mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	paramsmodulev1 "cosmossdk.io/api/cosmos/params/module/v1"
 	slashingmodulev1 "cosmossdk.io/api/cosmos/slashing/module/v1"
-	stakingmodulev1 "cosmossdk.io/api/cosmos/staking/module/v1"
 	txconfigv1 "cosmossdk.io/api/cosmos/tx/config/v1"
 	upgrademodulev1 "cosmossdk.io/api/cosmos/upgrade/module/v1"
 	vestingmodulev1 "cosmossdk.io/api/cosmos/vesting/module/v1"
@@ -265,7 +266,18 @@ var (
 	}
 
 	// blocked account addresses
-	blockAccAddrs = []string{
+	blockAccAddrs = blockedAddrs()
+)
+
+// BlockedAddrs returns all the addresses that are not
+// allowed to receive external tokens.
+//
+// These include:
+//   - module accounts
+//   - Ethereum's native precompiles
+//   - the static precompiled contracts available through evmOS
+func blockedAddrs() []string {
+	addrs := []string{
 		authtypes.FeeCollectorName,
 		distrtypes.ModuleName,
 		minttypes.ModuleName,
@@ -274,7 +286,18 @@ var (
 		// We allow the following module accounts to receive funds:
 		// govtypes.ModuleName
 	}
-)
+
+	blockedPrecompilesHex := evmtypes.AvailableStaticPrecompiles
+	for _, addr := range vm.PrecompiledAddressesBerlin {
+		blockedPrecompilesHex = append(blockedPrecompilesHex, addr.Hex())
+	}
+
+	for _, precompile := range blockedPrecompilesHex {
+		addrs = append(addrs, utils.EthHexToSDKAddr(precompile).String())
+	}
+
+	return addrs
+}
 
 func moduleConfig() depinject.Config {
 	// appConfig application configuration (used by depinject)
@@ -322,15 +345,15 @@ func moduleConfig() depinject.Config {
 						BlockedModuleAccountsOverride: blockAccAddrs,
 					}),
 				},
-				{
-					Name: stakingtypes.ModuleName,
-					Config: appconfig.WrapAny(&stakingmodulev1.Module{
-						// NOTE: specifying a prefix is only necessary when using bech32 addresses
-						// If not specfied, the auth Bech32Prefix appended with "valoper" and "valcons" is used by default
-						Bech32PrefixValidator: AccountAddressPrefix + "valoper",
-						Bech32PrefixConsensus: AccountAddressPrefix + "valcons",
-					}),
-				},
+				//{
+				//	Name: stakingtypes.ModuleName,
+				//	Config: appconfig.WrapAny(&stakingmodulev1.Module{
+				//		// NOTE: specifying a prefix is only necessary when using bech32 addresses
+				//		// If not specfied, the auth Bech32Prefix appended with "valoper" and "valcons" is used by default
+				//		Bech32PrefixValidator: AccountAddressPrefix + "valoper",
+				//		Bech32PrefixConsensus: AccountAddressPrefix + "valcons",
+				//	}),
+				//},
 				{
 					Name:   slashingtypes.ModuleName,
 					Config: appconfig.WrapAny(&slashingmodulev1.Module{}),

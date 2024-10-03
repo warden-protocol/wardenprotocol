@@ -3,10 +3,11 @@ package app
 import (
 	"context"
 	"fmt"
-	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
 	"io"
 	"os"
 	"path/filepath"
+
+	ratelimitkeeper "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/keeper"
 
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
@@ -82,11 +83,10 @@ import (
 	evmosante "github.com/evmos/evmos/v20/app/ante"
 	ethante "github.com/evmos/evmos/v20/app/ante/evm"
 	srvflags "github.com/evmos/evmos/v20/server/flags"
+	evmostypes "github.com/evmos/evmos/v20/types"
 	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
-	evmtransferkeeper "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
-	vestingkeeper "github.com/evmos/evmos/v20/x/vesting/keeper"
 
 	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
@@ -166,12 +166,10 @@ type App struct {
 	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// evmOS
-	EvmKeeper         *evmkeeper.Keeper
-	FeeMarketKeeper   feemarketkeeper.Keeper
-	Erc20Keeper       erc20keeper.Keeper
-	VestingKeeper     vestingkeeper.Keeper
-	EvmTransferKeeper evmtransferkeeper.Keeper
-	RateLimitKeeper   ratelimitkeeper.Keeper
+	EvmKeeper       *evmkeeper.Keeper
+	FeeMarketKeeper feemarketkeeper.Keeper
+	Erc20Keeper     erc20keeper.Keeper
+	RateLimitKeeper ratelimitkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -295,7 +293,7 @@ func New(
 				// For providing a custom a base account type add it below.
 				// By default the auth module uses authtypes.ProtoBaseAccount().
 				//
-				// func() sdk.AccountI { return authtypes.ProtoBaseAccount() },
+				evmostypes.ProtoAccount,
 				//
 				// For providing a different address codec, add it below.
 				// By default the auth module uses a Bech32 address codec,

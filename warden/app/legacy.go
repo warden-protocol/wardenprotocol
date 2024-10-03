@@ -63,15 +63,15 @@ import (
 
 	// evmos
 	srvflags "github.com/evmos/evmos/v20/server/flags"
+	"github.com/evmos/evmos/v20/x/erc20"
+	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
+	erc20types "github.com/evmos/evmos/v20/x/erc20/types"
 	"github.com/evmos/evmos/v20/x/evm"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
 	"github.com/evmos/evmos/v20/x/feemarket"
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
-	evmtransferkeeper "github.com/evmos/evmos/v20/x/ibc/transfer/keeper"
-	evmvesting "github.com/evmos/evmos/v20/x/vesting/keeper"
-	vestingtypes "github.com/evmos/evmos/v20/x/vesting/types"
 	// this line is used by starport scaffolding # ibc/app/import
 )
 
@@ -94,7 +94,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		// evm kv store
 		storetypes.NewKVStoreKey(evmtypes.StoreKey),
 		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
-		storetypes.NewKVStoreKey(vestingtypes.StoreKey),
+		storetypes.NewKVStoreKey(erc20types.StoreKey),
 		// feemarket kv store
 		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
 		storetypes.NewTransientStoreKey(feemarkettypes.TransientKey),
@@ -288,9 +288,15 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.BankKeeper,
 		app.StakingKeeper,
 		app.FeeMarketKeeper,
-		app.Erc20Keeper,
+		&app.Erc20Keeper,
 		tracer,
 		app.GetSubspace(evmtypes.ModuleName),
+	)
+
+	app.Erc20Keeper = erc20keeper.NewKeeper(
+		app.GetKey(erc20types.StoreKey), app.AppCodec(), authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper, app.BankKeeper, app.EvmKeeper, app.StakingKeeper,
+		app.AuthzKeeper, nil,
 	)
 
 	// integration point for custom authentication modules
@@ -333,17 +339,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
 	app.Ics20WasmHooks.ContractKeeper = &app.WasmKeeper
 
-	app.VestingKeeper = evmvesting.NewKeeper(
-		app.GetKey(vestingtypes.StoreKey),
-		authtypes.NewModuleAddress(govtypes.ModuleName),
-		app.appCodec,
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.DistrKeeper,
-		app.StakingKeeper,
-		*app.GovKeeper,
-	)
-
 	// Create the rate limit keeper
 	app.RateLimitKeeper = *ratelimitkeeper.NewKeeper(
 		app.appCodec,
@@ -355,34 +350,11 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.IBCKeeper.ChannelKeeper, // ICS4Wrapper
 	)
 
-	app.EvmTransferKeeper = evmtransferkeeper.NewKeeper(
-		app.appCodec, app.GetKey(ibctransfertypes.StoreKey), app.GetSubspace(ibctransfertypes.ModuleName),
-		app.RateLimitKeeper, // ICS4 Wrapper: ratelimit IBC middleware
-		app.IBCKeeper.ChannelKeeper, app.IBCKeeper.PortKeeper,
-		app.AccountKeeper, app.BankKeeper, scopedIBCTransferKeeper,
-		app.Erc20Keeper, // Add ERC20 Keeper for ERC20 transfers
-		authAddr,
-	)
-
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
 	app.EvmKeeper.WithStaticPrecompiles(
 		vm.PrecompiledContractsBerlin,
 	)
-
-	// app.EvmKeeper.WithStaticPrecompiles(
-	// 	evmkeeper.NewAvailableStaticPrecompiles(
-	// 		*evmStaking,
-	// 		app.DistrKeeper,
-	// 		app.BankKeeper,
-	// 		app.Erc20Keeper,
-	// 		app.VestingKeeper,
-	// 		app.AuthzKeeper,
-	// 		app.EvmTransferKeeper,
-	// 		app.IBCKeeper.ChannelKeeper,
-	// 		*app.GovKeeper,
-	// 	),
-	// )
 
 	// register IBC modules
 	if err := app.RegisterModules(
@@ -421,6 +393,7 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		gmptypes.ModuleName:         gmpmodule.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
 		evmtypes.ModuleName:         evm.AppModule{},
+		erc20types.ModuleName:       erc20.AppModule{},
 		feemarkettypes.ModuleName:   feemarket.AppModule{},
 	}
 

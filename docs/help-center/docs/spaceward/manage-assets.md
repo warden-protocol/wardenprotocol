@@ -12,6 +12,8 @@ Within your [Space](manage-spaces), you can receive or send assets across differ
 SpaceWard currently operates on the **Chiado testnet**, so you should use **only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.
 :::
 
+![Manage assets](../../static/img/manage-assets.png)
+
 ## Receive assets
 
 To receive assets, take these steps:

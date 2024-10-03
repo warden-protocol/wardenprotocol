@@ -22,6 +22,8 @@ To access the **SpaceWard-curated collection** of dApps, take these steps:
 2. In the left menu, navigate to **dApps**.
 3. Click a dApp and follow the prompts.
 
+![Access SpaceWard collection of dapps](../../static/img/dapps-collection.png)
+
 ## Use WalletConnect
 
 You can connect to any EVM-based decentralized application through WalletConnect:
@@ -33,7 +35,8 @@ You can connect to any EVM-based decentralized application through WalletConnect
 5. Paste the pairing code or the QR code and click **Connect**.
 6. Select the Space or address you wish to use and click **Approve connection**.
 
-![WalletConnect logo](../../static/img/walletconnect.png)
+![WalletConnect logo](../../static/img/walletconnect-1.png)
+![Connect a dApp using WalletConnect](../../static/img/walletconnect-2.png)
 
 ## Use MetaMask Snap
 
@@ -61,7 +64,8 @@ The Warden Protocol is in the testnet phase, so you have to use MetaMask Flask. 
 5. Select the preferred key and click **Add to MetaMask**.
 6. Confirm in MetaMask Flask.
 
-![MetaMask Snap logo](../../static/img/metamask-snap.png)
+![MetaMask Snap logo](../../static/img/metamask-snap-1.png)
+![Install Snap](../../static/img/metamask-snap-2.png)
 
 ### Result
 

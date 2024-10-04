@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )

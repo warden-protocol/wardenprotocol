@@ -5,13 +5,12 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.MsgAddKeychainAdminRequest, *common.Address, error) {
+func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*wardentypes.MsgAddKeychainAdminRequest, *common.Address, error) {
 	if len(args) != 2 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
@@ -21,14 +20,14 @@ func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.M
 	authority := wardencommon.Bech32StrFromAddress(origin)
 	newAdmin := wardencommon.Bech32StrFromAddress(newAdminAddress)
 
-	return &types.MsgAddKeychainAdminRequest{
+	return &wardentypes.MsgAddKeychainAdminRequest{
 		Authority:  authority,
 		KeychainId: keychainId,
 		NewAdmin:   newAdmin,
 	}, &newAdminAddress, nil
 }
 
-func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.MsgAddKeychainWriter, *common.Address, error) {
+func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*wardentypes.MsgAddKeychainWriter, *common.Address, error) {
 	if len(args) != 2 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
@@ -38,29 +37,29 @@ func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.
 	creator := wardencommon.Bech32StrFromAddress(origin)
 	newWriter := wardencommon.Bech32StrFromAddress(newAdminAddress)
 
-	return &types.MsgAddKeychainWriter{
+	return &wardentypes.MsgAddKeychainWriter{
 		Creator:    creator,
 		KeychainId: keychainId,
 		Writer:     newWriter,
 	}, &newAdminAddress, nil
 }
 
-func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyRequestStatus, origin common.Address) (*types.MsgFulfilKeyRequest, error) {
+func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus wardentypes.KeyRequestStatus, origin common.Address) (*wardentypes.MsgFulfilKeyRequest, error) {
 	if len(args) != 2 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
 	requestId := args[0].(uint64)
-	if keyRequestStatus == types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
+	if keyRequestStatus == wardentypes.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
 		key := args[1].([]byte)
-		result := &types.MsgFulfilKeyRequest_Key{
-			Key: &types.MsgNewKey{
+		result := &wardentypes.MsgFulfilKeyRequest_Key{
+			Key: &wardentypes.MsgNewKey{
 				PublicKey: key,
 			},
 		}
 
-		return &types.MsgFulfilKeyRequest{
+		return &wardentypes.MsgFulfilKeyRequest{
 			Creator:   creator,
 			RequestId: requestId,
 			Status:    keyRequestStatus,
@@ -68,11 +67,11 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 		}, nil
 	} else {
 		rejectReason := args[1].(string)
-		result := &types.MsgFulfilKeyRequest_RejectReason{
+		result := &wardentypes.MsgFulfilKeyRequest_RejectReason{
 			RejectReason: rejectReason,
 		}
 
-		return &types.MsgFulfilKeyRequest{
+		return &wardentypes.MsgFulfilKeyRequest{
 			Creator:   creator,
 			RequestId: requestId,
 			Status:    keyRequestStatus,
@@ -81,34 +80,34 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 	}
 }
 
-func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignRequestStatus, origin common.Address) (*types.MsgFulfilSignRequest, error) {
+func newMsgFulfilSignRequest(args []interface{}, signRequestStatus wardentypes.SignRequestStatus, origin common.Address) (*wardentypes.MsgFulfilSignRequest, error) {
 	if len(args) != 2 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
 	requestId := args[0].(uint64)
-	if signRequestStatus == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
+	if signRequestStatus == wardentypes.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
 		signedData := args[1].([]byte)
-		result := &types.MsgFulfilSignRequest_Payload{
-			Payload: &types.MsgSignedData{
+		result := &wardentypes.MsgFulfilSignRequest_Payload{
+			Payload: &wardentypes.MsgSignedData{
 				SignedData: signedData,
 			},
 		}
 
-		return &types.MsgFulfilSignRequest{
+		return &wardentypes.MsgFulfilSignRequest{
 			Creator:   creator,
 			RequestId: requestId,
-			Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+			Status:    wardentypes.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
 			Result:    result,
 		}, nil
 	} else {
 		rejectReason := args[1].(string)
-		result := &types.MsgFulfilSignRequest_RejectReason{
+		result := &wardentypes.MsgFulfilSignRequest_RejectReason{
 			RejectReason: rejectReason,
 		}
 
-		return &types.MsgFulfilSignRequest{
+		return &wardentypes.MsgFulfilSignRequest{
 			Creator:   creator,
 			RequestId: requestId,
 			Status:    signRequestStatus,
@@ -117,7 +116,7 @@ func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignReq
 	}
 }
 
-func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Address) (*types.MsgNewKeychain, error) {
+func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Address) (*wardentypes.MsgNewKeychain, error) {
 	if len(args) != 5 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 5, len(args))
 	}
@@ -128,7 +127,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 		return nil, fmt.Errorf("error while unpacking args to newKeyChainInput struct: %s", err)
 	}
 
-	return &types.MsgNewKeychain{
+	return &wardentypes.MsgNewKeychain{
 		Creator:      creator,
 		Name:         input.Name,
 		KeychainFees: input.KeychainFees,
@@ -140,13 +139,13 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 
 type newKeyChainInput struct {
 	Name         string
-	KeychainFees v1beta3.KeychainFees
+	KeychainFees wardentypes.KeychainFees
 	Description  string
 	Url          string
 	KeybaseId    string
 }
 
-func newMsgNewSpace(args []interface{}, origin common.Address) (*types.MsgNewSpace, error) {
+func newMsgNewSpace(args []interface{}, origin common.Address) (*wardentypes.MsgNewSpace, error) {
 	if len(args) != 5 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 5, len(args))
 	}
@@ -162,7 +161,7 @@ func newMsgNewSpace(args []interface{}, origin common.Address) (*types.MsgNewSpa
 		additionalOwners = append(additionalOwners, wardencommon.Bech32StrFromAddress(a))
 	}
 
-	return &types.MsgNewSpace{
+	return &wardentypes.MsgNewSpace{
 		Creator:                creator,
 		ApproveAdminTemplateId: approveAdminTemplateId,
 		RejectAdminTemplateId:  rejectAdminTemplateId,
@@ -172,7 +171,7 @@ func newMsgNewSpace(args []interface{}, origin common.Address) (*types.MsgNewSpa
 	}, nil
 }
 
-func newMsgRemoveKeychainAdmin(args []interface{}, origin common.Address) (*types.MsgRemoveKeychainAdminRequest, *common.Address, error) {
+func newMsgRemoveKeychainAdmin(args []interface{}, origin common.Address) (*wardentypes.MsgRemoveKeychainAdminRequest, *common.Address, error) {
 	if len(args) != 2 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
@@ -182,14 +181,14 @@ func newMsgRemoveKeychainAdmin(args []interface{}, origin common.Address) (*type
 	keychainId := args[0].(uint64)
 	admin := args[1].(common.Address)
 
-	return &types.MsgRemoveKeychainAdminRequest{
+	return &wardentypes.MsgRemoveKeychainAdminRequest{
 		Authority:  creator,
 		KeychainId: keychainId,
 		Admin:      wardencommon.Bech32StrFromAddress(admin),
 	}, &admin, nil
 }
 
-func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.Address) (*types.MsgUpdateKeychain, error) {
+func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.Address) (*wardentypes.MsgUpdateKeychain, error) {
 	if len(args) != 6 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
 	}
@@ -200,7 +199,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 		return nil, fmt.Errorf("error while unpacking args to updateKeyChainInput struct: %s", err)
 	}
 
-	return &types.MsgUpdateKeychain{
+	return &wardentypes.MsgUpdateKeychain{
 		Creator:      creator,
 		KeychainId:   input.KeychainId,
 		Name:         input.Name,
@@ -214,7 +213,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 type updateKeyChainInput struct {
 	KeychainId   uint64
 	Name         string
-	KeychainFees v1beta3.KeychainFees
+	KeychainFees wardentypes.KeychainFees
 	Description  string
 	Url          string
 	KeybaseId    string

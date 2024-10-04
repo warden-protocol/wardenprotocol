@@ -30,7 +30,7 @@ export interface MsgEthereumTxAmino {
   /** size is the encoded storage size of the transaction (DEPRECATED) */
   size: number;
   /** hash of the transaction in hex format */
-  hash?: string;
+  hash: string;
   /**
    * from is the ethereum signer address in hex format. This address value is checked
    * against the address derived from the signature (V, R, S) using the
@@ -39,7 +39,7 @@ export interface MsgEthereumTxAmino {
   from?: string;
 }
 export interface MsgEthereumTxAminoMsg {
-  type: "/ethermint.evm.v1.MsgEthereumTx";
+  type: "ethermint/MsgEthereumTx";
   value: MsgEthereumTxAmino;
 }
 /** MsgEthereumTx encapsulates an Ethereum transaction as an SDK message. */
@@ -105,7 +105,7 @@ export interface LegacyTxAmino {
   s?: string;
 }
 export interface LegacyTxAminoMsg {
-  type: "/ethermint.evm.v1.LegacyTx";
+  type: "ethermint/LegacyTx";
   value: LegacyTxAmino;
 }
 /**
@@ -181,7 +181,7 @@ export interface AccessListTxAmino {
   s?: string;
 }
 export interface AccessListTxAminoMsg {
-  type: "/ethermint.evm.v1.AccessListTx";
+  type: "ethermint/AccessListTx";
   value: AccessListTxAmino;
 }
 /** AccessListTx is the data of EIP-2930 access list transactions. */
@@ -259,7 +259,7 @@ export interface DynamicFeeTxAmino {
   s?: string;
 }
 export interface DynamicFeeTxAminoMsg {
-  type: "/ethermint.evm.v1.DynamicFeeTx";
+  type: "ethermint/DynamicFeeTx";
   value: DynamicFeeTxAmino;
 }
 /** DynamicFeeTx is the data of EIP-1559 dynamic fee transactions. */
@@ -376,10 +376,10 @@ export interface MsgUpdateParamsAmino {
    * params defines the x/evm parameters to update.
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params: ParamsAmino;
 }
 export interface MsgUpdateParamsAminoMsg {
-  type: "/ethermint.evm.v1.MsgUpdateParams";
+  type: "evmos/x/evm/MsgUpdateParams";
   value: MsgUpdateParamsAmino;
 }
 /** MsgUpdateParams defines a Msg for updating the x/evm module parameters. */
@@ -505,12 +505,18 @@ export const MsgEthereumTx = {
     const obj: any = {};
     obj.data = message.data ? Any.toAmino(message.data) : undefined;
     obj.size = message.size ?? 0;
-    obj.hash = message.hash === "" ? undefined : message.hash;
+    obj.hash = message.hash ?? "";
     obj.from = message.from === "" ? undefined : message.from;
     return obj;
   },
   fromAminoMsg(object: MsgEthereumTxAminoMsg): MsgEthereumTx {
     return MsgEthereumTx.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgEthereumTx): MsgEthereumTxAminoMsg {
+    return {
+      type: "ethermint/MsgEthereumTx",
+      value: MsgEthereumTx.toAmino(message)
+    };
   },
   fromProtoMsg(message: MsgEthereumTxProtoMsg): MsgEthereumTx {
     return MsgEthereumTx.decode(message.value);
@@ -697,6 +703,12 @@ export const LegacyTx = {
   },
   fromAminoMsg(object: LegacyTxAminoMsg): LegacyTx {
     return LegacyTx.fromAmino(object.value);
+  },
+  toAminoMsg(message: LegacyTx): LegacyTxAminoMsg {
+    return {
+      type: "ethermint/LegacyTx",
+      value: LegacyTx.toAmino(message)
+    };
   },
   fromProtoMsg(message: LegacyTxProtoMsg): LegacyTx {
     return LegacyTx.decode(message.value);
@@ -917,6 +929,12 @@ export const AccessListTx = {
   },
   fromAminoMsg(object: AccessListTxAminoMsg): AccessListTx {
     return AccessListTx.fromAmino(object.value);
+  },
+  toAminoMsg(message: AccessListTx): AccessListTxAminoMsg {
+    return {
+      type: "ethermint/AccessListTx",
+      value: AccessListTx.toAmino(message)
+    };
   },
   fromProtoMsg(message: AccessListTxProtoMsg): AccessListTx {
     return AccessListTx.decode(message.value);
@@ -1151,6 +1169,12 @@ export const DynamicFeeTx = {
   },
   fromAminoMsg(object: DynamicFeeTxAminoMsg): DynamicFeeTx {
     return DynamicFeeTx.fromAmino(object.value);
+  },
+  toAminoMsg(message: DynamicFeeTx): DynamicFeeTxAminoMsg {
+    return {
+      type: "ethermint/DynamicFeeTx",
+      value: DynamicFeeTx.toAmino(message)
+    };
   },
   fromProtoMsg(message: DynamicFeeTxProtoMsg): DynamicFeeTx {
     return DynamicFeeTx.decode(message.value);
@@ -1425,11 +1449,17 @@ export const MsgUpdateParams = {
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
     return MsgUpdateParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
+    return {
+      type: "evmos/x/evm/MsgUpdateParams",
+      value: MsgUpdateParams.toAmino(message)
+    };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
     return MsgUpdateParams.decode(message.value);

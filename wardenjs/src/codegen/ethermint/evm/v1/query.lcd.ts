@@ -40,7 +40,7 @@ export class LCDQueryClient {
     return await this.req.get<QueryValidatorAccountResponseSDKType>(endpoint);
   }
   /* Balance queries the balance of a the EVM denomination for a single
-   account. */
+   EthAccount. */
   async balance(params: QueryBalanceRequest): Promise<QueryBalanceResponseSDKType> {
     const endpoint = `evmos/evm/v1/balances/${params.address}`;
     return await this.req.get<QueryBalanceResponseSDKType>(endpoint);

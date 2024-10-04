@@ -5,7 +5,7 @@ package ethermint.types.v1;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v19/types";
+option go_package = "github.com/evmos/evmos/v20/types";
 
 // ExtensionOptionsWeb3Tx is an extension option that specifies the typed chain id,
 // the fee payer as well as its signature data.

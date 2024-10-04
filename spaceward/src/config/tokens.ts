@@ -216,19 +216,19 @@ export const COSMOS_PRICES: Record<string, bigint | undefined> = {
 	OSMO: BigInt(0.4446 * 10 ** 8),
 };
 
-/* TODO networks
-Astar	native	ASTR
-Avalanche	native	AVAX
-Binance Coin	native	BNB
-Ethereum Classic	native	ETC
-Polygon	native	MATIC
-*/
-const _ENABLED_ETH_CHAINS: { chainName: ChainName; testnet?: boolean }[] = [
+const _ENABLED_ETH_CHAINS: {
+	chainName: ChainName;
+	testnet?: boolean;
+}[] = [
 	{ chainName: "arbitrum" },
+	{ chainName: "astar" },
+	{ chainName: "avalanche" },
 	{ chainName: "base" },
 	{ chainName: "bsc" },
+	{ chainName: "ethereumClassic" },
 	{ chainName: "mainnet" },
 	{ chainName: "optimism" },
+	{ chainName: "polygon" },
 	{ chainName: "sepolia", testnet: true },
 ];
 

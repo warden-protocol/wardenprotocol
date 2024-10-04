@@ -1,10 +1,12 @@
 import { ethers } from "ethers";
-import { env } from "@/env";
-import { useNewAction } from "./useAction";
 import { warden } from "@wardenprotocol/wardenjs";
+import { env } from "@/env";
 import { useEnqueueAction } from "@/features/actions/hooks";
+import { useNewAction } from "./useAction";
+import { useNonce } from "./useNonce";
 
 export function useEthereumTx() {
+	const nonce = useNonce();
 	const { getMessage, authority } = useNewAction(
 		warden.warden.v1beta3.MsgNewSignRequest,
 	);
@@ -33,8 +35,10 @@ export function useEthereumTx() {
 				keyId,
 				analyzers: [],
 				input,
-				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-				encryptionKey: undefined,
+				nonce,
+				// fixme
+				encryptionKey: undefined as any,
+				maxKeychainFees: undefined as any,
 			},
 			{
 				walletConnectRequestId: wc?.requestId,
@@ -77,8 +81,10 @@ export function useEthereumTx() {
 				authority,
 				input: ethers.getBytes(tx.unsignedSerialized),
 				keyId,
-				// @ts-expect-error telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-				encryptionKey: undefined,
+				nonce,
+				// fixme
+				encryptionKey: undefined as any,
+				maxKeychainFees: undefined as any,
 			},
 			{
 				tx: _tx,

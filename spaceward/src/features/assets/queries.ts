@@ -1,12 +1,15 @@
-import { assets } from "chain-registry";
+import { assets, chains } from "chain-registry";
 import { ethers } from "ethers";
 import { fromBech32, toBech32 } from "@cosmjs/encoding";
+import type { ExtendedHttpEndpoint, WalletManager } from "@cosmos-kit/core";
+import { cosmos } from "@wardenprotocol/wardenjs";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import multicallAbi from "@/contracts/eip155/multicall3Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import {
+	COSMOS_CHAINS,
 	COSMOS_PRICES,
 	EIP_155_NATIVE_PRICE_FEEDS,
 	ENABLED_ETH_CHAINS,
@@ -20,6 +23,7 @@ import { getAbiItem, getCosmosChain, getInterface } from "./util";
 type ChainName = Parameters<typeof getProvider>[0];
 
 const assetsByChain: Record<string, (typeof assets)[number] | undefined> = {};
+const chainByName: Record<string, (typeof chains)[number] | undefined> = {};
 
 const getChainAssets = (chainName: string) => {
 	if (chainName in assetsByChain) {
@@ -52,6 +56,14 @@ const getAsset = (chainAssets: AssetList, denom: string) => {
 	return asset;
 };
 
+export const getBalanceQueryKey = (
+	chainType: "cosmos" | "eip155",
+	chainName: string,
+	address: string,
+) => {
+	return ["balance", chainType, chainName, address];
+};
+
 const cosmosBalancesQuery = (params: {
 	address?: string;
 	enabled: boolean;
@@ -60,7 +72,11 @@ const cosmosBalancesQuery = (params: {
 	prices?: PriceMapSlinky;
 }) => ({
 	enabled: params.enabled,
-	queryKey: ["cosmos", params.chainName, "balance", params.address],
+	queryKey: getBalanceQueryKey(
+		"cosmos",
+		params.chainName,
+		params.address ?? "",
+	),
 	queryFn: async () => {
 		if (!params.address) {
 			throw new Error("Address is required");
@@ -174,13 +190,16 @@ const eip155NativeBalanceQuery = ({
 	address?: `0x${string}`;
 	prices?: PriceMapSlinky;
 }) => ({
-	queryKey: ["eip155", chainName, "native", address],
+	queryKey: [
+		...getBalanceQueryKey("eip155", chainName, address ?? ""),
+		"native",
+	],
 	queryFn: async (): Promise<BalanceEntry> => {
 		if (!address) {
 			throw new Error("Address is required");
 		}
 
-		const { provider, token } = getProvider(chainName);
+		const { provider, tokenSymbol: token } = getProvider(chainName);
 		const slinkyPrice = prices?.[token];
 		const priceFeed = EIP_155_NATIVE_PRICE_FEEDS[chainName];
 
@@ -199,10 +218,10 @@ const eip155NativeBalanceQuery = ({
 
 		const price: bigint = slinkyPrice
 			? BigInt(slinkyPrice.price?.price ?? 0)
-			: (priceFeedContract
+			: ((priceFeedContract
 					? await priceFeedContract.latestRoundData()
 					: undefined
-				)?.answer ?? BigInt(0);
+				)?.answer ?? BigInt(0));
 
 		const priceDecimals = slinkyPrice ? Number(slinkyPrice.decimals) : 8;
 
@@ -255,7 +274,10 @@ const eip155ERC20BalanceQuery = ({
 	prices?: PriceMapSlinky;
 }) => ({
 	enabled: enabled && Boolean(address && token),
-	queryKey: ["eip155", chainName, "erc20", address, token],
+	queryKey: [
+		...getBalanceQueryKey("eip155", chainName, address ?? ""),
+		`erc20:${token}`,
+	],
 	queryFn: async (): Promise<BalanceEntry> => {
 		if (!address || !token) {
 			throw new Error("Address and token are required");
@@ -353,10 +375,10 @@ const eip155ERC20BalanceQuery = ({
 				? BigInt("100000000")
 				: slinkyPrice
 					? BigInt(slinkyPrice.price?.price ?? 0)
-					: (priceFeedContract
+					: ((priceFeedContract
 							? await priceFeedContract.latestRoundData()
 							: undefined
-						)?.answer ?? BigInt(0);
+						)?.answer ?? BigInt(0));
 
 			const priceDecimals = stablecoin
 				? 8
@@ -405,7 +427,7 @@ const DEFAULT_BECH32_PREFIX = getCosmosChain("osmosis")!.bech32_prefix;
 export const balancesQueryCosmos = (
 	enabled: boolean,
 	keys?: QueryKeyResponse[],
-	clients?: [CosmosQueryClient, string][],
+	clients?: [CosmosQueryClient, string, string][],
 	prices?: PriceMapSlinky,
 ) => {
 	const byAddress: Record<string, QueryKeyResponse> = {};
@@ -605,4 +627,105 @@ export const fiatPricesQuery = (enabled: boolean) => {
 			return fiatPriceQuery(enabled, name);
 		}),
 	};
+};
+
+const rpcClients: Record<
+	string,
+	{ client: CosmosQueryClient; rpcEndpoint: string } | undefined
+> = {};
+const rpcRetry: Record<string, number> = {};
+
+const checkHealth = async (
+	client: CosmosQueryClient | undefined,
+	chainName: string,
+) => {
+	if (!client) {
+		return false;
+	}
+
+	let chain = chainByName[chainName];
+
+	if (!chain) {
+		chain = chains.find((x) => x.chain_name === chainName);
+
+		if (!chain) {
+			console.warn("chain not found", { chainName });
+			return false;
+		}
+
+		chainByName[chainName] = chain;
+	}
+
+	const header = (
+		await client.cosmos.base.tendermint.v1beta1.getLatestBlock({})
+	).block?.header;
+
+	const isChainIdValid = header?.chainId === chain.chain_id;
+	// todo check against block height and block time
+	return isChainIdValid;
+};
+
+export const queryCosmosClients = (walletManager: WalletManager) => {
+	return {
+		queryKey: ["cosmos", "rpcClients"],
+		queryFn: async () => {
+			const clients: [CosmosQueryClient, string, string][] = [];
+
+			for (let i = 0; i < COSMOS_CHAINS.length; i++) {
+				const { chainName, rpc } = COSMOS_CHAINS[i];
+				const retries = (rpc?.length ?? 0) + 1;
+
+				for (let i = 0; i < retries; i++) {
+					let { client, rpcEndpoint } = rpcClients[chainName] ?? {};
+					const retry = (rpcRetry[chainName] ?? 0) % (retries + 1);
+					rpcRetry[chainName] = retry + 1;
+
+					if (!client || !rpcEndpoint) {
+						let endpoint: ExtendedHttpEndpoint | string;
+
+						if (!rpc?.[retry]) {
+							const repo = walletManager.getWalletRepo(chainName);
+							repo.activate();
+
+							try {
+								endpoint = await repo.getRpcEndpoint();
+							} catch (e) {
+								console.error(e);
+								endpoint = `https://rpc.cosmos.directory/${chainName}`;
+							}
+						} else {
+							endpoint = rpc[retry];
+						}
+
+						rpcEndpoint =
+							typeof endpoint === "string"
+								? endpoint
+								: endpoint.url;
+
+						try {
+							client =
+								await cosmos.ClientFactory.createRPCQueryClient(
+									{
+										rpcEndpoint,
+									},
+								);
+						} catch (e) {
+							console.error(e);
+							continue;
+						}
+					}
+
+					if (await checkHealth(client, chainName)) {
+						rpcClients[chainName] = { client, rpcEndpoint };
+						clients.push([client, chainName, rpcEndpoint]);
+						break;
+					} else if (rpcClients[chainName]) {
+						delete rpcClients[chainName];
+					}
+				}
+			}
+
+			return clients;
+		},
+	} as const;
 };

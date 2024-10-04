@@ -27,8 +27,10 @@ export default function StakingHeading(props: HeadingProps) {
 					<Icons.wardPink className="w-6 h-6" />
 
 					{bigintToFixed(props.availableWard ?? BigInt(0), {
+						ceil: true,
 						decimals: 18,
 						format: true,
+						display: 2
 					})}
 				</div>
 			</div>

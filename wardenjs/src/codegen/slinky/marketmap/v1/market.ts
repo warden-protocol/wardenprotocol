@@ -686,7 +686,7 @@ export const MarketMap = {
   encode(message: MarketMap, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.markets).forEach(([key, value]) => {
       MarketMap_MarketsEntry.encode({
-        key: (key as any),
+        key: key as any,
         value
       }, writer.uint32(10).fork()).ldelim();
     });

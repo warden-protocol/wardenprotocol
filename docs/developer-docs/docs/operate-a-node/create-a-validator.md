@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Create a validator
@@ -21,7 +21,7 @@ wardend keys add my-key-name
 Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following: 
 
 ```bash
-wardend keys add my-key-name --recover.
+wardend keys add my-key-name --recover
 ```
 
 Then get your public address:
@@ -68,7 +68,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
    {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
    ```
    
-2. Create a file named `validator.json` with the following content:
+2. Create a file named `validator.json` with the following contents:
 
    ```json
    {    

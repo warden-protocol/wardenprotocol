@@ -1,26 +1,25 @@
-import { useQueryHooks } from "@/hooks/useClient";
+import { walletContext } from "@cosmos-kit/react-lite";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { cosmos } from "@wardenprotocol/wardenjs";
-import { useQueries } from "@tanstack/react-query";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { useContext, useMemo } from "react";
+import { useQueryHooks } from "@/hooks/useClient";
 import {
 	balancesQueryCosmos,
 	balancesQueryEth,
 	fiatPricesQuery,
+	queryCosmosClients,
 } from "./queries";
-import type { CosmosQueryClient, PriceMapSlinky } from "./types";
-import { COSMOS_CHAINS } from "@/config/tokens";
-import { walletContext } from "@cosmos-kit/react-lite";
-import { ExtendedHttpEndpoint } from "@cosmos-kit/core";
+import type { PriceMapSlinky } from "./types";
 
 const DERIVE_ADDRESSES = [
 	AddressType.ADDRESS_TYPE_ETHEREUM,
 	AddressType.ADDRESS_TYPE_OSMOSIS,
 ];
+
 export const useAssetQueries = (spaceId?: string | null) => {
 	const { walletManager } = useContext(walletContext);
 	const { isReady, useKeysBySpaceId, slinky } = useQueryHooks();
-	const [clients, setClients] = useState<[CosmosQueryClient, string][]>([]);
+	const clients = useQuery(queryCosmosClients(walletManager)).data;
 
 	const pairs = slinky.oracle.v1.useGetAllCurrencyPairs({
 		options: { enabled: isReady, refetchInterval: Infinity },
@@ -29,7 +28,7 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 	const currencyPairs = useMemo(
 		() =>
-			pairs.data?.currencyPairs.map(({ Base, Quote }) => ({
+			pairs.data?.currencyPairs.map(({ base: Base, quote: Quote }) => ({
 				id: `${Base}/${Quote}`,
 				token: Base,
 			})) ?? [],
@@ -82,39 +81,6 @@ export const useAssetQueries = (spaceId?: string | null) => {
 
 		return priceMap;
 	}, [prices.data, currencyPairs]);
-
-	useEffect(() => {
-		Promise.all(
-			COSMOS_CHAINS.map(({ chainName, rpc }) => {
-				let promise: Promise<ExtendedHttpEndpoint | string>;
-
-				if (!rpc) {
-					const repo = walletManager.getWalletRepo(chainName);
-					repo.activate();
-					promise = repo.getRpcEndpoint();
-				} else {
-					promise = Promise.resolve(rpc[0]);
-				}
-
-				return promise
-					.then((endpoint) =>
-						cosmos.ClientFactory.createRPCQueryClient({
-							rpcEndpoint: endpoint
-								? typeof endpoint === "string"
-									? endpoint
-									: endpoint.url
-								: `https://rpc.cosmos.directory/${chainName}`,
-						}),
-					)
-					.then(
-						(client) =>
-							[client, chainName] as [CosmosQueryClient, string],
-					);
-			}),
-		).then((clients) => {
-			setClients(clients);
-		});
-	}, []);
 
 	const queryKeys = useKeysBySpaceId({
 		request: {

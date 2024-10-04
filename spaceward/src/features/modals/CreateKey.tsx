@@ -48,10 +48,12 @@ export default function CreateKeyModal({
 			{
 				spaceId,
 				keychainId,
-				templateId: BigInt(0),
 				keyType: warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
 				authority,
+				approveTemplateId: space.space.approveSignTemplateId,
+				rejectTemplateId: space.space.rejectSignTemplateId,
 				nonce: space.space.nonce,
+				maxKeychainFees: undefined as any
 			},
 			{
 				keyThemeIndex: themeIndex,
@@ -91,11 +93,7 @@ export default function CreateKeyModal({
 			return;
 		}
 
-		const settings = {
-			name,
-			themeIndex,
-		};
-
+		const settings = { name, themeIndex };
 		setKeySettings({ settings: { ...ks.settings, [TEMP_KEY]: settings } });
 		setPending(true);
 

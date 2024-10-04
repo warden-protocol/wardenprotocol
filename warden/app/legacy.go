@@ -5,6 +5,8 @@ import (
 	"maps"
 	"path/filepath"
 
+	"github.com/evmos/evmos/v20/x/evm/core/vm"
+
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -44,7 +46,6 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
-	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cast"
 
 	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
@@ -61,13 +62,15 @@ import (
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 
 	// evmos
-	srvflags "github.com/evmos/evmos/v18/server/flags"
-	"github.com/evmos/evmos/v18/x/evm"
-	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
-	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
-	"github.com/evmos/evmos/v18/x/feemarket"
-	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
-	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
+	srvflags "github.com/evmos/evmos/v20/server/flags"
+	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
+	erc20types "github.com/evmos/evmos/v20/x/erc20/types"
+	"github.com/evmos/evmos/v20/x/evm"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
+	"github.com/evmos/evmos/v20/x/feemarket"
+	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 	// this line is used by starport scaffolding # ibc/app/import
 )
 
@@ -90,6 +93,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		// evm kv store
 		storetypes.NewKVStoreKey(evmtypes.StoreKey),
 		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
+		storetypes.NewKVStoreKey(erc20types.StoreKey),
 		// feemarket kv store
 		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
 		storetypes.NewTransientStoreKey(feemarkettypes.TransientKey),
@@ -121,6 +125,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
 
+	authAddr := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
 		app.appCodec,
@@ -129,7 +135,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.StakingKeeper,
 		app.UpgradeKeeper,
 		scopedIBCKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	// Register the proposal types
@@ -149,7 +155,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.GmpKeeper = gmpkeeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(gmptypes.ModuleName),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 		app.TransferKeeper,
 	)
 
@@ -164,7 +170,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.AccountKeeper,
 		app.BankKeeper,
 		scopedIBCTransferKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.IBCHooksKeeper = ibchookskeeper.NewKeeper(
@@ -206,7 +212,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.AccountKeeper,
 		scopedICAHostKeeper,
 		app.MsgServiceRouter(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 	app.ICAHostKeeper.WithQueryRouter(app.GRPCQueryRouter())
 
@@ -219,7 +225,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.IBCKeeper.PortKeeper,
 		scopedICAControllerKeeper,
 		app.MsgServiceRouter(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 	app.GovKeeper.SetLegacyRouter(govRouter)
 
@@ -281,27 +287,15 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.BankKeeper,
 		app.StakingKeeper,
 		app.FeeMarketKeeper,
+		&app.Erc20Keeper,
 		tracer,
 		app.GetSubspace(evmtypes.ModuleName),
 	)
 
-	// NOTE: we are just adding the default Ethereum precompiles here.
-	// Additional precompiles could be added if desired.
-	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
-	wardenPrecompile, err := wardenprecompile.NewPrecompile(app.WardenKeeper, app.ActKeeper)
-	if err != nil {
-		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
-	}
-	precompiles[wardenPrecompile.Address()] = wardenPrecompile
-
-	actPrecompile, err := actprecompile.NewPrecompile(app.ActKeeper)
-	if err != nil {
-		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
-	}
-	precompiles[actPrecompile.Address()] = actPrecompile
-
-	app.EvmKeeper.WithPrecompiles(
-		precompiles,
+	app.Erc20Keeper = erc20keeper.NewKeeper(
+		app.GetKey(erc20types.StoreKey), app.AppCodec(), authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper, app.BankKeeper, app.EvmKeeper, app.StakingKeeper,
+		app.AuthzKeeper, nil,
 	)
 
 	// integration point for custom authentication modules
@@ -343,6 +337,25 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
 	app.Ics20WasmHooks.ContractKeeper = &app.WasmKeeper
+
+	// NOTE: we are just adding the default Ethereum precompiles here.
+	// Additional precompiles could be added if desired.
+	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
+	wardenPrecompile, err := wardenprecompile.NewPrecompile(app.WardenKeeper, app.ActKeeper)
+	if err != nil {
+		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
+	}
+	precompiles[wardenPrecompile.Address()] = wardenPrecompile
+
+	actPrecompile, err := actprecompile.NewPrecompile(app.ActKeeper)
+	if err != nil {
+		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
+	}
+	precompiles[actPrecompile.Address()] = actPrecompile
+
+	app.EvmKeeper.WithStaticPrecompiles(
+		precompiles,
+	)
 
 	// register IBC modules
 	if err := app.RegisterModules(

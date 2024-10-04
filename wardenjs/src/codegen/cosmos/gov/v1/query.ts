@@ -838,7 +838,7 @@ export const QueryProposalsRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalStatus = (reader.int32() as any);
+          message.proposalStatus = reader.int32() as any;
           break;
         case 2:
           message.voter = reader.string();

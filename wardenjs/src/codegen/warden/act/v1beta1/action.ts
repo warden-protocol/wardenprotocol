@@ -216,7 +216,7 @@ export const Action = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 3:
           message.msg = Any.decode(reader, reader.uint32());

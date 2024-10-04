@@ -9,6 +9,7 @@ import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { MsgNewSignRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
+import { useNonce } from "./useNonce";
 
 export enum SignRequesterState {
 	IDLE = "idle",
@@ -23,6 +24,7 @@ const { MsgNewActionResponse } = warden.act.v1beta1;
 const { MsgNewSignRequest } = warden.warden.v1beta3;
 
 export default function useRequestSignature() {
+	const nonce = useNonce();
 	const [state, setState] = useState<SignRequesterState>(
 		SignRequesterState.IDLE,
 	);
@@ -45,9 +47,9 @@ export default function useRequestSignature() {
 				keyId,
 				analyzers,
 				input,
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-				encryptionKey: undefined,
+				encryptionKey: undefined as any,
+				maxKeychainFees: undefined as any,
+				nonce,
 			},
 			{},
 		);

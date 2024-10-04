@@ -924,7 +924,7 @@ export const AccessControlType = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accessType = (reader.int32() as any);
+          message.accessType = reader.int32() as any;
           break;
         case 2:
           message.accessControlList.push(reader.string());

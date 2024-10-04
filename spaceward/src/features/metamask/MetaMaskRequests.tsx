@@ -140,7 +140,7 @@ export function MetaMaskRequests() {
 								onKeyChange={k => {
 									setCurrentKey(k);
 								}}
-								className="mb-2 relative"
+								className="mb-2 relative select-none"
 								dropdownClassName="bottom-2"
 								currentKey={currentKey}
 							/>

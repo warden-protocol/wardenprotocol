@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
-import { isDeliverTxSuccess } from "@cosmjs/stargate";
+import { useContext, useEffect, useRef, useState } from "react";
+import { DeliverTxResponse, isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useChain, walletContext } from "@cosmos-kit/react-lite";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
-import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { Action, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { useToast } from "@/components/ui/use-toast";
 
 import {
@@ -20,6 +20,9 @@ import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
 import { getActionHandler, GetStatus, handleCosmos, handleEth, handleEthRaw } from "./util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { capitalize } from "../modals/util";
+import { queryCosmosClients } from "../assets/queries";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -42,8 +45,28 @@ const waitForVisibility = () => {
 	});
 };
 
+class DetailedError<T> extends Error {
+	constructor(message: string, public detail: T) {
+		super(message);
+	}
+}
+
+function isDetailedError<T>(e?: unknown): e is DetailedError<T> {
+	if (!e) {
+		return false;
+	}
+
+	return "detail" in (e as {});
+}
+
+
 function ActionItem({ single, ...item }: ItemProps) {
+	const queryClient = useQueryClient();
 	const { walletManager } = useContext(walletContext);
+	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
+	const clientsRef = useRef(cosmosClients);
+	clientsRef.current = cosmosClients;
+
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
 	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
@@ -80,32 +103,51 @@ function ActionItem({ single, ...item }: ItemProps) {
 					const signer = getOfflineSigner();
 					const client = await getSigningClient(signer);
 					const txRaw = cosmos.tx.v1beta1.TxRaw.encode(item.txRaw);
-					const res = await client.broadcastTx(Uint8Array.from(txRaw.finish()));
+					try {
+						const res = await client.broadcastTx(Uint8Array.from(txRaw.finish()));
 
-					if (isDeliverTxSuccess(res)) {
-						setData({
-							[item.id]: {
-								...item,
-								status: QueuedActionStatus.Broadcast,
-								response: res,
-							},
-						});
-					} else {
-						console.error("Failed to broadcast", res);
+						if (isDeliverTxSuccess(res)) {
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Broadcast,
+									response: res,
+								},
+							});
+						} else {
+							console.error("Failed to broadcast", res);
+							throw new DetailedError("Could not broadcast transaction", res);
 
-						toast({
-							title: "Failed",
-							description: "Could not broadcast transaction",
-							duration: 10000,
-						});
+						}
+					} catch (e) {
+						if (isDetailedError<DeliverTxResponse>(e)) {
+							toast({
+								title: "Failed",
+								description: "Could not broadcast transaction",
+								duration: 10000,
+							});
 
-						setData({
-							[item.id]: {
-								...item,
-								status: QueuedActionStatus.Failed,
-								response: res,
-							},
-						});
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Failed,
+									response: e.detail,
+								},
+							});
+						} else {
+							toast({
+								title: "Failed",
+								description: (e as Error)?.message ?? "Unexpected error",
+								duration: 10000,
+							});
+
+							setData({
+								[item.id]: {
+									...item,
+									status: QueuedActionStatus.Failed,
+								},
+							});
+						}
 					}
 
 					break;
@@ -151,16 +193,21 @@ function ActionItem({ single, ...item }: ItemProps) {
 						}
 
 						const client = await getClient();
+						let action: Action | undefined;
 
-						const res = await client.warden.act.v1beta1.actionById({
-							id: item.actionId,
-						});
+						try {
+							const res = await client.warden.act.v1beta1.actionById({
+								id: item.actionId,
+							});
+
+							action = res.action;
+						} catch (e) {
+							console.error("failed to get action", e);
+						}
 
 						if (
-							res.action?.status === ActionStatus.ACTION_STATUS_COMPLETED
+							action?.status === ActionStatus.ACTION_STATUS_COMPLETED
 						) {
-							const { action } = res;
-
 							setData({
 								[item.id]: {
 									...item,
@@ -169,14 +216,14 @@ function ActionItem({ single, ...item }: ItemProps) {
 								},
 							});
 						} else if (
-							res.action?.status === ActionStatus.ACTION_STATUS_PENDING
+							action?.status === ActionStatus.ACTION_STATUS_PENDING
 						) {
 							timeout = setTimeout(
 								checkAction,
 								1000,
 							) as unknown as number;
-						} else if (res.action?.status === ActionStatus.ACTION_STATUS_REVOKED) {
-							console.error("action revoked", res);
+						} else if (action?.status === ActionStatus.ACTION_STATUS_REVOKED) {
+							console.error("action revoked", action);
 
 							toast({
 								title: "Failed",
@@ -188,11 +235,11 @@ function ActionItem({ single, ...item }: ItemProps) {
 								[item.id]: {
 									...item,
 									status: QueuedActionStatus.Failed,
-									action: res.action,
+									action,
 								}
 							})
 						} else {
-							console.error("action failed", res);
+							console.error("action failed", action);
 
 							toast({
 								title: "Failed",
@@ -302,9 +349,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 						if (item.networkType === "eth-raw") {
 							res = await handleEthRaw({ action: item, w });
 						} else if (item.networkType === "eth") {
-							res = await handleEth({ action: item, w });
+							res = await handleEth({ action: item, w, queryClient });
 						} else if (item.networkType === "cosmos") {
-							res = await handleCosmos({ action: item, w, walletManager });
+							const [, , rpcEndpoint] = clientsRef.current?.find((v) => v[1] === item?.chainName) ?? [];
+							res = await handleCosmos({ action: item, w, queryClient, rpcEndpoint });
 						}
 					} catch (e) {
 						console.error("broadcast failed", e);
@@ -400,7 +448,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 								? "Action ready"
 								: item.status ===
 									QueuedActionStatus.AwaitingBroadcast
-									? "Awaiting broadcast"
+									? `Awaiting broadcast on ${capitalize(item.chainName)}`
 									: item.status === QueuedActionStatus.Success
 										? "Success"
 										: item.status ===
@@ -430,6 +478,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 }
 
 export default function StatusSidebar() {
+	const [hide, setHide] = useState(true);
 	const { data } = useActionsState();
 	const storeIds = Object.keys(data ?? {});
 
@@ -462,7 +511,9 @@ export default function StatusSidebar() {
 						<ActionItem single {...data?.[filtered[0]]!} />
 					) : null
 				) : (
-					<Popover>
+					<Popover onOpenChange={open => {
+						setHide(!open);
+					}}>
 						<PopoverTrigger asChild>
 							<div className="flex flex-col relative cursor-pointer">
 								<p className="text-lg font-semibold">
@@ -477,9 +528,10 @@ export default function StatusSidebar() {
 						<PopoverContent
 							side="left"
 							sideOffset={20}
-							className="p-0"
+							className={clsx("p-0", { hidden: hide })}
+							forceMount={hide ? true : undefined}
 						>
-							<div className="bg-fill-quaternary">
+							<div className={"bg-fill-quaternary max-h-80 overflow-auto"}>
 								{filtered.map((id) => {
 									const action = data?.[id];
 

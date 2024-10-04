@@ -36,7 +36,8 @@ To get your key (wallet) address in a certain network, do the following:
 - Select the asset and network pair.
 - Copy the address.
 
-![Get your key address](../../static/img/get-key-address.png)
+![Get your key address](../../static/img/get-key-address-1.png)
+![Get your key address](../../static/img/get-key-address-2.png)
 
 ## View Keychains
 
@@ -46,3 +47,5 @@ You can access a list of all available Keychains – custodians that generate an
 2. In the left menu, navigate to **Keychains**.
 
 Here you can also request a key for any Keychain – just click **Create Key**.
+
+![View available Keychains](../../static/img/view-keychains.png)

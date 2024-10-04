@@ -25,6 +25,8 @@ import {
 	cosmosProtoRegistry,
 	wardenProtoRegistry,
 } from "@wardenprotocol/wardenjs";
+import { useQueryHooks } from "@/hooks/useClient";
+import { extReplacer } from "@/utils/formatting";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
@@ -110,11 +112,17 @@ function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Admin intent">
-					{msg.adminTemplateId.toString()}
+				<CardRow label="Admin Approve intent">
+					{msg.approveAdminTemplateId.toString()}
 				</CardRow>
-				<CardRow label="Sign intent">
-					{msg.signTemplateId.toString()}
+				<CardRow label="Admin Reject intent">
+					{msg.rejectAdminTemplateId.toString()}
+				</CardRow>
+				<CardRow label="Sign Approve intent">
+					{msg.approveSignTemplateId.toString()}
+				</CardRow>
+				<CardRow label="Sign Reject intent">
+					{msg.rejectSignTemplateId.toString()}
 				</CardRow>
 			</CardContent>
 		</Card>
@@ -194,6 +202,12 @@ function MsgNewKeychainDetails({ msg }: { msg: MsgNewKeychain }) {
 	);
 }
 
+function TemplateName({ id }: { id: bigint }) {
+	const { isReady, useTemplateById } = useQueryHooks();
+	const { data } = useTemplateById({ request: { id }, options: { enabled: isReady } });
+	return <span>{data?.template?.name ?? "Default Template"}</span>;
+}
+
 function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 	return (
 		<Card className="bg-background">
@@ -202,7 +216,21 @@ function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 				<CardDescription>Update a space</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<CardRow label="Space">{msg.spaceId.toString()}</CardRow>
+				<CardRow labelClassName="!w-52" label="Space">
+					{msg.spaceId.toString()}
+				</CardRow>
+				<CardRow labelClassName="!w-52" label="Admin Approve intent">
+					<TemplateName id={msg.approveAdminTemplateId} />
+				</CardRow>
+				<CardRow labelClassName="!w-52" label="Admin Reject intent">
+					<TemplateName id={msg.rejectAdminTemplateId} />
+				</CardRow>
+				<CardRow labelClassName="!w-52" label="Sign Approve intent">
+					<TemplateName id={msg.approveSignTemplateId} />
+				</CardRow>
+				<CardRow labelClassName="!w-52" label="Sign Reject intent">
+					<TemplateName id={msg.rejectSignTemplateId} />
+				</CardRow>
 			</CardContent>
 		</Card>
 	);
@@ -298,8 +326,8 @@ function MsgFallbackDetails({ type, msg }: { type: string; msg: any }) {
 			</CardHeader>
 			<CardContent>
 				{Object.entries(msg).map(([key, value]) => (
-					<CardRow label={key} key={key}>
-						{String(value)}
+					<CardRow labelClassName="!w-52" label={key} key={key}>
+						{JSON.stringify(value, extReplacer, 2)}
 					</CardRow>
 				))}
 			</CardContent>

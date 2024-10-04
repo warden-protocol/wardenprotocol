@@ -1366,7 +1366,7 @@ export const QueryKeyRequestsRequest = {
           message.keychainId = reader.uint64();
           break;
         case 3:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         case 4:
           message.spaceId = reader.uint64();
@@ -1718,10 +1718,10 @@ export const QueryAllKeysRequest = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.deriveAddresses.push((reader.int32() as any));
+              message.deriveAddresses.push(reader.int32() as any);
             }
           } else {
-            message.deriveAddresses.push((reader.int32() as any));
+            message.deriveAddresses.push(reader.int32() as any);
           }
           break;
         default:
@@ -1920,10 +1920,10 @@ export const QueryKeysBySpaceIdRequest = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.deriveAddresses.push((reader.int32() as any));
+              message.deriveAddresses.push(reader.int32() as any);
             }
           } else {
-            message.deriveAddresses.push((reader.int32() as any));
+            message.deriveAddresses.push(reader.int32() as any);
           }
           break;
         default:
@@ -2029,10 +2029,10 @@ export const QueryKeyByIdRequest = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.deriveAddresses.push((reader.int32() as any));
+              message.deriveAddresses.push(reader.int32() as any);
             }
           } else {
-            message.deriveAddresses.push((reader.int32() as any));
+            message.deriveAddresses.push(reader.int32() as any);
           }
           break;
         default:
@@ -2219,7 +2219,7 @@ export const AddressResponse = {
           message.address = reader.string();
           break;
         case 2:
-          message.type = (reader.int32() as any);
+          message.type = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -2313,7 +2313,7 @@ export const QuerySignRequestsRequest = {
           message.keychainId = reader.uint64();
           break;
         case 3:
-          message.status = (reader.int32() as any);
+          message.status = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);

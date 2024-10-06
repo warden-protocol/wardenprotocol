@@ -8,8 +8,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/vm"
-	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	cmn "github.com/evmos/evmos/v20/precompiles/common"
+	"github.com/evmos/evmos/v20/x/evm/core/vm"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 )
 
@@ -41,7 +41,6 @@ func NewPrecompile(
 	if err != nil {
 		return nil, err
 	}
-
 	return &Precompile{
 		Precompile: cmn.Precompile{
 			ABI:                  abi,
@@ -73,7 +72,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
-	ctx, stateDB, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+	ctx, stateDB, _, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}

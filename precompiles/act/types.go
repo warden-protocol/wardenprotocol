@@ -4,57 +4,13 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	"math/big"
 	"time"
 )
-
-type AnyType struct {
-	TypeUrl string `abi:"typeUrl"`
-	Value   []byte `abi:"value"`
-}
-
-type Timestamp struct {
-	Seconds uint64 `abi:"secs"`
-	Nanos   uint64 `abi:"nanos"`
-}
-
-type ActionVote struct {
-	Participant  string    `abi:"participant"`
-	VotedAt      Timestamp `abi:"votedAt"`
-	VoteType     int32     `abi:"voteType"`
-	VoteTypeText string    `abi:"voteTypeText"`
-}
-
-type Action struct {
-	Id                uint64       `abi:"id"`
-	Status            int32        `abi:"status"`
-	StatusText        string       `abi:"statusText"`
-	Msg               AnyType      `abi:"msg"`
-	Result            AnyType      `abi:"result"`
-	Creator           string       `abi:"creator"`
-	TimeoutHeight     uint64       `abi:"timeoutHeight"`
-	CreatedAt         Timestamp    `abi:"createdAt"`
-	UpdatedAt         Timestamp    `abi:"updatedAt"`
-	ApproveExpression string       `abi:"approveExpression"`
-	RejectExpression  string       `abi:"rejectExpression"`
-	Mentions          []string     `abi:"mentions"`
-	Votes             []ActionVote `abi:"votes"`
-}
-
-type Template struct {
-	Id         uint64 `abi:"id"`
-	Creator    string `abi:"creator"`
-	Name       string `abi:"name"`
-	Expression string `abi:"expression"`
-}
 
 // ActionsInput needed to unmarshal Pagination field and pass it to types.QueryActionsRequest
 type ActionsInput struct {
 	Pagination query.PageRequest `json:"pagination"`
-}
-
-type ActionsResponse struct {
-	Pagination query.PageResponse `abi:"pagination"`
-	Actions    []Action           `abi:"actions"`
 }
 
 func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) ActionsResponse {
@@ -65,16 +21,10 @@ func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) ActionsRe
 		}
 
 		r.Actions = actions
-		if res.Pagination != nil {
-			r.Pagination = *res.Pagination
-		}
+		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
 	return r
-}
-
-type ActionByIdResponse struct {
-	Action Action `abi:"action"`
 }
 
 func (r ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) ActionByIdResponse {
@@ -92,11 +42,6 @@ type ActionsByAddressInput struct {
 	Status     int32
 }
 
-type ActionsByAddressResponse struct {
-	Pagination query.PageResponse `abi:"pagination"`
-	Actions    []Action           `abi:"actions"`
-}
-
 func (r ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) ActionsByAddressResponse {
 	if res != nil {
 		actions := make([]Action, len(res.Actions))
@@ -105,9 +50,7 @@ func (r ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressR
 		}
 
 		r.Actions = actions
-		if res.Pagination != nil {
-			r.Pagination = *res.Pagination
-		}
+		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
 	return r
@@ -119,11 +62,6 @@ type TemplatesInput struct {
 	Creator    string `json:"creator"`
 }
 
-type TemplatesResponse struct {
-	Pagination query.PageResponse `abi:"pagination"`
-	Templates  []Template         `abi:"templates"`
-}
-
 func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) TemplatesResponse {
 	if res != nil {
 		templates := make([]Template, len(res.Templates))
@@ -132,16 +70,10 @@ func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) Templ
 		}
 
 		r.Templates = templates
-		if res.Pagination != nil {
-			r.Pagination = *res.Pagination
-		}
+		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
 	return r
-}
-
-type TemplateByIdResponse struct {
-	Template Template `abi:"template"`
 }
 
 func (r TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse) TemplateByIdResponse {
@@ -155,7 +87,7 @@ func (r TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse)
 func mapAction(action types.Action) Action {
 	return Action{
 		Id:                action.Id,
-		Status:            int32(action.Status),
+		Status:            big.NewInt(int64(action.Status)),
 		StatusText:        action.Status.String(),
 		Msg:               mapAny(action.Msg),
 		Result:            mapAny(action.Result),
@@ -211,7 +143,18 @@ func mapAny(any *cdctypes.Any) AnyType {
 
 func mapTimestamp(value time.Time) Timestamp {
 	return Timestamp{
-		Seconds: uint64(value.Unix()),
-		Nanos:   uint64(value.Nanosecond()),
+		Secs:  uint64(value.Unix()),
+		Nanos: uint64(value.Nanosecond()),
+	}
+}
+
+func mapPageResponse(value *query.PageResponse) TypesPageResponse {
+	if value == nil {
+		return TypesPageResponse{}
+	}
+
+	return TypesPageResponse{
+		NextKey: value.NextKey,
+		Total:   value.Total,
 	}
 }

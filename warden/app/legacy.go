@@ -349,7 +349,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	actPrecompile, err := actprecompile.NewPrecompile(app.ActKeeper)
 	if err != nil {
-		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
+		panic(fmt.Sprintf("error while creating x/act precompile: %s", err))
 	}
 	precompiles[actPrecompile.Address()] = actPrecompile
 

@@ -13,6 +13,8 @@ import (
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
 
+	"github.com/ethereum/go-ethereum/ethclient"
+
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
@@ -74,7 +76,6 @@ func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 		JSONRPCPort   int
 		JSONRPCWSPort int
 	}{
-
 		APIPort:       w.apiPort,
 		GRPCPort:      w.grpcPort,
 		CometPortRPC:  w.cometPortRPC,
@@ -108,6 +109,10 @@ func (w *WardenNode) grpcAddr() string {
 	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
 }
 
+func (w *WardenNode) jsonRpcAddr() string {
+	return fmt.Sprintf("http://127.0.0.1:%d", w.jsonRPCPort)
+}
+
 type GRPCClient struct {
 	Warden wardentypes.QueryClient
 	Act    acttypes.QueryClient
@@ -129,4 +134,11 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 		Bank:   banktypes.NewQueryClient(grpcConn),
 		Auth:   authtypes.NewQueryClient(grpcConn),
 	}
+}
+
+func (w *WardenNode) EthClient(t *testing.T) *ethclient.Client {
+	client, err := ethclient.Dial(w.jsonRpcAddr())
+	require.NoError(t, err)
+
+	return client
 }

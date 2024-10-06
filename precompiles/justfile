@@ -1,0 +1,15 @@
+git_root := `git rev-parse --show-toplevel`
+tmpdir := `mktemp -d`
+
+# regenerate all protobuf definitions using "buf"
+all: abi
+
+_abigen:
+  go install \
+    github.com/ethereum/go-ethereum/cmd/abigen
+
+# run "buf" to generate pulsar definitions
+abi: _abigen
+  abigen --abi {{git_root / "precompiles/act/abi.json"}} --pkg act --type IAct --out {{git_root / "precompiles/act/IAct.go"}}
+  abigen --abi {{git_root / "precompiles/warden/abi.json"}} --pkg warden --type IWarden --out {{git_root / "precompiles/warden/IWarden.go"}}
+

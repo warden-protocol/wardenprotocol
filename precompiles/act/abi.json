@@ -1,868 +1,870 @@
-[
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "actionId",
-        "type": "uint64"
-      }
-    ],
-    "name": "actionById",
-    "outputs": [
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "uint64",
-                "name": "id",
-                "type": "uint64"
-              },
-              {
-                "internalType": "int256",
-                "name": "status",
-                "type": "int256"
-              },
-              {
-                "internalType": "string",
-                "name": "statusText",
-                "type": "string"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "typeUrl",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "value",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct AnyType",
-                "name": "msg",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "typeUrl",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "value",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct AnyType",
-                "name": "result",
-                "type": "tuple"
-              },
-              {
-                "internalType": "string",
-                "name": "creator",
-                "type": "string"
-              },
-              {
-                "internalType": "uint64",
-                "name": "timeoutHeight",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "secs",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nanos",
-                    "type": "uint64"
-                  }
-                ],
-                "internalType": "struct Timestamp",
-                "name": "createdAt",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "secs",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nanos",
-                    "type": "uint64"
-                  }
-                ],
-                "internalType": "struct Timestamp",
-                "name": "updatedAt",
-                "type": "tuple"
-              },
-              {
-                "internalType": "string",
-                "name": "approveExpression",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "rejectExpression",
-                "type": "string"
-              },
-              {
-                "internalType": "string[]",
-                "name": "mentions",
-                "type": "string[]"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "participant",
-                    "type": "string"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint64",
-                        "name": "secs",
-                        "type": "uint64"
-                      },
-                      {
-                        "internalType": "uint64",
-                        "name": "nanos",
-                        "type": "uint64"
-                      }
-                    ],
-                    "internalType": "struct Timestamp",
-                    "name": "votedAt",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "int32",
-                    "name": "voteType",
-                    "type": "int32"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "voteTypeText",
-                    "type": "string"
-                  }
-                ],
-                "internalType": "struct ActionVote[]",
-                "name": "votes",
-                "type": "tuple[]"
-              }
-            ],
-            "internalType": "struct Action",
-            "name": "action",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct ActionByIdResponse",
-        "name": "response",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes",
-            "name": "key",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint64",
-            "name": "offset",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint64",
-            "name": "limit",
-            "type": "uint64"
-          },
-          {
-            "internalType": "bool",
-            "name": "countTotal",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "reverse",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct Types.PageRequest",
-        "name": "pagination",
-        "type": "tuple"
-      }
-    ],
-    "name": "actions",
-    "outputs": [
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "bytes",
-                "name": "nextKey",
-                "type": "bytes"
-              },
-              {
-                "internalType": "uint64",
-                "name": "total",
-                "type": "uint64"
-              }
-            ],
-            "internalType": "struct Types.PageResponse",
-            "name": "pagination",
-            "type": "tuple"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint64",
-                "name": "id",
-                "type": "uint64"
-              },
-              {
-                "internalType": "int256",
-                "name": "status",
-                "type": "int256"
-              },
-              {
-                "internalType": "string",
-                "name": "statusText",
-                "type": "string"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "typeUrl",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "value",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct AnyType",
-                "name": "msg",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "typeUrl",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "value",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct AnyType",
-                "name": "result",
-                "type": "tuple"
-              },
-              {
-                "internalType": "string",
-                "name": "creator",
-                "type": "string"
-              },
-              {
-                "internalType": "uint64",
-                "name": "timeoutHeight",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "secs",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nanos",
-                    "type": "uint64"
-                  }
-                ],
-                "internalType": "struct Timestamp",
-                "name": "createdAt",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "secs",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nanos",
-                    "type": "uint64"
-                  }
-                ],
-                "internalType": "struct Timestamp",
-                "name": "updatedAt",
-                "type": "tuple"
-              },
-              {
-                "internalType": "string",
-                "name": "approveExpression",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "rejectExpression",
-                "type": "string"
-              },
-              {
-                "internalType": "string[]",
-                "name": "mentions",
-                "type": "string[]"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "participant",
-                    "type": "string"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint64",
-                        "name": "secs",
-                        "type": "uint64"
-                      },
-                      {
-                        "internalType": "uint64",
-                        "name": "nanos",
-                        "type": "uint64"
-                      }
-                    ],
-                    "internalType": "struct Timestamp",
-                    "name": "votedAt",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "int32",
-                    "name": "voteType",
-                    "type": "int32"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "voteTypeText",
-                    "type": "string"
-                  }
-                ],
-                "internalType": "struct ActionVote[]",
-                "name": "votes",
-                "type": "tuple[]"
-              }
-            ],
-            "internalType": "struct Action[]",
-            "name": "actions",
-            "type": "tuple[]"
-          }
-        ],
-        "internalType": "struct ActionsResponse",
-        "name": "response",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes",
-            "name": "key",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint64",
-            "name": "offset",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint64",
-            "name": "limit",
-            "type": "uint64"
-          },
-          {
-            "internalType": "bool",
-            "name": "countTotal",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "reverse",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct Types.PageRequest",
-        "name": "pagination",
-        "type": "tuple"
-      },
-      {
-        "internalType": "string",
-        "name": "addr",
-        "type": "string"
-      },
-      {
-        "internalType": "int32",
-        "name": "status",
-        "type": "int32"
-      }
-    ],
-    "name": "actionsByAddress",
-    "outputs": [
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "bytes",
-                "name": "nextKey",
-                "type": "bytes"
-              },
-              {
-                "internalType": "uint64",
-                "name": "total",
-                "type": "uint64"
-              }
-            ],
-            "internalType": "struct Types.PageResponse",
-            "name": "pagination",
-            "type": "tuple"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint64",
-                "name": "id",
-                "type": "uint64"
-              },
-              {
-                "internalType": "int256",
-                "name": "status",
-                "type": "int256"
-              },
-              {
-                "internalType": "string",
-                "name": "statusText",
-                "type": "string"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "typeUrl",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "value",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct AnyType",
-                "name": "msg",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "typeUrl",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "bytes",
-                    "name": "value",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct AnyType",
-                "name": "result",
-                "type": "tuple"
-              },
-              {
-                "internalType": "string",
-                "name": "creator",
-                "type": "string"
-              },
-              {
-                "internalType": "uint64",
-                "name": "timeoutHeight",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "secs",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nanos",
-                    "type": "uint64"
-                  }
-                ],
-                "internalType": "struct Timestamp",
-                "name": "createdAt",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "uint64",
-                    "name": "secs",
-                    "type": "uint64"
-                  },
-                  {
-                    "internalType": "uint64",
-                    "name": "nanos",
-                    "type": "uint64"
-                  }
-                ],
-                "internalType": "struct Timestamp",
-                "name": "updatedAt",
-                "type": "tuple"
-              },
-              {
-                "internalType": "string",
-                "name": "approveExpression",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "rejectExpression",
-                "type": "string"
-              },
-              {
-                "internalType": "string[]",
-                "name": "mentions",
-                "type": "string[]"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "participant",
-                    "type": "string"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint64",
-                        "name": "secs",
-                        "type": "uint64"
-                      },
-                      {
-                        "internalType": "uint64",
-                        "name": "nanos",
-                        "type": "uint64"
-                      }
-                    ],
-                    "internalType": "struct Timestamp",
-                    "name": "votedAt",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "int32",
-                    "name": "voteType",
-                    "type": "int32"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "voteTypeText",
-                    "type": "string"
-                  }
-                ],
-                "internalType": "struct ActionVote[]",
-                "name": "votes",
-                "type": "tuple[]"
-              }
-            ],
-            "internalType": "struct Action[]",
-            "name": "actions",
-            "type": "tuple[]"
-          }
-        ],
-        "internalType": "struct ActionsByAddressResponse",
-        "name": "response",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "actionId",
-        "type": "uint64"
-      }
-    ],
-    "name": "checkAction",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "definition",
-        "type": "string"
-      }
-    ],
-    "name": "newTemplate",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "actionId",
-        "type": "uint64"
-      }
-    ],
-    "name": "revokeAction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "templateId",
-        "type": "uint64"
-      }
-    ],
-    "name": "templateById",
-    "outputs": [
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "uint64",
-                "name": "id",
-                "type": "uint64"
-              },
-              {
-                "internalType": "string",
-                "name": "creator",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "expression",
-                "type": "string"
-              }
-            ],
-            "internalType": "struct Template",
-            "name": "template",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct TemplateByIdResponse",
-        "name": "response",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes",
-            "name": "key",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint64",
-            "name": "offset",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint64",
-            "name": "limit",
-            "type": "uint64"
-          },
-          {
-            "internalType": "bool",
-            "name": "countTotal",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "reverse",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct Types.PageRequest",
-        "name": "pagination",
-        "type": "tuple"
-      }
-    ],
-    "name": "templates",
-    "outputs": [
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "bytes",
-                "name": "nextKey",
-                "type": "bytes"
-              },
-              {
-                "internalType": "uint64",
-                "name": "total",
-                "type": "uint64"
-              }
-            ],
-            "internalType": "struct Types.PageResponse",
-            "name": "pagination",
-            "type": "tuple"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint64",
-                "name": "id",
-                "type": "uint64"
-              },
-              {
-                "internalType": "string",
-                "name": "creator",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "expression",
-                "type": "string"
-              }
-            ],
-            "internalType": "struct Template[]",
-            "name": "templates",
-            "type": "tuple[]"
-          }
-        ],
-        "internalType": "struct TemplatesResponse",
-        "name": "response",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "templateId",
-        "type": "uint64"
-      },
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "definition",
-        "type": "string"
-      }
-    ],
-    "name": "updateTemplate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "actionId",
-        "type": "uint64"
-      },
-      {
-        "internalType": "int32",
-        "name": "voteType",
-        "type": "int32"
-      }
-    ],
-    "name": "voteForAction",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
-]
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
+        }
+      ],
+      "name": "actionById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "id",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "status",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "statusText",
+                  "type": "string"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "typeUrl",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "value",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AnyType",
+                  "name": "msg",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "typeUrl",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "value",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AnyType",
+                  "name": "result",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "string",
+                  "name": "creator",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "timeoutHeight",
+                  "type": "uint64"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Timestamp",
+                  "name": "createdAt",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Timestamp",
+                  "name": "updatedAt",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "string",
+                  "name": "approveExpression",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "rejectExpression",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "mentions",
+                  "type": "string[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "participant",
+                      "type": "string"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint64",
+                          "name": "secs",
+                          "type": "uint64"
+                        },
+                        {
+                          "internalType": "uint64",
+                          "name": "nanos",
+                          "type": "uint64"
+                        }
+                      ],
+                      "internalType": "struct Timestamp",
+                      "name": "votedAt",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "int32",
+                      "name": "voteType",
+                      "type": "int32"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "voteTypeText",
+                      "type": "string"
+                    }
+                  ],
+                  "internalType": "struct ActionVote[]",
+                  "name": "votes",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct Action",
+              "name": "action",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct ActionByIdResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        }
+      ],
+      "name": "actions",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "id",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "status",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "statusText",
+                  "type": "string"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "typeUrl",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "value",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AnyType",
+                  "name": "msg",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "typeUrl",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "value",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AnyType",
+                  "name": "result",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "string",
+                  "name": "creator",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "timeoutHeight",
+                  "type": "uint64"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Timestamp",
+                  "name": "createdAt",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Timestamp",
+                  "name": "updatedAt",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "string",
+                  "name": "approveExpression",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "rejectExpression",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "mentions",
+                  "type": "string[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "participant",
+                      "type": "string"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint64",
+                          "name": "secs",
+                          "type": "uint64"
+                        },
+                        {
+                          "internalType": "uint64",
+                          "name": "nanos",
+                          "type": "uint64"
+                        }
+                      ],
+                      "internalType": "struct Timestamp",
+                      "name": "votedAt",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "int32",
+                      "name": "voteType",
+                      "type": "int32"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "voteTypeText",
+                      "type": "string"
+                    }
+                  ],
+                  "internalType": "struct ActionVote[]",
+                  "name": "votes",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct Action[]",
+              "name": "actions",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct ActionsResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        },
+        {
+          "internalType": "string",
+          "name": "addr",
+          "type": "string"
+        },
+        {
+          "internalType": "int32",
+          "name": "status",
+          "type": "int32"
+        }
+      ],
+      "name": "actionsByAddress",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "id",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "status",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "statusText",
+                  "type": "string"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "typeUrl",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "value",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AnyType",
+                  "name": "msg",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "typeUrl",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "value",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AnyType",
+                  "name": "result",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "string",
+                  "name": "creator",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "timeoutHeight",
+                  "type": "uint64"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Timestamp",
+                  "name": "createdAt",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "secs",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nanos",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Timestamp",
+                  "name": "updatedAt",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "string",
+                  "name": "approveExpression",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "rejectExpression",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "mentions",
+                  "type": "string[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "participant",
+                      "type": "string"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint64",
+                          "name": "secs",
+                          "type": "uint64"
+                        },
+                        {
+                          "internalType": "uint64",
+                          "name": "nanos",
+                          "type": "uint64"
+                        }
+                      ],
+                      "internalType": "struct Timestamp",
+                      "name": "votedAt",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "int32",
+                      "name": "voteType",
+                      "type": "int32"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "voteTypeText",
+                      "type": "string"
+                    }
+                  ],
+                  "internalType": "struct ActionVote[]",
+                  "name": "votes",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct Action[]",
+              "name": "actions",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct ActionsByAddressResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
+        }
+      ],
+      "name": "checkAction",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "definition",
+          "type": "string"
+        }
+      ],
+      "name": "newTemplate",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
+        }
+      ],
+      "name": "revokeAction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "templateId",
+          "type": "uint64"
+        }
+      ],
+      "name": "templateById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "id",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "string",
+                  "name": "creator",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "expression",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct Template",
+              "name": "template",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct TemplateByIdResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        }
+      ],
+      "name": "templates",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "id",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "string",
+                  "name": "creator",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "expression",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct Template[]",
+              "name": "templates",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct TemplatesResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "templateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "definition",
+          "type": "string"
+        }
+      ],
+      "name": "updateTemplate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "int32",
+          "name": "voteType",
+          "type": "int32"
+        }
+      ],
+      "name": "voteForAction",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

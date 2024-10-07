@@ -439,7 +439,7 @@ export interface QueryParamsResponseProtoMsg {
 /** QueryParamsResponse defines the response type for querying x/evm parameters. */
 export interface QueryParamsResponseAmino {
   /** params define the evm module parameters. */
-  params?: ParamsAmino;
+  params: ParamsAmino;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "/ethermint.evm.v1.QueryParamsResponse";
@@ -490,6 +490,13 @@ export interface EthCallRequestSDKType {
 export interface EstimateGasResponse {
   /** gas returns the estimated gas */
   gas: bigint;
+  /**
+   * ret is the returned data from evm function (result or data supplied with revert
+   * opcode)
+   */
+  ret: Uint8Array;
+  /** vm_error is the error returned by vm execution */
+  vmError: string;
 }
 export interface EstimateGasResponseProtoMsg {
   typeUrl: "/ethermint.evm.v1.EstimateGasResponse";
@@ -499,6 +506,13 @@ export interface EstimateGasResponseProtoMsg {
 export interface EstimateGasResponseAmino {
   /** gas returns the estimated gas */
   gas?: string;
+  /**
+   * ret is the returned data from evm function (result or data supplied with revert
+   * opcode)
+   */
+  ret?: string;
+  /** vm_error is the error returned by vm execution */
+  vm_error?: string;
 }
 export interface EstimateGasResponseAminoMsg {
   type: "/ethermint.evm.v1.EstimateGasResponse";
@@ -507,6 +521,8 @@ export interface EstimateGasResponseAminoMsg {
 /** EstimateGasResponse defines EstimateGas response */
 export interface EstimateGasResponseSDKType {
   gas: bigint;
+  ret: Uint8Array;
+  vm_error: string;
 }
 /** QueryTraceTxRequest defines TraceTx request */
 export interface QueryTraceTxRequest {
@@ -552,7 +568,7 @@ export interface QueryTraceTxRequestAmino {
   /** block_hash of requested transaction */
   block_hash?: string;
   /** block_time of requested transaction */
-  block_time?: string;
+  block_time: string;
   /** proposer_address is the proposer of the requested block */
   proposer_address?: string;
   /** chain_id is the eip155 chain id parsed from the requested block header */
@@ -632,7 +648,7 @@ export interface QueryTraceBlockRequestAmino {
   /** block_hash (hex) of the traced block */
   block_hash?: string;
   /** block_time of the traced block */
-  block_time?: string;
+  block_time: string;
   /** proposer_address is the address of the requested block */
   proposer_address?: string;
   /** chain_id is the eip155 chain id parsed from the requested block header */
@@ -1987,7 +2003,7 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -2123,7 +2139,9 @@ export const EthCallRequest = {
 };
 function createBaseEstimateGasResponse(): EstimateGasResponse {
   return {
-    gas: BigInt(0)
+    gas: BigInt(0),
+    ret: new Uint8Array(),
+    vmError: ""
   };
 }
 export const EstimateGasResponse = {
@@ -2131,6 +2149,12 @@ export const EstimateGasResponse = {
   encode(message: EstimateGasResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.gas !== BigInt(0)) {
       writer.uint32(8).uint64(message.gas);
+    }
+    if (message.ret.length !== 0) {
+      writer.uint32(18).bytes(message.ret);
+    }
+    if (message.vmError !== "") {
+      writer.uint32(26).string(message.vmError);
     }
     return writer;
   },
@@ -2144,6 +2168,12 @@ export const EstimateGasResponse = {
         case 1:
           message.gas = reader.uint64();
           break;
+        case 2:
+          message.ret = reader.bytes();
+          break;
+        case 3:
+          message.vmError = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2153,17 +2183,23 @@ export const EstimateGasResponse = {
   },
   fromJSON(object: any): EstimateGasResponse {
     return {
-      gas: isSet(object.gas) ? BigInt(object.gas.toString()) : BigInt(0)
+      gas: isSet(object.gas) ? BigInt(object.gas.toString()) : BigInt(0),
+      ret: isSet(object.ret) ? bytesFromBase64(object.ret) : new Uint8Array(),
+      vmError: isSet(object.vmError) ? String(object.vmError) : ""
     };
   },
   toJSON(message: EstimateGasResponse): JsonSafe<EstimateGasResponse> {
     const obj: any = {};
     message.gas !== undefined && (obj.gas = (message.gas || BigInt(0)).toString());
+    message.ret !== undefined && (obj.ret = base64FromBytes(message.ret !== undefined ? message.ret : new Uint8Array()));
+    message.vmError !== undefined && (obj.vmError = message.vmError);
     return obj;
   },
   fromPartial(object: Partial<EstimateGasResponse>): EstimateGasResponse {
     const message = createBaseEstimateGasResponse();
     message.gas = object.gas !== undefined && object.gas !== null ? BigInt(object.gas.toString()) : BigInt(0);
+    message.ret = object.ret ?? new Uint8Array();
+    message.vmError = object.vmError ?? "";
     return message;
   },
   fromAmino(object: EstimateGasResponseAmino): EstimateGasResponse {
@@ -2171,11 +2207,19 @@ export const EstimateGasResponse = {
     if (object.gas !== undefined && object.gas !== null) {
       message.gas = BigInt(object.gas);
     }
+    if (object.ret !== undefined && object.ret !== null) {
+      message.ret = bytesFromBase64(object.ret);
+    }
+    if (object.vm_error !== undefined && object.vm_error !== null) {
+      message.vmError = object.vm_error;
+    }
     return message;
   },
   toAmino(message: EstimateGasResponse): EstimateGasResponseAmino {
     const obj: any = {};
     obj.gas = message.gas !== BigInt(0) ? (message.gas?.toString)() : undefined;
+    obj.ret = message.ret ? base64FromBytes(message.ret) : undefined;
+    obj.vm_error = message.vmError === "" ? undefined : message.vmError;
     return obj;
   },
   fromAminoMsg(object: EstimateGasResponseAminoMsg): EstimateGasResponse {
@@ -2363,7 +2407,7 @@ export const QueryTraceTxRequest = {
     }
     obj.block_number = message.blockNumber !== BigInt(0) ? (message.blockNumber?.toString)() : undefined;
     obj.block_hash = message.blockHash === "" ? undefined : message.blockHash;
-    obj.block_time = message.blockTime ? Timestamp.toAmino(message.blockTime) : undefined;
+    obj.block_time = message.blockTime ? Timestamp.toAmino(message.blockTime) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.proposer_address = message.proposerAddress ? base64FromBytes(message.proposerAddress) : undefined;
     obj.chain_id = message.chainId !== BigInt(0) ? (message.chainId?.toString)() : undefined;
     obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? (message.blockMaxGas?.toString)() : undefined;
@@ -2613,7 +2657,7 @@ export const QueryTraceBlockRequest = {
     obj.trace_config = message.traceConfig ? TraceConfig.toAmino(message.traceConfig) : undefined;
     obj.block_number = message.blockNumber !== BigInt(0) ? (message.blockNumber?.toString)() : undefined;
     obj.block_hash = message.blockHash === "" ? undefined : message.blockHash;
-    obj.block_time = message.blockTime ? Timestamp.toAmino(message.blockTime) : undefined;
+    obj.block_time = message.blockTime ? Timestamp.toAmino(message.blockTime) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.proposer_address = message.proposerAddress ? base64FromBytes(message.proposerAddress) : undefined;
     obj.chain_id = message.chainId !== BigInt(0) ? (message.chainId?.toString)() : undefined;
     obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? (message.blockMaxGas?.toString)() : undefined;

@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	evmoskr "github.com/evmos/evmos/v18/crypto/keyring"
+	evmoskr "github.com/evmos/evmos/v20/crypto/keyring"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 

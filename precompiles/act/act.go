@@ -150,7 +150,32 @@ func (Precompile) IsTransaction(method string) bool {
 		return false
 	}
 
-	panic(fmt.Errorf("invalid method name: %s", method))
+func (p *Precompile) IsTransaction(method string) (bool, error) {
+	switch method {
+		// transactions
+		case CheckActionMethod:
+			return true, nil
+		case NewTemplateMethod:
+			return true, nil
+		case RevokeActionMethod:
+			return true, nil
+		case UpdateTemplateMethod:
+			return true, nil
+		case VoteForActionMethod:
+			return true, nil
+		// queries
+		case ActionsQuery:
+			return false, nil
+		case ActionByIdQuery:
+			return false, nil
+		case ActionsByAddressQuery:
+			return false, nil
+		case TemplatesQuery:
+			return false, nil
+		case TemplateByIdQuery:
+			return false, nil
+	}
+	return false, fmt.Errorf("invalid method name: %s", method)
 }
 
 // Logger returns a precompile-specific logger.

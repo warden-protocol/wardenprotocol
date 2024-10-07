@@ -28,9 +28,110 @@ var (
 	_ = event.NewSubscription
 )
 
+// AddressesResponse is an auto generated low-level Go binding around an user-defined struct.
+type AddressesResponse struct {
+	Address string
+	Type    int32
+}
+
+// Coin is an auto generated low-level Go binding around an user-defined struct.
+type Coin struct {
+	Denom  string
+	Amount *big.Int
+}
+
+// Key is an auto generated low-level Go binding around an user-defined struct.
+type Key struct {
+	Id                uint64
+	SpaceId           uint64
+	KeychainId        uint64
+	Type              int32
+	PublicKey         []byte
+	ApproveTemplateId uint64
+	RejectTemplateId  uint64
+}
+
+// KeyRequest is an auto generated low-level Go binding around an user-defined struct.
+type KeyRequest struct {
+	Id                   uint64
+	Creator              string
+	SpaceId              uint64
+	KeychainId           uint64
+	KeyType              int32
+	Status               int32
+	RejectReason         string
+	ApproveTemplateId    uint64
+	RejectTemplateId     uint64
+	DeductedKeychainFees []Coin
+}
+
+// KeyResponse is an auto generated low-level Go binding around an user-defined struct.
+type KeyResponse struct {
+	Key       Key
+	Addresses []AddressesResponse
+}
+
+// Keychain is an auto generated low-level Go binding around an user-defined struct.
+type Keychain struct {
+	Id          uint64
+	Creator     string
+	Name        string
+	Admins      []string
+	Writers     []string
+	Fees        KeychainFees
+	Description string
+	Url         string
+	KeybaseId   string
+}
+
+// KeychainFees is an auto generated low-level Go binding around an user-defined struct.
+type KeychainFees struct {
+	KeyReq []Coin
+	SigReq []Coin
+}
+
+// PageRequest is an auto generated low-level Go binding around an user-defined struct.
+type PageRequest struct {
+	Key        []byte
+	Offset     uint64
+	Limit      uint64
+	CountTotal bool
+	Reverse    bool
+}
+
+// PageResponse is an auto generated low-level Go binding around an user-defined struct.
+type PageResponse struct {
+	NextKey []byte
+	Total   uint64
+}
+
+// SignRequest is an auto generated low-level Go binding around an user-defined struct.
+type SignRequest struct {
+	Id                   uint64
+	Creator              string
+	KeyId                uint64
+	DataForSigning       []byte
+	Status               int32
+	Result               []byte
+	EncryptionKey        []byte
+	DeductedKeychainFees []Coin
+}
+
+// Space is an auto generated low-level Go binding around an user-defined struct.
+type Space struct {
+	Id                     uint64
+	Creator                string
+	Owners                 []string
+	Nonce                  uint64
+	ApproveAdminTemplateId uint64
+	RejectAdminTemplateId  uint64
+	ApproveSignTemplateId  uint64
+	RejectSignTemplateId   uint64
+}
+
 // IWardenMetaData contains all meta data concerning the IWarden contract.
 var IWardenMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"NewAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"NewWriter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainWriter\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"key_type\",\"type\":\"int32\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"space_id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychain_id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approve_template_id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"reject_template_id\",\"type\":\"uint64\"}],\"name\":\"NewKey\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectKeyRequest\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"addKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"}],\"name\":\"addKeychainWriter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"pubKey\",\"type\":\"bytes\"}],\"name\":\"fulfilKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainWriter\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"FulfilSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"keyType\",\"type\":\"int32\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"}],\"name\":\"NewKey\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewKeychain\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownersCount\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"}],\"name\":\"NewSpace\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectKeyRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"admin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"RemoveKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"UpdateKeychain\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"addKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"}],\"name\":\"addKeychainWriter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"allKeys\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"Address\",\"type\":\"string\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"pubKey\",\"type\":\"bytes\"}],\"name\":\"fulfilKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"signedData\",\"type\":\"bytes\"}],\"name\":\"fulfilSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"keyById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"Address\",\"type\":\"string\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse\",\"name\":\"key\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"}],\"name\":\"keyRequestById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"KeyType\",\"type\":\"int32\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"RejectReason\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyRequest\",\"name\":\"keyRequest\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"},{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"}],\"name\":\"keyRequests\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"KeyType\",\"type\":\"int32\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"RejectReason\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyRequest[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"keychainById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Name\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Admins\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"Writers\",\"type\":\"string[]\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"Fees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"Description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"KeybaseId\",\"type\":\"string\"}],\"internalType\":\"structKeychain\",\"name\":\"keychain\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"}],\"name\":\"keychains\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Name\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Admins\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"Writers\",\"type\":\"string[]\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"Fees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"Description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"KeybaseId\",\"type\":\"string\"}],\"internalType\":\"structKeychain[]\",\"name\":\"keychain\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"keysBySpaceId\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"Address\",\"type\":\"string\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"keybaseId\",\"type\":\"string\"}],\"name\":\"newKeychain\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"address[]\",\"name\":\"additionalOwners\",\"type\":\"address[]\"}],\"name\":\"newSpace\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"admin\",\"type\":\"address\"}],\"name\":\"removeKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"signRequestById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"KeyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"DataForSigning\",\"type\":\"bytes\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"Result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"EncryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structSignRequest\",\"name\":\"signRequest\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"}],\"name\":\"signRequests\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"KeyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"DataForSigning\",\"type\":\"bytes\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"Result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"EncryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structSignRequest[]\",\"name\":\"signRequests\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"spaceById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Owners\",\"type\":\"string[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace\",\"name\":\"space\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"}],\"name\":\"spaces\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Owners\",\"type\":\"string[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace[]\",\"name\":\"spaces\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"spacesByOwner\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Owners\",\"type\":\"string[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace[]\",\"name\":\"spaces\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"keybaseId\",\"type\":\"string\"}],\"name\":\"updateKeychain\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IWardenABI is the input ABI used to generate the binding from.
@@ -179,6 +280,476 @@ func (_IWarden *IWardenTransactorRaw) Transact(opts *bind.TransactOpts, method s
 	return _IWarden.Contract.contract.Transact(opts, method, params...)
 }
 
+// AllKeys is a free data retrieval call binding the contract method 0xed65c53c.
+//
+// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) AllKeys(opts *bind.CallOpts, pageRequest PageRequest, deriveAddresses []int32) (struct {
+	Keys         []KeyResponse
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "allKeys", pageRequest, deriveAddresses)
+
+	outstruct := new(struct {
+		Keys         []KeyResponse
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Keys = *abi.ConvertType(out[0], new([]KeyResponse)).(*[]KeyResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// AllKeys is a free data retrieval call binding the contract method 0xed65c53c.
+//
+// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) AllKeys(pageRequest PageRequest, deriveAddresses []int32) (struct {
+	Keys         []KeyResponse
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.AllKeys(&_IWarden.CallOpts, pageRequest, deriveAddresses)
+}
+
+// AllKeys is a free data retrieval call binding the contract method 0xed65c53c.
+//
+// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) AllKeys(pageRequest PageRequest, deriveAddresses []int32) (struct {
+	Keys         []KeyResponse
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.AllKeys(&_IWarden.CallOpts, pageRequest, deriveAddresses)
+}
+
+// KeyById is a free data retrieval call binding the contract method 0x338c1f51.
+//
+// Solidity: function keyById(uint64 Id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[]) key)
+func (_IWarden *IWardenCaller) KeyById(opts *bind.CallOpts, Id uint64, deriveAddresses []int32) (KeyResponse, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "keyById", Id, deriveAddresses)
+
+	if err != nil {
+		return *new(KeyResponse), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(KeyResponse)).(*KeyResponse)
+
+	return out0, err
+
+}
+
+// KeyById is a free data retrieval call binding the contract method 0x338c1f51.
+//
+// Solidity: function keyById(uint64 Id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[]) key)
+func (_IWarden *IWardenSession) KeyById(Id uint64, deriveAddresses []int32) (KeyResponse, error) {
+	return _IWarden.Contract.KeyById(&_IWarden.CallOpts, Id, deriveAddresses)
+}
+
+// KeyById is a free data retrieval call binding the contract method 0x338c1f51.
+//
+// Solidity: function keyById(uint64 Id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[]) key)
+func (_IWarden *IWardenCallerSession) KeyById(Id uint64, deriveAddresses []int32) (KeyResponse, error) {
+	return _IWarden.Contract.KeyById(&_IWarden.CallOpts, Id, deriveAddresses)
+}
+
+// KeyRequestById is a free data retrieval call binding the contract method 0x69964bd6.
+//
+// Solidity: function keyRequestById(uint64 Id) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
+func (_IWarden *IWardenCaller) KeyRequestById(opts *bind.CallOpts, Id uint64) (KeyRequest, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "keyRequestById", Id)
+
+	if err != nil {
+		return *new(KeyRequest), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(KeyRequest)).(*KeyRequest)
+
+	return out0, err
+
+}
+
+// KeyRequestById is a free data retrieval call binding the contract method 0x69964bd6.
+//
+// Solidity: function keyRequestById(uint64 Id) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
+func (_IWarden *IWardenSession) KeyRequestById(Id uint64) (KeyRequest, error) {
+	return _IWarden.Contract.KeyRequestById(&_IWarden.CallOpts, Id)
+}
+
+// KeyRequestById is a free data retrieval call binding the contract method 0x69964bd6.
+//
+// Solidity: function keyRequestById(uint64 Id) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
+func (_IWarden *IWardenCallerSession) KeyRequestById(Id uint64) (KeyRequest, error) {
+	return _IWarden.Contract.KeyRequestById(&_IWarden.CallOpts, Id)
+}
+
+// KeyRequests is a free data retrieval call binding the contract method 0x40710374.
+//
+// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) KeyRequests(opts *bind.CallOpts, pageRequest PageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
+	Keys         []KeyRequest
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "keyRequests", pageRequest, keychainId, status, spaceId)
+
+	outstruct := new(struct {
+		Keys         []KeyRequest
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Keys = *abi.ConvertType(out[0], new([]KeyRequest)).(*[]KeyRequest)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// KeyRequests is a free data retrieval call binding the contract method 0x40710374.
+//
+// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) KeyRequests(pageRequest PageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
+	Keys         []KeyRequest
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.KeyRequests(&_IWarden.CallOpts, pageRequest, keychainId, status, spaceId)
+}
+
+// KeyRequests is a free data retrieval call binding the contract method 0x40710374.
+//
+// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) KeyRequests(pageRequest PageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
+	Keys         []KeyRequest
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.KeyRequests(&_IWarden.CallOpts, pageRequest, keychainId, status, spaceId)
+}
+
+// KeychainById is a free data retrieval call binding the contract method 0xba664dc2.
+//
+// Solidity: function keychainById(uint64 id) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
+func (_IWarden *IWardenCaller) KeychainById(opts *bind.CallOpts, id uint64) (Keychain, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "keychainById", id)
+
+	if err != nil {
+		return *new(Keychain), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(Keychain)).(*Keychain)
+
+	return out0, err
+
+}
+
+// KeychainById is a free data retrieval call binding the contract method 0xba664dc2.
+//
+// Solidity: function keychainById(uint64 id) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
+func (_IWarden *IWardenSession) KeychainById(id uint64) (Keychain, error) {
+	return _IWarden.Contract.KeychainById(&_IWarden.CallOpts, id)
+}
+
+// KeychainById is a free data retrieval call binding the contract method 0xba664dc2.
+//
+// Solidity: function keychainById(uint64 id) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
+func (_IWarden *IWardenCallerSession) KeychainById(id uint64) (Keychain, error) {
+	return _IWarden.Contract.KeychainById(&_IWarden.CallOpts, id)
+}
+
+// Keychains is a free data retrieval call binding the contract method 0x7e5a6446.
+//
+// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) Keychains(opts *bind.CallOpts, pageRequest PageRequest) (struct {
+	Keychain     []Keychain
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "keychains", pageRequest)
+
+	outstruct := new(struct {
+		Keychain     []Keychain
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Keychain = *abi.ConvertType(out[0], new([]Keychain)).(*[]Keychain)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// Keychains is a free data retrieval call binding the contract method 0x7e5a6446.
+//
+// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) Keychains(pageRequest PageRequest) (struct {
+	Keychain     []Keychain
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.Keychains(&_IWarden.CallOpts, pageRequest)
+}
+
+// Keychains is a free data retrieval call binding the contract method 0x7e5a6446.
+//
+// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) Keychains(pageRequest PageRequest) (struct {
+	Keychain     []Keychain
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.Keychains(&_IWarden.CallOpts, pageRequest)
+}
+
+// KeysBySpaceId is a free data retrieval call binding the contract method 0x8f6c0508.
+//
+// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) KeysBySpaceId(opts *bind.CallOpts, pageRequest PageRequest, spaceId uint64, deriveAddresses []int32) (struct {
+	Keys         []KeyResponse
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "keysBySpaceId", pageRequest, spaceId, deriveAddresses)
+
+	outstruct := new(struct {
+		Keys         []KeyResponse
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Keys = *abi.ConvertType(out[0], new([]KeyResponse)).(*[]KeyResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// KeysBySpaceId is a free data retrieval call binding the contract method 0x8f6c0508.
+//
+// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) KeysBySpaceId(pageRequest PageRequest, spaceId uint64, deriveAddresses []int32) (struct {
+	Keys         []KeyResponse
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.KeysBySpaceId(&_IWarden.CallOpts, pageRequest, spaceId, deriveAddresses)
+}
+
+// KeysBySpaceId is a free data retrieval call binding the contract method 0x8f6c0508.
+//
+// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) KeysBySpaceId(pageRequest PageRequest, spaceId uint64, deriveAddresses []int32) (struct {
+	Keys         []KeyResponse
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.KeysBySpaceId(&_IWarden.CallOpts, pageRequest, spaceId, deriveAddresses)
+}
+
+// SignRequestById is a free data retrieval call binding the contract method 0xa657df94.
+//
+// Solidity: function signRequestById(uint64 id) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
+func (_IWarden *IWardenCaller) SignRequestById(opts *bind.CallOpts, id uint64) (SignRequest, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "signRequestById", id)
+
+	if err != nil {
+		return *new(SignRequest), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(SignRequest)).(*SignRequest)
+
+	return out0, err
+
+}
+
+// SignRequestById is a free data retrieval call binding the contract method 0xa657df94.
+//
+// Solidity: function signRequestById(uint64 id) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
+func (_IWarden *IWardenSession) SignRequestById(id uint64) (SignRequest, error) {
+	return _IWarden.Contract.SignRequestById(&_IWarden.CallOpts, id)
+}
+
+// SignRequestById is a free data retrieval call binding the contract method 0xa657df94.
+//
+// Solidity: function signRequestById(uint64 id) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
+func (_IWarden *IWardenCallerSession) SignRequestById(id uint64) (SignRequest, error) {
+	return _IWarden.Contract.SignRequestById(&_IWarden.CallOpts, id)
+}
+
+// SignRequests is a free data retrieval call binding the contract method 0x1335dc4a.
+//
+// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) SignRequests(opts *bind.CallOpts, pageRequest PageRequest, keychainId uint64, status int32) (struct {
+	SignRequests []SignRequest
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "signRequests", pageRequest, keychainId, status)
+
+	outstruct := new(struct {
+		SignRequests []SignRequest
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.SignRequests = *abi.ConvertType(out[0], new([]SignRequest)).(*[]SignRequest)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// SignRequests is a free data retrieval call binding the contract method 0x1335dc4a.
+//
+// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) SignRequests(pageRequest PageRequest, keychainId uint64, status int32) (struct {
+	SignRequests []SignRequest
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.SignRequests(&_IWarden.CallOpts, pageRequest, keychainId, status)
+}
+
+// SignRequests is a free data retrieval call binding the contract method 0x1335dc4a.
+//
+// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) SignRequests(pageRequest PageRequest, keychainId uint64, status int32) (struct {
+	SignRequests []SignRequest
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.SignRequests(&_IWarden.CallOpts, pageRequest, keychainId, status)
+}
+
+// SpaceById is a free data retrieval call binding the contract method 0xe4c1fc79.
+//
+// Solidity: function spaceById(uint64 id) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64) space)
+func (_IWarden *IWardenCaller) SpaceById(opts *bind.CallOpts, id uint64) (Space, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "spaceById", id)
+
+	if err != nil {
+		return *new(Space), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(Space)).(*Space)
+
+	return out0, err
+
+}
+
+// SpaceById is a free data retrieval call binding the contract method 0xe4c1fc79.
+//
+// Solidity: function spaceById(uint64 id) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64) space)
+func (_IWarden *IWardenSession) SpaceById(id uint64) (Space, error) {
+	return _IWarden.Contract.SpaceById(&_IWarden.CallOpts, id)
+}
+
+// SpaceById is a free data retrieval call binding the contract method 0xe4c1fc79.
+//
+// Solidity: function spaceById(uint64 id) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64) space)
+func (_IWarden *IWardenCallerSession) SpaceById(id uint64) (Space, error) {
+	return _IWarden.Contract.SpaceById(&_IWarden.CallOpts, id)
+}
+
+// Spaces is a free data retrieval call binding the contract method 0x5f73892e.
+//
+// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) Spaces(opts *bind.CallOpts, pageRequest PageRequest) (struct {
+	Spaces       []Space
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "spaces", pageRequest)
+
+	outstruct := new(struct {
+		Spaces       []Space
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Spaces = *abi.ConvertType(out[0], new([]Space)).(*[]Space)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// Spaces is a free data retrieval call binding the contract method 0x5f73892e.
+//
+// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) Spaces(pageRequest PageRequest) (struct {
+	Spaces       []Space
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.Spaces(&_IWarden.CallOpts, pageRequest)
+}
+
+// Spaces is a free data retrieval call binding the contract method 0x5f73892e.
+//
+// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) Spaces(pageRequest PageRequest) (struct {
+	Spaces       []Space
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.Spaces(&_IWarden.CallOpts, pageRequest)
+}
+
+// SpacesByOwner is a free data retrieval call binding the contract method 0x88cd3f61.
+//
+// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) SpacesByOwner(opts *bind.CallOpts, pageRequest PageRequest, owner common.Address) (struct {
+	Spaces       []Space
+	PageResponse PageResponse
+}, error) {
+	var out []interface{}
+	err := _IWarden.contract.Call(opts, &out, "spacesByOwner", pageRequest, owner)
+
+	outstruct := new(struct {
+		Spaces       []Space
+		PageResponse PageResponse
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Spaces = *abi.ConvertType(out[0], new([]Space)).(*[]Space)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+
+	return *outstruct, err
+
+}
+
+// SpacesByOwner is a free data retrieval call binding the contract method 0x88cd3f61.
+//
+// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) SpacesByOwner(pageRequest PageRequest, owner common.Address) (struct {
+	Spaces       []Space
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.SpacesByOwner(&_IWarden.CallOpts, pageRequest, owner)
+}
+
+// SpacesByOwner is a free data retrieval call binding the contract method 0x88cd3f61.
+//
+// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) SpacesByOwner(pageRequest PageRequest, owner common.Address) (struct {
+	Spaces       []Space
+	PageResponse PageResponse
+}, error) {
+	return _IWarden.Contract.SpacesByOwner(&_IWarden.CallOpts, pageRequest, owner)
+}
+
 // AddKeychainAdmin is a paid mutator transaction binding the contract method 0xdf9c1808.
 //
 // Solidity: function addKeychainAdmin(uint64 keychainId, address newAdmin) returns(bool success)
@@ -242,6 +813,69 @@ func (_IWarden *IWardenTransactorSession) FulfilKeyRequest(requestId uint64, pub
 	return _IWarden.Contract.FulfilKeyRequest(&_IWarden.TransactOpts, requestId, pubKey)
 }
 
+// FulfilSignRequest is a paid mutator transaction binding the contract method 0x84f61386.
+//
+// Solidity: function fulfilSignRequest(uint64 requestId, bytes signedData) returns(bool success)
+func (_IWarden *IWardenTransactor) FulfilSignRequest(opts *bind.TransactOpts, requestId uint64, signedData []byte) (*types.Transaction, error) {
+	return _IWarden.contract.Transact(opts, "fulfilSignRequest", requestId, signedData)
+}
+
+// FulfilSignRequest is a paid mutator transaction binding the contract method 0x84f61386.
+//
+// Solidity: function fulfilSignRequest(uint64 requestId, bytes signedData) returns(bool success)
+func (_IWarden *IWardenSession) FulfilSignRequest(requestId uint64, signedData []byte) (*types.Transaction, error) {
+	return _IWarden.Contract.FulfilSignRequest(&_IWarden.TransactOpts, requestId, signedData)
+}
+
+// FulfilSignRequest is a paid mutator transaction binding the contract method 0x84f61386.
+//
+// Solidity: function fulfilSignRequest(uint64 requestId, bytes signedData) returns(bool success)
+func (_IWarden *IWardenTransactorSession) FulfilSignRequest(requestId uint64, signedData []byte) (*types.Transaction, error) {
+	return _IWarden.Contract.FulfilSignRequest(&_IWarden.TransactOpts, requestId, signedData)
+}
+
+// NewKeychain is a paid mutator transaction binding the contract method 0x7d4c42ad.
+//
+// Solidity: function newKeychain(string name, ((string,uint256)[],(string,uint256)[]) keychainFees, string description, string url, string keybaseId) returns(uint64 id)
+func (_IWarden *IWardenTransactor) NewKeychain(opts *bind.TransactOpts, name string, keychainFees KeychainFees, description string, url string, keybaseId string) (*types.Transaction, error) {
+	return _IWarden.contract.Transact(opts, "newKeychain", name, keychainFees, description, url, keybaseId)
+}
+
+// NewKeychain is a paid mutator transaction binding the contract method 0x7d4c42ad.
+//
+// Solidity: function newKeychain(string name, ((string,uint256)[],(string,uint256)[]) keychainFees, string description, string url, string keybaseId) returns(uint64 id)
+func (_IWarden *IWardenSession) NewKeychain(name string, keychainFees KeychainFees, description string, url string, keybaseId string) (*types.Transaction, error) {
+	return _IWarden.Contract.NewKeychain(&_IWarden.TransactOpts, name, keychainFees, description, url, keybaseId)
+}
+
+// NewKeychain is a paid mutator transaction binding the contract method 0x7d4c42ad.
+//
+// Solidity: function newKeychain(string name, ((string,uint256)[],(string,uint256)[]) keychainFees, string description, string url, string keybaseId) returns(uint64 id)
+func (_IWarden *IWardenTransactorSession) NewKeychain(name string, keychainFees KeychainFees, description string, url string, keybaseId string) (*types.Transaction, error) {
+	return _IWarden.Contract.NewKeychain(&_IWarden.TransactOpts, name, keychainFees, description, url, keybaseId)
+}
+
+// NewSpace is a paid mutator transaction binding the contract method 0xc78f7667.
+//
+// Solidity: function newSpace(uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId, address[] additionalOwners) returns(uint64 id)
+func (_IWarden *IWardenTransactor) NewSpace(opts *bind.TransactOpts, approveAdminTemplateId uint64, rejectAdminTemplateId uint64, approveSignTemplateId uint64, rejectSignTemplateId uint64, additionalOwners []common.Address) (*types.Transaction, error) {
+	return _IWarden.contract.Transact(opts, "newSpace", approveAdminTemplateId, rejectAdminTemplateId, approveSignTemplateId, rejectSignTemplateId, additionalOwners)
+}
+
+// NewSpace is a paid mutator transaction binding the contract method 0xc78f7667.
+//
+// Solidity: function newSpace(uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId, address[] additionalOwners) returns(uint64 id)
+func (_IWarden *IWardenSession) NewSpace(approveAdminTemplateId uint64, rejectAdminTemplateId uint64, approveSignTemplateId uint64, rejectSignTemplateId uint64, additionalOwners []common.Address) (*types.Transaction, error) {
+	return _IWarden.Contract.NewSpace(&_IWarden.TransactOpts, approveAdminTemplateId, rejectAdminTemplateId, approveSignTemplateId, rejectSignTemplateId, additionalOwners)
+}
+
+// NewSpace is a paid mutator transaction binding the contract method 0xc78f7667.
+//
+// Solidity: function newSpace(uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId, address[] additionalOwners) returns(uint64 id)
+func (_IWarden *IWardenTransactorSession) NewSpace(approveAdminTemplateId uint64, rejectAdminTemplateId uint64, approveSignTemplateId uint64, rejectSignTemplateId uint64, additionalOwners []common.Address) (*types.Transaction, error) {
+	return _IWarden.Contract.NewSpace(&_IWarden.TransactOpts, approveAdminTemplateId, rejectAdminTemplateId, approveSignTemplateId, rejectSignTemplateId, additionalOwners)
+}
+
 // RejectKeyRequest is a paid mutator transaction binding the contract method 0xd9ac97be.
 //
 // Solidity: function rejectKeyRequest(uint64 requestId, string rejectReason) returns(bool success)
@@ -261,6 +895,69 @@ func (_IWarden *IWardenSession) RejectKeyRequest(requestId uint64, rejectReason 
 // Solidity: function rejectKeyRequest(uint64 requestId, string rejectReason) returns(bool success)
 func (_IWarden *IWardenTransactorSession) RejectKeyRequest(requestId uint64, rejectReason string) (*types.Transaction, error) {
 	return _IWarden.Contract.RejectKeyRequest(&_IWarden.TransactOpts, requestId, rejectReason)
+}
+
+// RejectSignRequest is a paid mutator transaction binding the contract method 0xb7cf0661.
+//
+// Solidity: function rejectSignRequest(uint64 requestId, string rejectReason) returns(bool success)
+func (_IWarden *IWardenTransactor) RejectSignRequest(opts *bind.TransactOpts, requestId uint64, rejectReason string) (*types.Transaction, error) {
+	return _IWarden.contract.Transact(opts, "rejectSignRequest", requestId, rejectReason)
+}
+
+// RejectSignRequest is a paid mutator transaction binding the contract method 0xb7cf0661.
+//
+// Solidity: function rejectSignRequest(uint64 requestId, string rejectReason) returns(bool success)
+func (_IWarden *IWardenSession) RejectSignRequest(requestId uint64, rejectReason string) (*types.Transaction, error) {
+	return _IWarden.Contract.RejectSignRequest(&_IWarden.TransactOpts, requestId, rejectReason)
+}
+
+// RejectSignRequest is a paid mutator transaction binding the contract method 0xb7cf0661.
+//
+// Solidity: function rejectSignRequest(uint64 requestId, string rejectReason) returns(bool success)
+func (_IWarden *IWardenTransactorSession) RejectSignRequest(requestId uint64, rejectReason string) (*types.Transaction, error) {
+	return _IWarden.Contract.RejectSignRequest(&_IWarden.TransactOpts, requestId, rejectReason)
+}
+
+// RemoveKeychainAdmin is a paid mutator transaction binding the contract method 0x7225e3fa.
+//
+// Solidity: function removeKeychainAdmin(uint64 keychainId, address admin) returns(bool success)
+func (_IWarden *IWardenTransactor) RemoveKeychainAdmin(opts *bind.TransactOpts, keychainId uint64, admin common.Address) (*types.Transaction, error) {
+	return _IWarden.contract.Transact(opts, "removeKeychainAdmin", keychainId, admin)
+}
+
+// RemoveKeychainAdmin is a paid mutator transaction binding the contract method 0x7225e3fa.
+//
+// Solidity: function removeKeychainAdmin(uint64 keychainId, address admin) returns(bool success)
+func (_IWarden *IWardenSession) RemoveKeychainAdmin(keychainId uint64, admin common.Address) (*types.Transaction, error) {
+	return _IWarden.Contract.RemoveKeychainAdmin(&_IWarden.TransactOpts, keychainId, admin)
+}
+
+// RemoveKeychainAdmin is a paid mutator transaction binding the contract method 0x7225e3fa.
+//
+// Solidity: function removeKeychainAdmin(uint64 keychainId, address admin) returns(bool success)
+func (_IWarden *IWardenTransactorSession) RemoveKeychainAdmin(keychainId uint64, admin common.Address) (*types.Transaction, error) {
+	return _IWarden.Contract.RemoveKeychainAdmin(&_IWarden.TransactOpts, keychainId, admin)
+}
+
+// UpdateKeychain is a paid mutator transaction binding the contract method 0x4c683562.
+//
+// Solidity: function updateKeychain(uint64 keychainId, string name, ((string,uint256)[],(string,uint256)[]) keychainFees, string description, string url, string keybaseId) returns(bool success)
+func (_IWarden *IWardenTransactor) UpdateKeychain(opts *bind.TransactOpts, keychainId uint64, name string, keychainFees KeychainFees, description string, url string, keybaseId string) (*types.Transaction, error) {
+	return _IWarden.contract.Transact(opts, "updateKeychain", keychainId, name, keychainFees, description, url, keybaseId)
+}
+
+// UpdateKeychain is a paid mutator transaction binding the contract method 0x4c683562.
+//
+// Solidity: function updateKeychain(uint64 keychainId, string name, ((string,uint256)[],(string,uint256)[]) keychainFees, string description, string url, string keybaseId) returns(bool success)
+func (_IWarden *IWardenSession) UpdateKeychain(keychainId uint64, name string, keychainFees KeychainFees, description string, url string, keybaseId string) (*types.Transaction, error) {
+	return _IWarden.Contract.UpdateKeychain(&_IWarden.TransactOpts, keychainId, name, keychainFees, description, url, keybaseId)
+}
+
+// UpdateKeychain is a paid mutator transaction binding the contract method 0x4c683562.
+//
+// Solidity: function updateKeychain(uint64 keychainId, string name, ((string,uint256)[],(string,uint256)[]) keychainFees, string description, string url, string keybaseId) returns(bool success)
+func (_IWarden *IWardenTransactorSession) UpdateKeychain(keychainId uint64, name string, keychainFees KeychainFees, description string, url string, keybaseId string) (*types.Transaction, error) {
+	return _IWarden.Contract.UpdateKeychain(&_IWarden.TransactOpts, keychainId, name, keychainFees, description, url, keybaseId)
 }
 
 // IWardenAddKeychainAdminIterator is returned from FilterAddKeychainAdmin and is used to iterate over the raw logs and unpacked data for AddKeychainAdmin events raised by the IWarden contract.
@@ -340,15 +1037,15 @@ type IWardenAddKeychainAdmin struct {
 
 // FilterAddKeychainAdmin is a free log retrieval operation binding the contract event 0x363238dc5ee3ed860e5599b2698d2f74510cedfe6ed9a27eacef2fe5cc46763e.
 //
-// Solidity: event AddKeychainAdmin(address indexed NewAdmin, uint64 id, uint64 adminsCount)
-func (_IWarden *IWardenFilterer) FilterAddKeychainAdmin(opts *bind.FilterOpts, NewAdmin []common.Address) (*IWardenAddKeychainAdminIterator, error) {
+// Solidity: event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) FilterAddKeychainAdmin(opts *bind.FilterOpts, newAdmin []common.Address) (*IWardenAddKeychainAdminIterator, error) {
 
-	var NewAdminRule []interface{}
-	for _, NewAdminItem := range NewAdmin {
-		NewAdminRule = append(NewAdminRule, NewAdminItem)
+	var newAdminRule []interface{}
+	for _, newAdminItem := range newAdmin {
+		newAdminRule = append(newAdminRule, newAdminItem)
 	}
 
-	logs, sub, err := _IWarden.contract.FilterLogs(opts, "AddKeychainAdmin", NewAdminRule)
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "AddKeychainAdmin", newAdminRule)
 	if err != nil {
 		return nil, err
 	}
@@ -357,15 +1054,15 @@ func (_IWarden *IWardenFilterer) FilterAddKeychainAdmin(opts *bind.FilterOpts, N
 
 // WatchAddKeychainAdmin is a free log subscription operation binding the contract event 0x363238dc5ee3ed860e5599b2698d2f74510cedfe6ed9a27eacef2fe5cc46763e.
 //
-// Solidity: event AddKeychainAdmin(address indexed NewAdmin, uint64 id, uint64 adminsCount)
-func (_IWarden *IWardenFilterer) WatchAddKeychainAdmin(opts *bind.WatchOpts, sink chan<- *IWardenAddKeychainAdmin, NewAdmin []common.Address) (event.Subscription, error) {
+// Solidity: event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) WatchAddKeychainAdmin(opts *bind.WatchOpts, sink chan<- *IWardenAddKeychainAdmin, newAdmin []common.Address) (event.Subscription, error) {
 
-	var NewAdminRule []interface{}
-	for _, NewAdminItem := range NewAdmin {
-		NewAdminRule = append(NewAdminRule, NewAdminItem)
+	var newAdminRule []interface{}
+	for _, newAdminItem := range newAdmin {
+		newAdminRule = append(newAdminRule, newAdminItem)
 	}
 
-	logs, sub, err := _IWarden.contract.WatchLogs(opts, "AddKeychainAdmin", NewAdminRule)
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "AddKeychainAdmin", newAdminRule)
 	if err != nil {
 		return nil, err
 	}
@@ -399,7 +1096,7 @@ func (_IWarden *IWardenFilterer) WatchAddKeychainAdmin(opts *bind.WatchOpts, sin
 
 // ParseAddKeychainAdmin is a log parse operation binding the contract event 0x363238dc5ee3ed860e5599b2698d2f74510cedfe6ed9a27eacef2fe5cc46763e.
 //
-// Solidity: event AddKeychainAdmin(address indexed NewAdmin, uint64 id, uint64 adminsCount)
+// Solidity: event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount)
 func (_IWarden *IWardenFilterer) ParseAddKeychainAdmin(log types.Log) (*IWardenAddKeychainAdmin, error) {
 	event := new(IWardenAddKeychainAdmin)
 	if err := _IWarden.contract.UnpackLog(event, "AddKeychainAdmin", log); err != nil {
@@ -486,15 +1183,15 @@ type IWardenAddKeychainWriter struct {
 
 // FilterAddKeychainWriter is a free log retrieval operation binding the contract event 0x95209db0173d4ee88ed6a251e6c008e9ef15b765625418c7731c2dad6ba8d008.
 //
-// Solidity: event AddKeychainWriter(address indexed NewWriter, uint64 id, uint64 adminsCount)
-func (_IWarden *IWardenFilterer) FilterAddKeychainWriter(opts *bind.FilterOpts, NewWriter []common.Address) (*IWardenAddKeychainWriterIterator, error) {
+// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) FilterAddKeychainWriter(opts *bind.FilterOpts, newWriter []common.Address) (*IWardenAddKeychainWriterIterator, error) {
 
-	var NewWriterRule []interface{}
-	for _, NewWriterItem := range NewWriter {
-		NewWriterRule = append(NewWriterRule, NewWriterItem)
+	var newWriterRule []interface{}
+	for _, newWriterItem := range newWriter {
+		newWriterRule = append(newWriterRule, newWriterItem)
 	}
 
-	logs, sub, err := _IWarden.contract.FilterLogs(opts, "AddKeychainWriter", NewWriterRule)
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "AddKeychainWriter", newWriterRule)
 	if err != nil {
 		return nil, err
 	}
@@ -503,15 +1200,15 @@ func (_IWarden *IWardenFilterer) FilterAddKeychainWriter(opts *bind.FilterOpts, 
 
 // WatchAddKeychainWriter is a free log subscription operation binding the contract event 0x95209db0173d4ee88ed6a251e6c008e9ef15b765625418c7731c2dad6ba8d008.
 //
-// Solidity: event AddKeychainWriter(address indexed NewWriter, uint64 id, uint64 adminsCount)
-func (_IWarden *IWardenFilterer) WatchAddKeychainWriter(opts *bind.WatchOpts, sink chan<- *IWardenAddKeychainWriter, NewWriter []common.Address) (event.Subscription, error) {
+// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) WatchAddKeychainWriter(opts *bind.WatchOpts, sink chan<- *IWardenAddKeychainWriter, newWriter []common.Address) (event.Subscription, error) {
 
-	var NewWriterRule []interface{}
-	for _, NewWriterItem := range NewWriter {
-		NewWriterRule = append(NewWriterRule, NewWriterItem)
+	var newWriterRule []interface{}
+	for _, newWriterItem := range newWriter {
+		newWriterRule = append(newWriterRule, newWriterItem)
 	}
 
-	logs, sub, err := _IWarden.contract.WatchLogs(opts, "AddKeychainWriter", NewWriterRule)
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "AddKeychainWriter", newWriterRule)
 	if err != nil {
 		return nil, err
 	}
@@ -545,10 +1242,144 @@ func (_IWarden *IWardenFilterer) WatchAddKeychainWriter(opts *bind.WatchOpts, si
 
 // ParseAddKeychainWriter is a log parse operation binding the contract event 0x95209db0173d4ee88ed6a251e6c008e9ef15b765625418c7731c2dad6ba8d008.
 //
-// Solidity: event AddKeychainWriter(address indexed NewWriter, uint64 id, uint64 adminsCount)
+// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount)
 func (_IWarden *IWardenFilterer) ParseAddKeychainWriter(log types.Log) (*IWardenAddKeychainWriter, error) {
 	event := new(IWardenAddKeychainWriter)
 	if err := _IWarden.contract.UnpackLog(event, "AddKeychainWriter", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IWardenFulfilSignRequestIterator is returned from FilterFulfilSignRequest and is used to iterate over the raw logs and unpacked data for FulfilSignRequest events raised by the IWarden contract.
+type IWardenFulfilSignRequestIterator struct {
+	Event *IWardenFulfilSignRequest // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IWardenFulfilSignRequestIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IWardenFulfilSignRequest)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IWardenFulfilSignRequest)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IWardenFulfilSignRequestIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IWardenFulfilSignRequestIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IWardenFulfilSignRequest represents a FulfilSignRequest event raised by the IWarden contract.
+type IWardenFulfilSignRequest struct {
+	Id  uint64
+	Raw types.Log // Blockchain specific contextual infos
+}
+
+// FilterFulfilSignRequest is a free log retrieval operation binding the contract event 0x4d8a43263e214628c121391980488d29777a4d0160d73b07accb564be2a8db44.
+//
+// Solidity: event FulfilSignRequest(uint64 id)
+func (_IWarden *IWardenFilterer) FilterFulfilSignRequest(opts *bind.FilterOpts) (*IWardenFulfilSignRequestIterator, error) {
+
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "FulfilSignRequest")
+	if err != nil {
+		return nil, err
+	}
+	return &IWardenFulfilSignRequestIterator{contract: _IWarden.contract, event: "FulfilSignRequest", logs: logs, sub: sub}, nil
+}
+
+// WatchFulfilSignRequest is a free log subscription operation binding the contract event 0x4d8a43263e214628c121391980488d29777a4d0160d73b07accb564be2a8db44.
+//
+// Solidity: event FulfilSignRequest(uint64 id)
+func (_IWarden *IWardenFilterer) WatchFulfilSignRequest(opts *bind.WatchOpts, sink chan<- *IWardenFulfilSignRequest) (event.Subscription, error) {
+
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "FulfilSignRequest")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IWardenFulfilSignRequest)
+				if err := _IWarden.contract.UnpackLog(event, "FulfilSignRequest", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseFulfilSignRequest is a log parse operation binding the contract event 0x4d8a43263e214628c121391980488d29777a4d0160d73b07accb564be2a8db44.
+//
+// Solidity: event FulfilSignRequest(uint64 id)
+func (_IWarden *IWardenFilterer) ParseFulfilSignRequest(log types.Log) (*IWardenFulfilSignRequest, error) {
+	event := new(IWardenFulfilSignRequest)
+	if err := _IWarden.contract.UnpackLog(event, "FulfilSignRequest", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -635,7 +1466,7 @@ type IWardenNewKey struct {
 
 // FilterNewKey is a free log retrieval operation binding the contract event 0xdbf5c0202f94c1bcf43c3341f2a11bd8497c01c9d9406435b3017dad2a3f95b3.
 //
-// Solidity: event NewKey(uint64 id, int32 key_type, uint64 space_id, uint64 keychain_id, uint64 approve_template_id, uint64 reject_template_id)
+// Solidity: event NewKey(uint64 id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId)
 func (_IWarden *IWardenFilterer) FilterNewKey(opts *bind.FilterOpts) (*IWardenNewKeyIterator, error) {
 
 	logs, sub, err := _IWarden.contract.FilterLogs(opts, "NewKey")
@@ -647,7 +1478,7 @@ func (_IWarden *IWardenFilterer) FilterNewKey(opts *bind.FilterOpts) (*IWardenNe
 
 // WatchNewKey is a free log subscription operation binding the contract event 0xdbf5c0202f94c1bcf43c3341f2a11bd8497c01c9d9406435b3017dad2a3f95b3.
 //
-// Solidity: event NewKey(uint64 id, int32 key_type, uint64 space_id, uint64 keychain_id, uint64 approve_template_id, uint64 reject_template_id)
+// Solidity: event NewKey(uint64 id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId)
 func (_IWarden *IWardenFilterer) WatchNewKey(opts *bind.WatchOpts, sink chan<- *IWardenNewKey) (event.Subscription, error) {
 
 	logs, sub, err := _IWarden.contract.WatchLogs(opts, "NewKey")
@@ -684,10 +1515,305 @@ func (_IWarden *IWardenFilterer) WatchNewKey(opts *bind.WatchOpts, sink chan<- *
 
 // ParseNewKey is a log parse operation binding the contract event 0xdbf5c0202f94c1bcf43c3341f2a11bd8497c01c9d9406435b3017dad2a3f95b3.
 //
-// Solidity: event NewKey(uint64 id, int32 key_type, uint64 space_id, uint64 keychain_id, uint64 approve_template_id, uint64 reject_template_id)
+// Solidity: event NewKey(uint64 id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId)
 func (_IWarden *IWardenFilterer) ParseNewKey(log types.Log) (*IWardenNewKey, error) {
 	event := new(IWardenNewKey)
 	if err := _IWarden.contract.UnpackLog(event, "NewKey", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IWardenNewKeychainIterator is returned from FilterNewKeychain and is used to iterate over the raw logs and unpacked data for NewKeychain events raised by the IWarden contract.
+type IWardenNewKeychainIterator struct {
+	Event *IWardenNewKeychain // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IWardenNewKeychainIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IWardenNewKeychain)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IWardenNewKeychain)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IWardenNewKeychainIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IWardenNewKeychainIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IWardenNewKeychain represents a NewKeychain event raised by the IWarden contract.
+type IWardenNewKeychain struct {
+	Id      uint64
+	Creator common.Address
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterNewKeychain is a free log retrieval operation binding the contract event 0xbf4749d4199931cc72db43a71a673c8a5d90a98fedbea9c172788448b61a8f8d.
+//
+// Solidity: event NewKeychain(uint64 id, address indexed creator)
+func (_IWarden *IWardenFilterer) FilterNewKeychain(opts *bind.FilterOpts, creator []common.Address) (*IWardenNewKeychainIterator, error) {
+
+	var creatorRule []interface{}
+	for _, creatorItem := range creator {
+		creatorRule = append(creatorRule, creatorItem)
+	}
+
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "NewKeychain", creatorRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IWardenNewKeychainIterator{contract: _IWarden.contract, event: "NewKeychain", logs: logs, sub: sub}, nil
+}
+
+// WatchNewKeychain is a free log subscription operation binding the contract event 0xbf4749d4199931cc72db43a71a673c8a5d90a98fedbea9c172788448b61a8f8d.
+//
+// Solidity: event NewKeychain(uint64 id, address indexed creator)
+func (_IWarden *IWardenFilterer) WatchNewKeychain(opts *bind.WatchOpts, sink chan<- *IWardenNewKeychain, creator []common.Address) (event.Subscription, error) {
+
+	var creatorRule []interface{}
+	for _, creatorItem := range creator {
+		creatorRule = append(creatorRule, creatorItem)
+	}
+
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "NewKeychain", creatorRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IWardenNewKeychain)
+				if err := _IWarden.contract.UnpackLog(event, "NewKeychain", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseNewKeychain is a log parse operation binding the contract event 0xbf4749d4199931cc72db43a71a673c8a5d90a98fedbea9c172788448b61a8f8d.
+//
+// Solidity: event NewKeychain(uint64 id, address indexed creator)
+func (_IWarden *IWardenFilterer) ParseNewKeychain(log types.Log) (*IWardenNewKeychain, error) {
+	event := new(IWardenNewKeychain)
+	if err := _IWarden.contract.UnpackLog(event, "NewKeychain", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IWardenNewSpaceIterator is returned from FilterNewSpace and is used to iterate over the raw logs and unpacked data for NewSpace events raised by the IWarden contract.
+type IWardenNewSpaceIterator struct {
+	Event *IWardenNewSpace // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IWardenNewSpaceIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IWardenNewSpace)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IWardenNewSpace)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IWardenNewSpaceIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IWardenNewSpaceIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IWardenNewSpace represents a NewSpace event raised by the IWarden contract.
+type IWardenNewSpace struct {
+	Id                     uint64
+	Creator                common.Address
+	OwnersCount            uint64
+	ApproveAdminTemplateId uint64
+	RejectAdminTemplateId  uint64
+	ApproveSignTemplateId  uint64
+	RejectSignTemplateId   uint64
+	Raw                    types.Log // Blockchain specific contextual infos
+}
+
+// FilterNewSpace is a free log retrieval operation binding the contract event 0x1d673e16d9a82fd9a44a946aea320be2cdc951dc51ecb22fbde2396d9c49b4a7.
+//
+// Solidity: event NewSpace(uint64 id, address indexed creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId)
+func (_IWarden *IWardenFilterer) FilterNewSpace(opts *bind.FilterOpts, creator []common.Address) (*IWardenNewSpaceIterator, error) {
+
+	var creatorRule []interface{}
+	for _, creatorItem := range creator {
+		creatorRule = append(creatorRule, creatorItem)
+	}
+
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "NewSpace", creatorRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IWardenNewSpaceIterator{contract: _IWarden.contract, event: "NewSpace", logs: logs, sub: sub}, nil
+}
+
+// WatchNewSpace is a free log subscription operation binding the contract event 0x1d673e16d9a82fd9a44a946aea320be2cdc951dc51ecb22fbde2396d9c49b4a7.
+//
+// Solidity: event NewSpace(uint64 id, address indexed creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId)
+func (_IWarden *IWardenFilterer) WatchNewSpace(opts *bind.WatchOpts, sink chan<- *IWardenNewSpace, creator []common.Address) (event.Subscription, error) {
+
+	var creatorRule []interface{}
+	for _, creatorItem := range creator {
+		creatorRule = append(creatorRule, creatorItem)
+	}
+
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "NewSpace", creatorRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IWardenNewSpace)
+				if err := _IWarden.contract.UnpackLog(event, "NewSpace", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseNewSpace is a log parse operation binding the contract event 0x1d673e16d9a82fd9a44a946aea320be2cdc951dc51ecb22fbde2396d9c49b4a7.
+//
+// Solidity: event NewSpace(uint64 id, address indexed creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId)
+func (_IWarden *IWardenFilterer) ParseNewSpace(log types.Log) (*IWardenNewSpace, error) {
+	event := new(IWardenNewSpace)
+	if err := _IWarden.contract.UnpackLog(event, "NewSpace", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -822,6 +1948,431 @@ func (_IWarden *IWardenFilterer) WatchRejectKeyRequest(opts *bind.WatchOpts, sin
 func (_IWarden *IWardenFilterer) ParseRejectKeyRequest(log types.Log) (*IWardenRejectKeyRequest, error) {
 	event := new(IWardenRejectKeyRequest)
 	if err := _IWarden.contract.UnpackLog(event, "RejectKeyRequest", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IWardenRejectSignRequestIterator is returned from FilterRejectSignRequest and is used to iterate over the raw logs and unpacked data for RejectSignRequest events raised by the IWarden contract.
+type IWardenRejectSignRequestIterator struct {
+	Event *IWardenRejectSignRequest // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IWardenRejectSignRequestIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IWardenRejectSignRequest)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IWardenRejectSignRequest)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IWardenRejectSignRequestIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IWardenRejectSignRequestIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IWardenRejectSignRequest represents a RejectSignRequest event raised by the IWarden contract.
+type IWardenRejectSignRequest struct {
+	Id  uint64
+	Raw types.Log // Blockchain specific contextual infos
+}
+
+// FilterRejectSignRequest is a free log retrieval operation binding the contract event 0x9876fe372fa159e1ec936e70ab5196b67d4f8ea9b99022ea49f9e3770237e205.
+//
+// Solidity: event RejectSignRequest(uint64 id)
+func (_IWarden *IWardenFilterer) FilterRejectSignRequest(opts *bind.FilterOpts) (*IWardenRejectSignRequestIterator, error) {
+
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "RejectSignRequest")
+	if err != nil {
+		return nil, err
+	}
+	return &IWardenRejectSignRequestIterator{contract: _IWarden.contract, event: "RejectSignRequest", logs: logs, sub: sub}, nil
+}
+
+// WatchRejectSignRequest is a free log subscription operation binding the contract event 0x9876fe372fa159e1ec936e70ab5196b67d4f8ea9b99022ea49f9e3770237e205.
+//
+// Solidity: event RejectSignRequest(uint64 id)
+func (_IWarden *IWardenFilterer) WatchRejectSignRequest(opts *bind.WatchOpts, sink chan<- *IWardenRejectSignRequest) (event.Subscription, error) {
+
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "RejectSignRequest")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IWardenRejectSignRequest)
+				if err := _IWarden.contract.UnpackLog(event, "RejectSignRequest", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseRejectSignRequest is a log parse operation binding the contract event 0x9876fe372fa159e1ec936e70ab5196b67d4f8ea9b99022ea49f9e3770237e205.
+//
+// Solidity: event RejectSignRequest(uint64 id)
+func (_IWarden *IWardenFilterer) ParseRejectSignRequest(log types.Log) (*IWardenRejectSignRequest, error) {
+	event := new(IWardenRejectSignRequest)
+	if err := _IWarden.contract.UnpackLog(event, "RejectSignRequest", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IWardenRemoveKeychainAdminIterator is returned from FilterRemoveKeychainAdmin and is used to iterate over the raw logs and unpacked data for RemoveKeychainAdmin events raised by the IWarden contract.
+type IWardenRemoveKeychainAdminIterator struct {
+	Event *IWardenRemoveKeychainAdmin // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IWardenRemoveKeychainAdminIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IWardenRemoveKeychainAdmin)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IWardenRemoveKeychainAdmin)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IWardenRemoveKeychainAdminIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IWardenRemoveKeychainAdminIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IWardenRemoveKeychainAdmin represents a RemoveKeychainAdmin event raised by the IWarden contract.
+type IWardenRemoveKeychainAdmin struct {
+	KeychainId  uint64
+	Admin       common.Address
+	AdminsCount uint64
+	Raw         types.Log // Blockchain specific contextual infos
+}
+
+// FilterRemoveKeychainAdmin is a free log retrieval operation binding the contract event 0x8e8e92a5097448dcaea8690cf868dc7bdab4f7d72cff973706bb57a6d15ba681.
+//
+// Solidity: event RemoveKeychainAdmin(uint64 keychainId, address indexed admin, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) FilterRemoveKeychainAdmin(opts *bind.FilterOpts, admin []common.Address) (*IWardenRemoveKeychainAdminIterator, error) {
+
+	var adminRule []interface{}
+	for _, adminItem := range admin {
+		adminRule = append(adminRule, adminItem)
+	}
+
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "RemoveKeychainAdmin", adminRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IWardenRemoveKeychainAdminIterator{contract: _IWarden.contract, event: "RemoveKeychainAdmin", logs: logs, sub: sub}, nil
+}
+
+// WatchRemoveKeychainAdmin is a free log subscription operation binding the contract event 0x8e8e92a5097448dcaea8690cf868dc7bdab4f7d72cff973706bb57a6d15ba681.
+//
+// Solidity: event RemoveKeychainAdmin(uint64 keychainId, address indexed admin, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) WatchRemoveKeychainAdmin(opts *bind.WatchOpts, sink chan<- *IWardenRemoveKeychainAdmin, admin []common.Address) (event.Subscription, error) {
+
+	var adminRule []interface{}
+	for _, adminItem := range admin {
+		adminRule = append(adminRule, adminItem)
+	}
+
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "RemoveKeychainAdmin", adminRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IWardenRemoveKeychainAdmin)
+				if err := _IWarden.contract.UnpackLog(event, "RemoveKeychainAdmin", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseRemoveKeychainAdmin is a log parse operation binding the contract event 0x8e8e92a5097448dcaea8690cf868dc7bdab4f7d72cff973706bb57a6d15ba681.
+//
+// Solidity: event RemoveKeychainAdmin(uint64 keychainId, address indexed admin, uint64 adminsCount)
+func (_IWarden *IWardenFilterer) ParseRemoveKeychainAdmin(log types.Log) (*IWardenRemoveKeychainAdmin, error) {
+	event := new(IWardenRemoveKeychainAdmin)
+	if err := _IWarden.contract.UnpackLog(event, "RemoveKeychainAdmin", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IWardenUpdateKeychainIterator is returned from FilterUpdateKeychain and is used to iterate over the raw logs and unpacked data for UpdateKeychain events raised by the IWarden contract.
+type IWardenUpdateKeychainIterator struct {
+	Event *IWardenUpdateKeychain // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IWardenUpdateKeychainIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IWardenUpdateKeychain)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IWardenUpdateKeychain)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IWardenUpdateKeychainIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IWardenUpdateKeychainIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IWardenUpdateKeychain represents a UpdateKeychain event raised by the IWarden contract.
+type IWardenUpdateKeychain struct {
+	Id      uint64
+	Creator common.Address
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterUpdateKeychain is a free log retrieval operation binding the contract event 0xdd66c5db9eb871cf6f4ffac95382ac73e9affdde0c8171f2c305b5aebd7839ee.
+//
+// Solidity: event UpdateKeychain(uint64 id, address indexed creator)
+func (_IWarden *IWardenFilterer) FilterUpdateKeychain(opts *bind.FilterOpts, creator []common.Address) (*IWardenUpdateKeychainIterator, error) {
+
+	var creatorRule []interface{}
+	for _, creatorItem := range creator {
+		creatorRule = append(creatorRule, creatorItem)
+	}
+
+	logs, sub, err := _IWarden.contract.FilterLogs(opts, "UpdateKeychain", creatorRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IWardenUpdateKeychainIterator{contract: _IWarden.contract, event: "UpdateKeychain", logs: logs, sub: sub}, nil
+}
+
+// WatchUpdateKeychain is a free log subscription operation binding the contract event 0xdd66c5db9eb871cf6f4ffac95382ac73e9affdde0c8171f2c305b5aebd7839ee.
+//
+// Solidity: event UpdateKeychain(uint64 id, address indexed creator)
+func (_IWarden *IWardenFilterer) WatchUpdateKeychain(opts *bind.WatchOpts, sink chan<- *IWardenUpdateKeychain, creator []common.Address) (event.Subscription, error) {
+
+	var creatorRule []interface{}
+	for _, creatorItem := range creator {
+		creatorRule = append(creatorRule, creatorItem)
+	}
+
+	logs, sub, err := _IWarden.contract.WatchLogs(opts, "UpdateKeychain", creatorRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IWardenUpdateKeychain)
+				if err := _IWarden.contract.UnpackLog(event, "UpdateKeychain", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseUpdateKeychain is a log parse operation binding the contract event 0xdd66c5db9eb871cf6f4ffac95382ac73e9affdde0c8171f2c305b5aebd7839ee.
+//
+// Solidity: event UpdateKeychain(uint64 id, address indexed creator)
+func (_IWarden *IWardenFilterer) ParseUpdateKeychain(log types.Log) (*IWardenUpdateKeychain, error) {
+	event := new(IWardenUpdateKeychain)
+	if err := _IWarden.contract.UnpackLog(event, "UpdateKeychain", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

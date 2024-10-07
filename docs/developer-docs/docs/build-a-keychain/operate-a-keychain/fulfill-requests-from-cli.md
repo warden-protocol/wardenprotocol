@@ -35,7 +35,7 @@ go install ./cmd/clichain
 
 ## 2. Export variables
 
-Next steps require that you export your node and Keychain settings as environment variables.
+The next steps require that you export your node and Keychain settings as environment variables.
 
 If you used a `just` script or a devnet snapshot to run your node, you can export the predefined settings:
 

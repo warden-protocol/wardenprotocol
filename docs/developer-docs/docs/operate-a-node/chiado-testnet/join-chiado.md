@@ -23,7 +23,7 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 
 | Release |
 | ------- |
-| v0.5.0  |
+| v0.5.1  |
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ To join Chiado, install `wardend` (the Warden binary) using the script below. Th
 Build the `wardend` binary and initialize the chain home folder:
 
 ```bash
-git clone --depth 1 --branch v0.5.0 https://github.com/warden-protocol/wardenprotocol
+git clone --depth 1 --branch v0.5.1 https://github.com/warden-protocol/wardenprotocol
 just wardend build
 
 build/wardend init my-chain-moniker
@@ -116,6 +116,7 @@ https://rpc.chiado.wardenprotocol.org
    ```
 ## 4. Start the node
 Now you can start the node using the following command:
+
 ```bash
 wardend start
 ```

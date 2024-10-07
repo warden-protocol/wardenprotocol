@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	cmn "github.com/evmos/evmos/v18/precompiles/common"
+	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"

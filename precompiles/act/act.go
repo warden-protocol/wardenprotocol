@@ -4,7 +4,6 @@ import (
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	"embed"
-	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -123,8 +122,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	return bz, nil
 }
 
-// IsTransaction checks if the given method name corresponds to a transaction or query.
-func (Precompile) IsTransaction(method string) bool {
+func (p *Precompile) IsTransaction(method string) bool {
 	switch method {
 	// transactions
 	case CheckActionMethod:
@@ -149,33 +147,7 @@ func (Precompile) IsTransaction(method string) bool {
 	case TemplateByIdQuery:
 		return false
 	}
-
-func (p *Precompile) IsTransaction(method string) (bool, error) {
-	switch method {
-		// transactions
-		case CheckActionMethod:
-			return true, nil
-		case NewTemplateMethod:
-			return true, nil
-		case RevokeActionMethod:
-			return true, nil
-		case UpdateTemplateMethod:
-			return true, nil
-		case VoteForActionMethod:
-			return true, nil
-		// queries
-		case ActionsQuery:
-			return false, nil
-		case ActionByIdQuery:
-			return false, nil
-		case ActionsByAddressQuery:
-			return false, nil
-		case TemplatesQuery:
-			return false, nil
-		case TemplateByIdQuery:
-			return false, nil
-	}
-	return false, fmt.Errorf("invalid method name: %s", method)
+	return false
 }
 
 // Logger returns a precompile-specific logger.

@@ -149,7 +149,7 @@ To add a Keychain Writer, take these steps:
    ```
 
    :::tip
-   In this example, we used `$(wardend keys show -a my-keychain-writer-name)` to get the Keychain Wrtier address by it's name. Alternatively, you can just specify the address obtained in the previous step.
+   In this example, we used `$(wardend keys show -a my-keychain-writer-name)` to get the Keychain Writer address by its name. Alternatively, you can just specify the address obtained in the previous step.
    :::
 
 4. Finally, add the Writer account to your Keychain. Specify the Keychain ID from [Step 2.3](#2-register-a-keychain) and other details:

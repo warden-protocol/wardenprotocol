@@ -86,7 +86,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
 3. Fulfill the key request by submitting a transaction from the Keychain Writer account:
    
    ```bash
-   wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY /
+   wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY \
      --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
    ```
 

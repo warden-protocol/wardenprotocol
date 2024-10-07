@@ -10,6 +10,8 @@ _abigen:
 
 # run "buf" to generate pulsar definitions
 abi: _abigen
-  abigen --abi {{git_root / "precompiles/act/abi.json"}} --pkg act --type IAct --out {{git_root / "precompiles/act/IAct.go"}}
-  abigen --abi {{git_root / "precompiles/warden/abi.json"}} --pkg warden --type IWarden --out {{git_root / "precompiles/warden/IWarden.go"}}
+  cat {{git_root / "precompiles/act/abi.json"}} | jq '.abi' > {{tmpdir / "act.json"}}
+  abigen --abi {{tmpdir / "act.json"}}  --pkg act --type IAct --out {{git_root / "precompiles/act/IAct.go"}}
 
+  cat {{git_root / "precompiles/warden/abi.json"}} | jq '.abi' > {{tmpdir / "warden.json"}}
+  abigen --abi {{tmpdir / "warden.json"}}  --pkg warden --type IWarden --out {{git_root / "precompiles/warden/IWarden.go"}}

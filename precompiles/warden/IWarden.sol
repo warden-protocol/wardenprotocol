@@ -2,6 +2,7 @@
 pragma solidity >=0.8.18;
 
 import "../common/Types.sol";
+import "../common/Types.sol";
 
 /// @dev The IWarden contract's address.
 address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900; 
@@ -10,8 +11,8 @@ address constant IWARDEN_PRECOMPILE_ADDRESS = 0x00000000000000000000000000000000
 IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
 
 struct KeychainFees {
-    Coin[] KeyReq;
-    Coin[] SigReq;
+    Types.Coin[] KeyReq;
+    Types.Coin[] SigReq;
 }
 
 struct Key {
@@ -44,7 +45,7 @@ struct KeyRequest {
     string RejectReason;
     uint64 ApproveTemplateId;
     uint64 RejectTemplateId;
-    Coin[] DeductedKeychainFees;
+    Types.Coin[] DeductedKeychainFees;
 }
 
 struct Keychain {
@@ -67,7 +68,7 @@ struct SignRequest {
     int32 Status;
     bytes Result;
     bytes EncryptionKey;
-    Coin[] DeductedKeychainFees;
+    Types.Coin[] DeductedKeychainFees;
 }
 
 struct Space {

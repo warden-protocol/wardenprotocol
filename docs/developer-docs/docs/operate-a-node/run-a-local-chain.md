@@ -242,41 +242,6 @@ You'll see blocks being produced and height incrementing.
 
 In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features – for example, a Space and a Keychain.
 
-#### Create a Keychain
-
-1. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name and the chain ID:
-   
-   ```bash
-   wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
-     --from my-key-name \
-     --chain-id chain_123-1
-   ```
-
-2. Enter your passphrase and confirm the transaction.
-
-3. After that, you can query the node to check the result:
-   
-   ```bash
-   wardend query warden keychains
-   ```
-   
-   The output should look like this:
-   
-   ```bash
-   keychains:
-   - admins:
-     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     fees:
-       key_req: []
-       sig_req: []
-     id: "1"
-     name: my-keychain-name
-   pagination:
-     total: "1"
-   ```
-   
 #### Create a Space
 
 1. To create a Space, run the following command. Specify your key name and the chain ID:
@@ -306,6 +271,11 @@ In the previous steps, you configured your node with the minimum settings requir
    owners:
    - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
    ```
+
+#### Create a Keychain
+
+To create a Keychain and add a Keychain Writer, take steps from this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
+
 
 ## Result
 

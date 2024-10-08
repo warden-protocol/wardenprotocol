@@ -189,7 +189,7 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
 
 ## 5. Run the chain
 
-If your local chain isn't running, start it:
+If your local chain isn't running, execute this command in a separate terminal window:
    
 ```bash
 wardend start

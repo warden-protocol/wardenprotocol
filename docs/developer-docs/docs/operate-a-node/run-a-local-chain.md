@@ -111,7 +111,6 @@ In this flow, you'll create and configure your chain manually.
 
    ```
    sed -i 's/stake/award/g' ../.warden/config/genesis.json
-   sed -i 's/aevmos/award/g' ../.warden/config/genesis.json
    ```
 
 3. Create a key pair, specifying a custom key (validator account) name:

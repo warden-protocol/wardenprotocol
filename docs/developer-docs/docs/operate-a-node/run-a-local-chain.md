@@ -8,15 +8,12 @@ sidebar_position: 2
 
 This guide explains how to run a local chain for development and testing purposes.
 
-There are three ways to run a node:
+There are two ways to run a node:
 
 - **Option 1: Run a `just` script**  
-It's the simplest way to run a local chain. Initiate a `just` script that builds the chain binary and then creates, configures, and runs a new chain.
+It's the simplest way to run a local chain. Initiate our `just` script that builds the chain binary and then creates, configures, and runs a new chain.
 
-- **Option 2: Use a devnet snapshot**  
-You can use a devnet snapshot with prebuilt node settings.
-
-- **Option 3. Configure manually**  
+- **Option 2. Configure manually**  
 We recommend this option if you wish to run a node with custom settings and learn the basics of interacting with a node.
 
 ## Prerequisites
@@ -36,8 +33,7 @@ brew install just
 
 ## Option 1. Run a `just` script
 
-The simplest way to run a local chain is initiating a `just` script that builds the chain binary and then creates, configures, and runs a new chain.
-
+The simplest way to run a local chain is initiating our `just` script that builds the chain binary and then creates, configures, and runs a new chain.
 
 ### 1. Clone the repository
 
@@ -62,68 +58,7 @@ You'll see blocks being produced and height incrementing.
 You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
 :::
 
-## Option 2. Use a devnet snapshot
-
-You can use a devnet snapshot with prebuilt node settings.
-
-### 1. Clone the repository
-
-Clone the Warden Protocol repository and navigate to the root directory:
-   
-```bash
-git clone https://github.com/warden-protocol/wardenprotocol
-cd wardenprotocol
-```
-
-### 2. Build the binary
-
-1. Then use `just` to build the chain binary called `wardend`:
-      
-   ```bash
-   just wardend build
-   ```
-
-2. To install the binary in your `$GOPATH`, run this command:
-
-   ```bash
-   just wardend install
-   ```
-3. You can check the binary location and version:
-   
-   ```bash
-   which wardend
-   wardend version
-   ```
-
-### 3. Download the snapshot
-
-Download the [devnet snapshot](https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz) and extract it to `~/.warden`:
-   
-```bash
-wget https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz
-mkdir ~/.warden
-tar -xvf devnet.tar.gz -C ~/.warden
-```
-
-:::tip
-If you wish to use an alternative starting point, [check GitHub for other snapshots](https://github.com/warden-protocol/snapshots).
-:::
-
-### 4. Run the chain
-
-Finally, run the chain:
-
-```bash
-wardend start
-```
-
-You'll see blocks being produced and height incrementing.
-
-:::note
-You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
-:::
-
-## Option 3. Configure manually
+## Option 2. Configure manually
 
 We recommend this option if you wish to run a node with custom settings and learn the basics of interacting with a node.
 
@@ -243,41 +178,6 @@ You'll see blocks being produced and height incrementing.
 
 In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features – for example, a Space and a Keychain.
 
-#### Create a Keychain
-
-1. While the node is running, execute the command below in a separate terminal window. Specify a custom keychain description, your key name and the chain ID:
-   
-   ```bash
-   wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
-     --from my-key-name \
-     --chain-id chain_123-1
-   ```
-
-2. Enter your passphrase and confirm the transaction.
-
-3. After that, you can query the node to check the result:
-   
-   ```bash
-   wardend query warden keychains
-   ```
-   
-   The output should look like this:
-   
-   ```bash
-   keychains:
-   - admins:
-     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-     fees:
-       key_req: []
-       sig_req: []
-     id: "1"
-     name: my-keychain-name
-   pagination:
-     total: "1"
-   ```
-   
 #### Create a Space
 
 1. To create a Space, run the following command. Specify your key name and the chain ID:
@@ -307,6 +207,11 @@ In the previous steps, you configured your node with the minimum settings requir
    owners:
    - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
    ```
+
+#### Create a Keychain
+
+To create a Keychain and add a Keychain Writer, take steps from this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
+
 
 ## Result
 
@@ -366,5 +271,5 @@ To learn more about `wardend` commands for interacting with the node, see [Node 
 :::
 
 :::tip
-If you need to stop the node, use **Ctrl + C**. Note that when you run the chain again, it'll start from block 0.
+If you need to stop the node, use **Ctrl + C**. To start it again from block 0, run `wardend start`.
 :::

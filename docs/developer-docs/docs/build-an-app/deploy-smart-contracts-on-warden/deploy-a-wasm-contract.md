@@ -44,7 +44,7 @@ Before you start, complete the following prerequisites:
     wardend keys list
     ```
     :::tip
-    If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
+    If you used our `just` script to run the node, the local account name is `shulgin`.
     :::
    
    - You may also need your chain ID. Run `wardend status` and note down the value from the `network` field.

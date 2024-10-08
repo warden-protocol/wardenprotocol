@@ -1,15 +1,31 @@
 import {
 	createRpcQueryHooks,
+	ethermint,
 	getSigningWardenClient,
 	useRpcClient,
 	warden,
 } from "@wardenprotocol/wardenjs";
 import { env } from "../env";
 import { useChain } from "@cosmos-kit/react";
-import { EncodeObject, OfflineDirectSigner, OfflineSigner, TxBodyEncodeObject, makeAuthInfoBytes, makeSignDoc } from "@cosmjs/proto-signing";
+import {
+	EncodeObject,
+	OfflineDirectSigner,
+	OfflineSigner,
+	TxBodyEncodeObject,
+	makeAuthInfoBytes,
+	makeSignDoc,
+} from "@cosmjs/proto-signing";
 import { ToasterToast, useToast } from "@/components/ui/use-toast";
-import { DeliverTxResponse, SigningStargateClient, StdFee, isDeliverTxSuccess } from "@cosmjs/stargate";
-import { TxBody, TxRaw } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/v1beta1/tx";
+import {
+	DeliverTxResponse,
+	SigningStargateClient,
+	StdFee,
+	isDeliverTxSuccess,
+} from "@cosmjs/stargate";
+import {
+	TxBody,
+	TxRaw,
+} from "@wardenprotocol/wardenjs/codegen/cosmos/tx/v1beta1/tx";
 import { Any } from "@wardenprotocol/wardenjs/codegen/google/protobuf/any";
 import { Int53 } from "@cosmjs/math";
 import { PubKey } from "@wardenprotocol/wardenjs/codegen/ethermint/crypto/v1/ethsecp256k1/keys";
@@ -23,8 +39,8 @@ export async function getSigningClient(signer: OfflineSigner) {
 }
 
 const defaultFee: StdFee = {
-	gas: '220000',
-	amount: [{ denom: 'award', amount: '250000000000000' }],
+	gas: "220000",
+	amount: [{ denom: "award", amount: "250000000000000" }],
 };
 
 export interface TxOptions {
@@ -34,13 +50,17 @@ export interface TxOptions {
 }
 
 export enum TxStatus {
-	Failed = 'Transaction Failed',
-	Successful = 'Transaction Successful',
-	Broadcasting = 'Transaction confirmation in progress',
+	Failed = "Transaction Failed",
+	Successful = "Transaction Successful",
+	Broadcasting = "Transaction confirmation in progress",
 }
 
 export function useTx() {
-	const { address, getOfflineSignerDirect: getOfflineSigner, chain } = useChain(env.cosmoskitChainName);
+	const {
+		address,
+		getOfflineSignerDirect: getOfflineSigner,
+		chain,
+	} = useChain(env.cosmoskitChainName);
 	const { toast } = useToast();
 
 	const sign = async (msgs: EncodeObject[], options: TxOptions) => {
@@ -50,17 +70,17 @@ export function useTx() {
 		const fee = options.fee || defaultFee;
 		const txBody = TxBody.fromPartial({
 			messages: msgs,
-			memo: '',
+			memo: "",
 		});
 
 		return await buildTxRaw(chain.chain_id, client, signer, txBody, fee);
-	}
+	};
 
 	const tx = async (msgs: EncodeObject[], options: TxOptions) => {
 		if (!address) {
 			toast({
-				title: 'Wallet not connected',
-				description: 'Please connect the wallet',
+				title: "Wallet not connected",
+				description: "Please connect the wallet",
 			});
 			return;
 		}
@@ -77,14 +97,15 @@ export function useTx() {
 			toast({
 				title: TxStatus.Failed,
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				description: (e as any)?.message || 'An unexpected error has occured',
+				description:
+					(e as any)?.message || "An unexpected error has occured",
 			});
 			return;
 		}
 
 		const { id, update } = toast({
 			title: TxStatus.Broadcasting,
-			description: 'Waiting for transaction to be included in the block',
+			description: "Waiting for transaction to be included in the block",
 			duration: 999999,
 		});
 
@@ -105,7 +126,8 @@ export function useTx() {
 					update({
 						id,
 						title: TxStatus.Failed,
-						description: res?.rawLog ?? 'An unexpected error has occured',
+						description:
+							res?.rawLog ?? "An unexpected error has occured",
 						duration: 10000,
 					});
 
@@ -175,6 +197,7 @@ async function buildTxRaw(
 	};
 	const txBodyBytes = client.registry.encode(txBodyEncodeObject);
 	const gasLimit = Int53.fromString(fee.gas).toNumber();
+	console.log({ account, signerAddress });
 	const authInfoBytes = makeAuthInfoBytes(
 		[{ pubkey: pubk, sequence: account.sequence }],
 		fee.amount,
@@ -182,8 +205,16 @@ async function buildTxRaw(
 		fee.granter,
 		fee.payer,
 	);
-	const signDoc = makeSignDoc(txBodyBytes, authInfoBytes, chainId, Number(account.accountNumber));
-	const { signature, signed } = await signer.signDirect(signerAddress, signDoc);
+	const signDoc = makeSignDoc(
+		txBodyBytes,
+		authInfoBytes,
+		chainId,
+		Number(account.accountNumber),
+	);
+	const { signature, signed } = await signer.signDirect(
+		signerAddress,
+		signDoc,
+	);
 
 	return TxRaw.fromPartial({
 		bodyBytes: signed.bodyBytes,
@@ -194,9 +225,23 @@ async function buildTxRaw(
 
 async function fetchAccount(address: string) {
 	const rpcClient = await getClient();
-	const { account } = await rpcClient.cosmos.auth.v1beta1.account({ address });
+
+	const { account } = await rpcClient.cosmos.auth.v1beta1.account({
+		address,
+	});
+
 	if (!account) {
 		throw new Error("Failed to retrieve account from chain", account);
+	} else if (account.typeUrl === ethermint.types.v1.EthAccount.typeUrl) {
+		// fix account type
+		const ethAccount = ethermint.types.v1.EthAccount.decode(account.value);
+
+		if (!ethAccount.baseAccount) {
+			throw new Error("Failed to retrieve account from chain");
+		}
+
+		return ethAccount.baseAccount;
 	}
+
 	return account;
 }

@@ -17,9 +17,9 @@ export interface GenesisStateProtoMsg {
 /** GenesisState defines the evm module's genesis state. */
 export interface GenesisStateAmino {
   /** accounts is an array containing the ethereum genesis accounts. */
-  accounts?: GenesisAccountAmino[];
+  accounts: GenesisAccountAmino[];
   /** params defines all the parameters of the module. */
-  params?: ParamsAmino;
+  params: ParamsAmino;
 }
 export interface GenesisStateAminoMsg {
   type: "/ethermint.evm.v1.GenesisState";
@@ -58,7 +58,7 @@ export interface GenesisAccountAmino {
   /** code defines the hex bytes of the account code. */
   code?: string;
   /** storage defines the set of state key values for the account. */
-  storage?: StateAmino[];
+  storage: StateAmino[];
 }
 export interface GenesisAccountAminoMsg {
   type: "/ethermint.evm.v1.GenesisAccount";
@@ -148,7 +148,7 @@ export const GenesisState = {
     } else {
       obj.accounts = message.accounts;
     }
-    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

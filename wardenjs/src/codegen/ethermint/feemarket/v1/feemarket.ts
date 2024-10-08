@@ -50,17 +50,17 @@ export interface ParamsAmino {
   /** enable_height defines at which block height the base fee calculation is enabled. */
   enable_height?: string;
   /** base_fee for EIP-1559 blocks. */
-  base_fee?: string;
+  base_fee: string;
   /** min_gas_price defines the minimum gas price value for cosmos and eth transactions */
-  min_gas_price?: string;
+  min_gas_price: string;
   /**
    * min_gas_multiplier bounds the minimum gas used to be charged
    * to senders based on gas limit
    */
-  min_gas_multiplier?: string;
+  min_gas_multiplier: string;
 }
 export interface ParamsAminoMsg {
-  type: "/ethermint.feemarket.v1.Params";
+  type: "evmos/x/feemarket/Params";
   value: ParamsAmino;
 }
 /** Params defines the EVM module parameters */
@@ -209,13 +209,19 @@ export const Params = {
     obj.base_fee_change_denominator = message.baseFeeChangeDenominator === 0 ? undefined : message.baseFeeChangeDenominator;
     obj.elasticity_multiplier = message.elasticityMultiplier === 0 ? undefined : message.elasticityMultiplier;
     obj.enable_height = message.enableHeight !== BigInt(0) ? (message.enableHeight?.toString)() : undefined;
-    obj.base_fee = message.baseFee === "" ? undefined : message.baseFee;
-    obj.min_gas_price = message.minGasPrice === "" ? undefined : message.minGasPrice;
-    obj.min_gas_multiplier = message.minGasMultiplier === "" ? undefined : message.minGasMultiplier;
+    obj.base_fee = message.baseFee ?? "";
+    obj.min_gas_price = message.minGasPrice ?? "";
+    obj.min_gas_multiplier = message.minGasMultiplier ?? "";
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
     return Params.fromAmino(object.value);
+  },
+  toAminoMsg(message: Params): ParamsAminoMsg {
+    return {
+      type: "evmos/x/feemarket/Params",
+      value: Params.toAmino(message)
+    };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
     return Params.decode(message.value);

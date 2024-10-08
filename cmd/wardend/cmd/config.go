@@ -6,7 +6,7 @@ import (
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 
-	evmservercfg "github.com/evmos/evmos/v18/server/config"
+	evmservercfg "github.com/evmos/evmos/v20/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 )
 
@@ -94,7 +94,11 @@ func initAppConfig() (string, interface{}) {
 		Rosetta: *evmservercfg.DefaultRosettaConfig(),
 	}
 
-	customAppTemplate := serverconfig.DefaultConfigTemplate + oracleconfig.DefaultConfigTemplate + evmservercfg.DefaultConfigTemplate
+	customAppTemplate := serverconfig.DefaultConfigTemplate +
+		oracleconfig.DefaultConfigTemplate +
+		evmservercfg.DefaultEVMConfigTemplate +
+		evmservercfg.DefaultRosettaConfigTemplate
+
 	// Edit the default template file
 	//
 	// customAppTemplate := serverconfig.DefaultConfigTemplate + `

@@ -3,11 +3,12 @@
 syntax = "proto3";
 package ethermint.feemarket.v1;
 
+import "amino/amino.proto";
 import "ethermint/feemarket/v1/feemarket.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/evmos/evmos/v19/x/feemarket/types";
+option go_package = "github.com/evmos/evmos/v20/x/feemarket/types";
 
 // Query defines the gRPC querier service.
 service Query {
@@ -33,7 +34,7 @@ message QueryParamsRequest {}
 // QueryParamsResponse defines the response type for querying x/evm parameters.
 message QueryParamsResponse {
   // params define the evm module parameters.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 
 // QueryBaseFeeRequest defines the request type for querying the EIP1559 base

@@ -3,12 +3,14 @@
 syntax = "proto3";
 package ethermint.evm.v1;
 
+import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v19/x/evm/types";
+option go_package = "github.com/evmos/evmos/v20/x/evm/types";
 
 // Params defines the EVM module parameters
 message Params {
+  option (amino.name) = "evmos/x/evm/Params";
   // evm_denom represents the token denomination used to run the EVM state
   // transitions.
   string evm_denom = 1 [(gogoproto.moretags) = "yaml:\"evm_denom\""];
@@ -17,7 +19,8 @@ message Params {
   // extra_eips defines the additional EIPs for the vm.Config
   repeated string extra_eips = 4 [(gogoproto.customname) = "ExtraEIPs", (gogoproto.moretags) = "yaml:\"extra_eips\""];
   // chain_config defines the EVM chain configuration parameters
-  ChainConfig chain_config = 5 [(gogoproto.moretags) = "yaml:\"chain_config\"", (gogoproto.nullable) = false];
+  ChainConfig chain_config = 5
+      [(gogoproto.moretags) = "yaml:\"chain_config\"", (gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   // allow_unprotected_txs defines if replay-protected (i.e non EIP155
   // signed) transactions can be executed on the state machine.
   bool allow_unprotected_txs = 6;
@@ -206,7 +209,8 @@ message TxResult {
   bytes bloom = 2;
   // tx_logs contains the transaction hash and the proto-compatible ethereum
   // logs.
-  TransactionLogs tx_logs = 3 [(gogoproto.moretags) = "yaml:\"tx_logs\"", (gogoproto.nullable) = false];
+  TransactionLogs tx_logs = 3
+      [(gogoproto.moretags) = "yaml:\"tx_logs\"", (gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   // ret defines the bytes from the execution.
   bytes ret = 4;
   // reverted flag is set to true when the call has been reverted

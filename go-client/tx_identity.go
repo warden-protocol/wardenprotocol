@@ -8,7 +8,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/go-bip39"
-	"github.com/evmos/evmos/v18/crypto/ethsecp256k1"
+	"github.com/evmos/evmos/v20/crypto/ethsecp256k1"
 )
 
 var DefaultDerivationPath = "m/44'/60'/0'/0/0"

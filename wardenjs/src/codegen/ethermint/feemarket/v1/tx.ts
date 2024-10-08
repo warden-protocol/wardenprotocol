@@ -25,10 +25,10 @@ export interface MsgUpdateParamsAmino {
    * params defines the x/feemarket parameters to update.
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params: ParamsAmino;
 }
 export interface MsgUpdateParamsAminoMsg {
-  type: "/ethermint.feemarket.v1.MsgUpdateParams";
+  type: "evmos/x/feemarket/MsgUpdateParams";
   value: MsgUpdateParamsAmino;
 }
 /** MsgUpdateParams defines a Msg for updating the x/feemarket module parameters. */
@@ -127,11 +127,17 @@ export const MsgUpdateParams = {
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
     return MsgUpdateParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
+    return {
+      type: "evmos/x/feemarket/MsgUpdateParams",
+      value: MsgUpdateParams.toAmino(message)
+    };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
     return MsgUpdateParams.decode(message.value);

@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
+## [v0.5.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.1) - 2024-10-04
+
 ### Consensus Breaking Changes
 
 * (x/warden) [#660](https://github.com/warden-protocol/wardenprotocol/660) Added `Nonce` field to Space to avoid race conditions
@@ -64,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/act) Rename `Rule` to `Template`
 * (x/act) Remove Template and Approvers from Action.
 * (x/act) Remove TemplateId from Key, AdminTemplateId and SignTemplateId from Space
+* (evm) Bump evmOS to V20
 
 ### Features (non-breaking)
 

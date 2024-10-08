@@ -1,14 +1,18 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Create a validator
 
-This is a simple step-by-step guide for setting up a validator on Buenavista testnet. It's not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on Chiado testnet. It's not a guide on validator architecture or security features.
+
+:::tip
+We're transitioning from [Buenavista](buenavista-testnet/join-buenavista) to our new and improved testnet, [Chiado](chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please [join Chiado](chiado-testnet/join-chiado) and set up your validator here – then you can safely shut down your validators on Buenavista.
+:::
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Buenavista](buenavista-testnet/join-buenavista) instructions.
+The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Chiado](chiado-testnet/join-chiado) instructions.
 
 ## 1. Create/restore a key pair
 
@@ -41,7 +45,7 @@ In the next steps, you'll register your new validator by submitting a `create-va
 You can obtain testnet tokens from our **WARD faucet**:
 
 ```bash
-curl -XPOST -d '{"address": "my-address"}' https://faucet.buenavista.wardenprotocol.org
+curl -XPOST -d '{"address": "my-address"}' https://faucet.chiado.wardenprotocol.org
 ```
 
 To verify your balance, use this command:
@@ -59,7 +63,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
 1. Obtain your validator public key by running the following command:
 
    ```bash
-   wardend comet show-validator
+   wardend tendermint show-validator
    ```
 
    The output will be similar to this (with a different key):
@@ -73,7 +77,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
    ```json
    {    
        "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
-       "amount": "1000000uward",
+       "amount": "1000000000000000000award",
        "moniker": "your validator human-readable name (moniker)",
        "identity": "your validator identity signature",
        "website": "(optional) your validator website",
@@ -93,8 +97,8 @@ To create a validator and initialize it with a self-delegation, you need to crea
    ```bash
    wardend tx staking create-validator validator.json \
        --from=my-key-name \
-       --chain-id=buenavista-1 \
-       --fees=500uward
+       --chain-id=chiado_10010-1 \
+       --fees=500000000000000award
    ```
     
 **✏️ CAUTION**
@@ -117,7 +121,7 @@ There are certain files you need to backup to be able to restore your validator 
 Check if your validator is in the active set by running this command:
 
 ```bash
-wardend query comet-validator-set | grep "$(wardend comet show-address)"
+wardend query tendermint-validator-set | grep "$(wardend comet show-address)"
 ```
 
 If the output is empty, your validator isn't in the active set.

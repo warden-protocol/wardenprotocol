@@ -14,7 +14,7 @@ Learn more:
 - To learn more about key and signature requests, see [Request flow](/learn/request-flow).
 
 :::tip
-In this guide, you'll interact with a [local chain](/operate-a-node/run-a-local-chain) and create key and signature requests using [node commands](/operate-a-node/node-commands). Alternatively, you can [Join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista) and take the same steps but create requests using [SpaceWard](https://help.wardenprotocol.org).
+In this guide, you'll interact with a [local chain](/operate-a-node/run-a-local-chain) and create key and signature requests using [node commands](/operate-a-node/node-commands). Alternatively, you can [Join Chiado](/operate-a-node/chiado-testnet/join-chiado) and take the same steps but create requests using [SpaceWard](https://help.wardenprotocol.org).
 :::
 
 ## Prerequisites
@@ -23,7 +23,6 @@ Before you start, complete the following prerequisites:
 
 - [Run a local chain](/operate-a-node/run-a-local-chain). If you used [manual configuration](/operate-a-node/run-a-local-chain#option-2-configure-manually), make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings).
 - [Create a Keychain](create-a-keychain). You can skip it if you used our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) to run the node.
-
 
 ## 1. Install CLIChain
 

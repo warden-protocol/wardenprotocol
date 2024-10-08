@@ -78,13 +78,15 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
-	evmosante "github.com/evmos/evmos/v18/app/ante"
-	ethante "github.com/evmos/evmos/v18/app/ante/evm"
-	srvflags "github.com/evmos/evmos/v18/server/flags"
-	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
-	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
+	evmosante "github.com/evmos/evmos/v20/app/ante"
+	ethante "github.com/evmos/evmos/v20/app/ante/evm"
+	srvflags "github.com/evmos/evmos/v20/server/flags"
+	evmostypes "github.com/evmos/evmos/v20/types"
+	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 
-	evmosencodingcodec "github.com/evmos/evmos/v18/encoding/codec"
+	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
@@ -164,6 +166,7 @@ type App struct {
 	// evmOS
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
+	Erc20Keeper     erc20keeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -287,7 +290,7 @@ func New(
 				// For providing a custom a base account type add it below.
 				// By default the auth module uses authtypes.ProtoBaseAccount().
 				//
-				// func() sdk.AccountI { return authtypes.ProtoBaseAccount() },
+				evmostypes.ProtoAccount,
 				//
 				// For providing a different address codec, add it below.
 				// By default the auth module uses a Bech32 address codec,

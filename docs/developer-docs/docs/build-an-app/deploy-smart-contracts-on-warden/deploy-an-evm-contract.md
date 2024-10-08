@@ -31,7 +31,6 @@ Before you start, complete the following prerequisites:
   ```bash
   npm install @truffle/hdwallet-provider
   ```
-
 - [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
   - In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
@@ -41,7 +40,7 @@ Before you start, complete the following prerequisites:
     ```
 
     :::tip
-    If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
+    If you used our `just` script to run the node, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
     :::
 
   - You'll also need your chain ID and RPC address. To get them, run `wardend status` and note down values from the `network` and `rpc_address` fields.

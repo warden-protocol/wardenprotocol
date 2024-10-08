@@ -33,17 +33,25 @@ Before you start, complete the following prerequisites:
   ```
 - [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-  - In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
+  - In [Step 3](#3-configure-truffle), you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
 
     ```bash
     wardend keys export my-key-name --unarmored-hex --unsafe
     ```
 
     :::tip
-    If you used our `just` script to run the node, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
+    You can check the names of available keys by running `wardend keys list`. If you used our `just` script to run the node with predefined settings, the local account name is `shulgin`.
     :::
 
-  - You'll also need your chain ID and RPC address. To get them, run `wardend status` and note down values from the `network` and `rpc_address` fields.
+  - You'll also need your chain ID. Run the following and note down the value from the `network` field:
+
+    ```
+    wardend status
+    ```
+
+    :::tip
+    If you used our `just` script to run the node, the chain ID is `warden_1337-1`.
+    :::
 
 ## 1. Create an EVM project
 
@@ -93,7 +101,7 @@ Make adjustments in the code using your chain settings from [Prerequisites](#pre
 
 1. Replace `your_private_key` with your actual private key.
 2. In `network_id`, specify the first number from your chain ID. For example, if your chain ID is `warden_1337-1` or `chain_123-1`, specify `1337` or `123` respectively. Alternatively, you can just use `"*"` to match any chain ID.
-3. Make sure that values in `provider`, `host`, and `port` correspond to the RPC address of your node.
+3. If needed, adjust the gas limit and price – `gas` and `gasPrice`.
 
 ```javascript
 const HDWalletProvider = require("@truffle/hdwallet-provider");
@@ -105,13 +113,12 @@ module.exports = {
   networks: {
     warden: {
       provider: function() {
-        // Specify the RPC address of your node
         return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
       },
       network_id: 1337, // The first number from your chain ID
-      host: "127.0.0.1", // The host address of your node
-      port: 8545, // The port of your node
-      gas: 5500000, // award
+      host: "127.0.0.1",
+      port: 8545,
+      gas: 5500000,
       gasPrice: 20000000000 // award
     },
   },
@@ -122,6 +129,12 @@ module.exports = {
   }
 };
    ```
+
+:::note
+The `host` and `port` values are the standard localhost address and the RPC port of the node. `HDWalletProvider` uses the same URL to connect to the node.
+
+If you're running your node on the same machine where you're deploying the contract, you don't need to change these settings. Otherwise, run `wardend status` to check the host address and adjust the configuration. 
+:::
 
 ## 4. Create a migration script
 
@@ -203,6 +216,10 @@ Summary
 > Total deployments:   1
 > Final cost:          0.055 ETH
 ```
+
+:::note
+Truffle displays the local account balance and prices in ETH and gwei. However, this contract actually utilizes Warden's currency – WARD, denominated in award.
+:::
 
 ## 7. Interact with the contract
 

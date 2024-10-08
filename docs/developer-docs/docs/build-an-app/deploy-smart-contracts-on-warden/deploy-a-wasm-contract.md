@@ -44,7 +44,7 @@ Before you start, complete the following prerequisites:
   wardend keys list
   ```
   :::tip
-  If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
+  If you used our `just` script to run the node, the local account name is `shulgin`.
   :::
 
 ## 1. Create a CosmWasm project

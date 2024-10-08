@@ -5,7 +5,7 @@ package ethermint.types.v1;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v19/types";
+option go_package = "github.com/evmos/evmos/v20/types";
 
 // TxResult is the value stored in eth tx indexer
 message TxResult {

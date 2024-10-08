@@ -10,22 +10,23 @@ import * as _73 from "./feemarket/v1/feemarket.js";
 import * as _74 from "./feemarket/v1/genesis.js";
 import * as _75 from "./feemarket/v1/query.js";
 import * as _76 from "./feemarket/v1/tx.js";
-import * as _77 from "./types/v1/dynamic_fee.js";
-import * as _78 from "./types/v1/indexer.js";
-import * as _79 from "./types/v1/web3.js";
-import * as _191 from "./evm/v1/tx.amino.js";
-import * as _192 from "./feemarket/v1/tx.amino.js";
-import * as _193 from "./evm/v1/tx.registry.js";
-import * as _194 from "./feemarket/v1/tx.registry.js";
-import * as _195 from "./evm/v1/query.lcd.js";
-import * as _196 from "./feemarket/v1/query.lcd.js";
-import * as _197 from "./evm/v1/query.rpc.Query.js";
-import * as _198 from "./feemarket/v1/query.rpc.Query.js";
-import * as _199 from "./evm/v1/tx.rpc.msg.js";
-import * as _200 from "./feemarket/v1/tx.rpc.msg.js";
-import * as _229 from "./lcd.js";
-import * as _230 from "./rpc.query.js";
-import * as _231 from "./rpc.tx.js";
+import * as _77 from "./types/v1/account.js";
+import * as _78 from "./types/v1/dynamic_fee.js";
+import * as _79 from "./types/v1/indexer.js";
+import * as _80 from "./types/v1/web3.js";
+import * as _192 from "./evm/v1/tx.amino.js";
+import * as _193 from "./feemarket/v1/tx.amino.js";
+import * as _194 from "./evm/v1/tx.registry.js";
+import * as _195 from "./feemarket/v1/tx.registry.js";
+import * as _196 from "./evm/v1/query.lcd.js";
+import * as _197 from "./feemarket/v1/query.lcd.js";
+import * as _198 from "./evm/v1/query.rpc.Query.js";
+import * as _199 from "./feemarket/v1/query.rpc.Query.js";
+import * as _200 from "./evm/v1/tx.rpc.msg.js";
+import * as _201 from "./feemarket/v1/tx.rpc.msg.js";
+import * as _230 from "./lcd.js";
+import * as _231 from "./rpc.query.js";
+import * as _232 from "./rpc.tx.js";
 export namespace ethermint {
   export namespace crypto {
     export namespace v1 {
@@ -41,11 +42,11 @@ export namespace ethermint {
       ..._69,
       ..._70,
       ..._71,
-      ..._191,
-      ..._193,
-      ..._195,
-      ..._197,
-      ..._199
+      ..._192,
+      ..._194,
+      ..._196,
+      ..._198,
+      ..._200
     };
   }
   export namespace feemarket {
@@ -55,23 +56,24 @@ export namespace ethermint {
       ..._74,
       ..._75,
       ..._76,
-      ..._192,
-      ..._194,
-      ..._196,
-      ..._198,
-      ..._200
+      ..._193,
+      ..._195,
+      ..._197,
+      ..._199,
+      ..._201
     };
   }
   export namespace types {
     export const v1 = {
       ..._77,
       ..._78,
-      ..._79
+      ..._79,
+      ..._80
     };
   }
   export const ClientFactory = {
-    ..._229,
     ..._230,
-    ..._231
+    ..._231,
+    ..._232
   };
 }

@@ -34,7 +34,7 @@ Before you start, complete the following prerequisites:
   wardend keys export my-key-name --unarmored-hex --unsafe
   ```
   :::tip
-  If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
+  If you used our `just` script to run the node, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
   :::
 
 ## 1. Create an EVM project

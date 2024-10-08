@@ -84,7 +84,7 @@ export interface ParamsAmino {
   /** extra_eips defines the additional EIPs for the vm.Config */
   extra_eips?: string[];
   /** chain_config defines the EVM chain configuration parameters */
-  chain_config?: ChainConfigAmino;
+  chain_config: ChainConfigAmino;
   /**
    * allow_unprotected_txs defines if replay-protected (i.e non EIP155
    * signed) transactions can be executed on the state machine.
@@ -101,7 +101,7 @@ export interface ParamsAmino {
   active_static_precompiles?: string[];
 }
 export interface ParamsAminoMsg {
-  type: "/ethermint.evm.v1.Params";
+  type: "evmos/x/evm/Params";
   value: ParamsAmino;
 }
 /** Params defines the EVM module parameters */
@@ -511,7 +511,7 @@ export interface TxResultAmino {
    * tx_logs contains the transaction hash and the proto-compatible ethereum
    * logs.
    */
-  tx_logs?: TransactionLogsAmino;
+  tx_logs: TransactionLogsAmino;
   /** ret defines the bytes from the execution. */
   ret?: string;
   /** reverted flag is set to true when the call has been reverted */
@@ -781,7 +781,7 @@ export const Params = {
     } else {
       obj.extra_eips = message.extraEips;
     }
-    obj.chain_config = message.chainConfig ? ChainConfig.toAmino(message.chainConfig) : undefined;
+    obj.chain_config = message.chainConfig ? ChainConfig.toAmino(message.chainConfig) : ChainConfig.toAmino(ChainConfig.fromPartial({}));
     obj.allow_unprotected_txs = message.allowUnprotectedTxs === false ? undefined : message.allowUnprotectedTxs;
     if (message.evmChannels) {
       obj.evm_channels = message.evmChannels.map(e => e);
@@ -798,6 +798,12 @@ export const Params = {
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
     return Params.fromAmino(object.value);
+  },
+  toAminoMsg(message: Params): ParamsAminoMsg {
+    return {
+      type: "evmos/x/evm/Params",
+      value: Params.toAmino(message)
+    };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
     return Params.decode(message.value);
@@ -1809,7 +1815,7 @@ export const TxResult = {
     const obj: any = {};
     obj.contract_address = message.contractAddress === "" ? undefined : message.contractAddress;
     obj.bloom = message.bloom ? base64FromBytes(message.bloom) : undefined;
-    obj.tx_logs = message.txLogs ? TransactionLogs.toAmino(message.txLogs) : undefined;
+    obj.tx_logs = message.txLogs ? TransactionLogs.toAmino(message.txLogs) : TransactionLogs.toAmino(TransactionLogs.fromPartial({}));
     obj.ret = message.ret ? base64FromBytes(message.ret) : undefined;
     obj.reverted = message.reverted === false ? undefined : message.reverted;
     obj.gas_used = message.gasUsed !== BigInt(0) ? (message.gasUsed?.toString)() : undefined;

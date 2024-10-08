@@ -94,8 +94,8 @@ import (
 	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 
-	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
-	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
+	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
+	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 )
 
 func init() {

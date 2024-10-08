@@ -29,7 +29,7 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 5. [Manage Rules](/spaceward/manage-rules)
 6. [Stake WARD](/spaceward/stake-ward)
 7. [Participate in governance](/spaceward/participate-in-governance)
-8. View Actions in your Space
+8. View actions in your Space
 9. [View Keychains](/spaceward/manage-keys#view-keychains)
 10. Monitor transactions
 11. [Use dApps](/spaceward/use-dapps#use-spaceward-collection) from the SpaceWard-curated collection

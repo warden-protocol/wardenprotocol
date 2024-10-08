@@ -13,7 +13,7 @@ In the steps below, you'll interact with a [local chain](/operate-a-node/run-a-l
 :::
 
 :::tip
-You can skip this guide and test a preconfigured Keychain. Just run a local node using a [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) or a [devnet snapshot](/operate-a-node/run-a-local-chain#option-2-use-a-devnet-snapshot) and [start fulfilling requests](fulfill-requests-from-cli).
+You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).
 :::
 
 ## 1. Run a node
@@ -37,7 +37,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    ```
    
    :::tip
-   If you used a `just` script or a devnet snapshot to run your node, the local account name is `shulgin`.
+   If you used our `just` script to run the node, the local account name is `shulgin`.
    :::
 
 3. In some of the commands, you'll also need to specify your chain ID. The actual value depends on the configuration you used when running your node.
@@ -51,7 +51,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    See the `network` field in the output.
 
    :::tip
-   If you used a `just` script or a devnet snapshot to run your node, the chain ID is `warden_1337-1`.
+   If you used our `just` script to run the node, the chain ID is `warden_1337-1`.
    :::
 
 ## 2. Register a Keychain

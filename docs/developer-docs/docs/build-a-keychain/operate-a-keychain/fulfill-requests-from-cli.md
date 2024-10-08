@@ -21,8 +21,8 @@ In this guide, you'll interact with a [local chain](/operate-a-node/run-a-local-
 
 Before you start, complete the following prerequisites:
 
-- [Run a local chain](/operate-a-node/run-a-local-chain). If you used [manual configuration](/operate-a-node/run-a-local-chain#option-3-configure-manually), make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings).
-- [Create a Keychain](create-a-keychain). You can skip it if you used a [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) or a [devnet snapshot](/operate-a-node/run-a-local-chain#option-2-use-a-devnet-snapshot) to run your node.
+- [Run a local chain](/operate-a-node/run-a-local-chain). If you used [manual configuration](/operate-a-node/run-a-local-chain#option-2-configure-manually), make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings).
+- [Create a Keychain](create-a-keychain). You can skip it if you used our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) to run the node.
 
 
 ## 1. Install CLIChain
@@ -37,7 +37,7 @@ go install ./cmd/clichain
 
 The next steps require that you export your node and Keychain settings as environment variables.
 
-If you used a `just` script or a devnet snapshot to run your node, you can export the predefined settings:
+If you used our `just` script to run the node, you can export the predefined settings:
 
 ```bash
 export CHAIN_ID=warden_1337-1 

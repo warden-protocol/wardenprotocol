@@ -115,7 +115,7 @@ module.exports = {
       provider: function() {
         return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
       },
-      network_id: 1337, // The first number from your chain ID
+      network_id: 123, // The first number from your chain ID
       host: "127.0.0.1",
       port: 8545,
       gas: 5500000,
@@ -131,9 +131,7 @@ module.exports = {
    ```
 
 :::note
-The `host` and `port` values are the standard localhost address and the RPC port of the node. `HDWalletProvider` uses the same URL to connect to the node.
-
-If you're running your node on the same machine where you're deploying the contract, you don't need to change these settings. Otherwise, run `wardend status` to check the host address and adjust the configuration. 
+The `host` and `port` values are the standard localhost address and the RPC port of the node. `HDWalletProvider` uses the same URL to connect to the node. If you're running your node on the same machine where you're deploying the contract, you don't need to change these settings. Otherwise, run `wardend status` to check the host address and adjust the configuration accordingly. 
 :::
 
 ## 4. Create a migration script

@@ -24,7 +24,7 @@ const (
 	EventTypeNewKey = "NewKey"
 	// EventRejectKeyRequest defines the event type for the reject branch of x/warden FulfilKeyRequest transaction.
 	EventRejectKeyRequest = "RejectKeyRequest"
-	// EventRejectSignRequest defines the event type for the fulfil branch of x/warden FulfilSignRequest transaction.
+	// EventFulfilSignRequest defines the event type for the fulfil branch of x/warden FulfilSignRequest transaction.
 	EventFulfilSignRequest = "FulfilSignRequest"
 	// EventRejectSignRequest defines the event type for the reject branch of x/warden FulfilSignRequest transaction.
 	EventRejectSignRequest = "RejectSignRequest"

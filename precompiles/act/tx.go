@@ -46,12 +46,13 @@ func (p Precompile) CheckActionMethod(
 	)
 
 	response, err := msgServer.CheckAction(ctx, message)
-
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO AT: Add event
+	if err := p.EmitActionStateChangeEvent(ctx, stateDB, origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response.Status)
 }
@@ -88,7 +89,7 @@ func (p Precompile) NewTemplateMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ creator: %d, name: %s, definition: %s }",
+			"{ creator: %s, name: %s, definition: %s }",
 			message.Creator,
 			message.Name,
 			message.Definition,
@@ -96,12 +97,13 @@ func (p Precompile) NewTemplateMethod(
 	)
 
 	response, err := msgServer.NewTemplate(ctx, message)
-
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO AT: Add event
+	if err := p.EmitCreateTemplateEvent(ctx, stateDB, origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response.Id)
 }
@@ -152,9 +154,10 @@ func (p Precompile) RevokeActionMethod(
 		return nil, err
 	}
 
-	// TODO AT: Add event
+	if err := p.EmitActionStateChangeEvent(ctx, stateDB, origin); err != nil {
+		return nil, err
+	}
 
-	// TODO AT: What to return
 	return method.Outputs.Pack(true)
 }
 
@@ -190,7 +193,7 @@ func (p Precompile) UpdateTemplateMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ creator: %s, template_id: %s, name: %s, definition: %s }",
+			"{ creator: %s, template_id: %d, name: %s, definition: %s }",
 			message.Creator,
 			message.Id,
 			message.Name,
@@ -203,7 +206,9 @@ func (p Precompile) UpdateTemplateMethod(
 		return nil, err
 	}
 
-	// TODO AT: Add event
+	if err := p.EmitActionStateChangeEvent(ctx, stateDB, origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(true)
 }
@@ -245,7 +250,7 @@ func (p Precompile) VoteForActionMethod(
 		"tx called",
 		"method", method.Name,
 		"args", fmt.Sprintf(
-			"{ participant: %d, action_id: %s, vote_type: %v }",
+			"{ participant: %s, action_id: %d, vote_type: %v }",
 			message.Participant,
 			message.ActionId,
 			message.VoteType,
@@ -258,14 +263,20 @@ func (p Precompile) VoteForActionMethod(
 		return nil, err
 	}
 
-	// TODO AT: Add event
+	if err := p.EmitActionStateChangeEvent(ctx, stateDB, origin); err != nil {
+		return nil, err
+	}
+
+	if err := p.EmitActionVotedEvent(ctx, stateDB, origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response.Status)
 }
 
 func newMsgVoteForAction(args []interface{}, origin common.Address) (*types.MsgVoteForAction, error) {
-	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+	if len(args) != 2 {
+		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)

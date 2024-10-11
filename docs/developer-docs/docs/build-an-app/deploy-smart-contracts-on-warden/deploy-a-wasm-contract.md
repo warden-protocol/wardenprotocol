@@ -4,6 +4,9 @@ sidebar_position: 2
 
 # Deploy a WASM contract
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Overview
 
 The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
@@ -38,16 +41,14 @@ Before you start, complete the following prerequisites:
 
 - [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
 
-  - The next steps require your local account name, or key name, which is referenced as `my-key-name` in the provided command-line examples. You can check the list of available keys by executing this command:
+  The next steps require your local account name, or key name. You can check the list of available keys by executing this command:
 
-    ```bash
-    wardend keys list
-    ```
-    :::tip
-    If you used our `just` script to run the node, the local account name is `shulgin`.
-    :::
-   
-   - You may also need your chain ID. Run `wardend status` and note down the value from the `network` field.
+  ```bash
+  wardend keys list
+  ```
+  :::tip
+  If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
+  :::
 
 ## 1. Create a CosmWasm project
 
@@ -197,13 +198,24 @@ wardend start
 
 ## 6. Store the contract on-chain
 
-To store your contract on the Warden chain, run the command below. Replace `my-key-name` and `chain_123-1` with correct values from [Prerequisites](#prerequisites):
-
+To store your contract on the Warden chain, run the command below. Specify your key name from [Prerequisites](#prerequisites) in the `--from` flag (typically `shulgin`), also set the chain ID.
+   
+<Tabs>
+<TabItem value="default" label="Default node settings">
+```bash
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
+  --from shulgin --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award \
+  -y --chain-id warden_1337-1
+```
+</TabItem>
+<TabItem value="custom" label="Custom node settings">
 ```bash
 wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award \
   -y --chain-id chain_123-1
 ```
+</TabItem>
+</Tabs>
 
 The transaction should be successful without any errors.
 
@@ -225,14 +237,28 @@ Note down `code_id` from the output.
 
 You can instantiate the contract by using the command below.
 
-Before you proceed, replace `1` with the actual code ID you retrieved in previous step. Replace `my-key-name`  and `chain_123-1` with your key name and chain ID. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
+Before you proceed, replace `1` with the actual code ID you retrieved in previous step . Specify your key name in the `--from` flag and the chain ID. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
+
+<Tabs>
+<TabItem value="default" label="Default node settings">
+```bash
+wardend tx wasm instantiate 1 '{}' \
+  --from shulgin --label "Hello World" \
+  --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award \
+  --no-admin -y --chain-id warden_1337-1
+```
+</TabItem>
+<TabItem value="custom" label="Custom node settings">
 ```bash
 wardend tx wasm instantiate 1 '{}' \
   --from my-key-name --label "Hello World" \
   --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award \
   --no-admin -y --chain-id chain_123-1
 ```
+</TabItem>
+</Tabs>
+
 
 ## 9. Get the contract address
 
@@ -246,13 +272,25 @@ Note down the contract address.
 
 ## 10. Execute the contract
 
-Use the command below to execute your contract. Replace `my-contract-address` with your contract address. Also replace `my-key-name`  and `chain_123-1` with your key name and chain ID.
+Use the command below to exectute your contract. Replace `my-contract-address` with your contract address. Specify your key name in the `--from` flag and the chain ID.
 
+<Tabs>
+<TabItem value="default" label="Default node settings">
+```bash
+wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
+  --from shulgin --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award \
+  -y --chain-id warden_1337-1
+```
+</TabItem>
+<TabItem value="custom" label="Custom node settings">
 ```bash
 wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award \
   -y --chain-id chain_123-1
 ```
+</TabItem>
+</Tabs>
+
 
 ## 11. Query the contract
 

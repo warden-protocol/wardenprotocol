@@ -9,19 +9,19 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide.
+To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide. To interact with the chain,  you'll use [node commands](/operate-a-node/node-commands).
 
-:::tip
-In the steps below, you'll interact with a [local chain](/operate-a-node/run-a-local-chain). To become an actual Keychain operator, you need to [join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista) instead. However, we recommend running a local chain first to test your configuration.
-:::
+You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testent](http://localhost:3000/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 :::tip
 You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).
 :::
 
-## 1. Run a node
+## 1. Prepare the chain
 
-1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain).
+### Option 1. Run a local chain
+
+1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://golang.org/doc/install) 1.22.3 and [just](https://github.com/casey/just) 1.34.0 or later.
    
    For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account (key) that has a few [WARD tokens](/tokens/ward-token/ward). You'll use these tokens to fund the Keychain and its Writers.
    
@@ -38,12 +38,12 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 3. Check the local account balance to make sure it has funds:
    
    <Tabs>
-   <TabItem value="default" label="Default node settings">
+   <TabItem value="local-default" label="Local node: default settings">
    ```bash
    wardend query bank balances shulgin
    ```
    </TabItem>
-   <TabItem value="custom" label="Custom node settings">
+   <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
    wardend query bank balances my-key-name
    ```
@@ -64,6 +64,48 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
    :::
 
+### Option 2. Connect to Buenavista
+
+1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
+
+2. Clone the repository with Warden source code and initialize the chain home folder:
+  
+   ```bash
+   git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
+   just build
+   
+   build/wardend init my-chain-moniker
+   ```
+
+3. Create a new key:
+
+   ```
+   wardend keys add my-key-name
+   ```
+
+4. Write down the **mnemonic phrase** and the **address** of the new account. You'll need this information to interact with the chain and restore the account.
+
+   :::warning
+   The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
+   :::
+
+   :::tip
+   You can always check your public address by running this command:
+
+   ```
+   wardend keys show my-key-name -address
+   ```
+   :::
+
+5. Fund your key using [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org) and the public address returned in the previous step.
+
+5. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Buenavista. 
+   
+   ```
+   wardend query bank balances my-key-name \
+     --node https://rpc.buenavista.wardenprotocol.org:443
+   ```
+
 ## 2. Register a Keychain
 
 The following steps show how to register a new Keychain entity on-chain.
@@ -71,7 +113,7 @@ The following steps show how to register a new Keychain entity on-chain.
 1. Run this command to create a new Keychain:
 
    <Tabs>
-   <TabItem value="default" label="Default node settings">
+   <TabItem value="local-default" label="Local node: default settings">
    ```bash
    wardend tx warden new-keychain \
      --name 'my-keychain-name' \
@@ -79,12 +121,21 @@ The following steps show how to register a new Keychain entity on-chain.
      --chain-id warden_1337-1
    ```
    </TabItem>
-   <TabItem value="custom" label="Custom node settings">
+   <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
    wardend tx warden new-keychain \
      --name 'my-keychain-name' \
      --from my-key-name \
      --chain-id chain_123-1
+   ```
+   </TabItem>
+   <TabItem value="buenavista" label="Buenavista">
+   ```bash
+   wardend tx warden new-keychain \
+     --description 'my-keychain-name' \
+     --from my-key-name \
+     --chain-id buenavista-1 \
+     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -107,9 +158,25 @@ The following steps show how to register a new Keychain entity on-chain.
 
 3. Every Keychain is created with a **Keychain ID** that identifies it in key and signature requests and collects fees from users. You'll need this ID to operate your Keychain. Run the following command and check the `id` field in the output:
 
+   <Tabs>
+   <TabItem value="local-default" label="Local node: default settings">
    ```bash
    wardend query warden keychains
    ```
+   </TabItem>
+   <TabItem value="local-custom" label="Local node: custom settings">
+   ```bash
+   wardend query warden keychains
+   ```
+   </TabItem>
+   <TabItem value="buenavista" label="Buenavista">
+   ```bash
+   wardend query warden keychains \
+     --node https://rpc.buenavista.wardenprotocol.org:443
+   ```
+   </TabItem>
+   </Tabs>
+
    ```bash
    keychains:
    - admins:
@@ -141,57 +208,68 @@ To add a Keychain Writer, take these steps:
    ```bash
    wardend keys add my-keychain-writer-name
    ```
-   The output should look like this:
-
-   ```bash
-   - address: warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
-     name: my-keychain-writer-name
-     pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A2cECb3ziw5/LzUBUZIChyek3bnGQv/PSXHAH28xd9/Q"}'
-     type: local
-   
-   
-   **Important** write this mnemonic phrase in a safe place. It is the only way to recover your account if you ever forget your password.
-   
-   virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick
-   ```
 
 2. Write down the **mnemonic phrase** and the **address** of the new account. You'll need this information to interact with the chain and restore the account. Note that only this address will be able to publish signatures and public keys on behalf of the Keychain.
 
-3. Fund the account by running the command below. After `send`, specify your key name. Also set the Keychain Writer name and chain ID:
+   :::warning
+   The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
+   :::
+
+   :::tip
+   You can always check your public address by running this command:
+
+   ```
+   wardend keys show my-key-name -address
+   ```
+   :::
+
+3. Now you need to fund the account. If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and chain ID.
+
+    <Tabs>
+    <TabItem value="local-default" label="Local node: default settings">
+    ```bash
+    wardend tx bank send shulgin \
+      $(wardend keys show --address my-keychain-writer-name) \
+      1000000000000000000award \
+      --chain-id warden_1337-1
+    ```
+    </TabItem>
+    <TabItem value="local-custom" label="Local node: custom settings">
+    ```bash
+    wardend tx bank send my-key-name \
+      $(wardend keys show --address my-keychain-writer-name) \
+      1000000000000000000award \
+      --chain-id chain_123-1
+    ```
+    </TabItem>
+    </Tabs>
+
+    If you're interacting with Buenavista, fund your key using [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org) and the public address returned in the previous step.
+
+4. Check the Keychain Writer balance:
 
    <Tabs>
-   <TabItem value="default" label="Default node settings">
-   ```bash
-   wardend tx bank send shulgin \
-     $(wardend keys show --address my-keychain-writer-name) \
-     1000000000000000000award \
-     --chain-id warden_1337-1
-   ```
-   </TabItem>
-   <TabItem value="custom" label="Custom node settings">
-   ```bash
-   wardend tx bank send my-key-name \
-     $(wardend keys show --address my-keychain-writer-name) \
-     1000000000000000000award \
-     --chain-id chain_123-1
-   ```
-   </TabItem>
-   </Tabs>
-
-   To check the Keychain Writer balance, run this:
-   
+   <TabItem value="local" label="Local node">
    ```bash
    wardend query bank balances my-keychain-writer-name
    ```
+   </TabItem>
+   <TabItem value="buenavista" label="Buenavista">
+   ```bash
+   wardend query bank balances my-keychain-writer-name \
+     --node https://rpc.buenavista.wardenprotocol.org:443
+   ```
+   </TabItem>
+   </Tabs>   
 
    :::tip
-   In this example, we used `$(wardend keys show --address my-keychain-writer-name)` to get the Keychain Writer address by its name. Alternatively, you can just specify the address obtained in the previous step.
+   In this example, we used `$(wardend keys show --address my-keychain-writer-name)` to get the Keychain Writer address by its name. Alternatively, you can just specify the address obtained earlier.
    :::
 
-4. Finally, add the Writer account to your Keychain. In the `--from` flag, specify your key name. Also set the Keychain ID from [Step 2.3](#2-register-a-keychain), your Keychain writer name, and the chain ID:
+5. Finally, add the Writer account to your Keychain. In the `--from` flag, specify your key name. Also set the Keychain ID from [Step 2.3](#2-register-a-keychain), your Keychain writer name, and the chain ID:
    
    <Tabs>
-   <TabItem value="default" label="Default node settings">
+   <TabItem value="local-default" label="Local node: default settings">
    ```bash
    wardend tx warden add-keychain-writer \
      --from shulgin --keychain-id 1 \
@@ -199,7 +277,7 @@ To add a Keychain Writer, take these steps:
      --chain-id warden_1337-1
    ```
    </TabItem>
-   <TabItem value="custom" label="Custom node settings">
+   <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
    wardend tx warden add-keychain-writer --from my-key-name \
      --keychain-id 1 --writer \
@@ -207,13 +285,32 @@ To add a Keychain Writer, take these steps:
      --chain-id chain_123-1
    ```
    </TabItem>
+   <TabItem value="buenavista" label="Buenavista">
+   ```bash
+   wardend tx warden add-keychain-writer --from my-key-name \
+     --keychain-id 2 --writer \
+     $(wardend keys show --address my-keychain-writer-name) \
+     --chain-id buenavista-1 \
+     --node https://rpc.buenavista.wardenprotocol.org:443
+   ```
+   </TabItem>
    </Tabs>
   
-   To check the result, get the list of Keychains:
+6. To check the result, get the list of Keychains:
 
-   ```
+   <Tabs>
+   <TabItem value="local" label="Local node">
+   ```bash
    wardend query warden keychains
    ```
+   </TabItem>
+   <TabItem value="buenavista" label="Buenavista">
+   ```bash
+   wardend query warden keychains \
+     --node https://rpc.buenavista.wardenprotocol.org:443
+   ```
+   </TabItem>
+   </Tabs>   
 
    In the output, find your Keychain and check the `writers` list:
 
@@ -244,6 +341,5 @@ To add a Keychain Writer, take these steps:
 
 The next steps depend on your goals:
 
-- To become an actual Keychain operator, [join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista) and create a Keychain there.
 - To start fulfilling key and signature requests, follow this guide: [Fulfill requests from CLI](fulfill-requests-from-cli).
 - To start building a Keychain service, follow [Build a Keychain app](../build-a-keychain-app).

@@ -40,7 +40,7 @@ Before you start, complete the following prerequisites:
     ```
 
     :::tip
-    You can check the names of available keys by running `wardend keys list`. If you used our `just` script to run the node with predefined settings, the local account name is `shulgin`.
+    You can check the names of available keys by running `wardend keys list`. If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
     :::
 
   - You'll also need your chain ID. Run the following and note down the value from the `network` field:
@@ -50,7 +50,7 @@ Before you start, complete the following prerequisites:
     ```
 
     :::tip
-    If you used our `just` script to run the node, the chain ID is `warden_1337-1`.
+    If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
     :::
 
 ## 1. Create an EVM project

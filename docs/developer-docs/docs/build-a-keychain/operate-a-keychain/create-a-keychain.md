@@ -76,7 +76,7 @@ The following steps show how to register a new Keychain entity on-chain.
    wardend tx warden new-keychain \
      --name 'my-keychain-name' \
      --from shulgin \
-     --chain-id warden_1337-1 \
+     --chain-id warden_1337-1
    ```
    </TabItem>
    <TabItem value="custom" label="Custom node settings">
@@ -84,7 +84,7 @@ The following steps show how to register a new Keychain entity on-chain.
    wardend tx warden new-keychain \
      --name 'my-keychain-name' \
      --from my-key-name \
-     --chain-id chain_123-1 \
+     --chain-id chain_123-1
    ```
    </TabItem>
    </Tabs>

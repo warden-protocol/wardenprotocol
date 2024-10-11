@@ -308,10 +308,6 @@ func (p Precompile) EmitNewKeychainEvent(ctx sdk.Context, creator common.Address
 		return err
 	}
 
-	if err != nil {
-		return err
-	}
-
 	var b bytes.Buffer
 	sdkEvents := ctx.EventManager().Events()
 	eventNewKeychain := sdkEvents[len(sdkEvents)-1]

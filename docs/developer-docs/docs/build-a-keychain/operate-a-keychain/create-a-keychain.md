@@ -4,6 +4,9 @@ sidebar_position: 2
 
 # Create a Keychain
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Overview
 
 To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide.
@@ -22,36 +25,43 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    
    For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account (key) that has a few [WARD tokens](/tokens/ward-token/ward). You'll use these tokens to fund the Keychain and its Writers.
    
-2. The next steps require your local account name, or key name. It's referenced as `my-key-name` in the provided command-line examples.
-
-   You can check the list of available keys by executing this command:
+2. The next steps require your local account name, or key name. You can check the list of available keys by executing this command:
 
    ```bash
    wardend keys list
    ```
+
+   :::tip
+   If you used our `just` script to run the node with default settings, the local account name is `shulgin`. 
+   :::
    
-   To check the local account balance, run this:
+3. Check the local account balance to make sure it has funds:
    
+   <Tabs>
+   <TabItem value="default" label="Default node settings">
+   ```bash
+   wardend query bank balances shulgin
+   ```
+   </TabItem>
+   <TabItem value="custom" label="Custom node settings">
    ```bash
    wardend query bank balances my-key-name
    ```
+   </TabItem>
+   </Tabs>
    
-   :::tip
-   If you used our `just` script to run the node, the local account name is `shulgin`.
-   :::
-
-3. In some of the commands, you'll also need to specify your chain ID. The actual value depends on the configuration you used when running your node.
+4. In some of the commands, you'll also need to specify your chain ID. The actual value depends on the configuration you used when running your node.
 
    To check your chain ID, run this:
 
-   ```
+   ```bash
    wardend status
    ```
 
    See the `network` field in the output.
 
    :::tip
-   If you used our `just` script to run the node, the chain ID is `warden_1337-1`.
+   If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
    :::
 
 ## 2. Register a Keychain
@@ -60,12 +70,24 @@ The following steps show how to register a new Keychain entity on-chain.
 
 1. Run this command to create a new Keychain:
 
+   <Tabs>
+   <TabItem value="default" label="Default node settings">
+   ```bash
+   wardend tx warden new-keychain \
+     --name 'my-keychain-name' \
+     --from shulgin \
+     --chain-id warden_1337-1 \
+   ```
+   </TabItem>
+   <TabItem value="custom" label="Custom node settings">
    ```bash
    wardend tx warden new-keychain \
      --name 'my-keychain-name' \
      --from my-key-name \
      --chain-id chain_123-1 \
    ```
+   </TabItem>
+   </Tabs>
 
    Specify the required details:
 
@@ -101,6 +123,7 @@ The following steps show how to register a new Keychain entity on-chain.
     sig_req:
       - amount: "1"
         denom: award
+     # highlight-next-line
      id: "1"
      name: my-keychain-name
    pagination:
@@ -134,13 +157,26 @@ To add a Keychain Writer, take these steps:
 
 2. Write down the **mnemonic phrase** and the **address** of the new account. You'll need this information to interact with the chain and restore the account. Note that only this address will be able to publish signatures and public keys on behalf of the Keychain.
 
-3. Fund the account with some tokens. Specify your key name, the Keychain Writer name, and chain ID:
+3. Fund the account by running the command below. After `send`, specify your key name. Also set the Keychain Writer name and chain ID:
 
+   <Tabs>
+   <TabItem value="default" label="Default node settings">
    ```bash
-   wardend tx bank send my-key-name $(wardend keys show -a my-keychain-writer-name) \
+   wardend tx bank send shulgin \
+     $(wardend keys show --address my-keychain-writer-name) \
+     1000000000000000000award \
+     --chain-id warden_1337-1
+   ```
+   </TabItem>
+   <TabItem value="custom" label="Custom node settings">
+   ```bash
+   wardend tx bank send my-key-name \
+     $(wardend keys show --address my-keychain-writer-name) \
      1000000000000000000award \
      --chain-id chain_123-1
    ```
+   </TabItem>
+   </Tabs>
 
    To check the Keychain Writer balance, run this:
    
@@ -149,17 +185,30 @@ To add a Keychain Writer, take these steps:
    ```
 
    :::tip
-   In this example, we used `$(wardend keys show -a my-keychain-writer-name)` to get the Keychain Writer address by its name. Alternatively, you can just specify the address obtained in the previous step.
+   In this example, we used `$(wardend keys show --address my-keychain-writer-name)` to get the Keychain Writer address by its name. Alternatively, you can just specify the address obtained in the previous step.
    :::
 
-4. Finally, add the Writer account to your Keychain. Specify the Keychain ID from [Step 2.3](#2-register-a-keychain) and other details:
+4. Finally, add the Writer account to your Keychain. In the `--from` flag, specify your key name. Also set the Keychain ID from [Step 2.3](#2-register-a-keychain), your Keychain writer name, and the chain ID:
    
+   <Tabs>
+   <TabItem value="default" label="Default node settings">
+   ```bash
+   wardend tx warden add-keychain-writer \
+     --from shulgin --keychain-id 1 \
+     --writer $(wardend keys show --address my-keychain-writer-name) \
+     --chain-id warden_1337-1
    ```
+   </TabItem>
+   <TabItem value="custom" label="Custom node settings">
+   ```bash
    wardend tx warden add-keychain-writer --from my-key-name \
-   --keychain-id 1 --writer $(wardend keys show -a my-keychain-writer-name) \
-   --chain-id chain_123-1
+     --keychain-id 1 --writer \
+     $(wardend keys show --address my-keychain-writer-name) \
+     --chain-id chain_123-1
    ```
-
+   </TabItem>
+   </Tabs>
+  
    To check the result, get the list of Keychains:
 
    ```
@@ -168,7 +217,7 @@ To add a Keychain Writer, take these steps:
 
    In the output, find your Keychain and check the `writers` list:
 
-   ```
+   ```bash
    keychains:
    - admins:
      - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
@@ -183,8 +232,10 @@ To add a Keychain Writer, take these steps:
         denom: award
      id: "1"
      name: my-keychain-name
+     # highlight-start
      writers:
        - warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
+     # highlight-end
    pagination:
      total: "1"
    ```

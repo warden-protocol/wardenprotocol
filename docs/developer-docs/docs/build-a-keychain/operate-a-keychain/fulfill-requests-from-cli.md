@@ -22,7 +22,7 @@ In this guide, you'll interact with a [local chain](/operate-a-node/run-a-local-
 Before you start, complete the following prerequisites:
 
 - [Run a local chain](/operate-a-node/run-a-local-chain). If you used [manual configuration](/operate-a-node/run-a-local-chain#option-2-configure-manually), make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings).
-- [Create a Keychain](create-a-keychain). You can skip it if you used our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) to run the node.
+- [Create a Keychain](create-a-keychain). You can skip it if you used our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) to run the node with default settings.
 
 
 ## 1. Install CLIChain
@@ -88,8 +88,18 @@ When a user requests a new key, the Keychain generates a new private key, stores
 
    Your request ID will be returned in the `id` field of the output:
 
-   ```json
-   id: "1"
+   ```bash
+   key_requests:
+   - creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     deducted_keychain_fees: []
+     # highlight-next-line
+     id: "1"
+     key_type: KEY_TYPE_ECDSA_SECP256K1
+     keychain_id: "1"
+     space_id: "1"
+     status: KEY_REQUEST_STATUS_PENDING
+   pagination:
+     total: "1"
    ```
 
 3. Export the request ID using the command below. Replace `1` with the actual ID you obtained.
@@ -125,8 +135,16 @@ When a user requests a new key, the Keychain generates a new private key, stores
 
    Your request status will be returned in the `status` field of the output: 
 
-   ```
-   status: KEY_REQUEST_STATUS_FULFILLED
+   ```bash
+   key_request:
+     creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     deducted_keychain_fees: []
+     id: "1"
+     key_type: KEY_TYPE_ECDSA_SECP256K1
+     keychain_id: "1"
+     space_id: "1"
+     # highlight-next-line
+     status: KEY_REQUEST_STATUS_FULFILLED
    ```
 
 ## 4. Fulfill a signature request
@@ -135,7 +153,7 @@ When a user requests a new key, the Keychain signs a message with the private ke
 
 1. Create a signature request:
 
-   ```
+   ```bash
    wardend tx warden new-action new-sign-request --from $KEY_NAME \
      --input "MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=" \
      --key-id 1 -y --chain-id $CHAIN_ID | wardend q wait-tx
@@ -144,7 +162,7 @@ When a user requests a new key, the Keychain signs a message with the private ke
    :::tip
    In the `--input` flag, you should provide a Base64-encoded hash. For testing purposes, you can use the hash from the example above. Alternatively, you can create one yourself – run the following command, replacing `00112233` with arbitrary raw data:
 
-   ```
+   ```bash
    RAW_DATA="00112233"
    HASH=$(echo -n $RAW_DATA | sha256sum | awk '{print $1}')
    BASE64_HASH=$(echo -n $HASH | xxd -r -p | base64)
@@ -152,7 +170,7 @@ When a user requests a new key, the Keychain signs a message with the private ke
 
    Then run a signature request with the `$BASE64_HASH` variable in the `--input` flag:
 
-   ```
+   ```bash
    wardend tx warden new-action new-sign-request --from $KEY_NAME \
     --input $BASE64_HASH \
     --key-id 1 -y --chain-id $CHAIN_ID | wardend q wait-tx
@@ -166,10 +184,19 @@ When a user requests a new key, the Keychain signs a message with the private ke
    ```
    
    Your request ID and data for signing will be returned in the `id` and `data_for_signing` fields of the output:
-   
+
    ```bash
-   id: "1"
-   data_for_signing: MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=
+   pagination:
+     total: "1"
+   - Result: null
+     creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+     # highlight-next-line
+     data_for_signing: MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=
+     deducted_keychain_fees: []
+     # highlight-next-line
+     id: "1"
+     key_id: "1"
+     status: SIGN_REQUEST_STATUS_PENDING
    ```
 
 3. Export the request details using the command below. Specify the actual request ID and data you obtained.
@@ -195,11 +222,22 @@ When a user requests a new key, the Keychain signs a message with the private ke
 6. Check the request status to make sure it was fulfilled:
 
    ```
-   wardend query warden sign-request-by-id --id=$KEY_REQUEST_ID
+   wardend query warden sign-request-by-id --id=$SIGN_REQUEST_ID
    ```
 
    Your request status will be returned in the `status` field of the output: 
 
-   ```
+   ```bash
+   sign_request:
+   Result:
+     type: SignedData
+     value:
+       signed_data: a0OHXtOgLHHP6qXxehlkImIjefA9fWZyuaD8hwzj4aMPiDkjvPLstu2I0+Ntcjz6wa1bh3+NGpqNKmWpqOlyiQE=
+   creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+   data_for_signing: MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=
+   deducted_keychain_fees: []
+   id: "1"
+   key_id: "1"
+   # highlight-next-line
    status: SIGN_REQUEST_STATUS_FULFILLED
    ```

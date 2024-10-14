@@ -128,7 +128,7 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 
 	var input ActionsByAddressInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to ValidatorsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to ActionsByAddressInput struct: %s", err)
 	}
 
 	if bytes.Equal(input.Pagination.Key, []byte{0}) {
@@ -172,7 +172,7 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 
 	var input TemplatesInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to ValidatorsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to TemplatesInput struct: %s", err)
 	}
 
 	if bytes.Equal(input.Pagination.Key, []byte{0}) {

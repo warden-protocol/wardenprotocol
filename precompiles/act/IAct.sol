@@ -79,19 +79,26 @@ IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
  * @custom:address 0x0000000000000000000000000000000000000901
  */
 interface IAct {
-    function checkAction(uint64 actionId) external returns (string memory);
+    function checkAction(uint64 actionId)
+    external returns (string memory);
 
-    function newTemplate(string calldata name, string calldata definition) external returns (uint64);
+    function newTemplate(string calldata name, string calldata definition)
+    external returns (uint64);
 
-    function revokeAction(uint64 actionId) external returns (bool);
+    function revokeAction(uint64 actionId)
+    external returns (bool);
 
-    function updateTemplate(uint64 templateId, string calldata name, string calldata definition) external returns (bool);
+    function updateTemplate(uint64 templateId, string calldata name, string calldata definition)
+    external returns (bool);
 
-    function voteForAction(uint64 actionId, int32 voteType) external returns (string memory);
+    function voteForAction(uint64 actionId, int32 voteType)
+    external returns (string memory);
 
-    function actions(Types.PageRequest calldata pagination) external view returns (ActionsResponse memory response);
+    function actions(Types.PageRequest calldata pagination)
+    external view returns (ActionsResponse memory response);
 
-    function actionById(uint64 actionId) external view returns (ActionByIdResponse memory response);
+    function actionById(uint64 actionId)
+    external view returns (ActionByIdResponse memory response);
 
     function actionsByAddress(Types.PageRequest calldata pagination, string calldata addr, int32 status)
     external view returns (ActionsByAddressResponse memory response);

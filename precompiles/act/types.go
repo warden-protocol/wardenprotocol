@@ -10,7 +10,7 @@ import (
 
 // ActionsInput needed to unmarshal Pagination field and pass it to types.QueryActionsRequest
 type ActionsInput struct {
-	Pagination query.PageRequest `json:"pagination"`
+	Pagination query.PageRequest `abi:"pagination"`
 }
 
 func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) ActionsResponse {
@@ -37,8 +37,8 @@ func (r ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) Act
 
 // ActionsByAddressInput needed to unmarshal Pagination field and pass it to types.QueryActionsByAddressRequest
 type ActionsByAddressInput struct {
-	Pagination query.PageRequest
-	Address    string `json:"addr"`
+	Pagination query.PageRequest `abi:"pagination"`
+	Address    string            `abi:"addr"`
 	Status     int32
 }
 

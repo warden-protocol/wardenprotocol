@@ -1,5 +1,113 @@
 {
+  "data": {
+    "bytecode": {
+      "functionDebugData": {},
+      "generatedSources": [],
+      "linkReferences": {},
+      "object": "",
+      "opcodes": "",
+      "sourceMap": ""
+    },
+    "deployedBytecode": {
+      "functionDebugData": {},
+      "generatedSources": [],
+      "immutableReferences": {},
+      "linkReferences": {},
+      "object": "",
+      "opcodes": "",
+      "sourceMap": ""
+    },
+    "gasEstimates": null,
+    "methodIdentifiers": {
+      "actionById(uint64)": "51619ef0",
+      "actions((bytes,uint64,uint64,bool,bool))": "9e9d1e27",
+      "actionsByAddress((bytes,uint64,uint64,bool,bool),string,int32)": "c0c68593",
+      "checkAction(uint64)": "737c52b5",
+      "newTemplate(string,string)": "20748349",
+      "revokeAction(uint64)": "b8fcbfef",
+      "templateById(uint64)": "161f1e48",
+      "templates((bytes,uint64,uint64,bool,bool))": "91dc3baa",
+      "updateTemplate(uint64,string,string)": "cb7391d5",
+      "voteForAction(uint64,int32)": "df5a2a3a"
+    }
+  },
   "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "int32",
+          "name": "voteType",
+          "type": "int32"
+        }
+      ],
+      "name": "EventActionVoted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "EventCreateAction",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "templateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "EventCreateTemplate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "templateId",
+          "type": "uint64"
+        }
+      ],
+      "name": "EventUpdateTemplate",
+      "type": "event"
+    },
     {
       "inputs": [
         {
@@ -675,7 +783,13 @@
         }
       ],
       "name": "revokeAction",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -838,7 +952,13 @@
         }
       ],
       "name": "updateTemplate",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },

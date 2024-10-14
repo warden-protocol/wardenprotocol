@@ -199,10 +199,19 @@ interface IWarden {
         string calldata keybaseId
     ) external returns (bool success);
 
+    function addSpaceOwner(
+        uint64 keychainId,
+        string calldata name,
+        KeychainFees calldata keychainFees,
+        string calldata description,
+        string calldata url,
+        string calldata keybaseId
+    ) external returns (bool success);
+
     function allKeys(
-        PageRequest calldata pageRequest,
+        Types.PageRequest calldata pageRequest,
         int32[] calldata deriveAddresses
-    ) external view returns(KeyResponse[] memory keys, PageResponse memory pageResponse);
+    ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
 
     function keyById(
         uint64 Id,
@@ -210,52 +219,52 @@ interface IWarden {
     ) external view returns(KeyResponse memory key);
 
     function keysBySpaceId(
-        PageRequest calldata pageRequest,
+        Types.PageRequest calldata pageRequest,
         uint64 spaceId,
         int32[] calldata deriveAddresses
-    ) external view returns(KeyResponse[] memory keys, PageResponse memory pageResponse);
+    ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
 
     function keyRequestById(
         uint64 Id
     ) external view returns(KeyRequest memory keyRequest);
 
     function keyRequests(
-        PageRequest calldata pageRequest,
+        Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         int32 status,
         uint64 spaceId
-    ) external view returns(KeyRequest[] memory keys, PageResponse memory pageResponse);
+    ) external view returns(KeyRequest[] memory keys, Types.PageResponse memory pageResponse);
 
     function keychainById(
         uint64 id
     ) external view returns(Keychain memory keychain);
 
     function keychains(
-        PageRequest calldata pageRequest
-    ) external view returns(Keychain[] memory keychain, PageResponse memory pageResponse);
+        Types.PageRequest calldata pageRequest
+    ) external view returns(Keychain[] memory keychain, Types.PageResponse memory pageResponse);
 
     function signRequestById(
         uint64 id
     ) external view returns(SignRequest memory signRequest);
 
     function signRequests(
-        PageRequest calldata pageRequest,
+        Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         int32 status
-    ) external view returns(SignRequest[] memory signRequests, PageResponse memory pageResponse);
+    ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
     function spaceById(
         uint64 id
     ) external view returns(Space memory space);
 
     function spaces(
-        PageRequest calldata pageRequest
-    ) external view returns(Space[] memory spaces, PageResponse memory pageResponse);
+        Types.PageRequest calldata pageRequest
+    ) external view returns(Space[] memory spaces, Types.PageResponse memory pageResponse);
 
     function spacesByOwner(
-        PageRequest calldata pageRequest,
+        Types.PageRequest calldata pageRequest,
         address owner
-    ) external view returns(Space[] memory spaces, PageResponse memory pageResponse);
+    ) external view returns(Space[] memory spaces, Types.PageResponse memory pageResponse);
 
     /// @dev AddKeychainAdmin defines an Event emitted when add a new admin to keychain.
     /// @param newAdmin The address of the admin

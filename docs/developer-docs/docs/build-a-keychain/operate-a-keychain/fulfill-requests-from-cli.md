@@ -13,7 +13,7 @@ This is a step-by-step guide explaining how to fulfill key and signature request
 
 You'll interact with the node through [node commands](/operate-a-node/node-commands). For generating keys and signing messages, you'll use **CLIChain** – a command-line tool for managing cryptographic keys and operations.
 
-You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
+You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 Learn more:
 
@@ -79,14 +79,14 @@ The next steps require that you export your node and Keychain settings as enviro
    export KEYCHAIN_WRITER_NAME=my-keychain-writer-name
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
-   export CHAIN_ID=buenavista-1 
+   export CHAIN_ID=chiado_10010-1
    export KEY_NAME=my-key-name
    export SPACE_ID=1
    export KEYCHAIN_ID=1
    export KEYCHAIN_WRITER_NAME=my-keychain-writer-name
-   export RPC_URL=https://rpc.buenavista.wardenprotocol.org:443
+   export RPC_URL=https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -101,7 +101,7 @@ The next steps require that you export your node and Keychain settings as enviro
   Returned by `wardend query warden keychains` in the `id` field.
 - `KEYCHAIN_WRITER_NAME`: Your Keychain Writer name specified when [adding a Keychain Writer](create-a-keychain#3-add-a-keychain-writer).  
   Returned by `wardend keys list`.
-- `RPC_URL`: The RPC URL for interacting with Buenavista.
+- `RPC_URL`: The RPC URL for interacting with Chiado.
 
 ## 3. Fulfill a key request
 
@@ -118,7 +118,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
      --from $KEY_NAME -y --chain-id $CHAIN_ID | wardend query wait-tx
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden new-action new-key-request \
      --space-id $SPACE_ID --keychain-id $KEYCHAIN_ID --key-type KEY_TYPE_ECDSA_SECP256K1 \
@@ -135,7 +135,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
    wardend query warden key-requests --keychain-id $KEYCHAIN_ID
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend query warden key-requests --keychain-id $KEYCHAIN_ID --node $RPC_URL
    ```
@@ -185,7 +185,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
      --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY \
      --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID --node $RPC_URL
@@ -201,7 +201,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
    wardend query warden key-request-by-id --id=$KEY_REQUEST_ID --node $RPC_URL
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend query warden key-request-by-id --id=$KEY_REQUEST_ID
    ```
@@ -236,7 +236,7 @@ When a user requests a signature, the Keychain signs a message with the private 
      --key-id $KEY_REQUEST_ID -y --chain-id $CHAIN_ID | wardend query wait-tx
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden new-action new-sign-request --from $KEY_NAME \
      --input "MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=" \
@@ -265,7 +265,7 @@ When a user requests a signature, the Keychain signs a message with the private 
    wardend query warden sign-requests --keychain-id $KEYCHAIN_ID
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend query warden sign-requests --keychain-id $KEYCHAIN_ID --node $RPC_URL
    ```
@@ -310,7 +310,7 @@ When a user requests a signature, the Keychain signs a message with the private 
      --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE \
      --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID --node $RPC_URL
@@ -326,7 +326,7 @@ When a user requests a signature, the Keychain signs a message with the private 
    wardend query warden sign-request-by-id --id=$SIGN_REQUEST_ID
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend query warden sign-request-by-id --id=$SIGN_REQUEST_ID --node $RPC_URL
    ```

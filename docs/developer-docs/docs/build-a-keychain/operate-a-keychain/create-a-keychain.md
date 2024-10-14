@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide. To interact with the chain,  you'll use [node commands](/operate-a-node/node-commands).
 
-You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testent](http://localhost:3000/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
+You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testent](/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 :::tip
 You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).
@@ -68,13 +68,14 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
-2. Clone the repository with Warden source code and initialize the chain home folder:
+2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
   
    ```bash
    git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
+   cd wardenprotocol
    just build
-   
-   build/wardend init my-chain-moniker
+   just install
+   wardend init my-chain-moniker
    ```
 
 3. Create a new key:

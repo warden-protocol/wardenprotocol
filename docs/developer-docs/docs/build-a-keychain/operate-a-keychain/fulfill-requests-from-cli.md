@@ -13,7 +13,7 @@ This is a step-by-step guide explaining how to fulfill key and signature request
 
 You'll interact with the node through [node commands](/operate-a-node/node-commands). For generating keys and signing messages, you'll use **CLIChain** – a command-line tool for managing cryptographic keys and operations.
 
-You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testent](/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
+You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 Learn more:
 

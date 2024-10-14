@@ -18,7 +18,12 @@ These commands allow you to do the following:
 
 ## Prerequisites
 
-To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`, as shown in [Run a local chain](/operate-a-node/run-a-local-chain) and [Join Buenavista](/join-buenavista#1-install).
+To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
+
+You can follow installations instructions in one of these guides (depending on your goal):
+
+- [Run a local chain](/operate-a-node/run-a-local-chain)
+- [Join Buenavista](/join-buenavista#1-install)
 
 ## Execute `wardend` commands
 

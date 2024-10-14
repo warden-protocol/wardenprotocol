@@ -20,6 +20,11 @@ These commands allow you to do the following:
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
 
+You can follow installations instructions in one of these guides (depending on your goal):
+
+- [Run a local chain](/operate-a-node/run-a-local-chain)
+- [Join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista#1-install)
+
 ## Execute `wardend` commands
 
 To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with the node endpoint.

@@ -132,7 +132,7 @@ The following steps show how to register a new Keychain entity on-chain.
    <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-keychain-name' \
+     --name 'my-keychain-name' \
      --from my-key-name \
      --chain-id chiado_10010-1 \
      --node https://rpc.chiado.wardenprotocol.org:443

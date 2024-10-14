@@ -48,7 +48,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    ```
 
    :::tip
-   When interacting with the node, you should add the path to the binary location before `wardend` [commands](/operate-a-node/node-commands).
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands).
    :::
 
 
@@ -79,7 +79,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    ```
    
    :::tip
-   When interacting with the node, you should add the path to the binary location before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
    :::
 
 ## 2. Configure
@@ -156,7 +156,7 @@ Now you can start the node using the following command:
 wardend start
 ```
 
-If needed, add the path to the binary location before the command:
+If needed, add the path to the binary before the command:
 
 ```
 path-to-binary/wardend start

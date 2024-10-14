@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-This guide explains how to run a local chain for development and testing purposes.
+This guide explains how to run a local chain for development and testing purposes. To interact with the chain, you'll use [node commands](/operate-a-node/node-commands).
 
 There are two ways to run a node:
 

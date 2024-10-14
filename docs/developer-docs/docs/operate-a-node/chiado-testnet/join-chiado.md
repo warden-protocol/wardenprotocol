@@ -48,22 +48,45 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.1) and unzip it. The archive contains the `wardend` binary.
 
-2. Initialize the chain home folder:
+2. Navigate to the directory containing the binary. Install the binary to your GOPATH and initialize the chain home directory:
   
    ```bash
    ./wardend init my-chain-moniker
    ```
 
+   :::tip
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands).
+   :::
+
 ### Option 2: Use the source code
 
-Build the `wardend` binary and initialize the chain home folder:
+1. Clone the repository and navigate to the root directory:
 
-```bash
-git clone --depth 1 --branch v0.5.1 https://github.com/warden-protocol/wardenprotocol
-just build
+   ```bash
+   git clone --depth 1 --branch v0.5.1 https://github.com/warden-protocol/wardenprotocol
+   cd wardenprotocol
+   ```
 
-build/wardend init my-chain-moniker
-```
+   The binary is located in `/wardenprotocol/build`.
+
+2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the chain home directory.
+
+   ```bash
+   just wardend build
+   just wardend install
+   wardend init my-chain-moniker
+   ```
+
+   Alternatively, you can skip installation to `$GOPATH/bin`:
+
+   ```bash
+   just wardend build
+   build/wardend init my-chain-moniker
+   ```
+
+   :::tip
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
+   :::
 
 ## 2. Configure
 
@@ -137,6 +160,12 @@ Now you can start the node using the following command:
 
 ```bash
 wardend start
+```
+
+If needed, add the path to the binary before the command:
+
+```
+path-to-binary/wardend start
 ```
 
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.

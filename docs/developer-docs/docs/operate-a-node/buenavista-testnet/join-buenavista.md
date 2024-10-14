@@ -11,13 +11,8 @@ import PersistentPeers from "@site/src/components/PersistentPeers";
 This tutorial explains how to run the Warden binary, `wardend`, and join the **Buenavista testnet**:
 
 - The chain ID in queries: `buenavista-1`
-- Denomination: `uward` / 0.000001 WARD
 - Endpoints: [networks repository > buenavista](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista)
 - The current `wardend` version: **v0.4.2**
-
-:::warning
-We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
-:::
 
 ## Version history
 
@@ -46,22 +41,46 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.2) and unzip it. The archive contains the `wardend` binary.
 
-2. Initialize the chain home folder:
+2. Navigate to the directory containing the binary. Install the binary to your GOPATH and initialize the chain home directory:
   
    ```bash
    ./wardend init my-chain-moniker
    ```
 
+   :::tip
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands).
+   :::
+
+
 ### Option 2: Use the source code
 
-Build the `wardend` binary and initialize the chain home folder:
+1. Clone the repository and navigate to the root directory:
 
-```bash
-git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
-just build
+   ```bash
+   git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
+   cd wardenprotocol
+   ```
 
-build/wardend init my-chain-moniker
-```
+   The binary is located in `/wardenprotocol/build`.
+
+2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the chain home directory.
+   
+   ```bash
+   just build
+   just install
+   wardend init my-chain-moniker
+   ```
+   
+   Alternatively, you can skip installation to `$GOPATH/bin`:
+   
+   ```bash
+   just build
+   build/wardend init my-chain-moniker
+   ```
+   
+   :::tip
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
+   :::
 
 ## 2. Configure
 
@@ -102,7 +121,7 @@ https://rpc.buenavista.wardenprotocol.org
 1. From this RPC endpoint, you can get the trusted block height and hash:
 
    ```bash
-   export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443"
+   export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
    export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
    export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
@@ -119,7 +138,7 @@ https://rpc.buenavista.wardenprotocol.org
    ```
    70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
-   
+
 3. Add the state sync configuration to your `config.toml`:
 
    ```bash
@@ -135,6 +154,12 @@ Now you can start the node using the following command:
 
 ```bash
 wardend start
+```
+
+If needed, add the path to the binary before the command:
+
+```
+path-to-binary/wardend start
 ```
 
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.

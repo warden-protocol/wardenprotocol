@@ -81,7 +81,7 @@ Here are some of the available `wardend query warden` subcommands with examples:
 - `spaces`: This command returns a list of your [Spaces](/learn/glossary#space).
    
    ```bash
-   wardend query warden spaces\
+   wardend query warden spaces \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 

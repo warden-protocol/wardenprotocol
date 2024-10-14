@@ -263,8 +263,7 @@ To add a Keychain Writer, take these steps:
    <Tabs>
    <TabItem value="local-default" label="Local node: default settings">
    ```bash
-   wardend tx warden add-keychain-writer \
-     --from shulgin --keychain-id 1 \
+   wardend tx warden add-keychain-writer --from shulgin --keychain-id 1 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id warden_1337-1
    ```

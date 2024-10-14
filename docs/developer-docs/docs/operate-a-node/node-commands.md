@@ -23,7 +23,7 @@ To interact with the node, you need to install the [Warden binary](https://githu
 You can follow installations instructions in one of these guides (depending on your goal):
 
 - [Run a local chain](/operate-a-node/run-a-local-chain)
-- [Join Buenavista](/join-buenavista#1-install)
+- [Join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista#1-install)
 
 ## Execute `wardend` commands
 

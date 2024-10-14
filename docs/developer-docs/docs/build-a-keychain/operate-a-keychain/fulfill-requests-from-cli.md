@@ -328,7 +328,7 @@ When a user requests a signature, the Keychain signs a message with the private 
    </TabItem>
    <TabItem value="buenavista" label="Buenavista">
    ```bash
-   wwardend query warden sign-request-by-id --id=$SIGN_REQUEST_ID --node $RPC_URL
+   wardend query warden sign-request-by-id --id=$SIGN_REQUEST_ID --node $RPC_URL
    ```
    </TabItem>
    </Tabs>

@@ -112,11 +112,14 @@ https://rpc.buenavista.wardenprotocol.org
 
    ```bash
    echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-
-   # output should be similar to:
-   # 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
 
+   The output should be similar to this:
+
+   ```
+   70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
+   ```
+   
 3. Add the state sync configuration to your `config.toml`:
 
    ```bash

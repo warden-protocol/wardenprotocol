@@ -13,7 +13,11 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 - The chain ID in queries: `chiado_10010-1`
 - Denomination: `award` / 0.000000000000000001 WARD
 - Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
-- The current `wardend` version: **v0.5.0**
+- The current `wardend` version: **v0.5.1**
+
+:::warning
+We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+:::
 
 :::tip
 Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
@@ -27,24 +31,25 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 
 ## Prerequisites
 
-- We recommend running public testnet nodes on machines with the following characteristics:
+Before you start, complete the following prerequisites:
 
+- We recommend running public testnet nodes on machines with the following characteristics:
   - at least 8 cores
   - 32GB of RAM
   - 300GB of disk space
-
-- You also need to [install Go](https://golang.org/doc/install) 1.22.3 or later.
+- [Install Go](https://golang.org/doc/install) 1.22.3 or later.
+- If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.
 
 ## 1. Install
 
-To join Chiado, install `wardend` (the Warden binary) using the script below. There are two ways to do it:
+To be able to interact with the node, install `wardend` (the Warden binary) using the script below. There are two ways to do it:
 
 ### Option 1: Use the prebuilt binary
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.1) and unzip it. The archive contains the `wardend` binary.
 
 2. Initialize the chain home folder:
-
+  
    ```bash
    ./wardend init my-chain-moniker
    ```
@@ -55,7 +60,7 @@ Build the `wardend` binary and initialize the chain home folder:
 
 ```bash
 git clone --depth 1 --branch v0.5.1 https://github.com/warden-protocol/wardenprotocol
-just wardend build
+just build
 
 build/wardend init my-chain-moniker
 ```
@@ -91,35 +96,49 @@ This step is recommended but optional.
 To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and after that only download the blocks from the network.
 
 You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/chiado/chain.json) – for example, the following:
+
 ```bash
 https://rpc.chiado.wardenprotocol.org
 ```
+
 1. From this RPC endpoint, you can get the trusted block height and hash:
+
    ```bash
    export SNAP_RPC_SERVERS="https://rpc.chiado.wardenprotocol.org:443,https://rpc.chiado.wardenprotocol.org:443"
    export LATEST_HEIGHT=$(curl -s "https://rpc.chiado.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
    export TRUST_HASH=$(curl -s "https://rpc.chiado.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
    ```
+
 2. Check that all variables have been set correctly:
+
    ```bash
    echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-   # output should be similar to:
-   # 70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
+
+   The output should be similar to this:
+
+   ```
+   70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
+   ```
+
 3. Add the state sync configuration to your `config.toml`:
+
    ```bash
    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
    ```
+
 ## 4. Start the node
+
 Now you can start the node using the following command:
 
 ```bash
 wardend start
 ```
+
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
 
 ## Next steps

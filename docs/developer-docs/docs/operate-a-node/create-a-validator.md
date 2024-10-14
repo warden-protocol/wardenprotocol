@@ -22,6 +22,10 @@ The first step is creating a new key pair for your validator. Replace `my-key-na
 wardend keys add my-key-name
 ```
 
+:::warning
+After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
+:::
+
 Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following: 
 
 ```bash
@@ -31,22 +35,14 @@ wardend keys add my-key-name --recover
 Then get your public address:
 
 ```bash
-wardend keys show my-key-name -a
+wardend keys show my-key-name -address
 ```
-
-**✏️ CAUTION**
-
-After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
 
 ## 2. Get testnet WARD
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet tokens from our **WARD faucet**:
-
-```bash
-curl -XPOST -d '{"address": "my-address"}' https://faucet.chiado.wardenprotocol.org
-```
+You can obtain testnet **WARD** in [Chiado faucet](https://faucet.buenavista.wardenprotocol.org).
 
 To verify your balance, use this command:
 
@@ -92,6 +88,10 @@ To create a validator and initialize it with a self-delegation, you need to crea
 
    Here you have the chance to set your validator’s commission rate, maximum rate, and maximum change rate. You can also make the initial self-delegation (`amount`). Remember to replace the `pubkey` field with your own key obtained in the previous step.
 
+   :::warning
+   When you specify commission parameters, the `commission-max-change-rate` is measured as a percentage point change of the `commission-rate`. For example, a change from 1% to 2% is a 100% rate increase, but the `commission-max-change-rate` is measured as 1%.
+   :::
+
 3. Finally, you're ready to submit the transaction to create the validator:
     
    ```bash
@@ -100,12 +100,9 @@ To create a validator and initialize it with a self-delegation, you need to crea
        --chain-id=chiado_10010-1 \
        --fees=500000000000000award
    ```
-    
-**✏️ CAUTION**
-
-When you specify commission parameters, the commission-max-change-rate is measured as a percentage point change of the commission-rate. For example a change from 1% to 2% is a 100% rate increase, but the commission-max-change-rate is measured as 1%.
-
-The above transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`
+   :::tip
+   This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`
+   :::
 
 
 ## 3. Backup critical files

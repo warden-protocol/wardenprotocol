@@ -29,17 +29,18 @@ We're transitioning from Buenavista to our new and improved testnet, [Chiado](..
 
 ## Prerequisites
 
-- We recommend running public testnet nodes on machines with the following characteristics:
+Before you start, complete the following prerequisites:
 
+- We recommend running public testnet nodes on machines with the following characteristics:
   - at least 8 cores
   - 32GB of RAM
   - 300GB of disk space
-
-- You also need to [install Go](https://golang.org/doc/install) 1.22.3 or later.
+- [Install Go](https://golang.org/doc/install) 1.22.3 or later.
+- If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.
 
 ## 1. Install
 
-To join Buenavista, install `wardend` (the Warden binary) using the script below. There are two ways to do it:
+To be able to interact with the node, install `wardend` (the Warden binary) using the script below. There are two ways to do it:
 
 ### Option 1: Use the prebuilt binary
 

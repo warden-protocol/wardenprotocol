@@ -654,7 +654,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    After you enter the passphrase, the node will return the account address and a mnemonic phrase. Note them down: you'll need this data for recovering your account if necessary.
    :::
 
-5. Get some [WARD](/tokens/ward-token/ward) in the [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org): paste the address returned in the previous step.
+5. Get some [WARD](/tokens/ward-token/ward) in [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org): paste the address returned in the previous step.
 
    You can verify that your account is funded by running the command below. Specify the custom key name you chose before.
 
@@ -705,7 +705,6 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    
    ```bash
    wardend query wasm list-contract-by-code 1 \
-    --chain-id buenavista-1 \
     --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    

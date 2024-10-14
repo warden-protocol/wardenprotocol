@@ -159,12 +159,7 @@ The following steps show how to register a new Keychain entity on-chain.
 3. Every Keychain is created with a **Keychain ID** that identifies it in key and signature requests and collects fees from users. You'll need this ID to operate your Keychain. Run the following command and check the `id` field in the output:
 
    <Tabs>
-   <TabItem value="local-default" label="Local node: default settings">
-   ```bash
-   wardend query warden keychains
-   ```
-   </TabItem>
-   <TabItem value="local-custom" label="Local node: custom settings">
+   <TabItem value="local-default" label="Local node">
    ```bash
    wardend query warden keychains
    ```

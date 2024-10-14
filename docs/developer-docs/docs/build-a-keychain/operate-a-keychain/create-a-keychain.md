@@ -102,8 +102,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 5. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Buenavista. 
    
    ```
-   wardend query bank balances my-key-name \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 ## 2. Register a Keychain
@@ -166,8 +165,7 @@ The following steps show how to register a new Keychain entity on-chain.
    </TabItem>
    <TabItem value="buenavista" label="Buenavista">
    ```bash
-   wardend query warden keychains \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query warden keychains --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -251,8 +249,7 @@ To add a Keychain Writer, take these steps:
    </TabItem>
    <TabItem value="buenavista" label="Buenavista">
    ```bash
-   wardend query bank balances my-keychain-writer-name \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-keychain-writer-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>   
@@ -275,18 +272,15 @@ To add a Keychain Writer, take these steps:
    <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
    wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 1 --writer \
-     $(wardend keys show --address my-keychain-writer-name) \
+     --keychain-id 1 --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id chain_123-1
    ```
    </TabItem>
    <TabItem value="buenavista" label="Buenavista">
    ```bash
    wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 2 --writer \
-     $(wardend keys show --address my-keychain-writer-name) \
-     --chain-id buenavista-1 \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+     --keychain-id 2 --writer $(wardend keys show --address my-keychain-writer-name) \
+     --chain-id buenavista-1 --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -301,8 +295,7 @@ To add a Keychain Writer, take these steps:
    </TabItem>
    <TabItem value="buenavista" label="Buenavista">
    ```bash
-   wardend query warden keychains \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query warden keychains --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>   

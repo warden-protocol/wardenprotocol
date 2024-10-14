@@ -270,8 +270,8 @@ To add a Keychain Writer, take these steps:
    </TabItem>
    <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
-   wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 1 --writer $(wardend keys show --address my-keychain-writer-name) \
+   wardend tx warden add-keychain-writer --from my-key-name --keychain-id 1 \
+     --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id chain_123-1
    ```
    </TabItem>

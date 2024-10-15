@@ -82,6 +82,12 @@ struct Space {
     uint64 RejectSignTemplateId;
 }
 
+enum KeyType {
+    Unspecified,
+    EcdsaSec256k1,
+    EddsaEd25519
+}
+
 /**
  * @author Warden Team
  * @title x/warden Interface
@@ -199,13 +205,126 @@ interface IWarden {
         string calldata keybaseId
     ) external returns (bool success);
 
+    /// @dev Defines a method to add a space owner.
+    /// @param space Id The space id
+    /// @param newOwner The new owner
+    /// @param nonce The nonce
+    /// @param actionTimeoutHeight The block height up until this action can be executed
+    /// @param expectedApproveExpression The definition of expected approval expression the action is created with
+    /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @return success If execution was successful
     function addSpaceOwner(
-        uint64 keychainId,
-        string calldata name,
-        KeychainFees calldata keychainFees,
-        string calldata description,
-        string calldata url,
-        string calldata keybaseId
+        uint64 spaceId,
+        address newOwner,
+        uint64 nonce,
+        uint64 actionTimeoutHeight,
+        string calldata expectedApproveExpression,
+        string calldata expectedRejectExpression
+    ) external returns (bool success);
+
+    /// @dev Defines a method to remove a space owner.
+    /// @param space Id The space id
+    /// @param owner The owner
+    /// @param nonce The nonce
+    /// @param actionTimeoutHeight The block height up until this action can be executed
+    /// @param expectedApproveExpression The definition of expected approval expression the action is created with
+    /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @return success If execution was successful
+    function removeSpaceOwner(
+        uint64 spaceId,
+        address owner,
+        uint64 nonce,
+        uint64 actionTimeoutHeight,
+        string calldata expectedApproveExpression,
+        string calldata expectedRejectExpression
+    ) external returns (bool success);
+
+    /// @dev Defines a method to create a new key request.
+	/// @param spaceId The space id
+	/// @param keychainId The keychain id
+	/// @param keyType The key type
+	/// @param approveTemplateId The approve template id
+	/// @param rejectTemplateId The reject template id
+	/// @param maxKeychainFees The max keychain fees
+	/// @param nonce The nonce
+    /// @param actionTimeoutHeight The block height up until this action can be executed
+    /// @param expectedApproveExpression The definition of expected approval expression the action is created with
+    /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @return success If execution was successful
+    function newKeyRequest(
+	    uint64 spaceId,
+	    uint64 keychainId,
+	    KeyType keyType,
+	    uint64 approveTemplateId,
+	    uint64 rejectTemplateId,
+	    Types.Coin[] calldata maxKeychainFees,
+	    uint64 nonce,
+	    uint64 actionTimeoutHeight,
+	    string calldata expectedApproveExpression,
+	    string calldata expectedRejectExpression
+    ) external returns (bool success);
+
+    /// @dev Defines a method to create a new signature request.
+	/// @param keyId The key id
+    /// @param input The input
+    /// @param analyzers The analyzers
+    /// @param encryptionKey The encryption key
+	/// @param maxKeychainFees The max keychain fees
+	/// @param nonce The nonce
+    /// @param actionTimeoutHeight The block height up until this action can be executed
+    /// @param expectedApproveExpression The definition of expected approval expression the action is created with
+    /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @return success If execution was successful
+    function newSignRequest(
+	    uint64 keyId,
+        bytes calldata input,
+        address[] calldata analyzers,
+        bytes calldata encryptionKey,
+	    Types.Coin[] calldata maxKeychainFees,
+	    uint64 nonce,
+	    uint64 actionTimeoutHeight,
+	    string calldata expectedApproveExpression,
+	    string calldata expectedRejectExpression
+    ) external returns (bool success);
+
+    /// @dev Defines a method to update a key.
+	/// @param keyId The key id
+    /// @param approveTemplateId The approve template id
+    /// @param rejectTemplateId The reject template id
+    /// @param actionTimeoutHeight The block height up until this action can be executed
+    /// @param expectedApproveExpression The definition of expected approval expression the action is created with
+    /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @return success If execution was successful
+    function updateKey(
+	    uint64 keyId,
+	    uint64 approveTemplateId,
+	    uint64 rejectTemplateId,
+	    uint64 actionTimeoutHeight,
+	    string calldata expectedApproveExpression,
+	    string calldata expectedRejectExpression
+    ) external returns (bool success);
+
+    /// @dev Defines a method to update a space.
+	/// @param spaceId The space id
+	/// @param nonce The nonce
+    /// @param approveAdminTemplateId The template id of approve admin action
+    /// @param rejectAdminTemplateId The template id of reject admin action
+    /// @param approveSignTemplateId The template id of approve sign action
+    /// @param rejectSignTemplateId The template id of reject sign action
+    /// @param actionTimeoutHeight The block height up until this action can be executed
+    /// @param expectedApproveExpression The definition of expected approval expression the action is created with
+    /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @return success If execution was successful
+    function updateSpace(
+	    uint64 spaceId,
+	    uint64 nonce,
+	    uint64 approveAdminTemplateId,
+	    uint64 rejectAdminTemplateId,
+	    uint64 approveSignTemplateId,
+	    uint64 rejectSignTemplateId,
+	    uint64 actionTimeoutHeight,
+	    string calldata expectedApproveExpression,
+	    string calldata expectedRejectExpression
     ) external returns (bool success);
 
     function allKeys(
@@ -324,4 +443,44 @@ interface IWarden {
     /// @param id The keychain id
     /// @param creator The creator address
     event UpdateKeychain(uint64 id, address indexed creator);
+
+    /// @dev AddSpaceOwner defines an Event emitted when a new space owner is added.
+    /// @param spaceId The space id
+    /// @param newOwner The new owner address
+    event AddSpaceOwner(uint64 spaceId, address indexed newOwner);
+
+    /// @dev RemoveSpaceOwner defines an Event emitted when a space owner is removed.
+    /// @param spaceId The space id
+    /// @param removedOwner The new owner address
+    event RemoveSpaceOwner(uint64 spaceId, address indexed removedOwner);
+
+    /// @dev NewKeyRequest defines an Event emitted when a new key request is created.
+    /// @param id The id of the created key request
+    /// @param spaceId The space id
+    /// @param keychainId The keychain id
+    /// @param approveTemplateId The approve template id
+    /// @param rejectTemplateId The reject template id
+    /// @param keyType The key type
+    /// @param creator The creator address
+    event NewKeyRequest(uint64 id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, KeyType keyType, address indexed creator);
+
+    /// @dev NewSignRequest defines an Event emitted when a new signature request is created.
+    /// @param id The id of the signature request
+    /// @param keyId The id of the Key to be used for signing
+    /// @param creator The creator address
+    event NewSignRequest(uint64 id, uint64 keyId, address indexed creator);
+
+    /// @dev UpdateKey defines an Event emitted when a key is updated.
+    /// @param id The id of the key
+    /// @param approveTemplateId The approve template id
+    /// @param rejectTemplateId The reject template id
+    event UpdateKey(uint64 id, uint64 approveTemplateId, uint64 rejectTemplateId);
+
+    /// @dev UpdateSpace defines an Event emitted when a space is updated.
+    /// @param spaceId The id of the space being updated
+    /// @param approveAdminTemplateId The id of the template to be applied to every approve admin operation
+    /// @param rejectAdminTemplateId The id of the template to be applied to every reject admin operation
+    /// @param approveSignTemplateId The id of the template to be applied to every approve sign operation
+    /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
+    event UpdateSpace(uint64 id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }

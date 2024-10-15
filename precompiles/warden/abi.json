@@ -56,6 +56,25 @@
         {
           "indexed": false,
           "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "AddSpaceOwner",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
           "name": "id",
           "type": "uint64"
         }
@@ -116,6 +135,55 @@
           "type": "uint64"
         },
         {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "keychainId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "approveTemplateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "rejectTemplateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum KeyType",
+          "name": "keyType",
+          "type": "uint8"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "NewKeyRequest",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "id",
+          "type": "uint64"
+        },
+        {
           "indexed": true,
           "internalType": "address",
           "name": "creator",
@@ -123,6 +191,31 @@
         }
       ],
       "name": "NewKeychain",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "keyId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "NewSignRequest",
       "type": "event"
     },
     {
@@ -231,6 +324,50 @@
         {
           "indexed": false,
           "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "removedOwner",
+          "type": "address"
+        }
+      ],
+      "name": "RemoveSpaceOwner",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "approveTemplateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "rejectTemplateId",
+          "type": "uint64"
+        }
+      ],
+      "name": "UpdateKey",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
           "name": "id",
           "type": "uint64"
         },
@@ -242,6 +379,43 @@
         }
       ],
       "name": "UpdateKeychain",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "approveAdminTemplateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "rejectAdminTemplateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "approveSignTemplateId",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "rejectSignTemplateId",
+          "type": "uint64"
+        }
+      ],
+      "name": "UpdateSpace",
       "type": "event"
     },
     {
@@ -282,6 +456,50 @@
         }
       ],
       "name": "addKeychainWriter",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint64",
+          "name": "nonce",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "actionTimeoutHeight",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedApproveExpression",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedRejectExpression",
+          "type": "string"
+        }
+      ],
+      "name": "addSpaceOwner",
       "outputs": [
         {
           "internalType": "bool",
@@ -1164,6 +1382,82 @@
     {
       "inputs": [
         {
+          "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "keychainId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "enum KeyType",
+          "name": "keyType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint64",
+          "name": "approveTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "rejectTemplateId",
+          "type": "uint64"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "denom",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Coin[]",
+          "name": "maxKeychainFees",
+          "type": "tuple[]"
+        },
+        {
+          "internalType": "uint64",
+          "name": "nonce",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "actionTimeoutHeight",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedApproveExpression",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedRejectExpression",
+          "type": "string"
+        }
+      ],
+      "name": "newKeyRequest",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "string",
           "name": "name",
           "type": "string"
@@ -1231,6 +1525,77 @@
           "internalType": "uint64",
           "name": "id",
           "type": "uint64"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "keyId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
+          "internalType": "address[]",
+          "name": "analyzers",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "encryptionKey",
+          "type": "bytes"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "denom",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Coin[]",
+          "name": "maxKeychainFees",
+          "type": "tuple[]"
+        },
+        {
+          "internalType": "uint64",
+          "name": "nonce",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "actionTimeoutHeight",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedApproveExpression",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedRejectExpression",
+          "type": "string"
+        }
+      ],
+      "name": "newSignRequest",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
         }
       ],
       "stateMutability": "nonpayable",
@@ -1337,6 +1702,50 @@
         }
       ],
       "name": "removeKeychainAdmin",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint64",
+          "name": "nonce",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "actionTimeoutHeight",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedApproveExpression",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedRejectExpression",
+          "type": "string"
+        }
+      ],
+      "name": "removeSpaceOwner",
       "outputs": [
         {
           "internalType": "bool",
@@ -1827,6 +2236,50 @@
       "inputs": [
         {
           "internalType": "uint64",
+          "name": "keyId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "approveTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "rejectTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "actionTimeoutHeight",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedApproveExpression",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedRejectExpression",
+          "type": "string"
+        }
+      ],
+      "name": "updateKey",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
           "name": "keychainId",
           "type": "uint64"
         },
@@ -1893,6 +2346,65 @@
         }
       ],
       "name": "updateKeychain",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "spaceId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "nonce",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "approveAdminTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "rejectAdminTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "approveSignTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "rejectSignTemplateId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "actionTimeoutHeight",
+          "type": "uint64"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedApproveExpression",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "expectedRejectExpression",
+          "type": "string"
+        }
+      ],
+      "name": "updateSpace",
       "outputs": [
         {
           "internalType": "bool",

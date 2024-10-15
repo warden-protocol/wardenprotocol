@@ -477,7 +477,7 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Addr
 	return &log, nil
 }
 
-func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, newOwner *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, newOwner *common.Address, addSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventAddSpaceOwner]
 
 	topics := make([]common.Hash, 2)
@@ -489,11 +489,8 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, newOwner *common.Addr
 		return nil, err
 	}
 
-	sdkEvents := ctx.EventManager().Events()
-	events := sdkEvents[len(sdkEvents)-1]
-
 	var b bytes.Buffer
-	for _, attr := range events.Attributes {
+	for _, attr := range addSpaceOwnerEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 
@@ -517,7 +514,7 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, newOwner *common.Addr
 	return &log, nil
 }
 
-func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *common.Address, removeSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventRemoveSpaceOwner]
 
 	topics := make([]common.Hash, 2)
@@ -529,11 +526,8 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 		return nil, err
 	}
 
-	sdkEvents := ctx.EventManager().Events()
-	events := sdkEvents[len(sdkEvents)-1]
-
 	var b bytes.Buffer
-	for _, attr := range events.Attributes {
+	for _, attr := range removeSpaceOwnerEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 
@@ -557,7 +551,7 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 	return &log, nil
 }
 
-func (p Precompile) GetNewKeyRequest(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, creator *common.Address, newKeyRequestEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventNewKeyRequest]
 
 	topics := make([]common.Hash, 2)
@@ -569,11 +563,8 @@ func (p Precompile) GetNewKeyRequest(ctx sdk.Context, creator *common.Address, _
 		return nil, err
 	}
 
-	sdkEvents := ctx.EventManager().Events()
-	events := sdkEvents[len(sdkEvents)-1]
-
 	var b bytes.Buffer
-	for _, attr := range events.Attributes {
+	for _, attr := range newKeyRequestEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 
@@ -627,7 +618,7 @@ func (p Precompile) GetNewKeyRequest(ctx sdk.Context, creator *common.Address, _
 	return &log, nil
 }
 
-func (p Precompile) GetNewSignRequest(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, creator *common.Address, newSignRequestEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventNewSignRequest]
 
 	topics := make([]common.Hash, 2)
@@ -639,11 +630,8 @@ func (p Precompile) GetNewSignRequest(ctx sdk.Context, creator *common.Address, 
 		return nil, err
 	}
 
-	sdkEvents := ctx.EventManager().Events()
-	events := sdkEvents[len(sdkEvents)-1]
-
 	var b bytes.Buffer
-	for _, attr := range events.Attributes {
+	for _, attr := range newSignRequestEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 
@@ -673,17 +661,14 @@ func (p Precompile) GetNewSignRequest(ctx sdk.Context, creator *common.Address, 
 	return &log, nil
 }
 
-func (p Precompile) GetUpdateKey(ctx sdk.Context, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, updateKeyEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventUpdateKey]
 
 	topics := make([]common.Hash, 1)
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	events := sdkEvents[len(sdkEvents)-1]
-
 	var b bytes.Buffer
-	for _, attr := range events.Attributes {
+	for _, attr := range updateKeyEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 
@@ -719,17 +704,14 @@ func (p Precompile) GetUpdateKey(ctx sdk.Context, _ sdk.Msg) (*ethtypes.Log, err
 	return &log, nil
 }
 
-func (p Precompile) GetUpdateSpace(ctx sdk.Context, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, updateSpaceEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventUpdateSpace]
 
 	topics := make([]common.Hash, 1)
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	events := sdkEvents[len(sdkEvents)-1]
-
 	var b bytes.Buffer
-	for _, attr := range events.Attributes {
+	for _, attr := range updateSpaceEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 

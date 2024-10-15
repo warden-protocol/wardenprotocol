@@ -43,13 +43,12 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 	er.RegisterEvent("warden.warden.v1beta3.EventCreateSpace", wardenprecompile.GetNewSpaceEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventRemoveKeychainAdmin", wardenprecompile.GetRemoveKeychainAdminEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventUpdateKeychain", wardenprecompile.GetUpdateKeychainEvent)
-
-	// er.RegisterEvent("warden.warden.v1beta3.EventAddSpaceOwner", wardenprecompile.GetAddSpaceOwnerEvent)
-	// er.RegisterEvent("warden.warden.v1beta3.EventRemoveSpaceOwner", wardenprecompile.GetRemoveSpaceOwnerEvent)
-	// er.RegisterEvent("warden.warden.v1beta3.EventNewKeyRequest", wardenprecompile.GetNewKeyRequestEvent)
-	// er.RegisterEvent("warden.warden.v1beta3.EventNewSignRequest", wardenprecompile.GetNewSignRequestEvent)
-	// er.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", wardenprecompile.GetUpdateKeyEvent)
-	// er.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", wardenprecompile.GetUpdateSpaceEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventAddSpaceOwner", wardenprecompile.GetAddSpaceOwnerEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventRemoveSpaceOwner", wardenprecompile.GetRemoveSpaceOwnerEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventNewKeyRequest", wardenprecompile.GetNewKeyRequestEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventNewSignRequest", wardenprecompile.GetNewSignRequestEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", wardenprecompile.GetUpdateKeyEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", wardenprecompile.GetUpdateSpaceEvent)
 
 	return precompiles, nil
 }

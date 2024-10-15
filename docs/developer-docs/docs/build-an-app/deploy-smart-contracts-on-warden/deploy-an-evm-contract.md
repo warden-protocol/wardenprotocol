@@ -26,16 +26,32 @@ Before you start, complete the following prerequisites:
   npm install -g truffle
   ```
 
-- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
-
-  In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
+- Install HDWalletProvider:
 
   ```bash
-  wardend keys export my-key-name --unarmored-hex --unsafe
+  npm install @truffle/hdwallet-provider
   ```
-  :::tip
-  If you used our `just` script to run the node with default settings, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
-  :::
+- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
+
+  - In [Step 3](#3-configure-truffle), you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
+
+    ```bash
+    wardend keys export my-key-name --unarmored-hex --unsafe
+    ```
+
+    :::tip
+    You can check the names of available keys by running `wardend keys list`. If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
+    :::
+
+  - You'll also need your chain ID. Run the following and note down the value from the `network` field:
+
+    ```
+    wardend status
+    ```
+
+    :::tip
+    If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
+    :::
 
 ## 1. Create an EVM project
 
@@ -58,7 +74,7 @@ In the `/warden-smart-contract/contracts` directory, create a new file `HelloWar
 
 ```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 contract HelloWarden {
     string public message;
@@ -79,42 +95,44 @@ contract HelloWarden {
 
 ## 3. Configure Truffle
 
-1. Install HDWalletProvider:
+In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
 
-    ```bash
-    npm install @truffle/hdwallet-provider
-    ```
+Make adjustments in the code using your chain settings from [Prerequisites](#prerequisites):
 
-2. In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
+1. Replace `your_private_key` with your actual private key.
+2. In `network_id`, specify the first number from your chain ID. For example, if your chain ID is `warden_1337-1` or `chain_123-1`, specify `1337` or `123` respectively. Alternatively, you can just use `"*"` to match any chain ID.
+3. If needed, adjust the gas limit and price – `gas` and `gasPrice`.
 
-   Replace `your_private_key` with your actual private key (see [Prerequisites](#prerequisites)).
+```javascript
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-   ```javascript
-   const HDWalletProvider = require('@truffle/hdwallet-provider');
+// Your private key (keep this secret and never commit it to version control!)
+const PRIVATE_KEY = "your_private_key";
 
-   // Your private key (keep this secret and never commit it to version control!)
-   const PRIVATE_KEY = 'your_private_key';
-
-   module.exports = {
-   networks: {
-       warden: {
-       provider: function() {
-           return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
-       },
-       network_id: 1337, // Match any network id
-       host: "127.0.0.1",
-       port: 8545,
-       gas: 5500000,
-       gasPrice: 20000000000,  // 20 gwei
-       },
-   },
-   compilers: {
-       solc: {
-       version: "0.8.0",
-       }
-   }
-   };
+module.exports = {
+  networks: {
+    warden: {
+      provider: function() {
+        return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
+      },
+      network_id: 123, // The first number from your chain ID
+      host: "127.0.0.1",
+      port: 8545,
+      gas: 5500000,
+      gasPrice: 20000000000 // award
+    },
+  },
+  compilers: {
+    solc: {
+    version: "0.8.20",
+    }
+  }
+};
    ```
+
+:::note
+The `host` and `port` values are the standard localhost address and the RPC port of the node. `HDWalletProvider` uses the same URL to connect to the node. If you're running your node on the same machine where you're deploying the contract, you don't need to change these settings. Otherwise, run `wardend status` to check the host address and adjust the configuration accordingly. 
+:::
 
 ## 4. Create a migration script
 
@@ -144,7 +162,7 @@ Compiling your contracts...
 > Compiling ./contracts/HelloWarden.sol
 > Artifacts written to /build/contracts
 > Compiled successfully using:
-   - solc: 0.8.0+commit.c7dfd78e.Emscripten.clang
+   - solc: 0.8.20+commit.c7dfd78e.Emscripten.clang
 ```
 
 ## 6. Deploy the contract
@@ -196,6 +214,10 @@ Summary
 > Total deployments:   1
 > Final cost:          0.055 ETH
 ```
+
+:::note
+Truffle displays the local account balance and prices in ETH and gwei. However, this contract actually utilizes Warden's currency – WARD, denominated in award.
+:::
 
 ## 7. Interact with the contract
 

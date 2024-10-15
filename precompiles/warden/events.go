@@ -11,7 +11,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -38,7 +37,7 @@ const (
 	EventUpdateKeychain = "UpdateKeychain"
 )
 
-func (p Precompile) EmitAddKeychainAdminEvent(ctx sdk.Context, stateDB vm.StateDB, adminAddress common.Address) error {
+func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainAdmin]
 
@@ -56,35 +55,35 @@ func (p Precompile) EmitAddKeychainAdminEvent(ctx sdk.Context, stateDB vm.StateD
 		case "id":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("AddKeychainAdminEvent: invalid keychain id type")
+				return nil, fmt.Errorf("AddKeychainAdminEvent: invalid keychain id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		case "admins_count":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("AddKeychainAdminEvent: invalid admins count type")
+				return nil, fmt.Errorf("AddKeychainAdminEvent: invalid admins count type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		}
 	}
 
 	var err error
-	topics[1], err = cmn.MakeTopic(adminAddress)
+	topics[1], err = cmn.MakeTopic(*adminAddress)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitAddKeychainWriterEvent(ctx sdk.Context, stateDB vm.StateDB, writerAddres common.Address) error {
+func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainWriter]
 
@@ -102,35 +101,35 @@ func (p Precompile) EmitAddKeychainWriterEvent(ctx sdk.Context, stateDB vm.State
 		case "id":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("AddKeychainWriterEvent: invalid keychain id type")
+				return nil, fmt.Errorf("AddKeychainWriterEvent: invalid keychain id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		case "writers_count":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("AddKeychainWriterEvent: invalid writers count type")
+				return nil, fmt.Errorf("AddKeychainWriterEvent: invalid writers count type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		}
 	}
 
 	var err error
-	topics[1], err = cmn.MakeTopic(writerAddres)
+	topics[1], err = cmn.MakeTopic(*writerAddres)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitNewKeyEvent(ctx sdk.Context, stateDB vm.StateDB) error {
+func (p Precompile) GetNewKeyEvent(ctx sdk.Context) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeNewKey]
 
@@ -148,7 +147,7 @@ func (p Precompile) EmitNewKeyEvent(ctx sdk.Context, stateDB vm.StateDB) error {
 		case "id":
 			keyId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("NewKeyEvent: invalid key id type")
+				return nil, fmt.Errorf("NewKeyEvent: invalid key id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keyId)))
 		case "key_type":
@@ -157,41 +156,41 @@ func (p Precompile) EmitNewKeyEvent(ctx sdk.Context, stateDB vm.StateDB) error {
 		case "space_id":
 			spaceId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("NewKeyEvent: invalid space id")
+				return nil, fmt.Errorf("NewKeyEvent: invalid space id")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
 		case "keychain_id":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("NewKeyEvent: invalid keychain id")
+				return nil, fmt.Errorf("NewKeyEvent: invalid keychain id")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		case "approve_template_id":
 			approveTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("NewKeyEvent: invalid approve template id")
+				return nil, fmt.Errorf("NewKeyEvent: invalid approve template id")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveTemplateId)))
 		case "reject_template_id":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("NewKeyEvent: invalid reject template id")
+				return nil, fmt.Errorf("NewKeyEvent: invalid reject template id")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitRejectKeyRequestEvent(ctx sdk.Context, stateDB vm.StateDB) error {
+func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectKeyRequest]
 
@@ -209,23 +208,32 @@ func (p Precompile) EmitRejectKeyRequestEvent(ctx sdk.Context, stateDB vm.StateD
 		case "id":
 			requestId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("RejectKeyRequestEvent: invalid request id type")
+				return nil, fmt.Errorf("RejectKeyRequestEvent: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(requestId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitFulfilSignRequestEvent(ctx sdk.Context, stateDB vm.StateDB) error {
+func (p Precompile) GetNewKeyOrRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address, msg sdk.Msg) (*ethtypes.Log, error) {
+	msgFulfilKeyRequest := msg.(*wardentypes.MsgFulfilKeyRequest)
+	if msgFulfilKeyRequest.Status == wardentypes.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
+		return p.GetNewKeyEvent(ctx)
+	} else {
+		return p.GetRejectKeyRequestEvent(ctx)
+	}
+}
+
+func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventFulfilSignRequest]
 
@@ -243,23 +251,23 @@ func (p Precompile) EmitFulfilSignRequestEvent(ctx sdk.Context, stateDB vm.State
 		case "id":
 			requestId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("FulfilSignRequestEvent: invalid request id type")
+				return nil, fmt.Errorf("FulfilSignRequestEvent: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(requestId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitRejectSignRequestEvent(ctx sdk.Context, stateDB vm.StateDB) error {
+func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectSignRequest]
 
@@ -277,23 +285,32 @@ func (p Precompile) EmitRejectSignRequestEvent(ctx sdk.Context, stateDB vm.State
 		case "id":
 			requestId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("RejectSignRequestEvent: invalid request id type")
+				return nil, fmt.Errorf("RejectSignRequestEvent: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(requestId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitNewKeychainEvent(ctx sdk.Context, creator common.Address, stateDB vm.StateDB) error {
+func (p Precompile) GetFulfilOrRejectSignRequestEvent(ctx sdk.Context, _ *common.Address, msg sdk.Msg) (*ethtypes.Log, error) {
+	fulfilSignRequestMsg := msg.(*wardentypes.MsgFulfilSignRequest)
+	if fulfilSignRequestMsg.Status == wardentypes.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
+		return p.GetFulfilSignRequestEvent(ctx)
+	} else {
+		return p.GetRejectSignRequestEvent(ctx)
+	}
+}
+
+func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewKeychain]
@@ -305,7 +322,7 @@ func (p Precompile) EmitNewKeychainEvent(ctx sdk.Context, creator common.Address
 	topics[1], err = cmn.MakeTopic(creator)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var b bytes.Buffer
@@ -318,23 +335,23 @@ func (p Precompile) EmitNewKeychainEvent(ctx sdk.Context, creator common.Address
 		case "id":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewKeychain: invalid request id type")
+				return nil, fmt.Errorf("EventNewKeychain: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitNewSpaceEvent(ctx sdk.Context, creator common.Address, stateDB vm.StateDB) error {
+func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewSpace]
@@ -346,7 +363,7 @@ func (p Precompile) EmitNewSpaceEvent(ctx sdk.Context, creator common.Address, s
 	topics[1], err = cmn.MakeTopic(creator)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var b bytes.Buffer
@@ -359,53 +376,53 @@ func (p Precompile) EmitNewSpaceEvent(ctx sdk.Context, creator common.Address, s
 		case "id":
 			spaceId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewSpace: invalid space id type")
+				return nil, fmt.Errorf("EventNewSpace: invalid space id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
 		case "owners_count":
 			ownersCount, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewSpace: invalid owners count type")
+				return nil, fmt.Errorf("EventNewSpace: invalid owners count type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(ownersCount)))
 		case "approve_admin_template_id":
 			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewSpace: invalid approve_admin_template_id type")
+				return nil, fmt.Errorf("EventNewSpace: invalid approve_admin_template_id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
 		case "reject_admin_template_id":
 			rejectAdminTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewSpace: invalid reject_admin_template_id type")
+				return nil, fmt.Errorf("EventNewSpace: invalid reject_admin_template_id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectAdminTemplateId)))
 		case "approve_sign_template_id":
 			approveSignTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewSpace: invalid approve_sign_template_id type")
+				return nil, fmt.Errorf("EventNewSpace: invalid approve_sign_template_id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveSignTemplateId)))
 		case "reject_sign_template_id":
 			rejectSignTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventNewSpace: invalid reject_sign_template_id type")
+				return nil, fmt.Errorf("EventNewSpace: invalid reject_sign_template_id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectSignTemplateId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitRemoveKeychainAdmin(ctx sdk.Context, admin common.Address, stateDB vm.StateDB) error {
+func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventRemoveKeychainAdmin]
@@ -417,7 +434,7 @@ func (p Precompile) EmitRemoveKeychainAdmin(ctx sdk.Context, admin common.Addres
 	topics[1], err = cmn.MakeTopic(admin)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var b bytes.Buffer
@@ -430,29 +447,29 @@ func (p Precompile) EmitRemoveKeychainAdmin(ctx sdk.Context, admin common.Addres
 		case "id":
 			spaceId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("RemoveKeychainAdmin: invalid keychain id type")
+				return nil, fmt.Errorf("RemoveKeychainAdmin: invalid keychain id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
 		case "admins_count":
 			adminsCount, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("RemoveKeychainAdmin: invalid admins count type")
+				return nil, fmt.Errorf("RemoveKeychainAdmin: invalid admins count type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(adminsCount)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }
 
-func (p Precompile) EmitUpdateKeychainEvent(ctx sdk.Context, creator common.Address, stateDB vm.StateDB) error {
+func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventUpdateKeychain]
 
@@ -470,18 +487,18 @@ func (p Precompile) EmitUpdateKeychainEvent(ctx sdk.Context, creator common.Addr
 		case "id":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return fmt.Errorf("EventUpdateKeychain: invalid request id type")
+				return nil, fmt.Errorf("EventUpdateKeychain: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		}
 	}
 
-	stateDB.AddLog(&ethtypes.Log{
+	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
 		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
-	})
+	}
 
-	return nil
+	return &log, nil
 }

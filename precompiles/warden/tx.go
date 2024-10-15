@@ -2,6 +2,7 @@ package warden
 
 import (
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -60,9 +61,13 @@ func (p Precompile) AddKeychainAdminMethod(
 		return nil, err
 	}
 
-	if err = p.EmitAddKeychainAdminEvent(ctx, stateDB, *newAdmin); err != nil {
+	log, err := p.GetAddKeychainAdminEvent(ctx, newAdmin, nil)
+
+	if err != nil {
 		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -97,9 +102,13 @@ func (p Precompile) AddKeychainWriterMethod(
 		return nil, err
 	}
 
-	if err = p.EmitAddKeychainWriterEvent(ctx, stateDB, *newWriterAddress); err != nil {
+	log, err := p.GetAddKeychainWriterEvent(ctx, newWriterAddress, msgAddKeychainWriter)
+
+	if err != nil {
 		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -136,15 +145,12 @@ func (p Precompile) FulfilKeyRequestMethod(
 		return nil, err
 	}
 
-	if msgFulfilKeyRequest.Status == wardentypes.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
-		if err = p.EmitNewKeyEvent(ctx, stateDB); err != nil {
-			return nil, err
-		}
-	} else {
-		if err = p.EmitRejectKeyRequestEvent(ctx, stateDB); err != nil {
-			return nil, err
-		}
+	log, err := p.GetNewKeyOrRejectKeyRequestEvent(ctx, nil, msgFulfilKeyRequest)
+	if err != nil {
+		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -181,15 +187,13 @@ func (p Precompile) FulfilSignRequestMethod(
 		return nil, err
 	}
 
-	if msgFulfilSignRequest.Status == wardentypes.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
-		if err = p.EmitFulfilSignRequestEvent(ctx, stateDB); err != nil {
-			return nil, err
-		}
-	} else {
-		if err = p.EmitRejectSignRequestEvent(ctx, stateDB); err != nil {
-			return nil, err
-		}
+	log, err := p.GetFulfilOrRejectSignRequestEvent(ctx, nil, msgFulfilSignRequest)
+
+	if err != nil {
+		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -230,9 +234,13 @@ func (p Precompile) NewKeychainMethod(
 	}
 
 	// emit event
-	if err = p.EmitNewKeychainEvent(ctx, origin, stateDB); err != nil {
+	log, err := p.GetNewKeychainEvent(ctx, &origin, msgNewKeychain)
+
+	if err != nil {
 		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(msgNewKeychainResponse.Id)
 }
@@ -273,9 +281,13 @@ func (p Precompile) NewSpaceMethod(
 	}
 
 	// emit event
-	if err = p.EmitNewSpaceEvent(ctx, origin, stateDB); err != nil {
+	log, err := p.GetNewSpaceEvent(ctx, &origin, msgNewSpace)
+
+	if err != nil {
 		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(msgNewSpaceResponse.Id)
 }
@@ -311,9 +323,13 @@ func (p Precompile) RemoveKeychainAdminMethod(
 	}
 
 	// emit event
-	if err = p.EmitRemoveKeychainAdmin(ctx, *admin, stateDB); err != nil {
+	log, err := p.GetRemoveKeychainAdminEvent(ctx, admin, msgRemoveKeychainAdmin)
+
+	if err != nil {
 		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -353,9 +369,13 @@ func (p Precompile) UpdateKeychainMethod(
 	}
 
 	// emit event
-	if err = p.EmitUpdateKeychainEvent(ctx, origin, stateDB); err != nil {
+	log, err := p.GetUpdateKeychainEvent(ctx, &origin, msgUpdateKeychain)
+
+	if err != nil {
 		return nil, err
 	}
+
+	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }

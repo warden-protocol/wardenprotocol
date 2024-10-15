@@ -3,15 +3,15 @@ package act
 import (
 	"bytes"
 	"fmt"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/ethereum/go-ethereum/common"
-	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	cmn "github.com/evmos/evmos/v20/precompiles/common"
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
 	"math/big"
 	"reflect"
 	"strconv"
 	"strings"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	ethcmn "github.com/ethereum/go-ethereum/common"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	cmn "github.com/evmos/evmos/v20/precompiles/common"
 )
 
 const (
@@ -26,11 +26,10 @@ const (
 	EventActionStateChange = "ActionStateChange"
 )
 
-func (p *Precompile) EmitCreateTemplateEvent(ctx sdk.Context, stateDB vm.StateDB, writerAddress common.Address) error {
-	return p.emitEvent(
+func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+	return p.getEthEvent(
 		ctx,
-		stateDB,
-		writerAddress,
+		*writerAddress,
 		EventCreateTemplate,
 		parseNewTemplateEvent)
 }
@@ -56,17 +55,16 @@ func parseNewTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 				return nil, fmt.Errorf("NewTemplateEvent: invalid writers count type")
 			}
 
-			b.Write(cmn.PackNum(reflect.ValueOf(common.Address(address.Bytes()))))
+			b.Write(cmn.PackNum(reflect.ValueOf(ethcmn.Address(address.Bytes()))))
 		}
 	}
 
 	return &b, nil
 }
 
-func (p *Precompile) EmitUpdateTemplateEvent(ctx sdk.Context, stateDB vm.StateDB, writerAddress common.Address) error {
-	return p.emitEvent(
+func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress ethcmn.Address) (*ethtypes.Log, error) {
+	return p.getEthEvent(
 		ctx,
-		stateDB,
 		writerAddress,
 		EventUpdateTemplate,
 		parseUpdateTemplateEvent)
@@ -93,10 +91,9 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) EmitCreateActionEvent(ctx sdk.Context, stateDB vm.StateDB, writerAddress common.Address) error {
-	return p.emitEvent(
+func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress ethcmn.Address) (*ethtypes.Log, error) {
+	return p.getEthEvent(
 		ctx,
-		stateDB,
 		writerAddress,
 		EventCreateAction,
 		parseCreateActionEvent)
@@ -122,18 +119,17 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 				return nil, fmt.Errorf("CreateActionEvent: invalid creator type")
 			}
 
-			b.Write(cmn.PackNum(reflect.ValueOf(common.Address(address.Bytes()))))
+			b.Write(cmn.PackNum(reflect.ValueOf(ethcmn.Address(address.Bytes()))))
 		}
 
 	}
 	return &b, nil
 }
 
-func (p *Precompile) EmitActionVotedEvent(ctx sdk.Context, stateDB vm.StateDB, writerAddress common.Address) error {
-	return p.emitEvent(
+func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+	return p.getEthEvent(
 		ctx,
-		stateDB,
-		writerAddress,
+		*writerAddress,
 		EventActionVoted,
 		parseActionVotedEvent)
 }
@@ -158,7 +154,7 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 				return nil, fmt.Errorf("ActionVotedEvent: invalid participant type")
 			}
 
-			b.Write(cmn.PackNum(reflect.ValueOf(common.Address(address.Bytes()))))
+			b.Write(cmn.PackNum(reflect.ValueOf(ethcmn.Address(address.Bytes()))))
 
 		case "vote_type":
 			value, err := strconv.ParseInt(val, 10, 32)
@@ -173,11 +169,10 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) EmitActionStateChangeEvent(ctx sdk.Context, stateDB vm.StateDB, writerAddress common.Address) error {
-	return p.emitEvent(
+func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *ethcmn.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+	return p.getEthEvent(
 		ctx,
-		stateDB,
-		writerAddress,
+		*writerAddress,
 		EventActionStateChange,
 		parseActionStateChangeEvent)
 }
@@ -217,41 +212,46 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) emitEvent(
+func (p *Precompile) getEthEvent(
 	ctx sdk.Context,
-	stateDB vm.StateDB,
-	writerAddress common.Address,
+	writerAddress ethcmn.Address,
 	eventName string,
-	eventParser func(sdk.Event) (*bytes.Buffer, error)) error {
+	eventParser func(sdk.Event) (*bytes.Buffer, error)) (*ethtypes.Log, error) {
 
 	// Prepare the event topics
 	event := p.ABI.Events[eventName]
 	sdkEvents := ctx.EventManager().Events()
-
-	for _, x := range sdkEvents {
+	sdkEventLen := len(sdkEvents)
+	for i := range sdkEvents {
+		// iterage in reverse order
+		x := sdkEvents[sdkEventLen-1-i]
+		// TODO: check type, contract that .sol Event name should match with sdk Event name
+		fmt.Printf("\nx.Type %v, eventName %v\n", x.Type, eventName)
 		if x.Type == eventName {
 			b, err := eventParser(x)
 			if err != nil {
-				return err
+				return nil, err
 			}
 
-			topics := make([]common.Hash, 2)
+			topics := make([]ethcmn.Hash, 2)
 			// The first topic is always the signature of the event.
 			topics[0] = event.ID
 
 			topics[1], err = cmn.MakeTopic(writerAddress)
 			if err != nil {
-				return err
+				return nil, err
 			}
 
-			stateDB.AddLog(&ethtypes.Log{
+			ethLog := ethtypes.Log{
 				Address:     p.Address(),
 				Topics:      topics,
 				Data:        b.Bytes(),
 				BlockNumber: uint64(ctx.BlockHeight()),
-			})
+			}
+
+			return &ethLog, nil
 		}
 	}
 
-	return nil
+	return nil, nil
 }

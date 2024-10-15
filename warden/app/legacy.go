@@ -50,8 +50,7 @@ import (
 
 	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
-	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
-	wardenprecompile "github.com/warden-protocol/wardenprotocol/precompiles/warden"
+	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
@@ -341,17 +340,13 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
 	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
-	wardenPrecompile, err := wardenprecompile.NewPrecompile(app.WardenKeeper, app.ActKeeper)
+	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(app.WardenKeeper, app.ActKeeper)
 	if err != nil {
-		panic(fmt.Sprintf("error while creating x/warden precompile: %s", err))
+		panic(err)
 	}
-	precompiles[wardenPrecompile.Address()] = wardenPrecompile
-
-	actPrecompile, err := actprecompile.NewPrecompile(app.ActKeeper)
-	if err != nil {
-		panic(fmt.Sprintf("error while creating x/act precompile: %s", err))
+	for a, p := range wardenprecompiles {
+		precompiles[a] = p
 	}
-	precompiles[actPrecompile.Address()] = actPrecompile
 
 	app.EvmKeeper.WithStaticPrecompiles(
 		precompiles,

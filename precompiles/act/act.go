@@ -1,14 +1,16 @@
 package act
 
 import (
+	"embed"
+
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-	"embed"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	cmn "github.com/evmos/evmos/v20/precompiles/common"
+	ethcmn "github.com/ethereum/go-ethereum/common"
+	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 )
 
@@ -23,14 +25,14 @@ var f embed.FS
 
 // Precompile defines the precompiled contract for x/act.
 type Precompile struct {
-	cmn.Precompile
+	evmoscmn.Precompile
 	actmodulekeeper actmodulekeeper.Keeper
 }
 
 // LoadABI loads the x/act ABI from the embedded abi.json file
 // for the x/act precompile.
 func LoadABI() (abi.ABI, error) {
-	return cmn.LoadABI(f, "abi.json")
+	return evmoscmn.LoadABI(f, "abi.json")
 }
 
 func NewPrecompile(
@@ -40,19 +42,22 @@ func NewPrecompile(
 	if err != nil {
 		return nil, err
 	}
-	return &Precompile{
-		Precompile: cmn.Precompile{
+	
+	p := Precompile{
+		Precompile: evmoscmn.Precompile{
 			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
 		actmodulekeeper: actkeeper,
-	}, nil
+	}
+
+	return &p, nil
 }
 
 // Address implements vm.PrecompiledContract.
-func (p *Precompile) Address() common.Address {
-	return common.HexToAddress(PrecompileAddress)
+func (p *Precompile) Address() ethcmn.Address {
+	return ethcmn.HexToAddress(PrecompileAddress)
 }
 
 // RequiredGas implements vm.PrecompiledContract.
@@ -78,7 +83,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
-	defer cmn.HandleGasError(ctx, contract, initialGas, &err)()
+	defer evmoscmn.HandleGasError(ctx, contract, initialGas, &err)()
 
 	if err := stateDB.Commit(); err != nil {
 		return nil, err

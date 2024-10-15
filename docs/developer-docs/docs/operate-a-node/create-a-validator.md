@@ -42,7 +42,10 @@ wardend keys show my-key-name -address
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet **WARD** in [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
+You can obtain testnet **WARD** in one of our faucet:
+
+- [Chiado faucet](https://faucet.chiado.wardenprotocol.org)
+- [Discord faucet](https://discord.com/channels/1199357852666560654/1288141727701536818)
 
 To verify your balance, use this command:
 

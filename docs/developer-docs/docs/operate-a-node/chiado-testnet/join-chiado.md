@@ -95,7 +95,7 @@ To configure `wardend`, do the following:
    ```bash
    cd $HOME/.warden/config
    rm genesis.json
-   wget https://chiado-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
+   wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/chiado/genesis.json
    ```
 
 2. Set the mandatory configuration options: the minimum gas price and a list of seeds nodes.

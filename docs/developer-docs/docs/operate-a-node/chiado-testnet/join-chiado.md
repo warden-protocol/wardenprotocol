@@ -98,7 +98,7 @@ To configure `wardend`, do the following:
    wget https://chiado-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
-2. Set the mandatory configuration options: the minimum gas price and seeds.
+2. Set the mandatory configuration options: the minimum gas price and a list of seeds nodes.
 
    ```bash
    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250000000000000award"/' app.toml

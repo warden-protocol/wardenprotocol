@@ -3,12 +3,12 @@ package cases
 import (
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 	actv1beta1 "github.com/warden-protocol/wardenprotocol/api/warden/act/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
+	"math/big"
 	"testing"
 	"time"
 
@@ -47,7 +47,7 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 			"evm rule #1",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
-		time.Sleep(2 * time.Second)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 
 		templateById, err := iActClient.TemplateById(alice.CallOps(t), 1)
 		require.NoError(t, err)
@@ -59,7 +59,7 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 			"evm rule #1 modified",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
-		time.Sleep(2 * time.Second)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 
 		templateById, err = iActClient.TemplateById(alice.CallOps(t), 1)
 		require.NoError(t, err)
@@ -75,18 +75,14 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 		tx := alice.Tx(t, newActionTxText)
 		checks.SuccessTx(t, tx)
 
-		actions, err := iActClient.Actions(&bind.CallOpts{
-			From: common.HexToAddress(alice.Address(t)),
-		}, act.TypesPageRequest{})
+		actions, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 		if err != nil {
 			t.Fatal(err)
 		}
 		require.NotEmpty(t, actions)
 		require.Len(t, actions.Actions, 1)
 
-		actionById, err := iActClient.ActionById(&bind.CallOpts{
-			From: common.HexToAddress(alice.Address(t)),
-		}, 1)
+		actionById, err := iActClient.ActionById(alice.CallOps(t), 1)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -102,29 +98,41 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 		}
 		require.Len(t, actionsByAddress.Actions, 1)
 
-		tx = alice.Tx(t, fmt.Sprintf("warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1"))
+		tx = alice.Tx(t,
+			fmt.Sprintf("warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1"))
 		checks.SuccessTx(t, tx)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 
-		thirdOwnerTxText := fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"", 1, dave.Address(t), 2, "any(2, warden.space.owners)")
-		tx = alice.Tx(t, thirdOwnerTxText)
+		tx = alice.Tx(t,
+			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"",
+				1, dave.Address(t), 2, "any(2, warden.space.owners)"))
 		checks.SuccessTx(t, tx)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+
 		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 
-		// TODO: Fix vote for action
-		//_, err = iActClient.VoteForAction(bob.TransactOps(t, ctx, evmClient), 3, 1)
-		//require.NoError(t, err)
-		//time.Sleep(2 * time.Second)
-		//
-		//actRes, err := client.Act.ActionById(ctx, &acttypes.QueryActionByIdRequest{Id: 3})
-		//t.Logf("%v", actRes)
-		//
-		//res, err := client.Warden.SpaceById(ctx, &wardenmoduletypes.QuerySpaceByIdRequest{Id: 1})
-		//t.Logf("%v", res)
-		//
-		//client.EnsureSpaceAmount(t, ctx, dave.Address(t), 1)
-		////
-		////newAction2TxText := fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d", 1, bob.Address(t), 0)
-		////tx := alice.Tx(t, newAction2TxText)
-		////checks.SuccessTx(t, tx)
+		_, err = iActClient.RevokeAction(alice.TransactOps(t, ctx, evmClient), 3)
+		require.NoError(t, err)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+
+		actionById, err = iActClient.ActionById(alice.CallOps(t), 3)
+		if err != nil {
+			t.Fatal(err)
+		}
+		require.Equal(t, actionById.Action.Status, big.NewInt(int64(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED)))
+
+		alice.Tx(t,
+			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"",
+				1, dave.Address(t), 2, "any(2, warden.space.owners)"))
+		checks.SuccessTx(t, tx)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+
+		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+
+		_, err = iActClient.VoteForAction(bob.TransactOps(t, ctx, evmClient), 4, 1)
+		require.NoError(t, err)
+		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+
+		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 1)
 	})
 }

@@ -310,7 +310,7 @@ func newMsgVoteForAction(args []interface{}, origin common.Address) (*types.MsgV
 
 	authority := precommon.Bech32StrFromAddress(origin)
 	actionId := args[0].(uint64)
-	voteType := args[1].(types.ActionVoteType)
+	voteType := types.ActionVoteType(args[1].(int32))
 
 	return &types.MsgVoteForAction{
 		Participant: authority,

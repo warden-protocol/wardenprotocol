@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Operate Skip:Connect
@@ -59,7 +59,3 @@ client_timeout = "2s"
 # the oracle and the app.
 metrics_enabled = "true"
 ```
-
-## 4. What's next?
-
-You're all set! Connect will be available on [Warden version v0.4.0](buenavista-testnet/upgrade/v0.4.0).

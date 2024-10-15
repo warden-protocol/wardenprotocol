@@ -12,7 +12,7 @@ In this section you'll find a full list of **Omnichain Applications** that are c
 
 SpaceWard is our application functioning as the front-end interface for Warden:
 
-- 👉 [Try SpaceWard](https://spaceward.buenavista.wardenprotocol.org)
+- 👉 [Try SpaceWard](https://spaceward.chiado.wardenprotocol.org)
 - 👉 [Visit SpaceWard docs](https://help.wardenprotocol.org)
 
 ## YieldWard

@@ -2,8 +2,6 @@
 sidebar_position: 1
 ---
 
-import PersistentPeers from "@site/src/components/PersistentPeers";
-
 # Join Chiado
 
 ## Overview
@@ -48,7 +46,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.1) and unzip it. The archive contains the `wardend` binary.
 
-2. Navigate to the directory containing the binary and initialize the chain home directory:
+2. Navigate to the directory containing the binary and initialize the node:
   
    ```bash
    ./wardend init my-chain-moniker
@@ -69,7 +67,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
    The binary is located in `/wardenprotocol/build`.
 
-2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the chain home directory.
+2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the node.
 
    ```bash
    just wardend build
@@ -100,15 +98,14 @@ To configure `wardend`, do the following:
    wget https://chiado-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
-2. Set the mandatory configuration options: the minimum gas price and persistent peers.
+2. Set the mandatory configuration options: the minimum gas price and seeds.
 
    ```bash
    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250000000000000award"/' app.toml
    ```
-
-   <PersistentPeers
-   chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/chiado/chain.json'
-   code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
+   ```bash
+   sed -i 's/seeds = ""/seeds = "2d2c7af1c2d28408f437aef3d034087f40b85401@52.51.132.79:26656"/' config.toml
+   ```
 
 ## 3. Set up the state sync
 

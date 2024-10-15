@@ -41,7 +41,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.2) and unzip it. The archive contains the `wardend` binary.
 
-2. Navigate to the directory containing the binary and initialize the chain home directory:
+2. Navigate to the directory containing the binary and initialize the node:
   
    ```bash
    ./wardend init my-chain-moniker
@@ -63,7 +63,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
    The binary is located in `/wardenprotocol/build`.
 
-2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the chain home directory.
+2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the node.
    
    ```bash
    just build

@@ -2,6 +2,7 @@ package act
 
 import (
 	"embed"
+	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -10,7 +11,7 @@ import (
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
-	
+
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 )
 
@@ -27,6 +28,7 @@ var f embed.FS
 type Precompile struct {
 	evmoscmn.Precompile
 	actmodulekeeper actmodulekeeper.Keeper
+	eventsRegistry  *common.EthEventsRegistry
 }
 
 // LoadABI loads the x/act ABI from the embedded abi.json file
@@ -35,14 +37,12 @@ func LoadABI() (abi.ABI, error) {
 	return evmoscmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile(
-	actkeeper actmodulekeeper.Keeper,
-) (*Precompile, error) {
+func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistry) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
 	}
-	
+
 	p := Precompile{
 		Precompile: evmoscmn.Precompile{
 			ABI:                  abi,
@@ -50,6 +50,7 @@ func NewPrecompile(
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
 		actmodulekeeper: actkeeper,
+		eventsRegistry:  er,
 	}
 
 	return &p, nil

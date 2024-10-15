@@ -2,6 +2,7 @@ package warden
 
 import (
 	"embed"
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -28,8 +29,9 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000900"
 // Precompile defines the precompiled contract for x/warden.
 type Precompile struct {
 	cmn.Precompile
-	wardenkeeper wardenkeeper.Keeper
-	actkeeper    actkeeper.Keeper
+	wardenkeeper   wardenkeeper.Keeper
+	actkeeper      actkeeper.Keeper
+	eventsRegistry *precommon.EthEventsRegistry
 }
 
 // LoadABI loads the x/warden ABI from the embedded abi.json file
@@ -38,10 +40,7 @@ func LoadABI() (abi.ABI, error) {
 	return cmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile(
-	wardenkeeper wardenkeeper.Keeper,
-	actkeeper actkeeper.Keeper,
-) (*Precompile, error) {
+func NewPrecompile(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper, e *precommon.EthEventsRegistry) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -53,8 +52,9 @@ func NewPrecompile(
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
-		wardenkeeper: wardenkeeper,
-		actkeeper:    actkeeper,
+		wardenkeeper:   wardenkeeper,
+		actkeeper:      actkeeper,
+		eventsRegistry: e,
 	}, nil
 }
 

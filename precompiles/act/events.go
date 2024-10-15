@@ -3,9 +3,9 @@ package act
 import (
 	"bytes"
 	"fmt"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"math/big"
 	"reflect"
-	"strconv"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -37,7 +37,7 @@ func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = cmn.MakeTopic(writerAddress)
+	topics[1], err = cmn.MakeTopic(*writerAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -66,14 +66,6 @@ func parseNewTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 			}
 
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-
-		case "creator":
-			address, err := sdk.AccAddressFromBech32(val)
-			if err != nil {
-				return nil, fmt.Errorf("NewTemplateEvent: invalid writers count type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(ethcmn.Address(address.Bytes()))))
 		}
 	}
 
@@ -167,13 +159,6 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 			}
 
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-		case "creator":
-			address, err := sdk.AccAddressFromBech32(val)
-			if err != nil {
-				return nil, fmt.Errorf("CreateActionEvent: invalid creator type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(ethcmn.Address(address.Bytes()))))
 		}
 
 	}
@@ -191,7 +176,7 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = cmn.MakeTopic(writerAddress)
+	topics[1], err = cmn.MakeTopic(*writerAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -209,6 +194,19 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
+	mapVoteType := func(status string) (int32, error) {
+		switch status {
+		case v1beta1.ActionVoteType_VOTE_TYPE_UNSPECIFIED.String():
+			return int32(v1beta1.ActionVoteType_VOTE_TYPE_UNSPECIFIED), nil
+		case v1beta1.ActionVoteType_VOTE_TYPE_APPROVED.String():
+			return int32(v1beta1.ActionVoteType_VOTE_TYPE_APPROVED), nil
+		case v1beta1.ActionVoteType_VOTE_TYPE_REJECTED.String():
+			return int32(v1beta1.ActionVoteType_VOTE_TYPE_REJECTED), nil
+		default:
+			return -1, fmt.Errorf("cannot map action vote type: %v", status)
+		}
+	}
+
 	for _, attr := range sdkEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
@@ -220,16 +218,9 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 			}
 
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-		case "participant":
-			address, err := sdk.AccAddressFromBech32(val)
-			if err != nil {
-				return nil, fmt.Errorf("ActionVotedEvent: invalid participant type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(ethcmn.Address(address.Bytes()))))
 
 		case "vote_type":
-			value, err := strconv.ParseInt(val, 10, 32)
+			value, err := mapVoteType(val)
 			if err != nil {
 				return nil, fmt.Errorf("ActionVotedEvent: invalid vote_type type")
 			}
@@ -252,7 +243,7 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = cmn.MakeTopic(writerAddress)
+	topics[1], err = cmn.MakeTopic(*writerAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -270,6 +261,23 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
+	mapActionStatus := func(status string) (int32, error) {
+		switch status {
+		case v1beta1.ActionStatus_ACTION_STATUS_UNSPECIFIED.String():
+			return int32(v1beta1.ActionStatus_ACTION_STATUS_UNSPECIFIED), nil
+		case v1beta1.ActionStatus_ACTION_STATUS_PENDING.String():
+			return int32(v1beta1.ActionStatus_ACTION_STATUS_PENDING), nil
+		case v1beta1.ActionStatus_ACTION_STATUS_COMPLETED.String():
+			return int32(v1beta1.ActionStatus_ACTION_STATUS_COMPLETED), nil
+		case v1beta1.ActionStatus_ACTION_STATUS_REVOKED.String():
+			return int32(v1beta1.ActionStatus_ACTION_STATUS_REVOKED), nil
+		case v1beta1.ActionStatus_ACTION_STATUS_TIMEOUT.String():
+			return int32(v1beta1.ActionStatus_ACTION_STATUS_TIMEOUT), nil
+		default:
+			return -1, fmt.Errorf("cannot map action status: %v", status)
+		}
+	}
+
 	for _, attr := range sdkEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
@@ -282,14 +290,14 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 			b.Write(cmn.PackNum(reflect.ValueOf(value)))
 		case "previous_status":
-			value, err := strconv.ParseInt(val, 10, 32)
+			value, err := mapActionStatus(val)
 			if err != nil {
 				return nil, fmt.Errorf("ActionStateChangeEvent: invalid previous_status type")
 			}
 
 			b.Write(cmn.PackNum(reflect.ValueOf(value)))
 		case "new_status":
-			value, err := strconv.ParseInt(val, 10, 32)
+			value, err := mapActionStatus(val)
 			if err != nil {
 				return nil, fmt.Errorf("ActionStateChangeEvent: invalid new_status type")
 			}
@@ -301,4 +309,3 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 	return &b, nil
 }
-

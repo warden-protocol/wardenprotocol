@@ -51,7 +51,7 @@ func (p Precompile) CheckActionMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -102,7 +102,7 @@ func (p Precompile) NewTemplateMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -155,7 +155,7 @@ func (p Precompile) RevokeActionMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -207,7 +207,7 @@ func (p Precompile) UpdateTemplateMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -264,7 +264,7 @@ func (p Precompile) VoteForActionMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 

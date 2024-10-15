@@ -7,7 +7,6 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -62,7 +61,7 @@ func (p Precompile) AddKeychainAdminMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, newAdmin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, newAdmin); err != nil {
 		return nil, err
 	}
 
@@ -99,7 +98,7 @@ func (p Precompile) AddKeychainWriterMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, newWriterAddress); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, newWriterAddress); err != nil {
 		return nil, err
 	}
 
@@ -138,7 +137,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, nil); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, nil); err != nil {
 		return nil, err
 	}
 
@@ -177,7 +176,7 @@ func (p Precompile) FulfilSignRequestMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, nil); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, nil); err != nil {
 		return nil, err
 	}
 
@@ -219,7 +218,7 @@ func (p Precompile) NewKeychainMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -261,7 +260,7 @@ func (p Precompile) NewSpaceMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -298,7 +297,7 @@ func (p Precompile) RemoveKeychainAdminMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, admin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, admin); err != nil {
 		return nil, err
 	}
 
@@ -339,7 +338,7 @@ func (p Precompile) UpdateKeychainMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -382,7 +381,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -425,7 +424,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -472,7 +471,7 @@ func (p Precompile) NewKeyRequestMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -518,7 +517,7 @@ func (p Precompile) NewSignRequestMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -561,7 +560,7 @@ func (p Precompile) UpdateKeyMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
@@ -607,7 +606,7 @@ func (p Precompile) UpdateSpaceMethod(
 		return nil, err
 	}
 
-	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 

@@ -47,7 +47,7 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 			"evm rule #1",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
-		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		templateById, err := iActClient.TemplateById(alice.CallOps(t), 1)
 		require.NoError(t, err)
@@ -59,7 +59,7 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 			"evm rule #1 modified",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
-		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		templateById, err = iActClient.TemplateById(alice.CallOps(t), 1)
 		require.NoError(t, err)
@@ -113,7 +113,7 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 
 		_, err = iActClient.RevokeAction(alice.TransactOps(t, ctx, evmClient), 3)
 		require.NoError(t, err)
-		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		actionById, err = iActClient.ActionById(alice.CallOps(t), 3)
 		if err != nil {

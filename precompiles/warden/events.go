@@ -49,7 +49,7 @@ const (
 	EventUpdateSpace = "UpdateSpace"
 )
 
-func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *common.Address, eventAddKeychainWriter sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainAdmin]
 
@@ -57,8 +57,6 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	eventAddKeychainWriter := sdkEvents[len(sdkEvents)-1]
 	var b bytes.Buffer
 	for _, attr := range eventAddKeychainWriter.Attributes {
 		key := attr.GetKey()
@@ -95,7 +93,7 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	return &log, nil
 }
 
-func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *common.Address, eventAddKeychainWriter sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainWriter]
 
@@ -103,8 +101,6 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *com
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	eventAddKeychainWriter := sdkEvents[len(sdkEvents)-1]
 	var b bytes.Buffer
 	for _, attr := range eventAddKeychainWriter.Attributes {
 		key := attr.GetKey()
@@ -141,7 +137,7 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *com
 	return &log, nil
 }
 
-func (p Precompile) GetNewKeyEvent(ctx sdk.Context) (*ethtypes.Log, error) {
+func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewKey sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeNewKey]
 
@@ -149,8 +145,6 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context) (*ethtypes.Log, error) {
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	eventNewKey := sdkEvents[len(sdkEvents)-1]
 	var b bytes.Buffer
 	for _, attr := range eventNewKey.Attributes {
 		key := attr.GetKey()
@@ -202,7 +196,7 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context) (*ethtypes.Log, error) {
 	return &log, nil
 }
 
-func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context) (*ethtypes.Log, error) {
+func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address, eventRejectKey sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectKeyRequest]
 
@@ -210,8 +204,6 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context) (*ethtypes.Log, er
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	eventRejectKey := sdkEvents[len(sdkEvents)-1]
 	var b bytes.Buffer
 	for _, attr := range eventRejectKey.Attributes {
 		key := attr.GetKey()
@@ -236,16 +228,7 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context) (*ethtypes.Log, er
 	return &log, nil
 }
 
-func (p Precompile) GetNewKeyOrRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address, msg sdk.Msg) (*ethtypes.Log, error) {
-	msgFulfilKeyRequest := msg.(*wardentypes.MsgFulfilKeyRequest)
-	if msgFulfilKeyRequest.Status == wardentypes.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
-		return p.GetNewKeyEvent(ctx)
-	} else {
-		return p.GetRejectKeyRequestEvent(ctx)
-	}
-}
-
-func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, error) {
+func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address, eventFulfilSign sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventFulfilSignRequest]
 
@@ -253,8 +236,6 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, e
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	eventFulfilSign := sdkEvents[len(sdkEvents)-1]
 	var b bytes.Buffer
 	for _, attr := range eventFulfilSign.Attributes {
 		key := attr.GetKey()
@@ -279,7 +260,7 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, e
 	return &log, nil
 }
 
-func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, error) {
+func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address, eventRejectSign sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectSignRequest]
 
@@ -287,8 +268,6 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, e
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	sdkEvents := ctx.EventManager().Events()
-	eventRejectSign := sdkEvents[len(sdkEvents)-1]
 	var b bytes.Buffer
 	for _, attr := range eventRejectSign.Attributes {
 		key := attr.GetKey()
@@ -313,16 +292,7 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context) (*ethtypes.Log, e
 	return &log, nil
 }
 
-func (p Precompile) GetFulfilOrRejectSignRequestEvent(ctx sdk.Context, _ *common.Address, msg sdk.Msg) (*ethtypes.Log, error) {
-	fulfilSignRequestMsg := msg.(*wardentypes.MsgFulfilSignRequest)
-	if fulfilSignRequestMsg.Status == wardentypes.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
-		return p.GetFulfilSignRequestEvent(ctx)
-	} else {
-		return p.GetRejectSignRequestEvent(ctx)
-	}
-}
-
-func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address, eventNewKeychain sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewKeychain]
@@ -338,8 +308,6 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	}
 
 	var b bytes.Buffer
-	sdkEvents := ctx.EventManager().Events()
-	eventNewKeychain := sdkEvents[len(sdkEvents)-1]
 	for _, attr := range eventNewKeychain.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
@@ -363,7 +331,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	return &log, nil
 }
 
-func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, eventNewSpace sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewSpace]
@@ -379,8 +347,6 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, _
 	}
 
 	var b bytes.Buffer
-	sdkEvents := ctx.EventManager().Events()
-	eventNewSpace := sdkEvents[len(sdkEvents)-1]
 	for _, attr := range eventNewSpace.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
@@ -434,7 +400,7 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, _
 	return &log, nil
 }
 
-func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.Address, eventRemoveKeychainAdmin sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventRemoveKeychainAdmin]
@@ -450,8 +416,6 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	}
 
 	var b bytes.Buffer
-	sdkEvents := ctx.EventManager().Events()
-	eventRemoveKeychainAdmin := sdkEvents[len(sdkEvents)-1]
 	for _, attr := range eventRemoveKeychainAdmin.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
@@ -481,7 +445,7 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	return &log, nil
 }
 
-func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Address, _ sdk.Msg) (*ethtypes.Log, error) {
+func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Address, eventNewKeychain sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventUpdateKeychain]
 
@@ -490,8 +454,6 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Addr
 	topics[0] = event.ID
 
 	var b bytes.Buffer
-	sdkEvents := ctx.EventManager().Events()
-	eventNewKeychain := sdkEvents[len(sdkEvents)-1]
 	for _, attr := range eventNewKeychain.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")

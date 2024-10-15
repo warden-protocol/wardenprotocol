@@ -26,12 +26,30 @@ const (
 	EventActionStateChange = "ActionStateChange"
 )
 
-func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, _ sdk.Msg) (*ethtypes.Log, error) {
-	return p.getEthEvent(
-		ctx,
-		*writerAddress,
-		EventCreateTemplate,
-		parseNewTemplateEvent)
+func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+	b, err := parseNewTemplateEvent(sdkEvent)
+	if err != nil {
+		return nil, err
+	}
+
+	topics := make([]ethcmn.Hash, 2)
+	event := p.ABI.Events[EventCreateTemplate]
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	topics[1], err = cmn.MakeTopic(writerAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	ethLog := ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	}
+
+	return &ethLog, nil
 }
 
 func parseNewTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
@@ -62,12 +80,30 @@ func parseNewTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress ethcmn.Address) (*ethtypes.Log, error) {
-	return p.getEthEvent(
-		ctx,
-		writerAddress,
-		EventUpdateTemplate,
-		parseUpdateTemplateEvent)
+func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+	b, err := parseUpdateTemplateEvent(sdkEvent)
+	if err != nil {
+		return nil, err
+	}
+
+	topics := make([]ethcmn.Hash, 2)
+	event := p.ABI.Events[EventUpdateTemplate]
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	topics[1], err = cmn.MakeTopic(*writerAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	ethLog := ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	}
+
+	return &ethLog, nil
 }
 
 func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
@@ -91,12 +127,30 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress ethcmn.Address) (*ethtypes.Log, error) {
-	return p.getEthEvent(
-		ctx,
-		writerAddress,
-		EventCreateAction,
-		parseCreateActionEvent)
+func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+	b, err := parseCreateActionEvent(sdkEvent)
+	if err != nil {
+		return nil, err
+	}
+
+	topics := make([]ethcmn.Hash, 2)
+	event := p.ABI.Events[EventCreateAction]
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	topics[1], err = cmn.MakeTopic(*writerAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	ethLog := ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	}
+
+	return &ethLog, nil
 }
 
 func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
@@ -126,12 +180,30 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.Address, _ sdk.Msg) (*ethtypes.Log, error) {
-	return p.getEthEvent(
-		ctx,
-		*writerAddress,
-		EventActionVoted,
-		parseActionVotedEvent)
+func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+	b, err := parseActionVotedEvent(sdkEvent)
+	if err != nil {
+		return nil, err
+	}
+
+	topics := make([]ethcmn.Hash, 2)
+	event := p.ABI.Events[EventActionVoted]
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	topics[1], err = cmn.MakeTopic(writerAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	ethLog := ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	}
+
+	return &ethLog, nil
 }
 
 func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
@@ -169,12 +241,30 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *ethcmn.Address, _ sdk.Msg) (*ethtypes.Log, error) {
-	return p.getEthEvent(
-		ctx,
-		*writerAddress,
-		EventActionStateChange,
-		parseActionStateChangeEvent)
+func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+	b, err := parseActionStateChangeEvent(sdkEvent)
+	if err != nil {
+		return nil, err
+	}
+
+	topics := make([]ethcmn.Hash, 2)
+	event := p.ABI.Events[EventActionStateChange]
+	// The first topic is always the signature of the event.
+	topics[0] = event.ID
+
+	topics[1], err = cmn.MakeTopic(writerAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	ethLog := ethtypes.Log{
+		Address:     p.Address(),
+		Topics:      topics,
+		Data:        b.Bytes(),
+		BlockNumber: uint64(ctx.BlockHeight()),
+	}
+
+	return &ethLog, nil
 }
 
 func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
@@ -212,46 +302,3 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-func (p *Precompile) getEthEvent(
-	ctx sdk.Context,
-	writerAddress ethcmn.Address,
-	eventName string,
-	eventParser func(sdk.Event) (*bytes.Buffer, error)) (*ethtypes.Log, error) {
-
-	// Prepare the event topics
-	event := p.ABI.Events[eventName]
-	sdkEvents := ctx.EventManager().Events()
-	sdkEventLen := len(sdkEvents)
-	for i := range sdkEvents {
-		// iterage in reverse order
-		x := sdkEvents[sdkEventLen-1-i]
-		// TODO: check type, contract that .sol Event name should match with sdk Event name
-		fmt.Printf("\nx.Type %v, eventName %v\n", x.Type, eventName)
-		if x.Type == eventName {
-			b, err := eventParser(x)
-			if err != nil {
-				return nil, err
-			}
-
-			topics := make([]ethcmn.Hash, 2)
-			// The first topic is always the signature of the event.
-			topics[0] = event.ID
-
-			topics[1], err = cmn.MakeTopic(writerAddress)
-			if err != nil {
-				return nil, err
-			}
-
-			ethLog := ethtypes.Log{
-				Address:     p.Address(),
-				Topics:      topics,
-				Data:        b.Bytes(),
-				BlockNumber: uint64(ctx.BlockHeight()),
-			}
-
-			return &ethLog, nil
-		}
-	}
-
-	return nil, nil
-}

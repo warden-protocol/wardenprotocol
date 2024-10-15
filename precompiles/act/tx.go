@@ -51,13 +51,8 @@ func (p Precompile) CheckActionMethod(
 		return nil, err
 	}
 
-	log, err := p.GetActionStateChangeEvent(ctx, &origin, message)
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
-	}
-
-	if log != nil {
-		stateDB.AddLog(log)
 	}
 
 	return method.Outputs.Pack(response.Status)
@@ -107,12 +102,8 @@ func (p Precompile) NewTemplateMethod(
 		return nil, err
 	}
 
-	log, err := p.GetCreateTemplateEvent(ctx, &origin, message)
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
-	}
-	if log != nil {
-		stateDB.AddLog(log)
 	}
 
 	return method.Outputs.Pack(response.Id)
@@ -164,13 +155,8 @@ func (p Precompile) RevokeActionMethod(
 		return nil, err
 	}
 
-	log, err := p.GetActionStateChangeEvent(ctx, &origin, message)
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
-	}
-
-	if log != nil {
-		stateDB.AddLog(log)
 	}
 
 	return method.Outputs.Pack(true)
@@ -221,13 +207,8 @@ func (p Precompile) UpdateTemplateMethod(
 		return nil, err
 	}
 
-	log, err := p.GetActionStateChangeEvent(ctx, &origin, message)
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
-	}
-
-	if log != nil {
-		stateDB.AddLog(log)
 	}
 
 	return method.Outputs.Pack(true)
@@ -283,21 +264,8 @@ func (p Precompile) VoteForActionMethod(
 		return nil, err
 	}
 
-	log, err := p.GetActionStateChangeEvent(ctx, &origin, message)
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
-	}
-
-	if log != nil {
-		stateDB.AddLog(log)
-	}
-
-	log, err = p.GetActionVotedEvent(ctx, &origin, message)
-	if err != nil {
-		return nil, err
-	}
-	if log != nil {
-		stateDB.AddLog(log)
 	}
 
 	return method.Outputs.Pack(response.Status)

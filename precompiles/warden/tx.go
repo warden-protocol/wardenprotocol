@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -61,13 +62,9 @@ func (p Precompile) AddKeychainAdminMethod(
 		return nil, err
 	}
 
-	log, err := p.GetAddKeychainAdminEvent(ctx, newAdmin, nil)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, newAdmin); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -102,13 +99,9 @@ func (p Precompile) AddKeychainWriterMethod(
 		return nil, err
 	}
 
-	log, err := p.GetAddKeychainWriterEvent(ctx, newWriterAddress, msgAddKeychainWriter)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, newWriterAddress); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -145,12 +138,9 @@ func (p Precompile) FulfilKeyRequestMethod(
 		return nil, err
 	}
 
-	log, err := p.GetNewKeyOrRejectKeyRequestEvent(ctx, nil, msgFulfilKeyRequest)
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, nil); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -187,13 +177,9 @@ func (p Precompile) FulfilSignRequestMethod(
 		return nil, err
 	}
 
-	log, err := p.GetFulfilOrRejectSignRequestEvent(ctx, nil, msgFulfilSignRequest)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, nil); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -233,14 +219,9 @@ func (p Precompile) NewKeychainMethod(
 		return nil, err
 	}
 
-	// emit event
-	log, err := p.GetNewKeychainEvent(ctx, &origin, msgNewKeychain)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(msgNewKeychainResponse.Id)
 }
@@ -280,14 +261,9 @@ func (p Precompile) NewSpaceMethod(
 		return nil, err
 	}
 
-	// emit event
-	log, err := p.GetNewSpaceEvent(ctx, &origin, msgNewSpace)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(msgNewSpaceResponse.Id)
 }
@@ -322,14 +298,9 @@ func (p Precompile) RemoveKeychainAdminMethod(
 		return nil, err
 	}
 
-	// emit event
-	log, err := p.GetRemoveKeychainAdminEvent(ctx, admin, msgRemoveKeychainAdmin)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, admin); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -368,14 +339,9 @@ func (p Precompile) UpdateKeychainMethod(
 		return nil, err
 	}
 
-	// emit event
-	log, err := p.GetUpdateKeychainEvent(ctx, &origin, msgUpdateKeychain)
-
-	if err != nil {
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
-
-	stateDB.AddLog(log)
 
 	return method.Outputs.Pack(true)
 }
@@ -416,7 +382,9 @@ func (p Precompile) AddSpaceOwnerMethod(
 		return nil, err
 	}
 
-	// TODO: emit EventCreateAction here with response.Id, origin
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response)
 }
@@ -457,7 +425,9 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 		return nil, err
 	}
 
-	// TODO: emit EventCreateAction here with response.Id, origin
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response)
 }
@@ -502,7 +472,9 @@ func (p Precompile) NewKeyRequestMethod(
 		return nil, err
 	}
 
-	// TODO: emit EventCreateAction here with response.Id, origin
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response)
 }
@@ -546,7 +518,9 @@ func (p Precompile) NewSignRequestMethod(
 		return nil, err
 	}
 
-	// TODO: emit EventCreateAction here with response.Id, origin
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response)
 }
@@ -587,7 +561,9 @@ func (p Precompile) UpdateKeyMethod(
 		return nil, err
 	}
 
-	// TODO: emit EventCreateAction here with response.Id, origin
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response)
 }
@@ -631,7 +607,9 @@ func (p Precompile) UpdateSpaceMethod(
 		return nil, err
 	}
 
-	// TODO: emit EventCreateAction here with response.Id, origin
+	if err = precommon.EmitEvents(ctx, stateDB, &origin); err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(response)
 }

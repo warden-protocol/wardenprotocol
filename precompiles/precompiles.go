@@ -4,8 +4,6 @@ import (
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
-	actmodule "github.com/warden-protocol/wardenprotocol/api/warden/act/v1beta1"
-	wardenmodule "github.com/warden-protocol/wardenprotocol/api/warden/warden/v1beta3"
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
 	cmn "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	wardenprecompile "github.com/warden-protocol/wardenprotocol/precompiles/warden"
@@ -22,12 +20,12 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 		return nil, err
 	}
 	precompiles[actprecompile.Address()] = actprecompile
-
-	er.RegisterEvent(actmodule.Msg_CheckAction_FullMethodName, actprecompile.GetActionStateChangeEvent)
-	er.RegisterEvent(actmodule.Msg_NewTemplate_FullMethodName, actprecompile.GetCreateTemplateEvent)
-	er.RegisterEvent(actmodule.Msg_RevokeAction_FullMethodName, actprecompile.GetActionStateChangeEvent)
-	er.RegisterEvent(actmodule.Msg_UpdateTemplate_FullMethodName, actprecompile.GetActionStateChangeEvent)
-	er.RegisterEvent(actmodule.Msg_VoteForAction_FullMethodName, actprecompile.GetActionVotedEvent)
+	// warden.act.v1beta1.EventCreateTemplate
+	er.RegisterEvent("warden.act.v1beta1.EventActionStateChange", actprecompile.GetActionStateChangeEvent)
+	er.RegisterEvent("warden.act.v1beta1.EventCreateTemplate", actprecompile.GetCreateTemplateEvent)
+	er.RegisterEvent("warden.act.v1beta1.EventActionVoted", actprecompile.GetActionVotedEvent)
+	er.RegisterEvent("warden.act.v1beta1.EventUpdateTemplate", actprecompile.GetUpdateTemplateEvent)
+	er.RegisterEvent("warden.act.v1beta1.EventCreateAction", actprecompile.GetCreateActionEvent)
 
 	wardenprecompile, err := wardenprecompile.NewPrecompile(wardenkeeper, actkeeper)
 	if err != nil {
@@ -35,21 +33,23 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 	}
 	precompiles[wardenprecompile.Address()] = wardenprecompile
 
-	er.RegisterEvent(wardenmodule.Msg_AddKeychainAdmin_FullMethodName, wardenprecompile.GetAddKeychainAdminEvent)
-	er.RegisterEvent(wardenmodule.Msg_AddKeychainWriter_FullMethodName, wardenprecompile.GetAddKeychainWriterEvent)
-	er.RegisterEvent(wardenmodule.Msg_FulfilKeyRequest_FullMethodName, wardenprecompile.GetNewKeyOrRejectKeyRequestEvent)
-	er.RegisterEvent(wardenmodule.Msg_FulfilSignRequest_FullMethodName, wardenprecompile.GetFulfilOrRejectSignRequestEvent)
-	er.RegisterEvent(wardenmodule.Msg_NewKeychain_FullMethodName, wardenprecompile.GetNewKeychainEvent)
-	er.RegisterEvent(wardenmodule.Msg_NewSpace_FullMethodName, wardenprecompile.GetNewSpaceEvent)
-	er.RegisterEvent(wardenmodule.Msg_RemoveKeychainAdmin_FullMethodName, wardenprecompile.GetRemoveKeychainAdminEvent)
-	er.RegisterEvent(wardenmodule.Msg_UpdateKeychain_FullMethodName, wardenprecompile.GetUpdateKeychainEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventAddKeychainAdmin", wardenprecompile.GetAddKeychainAdminEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventAddKeychainWriter", wardenprecompile.GetAddKeychainWriterEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventNewKey", wardenprecompile.GetNewKeyEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventRejectKeyRequest", wardenprecompile.GetRejectKeyRequestEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventFulfilSignRequest", wardenprecompile.GetFulfilSignRequestEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventRejectSignRequest", wardenprecompile.GetRejectSignRequestEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventNewKeychain", wardenprecompile.GetNewKeychainEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventCreateSpace", wardenprecompile.GetNewSpaceEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventRemoveKeychainAdmin", wardenprecompile.GetRemoveKeychainAdminEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventUpdateKeychain", wardenprecompile.GetUpdateKeychainEvent)
 
-	// er.RegisterEvent(wardenmodule.Msg_AddSpaceOwner_FullMethodName, wardenprecompile.AddSpaceOwnerEvent)
-	// er.RegisterEvent(wardenmodule.Msg_RemoveSpaceOwner_FullMethodName, wardenprecompile.RemoveSpaceOwnerEvent)
-	// er.RegisterEvent(wardenmodule.Msg_NewKeyRequest_FullMethodName, wardenprecompile.NewKeyRequestEvent)
-	// er.RegisterEvent(wardenmodule.Msg_NewSignRequest_FullMethodName, wardenprecompile.NewSignRequestEvent)
-	// er.RegisterEvent(wardenmodule.Msg_UpdateKey_FullMethodName, wardenprecompile.UpdateKeyEvent)
-	// er.RegisterEvent(wardenmodule.Msg_UpdateSpace_FullMethodName, wardenprecompile.UpdateSpaceEvent)
+	// er.RegisterEvent("warden.warden.v1beta3.EventAddSpaceOwner", wardenprecompile.GetAddSpaceOwnerEvent)
+	// er.RegisterEvent("warden.warden.v1beta3.EventRemoveSpaceOwner", wardenprecompile.GetRemoveSpaceOwnerEvent)
+	// er.RegisterEvent("warden.warden.v1beta3.EventNewKeyRequest", wardenprecompile.GetNewKeyRequestEvent)
+	// er.RegisterEvent("warden.warden.v1beta3.EventNewSignRequest", wardenprecompile.GetNewSignRequestEvent)
+	// er.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", wardenprecompile.GetUpdateKeyEvent)
+	// er.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", wardenprecompile.GetUpdateSpaceEvent)
 
 	return precompiles, nil
 }

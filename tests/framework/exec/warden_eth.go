@@ -14,7 +14,7 @@ import (
 func (cli *Wardend) CallOps(t *testing.T) *bind.CallOpts {
 	return &bind.CallOpts{
 		Pending:     false,
-		From:        common.HexToAddress(cli.Address(t)),
+		From:        cli.EthAddress(t),
 		BlockNumber: nil,
 		Context:     nil,
 	}

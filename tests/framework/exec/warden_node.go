@@ -105,6 +105,15 @@ func (w *WardenNode) WaitRunnning(t *testing.T) {
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")
 }
 
+func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context) {
+	go func() {
+		select {
+		case _, _ = <-ctx.Done():
+			t.Logf("Node logs: \n %s", w.Stdout.String())
+		}
+	}()
+}
+
 func (w *WardenNode) grpcAddr() string {
 	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
 }

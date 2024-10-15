@@ -114,6 +114,19 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		bz, err = p.RemoveKeychainAdminMethod(ctx, evm.Origin, stateDB, method, args)
 	case UpdateKeychainMethod:
 		bz, err = p.UpdateKeychainMethod(ctx, evm.Origin, stateDB, method, args)
+	case AddSpaceOwnerMethod:
+		bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, stateDB, method, args)
+	case RemoveSpaceOwnerMethod:
+		bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, stateDB, method, args)
+	case NewKeyRequestMethod:
+		bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+	case NewSignRequestMethod:
+		bz, err = p.NewSignRequestMethod(ctx, evm.Origin, stateDB, method, args)
+	case UpdateKeyMethod:
+		bz, err = p.UpdateKeyMethod(ctx, evm.Origin, stateDB, method, args)
+	case UpdateSpaceMethod:
+		bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, stateDB, method, args)
+
 	// queries
 	case AllKeysMethod:
 		bz, err = p.AllKeysMethod(ctx, evm.Origin, stateDB, method, args)
@@ -168,7 +181,13 @@ func (Precompile) IsTransaction(method string) bool {
 		NewKeychainMethod,
 		NewSpaceMethod,
 		RemoveKeychainAdminMethod,
-		UpdateKeychainMethod:
+		UpdateKeychainMethod,
+		AddSpaceOwnerMethod,
+		RemoveSpaceOwnerMethod,
+		NewKeyRequestMethod,
+		NewSignRequestMethod,
+		UpdateKeyMethod,
+		UpdateSpaceMethod:
 		return true
 	default:
 		return false

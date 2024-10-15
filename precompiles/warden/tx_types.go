@@ -3,10 +3,13 @@ package warden
 import (
 	"fmt"
 
+	codecTypes "github.com/cosmos/cosmos-sdk/codec/types"
+	cosmosTypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	actTypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -218,4 +221,241 @@ type updateKeyChainInput struct {
 	Description  string
 	Url          string
 	KeybaseId    string
+}
+
+func newMsgAddSpaceOwner(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgAddSpaceOwner, error) {
+	if len(args) != 6 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
+	}
+
+	spaceId := args[0].(uint64)
+	newOwnerAddress := args[1].(common.Address)
+	nonce := args[2].(uint64)
+	actionTimeoutHeight := args[3].(uint64)
+	expectedApproveExpression := args[4].(string)
+	expectedRejectExpression := args[5].(string)
+
+	authority := wardencommon.Bech32StrFromAddress(origin)
+	newOwner := wardencommon.Bech32StrFromAddress(newOwnerAddress)
+
+	msgAddSpaceOwner := types.MsgAddSpaceOwner{
+		Authority: authority,
+		SpaceId:   spaceId,
+		NewOwner:  newOwner,
+		Nonce:     nonce,
+	}
+
+	anyMsg, err := codecTypes.NewAnyWithValue(&msgAddSpaceOwner)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &actTypes.MsgNewAction{
+		Creator:                   authority,
+		Message:                   anyMsg,
+		ActionTimeoutHeight:       actionTimeoutHeight,
+		ExpectedApproveExpression: expectedApproveExpression,
+		ExpectedRejectExpression:  expectedRejectExpression,
+	}, &msgAddSpaceOwner, nil
+}
+
+func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgRemoveSpaceOwner, error) {
+	if len(args) != 6 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
+	}
+
+	spaceId := args[0].(uint64)
+	ownerAddress := args[1].(common.Address)
+	nonce := args[2].(uint64)
+	actionTimeoutHeight := args[3].(uint64)
+	expectedApproveExpression := args[4].(string)
+	expectedRejectExpression := args[5].(string)
+
+	authority := wardencommon.Bech32StrFromAddress(origin)
+	owner := wardencommon.Bech32StrFromAddress(ownerAddress)
+
+	msgRemoveSpaceOwner := types.MsgRemoveSpaceOwner{
+		Authority: authority,
+		SpaceId:   spaceId,
+		Owner:     owner,
+		Nonce:     nonce,
+	}
+
+	anyMsg, err := codecTypes.NewAnyWithValue(&msgRemoveSpaceOwner)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &actTypes.MsgNewAction{
+		Creator:                   authority,
+		Message:                   anyMsg,
+		ActionTimeoutHeight:       actionTimeoutHeight,
+		ExpectedApproveExpression: expectedApproveExpression,
+		ExpectedRejectExpression:  expectedRejectExpression,
+	}, &msgRemoveSpaceOwner, nil
+}
+
+func newMsgNewKeyRequest(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgNewKeyRequest, error) {
+	if len(args) != 10 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 10, len(args))
+	}
+
+	spaceId := args[0].(uint64)
+	keychainId := args[1].(uint64)
+	keyType := args[2].(uint8)
+	approveTemplateId := args[3].(uint64)
+	rejectTemplateId := args[4].(uint64)
+	maxKeychainFees := args[5].(cosmosTypes.Coins)
+	nonce := args[6].(uint64)
+	actionTimeoutHeight := args[7].(uint64)
+	expectedApproveExpression := args[8].(string)
+	expectedRejectExpression := args[9].(string)
+
+	authority := wardencommon.Bech32StrFromAddress(origin)
+
+	msgNewKeyRequest := types.MsgNewKeyRequest{
+		Authority:         authority,
+		SpaceId:           spaceId,
+		KeychainId:        keychainId,
+		KeyType:           types.KeyType(keyType),
+		ApproveTemplateId: approveTemplateId,
+		RejectTemplateId:  rejectTemplateId,
+		MaxKeychainFees:   maxKeychainFees,
+		Nonce:             nonce,
+	}
+
+	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewKeyRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &actTypes.MsgNewAction{
+		Creator:                   authority,
+		Message:                   anyMsg,
+		ActionTimeoutHeight:       actionTimeoutHeight,
+		ExpectedApproveExpression: expectedApproveExpression,
+		ExpectedRejectExpression:  expectedRejectExpression,
+	}, &msgNewKeyRequest, nil
+}
+
+func newMsgNewSignRequest(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgNewSignRequest, error) {
+	if len(args) != 9 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 9, len(args))
+	}
+
+	keyId := args[0].(uint64)
+	input := args[1].([]byte)
+
+	var analyzers []string
+	for _, a := range args[2].([]common.Address) {
+		analyzers = append(analyzers, wardencommon.Bech32StrFromAddress(a))
+	}
+
+	encryptionKey := args[3].([]byte)
+	maxKeychainFees := args[4].(cosmosTypes.Coins)
+	nonce := args[5].(uint64)
+	actionTimeoutHeight := args[6].(uint64)
+	expectedApproveExpression := args[7].(string)
+	expectedRejectExpression := args[8].(string)
+
+	authority := wardencommon.Bech32StrFromAddress(origin)
+
+	msgNewSignRequest := types.MsgNewSignRequest{
+		Authority:       authority,
+		KeyId:           keyId,
+		Input:           input,
+		Analyzers:       analyzers,
+		EncryptionKey:   encryptionKey,
+		MaxKeychainFees: maxKeychainFees,
+		Nonce:           nonce,
+	}
+
+	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewSignRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &actTypes.MsgNewAction{
+		Creator:                   authority,
+		Message:                   anyMsg,
+		ActionTimeoutHeight:       actionTimeoutHeight,
+		ExpectedApproveExpression: expectedApproveExpression,
+		ExpectedRejectExpression:  expectedRejectExpression,
+	}, &msgNewSignRequest, nil
+}
+
+func newMsgUpdateKey(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgUpdateKey, error) {
+	if len(args) != 6 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
+	}
+
+	keyId := args[0].(uint64)
+	approveTemplateId := args[1].(uint64)
+	rejectTemplateId := args[2].(uint64)
+	actionTimeoutHeight := args[3].(uint64)
+	expectedApproveExpression := args[4].(string)
+	expectedRejectExpression := args[5].(string)
+
+	authority := wardencommon.Bech32StrFromAddress(origin)
+
+	msgUpdateKey := types.MsgUpdateKey{
+		Authority:         authority,
+		KeyId:             keyId,
+		ApproveTemplateId: approveTemplateId,
+		RejectTemplateId:  rejectTemplateId,
+	}
+
+	anyMsg, err := codecTypes.NewAnyWithValue(&msgUpdateKey)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &actTypes.MsgNewAction{
+		Creator:                   authority,
+		Message:                   anyMsg,
+		ActionTimeoutHeight:       actionTimeoutHeight,
+		ExpectedApproveExpression: expectedApproveExpression,
+		ExpectedRejectExpression:  expectedRejectExpression,
+	}, &msgUpdateKey, nil
+}
+
+func newMsgUpdateSpace(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgUpdateSpace, error) {
+	if len(args) != 9 {
+		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 9, len(args))
+	}
+
+	spaceId := args[0].(uint64)
+	nonce := args[1].(uint64)
+	approveAdminTemplateId := args[2].(uint64)
+	rejectAdminTemplateId := args[3].(uint64)
+	approveSignTemplateId := args[4].(uint64)
+	rejectSignTemplateId := args[5].(uint64)
+	actionTimeoutHeight := args[6].(uint64)
+	expectedApproveExpression := args[7].(string)
+	expectedRejectExpression := args[8].(string)
+
+	authority := wardencommon.Bech32StrFromAddress(origin)
+
+	msgUpdateSpace := types.MsgUpdateSpace{
+		Authority:              authority,
+		SpaceId:                spaceId,
+		Nonce:                  nonce,
+		ApproveAdminTemplateId: approveAdminTemplateId,
+		RejectAdminTemplateId:  rejectAdminTemplateId,
+		ApproveSignTemplateId:  approveSignTemplateId,
+		RejectSignTemplateId:   rejectSignTemplateId,
+	}
+
+	anyMsg, err := codecTypes.NewAnyWithValue(&msgUpdateSpace)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &actTypes.MsgNewAction{
+		Creator:                   authority,
+		Message:                   anyMsg,
+		ActionTimeoutHeight:       actionTimeoutHeight,
+		ExpectedApproveExpression: expectedApproveExpression,
+		ExpectedRejectExpression:  expectedRejectExpression,
+	}, &msgUpdateSpace, nil
 }

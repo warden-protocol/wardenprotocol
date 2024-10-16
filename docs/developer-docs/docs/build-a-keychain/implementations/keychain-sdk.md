@@ -72,18 +72,20 @@ In this section, we will walk you through different modules of the **Keychain SD
 
 ```go
 type Config struct {
-    Logger          *slog.Logger
-    ChainID         string
-    GRPCURL         string
-    GRPCInsecure    bool
-    KeychainID      uint64
-    DerivationPath  string
-    Mnemonic        string
-    BatchInterval   time.Duration
-    BatchSize       int
-    GasLimit        uint64
-    TxFees          sdk.Coins
-    TxTimeout       time.Duration
+    Logger              *slog.Logger
+    ChainID             string
+    GRPCURL             string
+    GRPCInsecure        bool
+    KeychainID          uint64
+    DerivationPath      string
+    Mnemonic            string
+    BatchInterval       time.Duration
+    BatchSize           int
+    GasLimit            uint64
+    AutoEstimateGas     bool
+    GasAdjustmentFactor float64
+    TxFees              sdk.Coins
+    TxTimeout           time.Duration
 }
 ```
 

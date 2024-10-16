@@ -38,21 +38,23 @@ The `Config` struct holds the environment variable configurations required by th
 
 ```go
 type Config struct {
-  ChainID          string        `env:"CHAIN_ID, default=warden"`
-  GRPCURL          string        `env:"GRPC_URL, default=localhost:9090"`
-  GRPCInsecure     bool          `env:"GRPC_INSECURE, default=true"`
-  DerivationPath   string        `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
-  Mnemonic         string        `env:"MNEMONIC, default=exclude try nephew main..."`
-  KeychainId       uint64        `env:"KEYCHAIN_ID, default=1"`
-  KeyringMnemonic  string        `env:"KEYRING_MNEMONIC, required"`
-  KeyringPassword  string        `env:"KEYRING_PASSWORD, required"`
-  BatchInterval    time.Duration `env:"BATCH_INTERVAL, default=8s"`
-  BatchSize        int           `env:"BATCH_SIZE, default=7"`
-  GasLimit         uint64        `env:"GAS_LIMIT, default=400000"`
-  TxTimeout        time.Duration `env:"TX_TIMEOUT, default=120s"`
-  TxFee            int64         `env:"TX_FEE, default=400000"`
-  HttpAddr         string        `env:"HTTP_ADDR, default=:8080"`
-  LogLevel         slog.Level    `env:"LOG_LEVEL, default=debug"`
+  ChainID             string        `env:"CHAIN_ID, default=warden"`
+  GRPCURL             string        `env:"GRPC_URL, default=localhost:9090"`
+  GRPCInsecure        bool          `env:"GRPC_INSECURE, default=true"`
+  DerivationPath      string        `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
+  Mnemonic            string        `env:"MNEMONIC, default=exclude try nephew main..."`
+  KeychainId          uint64        `env:"KEYCHAIN_ID, default=1"`
+  KeyringMnemonic     string        `env:"KEYRING_MNEMONIC, required"`
+  KeyringPassword     string        `env:"KEYRING_PASSWORD, required"`
+  BatchInterval       time.Duration `env:"BATCH_INTERVAL, default=8s"`
+  BatchSize           int           `env:"BATCH_SIZE, default=7"`
+  GasLimit            uint64        `env:"GAS_LIMIT, default=400000"`
+  AutoEstimateGas     bool          `env:"AUTO_ESTIMATE_GAS, default=true"`
+  GasAdjustmentFactor float64       `env:"GAS_ADJUSTMENT_FACTOR, default=1.1"`
+  TxTimeout           time.Duration `env:"TX_TIMEOUT, default=120s"`
+  TxFee               int64         `env:"TX_FEE, default=400000"`
+  HttpAddr            string        `env:"HTTP_ADDR, default=:8080"`
+  LogLevel            slog.Level    `env:"LOG_LEVEL, default=debug"`
 }
 ```
 

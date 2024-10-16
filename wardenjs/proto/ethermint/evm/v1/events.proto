@@ -3,7 +3,7 @@
 syntax = "proto3";
 package ethermint.evm.v1;
 
-option go_package = "github.com/evmos/evmos/v19/x/evm/types";
+option go_package = "github.com/evmos/evmos/v20/x/evm/types";
 
 // EventEthereumTx defines the event for an Ethereum transaction
 message EventEthereumTx {

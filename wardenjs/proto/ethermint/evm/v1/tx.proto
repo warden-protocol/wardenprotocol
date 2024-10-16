@@ -3,6 +3,7 @@
 syntax = "proto3";
 package ethermint.evm.v1;
 
+import "amino/amino.proto";
 import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "ethermint/evm/v1/evm.proto";
@@ -10,10 +11,11 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
 
-option go_package = "github.com/evmos/evmos/v19/x/evm/types";
+option go_package = "github.com/evmos/evmos/v20/x/evm/types";
 
 // Msg defines the evm Msg service.
 service Msg {
+  option (cosmos.msg.v1.service) = true;
   // EthereumTx defines a method submitting Ethereum transactions.
   rpc EthereumTx(MsgEthereumTx) returns (MsgEthereumTxResponse) {
     option (google.api.http).post = "/evmos/evm/v1/ethereum_tx";
@@ -25,15 +27,17 @@ service Msg {
 
 // MsgEthereumTx encapsulates an Ethereum transaction as an SDK message.
 message MsgEthereumTx {
+  option (amino.name) = "ethermint/MsgEthereumTx";
+
   option (gogoproto.goproto_getters) = false;
 
   // data is inner transaction data of the Ethereum transaction
   google.protobuf.Any data = 1;
 
   // size is the encoded storage size of the transaction (DEPRECATED)
-  double size = 2 [(gogoproto.jsontag) = "-"];
+  double size = 2 [(gogoproto.jsontag) = "-", (amino.dont_omitempty) = true];
   // hash of the transaction in hex format
-  string hash = 3 [(gogoproto.moretags) = "rlp:\"-\""];
+  string hash = 3 [(gogoproto.moretags) = "rlp:\"-\"", (amino.dont_omitempty) = true];
   // from is the ethereum signer address in hex format. This address value is checked
   // against the address derived from the signature (V, R, S) using the
   // secp256k1 elliptic curve
@@ -44,6 +48,8 @@ message MsgEthereumTx {
 // NOTE: All non-protected transactions (i.e non EIP155 signed) will fail if the
 // AllowUnprotectedTxs parameter is disabled.
 message LegacyTx {
+  option (amino.name) = "ethermint/LegacyTx";
+
   option (gogoproto.goproto_getters) = false;
   option (cosmos_proto.implements_interface) = "TxData";
 
@@ -69,6 +75,8 @@ message LegacyTx {
 
 // AccessListTx is the data of EIP-2930 access list transactions.
 message AccessListTx {
+  option (amino.name) = "ethermint/AccessListTx";
+
   option (gogoproto.goproto_getters) = false;
   option (cosmos_proto.implements_interface) = "TxData";
 
@@ -91,8 +99,12 @@ message AccessListTx {
   // data is the data payload bytes of the transaction.
   bytes data = 7;
   // accesses is an array of access tuples
-  repeated AccessTuple accesses = 8
-      [(gogoproto.castrepeated) = "AccessList", (gogoproto.jsontag) = "accessList", (gogoproto.nullable) = false];
+  repeated AccessTuple accesses = 8 [
+    (gogoproto.castrepeated) = "AccessList",
+    (gogoproto.jsontag) = "accessList",
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
   // v defines the signature value
   bytes v = 9;
   // r defines the signature value
@@ -103,6 +115,8 @@ message AccessListTx {
 
 // DynamicFeeTx is the data of EIP-1559 dynamic fee transactions.
 message DynamicFeeTx {
+  option (amino.name) = "ethermint/DynamicFeeTx";
+
   option (gogoproto.goproto_getters) = false;
   option (cosmos_proto.implements_interface) = "TxData";
 
@@ -127,8 +141,12 @@ message DynamicFeeTx {
   // data is the data payload bytes of the transaction.
   bytes data = 8;
   // accesses is an array of access tuples
-  repeated AccessTuple accesses = 9
-      [(gogoproto.castrepeated) = "AccessList", (gogoproto.jsontag) = "accessList", (gogoproto.nullable) = false];
+  repeated AccessTuple accesses = 9 [
+    (gogoproto.castrepeated) = "AccessList",
+    (gogoproto.jsontag) = "accessList",
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
   // v defines the signature value
   bytes v = 10;
   // r defines the signature value
@@ -164,6 +182,7 @@ message MsgEthereumTxResponse {
 
 // MsgUpdateParams defines a Msg for updating the x/evm module parameters.
 message MsgUpdateParams {
+  option (amino.name) = "evmos/x/evm/MsgUpdateParams";
   option (cosmos.msg.v1.signer) = "authority";
 
   // authority is the address of the governance account.
@@ -171,7 +190,7 @@ message MsgUpdateParams {
 
   // params defines the x/evm parameters to update.
   // NOTE: All parameters must be supplied.
-  Params params = 2 [(gogoproto.nullable) = false];
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 
 // MsgUpdateParamsResponse defines the response structure for executing a

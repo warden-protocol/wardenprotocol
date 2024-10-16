@@ -20,6 +20,11 @@ These commands allow you to do the following:
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
 
+You can follow installations instructions in one of these guides (depending on your goal):
+
+- [Run a local chain](/operate-a-node/run-a-local-chain)
+- [Join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista#1-install)
+
 ## Execute `wardend` commands
 
 To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with the node endpoint.
@@ -81,7 +86,7 @@ Here are some of the available `wardend query warden` subcommands with examples:
 - `spaces`: This command returns a list of your [Spaces](/learn/glossary#space).
    
    ```bash
-   wardend query warden spaces\
+   wardend query warden spaces \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 

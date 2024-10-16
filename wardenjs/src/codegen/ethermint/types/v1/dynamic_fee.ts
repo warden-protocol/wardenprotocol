@@ -14,7 +14,7 @@ export interface ExtensionOptionDynamicFeeTxProtoMsg {
 /** ExtensionOptionDynamicFeeTx is an extension option that specifies the maxPrioPrice for cosmos tx */
 export interface ExtensionOptionDynamicFeeTxAmino {
   /** max_priority_price is the same as `max_priority_fee_per_gas` in eip-1559 spec */
-  max_priority_price?: string;
+  max_priority_price: string;
 }
 export interface ExtensionOptionDynamicFeeTxAminoMsg {
   type: "/ethermint.types.v1.ExtensionOptionDynamicFeeTx";
@@ -78,7 +78,7 @@ export const ExtensionOptionDynamicFeeTx = {
   },
   toAmino(message: ExtensionOptionDynamicFeeTx): ExtensionOptionDynamicFeeTxAmino {
     const obj: any = {};
-    obj.max_priority_price = message.maxPriorityPrice === "" ? undefined : message.maxPriorityPrice;
+    obj.max_priority_price = message.maxPriorityPrice ?? "";
     return obj;
   },
   fromAminoMsg(object: ExtensionOptionDynamicFeeTxAminoMsg): ExtensionOptionDynamicFeeTx {

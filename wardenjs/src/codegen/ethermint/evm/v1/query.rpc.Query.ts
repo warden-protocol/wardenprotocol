@@ -19,7 +19,7 @@ export interface Query {
   validatorAccount(request: QueryValidatorAccountRequest): Promise<QueryValidatorAccountResponse>;
   /**
    * Balance queries the balance of a the EVM denomination for a single
-   * account.
+   * EthAccount.
    */
   balance(request: QueryBalanceRequest): Promise<QueryBalanceResponse>;
   /** Storage queries the balance of all coins for a single account. */
@@ -328,7 +328,7 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
     useValidatorAccount,
     /**
      * Balance queries the balance of a the EVM denomination for a single
-     * account.
+     * EthAccount.
      */
     useBalance,
     /** Storage queries the balance of all coins for a single account. */useStorage,

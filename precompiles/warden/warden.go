@@ -2,6 +2,8 @@ package warden
 
 import (
 	"embed"
+	"fmt"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 
 	"cosmossdk.io/log"
@@ -46,7 +48,7 @@ func NewPrecompile(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper,
 		return nil, err
 	}
 
-	return &Precompile{
+	p := Precompile{
 		Precompile: cmn.Precompile{
 			ABI:                  abi,
 			KvGasConfig:          storetypes.KVGasConfig(),
@@ -55,7 +57,11 @@ func NewPrecompile(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper,
 		wardenkeeper:   wardenkeeper,
 		actkeeper:      actkeeper,
 		eventsRegistry: e,
-	}, nil
+	}
+
+	p.SetAddress(common.HexToAddress(PrecompileAddress))
+
+	return &p, nil
 }
 
 // Address implements vm.PrecompiledContract.
@@ -66,6 +72,11 @@ func (Precompile) Address() common.Address {
 // RequiredGas returns the required bare minimum gas to execute the precompile.
 // Subtle: this method shadows the method (Precompile).RequiredGas of Precompile.Precompile.
 func (p Precompile) RequiredGas(input []byte) uint64 {
+	// NOTE: This check avoid panicking when trying to decode the method ID
+	if len(input) < 4 {
+		return 0
+	}
+
 	methodID := input[:4]
 
 	method, err := p.MethodById(methodID)
@@ -79,7 +90,7 @@ func (p Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz []byte, err error) {
-	ctx, stateDB, _, method, initialGas, args, err := p.RunSetup(evm, contract, readOnly, p.IsTransaction)
+	ctx, stateDB, snapshot, method, initialGas, args, err := p.RunSetup(evm, contract, readOnly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}
@@ -87,10 +98,6 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer cmn.HandleGasError(ctx, contract, initialGas, &err)()
-
-	if err := stateDB.Commit(); err != nil {
-		return nil, err
-	}
 
 	switch method.Name {
 	// transactions
@@ -164,12 +171,16 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		return nil, vm.ErrOutOfGas
 	}
 
+	if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
+		return nil, err
+	}
+
 	return bz, nil
 }
 
 // IsTransaction checks if the given method name corresponds to a transaction or query.
 //
-// Available staking transactions are:
+// Available warden transactions are:
 //
 //	-
 func (Precompile) IsTransaction(method string) bool {
@@ -189,9 +200,22 @@ func (Precompile) IsTransaction(method string) bool {
 		UpdateKeyMethod,
 		UpdateSpaceMethod:
 		return true
-	default:
+	case AllKeysMethod,
+		KeyByIdMethod,
+		KeysBySpaceIdMethod,
+		KeyRequestMethod,
+		KeyRequestsMethod,
+		KeychainMethod,
+		KeychainsMethod,
+		SignRequestByIdMethod,
+		SignRequestsMethod,
+		SpaceByIdMethod,
+		SpacesMethodMethod,
+		SpacesByOwnerMethod:
 		return false
 	}
+
+	panic(fmt.Errorf("warden precompile: method not exists: %s", method))
 }
 
 // Logger returns a precompile-specific logger.

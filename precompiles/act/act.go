@@ -158,5 +158,5 @@ func (p *Precompile) IsTransaction(method string) bool {
 
 // Logger returns a precompile-specific logger.
 func (p *Precompile) Logger(ctx sdk.Context) log.Logger {
-	return ctx.Logger().With("evm extension", "x/act")
+	return ctx.Logger().With("evm extension", "act")
 }

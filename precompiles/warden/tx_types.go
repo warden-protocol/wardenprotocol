@@ -295,33 +295,55 @@ func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act strin
 	}, &msgRemoveSpaceOwner, nil
 }
 
-func newMsgNewKeyRequest(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewKeyRequest, error) {
+type newKeyRequestInput struct {
+	SpaceId                   uint64
+	KeychainId                uint64
+	KeyType                   uint8
+	ApproveTemplateId         uint64
+	RejectTemplateId          uint64
+	MaxKeychainFees           []cosmosTypes.Coin
+	Nonce                     uint64
+	ActionTimeoutHeight       uint64
+	ExpectedApproveExpression string
+	ExpectedRejectExpression  string
+}
+
+func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewKeyRequest, error) {
 	if len(args) != 10 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 10, len(args))
 	}
 
-	spaceId := args[0].(uint64)
-	keychainId := args[1].(uint64)
-	keyType := args[2].(uint8)
-	approveTemplateId := args[3].(uint64)
-	rejectTemplateId := args[4].(uint64)
-	maxKeychainFees := args[5].(cosmosTypes.Coins)
-	nonce := args[6].(uint64)
-	actionTimeoutHeight := args[7].(uint64)
-	expectedApproveExpression := args[8].(string)
-	expectedRejectExpression := args[9].(string)
+	var input newKeyRequestInput
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, nil, fmt.Errorf("error while unpacking args to maxKeychainFees struct: %s", err)
+	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
+	mapKeyType := func(keyType uint8) (v1beta3.KeyType, error) {
+		switch keyType {
+		case uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED):
+			return v1beta3.KeyType_KEY_TYPE_UNSPECIFIED, nil
+		case uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1):
+			return v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1, nil
+		case uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519):
+			return v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519, nil
+		default:
+			return -1, fmt.Errorf("key type is not supported: %v", keyType)
+		}
+	}
+
+	keyType, err := mapKeyType(input.KeyType)
+
 	msgNewKeyRequest := types.MsgNewKeyRequest{
 		Authority:         act,
-		SpaceId:           spaceId,
-		KeychainId:        keychainId,
-		KeyType:           types.KeyType(keyType),
-		ApproveTemplateId: approveTemplateId,
-		RejectTemplateId:  rejectTemplateId,
-		MaxKeychainFees:   maxKeychainFees,
-		Nonce:             nonce,
+		SpaceId:           input.SpaceId,
+		KeychainId:        input.KeychainId,
+		KeyType:           keyType,
+		ApproveTemplateId: input.ApproveTemplateId,
+		RejectTemplateId:  input.RejectTemplateId,
+		MaxKeychainFees:   input.MaxKeychainFees,
+		Nonce:             input.Nonce,
 	}
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewKeyRequest)
@@ -332,9 +354,9 @@ func newMsgNewKeyRequest(args []interface{}, origin common.Address, act string) 
 	return &actTypes.MsgNewAction{
 		Creator:                   authority,
 		Message:                   anyMsg,
-		ActionTimeoutHeight:       actionTimeoutHeight,
-		ExpectedApproveExpression: expectedApproveExpression,
-		ExpectedRejectExpression:  expectedRejectExpression,
+		ActionTimeoutHeight:       input.ActionTimeoutHeight,
+		ExpectedApproveExpression: input.ExpectedApproveExpression,
+		ExpectedRejectExpression:  input.ExpectedRejectExpression,
 	}, &msgNewKeyRequest, nil
 }
 

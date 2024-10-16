@@ -36,11 +36,36 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": true,
+          "internalType": "address",
+          "name": "author",
+          "type": "address"
+        },
+        {
           "indexed": false,
           "internalType": "uint64",
           "name": "actionId",
           "type": "uint64"
         },
+        {
+          "indexed": false,
+          "internalType": "int32",
+          "name": "previousStatus",
+          "type": "int32"
+        },
+        {
+          "indexed": false,
+          "internalType": "int32",
+          "name": "newStatus",
+          "type": "int32"
+        }
+      ],
+      "name": "ActionStateChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
         {
           "indexed": true,
           "internalType": "address",
@@ -49,55 +74,48 @@
         },
         {
           "indexed": false,
-          "internalType": "int32",
-          "name": "voteType",
-          "type": "int32"
-        }
-      ],
-      "name": "EventActionVoted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
           "internalType": "uint64",
           "name": "actionId",
           "type": "uint64"
         },
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "creator",
-          "type": "address"
+          "indexed": false,
+          "internalType": "int32",
+          "name": "voteType",
+          "type": "int32"
         }
       ],
-      "name": "EventCreateAction",
+      "name": "ActionVoted",
       "type": "event"
     },
     {
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
-          "internalType": "uint64",
-          "name": "templateId",
-          "type": "uint64"
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
         },
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "creator",
-          "type": "address"
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "actionId",
+          "type": "uint64"
         }
       ],
-      "name": "EventCreateTemplate",
+      "name": "CreateAction",
       "type": "event"
     },
     {
       "anonymous": false,
       "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
         {
           "indexed": false,
           "internalType": "uint64",
@@ -105,7 +123,26 @@
           "type": "uint64"
         }
       ],
-      "name": "EventUpdateTemplate",
+      "name": "CreateTemplate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "author",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "templateId",
+          "type": "uint64"
+        }
+      ],
+      "name": "UpdateTemplate",
       "type": "event"
     },
     {

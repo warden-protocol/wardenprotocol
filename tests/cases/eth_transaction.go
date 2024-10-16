@@ -3,10 +3,12 @@ package cases
 import (
 	"context"
 	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 	actv1beta1 "github.com/warden-protocol/wardenprotocol/api/warden/act/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
+	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"math/big"
 	"testing"
@@ -29,6 +31,7 @@ func (c *Test_EthTransactionReader) Setup(t *testing.T, ctx context.Context, bui
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunnning(t)
+	c.w.PrintLogsAtTheEnd(t, ctx)
 }
 
 func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
@@ -40,26 +43,40 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 	evmClient := c.w.EthClient(t)
 	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), evmClient)
 	require.NoError(t, err)
+	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), evmClient)
+	require.NoError(t, err)
 
 	t.Run("work with templates", func(t *testing.T) {
-		_, err := iActClient.NewTemplate(
+		createTemplateTx, err := iActClient.NewTemplate(
 			alice.TransactOps(t, context.Background(), evmClient),
 			"evm rule #1",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		createTemplateReceipt, err := bind.WaitMined(ctx, evmClient, createTemplateTx)
+		require.NoError(t, err)
+
+		createTemplateEvents, err := checks.GetParsedEventsOnly(createTemplateReceipt, iActClient.ParseCreateTemplate)
+		require.NoError(t, err)
+		require.Len(t, createTemplateEvents, 1)
 
 		templateById, err := iActClient.TemplateById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 		require.Equal(t, "evm rule #1", templateById.Template.Name)
 
-		_, err = iActClient.UpdateTemplate(
+		updateTemplateTx, err := iActClient.UpdateTemplate(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			"evm rule #1 modified",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		updateTemplateReceipt, err := bind.WaitMined(ctx, evmClient, updateTemplateTx)
+		require.NoError(t, err)
+
+		updateTemplateEvents, err := checks.GetParsedEventsOnly(updateTemplateReceipt, iActClient.ParseUpdateTemplate)
+		require.NoError(t, err)
+		require.Len(t, updateTemplateEvents, 1)
 
 		templateById, err = iActClient.TemplateById(alice.CallOps(t), 1)
 		require.NoError(t, err)
@@ -111,9 +128,15 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 
 		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 
-		_, err = iActClient.RevokeAction(alice.TransactOps(t, ctx, evmClient), 3)
+		revokeTx, err := iActClient.RevokeAction(alice.TransactOps(t, ctx, evmClient), 3)
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		actionRevokeReceipt, err := bind.WaitMined(ctx, evmClient, revokeTx)
+		require.NoError(t, err)
+
+		actionStateChangeEvents, err := checks.GetParsedEventsOnly(actionRevokeReceipt, iActClient.ParseActionStateChange)
+		require.NoError(t, err)
+		require.Len(t, actionStateChangeEvents, 1)
 
 		actionById, err = iActClient.ActionById(alice.CallOps(t), 3)
 		if err != nil {
@@ -129,10 +152,24 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 
 		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 
-		_, err = iActClient.VoteForAction(bob.TransactOps(t, ctx, evmClient), 4, 1)
+		voteTx, err := iActClient.VoteForAction(bob.TransactOps(t, ctx, evmClient), 4, 1)
 		require.NoError(t, err)
-		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
+
+		actionVotedReceipt, err := bind.WaitMined(ctx, evmClient, voteTx)
+		require.NoError(t, err)
 
 		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 1)
+
+		actionVotedEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionVoted)
+		require.NoError(t, err)
+		require.Len(t, actionVotedEvents, 1)
+
+		addSpaceOwnerEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iWardenClient.ParseAddSpaceOwner)
+		require.NoError(t, err)
+		require.Len(t, addSpaceOwnerEvents, 1)
+
+		actionStateChangeEvents, err = checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionStateChange)
+		require.NoError(t, err)
+		require.Len(t, actionStateChangeEvents, 1)
 	})
 }

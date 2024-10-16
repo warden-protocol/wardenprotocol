@@ -22,7 +22,8 @@ const (
 	// EventActionVoted defines the event type for the x/act VoteForAction transaction.
 	EventActionVoted = "ActionVoted"
 	// EventCreateAction defines the event type for the x/act NewAction transaction.
-	EventCreateAction      = "CreateAction"
+	EventCreateAction = "CreateAction"
+	// EventActionStateChange defines the event type for the x/act action status change.
 	EventActionStateChange = "ActionStateChange"
 )
 
@@ -113,7 +114,6 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		}
-
 	}
 
 	return &b, nil
@@ -278,33 +278,40 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 		}
 	}
 
-	for _, attr := range sdkEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
-		switch key {
-		case "id":
-			value, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("ActionStateChangeEvent: invalid id type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(value)))
-		case "previous_status":
-			value, err := mapActionStatus(val)
-			if err != nil {
-				return nil, fmt.Errorf("ActionStateChangeEvent: invalid previous_status type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(value)))
-		case "new_status":
-			value, err := mapActionStatus(val)
-			if err != nil {
-				return nil, fmt.Errorf("ActionStateChangeEvent: invalid new_status type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(value)))
+	{
+		idAttribute, success := sdkEvent.GetAttribute("id")
+		if !success {
+			return nil, fmt.Errorf("ActionStateChangeEvent: id attribute is not found: %v", sdkEvent)
 		}
+		value, success := new(big.Int).SetString(strings.Trim(idAttribute.GetValue(), "\""), 10)
+		if !success {
+			return nil, fmt.Errorf("ActionStateChangeEvent: invalid id type")
+		}
+		b.Write(cmn.PackNum(reflect.ValueOf(value)))
+	}
 
+	{
+		prevStatusAttribute, success := sdkEvent.GetAttribute("previous_status")
+		if !success {
+			return nil, fmt.Errorf("ActionStateChangeEvent: previous_status attribute is not found: %v", sdkEvent)
+		}
+		value, err := mapActionStatus(strings.Trim(prevStatusAttribute.GetValue(), "\""))
+		if err != nil {
+			return nil, fmt.Errorf("ActionStateChangeEvent: invalid previous_status type")
+		}
+		b.Write(cmn.PackNum(reflect.ValueOf(value)))
+	}
+
+	{
+		newStatusAttribute, success := sdkEvent.GetAttribute("new_status")
+		if !success {
+			return nil, fmt.Errorf("ActionStateChangeEvent: new_status attribute is not found: %v", sdkEvent)
+		}
+		value, err := mapActionStatus(strings.Trim(newStatusAttribute.GetValue(), "\""))
+		if err != nil {
+			return nil, fmt.Errorf("ActionStateChangeEvent: invalid new_status type")
+		}
+		b.Write(cmn.PackNum(reflect.ValueOf(value)))
 	}
 
 	return &b, nil

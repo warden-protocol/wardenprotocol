@@ -109,8 +109,9 @@ interface IAct {
     function templateById(uint64 templateId)
     external view returns (TemplateByIdResponse memory response);
 
-    event EventCreateTemplate(address indexed creator, uint64 templateId);
-    event EventUpdateTemplate(uint64 templateId);
-    event EventActionVoted(address indexed participant, uint64 actionId, int32 voteType);
-    event EventCreateAction(address indexed creator, uint64 actionId );
+    event CreateTemplate(address indexed creator, uint64 templateId);
+    event UpdateTemplate(address indexed author, uint64 templateId);
+    event ActionVoted(address indexed participant, uint64 actionId, int32 voteType);
+    event CreateAction(address indexed creator, uint64 actionId);
+    event ActionStateChange(address indexed author, uint64 actionId, int32 previousStatus, int32 newStatus);
 }

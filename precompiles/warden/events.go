@@ -301,7 +301,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = cmn.MakeTopic(creator)
+	topics[1], err = cmn.MakeTopic(*creator)
 
 	if err != nil {
 		return nil, err
@@ -340,7 +340,7 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = cmn.MakeTopic(creator)
+	topics[1], err = cmn.MakeTopic(*creator)
 
 	if err != nil {
 		return nil, err
@@ -409,7 +409,7 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = cmn.MakeTopic(admin)
+	topics[1], err = cmn.MakeTopic(*admin)
 
 	if err != nil {
 		return nil, err

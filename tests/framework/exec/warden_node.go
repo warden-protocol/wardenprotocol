@@ -114,6 +114,25 @@ func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context) {
 	}()
 }
 
+func (w *WardenNode) PrintDebugLogsAtTheEnd(t *testing.T, ctx context.Context) {
+	go func() {
+		select {
+		case <-ctx.Done():
+			// Split the logs into individual lines
+			logs := strings.Split(w.Stdout.String(), "\n")
+			// Filter out lines that contain "INF "
+			var filteredLogs []string
+			for _, line := range logs {
+				if strings.Contains(line, "TEST_DEBUG") {
+					filteredLogs = append(filteredLogs, line)
+				}
+			}
+			// Join the filtered lines back and print them
+			t.Logf("Node logs: \n %s", strings.Join(filteredLogs, "\n"))
+		}
+	}()
+}
+
 func (w *WardenNode) grpcAddr() string {
 	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
 }

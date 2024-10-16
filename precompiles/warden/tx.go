@@ -375,7 +375,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 		),
 	)
 
-	response, err := msgServer.NewAction(ctx, msgNewAction)
+	_, err = msgServer.NewAction(ctx, msgNewAction)
 
 	if err != nil {
 		return nil, err
@@ -385,7 +385,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) RemoveSpaceOwnerMethod(
@@ -418,7 +418,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 		),
 	)
 
-	response, err := msgServer.NewAction(ctx, msgNewAction)
+	_, err = msgServer.NewAction(ctx, msgNewAction)
 
 	if err != nil {
 		return nil, err
@@ -428,7 +428,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) NewKeyRequestMethod(
@@ -465,7 +465,7 @@ func (p Precompile) NewKeyRequestMethod(
 		),
 	)
 
-	response, err := msgServer.NewAction(ctx, msgNewAction)
+	_, err = msgServer.NewAction(ctx, msgNewAction)
 
 	if err != nil {
 		return nil, err
@@ -475,7 +475,7 @@ func (p Precompile) NewKeyRequestMethod(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) NewSignRequestMethod(
@@ -511,7 +511,7 @@ func (p Precompile) NewSignRequestMethod(
 		),
 	)
 
-	response, err := msgServer.NewAction(ctx, msgNewAction)
+	_, err = msgServer.NewAction(ctx, msgNewAction)
 
 	if err != nil {
 		return nil, err
@@ -521,7 +521,7 @@ func (p Precompile) NewSignRequestMethod(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) UpdateKeyMethod(
@@ -554,7 +554,7 @@ func (p Precompile) UpdateKeyMethod(
 		),
 	)
 
-	response, err := msgServer.NewAction(ctx, msgNewAction)
+	_, err = msgServer.NewAction(ctx, msgNewAction)
 
 	if err != nil {
 		return nil, err
@@ -564,7 +564,7 @@ func (p Precompile) UpdateKeyMethod(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }
 
 func (p Precompile) UpdateSpaceMethod(
@@ -600,7 +600,7 @@ func (p Precompile) UpdateSpaceMethod(
 		),
 	)
 
-	response, err := msgServer.NewAction(ctx, msgNewAction)
+	_, err = msgServer.NewAction(ctx, msgNewAction)
 
 	if err != nil {
 		return nil, err
@@ -610,5 +610,5 @@ func (p Precompile) UpdateSpaceMethod(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(response)
+	return method.Outputs.Pack(true)
 }

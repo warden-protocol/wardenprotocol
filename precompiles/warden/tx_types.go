@@ -315,7 +315,7 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 
 	var input newKeyRequestInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, nil, fmt.Errorf("error while unpacking args to maxKeychainFees struct: %s", err)
+		return nil, nil, fmt.Errorf("error while unpacking args to newMsgNewKeyRequest struct: %s", err)
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
@@ -360,36 +360,43 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 	}, &msgNewKeyRequest, nil
 }
 
-func newMsgNewSignRequest(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewSignRequest, error) {
+type newSignRequestInput struct {
+	KeyId                     uint64
+	Input                     []byte
+	Analyzers                 []common.Address
+	EncryptionKey             []byte
+	MaxKeychainFees           []cosmosTypes.Coin
+	Nonce                     uint64
+	ActionTimeoutHeight       uint64
+	ExpectedApproveExpression string
+	ExpectedRejectExpression  string
+}
+
+func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewSignRequest, error) {
 	if len(args) != 9 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 9, len(args))
 	}
 
-	keyId := args[0].(uint64)
-	input := args[1].([]byte)
-
-	var analyzers []string
-	for _, a := range args[2].([]common.Address) {
-		analyzers = append(analyzers, wardencommon.Bech32StrFromAddress(a))
+	var input newSignRequestInput
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %s", err)
 	}
 
-	encryptionKey := args[3].([]byte)
-	maxKeychainFees := args[4].(cosmosTypes.Coins)
-	nonce := args[5].(uint64)
-	actionTimeoutHeight := args[6].(uint64)
-	expectedApproveExpression := args[7].(string)
-	expectedRejectExpression := args[8].(string)
+	var analyzers []string
+	for _, a := range input.Analyzers {
+		analyzers = append(analyzers, wardencommon.Bech32StrFromAddress(a))
+	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
 	msgNewSignRequest := types.MsgNewSignRequest{
 		Authority:       act,
-		KeyId:           keyId,
-		Input:           input,
+		KeyId:           input.KeyId,
+		Input:           input.Input,
 		Analyzers:       analyzers,
-		EncryptionKey:   encryptionKey,
-		MaxKeychainFees: maxKeychainFees,
-		Nonce:           nonce,
+		EncryptionKey:   input.EncryptionKey,
+		MaxKeychainFees: input.MaxKeychainFees,
+		Nonce:           input.Nonce,
 	}
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewSignRequest)
@@ -400,9 +407,9 @@ func newMsgNewSignRequest(args []interface{}, origin common.Address, act string)
 	return &actTypes.MsgNewAction{
 		Creator:                   authority,
 		Message:                   anyMsg,
-		ActionTimeoutHeight:       actionTimeoutHeight,
-		ExpectedApproveExpression: expectedApproveExpression,
-		ExpectedRejectExpression:  expectedRejectExpression,
+		ActionTimeoutHeight:       input.ActionTimeoutHeight,
+		ExpectedApproveExpression: input.ExpectedApproveExpression,
+		ExpectedRejectExpression:  input.ExpectedRejectExpression,
 	}, &msgNewSignRequest, nil
 }
 

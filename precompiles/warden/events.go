@@ -421,11 +421,11 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 		val := strings.Trim(attr.GetValue(), "\"")
 		switch key {
 		case "id":
-			spaceId, success := new(big.Int).SetString(val, 10)
+			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("RemoveKeychainAdmin: invalid keychain id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
+			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
 		case "admins_count":
 			adminsCount, success := new(big.Int).SetString(val, 10)
 			if !success {
@@ -639,13 +639,13 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, creator *common.Addr
 		case "id":
 			id, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewNewSignRequest: invalid id type")
+				return nil, fmt.Errorf("NewSignRequest: invalid id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(id)))
 		case "keyId":
 			keyId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewNewSignRequest: invalid key id type")
+				return nil, fmt.Errorf("NewSignRequest: invalid key id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keyId)))
 		}
@@ -676,19 +676,19 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 		case "id":
 			id, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid id type")
+				return nil, fmt.Errorf("UpdateKeyEvent: invalid id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(id)))
 		case "approveTemplateId":
 			approveTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewUpdateKey: invalid approve template id type")
+				return nil, fmt.Errorf("UpdateKeyEvent: invalid approve template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveTemplateId)))
 		case "rejectTemplateId":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewUpdateKey: invalid reject template id type")
+				return nil, fmt.Errorf("UpdateKeyEvent: invalid reject template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
 		}
@@ -719,31 +719,31 @@ func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, upda
 		case "id":
 			id, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid id type")
+				return nil, fmt.Errorf("UpdateSpaceEvent: invalid id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(id)))
 		case "approveAdminTemplateId":
 			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewUpdateSpace: invalid approve admin template id type")
+				return nil, fmt.Errorf("UpdateSpaceEvent: invalid approve admin template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
 		case "rejectAdminTemplateId":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewUpdateSpace: invalid reject admin template id type")
+				return nil, fmt.Errorf("UpdateSpaceEvent: invalid reject admin template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
 		case "approveSignTemplateId":
 			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewUpdateSpace: invalid approve sign template id type")
+				return nil, fmt.Errorf("UpdateSpaceEvent: invalid approve sign template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
 		case "rejectSignTemplateId":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
-				return nil, fmt.Errorf("NewUpdateSpace: invalid reject sign template id type")
+				return nil, fmt.Errorf("UpdateSpaceEvent: invalid reject sign template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
 		}

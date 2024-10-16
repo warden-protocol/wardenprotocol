@@ -345,6 +345,10 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		panic(err)
 	}
 	for a, p := range wardenprecompiles {
+		_, found := precompiles[a]
+		if found {
+			panic(fmt.Errorf("precompiles address already registered: %v", a))
+		}
 		precompiles[a] = p
 	}
 

@@ -440,7 +440,7 @@ func (p Precompile) NewKeyRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgNewKeyRequest, err := newMsgNewKeyRequest(args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, msgNewKeyRequest, err := newMsgNewKeyRequest(method, args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -487,7 +487,7 @@ func (p Precompile) NewSignRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgNewSignRequest, err := newMsgNewSignRequest(args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, msgNewSignRequest, err := newMsgNewSignRequest(method, args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err

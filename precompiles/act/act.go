@@ -2,7 +2,7 @@ package act
 
 import (
 	"embed"
-	"github.com/warden-protocol/wardenprotocol/precompiles/common"
+	"fmt"
 
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -12,6 +12,7 @@ import (
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
+	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 )
 
@@ -53,6 +54,8 @@ func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistr
 		eventsRegistry:  er,
 	}
 
+	p.SetAddress(ethcmn.HexToAddress(PrecompileAddress))
+
 	return &p, nil
 }
 
@@ -64,6 +67,11 @@ func (p *Precompile) Address() ethcmn.Address {
 // RequiredGas implements vm.PrecompiledContract.
 // Subtle: this method shadows the method (Precompile).RequiredGas of Precompile.Precompile.
 func (p *Precompile) RequiredGas(input []byte) uint64 {
+	// NOTE: This check avoid panicking when trying to decode the method ID
+	if len(input) < 4 {
+		return 0
+	}
+
 	methodID := input[:4]
 
 	method, err := p.MethodById(methodID)
@@ -77,7 +85,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
-	ctx, stateDB, _, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
+	ctx, stateDB, snapshot, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
 	if err != nil {
 		return nil, err
 	}
@@ -85,10 +93,6 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	// This handles any out of gas errors that may occur during the execution of a precompile tx or query.
 	// It avoids panics and returns the out of gas error so the EVM can continue gracefully.
 	defer evmoscmn.HandleGasError(ctx, contract, initialGas, &err)()
-
-	if err := stateDB.Commit(); err != nil {
-		return nil, err
-	}
 
 	switch method.Name {
 	// transactions
@@ -125,35 +129,31 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		return nil, vm.ErrOutOfGas
 	}
 
+	if err := p.AddJournalEntries(stateDB, snapshot); err != nil {
+		return nil, err
+	}
+
 	return bz, nil
 }
 
 func (p *Precompile) IsTransaction(method string) bool {
 	switch method {
 	// transactions
-	case CheckActionMethod:
-		return true
-	case NewTemplateMethod:
-		return true
-	case RevokeActionMethod:
-		return true
-	case UpdateTemplateMethod:
-		return true
-	case VoteForActionMethod:
+	case CheckActionMethod,
+		NewTemplateMethod,
+		RevokeActionMethod,
+		UpdateTemplateMethod,
+		VoteForActionMethod:
 		return true
 	// queries
-	case ActionsQuery:
-		return false
-	case ActionByIdQuery:
-		return false
-	case ActionsByAddressQuery:
-		return false
-	case TemplatesQuery:
-		return false
-	case TemplateByIdQuery:
+	case ActionsQuery,
+		ActionByIdQuery,
+		ActionsByAddressQuery,
+		TemplatesQuery,
+		TemplateByIdQuery:
 		return false
 	}
-	return false
+	panic(fmt.Errorf("act precompile: method not exists: %s", method))
 }
 
 // Logger returns a precompile-specific logger.

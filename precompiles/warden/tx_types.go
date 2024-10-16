@@ -223,7 +223,7 @@ type updateKeyChainInput struct {
 	KeybaseId    string
 }
 
-func newMsgAddSpaceOwner(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgAddSpaceOwner, error) {
+func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgAddSpaceOwner, error) {
 	if len(args) != 6 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
 	}
@@ -239,7 +239,7 @@ func newMsgAddSpaceOwner(args []interface{}, origin common.Address) (*actTypes.M
 	newOwner := wardencommon.Bech32StrFromAddress(newOwnerAddress)
 
 	msgAddSpaceOwner := types.MsgAddSpaceOwner{
-		Authority: authority,
+		Authority: act,
 		SpaceId:   spaceId,
 		NewOwner:  newOwner,
 		Nonce:     nonce,
@@ -259,7 +259,7 @@ func newMsgAddSpaceOwner(args []interface{}, origin common.Address) (*actTypes.M
 	}, &msgAddSpaceOwner, nil
 }
 
-func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgRemoveSpaceOwner, error) {
+func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgRemoveSpaceOwner, error) {
 	if len(args) != 6 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
 	}
@@ -275,7 +275,7 @@ func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address) (*actType
 	owner := wardencommon.Bech32StrFromAddress(ownerAddress)
 
 	msgRemoveSpaceOwner := types.MsgRemoveSpaceOwner{
-		Authority: authority,
+		Authority: act,
 		SpaceId:   spaceId,
 		Owner:     owner,
 		Nonce:     nonce,
@@ -295,7 +295,7 @@ func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address) (*actType
 	}, &msgRemoveSpaceOwner, nil
 }
 
-func newMsgNewKeyRequest(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgNewKeyRequest, error) {
+func newMsgNewKeyRequest(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewKeyRequest, error) {
 	if len(args) != 10 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 10, len(args))
 	}
@@ -314,7 +314,7 @@ func newMsgNewKeyRequest(args []interface{}, origin common.Address) (*actTypes.M
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
 	msgNewKeyRequest := types.MsgNewKeyRequest{
-		Authority:         authority,
+		Authority:         act,
 		SpaceId:           spaceId,
 		KeychainId:        keychainId,
 		KeyType:           types.KeyType(keyType),
@@ -338,7 +338,7 @@ func newMsgNewKeyRequest(args []interface{}, origin common.Address) (*actTypes.M
 	}, &msgNewKeyRequest, nil
 }
 
-func newMsgNewSignRequest(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgNewSignRequest, error) {
+func newMsgNewSignRequest(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewSignRequest, error) {
 	if len(args) != 9 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 9, len(args))
 	}
@@ -361,7 +361,7 @@ func newMsgNewSignRequest(args []interface{}, origin common.Address) (*actTypes.
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
 	msgNewSignRequest := types.MsgNewSignRequest{
-		Authority:       authority,
+		Authority:       act,
 		KeyId:           keyId,
 		Input:           input,
 		Analyzers:       analyzers,
@@ -384,7 +384,7 @@ func newMsgNewSignRequest(args []interface{}, origin common.Address) (*actTypes.
 	}, &msgNewSignRequest, nil
 }
 
-func newMsgUpdateKey(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgUpdateKey, error) {
+func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgUpdateKey, error) {
 	if len(args) != 6 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 6, len(args))
 	}
@@ -399,7 +399,7 @@ func newMsgUpdateKey(args []interface{}, origin common.Address) (*actTypes.MsgNe
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
 	msgUpdateKey := types.MsgUpdateKey{
-		Authority:         authority,
+		Authority:         act,
 		KeyId:             keyId,
 		ApproveTemplateId: approveTemplateId,
 		RejectTemplateId:  rejectTemplateId,
@@ -419,7 +419,7 @@ func newMsgUpdateKey(args []interface{}, origin common.Address) (*actTypes.MsgNe
 	}, &msgUpdateKey, nil
 }
 
-func newMsgUpdateSpace(args []interface{}, origin common.Address) (*actTypes.MsgNewAction, *types.MsgUpdateSpace, error) {
+func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgUpdateSpace, error) {
 	if len(args) != 9 {
 		return nil, nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 9, len(args))
 	}
@@ -437,7 +437,7 @@ func newMsgUpdateSpace(args []interface{}, origin common.Address) (*actTypes.Msg
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
 	msgUpdateSpace := types.MsgUpdateSpace{
-		Authority:              authority,
+		Authority:              act,
 		SpaceId:                spaceId,
 		Nonce:                  nonce,
 		ApproveAdminTemplateId: approveAdminTemplateId,

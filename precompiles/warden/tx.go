@@ -354,7 +354,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgAddSpaceOwner, err := newMsgAddSpaceOwner(args, origin)
+	msgNewAction, msgAddSpaceOwner, err := newMsgAddSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -397,7 +397,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgRemoveSpaceOwner, err := newMsgRemoveSpaceOwner(args, origin)
+	msgNewAction, msgRemoveSpaceOwner, err := newMsgRemoveSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -440,7 +440,7 @@ func (p Precompile) NewKeyRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgNewKeyRequest, err := newMsgNewKeyRequest(args, origin)
+	msgNewAction, msgNewKeyRequest, err := newMsgNewKeyRequest(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -487,7 +487,7 @@ func (p Precompile) NewSignRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgNewSignRequest, err := newMsgNewSignRequest(args, origin)
+	msgNewAction, msgNewSignRequest, err := newMsgNewSignRequest(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -533,7 +533,7 @@ func (p Precompile) UpdateKeyMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgUpdateKey, err := newMsgUpdateKey(args, origin)
+	msgNewAction, msgUpdateKey, err := newMsgUpdateKey(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -576,7 +576,7 @@ func (p Precompile) UpdateSpaceMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgUpdateSpace, err := newMsgUpdateSpace(args, origin)
+	msgNewAction, msgUpdateSpace, err := newMsgUpdateSpace(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err

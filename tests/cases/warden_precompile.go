@@ -281,12 +281,13 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		// reject sign request
 		newSignReqTx = alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newSignReqTx)
-		_, err = iWardenClient.RejectSignRequest(alice.TransactOps(t, ctx, evmClient), 2, "test reject reason")
+		signRequestRejectReason := "test reject reason"
+		_, err = iWardenClient.RejectSignRequest(alice.TransactOps(t, ctx, evmClient), 2, signRequestRejectReason)
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second)
 		signRequest, err = iWardenClient.SignRequestById(alice.CallOps(t), 2)
 		require.NoError(t, err)
-		result := []byte{}
+		result := []byte(signRequestRejectReason)
 		require.Equal(t, warden.SignRequest{
 			Id:                   2,
 			Creator:              alice.Address(t),

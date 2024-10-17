@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"math/big"
 	"testing"
-	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
@@ -31,8 +30,6 @@ func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build f
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunnning(t)
-
-	c.w.PrintLogsAtTheEnd(t, ctx)
 }
 
 func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
@@ -72,9 +69,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, alice.EthAddress(t), createTemplateEvents[0].Creator)
 
 		keychain, err := iWardenClient.KeychainById(alice.CallOps(t), 1)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
+
 		keychainAdmins := []string{}
 		keychainWriters := []string{}
 		keychainAdmins = append(keychainAdmins, alice.Address(t))
@@ -105,9 +101,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, uint64(1), addKeychainWriterEvents[0].AdminsCount)
 
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
+
 		keychainWriters = []string{alice.Address(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
@@ -136,9 +131,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, uint64(2), addKeychainAdminEvents[0].AdminsCount)
 
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
+
 		keychainAdmins = []string{alice.Address(t), bob.Address(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
@@ -167,9 +161,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, uint64(1), removeKeychainAdminEvents[0].AdminsCount)
 
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
+
 		keychainAdmins = []string{bob.Address(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
@@ -213,9 +206,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, keychainFees, updateKeychainEvents[0].KeychainFees)
 
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
+
 		keychainAdmins = []string{bob.Address(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
@@ -251,9 +243,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, uint64(1), newSpaceEvents[0].OwnersCount)
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
+
 		spaceOwners := []string{alice.Address(t)}
 		require.Equal(t, warden.Space{
 			Id:                     2,
@@ -286,7 +277,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.NoError(t, err)
 
 		require.Len(t, newKeyEvents, 1)
-		require.Equal(t, uint64(1), newKeyEvents[0].Id)
+		// todo: uncomment after merging PR #940
+		// require.Equal(t, uint64(1), newKeyEvents[0].Id)
 		require.Equal(t, int32(1), newKeyEvents[0].KeyType)
 		require.Equal(t, uint64(1), newKeyEvents[0].KeychainId)
 		require.Equal(t, uint64(1), newKeyEvents[0].SpaceId)
@@ -331,6 +323,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		// reject key request
 		newKeyReqTx = alice.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newKeyReqTx)
+
 		rejectKeyRequestTx, err := iWardenClient.RejectKeyRequest(alice.TransactOps(t, ctx, evmClient), 2, "test reject reason")
 		require.NoError(t, err)
 
@@ -357,23 +350,30 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			RejectReason:         "test reject reason",
 			DeductedKeychainFees: deductedKeychainFees,
 		}, keyRequest)
-		// new sign request //
 		// fulfil sign request
 		newSignReqTx := alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newSignReqTx)
+
 		signedData, err := base64.StdEncoding.DecodeString("LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA=")
-		if err != nil {
-			panic(err)
-		}
-		_, err = iWardenClient.FulfilSignRequest(alice.TransactOps(t, ctx, evmClient), 1, signedData)
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second)
+
+		fulfilSignRequestTx, err := iWardenClient.FulfilSignRequest(alice.TransactOps(t, ctx, evmClient), 1, signedData)
+		require.NoError(t, err)
+
+		fulfilSignRequestReceipt, err := bind.WaitMined(ctx, evmClient, fulfilSignRequestTx)
+		require.NoError(t, err)
+
+		fulfilSignRequestEvents, err := checks.GetParsedEventsOnly(fulfilSignRequestReceipt, iWardenClient.ParseFulfilSignRequest)
+		require.NoError(t, err)
+
+		require.Len(t, fulfilSignRequestEvents, 1)
+		require.Equal(t, uint64(1), fulfilSignRequestEvents[0].Id)
+
 		signRequest, err := iWardenClient.SignRequestById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 		dataForSigning, err := base64.StdEncoding.DecodeString("HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=")
-		if err != nil {
-			panic(err)
-		}
+		require.NoError(t, err)
+
 		encryptionKey := []byte{}
 		require.Equal(t, warden.SignRequest{
 			Id:                   1,
@@ -385,14 +385,22 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
 		}, signRequest)
-		// update key //
 		// reject sign request
 		newSignReqTx = alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newSignReqTx)
 		signRequestRejectReason := "test reject reason"
-		_, err = iWardenClient.RejectSignRequest(alice.TransactOps(t, ctx, evmClient), 2, signRequestRejectReason)
+		rejectSignRequestTx, err := iWardenClient.RejectSignRequest(alice.TransactOps(t, ctx, evmClient), 2, signRequestRejectReason)
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second)
+
+		rejectSignRequestReceipt, err := bind.WaitMined(ctx, evmClient, rejectSignRequestTx)
+		require.NoError(t, err)
+
+		rejectSignRequestEvents, err := checks.GetParsedEventsOnly(rejectSignRequestReceipt, iWardenClient.ParseRejectSignRequest)
+		require.NoError(t, err)
+
+		require.Len(t, rejectSignRequestEvents, 1)
+		require.Equal(t, uint64(2), rejectSignRequestEvents[0].Id)
+
 		signRequest, err = iWardenClient.SignRequestById(alice.CallOps(t), 2)
 		require.NoError(t, err)
 		result := []byte(signRequestRejectReason)

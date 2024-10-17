@@ -2,17 +2,14 @@ package act
 
 import (
 	"bytes"
-	"fmt"
-	"github.com/warden-protocol/wardenprotocol/precompiles/common"
-	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	"math/big"
-	"reflect"
-	"strings"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	"math/big"
+	"reflect"
 )
 
 const (
@@ -29,7 +26,7 @@ const (
 )
 
 func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
-	b, err := parseNewTemplateEvent(sdkEvent)
+	b, err := parseCreateTemplateEvent(sdkEvent)
 	if err != nil {
 		return nil, err
 	}
@@ -54,22 +51,16 @@ func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	return &ethLog, nil
 }
 
-func parseNewTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
+func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
-	for _, attr := range sdkEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
-		switch key {
-		case "id":
-			keychainId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewTemplateEvent: invalid keychain id type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-		}
+	typedEvent := v1beta1.EventCreateTemplate{}
+	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
 	}
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
 
 	return &b, nil
 }
@@ -103,19 +94,13 @@ func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
-	for _, attr := range sdkEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
-		switch key {
-		case "id":
-			keychainId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateTemplateEvent: invalid id type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-		}
+	typedEvent := v1beta1.EventUpdateTemplate{}
+	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
 	}
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
 
 	return &b, nil
 }
@@ -149,20 +134,14 @@ func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn
 func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
-	for _, attr := range sdkEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
-		switch key {
-		case "id":
-			keychainId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("CreateActionEvent: invalid id type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-		}
-
+	typedEvent := v1beta1.EventCreateAction{}
+	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
 	}
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
+
 	return &b, nil
 }
 
@@ -236,58 +215,15 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
-	mapActionStatus := func(status string) (int32, error) {
-		switch status {
-		case v1beta1.ActionStatus_ACTION_STATUS_UNSPECIFIED.String():
-			return int32(v1beta1.ActionStatus_ACTION_STATUS_UNSPECIFIED), nil
-		case v1beta1.ActionStatus_ACTION_STATUS_PENDING.String():
-			return int32(v1beta1.ActionStatus_ACTION_STATUS_PENDING), nil
-		case v1beta1.ActionStatus_ACTION_STATUS_COMPLETED.String():
-			return int32(v1beta1.ActionStatus_ACTION_STATUS_COMPLETED), nil
-		case v1beta1.ActionStatus_ACTION_STATUS_REVOKED.String():
-			return int32(v1beta1.ActionStatus_ACTION_STATUS_REVOKED), nil
-		case v1beta1.ActionStatus_ACTION_STATUS_TIMEOUT.String():
-			return int32(v1beta1.ActionStatus_ACTION_STATUS_TIMEOUT), nil
-		default:
-			return -1, fmt.Errorf("cannot map action status: %v", status)
-		}
+	typedEvent := v1beta1.EventActionStateChange{}
+	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
 	}
 
-	{
-		idAttribute, success := sdkEvent.GetAttribute("id")
-		if !success {
-			return nil, fmt.Errorf("ActionStateChangeEvent: id attribute is not found: %v", sdkEvent)
-		}
-		value, success := new(big.Int).SetString(strings.Trim(idAttribute.GetValue(), "\""), 10)
-		if !success {
-			return nil, fmt.Errorf("ActionStateChangeEvent: invalid id type")
-		}
-		b.Write(cmn.PackNum(reflect.ValueOf(value)))
-	}
-
-	{
-		prevStatusAttribute, success := sdkEvent.GetAttribute("previous_status")
-		if !success {
-			return nil, fmt.Errorf("ActionStateChangeEvent: previous_status attribute is not found: %v", sdkEvent)
-		}
-		value, err := mapActionStatus(strings.Trim(prevStatusAttribute.GetValue(), "\""))
-		if err != nil {
-			return nil, fmt.Errorf("ActionStateChangeEvent: invalid previous_status type")
-		}
-		b.Write(cmn.PackNum(reflect.ValueOf(value)))
-	}
-
-	{
-		newStatusAttribute, success := sdkEvent.GetAttribute("new_status")
-		if !success {
-			return nil, fmt.Errorf("ActionStateChangeEvent: new_status attribute is not found: %v", sdkEvent)
-		}
-		value, err := mapActionStatus(strings.Trim(newStatusAttribute.GetValue(), "\""))
-		if err != nil {
-			return nil, fmt.Errorf("ActionStateChangeEvent: invalid new_status type")
-		}
-		b.Write(cmn.PackNum(reflect.ValueOf(value)))
-	}
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(int32(typedEvent.PreviousStatus))))
+	b.Write(cmn.PackNum(reflect.ValueOf(int32(typedEvent.NewStatus))))
 
 	return &b, nil
 }

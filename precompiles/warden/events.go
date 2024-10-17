@@ -3,10 +3,6 @@ package warden
 import (
 	"bytes"
 	"fmt"
-	"math/big"
-	"reflect"
-	"strings"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/ethereum/go-ethereum/common"
@@ -15,6 +11,8 @@ import (
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+	"math/big"
+	"reflect"
 )
 
 const (
@@ -372,24 +370,24 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, ad
 	topics[0] = event.ID
 
 	var b bytes.Buffer
-	for _, attr := range addSpaceOwnerEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
 
-		switch key {
-		case "space_id":
-			spaceId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("AddSpaceOwner: invalid space id type")
-			}
-			var err error
-			topics[1], err = evmoscmn.MakeTopic(spaceId)
-			if err != nil {
-				return nil, err
-			}
-		case "new_owner":
-			b.Write([]byte(val))
-		}
+	typedEvent := v1beta3.EventAddSpaceOwner{}
+	err := precommon.ParseSdkEvent(addSpaceOwnerEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
+	}
+
+	newOwner, err := precommon.AddressFromBech32Str(typedEvent.GetNewOwner())
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(append(make([]byte, 12), newOwner.Bytes()...))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetSpaceId())
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{
@@ -409,24 +407,25 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 	topics[0] = event.ID
 
 	var b bytes.Buffer
-	for _, attr := range removeSpaceOwnerEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
 
-		switch key {
-		case "space_id":
-			spaceId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("RemoveSpaceOwner: invalid space id type")
-			}
-			var err error
-			topics[1], err = evmoscmn.MakeTopic(spaceId)
-			if err != nil {
-				return nil, err
-			}
-		case "removed_owner":
-			b.Write([]byte(val))
-		}
+	typedEvent := v1beta3.EventRemoveSpaceOwner{}
+	err := precommon.ParseSdkEvent(removeSpaceOwnerEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
+	}
+
+	removedOwnerAddress, err := precommon.AddressFromBech32Str(typedEvent.GetRemovedOwner())
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(append(make([]byte, 12), removedOwnerAddress.Bytes()...))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetSpaceId())
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetSpaceId())))))
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{
@@ -445,94 +444,48 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
-	//mapKeyType := func(keyType string) (uint8, error) {
-	//	switch keyType {
-	//	case v1beta3.KeyType_KEY_TYPE_UNSPECIFIED.String():
-	//		return uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED), nil
-	//	case v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1.String():
-	//		return uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1), nil
-	//	case v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519.String():
-	//		return uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519), nil
-	//	default:
-	//		return 0, fmt.Errorf("key type is not supported: %v", keyType)
-	//	}
-	//}
+	mapKeyType := func(keyType v1beta3.KeyType) (uint8, error) {
+		switch keyType {
+		case v1beta3.KeyType_KEY_TYPE_UNSPECIFIED:
+			return uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED), nil
+		case v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1:
+			return uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1), nil
+		case v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519:
+			return uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519), nil
+		default:
+			return 0, fmt.Errorf("key type is not supported: %v", keyType)
+		}
+	}
 
 	var b bytes.Buffer
 
 	typedEvent := v1beta3.EventNewKeyRequest{}
-	err := precompilescommon.ParseSdkEvent(newKeyRequestEvent, typedEvent.XXX_Merge)
+	err := precommon.ParseSdkEvent(newKeyRequestEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
 
-	//keyType, err := mapKeyType(typedEvent.KeyType)
-	//if err != nil {
-	//	return nil, fmt.Errorf("NewKeyRequest: invalid key type type")
-	//}
-	//b.Write(cmn.PackNum(reflect.ValueOf(keyType)))
+	keyType, err := mapKeyType(typedEvent.GetKeyType())
+	if err != nil {
+		return nil, fmt.Errorf("NewKeyRequest: invalid key type type")
+	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.SpaceId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.KeychainId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveTemplateId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectTemplateId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.KeyType)))))
-	b.Write([]byte(typedEvent.Creator))
-
-	topics[1], err = cmn.MakeTopic(typedEvent.Id)
-
+	creatorAddress, err := precommon.AddressFromBech32Str(typedEvent.GetCreator())
 	if err != nil {
 		return nil, err
 	}
 
-	for _, attr := range newKeyRequestEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetSpaceId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeychainId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(keyType)))
+	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
 
-		switch key {
-		case "id":
-			id, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid id type")
-			}
-			var err error
-			topics[1], err = evmoscmn.MakeTopic(id)
-			if err != nil {
-				return nil, err
-			}
-		case "space_id":
-			spaceId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid space id type")
-			}
-			b.Write(evmoscmn.PackNum(reflect.ValueOf(spaceId)))
-		case "keychain_id":
-			keychainId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid keychain id type")
-			}
-			b.Write(evmoscmn.PackNum(reflect.ValueOf(keychainId)))
-		case "approve_template_id":
-			approveTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid approve template id type")
-			}
-			b.Write(evmoscmn.PackNum(reflect.ValueOf(approveTemplateId)))
-		case "reject_template_id":
-			rejectTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewKeyRequest: invalid reject template id type")
-			}
-			b.Write(evmoscmn.PackNum(reflect.ValueOf(rejectTemplateId)))
-		case "key_type":
-			keyType, err := mapKeyType(val)
-			if err != nil {
-				return nil, fmt.Errorf("NewKeyRequest: invalid key type type")
-			}
-			b.Write(evmoscmn.PackNum(reflect.ValueOf(keyType)))
-		case "creator":
-			b.Write([]byte(val))
-		}
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{
@@ -554,15 +507,20 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 	var b bytes.Buffer
 
 	typedEvent := v1beta3.EventNewSignRequest{}
-	err := precompilescommon.ParseSdkEvent(newSignRequestEvent, typedEvent.XXX_Merge)
+	err := precommon.ParseSdkEvent(newSignRequestEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.KeyId)))))
-	b.Write([]byte(typedEvent.Creator))
+	creatorAddress, err := precommon.AddressFromBech32Str(typedEvent.GetCreator())
+	if err != nil {
+		return nil, err
+	}
 
-	topics[1], err = cmn.MakeTopic(typedEvent.Id)
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeyId())))))
+	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {
 		return nil, err
@@ -587,15 +545,15 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 	var b bytes.Buffer
 
 	typedEvent := v1beta3.EventUpdateKey{}
-	err := precompilescommon.ParseSdkEvent(updateKeyEvent, typedEvent.XXX_Merge)
+	err := precommon.ParseSdkEvent(updateKeyEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveTemplateId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectTemplateId)))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectTemplateId())))))
 
-	topics[1], err = cmn.MakeTopic(typedEvent.Id)
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {
 		return nil, err
@@ -620,17 +578,17 @@ func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, upda
 	var b bytes.Buffer
 
 	typedEvent := v1beta3.EventUpdateSpace{}
-	err := precompilescommon.ParseSdkEvent(updateSpaceEvent, typedEvent.XXX_Merge)
+	err := precommon.ParseSdkEvent(updateSpaceEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveAdminTemplateId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectAdminTemplateId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveSignTemplateId)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectSignTemplateId)))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveAdminTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectAdminTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveSignTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectSignTemplateId())))))
 
-	topics[1], err = cmn.MakeTopic(typedEvent.SpaceId)
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetSpaceId())
 
 	if err != nil {
 		return nil, err

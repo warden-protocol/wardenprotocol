@@ -461,7 +461,7 @@ interface IWarden {
     /// @param rejectTemplateId The reject template id
     /// @param keyType The key type
     /// @param creator The creator address
-    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, KeyType keyType, address creator);
+    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, uint8 keyType, address creator);
 
     /// @dev NewSignRequest defines an Event emitted when a new signature request is created.
     /// @param id The id of the signature request

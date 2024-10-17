@@ -2,11 +2,13 @@ package cases
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
 	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"testing"
@@ -32,9 +34,7 @@ func (c *Test_WardenPrecompileAction) Setup(t *testing.T, ctx context.Context, b
 func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
-	//dave := exec.NewWardend(c.w, "dave")
 
-	//client := TestGRPCClient(*c.w.GRPCClient(t))
 	evmClient := c.w.EthClient(t)
 
 	iActClient, err := act.NewIAct(common.HexToAddress(act.PrecompileAddress), evmClient)
@@ -45,7 +45,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 	t.Run("work with new action", func(t *testing.T) {
 		// addSpaceOwner
-		_, err := iWardenClient.AddSpaceOwner(
+		addSpaceOwnerTx, err := iWardenClient.AddSpaceOwner(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			bob.EthAddress(t),
@@ -56,6 +56,16 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		addSpaceOwnerTxReceipt, err := bind.WaitMined(ctx, evmClient, addSpaceOwnerTx)
+		require.NoError(t, err)
+
+		addSpaceOwnerEvents, err := checks.GetParsedEventsOnly(addSpaceOwnerTxReceipt, iWardenClient.ParseAddSpaceOwner)
+		require.NoError(t, err)
+
+		require.Len(t, addSpaceOwnerEvents, 1)
+		require.Equal(t, addSpaceOwnerEvents[0].SpaceId, uint64(1))
+		require.Equal(t, addSpaceOwnerEvents[0].NewOwner, bob.EthAddress(t))
 
 		actions1, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -76,7 +86,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		}, spaceById1)
 
 		// removeSpaceOwner
-		_, err = iWardenClient.RemoveSpaceOwner(
+		removeSpaceOwnerTx, err := iWardenClient.RemoveSpaceOwner(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			bob.EthAddress(t),
@@ -87,6 +97,16 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		removeSpaceOwnerTxReceipt, err := bind.WaitMined(ctx, evmClient, removeSpaceOwnerTx)
+		require.NoError(t, err)
+
+		removeSpaceOwnerEvents, err := checks.GetParsedEventsOnly(removeSpaceOwnerTxReceipt, iWardenClient.ParseRemoveSpaceOwner)
+		require.NoError(t, err)
+
+		require.Len(t, removeSpaceOwnerEvents, 1)
+		require.Equal(t, removeSpaceOwnerEvents[0].SpaceId, uint64(1))
+		require.Equal(t, removeSpaceOwnerEvents[0].RemovedOwner, bob.EthAddress(t))
 
 		actions2, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -130,7 +150,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, keychains2.Keychain[0].Writers[0], alice.Address(t))
 
 		// newKeyRequest
-		_, err = iWardenClient.NewKeyRequest(
+		newKeyRequestTx, err := iWardenClient.NewKeyRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			1,
@@ -145,6 +165,21 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		newKeyRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newKeyRequestTx)
+		require.NoError(t, err)
+
+		newKeyRequestEvents, err := checks.GetParsedEventsOnly(newKeyRequestTxReceipt, iWardenClient.ParseNewKeyRequest)
+		require.NoError(t, err)
+
+		require.Len(t, newKeyRequestEvents, 1)
+		require.Equal(t, newKeyRequestEvents[0].Id, uint64(1))
+		require.Equal(t, newKeyRequestEvents[0].SpaceId, uint64(1))
+		require.Equal(t, newKeyRequestEvents[0].KeychainId, uint64(1))
+		require.Equal(t, newKeyRequestEvents[0].ApproveTemplateId, uint64(0))
+		require.Equal(t, newKeyRequestEvents[0].RejectTemplateId, uint64(0))
+		require.Equal(t, newKeyRequestEvents[0].KeyType, uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1))
+		require.Equal(t, newKeyRequestEvents[0].Creator, alice.EthAddress(t))
 
 		actions3, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -183,7 +218,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Len(t, keyRequests2.Keys, 1)
 
 		// newSignRequest
-		_, err = iWardenClient.NewSignRequest(
+		newSignRequestTx, err := iWardenClient.NewSignRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
@@ -197,6 +232,17 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		newSignRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newSignRequestTx)
+		require.NoError(t, err)
+
+		newSignRequestEvents, err := checks.GetParsedEventsOnly(newSignRequestTxReceipt, iWardenClient.ParseNewSignRequest)
+		require.NoError(t, err)
+
+		require.Len(t, newSignRequestEvents, 1)
+		require.Equal(t, newSignRequestEvents[0].Id, uint64(1))
+		require.Equal(t, newSignRequestEvents[0].KeyId, uint64(1))
+		require.Equal(t, newSignRequestEvents[0].Creator, alice.EthAddress(t))
 
 		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -227,7 +273,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
-		_, err = iWardenClient.UpdateKey(
+		updateKeyTx, err := iWardenClient.UpdateKey(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			1,
@@ -238,6 +284,17 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		updateKeyTxReceipt, err := bind.WaitMined(ctx, evmClient, updateKeyTx)
+		require.NoError(t, err)
+
+		updateKeyEvents, err := checks.GetParsedEventsOnly(updateKeyTxReceipt, iWardenClient.ParseUpdateKey)
+		require.NoError(t, err)
+
+		require.Len(t, updateKeyEvents, 1)
+		require.Equal(t, updateKeyEvents[0].Id, uint64(1))
+		require.Equal(t, updateKeyEvents[0].ApproveTemplateId, uint64(1))
+		require.Equal(t, updateKeyEvents[0].RejectTemplateId, uint64(1))
 
 		actions5, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -262,7 +319,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		}, key.Key)
 
 		// updateSpace
-		_, err = iWardenClient.UpdateSpace(
+		updateSpaceTx, err := iWardenClient.UpdateSpace(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			2,
@@ -276,6 +333,19 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		updateSpaceTxReceipt, err := bind.WaitMined(ctx, evmClient, updateSpaceTx)
+		require.NoError(t, err)
+
+		updateSpaceEvents, err := checks.GetParsedEventsOnly(updateSpaceTxReceipt, iWardenClient.ParseUpdateSpace)
+		require.NoError(t, err)
+
+		require.Len(t, updateSpaceEvents, 1)
+		require.Equal(t, updateSpaceEvents[0].SpaceId, uint64(1))
+		require.Equal(t, updateSpaceEvents[0].ApproveAdminTemplateId, uint64(1))
+		require.Equal(t, updateSpaceEvents[0].RejectAdminTemplateId, uint64(1))
+		require.Equal(t, updateSpaceEvents[0].ApproveSignTemplateId, uint64(1))
+		require.Equal(t, updateSpaceEvents[0].RejectSignTemplateId, uint64(1))
 
 		actions6, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 

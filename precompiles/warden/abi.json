@@ -54,13 +54,13 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "uint64",
           "name": "spaceId",
           "type": "uint64"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
           "name": "newOwner",
           "type": "address"
@@ -129,7 +129,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "uint64",
           "name": "id",
           "type": "uint64"
@@ -160,12 +160,12 @@
         },
         {
           "indexed": false,
-          "internalType": "enum KeyType",
+          "internalType": "uint8",
           "name": "keyType",
           "type": "uint8"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
           "name": "creator",
           "type": "address"
@@ -197,7 +197,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "uint64",
           "name": "id",
           "type": "uint64"
@@ -209,7 +209,7 @@
           "type": "uint64"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
           "name": "creator",
           "type": "address"
@@ -322,13 +322,13 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "uint64",
           "name": "spaceId",
           "type": "uint64"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
           "name": "removedOwner",
           "type": "address"
@@ -341,7 +341,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "uint64",
           "name": "id",
           "type": "uint64"
@@ -421,9 +421,9 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "uint64",
-          "name": "id",
+          "name": "space_id",
           "type": "uint64"
         },
         {

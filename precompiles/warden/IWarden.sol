@@ -476,10 +476,10 @@ interface IWarden {
     event UpdateKey(uint64 indexed id, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev UpdateSpace defines an Event emitted when a space is updated.
-    /// @param id The id of the space being updated
+    /// @param space_id The id of the space being updated
     /// @param approveAdminTemplateId The id of the template to be applied to every approve admin operation
     /// @param rejectAdminTemplateId The id of the template to be applied to every reject admin operation
     /// @param approveSignTemplateId The id of the template to be applied to every approve sign operation
     /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
-    event UpdateSpace(uint64 indexed id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
+    event UpdateSpace(uint64 indexed space_id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }

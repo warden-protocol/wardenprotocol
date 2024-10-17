@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
+	precompilescommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -565,20 +566,46 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
-	mapKeyType := func(keyType string) (uint8, error) {
-		switch keyType {
-		case v1beta3.KeyType_KEY_TYPE_UNSPECIFIED.String():
-			return uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED), nil
-		case v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1.String():
-			return uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1), nil
-		case v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519.String():
-			return uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519), nil
-		default:
-			return 0, fmt.Errorf("key type is not supported: %v", keyType)
-		}
-	}
+	//mapKeyType := func(keyType string) (uint8, error) {
+	//	switch keyType {
+	//	case v1beta3.KeyType_KEY_TYPE_UNSPECIFIED.String():
+	//		return uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED), nil
+	//	case v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1.String():
+	//		return uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1), nil
+	//	case v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519.String():
+	//		return uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519), nil
+	//	default:
+	//		return 0, fmt.Errorf("key type is not supported: %v", keyType)
+	//	}
+	//}
 
 	var b bytes.Buffer
+
+	typedEvent := v1beta3.EventNewKeyRequest{}
+	err := precompilescommon.ParseSdkEvent(newKeyRequestEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
+	}
+
+	//keyType, err := mapKeyType(typedEvent.KeyType)
+	//if err != nil {
+	//	return nil, fmt.Errorf("NewKeyRequest: invalid key type type")
+	//}
+	//b.Write(cmn.PackNum(reflect.ValueOf(keyType)))
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.SpaceId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.KeychainId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveTemplateId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectTemplateId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.KeyType)))))
+	b.Write([]byte(typedEvent.Creator))
+
+	topics[1], err = cmn.MakeTopic(typedEvent.Id)
+
+	if err != nil {
+		return nil, err
+	}
+
 	for _, attr := range newKeyRequestEvent.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
@@ -619,11 +646,6 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
 		case "key_type":
-			keyType, err := mapKeyType(val)
-			if err != nil {
-				return nil, fmt.Errorf("NewKeyRequest: invalid key type type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(keyType)))
 		case "creator":
 			b.Write([]byte(val))
 		}
@@ -646,30 +668,20 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 	topics[0] = event.ID
 
 	var b bytes.Buffer
-	for _, attr := range newSignRequestEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
 
-		switch key {
-		case "id":
-			id, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewSignRequest: invalid id type")
-			}
-			var err error
-			topics[1], err = cmn.MakeTopic(id)
-			if err != nil {
-				return nil, err
-			}
-		case "key_id":
-			keyId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("NewSignRequest: invalid key id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(keyId)))
-		case "creator":
-			b.Write([]byte(val))
-		}
+	typedEvent := v1beta3.EventNewSignRequest{}
+	err := precompilescommon.ParseSdkEvent(newSignRequestEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.KeyId)))))
+	b.Write([]byte(typedEvent.Creator))
+
+	topics[1], err = cmn.MakeTopic(typedEvent.Id)
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{
@@ -689,34 +701,20 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 	topics[0] = event.ID
 
 	var b bytes.Buffer
-	for _, attr := range updateKeyEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
 
-		switch key {
-		case "id":
-			id, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateKeyEvent: invalid id type")
-			}
-			var err error
-			topics[1], err = cmn.MakeTopic(id)
-			if err != nil {
-				return nil, err
-			}
-		case "approve_template_id":
-			approveTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateKeyEvent: invalid approve template id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(approveTemplateId)))
-		case "reject_template_id":
-			rejectTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateKeyEvent: invalid reject template id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
-		}
+	typedEvent := v1beta3.EventUpdateKey{}
+	err := precompilescommon.ParseSdkEvent(updateKeyEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveTemplateId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectTemplateId)))))
+
+	topics[1], err = cmn.MakeTopic(typedEvent.Id)
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{
@@ -736,46 +734,22 @@ func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, upda
 	topics[0] = event.ID
 
 	var b bytes.Buffer
-	for _, attr := range updateSpaceEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
 
-		switch key {
-		case "id":
-			id, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateSpaceEvent: invalid id type")
-			}
-			var err error
-			topics[1], err = cmn.MakeTopic(id)
-			if err != nil {
-				return nil, err
-			}
-		case "approve_admin_template_id":
-			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateSpaceEvent: invalid approve admin template id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
-		case "reject_admin_template_id":
-			rejectTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateSpaceEvent: invalid reject admin template id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
-		case "approve_sign_template_id":
-			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateSpaceEvent: invalid approve sign template id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
-		case "reject_sign_template_id":
-			rejectTemplateId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("UpdateSpaceEvent: invalid reject sign template id type")
-			}
-			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
-		}
+	typedEvent := v1beta3.EventUpdateSpace{}
+	err := precompilescommon.ParseSdkEvent(updateSpaceEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveAdminTemplateId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectAdminTemplateId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.ApproveSignTemplateId)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.RejectSignTemplateId)))))
+
+	topics[1], err = cmn.MakeTopic(typedEvent.SpaceId)
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{

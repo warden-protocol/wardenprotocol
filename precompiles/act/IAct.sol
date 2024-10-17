@@ -20,7 +20,7 @@ IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
     }
 
     struct ActionVote {
-        string participant;
+        address participant;
         Timestamp votedAt;
         int32 voteType;
         string voteTypeText;

@@ -10,6 +10,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
 	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"math/big"
 	"testing"
 	"time"
@@ -97,6 +98,21 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		}
 		require.NotEmpty(t, actions)
 		require.Len(t, actions.Actions, 1)
+		require.Equal(t, actions.Actions[0].Id, uint64(1))
+		require.Equal(t, actions.Actions[0].Creator, alice.EthAddress(t))
+		require.Equal(t, actions.Actions[0].Status, big.NewInt(int64(v1beta1.ActionStatus_ACTION_STATUS_COMPLETED)))
+		require.Equal(t, actions.Actions[0].StatusText, v1beta1.ActionStatus_ACTION_STATUS_COMPLETED.String())
+		require.NotNil(t, actions.Actions[0].UpdatedAt)
+		require.NotNil(t, actions.Actions[0].Result)
+		require.Len(t, actions.Actions[0].Votes, 1)
+		require.Equal(t, actions.Actions[0].Votes[0].VoteType, int32(v1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
+		require.Equal(t, actions.Actions[0].Votes[0].VoteTypeText, v1beta1.ActionVoteType_VOTE_TYPE_APPROVED.String())
+		require.Equal(t, actions.Actions[0].Votes[0].Participant, alice.EthAddress(t))
+		require.NotNil(t, actions.Actions[0].RejectExpression)
+		require.NotNil(t, actions.Actions[0].ApproveExpression)
+		require.NotNil(t, actions.Actions[0].CreatedAt)
+		require.Len(t, actions.Actions[0].Mentions, 1)
+		require.Equal(t, actions.Actions[0].Mentions[0], alice.EthAddress(t))
 
 		actionById, err := iActClient.ActionById(alice.CallOps(t), 1)
 		if err != nil {
@@ -141,6 +157,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		if err != nil {
 			t.Fatal(err)
 		}
+		require.Equal(t, actionById.Action.Id, uint64(3))
 		require.Equal(t, actionById.Action.Status, big.NewInt(int64(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED)))
 
 		alice.Tx(t,
@@ -162,7 +179,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		actionVotedEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionVoted)
 		require.NoError(t, err)
 		require.Len(t, actionVotedEvents, 1)
-
+		require.Equal(t, actionVotedEvents[0].Participant, bob.EthAddress(t))
 		require.Equal(t, actionVotedEvents[0].VoteType, int32(actv1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
 		require.Equal(t, actionVotedEvents[0].ActionId, uint64(4))
 
@@ -175,6 +192,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		actionStateChangeEvents, err = checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionStateChange)
 		require.NoError(t, err)
 		require.Len(t, actionStateChangeEvents, 1)
+		require.Equal(t, actionStateChangeEvents[0].ActionId, uint64(4))
 		require.Equal(t, actionStateChangeEvents[0].PreviousStatus, int32(actv1beta1.ActionStatus_ACTION_STATUS_PENDING))
 		require.Equal(t, actionStateChangeEvents[0].NewStatus, int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 	})

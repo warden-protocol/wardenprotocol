@@ -17,9 +17,9 @@ type ActionsInput struct {
 
 func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) ActionsResponse {
 	if res != nil {
-		actions := make([]Action, len(res.Actions))
-		for i, action := range res.Actions {
-			actions[i] = mapAction(action)
+		actions := make([]Action, 0)
+		for _, action := range res.Actions {
+			actions = append(actions, mapAction(action))
 		}
 
 		r.Actions = actions
@@ -46,9 +46,9 @@ type ActionsByAddressInput struct {
 
 func (r ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) ActionsByAddressResponse {
 	if res != nil {
-		actions := make([]Action, len(res.Actions))
-		for i, action := range res.Actions {
-			actions[i] = mapAction(action)
+		actions := make([]Action, 0)
+		for _, action := range res.Actions {
+			actions = append(actions, mapAction(action))
 		}
 
 		r.Actions = actions
@@ -66,9 +66,9 @@ type TemplatesInput struct {
 
 func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) TemplatesResponse {
 	if res != nil {
-		templates := make([]Template, len(res.Templates))
-		for i, action := range res.Templates {
-			templates[i] = mapTemplate(action)
+		templates := make([]Template, 0)
+		for _, action := range res.Templates {
+			templates = append(templates, mapTemplate(action))
 		}
 
 		r.Templates = templates
@@ -110,7 +110,7 @@ func mapAction(action types.Action) Action {
 }
 
 func mapVotes(values []*types.ActionVote) []ActionVote {
-	result := make([]ActionVote, len(values))
+	result := make([]ActionVote, 0)
 	for _, v := range values {
 		if v != nil {
 			result = append(result, mapVote(*v))
@@ -121,7 +121,7 @@ func mapVotes(values []*types.ActionVote) []ActionVote {
 
 func mapVote(value types.ActionVote) ActionVote {
 	return ActionVote{
-		Participant:  value.Participant,
+		Participant:  precommon.MustAddressFromBech32Str(value.Participant),
 		VotedAt:      mapTimestamp(value.VotedAt),
 		VoteType:     int32(value.VoteType),
 		VoteTypeText: value.VoteType.String(),

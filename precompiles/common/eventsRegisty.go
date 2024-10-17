@@ -33,10 +33,6 @@ func NewEthEventsRegistry() EthEventsRegistry {
 
 func (r *EthEventsRegistry) EmitEvents(ctx sdk.Context, stateDB vm.StateDB, address *ethcmn.Address) error {
 	for _, x := range ctx.EventManager().Events() {
-		// TODO: check type, contract that .sol Event name should match with sdk Event name
-		// fmt.Printf("\nx.Type %v, eventName %v\n", x.Type, eventName)
-		// x.Type warden.act.v1beta1.EventCreateTemplate, eventName CreateTemplate
-
 		if provider := r.getEventProvider(x.Type); provider != nil {
 			log, err := provider(ctx, address, x)
 			if err != nil {

@@ -445,16 +445,15 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	return &log, nil
 }
 
-func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Address, eventNewKeychain sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, eventUpdateKeychain sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventUpdateKeychain]
 
 	topics := make([]common.Hash, 1)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
-
 	var b bytes.Buffer
-	for _, attr := range eventNewKeychain.Attributes {
+	for _, attr := range eventUpdateKeychain.Attributes {
 		key := attr.GetKey()
 		val := strings.Trim(attr.GetValue(), "\"")
 		switch key {
@@ -464,6 +463,14 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, creator *common.Addr
 				return nil, fmt.Errorf("EventUpdateKeychain: invalid request id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
+		case "keychain_fees":
+			fmt.Printf("\nkeychain_fees %s\n", val)
+			// keychainFees, success := new(KeychainFees)(val)
+			// if !success {
+			// 	return nil, fmt.Errorf("UpdateKeyEvent: invalid approve template id type")
+			// }
+			// b.Write(cmn.PackNum(reflect.ValueOf(*keychainFees)))
+
 		}
 	}
 

@@ -372,10 +372,46 @@
           "type": "uint64"
         },
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "creator",
-          "type": "address"
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "denom",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Coin[]",
+              "name": "KeyReq",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "denom",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Coin[]",
+              "name": "SigReq",
+              "type": "tuple[]"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct KeychainFees",
+          "name": "keychainFees",
+          "type": "tuple"
         }
       ],
       "name": "UpdateKeychain",
@@ -387,7 +423,7 @@
         {
           "indexed": false,
           "internalType": "uint64",
-          "name": "spaceId",
+          "name": "id",
           "type": "uint64"
         },
         {

@@ -2,7 +2,6 @@
 pragma solidity >=0.8.18;
 
 import "../common/Types.sol";
-import "../common/Types.sol";
 
 /// @dev The IWarden contract's address.
 address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900; 
@@ -206,7 +205,7 @@ interface IWarden {
     ) external returns (bool success);
 
     /// @dev Defines a method to add a space owner.
-    /// @param space Id The space id
+    /// @param spaceId The space id
     /// @param newOwner The new owner
     /// @param nonce The nonce
     /// @param actionTimeoutHeight The block height up until this action can be executed
@@ -223,7 +222,7 @@ interface IWarden {
     ) external returns (bool success);
 
     /// @dev Defines a method to remove a space owner.
-    /// @param space Id The space id
+    /// @param spaceId The space id
     /// @param owner The owner
     /// @param nonce The nonce
     /// @param actionTimeoutHeight The block height up until this action can be executed
@@ -441,8 +440,8 @@ interface IWarden {
 
     /// @dev UpdateKeychain defines an Event emitted when a keychain updated.
     /// @param id The keychain id
-    /// @param creator The creator address
-    event UpdateKeychain(uint64 id, address indexed creator);
+    /// @param keychainFees The keychain fees
+    event UpdateKeychain(uint64 id, KeychainFees keychainFees);
 
     /// @dev AddSpaceOwner defines an Event emitted when a new space owner is added.
     /// @param spaceId The space id
@@ -477,7 +476,7 @@ interface IWarden {
     event UpdateKey(uint64 id, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev UpdateSpace defines an Event emitted when a space is updated.
-    /// @param spaceId The id of the space being updated
+    /// @param id The id of the space being updated
     /// @param approveAdminTemplateId The id of the template to be applied to every approve admin operation
     /// @param rejectAdminTemplateId The id of the template to be applied to every reject admin operation
     /// @param approveSignTemplateId The id of the template to be applied to every approve sign operation

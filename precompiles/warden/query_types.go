@@ -3,7 +3,6 @@ package warden
 import (
 	"fmt"
 
-	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -22,39 +21,20 @@ func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllK
 		return nil, fmt.Errorf("error while unpacking args to allKeysInput struct: %s", err)
 	}
 
+	pagination := mapEthPageRequest(input.PageRequest)
 	return &types.QueryAllKeysRequest{
-		Pagination:      &input.PageRequest,
+		Pagination:      &pagination,
 		DeriveAddresses: input.DeriveAddresses,
 	}, nil
 }
 
 type allKeysInput struct {
-	PageRequest     query.PageRequest
+	PageRequest     PageRequest
 	DeriveAddresses []types.AddressType
 }
 
-type key struct {
-	Id                uint64
-	SpaceId           uint64
-	KeychainId        uint64
-	Type              int32
-	PublicKey         []byte
-	ApproveTemplateId uint64
-	RejectTemplateId  uint64
-}
-
-type addressResponse struct {
-	Address string
-	Type    int32
-}
-
-type keyOutput struct {
-	Key       key
-	Addresses []addressResponse
-}
-
-func (o *keyOutput) FromResponse(res *types.QueryKeyResponse) *keyOutput {
-	key := key{
+func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) *KeyResponse {
+	key := Key{
 		Id:                res.Key.Id,
 		SpaceId:           res.Key.SpaceId,
 		KeychainId:        res.Key.KeychainId,
@@ -64,34 +44,34 @@ func (o *keyOutput) FromResponse(res *types.QueryKeyResponse) *keyOutput {
 		RejectTemplateId:  res.Key.RejectTemplateId,
 	}
 
-	addresses := make([]addressResponse, len(res.Addresses))
+	addresses := make([]AddressesResponse, len(res.Addresses))
 
 	for j, a := range res.Addresses {
-		addresses[j] = addressResponse{
+		addresses[j] = AddressesResponse{
 			Address: a.Address,
 			Type:    int32(a.Type),
 		}
 	}
 
-	return &keyOutput{
+	return &KeyResponse{
 		Key:       key,
 		Addresses: addresses,
 	}
 }
 
-func (o *keyOutput) Pack(args abi.Arguments) ([]byte, error) {
+func (o *KeyResponse) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
 type keysOutput struct {
-	KeysResponse []keyOutput
-	PageResponse query.PageResponse
+	KeysResponse []KeyResponse
+	PageResponse PageResponse
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) *keysOutput {
-	o.KeysResponse = make([]keyOutput, len(res.Keys))
+	o.KeysResponse = make([]KeyResponse, len(res.Keys))
 	for i, k := range res.Keys {
-		keyReponse := new(keyOutput).FromResponse(&k)
+		keyReponse := new(KeyResponse).FromResponse(&k)
 
 		o.KeysResponse[i] = *keyReponse
 	}
@@ -164,35 +144,22 @@ func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.Qu
 	}, nil
 }
 
-type keyRequestOutput struct {
-	Id                   uint64
-	Creator              string
-	SpaceId              uint64
-	KeychainId           uint64
-	KeyType              types.KeyType
-	Status               types.KeyRequestStatus
-	RejectReason         string
-	ApproveTemplateId    uint64
-	RejectTemplateId     uint64
-	DeductedKeychainFees github_com_cosmos_cosmos_sdk_types.Coins
-}
-
-func (o *keyRequestOutput) FromResponse(res *types.QueryKeyRequestByIdResponse) *keyRequestOutput {
+func (o *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) *KeyRequest {
 	o.Id = res.KeyRequest.Id
 	o.Creator = res.KeyRequest.Creator
 	o.SpaceId = res.KeyRequest.SpaceId
 	o.KeychainId = res.KeyRequest.KeychainId
-	o.KeyType = res.KeyRequest.KeyType
-	o.Status = res.KeyRequest.Status
+	o.KeyType = int32(res.KeyRequest.KeyType)
+	o.Status = int32(res.KeyRequest.Status)
 	o.RejectReason = res.KeyRequest.RejectReason
 	o.ApproveTemplateId = res.KeyRequest.ApproveTemplateId
 	o.RejectTemplateId = res.KeyRequest.RejectTemplateId
-	o.DeductedKeychainFees = res.KeyRequest.DeductedKeychainFees
+	o.DeductedKeychainFees = mapSdkCoins(res.KeyRequest.DeductedKeychainFees)
 
 	return o
 }
 
-func (o *keyRequestOutput) Pack(args abi.Arguments) ([]byte, error) {
+func (o *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
@@ -222,31 +189,31 @@ type keyRequestsInput struct {
 }
 
 type keyRequestsOutput struct {
-	Pagination  query.PageResponse
-	KeyRequests []keyRequestOutput
+	Pagination  PageResponse
+	KeyRequests []KeyRequest
 }
 
 func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) *keyRequestsOutput {
-	o.KeyRequests = make([]keyRequestOutput, len(res.KeyRequests))
+	o.KeyRequests = make([]KeyRequest, len(res.KeyRequests))
 	for i, k := range res.KeyRequests {
-		keyRequestReponse := keyRequestOutput{
+		keyRequestReponse := KeyRequest{
 			Id:                   k.Id,
 			Creator:              k.Creator,
 			SpaceId:              k.SpaceId,
 			KeychainId:           k.KeychainId,
-			KeyType:              k.KeyType,
-			Status:               k.Status,
+			KeyType:              int32(k.KeyType),
+			Status:               int32(k.Status),
 			RejectReason:         k.RejectReason,
 			ApproveTemplateId:    k.ApproveTemplateId,
 			RejectTemplateId:     k.RejectTemplateId,
-			DeductedKeychainFees: k.DeductedKeychainFees,
+			DeductedKeychainFees: mapSdkCoins(k.DeductedKeychainFees),
 		}
 
 		o.KeyRequests[i] = keyRequestReponse
 	}
 
 	if res.Pagination != nil {
-		o.Pagination = *res.Pagination
+		o.Pagination = mapSdkPageResponse(*res.Pagination)
 	}
 
 	return o
@@ -268,25 +235,13 @@ func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKey
 	}, nil
 }
 
-type keychainOutput struct {
-	Id          uint64
-	Creator     string
-	Name        string
-	Admins      []string
-	Writers     []string
-	Fees        types.KeychainFees
-	Description string
-	Url         string
-	KeybaseId   string
-}
-
-func (o *keychainOutput) FromResponse(res *types.QueryKeychainByIdResponse) *keychainOutput {
+func (o *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) *Keychain {
 	o.Id = res.Keychain.Id
 	o.Creator = res.Keychain.Creator
 	o.Name = res.Keychain.Name
 	o.Admins = res.Keychain.Admins
 	o.Writers = res.Keychain.Writers
-	o.Fees = res.Keychain.Fees
+	o.Fees = mapSdkKeychainFees(res.Keychain.Fees)
 	o.Description = res.Keychain.Description
 	o.Url = res.Keychain.Url
 	if res.Keychain.KeybaseId != nil {
@@ -296,7 +251,7 @@ func (o *keychainOutput) FromResponse(res *types.QueryKeychainByIdResponse) *key
 	return o
 }
 
-func (o *keychainOutput) Pack(args abi.Arguments) ([]byte, error) {
+func (o *Keychain) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
@@ -321,23 +276,23 @@ type keychainsRequestsInput struct {
 
 type keychainsOutput struct {
 	Pagination query.PageResponse
-	Keychains  []keychainOutput
+	Keychains  []Keychain
 }
 
 func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) *keychainsOutput {
-	o.Keychains = make([]keychainOutput, len(res.Keychains))
+	o.Keychains = make([]Keychain, len(res.Keychains))
 	for i, k := range res.Keychains {
 		var keybaseId string
 		if k.KeybaseId != nil {
 			keybaseId = k.KeybaseId.Value
 		}
-		keyRequestReponse := keychainOutput{
+		keyRequestReponse := Keychain{
 			Id:          k.Id,
 			Creator:     k.Creator,
 			Name:        k.Name,
 			Admins:      k.Admins,
 			Writers:     k.Writers,
-			Fees:        k.Fees,
+			Fees:        mapSdkKeychainFees(k.Fees),
 			Description: k.Description,
 			Url:         k.Url,
 			KeybaseId:   keybaseId,
@@ -369,23 +324,12 @@ func newSignRequestByIdRequest(method *abi.Method, args []interface{}) (*types.Q
 	}, nil
 }
 
-type signRequestOutput struct {
-	Id                   uint64
-	Creator              string
-	KeyId                uint64
-	DataForSigning       []byte
-	Status               types.SignRequestStatus
-	Result               []byte
-	EncryptionKey        []byte
-	DeductedKeychainFees github_com_cosmos_cosmos_sdk_types.Coins
-}
-
-func (o *signRequestOutput) FromResponse(res *types.QuerySignRequestByIdResponse) *signRequestOutput {
+func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) *SignRequest {
 	o.Id = res.SignRequest.Id
 	o.Creator = res.SignRequest.Creator
 	o.KeyId = res.SignRequest.KeyId
 	o.DataForSigning = res.SignRequest.DataForSigning
-	o.Status = res.SignRequest.Status
+	o.Status = int32(res.SignRequest.Status)
 
 	result := res.SignRequest.Result
 	if res.SignRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
@@ -396,12 +340,12 @@ func (o *signRequestOutput) FromResponse(res *types.QuerySignRequestByIdResponse
 	}
 
 	o.EncryptionKey = res.SignRequest.EncryptionKey
-	o.DeductedKeychainFees = res.SignRequest.DeductedKeychainFees
+	o.DeductedKeychainFees = mapSdkCoins(res.SignRequest.DeductedKeychainFees)
 
 	return o
 }
 
-func (o *signRequestOutput) Pack(args abi.Arguments) ([]byte, error) {
+func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
@@ -429,12 +373,12 @@ type signRequestsInput struct {
 }
 
 type signRequestsOutput struct {
-	SignRequests []signRequestOutput
+	SignRequests []SignRequest
 	Pagination   query.PageResponse
 }
 
 func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) *signRequestsOutput {
-	o.SignRequests = make([]signRequestOutput, len(res.SignRequests))
+	o.SignRequests = make([]SignRequest, len(res.SignRequests))
 	for i, k := range res.SignRequests {
 		var result []byte
 		if k.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
@@ -443,12 +387,12 @@ func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) 
 			reason := k.Result.(*types.SignRequest_RejectReason).RejectReason
 			result = []byte(reason)
 		}
-		signRequest := signRequestOutput{
+		signRequest := SignRequest{
 			Id:             k.Id,
 			Creator:        k.Creator,
 			KeyId:          k.KeyId,
 			DataForSigning: k.DataForSigning,
-			Status:         k.Status,
+			Status:         int32(k.Status),
 			Result:         result,
 		}
 
@@ -478,18 +422,7 @@ func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySp
 	}, nil
 }
 
-type spaceOutput struct {
-	Id                     uint64
-	Creator                string
-	Owners                 []string
-	Nonce                  uint64
-	ApproveAdminTemplateId uint64
-	RejectAdminTemplateId  uint64
-	ApproveSignTemplateId  uint64
-	RejectSignTemplateId   uint64
-}
-
-func (o *spaceOutput) FromResponse(res *types.QuerySpaceByIdResponse) *spaceOutput {
+func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) *Space {
 	o.Id = res.Space.Id
 	o.Creator = res.Space.Creator
 	o.Owners = res.Space.Owners
@@ -502,7 +435,7 @@ func (o *spaceOutput) FromResponse(res *types.QuerySpaceByIdResponse) *spaceOutp
 	return o
 }
 
-func (o *spaceOutput) Pack(args abi.Arguments) ([]byte, error) {
+func (o *Space) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o)
 }
 
@@ -527,13 +460,13 @@ type spacesInput struct {
 
 type spacesOutput struct {
 	Pagination query.PageResponse
-	Spaces     []spaceOutput
+	Spaces     []Space
 }
 
 func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) *spacesOutput {
-	o.Spaces = make([]spaceOutput, len(res.Spaces))
+	o.Spaces = make([]Space, len(res.Spaces))
 	for i, k := range res.Spaces {
-		space := spaceOutput{
+		space := Space{
 			Id:                     k.Id,
 			Creator:                k.Creator,
 			Owners:                 k.Owners,

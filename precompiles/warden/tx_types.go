@@ -75,6 +75,7 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 			RejectReason: rejectReason,
 		}
 
+		fmt.Printf("\nMsgFulfilKeyRequest reject\n")
 		return &types.MsgFulfilKeyRequest{
 			Creator:   creator,
 			RequestId: requestId,
@@ -207,7 +208,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 		Creator:      creator,
 		KeychainId:   input.KeychainId,
 		Name:         input.Name,
-		KeychainFees: input.KeychainFees,
+		KeychainFees: mapEthKeychainFees(input.KeychainFees),
 		Description:  input.Description,
 		Url:          input.Url,
 		KeybaseId:    input.KeybaseId,
@@ -217,7 +218,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 type updateKeyChainInput struct {
 	KeychainId   uint64
 	Name         string
-	KeychainFees v1beta3.KeychainFees
+	KeychainFees KeychainFees
 	Description  string
 	Url          string
 	KeybaseId    string

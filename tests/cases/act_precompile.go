@@ -19,22 +19,21 @@ import (
 )
 
 func init() {
-	Register(&Test_EthTransactionReader{})
+	Register(&Test_ActPrecompile{})
 }
 
-type Test_EthTransactionReader struct {
+type Test_ActPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_EthTransactionReader) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_ActPrecompile) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunnning(t)
-	c.w.PrintLogsAtTheEnd(t, ctx)
 }
 
-func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
+func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 	dave := exec.NewWardend(c.w, "dave")

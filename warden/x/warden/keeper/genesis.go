@@ -28,7 +28,7 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 	}
 
 	for _, key := range genState.Keys {
-		err := k.KeysKeeper.Set(ctx, key)
+		err := k.KeysKeeper.Set(ctx, &key)
 		if err != nil {
 			return fmt.Errorf("failed to import keys: %w", err)
 		}

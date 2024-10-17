@@ -31,7 +31,7 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 		key.RejectTemplateId = msg.RejectTemplateId
 	}
 
-	if err := k.KeysKeeper.Set(ctx, key); err != nil {
+	if err := k.KeysKeeper.Set(ctx, &key); err != nil {
 		return nil, err
 	}
 

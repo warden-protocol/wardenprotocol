@@ -20,7 +20,7 @@ func Benchmark_QueryAllKeys(b *testing.B) {
 	for i := 0; i < 1_000_000; i++ {
 		err = k.KeysKeeper.New(
 			ctx,
-			types.Key{
+			&types.Key{
 				Type:      types.KeyType_KEY_TYPE_ECDSA_SECP256K1,
 				PublicKey: pk,
 			},

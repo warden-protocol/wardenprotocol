@@ -17,7 +17,7 @@ func (k Keeper) fulfillKeyRequest(ctx sdk.Context, msg *types.MsgFulfilKeyReques
 		return nil, err
 	}
 	// setup new key
-	key := types.Key{
+	key := &types.Key{
 		SpaceId:           req.SpaceId,
 		KeychainId:        req.KeychainId,
 		Type:              req.KeyType,
@@ -36,7 +36,7 @@ func (k Keeper) fulfillKeyRequest(ctx sdk.Context, msg *types.MsgFulfilKeyReques
 		return nil, err
 	}
 
-	return &key, nil
+	return key, nil
 }
 
 func ensureKeyFormatting(req types.KeyRequest, pubKey []byte) error {

@@ -75,7 +75,6 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 			RejectReason: rejectReason,
 		}
 
-		fmt.Printf("\nMsgFulfilKeyRequest reject\n")
 		return &types.MsgFulfilKeyRequest{
 			Creator:   creator,
 			RequestId: requestId,

@@ -12,7 +12,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"testing"
-	"time"
 )
 
 func init() {
@@ -53,9 +52,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		addSpaceOwnerTxReceipt, err := bind.WaitMined(ctx, evmClient, addSpaceOwnerTx)
 		require.NoError(t, err)
@@ -94,9 +91,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		removeSpaceOwnerTxReceipt, err := bind.WaitMined(ctx, evmClient, removeSpaceOwnerTx)
 		require.NoError(t, err)
@@ -126,23 +121,25 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			Owners:                 []string{alice.Address(t)},
 		}, spaceById2)
 
-		_, err = iWardenClient.NewKeychain(alice.TransactOps(t, context.Background(), evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
-
+		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, context.Background(), evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		_, err = bind.WaitMined(ctx, evmClient, newKeychainTx)
+		require.NoError(t, err)
 
 		keychains1, err := iWardenClient.Keychains(alice.CallOps(t), warden.PageRequest{})
 
 		require.NoError(t, err)
 		require.Len(t, keychains1.Keychain, 1)
 
-		_, err = iWardenClient.AddKeychainWriter(
+		addKeychainWriterTx, err := iWardenClient.AddKeychainWriter(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			alice.EthAddress(t))
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		_, err = bind.WaitMined(ctx, evmClient, addKeychainWriterTx)
+		require.NoError(t, err)
 
 		keychains2, err := iWardenClient.Keychains(alice.CallOps(t), warden.PageRequest{})
 
@@ -162,9 +159,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		newKeyRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newKeyRequestTx)
 		require.NoError(t, err)
@@ -203,14 +198,15 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			RejectReason:         "",
 		}, keyRequests1.Keys[0])
 
-		_, err = iWardenClient.FulfilKeyRequest(
+		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			[]byte{3, 127, 233, 231, 7, 1, 37, 58, 229, 52, 192, 74, 160, 180, 120, 109, 158, 81, 170, 197, 189, 110, 90, 124, 50, 198, 188, 78, 49, 207, 247, 159, 237},
 		)
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		_, err = bind.WaitMined(ctx, evmClient, fulfilKeyRequestTx)
+		require.NoError(t, err)
 
 		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
 
@@ -229,9 +225,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		newSignRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newSignRequestTx)
 		require.NoError(t, err)
@@ -265,13 +259,14 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		}, signRequests.SignRequests[0])
 
 		// updateKey
-		_, err = iActClient.NewTemplate(
+		newTemplateTx, err := iActClient.NewTemplate(
 			alice.TransactOps(t, context.Background(), evmClient),
 			"test template",
 			"any(2, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		_, err = bind.WaitMined(ctx, evmClient, newTemplateTx)
+		require.NoError(t, err)
 
 		updateKeyTx, err := iWardenClient.UpdateKey(
 			alice.TransactOps(t, context.Background(), evmClient),
@@ -281,9 +276,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		updateKeyTxReceipt, err := bind.WaitMined(ctx, evmClient, updateKeyTx)
 		require.NoError(t, err)
@@ -330,9 +323,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
-
 		require.NoError(t, err)
-		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
 
 		updateSpaceTxReceipt, err := bind.WaitMined(ctx, evmClient, updateSpaceTx)
 		require.NoError(t, err)
@@ -352,9 +343,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions6.Actions, 6)
 
-		space, err := iWardenClient.SpaceById(
-			alice.CallOps(t),
-			1)
+		space, err := iWardenClient.SpaceById(alice.CallOps(t), 1)
 
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{

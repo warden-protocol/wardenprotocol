@@ -64,8 +64,16 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		spaceById1, err2 := iWardenClient.SpaceById(alice.CallOps(t), 1)
 		require.NoError(t, err2)
-		require.Len(t, spaceById1.Owners, 2)
-		require.Equal(t, spaceById1.Owners[1], bob.Address(t))
+		require.Equal(t, warden.Space{
+			Id:                     1,
+			Creator:                alice.Address(t),
+			Nonce:                  1,
+			ApproveSignTemplateId:  0,
+			RejectAdminTemplateId:  0,
+			ApproveAdminTemplateId: 0,
+			RejectSignTemplateId:   0,
+			Owners:                 []string{alice.Address(t), bob.Address(t)},
+		}, spaceById1)
 
 		// removeSpaceOwner
 		_, err = iWardenClient.RemoveSpaceOwner(
@@ -87,8 +95,16 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		spaceById2, err2 := iWardenClient.SpaceById(alice.CallOps(t), 1)
 		require.NoError(t, err2)
-		require.Len(t, spaceById2.Owners, 1)
-		require.Equal(t, spaceById2.Owners[0], alice.Address(t))
+		require.Equal(t, warden.Space{
+			Id:                     1,
+			Creator:                alice.Address(t),
+			Nonce:                  2,
+			ApproveSignTemplateId:  0,
+			RejectAdminTemplateId:  0,
+			ApproveAdminTemplateId: 0,
+			RejectSignTemplateId:   0,
+			Owners:                 []string{alice.Address(t)},
+		}, spaceById2)
 
 		_, err = iWardenClient.NewKeychain(alice.TransactOps(t, context.Background(), evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
 
@@ -139,6 +155,18 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		require.NoError(t, err)
 		require.Len(t, keyRequests1.Keys, 1)
+		require.Equal(t, warden.KeyRequest{
+			Id:                   1,
+			Creator:              alice.Address(t),
+			SpaceId:              1,
+			KeychainId:           1,
+			ApproveTemplateId:    0,
+			RejectTemplateId:     0,
+			Status:               int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING),
+			KeyType:              int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
+			DeductedKeychainFees: []warden.Coin{},
+			RejectReason:         "",
+		}, keyRequests1.Keys[0])
 
 		_, err = iWardenClient.FulfilKeyRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
@@ -158,11 +186,11 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		_, err = iWardenClient.NewSignRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
-			[]byte{44, 171, 181, 223, 85, 54, 221, 14, 74, 123, 184, 201, 177, 198, 249, 239, 55, 82, 154, 230, 67, 219, 182, 184, 85, 230, 126, 254, 28, 31, 237, 40, 78, 46, 142, 40, 205, 71, 55, 234, 155, 205, 79, 94, 62, 107, 91, 52, 246, 77, 79, 108, 248, 161, 172, 86, 202, 219, 210, 116, 208, 152, 119, 182, 0},
+			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			[]common.Address{},
 			[]byte{},
 			[]warden.Coin{},
-			3,
+			2,
 			0,
 			"any(1, warden.space.owners)",
 			"any(1, warden.space.owners)")
@@ -175,9 +203,99 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions4.Actions, 4)
 
-		//signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
+		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
 
-		//require.NoError(t, err)
-		//require.Len(t, signRequests.SignRequests, 1)
+		require.NoError(t, err)
+		require.Len(t, signRequests.SignRequests, 1)
+		require.Equal(t, warden.SignRequest{
+			Id:                   1,
+			Creator:              alice.Address(t),
+			KeyId:                1,
+			Status:               int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			EncryptionKey:        []byte{},
+			DataForSigning:       []byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
+			DeductedKeychainFees: []warden.Coin{},
+			Result:               []byte{},
+		}, signRequests.SignRequests[0])
+
+		// updateKey
+		_, err = iActClient.NewTemplate(
+			alice.TransactOps(t, context.Background(), evmClient),
+			"test template",
+			"any(2, warden.space.owners)")
+
+		require.NoError(t, err)
+		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		_, err = iWardenClient.UpdateKey(
+			alice.TransactOps(t, context.Background(), evmClient),
+			1,
+			1,
+			1,
+			0,
+			"any(1, warden.space.owners)",
+			"any(1, warden.space.owners)")
+
+		require.NoError(t, err)
+		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		actions5, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
+
+		require.NoError(t, err)
+		require.Len(t, actions5.Actions, 5)
+
+		key, err := iWardenClient.KeyById(
+			alice.CallOps(t),
+			1,
+			[]int32{})
+
+		require.NoError(t, err)
+
+		require.Equal(t, warden.Key{
+			Id:                1,
+			SpaceId:           1,
+			ApproveTemplateId: 1,
+			RejectTemplateId:  1,
+			KeychainId:        1,
+			Type:              int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
+			PublicKey:         []byte{3, 127, 233, 231, 7, 1, 37, 58, 229, 52, 192, 74, 160, 180, 120, 109, 158, 81, 170, 197, 189, 110, 90, 124, 50, 198, 188, 78, 49, 207, 247, 159, 237},
+		}, key.Key)
+
+		// updateSpace
+		_, err = iWardenClient.UpdateSpace(
+			alice.TransactOps(t, context.Background(), evmClient),
+			1,
+			2,
+			1,
+			1,
+			1,
+			1,
+			0,
+			"any(1, warden.space.owners)",
+			"any(1, warden.space.owners)")
+
+		require.NoError(t, err)
+		time.Sleep(4 * time.Second) // TODO AT: replace by require.Eventually
+
+		actions6, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
+
+		require.NoError(t, err)
+		require.Len(t, actions6.Actions, 6)
+
+		space, err := iWardenClient.SpaceById(
+			alice.CallOps(t),
+			1)
+
+		require.NoError(t, err)
+		require.Equal(t, warden.Space{
+			Id:                     1,
+			Creator:                alice.Address(t),
+			Nonce:                  3,
+			ApproveSignTemplateId:  1,
+			RejectAdminTemplateId:  1,
+			ApproveAdminTemplateId: 1,
+			RejectSignTemplateId:   1,
+			Owners:                 []string{alice.Address(t)},
+		}, space)
 	})
 }

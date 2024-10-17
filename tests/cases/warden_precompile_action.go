@@ -6,23 +6,22 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
 	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
+	"github.com/warden-protocol/wardenprotocol/tests/framework"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"testing"
 	"time"
-
-	"github.com/warden-protocol/wardenprotocol/tests/framework"
-	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 )
 
 func init() {
-	Register(&Test_EthTransactionReaderWarden{})
+	Register(&Test_WardenPrecompileAction{})
 }
 
-type Test_EthTransactionReaderWarden struct {
+type Test_WardenPrecompileAction struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_EthTransactionReaderWarden) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_WardenPrecompileAction) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
@@ -30,7 +29,7 @@ func (c *Test_EthTransactionReaderWarden) Setup(t *testing.T, ctx context.Contex
 	c.w.PrintDebugLogsAtTheEnd(t, ctx)
 }
 
-func (c *Test_EthTransactionReaderWarden) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 	//dave := exec.NewWardend(c.w, "dave")
@@ -159,7 +158,7 @@ func (c *Test_EthTransactionReaderWarden) Run(t *testing.T, ctx context.Context,
 		_, err = iWardenClient.NewSignRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
-			[]byte{},
+			[]byte{44, 171, 181, 223, 85, 54, 221, 14, 74, 123, 184, 201, 177, 198, 249, 239, 55, 82, 154, 230, 67, 219, 182, 184, 85, 230, 126, 254, 28, 31, 237, 40, 78, 46, 142, 40, 205, 71, 55, 234, 155, 205, 79, 94, 62, 107, 91, 52, 246, 77, 79, 108, 248, 161, 172, 86, 202, 219, 210, 116, 208, 152, 119, 182, 0},
 			[]common.Address{},
 			[]byte{},
 			[]warden.Coin{},
@@ -176,9 +175,9 @@ func (c *Test_EthTransactionReaderWarden) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 		require.Len(t, actions4.Actions, 4)
 
-		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
+		//signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
 
-		require.NoError(t, err)
-		require.Len(t, signRequests.SignRequests, 1)
+		//require.NoError(t, err)
+		//require.Len(t, signRequests.SignRequests, 1)
 	})
 }

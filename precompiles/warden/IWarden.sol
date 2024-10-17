@@ -446,12 +446,12 @@ interface IWarden {
     /// @dev AddSpaceOwner defines an Event emitted when a new space owner is added.
     /// @param spaceId The space id
     /// @param newOwner The new owner address
-    event AddSpaceOwner(uint64 spaceId, address indexed newOwner);
+    event AddSpaceOwner(uint64 indexed spaceId, address newOwner);
 
     /// @dev RemoveSpaceOwner defines an Event emitted when a space owner is removed.
     /// @param spaceId The space id
     /// @param removedOwner The new owner address
-    event RemoveSpaceOwner(uint64 spaceId, address indexed removedOwner);
+    event RemoveSpaceOwner(uint64 indexed spaceId, address removedOwner);
 
     /// @dev NewKeyRequest defines an Event emitted when a new key request is created.
     /// @param id The id of the created key request
@@ -461,19 +461,19 @@ interface IWarden {
     /// @param rejectTemplateId The reject template id
     /// @param keyType The key type
     /// @param creator The creator address
-    event NewKeyRequest(uint64 id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, KeyType keyType, address indexed creator);
+    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, KeyType keyType, address creator);
 
     /// @dev NewSignRequest defines an Event emitted when a new signature request is created.
     /// @param id The id of the signature request
     /// @param keyId The id of the Key to be used for signing
     /// @param creator The creator address
-    event NewSignRequest(uint64 id, uint64 keyId, address indexed creator);
+    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator);
 
     /// @dev UpdateKey defines an Event emitted when a key is updated.
     /// @param id The id of the key
     /// @param approveTemplateId The approve template id
     /// @param rejectTemplateId The reject template id
-    event UpdateKey(uint64 id, uint64 approveTemplateId, uint64 rejectTemplateId);
+    event UpdateKey(uint64 indexed id, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev UpdateSpace defines an Event emitted when a space is updated.
     /// @param id The id of the space being updated
@@ -481,5 +481,5 @@ interface IWarden {
     /// @param rejectAdminTemplateId The id of the template to be applied to every reject admin operation
     /// @param approveSignTemplateId The id of the template to be applied to every approve sign operation
     /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
-    event UpdateSpace(uint64 id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
+    event UpdateSpace(uint64 indexed id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }

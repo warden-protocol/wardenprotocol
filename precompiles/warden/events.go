@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -484,17 +485,11 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	return &log, nil
 }
 
-func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, newOwner *common.Address, addSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, addSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventAddSpaceOwner]
 
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
-
-	var err error
-	topics[1], err = cmn.MakeTopic(*newOwner)
-	if err != nil {
-		return nil, err
-	}
 
 	var b bytes.Buffer
 	for _, attr := range addSpaceOwnerEvent.Attributes {
@@ -507,7 +502,13 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, newOwner *common.Addr
 			if !success {
 				return nil, fmt.Errorf("AddSpaceOwner: invalid space id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
+			var err error
+			topics[1], err = cmn.MakeTopic(spaceId)
+			if err != nil {
+				return nil, err
+			}
+		case "new_owner":
+			b.Write([]byte(val))
 		}
 	}
 
@@ -527,12 +528,6 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
-	var err error
-	topics[1], err = cmn.MakeTopic(*removedOwner)
-	if err != nil {
-		return nil, err
-	}
-
 	var b bytes.Buffer
 	for _, attr := range removeSpaceOwnerEvent.Attributes {
 		key := attr.GetKey()
@@ -544,7 +539,13 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 			if !success {
 				return nil, fmt.Errorf("RemoveSpaceOwner: invalid space id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
+			var err error
+			topics[1], err = cmn.MakeTopic(spaceId)
+			if err != nil {
+				return nil, err
+			}
+		case "removed_owner":
+			b.Write([]byte(val))
 		}
 	}
 
@@ -558,16 +559,23 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 	return &log, nil
 }
 
-func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, creator *common.Address, newKeyRequestEvent sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, newKeyRequestEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventNewKeyRequest]
 
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
-	var err error
-	topics[1], err = cmn.MakeTopic(*creator)
-	if err != nil {
-		return nil, err
+	mapKeyType := func(keyType string) (uint8, error) {
+		switch keyType {
+		case v1beta3.KeyType_KEY_TYPE_UNSPECIFIED.String():
+			return uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED), nil
+		case v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1.String():
+			return uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1), nil
+		case v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519.String():
+			return uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519), nil
+		default:
+			return 0, fmt.Errorf("key type is not supported: %v", keyType)
+		}
 	}
 
 	var b bytes.Buffer
@@ -581,37 +589,43 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, creator *common.Addre
 			if !success {
 				return nil, fmt.Errorf("NewKeyRequest: invalid id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(id)))
-		case "spaceId":
+			var err error
+			topics[1], err = cmn.MakeTopic(id)
+			if err != nil {
+				return nil, err
+			}
+		case "space_id":
 			spaceId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("NewKeyRequest: invalid space id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(spaceId)))
-		case "keychainId":
+		case "keychain_id":
 			keychainId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("NewKeyRequest: invalid keychain id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-		case "approveTemplateId":
+		case "approve_template_id":
 			approveTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("NewKeyRequest: invalid approve template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveTemplateId)))
-		case "rejectTemplateId":
+		case "reject_template_id":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("NewKeyRequest: invalid reject template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
-		case "keyType":
-			keyType, success := new(big.Int).SetString(val, 10)
-			if !success {
+		case "key_type":
+			keyType, err := mapKeyType(val)
+			if err != nil {
 				return nil, fmt.Errorf("NewKeyRequest: invalid key type type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keyType)))
+		case "creator":
+			b.Write([]byte(val))
 		}
 	}
 
@@ -625,17 +639,11 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, creator *common.Addre
 	return &log, nil
 }
 
-func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, creator *common.Address, newSignRequestEvent sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, newSignRequestEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventNewSignRequest]
 
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
-
-	var err error
-	topics[1], err = cmn.MakeTopic(*creator)
-	if err != nil {
-		return nil, err
-	}
 
 	var b bytes.Buffer
 	for _, attr := range newSignRequestEvent.Attributes {
@@ -648,13 +656,19 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, creator *common.Addr
 			if !success {
 				return nil, fmt.Errorf("NewSignRequest: invalid id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(id)))
-		case "keyId":
+			var err error
+			topics[1], err = cmn.MakeTopic(id)
+			if err != nil {
+				return nil, err
+			}
+		case "key_id":
 			keyId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("NewSignRequest: invalid key id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(keyId)))
+		case "creator":
+			b.Write([]byte(val))
 		}
 	}
 
@@ -671,7 +685,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, creator *common.Addr
 func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, updateKeyEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventUpdateKey]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
 	var b bytes.Buffer
@@ -685,14 +699,18 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 			if !success {
 				return nil, fmt.Errorf("UpdateKeyEvent: invalid id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(id)))
-		case "approveTemplateId":
+			var err error
+			topics[1], err = cmn.MakeTopic(id)
+			if err != nil {
+				return nil, err
+			}
+		case "approve_template_id":
 			approveTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("UpdateKeyEvent: invalid approve template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveTemplateId)))
-		case "rejectTemplateId":
+		case "reject_template_id":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("UpdateKeyEvent: invalid reject template id type")
@@ -714,7 +732,7 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, updateSpaceEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventUpdateSpace]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
 	var b bytes.Buffer
@@ -728,26 +746,30 @@ func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, upda
 			if !success {
 				return nil, fmt.Errorf("UpdateSpaceEvent: invalid id type")
 			}
-			b.Write(cmn.PackNum(reflect.ValueOf(id)))
-		case "approveAdminTemplateId":
+			var err error
+			topics[1], err = cmn.MakeTopic(id)
+			if err != nil {
+				return nil, err
+			}
+		case "approve_admin_template_id":
 			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("UpdateSpaceEvent: invalid approve admin template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
-		case "rejectAdminTemplateId":
+		case "reject_admin_template_id":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("UpdateSpaceEvent: invalid reject admin template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(rejectTemplateId)))
-		case "approveSignTemplateId":
+		case "approve_sign_template_id":
 			approveAdminTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("UpdateSpaceEvent: invalid approve sign template id type")
 			}
 			b.Write(cmn.PackNum(reflect.ValueOf(approveAdminTemplateId)))
-		case "rejectSignTemplateId":
+		case "reject_sign_template_id":
 			rejectTemplateId, success := new(big.Int).SetString(val, 10)
 			if !success {
 				return nil, fmt.Errorf("UpdateSpaceEvent: invalid reject sign template id type")

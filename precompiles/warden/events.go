@@ -128,12 +128,21 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	if err != nil {
 		return nil, err
 	}
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeyType())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetSpaceId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeychainId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveTemplateId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectTemplateId())))))
+	
+	packed, err := event.Inputs.NonIndexed().Pack(
+		typedEvent.GetId(),
+		typedEvent.GetKeyType(),
+		typedEvent.GetSpaceId(),
+		typedEvent.GetKeychainId(),
+		typedEvent.GetApproveTemplateId(),
+		typedEvent.GetRejectTemplateId(),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(packed)
 
 	log := ethtypes.Log{
 		Address:     p.Address(),

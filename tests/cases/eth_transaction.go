@@ -103,12 +103,12 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, _ fra
 		if err != nil {
 			t.Fatal(err)
 		}
-		require.Equal(t, actionById.Action.Creator, alice.Address(t))
+		require.Equal(t, actionById.Action.Creator, alice.EthAddress(t))
 
 		actionsByAddress, err := iActClient.ActionsByAddress(
 			alice.CallOps(t),
 			act.TypesPageRequest{},
-			alice.Address(t),
+			alice.EthAddress(t),
 			int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 		if err != nil {
 			t.Fatal(err)
@@ -170,9 +170,13 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, _ fra
 		addSpaceOwnerEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iWardenClient.ParseAddSpaceOwner)
 		require.NoError(t, err)
 		require.Len(t, addSpaceOwnerEvents, 1)
+		require.Equal(t, addSpaceOwnerEvents[0].SpaceId, uint64(1))
+		require.Equal(t, addSpaceOwnerEvents[0].NewOwner, dave.EthAddress(t))
 
 		actionStateChangeEvents, err = checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionStateChange)
 		require.NoError(t, err)
 		require.Len(t, actionStateChangeEvents, 1)
+		require.Equal(t, actionStateChangeEvents[0].PreviousStatus, int32(actv1beta1.ActionStatus_ACTION_STATUS_PENDING))
+		require.Equal(t, actionStateChangeEvents[0].NewStatus, int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 	})
 }

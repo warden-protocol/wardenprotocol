@@ -32,13 +32,13 @@ IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
         string statusText;
         AnyType msg;
         AnyType result;
-        string creator;
+        address creator;
         uint64 timeoutHeight;
         Timestamp createdAt;
         Timestamp updatedAt;
         string approveExpression;
         string rejectExpression;
-        string[] mentions;
+        address[] mentions;
         ActionVote[] votes;
     }
 
@@ -58,7 +58,7 @@ IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
 
     struct Template {
         uint64 id;
-        string creator;
+        address creator;
         string name;
         string expression;
     }
@@ -100,7 +100,7 @@ interface IAct {
     function actionById(uint64 actionId)
     external view returns (ActionByIdResponse memory response);
 
-    function actionsByAddress(Types.PageRequest calldata pagination, string calldata addr, int32 status)
+    function actionsByAddress(Types.PageRequest calldata pagination, address addr, int32 status)
     external view returns (ActionsByAddressResponse memory response);
 
     function templates(Types.PageRequest calldata pagination)
@@ -110,8 +110,8 @@ interface IAct {
     external view returns (TemplateByIdResponse memory response);
 
     event CreateTemplate(address indexed creator, uint64 templateId);
-    event UpdateTemplate(uint64 indexed templateId);
+    event UpdateTemplate(address indexed author, uint64 templateId);
     event ActionVoted(address indexed participant, uint64 actionId, int32 voteType);
-    event CreateAction(uint64 indexed actionId);
+    event CreateAction(address indexed creator, uint64 actionId);
     event ActionStateChange(address indexed author, uint64 actionId, int32 previousStatus, int32 newStatus);
 }

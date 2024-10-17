@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -137,7 +138,7 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 
 	return &types.QueryActionsByAddressRequest{
 		Pagination: &input.Pagination,
-		Address:    input.Address,
+		Address:    precommon.Bech32StrFromAddress(input.Address),
 		Status:     types.ActionStatus(input.Status),
 	}, nil
 }

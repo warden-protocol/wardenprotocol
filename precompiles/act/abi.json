@@ -1,4 +1,34 @@
 {
+  "deploy": {
+    "VM:-": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    },
+    "main:1": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    },
+    "ropsten:3": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    },
+    "rinkeby:4": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    },
+    "kovan:42": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    },
+    "goerli:5": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    },
+    "Custom": {
+      "linkReferences": {},
+      "autoDeployLib": true
+    }
+  },
   "data": {
     "bytecode": {
       "functionDebugData": {},
@@ -21,7 +51,7 @@
     "methodIdentifiers": {
       "actionById(uint64)": "51619ef0",
       "actions((bytes,uint64,uint64,bool,bool))": "9e9d1e27",
-      "actionsByAddress((bytes,uint64,uint64,bool,bool),string,int32)": "c0c68593",
+      "actionsByAddress((bytes,uint64,uint64,bool,bool),address,int32)": "d98d037e",
       "checkAction(uint64)": "737c52b5",
       "newTemplate(string,string)": "20748349",
       "revokeAction(uint64)": "b8fcbfef",
@@ -209,9 +239,9 @@
                   "type": "tuple"
                 },
                 {
-                  "internalType": "string",
+                  "internalType": "address",
                   "name": "creator",
-                  "type": "string"
+                  "type": "address"
                 },
                 {
                   "internalType": "uint64",
@@ -263,9 +293,9 @@
                   "type": "string"
                 },
                 {
-                  "internalType": "string[]",
+                  "internalType": "address[]",
                   "name": "mentions",
-                  "type": "string[]"
+                  "type": "address[]"
                 },
                 {
                   "components": [
@@ -428,9 +458,9 @@
                   "type": "tuple"
                 },
                 {
-                  "internalType": "string",
+                  "internalType": "address",
                   "name": "creator",
-                  "type": "string"
+                  "type": "address"
                 },
                 {
                   "internalType": "uint64",
@@ -482,9 +512,9 @@
                   "type": "string"
                 },
                 {
-                  "internalType": "string[]",
+                  "internalType": "address[]",
                   "name": "mentions",
-                  "type": "string[]"
+                  "type": "address[]"
                 },
                 {
                   "components": [
@@ -574,9 +604,9 @@
           "type": "tuple"
         },
         {
-          "internalType": "string",
+          "internalType": "address",
           "name": "addr",
-          "type": "string"
+          "type": "address"
         },
         {
           "internalType": "int32",
@@ -657,9 +687,9 @@
                   "type": "tuple"
                 },
                 {
-                  "internalType": "string",
+                  "internalType": "address",
                   "name": "creator",
-                  "type": "string"
+                  "type": "address"
                 },
                 {
                   "internalType": "uint64",
@@ -711,9 +741,9 @@
                   "type": "string"
                 },
                 {
-                  "internalType": "string[]",
+                  "internalType": "address[]",
                   "name": "mentions",
-                  "type": "string[]"
+                  "type": "address[]"
                 },
                 {
                   "components": [
@@ -850,9 +880,9 @@
                   "type": "uint64"
                 },
                 {
-                  "internalType": "string",
+                  "internalType": "address",
                   "name": "creator",
-                  "type": "string"
+                  "type": "address"
                 },
                 {
                   "internalType": "string",
@@ -942,9 +972,9 @@
                   "type": "uint64"
                 },
                 {
-                  "internalType": "string",
+                  "internalType": "address",
                   "name": "creator",
-                  "type": "string"
+                  "type": "address"
                 },
                 {
                   "internalType": "string",

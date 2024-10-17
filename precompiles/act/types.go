@@ -3,6 +3,8 @@ package act
 import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	"github.com/ethereum/go-ethereum/common"
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"math/big"
 	"time"
@@ -38,7 +40,7 @@ func (r ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) Act
 // ActionsByAddressInput needed to unmarshal Pagination field and pass it to types.QueryActionsByAddressRequest
 type ActionsByAddressInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
-	Address    string            `abi:"addr"`
+	Address    common.Address    `abi:"addr"`
 	Status     int32
 }
 
@@ -85,19 +87,24 @@ func (r TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse)
 }
 
 func mapAction(action types.Action) Action {
+	mentions := make([]common.Address, 0)
+	for _, mention := range action.Mentions {
+		mentions = append(mentions, precommon.MustAddressFromBech32Str(mention))
+	}
+
 	return Action{
 		Id:                action.Id,
 		Status:            big.NewInt(int64(action.Status)),
 		StatusText:        action.Status.String(),
 		Msg:               mapAny(action.Msg),
 		Result:            mapAny(action.Result),
-		Creator:           action.Creator,
+		Creator:           precommon.MustAddressFromBech32Str(action.Creator),
 		TimeoutHeight:     action.TimeoutHeight,
 		CreatedAt:         mapTimestamp(action.CreatedAt),
 		UpdatedAt:         mapTimestamp(action.UpdatedAt),
 		ApproveExpression: action.ApproveExpression.String(),
 		RejectExpression:  action.RejectExpression.String(),
-		Mentions:          action.Mentions,
+		Mentions:          mentions,
 		Votes:             mapVotes(action.Votes),
 	}
 }
@@ -124,7 +131,7 @@ func mapVote(value types.ActionVote) ActionVote {
 func mapTemplate(value types.Template) Template {
 	return Template{
 		Id:         value.Id,
-		Creator:    value.Creator,
+		Creator:    precommon.MustAddressFromBech32Str(value.Creator),
 		Name:       value.Name,
 		Expression: value.Expression.String(),
 	}

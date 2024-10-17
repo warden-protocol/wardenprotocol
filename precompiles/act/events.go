@@ -3,6 +3,7 @@ package act
 import (
 	"bytes"
 	"fmt"
+	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"math/big"
 	"reflect"
@@ -194,41 +195,15 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
-	mapVoteType := func(status string) (int32, error) {
-		switch status {
-		case v1beta1.ActionVoteType_VOTE_TYPE_UNSPECIFIED.String():
-			return int32(v1beta1.ActionVoteType_VOTE_TYPE_UNSPECIFIED), nil
-		case v1beta1.ActionVoteType_VOTE_TYPE_APPROVED.String():
-			return int32(v1beta1.ActionVoteType_VOTE_TYPE_APPROVED), nil
-		case v1beta1.ActionVoteType_VOTE_TYPE_REJECTED.String():
-			return int32(v1beta1.ActionVoteType_VOTE_TYPE_REJECTED), nil
-		default:
-			return -1, fmt.Errorf("cannot map action vote type: %v", status)
-		}
+	typedEvent := v1beta1.EventActionVoted{}
+	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
+	if err != nil {
+		return nil, err
 	}
 
-	for _, attr := range sdkEvent.Attributes {
-		key := attr.GetKey()
-		val := strings.Trim(attr.GetValue(), "\"")
-		switch key {
-		case "id":
-			keychainId, success := new(big.Int).SetString(val, 10)
-			if !success {
-				return nil, fmt.Errorf("ActionVotedEvent: invalid keychain id type")
-			}
+	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(int32(typedEvent.VoteType))))
 
-			b.Write(cmn.PackNum(reflect.ValueOf(keychainId)))
-
-		case "vote_type":
-			value, err := mapVoteType(val)
-			if err != nil {
-				return nil, fmt.Errorf("ActionVotedEvent: invalid vote_type type")
-			}
-
-			b.Write(cmn.PackNum(reflect.ValueOf(value)))
-		}
-
-	}
 	return &b, nil
 }
 

@@ -110,8 +110,8 @@ interface IAct {
     external view returns (TemplateByIdResponse memory response);
 
     event CreateTemplate(address indexed creator, uint64 templateId);
-    event UpdateTemplate(address indexed author, uint64 templateId);
+    event UpdateTemplate(uint64 indexed templateId);
     event ActionVoted(address indexed participant, uint64 actionId, int32 voteType);
-    event CreateAction(address indexed creator, uint64 actionId);
+    event CreateAction(uint64 indexed actionId);
     event ActionStateChange(address indexed author, uint64 actionId, int32 previousStatus, int32 newStatus);
 }

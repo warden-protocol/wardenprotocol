@@ -34,7 +34,7 @@ func (c *Test_EthTransactionReader) Setup(t *testing.T, ctx context.Context, bui
 	c.w.PrintLogsAtTheEnd(t, ctx)
 }
 
-func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 	dave := exec.NewWardend(c.w, "dave")
@@ -163,6 +163,9 @@ func (c *Test_EthTransactionReader) Run(t *testing.T, ctx context.Context, build
 		actionVotedEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionVoted)
 		require.NoError(t, err)
 		require.Len(t, actionVotedEvents, 1)
+
+		require.Equal(t, actionVotedEvents[0].VoteType, int32(actv1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
+		require.Equal(t, actionVotedEvents[0].ActionId, uint64(4))
 
 		addSpaceOwnerEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iWardenClient.ParseAddSpaceOwner)
 		require.NoError(t, err)

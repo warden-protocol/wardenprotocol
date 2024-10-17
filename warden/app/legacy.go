@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"maps"
 	"path/filepath"
 
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
@@ -47,9 +48,9 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
 
-	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
+	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
@@ -338,8 +339,21 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
+	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
+	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(app.WardenKeeper, app.ActKeeper)
+	if err != nil {
+		panic(err)
+	}
+	for a, p := range wardenprecompiles {
+		_, found := precompiles[a]
+		if found {
+			panic(fmt.Errorf("precompiles address already registered: %v", a))
+		}
+		precompiles[a] = p
+	}
+
 	app.EvmKeeper.WithStaticPrecompiles(
-		vm.PrecompiledContractsBerlin,
+		precompiles,
 	)
 
 	// register IBC modules

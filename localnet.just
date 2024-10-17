@@ -8,7 +8,7 @@ start bin="wardend" install="true":
     set -euxo pipefail
 
     if [[ "{{install}}" == "true" && "{{bin}}" == "wardend" ]]; then
-        just wardend install
+        just --unstable wardend install
     fi
 
     function replace() {
@@ -35,7 +35,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
-    jq '.app_state.evm.params.active_static_precompiles = []' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
+    jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901"]' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
@@ -46,14 +46,14 @@ start bin="wardend" install="true":
       sleep 3
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
       if [ -f $ethereum_analyzer_wasm ]; then
-        just deploy-contract $ethereum_analyzer_wasm
+        just --unstable  deploy-contract $ethereum_analyzer_wasm
       else
         echo "$ethereum_analyzer_wasm not found, will try to build it"
         pushd contracts
-        just compile ethereum-analyzer
+        just --unstable compile ethereum-analyzer
         popd
         if [ -f $ethereum_analyzer_wasm ]; then
-          just deploy-contract $ethereum_analyzer_wasm
+          just --unstable deploy-contract $ethereum_analyzer_wasm
         else
           echo "Could not build ethereum_analyzer.wasm, giving up deploying it."
         fi

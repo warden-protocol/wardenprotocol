@@ -61,13 +61,14 @@ jobs:
     needs: build-and-push
     steps:
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: ${{ needs.build-and-push.outputs.image }}
           output: "trivy.txt"
           # exit-code: "1"
           severity: "CRITICAL,HIGH"
         env:
+          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db,public.ecr.aws/aquasecurity/trivy-db
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Trivy Output to Summary

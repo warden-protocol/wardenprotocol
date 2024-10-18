@@ -279,7 +279,7 @@ To add a Keychain Writer, take these steps:
    <TabItem value="buenavista" label="Buenavista">
    ```bash
    wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 2 --writer $(wardend keys show --address my-keychain-writer-name) \
+     --keychain-id 1 --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id buenavista-1 --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>

@@ -94,7 +94,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-key-name --address
    ```
    :::
 
@@ -213,7 +213,7 @@ To add a Keychain Writer, take these steps:
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-key-name --address
    ```
    :::
 

@@ -15,6 +15,7 @@ type ActionsInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 }
 
+// FromResponse needed to map QueryActionsResponse to ActionsResponse
 func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) ActionsResponse {
 	if res != nil {
 		actions := make([]Action, 0)
@@ -29,6 +30,7 @@ func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) ActionsRe
 	return r
 }
 
+// FromResponse needed to map QueryActionByIdResponse to ActionByIdResponse
 func (r ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) ActionByIdResponse {
 	if res != nil && res.Action != nil {
 		r.Action = mapAction(*res.Action)
@@ -44,6 +46,7 @@ type ActionsByAddressInput struct {
 	Status     int32
 }
 
+// FromResponse needed to map QueryActionsByAddressResponse to ActionsByAddressResponse
 func (r ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) ActionsByAddressResponse {
 	if res != nil {
 		actions := make([]Action, 0)
@@ -64,6 +67,7 @@ type TemplatesInput struct {
 	Creator    string `json:"creator"`
 }
 
+// FromResponse needed to map QueryTemplatesResponse to TemplatesResponse
 func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) TemplatesResponse {
 	if res != nil {
 		templates := make([]Template, 0)
@@ -78,6 +82,7 @@ func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) Templ
 	return r
 }
 
+// FromResponse needed to map QueryTemplateByIdResponse to TemplateByIdResponse
 func (r TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse) TemplateByIdResponse {
 	if res != nil && res.Template != nil {
 		r.Template = mapTemplate(*res.Template)

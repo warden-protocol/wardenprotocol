@@ -2,6 +2,16 @@
 pragma solidity >=0.8.18;
 
 library Types {
+    struct AnyType {
+    string typeUrl;
+    bytes value;
+    }
+
+    struct Timestamp {
+        uint64 secs;
+        uint64 nanos;
+    }
+
 /// @dev Dec represents a fixed point decimal value. The value is stored as an integer, and the
 /// precision is stored as a uint8. The value is multiplied by 10^precision to get the actual value.
     struct Dec {

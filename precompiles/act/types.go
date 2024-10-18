@@ -1,7 +1,6 @@
 package act
 
 import (
-	"math/big"
 	"time"
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -143,8 +142,7 @@ func mapAction(action types.Action) (Action, error) {
 
 	return Action{
 		Id:                action.Id,
-		Status:            big.NewInt(int64(action.Status)),
-		StatusText:        action.Status.String(),
+		Status:            uint8(action.Status),
 		Msg:               mapAny(action.Msg),
 		Result:            mapAny(action.Result),
 		Creator:           creator,
@@ -181,10 +179,9 @@ func mapVote(value types.ActionVote) (ActionVote, error) {
 	}
 
 	return ActionVote{
-		Participant:  participant,
-		VotedAt:      mapTimestamp(value.VotedAt),
-		VoteType:     int32(value.VoteType),
-		VoteTypeText: value.VoteType.String(),
+		Participant: participant,
+		VotedAt:     mapTimestamp(value.VotedAt),
+		VoteType:    uint8(value.VoteType),
 	}, nil
 }
 
@@ -203,19 +200,19 @@ func mapTemplate(value types.Template) (Template, error) {
 	}, nil
 }
 
-func mapAny(any *cdctypes.Any) AnyType {
+func mapAny(any *cdctypes.Any) TypesAnyType {
 	if any == nil {
-		return AnyType{}
+		return TypesAnyType{}
 	}
 
-	return AnyType{
+	return TypesAnyType{
 		any.TypeUrl,
 		any.Value,
 	}
 }
 
-func mapTimestamp(value time.Time) Timestamp {
-	return Timestamp{
+func mapTimestamp(value time.Time) TypesTimestamp {
+	return TypesTimestamp{
 		Secs:  uint64(value.Unix()),
 		Nanos: uint64(value.Nanosecond()),
 	}

@@ -3,7 +3,6 @@ package cases
 import (
 	"context"
 	"fmt"
-	"math/big"
 	"testing"
 	"time"
 
@@ -99,13 +98,11 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.Len(t, actions.Actions, 1)
 		require.Equal(t, actions.Actions[0].Id, uint64(1))
 		require.Equal(t, actions.Actions[0].Creator, alice.EthAddress(t))
-		require.Equal(t, actions.Actions[0].Status, big.NewInt(int64(v1beta1.ActionStatus_ACTION_STATUS_COMPLETED)))
-		require.Equal(t, actions.Actions[0].StatusText, v1beta1.ActionStatus_ACTION_STATUS_COMPLETED.String())
+		require.Equal(t, actions.Actions[0].Status, uint8(v1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 		require.NotNil(t, actions.Actions[0].UpdatedAt)
 		require.NotNil(t, actions.Actions[0].Result)
 		require.Len(t, actions.Actions[0].Votes, 1)
-		require.Equal(t, actions.Actions[0].Votes[0].VoteType, int32(v1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
-		require.Equal(t, actions.Actions[0].Votes[0].VoteTypeText, v1beta1.ActionVoteType_VOTE_TYPE_APPROVED.String())
+		require.Equal(t, actions.Actions[0].Votes[0].VoteType, uint8(v1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
 		require.Equal(t, actions.Actions[0].Votes[0].Participant, alice.EthAddress(t))
 		require.NotNil(t, actions.Actions[0].RejectExpression)
 		require.NotNil(t, actions.Actions[0].ApproveExpression)
@@ -151,7 +148,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		actionById, err = iActClient.ActionById(alice.CallOps(t), 3)
 		require.NoError(t, err)
 		require.Equal(t, actionById.Action.Id, uint64(3))
-		require.Equal(t, actionById.Action.Status, big.NewInt(int64(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED)))
+		require.Equal(t, actionById.Action.Status, uint8(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED))
 
 		tx = alice.Tx(t,
 			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"",
@@ -173,7 +170,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.NoError(t, err)
 		require.Len(t, actionVotedEvents, 1)
 		require.Equal(t, actionVotedEvents[0].Participant, bob.EthAddress(t))
-		require.Equal(t, actionVotedEvents[0].VoteType, int32(actv1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
+		require.Equal(t, actionVotedEvents[0].VoteType, uint8(actv1beta1.ActionVoteType_VOTE_TYPE_APPROVED))
 		require.Equal(t, actionVotedEvents[0].ActionId, uint64(4))
 
 		addSpaceOwnerEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iWardenClient.ParseAddSpaceOwner)
@@ -186,7 +183,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.NoError(t, err)
 		require.Len(t, actionStateChangeEvents, 1)
 		require.Equal(t, actionStateChangeEvents[0].ActionId, uint64(4))
-		require.Equal(t, actionStateChangeEvents[0].PreviousStatus, int32(actv1beta1.ActionStatus_ACTION_STATUS_PENDING))
-		require.Equal(t, actionStateChangeEvents[0].NewStatus, int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
+		require.Equal(t, actionStateChangeEvents[0].PreviousStatus, uint8(actv1beta1.ActionStatus_ACTION_STATUS_PENDING))
+		require.Equal(t, actionStateChangeEvents[0].NewStatus, uint8(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 	})
 }

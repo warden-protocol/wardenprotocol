@@ -31,14 +31,13 @@ var (
 // Action is an auto generated low-level Go binding around an user-defined struct.
 type Action struct {
 	Id                uint64
-	Status            *big.Int
-	StatusText        string
-	Msg               AnyType
-	Result            AnyType
+	Status            uint8
+	Msg               TypesAnyType
+	Result            TypesAnyType
 	Creator           common.Address
 	TimeoutHeight     uint64
-	CreatedAt         Timestamp
-	UpdatedAt         Timestamp
+	CreatedAt         TypesTimestamp
+	UpdatedAt         TypesTimestamp
 	ApproveExpression string
 	RejectExpression  string
 	Mentions          []common.Address
@@ -52,10 +51,9 @@ type ActionByIdResponse struct {
 
 // ActionVote is an auto generated low-level Go binding around an user-defined struct.
 type ActionVote struct {
-	Participant  common.Address
-	VotedAt      Timestamp
-	VoteType     int32
-	VoteTypeText string
+	Participant common.Address
+	VotedAt     TypesTimestamp
+	VoteType    uint8
 }
 
 // ActionsByAddressResponse is an auto generated low-level Go binding around an user-defined struct.
@@ -68,12 +66,6 @@ type ActionsByAddressResponse struct {
 type ActionsResponse struct {
 	Pagination TypesPageResponse
 	Actions    []Action
-}
-
-// AnyType is an auto generated low-level Go binding around an user-defined struct.
-type AnyType struct {
-	TypeUrl string
-	Value   []byte
 }
 
 // Template is an auto generated low-level Go binding around an user-defined struct.
@@ -95,10 +87,10 @@ type TemplatesResponse struct {
 	Templates  []Template
 }
 
-// Timestamp is an auto generated low-level Go binding around an user-defined struct.
-type Timestamp struct {
-	Secs  uint64
-	Nanos uint64
+// TypesAnyType is an auto generated low-level Go binding around an user-defined struct.
+type TypesAnyType struct {
+	TypeUrl string
+	Value   []byte
 }
 
 // TypesPageRequest is an auto generated low-level Go binding around an user-defined struct.
@@ -116,9 +108,15 @@ type TypesPageResponse struct {
 	Total   uint64
 }
 
+// TypesTimestamp is an auto generated low-level Go binding around an user-defined struct.
+type TypesTimestamp struct {
+	Secs  uint64
+	Nanos uint64
+}
+
 // IActMetaData contains all meta data concerning the IAct contract.
 var IActMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"previousStatus\",\"type\":\"int32\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"newStatus\",\"type\":\"int32\"}],\"name\":\"ActionStateChange\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"voteType\",\"type\":\"int32\"}],\"name\":\"ActionVoted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"CreateAction\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"}],\"name\":\"CreateTemplate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"}],\"name\":\"UpdateTemplate\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"actionById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"int256\",\"name\":\"status\",\"type\":\"int256\"},{\"internalType\":\"string\",\"name\":\"statusText\",\"type\":\"string\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structAnyType\",\"name\":\"msg\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structAnyType\",\"name\":\"result\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"timeoutHeight\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"createdAt\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"updatedAt\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"approveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"rejectExpression\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"mentions\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"votedAt\",\"type\":\"tuple\"},{\"internalType\":\"int32\",\"name\":\"voteType\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"voteTypeText\",\"type\":\"string\"}],\"internalType\":\"structActionVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"}],\"internalType\":\"structAction\",\"name\":\"action\",\"type\":\"tuple\"}],\"internalType\":\"structActionByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"actions\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"int256\",\"name\":\"status\",\"type\":\"int256\"},{\"internalType\":\"string\",\"name\":\"statusText\",\"type\":\"string\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structAnyType\",\"name\":\"msg\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structAnyType\",\"name\":\"result\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"timeoutHeight\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"createdAt\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"updatedAt\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"approveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"rejectExpression\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"mentions\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"votedAt\",\"type\":\"tuple\"},{\"internalType\":\"int32\",\"name\":\"voteType\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"voteTypeText\",\"type\":\"string\"}],\"internalType\":\"structActionVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"}],\"internalType\":\"structAction[]\",\"name\":\"actions\",\"type\":\"tuple[]\"}],\"internalType\":\"structActionsResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"}],\"name\":\"actionsByAddress\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"int256\",\"name\":\"status\",\"type\":\"int256\"},{\"internalType\":\"string\",\"name\":\"statusText\",\"type\":\"string\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structAnyType\",\"name\":\"msg\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structAnyType\",\"name\":\"result\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"timeoutHeight\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"createdAt\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"updatedAt\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"approveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"rejectExpression\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"mentions\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTimestamp\",\"name\":\"votedAt\",\"type\":\"tuple\"},{\"internalType\":\"int32\",\"name\":\"voteType\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"voteTypeText\",\"type\":\"string\"}],\"internalType\":\"structActionVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"}],\"internalType\":\"structAction[]\",\"name\":\"actions\",\"type\":\"tuple[]\"}],\"internalType\":\"structActionsByAddressResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"checkAction\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"definition\",\"type\":\"string\"}],\"name\":\"newTemplate\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"revokeAction\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"}],\"name\":\"templateById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expression\",\"type\":\"string\"}],\"internalType\":\"structTemplate\",\"name\":\"template\",\"type\":\"tuple\"}],\"internalType\":\"structTemplateByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"templates\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expression\",\"type\":\"string\"}],\"internalType\":\"structTemplate[]\",\"name\":\"templates\",\"type\":\"tuple[]\"}],\"internalType\":\"structTemplatesResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"definition\",\"type\":\"string\"}],\"name\":\"updateTemplate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"voteType\",\"type\":\"int32\"}],\"name\":\"voteForAction\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"enumActionStatus\",\"name\":\"previousStatus\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"enumActionStatus\",\"name\":\"newStatus\",\"type\":\"uint8\"}],\"name\":\"ActionStateChange\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"enumVoteType\",\"name\":\"voteType\",\"type\":\"uint8\"}],\"name\":\"ActionVoted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"CreateAction\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"}],\"name\":\"CreateTemplate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"}],\"name\":\"UpdateTemplate\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"actionById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"enumActionStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structTypes.AnyType\",\"name\":\"msg\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structTypes.AnyType\",\"name\":\"result\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"timeoutHeight\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"createdAt\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"updatedAt\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"approveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"rejectExpression\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"mentions\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"votedAt\",\"type\":\"tuple\"},{\"internalType\":\"enumVoteType\",\"name\":\"voteType\",\"type\":\"uint8\"}],\"internalType\":\"structActionVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"}],\"internalType\":\"structAction\",\"name\":\"action\",\"type\":\"tuple\"}],\"internalType\":\"structActionByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"actions\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"enumActionStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structTypes.AnyType\",\"name\":\"msg\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structTypes.AnyType\",\"name\":\"result\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"timeoutHeight\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"createdAt\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"updatedAt\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"approveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"rejectExpression\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"mentions\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"votedAt\",\"type\":\"tuple\"},{\"internalType\":\"enumVoteType\",\"name\":\"voteType\",\"type\":\"uint8\"}],\"internalType\":\"structActionVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"}],\"internalType\":\"structAction[]\",\"name\":\"actions\",\"type\":\"tuple[]\"}],\"internalType\":\"structActionsResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"}],\"name\":\"actionsByAddress\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"enumActionStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structTypes.AnyType\",\"name\":\"msg\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"typeUrl\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"internalType\":\"structTypes.AnyType\",\"name\":\"result\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"timeoutHeight\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"createdAt\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"updatedAt\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"approveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"rejectExpression\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"mentions\",\"type\":\"address[]\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"secs\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nanos\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.Timestamp\",\"name\":\"votedAt\",\"type\":\"tuple\"},{\"internalType\":\"enumVoteType\",\"name\":\"voteType\",\"type\":\"uint8\"}],\"internalType\":\"structActionVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"}],\"internalType\":\"structAction[]\",\"name\":\"actions\",\"type\":\"tuple[]\"}],\"internalType\":\"structActionsByAddressResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"checkAction\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"definition\",\"type\":\"string\"}],\"name\":\"newTemplate\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"}],\"name\":\"revokeAction\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"}],\"name\":\"templateById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expression\",\"type\":\"string\"}],\"internalType\":\"structTemplate\",\"name\":\"template\",\"type\":\"tuple\"}],\"internalType\":\"structTemplateByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"templates\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expression\",\"type\":\"string\"}],\"internalType\":\"structTemplate[]\",\"name\":\"templates\",\"type\":\"tuple[]\"}],\"internalType\":\"structTemplatesResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"templateId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"definition\",\"type\":\"string\"}],\"name\":\"updateTemplate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"actionId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"voteType\",\"type\":\"int32\"}],\"name\":\"voteForAction\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IActABI is the input ABI used to generate the binding from.
@@ -269,7 +267,7 @@ func (_IAct *IActTransactorRaw) Transact(opts *bind.TransactOpts, method string,
 
 // ActionById is a free data retrieval call binding the contract method 0x51619ef0.
 //
-// Solidity: function actionById(uint64 actionId) view returns(((uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])) response)
+// Solidity: function actionById(uint64 actionId) view returns(((uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])) response)
 func (_IAct *IActCaller) ActionById(opts *bind.CallOpts, actionId uint64) (ActionByIdResponse, error) {
 	var out []interface{}
 	err := _IAct.contract.Call(opts, &out, "actionById", actionId)
@@ -286,21 +284,21 @@ func (_IAct *IActCaller) ActionById(opts *bind.CallOpts, actionId uint64) (Actio
 
 // ActionById is a free data retrieval call binding the contract method 0x51619ef0.
 //
-// Solidity: function actionById(uint64 actionId) view returns(((uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])) response)
+// Solidity: function actionById(uint64 actionId) view returns(((uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])) response)
 func (_IAct *IActSession) ActionById(actionId uint64) (ActionByIdResponse, error) {
 	return _IAct.Contract.ActionById(&_IAct.CallOpts, actionId)
 }
 
 // ActionById is a free data retrieval call binding the contract method 0x51619ef0.
 //
-// Solidity: function actionById(uint64 actionId) view returns(((uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])) response)
+// Solidity: function actionById(uint64 actionId) view returns(((uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])) response)
 func (_IAct *IActCallerSession) ActionById(actionId uint64) (ActionByIdResponse, error) {
 	return _IAct.Contract.ActionById(&_IAct.CallOpts, actionId)
 }
 
 // Actions is a free data retrieval call binding the contract method 0x9e9d1e27.
 //
-// Solidity: function actions((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])[]) response)
+// Solidity: function actions((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])[]) response)
 func (_IAct *IActCaller) Actions(opts *bind.CallOpts, pagination TypesPageRequest) (ActionsResponse, error) {
 	var out []interface{}
 	err := _IAct.contract.Call(opts, &out, "actions", pagination)
@@ -317,21 +315,21 @@ func (_IAct *IActCaller) Actions(opts *bind.CallOpts, pagination TypesPageReques
 
 // Actions is a free data retrieval call binding the contract method 0x9e9d1e27.
 //
-// Solidity: function actions((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])[]) response)
+// Solidity: function actions((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])[]) response)
 func (_IAct *IActSession) Actions(pagination TypesPageRequest) (ActionsResponse, error) {
 	return _IAct.Contract.Actions(&_IAct.CallOpts, pagination)
 }
 
 // Actions is a free data retrieval call binding the contract method 0x9e9d1e27.
 //
-// Solidity: function actions((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])[]) response)
+// Solidity: function actions((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])[]) response)
 func (_IAct *IActCallerSession) Actions(pagination TypesPageRequest) (ActionsResponse, error) {
 	return _IAct.Contract.Actions(&_IAct.CallOpts, pagination)
 }
 
 // ActionsByAddress is a free data retrieval call binding the contract method 0xd98d037e.
 //
-// Solidity: function actionsByAddress((bytes,uint64,uint64,bool,bool) pagination, address addr, int32 status) view returns(((bytes,uint64),(uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])[]) response)
+// Solidity: function actionsByAddress((bytes,uint64,uint64,bool,bool) pagination, address addr, int32 status) view returns(((bytes,uint64),(uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])[]) response)
 func (_IAct *IActCaller) ActionsByAddress(opts *bind.CallOpts, pagination TypesPageRequest, addr common.Address, status int32) (ActionsByAddressResponse, error) {
 	var out []interface{}
 	err := _IAct.contract.Call(opts, &out, "actionsByAddress", pagination, addr, status)
@@ -348,14 +346,14 @@ func (_IAct *IActCaller) ActionsByAddress(opts *bind.CallOpts, pagination TypesP
 
 // ActionsByAddress is a free data retrieval call binding the contract method 0xd98d037e.
 //
-// Solidity: function actionsByAddress((bytes,uint64,uint64,bool,bool) pagination, address addr, int32 status) view returns(((bytes,uint64),(uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])[]) response)
+// Solidity: function actionsByAddress((bytes,uint64,uint64,bool,bool) pagination, address addr, int32 status) view returns(((bytes,uint64),(uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])[]) response)
 func (_IAct *IActSession) ActionsByAddress(pagination TypesPageRequest, addr common.Address, status int32) (ActionsByAddressResponse, error) {
 	return _IAct.Contract.ActionsByAddress(&_IAct.CallOpts, pagination, addr, status)
 }
 
 // ActionsByAddress is a free data retrieval call binding the contract method 0xd98d037e.
 //
-// Solidity: function actionsByAddress((bytes,uint64,uint64,bool,bool) pagination, address addr, int32 status) view returns(((bytes,uint64),(uint64,int256,string,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),int32,string)[])[]) response)
+// Solidity: function actionsByAddress((bytes,uint64,uint64,bool,bool) pagination, address addr, int32 status) view returns(((bytes,uint64),(uint64,uint8,(string,bytes),(string,bytes),address,uint64,(uint64,uint64),(uint64,uint64),string,string,address[],(address,(uint64,uint64),uint8)[])[]) response)
 func (_IAct *IActCallerSession) ActionsByAddress(pagination TypesPageRequest, addr common.Address, status int32) (ActionsByAddressResponse, error) {
 	return _IAct.Contract.ActionsByAddress(&_IAct.CallOpts, pagination, addr, status)
 }
@@ -598,14 +596,14 @@ func (it *IActActionStateChangeIterator) Close() error {
 type IActActionStateChange struct {
 	Author         common.Address
 	ActionId       uint64
-	PreviousStatus int32
-	NewStatus      int32
+	PreviousStatus uint8
+	NewStatus      uint8
 	Raw            types.Log // Blockchain specific contextual infos
 }
 
-// FilterActionStateChange is a free log retrieval operation binding the contract event 0x8331fa892365e6ea3a5e8809843b2fd43127125b41d14e515b6608016b252d56.
+// FilterActionStateChange is a free log retrieval operation binding the contract event 0x4ec265596164182b2025b3bd681450aef02c2b9487924e1b6ac3785f9c4636dc.
 //
-// Solidity: event ActionStateChange(address indexed author, uint64 actionId, int32 previousStatus, int32 newStatus)
+// Solidity: event ActionStateChange(address indexed author, uint64 actionId, uint8 previousStatus, uint8 newStatus)
 func (_IAct *IActFilterer) FilterActionStateChange(opts *bind.FilterOpts, author []common.Address) (*IActActionStateChangeIterator, error) {
 
 	var authorRule []interface{}
@@ -620,9 +618,9 @@ func (_IAct *IActFilterer) FilterActionStateChange(opts *bind.FilterOpts, author
 	return &IActActionStateChangeIterator{contract: _IAct.contract, event: "ActionStateChange", logs: logs, sub: sub}, nil
 }
 
-// WatchActionStateChange is a free log subscription operation binding the contract event 0x8331fa892365e6ea3a5e8809843b2fd43127125b41d14e515b6608016b252d56.
+// WatchActionStateChange is a free log subscription operation binding the contract event 0x4ec265596164182b2025b3bd681450aef02c2b9487924e1b6ac3785f9c4636dc.
 //
-// Solidity: event ActionStateChange(address indexed author, uint64 actionId, int32 previousStatus, int32 newStatus)
+// Solidity: event ActionStateChange(address indexed author, uint64 actionId, uint8 previousStatus, uint8 newStatus)
 func (_IAct *IActFilterer) WatchActionStateChange(opts *bind.WatchOpts, sink chan<- *IActActionStateChange, author []common.Address) (event.Subscription, error) {
 
 	var authorRule []interface{}
@@ -662,9 +660,9 @@ func (_IAct *IActFilterer) WatchActionStateChange(opts *bind.WatchOpts, sink cha
 	}), nil
 }
 
-// ParseActionStateChange is a log parse operation binding the contract event 0x8331fa892365e6ea3a5e8809843b2fd43127125b41d14e515b6608016b252d56.
+// ParseActionStateChange is a log parse operation binding the contract event 0x4ec265596164182b2025b3bd681450aef02c2b9487924e1b6ac3785f9c4636dc.
 //
-// Solidity: event ActionStateChange(address indexed author, uint64 actionId, int32 previousStatus, int32 newStatus)
+// Solidity: event ActionStateChange(address indexed author, uint64 actionId, uint8 previousStatus, uint8 newStatus)
 func (_IAct *IActFilterer) ParseActionStateChange(log types.Log) (*IActActionStateChange, error) {
 	event := new(IActActionStateChange)
 	if err := _IAct.contract.UnpackLog(event, "ActionStateChange", log); err != nil {
@@ -745,13 +743,13 @@ func (it *IActActionVotedIterator) Close() error {
 type IActActionVoted struct {
 	Participant common.Address
 	ActionId    uint64
-	VoteType    int32
+	VoteType    uint8
 	Raw         types.Log // Blockchain specific contextual infos
 }
 
-// FilterActionVoted is a free log retrieval operation binding the contract event 0x9b6ca79ff1d9566813a39347b8ccc081933d8d0aa8401c9a40cdf7bd53667ec3.
+// FilterActionVoted is a free log retrieval operation binding the contract event 0x39db7e0304bfea692e054bba473c1d34175e298180e0c64dc10db63bd6449ae3.
 //
-// Solidity: event ActionVoted(address indexed participant, uint64 actionId, int32 voteType)
+// Solidity: event ActionVoted(address indexed participant, uint64 actionId, uint8 voteType)
 func (_IAct *IActFilterer) FilterActionVoted(opts *bind.FilterOpts, participant []common.Address) (*IActActionVotedIterator, error) {
 
 	var participantRule []interface{}
@@ -766,9 +764,9 @@ func (_IAct *IActFilterer) FilterActionVoted(opts *bind.FilterOpts, participant 
 	return &IActActionVotedIterator{contract: _IAct.contract, event: "ActionVoted", logs: logs, sub: sub}, nil
 }
 
-// WatchActionVoted is a free log subscription operation binding the contract event 0x9b6ca79ff1d9566813a39347b8ccc081933d8d0aa8401c9a40cdf7bd53667ec3.
+// WatchActionVoted is a free log subscription operation binding the contract event 0x39db7e0304bfea692e054bba473c1d34175e298180e0c64dc10db63bd6449ae3.
 //
-// Solidity: event ActionVoted(address indexed participant, uint64 actionId, int32 voteType)
+// Solidity: event ActionVoted(address indexed participant, uint64 actionId, uint8 voteType)
 func (_IAct *IActFilterer) WatchActionVoted(opts *bind.WatchOpts, sink chan<- *IActActionVoted, participant []common.Address) (event.Subscription, error) {
 
 	var participantRule []interface{}
@@ -808,9 +806,9 @@ func (_IAct *IActFilterer) WatchActionVoted(opts *bind.WatchOpts, sink chan<- *I
 	}), nil
 }
 
-// ParseActionVoted is a log parse operation binding the contract event 0x9b6ca79ff1d9566813a39347b8ccc081933d8d0aa8401c9a40cdf7bd53667ec3.
+// ParseActionVoted is a log parse operation binding the contract event 0x39db7e0304bfea692e054bba473c1d34175e298180e0c64dc10db63bd6449ae3.
 //
-// Solidity: event ActionVoted(address indexed participant, uint64 actionId, int32 voteType)
+// Solidity: event ActionVoted(address indexed participant, uint64 actionId, uint8 voteType)
 func (_IAct *IActFilterer) ParseActionVoted(log types.Log) (*IActActionVoted, error) {
 	event := new(IActActionVoted)
 	if err := _IAct.contract.UnpackLog(event, "ActionVoted", log); err != nil {

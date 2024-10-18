@@ -6,35 +6,27 @@ import "../common/Types.sol";
 /// @dev The IAct contract's address.
 address constant IACT_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000901;
 
+enum ActionStatus { Pending, Approved, Rejected, Revoked }
+enum VoteType { None, Approve, Reject }
+
 /// @dev The IAct contract's instance.
 IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
-struct AnyType {
-    string typeUrl;
-    bytes value;
-}
-
-struct Timestamp {
-    uint64 secs;
-    uint64 nanos;
-}
 
 struct ActionVote {
     address participant;
-    Timestamp votedAt;
-    int32 voteType;
-    string voteTypeText;
+    Types.Timestamp votedAt;
+    VoteType voteType;
 }
 
 struct Action {
     uint64 id;
-    int status;
-    string statusText;
-    AnyType msg;
-    AnyType result;
+    ActionStatus status;
+    Types.AnyType msg;
+    Types.AnyType result;
     address creator;
     uint64 timeoutHeight;
-    Timestamp createdAt;
-    Timestamp updatedAt;
+    Types.Timestamp createdAt;
+    Types.Timestamp updatedAt;
     string approveExpression;
     string rejectExpression;
     address[] mentions;
@@ -173,7 +165,7 @@ interface IAct {
     event ActionVoted(
         address indexed participant,
         uint64 actionId,
-        int32 voteType
+        VoteType voteType
     );
 
     /// @dev CreateAction defines an Event emitted when an action is created.
@@ -189,7 +181,7 @@ interface IAct {
     event ActionStateChange(
         address indexed author,
         uint64 actionId,
-        int32 previousStatus,
-        int32 newStatus
+        ActionStatus previousStatus,
+        ActionStatus newStatus
     );
 }

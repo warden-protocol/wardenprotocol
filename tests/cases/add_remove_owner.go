@@ -23,7 +23,7 @@ func (c *Test_AddRemoveOwner) Setup(t *testing.T, ctx context.Context, build fra
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-base")
-	c.w.WaitRunnning(t)
+	c.w.WaitRunning(t)
 }
 
 func (c *Test_AddRemoveOwner) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {

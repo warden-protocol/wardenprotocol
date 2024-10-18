@@ -24,7 +24,7 @@ func (c *Test_CreateSpace) Setup(t *testing.T, ctx context.Context, build framew
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-base")
-	c.w.WaitRunnning(t)
+	c.w.WaitRunning(t)
 }
 
 func (c *Test_CreateSpace) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {

@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -11,7 +12,7 @@ func TestNewIdentityFromSeed(t *testing.T) {
 
 	id, err := NewIdentityFromSeed(seed)
 	if err != nil {
-		t.Fatal(err)
+		require.NoError(t, err)
 	}
 
 	fmt.Printf("address: %s\n", id.Address.String())

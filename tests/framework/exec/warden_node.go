@@ -13,6 +13,8 @@ import (
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
 
+	"github.com/ethereum/go-ethereum/ethclient"
+
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
@@ -74,7 +76,6 @@ func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 		JSONRPCPort   int
 		JSONRPCWSPort int
 	}{
-
 		APIPort:       w.apiPort,
 		GRPCPort:      w.grpcPort,
 		CometPortRPC:  w.cometPortRPC,
@@ -98,14 +99,46 @@ func (w *WardenNode) CometPortRPC() int {
 	return w.cometPortRPC
 }
 
-func (w *WardenNode) WaitRunnning(t *testing.T) {
+func (w *WardenNode) WaitRunning(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return strings.Contains(w.Stdout.String(), "height=2")
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")
 }
 
+func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context) {
+	go func() {
+		select {
+		case _, _ = <-ctx.Done():
+			t.Logf("Node logs: \n %s", w.Stdout.String())
+		}
+	}()
+}
+
+func (w *WardenNode) PrintDebugLogsAtTheEnd(t *testing.T, ctx context.Context) {
+	go func() {
+		select {
+		case <-ctx.Done():
+			// Split the logs into individual lines
+			logs := strings.Split(w.Stdout.String(), "\n")
+			// Filter out lines that contain "INF "
+			var filteredLogs []string
+			for _, line := range logs {
+				if strings.Contains(line, "TEST_DEBUG") {
+					filteredLogs = append(filteredLogs, line)
+				}
+			}
+			// Join the filtered lines back and print them
+			t.Logf("Node logs: \n %s", strings.Join(filteredLogs, "\n"))
+		}
+	}()
+}
+
 func (w *WardenNode) grpcAddr() string {
 	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
+}
+
+func (w *WardenNode) jsonRpcAddr() string {
+	return fmt.Sprintf("http://127.0.0.1:%d", w.jsonRPCPort)
 }
 
 type GRPCClient struct {
@@ -129,4 +162,11 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 		Bank:   banktypes.NewQueryClient(grpcConn),
 		Auth:   authtypes.NewQueryClient(grpcConn),
 	}
+}
+
+func (w *WardenNode) EthClient(t *testing.T) *ethclient.Client {
+	client, err := ethclient.Dial(w.jsonRpcAddr())
+	require.NoError(t, err)
+
+	return client
 }

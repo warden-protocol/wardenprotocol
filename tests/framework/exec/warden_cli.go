@@ -19,8 +19,9 @@ type Wardend struct {
 	QueryAppend string
 	TxAppend    string
 
-	Node    *WardenNode
-	address string
+	Node       *WardenNode
+	address    string
+	privateKey string
 }
 
 func NewWardend(node *WardenNode, name string) *Wardend {
@@ -75,4 +76,27 @@ func (cli *Wardend) Address(t *testing.T) string {
 	cli.address = strings.TrimSpace(output)
 
 	return cli.address
+}
+
+func (cli *Wardend) PrivateKey(t *testing.T) string {
+	if cli.privateKey != "" {
+		return cli.privateKey
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+
+	cmd := &Exec{
+		Bin:    "sh",
+		Args:   []string{"-c", fmt.Sprintf("%s keys unsafe-export-eth-key %s --keyring-backend test --keyring-dir %s", cli.BinPath, cli.Name, cli.Node.Home)},
+		Stdout: &iowriter.IOWriter{},
+		Stderr: &iowriter.IOWriter{},
+	}
+	err := cmd.Run(ctx)
+	require.NoError(t, err)
+
+	output := cmd.Stdout.String()
+	cli.privateKey = strings.TrimSpace(output)
+
+	return cli.privateKey
 }

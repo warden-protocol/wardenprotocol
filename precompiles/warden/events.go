@@ -85,7 +85,7 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 }
 
 // Map EventAddKeychainWriter to eth AddKeychainWriter event and write to eth log
-func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *common.Address, eventAddKeychainWriter sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *common.Address, eventAddKeychainWriter sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainWriter]
 
@@ -102,7 +102,7 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddres *com
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetId())))))
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetWritersCount())))))
 
-	topics[1], err = evmoscmn.MakeTopic(*writerAddres)
+	topics[1], err = evmoscmn.MakeTopic(*writerAddress)
 	if err != nil {
 		return nil, err
 	}

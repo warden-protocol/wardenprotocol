@@ -31,7 +31,7 @@ func (c *Test_ActPrecompile) Setup(t *testing.T, ctx context.Context, build fram
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
-	c.w.WaitRunnning(t)
+	c.w.WaitRunning(t)
 }
 
 func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {

@@ -26,7 +26,7 @@ func (c *Test_WardenPrecompileAction) Setup(t *testing.T, ctx context.Context, b
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
-	c.w.WaitRunnning(t)
+	c.w.WaitRunning(t)
 	c.w.PrintDebugLogsAtTheEnd(t, ctx)
 }
 
@@ -69,8 +69,8 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions1.Actions, 1)
 
-		spaceById1, err2 := iWardenClient.SpaceById(alice.CallOps(t), 1)
-		require.NoError(t, err2)
+		spaceById1, err := iWardenClient.SpaceById(alice.CallOps(t), 1)
+		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
 			Creator:                alice.EthAddress(t),
@@ -108,8 +108,8 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions2.Actions, 2)
 
-		spaceById2, err2 := iWardenClient.SpaceById(alice.CallOps(t), 1)
-		require.NoError(t, err2)
+		spaceById2, err := iWardenClient.SpaceById(alice.CallOps(t), 1)
+		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
 			Creator:                alice.EthAddress(t),

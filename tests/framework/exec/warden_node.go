@@ -99,7 +99,7 @@ func (w *WardenNode) CometPortRPC() int {
 	return w.cometPortRPC
 }
 
-func (w *WardenNode) WaitRunnning(t *testing.T) {
+func (w *WardenNode) WaitRunning(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return strings.Contains(w.Stdout.String(), "height=2")
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")

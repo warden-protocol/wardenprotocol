@@ -31,7 +31,7 @@ wardend keys add my-key-name --recover
 Then get your public address:
 
 ```bash
-wardend keys show my-key-name -address
+wardend keys show my-key-name --address
 ```
 
 ## 2. Get testnet WARD

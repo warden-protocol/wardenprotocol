@@ -150,10 +150,10 @@ You can try to request a new ECDSA Key from SpaceWard of from the CLI. In the fo
 
 ```bash
 wardend tx warden new-key-request \
+  --from my-key-name \
   --space-id my-space-id \
   --keychain-id my-keychain-id \
   --key-type ecdsa-secp256-k1 \
-  --from my-key-name \
   --chain-id warden
 ```
 

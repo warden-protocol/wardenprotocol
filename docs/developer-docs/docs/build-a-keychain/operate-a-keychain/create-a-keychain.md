@@ -2,10 +2,10 @@
 sidebar_position: 2
 ---
 
-# Create a Keychain
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+# Create a Keychain
 
 ## Overview
 
@@ -94,7 +94,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-key-name --address
    ```
    :::
 
@@ -132,7 +132,7 @@ The following steps show how to register a new Keychain entity on-chain.
    <TabItem value="buenavista" label="Buenavista">
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-keychain-name' \
+     --description 'my-keychain-description' \
      --from my-key-name \
      --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
@@ -213,7 +213,7 @@ To add a Keychain Writer, take these steps:
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-keychain-writer-name --address
    ```
    :::
 
@@ -279,7 +279,7 @@ To add a Keychain Writer, take these steps:
    <TabItem value="buenavista" label="Buenavista">
    ```bash
    wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 2 --writer $(wardend keys show --address my-keychain-writer-name) \
+     --keychain-id 1 --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id buenavista-1 --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    </TabItem>

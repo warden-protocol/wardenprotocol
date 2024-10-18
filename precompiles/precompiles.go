@@ -20,7 +20,7 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 		return nil, err
 	}
 	precompiles[actprecompile.Address()] = actprecompile
-	// warden.act.v1beta1.EventCreateTemplate
+
 	er.RegisterEvent("warden.act.v1beta1.EventActionStateChange", actprecompile.GetActionStateChangeEvent)
 	er.RegisterEvent("warden.act.v1beta1.EventCreateTemplate", actprecompile.GetCreateTemplateEvent)
 	er.RegisterEvent("warden.act.v1beta1.EventActionVoted", actprecompile.GetActionVotedEvent)

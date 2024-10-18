@@ -5,6 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
+	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
 const (
@@ -22,6 +23,8 @@ const (
 	SpacesByOwnerMethod   = "spacesByOwner"
 )
 
+// allKeys query implementation
+// Constructs QueryAllKeysRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) AllKeysMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -29,13 +32,15 @@ func (p Precompile) AllKeysMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newAllKeysRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := p.wardenkeeper.AllKeys(ctx, req)
+	response, err := queryServer.AllKeys(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -49,6 +54,8 @@ func (p Precompile) AllKeysMethod(
 	return out.Pack(method.Outputs)
 }
 
+// keyById query implementation
+// Constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeyByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -56,13 +63,15 @@ func (p Precompile) KeyByIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newKeyByIdRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := p.wardenkeeper.KeyById(ctx, req)
+	response, err := queryServer.KeyById(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -76,6 +85,8 @@ func (p Precompile) KeyByIdMethod(
 	return out.Pack(method.Outputs)
 }
 
+// keysBySpaceId query implementation
+// Constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeysBySpaceIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -83,13 +94,15 @@ func (p Precompile) KeysBySpaceIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newKeysBySpaceIdRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := p.wardenkeeper.KeysBySpaceId(ctx, req)
+	response, err := queryServer.KeysBySpaceId(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -103,6 +116,8 @@ func (p Precompile) KeysBySpaceIdMethod(
 	return out.Pack(method.Outputs)
 }
 
+// keyRequestById query implementation
+// Constructs QueryKeyRequestByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeyRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -110,12 +125,14 @@ func (p Precompile) KeyRequestMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newKeyRequestByIdRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.KeyRequestById(ctx, req)
+	response, err := queryServer.KeyRequestById(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -129,6 +146,8 @@ func (p Precompile) KeyRequestMethod(
 	return out.Pack(method.Outputs)
 }
 
+// keyRequests query implementation
+// Constructs QueryKeyRequestsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeyRequestsMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -136,12 +155,14 @@ func (p Precompile) KeyRequestsMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newKeyRequestsRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.KeyRequests(ctx, req)
+	response, err := queryServer.KeyRequests(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -155,6 +176,8 @@ func (p Precompile) KeyRequestsMethod(
 	return out.Pack(method.Outputs)
 }
 
+// keychainById query implementation
+// Constructs QueryKeychainByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeychainMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -162,12 +185,14 @@ func (p Precompile) KeychainMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newKeychainRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.KeychainById(ctx, req)
+	response, err := queryServer.KeychainById(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -180,6 +205,8 @@ func (p Precompile) KeychainMethod(
 	return out.Pack(method.Outputs)
 }
 
+// keychains query implementation
+// Constructs QueryKeychainsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeychainsMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -187,12 +214,14 @@ func (p Precompile) KeychainsMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newKeychainsRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.Keychains(ctx, req)
+	response, err := queryServer.Keychains(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -205,6 +234,8 @@ func (p Precompile) KeychainsMethod(
 	return out.Pack(method.Outputs)
 }
 
+// signRequestById query implementation
+// Constructs QuerySignRequestByIdResponse from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SignRequestByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -212,12 +243,14 @@ func (p Precompile) SignRequestByIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	req, err := newSignRequestByIdRequest(method, args)
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
+	req, err := newSignRequestByIdRequest(args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.SignRequestById(ctx, req)
+	response, err := queryServer.SignRequestById(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -230,6 +263,8 @@ func (p Precompile) SignRequestByIdMethod(
 	return out.Pack(method.Outputs)
 }
 
+// signRequests query implementation
+// Constructs QuerySignRequestsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SignRequestsMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -237,12 +272,14 @@ func (p Precompile) SignRequestsMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newSignRequestsRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.SignRequests(ctx, req)
+	response, err := queryServer.SignRequests(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -255,6 +292,8 @@ func (p Precompile) SignRequestsMethod(
 	return out.Pack(method.Outputs)
 }
 
+// spaceById query implementation
+// Constructs QuerySpaceByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SpaceByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -262,12 +301,14 @@ func (p Precompile) SpaceByIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newSpaceByIdRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.SpaceById(ctx, req)
+	response, err := queryServer.SpaceById(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -280,6 +321,8 @@ func (p Precompile) SpaceByIdMethod(
 	return out.Pack(method.Outputs)
 }
 
+// spaces query implementation
+// Constructs QuerySpacesRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SpacesMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -287,12 +330,14 @@ func (p Precompile) SpacesMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newSpacesRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.Spaces(ctx, req)
+	response, err := queryServer.Spaces(ctx, req)
 
 	if err != nil {
 		return nil, err
@@ -305,6 +350,8 @@ func (p Precompile) SpacesMethod(
 	return out.Pack(method.Outputs)
 }
 
+// spacesByOwner query implementation
+// Constructs QuerySpacesByOwnerRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SpacesByOwnerMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -312,12 +359,14 @@ func (p Precompile) SpacesByOwnerMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
+	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
+
 	req, err := newSpacesByOwnerRequest(method, args)
 
 	if err != nil {
 		return nil, err
 	}
-	response, err := p.wardenkeeper.SpacesByOwner(ctx, req)
+	response, err := queryServer.SpacesByOwner(ctx, req)
 
 	if err != nil {
 		return nil, err

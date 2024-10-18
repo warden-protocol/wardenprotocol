@@ -264,9 +264,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		checks.SuccessTx(t, newKeyReqTx)
 		// fulfil key request
 		pubKey, err := hex.DecodeString("a5d4105f9c22b101f3bb0f53f4b96e9b931dbae0542858a98b8ff9aeedc1d09f09")
-		if err != nil {
-			panic(err)
-		}
+		require.NoError(t, err)
+
 		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(alice.TransactOps(t, ctx, evmClient), 1, pubKey)
 		require.NoError(t, err)
 

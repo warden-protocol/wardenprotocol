@@ -21,6 +21,8 @@ const (
 	VoteForActionMethod  = "voteForAction"
 )
 
+// checkAction method implementation
+// Constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) CheckActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -71,6 +73,8 @@ func newMsgCheckAction(args []interface{}, origin common.Address) (*types.MsgChe
 	}, nil
 }
 
+// newTemplate method implementation
+// Constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) NewTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -125,6 +129,8 @@ func newMsgNewTemplate(args []interface{}, origin common.Address) (*types.MsgNew
 	}, nil
 }
 
+// revokeAction method implementation
+// Constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) RevokeActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -175,6 +181,8 @@ func newMsgRevokeAction(args []interface{}, origin common.Address) (*types.MsgRe
 	}, nil
 }
 
+// updateTemplate method implementation
+// Constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) UpdateTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -232,6 +240,8 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*types.Msg
 	}, nil
 }
 
+// voteForAction method implementation
+// Constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) VoteForActionMethod(
 	ctx sdk.Context,
 	origin common.Address,

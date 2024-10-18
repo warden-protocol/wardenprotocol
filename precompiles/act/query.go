@@ -20,6 +20,8 @@ const (
 	TemplateByIdQuery     = "templateById"
 )
 
+// actions query implementation
+// Constructs QueryActionsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) ActionsQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
@@ -38,7 +40,10 @@ func (p Precompile) ActionsQuery(
 		return nil, err
 	}
 
-	out := new(ActionsResponse).FromResponse(res)
+	out, err := new(ActionsResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -62,6 +67,8 @@ func newActionsQuery(method *abi.Method, args []interface{}) (*types.QueryAction
 	}, nil
 }
 
+// actionById query implementation
+// Constructs QueryActionByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) ActionByIdQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
@@ -80,7 +87,10 @@ func (p Precompile) ActionByIdQuery(
 		return nil, err
 	}
 
-	out := new(ActionByIdResponse).FromResponse(res)
+	out, err := new(ActionByIdResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -99,6 +109,8 @@ func newActionByIdQuery(args []interface{}) (*types.QueryActionByIdRequest, erro
 	}, nil
 }
 
+// actionsByAddress query implementation
+// Constructs QueryActionsByAddressRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) ActionsByAddressQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
@@ -117,7 +129,10 @@ func (p Precompile) ActionsByAddressQuery(
 		return nil, err
 	}
 
-	out := new(ActionsByAddressResponse).FromResponse(res)
+	out, err := new(ActionsByAddressResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -143,6 +158,8 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 	}, nil
 }
 
+// templates query implementation
+// Constructs QueryTemplatesRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) TemplatesQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
@@ -161,7 +178,10 @@ func (p Precompile) TemplatesQuery(
 		return nil, err
 	}
 
-	out := new(TemplatesResponse).FromResponse(res)
+	out, err := new(TemplatesResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -186,6 +206,8 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 	}, nil
 }
 
+// templateById query implementation
+// Constructs QueryTemplateByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) TemplateByIdQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
@@ -204,7 +226,10 @@ func (p Precompile) TemplateByIdQuery(
 		return nil, err
 	}
 
-	out := new(TemplateByIdResponse).FromResponse(res)
+	out, err := new(TemplateByIdResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }

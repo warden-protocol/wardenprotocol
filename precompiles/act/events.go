@@ -25,6 +25,7 @@ const (
 	EventActionStateChange = "ActionStateChange"
 )
 
+// Map EventCreateTemplate to eth CreateTemplate event and write to eth log
 func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseCreateTemplateEvent(sdkEvent)
 	if err != nil {
@@ -65,6 +66,7 @@ func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
+// Map EventUpdateTemplate to eth UpdateTemplate event and write to eth log
 func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseUpdateTemplateEvent(sdkEvent)
 	if err != nil {
@@ -105,6 +107,7 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
+// Map EventCreateAction to eth CreateAction event and write to eth log
 func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseCreateActionEvent(sdkEvent)
 	if err != nil {
@@ -145,6 +148,7 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
+// Map EventActionVoted to eth ActionVoted event and write to eth log
 func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseActionVotedEvent(sdkEvent)
 	if err != nil {
@@ -186,6 +190,7 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
+// Map EventActionStateChange to eth ActionStateChange event and write to eth log
 func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseActionStateChangeEvent(sdkEvent)
 	if err != nil {

@@ -5,10 +5,12 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
+// Creates bech32 address string from eth address
 func Bech32StrFromAddress(address common.Address) string {
 	return sdk.AccAddress(address.Bytes()).String()
 }
 
+// Creates eth address from bech32 address string
 func AddressFromBech32Str(address string) (common.Address, error) {
 	accAddress, err := sdk.AccAddressFromBech32(address)
 	if err != nil {

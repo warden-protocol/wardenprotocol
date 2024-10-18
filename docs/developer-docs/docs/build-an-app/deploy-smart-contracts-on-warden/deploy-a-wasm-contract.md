@@ -323,9 +323,7 @@ wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
 You can query your contract with the following command. Replace `my-contract-address` with your contract address.
 
 ```bash
-wardend query wasm contract-state smart \
-  my-contract-address \
-  '{"get_greeting":{}}'
+wardend query wasm contract-state smart my-contract-address '{"get_greeting":{}}'
 ```
 
 In the output, you should see this: `data: Hello, World!`

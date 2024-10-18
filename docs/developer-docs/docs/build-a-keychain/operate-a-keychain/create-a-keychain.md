@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide. To interact with the chain,  you'll use [node commands](/operate-a-node/node-commands).
 
-You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
+You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 :::tip
 You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).

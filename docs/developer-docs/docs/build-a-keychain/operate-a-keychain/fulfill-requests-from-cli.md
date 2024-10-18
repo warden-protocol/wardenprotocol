@@ -121,7 +121,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
      --key-type KEY_TYPE_ECDSA_SECP256K1 \
      -y \
      --chain-id $CHAIN_ID \
-     | wardend query wait-tx
+   | wardend query wait-tx
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
@@ -193,18 +193,14 @@ When a user requests a new key, the Keychain generates a new private key, stores
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   wardend tx warden fulfill-key-request \
-     $KEY_REQUEST_ID \
-     $PUBLIC_KEY \
+   wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY \
      --from $KEYCHAIN_WRITER_NAME \
      --chain-id $CHAIN_ID
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden fulfill-key-request \
-     $KEY_REQUEST_ID \
-     $PUBLIC_KEY \
+   wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY \
      --from $KEYCHAIN_WRITER_NAME \
      --fees 400000000award \
      --chain-id $CHAIN_ID \
@@ -257,7 +253,7 @@ When a user requests a signature, the Keychain signs a message with the private 
      --key-id $KEY_REQUEST_ID \
      -y \
      --chain-id $CHAIN_ID \
-     | wardend query wait-tx
+   | wardend query wait-tx
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
@@ -335,18 +331,14 @@ When a user requests a signature, the Keychain signs a message with the private 
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   wardend tx warden fulfill-sign-request \
-     $SIGN_REQUEST_ID \
-     $SIGNATURE \
+   wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE \
      --from $KEYCHAIN_WRITER_NAME \
      --chain-id $CHAIN_ID
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden fulfill-sign-request \
-     $SIGN_REQUEST_ID \
-     $SIGNATURE \
+   wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE \
      --from $KEYCHAIN_WRITER_NAME \
      --fees 400000000award \
      --chain-id $CHAIN_ID \

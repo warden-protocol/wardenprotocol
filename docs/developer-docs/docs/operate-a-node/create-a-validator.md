@@ -99,9 +99,9 @@ To create a validator and initialize it with a self-delegation, you need to crea
     
    ```bash
    wardend tx staking create-validator validator.json \
-       --from=my-key-name \
-       --chain-id=chiado_10010-1 \
-       --fees=500000000000000award
+     --from=my-key-name \
+     --chain-id=chiado_10010-1 \
+     --fees=500000000000000award
    ```
    :::tip
    This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`

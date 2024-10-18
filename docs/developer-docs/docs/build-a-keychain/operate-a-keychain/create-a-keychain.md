@@ -134,6 +134,7 @@ The following steps show how to register a new Keychain entity on-chain.
    wardend tx warden new-keychain \
      --name 'my-keychain-name' \
      --from my-key-name \
+     --fees 400000000award \
      --chain-id chiado_10010-1 \
      --node https://rpc.chiado.wardenprotocol.org:443
    ```
@@ -264,23 +265,30 @@ To add a Keychain Writer, take these steps:
    <Tabs>
    <TabItem value="local-default" label="Local node: default settings">
    ```bash
-   wardend tx warden add-keychain-writer --from shulgin --keychain-id 1 \
+   wardend tx warden add-keychain-writer \
+     --from shulgin \
+     --keychain-id 1 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id warden_1337-1
    ```
    </TabItem>
    <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
-   wardend tx warden add-keychain-writer --from my-key-name --keychain-id 1 \
+   wardend tx warden add-keychain-writer \
+     --from my-key-name \
+     --keychain-id 1 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id chain_123-1
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 2 --writer $(wardend keys show --address my-keychain-writer-name) \
-     --chain-id chiado_10010-1 --node https://rpc.chiado.wardenprotocol.org:443
+   wardend tx warden add-keychain-writer \
+     --from my-key-name --keychain-id 1 \
+     --writer $(wardend keys show --address my-keychain-writer-name) \
+     --fees 400000000award \
+     --chain-id chiado_10010-1 \
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>

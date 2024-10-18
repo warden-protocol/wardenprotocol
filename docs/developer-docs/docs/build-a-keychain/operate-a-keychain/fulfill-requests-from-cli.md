@@ -37,6 +37,7 @@ To operate a Keychain on Chiado, complete these prerequisites:
   ```
   wardend tx warden new-space \
     --from my-key-name \
+    --fees 400000000award \
     --chain-id chiado_10100-1 \
     --node https://rpc.chiado.wardenprotocol.org:443
   ```
@@ -114,15 +115,26 @@ When a user requests a new key, the Keychain generates a new private key, stores
    <TabItem value="local" label="Local node">
    ```bash
    wardend tx warden new-action new-key-request \
-     --space-id $SPACE_ID --keychain-id $KEYCHAIN_ID --key-type KEY_TYPE_ECDSA_SECP256K1 \
-     --from $KEY_NAME -y --chain-id $CHAIN_ID | wardend query wait-tx
+     --from $KEY_NAME \
+     --space-id $SPACE_ID \
+     --keychain-id $KEYCHAIN_ID \
+     --key-type KEY_TYPE_ECDSA_SECP256K1 \
+     -y \
+     --chain-id $CHAIN_ID \
+     | wardend query wait-tx
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden new-action new-key-request \
-     --space-id $SPACE_ID --keychain-id $KEYCHAIN_ID --key-type KEY_TYPE_ECDSA_SECP256K1 \
-     --from $KEY_NAME -y --chain-id $CHAIN_ID --node $RPC_URL
+     --from $KEY_NAME \
+     --space-id $SPACE_ID \
+     --keychain-id $KEYCHAIN_ID \
+     --key-type KEY_TYPE_ECDSA_SECP256K1 \
+     --fees 400000000award \
+     -y \
+     --chain-id $CHAIN_ID \
+     --node $RPC_URL
    ```
    </TabItem>
    </Tabs>
@@ -181,14 +193,22 @@ When a user requests a new key, the Keychain generates a new private key, stores
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY \
-     --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
+   wardend tx warden fulfill-key-request \
+     $KEY_REQUEST_ID \
+     $PUBLIC_KEY \
+     --from $KEYCHAIN_WRITER_NAME \
+     --chain-id $CHAIN_ID
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY \
-     --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID --node $RPC_URL
+   wardend tx warden fulfill-key-request \
+     $KEY_REQUEST_ID \
+     $PUBLIC_KEY \
+     --from $KEYCHAIN_WRITER_NAME \
+     --fees 400000000award \
+     --chain-id $CHAIN_ID \
+     --node $RPC_URL
    ```
    </TabItem>
    </Tabs>
@@ -203,7 +223,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend query warden key-request-by-id --id=$KEY_REQUEST_ID  --node $RPC_URL
+   wardend query warden key-request-by-id --id=$KEY_REQUEST_ID --node $RPC_URL
    ```
    </TabItem>
    </Tabs>
@@ -231,16 +251,25 @@ When a user requests a signature, the Keychain signs a message with the private 
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   wardend tx warden new-action new-sign-request --from $KEY_NAME \
+   wardend tx warden new-action new-sign-request \
+     --from $KEY_NAME \
      --input "MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=" \
-     --key-id $KEY_REQUEST_ID -y --chain-id $CHAIN_ID | wardend query wait-tx
+     --key-id $KEY_REQUEST_ID \
+     -y \
+     --chain-id $CHAIN_ID \
+     | wardend query wait-tx
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden new-action new-sign-request --from $KEY_NAME \
+   wardend tx warden new-action new-sign-request \
+     --from $KEY_NAME \
      --input "MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=" \
-     --key-id $KEY_REQUEST_ID -y --chain-id $CHAIN_ID --node $RPC_URL
+     --key-id $KEY_REQUEST_ID \
+     --fees 400000000award \
+     -y \
+     --chain-id $CHAIN_ID \
+     --node $RPC_URL
    ```
    </TabItem>
    </Tabs>
@@ -306,14 +335,22 @@ When a user requests a signature, the Keychain signs a message with the private 
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE \
-     --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID
+   wardend tx warden fulfill-sign-request \
+     $SIGN_REQUEST_ID \
+     $SIGNATURE \
+     --from $KEYCHAIN_WRITER_NAME \
+     --chain-id $CHAIN_ID
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE \
-     --from $KEYCHAIN_WRITER_NAME --chain-id $CHAIN_ID --node $RPC_URL
+   wardend tx warden fulfill-sign-request \
+     $SIGN_REQUEST_ID \
+     $SIGNATURE \
+     --from $KEYCHAIN_WRITER_NAME \
+     --fees 400000000award \
+     --chain-id $CHAIN_ID \
+     --node $RPC_URL
    ```
    </TabItem>
    </Tabs>

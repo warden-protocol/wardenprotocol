@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
+### Bug Fixes
+* (x/warden) Fix bug with Id=0 in NewKeyEvent
+
 ## [v0.5.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.1) - 2024-10-04
 
 ### Consensus Breaking Changes

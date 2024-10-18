@@ -154,10 +154,13 @@ func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.Qu
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	id := args[0].(uint64)
+	var input struct{ Id uint64 }
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, fmt.Errorf("failed to unpack arguments into key request id input: %w", err)
+	}
 
 	return &types.QueryKeyRequestByIdRequest{
-		Id: id,
+		Id: input.Id,
 	}, nil
 }
 
@@ -230,14 +233,20 @@ func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKey
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	id := args[0].(uint64)
+	var input struct{ Id uint64 }
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, fmt.Errorf("failed to unpack arguments into keychain id input: %w", err)
+	}
 
 	return &types.QueryKeychainByIdRequest{
-		Id: id,
+		Id: input.Id,
 	}, nil
 }
 
 func (k *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) (*Keychain, error) {
+	if res == nil || res.Keychain == nil {
+		return nil, errors.New("received nil response or keychain")
+	}
 	return k.mapKeychain(*res.Keychain)
 }
 

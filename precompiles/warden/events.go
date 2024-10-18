@@ -74,9 +74,8 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 		return nil, err
 	}
 
-	topics[1], err = evmoscmn.MakeTopic(*adminAddress)
-	if err != nil {
-		return nil, err
+	if topics[1], err = evmoscmn.MakeTopic(*adminAddress); err != nil {
+		return nil, fmt.Errorf("failed to make topic for admin address: %w", err)
 	}
 
 	log := ethtypes.Log{
@@ -301,7 +300,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 }
 
 // Map EventNewKeychain to eth NewKeychain event and write to eth log
-func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, eventCreateSpace sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, eventNewSpace sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewSpace]
@@ -317,7 +316,7 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	}
 
 	typedEvent := wardentypes.EventCreateSpace{}
-	err = precommon.ParseSdkEvent(eventCreateSpace, typedEvent.XXX_Merge)
+	err = precommon.ParseSdkEvent(eventNewSpace, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
 	}

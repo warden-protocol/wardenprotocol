@@ -214,7 +214,7 @@ To add a Keychain Writer, take these steps:
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name --address
+   wardend keys show my-keychain-writer-name --address
    ```
    :::
 
@@ -286,7 +286,8 @@ To add a Keychain Writer, take these steps:
    <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden add-keychain-writer \
-     --from my-key-name --keychain-id 1 \
+     --from my-key-name \
+     --keychain-id 1 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --fees 400000000award \
      --chain-id chiado_10010-1 \

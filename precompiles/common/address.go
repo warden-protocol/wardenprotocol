@@ -19,12 +19,3 @@ func AddressFromBech32Str(address string) (common.Address, error) {
 
 	return common.BytesToAddress(accAddress.Bytes()), nil
 }
-
-func MustAddressFromBech32Str(address string) common.Address {
-	accAddress, err := AddressFromBech32Str(address)
-	if err != nil {
-		panic(err)
-	}
-
-	return accAddress
-}

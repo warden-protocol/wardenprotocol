@@ -40,7 +40,10 @@ func (p Precompile) ActionsQuery(
 		return nil, err
 	}
 
-	out := new(ActionsResponse).FromResponse(res)
+	out, err := new(ActionsResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -84,7 +87,10 @@ func (p Precompile) ActionByIdQuery(
 		return nil, err
 	}
 
-	out := new(ActionByIdResponse).FromResponse(res)
+	out, err := new(ActionByIdResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -123,7 +129,10 @@ func (p Precompile) ActionsByAddressQuery(
 		return nil, err
 	}
 
-	out := new(ActionsByAddressResponse).FromResponse(res)
+	out, err := new(ActionsByAddressResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -169,7 +178,10 @@ func (p Precompile) TemplatesQuery(
 		return nil, err
 	}
 
-	out := new(TemplatesResponse).FromResponse(res)
+	out, err := new(TemplatesResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }
@@ -214,7 +226,10 @@ func (p Precompile) TemplateByIdQuery(
 		return nil, err
 	}
 
-	out := new(TemplateByIdResponse).FromResponse(res)
+	out, err := new(TemplateByIdResponse).FromResponse(res)
+	if err != nil {
+		return nil, err
+	}
 
 	return method.Outputs.Pack(out)
 }

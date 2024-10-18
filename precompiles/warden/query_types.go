@@ -6,14 +6,15 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	cmn "github.com/evmos/evmos/v20/precompiles/common"
+
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllKeysRequest, error) {
 	if len(args) != 2 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input allKeysInput
@@ -98,7 +99,7 @@ func (o *keysOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeyByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyByIdRequest, error) {
 	if len(args) != 2 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input keyByIdInput
@@ -119,7 +120,7 @@ type keyByIdInput struct {
 
 func newKeysBySpaceIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeysBySpaceIdRequest, error) {
 	if len(args) != 3 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	var input keysBySpaceIdInput
@@ -142,7 +143,7 @@ type keysBySpaceIdInput struct {
 
 func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id := args[0].(uint64)
@@ -162,7 +163,7 @@ func (o *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestsRequest, error) {
 	if len(args) != 4 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 4, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
 
 	var input keyRequestsInput
@@ -215,7 +216,7 @@ func (o *keyRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id := args[0].(uint64)
@@ -235,7 +236,7 @@ func (k *Keychain) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeychainsRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainsRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input keychainsRequestsInput
@@ -280,7 +281,7 @@ func (o *keychainsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id := args[0].(uint64)
@@ -327,7 +328,7 @@ func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.QuerySignRequestsRequest, error) {
 	if len(args) != 3 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	var input signRequestsInput
@@ -376,7 +377,7 @@ func (o *signRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySpaceByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id := args[0].(uint64)
@@ -419,7 +420,7 @@ func (o *Space) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSpacesRequest(method *abi.Method, args []interface{}) (*types.QuerySpacesRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input spacesInput
@@ -465,7 +466,7 @@ func (o *spacesOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSpacesByOwnerRequest(method *abi.Method, args []interface{}) (*types.QuerySpacesByOwnerRequest, error) {
 	if len(args) != 2 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input spacesByOwnerInput

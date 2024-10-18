@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
@@ -62,7 +62,7 @@ func (p Precompile) CheckActionMethod(
 
 func newMsgCheckAction(args []interface{}, origin common.Address) (*types.MsgCheckAction, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
@@ -115,7 +115,7 @@ func (p Precompile) NewTemplateMethod(
 
 func newMsgNewTemplate(args []interface{}, origin common.Address) (*types.MsgNewTemplate, error) {
 	if len(args) != 2 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
@@ -170,7 +170,7 @@ func (p Precompile) RevokeActionMethod(
 
 func newMsgRevokeAction(args []interface{}, origin common.Address) (*types.MsgRevokeAction, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
@@ -224,7 +224,7 @@ func (p Precompile) UpdateTemplateMethod(
 
 func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*types.MsgUpdateTemplate, error) {
 	if len(args) != 3 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
@@ -283,7 +283,7 @@ func (p Precompile) VoteForActionMethod(
 
 func newMsgVoteForAction(args []interface{}, origin common.Address) (*types.MsgVoteForAction, error) {
 	if len(args) != 2 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)

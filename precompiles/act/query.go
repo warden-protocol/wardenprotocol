@@ -3,10 +3,11 @@ package act
 import (
 	"bytes"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
@@ -50,7 +51,7 @@ func (p Precompile) ActionsQuery(
 
 func newActionsQuery(method *abi.Method, args []interface{}) (*types.QueryActionsRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input ActionsInput
@@ -97,7 +98,7 @@ func (p Precompile) ActionByIdQuery(
 
 func newActionByIdQuery(args []interface{}) (*types.QueryActionByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	actionId, ok := args[0].(uint64)
@@ -139,7 +140,7 @@ func (p Precompile) ActionsByAddressQuery(
 
 func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.QueryActionsByAddressRequest, error) {
 	if len(args) != 3 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	var input ActionsByAddressInput
@@ -188,7 +189,7 @@ func (p Precompile) TemplatesQuery(
 
 func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemplatesRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 3, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	var input TemplatesInput
@@ -236,7 +237,7 @@ func (p Precompile) TemplateByIdQuery(
 
 func newTemplateByIdQuery(args []interface{}) (*types.QueryTemplateByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	templateId := args[0].(uint64)

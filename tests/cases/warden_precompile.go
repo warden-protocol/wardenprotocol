@@ -311,7 +311,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 				Id:                1,
 				SpaceId:           1,
 				KeychainId:        1,
-				Type:              1,
+				KeyType:           1,
 				PublicKey:         pubKey,
 				ApproveTemplateId: 0,
 				RejectTemplateId:  0,

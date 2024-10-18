@@ -437,7 +437,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "KeyReq",
+              "name": "keyReq",
               "type": "tuple[]"
             },
             {
@@ -454,7 +454,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "SigReq",
+              "name": "sigReq",
               "type": "tuple[]"
             }
           ],
@@ -644,59 +644,59 @@
               "components": [
                 {
                   "internalType": "uint64",
-                  "name": "Id",
+                  "name": "id",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "SpaceId",
+                  "name": "spaceId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "KeychainId",
+                  "name": "keychainId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "int32",
-                  "name": "Type",
+                  "name": "keyType",
                   "type": "int32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "PublicKey",
+                  "name": "publicKey",
                   "type": "bytes"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "ApproveTemplateId",
+                  "name": "approveTemplateId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "RejectTemplateId",
+                  "name": "rejectTemplateId",
                   "type": "uint64"
                 }
               ],
               "internalType": "struct Key",
-              "name": "Key",
+              "name": "key",
               "type": "tuple"
             },
             {
               "components": [
                 {
                   "internalType": "address",
-                  "name": "Address",
+                  "name": "addressValue",
                   "type": "address"
                 },
                 {
                   "internalType": "int32",
-                  "name": "Type",
+                  "name": "addressType",
                   "type": "int32"
                 }
               ],
               "internalType": "struct AddressesResponse[]",
-              "name": "Addresses",
+              "name": "addresses",
               "type": "tuple[]"
             }
           ],
@@ -794,59 +794,59 @@
               "components": [
                 {
                   "internalType": "uint64",
-                  "name": "Id",
+                  "name": "id",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "SpaceId",
+                  "name": "spaceId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "KeychainId",
+                  "name": "keychainId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "int32",
-                  "name": "Type",
+                  "name": "keyType",
                   "type": "int32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "PublicKey",
+                  "name": "publicKey",
                   "type": "bytes"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "ApproveTemplateId",
+                  "name": "approveTemplateId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "RejectTemplateId",
+                  "name": "rejectTemplateId",
                   "type": "uint64"
                 }
               ],
               "internalType": "struct Key",
-              "name": "Key",
+              "name": "key",
               "type": "tuple"
             },
             {
               "components": [
                 {
                   "internalType": "address",
-                  "name": "Address",
+                  "name": "addressValue",
                   "type": "address"
                 },
                 {
                   "internalType": "int32",
-                  "name": "Type",
+                  "name": "addressType",
                   "type": "int32"
                 }
               ],
               "internalType": "struct AddressesResponse[]",
-              "name": "Addresses",
+              "name": "addresses",
               "type": "tuple[]"
             }
           ],
@@ -872,47 +872,47 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "uint64",
-              "name": "SpaceId",
+              "name": "spaceId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "KeychainId",
+              "name": "keychainId",
               "type": "uint64"
             },
             {
               "internalType": "int32",
-              "name": "KeyType",
+              "name": "keyType",
               "type": "int32"
             },
             {
               "internalType": "int32",
-              "name": "Status",
+              "name": "status",
               "type": "int32"
             },
             {
               "internalType": "string",
-              "name": "RejectReason",
+              "name": "rejectReason",
               "type": "string"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveTemplateId",
+              "name": "approveTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectTemplateId",
+              "name": "rejectTemplateId",
               "type": "uint64"
             },
             {
@@ -929,7 +929,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "DeductedKeychainFees",
+              "name": "deductedKeychainFees",
               "type": "tuple[]"
             }
           ],
@@ -997,47 +997,47 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "uint64",
-              "name": "SpaceId",
+              "name": "spaceId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "KeychainId",
+              "name": "keychainId",
               "type": "uint64"
             },
             {
               "internalType": "int32",
-              "name": "KeyType",
+              "name": "keyType",
               "type": "int32"
             },
             {
               "internalType": "int32",
-              "name": "Status",
+              "name": "status",
               "type": "int32"
             },
             {
               "internalType": "string",
-              "name": "RejectReason",
+              "name": "rejectReason",
               "type": "string"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveTemplateId",
+              "name": "approveTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectTemplateId",
+              "name": "rejectTemplateId",
               "type": "uint64"
             },
             {
@@ -1054,12 +1054,12 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "DeductedKeychainFees",
+              "name": "deductedKeychainFees",
               "type": "tuple[]"
             }
           ],
           "internalType": "struct KeyRequest[]",
-          "name": "keys",
+          "name": "keyRequests",
           "type": "tuple[]"
         },
         {
@@ -1097,27 +1097,27 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "string",
-              "name": "Name",
+              "name": "name",
               "type": "string"
             },
             {
               "internalType": "address[]",
-              "name": "Admins",
+              "name": "admins",
               "type": "address[]"
             },
             {
               "internalType": "address[]",
-              "name": "Writers",
+              "name": "writers",
               "type": "address[]"
             },
             {
@@ -1136,7 +1136,7 @@
                     }
                   ],
                   "internalType": "struct Types.Coin[]",
-                  "name": "KeyReq",
+                  "name": "keyReq",
                   "type": "tuple[]"
                 },
                 {
@@ -1153,27 +1153,27 @@
                     }
                   ],
                   "internalType": "struct Types.Coin[]",
-                  "name": "SigReq",
+                  "name": "sigReq",
                   "type": "tuple[]"
                 }
               ],
               "internalType": "struct KeychainFees",
-              "name": "Fees",
+              "name": "fees",
               "type": "tuple"
             },
             {
               "internalType": "string",
-              "name": "Description",
+              "name": "description",
               "type": "string"
             },
             {
               "internalType": "string",
-              "name": "Url",
+              "name": "url",
               "type": "string"
             },
             {
               "internalType": "string",
-              "name": "KeybaseId",
+              "name": "keybaseId",
               "type": "string"
             }
           ],
@@ -1226,27 +1226,27 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "string",
-              "name": "Name",
+              "name": "name",
               "type": "string"
             },
             {
               "internalType": "address[]",
-              "name": "Admins",
+              "name": "admins",
               "type": "address[]"
             },
             {
               "internalType": "address[]",
-              "name": "Writers",
+              "name": "writers",
               "type": "address[]"
             },
             {
@@ -1265,7 +1265,7 @@
                     }
                   ],
                   "internalType": "struct Types.Coin[]",
-                  "name": "KeyReq",
+                  "name": "keyReq",
                   "type": "tuple[]"
                 },
                 {
@@ -1282,32 +1282,32 @@
                     }
                   ],
                   "internalType": "struct Types.Coin[]",
-                  "name": "SigReq",
+                  "name": "sigReq",
                   "type": "tuple[]"
                 }
               ],
               "internalType": "struct KeychainFees",
-              "name": "Fees",
+              "name": "fees",
               "type": "tuple"
             },
             {
               "internalType": "string",
-              "name": "Description",
+              "name": "description",
               "type": "string"
             },
             {
               "internalType": "string",
-              "name": "Url",
+              "name": "url",
               "type": "string"
             },
             {
               "internalType": "string",
-              "name": "KeybaseId",
+              "name": "keybaseId",
               "type": "string"
             }
           ],
           "internalType": "struct Keychain[]",
-          "name": "keychain",
+          "name": "keychains",
           "type": "tuple[]"
         },
         {
@@ -1384,59 +1384,59 @@
               "components": [
                 {
                   "internalType": "uint64",
-                  "name": "Id",
+                  "name": "id",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "SpaceId",
+                  "name": "spaceId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "KeychainId",
+                  "name": "keychainId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "int32",
-                  "name": "Type",
+                  "name": "keyType",
                   "type": "int32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "PublicKey",
+                  "name": "publicKey",
                   "type": "bytes"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "ApproveTemplateId",
+                  "name": "approveTemplateId",
                   "type": "uint64"
                 },
                 {
                   "internalType": "uint64",
-                  "name": "RejectTemplateId",
+                  "name": "rejectTemplateId",
                   "type": "uint64"
                 }
               ],
               "internalType": "struct Key",
-              "name": "Key",
+              "name": "key",
               "type": "tuple"
             },
             {
               "components": [
                 {
                   "internalType": "address",
-                  "name": "Address",
+                  "name": "addressValue",
                   "type": "address"
                 },
                 {
                   "internalType": "int32",
-                  "name": "Type",
+                  "name": "addressType",
                   "type": "int32"
                 }
               ],
               "internalType": "struct AddressesResponse[]",
-              "name": "Addresses",
+              "name": "addresses",
               "type": "tuple[]"
             }
           ],
@@ -1564,7 +1564,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "KeyReq",
+              "name": "keyReq",
               "type": "tuple[]"
             },
             {
@@ -1581,7 +1581,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "SigReq",
+              "name": "sigReq",
               "type": "tuple[]"
             }
           ],
@@ -1856,37 +1856,37 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "uint64",
-              "name": "KeyId",
+              "name": "keyId",
               "type": "uint64"
             },
             {
               "internalType": "bytes",
-              "name": "DataForSigning",
+              "name": "dataForSigning",
               "type": "bytes"
             },
             {
               "internalType": "int32",
-              "name": "Status",
+              "name": "status",
               "type": "int32"
             },
             {
               "internalType": "bytes",
-              "name": "Result",
+              "name": "result",
               "type": "bytes"
             },
             {
               "internalType": "bytes",
-              "name": "EncryptionKey",
+              "name": "encryptionKey",
               "type": "bytes"
             },
             {
@@ -1903,7 +1903,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "DeductedKeychainFees",
+              "name": "deductedKeychainFees",
               "type": "tuple[]"
             }
           ],
@@ -1966,37 +1966,37 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "uint64",
-              "name": "KeyId",
+              "name": "keyId",
               "type": "uint64"
             },
             {
               "internalType": "bytes",
-              "name": "DataForSigning",
+              "name": "dataForSigning",
               "type": "bytes"
             },
             {
               "internalType": "int32",
-              "name": "Status",
+              "name": "status",
               "type": "int32"
             },
             {
               "internalType": "bytes",
-              "name": "Result",
+              "name": "result",
               "type": "bytes"
             },
             {
               "internalType": "bytes",
-              "name": "EncryptionKey",
+              "name": "encryptionKey",
               "type": "bytes"
             },
             {
@@ -2013,7 +2013,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "DeductedKeychainFees",
+              "name": "deductedKeychainFees",
               "type": "tuple[]"
             }
           ],
@@ -2056,42 +2056,42 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "address[]",
-              "name": "Owners",
+              "name": "owners",
               "type": "address[]"
             },
             {
               "internalType": "uint64",
-              "name": "Nonce",
+              "name": "nonce",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveAdminTemplateId",
+              "name": "approveAdminTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectAdminTemplateId",
+              "name": "rejectAdminTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveSignTemplateId",
+              "name": "approveSignTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectSignTemplateId",
+              "name": "rejectSignTemplateId",
               "type": "uint64"
             }
           ],
@@ -2144,42 +2144,42 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "address[]",
-              "name": "Owners",
+              "name": "owners",
               "type": "address[]"
             },
             {
               "internalType": "uint64",
-              "name": "Nonce",
+              "name": "nonce",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveAdminTemplateId",
+              "name": "approveAdminTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectAdminTemplateId",
+              "name": "rejectAdminTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveSignTemplateId",
+              "name": "approveSignTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectSignTemplateId",
+              "name": "rejectSignTemplateId",
               "type": "uint64"
             }
           ],
@@ -2254,42 +2254,42 @@
           "components": [
             {
               "internalType": "uint64",
-              "name": "Id",
+              "name": "id",
               "type": "uint64"
             },
             {
               "internalType": "address",
-              "name": "Creator",
+              "name": "creator",
               "type": "address"
             },
             {
               "internalType": "address[]",
-              "name": "Owners",
+              "name": "owners",
               "type": "address[]"
             },
             {
               "internalType": "uint64",
-              "name": "Nonce",
+              "name": "nonce",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveAdminTemplateId",
+              "name": "approveAdminTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectAdminTemplateId",
+              "name": "rejectAdminTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "ApproveSignTemplateId",
+              "name": "approveSignTemplateId",
               "type": "uint64"
             },
             {
               "internalType": "uint64",
-              "name": "RejectSignTemplateId",
+              "name": "rejectSignTemplateId",
               "type": "uint64"
             }
           ],
@@ -2390,7 +2390,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "KeyReq",
+              "name": "keyReq",
               "type": "tuple[]"
             },
             {
@@ -2407,7 +2407,7 @@
                 }
               ],
               "internalType": "struct Types.Coin[]",
-              "name": "SigReq",
+              "name": "sigReq",
               "type": "tuple[]"
             }
           ],

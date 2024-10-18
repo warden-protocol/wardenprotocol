@@ -43,7 +43,7 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 		Id:                res.Key.Id,
 		SpaceId:           res.Key.SpaceId,
 		KeychainId:        res.Key.KeychainId,
-		Type:              int32(res.Key.Type),
+		KeyType:           int32(res.Key.Type),
 		PublicKey:         res.Key.PublicKey,
 		ApproveTemplateId: res.Key.ApproveTemplateId,
 		RejectTemplateId:  res.Key.RejectTemplateId,
@@ -58,8 +58,8 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 		}
 
 		addresses[j] = AddressesResponse{
-			Address: ethAddress,
-			Type:    int32(a.Type),
+			AddressValue: ethAddress,
+			AddressType:  int32(a.Type),
 		}
 	}
 
@@ -162,6 +162,9 @@ func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.Qu
 }
 
 func (o *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) (*KeyRequest, error) {
+	if res == nil || res.KeyRequest == nil {
+		return nil, errors.New("received nil response or key request")
+	}
 	return o.mapKeyRequest(*res.KeyRequest)
 }
 

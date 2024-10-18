@@ -6,79 +6,76 @@ import "../common/Types.sol";
 /// @dev The IWarden contract's address.
 address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900; 
 
-/// @dev The IWarden contract's instance.
-IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-
 struct KeychainFees {
-    Types.Coin[] KeyReq;
-    Types.Coin[] SigReq;
+    Types.Coin[] keyReq;
+    Types.Coin[] sigReq;
 }
 
 struct Key {
-    uint64 Id;
-    uint64 SpaceId;
-    uint64 KeychainId;
-    int32 Type;
-    bytes PublicKey;
-    uint64 ApproveTemplateId;
-    uint64 RejectTemplateId;
+    uint64 id;
+    uint64 spaceId;
+    uint64 keychainId;
+    int32 keyType;
+    bytes publicKey;
+    uint64 approveTemplateId;
+    uint64 rejectTemplateId;
 }
 
 struct KeyResponse {
-    Key Key;
-    AddressesResponse[] Addresses;
+    Key key;
+    AddressesResponse[] addresses;
 }
 
 struct AddressesResponse {
-    address Address;
-    int32 Type;
+    address addressValue;
+    int32 addressType;
 }
 
 struct KeyRequest {
-    uint64 Id;
-    address Creator;
-    uint64 SpaceId;
-    uint64 KeychainId;
-    int32 KeyType;
-    int32 Status;
-    string RejectReason;
-    uint64 ApproveTemplateId;
-    uint64 RejectTemplateId;
-    Types.Coin[] DeductedKeychainFees;
+    uint64 id;
+    address creator;
+    uint64 spaceId;
+    uint64 keychainId;
+    int32 keyType;
+    int32 status;
+    string rejectReason;
+    uint64 approveTemplateId;
+    uint64 rejectTemplateId;
+    Types.Coin[] deductedKeychainFees;
 }
 
 struct Keychain {
-    uint64 Id;
-    address Creator;
-	string Name;
-    address[] Admins;
-    address[] Writers;
-	KeychainFees Fees;
-	string Description;
-	string Url;
-	string KeybaseId;
+    uint64 id;
+    address creator;
+	string name;
+    address[] admins;
+    address[] writers;
+	KeychainFees fees;
+	string description;
+	string url;
+	string keybaseId;
 }
 
 struct SignRequest {
-    uint64 Id;
-    address Creator;
-    uint64 KeyId;
-    bytes DataForSigning;
-    int32 Status;
-    bytes Result;
-    bytes EncryptionKey;
-    Types.Coin[] DeductedKeychainFees;
+    uint64 id;
+    address creator;
+    uint64 keyId;
+    bytes dataForSigning;
+    int32 status;
+    bytes result;
+    bytes encryptionKey;
+    Types.Coin[] deductedKeychainFees;
 }
 
 struct Space {
-    uint64 Id;
-    address Creator;
-    address[] Owners;
-    uint64 Nonce;
-    uint64 ApproveAdminTemplateId;
-    uint64 RejectAdminTemplateId;
-    uint64 ApproveSignTemplateId;
-    uint64 RejectSignTemplateId;
+    uint64 id;
+    address creator;
+    address[] owners;
+    uint64 nonce;
+    uint64 approveAdminTemplateId;
+    uint64 rejectAdminTemplateId;
+    uint64 approveSignTemplateId;
+    uint64 rejectSignTemplateId;
 }
 
 enum KeyType {
@@ -178,7 +175,7 @@ interface IWarden {
         address[] calldata additionalOwners
     ) external returns (uint64 id);
 
-    /// @dev Defines a method to remove an admin from a keychain.
+    /// @dev Defines a method to remove an admin from keychain.
     /// @param keychainId The id of the keychain
     /// @param admin The admin address
     /// @return success If execution was successful
@@ -436,13 +433,13 @@ interface IWarden {
         address owner
     ) external view returns(Space[] memory spaces, Types.PageResponse memory pageResponse);
 
-    /// @dev AddKeychainAdmin defines an Event emitted when add a new admin to keychain.
+    /// @dev AddKeychainAdmin defines an Event emitted when add a new admin to a keychain.
     /// @param newAdmin The address of the admin
     /// @param id The keychain id
     /// @param adminsCount The new count of admins
     event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount);
 
-    /// @dev AddKeychainWriter defines an Event emitted when add a new writer to keychain.
+    /// @dev AddKeychainWriter defines an Event emitted when add a new writer to a keychain.
     /// @param newWriter The address of the writer
     /// @param id The keychain id
     /// @param writersCount The new count of writers
@@ -461,7 +458,7 @@ interface IWarden {
     /// @param id The request id
     event RejectKeyRequest(uint64 id);
 
-    /// @dev FulfilSignRequest defines an Event emitted when a sign request fulfiled.
+    /// @dev FulfilSignRequest defines an Event emitted when a sign request fulfilled.
     /// @param id The request id
     event FulfilSignRequest(uint64 id);
 
@@ -469,12 +466,12 @@ interface IWarden {
     /// @param id The request id
     event RejectSignRequest(uint64 id);
 
-    /// @dev NewKeychain defines an Event emitted when a new keychain created.
+    /// @dev NewKeychain defines an Event emitted when a new keychain is created.
     /// @param id The keychain id
     /// @param creator The creator address
     event NewKeychain(uint64 id, address indexed creator);
 
-    /// @dev NewSpace defines an Event emitted when a new space created.
+    /// @dev NewSpace defines an Event emitted when a new space is created.
     /// @param id The space id
     /// @param creator The creator address
     /// @param ownersCount The count of space owners
@@ -490,7 +487,7 @@ interface IWarden {
     /// @param adminsCount The count of keychain admins
     event RemoveKeychainAdmin(uint64 keychainId, address indexed admin, uint64 adminsCount);
 
-    /// @dev UpdateKeychain defines an Event emitted when a keychain updated.
+    /// @dev UpdateKeychain defines an Event emitted when a keychain is updated.
     /// @param id The keychain id
     /// @param keychainFees The keychain fees
     event UpdateKeychain(uint64 id, KeychainFees keychainFees);
@@ -535,3 +532,6 @@ interface IWarden {
     /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
     event UpdateSpace(uint64 indexed space_id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }
+
+/// @dev The IWarden contract's instance.
+IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);

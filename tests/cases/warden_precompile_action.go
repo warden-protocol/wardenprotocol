@@ -132,7 +132,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		keychains1, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Len(t, keychains1.Keychain, 1)
+		require.Len(t, keychains1.Keychains, 1)
 
 		addKeychainWriterTx, err := iWardenClient.AddKeychainWriter(
 			alice.TransactOps(t, context.Background(), evmClient),
@@ -146,7 +146,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		keychains2, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Equal(t, keychains2.Keychain[0].Writers[0], alice.EthAddress(t))
+		require.Equal(t, keychains2.Keychains[0].Writers[0], alice.EthAddress(t))
 
 		// newKeyRequest
 		newKeyRequestTx, err := iWardenClient.NewKeyRequest(
@@ -186,7 +186,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		keyRequests1, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING), 1)
 
 		require.NoError(t, err)
-		require.Len(t, keyRequests1.Keys, 1)
+		require.Len(t, keyRequests1.KeyRequests, 1)
 		require.Equal(t, warden.KeyRequest{
 			Id:                   1,
 			Creator:              alice.EthAddress(t),
@@ -198,7 +198,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			KeyType:              int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
 			DeductedKeychainFees: []warden.TypesCoin{},
 			RejectReason:         "",
-		}, keyRequests1.Keys[0])
+		}, keyRequests1.KeyRequests[0])
 
 		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
@@ -213,7 +213,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
 
 		require.NoError(t, err)
-		require.Len(t, keyRequests2.Keys, 1)
+		require.Len(t, keyRequests2.KeyRequests, 1)
 
 		// newSignRequest
 		newSignRequestTx, err := iWardenClient.NewSignRequest(
@@ -309,7 +309,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			ApproveTemplateId: 1,
 			RejectTemplateId:  1,
 			KeychainId:        1,
-			Type:              int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
+			KeyType:           int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
 			PublicKey:         []byte{3, 127, 233, 231, 7, 1, 37, 58, 229, 52, 192, 74, 160, 180, 120, 109, 158, 81, 170, 197, 189, 110, 90, 124, 50, 198, 188, 78, 49, 207, 247, 159, 237},
 		}, key.Key)
 

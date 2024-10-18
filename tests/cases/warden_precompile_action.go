@@ -144,7 +144,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		keychains2, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Equal(t, keychains2.Keychain[0].Writers[0], alice.Address(t))
+		require.Equal(t, keychains2.Keychain[0].Writers[0], alice.EthAddress(t))
 
 		// newKeyRequest
 		newKeyRequestTx, err := iWardenClient.NewKeyRequest(

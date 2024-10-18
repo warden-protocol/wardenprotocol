@@ -225,12 +225,12 @@ func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKey
 	}, nil
 }
 
-func (o *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) (*Keychain, error) {
-	return o.mapKeychain(*res.Keychain)
+func (k *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) (*Keychain, error) {
+	return k.mapKeychain(*res.Keychain)
 }
 
-func (o *Keychain) Pack(args abi.Arguments) ([]byte, error) {
-	return args.Pack(o)
+func (k *Keychain) Pack(args abi.Arguments) ([]byte, error) {
+	return args.Pack(k)
 }
 
 func newKeychainsRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainsRequest, error) {

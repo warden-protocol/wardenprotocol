@@ -14,13 +14,14 @@ jobs:
         image: ${{ fromJSON(vars.SCAN_IMAGES_LIST) }}
     steps:
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:latest"
           format: "sarif"
           output: "trivy.sarif"
           severity: "CRITICAL,HIGH"
         env:
+          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db,public.ecr.aws/aquasecurity/trivy-db
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Trivy scan results to GitHub Security tab

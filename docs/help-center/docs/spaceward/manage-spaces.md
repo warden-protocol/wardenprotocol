@@ -12,7 +12,7 @@ Note that a Space can have multiple [owners](manage-owners).
 
 ## Create your first Space
 
-After you connect a wallet for the first time, SpaceWard will prompt you to create your first Space, as shown in the [Quick start guide](buenavista-quick-start).
+After you connect a wallet for the first time, SpaceWard will prompt you to create your first Space, as shown in the [Quick start guide](chiado-quick-start).
 
 To check an overview of your Space, click **Dashboard** in the left menu. To unlock more features, [request a key](manage-keys#request-a-key).
 
@@ -20,7 +20,7 @@ To check an overview of your Space, click **Dashboard** in the left menu. To unl
 
 If you wish to create additional Spaces, take these steps:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 2. Navigate to the top-left corner of the screen and click **Active Space**.
 3. Click **Create New Space**.
 4. Approve the transaction for creating a new Space in your connected wallet.

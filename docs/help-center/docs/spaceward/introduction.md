@@ -8,13 +8,13 @@ slug: /
 
 ## Overview
 
-👉 [Try SpaceWard on Buenavista testnet](https://spaceward.buenavista.wardenprotocol.org)
+👉 [Try SpaceWard on Chiado testnet](https://spaceward.chiado.wardenprotocol.org)
 
-**SpaceWard** is the front-end interface for the Warden Protocol, enabling account aggregation and modularly secure omnichain operations.
+**SpaceWard** is the front-end interface for the Warden Protocol, enabling account aggregation and secure omnichain operations.
 
-**For users**: Use the most secure multichain multisig wallet. Create Spaces, protect your wallets and program transactions with Intents, and interact with the Web3 space.
+**For users**: Access the most secure multichain multisig wallet. Create Spaces and interact with the Web3 space. Create Rules to protect your wallets and program transactions.
 
-**For builders**: Build OApps on Warden or any compatible blockchain, protected by Modular Security.
+**For builders**: Build Omnichain Applications (OApps) on Warden or any compatible blockchain.
 
 To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-your-wallet) with the Warden Protocol.
 

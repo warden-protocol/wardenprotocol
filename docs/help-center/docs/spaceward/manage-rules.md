@@ -18,7 +18,7 @@ Each approver is identified by Warden address – an address that is assigned to
 
 To create a Rule, do this:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org).
 2. In the left menu, navigate to **Rules**.
 3. Click **Create a new Rule**.
 4. Select the preferred Rule type:
@@ -35,7 +35,7 @@ To create a Rule, do this:
 
 You can edit your Rule at any moment:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Rules**.
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and navigate to **Rules**.
 2. Click the pencil symbol on your Rule. Click **Edit**.
 3. You can make the following adjustments:
     - To add an approver, click **Add approver** and enter a Warden address. Approvers are accounts participating in your Rule, which includes you as the default approver. Other SpaceWard users can also add you to their Rules. The number of approvers isn't limited.
@@ -53,7 +53,7 @@ You can edit your Rule at any moment:
 
 To configure an advanced Rule, take these steps:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Rules**.
+1. Connect to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and navigate to **Rules**.
 2. Click the pencil symbol on your Rule. Click **Edit in Advanced mode**.
 3. Enter a custom expression for your Rule.
 

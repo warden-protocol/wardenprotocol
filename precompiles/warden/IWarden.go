@@ -30,14 +30,8 @@ var (
 
 // AddressesResponse is an auto generated low-level Go binding around an user-defined struct.
 type AddressesResponse struct {
-	Address string
+	Address common.Address
 	Type    int32
-}
-
-// Coin is an auto generated low-level Go binding around an user-defined struct.
-type Coin struct {
-	Denom  string
-	Amount *big.Int
 }
 
 // Key is an auto generated low-level Go binding around an user-defined struct.
@@ -54,7 +48,7 @@ type Key struct {
 // KeyRequest is an auto generated low-level Go binding around an user-defined struct.
 type KeyRequest struct {
 	Id                   uint64
-	Creator              string
+	Creator              common.Address
 	SpaceId              uint64
 	KeychainId           uint64
 	KeyType              int32
@@ -62,7 +56,7 @@ type KeyRequest struct {
 	RejectReason         string
 	ApproveTemplateId    uint64
 	RejectTemplateId     uint64
-	DeductedKeychainFees []Coin
+	DeductedKeychainFees []TypesCoin
 }
 
 // KeyResponse is an auto generated low-level Go binding around an user-defined struct.
@@ -74,10 +68,10 @@ type KeyResponse struct {
 // Keychain is an auto generated low-level Go binding around an user-defined struct.
 type Keychain struct {
 	Id          uint64
-	Creator     string
+	Creator     common.Address
 	Name        string
-	Admins      []string
-	Writers     []string
+	Admins      []common.Address
+	Writers     []common.Address
 	Fees        KeychainFees
 	Description string
 	Url         string
@@ -86,42 +80,27 @@ type Keychain struct {
 
 // KeychainFees is an auto generated low-level Go binding around an user-defined struct.
 type KeychainFees struct {
-	KeyReq []Coin
-	SigReq []Coin
-}
-
-// PageRequest is an auto generated low-level Go binding around an user-defined struct.
-type PageRequest struct {
-	Key        []byte
-	Offset     uint64
-	Limit      uint64
-	CountTotal bool
-	Reverse    bool
-}
-
-// PageResponse is an auto generated low-level Go binding around an user-defined struct.
-type PageResponse struct {
-	NextKey []byte
-	Total   uint64
+	KeyReq []TypesCoin
+	SigReq []TypesCoin
 }
 
 // SignRequest is an auto generated low-level Go binding around an user-defined struct.
 type SignRequest struct {
 	Id                   uint64
-	Creator              string
+	Creator              common.Address
 	KeyId                uint64
 	DataForSigning       []byte
 	Status               int32
 	Result               []byte
 	EncryptionKey        []byte
-	DeductedKeychainFees []Coin
+	DeductedKeychainFees []TypesCoin
 }
 
 // Space is an auto generated low-level Go binding around an user-defined struct.
 type Space struct {
 	Id                     uint64
-	Creator                string
-	Owners                 []string
+	Creator                common.Address
+	Owners                 []common.Address
 	Nonce                  uint64
 	ApproveAdminTemplateId uint64
 	RejectAdminTemplateId  uint64
@@ -129,9 +108,30 @@ type Space struct {
 	RejectSignTemplateId   uint64
 }
 
+// TypesCoin is an auto generated low-level Go binding around an user-defined struct.
+type TypesCoin struct {
+	Denom  string
+	Amount *big.Int
+}
+
+// TypesPageRequest is an auto generated low-level Go binding around an user-defined struct.
+type TypesPageRequest struct {
+	Key        []byte
+	Offset     uint64
+	Limit      uint64
+	CountTotal bool
+	Reverse    bool
+}
+
+// TypesPageResponse is an auto generated low-level Go binding around an user-defined struct.
+type TypesPageResponse struct {
+	NextKey []byte
+	Total   uint64
+}
+
 // IWardenMetaData contains all meta data concerning the IWarden contract.
 var IWardenMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"writersCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainWriter\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"AddSpaceOwner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"FulfilSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"keyType\",\"type\":\"int32\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"}],\"name\":\"NewKey\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"keyType\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewKeyRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewKeychain\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keyId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownersCount\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"}],\"name\":\"NewSpace\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectKeyRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"admin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"RemoveKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"removedOwner\",\"type\":\"address\"}],\"name\":\"RemoveSpaceOwner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"}],\"name\":\"UpdateKey\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"indexed\":false,\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"}],\"name\":\"UpdateKeychain\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"space_id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"}],\"name\":\"UpdateSpace\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"addKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"}],\"name\":\"addKeychainWriter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"addSpaceOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"allKeys\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"Address\",\"type\":\"string\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"pubKey\",\"type\":\"bytes\"}],\"name\":\"fulfilKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"signedData\",\"type\":\"bytes\"}],\"name\":\"fulfilSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"keyById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"Address\",\"type\":\"string\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse\",\"name\":\"key\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"keyRequestById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"KeyType\",\"type\":\"int32\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"RejectReason\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyRequest\",\"name\":\"keyRequest\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"},{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"}],\"name\":\"keyRequests\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"KeyType\",\"type\":\"int32\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"RejectReason\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyRequest[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"keychainById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Name\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Admins\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"Writers\",\"type\":\"string[]\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"Fees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"Description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"KeybaseId\",\"type\":\"string\"}],\"internalType\":\"structKeychain\",\"name\":\"keychain\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"}],\"name\":\"keychains\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Name\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Admins\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"Writers\",\"type\":\"string[]\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"Fees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"Description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"KeybaseId\",\"type\":\"string\"}],\"internalType\":\"structKeychain[]\",\"name\":\"keychain\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"keysBySpaceId\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"Address\",\"type\":\"string\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"enumKeyType\",\"name\":\"keyType\",\"type\":\"uint8\"},{\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"maxKeychainFees\",\"type\":\"tuple[]\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"newKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"keybaseId\",\"type\":\"string\"}],\"name\":\"newKeychain\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"address[]\",\"name\":\"analyzers\",\"type\":\"address[]\"},{\"internalType\":\"bytes\",\"name\":\"encryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"maxKeychainFees\",\"type\":\"tuple[]\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"newSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"address[]\",\"name\":\"additionalOwners\",\"type\":\"address[]\"}],\"name\":\"newSpace\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"admin\",\"type\":\"address\"}],\"name\":\"removeKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"removeSpaceOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"signRequestById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"KeyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"DataForSigning\",\"type\":\"bytes\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"Result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"EncryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structSignRequest\",\"name\":\"signRequest\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"}],\"name\":\"signRequests\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"KeyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"DataForSigning\",\"type\":\"bytes\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"Result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"EncryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structSignRequest[]\",\"name\":\"signRequests\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"spaceById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Owners\",\"type\":\"string[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace\",\"name\":\"space\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"}],\"name\":\"spaces\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Owners\",\"type\":\"string[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace[]\",\"name\":\"spaces\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structPageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"spacesByOwner\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"Creator\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"Owners\",\"type\":\"string[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace[]\",\"name\":\"spaces\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structPageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keyId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"updateKey\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structCoin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"keybaseId\",\"type\":\"string\"}],\"name\":\"updateKeychain\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"updateSpace\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"AddKeychainWriter\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"AddSpaceOwner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"FulfilSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int32\",\"name\":\"keyType\",\"type\":\"int32\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"}],\"name\":\"NewKey\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"keyType\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewKeyRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewKeychain\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keyId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"NewSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownersCount\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"}],\"name\":\"NewSpace\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectKeyRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"RejectSignRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"admin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"adminsCount\",\"type\":\"uint64\"}],\"name\":\"RemoveKeychainAdmin\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"removedOwner\",\"type\":\"address\"}],\"name\":\"RemoveSpaceOwner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"}],\"name\":\"UpdateKey\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"indexed\":false,\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"}],\"name\":\"UpdateKeychain\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"space_id\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"}],\"name\":\"UpdateSpace\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"addKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newWriter\",\"type\":\"address\"}],\"name\":\"addKeychainWriter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"addSpaceOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"allKeys\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"Address\",\"type\":\"address\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"pubKey\",\"type\":\"bytes\"}],\"name\":\"fulfilKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"signedData\",\"type\":\"bytes\"}],\"name\":\"fulfilSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"keyById\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"Address\",\"type\":\"address\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse\",\"name\":\"key\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"}],\"name\":\"keyRequestById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"KeyType\",\"type\":\"int32\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"RejectReason\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyRequest\",\"name\":\"keyRequest\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"},{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"}],\"name\":\"keyRequests\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"KeyType\",\"type\":\"int32\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"string\",\"name\":\"RejectReason\",\"type\":\"string\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyRequest[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"keychainById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"Name\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"Admins\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"Writers\",\"type\":\"address[]\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"Fees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"Description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"KeybaseId\",\"type\":\"string\"}],\"internalType\":\"structKeychain\",\"name\":\"keychain\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"}],\"name\":\"keychains\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"Name\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"Admins\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"Writers\",\"type\":\"address[]\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"Fees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"Description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"KeybaseId\",\"type\":\"string\"}],\"internalType\":\"structKeychain[]\",\"name\":\"keychain\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"int32[]\",\"name\":\"deriveAddresses\",\"type\":\"int32[]\"}],\"name\":\"keysBySpaceId\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"SpaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"KeychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"PublicKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"ApproveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structKey\",\"name\":\"Key\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"Address\",\"type\":\"address\"},{\"internalType\":\"int32\",\"name\":\"Type\",\"type\":\"int32\"}],\"internalType\":\"structAddressesResponse[]\",\"name\":\"Addresses\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeyResponse[]\",\"name\":\"keys\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"enumKeyType\",\"name\":\"keyType\",\"type\":\"uint8\"},{\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"maxKeychainFees\",\"type\":\"tuple[]\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"newKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"keybaseId\",\"type\":\"string\"}],\"name\":\"newKeychain\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"address[]\",\"name\":\"analyzers\",\"type\":\"address[]\"},{\"internalType\":\"bytes\",\"name\":\"encryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"maxKeychainFees\",\"type\":\"tuple[]\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"newSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"address[]\",\"name\":\"additionalOwners\",\"type\":\"address[]\"}],\"name\":\"newSpace\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectKeyRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"requestId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"rejectReason\",\"type\":\"string\"}],\"name\":\"rejectSignRequest\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"admin\",\"type\":\"address\"}],\"name\":\"removeKeychainAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"removeSpaceOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"signRequestById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"KeyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"DataForSigning\",\"type\":\"bytes\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"Result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"EncryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structSignRequest\",\"name\":\"signRequest\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"int32\",\"name\":\"status\",\"type\":\"int32\"}],\"name\":\"signRequests\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"KeyId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"DataForSigning\",\"type\":\"bytes\"},{\"internalType\":\"int32\",\"name\":\"Status\",\"type\":\"int32\"},{\"internalType\":\"bytes\",\"name\":\"Result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"EncryptionKey\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"DeductedKeychainFees\",\"type\":\"tuple[]\"}],\"internalType\":\"structSignRequest[]\",\"name\":\"signRequests\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"}],\"name\":\"spaceById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"Owners\",\"type\":\"address[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace\",\"name\":\"space\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"}],\"name\":\"spaces\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"Owners\",\"type\":\"address[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace[]\",\"name\":\"spaces\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pageRequest\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"spacesByOwner\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"Id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"Creator\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"Owners\",\"type\":\"address[]\"},{\"internalType\":\"uint64\",\"name\":\"Nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"ApproveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"RejectSignTemplateId\",\"type\":\"uint64\"}],\"internalType\":\"structSpace[]\",\"name\":\"spaces\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pageResponse\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keyId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"updateKey\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"keychainId\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"KeyReq\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"SigReq\",\"type\":\"tuple[]\"}],\"internalType\":\"structKeychainFees\",\"name\":\"keychainFees\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"keybaseId\",\"type\":\"string\"}],\"name\":\"updateKeychain\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"spaceId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectAdminTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"approveSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"rejectSignTemplateId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"actionTimeoutHeight\",\"type\":\"uint64\"},{\"internalType\":\"string\",\"name\":\"expectedApproveExpression\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"expectedRejectExpression\",\"type\":\"string\"}],\"name\":\"updateSpace\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IWardenABI is the input ABI used to generate the binding from.
@@ -282,24 +282,24 @@ func (_IWarden *IWardenTransactorRaw) Transact(opts *bind.TransactOpts, method s
 
 // AllKeys is a free data retrieval call binding the contract method 0xed65c53c.
 //
-// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) AllKeys(opts *bind.CallOpts, pageRequest PageRequest, deriveAddresses []int32) (struct {
+// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) AllKeys(opts *bind.CallOpts, pageRequest TypesPageRequest, deriveAddresses []int32) (struct {
 	Keys         []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "allKeys", pageRequest, deriveAddresses)
 
 	outstruct := new(struct {
 		Keys         []KeyResponse
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.Keys = *abi.ConvertType(out[0], new([]KeyResponse)).(*[]KeyResponse)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -307,30 +307,30 @@ func (_IWarden *IWardenCaller) AllKeys(opts *bind.CallOpts, pageRequest PageRequ
 
 // AllKeys is a free data retrieval call binding the contract method 0xed65c53c.
 //
-// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) AllKeys(pageRequest PageRequest, deriveAddresses []int32) (struct {
+// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) AllKeys(pageRequest TypesPageRequest, deriveAddresses []int32) (struct {
 	Keys         []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.AllKeys(&_IWarden.CallOpts, pageRequest, deriveAddresses)
 }
 
 // AllKeys is a free data retrieval call binding the contract method 0xed65c53c.
 //
-// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) AllKeys(pageRequest PageRequest, deriveAddresses []int32) (struct {
+// Solidity: function allKeys((bytes,uint64,uint64,bool,bool) pageRequest, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) AllKeys(pageRequest TypesPageRequest, deriveAddresses []int32) (struct {
 	Keys         []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.AllKeys(&_IWarden.CallOpts, pageRequest, deriveAddresses)
 }
 
 // KeyById is a free data retrieval call binding the contract method 0x338c1f51.
 //
-// Solidity: function keyById(uint64 id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[]) key)
-func (_IWarden *IWardenCaller) KeyById(opts *bind.CallOpts, id uint64, deriveAddresses []int32) (KeyResponse, error) {
+// Solidity: function keyById(uint64 Id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[]) key)
+func (_IWarden *IWardenCaller) KeyById(opts *bind.CallOpts, Id uint64, deriveAddresses []int32) (KeyResponse, error) {
 	var out []interface{}
-	err := _IWarden.contract.Call(opts, &out, "keyById", id, deriveAddresses)
+	err := _IWarden.contract.Call(opts, &out, "keyById", Id, deriveAddresses)
 
 	if err != nil {
 		return *new(KeyResponse), err
@@ -344,24 +344,24 @@ func (_IWarden *IWardenCaller) KeyById(opts *bind.CallOpts, id uint64, deriveAdd
 
 // KeyById is a free data retrieval call binding the contract method 0x338c1f51.
 //
-// Solidity: function keyById(uint64 id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[]) key)
-func (_IWarden *IWardenSession) KeyById(id uint64, deriveAddresses []int32) (KeyResponse, error) {
-	return _IWarden.Contract.KeyById(&_IWarden.CallOpts, id, deriveAddresses)
+// Solidity: function keyById(uint64 Id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[]) key)
+func (_IWarden *IWardenSession) KeyById(Id uint64, deriveAddresses []int32) (KeyResponse, error) {
+	return _IWarden.Contract.KeyById(&_IWarden.CallOpts, Id, deriveAddresses)
 }
 
 // KeyById is a free data retrieval call binding the contract method 0x338c1f51.
 //
-// Solidity: function keyById(uint64 id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[]) key)
-func (_IWarden *IWardenCallerSession) KeyById(id uint64, deriveAddresses []int32) (KeyResponse, error) {
-	return _IWarden.Contract.KeyById(&_IWarden.CallOpts, id, deriveAddresses)
+// Solidity: function keyById(uint64 Id, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[]) key)
+func (_IWarden *IWardenCallerSession) KeyById(Id uint64, deriveAddresses []int32) (KeyResponse, error) {
+	return _IWarden.Contract.KeyById(&_IWarden.CallOpts, Id, deriveAddresses)
 }
 
 // KeyRequestById is a free data retrieval call binding the contract method 0x69964bd6.
 //
-// Solidity: function keyRequestById(uint64 id) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
-func (_IWarden *IWardenCaller) KeyRequestById(opts *bind.CallOpts, id uint64) (KeyRequest, error) {
+// Solidity: function keyRequestById(uint64 Id) view returns((uint64,address,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
+func (_IWarden *IWardenCaller) KeyRequestById(opts *bind.CallOpts, Id uint64) (KeyRequest, error) {
 	var out []interface{}
-	err := _IWarden.contract.Call(opts, &out, "keyRequestById", id)
+	err := _IWarden.contract.Call(opts, &out, "keyRequestById", Id)
 
 	if err != nil {
 		return *new(KeyRequest), err
@@ -375,38 +375,38 @@ func (_IWarden *IWardenCaller) KeyRequestById(opts *bind.CallOpts, id uint64) (K
 
 // KeyRequestById is a free data retrieval call binding the contract method 0x69964bd6.
 //
-// Solidity: function keyRequestById(uint64 id) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
-func (_IWarden *IWardenSession) KeyRequestById(id uint64) (KeyRequest, error) {
-	return _IWarden.Contract.KeyRequestById(&_IWarden.CallOpts, id)
+// Solidity: function keyRequestById(uint64 Id) view returns((uint64,address,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
+func (_IWarden *IWardenSession) KeyRequestById(Id uint64) (KeyRequest, error) {
+	return _IWarden.Contract.KeyRequestById(&_IWarden.CallOpts, Id)
 }
 
 // KeyRequestById is a free data retrieval call binding the contract method 0x69964bd6.
 //
-// Solidity: function keyRequestById(uint64 id) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
-func (_IWarden *IWardenCallerSession) KeyRequestById(id uint64) (KeyRequest, error) {
-	return _IWarden.Contract.KeyRequestById(&_IWarden.CallOpts, id)
+// Solidity: function keyRequestById(uint64 Id) view returns((uint64,address,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[]) keyRequest)
+func (_IWarden *IWardenCallerSession) KeyRequestById(Id uint64) (KeyRequest, error) {
+	return _IWarden.Contract.KeyRequestById(&_IWarden.CallOpts, Id)
 }
 
 // KeyRequests is a free data retrieval call binding the contract method 0x40710374.
 //
-// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) KeyRequests(opts *bind.CallOpts, pageRequest PageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
+// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,address,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) KeyRequests(opts *bind.CallOpts, pageRequest TypesPageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
 	Keys         []KeyRequest
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "keyRequests", pageRequest, keychainId, status, spaceId)
 
 	outstruct := new(struct {
 		Keys         []KeyRequest
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.Keys = *abi.ConvertType(out[0], new([]KeyRequest)).(*[]KeyRequest)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -414,27 +414,27 @@ func (_IWarden *IWardenCaller) KeyRequests(opts *bind.CallOpts, pageRequest Page
 
 // KeyRequests is a free data retrieval call binding the contract method 0x40710374.
 //
-// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) KeyRequests(pageRequest PageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
+// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,address,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) KeyRequests(pageRequest TypesPageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
 	Keys         []KeyRequest
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.KeyRequests(&_IWarden.CallOpts, pageRequest, keychainId, status, spaceId)
 }
 
 // KeyRequests is a free data retrieval call binding the contract method 0x40710374.
 //
-// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,string,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) KeyRequests(pageRequest PageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
+// Solidity: function keyRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status, uint64 spaceId) view returns((uint64,address,uint64,uint64,int32,int32,string,uint64,uint64,(string,uint256)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) KeyRequests(pageRequest TypesPageRequest, keychainId uint64, status int32, spaceId uint64) (struct {
 	Keys         []KeyRequest
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.KeyRequests(&_IWarden.CallOpts, pageRequest, keychainId, status, spaceId)
 }
 
 // KeychainById is a free data retrieval call binding the contract method 0xba664dc2.
 //
-// Solidity: function keychainById(uint64 id) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
+// Solidity: function keychainById(uint64 id) view returns((uint64,address,string,address[],address[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
 func (_IWarden *IWardenCaller) KeychainById(opts *bind.CallOpts, id uint64) (Keychain, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "keychainById", id)
@@ -451,38 +451,38 @@ func (_IWarden *IWardenCaller) KeychainById(opts *bind.CallOpts, id uint64) (Key
 
 // KeychainById is a free data retrieval call binding the contract method 0xba664dc2.
 //
-// Solidity: function keychainById(uint64 id) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
+// Solidity: function keychainById(uint64 id) view returns((uint64,address,string,address[],address[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
 func (_IWarden *IWardenSession) KeychainById(id uint64) (Keychain, error) {
 	return _IWarden.Contract.KeychainById(&_IWarden.CallOpts, id)
 }
 
 // KeychainById is a free data retrieval call binding the contract method 0xba664dc2.
 //
-// Solidity: function keychainById(uint64 id) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
+// Solidity: function keychainById(uint64 id) view returns((uint64,address,string,address[],address[],((string,uint256)[],(string,uint256)[]),string,string,string) keychain)
 func (_IWarden *IWardenCallerSession) KeychainById(id uint64) (Keychain, error) {
 	return _IWarden.Contract.KeychainById(&_IWarden.CallOpts, id)
 }
 
 // Keychains is a free data retrieval call binding the contract method 0x7e5a6446.
 //
-// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) Keychains(opts *bind.CallOpts, pageRequest PageRequest) (struct {
+// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,address,string,address[],address[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) Keychains(opts *bind.CallOpts, pageRequest TypesPageRequest) (struct {
 	Keychain     []Keychain
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "keychains", pageRequest)
 
 	outstruct := new(struct {
 		Keychain     []Keychain
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.Keychain = *abi.ConvertType(out[0], new([]Keychain)).(*[]Keychain)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -490,44 +490,44 @@ func (_IWarden *IWardenCaller) Keychains(opts *bind.CallOpts, pageRequest PageRe
 
 // Keychains is a free data retrieval call binding the contract method 0x7e5a6446.
 //
-// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) Keychains(pageRequest PageRequest) (struct {
+// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,address,string,address[],address[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) Keychains(pageRequest TypesPageRequest) (struct {
 	Keychain     []Keychain
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.Keychains(&_IWarden.CallOpts, pageRequest)
 }
 
 // Keychains is a free data retrieval call binding the contract method 0x7e5a6446.
 //
-// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string,string[],string[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) Keychains(pageRequest PageRequest) (struct {
+// Solidity: function keychains((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,address,string,address[],address[],((string,uint256)[],(string,uint256)[]),string,string,string)[] keychain, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) Keychains(pageRequest TypesPageRequest) (struct {
 	Keychain     []Keychain
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.Keychains(&_IWarden.CallOpts, pageRequest)
 }
 
 // KeysBySpaceId is a free data retrieval call binding the contract method 0x8f6c0508.
 //
-// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) KeysBySpaceId(opts *bind.CallOpts, pageRequest PageRequest, spaceId uint64, deriveAddresses []int32) (struct {
+// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) KeysBySpaceId(opts *bind.CallOpts, pageRequest TypesPageRequest, spaceId uint64, deriveAddresses []int32) (struct {
 	Keys         []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "keysBySpaceId", pageRequest, spaceId, deriveAddresses)
 
 	outstruct := new(struct {
 		Keys         []KeyResponse
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.Keys = *abi.ConvertType(out[0], new([]KeyResponse)).(*[]KeyResponse)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -535,27 +535,27 @@ func (_IWarden *IWardenCaller) KeysBySpaceId(opts *bind.CallOpts, pageRequest Pa
 
 // KeysBySpaceId is a free data retrieval call binding the contract method 0x8f6c0508.
 //
-// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) KeysBySpaceId(pageRequest PageRequest, spaceId uint64, deriveAddresses []int32) (struct {
+// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) KeysBySpaceId(pageRequest TypesPageRequest, spaceId uint64, deriveAddresses []int32) (struct {
 	Keys         []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.KeysBySpaceId(&_IWarden.CallOpts, pageRequest, spaceId, deriveAddresses)
 }
 
 // KeysBySpaceId is a free data retrieval call binding the contract method 0x8f6c0508.
 //
-// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(string,int32)[])[] keys, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) KeysBySpaceId(pageRequest PageRequest, spaceId uint64, deriveAddresses []int32) (struct {
+// Solidity: function keysBySpaceId((bytes,uint64,uint64,bool,bool) pageRequest, uint64 spaceId, int32[] deriveAddresses) view returns(((uint64,uint64,uint64,int32,bytes,uint64,uint64),(address,int32)[])[] keys, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) KeysBySpaceId(pageRequest TypesPageRequest, spaceId uint64, deriveAddresses []int32) (struct {
 	Keys         []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.KeysBySpaceId(&_IWarden.CallOpts, pageRequest, spaceId, deriveAddresses)
 }
 
 // SignRequestById is a free data retrieval call binding the contract method 0xa657df94.
 //
-// Solidity: function signRequestById(uint64 id) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
+// Solidity: function signRequestById(uint64 id) view returns((uint64,address,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
 func (_IWarden *IWardenCaller) SignRequestById(opts *bind.CallOpts, id uint64) (SignRequest, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "signRequestById", id)
@@ -572,38 +572,38 @@ func (_IWarden *IWardenCaller) SignRequestById(opts *bind.CallOpts, id uint64) (
 
 // SignRequestById is a free data retrieval call binding the contract method 0xa657df94.
 //
-// Solidity: function signRequestById(uint64 id) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
+// Solidity: function signRequestById(uint64 id) view returns((uint64,address,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
 func (_IWarden *IWardenSession) SignRequestById(id uint64) (SignRequest, error) {
 	return _IWarden.Contract.SignRequestById(&_IWarden.CallOpts, id)
 }
 
 // SignRequestById is a free data retrieval call binding the contract method 0xa657df94.
 //
-// Solidity: function signRequestById(uint64 id) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
+// Solidity: function signRequestById(uint64 id) view returns((uint64,address,uint64,bytes,int32,bytes,bytes,(string,uint256)[]) signRequest)
 func (_IWarden *IWardenCallerSession) SignRequestById(id uint64) (SignRequest, error) {
 	return _IWarden.Contract.SignRequestById(&_IWarden.CallOpts, id)
 }
 
 // SignRequests is a free data retrieval call binding the contract method 0x1335dc4a.
 //
-// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) SignRequests(opts *bind.CallOpts, pageRequest PageRequest, keychainId uint64, status int32) (struct {
+// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,address,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) SignRequests(opts *bind.CallOpts, pageRequest TypesPageRequest, keychainId uint64, status int32) (struct {
 	SignRequests []SignRequest
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "signRequests", pageRequest, keychainId, status)
 
 	outstruct := new(struct {
 		SignRequests []SignRequest
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.SignRequests = *abi.ConvertType(out[0], new([]SignRequest)).(*[]SignRequest)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -611,27 +611,27 @@ func (_IWarden *IWardenCaller) SignRequests(opts *bind.CallOpts, pageRequest Pag
 
 // SignRequests is a free data retrieval call binding the contract method 0x1335dc4a.
 //
-// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) SignRequests(pageRequest PageRequest, keychainId uint64, status int32) (struct {
+// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,address,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) SignRequests(pageRequest TypesPageRequest, keychainId uint64, status int32) (struct {
 	SignRequests []SignRequest
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.SignRequests(&_IWarden.CallOpts, pageRequest, keychainId, status)
 }
 
 // SignRequests is a free data retrieval call binding the contract method 0x1335dc4a.
 //
-// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,string,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) SignRequests(pageRequest PageRequest, keychainId uint64, status int32) (struct {
+// Solidity: function signRequests((bytes,uint64,uint64,bool,bool) pageRequest, uint64 keychainId, int32 status) view returns((uint64,address,uint64,bytes,int32,bytes,bytes,(string,uint256)[])[] signRequests, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) SignRequests(pageRequest TypesPageRequest, keychainId uint64, status int32) (struct {
 	SignRequests []SignRequest
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.SignRequests(&_IWarden.CallOpts, pageRequest, keychainId, status)
 }
 
 // SpaceById is a free data retrieval call binding the contract method 0xe4c1fc79.
 //
-// Solidity: function spaceById(uint64 id) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64) space)
+// Solidity: function spaceById(uint64 id) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64) space)
 func (_IWarden *IWardenCaller) SpaceById(opts *bind.CallOpts, id uint64) (Space, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "spaceById", id)
@@ -648,38 +648,38 @@ func (_IWarden *IWardenCaller) SpaceById(opts *bind.CallOpts, id uint64) (Space,
 
 // SpaceById is a free data retrieval call binding the contract method 0xe4c1fc79.
 //
-// Solidity: function spaceById(uint64 id) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64) space)
+// Solidity: function spaceById(uint64 id) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64) space)
 func (_IWarden *IWardenSession) SpaceById(id uint64) (Space, error) {
 	return _IWarden.Contract.SpaceById(&_IWarden.CallOpts, id)
 }
 
 // SpaceById is a free data retrieval call binding the contract method 0xe4c1fc79.
 //
-// Solidity: function spaceById(uint64 id) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64) space)
+// Solidity: function spaceById(uint64 id) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64) space)
 func (_IWarden *IWardenCallerSession) SpaceById(id uint64) (Space, error) {
 	return _IWarden.Contract.SpaceById(&_IWarden.CallOpts, id)
 }
 
 // Spaces is a free data retrieval call binding the contract method 0x5f73892e.
 //
-// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) Spaces(opts *bind.CallOpts, pageRequest PageRequest) (struct {
+// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) Spaces(opts *bind.CallOpts, pageRequest TypesPageRequest) (struct {
 	Spaces       []Space
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "spaces", pageRequest)
 
 	outstruct := new(struct {
 		Spaces       []Space
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.Spaces = *abi.ConvertType(out[0], new([]Space)).(*[]Space)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -687,44 +687,44 @@ func (_IWarden *IWardenCaller) Spaces(opts *bind.CallOpts, pageRequest PageReque
 
 // Spaces is a free data retrieval call binding the contract method 0x5f73892e.
 //
-// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) Spaces(pageRequest PageRequest) (struct {
+// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) Spaces(pageRequest TypesPageRequest) (struct {
 	Spaces       []Space
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.Spaces(&_IWarden.CallOpts, pageRequest)
 }
 
 // Spaces is a free data retrieval call binding the contract method 0x5f73892e.
 //
-// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) Spaces(pageRequest PageRequest) (struct {
+// Solidity: function spaces((bytes,uint64,uint64,bool,bool) pageRequest) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) Spaces(pageRequest TypesPageRequest) (struct {
 	Spaces       []Space
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.Spaces(&_IWarden.CallOpts, pageRequest)
 }
 
 // SpacesByOwner is a free data retrieval call binding the contract method 0x88cd3f61.
 //
-// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCaller) SpacesByOwner(opts *bind.CallOpts, pageRequest PageRequest, owner common.Address) (struct {
+// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCaller) SpacesByOwner(opts *bind.CallOpts, pageRequest TypesPageRequest, owner common.Address) (struct {
 	Spaces       []Space
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	var out []interface{}
 	err := _IWarden.contract.Call(opts, &out, "spacesByOwner", pageRequest, owner)
 
 	outstruct := new(struct {
 		Spaces       []Space
-		PageResponse PageResponse
+		PageResponse TypesPageResponse
 	})
 	if err != nil {
 		return *outstruct, err
 	}
 
 	outstruct.Spaces = *abi.ConvertType(out[0], new([]Space)).(*[]Space)
-	outstruct.PageResponse = *abi.ConvertType(out[1], new(PageResponse)).(*PageResponse)
+	outstruct.PageResponse = *abi.ConvertType(out[1], new(TypesPageResponse)).(*TypesPageResponse)
 
 	return *outstruct, err
 
@@ -732,20 +732,20 @@ func (_IWarden *IWardenCaller) SpacesByOwner(opts *bind.CallOpts, pageRequest Pa
 
 // SpacesByOwner is a free data retrieval call binding the contract method 0x88cd3f61.
 //
-// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenSession) SpacesByOwner(pageRequest PageRequest, owner common.Address) (struct {
+// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenSession) SpacesByOwner(pageRequest TypesPageRequest, owner common.Address) (struct {
 	Spaces       []Space
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.SpacesByOwner(&_IWarden.CallOpts, pageRequest, owner)
 }
 
 // SpacesByOwner is a free data retrieval call binding the contract method 0x88cd3f61.
 //
-// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,string,string[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
-func (_IWarden *IWardenCallerSession) SpacesByOwner(pageRequest PageRequest, owner common.Address) (struct {
+// Solidity: function spacesByOwner((bytes,uint64,uint64,bool,bool) pageRequest, address owner) view returns((uint64,address,address[],uint64,uint64,uint64,uint64,uint64)[] spaces, (bytes,uint64) pageResponse)
+func (_IWarden *IWardenCallerSession) SpacesByOwner(pageRequest TypesPageRequest, owner common.Address) (struct {
 	Spaces       []Space
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }, error) {
 	return _IWarden.Contract.SpacesByOwner(&_IWarden.CallOpts, pageRequest, owner)
 }
@@ -858,21 +858,21 @@ func (_IWarden *IWardenTransactorSession) FulfilSignRequest(requestId uint64, si
 // NewKeyRequest is a paid mutator transaction binding the contract method 0x90bfe071.
 //
 // Solidity: function newKeyRequest(uint64 spaceId, uint64 keychainId, uint8 keyType, uint64 approveTemplateId, uint64 rejectTemplateId, (string,uint256)[] maxKeychainFees, uint64 nonce, uint64 actionTimeoutHeight, string expectedApproveExpression, string expectedRejectExpression) returns(bool success)
-func (_IWarden *IWardenTransactor) NewKeyRequest(opts *bind.TransactOpts, spaceId uint64, keychainId uint64, keyType uint8, approveTemplateId uint64, rejectTemplateId uint64, maxKeychainFees []Coin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
+func (_IWarden *IWardenTransactor) NewKeyRequest(opts *bind.TransactOpts, spaceId uint64, keychainId uint64, keyType uint8, approveTemplateId uint64, rejectTemplateId uint64, maxKeychainFees []TypesCoin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
 	return _IWarden.contract.Transact(opts, "newKeyRequest", spaceId, keychainId, keyType, approveTemplateId, rejectTemplateId, maxKeychainFees, nonce, actionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 }
 
 // NewKeyRequest is a paid mutator transaction binding the contract method 0x90bfe071.
 //
 // Solidity: function newKeyRequest(uint64 spaceId, uint64 keychainId, uint8 keyType, uint64 approveTemplateId, uint64 rejectTemplateId, (string,uint256)[] maxKeychainFees, uint64 nonce, uint64 actionTimeoutHeight, string expectedApproveExpression, string expectedRejectExpression) returns(bool success)
-func (_IWarden *IWardenSession) NewKeyRequest(spaceId uint64, keychainId uint64, keyType uint8, approveTemplateId uint64, rejectTemplateId uint64, maxKeychainFees []Coin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
+func (_IWarden *IWardenSession) NewKeyRequest(spaceId uint64, keychainId uint64, keyType uint8, approveTemplateId uint64, rejectTemplateId uint64, maxKeychainFees []TypesCoin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
 	return _IWarden.Contract.NewKeyRequest(&_IWarden.TransactOpts, spaceId, keychainId, keyType, approveTemplateId, rejectTemplateId, maxKeychainFees, nonce, actionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 }
 
 // NewKeyRequest is a paid mutator transaction binding the contract method 0x90bfe071.
 //
 // Solidity: function newKeyRequest(uint64 spaceId, uint64 keychainId, uint8 keyType, uint64 approveTemplateId, uint64 rejectTemplateId, (string,uint256)[] maxKeychainFees, uint64 nonce, uint64 actionTimeoutHeight, string expectedApproveExpression, string expectedRejectExpression) returns(bool success)
-func (_IWarden *IWardenTransactorSession) NewKeyRequest(spaceId uint64, keychainId uint64, keyType uint8, approveTemplateId uint64, rejectTemplateId uint64, maxKeychainFees []Coin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
+func (_IWarden *IWardenTransactorSession) NewKeyRequest(spaceId uint64, keychainId uint64, keyType uint8, approveTemplateId uint64, rejectTemplateId uint64, maxKeychainFees []TypesCoin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
 	return _IWarden.Contract.NewKeyRequest(&_IWarden.TransactOpts, spaceId, keychainId, keyType, approveTemplateId, rejectTemplateId, maxKeychainFees, nonce, actionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 }
 
@@ -900,21 +900,21 @@ func (_IWarden *IWardenTransactorSession) NewKeychain(name string, keychainFees 
 // NewSignRequest is a paid mutator transaction binding the contract method 0x9c69bab0.
 //
 // Solidity: function newSignRequest(uint64 keyId, bytes input, address[] analyzers, bytes encryptionKey, (string,uint256)[] maxKeychainFees, uint64 nonce, uint64 actionTimeoutHeight, string expectedApproveExpression, string expectedRejectExpression) returns(bool success)
-func (_IWarden *IWardenTransactor) NewSignRequest(opts *bind.TransactOpts, keyId uint64, input []byte, analyzers []common.Address, encryptionKey []byte, maxKeychainFees []Coin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
+func (_IWarden *IWardenTransactor) NewSignRequest(opts *bind.TransactOpts, keyId uint64, input []byte, analyzers []common.Address, encryptionKey []byte, maxKeychainFees []TypesCoin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
 	return _IWarden.contract.Transact(opts, "newSignRequest", keyId, input, analyzers, encryptionKey, maxKeychainFees, nonce, actionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 }
 
 // NewSignRequest is a paid mutator transaction binding the contract method 0x9c69bab0.
 //
 // Solidity: function newSignRequest(uint64 keyId, bytes input, address[] analyzers, bytes encryptionKey, (string,uint256)[] maxKeychainFees, uint64 nonce, uint64 actionTimeoutHeight, string expectedApproveExpression, string expectedRejectExpression) returns(bool success)
-func (_IWarden *IWardenSession) NewSignRequest(keyId uint64, input []byte, analyzers []common.Address, encryptionKey []byte, maxKeychainFees []Coin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
+func (_IWarden *IWardenSession) NewSignRequest(keyId uint64, input []byte, analyzers []common.Address, encryptionKey []byte, maxKeychainFees []TypesCoin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
 	return _IWarden.Contract.NewSignRequest(&_IWarden.TransactOpts, keyId, input, analyzers, encryptionKey, maxKeychainFees, nonce, actionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 }
 
 // NewSignRequest is a paid mutator transaction binding the contract method 0x9c69bab0.
 //
 // Solidity: function newSignRequest(uint64 keyId, bytes input, address[] analyzers, bytes encryptionKey, (string,uint256)[] maxKeychainFees, uint64 nonce, uint64 actionTimeoutHeight, string expectedApproveExpression, string expectedRejectExpression) returns(bool success)
-func (_IWarden *IWardenTransactorSession) NewSignRequest(keyId uint64, input []byte, analyzers []common.Address, encryptionKey []byte, maxKeychainFees []Coin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
+func (_IWarden *IWardenTransactorSession) NewSignRequest(keyId uint64, input []byte, analyzers []common.Address, encryptionKey []byte, maxKeychainFees []TypesCoin, nonce uint64, actionTimeoutHeight uint64, expectedApproveExpression string, expectedRejectExpression string) (*types.Transaction, error) {
 	return _IWarden.Contract.NewSignRequest(&_IWarden.TransactOpts, keyId, input, analyzers, encryptionKey, maxKeychainFees, nonce, actionTimeoutHeight, expectedApproveExpression, expectedRejectExpression)
 }
 
@@ -1301,15 +1301,15 @@ func (it *IWardenAddKeychainWriterIterator) Close() error {
 
 // IWardenAddKeychainWriter represents a AddKeychainWriter event raised by the IWarden contract.
 type IWardenAddKeychainWriter struct {
-	NewWriter    common.Address
-	Id           uint64
-	WritersCount uint64
-	Raw          types.Log // Blockchain specific contextual infos
+	NewWriter   common.Address
+	Id          uint64
+	AdminsCount uint64
+	Raw         types.Log // Blockchain specific contextual infos
 }
 
 // FilterAddKeychainWriter is a free log retrieval operation binding the contract event 0x95209db0173d4ee88ed6a251e6c008e9ef15b765625418c7731c2dad6ba8d008.
 //
-// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount)
+// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount)
 func (_IWarden *IWardenFilterer) FilterAddKeychainWriter(opts *bind.FilterOpts, newWriter []common.Address) (*IWardenAddKeychainWriterIterator, error) {
 
 	var newWriterRule []interface{}
@@ -1326,7 +1326,7 @@ func (_IWarden *IWardenFilterer) FilterAddKeychainWriter(opts *bind.FilterOpts, 
 
 // WatchAddKeychainWriter is a free log subscription operation binding the contract event 0x95209db0173d4ee88ed6a251e6c008e9ef15b765625418c7731c2dad6ba8d008.
 //
-// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount)
+// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount)
 func (_IWarden *IWardenFilterer) WatchAddKeychainWriter(opts *bind.WatchOpts, sink chan<- *IWardenAddKeychainWriter, newWriter []common.Address) (event.Subscription, error) {
 
 	var newWriterRule []interface{}
@@ -1368,7 +1368,7 @@ func (_IWarden *IWardenFilterer) WatchAddKeychainWriter(opts *bind.WatchOpts, si
 
 // ParseAddKeychainWriter is a log parse operation binding the contract event 0x95209db0173d4ee88ed6a251e6c008e9ef15b765625418c7731c2dad6ba8d008.
 //
-// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount)
+// Solidity: event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount)
 func (_IWarden *IWardenFilterer) ParseAddKeychainWriter(log types.Log) (*IWardenAddKeychainWriter, error) {
 	event := new(IWardenAddKeychainWriter)
 	if err := _IWarden.contract.UnpackLog(event, "AddKeychainWriter", log); err != nil {

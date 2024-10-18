@@ -83,7 +83,7 @@ interface IAct {
     /// @return action status
     function checkAction(uint64 actionId) external returns (string memory);
 
-    /// @dev Defines a method to check an action.
+    /// @dev Defines a method to create a new template.
     /// @param name The template name
     /// @param definition The template definition
     /// @return template id

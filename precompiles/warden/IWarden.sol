@@ -30,13 +30,13 @@ struct KeyResponse {
 }
 
 struct AddressesResponse {
-    string Address;
+    address Address;
     int32 Type;
 }
 
 struct KeyRequest {
     uint64 Id;
-    string Creator;
+    address Creator;
     uint64 SpaceId;
     uint64 KeychainId;
     int32 KeyType;
@@ -49,10 +49,10 @@ struct KeyRequest {
 
 struct Keychain {
     uint64 Id;
-	string Creator;
+    address Creator;
 	string Name;
-	string[] Admins;
-	string[] Writers;
+    address[] Admins;
+    address[] Writers;
 	KeychainFees Fees;
 	string Description;
 	string Url;
@@ -61,7 +61,7 @@ struct Keychain {
 
 struct SignRequest {
     uint64 Id;
-    string Creator;
+    address Creator;
     uint64 KeyId;
     bytes DataForSigning;
     int32 Status;
@@ -72,8 +72,8 @@ struct SignRequest {
 
 struct Space {
     uint64 Id;
-    string Creator;
-    string[] Owners;
+    address Creator;
+    address[] Owners;
     uint64 Nonce;
     uint64 ApproveAdminTemplateId;
     uint64 RejectAdminTemplateId;
@@ -94,7 +94,7 @@ enum KeyType {
  * @custom:address 0x0000000000000000000000000000000000000900
  */
 interface IWarden {
-    /// @dev Defines a method for adding a new admin to keychain.
+    /// @dev Defines a method for adding a new admin to a keychain.
     /// @param keychainId The keychain id
     /// @param newAdmin The new admin's address
     /// @return success If execution was successful
@@ -103,7 +103,7 @@ interface IWarden {
         address newAdmin
     ) external returns (bool success);
 
-    /// @dev Defines a method for adding a new writer to keychain.
+    /// @dev Defines a method for adding a new writer to a keychain.
     /// @param keychainId The keychain id
     /// @param newWriter The new writer's address
     /// @return success If execution was successful
@@ -178,7 +178,7 @@ interface IWarden {
         address[] calldata additionalOwners
     ) external returns (uint64 id);
 
-    /// @dev Defines a method to remove an admin from keychain.
+    /// @dev Defines a method to remove an admin from a keychain.
     /// @param keychainId The id of the keychain
     /// @param admin The admin address
     /// @return success If execution was successful
@@ -326,59 +326,111 @@ interface IWarden {
 	    string calldata expectedRejectExpression
     ) external returns (bool success);
 
+    /// @dev Defines a method to query keys.
+    /// @param pageRequest The pagination details
+    /// @return keys An array of `KeyResponse` structs containing the retrieved keys
+    /// @return pageResponse  pagination details
     function allKeys(
         Types.PageRequest calldata pageRequest,
         int32[] calldata deriveAddresses
     ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
 
+    /// @dev Defines a method to query key by id.
+    /// @param id The id of the key
+    /// @param deriveAddresses The array of address types to derive
+    /// @return key `KeyResponse` struct containing the retrieved key
     function keyById(
         uint64 id,
         int32[] calldata deriveAddresses
     ) external view returns(KeyResponse memory key);
 
+    /// @dev Defines a method to query keys by space id.
+    /// @param pageRequest The pagination details
+    /// @param spaceId The id of the space
+    /// @param deriveAddresses The array of address types to derive
+    /// @return keys An array of `KeyResponse` structs containing the retrieved keys
+    /// @return pageResponse  pagination details
     function keysBySpaceId(
         Types.PageRequest calldata pageRequest,
         uint64 spaceId,
         int32[] calldata deriveAddresses
     ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
 
+    /// @dev Defines a method to query keyRequest by id.
+    /// @param id The id of the keyRequest
+    /// @return keyRequest The key request
     function keyRequestById(
         uint64 id
     ) external view returns(KeyRequest memory keyRequest);
 
+    /// @dev Defines a method to query keyRequests.
+    /// @param pageRequest The pagination details
+    /// @param keychainId The id of the keychain
+    /// @param status The key requests status
+    /// @param spaceId The id of the space
+    /// @return keyRequests An array of `KeyRequest` structs containing the retrieved key requests
+    /// @return pageResponse  pagination details
     function keyRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         int32 status,
         uint64 spaceId
-    ) external view returns(KeyRequest[] memory keys, Types.PageResponse memory pageResponse);
+    ) external view returns(KeyRequest[] memory keyRequests, Types.PageResponse memory pageResponse);
 
+    /// @dev Defines a method to query keychain by id.
+    /// @param id The id of the keychain
+    /// @return keychain The keychain
     function keychainById(
         uint64 id
     ) external view returns(Keychain memory keychain);
 
+    /// @dev Defines a method to query keychains.
+    /// @param pageRequest The pagination details
+    /// @return keychains An array of `Keychain` structs containing the retrieved key requests
+    /// @return pageResponse  pagination details
     function keychains(
         Types.PageRequest calldata pageRequest
-    ) external view returns(Keychain[] memory keychain, Types.PageResponse memory pageResponse);
+    ) external view returns(Keychain[] memory keychains, Types.PageResponse memory pageResponse);
 
+    /// @dev Defines a method to query sign request by id.
+    /// @param id The id of the sign request
+    /// @return signRequest The sign request
     function signRequestById(
         uint64 id
     ) external view returns(SignRequest memory signRequest);
 
+    /// @dev Defines a method to query sign requests.
+    /// @param pageRequest The pagination details
+    /// @param keychainId The id of the keychain
+    /// @param status The sign requests status
+    /// @return signRequests An array of `SignRequest` structs containing the retrieved sign requests
+    /// @return pageResponse  pagination details
     function signRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         int32 status
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
+    /// @dev Defines a method to query space by id.
+    /// @param id The id of the space
+    /// @return space The space
     function spaceById(
         uint64 id
     ) external view returns(Space memory space);
 
+    /// @dev Defines a method to query spaces.
+    /// @param pageRequest The pagination details
+    /// @return spaces An array of `Space` structs containing the retrieved sign requests
+    /// @return pageResponse  pagination details
     function spaces(
         Types.PageRequest calldata pageRequest
     ) external view returns(Space[] memory spaces, Types.PageResponse memory pageResponse);
 
+    /// @dev Defines a method to query spaces by owner.
+    /// @param pageRequest The pagination details
+    /// @param owner The owner address
+    /// @return spaces An array of `Space` structs containing the retrieved sign requests
+    /// @return pageResponse  pagination details
     function spacesByOwner(
         Types.PageRequest calldata pageRequest,
         address owner

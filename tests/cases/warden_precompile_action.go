@@ -73,13 +73,13 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err2)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.Address(t),
+			Creator:                alice.EthAddress(t),
 			Nonce:                  1,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,
 			ApproveAdminTemplateId: 0,
 			RejectSignTemplateId:   0,
-			Owners:                 []string{alice.Address(t), bob.Address(t)},
+			Owners:                 []common.Address{alice.EthAddress(t), bob.EthAddress(t)},
 		}, spaceById1)
 
 		// removeSpaceOwner
@@ -112,13 +112,13 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err2)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.Address(t),
+			Creator:                alice.EthAddress(t),
 			Nonce:                  2,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,
 			ApproveAdminTemplateId: 0,
 			RejectSignTemplateId:   0,
-			Owners:                 []string{alice.Address(t)},
+			Owners:                 []common.Address{alice.EthAddress(t)},
 		}, spaceById2)
 
 		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, context.Background(), evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
@@ -127,7 +127,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		_, err = bind.WaitMined(ctx, evmClient, newKeychainTx)
 		require.NoError(t, err)
 
-		keychains1, err := iWardenClient.Keychains(alice.CallOps(t), warden.PageRequest{})
+		keychains1, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
 		require.NoError(t, err)
 		require.Len(t, keychains1.Keychain, 1)
@@ -141,10 +141,10 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		_, err = bind.WaitMined(ctx, evmClient, addKeychainWriterTx)
 		require.NoError(t, err)
 
-		keychains2, err := iWardenClient.Keychains(alice.CallOps(t), warden.PageRequest{})
+		keychains2, err := iWardenClient.Keychains(alice.CallOps(t), warden.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Equal(t, keychains2.Keychain[0].Writers[0], alice.Address(t))
+		require.Equal(t, keychains2.Keychain[0].Writers[0], alice.EthAddress(t))
 
 		// newKeyRequest
 		newKeyRequestTx, err := iWardenClient.NewKeyRequest(
@@ -154,7 +154,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
 			0,
 			0,
-			[]warden.Coin{},
+			[]warden.TypesCoin{},
 			2,
 			0,
 			"any(1, warden.space.owners)",
@@ -181,20 +181,20 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions3.Actions, 3)
 
-		keyRequests1, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING), 1)
+		keyRequests1, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING), 1)
 
 		require.NoError(t, err)
 		require.Len(t, keyRequests1.Keys, 1)
 		require.Equal(t, warden.KeyRequest{
 			Id:                   1,
-			Creator:              alice.Address(t),
+			Creator:              alice.EthAddress(t),
 			SpaceId:              1,
 			KeychainId:           1,
 			ApproveTemplateId:    0,
 			RejectTemplateId:     0,
 			Status:               int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING),
 			KeyType:              int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
-			DeductedKeychainFees: []warden.Coin{},
+			DeductedKeychainFees: []warden.TypesCoin{},
 			RejectReason:         "",
 		}, keyRequests1.Keys[0])
 
@@ -208,7 +208,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		_, err = bind.WaitMined(ctx, evmClient, fulfilKeyRequestTx)
 		require.NoError(t, err)
 
-		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
+		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
 
 		require.NoError(t, err)
 		require.Len(t, keyRequests2.Keys, 1)
@@ -220,7 +220,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			[]common.Address{},
 			[]byte{},
-			[]warden.Coin{},
+			[]warden.TypesCoin{},
 			2,
 			0,
 			"any(1, warden.space.owners)",
@@ -243,18 +243,18 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions4.Actions, 4)
 
-		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.PageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
+		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
 
 		require.NoError(t, err)
 		require.Len(t, signRequests.SignRequests, 1)
 		require.Equal(t, warden.SignRequest{
 			Id:                   1,
-			Creator:              alice.Address(t),
+			Creator:              alice.EthAddress(t),
 			KeyId:                1,
 			Status:               int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
 			EncryptionKey:        []byte{},
 			DataForSigning:       []byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
-			DeductedKeychainFees: []warden.Coin{},
+			DeductedKeychainFees: []warden.TypesCoin{},
 			Result:               []byte{},
 		}, signRequests.SignRequests[0])
 
@@ -348,13 +348,13 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Equal(t, warden.Space{
 			Id:                     1,
-			Creator:                alice.Address(t),
+			Creator:                alice.EthAddress(t),
 			Nonce:                  3,
 			ApproveSignTemplateId:  1,
 			RejectAdminTemplateId:  1,
 			ApproveAdminTemplateId: 1,
 			RejectSignTemplateId:   1,
-			Owners:                 []string{alice.Address(t)},
+			Owners:                 []common.Address{alice.EthAddress(t)},
 		}, space)
 	})
 }

@@ -29,11 +29,11 @@ func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllK
 }
 
 type allKeysInput struct {
-	PageRequest     PageRequest
+	PageRequest     TypesPageRequest
 	DeriveAddresses []types.AddressType
 }
 
-func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) *KeyResponse {
+func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, error) {
 	key := Key{
 		Id:                res.Key.Id,
 		SpaceId:           res.Key.SpaceId,
@@ -47,8 +47,13 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) *KeyResponse {
 	addresses := make([]AddressesResponse, len(res.Addresses))
 
 	for j, a := range res.Addresses {
+		ethAddress, err := wardencommon.AddressFromBech32Str(a.Address)
+		if err != nil {
+			return nil, err
+		}
+
 		addresses[j] = AddressesResponse{
-			Address: a.Address,
+			Address: ethAddress,
 			Type:    int32(a.Type),
 		}
 	}
@@ -56,7 +61,7 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) *KeyResponse {
 	return &KeyResponse{
 		Key:       key,
 		Addresses: addresses,
-	}
+	}, nil
 }
 
 func (o *KeyResponse) Pack(args abi.Arguments) ([]byte, error) {
@@ -65,13 +70,16 @@ func (o *KeyResponse) Pack(args abi.Arguments) ([]byte, error) {
 
 type keysOutput struct {
 	KeysResponse []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }
 
-func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) *keysOutput {
+func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, error) {
 	o.KeysResponse = make([]KeyResponse, len(res.Keys))
 	for i, k := range res.Keys {
-		keyReponse := new(KeyResponse).FromResponse(&k)
+		keyReponse, err := new(KeyResponse).FromResponse(&k)
+		if err != nil {
+			return nil, err
+		}
 
 		o.KeysResponse[i] = *keyReponse
 	}
@@ -81,7 +89,7 @@ func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) *keysOutput {
 		o.PageResponse.NextKey = res.Pagination.NextKey
 	}
 
-	return o
+	return o, nil
 }
 
 func (o *keysOutput) Pack(args abi.Arguments) ([]byte, error) {
@@ -144,19 +152,8 @@ func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.Qu
 	}, nil
 }
 
-func (o *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) *KeyRequest {
-	o.Id = res.KeyRequest.Id
-	o.Creator = res.KeyRequest.Creator
-	o.SpaceId = res.KeyRequest.SpaceId
-	o.KeychainId = res.KeyRequest.KeychainId
-	o.KeyType = int32(res.KeyRequest.KeyType)
-	o.Status = int32(res.KeyRequest.Status)
-	o.RejectReason = res.KeyRequest.RejectReason
-	o.ApproveTemplateId = res.KeyRequest.ApproveTemplateId
-	o.RejectTemplateId = res.KeyRequest.RejectTemplateId
-	o.DeductedKeychainFees = mapSdkCoins(res.KeyRequest.DeductedKeychainFees)
-
-	return o
+func (o *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) (*KeyRequest, error) {
+	return o.mapKeyRequest(*res.KeyRequest)
 }
 
 func (o *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
@@ -189,34 +186,27 @@ type keyRequestsInput struct {
 }
 
 type keyRequestsOutput struct {
-	Pagination  PageResponse
+	Pagination  TypesPageResponse
 	KeyRequests []KeyRequest
 }
 
-func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) *keyRequestsOutput {
+func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) (*keyRequestsOutput, error) {
 	o.KeyRequests = make([]KeyRequest, len(res.KeyRequests))
 	for i, k := range res.KeyRequests {
-		keyRequestReponse := KeyRequest{
-			Id:                   k.Id,
-			Creator:              k.Creator,
-			SpaceId:              k.SpaceId,
-			KeychainId:           k.KeychainId,
-			KeyType:              int32(k.KeyType),
-			Status:               int32(k.Status),
-			RejectReason:         k.RejectReason,
-			ApproveTemplateId:    k.ApproveTemplateId,
-			RejectTemplateId:     k.RejectTemplateId,
-			DeductedKeychainFees: mapSdkCoins(k.DeductedKeychainFees),
+		keyRequestReponse, err := new(KeyRequest).mapKeyRequest(*k)
+
+		if err != nil {
+			return nil, err
 		}
 
-		o.KeyRequests[i] = keyRequestReponse
+		o.KeyRequests[i] = *keyRequestReponse
 	}
 
 	if res.Pagination != nil {
 		o.Pagination = mapSdkPageResponse(*res.Pagination)
 	}
 
-	return o
+	return o, nil
 }
 
 func (o *keyRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
@@ -235,24 +225,12 @@ func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKey
 	}, nil
 }
 
-func (o *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) *Keychain {
-	o.Id = res.Keychain.Id
-	o.Creator = res.Keychain.Creator
-	o.Name = res.Keychain.Name
-	o.Admins = res.Keychain.Admins
-	o.Writers = res.Keychain.Writers
-	o.Fees = mapSdkKeychainFees(res.Keychain.Fees)
-	o.Description = res.Keychain.Description
-	o.Url = res.Keychain.Url
-	if res.Keychain.KeybaseId != nil {
-		o.KeybaseId = res.Keychain.KeybaseId.Value
-	}
-
-	return o
+func (k *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) (*Keychain, error) {
+	return k.mapKeychain(*res.Keychain)
 }
 
-func (o *Keychain) Pack(args abi.Arguments) ([]byte, error) {
-	return args.Pack(o)
+func (k *Keychain) Pack(args abi.Arguments) ([]byte, error) {
+	return args.Pack(k)
 }
 
 func newKeychainsRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainsRequest, error) {
@@ -279,33 +257,21 @@ type keychainsOutput struct {
 	Keychains  []Keychain
 }
 
-func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) *keychainsOutput {
+func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) (*keychainsOutput, error) {
 	o.Keychains = make([]Keychain, len(res.Keychains))
 	for i, k := range res.Keychains {
-		var keybaseId string
-		if k.KeybaseId != nil {
-			keybaseId = k.KeybaseId.Value
+		keyRequestReponse, err := new(Keychain).mapKeychain(k)
+		if err != nil {
+			return nil, err
 		}
-		keyRequestReponse := Keychain{
-			Id:          k.Id,
-			Creator:     k.Creator,
-			Name:        k.Name,
-			Admins:      k.Admins,
-			Writers:     k.Writers,
-			Fees:        mapSdkKeychainFees(k.Fees),
-			Description: k.Description,
-			Url:         k.Url,
-			KeybaseId:   keybaseId,
-		}
-
-		o.Keychains[i] = keyRequestReponse
+		o.Keychains[i] = *keyRequestReponse
 	}
 
 	if res.Pagination != nil {
 		o.Pagination = *res.Pagination
 	}
 
-	return o
+	return o, nil
 }
 
 func (o *keychainsOutput) Pack(args abi.Arguments) ([]byte, error) {
@@ -324,25 +290,35 @@ func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdR
 	}, nil
 }
 
-func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) *SignRequest {
-	o.Id = res.SignRequest.Id
-	o.Creator = res.SignRequest.Creator
-	o.KeyId = res.SignRequest.KeyId
-	o.DataForSigning = res.SignRequest.DataForSigning
-	o.Status = int32(res.SignRequest.Status)
+func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) (*SignRequest, error) {
+	return o.mapSignRequest(res.SignRequest)
+}
 
-	result := res.SignRequest.Result
-	if res.SignRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
+func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignRequest, error) {
+	ethCreator, err := wardencommon.AddressFromBech32Str(signRequest.Creator)
+	if err != nil {
+		return nil, err
+	}
+
+	o.Creator = ethCreator
+
+	o.Id = signRequest.Id
+	o.KeyId = signRequest.KeyId
+	o.DataForSigning = signRequest.DataForSigning
+	o.Status = int32(signRequest.Status)
+
+	result := signRequest.Result
+	if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
 		o.Result = result.(*types.SignRequest_SignedData).SignedData
-	} else if res.SignRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED {
+	} else if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED {
 		reason := result.(*types.SignRequest_RejectReason).RejectReason
 		o.Result = []byte(reason)
 	}
 
-	o.EncryptionKey = res.SignRequest.EncryptionKey
-	o.DeductedKeychainFees = mapSdkCoins(res.SignRequest.DeductedKeychainFees)
+	o.EncryptionKey = signRequest.EncryptionKey
+	o.DeductedKeychainFees = mapSdkCoins(signRequest.DeductedKeychainFees)
 
-	return o
+	return o, nil
 }
 
 func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
@@ -377,33 +353,21 @@ type signRequestsOutput struct {
 	Pagination   query.PageResponse
 }
 
-func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) *signRequestsOutput {
+func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) (*signRequestsOutput, error) {
 	o.SignRequests = make([]SignRequest, len(res.SignRequests))
 	for i, k := range res.SignRequests {
-		var result []byte
-		if k.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
-			result = k.Result.(*types.SignRequest_SignedData).SignedData
-		} else if k.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED {
-			reason := k.Result.(*types.SignRequest_RejectReason).RejectReason
-			result = []byte(reason)
+		signRequest, err := new(SignRequest).mapSignRequest(k)
+		if err != nil {
+			return nil, err
 		}
-		signRequest := SignRequest{
-			Id:             k.Id,
-			Creator:        k.Creator,
-			KeyId:          k.KeyId,
-			DataForSigning: k.DataForSigning,
-			Status:         int32(k.Status),
-			Result:         result,
-		}
-
-		o.SignRequests[i] = signRequest
+		o.SignRequests[i] = *signRequest
 	}
 
 	if res.Pagination != nil {
 		o.Pagination = *res.Pagination
 	}
 
-	return o
+	return o, nil
 }
 
 func (o *signRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
@@ -422,17 +386,31 @@ func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySp
 	}, nil
 }
 
-func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) *Space {
-	o.Id = res.Space.Id
-	o.Creator = res.Space.Creator
-	o.Owners = res.Space.Owners
-	o.Nonce = res.Space.Nonce
-	o.ApproveAdminTemplateId = res.Space.ApproveAdminTemplateId
-	o.RejectAdminTemplateId = res.Space.RejectAdminTemplateId
-	o.ApproveSignTemplateId = res.Space.ApproveSignTemplateId
-	o.RejectSignTemplateId = res.Space.RejectSignTemplateId
+func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) (*Space, error) {
+	return o.mapSpace(res.Space)
+}
 
-	return o
+func (o *Space) mapSpace(space *types.Space) (*Space, error) {
+	ethCreator, err := wardencommon.AddressFromBech32Str(space.Creator)
+	if err != nil {
+		return nil, err
+	}
+
+	ethOwners, err := wardencommon.AddressesFromBech32StrArray(space.Owners)
+	if err != nil {
+		return nil, err
+	}
+
+	o.Id = space.Id
+	o.Creator = ethCreator
+	o.Owners = ethOwners
+	o.Nonce = space.Nonce
+	o.ApproveAdminTemplateId = space.ApproveAdminTemplateId
+	o.RejectAdminTemplateId = space.RejectAdminTemplateId
+	o.ApproveSignTemplateId = space.ApproveSignTemplateId
+	o.RejectSignTemplateId = space.RejectSignTemplateId
+
+	return o, nil
 }
 
 func (o *Space) Pack(args abi.Arguments) ([]byte, error) {
@@ -463,28 +441,22 @@ type spacesOutput struct {
 	Spaces     []Space
 }
 
-func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) *spacesOutput {
+func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) (*spacesOutput, error) {
 	o.Spaces = make([]Space, len(res.Spaces))
 	for i, k := range res.Spaces {
-		space := Space{
-			Id:                     k.Id,
-			Creator:                k.Creator,
-			Owners:                 k.Owners,
-			Nonce:                  k.Nonce,
-			ApproveAdminTemplateId: k.ApproveAdminTemplateId,
-			RejectAdminTemplateId:  k.RejectAdminTemplateId,
-			ApproveSignTemplateId:  k.ApproveSignTemplateId,
-			RejectSignTemplateId:   k.RejectSignTemplateId,
+		space, err := new(Space).mapSpace(&k)
+		if err != nil {
+			return nil, err
 		}
 
-		o.Spaces[i] = space
+		o.Spaces[i] = *space
 	}
 
 	if res.Pagination != nil {
 		o.Pagination = *res.Pagination
 	}
 
-	return o
+	return o, nil
 }
 
 func (o *spacesOutput) Pack(args abi.Arguments) ([]byte, error) {
@@ -510,4 +482,59 @@ func newSpacesByOwnerRequest(method *abi.Method, args []interface{}) (*types.Que
 type spacesByOwnerInput struct {
 	PageRequest query.PageRequest
 	Owner       common.Address
+}
+
+func (k *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, error) {
+	ethCreator, err := wardencommon.AddressFromBech32Str(keyRequest.Creator)
+
+	if err != nil {
+		return nil, err
+	}
+
+	k.Id = keyRequest.Id
+	k.Creator = ethCreator
+	k.SpaceId = keyRequest.SpaceId
+	k.KeychainId = keyRequest.KeychainId
+	k.KeyType = int32(keyRequest.KeyType)
+	k.Status = int32(keyRequest.Status)
+	k.RejectReason = keyRequest.RejectReason
+	k.ApproveTemplateId = keyRequest.ApproveTemplateId
+	k.RejectTemplateId = keyRequest.RejectTemplateId
+	k.DeductedKeychainFees = mapSdkCoins(keyRequest.DeductedKeychainFees)
+
+	return k, nil
+}
+
+func (k *Keychain) mapKeychain(keychain types.Keychain) (*Keychain, error) {
+	var keybaseId string
+	if keychain.KeybaseId != nil {
+		keybaseId = keychain.KeybaseId.Value
+	}
+
+	ethCreator, err := wardencommon.AddressFromBech32Str(keychain.Creator)
+	if err != nil {
+		return nil, err
+	}
+
+	ethAdmins, err := wardencommon.AddressesFromBech32StrArray(keychain.Admins)
+	if err != nil {
+		return nil, err
+	}
+
+	ethWriters, err := wardencommon.AddressesFromBech32StrArray(keychain.Writers)
+	if err != nil {
+		return nil, err
+	}
+
+	k.Id = keychain.Id
+	k.Creator = ethCreator
+	k.Name = keychain.Name
+	k.Admins = ethAdmins
+	k.Writers = ethWriters
+	k.Fees = mapSdkKeychainFees(keychain.Fees)
+	k.Description = keychain.Description
+	k.Url = keychain.Url
+	k.KeybaseId = keybaseId
+
+	return k, nil
 }

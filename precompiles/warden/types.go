@@ -33,23 +33,23 @@ func mapEthKeychainFees(keychainFees KeychainFees) v1beta3.KeychainFees {
 	}
 }
 
-func mapSdkCoins(coins sdkTypes.Coins) []Coin {
-	var c []Coin
+func mapSdkCoins(coins sdkTypes.Coins) []TypesCoin {
+	var c []TypesCoin
 	for _, sdkCoin := range coins {
-		c = append(c, Coin{Denom: sdkCoin.GetDenom(), Amount: sdkCoin.Amount.BigInt()})
+		c = append(c, TypesCoin{Denom: sdkCoin.GetDenom(), Amount: sdkCoin.Amount.BigInt()})
 	}
 
 	return c
 }
 
-func mapSdkPageResponse(pageResponse sdkQuery.PageResponse) PageResponse {
-	return PageResponse{
+func mapSdkPageResponse(pageResponse sdkQuery.PageResponse) TypesPageResponse {
+	return TypesPageResponse{
 		NextKey: pageResponse.GetNextKey(),
 		Total:   pageResponse.GetTotal(),
 	}
 }
 
-func mapEthPageRequest(pageRequest PageRequest) sdkQuery.PageRequest {
+func mapEthPageRequest(pageRequest TypesPageRequest) sdkQuery.PageRequest {
 	return sdkQuery.PageRequest{
 		Key:        pageRequest.Key,
 		Offset:     pageRequest.Offset,

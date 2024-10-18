@@ -120,7 +120,7 @@ There are certain files you need to backup to be able to restore your validator 
 Check if your validator is in the active set by running this command:
 
 ```bash
-wardend query tendermint-validator-set | grep "$(wardend comet show-address)"
+wardend query tendermint-validator-set | grep "$(wardend tendermint show-address)"
 ```
 
 If the output is empty, your validator isn't in the active set.

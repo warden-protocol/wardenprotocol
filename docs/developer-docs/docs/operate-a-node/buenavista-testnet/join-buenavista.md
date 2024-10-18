@@ -98,7 +98,7 @@ To configure `wardend`, do the following:
    wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
-   These commands will remove the `$HOME/.warden/genesis.json` file and replace it with with the correct version.
+   These commands will remove the `$HOME/.warden/genesis.json` file and replace it with the correct version.
 
 2. In the `app.toml` file, set the mandatory options: the minimum gas price and persistent peers.
 
@@ -156,7 +156,7 @@ https://rpc.buenavista.wardenprotocol.org
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
    ```
 
-   These commands will update the following fields in `$HOME/.warden/config.toml`: `enable` in `[statesync]`, `rpc_servers`, `trust_height`, `trust_hash`. Alternatively, you can adjust the file manually.
+   These commands will update the the `[statesync]` section in `$HOME/.warden/config.toml`. Alternatively, you can adjust the file manually.
 
 ## 4. Start the node
 

@@ -10,7 +10,6 @@ import (
 
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actTypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -143,7 +142,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 
 type newKeyChainInput struct {
 	Name         string
-	KeychainFees v1beta3.KeychainFees
+	KeychainFees types.KeychainFees
 	Description  string
 	Url          string
 	KeybaseId    string
@@ -320,14 +319,14 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
-	mapKeyType := func(keyType uint8) (v1beta3.KeyType, error) {
+	mapKeyType := func(keyType uint8) (types.KeyType, error) {
 		switch keyType {
-		case uint8(v1beta3.KeyType_KEY_TYPE_UNSPECIFIED):
-			return v1beta3.KeyType_KEY_TYPE_UNSPECIFIED, nil
-		case uint8(v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1):
-			return v1beta3.KeyType_KEY_TYPE_ECDSA_SECP256K1, nil
-		case uint8(v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519):
-			return v1beta3.KeyType_KEY_TYPE_EDDSA_ED25519, nil
+		case uint8(types.KeyType_KEY_TYPE_UNSPECIFIED):
+			return types.KeyType_KEY_TYPE_UNSPECIFIED, nil
+		case uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1):
+			return types.KeyType_KEY_TYPE_ECDSA_SECP256K1, nil
+		case uint8(types.KeyType_KEY_TYPE_EDDSA_ED25519):
+			return types.KeyType_KEY_TYPE_EDDSA_ED25519, nil
 		default:
 			return -1, fmt.Errorf("key type is not supported: %v", keyType)
 		}

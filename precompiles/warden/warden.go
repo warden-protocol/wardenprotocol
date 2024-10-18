@@ -1,9 +1,10 @@
 package warden
 
 import (
-	"cosmossdk.io/log"
 	"embed"
 	"fmt"
+
+	"cosmossdk.io/log"
 
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -155,7 +156,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 		bz, err = p.SignRequestsMethod(ctx, evm.Origin, stateDB, method, args)
 	case SpaceByIdMethod:
 		bz, err = p.SpaceByIdMethod(ctx, evm.Origin, stateDB, method, args)
-	case SpacesMethodMethod:
+	case SpacesMethod:
 		bz, err = p.SpacesMethod(ctx, evm.Origin, stateDB, method, args)
 	case SpacesByOwnerMethod:
 		bz, err = p.SpacesByOwnerMethod(ctx, evm.Origin, stateDB, method, args)
@@ -212,7 +213,7 @@ func (*Precompile) IsTransaction(method string) bool {
 		SignRequestByIdMethod,
 		SignRequestsMethod,
 		SpaceByIdMethod,
-		SpacesMethodMethod,
+		SpacesMethod,
 		SpacesByOwnerMethod:
 		return false
 	}

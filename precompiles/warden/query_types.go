@@ -1,6 +1,7 @@
 package warden
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -8,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -35,6 +35,10 @@ type allKeysInput struct {
 }
 
 func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, error) {
+	if res == nil {
+		return nil, errors.New("received nil QueryKeyResponse")
+	}
+
 	key := Key{
 		Id:                res.Key.Id,
 		SpaceId:           res.Key.SpaceId,
@@ -48,7 +52,7 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 	addresses := make([]AddressesResponse, len(res.Addresses))
 
 	for j, a := range res.Addresses {
-		ethAddress, err := wardencommon.AddressFromBech32Str(a.Address)
+		ethAddress, err := precommon.AddressFromBech32Str(a.Address)
 		if err != nil {
 			return nil, err
 		}
@@ -75,6 +79,10 @@ type keysOutput struct {
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, error) {
+	if res == nil {
+		return nil, errors.New("received nil QueryKeyResponse")
+	}
+
 	o.KeysResponse = make([]KeyResponse, len(res.Keys))
 	for i, k := range res.Keys {
 		keyReponse, err := new(KeyResponse).FromResponse(&k)
@@ -296,7 +304,7 @@ func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) (*Si
 }
 
 func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignRequest, error) {
-	ethCreator, err := wardencommon.AddressFromBech32Str(signRequest.Creator)
+	ethCreator, err := precommon.AddressFromBech32Str(signRequest.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -392,12 +400,12 @@ func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) (*Space, error) 
 }
 
 func (o *Space) mapSpace(space *types.Space) (*Space, error) {
-	ethCreator, err := wardencommon.AddressFromBech32Str(space.Creator)
+	ethCreator, err := precommon.AddressFromBech32Str(space.Creator)
 	if err != nil {
 		return nil, err
 	}
 
-	ethOwners, err := wardencommon.AddressesFromBech32StrArray(space.Owners)
+	ethOwners, err := precommon.AddressesFromBech32StrArray(space.Owners)
 	if err != nil {
 		return nil, err
 	}
@@ -476,7 +484,7 @@ func newSpacesByOwnerRequest(method *abi.Method, args []interface{}) (*types.Que
 
 	return &types.QuerySpacesByOwnerRequest{
 		Pagination: &input.PageRequest,
-		Owner:      wardencommon.Bech32StrFromAddress(input.Owner),
+		Owner:      precommon.Bech32StrFromAddress(input.Owner),
 	}, nil
 }
 
@@ -486,7 +494,7 @@ type spacesByOwnerInput struct {
 }
 
 func (k *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, error) {
-	ethCreator, err := wardencommon.AddressFromBech32Str(keyRequest.Creator)
+	ethCreator, err := precommon.AddressFromBech32Str(keyRequest.Creator)
 
 	if err != nil {
 		return nil, err
@@ -512,17 +520,17 @@ func (k *Keychain) mapKeychain(keychain types.Keychain) (*Keychain, error) {
 		keybaseId = keychain.KeybaseId.Value
 	}
 
-	ethCreator, err := wardencommon.AddressFromBech32Str(keychain.Creator)
+	ethCreator, err := precommon.AddressFromBech32Str(keychain.Creator)
 	if err != nil {
 		return nil, err
 	}
 
-	ethAdmins, err := wardencommon.AddressesFromBech32StrArray(keychain.Admins)
+	ethAdmins, err := precommon.AddressesFromBech32StrArray(keychain.Admins)
 	if err != nil {
 		return nil, err
 	}
 
-	ethWriters, err := wardencommon.AddressesFromBech32StrArray(keychain.Writers)
+	ethWriters, err := precommon.AddressesFromBech32StrArray(keychain.Writers)
 	if err != nil {
 		return nil, err
 	}

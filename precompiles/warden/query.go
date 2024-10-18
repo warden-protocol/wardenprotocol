@@ -20,7 +20,7 @@ const (
 	SignRequestByIdMethod = "signRequestById"
 	SignRequestsMethod    = "signRequests"
 	SpaceByIdMethod       = "spaceById"
-	SpacesMethodMethod    = "spaces"
+	SpacesMethod          = "spaces"
 	SpacesByOwnerMethod   = "spacesByOwner"
 )
 

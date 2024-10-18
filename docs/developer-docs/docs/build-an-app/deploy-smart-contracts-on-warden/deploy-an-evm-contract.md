@@ -4,6 +4,9 @@ sidebar_position: 1
 
 # Deploy an EVM contract
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Overview
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They are written in **Solidity**.
@@ -31,27 +34,42 @@ Before you start, complete the following prerequisites:
   ```bash
   npm install @truffle/hdwallet-provider
   ```
-- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
+- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed. Get the information required for the next steps:
 
-  - In [Step 3](#3-configure-truffle), you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
+  - Check the list of available keys (local accounts) and note down your key name.
 
-    ```bash
-    wardend keys export my-key-name --unarmored-hex --unsafe
-    ```
+     ```bash
+     wardend keys list
+     ```
 
-    :::tip
-    You can check the names of available keys by running `wardend keys list`. If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
-    :::
+     :::tip
+     If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
+     :::
+
+   - Execute a command for getting the private key associated with this key name. You'll need it in [Step 3](#3-configure-truffle).
+
+     <Tabs>
+     <TabItem value="default" label="Default node settings">
+     ```bash
+     wardend keys export shulgin --unarmored-hex --unsafe
+     ```
+     </TabItem>
+     <TabItem value="custom" label="Custom node settings">
+     ```bash
+     wardend keys export my-key-name --unarmored-hex --unsafe
+     ```
+     </TabItem>
+     </Tabs>
 
   - You'll also need your chain ID. Run the following and note down the value from the `network` field:
 
-    ```
-    wardend status
-    ```
+     ```
+     wardend status
+     ```
 
-    :::tip
-    If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
-    :::
+     :::tip
+     If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
+     :::
 
 ## 1. Create an EVM project
 

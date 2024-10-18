@@ -258,6 +258,12 @@ Truffle displays the local account balance and prices in ETH and gwei. However, 
 
    The console log should first print `Hello, Warden!` and then `Hello, EVM on Warden!`
 
+3. To exit the console, run this:
+
+   ```
+   .exit
+   ```
+
    If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 
    Happy coding! 🚀

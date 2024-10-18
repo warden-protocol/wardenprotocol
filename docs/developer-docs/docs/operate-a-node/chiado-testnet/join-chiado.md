@@ -13,10 +13,6 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 - Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
 - The current `wardend` version: **v0.5.1**
 
-:::warning
-We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
-:::
-
 :::tip
 Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
 :::

@@ -38,7 +38,7 @@ To operate a Keychain on Chiado, complete these prerequisites:
   wardend tx warden new-space \
     --from my-key-name \
     --fees 400000000award \
-    --chain-id chiado_10100-1 \
+    --chain-id chiado_1001-1 \
     --node https://rpc.chiado.wardenprotocol.org:443
   ```
 

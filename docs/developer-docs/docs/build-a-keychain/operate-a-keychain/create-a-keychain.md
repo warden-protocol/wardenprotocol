@@ -100,7 +100,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
 
-5. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
+6. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
    
    ```
    wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443

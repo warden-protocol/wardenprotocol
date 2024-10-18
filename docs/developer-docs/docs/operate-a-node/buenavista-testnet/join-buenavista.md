@@ -14,6 +14,10 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **B
 - Endpoints: [networks repository > buenavista](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista)
 - The current `wardend` version: **v0.4.2**
 
+:::warning
+We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+:::
+
 ## Version history
 
 | Release | Upgrade block height | Upgrade date |

@@ -443,9 +443,9 @@ interface IWarden {
     event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount);
 
     /// @dev AddKeychainWriter defines an Event emitted when add a new writer to keychain.
-    /// @param newWriter The address of the admin
+    /// @param newWriter The address of the writer
     /// @param id The keychain id
-    /// @param writersCount The new count of admins
+    /// @param writersCount The new count of writers
     event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount);
 
     /// @dev NewKey defines an Event emitted when a key request fulfilled.
@@ -502,7 +502,7 @@ interface IWarden {
 
     /// @dev RemoveSpaceOwner defines an Event emitted when a space owner is removed.
     /// @param spaceId The space id
-    /// @param removedOwner The new owner address
+    /// @param removedOwner The removed owner address
     event RemoveSpaceOwner(uint64 indexed spaceId, address removedOwner);
 
     /// @dev NewKeyRequest defines an Event emitted when a new key request is created.

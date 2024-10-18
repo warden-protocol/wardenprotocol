@@ -3,20 +3,21 @@ package cases
 import (
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/stretchr/testify/require"
-	actv1beta1 "github.com/warden-protocol/wardenprotocol/api/warden/act/v1beta1"
-	"github.com/warden-protocol/wardenprotocol/precompiles/act"
-	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
-	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
-	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"math/big"
 	"testing"
 	"time"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/stretchr/testify/require"
+
+	actv1beta1 "github.com/warden-protocol/wardenprotocol/api/warden/act/v1beta1"
+	"github.com/warden-protocol/wardenprotocol/precompiles/act"
+	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func init() {

@@ -79,7 +79,7 @@ struct TemplateByIdResponse {
  */
 interface IAct {
     /// @dev Defines a method to check an action.
-    /// @param actionId The actionId id
+    /// @param actionId The action id
     /// @return action status
     function checkAction(uint64 actionId) external returns (string memory);
 
@@ -97,7 +97,7 @@ interface IAct {
     /// @return true If execution was successful
     function revokeAction(uint64 actionId) external returns (bool);
 
-    /// @dev Defines a method to update an action.
+    /// @dev Defines a method to update a template.
     /// @param templateId The id of the template
     /// @param name The template name
     /// @param definition The template definition
@@ -162,7 +162,7 @@ interface IAct {
     event CreateTemplate(address indexed creator, uint64 templateId);
 
     /// @dev UpdateTemplate defines an Event emitted when a template is updated.
-    /// @param author The address of the creator
+    /// @param author The address of the author
     /// @param templateId The template id
     event UpdateTemplate(address indexed author, uint64 templateId);
 

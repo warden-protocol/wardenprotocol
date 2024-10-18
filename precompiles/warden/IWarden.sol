@@ -30,13 +30,13 @@ struct KeyResponse {
 }
 
 struct AddressesResponse {
-    string Address;
+    address Address;
     int32 Type;
 }
 
 struct KeyRequest {
     uint64 Id;
-    string Creator;
+    address Creator;
     uint64 SpaceId;
     uint64 KeychainId;
     int32 KeyType;
@@ -49,10 +49,10 @@ struct KeyRequest {
 
 struct Keychain {
     uint64 Id;
-	string Creator;
+    address Creator;
 	string Name;
-	string[] Admins;
-	string[] Writers;
+    address[] Admins;
+    address[] Writers;
 	KeychainFees Fees;
 	string Description;
 	string Url;
@@ -61,7 +61,7 @@ struct Keychain {
 
 struct SignRequest {
     uint64 Id;
-    string Creator;
+    address Creator;
     uint64 KeyId;
     bytes DataForSigning;
     int32 Status;
@@ -72,8 +72,8 @@ struct SignRequest {
 
 struct Space {
     uint64 Id;
-    string Creator;
-    string[] Owners;
+    address Creator;
+    address[] Owners;
     uint64 Nonce;
     uint64 ApproveAdminTemplateId;
     uint64 RejectAdminTemplateId;

@@ -29,7 +29,7 @@ func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllK
 }
 
 type allKeysInput struct {
-	PageRequest     PageRequest
+	PageRequest     TypesPageRequest
 	DeriveAddresses []types.AddressType
 }
 
@@ -65,7 +65,7 @@ func (o *KeyResponse) Pack(args abi.Arguments) ([]byte, error) {
 
 type keysOutput struct {
 	KeysResponse []KeyResponse
-	PageResponse PageResponse
+	PageResponse TypesPageResponse
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) *keysOutput {
@@ -189,7 +189,7 @@ type keyRequestsInput struct {
 }
 
 type keyRequestsOutput struct {
-	Pagination  PageResponse
+	Pagination  TypesPageResponse
 	KeyRequests []KeyRequest
 }
 

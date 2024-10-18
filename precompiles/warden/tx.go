@@ -1,8 +1,6 @@
 package warden
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -52,12 +50,7 @@ func (p Precompile) AddKeychainAdminMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ authority: %s, keyhcain_id: %d, new_admin: %s }",
-			msgAddKeychainAdmin.Authority,
-			msgAddKeychainAdmin.KeychainId,
-			msgAddKeychainAdmin.NewAdmin,
-		),
+		"args",
 	)
 
 	if _, err := msgServer.AddKeychainAdmin(ctx, msgAddKeychainAdmin); err != nil {
@@ -91,12 +84,7 @@ func (p Precompile) AddKeychainWriterMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ authority: %s, keyhcain_id: %d, new_writer: %s }",
-			msgAddKeychainWriter.Creator,
-			msgAddKeychainWriter.KeychainId,
-			msgAddKeychainWriter.Writer,
-		),
+		"args",
 	)
 
 	if _, err = msgServer.AddKeychainWriter(ctx, msgAddKeychainWriter); err != nil {
@@ -132,13 +120,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ authority: %s, request_id: %d, status: %s, resul: %s }",
-			msgFulfilKeyRequest.Creator,
-			msgFulfilKeyRequest.RequestId,
-			msgFulfilKeyRequest.Status,
-			msgFulfilKeyRequest.Result,
-		),
+		"args",
 	)
 
 	if _, err = msgServer.FulfilKeyRequest(ctx, msgFulfilKeyRequest); err != nil {
@@ -174,13 +156,7 @@ func (p Precompile) FulfilSignRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ authority: %s, request_id: %d, status: %s, resul: %s }",
-			msgFulfilSignRequest.Creator,
-			msgFulfilSignRequest.RequestId,
-			msgFulfilSignRequest.Status,
-			msgFulfilSignRequest.Result,
-		),
+		"args",
 	)
 
 	if _, err = msgServer.FulfilSignRequest(ctx, msgFulfilSignRequest); err != nil {
@@ -214,15 +190,7 @@ func (p Precompile) NewKeychainMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, name: %s, keychain_fees: %v, description: %s, url: %s, keybaseId: %s }",
-			msgNewKeychain.Creator,
-			msgNewKeychain.Name,
-			msgNewKeychain.KeychainFees,
-			msgNewKeychain.Description,
-			msgNewKeychain.Url,
-			msgNewKeychain.KeybaseId,
-		),
+		"args",
 	)
 
 	msgNewKeychainResponse, err := msgServer.NewKeychain(ctx, msgNewKeychain)
@@ -258,15 +226,7 @@ func (p Precompile) NewSpaceMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, approve_admin_template_id: %d, reject_admin_template_id: %d, approve_sign_template_id: %d, reject_sign_template_id: %d, additional_owners: %v }",
-			msgNewSpace.Creator,
-			msgNewSpace.ApproveAdminTemplateId,
-			msgNewSpace.RejectAdminTemplateId,
-			msgNewSpace.ApproveSignTemplateId,
-			msgNewSpace.RejectSignTemplateId,
-			msgNewSpace.AdditionalOwners,
-		),
+		"args",
 	)
 
 	msgNewSpaceResponse, err := msgServer.NewSpace(ctx, msgNewSpace)
@@ -302,12 +262,7 @@ func (p Precompile) RemoveKeychainAdminMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ authority: %s, keychain_id: %d, admin: %s }",
-			msgRemoveKeychainAdmin.Authority,
-			msgRemoveKeychainAdmin.KeychainId,
-			msgRemoveKeychainAdmin.Admin,
-		),
+		"args",
 	)
 
 	if _, err := msgServer.RemoveKeychainAdmin(ctx, msgRemoveKeychainAdmin); err != nil {
@@ -341,16 +296,7 @@ func (p Precompile) UpdateKeychainMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, keychain_id: %d, name: %s, keychain_fees: %v, description: %s, url: %s, keybaseId: %s }",
-			msgUpdateKeychain.Creator,
-			msgUpdateKeychain.KeychainId,
-			msgUpdateKeychain.Name,
-			msgUpdateKeychain.KeychainFees,
-			msgUpdateKeychain.Description,
-			msgUpdateKeychain.Url,
-			msgUpdateKeychain.KeybaseId,
-		),
+		"args",
 	)
 
 	if _, err = msgServer.UpdateKeychain(ctx, msgUpdateKeychain); err != nil {
@@ -375,7 +321,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgAddSpaceOwner, err := newMsgAddSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, err := newMsgAddSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -384,16 +330,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, action_timeout_height: %d, expected_approve_expression: %s, expected_reject_expression: %s, space_id: %d, new_owner: %s, nonce: %d }",
-			msgNewAction.Creator,
-			msgNewAction.ActionTimeoutHeight,
-			msgNewAction.ExpectedApproveExpression,
-			msgNewAction.ExpectedRejectExpression,
-			msgAddSpaceOwner.SpaceId,
-			msgAddSpaceOwner.NewOwner,
-			msgAddSpaceOwner.Nonce,
-		),
+		"args",
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -420,7 +357,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgRemoveSpaceOwner, err := newMsgRemoveSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, err := newMsgRemoveSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -429,16 +366,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, action_timeout_height: %d, expected_approve_expression: %s, expected_reject_expression: %s, space_id: %d, owner: %s, nonce: %d }",
-			msgNewAction.Creator,
-			msgNewAction.ActionTimeoutHeight,
-			msgNewAction.ExpectedApproveExpression,
-			msgNewAction.ExpectedRejectExpression,
-			msgRemoveSpaceOwner.SpaceId,
-			msgRemoveSpaceOwner.Owner,
-			msgRemoveSpaceOwner.Nonce,
-		),
+		"args",
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -465,7 +393,7 @@ func (p Precompile) NewKeyRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgNewKeyRequest, err := newMsgNewKeyRequest(method, args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, err := newMsgNewKeyRequest(method, args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -474,20 +402,7 @@ func (p Precompile) NewKeyRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, action_timeout_height: %d, expected_approve_expression: %s, expected_reject_expression: %s, space_id: %d, keychain_id: %d, key_type: %s, approve_template_id: %d, reject_template_id: %d, max_keychain_fees: %v, nonce: %d  }",
-			msgNewAction.Creator,
-			msgNewAction.ActionTimeoutHeight,
-			msgNewAction.ExpectedApproveExpression,
-			msgNewAction.ExpectedRejectExpression,
-			msgNewKeyRequest.SpaceId,
-			msgNewKeyRequest.KeychainId,
-			msgNewKeyRequest.KeyType,
-			msgNewKeyRequest.ApproveTemplateId,
-			msgNewKeyRequest.RejectTemplateId,
-			msgNewKeyRequest.MaxKeychainFees,
-			msgNewKeyRequest.Nonce,
-		),
+		"args",
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -514,7 +429,7 @@ func (p Precompile) NewSignRequestMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgNewSignRequest, err := newMsgNewSignRequest(method, args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, err := newMsgNewSignRequest(method, args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -523,19 +438,7 @@ func (p Precompile) NewSignRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, action_timeout_height: %d, expected_approve_expression: %s, expected_reject_expression: %s, key_id: %d, input: %b, analyzers: %v, encryption_key: %b, max_keychain_fees: %v, Nonce: %d  }",
-			msgNewAction.Creator,
-			msgNewAction.ActionTimeoutHeight,
-			msgNewAction.ExpectedApproveExpression,
-			msgNewAction.ExpectedRejectExpression,
-			msgNewSignRequest.KeyId,
-			msgNewSignRequest.Input,
-			msgNewSignRequest.Analyzers,
-			msgNewSignRequest.EncryptionKey,
-			msgNewSignRequest.MaxKeychainFees,
-			msgNewSignRequest.Nonce,
-		),
+		"args",
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -562,7 +465,7 @@ func (p Precompile) UpdateKeyMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgUpdateKey, err := newMsgUpdateKey(args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, err := newMsgUpdateKey(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -571,16 +474,7 @@ func (p Precompile) UpdateKeyMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, action_timeout_height: %d, expected_approve_expression: %s, expected_reject_expression: %s, key_id: %d, approve_template_id: %d, reject_template_id: %d }",
-			msgNewAction.Creator,
-			msgNewAction.ActionTimeoutHeight,
-			msgNewAction.ExpectedApproveExpression,
-			msgNewAction.ExpectedRejectExpression,
-			msgUpdateKey.KeyId,
-			msgUpdateKey.ApproveTemplateId,
-			msgUpdateKey.RejectTemplateId,
-		),
+		"args",
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -607,7 +501,7 @@ func (p Precompile) UpdateSpaceMethod(
 ) ([]byte, error) {
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
-	msgNewAction, msgUpdateSpace, err := newMsgUpdateSpace(args, origin, p.actkeeper.GetModuleAddress())
+	msgNewAction, err := newMsgUpdateSpace(args, origin, p.actkeeper.GetModuleAddress())
 
 	if err != nil {
 		return nil, err
@@ -616,19 +510,7 @@ func (p Precompile) UpdateSpaceMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, action_timeout_height: %d, expected_approve_expression: %s, expected_reject_expression: %s, space_id: %d, nonce: %d, approve_admin_template_id: %d, reject_admin_template_id: %d, approve_sign_template_id: %d, reject_sign_template_id: %d }",
-			msgNewAction.Creator,
-			msgNewAction.ActionTimeoutHeight,
-			msgNewAction.ExpectedApproveExpression,
-			msgNewAction.ExpectedRejectExpression,
-			msgUpdateSpace.SpaceId,
-			msgUpdateSpace.Nonce,
-			msgUpdateSpace.ApproveAdminTemplateId,
-			msgUpdateSpace.RejectAdminTemplateId,
-			msgUpdateSpace.ApproveSignTemplateId,
-			msgUpdateSpace.RejectSignTemplateId,
-		),
+		"args",
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)

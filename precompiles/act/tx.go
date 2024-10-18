@@ -1,8 +1,6 @@
 package act
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -41,11 +39,7 @@ func (p Precompile) CheckActionMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ action_id: %d, creator: %s }",
-			message.ActionId,
-			message.Creator,
-		),
+		"args",
 	)
 
 	response, err := msgServer.CheckAction(ctx, message)
@@ -93,12 +87,7 @@ func (p Precompile) NewTemplateMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, name: %s, definition: %s }",
-			message.Creator,
-			message.Name,
-			message.Definition,
-		),
+		"args",
 	)
 
 	response, err := msgServer.NewTemplate(ctx, message)
@@ -149,11 +138,7 @@ func (p Precompile) RevokeActionMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ action_id: %d, creator: %s }",
-			message.ActionId,
-			message.Creator,
-		),
+		"args",
 	)
 
 	_, err = msgServer.RevokeAction(ctx, message)
@@ -201,13 +186,7 @@ func (p Precompile) UpdateTemplateMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ creator: %s, template_id: %d, name: %s, definition: %s }",
-			message.Creator,
-			message.Id,
-			message.Name,
-			message.Definition,
-		),
+		"args",
 	)
 
 	_, err = msgServer.UpdateTemplate(ctx, message)
@@ -260,12 +239,7 @@ func (p Precompile) VoteForActionMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args", fmt.Sprintf(
-			"{ participant: %s, action_id: %d, vote_type: %v }",
-			message.Participant,
-			message.ActionId,
-			message.VoteType,
-		),
+		"args",
 	)
 
 	response, err := msgServer.VoteForAction(ctx, message)

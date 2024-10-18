@@ -222,9 +222,9 @@ type updateKeyChainInput struct {
 	KeybaseId    string
 }
 
-func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgAddSpaceOwner, error) {
+func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 6 {
-		return nil, nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
 
 	spaceId := args[0].(uint64)
@@ -246,7 +246,7 @@ func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) 
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgAddSpaceOwner)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return &actTypes.MsgNewAction{
@@ -255,12 +255,12 @@ func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) 
 		ActionTimeoutHeight:       actionTimeoutHeight,
 		ExpectedApproveExpression: expectedApproveExpression,
 		ExpectedRejectExpression:  expectedRejectExpression,
-	}, &msgAddSpaceOwner, nil
+	}, nil
 }
 
-func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgRemoveSpaceOwner, error) {
+func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 6 {
-		return nil, nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
 
 	spaceId := args[0].(uint64)
@@ -282,7 +282,7 @@ func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act strin
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgRemoveSpaceOwner)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return &actTypes.MsgNewAction{
@@ -291,7 +291,7 @@ func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act strin
 		ActionTimeoutHeight:       actionTimeoutHeight,
 		ExpectedApproveExpression: expectedApproveExpression,
 		ExpectedRejectExpression:  expectedRejectExpression,
-	}, &msgRemoveSpaceOwner, nil
+	}, nil
 }
 
 type newKeyRequestInput struct {
@@ -307,14 +307,14 @@ type newKeyRequestInput struct {
 	ExpectedRejectExpression  string
 }
 
-func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewKeyRequest, error) {
+func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 10 {
-		return nil, nil, wardencommon.WrongArgsNumber{Expected: 10, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 10, Got: len(args)}
 	}
 
 	var input newKeyRequestInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, nil, fmt.Errorf("error while unpacking args to newMsgNewKeyRequest struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to newMsgNewKeyRequest struct: %s", err)
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
@@ -347,7 +347,7 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewKeyRequest)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return &actTypes.MsgNewAction{
@@ -356,7 +356,7 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 		ActionTimeoutHeight:       input.ActionTimeoutHeight,
 		ExpectedApproveExpression: input.ExpectedApproveExpression,
 		ExpectedRejectExpression:  input.ExpectedRejectExpression,
-	}, &msgNewKeyRequest, nil
+	}, nil
 }
 
 type newSignRequestInput struct {
@@ -371,14 +371,14 @@ type newSignRequestInput struct {
 	ExpectedRejectExpression  string
 }
 
-func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgNewSignRequest, error) {
+func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 9 {
-		return nil, nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
 	}
 
 	var input newSignRequestInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %s", err)
 	}
 
 	var analyzers []string
@@ -400,7 +400,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewSignRequest)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return &actTypes.MsgNewAction{
@@ -409,12 +409,12 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 		ActionTimeoutHeight:       input.ActionTimeoutHeight,
 		ExpectedApproveExpression: input.ExpectedApproveExpression,
 		ExpectedRejectExpression:  input.ExpectedRejectExpression,
-	}, &msgNewSignRequest, nil
+	}, nil
 }
 
-func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgUpdateKey, error) {
+func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 6 {
-		return nil, nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 6, Got: len(args)}
 	}
 
 	keyId := args[0].(uint64)
@@ -435,7 +435,7 @@ func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*ac
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgUpdateKey)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return &actTypes.MsgNewAction{
@@ -444,12 +444,12 @@ func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*ac
 		ActionTimeoutHeight:       actionTimeoutHeight,
 		ExpectedApproveExpression: expectedApproveExpression,
 		ExpectedRejectExpression:  expectedRejectExpression,
-	}, &msgUpdateKey, nil
+	}, nil
 }
 
-func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, *types.MsgUpdateSpace, error) {
+func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
 	if len(args) != 9 {
-		return nil, nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
 	}
 
 	spaceId := args[0].(uint64)
@@ -476,7 +476,7 @@ func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgUpdateSpace)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return &actTypes.MsgNewAction{
@@ -485,5 +485,5 @@ func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*
 		ActionTimeoutHeight:       actionTimeoutHeight,
 		ExpectedApproveExpression: expectedApproveExpression,
 		ExpectedRejectExpression:  expectedRejectExpression,
-	}, &msgUpdateSpace, nil
+	}, nil
 }

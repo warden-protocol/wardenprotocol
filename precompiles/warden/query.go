@@ -41,7 +41,10 @@ func (p Precompile) AllKeysMethod(
 		return nil, err
 	}
 
-	out := new(keysOutput).FromResponse(response)
+	out, err := new(keysOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -65,7 +68,10 @@ func (p Precompile) KeyByIdMethod(
 		return nil, err
 	}
 
-	out := new(KeyResponse).FromResponse(response)
+	out, err := new(KeyResponse).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -89,7 +95,10 @@ func (p Precompile) KeysBySpaceIdMethod(
 		return nil, err
 	}
 
-	out := new(keysOutput).FromResponse(response)
+	out, err := new(keysOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -112,7 +121,10 @@ func (p Precompile) KeyRequestMethod(
 		return nil, err
 	}
 
-	out := new(KeyRequest).FromResponse(response)
+	out, err := new(KeyRequest).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -135,7 +147,10 @@ func (p Precompile) KeyRequestsMethod(
 		return nil, err
 	}
 
-	out := new(keyRequestsOutput).FromResponse(response)
+	out, err := new(keyRequestsOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -157,7 +172,10 @@ func (p Precompile) KeychainMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(Keychain).FromResponse(response)
+	out, err := new(Keychain).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -179,7 +197,10 @@ func (p Precompile) KeychainsMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(keychainsOutput).FromResponse(response)
+	out, err := new(keychainsOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -201,7 +222,10 @@ func (p Precompile) SignRequestByIdMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(SignRequest).FromResponse(response)
+	out, err := new(SignRequest).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -223,7 +247,10 @@ func (p Precompile) SignRequestsMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(signRequestsOutput).FromResponse(response)
+	out, err := new(signRequestsOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -245,7 +272,10 @@ func (p Precompile) SpaceByIdMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(Space).FromResponse(response)
+	out, err := new(Space).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -267,7 +297,10 @@ func (p Precompile) SpacesMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(spacesOutput).FromResponse(response)
+	out, err := new(spacesOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }
@@ -289,7 +322,10 @@ func (p Precompile) SpacesByOwnerMethod(
 	if err != nil {
 		return nil, err
 	}
-	out := new(spacesOutput).FromResponse(response)
+	out, err := new(spacesOutput).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
 
 	return out.Pack(method.Outputs)
 }

@@ -44,8 +44,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 
 	t.Run("work with keychains", func(t *testing.T) {
 		// new keychain
-		keyReq := []warden.Coin{}
-		sigReq := []warden.Coin{}
+		keyReq := []warden.TypesCoin{}
+		sigReq := []warden.TypesCoin{}
 		keychainFees := warden.KeychainFees{
 			KeyReq: keyReq,
 			SigReq: sigReq,
@@ -71,12 +71,12 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychain, err := iWardenClient.KeychainById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 
-		keychainAdmins := []string{}
-		keychainWriters := []string{}
-		keychainAdmins = append(keychainAdmins, alice.Address(t))
+		keychainAdmins := []common.Address{}
+		keychainWriters := []common.Address{}
+		keychainAdmins = append(keychainAdmins, alice.EthAddress(t))
 		require.Equal(t, warden.Keychain{
 			Id:          1,
-			Creator:     alice.Address(t),
+			Creator:     alice.EthAddress(t),
 			Name:        keychainName,
 			Admins:      keychainAdmins,
 			Writers:     keychainWriters,
@@ -103,10 +103,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 
-		keychainWriters = []string{alice.Address(t)}
+		keychainWriters = []common.Address{alice.EthAddress(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
-			Creator:     alice.Address(t),
+			Creator:     alice.EthAddress(t),
 			Name:        keychainName,
 			Admins:      keychainAdmins,
 			Writers:     keychainWriters,
@@ -133,10 +133,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 
-		keychainAdmins = []string{alice.Address(t), bob.Address(t)}
+		keychainAdmins = []common.Address{alice.EthAddress(t), bob.EthAddress(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
-			Creator:     alice.Address(t),
+			Creator:     alice.EthAddress(t),
 			Name:        keychainName,
 			Admins:      keychainAdmins,
 			Writers:     keychainWriters,
@@ -163,10 +163,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 
-		keychainAdmins = []string{bob.Address(t)}
+		keychainAdmins = []common.Address{bob.EthAddress(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
-			Creator:     alice.Address(t),
+			Creator:     alice.EthAddress(t),
 			Name:        keychainName,
 			Admins:      keychainAdmins,
 			Writers:     keychainWriters,
@@ -180,11 +180,11 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychainDescription = "newDescription"
 		keychainUrl = "new.test.url"
 		keychainKeybaseId = "ABCDEF1234567890"
-		keyReq = []warden.Coin{{
+		keyReq = []warden.TypesCoin{{
 			Denom:  "award",
 			Amount: new(big.Int).SetInt64(1),
 		}}
-		sigReq = []warden.Coin{{
+		sigReq = []warden.TypesCoin{{
 			Denom:  "award",
 			Amount: new(big.Int).SetInt64(1),
 		}}
@@ -208,10 +208,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
 		require.NoError(t, err)
 
-		keychainAdmins = []string{bob.Address(t)}
+		keychainAdmins = []common.Address{bob.EthAddress(t)}
 		require.Equal(t, warden.Keychain{
 			Id:          1,
-			Creator:     alice.Address(t),
+			Creator:     alice.EthAddress(t),
 			Name:        keychainName,
 			Admins:      keychainAdmins,
 			Writers:     keychainWriters,
@@ -245,10 +245,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
 		require.NoError(t, err)
 
-		spaceOwners := []string{alice.Address(t)}
+		spaceOwners := []common.Address{alice.EthAddress(t)}
 		require.Equal(t, warden.Space{
 			Id:                     2,
-			Creator:                alice.Address(t),
+			Creator:                alice.EthAddress(t),
 			Owners:                 spaceOwners,
 			Nonce:                  0,
 			ApproveAdminTemplateId: 0,
@@ -287,13 +287,13 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 
 		keyRequest, err := iWardenClient.KeyRequestById(alice.CallOps(t), 1)
 		require.NoError(t, err)
-		deductedKeychainFees := []warden.Coin{{
+		deductedKeychainFees := []warden.TypesCoin{{
 			Denom:  "award",
 			Amount: new(big.Int).SetInt64(1),
 		}}
 		require.Equal(t, warden.KeyRequest{
 			Id:                   1,
-			Creator:              alice.Address(t),
+			Creator:              alice.EthAddress(t),
 			SpaceId:              1,
 			KeychainId:           1,
 			KeyType:              1,
@@ -340,7 +340,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.NoError(t, err)
 		require.Equal(t, warden.KeyRequest{
 			Id:                   2,
-			Creator:              alice.Address(t),
+			Creator:              alice.EthAddress(t),
 			SpaceId:              1,
 			KeychainId:           1,
 			KeyType:              1,
@@ -377,7 +377,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		encryptionKey := []byte{}
 		require.Equal(t, warden.SignRequest{
 			Id:                   1,
-			Creator:              alice.Address(t),
+			Creator:              alice.EthAddress(t),
 			KeyId:                1,
 			DataForSigning:       dataForSigning,
 			Status:               2,
@@ -406,7 +406,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		result := []byte(signRequestRejectReason)
 		require.Equal(t, warden.SignRequest{
 			Id:                   2,
-			Creator:              alice.Address(t),
+			Creator:              alice.EthAddress(t),
 			KeyId:                1,
 			DataForSigning:       dataForSigning,
 			Status:               3,

@@ -711,8 +711,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    Before you proceed, replace `my-contract-address` with your contract address and `my-key-name` with your key name. The `--amount` flag specifies the gas fee in the Axelar network – make sure you have enough AXL.
    
    ```bash
-   wardend tx wasm execute my-contract-address \
-    '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
+   wardend tx wasm execute my-contract-address '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
     --from my-key-name \
     --amount 3000000ibc/0E1517E2771CA7C03F2ED3F9BAECCAEADF0BFD79B89679E834933BC0F179AD98 \
     --gas auto \

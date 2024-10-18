@@ -2,10 +2,10 @@
 sidebar_position: 1
 ---
 
-# Deploy an EVM contract
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+# Deploy an EVM contract
 
 ## Overview
 

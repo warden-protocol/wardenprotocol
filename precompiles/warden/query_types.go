@@ -312,7 +312,7 @@ func (o *keychainsOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.Keychains, o.Pagination)
 }
 
-func newSignRequestByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySignRequestByIdRequest, error) {
+func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 1, len(args))
 	}

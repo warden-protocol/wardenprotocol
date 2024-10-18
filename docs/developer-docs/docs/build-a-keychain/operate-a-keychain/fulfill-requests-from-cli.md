@@ -198,12 +198,12 @@ When a user requests a new key, the Keychain generates a new private key, stores
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   wardend query warden key-request-by-id --id=$KEY_REQUEST_ID --node $RPC_URL
+   wardend query warden key-request-by-id --id=$KEY_REQUEST_ID
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend query warden key-request-by-id --id=$KEY_REQUEST_ID
+   wardend query warden key-request-by-id --id=$KEY_REQUEST_ID  --node $RPC_URL
    ```
    </TabItem>
    </Tabs>

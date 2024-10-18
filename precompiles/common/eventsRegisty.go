@@ -7,6 +7,7 @@ import (
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 )
 
+// Maps sdk.Event types to functions that construct and write to log corresponding eth events
 type EthEventsRegistry struct {
 	p map[string]EthEventProvider
 }
@@ -31,6 +32,7 @@ func NewEthEventsRegistry() EthEventsRegistry {
 	}
 }
 
+// Iterates through current transaction sdk events and writes eth event to log if sdk event registered in events registry
 func (r *EthEventsRegistry) EmitEvents(ctx sdk.Context, stateDB vm.StateDB, address *ethcmn.Address) error {
 	for _, x := range ctx.EventManager().Events() {
 		if provider := r.getEventProvider(x.Type); provider != nil {

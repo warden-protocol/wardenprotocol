@@ -5,6 +5,8 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 )
 
+// Takes sdk.Event as proto msg, passes it to fillEvent.
+// fillEvent should create typed event for caller.
 func ParseSdkEvent(sdkEvent sdk.Event, fillEvent func(proto.Message)) error {
 	events := sdk.EmptyEvents().AppendEvent(sdkEvent).ToABCIEvents()
 	event := events[0]

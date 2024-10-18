@@ -116,24 +116,24 @@ The following steps show how to register a new Keychain entity on-chain.
    <TabItem value="local-default" label="Local node: default settings">
    ```bash
    wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
      --from shulgin \
+     --name 'my-keychain-name' \
      --chain-id warden_1337-1
    ```
    </TabItem>
    <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
    wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
      --from my-key-name \
+     --name 'my-keychain-name' \
      --chain-id chain_123-1
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
      --from my-key-name \
+     --name 'my-keychain-name' \
      --fees 400000000award \
      --chain-id chiado_10010-1 \
      --node https://rpc.chiado.wardenprotocol.org:443

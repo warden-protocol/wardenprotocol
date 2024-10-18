@@ -276,8 +276,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.NoError(t, err)
 
 		require.Len(t, newKeyEvents, 1)
-		// todo: uncomment after merging PR #940
-		// require.Equal(t, uint64(1), newKeyEvents[0].Id)
+		require.Equal(t, uint64(1), newKeyEvents[0].Id)
 		require.Equal(t, int32(1), newKeyEvents[0].KeyType)
 		require.Equal(t, uint64(1), newKeyEvents[0].KeychainId)
 		require.Equal(t, uint64(1), newKeyEvents[0].SpaceId)

@@ -61,8 +61,7 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventAddKeychainAdmin{}
-	err := precommon.ParseSdkEvent(eventAddKeychainAdmin, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(eventAddKeychainAdmin, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -98,8 +97,7 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *co
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventAddKeychainWriter{}
-	err := precommon.ParseSdkEvent(eventAddKeychainWriter, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(eventAddKeychainWriter, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -136,8 +134,7 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventNewKey{}
-	err := precommon.ParseSdkEvent(eventNewKey, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(eventNewKey, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -174,8 +171,7 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address,
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventRejectKeyRequest{}
-	err := precommon.ParseSdkEvent(eventRejectKeyRequest, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(eventRejectKeyRequest, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -206,8 +202,7 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventFulfilSignRequest{}
-	err := precommon.ParseSdkEvent(eventFulfilSignRequest, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(eventFulfilSignRequest, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -238,8 +233,7 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventRejectSignRequest{}
-	err := precommon.ParseSdkEvent(eventRejectSignRequest, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(eventRejectSignRequest, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -277,8 +271,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	}
 
 	typedEvent := wardentypes.EventNewKeychain{}
-	err = precommon.ParseSdkEvent(eventNewKeychain, typedEvent.XXX_Merge)
-	if err != nil {
+	if err = precommon.ParseSdkEvent(eventNewKeychain, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -309,15 +302,12 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = evmoscmn.MakeTopic(*creator)
-
-	if err != nil {
+	if topics[1], err = evmoscmn.MakeTopic(*creator); err != nil {
 		return nil, err
 	}
 
 	typedEvent := wardentypes.EventCreateSpace{}
-	err = precommon.ParseSdkEvent(eventNewSpace, typedEvent.XXX_Merge)
-	if err != nil {
+	if err = precommon.ParseSdkEvent(eventNewSpace, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -353,16 +343,13 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = evmoscmn.MakeTopic(*admin)
-
-	if err != nil {
+	if topics[1], err = evmoscmn.MakeTopic(*admin); err != nil {
 		return nil, err
 	}
 
 	var b bytes.Buffer
 	typedEvent := wardentypes.EventRemoveKeychainAdmin{}
-	err = precommon.ParseSdkEvent(eventRemoveKeychainAdmin, typedEvent.XXX_Merge)
-	if err != nil {
+	if err = precommon.ParseSdkEvent(eventRemoveKeychainAdmin, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetId())))))
@@ -391,15 +378,15 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	// use Marshal/Unmarshal here cause big.Word=uint inside big.Int is not correctly merged in cosmos.gogoproto
 	var e error
 	var marshaled []byte
-	err := precommon.ParseSdkEvent(eventUpdateKeychain, func(m proto.Message) {
+	if err := precommon.ParseSdkEvent(eventUpdateKeychain, func(m proto.Message) {
 		marshaled, e = proto.Marshal(m)
 		typedEvent.Unmarshal(marshaled)
-	})
+	}); err != nil {
+		return nil, err
+	}
+
 	if e != nil {
 		return nil, e
-	}
-	if err != nil {
-		return nil, err
 	}
 
 	packedKeychainFees, err := event.Inputs.NonIndexed().Pack(
@@ -431,8 +418,7 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, ad
 	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventAddSpaceOwner{}
-	err := precommon.ParseSdkEvent(addSpaceOwnerEvent, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(addSpaceOwnerEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -469,8 +455,7 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventRemoveSpaceOwner{}
-	err := precommon.ParseSdkEvent(removeSpaceOwnerEvent, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(removeSpaceOwnerEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -520,8 +505,7 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventNewKeyRequest{}
-	err := precommon.ParseSdkEvent(newKeyRequestEvent, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(newKeyRequestEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -568,8 +552,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventNewSignRequest{}
-	err := precommon.ParseSdkEvent(newSignRequestEvent, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(newSignRequestEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -605,8 +588,7 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventUpdateKey{}
-	err := precommon.ParseSdkEvent(updateKeyEvent, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(updateKeyEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
@@ -642,8 +624,7 @@ func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, upda
 	topics[0] = event.ID
 
 	typedEvent := wardentypes.EventUpdateSpace{}
-	err := precommon.ParseSdkEvent(updateSpaceEvent, typedEvent.XXX_Merge)
-	if err != nil {
+	if err := precommon.ParseSdkEvent(updateSpaceEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 

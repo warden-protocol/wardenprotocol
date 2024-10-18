@@ -8,18 +8,18 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllKeysRequest, error) {
 	if len(args) != 2 {
-		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input allKeysInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to allKeysInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to allKeysInput struct: %w", err)
 	}
 
 	pagination := mapEthPageRequest(input.PageRequest)
@@ -52,7 +52,7 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 	addresses := make([]AddressesResponse, len(res.Addresses))
 
 	for j, a := range res.Addresses {
-		ethAddress, err := precommon.AddressFromBech32Str(a.Address)
+		ethAddress, err := wardencommon.AddressFromBech32Str(a.Address)
 		if err != nil {
 			return nil, err
 		}
@@ -107,12 +107,12 @@ func (o *keysOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeyByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyByIdRequest, error) {
 	if len(args) != 2 {
-		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input keyByIdInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to keyByIdInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to keyByIdInput struct: %w", err)
 	}
 
 	return &types.QueryKeyByIdRequest{
@@ -128,12 +128,12 @@ type keyByIdInput struct {
 
 func newKeysBySpaceIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeysBySpaceIdRequest, error) {
 	if len(args) != 3 {
-		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	var input keysBySpaceIdInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to keysBySpaceIdInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to keysBySpaceIdInput struct: %w", err)
 	}
 
 	return &types.QueryKeysBySpaceIdRequest{
@@ -151,7 +151,7 @@ type keysBySpaceIdInput struct {
 
 func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input struct{ Id uint64 }
@@ -177,12 +177,12 @@ func (o *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestsRequest, error) {
 	if len(args) != 4 {
-		return nil, precommon.WrongArgsNumber{Expected: 4, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
 
 	var input keyRequestsInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to keyRequestsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to keyRequestsInput struct: %w", err)
 	}
 
 	return &types.QueryKeyRequestsRequest{
@@ -206,6 +206,10 @@ type keyRequestsOutput struct {
 }
 
 func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) (*keyRequestsOutput, error) {
+	if res == nil {
+		return nil, errors.New("received nil QueryKeyRequestsResponse")
+	}
+
 	o.KeyRequests = make([]KeyRequest, len(res.KeyRequests))
 	for i, k := range res.KeyRequests {
 		keyRequestReponse, err := new(KeyRequest).mapKeyRequest(*k)
@@ -230,7 +234,7 @@ func (o *keyRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeychainRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input struct{ Id uint64 }
@@ -256,12 +260,12 @@ func (k *Keychain) Pack(args abi.Arguments) ([]byte, error) {
 
 func newKeychainsRequest(method *abi.Method, args []interface{}) (*types.QueryKeychainsRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input keychainsRequestsInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to keychainsRequestsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to keychainsRequestsInput struct: %w", err)
 	}
 
 	return &types.QueryKeychainsRequest{
@@ -279,6 +283,9 @@ type keychainsOutput struct {
 }
 
 func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) (*keychainsOutput, error) {
+	if res == nil {
+		return nil, errors.New("received nil QueryKeychainsResponse")
+	}
 	o.Keychains = make([]Keychain, len(res.Keychains))
 	for i, k := range res.Keychains {
 		keyRequestReponse, err := new(Keychain).mapKeychain(k)
@@ -301,7 +308,7 @@ func (o *keychainsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id := args[0].(uint64)
@@ -312,11 +319,14 @@ func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdR
 }
 
 func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) (*SignRequest, error) {
+	if res == nil {
+		return nil, errors.New("received nil QuerySignRequestByIdResponse")
+	}
 	return o.mapSignRequest(res.SignRequest)
 }
 
 func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignRequest, error) {
-	ethCreator, err := precommon.AddressFromBech32Str(signRequest.Creator)
+	ethCreator, err := wardencommon.AddressFromBech32Str(signRequest.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -348,12 +358,12 @@ func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.QuerySignRequestsRequest, error) {
 	if len(args) != 3 {
-		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	var input signRequestsInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to signRequestsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to signRequestsInput struct: %w", err)
 	}
 
 	return &types.QuerySignRequestsRequest{
@@ -375,6 +385,9 @@ type signRequestsOutput struct {
 }
 
 func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) (*signRequestsOutput, error) {
+	if res == nil {
+		return nil, errors.New("received nil QuerySignRequestsResponse")
+	}
 	o.SignRequests = make([]SignRequest, len(res.SignRequests))
 	for i, k := range res.SignRequests {
 		signRequest, err := new(SignRequest).mapSignRequest(k)
@@ -397,7 +410,7 @@ func (o *signRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySpaceByIdRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id := args[0].(uint64)
@@ -408,16 +421,19 @@ func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySp
 }
 
 func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) (*Space, error) {
+	if res == nil {
+		return nil, errors.New("received nil QuerySpaceByIdResponse")
+	}
 	return o.mapSpace(res.Space)
 }
 
 func (o *Space) mapSpace(space *types.Space) (*Space, error) {
-	ethCreator, err := precommon.AddressFromBech32Str(space.Creator)
+	ethCreator, err := wardencommon.AddressFromBech32Str(space.Creator)
 	if err != nil {
 		return nil, err
 	}
 
-	ethOwners, err := precommon.AddressesFromBech32StrArray(space.Owners)
+	ethOwners, err := wardencommon.AddressesFromBech32StrArray(space.Owners)
 	if err != nil {
 		return nil, err
 	}
@@ -440,12 +456,12 @@ func (o *Space) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSpacesRequest(method *abi.Method, args []interface{}) (*types.QuerySpacesRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input spacesInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to spacesInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to spacesInput struct: %w", err)
 	}
 
 	return &types.QuerySpacesRequest{
@@ -463,6 +479,9 @@ type spacesOutput struct {
 }
 
 func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) (*spacesOutput, error) {
+	if res == nil {
+		return nil, errors.New("received nil QuerySpacesResponse")
+	}
 	o.Spaces = make([]Space, len(res.Spaces))
 	for i, k := range res.Spaces {
 		space, err := new(Space).mapSpace(&k)
@@ -486,17 +505,17 @@ func (o *spacesOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 func newSpacesByOwnerRequest(method *abi.Method, args []interface{}) (*types.QuerySpacesByOwnerRequest, error) {
 	if len(args) != 2 {
-		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
+		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input spacesByOwnerInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to spacesInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to spacesInput struct: %w", err)
 	}
 
 	return &types.QuerySpacesByOwnerRequest{
 		Pagination: &input.PageRequest,
-		Owner:      precommon.Bech32StrFromAddress(input.Owner),
+		Owner:      wardencommon.Bech32StrFromAddress(input.Owner),
 	}, nil
 }
 
@@ -506,7 +525,7 @@ type spacesByOwnerInput struct {
 }
 
 func (k *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, error) {
-	ethCreator, err := precommon.AddressFromBech32Str(keyRequest.Creator)
+	ethCreator, err := wardencommon.AddressFromBech32Str(keyRequest.Creator)
 
 	if err != nil {
 		return nil, err
@@ -532,17 +551,17 @@ func (k *Keychain) mapKeychain(keychain types.Keychain) (*Keychain, error) {
 		keybaseId = keychain.KeybaseId.Value
 	}
 
-	ethCreator, err := precommon.AddressFromBech32Str(keychain.Creator)
+	ethCreator, err := wardencommon.AddressFromBech32Str(keychain.Creator)
 	if err != nil {
 		return nil, err
 	}
 
-	ethAdmins, err := precommon.AddressesFromBech32StrArray(keychain.Admins)
+	ethAdmins, err := wardencommon.AddressesFromBech32StrArray(keychain.Admins)
 	if err != nil {
 		return nil, err
 	}
 
-	ethWriters, err := precommon.AddressesFromBech32StrArray(keychain.Writers)
+	ethWriters, err := wardencommon.AddressesFromBech32StrArray(keychain.Writers)
 	if err != nil {
 		return nil, err
 	}

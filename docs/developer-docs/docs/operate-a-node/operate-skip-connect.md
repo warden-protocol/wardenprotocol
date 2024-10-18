@@ -30,13 +30,15 @@ Then you need to integrate the Connect sidecar into your setup. To run Connect w
 slinky
 ```
 
-Note that some default values may need to change depending on how you’ve setup your node and the sidecar.
+Note that some default values may need to change depending on how you’ve set up your node and the sidecar.
 
 ## 3. Configure wardend
 
 The chain binary (`wardend`) has been altered to accept new options related to Connect.
 
-In order to point your chain binary to Connect, add the following under the `[oracle]` heading in your **app.toml** file:
+In order to point your binary to Connect, adjust your `app.toml` file. You can find it here: `$HOME/.warden/app.toml`.
+
+Under the `[oracle]` heading, add the following:
 
 ```toml
 [oracle]

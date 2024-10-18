@@ -265,10 +265,13 @@ The output should contain status information about your node:
 }
 ```
 
-:::tip
-To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
-:::
-
-:::tip
 If you need to stop the node, use **Ctrl + C**. To start it again from block 0, run `wardend start`.
-:::
+
+## Next steps
+
+- Now you can deploy a smart contract on the local chain, as explained in these guides:
+  - [Deploy an EVM contract](/deploy-smart-contracts-on-warden/deploy-an-evm-contract)
+  - [Deploy a WASM contract](/deploy-smart-contracts-on-warden/deploy-a-wasm-contract)
+- You can also create and test a Keychain locally. Start with this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
+- To join our testnet, see [Join Chiado](/chiado-testnet/join-chiado).
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).

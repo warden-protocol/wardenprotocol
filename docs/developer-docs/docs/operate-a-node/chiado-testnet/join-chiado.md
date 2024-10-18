@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Join Chiado
 
+:::important
+Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
+:::
+
 ## Overview
 
 This tutorial explains how to run the Warden binary, `wardend`, and join the **Chiado testnet**:
@@ -12,10 +16,6 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 - Denomination: `award` / 0.000000000000000001 WARD
 - Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
 - The current `wardend` version: **v0.5.1**
-
-:::tip
-Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
-:::
 
 ## Version history
 
@@ -86,7 +86,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 To configure `wardend`, do the following:
 
-1. Prepare the genesis file:
+1. Prepare the `genesis.json` file:
 
    ```bash
    cd $HOME/.warden/config
@@ -94,7 +94,9 @@ To configure `wardend`, do the following:
    wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/chiado/genesis.json
    ```
 
-2. Set the mandatory configuration options: the minimum gas price and a list of seeds nodes.
+   These commands will remove the `$HOME/.warden/genesis.json` file and replace it with with the correct version.
+
+2. In the `app.toml` file, set the mandatory options: the minimum gas price and a list of seeds nodes.
 
    ```bash
    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250000000000000award"/' app.toml
@@ -102,6 +104,8 @@ To configure `wardend`, do the following:
    ```bash
    sed -i 's/seeds = ""/seeds = "2d2c7af1c2d28408f437aef3d034087f40b85401@52.51.132.79:26656"/' config.toml
    ```
+
+   These commands will update the `mininmum-gas-prices` and `seeds` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
 
 ## 3. Set up the state sync
 
@@ -138,7 +142,7 @@ https://rpc.chiado.wardenprotocol.org
    70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
 
-3. Add the state sync configuration to your `config.toml`:
+3. Add the state sync configuration to the `config.toml` file:
 
    ```bash
    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
@@ -146,6 +150,8 @@ https://rpc.chiado.wardenprotocol.org
    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
    ```
+
+   These commands will update the following fields in `$HOME/.warden/config.toml`: `enable` in `[statesync]`, `rpc_servers`, `trust_height`, `trust_hash`. Alternatively, you can adjust the file manually.
 
 ## 4. Start the node
 
@@ -157,7 +163,7 @@ wardend start
 
 If needed, add the path to the binary before the command:
 
-```
+```bash
 path-to-binary/wardend start
 ```
 
@@ -165,4 +171,8 @@ It'll connect to persistent peers provided and start downloading blocks. You can
 
 ## Next steps
 
-If you want to create a validator in the testnet, follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
+After joining Chiado, you can take these steps:
+
+- If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
+- Don't forget to join our community in [Discord](https://discord.com/invite/warden).

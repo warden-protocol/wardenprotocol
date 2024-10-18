@@ -93,9 +93,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		checks.SuccessTx(t, tx)
 
 		actions, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
-		if err != nil {
-			require.NoError(t, err)
-		}
+		require.NoError(t, err)
 		require.NotEmpty(t, actions)
 		require.Len(t, actions.Actions, 1)
 		require.Equal(t, actions.Actions[0].Id, uint64(1))
@@ -115,9 +113,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.Equal(t, actions.Actions[0].Mentions[0], alice.EthAddress(t))
 
 		actionById, err := iActClient.ActionById(alice.CallOps(t), 1)
-		if err != nil {
-			require.NoError(t, err)
-		}
+		require.NoError(t, err)
 		require.Equal(t, actionById.Action.Creator, alice.EthAddress(t))
 
 		actionsByAddress, err := iActClient.ActionsByAddress(
@@ -125,9 +121,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 			act.TypesPageRequest{},
 			alice.EthAddress(t),
 			int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
-		if err != nil {
-			require.NoError(t, err)
-		}
+		require.NoError(t, err)
 		require.Len(t, actionsByAddress.Actions, 1)
 
 		tx = alice.Tx(t,
@@ -154,13 +148,11 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.Len(t, actionStateChangeEvents, 1)
 
 		actionById, err = iActClient.ActionById(alice.CallOps(t), 3)
-		if err != nil {
-			require.NoError(t, err)
-		}
+		require.NoError(t, err)
 		require.Equal(t, actionById.Action.Id, uint64(3))
 		require.Equal(t, actionById.Action.Status, big.NewInt(int64(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED)))
 
-		alice.Tx(t,
+		tx = alice.Tx(t,
 			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"",
 				1, dave.Address(t), 2, "any(2, warden.space.owners)"))
 		checks.SuccessTx(t, tx)

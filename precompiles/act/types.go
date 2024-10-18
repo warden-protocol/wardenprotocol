@@ -1,13 +1,15 @@
 package act
 
 import (
+	"math/big"
+	"time"
+
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	"math/big"
-	"time"
 )
 
 // ActionsInput needed to unmarshal Pagination field and pass it to types.QueryActionsRequest
@@ -18,7 +20,7 @@ type ActionsInput struct {
 // FromResponse needed to map QueryActionsResponse to ActionsResponse
 func (r *ActionsResponse) FromResponse(res *types.QueryActionsResponse) (ActionsResponse, error) {
 	if res != nil {
-		actions := make([]Action, 0)
+		actions := make([]Action, 0, len(res.Actions))
 		for _, action := range res.Actions {
 			mappedAction, err := mapAction(action)
 			if err != nil {
@@ -59,7 +61,7 @@ type ActionsByAddressInput struct {
 // FromResponse needed to map QueryActionsByAddressResponse to ActionsByAddressResponse
 func (r *ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) (ActionsByAddressResponse, error) {
 	if res != nil {
-		actions := make([]Action, 0)
+		actions := make([]Action, 0, len(res.Actions))
 		for _, action := range res.Actions {
 			mappedAction, err := mapAction(action)
 			if err != nil {
@@ -85,7 +87,7 @@ type TemplatesInput struct {
 // FromResponse needed to map QueryTemplatesResponse to TemplatesResponse
 func (r *TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) (TemplatesResponse, error) {
 	if res != nil {
-		templates := make([]Template, 0)
+		templates := make([]Template, 0, len(res.Templates))
 		for _, action := range res.Templates {
 			mappedTemplate, err := mapTemplate(action)
 			if err != nil {
@@ -117,7 +119,7 @@ func (r *TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse
 }
 
 func mapAction(action types.Action) (Action, error) {
-	mentions := make([]common.Address, 0)
+	mentions := make([]common.Address, 0, len(action.Mentions))
 	for _, mention := range action.Mentions {
 		mentionAddress, err := precommon.AddressFromBech32Str(mention)
 
@@ -157,7 +159,7 @@ func mapAction(action types.Action) (Action, error) {
 }
 
 func mapVotes(values []*types.ActionVote) ([]ActionVote, error) {
-	result := make([]ActionVote, 0)
+	result := make([]ActionVote, 0, len(values))
 	for _, v := range values {
 		if v != nil {
 			mappedTemplate, err := mapVote(*v)

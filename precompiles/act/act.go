@@ -54,7 +54,7 @@ func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistr
 		eventsRegistry:  er,
 	}
 
-	p.SetAddress(ethcmn.HexToAddress(PrecompileAddress))
+	p.SetAddress(p.Address())
 
 	return &p, nil
 }

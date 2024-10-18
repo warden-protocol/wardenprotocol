@@ -189,7 +189,7 @@ func (p Precompile) TemplatesQuery(
 
 func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemplatesRequest, error) {
 	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	var input TemplatesInput
@@ -240,7 +240,10 @@ func newTemplateByIdQuery(args []interface{}) (*types.QueryTemplateByIdRequest, 
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	templateId := args[0].(uint64)
+	templateId, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for templateId, got %T", args[0])
+	}
 
 	return &types.QueryTemplateByIdRequest{
 		Id: templateId,

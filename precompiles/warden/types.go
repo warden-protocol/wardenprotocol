@@ -2,8 +2,10 @@ package warden
 
 import (
 	"cosmossdk.io/math"
+
 	sdkTypes "github.com/cosmos/cosmos-sdk/types"
 	sdkQuery "github.com/cosmos/cosmos-sdk/types/query"
+
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 

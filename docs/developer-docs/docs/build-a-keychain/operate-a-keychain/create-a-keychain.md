@@ -2,10 +2,10 @@
 sidebar_position: 2
 ---
 
-# Create a Keychain
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+# Create a Keychain
 
 ## Overview
 
@@ -94,7 +94,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-key-name --address
    ```
    :::
 
@@ -214,16 +214,17 @@ To add a Keychain Writer, take these steps:
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-key-name --address
    ```
    :::
 
-3. Now you need to fund the account. If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and chain ID.
+3. Now you need to fund the account. If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and the chain ID.
 
     <Tabs>
     <TabItem value="local-default" label="Local node: default settings">
     ```bash
-    wardend tx bank send shulgin \
+    wardend tx bank send \
+      shulgin \
       $(wardend keys show --address my-keychain-writer-name) \
       1000000000000000000award \
       --chain-id warden_1337-1
@@ -231,7 +232,8 @@ To add a Keychain Writer, take these steps:
     </TabItem>
     <TabItem value="local-custom" label="Local node: custom settings">
     ```bash
-    wardend tx bank send my-key-name \
+    wardend tx bank send \
+      my-key-name \
       $(wardend keys show --address my-keychain-writer-name) \
       1000000000000000000award \
       --chain-id chain_123-1

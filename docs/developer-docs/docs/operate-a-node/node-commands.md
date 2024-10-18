@@ -146,7 +146,7 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-description' \
+     --name 'my-keychain-name' \
      --from my-key-name \
      --chain-id chiado_10010-1 \
      --node https://rpc.chiado.wardenprotocol.org:443

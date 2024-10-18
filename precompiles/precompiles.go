@@ -40,7 +40,7 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 	er.RegisterEvent("warden.warden.v1beta3.EventFulfilSignRequest", wardenprecompile.GetFulfilSignRequestEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventRejectSignRequest", wardenprecompile.GetRejectSignRequestEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventNewKeychain", wardenprecompile.GetNewKeychainEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventCreateSpace", wardenprecompile.GetCreateSpaceEvent)
+	er.RegisterEvent("warden.warden.v1beta3.EventCreateSpace", wardenprecompile.GetNewSpaceEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventRemoveKeychainAdmin", wardenprecompile.GetRemoveKeychainAdminEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventUpdateKeychain", wardenprecompile.GetUpdateKeychainEvent)
 	er.RegisterEvent("warden.warden.v1beta3.EventAddSpaceOwner", wardenprecompile.GetAddSpaceOwnerEvent)

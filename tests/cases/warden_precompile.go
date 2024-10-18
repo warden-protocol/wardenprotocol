@@ -98,7 +98,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Len(t, addKeychainWriterEvents, 1)
 		require.Equal(t, uint64(1), addKeychainWriterEvents[0].Id)
 		require.Equal(t, alice.EthAddress(t), addKeychainWriterEvents[0].NewWriter)
-		require.Equal(t, uint64(1), addKeychainWriterEvents[0].AdminsCount)
+		require.Equal(t, uint64(1), addKeychainWriterEvents[0].WritersCount)
 
 		keychain, err = iWardenClient.KeychainById(alice.CallOps(t), 1)
 		require.NoError(t, err)

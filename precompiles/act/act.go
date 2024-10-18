@@ -11,7 +11,6 @@ import (
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
-
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 )

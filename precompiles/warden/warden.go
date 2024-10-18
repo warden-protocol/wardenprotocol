@@ -1,18 +1,18 @@
 package warden
 
 import (
+	"cosmossdk.io/log"
 	"embed"
 	"fmt"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-
-	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -65,13 +65,13 @@ func NewPrecompile(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper,
 }
 
 // Address implements vm.PrecompiledContract.
-func (Precompile) Address() common.Address {
+func (*Precompile) Address() common.Address {
 	return common.HexToAddress(PrecompileAddress)
 }
 
 // RequiredGas returns the required bare minimum gas to execute the precompile.
 // Subtle: this method shadows the method (Precompile).RequiredGas of Precompile.Precompile.
-func (p Precompile) RequiredGas(input []byte) uint64 {
+func (p *Precompile) RequiredGas(input []byte) uint64 {
 	// NOTE: This check avoid panicking when trying to decode the method ID
 	if len(input) < 4 {
 		return 0
@@ -183,7 +183,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 // Available warden transactions are:
 //
 //	-
-func (Precompile) IsTransaction(method string) bool {
+func (*Precompile) IsTransaction(method string) bool {
 	switch method {
 	case AddKeychainAdminMethod,
 		AddKeychainWriterMethod,
@@ -221,6 +221,6 @@ func (Precompile) IsTransaction(method string) bool {
 }
 
 // Logger returns a precompile-specific logger.
-func (p Precompile) Logger(ctx sdk.Context) log.Logger {
+func (p *Precompile) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("evm extension", "x/warden")
 }

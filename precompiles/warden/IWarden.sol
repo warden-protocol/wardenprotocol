@@ -332,7 +332,7 @@ interface IWarden {
     ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
 
     function keyById(
-        uint64 Id,
+        uint64 id,
         int32[] calldata deriveAddresses
     ) external view returns(KeyResponse memory key);
 
@@ -343,7 +343,7 @@ interface IWarden {
     ) external view returns(KeyResponse[] memory keys, Types.PageResponse memory pageResponse);
 
     function keyRequestById(
-        uint64 Id
+        uint64 id
     ) external view returns(KeyRequest memory keyRequest);
 
     function keyRequests(
@@ -393,10 +393,10 @@ interface IWarden {
     /// @dev AddKeychainWriter defines an Event emitted when add a new writer to keychain.
     /// @param newWriter The address of the admin
     /// @param id The keychain id
-    /// @param adminsCount The new count of admins
-    event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 adminsCount);
+    /// @param writersCount The new count of admins
+    event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount);
 
-    /// @dev NewKey defines an Event emitted when a key request fulfiled.
+    /// @dev NewKey defines an Event emitted when a key request fulfilled.
     /// @param id The key id
     /// @param keyType The key type
     /// @param spaceId The space id

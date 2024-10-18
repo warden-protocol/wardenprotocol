@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
 )
@@ -23,7 +24,7 @@ func (cli *Wardend) CallOps(t *testing.T) *bind.CallOpts {
 func (cli *Wardend) EthAddress(t *testing.T) common.Address {
 	privateKey, err := crypto.HexToECDSA(cli.PrivateKey(t))
 	if err != nil {
-		t.Fatal(err)
+		require.NoError(t, err)
 	}
 
 	publicKey := privateKey.Public()
@@ -41,24 +42,24 @@ func (cli *Wardend) TransactOps(
 	client *ethclient.Client) *bind.TransactOpts {
 	privateKey, err := crypto.HexToECDSA(cli.PrivateKey(t))
 	if err != nil {
-		t.Fatal(err)
+		require.NoError(t, err)
 	}
 
 	fromAddress := cli.EthAddress(t)
 
 	nonce, err := client.PendingNonceAt(ctx, fromAddress)
 	if err != nil {
-		t.Fatal(err)
+		require.NoError(t, err)
 	}
 
 	gasPrice, err := client.SuggestGasPrice(ctx)
 	if err != nil {
-		t.Fatal(err)
+		require.NoError(t, err)
 	}
 
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1337))
 	if err != nil {
-		t.Fatal(err)
+		require.NoError(t, err)
 	}
 
 	auth.Nonce = big.NewInt(int64(nonce))

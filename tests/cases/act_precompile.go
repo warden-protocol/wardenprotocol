@@ -94,7 +94,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 
 		actions, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 		if err != nil {
-			t.Fatal(err)
+			require.NoError(t, err)
 		}
 		require.NotEmpty(t, actions)
 		require.Len(t, actions.Actions, 1)
@@ -116,7 +116,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 
 		actionById, err := iActClient.ActionById(alice.CallOps(t), 1)
 		if err != nil {
-			t.Fatal(err)
+			require.NoError(t, err)
 		}
 		require.Equal(t, actionById.Action.Creator, alice.EthAddress(t))
 
@@ -126,7 +126,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 			alice.EthAddress(t),
 			int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 		if err != nil {
-			t.Fatal(err)
+			require.NoError(t, err)
 		}
 		require.Len(t, actionsByAddress.Actions, 1)
 
@@ -155,7 +155,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 
 		actionById, err = iActClient.ActionById(alice.CallOps(t), 3)
 		if err != nil {
-			t.Fatal(err)
+			require.NoError(t, err)
 		}
 		require.Equal(t, actionById.Action.Id, uint64(3))
 		require.Equal(t, actionById.Action.Status, big.NewInt(int64(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED)))

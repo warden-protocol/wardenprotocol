@@ -16,7 +16,7 @@ type ActionsInput struct {
 }
 
 // FromResponse needed to map QueryActionsResponse to ActionsResponse
-func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) (ActionsResponse, error) {
+func (r *ActionsResponse) FromResponse(res *types.QueryActionsResponse) (ActionsResponse, error) {
 	if res != nil {
 		actions := make([]Action, 0)
 		for _, action := range res.Actions {
@@ -32,11 +32,11 @@ func (r ActionsResponse) FromResponse(res *types.QueryActionsResponse) (ActionsR
 		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
-	return r, nil
+	return *r, nil
 }
 
 // FromResponse needed to map QueryActionByIdResponse to ActionByIdResponse
-func (r ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) (ActionByIdResponse, error) {
+func (r *ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) (ActionByIdResponse, error) {
 	if res != nil && res.Action != nil {
 		mappedAction, err := mapAction(*res.Action)
 		if err != nil {
@@ -46,7 +46,7 @@ func (r ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) (Ac
 		r.Action = mappedAction
 	}
 
-	return r, nil
+	return *r, nil
 }
 
 // ActionsByAddressInput needed to unmarshal Pagination field and pass it to types.QueryActionsByAddressRequest
@@ -57,7 +57,7 @@ type ActionsByAddressInput struct {
 }
 
 // FromResponse needed to map QueryActionsByAddressResponse to ActionsByAddressResponse
-func (r ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) (ActionsByAddressResponse, error) {
+func (r *ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) (ActionsByAddressResponse, error) {
 	if res != nil {
 		actions := make([]Action, 0)
 		for _, action := range res.Actions {
@@ -73,7 +73,7 @@ func (r ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressR
 		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
-	return r, nil
+	return *r, nil
 }
 
 // TemplatesInput needed to unmarshal Pagination field and pass it to types.QueryTemplatesRequest
@@ -83,7 +83,7 @@ type TemplatesInput struct {
 }
 
 // FromResponse needed to map QueryTemplatesResponse to TemplatesResponse
-func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) (TemplatesResponse, error) {
+func (r *TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) (TemplatesResponse, error) {
 	if res != nil {
 		templates := make([]Template, 0)
 		for _, action := range res.Templates {
@@ -99,11 +99,11 @@ func (r TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) (Temp
 		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
-	return r, nil
+	return *r, nil
 }
 
 // FromResponse needed to map QueryTemplateByIdResponse to TemplateByIdResponse
-func (r TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse) (TemplateByIdResponse, error) {
+func (r *TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse) (TemplateByIdResponse, error) {
 	if res != nil && res.Template != nil {
 		mappedTemplate, err := mapTemplate(*res.Template)
 		if err != nil {
@@ -113,7 +113,7 @@ func (r TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse)
 		r.Template = mappedTemplate
 	}
 
-	return r, nil
+	return *r, nil
 }
 
 func mapAction(action types.Action) (Action, error) {

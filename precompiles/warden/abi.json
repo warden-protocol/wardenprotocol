@@ -43,7 +43,7 @@
         {
           "indexed": false,
           "internalType": "uint64",
-          "name": "adminsCount",
+          "name": "writersCount",
           "type": "uint64"
         }
       ],
@@ -727,7 +727,7 @@
       "inputs": [
         {
           "internalType": "uint64",
-          "name": "Id",
+          "name": "id",
           "type": "uint64"
         },
         {
@@ -812,7 +812,7 @@
       "inputs": [
         {
           "internalType": "uint64",
-          "name": "Id",
+          "name": "id",
           "type": "uint64"
         }
       ],

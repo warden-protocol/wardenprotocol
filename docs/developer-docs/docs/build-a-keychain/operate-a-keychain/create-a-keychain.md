@@ -132,7 +132,7 @@ The following steps show how to register a new Keychain entity on-chain.
    <TabItem value="buenavista" label="Buenavista">
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-keychain-name' \
+     --description 'my-keychain-description' \
      --from my-key-name \
      --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443

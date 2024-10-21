@@ -80,7 +80,7 @@ struct Space {
 
 enum KeyType {
     Unspecified,
-    EcdsaSec256k1,
+    EcdsaSecp256k1,
     EddsaEd25519
 }
 
@@ -510,7 +510,7 @@ interface IWarden {
     /// @param rejectTemplateId The reject template id
     /// @param keyType The key type
     /// @param creator The creator address
-    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, uint8 keyType, address creator);
+    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, int32 keyType, address creator);
 
     /// @dev NewSignRequest defines an Event emitted when a new signature request is created.
     /// @param id The id of the signature request
@@ -525,12 +525,12 @@ interface IWarden {
     event UpdateKey(uint64 indexed id, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev UpdateSpace defines an Event emitted when a space is updated.
-    /// @param space_id The id of the space being updated
+    /// @param spaceId The id of the space being updated
     /// @param approveAdminTemplateId The id of the template to be applied to every approve admin operation
     /// @param rejectAdminTemplateId The id of the template to be applied to every reject admin operation
     /// @param approveSignTemplateId The id of the template to be applied to every approve sign operation
     /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
-    event UpdateSpace(uint64 indexed space_id, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
+    event UpdateSpace(uint64 indexed spaceId, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }
 
 /// @dev The IWarden contract's instance.

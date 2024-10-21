@@ -22,7 +22,7 @@ func AddressFromBech32Str(address string) (common.Address, error) {
 
 // AddressesFromBech32StrItemArray tries to create a slice of common.Address values from arbitrary slice
 func AddressesFromBech32StrItemArray[T any](items []T, addressFunc func(T) string) ([]common.Address, error) {
-	ethAddresses := make([]common.Address, 0)
+	ethAddresses := make([]common.Address, 0, len(items))
 
 	for _, item := range items {
 		ethAddress, err := AddressFromBech32Str(addressFunc(item))

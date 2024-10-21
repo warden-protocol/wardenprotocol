@@ -36,7 +36,7 @@ func mapEthKeychainFees(keychainFees KeychainFees) v1beta3.KeychainFees {
 }
 
 func mapSdkCoins(coins sdkTypes.Coins) []TypesCoin {
-	var c []TypesCoin
+	c := make([]TypesCoin, 0, len(coins))
 	for _, sdkCoin := range coins {
 		c = append(c, TypesCoin{Denom: sdkCoin.GetDenom(), Amount: sdkCoin.Amount.BigInt()})
 	}

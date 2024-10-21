@@ -51,7 +51,7 @@ const (
 	EventUpdateSpace = "UpdateSpace"
 )
 
-// Map EventAddKeychainAdmin to eth AddKeychainAdmin event and write to eth log
+// GetAddKeychainAdminEvent maps EventAddKeychainAdmin to eth AddKeychainAdmin event and write to eth log
 func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *common.Address, eventAddKeychainAdmin sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainAdmin]
@@ -87,7 +87,7 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	return &log, nil
 }
 
-// Map EventAddKeychainWriter to eth AddKeychainWriter event and write to eth log
+// GetAddKeychainWriterEvent maps EventAddKeychainWriter to eth AddKeychainWriter event and write to eth log
 func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *common.Address, eventAddKeychainWriter sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainWriter]
@@ -124,7 +124,7 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *co
 	return &log, nil
 }
 
-// Map EventNewKey to eth NewKey event and write to eth log
+// GetNewKeyEvent maps EventNewKey to eth NewKey event and write to eth log
 func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewKey sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeNewKey]
@@ -161,7 +161,7 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	return &log, nil
 }
 
-// Map EventRejectKeyRequest to eth RejectKeyRequest event and write to eth log
+// GetRejectKeyRequestEvent maps EventRejectKeyRequest to eth RejectKeyRequest event and write to eth log
 func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address, eventRejectKeyRequest sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectKeyRequest]
@@ -192,7 +192,7 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address,
 	return &log, nil
 }
 
-// Map EventFulfilSignRequest to eth FulfilSignRequest event and write to eth log
+// GetFulfilSignRequestEvent maps EventFulfilSignRequest to eth FulfilSignRequest event and write to eth log
 func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address, eventFulfilSignRequest sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventFulfilSignRequest]
@@ -223,7 +223,7 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address
 	return &log, nil
 }
 
-// Map EventRejectSignRequest to eth RejectSignRequest event and write to eth log
+// GetRejectSignRequestEvent maps EventRejectSignRequest to eth RejectSignRequest event and write to eth log
 func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address, eventRejectSignRequest sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectSignRequest]
@@ -254,7 +254,7 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address
 	return &log, nil
 }
 
-// Map EventNewKeychain to eth NewKeychain event and write to eth log
+// GetNewKeychainEvent maps EventNewKeychain to eth NewKeychain event and write to eth log
 func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address, eventNewKeychain sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
@@ -292,7 +292,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	return &log, nil
 }
 
-// Map EventNewKeychain to eth NewKeychain event and write to eth log
+// GetNewSpaceEvent maps EventNewKeychain to eth NewKeychain event and write to eth log
 func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, eventNewSpace sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
@@ -333,7 +333,7 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	return &log, nil
 }
 
-// Map EventRemoveKeychainAdmin to eth RemoveKeychainAdmin event and write to eth log
+// GetRemoveKeychainAdminEvent maps EventRemoveKeychainAdmin to eth RemoveKeychainAdmin event and write to eth log
 func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.Address, eventRemoveKeychainAdmin sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics
@@ -365,7 +365,7 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	return &log, nil
 }
 
-// Map EventUpdateKeychain to eth UpdateKeychain event and write to eth log
+// GetUpdateKeychainEvent maps EventUpdateKeychain to eth UpdateKeychain event and write to eth log
 func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, eventUpdateKeychain sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventUpdateKeychain]
@@ -408,7 +408,7 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	return &log, nil
 }
 
-// Map EventAddSpaceOwner to eth AddSpaceOwner event and write to eth log
+// GetAddSpaceOwnerEvent maps EventAddSpaceOwner to eth AddSpaceOwner event and write to eth log
 func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, addSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventAddSpaceOwner]
 
@@ -445,7 +445,7 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, ad
 	return &log, nil
 }
 
-// Map EventRemoveSpaceOwner to eth RemoveSpaceOwner event and write to eth log
+// GetRemoveSpaceOwnerEvent maps EventRemoveSpaceOwner to eth RemoveSpaceOwner event and write to eth log
 func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *common.Address, removeSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventRemoveSpaceOwner]
 
@@ -482,7 +482,7 @@ func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *comm
 	return &log, nil
 }
 
-// Map EventNewKeyRequest to eth NewKeyRequest event and write to eth log
+// GetNewKeyRequestEvent maps EventNewKeyRequest to eth NewKeyRequest event and write to eth log
 func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, newKeyRequestEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventNewKeyRequest]
 
@@ -542,7 +542,7 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 	return &log, nil
 }
 
-// Map EventNewSignRequest to eth NewSignRequest event and write to eth log
+// GetNewSignRequestEvent maps EventNewSignRequest to eth NewSignRequest event and write to eth log
 func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, newSignRequestEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventNewSignRequest]
 
@@ -580,7 +580,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 	return &log, nil
 }
 
-// Map EventUpdateKey to eth UpdateKey event and write to eth log
+// GetUpdateKeyEvent maps EventUpdateKey to eth UpdateKey event and write to eth log
 func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, updateKeyEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventUpdateKey]
 
@@ -616,7 +616,7 @@ func (p Precompile) GetUpdateKeyEvent(ctx sdk.Context, _ *common.Address, update
 	return &log, nil
 }
 
-// Map EventUpdateSpace to eth UpdateSpace event and write to eth log
+// GetUpdateSpaceEvent maps EventUpdateSpace to eth UpdateSpace event and write to eth log
 func (p Precompile) GetUpdateSpaceEvent(ctx sdk.Context, _ *common.Address, updateSpaceEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventUpdateSpace]
 

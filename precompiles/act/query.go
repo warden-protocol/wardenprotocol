@@ -54,7 +54,7 @@ func newActionsQuery(method *abi.Method, args []interface{}) (*types.QueryAction
 
 	var input ActionsInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to ActionsInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to ActionsInput struct: %w", err)
 	}
 
 	precommon.ClearPaginationKey(&input.Pagination)
@@ -140,7 +140,7 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 
 	var input ActionsByAddressInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to ActionsByAddressInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to ActionsByAddressInput struct: %w", err)
 	}
 
 	precommon.ClearPaginationKey(&input.Pagination)
@@ -186,7 +186,7 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 
 	var input TemplatesInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to TemplatesInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to TemplatesInput struct: %w", err)
 	}
 
 	precommon.ClearPaginationKey(&input.Pagination)

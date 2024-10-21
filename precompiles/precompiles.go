@@ -15,7 +15,7 @@ import (
 func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	er := cmn.NewEthEventsRegistry()
-	actprecompile, err := actprecompile.NewPrecompile(actkeeper, &er)
+	actprecompile, err := actprecompile.NewPrecompile(actkeeper, er)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 	er.RegisterEvent("warden.act.v1beta1.EventUpdateTemplate", actprecompile.GetUpdateTemplateEvent)
 	er.RegisterEvent("warden.act.v1beta1.EventCreateAction", actprecompile.GetCreateActionEvent)
 
-	wardenprecompile, err := wardenprecompile.NewPrecompile(wardenkeeper, actkeeper, &er)
+	wardenprecompile, err := wardenprecompile.NewPrecompile(wardenkeeper, actkeeper, er)
 	if err != nil {
 		return nil, err
 	}

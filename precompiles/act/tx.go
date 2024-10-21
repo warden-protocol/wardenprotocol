@@ -23,7 +23,7 @@ const (
 
 // checkAction method implementation
 // Constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) CheckActionMethod(
+func (p *Precompile) CheckActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -71,7 +71,7 @@ func newMsgCheckAction(args []interface{}, origin common.Address) (*acttypes.Msg
 
 // newTemplate method implementation
 // Constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) NewTemplateMethod(
+func (p *Precompile) NewTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -128,7 +128,7 @@ func newMsgNewTemplate(args []interface{}, origin common.Address) (*acttypes.Msg
 
 // revokeAction method implementation
 // Constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) RevokeActionMethod(
+func (p *Precompile) RevokeActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -176,7 +176,7 @@ func newMsgRevokeAction(args []interface{}, origin common.Address) (*acttypes.Ms
 
 // updateTemplate method implementation
 // Constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) UpdateTemplateMethod(
+func (p *Precompile) UpdateTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -238,7 +238,7 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.
 
 // voteForAction method implementation
 // Constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) VoteForActionMethod(
+func (p *Precompile) VoteForActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,

@@ -4,7 +4,10 @@ pragma solidity >=0.8.18;
 import "../common/Types.sol";
 
 /// @dev The IWarden contract's address.
-address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900; 
+address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900;
+
+/// @dev The IWarden contract's instance.
+IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
 
 struct KeychainFees {
     Types.Coin[] keyReq;
@@ -532,6 +535,3 @@ interface IWarden {
     /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
     event UpdateSpace(uint64 indexed spaceId, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }
-
-/// @dev The IWarden contract's instance.
-IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);

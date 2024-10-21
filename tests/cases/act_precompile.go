@@ -82,7 +82,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.NoError(t, err)
 		require.Equal(t, "evm rule #1 modified", templateById.Template.Name)
 
-		templates, err := iActClient.Templates(alice.CallOps(t), act.TypesPageRequest{})
+		templates, err := iActClient.Templates(alice.CallOps(t), act.TypesPageRequest{}, common.Address{})
 		require.NoError(t, err)
 		require.Len(t, templates.Templates, 1)
 	})

@@ -80,7 +80,7 @@ func (r *ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddress
 // TemplatesInput needed to unmarshal Pagination field and pass it to types.QueryTemplatesRequest
 type TemplatesInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
-	Creator    string            `abi:"creator"`
+	Creator    common.Address    `abi:"creator"`
 }
 
 // FromResponse needed to map QueryTemplatesResponse to TemplatesResponse
@@ -206,8 +206,8 @@ func mapAny(any *cdctypes.Any) TypesAnyType {
 	}
 
 	return TypesAnyType{
-		any.TypeUrl,
-		any.Value,
+		TypeUrl: any.TypeUrl,
+		Value:   any.Value,
 	}
 }
 

@@ -2,6 +2,7 @@ package act
 
 import (
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -187,8 +188,8 @@ func (p *Precompile) TemplatesQuery(
 }
 
 func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemplatesRequest, error) {
-	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+	if len(args) != 2 {
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input TemplatesInput
@@ -198,9 +199,16 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 
 	precommon.ClearPaginationKey(&input.Pagination)
 
+	var creator string
+	if input.Creator == (common.Address{}) {
+		creator = ""
+	} else {
+		creator = precommon.Bech32StrFromAddress(input.Creator)
+	}
+
 	return &types.QueryTemplatesRequest{
 		Pagination: &input.Pagination,
-		Creator:    input.Creator,
+		Creator:    creator,
 	}, nil
 }
 

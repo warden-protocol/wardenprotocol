@@ -395,18 +395,15 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	topics[0] = event.ID
 	var b bytes.Buffer
 	typedEvent := wardentypes.EventUpdateKeychain{}
+
 	// use Marshal/Unmarshal here cause big.Word=uint inside big.Int is not correctly merged in cosmos.gogoproto
-	var e error
+	var err error
 	var marshaled []byte
 	if err := precommon.ParseSdkEvent(eventUpdateKeychain, func(m proto.Message) {
-		marshaled, e = proto.Marshal(m)
+		marshaled, err = proto.Marshal(m)
 		typedEvent.Unmarshal(marshaled)
 	}); err != nil {
 		return nil, err
-	}
-
-	if e != nil {
-		return nil, e
 	}
 
 	packedKeychainFees, err := event.Inputs.NonIndexed().Pack(

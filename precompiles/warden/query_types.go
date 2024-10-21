@@ -85,12 +85,12 @@ func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, er
 
 	o.KeysResponse = make([]KeyResponse, len(res.Keys))
 	for i, k := range res.Keys {
-		keyReponse, err := new(KeyResponse).FromResponse(&k)
+		keyResponse, err := new(KeyResponse).FromResponse(&k)
 		if err != nil {
 			return nil, err
 		}
 
-		o.KeysResponse[i] = *keyReponse
+		o.KeysResponse[i] = *keyResponse
 	}
 
 	if res.Pagination != nil {
@@ -212,13 +212,13 @@ func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) (*
 
 	o.KeyRequests = make([]KeyRequest, len(res.KeyRequests))
 	for i, k := range res.KeyRequests {
-		keyRequestReponse, err := new(KeyRequest).mapKeyRequest(*k)
+		keyRequestResponse, err := new(KeyRequest).mapKeyRequest(*k)
 
 		if err != nil {
 			return nil, err
 		}
 
-		o.KeyRequests[i] = *keyRequestReponse
+		o.KeyRequests[i] = *keyRequestResponse
 	}
 
 	if res.Pagination != nil {
@@ -286,13 +286,15 @@ func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) (*keyc
 	if res == nil || res.Keychains == nil {
 		return nil, errors.New("received nil QueryKeychainsResponse")
 	}
+
 	o.Keychains = make([]Keychain, len(res.Keychains))
+
 	for i, k := range res.Keychains {
-		keyRequestReponse, err := new(Keychain).mapKeychain(k)
+		keychain, err := new(Keychain).mapKeychain(k)
 		if err != nil {
 			return nil, err
 		}
-		o.Keychains[i] = *keyRequestReponse
+		o.Keychains[i] = *keychain
 	}
 
 	if res.Pagination != nil {
@@ -313,7 +315,7 @@ func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdR
 
 	id, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for id, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for id, got %T", args[0])
 	}
 
 	return &types.QuerySignRequestByIdRequest{
@@ -343,10 +345,17 @@ func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignReque
 
 	result := signRequest.Result
 	if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
-		o.Result = result.(*types.SignRequest_SignedData).SignedData
+		if signedData, ok := result.(*types.SignRequest_SignedData); ok {
+			o.Result = signedData.SignedData
+		} else {
+			return nil, errors.New("unexpected result type for fulfilled sign request")
+		}
 	} else if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED {
-		reason := result.(*types.SignRequest_RejectReason).RejectReason
-		o.Result = []byte(reason)
+		if rejectReason, ok := result.(*types.SignRequest_RejectReason); ok {
+			o.Result = []byte(rejectReason.RejectReason)
+		} else {
+			return nil, errors.New("unexpected result type for rejected sign request")
+		}
 	}
 
 	o.EncryptionKey = signRequest.EncryptionKey
@@ -419,7 +428,7 @@ func newSpaceByIdRequest(args []interface{}) (*types.QuerySpaceByIdRequest, erro
 
 	id, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for id, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for id, got %T", args[0])
 	}
 
 	return &types.QuerySpaceByIdRequest{

@@ -54,7 +54,7 @@ func (r *ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) (A
 type ActionsByAddressInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 	Address    common.Address    `abi:"addr"`
-	Status     int32             `abi:"status"`
+	Status     uint8             `abi:"status"`
 }
 
 // FromResponse needed to map QueryActionsByAddressResponse to ActionsByAddressResponse

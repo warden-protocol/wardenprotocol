@@ -131,7 +131,7 @@ interface IAct {
     function actionsByAddress(
         Types.PageRequest calldata pagination,
         address addr,
-        int32 status
+        ActionStatus status
     ) external view returns (ActionsByAddressResponse memory response);
 
     /// @dev Defines a method to query templates.

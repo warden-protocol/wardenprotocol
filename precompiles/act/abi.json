@@ -559,9 +559,9 @@
 					"type": "address"
 				},
 				{
-					"internalType": "int32",
+					"internalType": "enum ActionStatus",
 					"name": "status",
-					"type": "int32"
+					"type": "uint8"
 				}
 			],
 			"name": "actionsByAddress",

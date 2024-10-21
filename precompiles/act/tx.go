@@ -21,8 +21,7 @@ const (
 	VoteForActionMethod  = "voteForAction"
 )
 
-// checkAction method implementation
-// Constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
+// CheckActionMethod constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
 func (p *Precompile) CheckActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -74,8 +73,7 @@ func newMsgCheckAction(args []interface{}, origin common.Address) (*acttypes.Msg
 	}, nil
 }
 
-// newTemplate method implementation
-// Constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output
+// NewTemplateMethod constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) NewTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -133,8 +131,7 @@ func newMsgNewTemplate(args []interface{}, origin common.Address) (*acttypes.Msg
 	}, nil
 }
 
-// revokeAction method implementation
-// Constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output
+// RevokeActionMethod constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) RevokeActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -186,8 +183,7 @@ func newMsgRevokeAction(args []interface{}, origin common.Address) (*acttypes.Ms
 	}, nil
 }
 
-// updateTemplate method implementation
-// Constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output
+// UpdateTemplateMethod constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) UpdateTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -251,8 +247,7 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.
 	}, nil
 }
 
-// voteForAction method implementation
-// Constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output
+// VoteForActionMethod constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) VoteForActionMethod(
 	ctx sdk.Context,
 	origin common.Address,

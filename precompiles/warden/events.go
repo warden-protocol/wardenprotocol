@@ -56,6 +56,10 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainAdmin]
 
+	if adminAddress == nil {
+		return nil, fmt.Errorf("adminAddress is nil")
+	}
+
 	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
@@ -91,6 +95,10 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *common.Address, eventAddKeychainWriter sdk.Event) (*ethtypes.Log, error) {
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeAddKeychainWriter]
+
+	if writerAddress == nil {
+		return nil, fmt.Errorf("writerAddress is nil")
+	}
 
 	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
@@ -260,6 +268,10 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewKeychain]
 
+	if creator == nil {
+		return nil, fmt.Errorf("creator is nil")
+	}
+
 	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
@@ -297,6 +309,10 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventNewSpace]
+
+	if creator == nil {
+		return nil, fmt.Errorf("creator is nil")
+	}
 
 	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
@@ -338,6 +354,10 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	var err error
 	// Prepare the event topics
 	event := p.ABI.Events[EventRemoveKeychainAdmin]
+
+	if admin == nil {
+		return nil, fmt.Errorf("admin is nil")
+	}
 
 	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
@@ -446,7 +466,7 @@ func (p Precompile) GetAddSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, ad
 }
 
 // GetRemoveSpaceOwnerEvent maps EventRemoveSpaceOwner to eth RemoveSpaceOwner event and write to eth log
-func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, removedOwner *common.Address, removeSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
+func (p Precompile) GetRemoveSpaceOwnerEvent(ctx sdk.Context, _ *common.Address, removeSpaceOwnerEvent sdk.Event) (*ethtypes.Log, error) {
 	event := p.ABI.Events[EventRemoveSpaceOwner]
 
 	topics := make([]common.Hash, 2)

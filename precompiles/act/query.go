@@ -40,6 +40,9 @@ func (p Precompile) ActionsQuery(
 	if err != nil {
 		return nil, err
 	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
 
 	out, err := new(ActionsResponse).FromResponse(res)
 	if err != nil {
@@ -87,6 +90,9 @@ func (p Precompile) ActionByIdQuery(
 	if err != nil {
 		return nil, err
 	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
 
 	out, err := new(ActionByIdResponse).FromResponse(res)
 	if err != nil {
@@ -128,6 +134,9 @@ func (p Precompile) ActionsByAddressQuery(
 	res, err := queryServer.ActionsByAddress(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(ActionsByAddressResponse).FromResponse(res)
@@ -178,6 +187,9 @@ func (p Precompile) TemplatesQuery(
 	if err != nil {
 		return nil, err
 	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
 
 	out, err := new(TemplatesResponse).FromResponse(res)
 	if err != nil {
@@ -225,6 +237,9 @@ func (p Precompile) TemplateByIdQuery(
 	res, err := queryServer.TemplateById(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(TemplateByIdResponse).FromResponse(res)

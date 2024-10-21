@@ -20,11 +20,12 @@ func mapSdkKeychainFees(keychainFees v1beta3.KeychainFees) KeychainFees {
 }
 
 func mapEthKeychainFees(keychainFees KeychainFees) v1beta3.KeychainFees {
-	var keyReq []sdkTypes.Coin
+	keyReq := make([]sdkTypes.Coin, 0, len(keychainFees.KeyReq))
 	for _, kr := range keychainFees.KeyReq {
 		keyReq = append(keyReq, sdkTypes.NewCoin(kr.Denom, math.NewIntFromBigInt(kr.Amount)))
 	}
-	var sigReq []sdkTypes.Coin
+
+	sigReq := make([]sdkTypes.Coin, 0, len(keychainFees.SigReq))
 	for _, sr := range keychainFees.SigReq {
 		sigReq = append(sigReq, sdkTypes.NewCoin(sr.Denom, math.NewIntFromBigInt(sr.Amount)))
 	}

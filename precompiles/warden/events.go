@@ -292,7 +292,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	return &log, nil
 }
 
-// GetNewSpaceEvent maps EventNewKeychain to eth NewKeychain event and write to eth log
+// GetNewSpaceEvent maps EventNewSpace to eth NewSpace event and writes to eth log
 func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, eventNewSpace sdk.Event) (*ethtypes.Log, error) {
 	var err error
 	// Prepare the event topics

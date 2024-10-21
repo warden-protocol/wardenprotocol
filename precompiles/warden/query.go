@@ -1,6 +1,8 @@
 package warden
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -36,15 +38,16 @@ func (p Precompile) AllKeysMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newAllKeysRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
 
 	response, err := queryServer.AllKeys(ctx, req)
-
 	if err != nil {
 		return nil, err
+	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(keysOutput).FromResponse(response)
@@ -67,15 +70,16 @@ func (p Precompile) KeyByIdMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newKeyByIdRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
 
 	response, err := queryServer.KeyById(ctx, req)
-
 	if err != nil {
 		return nil, err
+	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(KeyResponse).FromResponse(response)
@@ -87,7 +91,7 @@ func (p Precompile) KeyByIdMethod(
 }
 
 // keysBySpaceId query implementation
-// KeysBySpaceIdMethod constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
+// KeysBySpaceIdMethod constructs QueryKeysBySpaceIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeysBySpaceIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -98,15 +102,16 @@ func (p Precompile) KeysBySpaceIdMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newKeysBySpaceIdRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
 
 	response, err := queryServer.KeysBySpaceId(ctx, req)
-
 	if err != nil {
 		return nil, err
+	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(keysOutput).FromResponse(response)
@@ -129,14 +134,16 @@ func (p Precompile) KeyRequestMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newKeyRequestByIdRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
-	response, err := queryServer.KeyRequestById(ctx, req)
 
+	response, err := queryServer.KeyRequestById(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(KeyRequest).FromResponse(response)
@@ -159,14 +166,16 @@ func (p Precompile) KeyRequestsMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newKeyRequestsRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
-	response, err := queryServer.KeyRequests(ctx, req)
 
+	response, err := queryServer.KeyRequests(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(keyRequestsOutput).FromResponse(response)
@@ -189,15 +198,18 @@ func (p Precompile) KeychainMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newKeychainRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.KeychainById(ctx, req)
-
 	if err != nil {
 		return nil, err
 	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
+
 	out, err := new(Keychain).FromResponse(response)
 	if err != nil {
 		return nil, err
@@ -218,15 +230,18 @@ func (p Precompile) KeychainsMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newKeychainsRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.Keychains(ctx, req)
-
 	if err != nil {
 		return nil, err
 	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
+
 	out, err := new(keychainsOutput).FromResponse(response)
 	if err != nil {
 		return nil, err
@@ -236,7 +251,7 @@ func (p Precompile) KeychainsMethod(
 }
 
 // signRequestById query implementation
-// SignRequestByIdMethod constructs QuerySignRequestByIdResponse from args, passes it to query server and packs response into corresponding abi output
+// SignRequestByIdMethod constructs QuerySignRequestByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SignRequestByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -247,15 +262,18 @@ func (p Precompile) SignRequestByIdMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newSignRequestByIdRequest(args)
-
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.SignRequestById(ctx, req)
-
 	if err != nil {
 		return nil, err
 	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
+
 	out, err := new(SignRequest).FromResponse(response)
 	if err != nil {
 		return nil, err
@@ -276,15 +294,18 @@ func (p Precompile) SignRequestsMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newSignRequestsRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.SignRequests(ctx, req)
-
 	if err != nil {
 		return nil, err
 	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
+
 	out, err := new(signRequestsOutput).FromResponse(response)
 	if err != nil {
 		return nil, err
@@ -304,16 +325,19 @@ func (p Precompile) SpaceByIdMethod(
 ) ([]byte, error) {
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
-	req, err := newSpaceByIdRequest(method, args)
-
+	req, err := newSpaceByIdRequest(args)
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.SpaceById(ctx, req)
-
 	if err != nil {
 		return nil, err
 	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
+
 	out, err := new(Space).FromResponse(response)
 	if err != nil {
 		return nil, err
@@ -334,15 +358,18 @@ func (p Precompile) SpacesMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newSpacesRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.Spaces(ctx, req)
-
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
 	if err != nil {
 		return nil, err
 	}
+
 	out, err := new(spacesOutput).FromResponse(response)
 	if err != nil {
 		return nil, err
@@ -363,15 +390,18 @@ func (p Precompile) SpacesByOwnerMethod(
 	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
 
 	req, err := newSpacesByOwnerRequest(method, args)
-
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := queryServer.SpacesByOwner(ctx, req)
-
 	if err != nil {
 		return nil, err
 	}
+	if response == nil {
+		return nil, fmt.Errorf("received nil response from query server")
+	}
+
 	out, err := new(spacesOutput).FromResponse(response)
 	if err != nil {
 		return nil, err

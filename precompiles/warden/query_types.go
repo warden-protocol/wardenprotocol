@@ -164,15 +164,15 @@ func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.Qu
 	}, nil
 }
 
-func (o *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) (*KeyRequest, error) {
+func (kr *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) (*KeyRequest, error) {
 	if res == nil || res.KeyRequest == nil {
 		return nil, errors.New("received nil response or key request")
 	}
-	return o.mapKeyRequest(*res.KeyRequest)
+	return kr.mapKeyRequest(*res.KeyRequest)
 }
 
-func (o *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
-	return args.Pack(o)
+func (kr *KeyRequest) Pack(args abi.Arguments) ([]byte, error) {
+	return args.Pack(kr)
 }
 
 func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestsRequest, error) {
@@ -313,7 +313,7 @@ func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdR
 
 	id, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for id, got %T", args[0])
+		return nil, fmt.Errorf("expected uint64 for id, got %d", args[0])
 	}
 
 	return &types.QuerySignRequestByIdRequest{
@@ -322,7 +322,7 @@ func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdR
 }
 
 func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) (*SignRequest, error) {
-	if res == nil {
+	if res == nil || res.SignRequest == nil {
 		return nil, errors.New("received nil QuerySignRequestByIdResponse")
 	}
 	return o.mapSignRequest(res.SignRequest)
@@ -411,14 +411,14 @@ func (o *signRequestsOutput) Pack(args abi.Arguments) ([]byte, error) {
 	return args.Pack(o.SignRequests, o.Pagination)
 }
 
-func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySpaceByIdRequest, error) {
+func newSpaceByIdRequest(args []interface{}) (*types.QuerySpaceByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	id, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for id, got %T", args[0])
+		return nil, fmt.Errorf("expected uint64 for id, got %d", args[0])
 	}
 
 	return &types.QuerySpaceByIdRequest{
@@ -530,25 +530,25 @@ type spacesByOwnerInput struct {
 	Owner       common.Address
 }
 
-func (k *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, error) {
+func (kr *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, error) {
 	ethCreator, err := wardencommon.AddressFromBech32Str(keyRequest.Creator)
 
 	if err != nil {
 		return nil, err
 	}
 
-	k.Id = keyRequest.Id
-	k.Creator = ethCreator
-	k.SpaceId = keyRequest.SpaceId
-	k.KeychainId = keyRequest.KeychainId
-	k.KeyType = int32(keyRequest.KeyType)
-	k.Status = int32(keyRequest.Status)
-	k.RejectReason = keyRequest.RejectReason
-	k.ApproveTemplateId = keyRequest.ApproveTemplateId
-	k.RejectTemplateId = keyRequest.RejectTemplateId
-	k.DeductedKeychainFees = mapSdkCoins(keyRequest.DeductedKeychainFees)
+	kr.Id = keyRequest.Id
+	kr.Creator = ethCreator
+	kr.SpaceId = keyRequest.SpaceId
+	kr.KeychainId = keyRequest.KeychainId
+	kr.KeyType = int32(keyRequest.KeyType)
+	kr.Status = int32(keyRequest.Status)
+	kr.RejectReason = keyRequest.RejectReason
+	kr.ApproveTemplateId = keyRequest.ApproveTemplateId
+	kr.RejectTemplateId = keyRequest.RejectTemplateId
+	kr.DeductedKeychainFees = mapSdkCoins(keyRequest.DeductedKeychainFees)
 
-	return k, nil
+	return kr, nil
 }
 
 func (k *Keychain) mapKeychain(keychain types.Keychain) (*Keychain, error) {

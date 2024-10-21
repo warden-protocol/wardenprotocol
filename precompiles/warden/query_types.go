@@ -311,7 +311,10 @@ func newSignRequestByIdRequest(args []interface{}) (*types.QuerySignRequestByIdR
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	id := args[0].(uint64)
+	id, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for id, got %T", args[0])
+	}
 
 	return &types.QuerySignRequestByIdRequest{
 		Id: id,
@@ -413,7 +416,10 @@ func newSpaceByIdRequest(method *abi.Method, args []interface{}) (*types.QuerySp
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	id := args[0].(uint64)
+	id, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for id, got %T", args[0])
+	}
 
 	return &types.QuerySpaceByIdRequest{
 		Id: id,

@@ -31,7 +31,7 @@ const (
 )
 
 // addKeychainAdmin method implementation
-// Constructs MsgAddKeychainAdminRequest from args, passes it to msg server and packs corresponding abi output
+// AddKeychainAdminMethod constructs MsgAddKeychainAdminRequest from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) AddKeychainAdminMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -65,7 +65,7 @@ func (p Precompile) AddKeychainAdminMethod(
 }
 
 // addKeychainWriter method implementation
-// Constructs MsgAddKeychainWriter from args, passes it to msg server and packs corresponding abi output
+// AddKeychainWriterMethod constructs MsgAddKeychainWriter from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) AddKeychainWriterMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -100,7 +100,7 @@ func (p Precompile) AddKeychainWriterMethod(
 
 // Implements fulfilKeyRequest and rejectKeyRequest.
 // keyRequestStatus should be KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED for fulfilKeyRequest and KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED for rejectKeyRequest.
-// Constructs MsgFulfilKeyRequest from args, passes it to msg server and packs corresponding abi output
+// FulfilKeyRequestMethod constructs MsgFulfilKeyRequest from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) FulfilKeyRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -136,7 +136,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 
 // Implements fulfilSignRequest and rejectSignRequest.
 // signRequestStatus should be SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED for fulfilSignRequest and SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED for rejectSignRequest.
-// Constructs MsgFulfilKeyRequest from args, passes it to msg server and packs corresponding abi output
+// FulfilSignRequestMethod constructs MsgFulfilSignRequest from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) FulfilSignRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -171,7 +171,7 @@ func (p Precompile) FulfilSignRequestMethod(
 }
 
 // newKeychain method implementation
-// Constructs MsgNewKeychain from args, passes it to msg server and packs corresponding abi output
+// NewKeychainMethod constructs MsgNewKeychain from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) NewKeychainMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -207,7 +207,7 @@ func (p Precompile) NewKeychainMethod(
 }
 
 // newSpace method implementation
-// Constructs MsgNewSpace from args, passes it to msg server and packs corresponding abi output
+// NewSpaceMethod constructs MsgNewSpace from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) NewSpaceMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -243,7 +243,7 @@ func (p Precompile) NewSpaceMethod(
 }
 
 // removeKeychainAdmin method implementation
-// Constructs MsgRemoveKeychainAdminRequest from args, passes it to msg server and packs corresponding abi output
+// RemoveKeychainAdminMethod constructs MsgRemoveKeychainAdminRequest from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) RemoveKeychainAdminMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -277,7 +277,7 @@ func (p Precompile) RemoveKeychainAdminMethod(
 }
 
 // updateKeychain method implementation
-// Constructs MsgUpdateKeychain from args, passes it to msg server and packs corresponding abi output
+// UpdateKeychainMethod constructs MsgUpdateKeychain from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) UpdateKeychainMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -311,7 +311,7 @@ func (p Precompile) UpdateKeychainMethod(
 }
 
 // addSpaceOwner method implementation
-// Constructs MsgAddSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
+// AddSpaceOwnerMethod constructs MsgAddSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) AddSpaceOwnerMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -347,7 +347,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 }
 
 // removeSpaceOwner method implementation
-// Constructs MsgRemoveSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
+// RemoveSpaceOwnerMethod constructs MsgRemoveSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) RemoveSpaceOwnerMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -383,7 +383,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 }
 
 // newKeyRequest method implementation
-// Constructs MsgNewKeyRequest wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
+// NewKeyRequestMethod constructs MsgNewKeyRequest wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) NewKeyRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -419,7 +419,7 @@ func (p Precompile) NewKeyRequestMethod(
 }
 
 // newSignRequest method implementation
-// Constructs MsgNewSignRequest wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
+// NewSignRequestMethod constructs MsgNewSignRequest wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) NewSignRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -455,7 +455,7 @@ func (p Precompile) NewSignRequestMethod(
 }
 
 // updateKey method implementation
-// Constructs MsgUpdateKey wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
+// UpdateKeyMethod constructs MsgUpdateKey wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) UpdateKeyMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -491,7 +491,7 @@ func (p Precompile) UpdateKeyMethod(
 }
 
 // updateSpace method implementation
-// Constructs MsgUpdateSpace wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
+// UpdateSpaceMethod constructs MsgUpdateSpace wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output
 func (p Precompile) UpdateSpaceMethod(
 	ctx sdk.Context,
 	origin common.Address,

@@ -25,7 +25,7 @@ const (
 )
 
 // allKeys query implementation
-// Constructs QueryAllKeysRequest from args, passes it to query server and packs response into corresponding abi output
+// AllKeysMethod constructs QueryAllKeysRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) AllKeysMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -56,7 +56,7 @@ func (p Precompile) AllKeysMethod(
 }
 
 // keyById query implementation
-// Constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
+// KeyByIdMethod constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeyByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -87,7 +87,7 @@ func (p Precompile) KeyByIdMethod(
 }
 
 // keysBySpaceId query implementation
-// Constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
+// KeysBySpaceIdMethod constructs QueryKeyByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeysBySpaceIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -118,7 +118,7 @@ func (p Precompile) KeysBySpaceIdMethod(
 }
 
 // keyRequestById query implementation
-// Constructs QueryKeyRequestByIdRequest from args, passes it to query server and packs response into corresponding abi output
+// KeyRequestMethod constructs QueryKeyRequestByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeyRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -148,7 +148,7 @@ func (p Precompile) KeyRequestMethod(
 }
 
 // keyRequests query implementation
-// Constructs QueryKeyRequestsRequest from args, passes it to query server and packs response into corresponding abi output
+// KeyRequestsMethod constructs QueryKeyRequestsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeyRequestsMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -178,7 +178,7 @@ func (p Precompile) KeyRequestsMethod(
 }
 
 // keychainById query implementation
-// Constructs QueryKeychainByIdRequest from args, passes it to query server and packs response into corresponding abi output
+// KeychainMethod constructs QueryKeychainByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeychainMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -207,7 +207,7 @@ func (p Precompile) KeychainMethod(
 }
 
 // keychains query implementation
-// Constructs QueryKeychainsRequest from args, passes it to query server and packs response into corresponding abi output
+// KeychainsMethod constructs QueryKeychainsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) KeychainsMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -236,7 +236,7 @@ func (p Precompile) KeychainsMethod(
 }
 
 // signRequestById query implementation
-// Constructs QuerySignRequestByIdResponse from args, passes it to query server and packs response into corresponding abi output
+// SignRequestByIdMethod constructs QuerySignRequestByIdResponse from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SignRequestByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -265,7 +265,7 @@ func (p Precompile) SignRequestByIdMethod(
 }
 
 // signRequests query implementation
-// Constructs QuerySignRequestsRequest from args, passes it to query server and packs response into corresponding abi output
+// SignRequestsMethod constructs QuerySignRequestsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SignRequestsMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -294,7 +294,7 @@ func (p Precompile) SignRequestsMethod(
 }
 
 // spaceById query implementation
-// Constructs QuerySpaceByIdRequest from args, passes it to query server and packs response into corresponding abi output
+// SpaceByIdMethod constructs QuerySpaceByIdRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SpaceByIdMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -323,7 +323,7 @@ func (p Precompile) SpaceByIdMethod(
 }
 
 // spaces query implementation
-// Constructs QuerySpacesRequest from args, passes it to query server and packs response into corresponding abi output
+// SpacesMethod constructs QuerySpacesRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SpacesMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -352,7 +352,7 @@ func (p Precompile) SpacesMethod(
 }
 
 // spacesByOwner query implementation
-// Constructs QuerySpacesByOwnerRequest from args, passes it to query server and packs response into corresponding abi output
+// SpacesByOwnerMethod constructs QuerySpacesByOwnerRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) SpacesByOwnerMethod(
 	ctx sdk.Context,
 	origin common.Address,

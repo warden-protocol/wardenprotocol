@@ -22,7 +22,7 @@ const (
 )
 
 // actions query implementation
-// Constructs QueryActionsRequest from args, passes it to query server and packs response into corresponding abi output
+// ActionsQuery constructs QueryActionsRequest from args, passes it to query server and packs response into corresponding abi output
 func (p Precompile) ActionsQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,

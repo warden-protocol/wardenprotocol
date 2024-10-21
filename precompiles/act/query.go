@@ -1,7 +1,6 @@
 package act
 
 import (
-	"bytes"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,9 +20,8 @@ const (
 	TemplateByIdQuery     = "templateById"
 )
 
-// actions query implementation
-// ActionsQuery constructs QueryActionsRequest from args, passes it to query server and packs response into corresponding abi output
-func (p Precompile) ActionsQuery(
+// ActionsQuery actions query implementation, constructs QueryActionsRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p *Precompile) ActionsQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
@@ -62,18 +60,15 @@ func newActionsQuery(method *abi.Method, args []interface{}) (*types.QueryAction
 		return nil, fmt.Errorf("error while unpacking args to ActionsInput struct: %w", err)
 	}
 
-	if bytes.Equal(input.Pagination.Key, []byte{0}) {
-		input.Pagination.Key = nil
-	}
+	precommon.ClearPaginationKey(&input.Pagination)
 
 	return &types.QueryActionsRequest{
 		Pagination: &input.Pagination,
 	}, nil
 }
 
-// actionById query implementation
-// Constructs QueryActionByIdRequest from args, passes it to query server and packs response into corresponding abi output
-func (p Precompile) ActionByIdQuery(
+// ActionByIdQuery is actionById query implementation, constructs QueryActionByIdRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p *Precompile) ActionByIdQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
@@ -111,14 +106,14 @@ func newActionByIdQuery(args []interface{}) (*types.QueryActionByIdRequest, erro
 	if !ok {
 		return nil, fmt.Errorf("expected uint64 for actionId, got %T", args[0])
 	}
+
 	return &types.QueryActionByIdRequest{
 		Id: actionId,
 	}, nil
 }
 
-// actionsByAddress query implementation
-// Constructs QueryActionsByAddressRequest from args, passes it to query server and packs response into corresponding abi output
-func (p Precompile) ActionsByAddressQuery(
+// ActionsByAddressQuery is actionsByAddress query implementation, Constructs QueryActionsByAddressRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p *Precompile) ActionsByAddressQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
@@ -157,9 +152,7 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 		return nil, fmt.Errorf("error while unpacking args to ActionsByAddressInput struct: %w", err)
 	}
 
-	if bytes.Equal(input.Pagination.Key, []byte{0}) {
-		input.Pagination.Key = nil
-	}
+	precommon.ClearPaginationKey(&input.Pagination)
 
 	return &types.QueryActionsByAddressRequest{
 		Pagination: &input.Pagination,
@@ -168,9 +161,8 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 	}, nil
 }
 
-// templates query implementation
-// Constructs QueryTemplatesRequest from args, passes it to query server and packs response into corresponding abi output
-func (p Precompile) TemplatesQuery(
+// TemplatesQuery is templates query implementation, constructs QueryTemplatesRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p *Precompile) TemplatesQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,
@@ -209,9 +201,7 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 		return nil, fmt.Errorf("error while unpacking args to TemplatesInput struct: %w", err)
 	}
 
-	if bytes.Equal(input.Pagination.Key, []byte{0}) {
-		input.Pagination.Key = nil
-	}
+	precommon.ClearPaginationKey(&input.Pagination)
 
 	return &types.QueryTemplatesRequest{
 		Pagination: &input.Pagination,
@@ -219,9 +209,8 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 	}, nil
 }
 
-// templateById query implementation
-// Constructs QueryTemplateByIdRequest from args, passes it to query server and packs response into corresponding abi output
-func (p Precompile) TemplateByIdQuery(
+// TemplateByIdQuery is templateById query implementation, constructs QueryTemplateByIdRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p *Precompile) TemplateByIdQuery(
 	ctx sdk.Context,
 	_ *vm.Contract,
 	method *abi.Method,

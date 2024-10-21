@@ -1,6 +1,8 @@
 package act
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -8,7 +10,7 @@ import (
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 const (
@@ -21,7 +23,7 @@ const (
 
 // checkAction method implementation
 // Constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) CheckActionMethod(
+func (p *Precompile) CheckActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -54,14 +56,14 @@ func (p Precompile) CheckActionMethod(
 	return method.Outputs.Pack(response.Status)
 }
 
-func newMsgCheckAction(args []interface{}, origin common.Address) (*types.MsgCheckAction, error) {
+func newMsgCheckAction(args []interface{}, origin common.Address) (*acttypes.MsgCheckAction, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
-	return &types.MsgCheckAction{
+	return &acttypes.MsgCheckAction{
 		Creator:  authority,
 		ActionId: args[0].(uint64),
 	}, nil
@@ -69,7 +71,7 @@ func newMsgCheckAction(args []interface{}, origin common.Address) (*types.MsgChe
 
 // newTemplate method implementation
 // Constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) NewTemplateMethod(
+func (p *Precompile) NewTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -102,16 +104,22 @@ func (p Precompile) NewTemplateMethod(
 	return method.Outputs.Pack(response.Id)
 }
 
-func newMsgNewTemplate(args []interface{}, origin common.Address) (*types.MsgNewTemplate, error) {
+func newMsgNewTemplate(args []interface{}, origin common.Address) (*acttypes.MsgNewTemplate, error) {
 	if len(args) != 2 {
 		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
-	name := args[0].(string)
-	definition := args[1].(string)
+	name, ok := args[0].(string)
+	if !ok {
+		return nil, fmt.Errorf("expected string for name, got %T", args[0])
+	}
+	definition, ok := args[1].(string)
+	if !ok {
+		return nil, fmt.Errorf("expected string for definition, got %T", args[1])
+	}
 
-	return &types.MsgNewTemplate{
+	return &acttypes.MsgNewTemplate{
 		Creator:    authority,
 		Name:       name,
 		Definition: definition,
@@ -120,7 +128,7 @@ func newMsgNewTemplate(args []interface{}, origin common.Address) (*types.MsgNew
 
 // revokeAction method implementation
 // Constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) RevokeActionMethod(
+func (p *Precompile) RevokeActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -153,14 +161,14 @@ func (p Precompile) RevokeActionMethod(
 	return method.Outputs.Pack(true)
 }
 
-func newMsgRevokeAction(args []interface{}, origin common.Address) (*types.MsgRevokeAction, error) {
+func newMsgRevokeAction(args []interface{}, origin common.Address) (*acttypes.MsgRevokeAction, error) {
 	if len(args) != 1 {
 		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
-	return &types.MsgRevokeAction{
+	return &acttypes.MsgRevokeAction{
 		Creator:  authority,
 		ActionId: args[0].(uint64),
 	}, nil
@@ -168,7 +176,7 @@ func newMsgRevokeAction(args []interface{}, origin common.Address) (*types.MsgRe
 
 // updateTemplate method implementation
 // Constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) UpdateTemplateMethod(
+func (p *Precompile) UpdateTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -201,17 +209,26 @@ func (p Precompile) UpdateTemplateMethod(
 	return method.Outputs.Pack(true)
 }
 
-func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*types.MsgUpdateTemplate, error) {
+func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.MsgUpdateTemplate, error) {
 	if len(args) != 3 {
 		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
-	templateId := args[0].(uint64)
-	name := args[1].(string)
-	definition := args[2].(string)
+	templateId, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for templateId, got %T", args[0])
+	}
+	name, ok := args[1].(string)
+	if !ok {
+		return nil, fmt.Errorf("expected string for name, got %T", args[1])
+	}
+	definition, ok := args[2].(string)
+	if !ok {
+		return nil, fmt.Errorf("expected string for definition, got %T", args[2])
+	}
 
-	return &types.MsgUpdateTemplate{
+	return &acttypes.MsgUpdateTemplate{
 		Creator:    authority,
 		Id:         templateId,
 		Name:       name,
@@ -221,7 +238,7 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*types.Msg
 
 // voteForAction method implementation
 // Constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output
-func (p Precompile) VoteForActionMethod(
+func (p *Precompile) VoteForActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -255,18 +272,24 @@ func (p Precompile) VoteForActionMethod(
 	return method.Outputs.Pack(response.Status)
 }
 
-func newMsgVoteForAction(args []interface{}, origin common.Address) (*types.MsgVoteForAction, error) {
+func newMsgVoteForAction(args []interface{}, origin common.Address) (*acttypes.MsgVoteForAction, error) {
 	if len(args) != 2 {
 		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
-	actionId := args[0].(uint64)
-	voteType := types.ActionVoteType(args[1].(int32))
+	actionId, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for actionId, got %T", args[0])
+	}
+	voteType, ok := args[1].(uint8)
+	if !ok {
+		return nil, fmt.Errorf("expected uint8 for voteType, got %T", args[1])
+	}
 
-	return &types.MsgVoteForAction{
+	return &acttypes.MsgVoteForAction{
 		Participant: authority,
 		ActionId:    actionId,
-		VoteType:    voteType,
+		VoteType:    acttypes.ActionVoteType(voteType),
 	}, nil
 }

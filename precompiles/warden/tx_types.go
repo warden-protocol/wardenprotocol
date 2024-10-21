@@ -50,7 +50,7 @@ func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.
 
 	newWriterAddress, ok := args[1].(common.Address)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected common.Address for newAdminAddress, got %T", args[1])
+		return nil, nil, fmt.Errorf("expected common.Address for newWriterAddress, got %T", args[1])
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)

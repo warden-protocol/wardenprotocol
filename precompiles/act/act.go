@@ -2,9 +2,10 @@ package act
 
 import (
 	"cosmossdk.io/log"
-	storetypes "cosmossdk.io/store/types"
 	"embed"
 	"fmt"
+
+	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"

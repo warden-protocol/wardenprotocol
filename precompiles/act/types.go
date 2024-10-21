@@ -79,8 +79,8 @@ func (r *ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddress
 
 // TemplatesInput needed to unmarshal Pagination field and pass it to types.QueryTemplatesRequest
 type TemplatesInput struct {
-	Pagination query.PageRequest
-	Creator    string `json:"creator"`
+	Pagination query.PageRequest `abi:"pagination"`
+	Creator    string            `abi:"creator"`
 }
 
 // FromResponse needed to map QueryTemplatesResponse to TemplatesResponse

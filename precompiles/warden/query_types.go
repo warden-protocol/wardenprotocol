@@ -185,6 +185,10 @@ func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.Query
 		return nil, fmt.Errorf("error while unpacking args to keyRequestsInput struct: %w", err)
 	}
 
+	if _, ok := types.KeyRequestStatus_name[input.Status]; !ok {
+		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
+	}
+
 	return &types.QueryKeyRequestsRequest{
 		Pagination: &input.PageRequest,
 		KeychainId: input.KeychainId,
@@ -378,6 +382,14 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 		return nil, fmt.Errorf("error while unpacking args to signRequestsInput struct: %w", err)
 	}
 
+	if _, ok := types.SignRequestStatus_name[input.Status]; !ok {
+		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
+	}
+
+	if _, ok := types.SignRequestStatus_name[input.Status]; !ok {
+		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
+	}
+
 	return &types.QuerySignRequestsRequest{
 		Pagination: &input.PageRequest,
 		KeychainId: input.KeychainId,
@@ -541,6 +553,10 @@ type spacesByOwnerInput struct {
 }
 
 func (kr *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, error) {
+	if keyRequest.Creator == "" {
+		return nil, errors.New("keyRequest.Creator is empty")
+	}
+
 	ethCreator, err := wardencommon.AddressFromBech32Str(keyRequest.Creator)
 
 	if err != nil {

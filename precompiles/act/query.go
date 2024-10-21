@@ -147,6 +147,10 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 
 	precommon.ClearPaginationKey(&input.Pagination)
 
+	if _, ok := types.ActionStatus_name[int32(input.Status)]; !ok {
+		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
+	}
+
 	return &types.QueryActionsByAddressRequest{
 		Pagination: &input.Pagination,
 		Address:    precommon.Bech32StrFromAddress(input.Address),

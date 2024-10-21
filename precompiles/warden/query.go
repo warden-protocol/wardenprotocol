@@ -7,8 +7,6 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
-
-	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
 const (
@@ -35,14 +33,12 @@ func (p Precompile) AllKeysMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newAllKeysRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.AllKeys(ctx, req)
+	response, err := p.queryServer.AllKeys(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -67,14 +63,12 @@ func (p Precompile) KeyByIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newKeyByIdRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.KeyById(ctx, req)
+	response, err := p.queryServer.KeyById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -99,14 +93,12 @@ func (p Precompile) KeysBySpaceIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newKeysBySpaceIdRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.KeysBySpaceId(ctx, req)
+	response, err := p.queryServer.KeysBySpaceId(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -131,14 +123,12 @@ func (p Precompile) KeyRequestMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newKeyRequestByIdRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.KeyRequestById(ctx, req)
+	response, err := p.queryServer.KeyRequestById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -163,14 +153,12 @@ func (p Precompile) KeyRequestsMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newKeyRequestsRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.KeyRequests(ctx, req)
+	response, err := p.queryServer.KeyRequests(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -195,14 +183,12 @@ func (p Precompile) KeychainMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newKeychainRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.KeychainById(ctx, req)
+	response, err := p.queryServer.KeychainById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -227,14 +213,12 @@ func (p Precompile) KeychainsMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newKeychainsRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.Keychains(ctx, req)
+	response, err := p.queryServer.Keychains(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -259,14 +243,12 @@ func (p Precompile) SignRequestByIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newSignRequestByIdRequest(args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.SignRequestById(ctx, req)
+	response, err := p.queryServer.SignRequestById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -291,14 +273,12 @@ func (p Precompile) SignRequestsMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newSignRequestsRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.SignRequests(ctx, req)
+	response, err := p.queryServer.SignRequests(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -323,14 +303,12 @@ func (p Precompile) SpaceByIdMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newSpaceByIdRequest(args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.SpaceById(ctx, req)
+	response, err := p.queryServer.SpaceById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -355,14 +333,12 @@ func (p Precompile) SpacesMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newSpacesRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.Spaces(ctx, req)
+	response, err := p.queryServer.Spaces(ctx, req)
 	if response == nil {
 		return nil, fmt.Errorf("received nil response from query server")
 	}
@@ -387,14 +363,12 @@ func (p Precompile) SpacesByOwnerMethod(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := wardenkeeper.NewQueryServerImpl(p.wardenkeeper)
-
 	req, err := newSpacesByOwnerRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := queryServer.SpacesByOwner(ctx, req)
+	response, err := p.queryServer.SpacesByOwner(ctx, req)
 	if err != nil {
 		return nil, err
 	}

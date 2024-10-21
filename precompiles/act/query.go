@@ -8,7 +8,6 @@ import (
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -27,14 +26,12 @@ func (p *Precompile) ActionsQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newActionsQuery(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.Actions(ctx, req)
+	res, err := p.queryServer.Actions(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -74,14 +71,12 @@ func (p *Precompile) ActionByIdQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newActionByIdQuery(args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.ActionById(ctx, req)
+	res, err := p.queryServer.ActionById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -119,14 +114,12 @@ func (p *Precompile) ActionsByAddressQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newActionsByAddressQuery(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.ActionsByAddress(ctx, req)
+	res, err := p.queryServer.ActionsByAddress(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -168,14 +161,12 @@ func (p *Precompile) TemplatesQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newTemplatesQuery(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.Templates(ctx, req)
+	res, err := p.queryServer.Templates(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -216,14 +207,12 @@ func (p *Precompile) TemplateByIdQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newTemplateByIdQuery(args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.TemplateById(ctx, req)
+	res, err := p.queryServer.TemplateById(ctx, req)
 	if err != nil {
 		return nil, err
 	}

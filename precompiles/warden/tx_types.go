@@ -20,12 +20,12 @@ func newMsgAddKeychainAdmin(args []interface{}, origin common.Address) (*types.M
 
 	keychainId, ok := args[0].(uint64)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %d", args[0])
+		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %T", args[0])
 	}
 
 	newAdminAddress, ok := args[1].(common.Address)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected common.Address for newAdminAddress, got %s", args[1])
+		return nil, nil, fmt.Errorf("expected common.Address for newAdminAddress, got %T", args[1])
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
@@ -45,12 +45,12 @@ func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.
 
 	keychainId, ok := args[0].(uint64)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %d", args[0])
+		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %T", args[0])
 	}
 
 	newWriterAddress, ok := args[1].(common.Address)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected common.Address for newAdminAddress, got %s", args[1])
+		return nil, nil, fmt.Errorf("expected common.Address for newAdminAddress, got %T", args[1])
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
@@ -70,7 +70,7 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 
 	requestId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for requestId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for requestId, got %T", args[0])
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
@@ -78,7 +78,7 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 	if keyRequestStatus == types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
 		key, ok1 := args[1].([]byte)
 		if !ok1 {
-			return nil, fmt.Errorf("expected []byte for key, got %b", args[1])
+			return nil, fmt.Errorf("expected []byte for key, got %T", args[1])
 		}
 
 		result := &types.MsgFulfilKeyRequest_Key{
@@ -96,7 +96,7 @@ func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyReques
 	} else {
 		rejectReason, ok1 := args[1].(string)
 		if !ok1 {
-			return nil, fmt.Errorf("expected string for rejectReason, got %s", args[1])
+			return nil, fmt.Errorf("expected string for rejectReason, got %T", args[1])
 		}
 
 		result := &types.MsgFulfilKeyRequest_RejectReason{
@@ -121,13 +121,13 @@ func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignReq
 
 	requestId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for requestId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for requestId, got %T", args[0])
 	}
 
 	if signRequestStatus == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
 		signedData, ok1 := args[1].([]byte)
 		if !ok1 {
-			return nil, fmt.Errorf("expected []byte for signedData, got %b", args[1])
+			return nil, fmt.Errorf("expected []byte for signedData, got %T", args[1])
 		}
 
 		result := &types.MsgFulfilSignRequest_Payload{
@@ -145,7 +145,7 @@ func newMsgFulfilSignRequest(args []interface{}, signRequestStatus types.SignReq
 	} else {
 		rejectReason, ok1 := args[1].(string)
 		if !ok1 {
-			return nil, fmt.Errorf("expected string for rejectReason, got %s", args[1])
+			return nil, fmt.Errorf("expected string for rejectReason, got %T", args[1])
 		}
 
 		result := &types.MsgFulfilSignRequest_RejectReason{
@@ -199,27 +199,27 @@ func newMsgNewSpace(args []interface{}, origin common.Address) (*types.MsgNewSpa
 
 	approveAdminTemplateId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for approveAdminTemplateId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for approveAdminTemplateId, got %T", args[0])
 	}
 
 	rejectAdminTemplateId, ok := args[1].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for rejectAdminTemplateId, got %d", args[1])
+		return nil, fmt.Errorf("expected uint64 for rejectAdminTemplateId, got %T", args[1])
 	}
 
 	approveSignTemplateId, ok := args[2].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for approveSignTemplateId, got %d", args[2])
+		return nil, fmt.Errorf("expected uint64 for approveSignTemplateId, got %T", args[2])
 	}
 
 	rejectSignTemplateId, ok := args[3].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for rejectSignTemplateId, got %d", args[3])
+		return nil, fmt.Errorf("expected uint64 for rejectSignTemplateId, got %T", args[3])
 	}
 
 	owners, ok := args[4].([]common.Address)
 	if !ok {
-		return nil, fmt.Errorf("expected []common.Address for owners, got %s", args[4])
+		return nil, fmt.Errorf("expected []common.Address for owners, got %T", args[4])
 	}
 
 	var additionalOwners []string
@@ -246,12 +246,12 @@ func newMsgRemoveKeychainAdmin(args []interface{}, origin common.Address) (*type
 
 	keychainId, ok := args[0].(uint64)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %d", args[0])
+		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %T", args[0])
 	}
 
 	admin, ok := args[1].(common.Address)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected common.Address for admin, got %s", args[1])
+		return nil, nil, fmt.Errorf("expected common.Address for admin, got %T", args[1])
 	}
 
 	return &types.MsgRemoveKeychainAdminRequest{
@@ -299,32 +299,32 @@ func newMsgAddSpaceOwner(args []interface{}, origin common.Address, act string) 
 
 	spaceId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for spaceId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for spaceId, got %T", args[0])
 	}
 
 	newOwnerAddress, ok := args[1].(common.Address)
 	if !ok {
-		return nil, fmt.Errorf("expected common.Address for newOwnerAddress, got %s", args[1])
+		return nil, fmt.Errorf("expected common.Address for newOwnerAddress, got %T", args[1])
 	}
 
 	nonce, ok := args[2].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for nonce, got %d", args[2])
+		return nil, fmt.Errorf("expected uint64 for nonce, got %T", args[2])
 	}
 
 	actionTimeoutHeight, ok := args[3].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %d", args[3])
+		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %T", args[3])
 	}
 
 	expectedApproveExpression, ok := args[4].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %s", args[4])
+		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %T", args[4])
 	}
 
 	expectedRejectExpression, ok := args[5].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %s", args[5])
+		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %T", args[5])
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
@@ -358,32 +358,32 @@ func newMsgRemoveSpaceOwner(args []interface{}, origin common.Address, act strin
 
 	spaceId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for spaceId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for spaceId, got %T", args[0])
 	}
 
 	ownerAddress, ok := args[1].(common.Address)
 	if !ok {
-		return nil, fmt.Errorf("expected common.Address for ownerAddress, got %s", args[1])
+		return nil, fmt.Errorf("expected common.Address for ownerAddress, got %T", args[1])
 	}
 
 	nonce, ok := args[2].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for nonce, got %d", args[2])
+		return nil, fmt.Errorf("expected uint64 for nonce, got %T", args[2])
 	}
 
 	actionTimeoutHeight, ok := args[3].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %d", args[3])
+		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %T", args[3])
 	}
 
 	expectedApproveExpression, ok := args[4].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %s", args[4])
+		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %T", args[4])
 	}
 
 	expectedRejectExpression, ok := args[5].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %s", args[5])
+		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %T", args[5])
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
@@ -497,7 +497,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 
 	var input newSignRequestInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %w", err)
 	}
 
 	var analyzers []string
@@ -538,32 +538,32 @@ func newMsgUpdateKey(args []interface{}, origin common.Address, act string) (*ac
 
 	keyId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for keyId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for keyId, got %T", args[0])
 	}
 
 	approveTemplateId, ok := args[1].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for approveTemplateId, got %d", args[1])
+		return nil, fmt.Errorf("expected uint64 for approveTemplateId, got %T", args[1])
 	}
 
 	rejectTemplateId, ok := args[2].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for rejectTemplateId, got %d", args[2])
+		return nil, fmt.Errorf("expected uint64 for rejectTemplateId, got %T", args[2])
 	}
 
 	actionTimeoutHeight, ok := args[3].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %d", args[3])
+		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %T", args[3])
 	}
 
 	expectedApproveExpression, ok := args[4].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %s", args[4])
+		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %T", args[4])
 	}
 
 	expectedRejectExpression, ok := args[5].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %s", args[5])
+		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %T", args[5])
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
@@ -596,47 +596,47 @@ func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*
 
 	spaceId, ok := args[0].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for spaceId, got %d", args[0])
+		return nil, fmt.Errorf("expected uint64 for spaceId, got %T", args[0])
 	}
 
 	nonce, ok := args[1].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for nonce, got %d", args[1])
+		return nil, fmt.Errorf("expected uint64 for nonce, got %T", args[1])
 	}
 
 	approveAdminTemplateId, ok := args[2].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for approveAdminTemplateId, got %d", args[2])
+		return nil, fmt.Errorf("expected uint64 for approveAdminTemplateId, got %T", args[2])
 	}
 
 	rejectAdminTemplateId, ok := args[3].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for rejectAdminTemplateId, got %d", args[3])
+		return nil, fmt.Errorf("expected uint64 for rejectAdminTemplateId, got %T", args[3])
 	}
 
 	approveSignTemplateId, ok := args[4].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for approveSignTemplateId, got %d", args[4])
+		return nil, fmt.Errorf("expected uint64 for approveSignTemplateId, got %T", args[4])
 	}
 
 	rejectSignTemplateId, ok := args[5].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for rejectSignTemplateId, got %d", args[5])
+		return nil, fmt.Errorf("expected uint64 for rejectSignTemplateId, got %T", args[5])
 	}
 
 	actionTimeoutHeight, ok := args[6].(uint64)
 	if !ok {
-		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %d", args[6])
+		return nil, fmt.Errorf("expected uint64 for actionTimeoutHeight, got %T", args[6])
 	}
 
 	expectedApproveExpression, ok := args[7].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %s", args[7])
+		return nil, fmt.Errorf("expected string for expectedApproveExpression, got %T", args[7])
 	}
 
 	expectedRejectExpression, ok := args[8].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %s", args[8])
+		return nil, fmt.Errorf("expected string for expectedRejectExpression, got %T", args[8])
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)

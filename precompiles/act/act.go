@@ -1,11 +1,10 @@
 package act
 
 import (
-	"embed"
-	"fmt"
-
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
+	"embed"
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
@@ -14,6 +13,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
@@ -30,6 +30,7 @@ type Precompile struct {
 	evmoscmn.Precompile
 	actmodulekeeper actmodulekeeper.Keeper
 	eventsRegistry  *common.EthEventsRegistry
+	queryServer     types.QueryServer
 }
 
 // LoadABI loads the x/act ABI from the embedded abi.json file
@@ -52,6 +53,7 @@ func NewPrecompile(actkeeper actmodulekeeper.Keeper, er *common.EthEventsRegistr
 		},
 		actmodulekeeper: actkeeper,
 		eventsRegistry:  er,
+		queryServer:     actmodulekeeper.NewQueryServerImpl(actkeeper),
 	}
 
 	p.SetAddress(p.Address())

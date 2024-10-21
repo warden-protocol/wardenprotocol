@@ -977,9 +977,9 @@
 					"type": "uint64"
 				},
 				{
-					"internalType": "int32",
+					"internalType": "enum VoteType",
 					"name": "voteType",
-					"type": "int32"
+					"type": "uint8"
 				}
 			],
 			"name": "voteForAction",

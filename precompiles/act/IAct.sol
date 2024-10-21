@@ -106,7 +106,7 @@ interface IAct {
     /// @return action status
     function voteForAction(
         uint64 actionId,
-        int32 voteType
+        VoteType voteType
     ) external returns (string memory);
 
     /// @dev Defines a method to query actions.

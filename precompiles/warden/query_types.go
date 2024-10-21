@@ -79,7 +79,7 @@ type keysOutput struct {
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, error) {
-	if res == nil {
+	if res == nil || res.Keys == nil {
 		return nil, errors.New("received nil QueryKeyResponse")
 	}
 
@@ -206,7 +206,7 @@ type keyRequestsOutput struct {
 }
 
 func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) (*keyRequestsOutput, error) {
-	if res == nil {
+	if res == nil || res.KeyRequests == nil {
 		return nil, errors.New("received nil QueryKeyRequestsResponse")
 	}
 
@@ -283,7 +283,7 @@ type keychainsOutput struct {
 }
 
 func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) (*keychainsOutput, error) {
-	if res == nil {
+	if res == nil || res.Keychains == nil {
 		return nil, errors.New("received nil QueryKeychainsResponse")
 	}
 	o.Keychains = make([]Keychain, len(res.Keychains))
@@ -388,9 +388,10 @@ type signRequestsOutput struct {
 }
 
 func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) (*signRequestsOutput, error) {
-	if res == nil {
+	if res == nil || res.SignRequests == nil {
 		return nil, errors.New("received nil QuerySignRequestsResponse")
 	}
+
 	o.SignRequests = make([]SignRequest, len(res.SignRequests))
 	for i, k := range res.SignRequests {
 		signRequest, err := new(SignRequest).mapSignRequest(k)
@@ -427,7 +428,7 @@ func newSpaceByIdRequest(args []interface{}) (*types.QuerySpaceByIdRequest, erro
 }
 
 func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) (*Space, error) {
-	if res == nil {
+	if res == nil || res.Space == nil {
 		return nil, errors.New("received nil QuerySpaceByIdResponse")
 	}
 	return o.mapSpace(res.Space)
@@ -485,7 +486,7 @@ type spacesOutput struct {
 }
 
 func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) (*spacesOutput, error) {
-	if res == nil {
+	if res == nil || res.Spaces == nil {
 		return nil, errors.New("received nil QuerySpacesResponse")
 	}
 	o.Spaces = make([]Space, len(res.Spaces))

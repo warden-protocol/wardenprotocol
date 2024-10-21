@@ -440,13 +440,13 @@ interface IWarden {
     /// @param newAdmin The address of the admin
     /// @param id The keychain id
     /// @param adminsCount The new count of admins
-    event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount);
+    event AddKeychainAdmin(address newAdmin, uint64 indexed id, uint64 adminsCount);
 
     /// @dev AddKeychainWriter defines an Event emitted when add a new writer to a keychain.
     /// @param newWriter The address of the writer
     /// @param id The keychain id
     /// @param writersCount The new count of writers
-    event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount);
+    event AddKeychainWriter(address newWriter, uint64 indexed id, uint64 writersCount);
 
     /// @dev NewKey defines an Event emitted when a key request fulfilled.
     /// @param id The key id
@@ -455,24 +455,24 @@ interface IWarden {
     /// @param keychainId The keychain id
     /// @param approveTemplateId The approve template id
     /// @param rejectTemplateId The reject template id
-    event NewKey(uint64 id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
+    event NewKey(uint64 indexed id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev RejectKeyRequest defines an Event emitted when a key request rejected.
     /// @param id The request id
-    event RejectKeyRequest(uint64 id);
+    event RejectKeyRequest(uint64 indexed id);
 
     /// @dev FulfilSignRequest defines an Event emitted when a sign request fulfilled.
     /// @param id The request id
-    event FulfilSignRequest(uint64 id);
+    event FulfilSignRequest(uint64 indexed id);
 
     /// @dev RejectSignRequest defines an Event emitted when a sign request rejected.
     /// @param id The request id
-    event RejectSignRequest(uint64 id);
+    event RejectSignRequest(uint64 indexed id);
 
     /// @dev NewKeychain defines an Event emitted when a new keychain is created.
     /// @param id The keychain id
     /// @param creator The creator address
-    event NewKeychain(uint64 id, address indexed creator);
+    event NewKeychain(uint64 indexed id, address creator);
 
     /// @dev NewSpace defines an Event emitted when a new space is created.
     /// @param id The space id
@@ -482,18 +482,18 @@ interface IWarden {
     /// @param rejectAdminTemplateId The template id of reject admin action
     /// @param approveSignTemplateId The template id of approve sign action
     /// @param rejectSignTemplateId The template id of reject sign action
-    event NewSpace(uint64 id, address indexed creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
+    event NewSpace(uint64 indexed id, address creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 
     /// @dev RemoveKeychainAdmin defines an Event emitted when an admin removed from keychain.
     /// @param keychainId The keychain id
     /// @param admin The admin address
     /// @param adminsCount The count of keychain admins
-    event RemoveKeychainAdmin(uint64 keychainId, address indexed admin, uint64 adminsCount);
+    event RemoveKeychainAdmin(uint64 indexed keychainId, address admin, uint64 adminsCount);
 
     /// @dev UpdateKeychain defines an Event emitted when a keychain is updated.
     /// @param id The keychain id
     /// @param keychainFees The keychain fees
-    event UpdateKeychain(uint64 id, KeychainFees keychainFees);
+    event UpdateKeychain(uint64 indexed id, KeychainFees keychainFees);
 
     /// @dev AddSpaceOwner defines an Event emitted when a new space owner is added.
     /// @param spaceId The space id

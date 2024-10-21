@@ -3,14 +3,13 @@ package warden
 import (
 	"bytes"
 	"fmt"
-	"math/big"
-	"reflect"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
+	"math/big"
+	"reflect"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -64,27 +63,31 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
+	var b bytes.Buffer
+
 	typedEvent := wardentypes.EventAddKeychainAdmin{}
 	if err := precommon.ParseSdkEvent(eventAddKeychainAdmin, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-		typedEvent.GetAdminsCount(),
-	)
+	newAdminAddress, err := precommon.AddressFromBech32Str(typedEvent.GetNewAdmin())
 	if err != nil {
 		return nil, err
 	}
 
-	if topics[1], err = evmoscmn.MakeTopic(*adminAddress); err != nil {
-		return nil, fmt.Errorf("failed to make topic for admin address: %w", err)
+	b.Write(append(make([]byte, 12), newAdminAddress.Bytes()...))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetAdminsCount())))))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
+	if err != nil {
+		return nil, err
 	}
 
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -104,20 +107,23 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *co
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
+	var b bytes.Buffer
+
 	typedEvent := wardentypes.EventAddKeychainWriter{}
 	if err := precommon.ParseSdkEvent(eventAddKeychainWriter, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-		typedEvent.GetWritersCount(),
-	)
+	newWriterAddress, err := precommon.AddressFromBech32Str(typedEvent.GetNewWriter())
 	if err != nil {
 		return nil, err
 	}
 
-	topics[1], err = evmoscmn.MakeTopic(*writerAddress)
+	b.Write(append(make([]byte, 12), newWriterAddress.Bytes()...))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetWritersCount())))))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +131,7 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *co
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -137,7 +143,7 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	// Prepare the event topics
 	event := p.ABI.Events[EventTypeNewKey]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -147,13 +153,18 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	}
 
 	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
 		typedEvent.GetKeyType(),
 		typedEvent.GetSpaceId(),
 		typedEvent.GetKeychainId(),
 		typedEvent.GetApproveTemplateId(),
 		typedEvent.GetRejectTemplateId(),
 	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {
 		return nil, err
@@ -174,7 +185,7 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address,
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectKeyRequest]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -183,9 +194,9 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address,
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-	)
+	var err error
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +204,7 @@ func (p Precompile) GetRejectKeyRequestEvent(ctx sdk.Context, _ *common.Address,
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        []byte{},
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -205,7 +216,7 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address
 	// Prepare the event topics
 	event := p.ABI.Events[EventFulfilSignRequest]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -214,9 +225,9 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-	)
+	var err error
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +235,7 @@ func (p Precompile) GetFulfilSignRequestEvent(ctx sdk.Context, _ *common.Address
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        []byte{},
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -236,7 +247,7 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address
 	// Prepare the event topics
 	event := p.ABI.Events[EventRejectSignRequest]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -245,9 +256,9 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-	)
+	var err error
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +266,7 @@ func (p Precompile) GetRejectSignRequestEvent(ctx sdk.Context, _ *common.Address
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        []byte{},
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -276,20 +287,17 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	topics[1], err = evmoscmn.MakeTopic(*creator)
-
-	if err != nil {
-		return nil, err
-	}
+	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventNewKeychain{}
 	if err = precommon.ParseSdkEvent(eventNewKeychain, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-	)
+	b.Write(append(make([]byte, 12), creator.Bytes()...))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
 	if err != nil {
 		return nil, err
 	}
@@ -297,7 +305,7 @@ func (p Precompile) GetNewKeychainEvent(ctx sdk.Context, creator *common.Address
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -318,23 +326,22 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	if topics[1], err = evmoscmn.MakeTopic(*creator); err != nil {
-		return nil, err
-	}
+	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventCreateSpace{}
 	if err = precommon.ParseSdkEvent(eventNewSpace, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
 
-	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
-		typedEvent.GetOwnersCount(),
-		typedEvent.GetApproveAdminTemplateId(),
-		typedEvent.GetRejectAdminTemplateId(),
-		typedEvent.GetApproveSignTemplateId(),
-		typedEvent.GetRejectSignTemplateId(),
-	)
+	b.Write(append(make([]byte, 12), creator.Bytes()...))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetOwnersCount())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveAdminTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectAdminTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveSignTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectSignTemplateId())))))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
 	if err != nil {
 		return nil, err
 	}
@@ -342,7 +349,7 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	log := ethtypes.Log{
 		Address:     p.Address(),
 		Topics:      topics,
-		Data:        packed,
+		Data:        b.Bytes(),
 		BlockNumber: uint64(ctx.BlockHeight()),
 	}
 
@@ -363,17 +370,26 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
-	if topics[1], err = evmoscmn.MakeTopic(*admin); err != nil {
-		return nil, err
-	}
-
 	var b bytes.Buffer
+
 	typedEvent := wardentypes.EventRemoveKeychainAdmin{}
 	if err = precommon.ParseSdkEvent(eventRemoveKeychainAdmin, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetId())))))
+
+	adminAddress, err := precommon.AddressFromBech32Str(typedEvent.GetAdmin())
+	if err != nil {
+		return nil, err
+	}
+
+	b.Write(append(make([]byte, 12), adminAddress.Bytes()...))
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetAdminsCount())))))
+
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
+	if err != nil {
+		return nil, err
+	}
 
 	log := ethtypes.Log{
 		Address:     p.Address(),
@@ -390,7 +406,7 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	// Prepare the event topics
 	event := p.ABI.Events[EventUpdateKeychain]
 
-	topics := make([]common.Hash, 1)
+	topics := make([]common.Hash, 2)
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 	var b bytes.Buffer
@@ -406,8 +422,13 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 		return nil, err
 	}
 
+	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
+
+	if err != nil {
+		return nil, err
+	}
+
 	packedKeychainFees, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetId(),
 		mapSdkKeychainFees(typedEvent.GetKeychainFees()),
 	)
 	if err != nil {

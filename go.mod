@@ -15,6 +15,8 @@ replace (
 	github.com/ethereum/go-ethereum => github.com/warden-protocol/go-ethereum v1.10.26-warden-evmos-rc2
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
+
+	github.com/mattn/go-sqlite3 => github.com/mattn/go-sqlite3 v1.14.24
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )

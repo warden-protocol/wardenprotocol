@@ -29,8 +29,8 @@ func (r *EthEventsRegistry) getEventProvider(eventType string) EthEventProvider 
 	return nil
 }
 
-func NewEthEventsRegistry() EthEventsRegistry {
-	return EthEventsRegistry{
+func NewEthEventsRegistry() *EthEventsRegistry {
+	return &EthEventsRegistry{
 		p: make(map[string]EthEventProvider),
 	}
 }

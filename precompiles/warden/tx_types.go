@@ -333,6 +333,9 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 	}
 
 	keyType, err := mapKeyType(input.KeyType)
+	if err != nil {
+		return nil, err
+	}
 
 	msgNewKeyRequest := types.MsgNewKeyRequest{
 		Authority:         act,

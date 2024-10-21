@@ -50,7 +50,7 @@ func (p Precompile) AddKeychainAdminMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	if _, err := msgServer.AddKeychainAdmin(ctx, msgAddKeychainAdmin); err != nil {
@@ -84,7 +84,7 @@ func (p Precompile) AddKeychainWriterMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	if _, err = msgServer.AddKeychainWriter(ctx, msgAddKeychainWriter); err != nil {
@@ -120,7 +120,7 @@ func (p Precompile) FulfilKeyRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	if _, err = msgServer.FulfilKeyRequest(ctx, msgFulfilKeyRequest); err != nil {
@@ -156,7 +156,7 @@ func (p Precompile) FulfilSignRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	if _, err = msgServer.FulfilSignRequest(ctx, msgFulfilSignRequest); err != nil {
@@ -190,7 +190,7 @@ func (p Precompile) NewKeychainMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	msgNewKeychainResponse, err := msgServer.NewKeychain(ctx, msgNewKeychain)
@@ -226,7 +226,7 @@ func (p Precompile) NewSpaceMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	msgNewSpaceResponse, err := msgServer.NewSpace(ctx, msgNewSpace)
@@ -262,7 +262,7 @@ func (p Precompile) RemoveKeychainAdminMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	if _, err := msgServer.RemoveKeychainAdmin(ctx, msgRemoveKeychainAdmin); err != nil {
@@ -296,7 +296,7 @@ func (p Precompile) UpdateKeychainMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	if _, err = msgServer.UpdateKeychain(ctx, msgUpdateKeychain); err != nil {
@@ -330,7 +330,7 @@ func (p Precompile) AddSpaceOwnerMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -366,7 +366,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -402,7 +402,7 @@ func (p Precompile) NewKeyRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -438,7 +438,7 @@ func (p Precompile) NewSignRequestMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -474,7 +474,7 @@ func (p Precompile) UpdateKeyMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)
@@ -510,7 +510,7 @@ func (p Precompile) UpdateSpaceMethod(
 	p.Logger(ctx).Debug(
 		"tx called",
 		"method", method.Name,
-		"args",
+		"args", args,
 	)
 
 	_, err = msgServer.NewAction(ctx, msgNewAction)

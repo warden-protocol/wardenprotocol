@@ -23,15 +23,11 @@ func (cli *Wardend) CallOps(t *testing.T) *bind.CallOpts {
 
 func (cli *Wardend) EthAddress(t *testing.T) common.Address {
 	privateKey, err := crypto.HexToECDSA(cli.PrivateKey(t))
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
 	publicKey := privateKey.Public()
 	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
-	if !ok {
-		t.Fatal("cannot assert type: publicKey is not of type *ecdsa.PublicKey")
-	}
+	require.True(t, ok, "cannot assert type: publicKey is not of type *ecdsa.PublicKey")
 
 	return crypto.PubkeyToAddress(*publicKeyECDSA)
 }
@@ -41,26 +37,18 @@ func (cli *Wardend) TransactOps(
 	ctx context.Context,
 	client *ethclient.Client) *bind.TransactOpts {
 	privateKey, err := crypto.HexToECDSA(cli.PrivateKey(t))
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
 	fromAddress := cli.EthAddress(t)
 
 	nonce, err := client.PendingNonceAt(ctx, fromAddress)
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
 	gasPrice, err := client.SuggestGasPrice(ctx)
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1337))
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
 	auth.Nonce = big.NewInt(int64(nonce))
 	auth.Value = big.NewInt(0)     // in wei

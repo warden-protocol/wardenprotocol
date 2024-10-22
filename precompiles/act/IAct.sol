@@ -9,7 +9,7 @@ address constant IACT_PRECOMPILE_ADDRESS = 0x00000000000000000000000000000000000
 /// @dev The IAct contract's instance.
 IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
 
-enum ActionStatus { Pending, Approved, Rejected, Revoked }
+enum ActionStatus { Unspecified, Pending, Completed, Revoked, Timeout }
 enum VoteType { None, Approve, Reject }
 
 struct ActionVote {

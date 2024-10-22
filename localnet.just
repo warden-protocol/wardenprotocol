@@ -8,7 +8,7 @@ start bin="wardend" install="true":
     set -euxo pipefail
 
     if [[ "{{install}}" == "true" && "{{bin}}" == "wardend" ]]; then
-        just --unstable wardend install
+        just wardend install
     fi
 
     function replace() {
@@ -46,14 +46,14 @@ start bin="wardend" install="true":
       sleep 3
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
       if [ -f $ethereum_analyzer_wasm ]; then
-        just --unstable  deploy-contract $ethereum_analyzer_wasm
+        just deploy-contract $ethereum_analyzer_wasm
       else
         echo "$ethereum_analyzer_wasm not found, will try to build it"
         pushd contracts
-        just --unstable compile ethereum-analyzer
+        just compile ethereum-analyzer
         popd
         if [ -f $ethereum_analyzer_wasm ]; then
-          just --unstable deploy-contract $ethereum_analyzer_wasm
+          just deploy-contract $ethereum_analyzer_wasm
         else
           echo "Could not build ethereum_analyzer.wasm, giving up deploying it."
         fi

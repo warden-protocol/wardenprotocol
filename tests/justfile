@@ -17,7 +17,7 @@ list:
 focus name:
   go test -run 'TestIntegration/{{name}}' -v ./integration_test.go
 
-#[confirm("Are you sure you want to delete the folder?")]
+[confirm("Are you sure you want to delete the folder?")]
 _rm_rf dir:
   rm -rf {{dir}}
 

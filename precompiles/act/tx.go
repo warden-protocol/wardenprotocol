@@ -21,8 +21,7 @@ const (
 	VoteForActionMethod  = "voteForAction"
 )
 
-// checkAction method implementation
-// Constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
+// CheckActionMethod constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
 func (p *Precompile) CheckActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -63,14 +62,18 @@ func newMsgCheckAction(args []interface{}, origin common.Address) (*acttypes.Msg
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
+	actionId, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for actionId, got %T", args[0])
+	}
+
 	return &acttypes.MsgCheckAction{
 		Creator:  authority,
-		ActionId: args[0].(uint64),
+		ActionId: actionId,
 	}, nil
 }
 
-// newTemplate method implementation
-// Constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output
+// NewTemplateMethod constructs MsgNewTemplate from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) NewTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -110,10 +113,12 @@ func newMsgNewTemplate(args []interface{}, origin common.Address) (*acttypes.Msg
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
+
 	name, ok := args[0].(string)
 	if !ok {
 		return nil, fmt.Errorf("expected string for name, got %T", args[0])
 	}
+
 	definition, ok := args[1].(string)
 	if !ok {
 		return nil, fmt.Errorf("expected string for definition, got %T", args[1])
@@ -126,8 +131,7 @@ func newMsgNewTemplate(args []interface{}, origin common.Address) (*acttypes.Msg
 	}, nil
 }
 
-// revokeAction method implementation
-// Constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output
+// RevokeActionMethod constructs MsgRevokeAction from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) RevokeActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -168,14 +172,18 @@ func newMsgRevokeAction(args []interface{}, origin common.Address) (*acttypes.Ms
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
+	actionId, ok := args[0].(uint64)
+	if !ok {
+		return nil, fmt.Errorf("expected uint64 for actionId, got %T", args[0])
+	}
+
 	return &acttypes.MsgRevokeAction{
 		Creator:  authority,
-		ActionId: args[0].(uint64),
+		ActionId: actionId,
 	}, nil
 }
 
-// updateTemplate method implementation
-// Constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output
+// UpdateTemplateMethod constructs MsgUpdateTemplate from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) UpdateTemplateMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -215,14 +223,17 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
+
 	templateId, ok := args[0].(uint64)
 	if !ok {
 		return nil, fmt.Errorf("expected uint64 for templateId, got %T", args[0])
 	}
+
 	name, ok := args[1].(string)
 	if !ok {
 		return nil, fmt.Errorf("expected string for name, got %T", args[1])
 	}
+
 	definition, ok := args[2].(string)
 	if !ok {
 		return nil, fmt.Errorf("expected string for definition, got %T", args[2])
@@ -236,8 +247,7 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.
 	}, nil
 }
 
-// voteForAction method implementation
-// Constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output
+// VoteForActionMethod constructs MsgVoteForAction from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) VoteForActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -278,10 +288,12 @@ func newMsgVoteForAction(args []interface{}, origin common.Address) (*acttypes.M
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
+
 	actionId, ok := args[0].(uint64)
 	if !ok {
 		return nil, fmt.Errorf("expected uint64 for actionId, got %T", args[0])
 	}
+
 	voteType, ok := args[1].(uint8)
 	if !ok {
 		return nil, fmt.Errorf("expected uint8 for voteType, got %T", args[1])

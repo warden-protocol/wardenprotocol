@@ -48,19 +48,19 @@ func newMsgAddKeychainWriter(args []interface{}, origin common.Address) (*types.
 		return nil, nil, fmt.Errorf("expected uint64 for keychainId, got %T", args[0])
 	}
 
-	newAdminAddress, ok := args[1].(common.Address)
+	newWriterAddress, ok := args[1].(common.Address)
 	if !ok {
-		return nil, nil, fmt.Errorf("expected common.Address for newAdminAddress, got %T", args[1])
+		return nil, nil, fmt.Errorf("expected common.Address for newWriterAddress, got %T", args[1])
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
-	newWriter := wardencommon.Bech32StrFromAddress(newAdminAddress)
+	newWriter := wardencommon.Bech32StrFromAddress(newWriterAddress)
 
 	return &types.MsgAddKeychainWriter{
 		Creator:    creator,
 		KeychainId: keychainId,
 		Writer:     newWriter,
-	}, &newAdminAddress, nil
+	}, &newWriterAddress, nil
 }
 
 func newMsgFulfilKeyRequest(args []interface{}, keyRequestStatus types.KeyRequestStatus, origin common.Address) (*types.MsgFulfilKeyRequest, error) {
@@ -169,7 +169,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 	creator := wardencommon.Bech32StrFromAddress(origin)
 	var input newKeyChainInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to newKeyChainInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to newKeyChainInput struct: %w", err)
 	}
 
 	return &types.MsgNewKeychain{
@@ -269,7 +269,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 	creator := wardencommon.Bech32StrFromAddress(origin)
 	var input updateKeyChainInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to updateKeyChainInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to updateKeyChainInput struct: %w", err)
 	}
 
 	return &types.MsgUpdateKeychain{
@@ -497,7 +497,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 
 	var input newSignRequestInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %s", err)
+		return nil, fmt.Errorf("error while unpacking args to newSignRequestInput struct: %w", err)
 	}
 
 	var analyzers []string

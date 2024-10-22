@@ -1,36 +1,4 @@
 {
-	"data": {
-		"bytecode": {
-			"functionDebugData": {},
-			"generatedSources": [],
-			"linkReferences": {},
-			"object": "",
-			"opcodes": "",
-			"sourceMap": ""
-		},
-		"deployedBytecode": {
-			"functionDebugData": {},
-			"generatedSources": [],
-			"immutableReferences": {},
-			"linkReferences": {},
-			"object": "",
-			"opcodes": "",
-			"sourceMap": ""
-		},
-		"gasEstimates": null,
-		"methodIdentifiers": {
-			"actionById(uint64)": "51619ef0",
-			"actions((bytes,uint64,uint64,bool,bool))": "9e9d1e27",
-			"actionsByAddress((bytes,uint64,uint64,bool,bool),address,int32)": "d98d037e",
-			"checkAction(uint64)": "737c52b5",
-			"newTemplate(string,string)": "20748349",
-			"revokeAction(uint64)": "b8fcbfef",
-			"templateById(uint64)": "161f1e48",
-			"templates((bytes,uint64,uint64,bool,bool))": "91dc3baa",
-			"updateTemplate(uint64,string,string)": "cb7391d5",
-			"voteForAction(uint64,int32)": "df5a2a3a"
-		}
-	},
 	"abi": [
 		{
 			"anonymous": false,
@@ -559,9 +527,9 @@
 					"type": "address"
 				},
 				{
-					"internalType": "int32",
+					"internalType": "enum ActionStatus",
 					"name": "status",
-					"type": "int32"
+					"type": "uint8"
 				}
 			],
 			"name": "actionsByAddress",
@@ -881,6 +849,11 @@
 					"internalType": "struct Types.PageRequest",
 					"name": "pagination",
 					"type": "tuple"
+				},
+				{
+					"internalType": "address",
+					"name": "creator",
+					"type": "address"
 				}
 			],
 			"name": "templates",
@@ -977,9 +950,9 @@
 					"type": "uint64"
 				},
 				{
-					"internalType": "int32",
+					"internalType": "enum VoteType",
 					"name": "voteType",
-					"type": "int32"
+					"type": "uint8"
 				}
 			],
 			"name": "voteForAction",

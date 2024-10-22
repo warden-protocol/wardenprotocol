@@ -44,13 +44,3 @@ func AddressesFromBech32StrArray(items []string) ([]common.Address, error) {
 
 	return AddressesFromBech32StrItemArray(items, id)
 }
-
-// MustAddressFromBech32Str creates common.Address from a string, panics if it's unsuccessful
-func MustAddressFromBech32Str(address string) common.Address {
-	accAddress, err := AddressFromBech32Str(address)
-	if err != nil {
-		panic(err)
-	}
-
-	return accAddress
-}

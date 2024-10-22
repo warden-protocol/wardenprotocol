@@ -4,7 +4,10 @@ pragma solidity >=0.8.18;
 import "../common/Types.sol";
 
 /// @dev The IWarden contract's address.
-address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900; 
+address constant IWARDEN_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900;
+
+/// @dev The IWarden contract's instance.
+IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
 
 struct KeychainFees {
     Types.Coin[] keyReq;
@@ -47,13 +50,13 @@ struct KeyRequest {
 struct Keychain {
     uint64 id;
     address creator;
-	string name;
+    string name;
     address[] admins;
     address[] writers;
-	KeychainFees fees;
-	string description;
-	string url;
-	string keybaseId;
+    KeychainFees fees;
+    string description;
+    string url;
+    string keybaseId;
 }
 
 struct SignRequest {
@@ -236,55 +239,55 @@ interface IWarden {
     ) external returns (bool success);
 
     /// @dev Defines a method to create a new key request.
-	/// @param spaceId The space id
-	/// @param keychainId The keychain id
-	/// @param keyType The key type
-	/// @param approveTemplateId The approve template id
-	/// @param rejectTemplateId The reject template id
-	/// @param maxKeychainFees The max keychain fees
-	/// @param nonce The nonce
+    /// @param spaceId The space id
+    /// @param keychainId The keychain id
+    /// @param keyType The key type
+    /// @param approveTemplateId The approve template id
+    /// @param rejectTemplateId The reject template id
+    /// @param maxKeychainFees The max keychain fees
+    /// @param nonce The nonce
     /// @param actionTimeoutHeight The block height up until this action can be executed
     /// @param expectedApproveExpression The definition of expected approval expression the action is created with
     /// @param expectedRejectExpression The definition of expected reject expression the action is created with
     /// @return success If execution was successful
     function newKeyRequest(
-	    uint64 spaceId,
-	    uint64 keychainId,
-	    KeyType keyType,
-	    uint64 approveTemplateId,
-	    uint64 rejectTemplateId,
-	    Types.Coin[] calldata maxKeychainFees,
-	    uint64 nonce,
-	    uint64 actionTimeoutHeight,
-	    string calldata expectedApproveExpression,
-	    string calldata expectedRejectExpression
+        uint64 spaceId,
+        uint64 keychainId,
+        KeyType keyType,
+        uint64 approveTemplateId,
+        uint64 rejectTemplateId,
+        Types.Coin[] calldata maxKeychainFees,
+        uint64 nonce,
+        uint64 actionTimeoutHeight,
+        string calldata expectedApproveExpression,
+        string calldata expectedRejectExpression
     ) external returns (bool success);
 
     /// @dev Defines a method to create a new signature request.
-	/// @param keyId The key id
+    /// @param keyId The key id
     /// @param input The input
     /// @param analyzers The analyzers
     /// @param encryptionKey The encryption key
-	/// @param maxKeychainFees The max keychain fees
-	/// @param nonce The nonce
+    /// @param maxKeychainFees The max keychain fees
+    /// @param nonce The nonce
     /// @param actionTimeoutHeight The block height up until this action can be executed
     /// @param expectedApproveExpression The definition of expected approval expression the action is created with
     /// @param expectedRejectExpression The definition of expected reject expression the action is created with
     /// @return success If execution was successful
     function newSignRequest(
-	    uint64 keyId,
+        uint64 keyId,
         bytes calldata input,
         address[] calldata analyzers,
         bytes calldata encryptionKey,
-	    Types.Coin[] calldata maxKeychainFees,
-	    uint64 nonce,
-	    uint64 actionTimeoutHeight,
-	    string calldata expectedApproveExpression,
-	    string calldata expectedRejectExpression
+        Types.Coin[] calldata maxKeychainFees,
+        uint64 nonce,
+        uint64 actionTimeoutHeight,
+        string calldata expectedApproveExpression,
+        string calldata expectedRejectExpression
     ) external returns (bool success);
 
     /// @dev Defines a method to update a key.
-	/// @param keyId The key id
+    /// @param keyId The key id
     /// @param approveTemplateId The approve template id
     /// @param rejectTemplateId The reject template id
     /// @param actionTimeoutHeight The block height up until this action can be executed
@@ -292,17 +295,17 @@ interface IWarden {
     /// @param expectedRejectExpression The definition of expected reject expression the action is created with
     /// @return success If execution was successful
     function updateKey(
-	    uint64 keyId,
-	    uint64 approveTemplateId,
-	    uint64 rejectTemplateId,
-	    uint64 actionTimeoutHeight,
-	    string calldata expectedApproveExpression,
-	    string calldata expectedRejectExpression
+        uint64 keyId,
+        uint64 approveTemplateId,
+        uint64 rejectTemplateId,
+        uint64 actionTimeoutHeight,
+        string calldata expectedApproveExpression,
+        string calldata expectedRejectExpression
     ) external returns (bool success);
 
     /// @dev Defines a method to update a space.
-	/// @param spaceId The space id
-	/// @param nonce The nonce
+    /// @param spaceId The space id
+    /// @param nonce The nonce
     /// @param approveAdminTemplateId The template id of approve admin action
     /// @param rejectAdminTemplateId The template id of reject admin action
     /// @param approveSignTemplateId The template id of approve sign action
@@ -312,15 +315,15 @@ interface IWarden {
     /// @param expectedRejectExpression The definition of expected reject expression the action is created with
     /// @return success If execution was successful
     function updateSpace(
-	    uint64 spaceId,
-	    uint64 nonce,
-	    uint64 approveAdminTemplateId,
-	    uint64 rejectAdminTemplateId,
-	    uint64 approveSignTemplateId,
-	    uint64 rejectSignTemplateId,
-	    uint64 actionTimeoutHeight,
-	    string calldata expectedApproveExpression,
-	    string calldata expectedRejectExpression
+        uint64 spaceId,
+        uint64 nonce,
+        uint64 approveAdminTemplateId,
+        uint64 rejectAdminTemplateId,
+        uint64 approveSignTemplateId,
+        uint64 rejectSignTemplateId,
+        uint64 actionTimeoutHeight,
+        string calldata expectedApproveExpression,
+        string calldata expectedRejectExpression
     ) external returns (bool success);
 
     /// @dev Defines a method to query keys.
@@ -437,13 +440,13 @@ interface IWarden {
     /// @param newAdmin The address of the admin
     /// @param id The keychain id
     /// @param adminsCount The new count of admins
-    event AddKeychainAdmin(address indexed newAdmin, uint64 id, uint64 adminsCount);
+    event AddKeychainAdmin(address newAdmin, uint64 indexed id, uint64 adminsCount);
 
     /// @dev AddKeychainWriter defines an Event emitted when add a new writer to a keychain.
     /// @param newWriter The address of the writer
     /// @param id The keychain id
     /// @param writersCount The new count of writers
-    event AddKeychainWriter(address indexed newWriter, uint64 id, uint64 writersCount);
+    event AddKeychainWriter(address newWriter, uint64 indexed id, uint64 writersCount);
 
     /// @dev NewKey defines an Event emitted when a key request fulfilled.
     /// @param id The key id
@@ -452,24 +455,24 @@ interface IWarden {
     /// @param keychainId The keychain id
     /// @param approveTemplateId The approve template id
     /// @param rejectTemplateId The reject template id
-    event NewKey(uint64 id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
+    event NewKey(uint64 indexed id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev RejectKeyRequest defines an Event emitted when a key request rejected.
     /// @param id The request id
-    event RejectKeyRequest(uint64 id);
+    event RejectKeyRequest(uint64 indexed id);
 
     /// @dev FulfilSignRequest defines an Event emitted when a sign request fulfilled.
     /// @param id The request id
-    event FulfilSignRequest(uint64 id);
+    event FulfilSignRequest(uint64 indexed id);
 
     /// @dev RejectSignRequest defines an Event emitted when a sign request rejected.
     /// @param id The request id
-    event RejectSignRequest(uint64 id);
+    event RejectSignRequest(uint64 indexed id);
 
     /// @dev NewKeychain defines an Event emitted when a new keychain is created.
     /// @param id The keychain id
     /// @param creator The creator address
-    event NewKeychain(uint64 id, address indexed creator);
+    event NewKeychain(uint64 indexed id, address creator);
 
     /// @dev NewSpace defines an Event emitted when a new space is created.
     /// @param id The space id
@@ -479,18 +482,18 @@ interface IWarden {
     /// @param rejectAdminTemplateId The template id of reject admin action
     /// @param approveSignTemplateId The template id of approve sign action
     /// @param rejectSignTemplateId The template id of reject sign action
-    event NewSpace(uint64 id, address indexed creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
+    event NewSpace(uint64 indexed id, address creator, uint64 ownersCount, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 
     /// @dev RemoveKeychainAdmin defines an Event emitted when an admin removed from keychain.
     /// @param keychainId The keychain id
     /// @param admin The admin address
     /// @param adminsCount The count of keychain admins
-    event RemoveKeychainAdmin(uint64 keychainId, address indexed admin, uint64 adminsCount);
+    event RemoveKeychainAdmin(uint64 indexed keychainId, address admin, uint64 adminsCount);
 
     /// @dev UpdateKeychain defines an Event emitted when a keychain is updated.
     /// @param id The keychain id
     /// @param keychainFees The keychain fees
-    event UpdateKeychain(uint64 id, KeychainFees keychainFees);
+    event UpdateKeychain(uint64 indexed id, KeychainFees keychainFees);
 
     /// @dev AddSpaceOwner defines an Event emitted when a new space owner is added.
     /// @param spaceId The space id
@@ -532,6 +535,3 @@ interface IWarden {
     /// @param rejectSignTemplateId The id of the template to be applied to every reject sign operation
     event UpdateSpace(uint64 indexed spaceId, uint64 approveAdminTemplateId, uint64 rejectAdminTemplateId, uint64 approveSignTemplateId, uint64 rejectSignTemplateId);
 }
-
-/// @dev The IWarden contract's instance.
-IWarden constant IWARDEN_CONTRACT = IWarden(IWARDEN_PRECOMPILE_ADDRESS);

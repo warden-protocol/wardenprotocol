@@ -2,13 +2,13 @@ package act
 
 import (
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -27,16 +27,17 @@ func (p *Precompile) ActionsQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newActionsQuery(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.Actions(ctx, req)
+	res, err := p.queryServer.Actions(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(ActionsResponse).FromResponse(res)
@@ -71,16 +72,17 @@ func (p *Precompile) ActionByIdQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newActionByIdQuery(args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.ActionById(ctx, req)
+	res, err := p.queryServer.ActionById(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(ActionByIdResponse).FromResponse(res)
@@ -113,16 +115,17 @@ func (p *Precompile) ActionsByAddressQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newActionsByAddressQuery(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.ActionsByAddress(ctx, req)
+	res, err := p.queryServer.ActionsByAddress(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(ActionsByAddressResponse).FromResponse(res)
@@ -145,6 +148,10 @@ func newActionsByAddressQuery(method *abi.Method, args []interface{}) (*types.Qu
 
 	precommon.ClearPaginationKey(&input.Pagination)
 
+	if _, ok := types.ActionStatus_name[int32(input.Status)]; !ok {
+		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
+	}
+
 	return &types.QueryActionsByAddressRequest{
 		Pagination: &input.Pagination,
 		Address:    precommon.Bech32StrFromAddress(input.Address),
@@ -159,16 +166,17 @@ func (p *Precompile) TemplatesQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newTemplatesQuery(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.Templates(ctx, req)
+	res, err := p.queryServer.Templates(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(TemplatesResponse).FromResponse(res)
@@ -180,8 +188,8 @@ func (p *Precompile) TemplatesQuery(
 }
 
 func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemplatesRequest, error) {
-	if len(args) != 1 {
-		return nil, precommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+	if len(args) != 2 {
+		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
 	var input TemplatesInput
@@ -191,9 +199,16 @@ func newTemplatesQuery(method *abi.Method, args []interface{}) (*types.QueryTemp
 
 	precommon.ClearPaginationKey(&input.Pagination)
 
+	var creator string
+	if input.Creator == (common.Address{}) {
+		creator = ""
+	} else {
+		creator = precommon.Bech32StrFromAddress(input.Creator)
+	}
+
 	return &types.QueryTemplatesRequest{
 		Pagination: &input.Pagination,
-		Creator:    input.Creator,
+		Creator:    creator,
 	}, nil
 }
 
@@ -204,16 +219,17 @@ func (p *Precompile) TemplateByIdQuery(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	queryServer := actmodulekeeper.NewQueryServerImpl(p.actmodulekeeper)
-
 	req, err := newTemplateByIdQuery(args)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := queryServer.TemplateById(ctx, req)
+	res, err := p.queryServer.TemplateById(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	if res == nil {
+		return nil, fmt.Errorf("received nil response from query server")
 	}
 
 	out, err := new(TemplateByIdResponse).FromResponse(res)

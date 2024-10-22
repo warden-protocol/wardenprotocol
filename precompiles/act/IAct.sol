@@ -6,11 +6,11 @@ import "../common/Types.sol";
 /// @dev The IAct contract's address.
 address constant IACT_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000901;
 
-enum ActionStatus { Pending, Approved, Rejected, Revoked }
-enum VoteType { None, Approve, Reject }
-
 /// @dev The IAct contract's instance.
 IAct constant IACT_CONTRACT = IAct(IACT_PRECOMPILE_ADDRESS);
+
+enum ActionStatus { Unspecified, Pending, Completed, Revoked, Timeout }
+enum VoteType { None, Approve, Reject }
 
 struct ActionVote {
     address participant;
@@ -106,7 +106,7 @@ interface IAct {
     /// @return action status
     function voteForAction(
         uint64 actionId,
-        int32 voteType
+        VoteType voteType
     ) external returns (string memory);
 
     /// @dev Defines a method to query actions.
@@ -131,14 +131,16 @@ interface IAct {
     function actionsByAddress(
         Types.PageRequest calldata pagination,
         address addr,
-        int32 status
+        ActionStatus status
     ) external view returns (ActionsByAddressResponse memory response);
 
     /// @dev Defines a method to query templates.
     /// @param pagination The pagination details
+    /// @param creator The template creator
     /// @return response The paged templates
     function templates(
-        Types.PageRequest calldata pagination
+        Types.PageRequest calldata pagination,
+        address creator
     ) external view returns (TemplatesResponse memory response);
 
     /// @dev Defines a method to query a template by id.

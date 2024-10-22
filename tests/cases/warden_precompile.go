@@ -7,11 +7,11 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
-	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"

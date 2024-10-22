@@ -2,6 +2,7 @@ package act
 
 import (
 	"bytes"
+	"fmt"
 	"math/big"
 	"reflect"
 
@@ -32,6 +33,10 @@ func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	b, err := parseCreateTemplateEvent(sdkEvent)
 	if err != nil {
 		return nil, err
+	}
+
+	if writerAddress == nil {
+		return nil, fmt.Errorf("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -75,6 +80,10 @@ func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 		return nil, err
 	}
 
+	if writerAddress == nil {
+		return nil, fmt.Errorf("writerAddress is nil")
+	}
+
 	topics := make([]ethcmn.Hash, 2)
 	event := p.ABI.Events[EventUpdateTemplate]
 	// The first topic is always the signature of the event.
@@ -114,6 +123,10 @@ func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn
 	b, err := parseCreateActionEvent(sdkEvent)
 	if err != nil {
 		return nil, err
+	}
+
+	if writerAddress == nil {
+		return nil, fmt.Errorf("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -157,6 +170,10 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 		return nil, err
 	}
 
+	if writerAddress == nil {
+		return nil, fmt.Errorf("writerAddress is nil")
+	}
+
 	topics := make([]ethcmn.Hash, 2)
 	event := p.ABI.Events[EventActionVoted]
 	// The first topic is always the signature of the event.
@@ -197,6 +214,10 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 	b, err := parseActionStateChangeEvent(sdkEvent)
 	if err != nil {
 		return nil, err
+	}
+
+	if writerAddress == nil {
+		return nil, fmt.Errorf("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)

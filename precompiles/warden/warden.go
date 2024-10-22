@@ -15,8 +15,9 @@ import (
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
@@ -32,9 +33,10 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000900"
 // Precompile defines the precompiled contract for x/warden.
 type Precompile struct {
 	cmn.Precompile
-	wardenkeeper   wardenkeeper.Keeper
+	wardenkeeper   wardenmodulekeeper.Keeper
 	actkeeper      actkeeper.Keeper
 	eventsRegistry *precommon.EthEventsRegistry
+	queryServer    types.QueryServer
 }
 
 // LoadABI loads the x/warden ABI from the embedded abi.json file
@@ -43,7 +45,7 @@ func LoadABI() (abi.ABI, error) {
 	return cmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper, e *precommon.EthEventsRegistry) (*Precompile, error) {
+func NewPrecompile(wardenkeeper wardenmodulekeeper.Keeper, actkeeper actkeeper.Keeper, e *precommon.EthEventsRegistry) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -58,6 +60,7 @@ func NewPrecompile(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper,
 		wardenkeeper:   wardenkeeper,
 		actkeeper:      actkeeper,
 		eventsRegistry: e,
+		queryServer:    wardenmodulekeeper.NewQueryServerImpl(wardenkeeper),
 	}
 
 	p.SetAddress(common.HexToAddress(PrecompileAddress))

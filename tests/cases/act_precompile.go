@@ -82,7 +82,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.NoError(t, err)
 		require.Equal(t, "evm rule #1 modified", templateById.Template.Name)
 
-		templates, err := iActClient.Templates(alice.CallOps(t), act.TypesPageRequest{})
+		templates, err := iActClient.Templates(alice.CallOps(t), act.TypesPageRequest{}, common.Address{})
 		require.NoError(t, err)
 		require.Len(t, templates.Templates, 1)
 	})
@@ -118,7 +118,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 			alice.CallOps(t),
 			act.TypesPageRequest{},
 			alice.EthAddress(t),
-			int32(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
+			uint8(actv1beta1.ActionStatus_ACTION_STATUS_COMPLETED))
 		require.NoError(t, err)
 		require.Len(t, actionsByAddress.Actions, 1)
 

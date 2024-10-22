@@ -14,41 +14,42 @@ import (
 // Single point of all wardenprotocol precompiles initialization, including precompiles and events registry
 func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
-	er := cmn.NewEthEventsRegistry()
-	actprecompile, err := actprecompile.NewPrecompile(actkeeper, er)
+	eventsRegistry := cmn.NewEthEventsRegistry()
+
+	newActPrecompile, err := actprecompile.NewPrecompile(actkeeper, eventsRegistry)
 	if err != nil {
 		return nil, err
 	}
-	precompiles[actprecompile.Address()] = actprecompile
+	precompiles[newActPrecompile.Address()] = newActPrecompile
 
-	er.RegisterEvent("warden.act.v1beta1.EventActionStateChange", actprecompile.GetActionStateChangeEvent)
-	er.RegisterEvent("warden.act.v1beta1.EventCreateTemplate", actprecompile.GetCreateTemplateEvent)
-	er.RegisterEvent("warden.act.v1beta1.EventActionVoted", actprecompile.GetActionVotedEvent)
-	er.RegisterEvent("warden.act.v1beta1.EventUpdateTemplate", actprecompile.GetUpdateTemplateEvent)
-	er.RegisterEvent("warden.act.v1beta1.EventCreateAction", actprecompile.GetCreateActionEvent)
+	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventActionStateChange", newActPrecompile.GetActionStateChangeEvent)
+	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventCreateTemplate", newActPrecompile.GetCreateTemplateEvent)
+	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventActionVoted", newActPrecompile.GetActionVotedEvent)
+	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventUpdateTemplate", newActPrecompile.GetUpdateTemplateEvent)
+	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventCreateAction", newActPrecompile.GetCreateActionEvent)
 
-	wardenprecompile, err := wardenprecompile.NewPrecompile(wardenkeeper, actkeeper, er)
+	newWardenPrecompile, err := wardenprecompile.NewPrecompile(wardenkeeper, actkeeper, eventsRegistry)
 	if err != nil {
 		return nil, err
 	}
-	precompiles[wardenprecompile.Address()] = wardenprecompile
+	precompiles[newWardenPrecompile.Address()] = newWardenPrecompile
 
-	er.RegisterEvent("warden.warden.v1beta3.EventAddKeychainAdmin", wardenprecompile.GetAddKeychainAdminEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventAddKeychainWriter", wardenprecompile.GetAddKeychainWriterEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventNewKey", wardenprecompile.GetNewKeyEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventRejectKeyRequest", wardenprecompile.GetRejectKeyRequestEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventFulfilSignRequest", wardenprecompile.GetFulfilSignRequestEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventRejectSignRequest", wardenprecompile.GetRejectSignRequestEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventNewKeychain", wardenprecompile.GetNewKeychainEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventCreateSpace", wardenprecompile.GetNewSpaceEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventRemoveKeychainAdmin", wardenprecompile.GetRemoveKeychainAdminEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventUpdateKeychain", wardenprecompile.GetUpdateKeychainEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventAddSpaceOwner", wardenprecompile.GetAddSpaceOwnerEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventRemoveSpaceOwner", wardenprecompile.GetRemoveSpaceOwnerEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventNewKeyRequest", wardenprecompile.GetNewKeyRequestEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventNewSignRequest", wardenprecompile.GetNewSignRequestEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", wardenprecompile.GetUpdateKeyEvent)
-	er.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", wardenprecompile.GetUpdateSpaceEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventAddKeychainAdmin", newWardenPrecompile.GetAddKeychainAdminEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventAddKeychainWriter", newWardenPrecompile.GetAddKeychainWriterEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventNewKey", newWardenPrecompile.GetNewKeyEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventRejectKeyRequest", newWardenPrecompile.GetRejectKeyRequestEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventFulfilSignRequest", newWardenPrecompile.GetFulfilSignRequestEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventRejectSignRequest", newWardenPrecompile.GetRejectSignRequestEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventNewKeychain", newWardenPrecompile.GetNewKeychainEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventCreateSpace", newWardenPrecompile.GetNewSpaceEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventRemoveKeychainAdmin", newWardenPrecompile.GetRemoveKeychainAdminEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateKeychain", newWardenPrecompile.GetUpdateKeychainEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventAddSpaceOwner", newWardenPrecompile.GetAddSpaceOwnerEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventRemoveSpaceOwner", newWardenPrecompile.GetRemoveSpaceOwnerEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventNewKeyRequest", newWardenPrecompile.GetNewKeyRequestEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventNewSignRequest", newWardenPrecompile.GetNewSignRequestEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", newWardenPrecompile.GetUpdateKeyEvent)
+	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", newWardenPrecompile.GetUpdateSpaceEvent)
 
 	return precompiles, nil
 }

@@ -1,7 +1,7 @@
 {
   "app_name": "wardend",
-  "app_version": "v0.5.0-49-gec32e94f-dirty",
-  "genesis_time": "2024-10-11T18:00:02.257587933Z",
+  "app_version": "v0.5.0-50-g04b9df68-dirty",
+  "genesis_time": "2024-10-22T14:04:05.95978498Z",
   "chain_id": "warden_1337-1",
   "initial_height": 1,
   "app_hash": null,
@@ -28,7 +28,7 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1lqmrjg75jhumk3wkh86wa5se7hjgulv53n7kr8",
+          "address": "warden1xhawfasggklp8tvvqddaz902p270lchqvcwgmq",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -45,7 +45,7 @@
       },
       "balances": [
         {
-          "address": "warden1lqmrjg75jhumk3wkh86wa5se7hjgulv53n7kr8",
+          "address": "warden1xhawfasggklp8tvvqddaz902p270lchqvcwgmq",
           "coins": [
             {
               "denom": "award",
@@ -201,10 +201,10 @@
                 },
                 "min_self_delegation": "1",
                 "delegator_address": "",
-                "validator_address": "wardenvaloper1lqmrjg75jhumk3wkh86wa5se7hjgulv5qgunvk",
+                "validator_address": "wardenvaloper1xhawfasggklp8tvvqddaz902p270lchqarvd53",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "u8Jktfa4C2gPV5ukm0kvx6NVCI/h8Vc5baWjOddnNNE="
+                  "key": "B22P6ibnixx5s5sKR98+ALqAjqiXsHNeAyUMb0lZgzY="
                 },
                 "value": {
                   "denom": "award",
@@ -212,7 +212,7 @@
                 }
               }
             ],
-            "memo": "9fcfbcde2021a478c3e989cf0bf33d3e6066e30e@172.19.18.7:26656",
+            "memo": "71df6ae3bd279f5798550e739827b52b3df60ff1@172.19.18.7:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -222,7 +222,7 @@
               {
                 "public_key": {
                   "@type": "/ethermint.crypto.v1.ethsecp256k1.PubKey",
-                  "key": "A6MGLlOwUbEh4JId0xpZS+V+r8GB8js2szx2FpyAGL5/"
+                  "key": "Ak3S7h1WZlDQiIZOfb2/vYbnN2v35nn9r5SNVeIhnXm/"
                 },
                 "mode_info": {
                   "single": {
@@ -241,7 +241,7 @@
             "tip": null
           },
           "signatures": [
-            "bxl7NCbjmmk2PcaYvwWEBPdWg+guwsif4pA72FwhKQMc39B5K6PZQSCFrRVcDcIuE4t3EQhocLkak4ru4TiwkwE="
+            "t5JOuqKEUU9x0MV7GH27+4sZAxHZHXfj+RpC6JA4vysrarye4LLCDIuAPANJTVeZEQ/0SE6l7nl55xJaebDnqgE="
           ]
         }
       ]

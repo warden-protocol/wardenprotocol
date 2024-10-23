@@ -52,7 +52,7 @@ Before you start, complete the following prerequisites:
 
 ## 1. Create a CosmWasm project
 
-Create a new CosmWasm project by running the following:
+Create a new CosmWasm project template:
 
 ```bash
 cargo generate --git https://github.com/CosmWasm/cw-template.git --name hello-world
@@ -61,7 +61,7 @@ cd hello-world
 
 ## 2. Modify the contract code
 
-Now you need to modify files in the `/src` folder as shown in the steps below.
+Now you need to modify files in the `/src` directory as shown in the steps below.
 
 1. Open the `contract.rs` file and replace its contents with this code:
 

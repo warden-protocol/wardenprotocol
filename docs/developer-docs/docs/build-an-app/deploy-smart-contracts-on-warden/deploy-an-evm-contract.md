@@ -133,7 +133,7 @@ module.exports = {
       provider: function() {
         return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
       },
-      network_id: 123, // The first number from your chain ID
+      network_id: 1337, // The first number from your chain ID
       host: "127.0.0.1",
       port: 8545,
       gas: 5500000,
@@ -239,26 +239,52 @@ Truffle displays the local account balance and prices in ETH and gwei. However, 
 
 ## 7. Interact with the contract
 
-1. Open the Truffle console:
+1. To interact with your contract, open the Truffle console:
    
    ```bash
    truffle console --network warden
    ```
    
-2. In the console, interact with your contract:
+2. Retrieve the deployed instance of the contract:
    
    ```javascript
-   let instance = await HelloWarden.deployed()
-   let message = await instance.getMessage()
-   console.log(message) // Should print "Hello, Warden!"
-   await instance.setMessage("Hello, EVM on Warden!")
-   message = await instance.getMessage()
-   console.log(message) // Should print "Hello, EVM on Warden!"
+   let instance = await HelloWarden.deployed();
    ```
 
-   The console log should first print `Hello, Warden!` and then `Hello, EVM on Warden!`
+3. Retrieve the stored message by calling the `getMessage()` function in your contract:
+   
+   ```javascript
+   let message = await instance.getMessage();
+   ```
 
-3. To exit the console, run this:
+4. Print the message:
+
+   ```javascript
+   console.log(message);
+   ```
+
+   The console log should print `Hello, Warden!`
+
+5. Update the message in the contract with `setMessage()`:
+   
+   ```javascript
+   await instance.setMessage("Hello, EVM on Warden!");
+   ```
+
+6. Call `getMessage()` again to retrieve the updated message:
+   
+   ```javascript
+   message = await instance.getMessage();
+   ```
+
+7. Print the updated message:
+   
+   ```javascript
+   console.log(message);
+   ```
+   The console log should print `Hello, EVM on Warden!`
+
+8. To exit the console, run this:
 
    ```
    .exit

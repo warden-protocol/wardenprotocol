@@ -84,6 +84,8 @@ export function Root() {
 	}
 
 	if (
+		(env.spacewardEnv === "production" &&
+			env.chainId === "chiado_10010-1") ||
 		(env.spacewardEnv === "production" && env.maintenance) ||
 		(env.spacewardEnv === "production" &&
 			story.content &&
@@ -116,8 +118,8 @@ export function Root() {
 										Welcome to SpaceWard
 									</h1>
 									<div className="text-label-accent text-xl uppercase font-spacemono">
-										[&nbsp;.&nbsp;Unlock the Potential
-										of Warden Protocol&nbsp;.&nbsp;]
+										[&nbsp;.&nbsp;Unlock the Potential of
+										Warden Protocol&nbsp;.&nbsp;]
 									</div>
 								</div>
 								<div className="w-full md:w-1/2 lg:w-auto p-8 flex flex-col place-content-center bg-fill-accent-primary rounded-2xl	text-label-on-light">
@@ -131,8 +133,8 @@ export function Root() {
 									</div>
 									<div className="flex items-center place-content-center pb-12">
 										<p className="mx-auto text-center max-w-92">
-											Connect your wallet to get
-											started with SpaceWard.
+											Connect your wallet to get started
+											with SpaceWard.
 										</p>
 									</div>
 									<div className="flex items-center place-content-center pb-6">

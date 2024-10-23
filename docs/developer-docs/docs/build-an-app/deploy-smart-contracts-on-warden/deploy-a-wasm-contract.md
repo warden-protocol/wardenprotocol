@@ -2,10 +2,10 @@
 sidebar_position: 2
 ---
 
-# Deploy a WASM contract
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+# Deploy a WASM contract
 
 ## Overview
 

@@ -83,47 +83,37 @@ export function Root() {
 		);
 	}
 
-	// TODO: remove once chaido is live
-	if (env.spacewardEnv === "production" && env.chainId === "chiado_10010-1") {
-		return (
-			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
-					<Icons.logo className="h-12 w-auto mb-10" />
-					<h1 className="text-2xl font-bold">Chiado Coming Soon</h1>
-					<p className="text-muted-foreground text-center">
-						We are currently upgrading SpaceWard to a new version.
-						Please check back later.
-					</p>
-				</div>
-			</ThemeProvider>
-		);
-	}
-
-	// Maintenance mode enabled
-	if (
-		(env.spacewardEnv === "production" && env.maintenance) ||
-		(env.spacewardEnv === "production" &&
-			story.content &&
-			story.content.maintenance)
-	) {
-		return (
-			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
-					<Icons.logo className="h-12 w-auto mb-10" />
-					<h1 className="text-2xl font-bold">Upgrade in progress</h1>
-					<p className="text-muted-foreground text-center">
-						We are currently upgrading SpaceWard to a new version.
-						Please check back later.
-					</p>
-				</div>
-			</ThemeProvider>
-		);
-	}
-
 	return (
 		<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 			<div className={cn("min-h-screen flex flex-row")}>
-				{!address ? (
+				{/* TODO: remove once chaido is live */}
+				{env.spacewardEnv === "production" &&
+				env.chainId === "chiado_10010-1" ? (
+					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+						<Icons.logo className="h-12 w-auto mb-10" />
+						<h1 className="text-2xl font-bold">
+							Chiado Coming Soon
+						</h1>
+						<p className="text-muted-foreground text-center">
+							We are currently upgrading SpaceWard to a new
+							version. Please check back later.
+						</p>
+					</div>
+				) : (env.spacewardEnv === "production" && env.maintenance) ||
+				  (env.spacewardEnv === "production" &&
+						story.content &&
+						story.content.maintenance) ? (
+					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+						<Icons.logo className="h-12 w-auto mb-10" />
+						<h1 className="text-2xl font-bold">
+							Upgrade in progress
+						</h1>
+						<p className="text-muted-foreground text-center">
+							We are currently upgrading SpaceWard to a new
+							version. Please check back later.
+						</p>
+					</div>
+				) : !address ? (
 					<>
 						<main className="pt-10 pb-10 h-screen  bg-[url(/rail.png)] dark:bg-[url(/rail.png)] bg-cover bg-no-repeat">
 							<div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full lg:grid lg:grid-cols-[1fr_556px]">

@@ -61,9 +61,11 @@ cd hello-world
 
 ## 2. Modify the contract code
 
-1. Open `/hello-world/src/contract.rs` and replace its contents with this code:
+Now you need to modify files in the `/src` folder as shown in the steps below.
 
-   ```rust
+1. Open the `contract.rs` file and replace its contents with this code:
+
+   ```rust title="/hello-world/src/contract.rs"
    use cosmwasm_std::{
        entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
    };
@@ -109,9 +111,9 @@ cd hello-world
    }
    ```
 
-2. Open `/hello-world/src/msg.rs` and replace its contents with this code:
+2. Open the `msg.rs` file and replace its contents with this code:
    
-   ```rust
+   ```rust title="/hello-world/src/msg.rs"
    use cosmwasm_schema::{cw_serde, QueryResponses};
    
    #[cw_serde]
@@ -135,9 +137,9 @@ cd hello-world
    }
    ```
 
-2. Open `/hello-world/src/helpers.rs` and replace its contents with this code:
+2. Open the `helpers.rs` file and replace its contents with this code:
    
-   ```rust
+   ```rust title="/hello-world/src/helpers.rs"
    use schemars::JsonSchema;
    use serde::{Deserialize, Serialize};
    

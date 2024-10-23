@@ -2,37 +2,34 @@
 sidebar_position: 1
 ---
 
-import PersistentPeers from "@site/src/components/PersistentPeers";
+# Join Chiado
 
-# Join Buenavista
-
-:::warning
-We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+:::important
+Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
 :::
 
 ## Overview
 
-This tutorial explains how to run the Warden binary, `wardend`, and join the **Buenavista testnet**:
+This tutorial explains how to run the Warden binary, `wardend`, and join the **Chiado testnet**:
 
-- The chain ID in queries: `buenavista-1`
-- Endpoints: [networks repository > buenavista](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista)
-- The current `wardend` version: **v0.4.2**
+- The chain ID in queries: `chiado_10010-1`
+- Denomination: `award` / 0.000000000000000001 WARD
+- Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
+- The current `wardend` version: **v0.5.2**
 
 ## Version history
 
-| Release | Upgrade block height | Upgrade date |
-| ------- | -------------------- | ------------ |
-| v0.3.0  | genesis              |              |
-| v0.4.1  | 1675700              | Aug 13, 2024 |
-| v0.4.2  | 1965400              | Sep 2, 2024  |
+| Release |
+| ------- |
+| v0.5.2  |
 
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
 
 - We recommend running public testnet nodes on machines with the following characteristics:
-  - at least 8 cores
-  - 32GB of RAM
+  - at least 4 cores
+  - 16GB of RAM
   - 300GB of disk space
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
 - If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.
@@ -43,7 +40,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 ### Option 1: Use the prebuilt binary
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.2) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.2) and unzip it. The archive contains the `wardend` binary.
 
 2. Navigate to the directory containing the binary and initialize the node:
   
@@ -55,33 +52,32 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands).
    :::
 
-
 ### Option 2: Use the source code
 
 1. Clone the repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
    The binary is located in `/wardenprotocol/build`.
 
 2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the node.
-   
+
    ```bash
-   just build
-   just install
+   just wardend build
+   just wardend install
    wardend init my-chain-moniker
    ```
-   
+
    Alternatively, you can skip installation to `$GOPATH/bin`:
-   
+
    ```bash
-   just build
+   just wardend build
    build/wardend init my-chain-moniker
    ```
-   
+
    :::tip
    When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
    :::
@@ -95,22 +91,21 @@ To configure `wardend`, do the following:
    ```bash
    cd $HOME/.warden/config
    rm genesis.json
-   wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
+   wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/chiado/genesis.json
    ```
 
    These commands will remove the `$HOME/.warden/genesis.json` file and replace it with the correct version.
 
-2. In the `app.toml` file, set the mandatory options: the minimum gas price and persistent peers.
+2. In the `app.toml` file, set the mandatory options: the minimum gas price and a list of seeds nodes.
 
    ```bash
-   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250uward"/' app.toml
+   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250000000000000award"/' app.toml
+   ```
+   ```bash
+   sed -i 's/seeds = ""/seeds = "2d2c7af1c2d28408f437aef3d034087f40b85401@52.51.132.79:26656"/' config.toml
    ```
 
-   <PersistentPeers
-   chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
-   code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
-
-   These commands will update the `minimum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
+   These commands will update the `minimum-gas-prices` and `seeds` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
 
 ## 3. Set up the state sync
 
@@ -120,19 +115,19 @@ This step is recommended but optional.
 
 To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and after that only download the blocks from the network.
 
-You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/chain.json) – for example, the following:
+You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/chiado/chain.json) – for example, the following:
 
 ```bash
-https://rpc.buenavista.wardenprotocol.org
+https://rpc.chiado.wardenprotocol.org
 ```
 
 1. From this RPC endpoint, you can get the trusted block height and hash:
 
    ```bash
-   export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443    "
-   export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r .result.block.header.height)
+   export SNAP_RPC_SERVERS="https://rpc.chiado.wardenprotocol.org:443,https://rpc.chiado.wardenprotocol.org:443"
+   export LATEST_HEIGHT=$(curl -s "https://rpc.chiado.wardenprotocol.org/block" | jq -r .result.block.header.height)
    export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
-   export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+   export TRUST_HASH=$(curl -s "https://rpc.chiado.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
    ```
 
 2. Check that all variables have been set correctly:
@@ -176,7 +171,7 @@ It'll connect to persistent peers provided and start downloading blocks. You can
 
 ## Next steps
 
-After joining Buenavista, you can take these steps:
+After joining Chiado, you can take these steps:
 
 - If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
 - To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).

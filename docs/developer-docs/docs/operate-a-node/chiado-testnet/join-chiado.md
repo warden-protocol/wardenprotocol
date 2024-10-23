@@ -28,8 +28,8 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 Before you start, complete the following prerequisites:
 
 - We recommend running public testnet nodes on machines with the following characteristics:
-  - at least 8 cores
-  - 32GB of RAM
+  - at least 4 cores
+  - 16GB of RAM
   - 300GB of disk space
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
 - If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.

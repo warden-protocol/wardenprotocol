@@ -57,7 +57,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 1. Clone the repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.5.1 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 

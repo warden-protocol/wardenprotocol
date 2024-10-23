@@ -2,16 +2,16 @@
 sidebar_position: 2
 ---
 
-# Create a Keychain
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+# Create a Keychain
 
 ## Overview
 
 To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide. To interact with the chain,  you'll use [node commands](/operate-a-node/node-commands).
 
-You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Buenavista testnet](/operate-a-node/buenavista-testnet/join-buenavista). In the provided code snippets, you'll find tabs with different versions of node commands.
+You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 :::tip
 You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).
@@ -64,7 +64,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
    :::
 
-### Option 2. Connect to Buenavista
+### Option 2. Connect to Chiado
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
@@ -94,16 +94,16 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-key-name --address
    ```
    :::
 
-5. Fund your key using [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org) and the public address returned in the previous step.
+5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
 
-5. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Buenavista. 
+6. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
    
    ```
-   wardend query bank balances my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443
    ```
 
 ## 2. Register a Keychain
@@ -116,26 +116,27 @@ The following steps show how to register a new Keychain entity on-chain.
    <TabItem value="local-default" label="Local node: default settings">
    ```bash
    wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
      --from shulgin \
+     --name 'my-keychain-name' \
      --chain-id warden_1337-1
    ```
    </TabItem>
    <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
    wardend tx warden new-keychain \
-     --name 'my-keychain-name' \
      --from my-key-name \
+     --name 'my-keychain-name' \
      --chain-id chain_123-1
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-keychain-name' \
      --from my-key-name \
-     --chain-id buenavista-1 \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+     --name 'my-keychain-name' \
+     --fees 400000000award \
+     --chain-id chiado_10010-1 \
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -164,9 +165,9 @@ The following steps show how to register a new Keychain entity on-chain.
    wardend query warden keychains
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend query warden keychains --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query warden keychains --node https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -213,16 +214,17 @@ To add a Keychain Writer, take these steps:
    You can always check your public address by running this command:
 
    ```
-   wardend keys show my-key-name -address
+   wardend keys show my-keychain-writer-name --address
    ```
    :::
 
-3. Now you need to fund the account. If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and chain ID.
+3. Now you need to fund the account. If you're running a local chain, execute the command below. After `send`, specify your key name. Also set the Keychain Writer name and the chain ID.
 
     <Tabs>
     <TabItem value="local-default" label="Local node: default settings">
     ```bash
-    wardend tx bank send shulgin \
+    wardend tx bank send \
+      shulgin \
       $(wardend keys show --address my-keychain-writer-name) \
       1000000000000000000award \
       --chain-id warden_1337-1
@@ -230,7 +232,8 @@ To add a Keychain Writer, take these steps:
     </TabItem>
     <TabItem value="local-custom" label="Local node: custom settings">
     ```bash
-    wardend tx bank send my-key-name \
+    wardend tx bank send \
+      my-key-name \
       $(wardend keys show --address my-keychain-writer-name) \
       1000000000000000000award \
       --chain-id chain_123-1
@@ -238,7 +241,7 @@ To add a Keychain Writer, take these steps:
     </TabItem>
     </Tabs>
 
-    If you're interacting with Buenavista, fund your key using [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org) and the public address returned in the previous step.
+    If you're interacting with Chiado, fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
 
 4. Check the Keychain Writer balance:
 
@@ -248,9 +251,9 @@ To add a Keychain Writer, take these steps:
    wardend query bank balances my-keychain-writer-name
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend query bank balances my-keychain-writer-name --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-keychain-writer-name --node https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>   
@@ -264,23 +267,31 @@ To add a Keychain Writer, take these steps:
    <Tabs>
    <TabItem value="local-default" label="Local node: default settings">
    ```bash
-   wardend tx warden add-keychain-writer --from shulgin --keychain-id 1 \
+   wardend tx warden add-keychain-writer \
+     --from shulgin \
+     --keychain-id 1 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id warden_1337-1
    ```
    </TabItem>
    <TabItem value="local-custom" label="Local node: custom settings">
    ```bash
-   wardend tx warden add-keychain-writer --from my-key-name --keychain-id 1 \
+   wardend tx warden add-keychain-writer \
+     --from my-key-name \
+     --keychain-id 1 \
      --writer $(wardend keys show --address my-keychain-writer-name) \
      --chain-id chain_123-1
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend tx warden add-keychain-writer --from my-key-name \
-     --keychain-id 2 --writer $(wardend keys show --address my-keychain-writer-name) \
-     --chain-id buenavista-1 --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend tx warden add-keychain-writer \
+     --from my-key-name \
+     --keychain-id 1 \
+     --writer $(wardend keys show --address my-keychain-writer-name) \
+     --fees 400000000award \
+     --chain-id chiado_10010-1 \
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>
@@ -293,9 +304,9 @@ To add a Keychain Writer, take these steps:
    wardend query warden keychains
    ```
    </TabItem>
-   <TabItem value="buenavista" label="Buenavista">
+   <TabItem value="chiado" label="Chiado">
    ```bash
-   wardend query warden keychains --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query warden keychains --node https://rpc.chiado.wardenprotocol.org:443
    ```
    </TabItem>
    </Tabs>   

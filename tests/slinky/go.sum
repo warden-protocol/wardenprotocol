@@ -386,6 +386,8 @@ github.com/cosmos/ics23/go v0.10.0 h1:iXqLLgp2Lp+EdpIuwXTYIQU+AiHj9mOC2X9ab++bZD
 github.com/cosmos/ics23/go v0.10.0/go.mod h1:ZfJSmng/TBNTBkFemHHHj5YY7VAU/MBU980F4VU1NG0=
 github.com/cosmos/interchain-security/v5 v5.1.1 h1:xmRRMeE4xoc+JAZUh0XzXFYWaGBtzFFj5SETuOgnEnY=
 github.com/cosmos/interchain-security/v5 v5.1.1/go.mod h1:vmeTcTxFCl1eV0o6xpl/IRT7Basz0szVVGzbppnInMg=
+github.com/cosmos/interchain-security/v5 v5.2.0 h1:ZB4sMH5kG4Fmuk+WLKykXv8qSSoafo1eVlSo0G5scKE=
+github.com/cosmos/interchain-security/v5 v5.2.0/go.mod h1:vmeTcTxFCl1eV0o6xpl/IRT7Basz0szVVGzbppnInMg=
 github.com/cosmos/ledger-cosmos-go v0.13.3 h1:7ehuBGuyIytsXbd4MP43mLeoN2LTOEnk5nvue4rK+yM=
 github.com/cosmos/ledger-cosmos-go v0.13.3/go.mod h1:HENcEP+VtahZFw38HZ3+LS3Iv5XV6svsnkk9vdJtLr8=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=

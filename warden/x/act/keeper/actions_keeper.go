@@ -25,7 +25,7 @@ func newActionKeeper(storeService store.KVStoreService, cdc codec.BinaryCodec) A
 	sb := collections.NewSchemaBuilder(storeService)
 
 	actionsStore := collections.NewMap(sb, ActionPrefix, "action", collections.Uint64Key, codec.CollValue[types.Action](cdc))
-	actionsCount := collections.NewSequence(sb, types.KeyPrefix(types.ActionCountKey), "actions_count")
+	actionsCount := collections.NewSequence(sb, ActionsSeqPrefix, "actions_count")
 	actions := repo.NewSeqCollection(actionsCount, actionsStore, func(a *types.Action, u uint64) { a.Id = u })
 
 	actionByAddress := collections.NewMap(

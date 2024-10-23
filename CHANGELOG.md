@@ -40,6 +40,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
+### Features (non-breaking)
+* 
+
+### Bug Fixes
+* 
+
+## [v0.5.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.2) - 2024-10-22
+
+### Features (non-breaking)
+* (x/warden) Fix RejectSignRequestTxCmd - use SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
+* (x/warden) Expose AddKeychainAdmin and RemoveKeychainAdmin in tx.proto to use in precompiles
+* (evm) Precompiles for x/act and x/warden
+
 ### Bug Fixes
 * (x/warden) Fix bug with Id=0 in NewKeyEvent
 

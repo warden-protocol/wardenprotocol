@@ -28,7 +28,7 @@ func (c *Test_KeychainWriters) Setup(t *testing.T, ctx context.Context, build fr
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-keychain")
-	c.w.WaitRunnning(t)
+	c.w.WaitRunning(t)
 }
 
 func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {

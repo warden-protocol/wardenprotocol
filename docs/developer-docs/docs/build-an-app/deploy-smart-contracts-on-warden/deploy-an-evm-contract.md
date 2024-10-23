@@ -88,9 +88,9 @@ Before you start, complete the following prerequisites:
 
 ## 2. Create a smart contract
 
-In the `/warden-smart-contract/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
+In the `/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
 
-```solidity
+```solidity title="/warden-smart-contract/contracts/HelloWarden.sol"
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -121,7 +121,7 @@ Make adjustments in the code using your chain settings from [Prerequisites](#pre
 2. In `network_id`, specify the first number from your chain ID. For example, if your chain ID is `warden_1337-1` or `chain_123-1`, specify `1337` or `123` respectively. Alternatively, you can just use `"*"` to match any chain ID.
 3. If needed, adjust the gas limit and price – `gas` and `gasPrice`.
 
-```javascript
+```javascript title="/warden-smart-contract/truffle-config.js"
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 // Your private key (keep this secret and never commit it to version control!)
@@ -154,9 +154,9 @@ The `host` and `port` values are the standard localhost address and the RPC port
 
 ## 4. Create a migration script
 
-In `/warden-smart-contract/migrations`, create a new file `2_deploy_hello_warden.js` with the following s:
+In `/migrations`, create a new file `2_deploy_hello_warden.js` with the following contents:
 
-```javascript
+```javascript title="/warden-smart-contract/migrations/2_deploy_hello_warden.js"
 const HelloWarden = artifacts.require("HelloWarden");
 
 module.exports = function(deployer) {

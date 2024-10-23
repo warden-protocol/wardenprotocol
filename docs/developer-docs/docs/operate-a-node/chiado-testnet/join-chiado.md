@@ -40,7 +40,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 ### Option 1: Use the prebuilt binary
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.1) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.2) and unzip it. The archive contains the `wardend` binary.
 
 2. Navigate to the directory containing the binary and initialize the node:
   

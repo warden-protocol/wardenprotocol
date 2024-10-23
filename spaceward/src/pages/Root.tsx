@@ -83,6 +83,10 @@ export function Root() {
 		);
 	}
 
+	console.log(env.spacewardEnv);
+	console.log(env.chainId);
+	console.log(env.maintenance);
+
 	if (
 		(env.spacewardEnv === "production" &&
 			env.chainId === "chiado_10010-1") ||

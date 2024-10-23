@@ -26,7 +26,7 @@ func (c *Test_RejectAny3Action) Setup(t *testing.T, ctx context.Context, build f
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
-	c.w.WaitRunnning(t)
+	c.w.WaitRunning(t)
 }
 
 func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {

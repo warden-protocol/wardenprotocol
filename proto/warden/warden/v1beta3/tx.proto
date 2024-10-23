@@ -2,8 +2,8 @@ syntax = "proto3";
 package warden.warden.v1beta3;
 
 import "amino/amino.proto";
-import "cosmos/msg/v1/msg.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
@@ -28,16 +28,14 @@ service Msg {
   // Add a new owner to a Space.
   rpc AddSpaceOwner(MsgAddSpaceOwner) returns (MsgAddSpaceOwnerResponse);
 
-  // Remove an owner from the Space. 
-  rpc RemoveSpaceOwner(MsgRemoveSpaceOwner)
-      returns (MsgRemoveSpaceOwnerResponse);
+  // Remove an owner from the Space.
+  rpc RemoveSpaceOwner(MsgRemoveSpaceOwner) returns (MsgRemoveSpaceOwnerResponse);
 
   // Create a new Keychain. The user will be the first admin of the Keychain.
   rpc NewKeychain(MsgNewKeychain) returns (MsgNewKeychainResponse);
 
   // Add a new writer to a Keychain.
-  rpc AddKeychainWriter(MsgAddKeychainWriter)
-      returns (MsgAddKeychainWriterResponse);
+  rpc AddKeychainWriter(MsgAddKeychainWriter) returns (MsgAddKeychainWriterResponse);
 
   // Update a Space.
   rpc UpdateSpace(MsgUpdateSpace) returns (MsgUpdateSpaceResponse);
@@ -49,20 +47,22 @@ service Msg {
   rpc NewKeyRequest(MsgNewKeyRequest) returns (MsgNewKeyRequestResponse);
 
   // Fulfil or reject a KeyRequest.
-  rpc FulfilKeyRequest(MsgFulfilKeyRequest)
-      returns (MsgFulfilKeyRequestResponse);
+  rpc FulfilKeyRequest(MsgFulfilKeyRequest) returns (MsgFulfilKeyRequestResponse);
 
   // Update a Key.
-  rpc UpdateKey(MsgUpdateKey)
-      returns (MsgUpdateKeyResponse);
+  rpc UpdateKey(MsgUpdateKey) returns (MsgUpdateKeyResponse);
 
   // Create a new SignRequest.
-  rpc NewSignRequest(MsgNewSignRequest)
-      returns (MsgNewSignRequestResponse);
+  rpc NewSignRequest(MsgNewSignRequest) returns (MsgNewSignRequestResponse);
 
   // Fulfil or reject a SignRequest.
-  rpc FulfilSignRequest(MsgFulfilSignRequest)
-      returns (MsgFulfilSignRequestResponse);
+  rpc FulfilSignRequest(MsgFulfilSignRequest) returns (MsgFulfilSignRequestResponse);
+
+  // Add a new admin to a Keychain
+  rpc AddKeychainAdmin(MsgAddKeychainAdminRequest) returns (MsgAddKeychainAdminResponse);
+
+  /// Remove admin from a Keychain
+  rpc RemoveKeychainAdmin(MsgRemoveKeychainAdminRequest) returns (MsgRemoveKeychainAdminResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -96,7 +96,9 @@ message MsgNewSpace {
   repeated string additional_owners = 6;
 }
 
-message MsgNewSpaceResponse { uint64 id = 1; }
+message MsgNewSpaceResponse {
+  uint64 id = 1;
+}
 
 message MsgAddSpaceOwner {
   option (cosmos.msg.v1.signer) = "authority";
@@ -129,7 +131,9 @@ message MsgNewKeychain {
   string keybase_id = 7;
 }
 
-message MsgNewKeychainResponse { uint64 id = 1; }
+message MsgNewKeychainResponse {
+  uint64 id = 1;
+}
 
 message MsgAddKeychainWriter {
   option (cosmos.msg.v1.signer) = "creator";
@@ -194,17 +198,21 @@ message MsgNewKeyRequest {
   uint64 approve_template_id = 5;
   uint64 reject_template_id = 6;
   repeated cosmos.base.v1beta1.Coin max_keychain_fees = 7 [
-    (gogoproto.nullable)     = false,
+    (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
   ];
   uint64 nonce = 8;
 }
 
-message MsgNewKeyRequestResponse { uint64 id = 1; }
+message MsgNewKeyRequestResponse {
+  uint64 id = 1;
+}
 
-message MsgNewKey { bytes public_key = 1; }
+message MsgNewKey {
+  bytes public_key = 1;
+}
 
 message MsgFulfilKeyRequest {
   option (cosmos.msg.v1.signer) = "creator";
@@ -238,17 +246,21 @@ message MsgNewSignRequest {
   repeated string analyzers = 4 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   bytes encryption_key = 5;
   repeated cosmos.base.v1beta1.Coin max_keychain_fees = 6 [
-    (gogoproto.nullable)     = false,
+    (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
   ];
   uint64 nonce = 7;
 }
 
-message MsgNewSignRequestResponse { uint64 id = 1; }
+message MsgNewSignRequestResponse {
+  uint64 id = 1;
+}
 
-message MsgSignedData { bytes signed_data = 1; }
+message MsgSignedData {
+  bytes signed_data = 1;
+}
 
 message MsgFulfilSignRequest {
   option (cosmos.msg.v1.signer) = "creator";

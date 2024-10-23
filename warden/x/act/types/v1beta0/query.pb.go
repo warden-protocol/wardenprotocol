@@ -704,7 +704,7 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 
 func (c *queryClient) Actions(ctx context.Context, in *QueryActionsRequest, opts ...grpc.CallOption) (*QueryActionsResponse, error) {
 	out := new(QueryActionsResponse)
-	err := c.cc.Invoke(ctx, "/warden.intent.Query/Actions", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/warden.intent.Query/Templates", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -770,7 +770,7 @@ func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsReq
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
 func (*UnimplementedQueryServer) Actions(ctx context.Context, req *QueryActionsRequest) (*QueryActionsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Actions not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method Templates not implemented")
 }
 func (*UnimplementedQueryServer) Intents(ctx context.Context, req *QueryIntentsRequest) (*QueryIntentsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Intents not implemented")
@@ -817,7 +817,7 @@ func _Query_Actions_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.intent.Query/Actions",
+		FullMethod: "/warden.intent.Query/Templates",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Actions(ctx, req.(*QueryActionsRequest))
@@ -906,7 +906,7 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Params_Handler,
 		},
 		{
-			MethodName: "Actions",
+			MethodName: "Templates",
 			Handler:    _Query_Actions_Handler,
 		},
 		{
@@ -1852,7 +1852,7 @@ func (m *QueryActionsResponse) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Actions", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Templates", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2470,7 +2470,7 @@ func (m *QueryActionsByAddressResponse) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Actions", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Templates", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {

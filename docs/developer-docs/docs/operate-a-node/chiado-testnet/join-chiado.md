@@ -15,7 +15,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 - The chain ID in queries: `chiado_10010-1`
 - Denomination: `award` / 0.000000000000000001 WARD
 - Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
-- The current `wardend` version: **v0.5.1**
+- The current `wardend` version: **v0.5.2**
 
 ## Version history
 

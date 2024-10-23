@@ -110,7 +110,7 @@ To configure `wardend`, do the following:
    chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
    code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
 
-   These commands will update the `mininmum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
+   These commands will update the `minimum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
 
 ## 3. Set up the state sync
 
@@ -156,7 +156,7 @@ https://rpc.buenavista.wardenprotocol.org
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
    ```
 
-   These commands will update the the `[statesync]` section in `$HOME/.warden/config.toml`. Alternatively, you can adjust the file manually.
+   These commands will update the `[statesync]` section in `$HOME/.warden/config.toml`. Alternatively, you can adjust the file manually.
 
 ## 4. Start the node
 

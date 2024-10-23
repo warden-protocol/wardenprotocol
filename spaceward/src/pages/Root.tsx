@@ -19,6 +19,7 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
+import { useState, useEffect } from "react";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -32,6 +33,16 @@ export function Root() {
 	const { connectToWallet, signOut } = useWallet();
 	const { status, address } = useChain(env.cosmoskitChainName);
 	const { spaceId, setSpaceId } = useSpaceId();
+
+	const [chainId, setChainId] = useState<string>("");
+	const [spacewardEnv, setSpacewardEnv] = useState<string>("");
+	const [maintenance, setMaintenance] = useState<boolean>(false);
+
+	useEffect(() => {
+		setChainId(env.chainId);
+		setSpacewardEnv(env.spacewardEnv);
+		setMaintenance(env.maintenance);
+	}, []);
 
 	const story = useStoryblok("config", { version: "published" });
 
@@ -83,12 +94,15 @@ export function Root() {
 		);
 	}
 
-	return (
-		<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-			<div className={cn("min-h-screen flex flex-row")}>
-				{/* TODO: remove once chaido is live */}
-				{env.spacewardEnv === "production" &&
-				env.chainId === "chiado_10010-1" ? (
+	if (spacewardEnv === "production") {
+		// TODO: remove once chaido is live
+		if (chainId === "chiado_10010-1") {
+			return (
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+				>
 					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
 						<Icons.logo className="h-12 w-auto mb-10" />
 						<h1 className="text-2xl font-bold">
@@ -99,10 +113,22 @@ export function Root() {
 							version. Please check back later.
 						</p>
 					</div>
-				) : (env.spacewardEnv === "production" && env.maintenance) ||
-				  (env.spacewardEnv === "production" &&
-						story.content &&
-						story.content.maintenance) ? (
+				</ThemeProvider>
+			);
+		}
+
+		// Maintenance mode enabled
+		if (
+			(typeof maintenance === "string" && maintenance === "true") ||
+			(typeof maintenance === "boolean" && maintenance) ||
+			(story && story.content && story.content.maintenance)
+		) {
+			return (
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+				>
 					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
 						<Icons.logo className="h-12 w-auto mb-10" />
 						<h1 className="text-2xl font-bold">
@@ -113,7 +139,15 @@ export function Root() {
 							version. Please check back later.
 						</p>
 					</div>
-				) : !address ? (
+				</ThemeProvider>
+			);
+		}
+	}
+
+	return (
+		<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+			<div className={cn("min-h-screen flex flex-row")}>
+				{!address ? (
 					<>
 						<main className="pt-10 pb-10 h-screen  bg-[url(/rail.png)] dark:bg-[url(/rail.png)] bg-cover bg-no-repeat">
 							<div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full lg:grid lg:grid-cols-[1fr_556px]">

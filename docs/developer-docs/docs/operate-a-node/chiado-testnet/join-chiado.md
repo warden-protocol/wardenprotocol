@@ -21,7 +21,7 @@ This tutorial explains how to run the Warden binary, `wardend`, and join the **C
 
 | Release |
 | ------- |
-| v0.5.1  |
+| v0.5.2  |
 
 ## Prerequisites
 

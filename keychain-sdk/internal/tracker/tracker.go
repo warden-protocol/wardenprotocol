@@ -4,57 +4,57 @@ import (
 	"sync"
 )
 
-type hashSet map[string]struct{}
+type Action int
+
+const (
+	ActionSkip Action = iota
+	ActionProcess
+)
 
 type T struct {
-	rw       sync.RWMutex
-	ingested map[uint64]hashSet
+	threshold uint8
+	rw        sync.RWMutex
+	ingested  map[uint64]*statusTracker
 }
 
-func New() *T {
+func New(threshold uint8) *T {
 	return &T{
-		ingested: make(map[uint64]hashSet),
+		threshold: threshold,
+		ingested:  make(map[uint64]*statusTracker),
 	}
 }
 
-func (t *T) IsNew(id uint64, nodeUrl string) bool {
-	t.rw.RLock()
-	defer t.rw.RUnlock()
-	value, exists := t.ingested[id]
-	if !exists {
-		return true
-	}
-
-	_, alreadySeen := value[nodeUrl]
-	return !alreadySeen
-}
-
-func (t *T) HasReachedConsensus(id uint64, threshold uint) bool {
-	t.rw.RLock()
-	defer t.rw.RUnlock()
-	value, exists := t.ingested[id]
-	if !exists {
-		return false
-	}
-
-	return len(value) >= int(threshold)
-}
-
-func (t *T) Ingested(id uint64, nodeUrl string) {
-	t.rw.Lock()
-	defer t.rw.Unlock()
-
+func (t *T) statusTracker(id uint64) *statusTracker {
 	value, ok := t.ingested[id]
-	if ok == false {
-		t.ingested[id] = make(hashSet)
-		value = t.ingested[id]
+	if !ok {
+		t.ingested[id] = NewStatusTracker(t.threshold)
+
+		return t.ingested[id]
 	}
 
-	value[nodeUrl] = struct{}{}
+	return value
+}
+
+func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
+	t.rw.RLock()
+	defer t.rw.RUnlock()
+
+	value := t.statusTracker(id)
+
+	if err := value.MarkSeen(ingesterId); err != nil {
+		return ActionSkip, err
+	}
+
+	if value.status == statusProcessig {
+		return ActionProcess, nil
+	}
+
+	return ActionSkip, nil
 }
 
 func (t *T) Done(id uint64) {
 	t.rw.Lock()
 	defer t.rw.Unlock()
+
 	delete(t.ingested, id)
 }

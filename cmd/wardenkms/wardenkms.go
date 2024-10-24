@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"log"
 	"log/slog"
@@ -20,11 +21,10 @@ import (
 )
 
 type Config struct {
-	ChainID      string   `env:"CHAIN_ID, default=warden"`
-	GRPCURLs     []string `env:"GRPC_URLS, default=localhost:9090"`
-	GRPCInsecure bool     `env:"GRPC_INSECURE, default=true"`
-	Mnemonic     string   `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
-	KeychainId   uint64   `env:"KEYCHAIN_ID, default=1"`
+	ChainID    string                `env:"CHAIN_ID, default=warden_1337-1"`
+	GRPCURLs   GrpcNodeConfigDecoder `env:"GRPC_URLS, default=[{\"GRPCUrl\":\"localhost:9090\",\"GRPCInsecure\":true}] "`
+	Mnemonic   string                `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
+	KeychainId uint64                `env:"KEYCHAIN_ID, default=1"`
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
@@ -39,7 +39,26 @@ type Config struct {
 
 	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
 
-	ConsensusNodeThreshold uint `env:"CONSENSUS_NODE_THRESHOLD, default=1"`
+	ConsensusNodeThreshold uint8 `env:"CONSENSUS_NODE_THRESHOLD, default=1"`
+}
+
+type GrpcNodeConfig struct {
+	GRPCUrl      string
+	GRPCInsecure bool
+}
+
+type GrpcNodeConfigDecoder []GrpcNodeConfig
+
+func (sd *GrpcNodeConfigDecoder) Decode(value string) error {
+	nodeConfigs := make([]GrpcNodeConfig, 0)
+
+	if err := json.Unmarshal([]byte(value), &nodeConfigs); err != nil {
+		return fmt.Errorf("invalid map json: %w", err)
+	}
+
+	*sd = nodeConfigs
+
+	return nil
 }
 
 func main() {
@@ -58,12 +77,10 @@ func main() {
 		return
 	}
 
-	grpcConfigs := make([]keychain.GrpcNodeConfig, 0)
-	for url, grpcInsecure := range cfg.GRPCURLs {
-		grpcConfigs = append(grpcConfigs, keychain.GrpcNodeConfig{
-			GRPCInsecure: grpcInsecure,
-			GRPCURL:      url,
-		})
+	grpcConfigs, err := mapGrpcConfig(cfg.GRPCURLs)
+	if err != nil {
+		logger.Error("failed to initialize grpc configs", "error", err)
+		return
 	}
 
 	app := keychain.NewApp(keychain.Config{
@@ -158,4 +175,20 @@ func bigEndianBytesFromUint32(n uint64) ([4]byte, error) {
 	b := make([]byte, 4)
 	binary.BigEndian.PutUint32(b, uint32(n))
 	return [4]byte(b), nil
+}
+
+func mapGrpcConfig(value GrpcNodeConfigDecoder) ([]keychain.GrpcNodeConfig, error) {
+	if len(value) == 0 {
+		return nil, fmt.Errorf("GRPCUrls must be specified")
+	}
+
+	result := make([]keychain.GrpcNodeConfig, 0)
+	for _, item := range value {
+		result = append(result, keychain.GrpcNodeConfig{
+			GRPCInsecure: item.GRPCInsecure,
+			GRPCURL:      item.GRPCUrl,
+		})
+	}
+
+	return result, nil
 }

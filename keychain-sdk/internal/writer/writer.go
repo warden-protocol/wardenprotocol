@@ -32,6 +32,11 @@ type W struct {
 	batch Batch
 }
 
+type SyncTxClient interface {
+	SendWaitTx(ctx context.Context, txBytes []byte) error
+	BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coins, msgers ...client.Msger) ([]byte, error)
+}
+
 func New(
 	batchSize int,
 	batchInterval time.Duration,
@@ -46,9 +51,7 @@ func New(
 	}
 }
 
-type FnResolveLiveClient func() (*client.TxClient, error)
-
-func (w *W) Start(ctx context.Context, liveClientFn FnResolveLiveClient, flushErrors chan error) error {
+func (w *W) Start(ctx context.Context, client SyncTxClient, flushErrors chan error) error {
 	w.Logger.Info("starting tx writer")
 	for {
 		select {
@@ -60,12 +63,8 @@ func (w *W) Start(ctx context.Context, liveClientFn FnResolveLiveClient, flushEr
 				ctx, cancel = context.WithTimeout(ctx, w.TxTimeout)
 			}
 
-			if txClient, err := liveClientFn(); err != nil {
+			if err := w.Flush(ctx, client); err != nil {
 				flushErrors <- err
-			} else {
-				if err := w.Flush(ctx, txClient); err != nil {
-					flushErrors <- err
-				}
 			}
 
 			cancel()
@@ -100,7 +99,7 @@ func (w *W) fees() sdk.Coins {
 	return w.Fees
 }
 
-func (w *W) Flush(ctx context.Context, txClient *client.TxClient) error {
+func (w *W) Flush(ctx context.Context, txClient SyncTxClient) error {
 	msgs := w.batch.Clear()
 	if len(msgs) == 0 {
 		w.Logger.Debug("flushing batch", "empty", true)
@@ -128,7 +127,7 @@ func (w *W) Flush(ctx context.Context, txClient *client.TxClient) error {
 	return nil
 }
 
-func (w *W) sendWaitTx(ctx context.Context, txClient *client.TxClient, msgs ...client.Msger) error {
+func (w *W) sendWaitTx(ctx context.Context, txClient SyncTxClient, msgs ...client.Msger) error {
 	w.sendTxLock.Lock()
 	defer w.sendTxLock.Unlock()
 

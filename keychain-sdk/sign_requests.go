@@ -8,6 +8,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/enc"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -69,33 +70,36 @@ func (w *signResponseWriter) Reject(reason string) error {
 }
 
 func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest, appClient *AppClient) {
-	ingestRequest := func(signRequest *wardentypes.SignRequest) {
-		if !a.signRequestTracker.IsNew(signRequest.Id, appClient.grpcUrl) {
-			a.logger().Debug("skipping sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl)
-			return
-		}
-
-		a.logger().Info("got sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl)
-		a.signRequestTracker.Ingested(signRequest.Id, appClient.grpcUrl)
-
-		if a.signRequestTracker.HasReachedConsensus(signRequest.Id, a.config.ConsensusNodeThreshold) {
-			signRequestsCh <- signRequest
-		}
-	}
-
 	for {
 		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		signRequests, err := appClient.signRequests(reqCtx)
+		signRequests, err := appClient.signRequests(reqCtx, a.config.BatchSize, a.config.KeychainID)
 		cancel()
 		if err != nil {
 			a.logger().Error("failed to get sign requests", "error", err)
 		} else {
 			for _, signRequest := range signRequests {
-				ingestRequest(signRequest)
+				a.ingestSignRequest(signRequestsCh, signRequest, appClient)
 			}
 		}
 
 		time.Sleep(a.config.BatchInterval / 2)
+	}
+}
+
+func (a *App) ingestSignRequest(signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *AppClient) {
+	action, err := a.keyRequestTracker.Ingest(signRequest.Id, appClient.grpcUrl)
+	if err != nil {
+		a.logger().Error("failed to ingest sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl, "error", err)
+		return
+	}
+
+	if action == tracker.ActionSkip {
+		a.logger().Debug("skipping sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl)
+		return
+	}
+
+	if action == tracker.ActionProcess {
+		signRequestsCh <- signRequest
 	}
 }
 
@@ -136,6 +140,6 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 	}()
 }
 
-func (a *AppClient) signRequests(ctx context.Context) ([]*wardentypes.SignRequest, error) {
-	return a.query.PendingSignRequests(ctx, &client.PageRequest{Limit: uint64(a.batchSize)}, a.keychainId)
+func (a *AppClient) signRequests(ctx context.Context, batchSize int, keychainId uint64) ([]*wardentypes.SignRequest, error) {
+	return a.query.PendingSignRequests(ctx, &client.PageRequest{Limit: uint64(batchSize)}, keychainId)
 }

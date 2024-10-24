@@ -12,7 +12,6 @@ import (
 	"io"
 	"log/slog"
 
-	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -31,25 +30,15 @@ type App struct {
 	keyRequestTracker  *tracker.T
 	signRequestTracker *tracker.T
 
-	clients []*AppClient
-}
-
-type AppClient struct {
-	grpcUrl      string
-	grpcInsecure bool
-	batchSize    int
-	keychainId   uint64
-	query        *client.QueryClient
-	txClient     *client.TxClient
+	clientsPool *ClientsPool
 }
 
 // NewApp creates a new Keychain application, using the given configuration.
 func NewApp(config Config) *App {
 	return &App{
 		config:             config,
-		keyRequestTracker:  tracker.New(),
-		signRequestTracker: tracker.New(),
-		clients:            []*AppClient{},
+		keyRequestTracker:  tracker.New(config.ConsensusNodeThreshold),
+		signRequestTracker: tracker.New(config.ConsensusNodeThreshold),
 	}
 }
 
@@ -75,27 +64,37 @@ func (a *App) SetSignRequestHandler(handler SignRequestHandler) {
 func (a *App) Start(ctx context.Context) error {
 	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainID)
 
-	err := a.initConnections()
-	if err != nil {
+	clientsPool := NewClientsPool(a.config)
+	if err := clientsPool.initConnections(a.logger()); err != nil {
 		return fmt.Errorf("failed to init connections: %w", err)
 	}
 
+	a.clientsPool = clientsPool
+
+	a.txWriter = writer.New(
+		a.config.BatchSize,
+		a.config.BatchInterval,
+		a.config.TxTimeout,
+		a.logger())
+	a.txWriter.Fees = a.config.TxFees
+	a.txWriter.GasLimit = a.config.GasLimit
+
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
 	defer close(keyRequestsCh)
-	for _, appClient := range a.clients {
+	for _, appClient := range a.clientsPool.clients {
 		go a.ingestKeyRequests(keyRequestsCh, appClient)
 	}
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
 	defer close(signRequestsCh)
-	for _, appClient := range a.clients {
+	for _, appClient := range a.clientsPool.clients {
 		go a.ingestSignRequests(signRequestsCh, appClient)
 	}
 
 	flushErrors := make(chan error)
 	defer close(flushErrors)
 	go func() {
-		if err := a.txWriter.Start(ctx, a.liveTxClient, flushErrors); err != nil {
+		if err := a.txWriter.Start(ctx, a.clientsPool, flushErrors); err != nil {
 			a.logger().Error("tx writer exited with error", "error", err)
 		}
 	}()
@@ -114,71 +113,7 @@ func (a *App) Start(ctx context.Context) error {
 	}
 }
 
-func (a *App) liveTxClient() (*client.TxClient, error) {
-	for _, appClient := range a.clients {
-		if state := appClient.query.Conn().GetState(); state == connectivity.Ready || state == connectivity.Idle {
-			return appClient.txClient, nil
-		}
-	}
-
-	return nil, fmt.Errorf("all node clients are down")
-}
-
 // ConnectionState returns the current state of the gRPC connection.
 func (a *App) ConnectionState() map[string]connectivity.State {
-	statuses := make(map[string]connectivity.State)
-
-	for _, appClient := range a.clients {
-		state := appClient.query.Conn().GetState()
-		statuses[appClient.grpcUrl] = state
-	}
-
-	return statuses
-}
-
-func (a *App) initConnections() error {
-	initConnection := func(logger *slog.Logger, grpcNodeConfig GrpcNodeConfig, config BasicConfig) (*AppClient, error) {
-		appClient := &AppClient{
-			batchSize:    config.BatchSize,
-			keychainId:   config.KeychainID,
-			grpcUrl:      grpcNodeConfig.GRPCURL,
-			grpcInsecure: grpcNodeConfig.GRPCInsecure,
-		}
-
-		logger.Info("connecting to Warden Protocol using gRPC", "url", grpcNodeConfig, "insecure", grpcNodeConfig.GRPCInsecure)
-
-		query, err := client.NewQueryClient(grpcNodeConfig.GRPCURL, grpcNodeConfig.GRPCInsecure)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create query client: %w", err)
-		}
-		appClient.query = query
-
-		conn := query.Conn()
-
-		identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create identity: %w", err)
-		}
-
-		logger.Info("keychain writer identity", "address", identity.Address.String())
-
-		appClient.txClient = client.NewTxClient(identity, config.ChainID, conn, query)
-
-		return appClient, nil
-	}
-
-	for _, grpcUrl := range a.config.GRPCConfigs {
-		appClient, err := initConnection(a.logger(), grpcUrl, a.config.BasicConfig)
-		if err != nil {
-			return err
-		}
-
-		a.clients = append(a.clients, appClient)
-	}
-
-	a.txWriter = writer.New(a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
-	a.txWriter.Fees = a.config.TxFees
-	a.txWriter.GasLimit = a.config.GasLimit
-
-	return nil
+	return a.clientsPool.ConnectionState()
 }

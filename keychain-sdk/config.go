@@ -55,7 +55,7 @@ type Config struct {
 	BasicConfig
 
 	// ConsensusNodeThreshold represents the number of nodes required to execute a pending key/sign request.
-	ConsensusNodeThreshold uint
+	ConsensusNodeThreshold uint8
 
 	// GRPCURLs is the list of URLs of the gRPC server to connect to.
 	// e.g. "localhost:9090"

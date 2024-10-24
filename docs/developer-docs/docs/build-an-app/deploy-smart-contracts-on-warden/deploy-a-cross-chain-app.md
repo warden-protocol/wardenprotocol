@@ -665,8 +665,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    You can verify that your account is funded by running the command below. Specify the custom key name you chose before.
 
    ```bash
-   wardend query bank balances my-key-name \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 ### 2.5. Deploy on Buenavista
@@ -676,7 +675,9 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    ```bash
    wardend tx wasm store target/wasm32-unknown-unknown/release/burn_tokens.wasm \
      --from my-key-name \
-     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward  -y \
+     --gas auto \
+     --gas-adjustment 1.5 \
+     --gas-prices 0.025uward  -y \
      --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
@@ -688,8 +689,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 2. Get the code ID that identifies your WASM contract:
    
    ```bash
-   wardend query wasm list-code \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query wasm list-code --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
    Note down `code_id` from the output.
@@ -700,8 +700,11 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 
    ```bash
    wardend tx wasm instantiate 1 '{}' \
-     --from my-key-name --label "Burn Tokens" \
-     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward \
+     --from my-key-name \
+     --label "Burn Tokens" \
+     --gas auto \
+     --gas-adjustment 1.5 \
+     --gas-prices 0.025uward \
      --no-admin -y \
      --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
@@ -710,8 +713,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 4. To get the contract address, run the following command. Replace `1` with the actual `code_id`.
    
    ```bash
-   wardend query wasm list-contract-by-code 1 \
-    --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query wasm list-contract-by-code 1 --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
 5. Use the command below to execute your contract.
@@ -719,11 +721,13 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    Before you proceed, replace `my-contract-address` with your contract address and `my-key-name` with your key name. The `--amount` flag specifies the gas fee in the Axelar network – make sure you have enough AXL.
    
    ```bash
-   wardend tx wasm execute my-contract-address \
-    '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
+   wardend tx wasm execute my-contract-address '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
     --from my-key-name \
     --amount 3000000ibc/0E1517E2771CA7C03F2ED3F9BAECCAEADF0BFD79B89679E834933BC0F179AD98 \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward -y \
+    --gas auto \
+    --gas-adjustment 1.5 \
+    --gas-prices 0.025uward \
+    -y \
     --chain-id buenavista-1 \
     --node https://rpc.buenavista.wardenprotocol.org:443
    ```

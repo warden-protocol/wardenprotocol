@@ -6,6 +6,10 @@ import PersistentPeers from "@site/src/components/PersistentPeers";
 
 # Join Buenavista
 
+:::warning
+We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+:::
+
 ## Overview
 
 This tutorial explains how to run the Warden binary, `wardend`, and join the **Buenavista testnet**:
@@ -86,7 +90,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 To configure `wardend`, do the following:
 
-1. Prepare the genesis file:
+1. Prepare the `genesis.json` file:
 
    ```bash
    cd $HOME/.warden/config
@@ -94,7 +98,9 @@ To configure `wardend`, do the following:
    wget https://buenavista-genesis.s3.eu-west-1.amazonaws.com/genesis.json.tar.xz | tar -xJ
    ```
 
-2. Set the mandatory configuration options: the minimum gas price and persistent peers.
+   These commands will remove the `$HOME/.warden/genesis.json` file and replace it with the correct version.
+
+2. In the `app.toml` file, set the mandatory options: the minimum gas price and persistent peers.
 
    ```bash
    sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250uward"/' app.toml
@@ -103,6 +109,8 @@ To configure `wardend`, do the following:
    <PersistentPeers
    chainInfoUrl='https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/chain.json'
    code={`sed -i 's/persistent_peers = ""/persistent_peers = "{{persistent_peers}}"/' config.toml`} />
+
+   These commands will update the `minimum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
 
 ## 3. Set up the state sync
 
@@ -139,7 +147,7 @@ https://rpc.buenavista.wardenprotocol.org
    70694 68694 6AF4938885598EA10C0BD493D267EF363B067101B6F81D1210B27EBE0B32FA2A
    ```
 
-3. Add the state sync configuration to your `config.toml`:
+3. Add the state sync configuration to the `config.toml` file:
 
    ```bash
    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
@@ -147,6 +155,8 @@ https://rpc.buenavista.wardenprotocol.org
    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
    ```
+
+   These commands will update the `[statesync]` section in `$HOME/.warden/config.toml`. Alternatively, you can adjust the file manually.
 
 ## 4. Start the node
 
@@ -158,7 +168,7 @@ wardend start
 
 If needed, add the path to the binary before the command:
 
-```
+```bash
 path-to-binary/wardend start
 ```
 
@@ -166,4 +176,8 @@ It'll connect to persistent peers provided and start downloading blocks. You can
 
 ## Next steps
 
-If you want to create a validator in the testnet, follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
+After joining Buenavista, you can take these steps:
+
+- If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
+- Don't forget to join our community in [Discord](https://discord.com/invite/warden).

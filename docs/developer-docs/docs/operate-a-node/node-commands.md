@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # Node commands
@@ -23,7 +23,7 @@ To interact with the node, you need to install the [Warden binary](https://githu
 You can follow installations instructions in one of these guides (depending on your goal):
 
 - [Run a local chain](/operate-a-node/run-a-local-chain)
-- [Join Buenavista](/operate-a-node/buenavista-testnet/join-buenavista#1-install)
+- [Join Chiado](/operate-a-node/chiado-testnet/join-chiado#1-install)
 
 ## Execute `wardend` commands
 
@@ -33,7 +33,7 @@ For example, to check the node status, run the example below using the preferred
 
 ```bash
 wardend status \
-  --node https://rpc.buenavista.wardenprotocol.org:443
+  --node https://rpc.chiado.wardenprotocol.org:443
 ```
 
 :::tip
@@ -80,14 +80,14 @@ Here are some of the available `wardend query warden` subcommands with examples:
 
    ```bash
    wardend query warden keychains \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```
 
 - `spaces`: This command returns a list of your [Spaces](/learn/glossary#space).
    
    ```bash
    wardend query warden spaces \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```
 
 ### `keys`: Manage keys
@@ -146,10 +146,10 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    
    ```bash
    wardend tx warden new-keychain \
-     --description 'my-description' \
-     --from my-key-name \
-     --chain-id buenavista-1 \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   --from my-key-name \
+     --name 'my-keychain-name' \
+     --chain-id chiado_10010-1 \
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```
 
 - `new-space`: This command creates a new [Space](/learn/glossary#space). It requires specifying your key name and the chain ID.
@@ -157,6 +157,6 @@ For example, the `warden` command allows you to initiate [Warden](/learn/warden-
    ```bash
    wardend tx warden new-space \
      --from my-key-name \
-     --chain-id buenavista-1 \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+     --chain-id chiado_10010-1 \
+     --node https://rpc.chiado.wardenprotocol.org:443
    ```

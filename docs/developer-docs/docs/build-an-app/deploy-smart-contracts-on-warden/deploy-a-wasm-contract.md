@@ -52,7 +52,7 @@ Before you start, complete the following prerequisites:
 
 ## 1. Create a CosmWasm project
 
-Create a new CosmWasm project by running the following:
+Create a new CosmWasm project template:
 
 ```bash
 cargo generate --git https://github.com/CosmWasm/cw-template.git --name hello-world
@@ -61,11 +61,13 @@ cd hello-world
 
 ## 2. Modify the contract code
 
-1. Open `src/contract.rs` and replace its contents with this code:
+Now you need to modify files in the `/src` directory as shown in the steps below.
 
-   ```rust
+1. Open the `contract.rs` file and replace its contents with this code:
+
+   ```rust title="/hello-world/src/contract.rs"
    use cosmwasm_std::{
-       entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
+       entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
    };
    use cw2::set_contract_version;
    
@@ -102,16 +104,16 @@ cd hello-world
    }
    
    #[entry_point]
-   pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+   pub fn query(_deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
        match msg {
-           QueryMsg::GetGreeting {} => to_binary(&"Hello, World!"),
+           QueryMsg::GetGreeting {} => to_json_binary(&"Hello, World!"),
        }
    }
    ```
 
-2. Open `src/msg.rs` and replace its contents with this code:
+2. Open the `msg.rs` file and replace its contents with this code:
    
-   ```rust
+   ```rust title="/hello-world/src/msg.rs"
    use cosmwasm_schema::{cw_serde, QueryResponses};
    
    #[cw_serde]
@@ -128,11 +130,50 @@ cd hello-world
        #[returns(String)]
        GetGreeting {},
    }
+   
+   #[cw_serde]
+   pub struct GetCountResponse {
+       pub count: i32,
+   }
+   ```
+
+2. Open the `helpers.rs` file and replace its contents with this code:
+   
+   ```rust title="/hello-world/src/helpers.rs"
+   use schemars::JsonSchema;
+   use serde::{Deserialize, Serialize};
+   
+   use cosmwasm_std::{
+       to_json_binary, Addr, CosmosMsg, StdResult, WasmMsg
+   };
+   
+   use crate::msg::{ExecuteMsg};
+   
+   /// CwTemplateContract is a wrapper around Addr that provides a lot of helpers
+   /// for working with this.
+   #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
+   pub struct CwTemplateContract(pub Addr);
+   
+   impl CwTemplateContract {
+       pub fn addr(&self) -> Addr {
+           self.0.clone()
+       }
+   
+       pub fn call<T: Into<ExecuteMsg>>(&self, msg: T) -> StdResult<CosmosMsg> {
+           let msg = to_json_binary(&msg.into())?;
+           Ok(WasmMsg::Execute {
+               contract_addr: self.addr().into(),
+               msg,
+               funds: vec![],
+           }
+           .into())
+       }
+   }
    ```
 
 ## 3. Compile the contract
 
-To compile the contract, run the following:
+To compile the contract, run the following from the `hellow-world` directory:
 
 ```bash
 cargo wasm
@@ -145,13 +186,13 @@ The contract should be compiled without any errors.
 Now you need to optimize your compiled Wasm code:
 
 ```bash
-wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm /
-target/wasm32-unknown-unknown/release/hello_world.wasm
+wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
+  target/wasm32-unknown-unknown/release/hello_world.wasm
 ```
 
 ## 5. Run the chain
 
-If your local chain isn't running, start it:
+If your local chain isn't running, execute this command in a separate terminal window:
    
 ```bash
 wardend start
@@ -159,24 +200,38 @@ wardend start
 
 ## 6. Store the contract on-chain
 
-To store your contract on the Warden chain, run the command below. Specify your key name from [Prerequisites](#prerequisites) in the `--from` flag (typically `shulgin`).
+To store your contract on the Warden chain, run the command below. Specify your key name from [Prerequisites](#prerequisites) in the `--from` flag (typically `shulgin`), also set the chain ID.
    
 <Tabs>
 <TabItem value="default" label="Default node settings">
 ```bash
-wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm /
---from shulgin --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
+  --from shulgin \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id warden_1337-1
 ```
 </TabItem>
 <TabItem value="custom" label="Custom node settings">
 ```bash
-wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm /
---from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
+  --from my-key-name \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id chain_123-1
 ```
 </TabItem>
 </Tabs>
 
 The transaction should be successful without any errors.
+
+:::tip
+If you used a `just` script or a devnet snapshot to run your node, you can omit the `--chain-id` flag in this and the following commands.
+:::
 
 ## 7. Get the code ID
 
@@ -192,23 +247,34 @@ Note down `code_id` from the output.
 
 You can instantiate the contract by using the command below.
 
-Before you proceed, replace `1` with the actual code ID you retrieved in previous step and specify your key name in the `--from` flag. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
+
+Before you proceed, replace `1` with the actual code ID you retrieved in previous step . Specify your key name in the `--from` flag and the chain ID. Also note that you can either define an admin or pass `--no-admin` to make it immutable, like in this example.
 
 <Tabs>
 <TabItem value="default" label="Default node settings">
 ```bash
-wardend tx wasm instantiate 1 '{}' /
-  --from shulgin --label "Hello World" /
-  --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award /
-  --no-admin -y 
+wardend tx wasm instantiate 1 '{}' \
+  --from shulgin \
+  --label "Hello World" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  --no-admin \
+  -y \
+  --chain-id warden_1337-1
 ```
 </TabItem>
 <TabItem value="custom" label="Custom node settings">
 ```bash
-wardend tx wasm instantiate 1 '{}' /
-  --from my-key-name --label "Hello World" /
-  --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award /
-  --no-admin -y 
+wardend tx wasm instantiate 1 '{}' \
+  --from my-key-name \
+  --label "Hello World" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  --no-admin \
+  -y \
+  --chain-id chain_123-1
 ```
 </TabItem>
 </Tabs>
@@ -226,19 +292,29 @@ Note down the contract address.
 
 ## 10. Execute the contract
 
-Use the command below to exectute your contract. Replace `my-contract-address` with your contract address and specify your key name in the `--from` flag.
+Use the command below to exectute your contract. Replace `my-contract-address` with your contract address. Specify your key name in the `--from` flag and the chain ID.
 
 <Tabs>
 <TabItem value="default" label="Default node settings">
 ```bash
-wardend tx wasm execute my-contract-address '{"say_hello":{}}' /
---from shulgin --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
+wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
+  --from shulgin \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id warden_1337-1
 ```
 </TabItem>
 <TabItem value="custom" label="Custom node settings">
 ```bash
-wardend tx wasm execute my-contract-address '{"say_hello":{}}' /
---from my-key-name --gas auto --gas-adjustment 1.3 --gas-prices 100000000000award -y
+wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
+  --from my-key-name \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id chain_123-1
 ```
 </TabItem>
 </Tabs>

@@ -1,18 +1,22 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Create a validator
 
-This is a simple step-by-step guide for setting up a validator on Buenavista testnet. It's not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on Chiado testnet. It's not a guide on validator architecture or security features.
+
+:::tip
+We're transitioning from [Buenavista](buenavista-testnet/join-buenavista) to our new and improved testnet, [Chiado](chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please [join Chiado](chiado-testnet/join-chiado) and set up your validator here – then you can safely shut down your validators on Buenavista.
+:::
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Buenavista](buenavista-testnet/join-buenavista) instructions.
+The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Chiado](chiado-testnet/join-chiado) instructions.
 
 ## 1. Create/restore a key pair
 
-The first step is creating a new key pair for your validator. Replace `my-key-name` with a key name of your choice and run the following: 
+The first step is creating a new key pair for your validator. Replace `my-key-name` with a key name of your choice and run the following:
 
 ```bash
 wardend keys add my-key-name
@@ -22,7 +26,7 @@ wardend keys add my-key-name
 After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
 :::
 
-Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following: 
+Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `my-key-name` with a key name of your choice and run the following:
 
 ```bash
 wardend keys add my-key-name --recover
@@ -38,7 +42,10 @@ wardend keys show my-key-name --address
 
 In the next steps, you'll register your new validator by submitting a `create-validator` transaction. Transactions consume gas, so you need to fund your newly created address from the first step.
 
-You can obtain testnet **WARD** in [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org).
+You can obtain testnet **WARD** in one of our faucet:
+
+- [Chiado faucet](https://faucet.chiado.wardenprotocol.org)
+- [Discord faucet](https://discord.com/channels/1199357852666560654/1288141727701536818)
 
 To verify your balance, use this command:
 
@@ -55,30 +62,33 @@ To create a validator and initialize it with a self-delegation, you need to crea
 1. Obtain your validator public key by running the following command:
 
    ```bash
-   wardend comet show-validator
+   wardend tendermint show-validator
    ```
 
    The output will be similar to this (with a different key):
-   
+
    ```bash
    {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
    ```
-   
+
 2. Create a file named `validator.json` with the following contents:
 
    ```json
-   {    
-       "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
-       "amount": "1000000uward",
-       "moniker": "your validator human-readable name (moniker)",
-       "identity": "your validator identity signature",
-       "website": "(optional) your validator website",
-       "security": "(optional) your validator security contact",
-       "details": "(optional) your validator details",
-       "commission-rate": "0.1",
-       "commission-max-rate": "0.2",
-       "commission-max-change-rate": "0.01",
-       "min-self-delegation": "1"
+   {
+     "pubkey": {
+       "@type": "/cosmos.crypto.ed25519.PubKey",
+       "key": "lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="
+     },
+     "amount": "1000000000000000000award",
+     "moniker": "your validator human-readable name (moniker)",
+     "identity": "your validator identity signature",
+     "website": "(optional) your validator website",
+     "security": "(optional) your validator security contact",
+     "details": "(optional) your validator details",
+     "commission-rate": "0.1",
+     "commission-max-rate": "0.2",
+     "commission-max-change-rate": "0.01",
+     "min-self-delegation": "1"
    }
    ```
 
@@ -89,17 +99,17 @@ To create a validator and initialize it with a self-delegation, you need to crea
    :::
 
 3. Finally, you're ready to submit the transaction to create the validator:
-    
    ```bash
    wardend tx staking create-validator validator.json \
-       --from=my-key-name \
-       --chain-id=buenavista-1 \
-       --fees=500uward
+     --from=my-key-name \
+     --chain-id=chiado_10010-1 \
+     --fees=250000000000000award \
+     --gas auto \
+     --gas-adjustment 1.6
    ```
    :::tip
    This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`
    :::
-
 
 ## 3. Backup critical files
 
@@ -108,13 +118,21 @@ There are certain files you need to backup to be able to restore your validator 
 - `priv_validator_key.json`
 - `node_key.json`
 
-
 ## 4. Check your validator
 
 Check if your validator is in the active set by running this command:
 
 ```bash
-wardend query comet-validator-set | grep "$(wardend comet show-address)"
+wardend query tendermint-validator-set | grep "$(wardend tendermint show-address)"
 ```
 
 If the output is empty, your validator isn't in the active set.
+
+## Next steps
+
+You're now all set to start validating! You can take these next steps:
+
+- To learn how to operate an oracle service, see [Operate Skip:Connect](operate-skip-connect).
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](node-commands).
+- Don't forget to join our community in [Discord](https://discord.com/invite/warden).
+

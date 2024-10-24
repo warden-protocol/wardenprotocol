@@ -1,4 +1,4 @@
-![Warden Protocol](./docs/logo.svg)
+![Warden Protocol](./docs/developer-docs/logo.svg)
 
 ## Overview
 

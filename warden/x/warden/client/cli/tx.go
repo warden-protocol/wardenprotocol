@@ -197,7 +197,7 @@ The sender of this transaction must be a writer of the Keychain for the request.
 			msg := &v1beta3.MsgFulfilSignRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				RequestId: reqId,
-				Status:    v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+				Status:    v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED,
 				Result: &v1beta3.MsgFulfilSignRequest_RejectReason{
 					RejectReason: args[1],
 				},

@@ -2,6 +2,9 @@
 sidebar_position: 1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Deploy an EVM contract
 
 ## Overview
@@ -26,16 +29,47 @@ Before you start, complete the following prerequisites:
   npm install -g truffle
   ```
 
-- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed.
-
-  In Step 3, you'll need your Warden private key. You can get it by executing the command below. Specify your key name (local account name).
+- Install HDWalletProvider:
 
   ```bash
-  wardend keys export my-key-name --unarmored-hex --unsafe
+  npm install @truffle/hdwallet-provider
   ```
-  :::tip
-  If you used our `just` script to run the node with default settings, the local account name is `shulgin`. You can check the names of available keys by running `wardend keys list`.
-  :::
+- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed. Get the information required for the next steps:
+
+  - Check the list of available keys (local accounts) and note down your key name.
+
+     ```bash
+     wardend keys list
+     ```
+
+     :::tip
+     If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
+     :::
+
+   - Execute a command for getting the private key associated with this key name. You'll need it in [Step 3](#3-configure-truffle).
+
+     <Tabs>
+     <TabItem value="default" label="Default node settings">
+     ```bash
+     wardend keys export shulgin --unarmored-hex --unsafe
+     ```
+     </TabItem>
+     <TabItem value="custom" label="Custom node settings">
+     ```bash
+     wardend keys export my-key-name --unarmored-hex --unsafe
+     ```
+     </TabItem>
+     </Tabs>
+
+  - You'll also need your chain ID. Run the following and note down the value from the `network` field:
+
+     ```
+     wardend status
+     ```
+
+     :::tip
+     If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
+     :::
 
 ## 1. Create an EVM project
 
@@ -54,11 +88,11 @@ Before you start, complete the following prerequisites:
 
 ## 2. Create a smart contract
 
-In the `/warden-smart-contract/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
+In the `/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
 
-```solidity
+```solidity title="/warden-smart-contract/contracts/HelloWarden.sol"
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 contract HelloWarden {
     string public message;
@@ -79,48 +113,50 @@ contract HelloWarden {
 
 ## 3. Configure Truffle
 
-1. Install HDWalletProvider:
+In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
 
-    ```bash
-    npm install @truffle/hdwallet-provider
-    ```
+Make adjustments in the code using your chain settings from [Prerequisites](#prerequisites):
 
-2. In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
+1. Replace `your_private_key` with your actual private key.
+2. In `network_id`, specify the first number from your chain ID. For example, if your chain ID is `warden_1337-1` or `chain_123-1`, specify `1337` or `123` respectively. Alternatively, you can just use `"*"` to match any chain ID.
+3. If needed, adjust the gas limit and price – `gas` and `gasPrice`.
 
-   Replace `your_private_key` with your actual private key (see [Prerequisites](#prerequisites)).
+```javascript title="/warden-smart-contract/truffle-config.js"
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-   ```javascript
-   const HDWalletProvider = require('@truffle/hdwallet-provider');
+// Your private key (keep this secret and never commit it to version control!)
+const PRIVATE_KEY = "your_private_key";
 
-   // Your private key (keep this secret and never commit it to version control!)
-   const PRIVATE_KEY = 'your_private_key';
-
-   module.exports = {
-   networks: {
-       warden: {
-       provider: function() {
-           return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
-       },
-       network_id: 1337, // Match any network id
-       host: "127.0.0.1",
-       port: 8545,
-       gas: 5500000,
-       gasPrice: 20000000000,  // 20 gwei
-       },
-   },
-   compilers: {
-       solc: {
-       version: "0.8.0",
-       }
-   }
-   };
+module.exports = {
+  networks: {
+    warden: {
+      provider: function() {
+        return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
+      },
+      network_id: 1337, // The first number from your chain ID
+      host: "127.0.0.1",
+      port: 8545,
+      gas: 5500000,
+      gasPrice: 20000000000 // award
+    },
+  },
+  compilers: {
+    solc: {
+    version: "0.8.20",
+    }
+  }
+};
    ```
+
+:::note
+The `host` and `port` values are the standard localhost address and the RPC port of the node. `HDWalletProvider` uses the same URL to connect to the node. If you're running your node on the same machine where you're deploying the contract, you don't need to change these settings. Otherwise, run `wardend status` to check the host address and adjust the configuration accordingly. 
+:::
 
 ## 4. Create a migration script
 
-In `/warden-smart-contract/migrations`, create a new file `2_deploy_hello_warden.js` with the following s:
+In `/migrations`, create a new file `2_deploy_hello_warden.js` with the following contents:
 
-```javascript
+```javascript title="/warden-smart-contract/migrations/2_deploy_hello_warden.js"
 const HelloWarden = artifacts.require("HelloWarden");
 
 module.exports = function(deployer) {
@@ -144,7 +180,7 @@ Compiling your contracts...
 > Compiling ./contracts/HelloWarden.sol
 > Artifacts written to /build/contracts
 > Compiled successfully using:
-   - solc: 0.8.0+commit.c7dfd78e.Emscripten.clang
+   - solc: 0.8.20+commit.c7dfd78e.Emscripten.clang
 ```
 
 ## 6. Deploy the contract
@@ -197,26 +233,62 @@ Summary
 > Final cost:          0.055 ETH
 ```
 
+:::note
+Due to Evmos default settings, this log displays prices in ETH and gwei. However, the contract itself uses Warden's currency – WARD, denominated in award.
+:::
+
 ## 7. Interact with the contract
 
-1. Open the Truffle console:
+1. To interact with your contract, open the Truffle console:
    
    ```bash
    truffle console --network warden
    ```
    
-2. In the console, interact with your contract:
+2. Retrieve the deployed instance of the contract:
    
    ```javascript
-   let instance = await HelloWarden.deployed()
-   let message = await instance.getMessage()
-   console.log(message) // Should print "Hello, Warden!"
-   await instance.setMessage("Hello, EVM on Warden!")
-   message = await instance.getMessage()
-   console.log(message) // Should print "Hello, EVM on Warden!"
+   let instance = await HelloWarden.deployed();
    ```
 
-   The console log should first print `Hello, Warden!` and then `Hello, EVM on Warden!`
+3. Retrieve the stored message by calling the `getMessage()` function in your contract:
+   
+   ```javascript
+   let message = await instance.getMessage();
+   ```
+
+4. Print the message:
+
+   ```javascript
+   console.log(message);
+   ```
+
+   The console log should print `Hello, Warden!`
+
+5. Update the message in the contract with `setMessage()`:
+   
+   ```javascript
+   await instance.setMessage("Hello, EVM on Warden!");
+   ```
+
+6. Call `getMessage()` again to retrieve the updated message:
+   
+   ```javascript
+   message = await instance.getMessage();
+   ```
+
+7. Print the updated message:
+   
+   ```javascript
+   console.log(message);
+   ```
+   The console log should print `Hello, EVM on Warden!`
+
+8. To exit the console, run this:
+
+   ```
+   .exit
+   ```
 
    If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 

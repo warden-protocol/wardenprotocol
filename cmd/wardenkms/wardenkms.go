@@ -149,11 +149,17 @@ func main() {
 	if cfg.HttpAddr != "" {
 		logger.Info("starting HTTP server", "addr", cfg.HttpAddr)
 		http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
+
+			readyConnectionsCount := uint(0)
 			for _, state := range app.ConnectionState() {
 				if state == connectivity.Ready {
-					w.WriteHeader(http.StatusOK)
-					return
+					readyConnectionsCount += 1
 				}
+			}
+
+			if readyConnectionsCount >= uint(cfg.ConsensusNodeThreshold) {
+				w.WriteHeader(http.StatusOK)
+				return
 			}
 
 			w.WriteHeader(http.StatusServiceUnavailable)

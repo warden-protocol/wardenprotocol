@@ -234,7 +234,7 @@ Summary
 ```
 
 :::note
-Due to Evmos default settings, this log displays the local account balance and prices ETH and gwei. However, the contract itself uses Warden's currency – WARD, denominated in award.
+Due to Evmos default settings, this log displays prices in ETH and gwei. However, the contract itself uses Warden's currency – WARD, denominated in award.
 :::
 
 ## 7. Interact with the contract

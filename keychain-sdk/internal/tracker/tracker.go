@@ -36,8 +36,8 @@ func (t *T) statusTracker(id uint64) *statusTracker {
 }
 
 func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
-	t.rw.RLock()
-	defer t.rw.RUnlock()
+	t.rw.Lock()
+	defer t.rw.Unlock()
 
 	value := t.statusTracker(id)
 

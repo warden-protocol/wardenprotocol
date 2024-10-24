@@ -7,8 +7,8 @@ import (
 type status int
 
 const (
-	statusSeen      status = iota
-	statusProcessig        = iota
+	statusSeen status = iota
+	statusProcessing
 )
 
 type statusTracker struct {
@@ -41,12 +41,12 @@ func (sh *statusTracker) MarkSeen(seenBy string) error {
 		return fmt.Errorf("cannot mark as seen: already seen by %s", seenBy)
 	}
 
-	if sh.status == statusProcessig {
+	if sh.status == statusProcessing {
 		return fmt.Errorf("is already in processing state")
 	}
 
 	if uint64(len(sh.seensBy)) >= uint64(sh.threshold) {
-		sh.status = statusProcessig
+		sh.status = statusProcessing
 	}
 
 	return nil

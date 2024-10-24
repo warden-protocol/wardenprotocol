@@ -45,7 +45,7 @@ func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
 		return ActionSkip, err
 	}
 
-	if value.status == statusProcessig {
+	if value.status == statusProcessing {
 		return ActionProcess, nil
 	}
 

@@ -67,7 +67,7 @@ type GrpcNodeConfig struct {
 	// gRPC server.
 	GRPCInsecure bool
 
-	// GRPCURLs is the list of URLs of the gRPC server to connect to.
+	// GRPCURL is the URL of the gRPC server to connect to.
 	// e.g. "localhost:9090"
 	GRPCURL string
 }

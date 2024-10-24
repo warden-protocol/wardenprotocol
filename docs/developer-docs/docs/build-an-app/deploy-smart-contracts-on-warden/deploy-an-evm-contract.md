@@ -234,7 +234,7 @@ Summary
 ```
 
 :::note
-Truffle displays the local account balance and prices in ETH and gwei. However, this contract actually utilizes Warden's currency – WARD, denominated in award.
+Evmos displays the local account balance and prices in ETH and gwei. However, this contract actually utilizes Warden's currency – WARD, denominated in award.
 :::
 
 ## 7. Interact with the contract

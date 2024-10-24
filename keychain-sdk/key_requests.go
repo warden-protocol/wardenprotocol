@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -56,27 +57,40 @@ func (w *keyResponseWriter) Reject(reason string) error {
 	return err
 }
 
-func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {
+func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest, client *AppClient) {
 	for {
 		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		keyRequests, err := a.keyRequests(reqCtx)
+		keyRequests, err := client.keyRequests(reqCtx, a.config.BatchSize, a.config.KeychainID)
 		cancel()
 		if err != nil {
 			a.logger().Error("failed to get key requests", "error", err)
 		} else {
 			for _, keyRequest := range keyRequests {
-				if !a.keyRequestTracker.IsNew(keyRequest.Id) {
-					a.logger().Debug("skipping key request", "id", keyRequest.Id)
-					continue
-				}
-
-				a.logger().Info("got key request", "id", keyRequest.Id)
-				a.keyRequestTracker.Ingested(keyRequest.Id)
-				keyRequestsCh <- keyRequest
+				a.ingestRequest(keyRequestsCh, keyRequest, client)
 			}
 		}
 
 		time.Sleep(a.config.BatchInterval / 2)
+	}
+}
+
+func (a *App) ingestRequest(
+	keyRequestsCh chan *wardentypes.KeyRequest,
+	keyRequest *wardentypes.KeyRequest,
+	client *AppClient) {
+	action, err := a.keyRequestTracker.Ingest(keyRequest.Id, client.grpcUrl)
+	if err != nil {
+		a.logger().Error("failed to ingest key request", "id", keyRequest.Id, "grpcUrl", client.grpcUrl, "error", err)
+		return
+	}
+
+	if action == tracker.ActionSkip {
+		a.logger().Debug("skipping key request", "id", keyRequest.Id, "grpcUrl", client.grpcUrl)
+		return
+	}
+
+	if action == tracker.ActionProcess {
+		keyRequestsCh <- keyRequest
 	}
 }
 
@@ -109,6 +123,6 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 	}()
 }
 
-func (a *App) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
-	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainID)
+func (a *AppClient) keyRequests(ctx context.Context, batchSize int, keychainId uint64) ([]*wardentypes.KeyRequest, error) {
+	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(batchSize)}, keychainId)
 }

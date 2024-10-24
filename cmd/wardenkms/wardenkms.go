@@ -178,12 +178,17 @@ func bigEndianBytesFromUint32(n uint64) ([4]byte, error) {
 }
 
 func mapGrpcConfig(value GrpcNodeConfigDecoder) ([]keychain.GrpcNodeConfig, error) {
-	if len(value) == 0 {
+	var nodesLength = len(value)
+	if nodesLength == 0 {
 		return nil, fmt.Errorf("GRPCUrls must be specified")
 	}
 
-	result := make([]keychain.GrpcNodeConfig, 0)
+	result := make([]keychain.GrpcNodeConfig, 0, nodesLength)
 	for _, item := range value {
+		if item.GRPCUrl == "" {
+			return nil, fmt.Errorf("GRPCUrl must be specified")
+		}
+
 		result = append(result, keychain.GrpcNodeConfig{
 			GRPCInsecure: item.GRPCInsecure,
 			GRPCURL:      item.GRPCUrl,

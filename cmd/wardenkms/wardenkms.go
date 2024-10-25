@@ -183,7 +183,7 @@ func main() {
 				w.WriteHeader(http.StatusServiceUnavailable)
 			}
 
-			w.Write(bytes)
+			_, _ = w.Write(bytes)
 		})
 		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}

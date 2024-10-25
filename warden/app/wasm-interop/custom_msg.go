@@ -18,6 +18,7 @@ type WardenProtocolMsg struct {
 type WardenMsg struct {
 	NewKeyRequest  *NewKeyRequest  `json:"new_key_request,omitempty"`
 	NewSignRequest *NewSignRequest `json:"new_sign_request,omitempty"`
+	ExecuteFuture  *ExecuteFuture  `json:"execute_future,omitempty"`
 }
 
 type NewKeyRequest struct {
@@ -37,6 +38,11 @@ type NewSignRequest struct {
 	TimeoutHeight uint64   `json:"timeout_height"`
 }
 
+type ExecuteFuture struct {
+	Input  []byte `json:"input"`
+	Output []byte `json:"output"`
+}
+
 func EncodeCustomMsg(sender sdk.AccAddress, rawMsg json.RawMessage) ([]sdk.Msg, error) {
 	var msg WardenProtocolMsg
 	err := json.Unmarshal(rawMsg, &msg)
@@ -48,6 +54,8 @@ func EncodeCustomMsg(sender sdk.AccAddress, rawMsg json.RawMessage) ([]sdk.Msg, 
 		return handleNewKeyRequest(sender, msg)
 	case msg.Warden.NewSignRequest != nil:
 		return handleNewSignRequest(sender, msg)
+	case msg.Warden.ExecuteFuture != nil:
+		return handleExecuteFuture(sender, msg)
 	default:
 		return nil, fmt.Errorf("unknown variant of WardenProtocolMsg")
 	}
@@ -98,4 +106,14 @@ func handleNewSignRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.M
 		ActionTimeoutHeight: newSignRequest.TimeoutHeight,
 	}
 	return []sdk.Msg{newActionMsg}, nil
+}
+
+func handleExecuteFuture(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.Msg, error) {
+	mockCallback := msg.Warden.ExecuteFuture
+	callbackMsg := &types.MsgMockCallback{
+		Creator:        sender.String(),
+		CallbackInput:  mockCallback.Input,
+		CallbackOutput: mockCallback.Output,
+	}
+	return []sdk.Msg{callbackMsg}, nil
 }

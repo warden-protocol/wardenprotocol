@@ -1,23 +1,24 @@
+use cosmwasm_schema::cw_serde;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{
-    to_json_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, PageRequest, Response,
-    StdResult,
+    to_json_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult, from_json
 };
 use cw2::set_contract_version;
+use cw_storage_plus::{Item, Map};
 
-use bindings::key::KeyType;
 use bindings::msg::WardenMsg;
-use bindings::querier::WardenQuerier;
-use bindings::query::AddressType;
-use bindings::{QueryKeysResponse, WardenProtocolMsg, WardenProtocolQuery};
+use bindings::{WardenProtocolMsg, WardenProtocolQuery};
 
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, QueryMsg};
+use crate::msg::{ExecuteMsg, FutureResult, QueryMsg};
 
 // version info for migration info
 const CONTRACT_NAME: &str = "crates.io:wardenprotocol-sample";
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+pub const COUNT: Item<u64> = Item::new("count");
+pub const FUTURES_MAP: Map<u64, String> = Map::new("futures_map");
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -38,64 +39,88 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response<WardenProtocolMsg>, ContractError> {
     match msg {
-        ExecuteMsg::NewKeyRequest {
-            space_id,
-            keychain_id,
-            key_type,
-            timeout_height,
-            intent_id,
-        } => execute_new_key_request(
+        ExecuteMsg::DoStuff {
+            input
+        } => execute_do_stuff(
             deps,
             env,
             info,
-            space_id,
-            keychain_id,
-            key_type,
-            timeout_height,
-            intent_id,
+            input,
+        ),
+        ExecuteMsg::FutureReady {
+            output,
+        } => execute_callback(
+            deps,
+            env,
+            info,
+            output,
         ),
     }
 }
 
-fn execute_new_key_request(
-    _deps: DepsMut<WardenProtocolQuery>,
+#[cw_serde]
+struct FutureInput {
+    id: u64,
+    input: String,
+}
+
+#[cw_serde]
+struct FutureOutput {
+    id: u64,
+    output: String,
+}
+
+fn execute_do_stuff(
+    deps: DepsMut<WardenProtocolQuery>,
     _env: Env,
     _info: MessageInfo,
-    space_id: u64,
-    keychain_id: u64,
-    key_type: KeyType,
-    timeout_height: u64,
-    intent_id: u64,
+    input: String,
 ) -> Result<Response<WardenProtocolMsg>, ContractError> {
-    let msg = WardenMsg::NewKeyRequest {
-        space_id,
-        keychain_id,
-        key_type,
-        timeout_height,
-        intent_id,
+    // load the next ID
+    let count = COUNT.may_load(deps.storage)?.unwrap_or(0);
+
+    // prepare the future to be executed
+    let input_length = input.len();
+    let msg = WardenMsg::ExecuteFuture {
+        input: to_json_binary(&FutureInput{
+            id: count,
+            input,
+        }).unwrap(),
+        output: to_json_binary(&FutureOutput{
+            id: count,
+            output: format!("I'm the output of an AI model :] Your input length was {}.", input_length),
+        }).unwrap(),
     };
+
+    // update the count
+    COUNT.save(deps.storage, &(count+1))?;
+
     let res = Response::new()
-        .add_message(msg)
-        .add_attribute("action", "new_key_request");
+        .add_message(msg);
     Ok(res)
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
-pub fn query(deps: Deps<WardenProtocolQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
-    match msg {
-        QueryMsg::WardenAllKeys {
-            pagination,
-            derive_addresses,
-        } => to_json_binary(&query_warden_all_keys(deps, pagination, derive_addresses)?),
-    }
+fn execute_callback(
+    deps: DepsMut<WardenProtocolQuery>,
+    _env: Env,
+    _info: MessageInfo,
+    output: Binary,
+) -> Result<Response<WardenProtocolMsg>, ContractError> {
+    // this is called by x/warden when the result of the execution is ready
+
+    let result: FutureOutput = from_json(output)?;
+
+    FUTURES_MAP.save(deps.storage, result.id, &result.output)?;
+
+    Ok(Response::default())
 }
 
-pub fn query_warden_all_keys(
-    deps: Deps<WardenProtocolQuery>,
-    pagination: PageRequest,
-    derive_addresses: Vec<AddressType>,
-) -> StdResult<QueryKeysResponse> {
-    let querier = WardenQuerier::new(&deps.querier);
-    let response = querier.query_warden_all_keys(pagination, derive_addresses)?;
-    Ok(response)
+#[cfg_attr(not(feature = "library"), entry_point)]
+pub fn query(_deps: Deps<WardenProtocolQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    match msg {
+        QueryMsg::GetFutureResult { id } => {
+            let output = FUTURES_MAP.load(_deps.storage, id)?;
+            to_json_binary(&FutureResult{ output })
+        }
+    }
 }

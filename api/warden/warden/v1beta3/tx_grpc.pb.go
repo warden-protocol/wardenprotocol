@@ -34,6 +34,7 @@ const (
 	Msg_FulfilSignRequest_FullMethodName   = "/warden.warden.v1beta3.Msg/FulfilSignRequest"
 	Msg_AddKeychainAdmin_FullMethodName    = "/warden.warden.v1beta3.Msg/AddKeychainAdmin"
 	Msg_RemoveKeychainAdmin_FullMethodName = "/warden.warden.v1beta3.Msg/RemoveKeychainAdmin"
+	Msg_MockCallback_FullMethodName        = "/warden.warden.v1beta3.Msg/MockCallback"
 )
 
 // MsgClient is the client API for Msg service.
@@ -71,6 +72,7 @@ type MsgClient interface {
 	AddKeychainAdmin(ctx context.Context, in *MsgAddKeychainAdminRequest, opts ...grpc.CallOption) (*MsgAddKeychainAdminResponse, error)
 	// / Remove admin from a Keychain
 	RemoveKeychainAdmin(ctx context.Context, in *MsgRemoveKeychainAdminRequest, opts ...grpc.CallOption) (*MsgRemoveKeychainAdminResponse, error)
+	MockCallback(ctx context.Context, in *MsgMockCallback, opts ...grpc.CallOption) (*MsgMockCallbackResponse, error)
 }
 
 type msgClient struct {
@@ -216,6 +218,15 @@ func (c *msgClient) RemoveKeychainAdmin(ctx context.Context, in *MsgRemoveKeycha
 	return out, nil
 }
 
+func (c *msgClient) MockCallback(ctx context.Context, in *MsgMockCallback, opts ...grpc.CallOption) (*MsgMockCallbackResponse, error) {
+	out := new(MsgMockCallbackResponse)
+	err := c.cc.Invoke(ctx, Msg_MockCallback_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -251,6 +262,7 @@ type MsgServer interface {
 	AddKeychainAdmin(context.Context, *MsgAddKeychainAdminRequest) (*MsgAddKeychainAdminResponse, error)
 	// / Remove admin from a Keychain
 	RemoveKeychainAdmin(context.Context, *MsgRemoveKeychainAdminRequest) (*MsgRemoveKeychainAdminResponse, error)
+	MockCallback(context.Context, *MsgMockCallback) (*MsgMockCallbackResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -302,6 +314,9 @@ func (UnimplementedMsgServer) AddKeychainAdmin(context.Context, *MsgAddKeychainA
 }
 func (UnimplementedMsgServer) RemoveKeychainAdmin(context.Context, *MsgRemoveKeychainAdminRequest) (*MsgRemoveKeychainAdminResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveKeychainAdmin not implemented")
+}
+func (UnimplementedMsgServer) MockCallback(context.Context, *MsgMockCallback) (*MsgMockCallbackResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MockCallback not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -586,6 +601,24 @@ func _Msg_RemoveKeychainAdmin_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_MockCallback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgMockCallback)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).MockCallback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_MockCallback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).MockCallback(ctx, req.(*MsgMockCallback))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -652,6 +685,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveKeychainAdmin",
 			Handler:    _Msg_RemoveKeychainAdmin_Handler,
+		},
+		{
+			MethodName: "MockCallback",
+			Handler:    _Msg_MockCallback_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,6 +1,6 @@
 use crate::key::KeyType;
 use cosmwasm_schema::cw_serde;
-use cosmwasm_std::{CosmosMsg, CustomMsg};
+use cosmwasm_std::{Binary, CosmosMsg, CustomMsg};
 
 /// WardenMsg is an override of CosmosMsg::Custom to add support for Warden Protocol's custom message types
 #[cw_serde]
@@ -19,6 +19,10 @@ pub enum WardenMsg {
         key_type: KeyType,
         timeout_height: u64,
         intent_id: u64,
+    },
+    ExecuteFuture {
+        input: Binary,
+        output: Binary,
     },
 }
 

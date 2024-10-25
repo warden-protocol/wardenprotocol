@@ -63,6 +63,8 @@ service Msg {
 
   /// Remove admin from a Keychain
   rpc RemoveKeychainAdmin(MsgRemoveKeychainAdminRequest) returns (MsgRemoveKeychainAdminResponse);
+
+  rpc MockCallback(MsgMockCallback) returns (MsgMockCallbackResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -278,3 +280,12 @@ message MsgFulfilSignRequest {
 }
 
 message MsgFulfilSignRequestResponse {}
+
+message MsgMockCallback {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  bytes callback_input = 2;
+  bytes callback_output = 3;
+}
+
+message MsgMockCallbackResponse {}

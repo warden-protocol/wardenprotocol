@@ -1502,6 +1502,7 @@ dependencies = [
  "bindings",
  "cosmwasm-schema",
  "cosmwasm-std",
+ "cw-storage-plus",
  "cw2",
  "derivative",
  "schemars",

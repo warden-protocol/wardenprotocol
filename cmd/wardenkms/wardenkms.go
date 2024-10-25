@@ -93,7 +93,7 @@ func main() {
 			BatchInterval: cfg.BatchInterval,
 			BatchSize:     cfg.BatchSize,
 			TxTimeout:     cfg.TxTimeout,
-			TxFees:        sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
+			TxFees:        sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
 		},
 		GRPCConfigs:            grpcConfigs,
 		ConsensusNodeThreshold: cfg.ConsensusNodeThreshold,
@@ -149,20 +149,41 @@ func main() {
 	if cfg.HttpAddr != "" {
 		logger.Info("starting HTTP server", "addr", cfg.HttpAddr)
 		http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
+			connectionStates := app.ConnectionState()
 
 			readyConnectionsCount := uint(0)
-			for _, state := range app.ConnectionState() {
+			nodes := make([]NodeStatus, 0, len(connectionStates))
+
+			for url, state := range connectionStates {
 				if state == connectivity.Ready {
 					readyConnectionsCount += 1
 				}
+
+				nodes = append(nodes, NodeStatus{
+					Address: url,
+					Status:  state.String(),
+				})
+			}
+
+			bytes, err := json.Marshal(HealthCheckResponse{
+				Online:    readyConnectionsCount,
+				Total:     uint(len(connectionStates)),
+				Nodes:     nodes,
+				Threshold: cfg.ConsensusNodeThreshold,
+			})
+
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
 			}
 
 			if readyConnectionsCount >= uint(cfg.ConsensusNodeThreshold) {
 				w.WriteHeader(http.StatusOK)
-				return
+			} else {
+				w.WriteHeader(http.StatusServiceUnavailable)
 			}
 
-			w.WriteHeader(http.StatusServiceUnavailable)
+			w.Write(bytes)
 		})
 		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}

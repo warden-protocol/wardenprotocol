@@ -31,25 +31,25 @@ func NewClientsPool(config Config) *ClientsPool {
 	return &pool
 }
 
-func (a *ClientsPool) initConnections(logger *slog.Logger) error {
-	identity, err := client.NewIdentityFromSeed(a.config.Mnemonic)
+func (cp *ClientsPool) initConnections(logger *slog.Logger) error {
+	identity, err := client.NewIdentityFromSeed(cp.config.Mnemonic)
 	if err != nil {
 		return fmt.Errorf("failed to create identity: %w", err)
 	}
 
-	for _, grpcUrl := range a.config.GRPCConfigs {
-		appClient, err := a.initConnection(logger, grpcUrl, a.config.BasicConfig, identity)
+	for _, grpcUrl := range cp.config.GRPCConfigs {
+		appClient, err := cp.initConnection(logger, grpcUrl, cp.config.BasicConfig, identity)
 		if err != nil {
 			return err
 		}
 
-		a.clients = append(a.clients, appClient)
+		cp.clients = append(cp.clients, appClient)
 	}
 
 	return nil
 }
 
-func (a *ClientsPool) initConnection(
+func (cp *ClientsPool) initConnection(
 	logger *slog.Logger,
 	grpcNodeConfig GrpcNodeConfig,
 	config BasicConfig,
@@ -76,8 +76,8 @@ func (a *ClientsPool) initConnection(
 	return appClient, nil
 }
 
-func (a *ClientsPool) liveTxClient() (*client.TxClient, error) {
-	for _, appClient := range a.clients {
+func (cp *ClientsPool) liveTxClient() (*client.TxClient, error) {
+	for _, appClient := range cp.clients {
 		if state := appClient.query.Conn().GetState(); isOnline(state) {
 			return appClient.txClient, nil
 		}
@@ -90,12 +90,12 @@ func isOnline(state connectivity.State) bool {
 	return state == connectivity.Ready || state == connectivity.Idle
 }
 
-func (p *ClientsPool) BuildTx(
+func (cp *ClientsPool) BuildTx(
 	ctx context.Context,
 	gasLimit uint64,
 	fees sdkTypes.Coins,
 	msgers ...client.Msger) ([]byte, error) {
-	liveClient, err := p.liveTxClient()
+	liveClient, err := cp.liveTxClient()
 	if err != nil {
 		return nil, fmt.Errorf("failed to aquire live client for BuildTx: %w", err)
 	}
@@ -103,8 +103,8 @@ func (p *ClientsPool) BuildTx(
 	return liveClient.BuildTx(ctx, gasLimit, fees, msgers...)
 }
 
-func (p *ClientsPool) SendWaitTx(ctx context.Context, txBytes []byte) error {
-	liveClient, err := p.liveTxClient()
+func (cp *ClientsPool) SendWaitTx(ctx context.Context, txBytes []byte) error {
+	liveClient, err := cp.liveTxClient()
 	if err != nil {
 		return fmt.Errorf("failed to aquire live client for SendWaitTx: %w", err)
 	}
@@ -112,10 +112,10 @@ func (p *ClientsPool) SendWaitTx(ctx context.Context, txBytes []byte) error {
 	return liveClient.SendWaitTx(ctx, txBytes)
 }
 
-func (a *ClientsPool) ConnectionState() map[string]connectivity.State {
+func (cp *ClientsPool) ConnectionState() map[string]connectivity.State {
 	statuses := make(map[string]connectivity.State)
 
-	for _, appClient := range a.clients {
+	for _, appClient := range cp.clients {
 		state := appClient.query.Conn().GetState()
 		statuses[appClient.grpcUrl] = state
 	}

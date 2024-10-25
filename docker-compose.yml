@@ -15,7 +15,7 @@ services:
       WARDEND_GRPC_ADDRESS: 0.0.0.0:9090
       WARDEND_RPC_LADDR: tcp://0.0.0.0:26657
       WARDEND_RPC_CORS_ALLOWED_ORIGINS: "*"
-      WARDEND_MINIMUM_GAS_PRICES: "0uward"
+      WARDEND_MINIMUM_GAS_PRICES: "0award"
 
   faucet:
     build:

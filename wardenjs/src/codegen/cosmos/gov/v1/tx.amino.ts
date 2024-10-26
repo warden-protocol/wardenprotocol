@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgSubmitProposal, MsgExecLegacyContent, MsgVote, MsgVoteWeighted, MsgDeposit, MsgUpdateParams, MsgCancelProposal } from "./tx.js";
+import { MsgSubmitProposal, MsgExecLegacyContent, MsgVote, MsgVoteWeighted, MsgDeposit } from "./tx.js";
 export const AminoConverter = {
   "/cosmos.gov.v1.MsgSubmitProposal": {
     aminoType: "cosmos-sdk/v1/MsgSubmitProposal",
@@ -25,15 +25,5 @@ export const AminoConverter = {
     aminoType: "cosmos-sdk/v1/MsgDeposit",
     toAmino: MsgDeposit.toAmino,
     fromAmino: MsgDeposit.fromAmino
-  },
-  "/cosmos.gov.v1.MsgUpdateParams": {
-    aminoType: "cosmos-sdk/x/gov/v1/MsgUpdateParams",
-    toAmino: MsgUpdateParams.toAmino,
-    fromAmino: MsgUpdateParams.fromAmino
-  },
-  "/cosmos.gov.v1.MsgCancelProposal": {
-    aminoType: "cosmos-sdk/v1/MsgCancelProposal",
-    toAmino: MsgCancelProposal.toAmino,
-    fromAmino: MsgCancelProposal.fromAmino
   }
 };

@@ -689,6 +689,40 @@ export interface MsgFulfilSignRequestResponseAminoMsg {
   value: MsgFulfilSignRequestResponseAmino;
 }
 export interface MsgFulfilSignRequestResponseSDKType {}
+export interface MsgMockCallback {
+  creator: string;
+  callbackInput: Uint8Array;
+  callbackOutput: Uint8Array;
+}
+export interface MsgMockCallbackProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgMockCallback";
+  value: Uint8Array;
+}
+export interface MsgMockCallbackAmino {
+  creator?: string;
+  callback_input?: string;
+  callback_output?: string;
+}
+export interface MsgMockCallbackAminoMsg {
+  type: "/warden.warden.v1beta3.MsgMockCallback";
+  value: MsgMockCallbackAmino;
+}
+export interface MsgMockCallbackSDKType {
+  creator: string;
+  callback_input: Uint8Array;
+  callback_output: Uint8Array;
+}
+export interface MsgMockCallbackResponse {}
+export interface MsgMockCallbackResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta3.MsgMockCallbackResponse";
+  value: Uint8Array;
+}
+export interface MsgMockCallbackResponseAmino {}
+export interface MsgMockCallbackResponseAminoMsg {
+  type: "/warden.warden.v1beta3.MsgMockCallbackResponse";
+  value: MsgMockCallbackResponseAmino;
+}
+export interface MsgMockCallbackResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -961,10 +995,10 @@ export const MsgNewSpace = {
   toAmino(message: MsgNewSpace): MsgNewSpaceAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
     if (message.additionalOwners) {
       obj.additional_owners = message.additionalOwners.map(e => e);
     } else {
@@ -1042,7 +1076,7 @@ export const MsgNewSpaceResponse = {
   },
   toAmino(message: MsgNewSpaceResponse): MsgNewSpaceResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSpaceResponseAminoMsg): MsgNewSpaceResponse {
@@ -1155,9 +1189,9 @@ export const MsgAddSpaceOwner = {
   toAmino(message: MsgAddSpaceOwner): MsgAddSpaceOwnerAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.new_owner = message.newOwner === "" ? undefined : message.newOwner;
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgAddSpaceOwnerAminoMsg): MsgAddSpaceOwner {
@@ -1327,9 +1361,9 @@ export const MsgRemoveSpaceOwner = {
   toAmino(message: MsgRemoveSpaceOwner): MsgRemoveSpaceOwnerAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.owner = message.owner === "" ? undefined : message.owner;
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgRemoveSpaceOwnerAminoMsg): MsgRemoveSpaceOwner {
@@ -1602,7 +1636,7 @@ export const MsgNewKeychainResponse = {
   },
   toAmino(message: MsgNewKeychainResponse): MsgNewKeychainResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeychainResponseAminoMsg): MsgNewKeychainResponse {
@@ -1702,7 +1736,7 @@ export const MsgAddKeychainWriter = {
   toAmino(message: MsgAddKeychainWriter): MsgAddKeychainWriterAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.writer = message.writer === "" ? undefined : message.writer;
     return obj;
   },
@@ -1912,12 +1946,12 @@ export const MsgUpdateSpace = {
   toAmino(message: MsgUpdateSpace): MsgUpdateSpaceAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateSpaceAminoMsg): MsgUpdateSpace {
@@ -2126,7 +2160,7 @@ export const MsgUpdateKeychain = {
   toAmino(message: MsgUpdateKeychain): MsgUpdateKeychainAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.name = message.name === "" ? undefined : message.name;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
     obj.description = message.description === "" ? undefined : message.description;
@@ -2288,7 +2322,7 @@ export const MsgAddKeychainAdminRequest = {
   toAmino(message: MsgAddKeychainAdminRequest): MsgAddKeychainAdminRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.new_admin = message.newAdmin === "" ? undefined : message.newAdmin;
     return obj;
   },
@@ -2446,7 +2480,7 @@ export const MsgRemoveKeychainAdminRequest = {
   toAmino(message: MsgRemoveKeychainAdminRequest): MsgRemoveKeychainAdminRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.admin = message.admin === "" ? undefined : message.admin;
     return obj;
   },
@@ -2581,7 +2615,7 @@ export const MsgNewKeyRequest = {
           message.keychainId = reader.uint64();
           break;
         case 4:
-          message.keyType = reader.int32() as any;
+          message.keyType = (reader.int32() as any);
           break;
         case 5:
           message.approveTemplateId = reader.uint64();
@@ -2671,17 +2705,17 @@ export const MsgNewKeyRequest = {
   toAmino(message: MsgNewKeyRequest): MsgNewKeyRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     if (message.maxKeychainFees) {
       obj.max_keychain_fees = message.maxKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestAminoMsg): MsgNewKeyRequest {
@@ -2754,7 +2788,7 @@ export const MsgNewKeyRequestResponse = {
   },
   toAmino(message: MsgNewKeyRequestResponse): MsgNewKeyRequestResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestResponseAminoMsg): MsgNewKeyRequestResponse {
@@ -2889,7 +2923,7 @@ export const MsgFulfilKeyRequest = {
           message.requestId = reader.uint64();
           break;
         case 3:
-          message.status = reader.int32() as any;
+          message.status = (reader.int32() as any);
           break;
         case 4:
           message.key = MsgNewKey.decode(reader, reader.uint32());
@@ -2953,7 +2987,7 @@ export const MsgFulfilKeyRequest = {
   toAmino(message: MsgFulfilKeyRequest): MsgFulfilKeyRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.request_id = message.requestId !== BigInt(0) ? (message.requestId?.toString)() : undefined;
+    obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.key = message.key ? MsgNewKey.toAmino(message.key) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
@@ -3126,9 +3160,9 @@ export const MsgUpdateKey = {
   toAmino(message: MsgUpdateKey): MsgUpdateKeyAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateKeyAminoMsg): MsgUpdateKey {
@@ -3341,7 +3375,7 @@ export const MsgNewSignRequest = {
   toAmino(message: MsgNewSignRequest): MsgNewSignRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
-    obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
     obj.input = message.input ? base64FromBytes(message.input) : undefined;
     if (message.analyzers) {
       obj.analyzers = message.analyzers.map(e => e);
@@ -3354,7 +3388,7 @@ export const MsgNewSignRequest = {
     } else {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestAminoMsg): MsgNewSignRequest {
@@ -3427,7 +3461,7 @@ export const MsgNewSignRequestResponse = {
   },
   toAmino(message: MsgNewSignRequestResponse): MsgNewSignRequestResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestResponseAminoMsg): MsgNewSignRequestResponse {
@@ -3562,7 +3596,7 @@ export const MsgFulfilSignRequest = {
           message.requestId = reader.uint64();
           break;
         case 3:
-          message.status = reader.int32() as any;
+          message.status = (reader.int32() as any);
           break;
         case 4:
           message.payload = MsgSignedData.decode(reader, reader.uint32());
@@ -3626,7 +3660,7 @@ export const MsgFulfilSignRequest = {
   toAmino(message: MsgFulfilSignRequest): MsgFulfilSignRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.request_id = message.requestId !== BigInt(0) ? (message.requestId?.toString)() : undefined;
+    obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.payload = message.payload ? MsgSignedData.toAmino(message.payload) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
@@ -3702,6 +3736,164 @@ export const MsgFulfilSignRequestResponse = {
     return {
       typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequestResponse",
       value: MsgFulfilSignRequestResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgMockCallback(): MsgMockCallback {
+  return {
+    creator: "",
+    callbackInput: new Uint8Array(),
+    callbackOutput: new Uint8Array()
+  };
+}
+export const MsgMockCallback = {
+  typeUrl: "/warden.warden.v1beta3.MsgMockCallback",
+  encode(message: MsgMockCallback, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.callbackInput.length !== 0) {
+      writer.uint32(18).bytes(message.callbackInput);
+    }
+    if (message.callbackOutput.length !== 0) {
+      writer.uint32(26).bytes(message.callbackOutput);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgMockCallback {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMockCallback();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.callbackInput = reader.bytes();
+          break;
+        case 3:
+          message.callbackOutput = reader.bytes();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgMockCallback {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      callbackInput: isSet(object.callbackInput) ? bytesFromBase64(object.callbackInput) : new Uint8Array(),
+      callbackOutput: isSet(object.callbackOutput) ? bytesFromBase64(object.callbackOutput) : new Uint8Array()
+    };
+  },
+  toJSON(message: MsgMockCallback): JsonSafe<MsgMockCallback> {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.callbackInput !== undefined && (obj.callbackInput = base64FromBytes(message.callbackInput !== undefined ? message.callbackInput : new Uint8Array()));
+    message.callbackOutput !== undefined && (obj.callbackOutput = base64FromBytes(message.callbackOutput !== undefined ? message.callbackOutput : new Uint8Array()));
+    return obj;
+  },
+  fromPartial(object: Partial<MsgMockCallback>): MsgMockCallback {
+    const message = createBaseMsgMockCallback();
+    message.creator = object.creator ?? "";
+    message.callbackInput = object.callbackInput ?? new Uint8Array();
+    message.callbackOutput = object.callbackOutput ?? new Uint8Array();
+    return message;
+  },
+  fromAmino(object: MsgMockCallbackAmino): MsgMockCallback {
+    const message = createBaseMsgMockCallback();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.callback_input !== undefined && object.callback_input !== null) {
+      message.callbackInput = bytesFromBase64(object.callback_input);
+    }
+    if (object.callback_output !== undefined && object.callback_output !== null) {
+      message.callbackOutput = bytesFromBase64(object.callback_output);
+    }
+    return message;
+  },
+  toAmino(message: MsgMockCallback): MsgMockCallbackAmino {
+    const obj: any = {};
+    obj.creator = message.creator === "" ? undefined : message.creator;
+    obj.callback_input = message.callbackInput ? base64FromBytes(message.callbackInput) : undefined;
+    obj.callback_output = message.callbackOutput ? base64FromBytes(message.callbackOutput) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgMockCallbackAminoMsg): MsgMockCallback {
+    return MsgMockCallback.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgMockCallbackProtoMsg): MsgMockCallback {
+    return MsgMockCallback.decode(message.value);
+  },
+  toProto(message: MsgMockCallback): Uint8Array {
+    return MsgMockCallback.encode(message).finish();
+  },
+  toProtoMsg(message: MsgMockCallback): MsgMockCallbackProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgMockCallback",
+      value: MsgMockCallback.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgMockCallbackResponse(): MsgMockCallbackResponse {
+  return {};
+}
+export const MsgMockCallbackResponse = {
+  typeUrl: "/warden.warden.v1beta3.MsgMockCallbackResponse",
+  encode(_: MsgMockCallbackResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgMockCallbackResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMockCallbackResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgMockCallbackResponse {
+    return {};
+  },
+  toJSON(_: MsgMockCallbackResponse): JsonSafe<MsgMockCallbackResponse> {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgMockCallbackResponse>): MsgMockCallbackResponse {
+    const message = createBaseMsgMockCallbackResponse();
+    return message;
+  },
+  fromAmino(_: MsgMockCallbackResponseAmino): MsgMockCallbackResponse {
+    const message = createBaseMsgMockCallbackResponse();
+    return message;
+  },
+  toAmino(_: MsgMockCallbackResponse): MsgMockCallbackResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgMockCallbackResponseAminoMsg): MsgMockCallbackResponse {
+    return MsgMockCallbackResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgMockCallbackResponseProtoMsg): MsgMockCallbackResponse {
+    return MsgMockCallbackResponse.decode(message.value);
+  },
+  toProto(message: MsgMockCallbackResponse): Uint8Array {
+    return MsgMockCallbackResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgMockCallbackResponse): MsgMockCallbackResponseProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta3.MsgMockCallbackResponse",
+      value: MsgMockCallbackResponse.encode(message).finish()
     };
   }
 };

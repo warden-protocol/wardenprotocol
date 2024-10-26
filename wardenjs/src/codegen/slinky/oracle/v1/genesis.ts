@@ -282,7 +282,7 @@ export const QuotePrice = {
     const obj: any = {};
     obj.price = message.price === "" ? undefined : message.price;
     obj.block_timestamp = message.blockTimestamp ? Timestamp.toAmino(message.blockTimestamp) : undefined;
-    obj.block_height = message.blockHeight !== BigInt(0) ? (message.blockHeight?.toString)() : undefined;
+    obj.block_height = message.blockHeight !== BigInt(0) ? message.blockHeight.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuotePriceAminoMsg): QuotePrice {
@@ -382,8 +382,8 @@ export const CurrencyPairState = {
   toAmino(message: CurrencyPairState): CurrencyPairStateAmino {
     const obj: any = {};
     obj.price = message.price ? QuotePrice.toAmino(message.price) : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: CurrencyPairStateAminoMsg): CurrencyPairState {
@@ -497,8 +497,8 @@ export const CurrencyPairGenesis = {
     const obj: any = {};
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
     obj.currency_pair_price = message.currencyPairPrice ? QuotePrice.toAmino(message.currencyPairPrice) : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: CurrencyPairGenesisAminoMsg): CurrencyPairGenesis {
@@ -591,7 +591,7 @@ export const GenesisState = {
     } else {
       obj.currency_pair_genesis = message.currencyPairGenesis;
     }
-    obj.next_id = message.nextId !== BigInt(0) ? (message.nextId?.toString)() : undefined;
+    obj.next_id = message.nextId !== BigInt(0) ? message.nextId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

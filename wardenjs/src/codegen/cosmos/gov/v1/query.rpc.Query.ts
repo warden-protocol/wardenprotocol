@@ -4,11 +4,9 @@ import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryConstitutionRequest, QueryConstitutionResponse, QueryProposalRequest, QueryProposalResponse, QueryProposalsRequest, QueryProposalsResponse, QueryVoteRequest, QueryVoteResponse, QueryVotesRequest, QueryVotesResponse, QueryParamsRequest, QueryParamsResponse, QueryDepositRequest, QueryDepositResponse, QueryDepositsRequest, QueryDepositsResponse, QueryTallyResultRequest, QueryTallyResultResponse } from "./query.js";
+import { QueryProposalRequest, QueryProposalResponse, QueryProposalsRequest, QueryProposalsResponse, QueryVoteRequest, QueryVoteResponse, QueryVotesRequest, QueryVotesResponse, QueryParamsRequest, QueryParamsResponse, QueryDepositRequest, QueryDepositResponse, QueryDepositsRequest, QueryDepositsResponse, QueryTallyResultRequest, QueryTallyResultResponse } from "./query.js";
 /** Query defines the gRPC querier service for gov module */
 export interface Query {
-  /** Constitution queries the chain's constitution. */
-  constitution(request?: QueryConstitutionRequest): Promise<QueryConstitutionResponse>;
   /** Proposal queries proposal details based on ProposalID. */
   proposal(request: QueryProposalRequest): Promise<QueryProposalResponse>;
   /** Proposals queries all proposals based on given status. */
@@ -19,7 +17,7 @@ export interface Query {
   votes(request: QueryVotesRequest): Promise<QueryVotesResponse>;
   /** Params queries all parameters of the gov module. */
   params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** Deposit queries single deposit information based on proposalID, depositAddr. */
+  /** Deposit queries single deposit information based proposalID, depositAddr. */
   deposit(request: QueryDepositRequest): Promise<QueryDepositResponse>;
   /** Deposits queries all deposits of a single proposal. */
   deposits(request: QueryDepositsRequest): Promise<QueryDepositsResponse>;
@@ -30,7 +28,6 @@ export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
   constructor(rpc: Rpc) {
     this.rpc = rpc;
-    this.constitution = this.constitution.bind(this);
     this.proposal = this.proposal.bind(this);
     this.proposals = this.proposals.bind(this);
     this.vote = this.vote.bind(this);
@@ -39,11 +36,6 @@ export class QueryClientImpl implements Query {
     this.deposit = this.deposit.bind(this);
     this.deposits = this.deposits.bind(this);
     this.tallyResult = this.tallyResult.bind(this);
-  }
-  constitution(request: QueryConstitutionRequest = {}): Promise<QueryConstitutionResponse> {
-    const data = QueryConstitutionRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.gov.v1.Query", "Constitution", data);
-    return promise.then(data => QueryConstitutionResponse.decode(new BinaryReader(data)));
   }
   proposal(request: QueryProposalRequest): Promise<QueryProposalResponse> {
     const data = QueryProposalRequest.encode(request).finish();
@@ -90,9 +82,6 @@ export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
   const queryService = new QueryClientImpl(rpc);
   return {
-    constitution(request?: QueryConstitutionRequest): Promise<QueryConstitutionResponse> {
-      return queryService.constitution(request);
-    },
     proposal(request: QueryProposalRequest): Promise<QueryProposalResponse> {
       return queryService.proposal(request);
     },
@@ -119,9 +108,6 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     }
   };
 };
-export interface UseConstitutionQuery<TData> extends ReactQueryParams<QueryConstitutionResponse, TData> {
-  request?: QueryConstitutionRequest;
-}
 export interface UseProposalQuery<TData> extends ReactQueryParams<QueryProposalResponse, TData> {
   request: QueryProposalRequest;
 }
@@ -158,15 +144,6 @@ const getQueryService = (rpc: ProtobufRpcClient | undefined): QueryClientImpl | 
 };
 export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
   const queryService = getQueryService(rpc);
-  const useConstitution = <TData = QueryConstitutionResponse,>({
-    request,
-    options
-  }: UseConstitutionQuery<TData>) => {
-    return useQuery<QueryConstitutionResponse, Error, TData>(["constitutionQuery", request], () => {
-      if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.constitution(request);
-    }, options);
-  };
   const useProposal = <TData = QueryProposalResponse,>({
     request,
     options
@@ -240,13 +217,12 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
     }, options);
   };
   return {
-    /** Constitution queries the chain's constitution. */useConstitution,
     /** Proposal queries proposal details based on ProposalID. */useProposal,
     /** Proposals queries all proposals based on given status. */useProposals,
     /** Vote queries voted information based on proposalID, voterAddr. */useVote,
     /** Votes queries votes of a given proposal. */useVotes,
     /** Params queries all parameters of the gov module. */useParams,
-    /** Deposit queries single deposit information based on proposalID, depositAddr. */useDeposit,
+    /** Deposit queries single deposit information based proposalID, depositAddr. */useDeposit,
     /** Deposits queries all deposits of a single proposal. */useDeposits,
     /** TallyResult queries the tally of a proposal vote. */useTallyResult
   };

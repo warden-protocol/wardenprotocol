@@ -381,10 +381,10 @@ export const KeyRequest = {
           message.keychainId = reader.uint64();
           break;
         case 5:
-          message.keyType = reader.int32() as any;
+          message.keyType = (reader.int32() as any);
           break;
         case 6:
-          message.status = reader.int32() as any;
+          message.status = (reader.int32() as any);
           break;
         case 7:
           message.rejectReason = reader.string();
@@ -485,15 +485,15 @@ export const KeyRequest = {
   },
   toAmino(message: KeyRequest): KeyRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.reject_reason = message.rejectReason === "" ? undefined : message.rejectReason;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     if (message.deductedKeychainFees) {
       obj.deducted_keychain_fees = message.deductedKeychainFees.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
@@ -571,7 +571,7 @@ export const Key = {
           message.keychainId = reader.uint64();
           break;
         case 4:
-          message.type = reader.int32() as any;
+          message.type = (reader.int32() as any);
           break;
         case 5:
           message.publicKey = reader.bytes();
@@ -649,13 +649,13 @@ export const Key = {
   },
   toAmino(message: Key): KeyAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.type = message.type === 0 ? undefined : message.type;
     obj.public_key = message.publicKey ? base64FromBytes(message.publicKey) : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: KeyAminoMsg): Key {

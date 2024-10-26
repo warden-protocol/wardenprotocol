@@ -893,7 +893,7 @@ export const QueryAccountResponse = {
     const obj: any = {};
     obj.balance = message.balance === "" ? undefined : message.balance;
     obj.code_hash = message.codeHash === "" ? undefined : message.codeHash;
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryAccountResponseAminoMsg): QueryAccountResponse {
@@ -1066,8 +1066,8 @@ export const QueryCosmosAccountResponse = {
   toAmino(message: QueryCosmosAccountResponse): QueryCosmosAccountResponseAmino {
     const obj: any = {};
     obj.cosmos_address = message.cosmosAddress === "" ? undefined : message.cosmosAddress;
-    obj.sequence = message.sequence !== BigInt(0) ? (message.sequence?.toString)() : undefined;
-    obj.account_number = message.accountNumber !== BigInt(0) ? (message.accountNumber?.toString)() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.account_number = message.accountNumber !== BigInt(0) ? message.accountNumber.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryCosmosAccountResponseAminoMsg): QueryCosmosAccountResponse {
@@ -1240,8 +1240,8 @@ export const QueryValidatorAccountResponse = {
   toAmino(message: QueryValidatorAccountResponse): QueryValidatorAccountResponseAmino {
     const obj: any = {};
     obj.account_address = message.accountAddress === "" ? undefined : message.accountAddress;
-    obj.sequence = message.sequence !== BigInt(0) ? (message.sequence?.toString)() : undefined;
-    obj.account_number = message.accountNumber !== BigInt(0) ? (message.accountNumber?.toString)() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.account_number = message.accountNumber !== BigInt(0) ? message.accountNumber.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryValidatorAccountResponseAminoMsg): QueryValidatorAccountResponse {
@@ -2116,9 +2116,9 @@ export const EthCallRequest = {
   toAmino(message: EthCallRequest): EthCallRequestAmino {
     const obj: any = {};
     obj.args = message.args ? base64FromBytes(message.args) : undefined;
-    obj.gas_cap = message.gasCap !== BigInt(0) ? (message.gasCap?.toString)() : undefined;
+    obj.gas_cap = message.gasCap !== BigInt(0) ? message.gasCap.toString() : undefined;
     obj.proposer_address = message.proposerAddress ? base64FromBytes(message.proposerAddress) : undefined;
-    obj.chain_id = message.chainId !== BigInt(0) ? (message.chainId?.toString)() : undefined;
+    obj.chain_id = message.chainId !== BigInt(0) ? message.chainId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EthCallRequestAminoMsg): EthCallRequest {
@@ -2217,7 +2217,7 @@ export const EstimateGasResponse = {
   },
   toAmino(message: EstimateGasResponse): EstimateGasResponseAmino {
     const obj: any = {};
-    obj.gas = message.gas !== BigInt(0) ? (message.gas?.toString)() : undefined;
+    obj.gas = message.gas !== BigInt(0) ? message.gas.toString() : undefined;
     obj.ret = message.ret ? base64FromBytes(message.ret) : undefined;
     obj.vm_error = message.vmError === "" ? undefined : message.vmError;
     return obj;
@@ -2405,12 +2405,12 @@ export const QueryTraceTxRequest = {
     } else {
       obj.predecessors = message.predecessors;
     }
-    obj.block_number = message.blockNumber !== BigInt(0) ? (message.blockNumber?.toString)() : undefined;
+    obj.block_number = message.blockNumber !== BigInt(0) ? message.blockNumber.toString() : undefined;
     obj.block_hash = message.blockHash === "" ? undefined : message.blockHash;
     obj.block_time = message.blockTime ? Timestamp.toAmino(message.blockTime) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.proposer_address = message.proposerAddress ? base64FromBytes(message.proposerAddress) : undefined;
-    obj.chain_id = message.chainId !== BigInt(0) ? (message.chainId?.toString)() : undefined;
-    obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? (message.blockMaxGas?.toString)() : undefined;
+    obj.chain_id = message.chainId !== BigInt(0) ? message.chainId.toString() : undefined;
+    obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? message.blockMaxGas.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryTraceTxRequestAminoMsg): QueryTraceTxRequest {
@@ -2655,12 +2655,12 @@ export const QueryTraceBlockRequest = {
       obj.txs = message.txs;
     }
     obj.trace_config = message.traceConfig ? TraceConfig.toAmino(message.traceConfig) : undefined;
-    obj.block_number = message.blockNumber !== BigInt(0) ? (message.blockNumber?.toString)() : undefined;
+    obj.block_number = message.blockNumber !== BigInt(0) ? message.blockNumber.toString() : undefined;
     obj.block_hash = message.blockHash === "" ? undefined : message.blockHash;
     obj.block_time = message.blockTime ? Timestamp.toAmino(message.blockTime) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.proposer_address = message.proposerAddress ? base64FromBytes(message.proposerAddress) : undefined;
-    obj.chain_id = message.chainId !== BigInt(0) ? (message.chainId?.toString)() : undefined;
-    obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? (message.blockMaxGas?.toString)() : undefined;
+    obj.chain_id = message.chainId !== BigInt(0) ? message.chainId.toString() : undefined;
+    obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? message.blockMaxGas.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryTraceBlockRequestAminoMsg): QueryTraceBlockRequest {

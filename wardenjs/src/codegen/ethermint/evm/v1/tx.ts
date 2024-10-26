@@ -690,9 +690,9 @@ export const LegacyTx = {
   },
   toAmino(message: LegacyTx): LegacyTxAmino {
     const obj: any = {};
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     obj.gas_price = message.gasPrice === "" ? undefined : message.gasPrice;
-    obj.gas = message.gas !== BigInt(0) ? (message.gas?.toString)() : undefined;
+    obj.gas = message.gas !== BigInt(0) ? message.gas.toString() : undefined;
     obj.to = message.to === "" ? undefined : message.to;
     obj.value = message.value === "" ? undefined : message.value;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
@@ -911,9 +911,9 @@ export const AccessListTx = {
   toAmino(message: AccessListTx): AccessListTxAmino {
     const obj: any = {};
     obj.chain_id = message.chainId ?? "";
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     obj.gas_price = message.gasPrice === "" ? undefined : message.gasPrice;
-    obj.gas = message.gas !== BigInt(0) ? (message.gas?.toString)() : undefined;
+    obj.gas = message.gas !== BigInt(0) ? message.gas.toString() : undefined;
     obj.to = message.to === "" ? undefined : message.to;
     obj.value = message.value === "" ? undefined : message.value;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
@@ -1150,10 +1150,10 @@ export const DynamicFeeTx = {
   toAmino(message: DynamicFeeTx): DynamicFeeTxAmino {
     const obj: any = {};
     obj.chain_id = message.chainId ?? "";
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
     obj.gas_tip_cap = message.gasTipCap === "" ? undefined : message.gasTipCap;
     obj.gas_fee_cap = message.gasFeeCap === "" ? undefined : message.gasFeeCap;
-    obj.gas = message.gas !== BigInt(0) ? (message.gas?.toString)() : undefined;
+    obj.gas = message.gas !== BigInt(0) ? message.gas.toString() : undefined;
     obj.to = message.to === "" ? undefined : message.to;
     obj.value = message.value === "" ? undefined : message.value;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
@@ -1362,7 +1362,7 @@ export const MsgEthereumTxResponse = {
     }
     obj.ret = message.ret ? base64FromBytes(message.ret) : undefined;
     obj.vm_error = message.vmError === "" ? undefined : message.vmError;
-    obj.gas_used = message.gasUsed !== BigInt(0) ? (message.gasUsed?.toString)() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgEthereumTxResponseAminoMsg): MsgEthereumTxResponse {

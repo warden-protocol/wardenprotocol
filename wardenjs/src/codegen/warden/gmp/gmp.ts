@@ -134,7 +134,7 @@ export const Params = {
     const obj: any = {};
     obj.gmp_address = message.gmpAddress === "" ? undefined : message.gmpAddress;
     obj.gmp_channel = message.gmpChannel === "" ? undefined : message.gmpChannel;
-    obj.gmp_timeout = message.gmpTimeout !== BigInt(0) ? (message.gmpTimeout?.toString)() : undefined;
+    obj.gmp_timeout = message.gmpTimeout !== BigInt(0) ? message.gmpTimeout.toString() : undefined;
     obj.fee_recipient = message.feeRecipient === "" ? undefined : message.feeRecipient;
     return obj;
   },

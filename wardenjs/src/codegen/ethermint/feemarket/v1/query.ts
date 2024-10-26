@@ -500,7 +500,7 @@ export const QueryBlockGasResponse = {
   },
   toAmino(message: QueryBlockGasResponse): QueryBlockGasResponseAmino {
     const obj: any = {};
-    obj.gas = message.gas !== BigInt(0) ? (message.gas?.toString)() : undefined;
+    obj.gas = message.gas !== BigInt(0) ? message.gas.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryBlockGasResponseAminoMsg): QueryBlockGasResponse {

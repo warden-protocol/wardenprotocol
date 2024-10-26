@@ -294,18 +294,18 @@ export const Space = {
   },
   toAmino(message: Space): SpaceAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     if (message.owners) {
       obj.owners = message.owners.map(e => e);
     } else {
       obj.owners = message.owners;
     }
-    obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SpaceAminoMsg): Space {

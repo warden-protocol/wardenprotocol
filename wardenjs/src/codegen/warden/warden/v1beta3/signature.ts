@@ -200,7 +200,7 @@ export const SignRequest = {
           message.dataForSigning = reader.bytes();
           break;
         case 5:
-          message.status = reader.int32() as any;
+          message.status = (reader.int32() as any);
           break;
         case 6:
           message.signedData = reader.bytes();
@@ -295,9 +295,9 @@ export const SignRequest = {
   },
   toAmino(message: SignRequest): SignRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
     obj.data_for_signing = message.dataForSigning ? base64FromBytes(message.dataForSigning) : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.signed_data = message.signedData ? base64FromBytes(message.signedData) : undefined;

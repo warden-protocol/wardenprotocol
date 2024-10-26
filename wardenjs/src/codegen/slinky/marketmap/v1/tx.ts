@@ -537,7 +537,7 @@ export const MsgUpsertMarketsResponse = {
   encode(message: MsgUpsertMarketsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.marketUpdates).forEach(([key, value]) => {
       MsgUpsertMarketsResponse_MarketUpdatesEntry.encode({
-        key: key as any,
+        key: (key as any),
         value
       }, writer.uint32(8).fork()).ldelim();
     });

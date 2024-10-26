@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryConstitutionRequest, QueryConstitutionResponseSDKType, QueryProposalRequest, QueryProposalResponseSDKType, QueryProposalsRequest, QueryProposalsResponseSDKType, QueryVoteRequest, QueryVoteResponseSDKType, QueryVotesRequest, QueryVotesResponseSDKType, QueryParamsRequest, QueryParamsResponseSDKType, QueryDepositRequest, QueryDepositResponseSDKType, QueryDepositsRequest, QueryDepositsResponseSDKType, QueryTallyResultRequest, QueryTallyResultResponseSDKType } from "./query.js";
+import { QueryProposalRequest, QueryProposalResponseSDKType, QueryProposalsRequest, QueryProposalsResponseSDKType, QueryVoteRequest, QueryVoteResponseSDKType, QueryVotesRequest, QueryVotesResponseSDKType, QueryParamsRequest, QueryParamsResponseSDKType, QueryDepositRequest, QueryDepositResponseSDKType, QueryDepositsRequest, QueryDepositsResponseSDKType, QueryTallyResultRequest, QueryTallyResultResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -10,7 +10,6 @@ export class LCDQueryClient {
     requestClient: LCDClient;
   }) {
     this.req = requestClient;
-    this.constitution = this.constitution.bind(this);
     this.proposal = this.proposal.bind(this);
     this.proposals = this.proposals.bind(this);
     this.vote = this.vote.bind(this);
@@ -19,11 +18,6 @@ export class LCDQueryClient {
     this.deposit = this.deposit.bind(this);
     this.deposits = this.deposits.bind(this);
     this.tallyResult = this.tallyResult.bind(this);
-  }
-  /* Constitution queries the chain's constitution. */
-  async constitution(_params: QueryConstitutionRequest = {}): Promise<QueryConstitutionResponseSDKType> {
-    const endpoint = `cosmos/gov/v1/constitution`;
-    return await this.req.get<QueryConstitutionResponseSDKType>(endpoint);
   }
   /* Proposal queries proposal details based on ProposalID. */
   async proposal(params: QueryProposalRequest): Promise<QueryProposalResponseSDKType> {
@@ -71,7 +65,7 @@ export class LCDQueryClient {
     const endpoint = `cosmos/gov/v1/params/${params.paramsType}`;
     return await this.req.get<QueryParamsResponseSDKType>(endpoint);
   }
-  /* Deposit queries single deposit information based on proposalID, depositAddr. */
+  /* Deposit queries single deposit information based proposalID, depositAddr. */
   async deposit(params: QueryDepositRequest): Promise<QueryDepositResponseSDKType> {
     const endpoint = `cosmos/gov/v1/proposals/${params.proposalId}/deposits/${params.depositor}`;
     return await this.req.get<QueryDepositResponseSDKType>(endpoint);

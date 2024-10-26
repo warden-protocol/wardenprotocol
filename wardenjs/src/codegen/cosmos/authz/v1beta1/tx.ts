@@ -3,6 +3,7 @@ import { Grant, GrantAmino, GrantSDKType, GenericAuthorization } from "./authz.j
 import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
 import { SendAuthorization } from "../../bank/v1beta1/authz.js";
 import { StakeAuthorization } from "../../staking/v1beta1/authz.js";
+import { ContractExecutionAuthorization, ContractMigrationAuthorization } from "../../../cosmwasm/wasm/v1/authz.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -382,7 +383,7 @@ export const MsgExec = {
       writer.uint32(10).string(message.grantee);
     }
     for (const v of message.msgs) {
-      Any.encode(v! as Any, writer.uint32(18).fork()).ldelim();
+      Any.encode((v! as Any), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -397,7 +398,7 @@ export const MsgExec = {
           message.grantee = reader.string();
           break;
         case 2:
-          message.msgs.push(Any.decode(reader, reader.uint32()) as Any);
+          message.msgs.push((Any.decode(reader, reader.uint32()) as Any));
           break;
         default:
           reader.skipType(tag & 7);
@@ -440,7 +441,7 @@ export const MsgExec = {
     const obj: any = {};
     obj.grantee = message.grantee === "" ? undefined : message.grantee;
     if (message.msgs) {
-      obj.msgs = message.msgs.map(e => e ? Sdk_MsgcosmosauthzAuthorization_ToAmino(e as Any) : undefined);
+      obj.msgs = message.msgs.map(e => e ? Sdk_MsgcosmosauthzAuthorization_ToAmino((e as Any)) : undefined);
     } else {
       obj.msgs = message.msgs;
     }
@@ -715,7 +716,7 @@ export const Sdk_Msg_FromAmino = (content: AnyAmino): Any => {
 export const Sdk_Msg_ToAmino = (content: Any) => {
   return Any.toAmino(content);
 };
-export const Cosmos_authzAuthorization_InterfaceDecoder = (input: BinaryReader | Uint8Array): GenericAuthorization | SendAuthorization | StakeAuthorization | Any => {
+export const Cosmos_authzAuthorization_InterfaceDecoder = (input: BinaryReader | Uint8Array): GenericAuthorization | SendAuthorization | StakeAuthorization | ContractExecutionAuthorization | ContractMigrationAuthorization | Any => {
   const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
   const data = Any.decode(reader, reader.uint32());
   switch (data.typeUrl) {
@@ -725,6 +726,10 @@ export const Cosmos_authzAuthorization_InterfaceDecoder = (input: BinaryReader |
       return SendAuthorization.decode(data.value);
     case "/cosmos.staking.v1beta1.StakeAuthorization":
       return StakeAuthorization.decode(data.value);
+    case "/cosmwasm.wasm.v1.ContractExecutionAuthorization":
+      return ContractExecutionAuthorization.decode(data.value);
+    case "/cosmwasm.wasm.v1.ContractMigrationAuthorization":
+      return ContractMigrationAuthorization.decode(data.value);
     default:
       return data;
   }
@@ -746,6 +751,16 @@ export const Cosmos_authzAuthorization_FromAmino = (content: AnyAmino): Any => {
         typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
         value: StakeAuthorization.encode(StakeAuthorization.fromPartial(StakeAuthorization.fromAmino(content.value))).finish()
       });
+    case "wasm/ContractExecutionAuthorization":
+      return Any.fromPartial({
+        typeUrl: "/cosmwasm.wasm.v1.ContractExecutionAuthorization",
+        value: ContractExecutionAuthorization.encode(ContractExecutionAuthorization.fromPartial(ContractExecutionAuthorization.fromAmino(content.value))).finish()
+      });
+    case "wasm/ContractMigrationAuthorization":
+      return Any.fromPartial({
+        typeUrl: "/cosmwasm.wasm.v1.ContractMigrationAuthorization",
+        value: ContractMigrationAuthorization.encode(ContractMigrationAuthorization.fromPartial(ContractMigrationAuthorization.fromAmino(content.value))).finish()
+      });
     default:
       return Any.fromAmino(content);
   }
@@ -766,6 +781,16 @@ export const Cosmos_authzAuthorization_ToAmino = (content: Any) => {
       return {
         type: "cosmos-sdk/StakeAuthorization",
         value: StakeAuthorization.toAmino(StakeAuthorization.decode(content.value, undefined))
+      };
+    case "/cosmwasm.wasm.v1.ContractExecutionAuthorization":
+      return {
+        type: "wasm/ContractExecutionAuthorization",
+        value: ContractExecutionAuthorization.toAmino(ContractExecutionAuthorization.decode(content.value, undefined))
+      };
+    case "/cosmwasm.wasm.v1.ContractMigrationAuthorization":
+      return {
+        type: "wasm/ContractMigrationAuthorization",
+        value: ContractMigrationAuthorization.toAmino(ContractMigrationAuthorization.decode(content.value, undefined))
       };
     default:
       return Any.toAmino(content);

@@ -242,7 +242,7 @@ export const EventCreateTemplate = {
   },
   toAmino(message: EventCreateTemplate): EventCreateTemplateAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
@@ -316,7 +316,7 @@ export const EventUpdateTemplate = {
   },
   toAmino(message: EventUpdateTemplate): EventUpdateTemplateAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventUpdateTemplateAminoMsg): EventUpdateTemplate {
@@ -402,7 +402,7 @@ export const EventCreateAction = {
   },
   toAmino(message: EventCreateAction): EventCreateActionAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
@@ -457,7 +457,7 @@ export const EventActionVoted = {
           message.participant = reader.string();
           break;
         case 3:
-          message.voteType = reader.int32() as any;
+          message.voteType = (reader.int32() as any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -502,7 +502,7 @@ export const EventActionVoted = {
   },
   toAmino(message: EventActionVoted): EventActionVotedAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.participant = message.participant === "" ? undefined : message.participant;
     obj.vote_type = message.voteType === 0 ? undefined : message.voteType;
     return obj;
@@ -555,10 +555,10 @@ export const EventActionStateChange = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.previousStatus = reader.int32() as any;
+          message.previousStatus = (reader.int32() as any);
           break;
         case 3:
-          message.newStatus = reader.int32() as any;
+          message.newStatus = (reader.int32() as any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -603,7 +603,7 @@ export const EventActionStateChange = {
   },
   toAmino(message: EventActionStateChange): EventActionStateChangeAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.previous_status = message.previousStatus === 0 ? undefined : message.previousStatus;
     obj.new_status = message.newStatus === 0 ? undefined : message.newStatus;
     return obj;
@@ -678,7 +678,7 @@ export const EventActionPruned = {
   },
   toAmino(message: EventActionPruned): EventActionPrunedAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventActionPrunedAminoMsg): EventActionPruned {

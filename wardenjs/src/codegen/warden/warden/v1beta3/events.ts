@@ -678,13 +678,13 @@ export const EventCreateSpace = {
   },
   toAmino(message: EventCreateSpace): EventCreateSpaceAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.owners_count = message.ownersCount !== BigInt(0) ? (message.ownersCount?.toString)() : undefined;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
+    obj.owners_count = message.ownersCount !== BigInt(0) ? message.ownersCount.toString() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventCreateSpaceAminoMsg): EventCreateSpace {
@@ -809,11 +809,11 @@ export const EventUpdateSpace = {
   },
   toAmino(message: EventUpdateSpace): EventUpdateSpaceAmino {
     const obj: any = {};
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? (message.approveAdminTemplateId?.toString)() : undefined;
-    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? (message.rejectAdminTemplateId?.toString)() : undefined;
-    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? (message.approveSignTemplateId?.toString)() : undefined;
-    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? (message.rejectSignTemplateId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.approve_admin_template_id = message.approveAdminTemplateId !== BigInt(0) ? message.approveAdminTemplateId.toString() : undefined;
+    obj.reject_admin_template_id = message.rejectAdminTemplateId !== BigInt(0) ? message.rejectAdminTemplateId.toString() : undefined;
+    obj.approve_sign_template_id = message.approveSignTemplateId !== BigInt(0) ? message.approveSignTemplateId.toString() : undefined;
+    obj.reject_sign_template_id = message.rejectSignTemplateId !== BigInt(0) ? message.rejectSignTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventUpdateSpaceAminoMsg): EventUpdateSpace {
@@ -912,9 +912,9 @@ export const EventAddSpaceOwner = {
   },
   toAmino(message: EventAddSpaceOwner): EventAddSpaceOwnerAmino {
     const obj: any = {};
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.new_owner = message.newOwner === "" ? undefined : message.newOwner;
-    obj.owners_count = message.ownersCount !== BigInt(0) ? (message.ownersCount?.toString)() : undefined;
+    obj.owners_count = message.ownersCount !== BigInt(0) ? message.ownersCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventAddSpaceOwnerAminoMsg): EventAddSpaceOwner {
@@ -1013,9 +1013,9 @@ export const EventRemoveSpaceOwner = {
   },
   toAmino(message: EventRemoveSpaceOwner): EventRemoveSpaceOwnerAmino {
     const obj: any = {};
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     obj.removed_owner = message.removedOwner === "" ? undefined : message.removedOwner;
-    obj.owners_count = message.ownersCount !== BigInt(0) ? (message.ownersCount?.toString)() : undefined;
+    obj.owners_count = message.ownersCount !== BigInt(0) ? message.ownersCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventRemoveSpaceOwnerAminoMsg): EventRemoveSpaceOwner {
@@ -1094,7 +1094,7 @@ export const EventNewKeyRequest = {
           message.rejectTemplateId = reader.uint64();
           break;
         case 6:
-          message.keyType = reader.int32() as any;
+          message.keyType = (reader.int32() as any);
           break;
         case 7:
           message.creator = reader.string();
@@ -1166,11 +1166,11 @@ export const EventNewKeyRequest = {
   },
   toAmino(message: EventNewKeyRequest): EventNewKeyRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
@@ -1235,7 +1235,7 @@ export const EventNewKey = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.keyType = reader.int32() as any;
+          message.keyType = (reader.int32() as any);
           break;
         case 3:
           message.spaceId = reader.uint64();
@@ -1310,12 +1310,12 @@ export const EventNewKey = {
   },
   toAmino(message: EventNewKey): EventNewKeyAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
-    obj.space_id = message.spaceId !== BigInt(0) ? (message.spaceId?.toString)() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventNewKeyAminoMsg): EventNewKey {
@@ -1388,7 +1388,7 @@ export const EventRejectKeyRequest = {
   },
   toAmino(message: EventRejectKeyRequest): EventRejectKeyRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventRejectKeyRequestAminoMsg): EventRejectKeyRequest {
@@ -1487,9 +1487,9 @@ export const EventUpdateKey = {
   },
   toAmino(message: EventUpdateKey): EventUpdateKeyAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
-    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? (message.approveTemplateId?.toString)() : undefined;
-    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? (message.rejectTemplateId?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.approve_template_id = message.approveTemplateId !== BigInt(0) ? message.approveTemplateId.toString() : undefined;
+    obj.reject_template_id = message.rejectTemplateId !== BigInt(0) ? message.rejectTemplateId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventUpdateKeyAminoMsg): EventUpdateKey {
@@ -1588,8 +1588,8 @@ export const EventNewSignRequest = {
   },
   toAmino(message: EventNewSignRequest): EventNewSignRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
-    obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
@@ -1663,7 +1663,7 @@ export const EventFulfilSignRequest = {
   },
   toAmino(message: EventFulfilSignRequest): EventFulfilSignRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventFulfilSignRequestAminoMsg): EventFulfilSignRequest {
@@ -1736,7 +1736,7 @@ export const EventRejectSignRequest = {
   },
   toAmino(message: EventRejectSignRequest): EventRejectSignRequestAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventRejectSignRequestAminoMsg): EventRejectSignRequest {
@@ -1835,7 +1835,7 @@ export const EventNewKeychain = {
   },
   toAmino(message: EventNewKeychain): EventNewKeychainAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
     return obj;
@@ -1923,7 +1923,7 @@ export const EventUpdateKeychain = {
   },
   toAmino(message: EventUpdateKeychain): EventUpdateKeychainAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
     return obj;
   },
@@ -2023,9 +2023,9 @@ export const EventAddKeychainWriter = {
   },
   toAmino(message: EventAddKeychainWriter): EventAddKeychainWriterAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.new_writer = message.newWriter === "" ? undefined : message.newWriter;
-    obj.writers_count = message.writersCount !== BigInt(0) ? (message.writersCount?.toString)() : undefined;
+    obj.writers_count = message.writersCount !== BigInt(0) ? message.writersCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventAddKeychainWriterAminoMsg): EventAddKeychainWriter {
@@ -2124,9 +2124,9 @@ export const EventAddKeychainAdmin = {
   },
   toAmino(message: EventAddKeychainAdmin): EventAddKeychainAdminAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.new_admin = message.newAdmin === "" ? undefined : message.newAdmin;
-    obj.admins_count = message.adminsCount !== BigInt(0) ? (message.adminsCount?.toString)() : undefined;
+    obj.admins_count = message.adminsCount !== BigInt(0) ? message.adminsCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventAddKeychainAdminAminoMsg): EventAddKeychainAdmin {
@@ -2225,9 +2225,9 @@ export const EventRemoveKeychainAdmin = {
   },
   toAmino(message: EventRemoveKeychainAdmin): EventRemoveKeychainAdminAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.admin = message.admin === "" ? undefined : message.admin;
-    obj.admins_count = message.adminsCount !== BigInt(0) ? (message.adminsCount?.toString)() : undefined;
+    obj.admins_count = message.adminsCount !== BigInt(0) ? message.adminsCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventRemoveKeychainAdminAminoMsg): EventRemoveKeychainAdmin {

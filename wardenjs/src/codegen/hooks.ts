@@ -14,6 +14,7 @@ import * as _CosmosParamsV1beta1Queryrpc from "./cosmos/params/v1beta1/query.rpc
 import * as _CosmosStakingV1beta1Queryrpc from "./cosmos/staking/v1beta1/query.rpc.Query.js";
 import * as _CosmosTxV1beta1Servicerpc from "./cosmos/tx/v1beta1/service.rpc.Service.js";
 import * as _CosmosUpgradeV1beta1Queryrpc from "./cosmos/upgrade/v1beta1/query.rpc.Query.js";
+import * as _CosmwasmWasmV1Queryrpc from "./cosmwasm/wasm/v1/query.rpc.Query.js";
 import * as _EthermintEvmV1Queryrpc from "./ethermint/evm/v1/query.rpc.Query.js";
 import * as _EthermintFeemarketV1Queryrpc from "./ethermint/feemarket/v1/query.rpc.Query.js";
 import * as _SlinkyMarketmapV1Queryrpc from "./slinky/marketmap/v1/query.rpc.Query.js";
@@ -69,6 +70,11 @@ export const createRpcQueryHooks = ({
       },
       upgrade: {
         v1beta1: _CosmosUpgradeV1beta1Queryrpc.createRpcQueryHooks(rpc)
+      }
+    },
+    cosmwasm: {
+      wasm: {
+        v1: _CosmwasmWasmV1Queryrpc.createRpcQueryHooks(rpc)
       }
     },
     ethermint: {

@@ -216,7 +216,7 @@ export const Action = {
           message.id = reader.uint64();
           break;
         case 2:
-          message.status = reader.int32() as any;
+          message.status = (reader.int32() as any);
           break;
         case 3:
           message.msg = Any.decode(reader, reader.uint32());
@@ -349,12 +349,12 @@ export const Action = {
   },
   toAmino(message: Action): ActionAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.msg = message.msg ? Any.toAmino(message.msg) : undefined;
     obj.result = message.result ? Any.toAmino(message.result) : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.timeout_height = message.timeoutHeight !== BigInt(0) ? (message.timeoutHeight?.toString)() : undefined;
+    obj.timeout_height = message.timeoutHeight !== BigInt(0) ? message.timeoutHeight.toString() : undefined;
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.updated_at = message.updatedAt ? Timestamp.toAmino(message.updatedAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     if (message.mentions) {

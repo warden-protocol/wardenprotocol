@@ -208,7 +208,7 @@ export const Params = {
     obj.no_base_fee = message.noBaseFee === false ? undefined : message.noBaseFee;
     obj.base_fee_change_denominator = message.baseFeeChangeDenominator === 0 ? undefined : message.baseFeeChangeDenominator;
     obj.elasticity_multiplier = message.elasticityMultiplier === 0 ? undefined : message.elasticityMultiplier;
-    obj.enable_height = message.enableHeight !== BigInt(0) ? (message.enableHeight?.toString)() : undefined;
+    obj.enable_height = message.enableHeight !== BigInt(0) ? message.enableHeight.toString() : undefined;
     obj.base_fee = message.baseFee ?? "";
     obj.min_gas_price = message.minGasPrice ?? "";
     obj.min_gas_multiplier = message.minGasMultiplier ?? "";

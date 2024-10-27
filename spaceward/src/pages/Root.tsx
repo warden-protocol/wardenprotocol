@@ -19,6 +19,7 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
+import { useState, useEffect } from "react";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -32,6 +33,16 @@ export function Root() {
 	const { connectToWallet, signOut } = useWallet();
 	const { status, address } = useChain(env.cosmoskitChainName);
 	const { spaceId, setSpaceId } = useSpaceId();
+
+	const [chainId, setChainId] = useState<string>("");
+	const [spacewardEnv, setSpacewardEnv] = useState<string>("");
+	const [maintenance, setMaintenance] = useState<boolean>(false);
+
+	useEffect(() => {
+		setChainId(env.chainId);
+		setSpacewardEnv(env.spacewardEnv);
+		setMaintenance(env.maintenance);
+	}, []);
 
 	const story = useStoryblok("config", { version: "published" });
 
@@ -83,24 +94,54 @@ export function Root() {
 		);
 	}
 
-	if (
-		(env.spacewardEnv === "production" && env.maintenance) ||
-		(env.spacewardEnv === "production" &&
-			story.content &&
-			story.content.maintenance)
-	) {
-		return (
-			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
-					<Icons.logo className="h-12 w-auto mb-10" />
-					<h1 className="text-2xl font-bold">Upgrade in progress</h1>
-					<p className="text-muted-foreground text-center">
-						We are currently upgrading SpaceWard to a new version.
-						Please check back later.
-					</p>
-				</div>
-			</ThemeProvider>
-		);
+	if (spacewardEnv === "production") {
+		// TODO: remove once chaido is live
+		if (chainId === "chiado_10010-1") {
+			return (
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+				>
+					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+						<Icons.logo className="h-12 w-auto mb-10" />
+						<h1 className="text-2xl font-bold">
+							Chiado Coming Soon
+						</h1>
+						<p className="text-muted-foreground text-center">
+							We are currently upgrading SpaceWard to a new
+							version. Please check back later.
+						</p>
+					</div>
+				</ThemeProvider>
+			);
+		}
+
+		// Maintenance mode enabled
+		if (
+			(typeof maintenance === "string" && maintenance === "true") ||
+			(typeof maintenance === "boolean" && maintenance) ||
+			(story && story.content && story.content.maintenance)
+		) {
+			return (
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+				>
+					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+						<Icons.logo className="h-12 w-auto mb-10" />
+						<h1 className="text-2xl font-bold">
+							Upgrade in progress
+						</h1>
+						<p className="text-muted-foreground text-center">
+							We are currently upgrading SpaceWard to a new
+							version. Please check back later.
+						</p>
+					</div>
+				</ThemeProvider>
+			);
+		}
 	}
 
 	return (
@@ -116,8 +157,8 @@ export function Root() {
 										Welcome to SpaceWard
 									</h1>
 									<div className="text-label-accent text-xl uppercase font-spacemono">
-										[&nbsp;.&nbsp;Unlock the Potential
-										of Warden Protocol&nbsp;.&nbsp;]
+										[&nbsp;.&nbsp;Unlock the Potential of
+										Warden Protocol&nbsp;.&nbsp;]
 									</div>
 								</div>
 								<div className="w-full md:w-1/2 lg:w-auto p-8 flex flex-col place-content-center bg-fill-accent-primary rounded-2xl	text-label-on-light">
@@ -131,8 +172,8 @@ export function Root() {
 									</div>
 									<div className="flex items-center place-content-center pb-12">
 										<p className="mx-auto text-center max-w-92">
-											Connect your wallet to get
-											started with SpaceWard.
+											Connect your wallet to get started
+											with SpaceWard.
 										</p>
 									</div>
 									<div className="flex items-center place-content-center pb-6">

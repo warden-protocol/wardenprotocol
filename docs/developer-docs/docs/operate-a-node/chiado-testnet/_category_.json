@@ -1,0 +1,11 @@
+{
+  "position": 3,
+  "label": "Chiado testnet",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Chiado testnet"
+  },
+  "customProps": {}
+}

@@ -181,75 +181,75 @@ contract HelloWarden {
 
 ## 4. Configure Truffle
 
-In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
+1. In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with this code:
 
-Make adjustments in the code using your chain settings from [Step 1](#1-prepare-the-chain):
+   <Tabs>
+   <TabItem value="local" label="Local node">
+   ```javascript title="/warden-smart-contract/truffle-config.js"
+   const HDWalletProvider = require("@truffle/hdwallet-provider");
+   
+   // Keep your private key confidential, DO NOT commit to version control!
+   const PRIVATE_KEY = "your_private_key";
+   
+   // The standard localhost address and the node's RPC port
+   const RPC_URL = "http://127.0.0.1:8545";
+   
+   module.exports = {
+     networks: {
+       warden: {
+         provider: function() {
+           return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
+         },
+         network_id: 1337, // The first number from the chain ID
+         gas: 5500000,
+         gasPrice: 20000000000 // award
+       },
+     },
+     compilers: {
+       solc: {
+       version: "0.8.20",
+       }
+     }
+   };
+   ```
+   </TabItem>
+   <TabItem value="chiado" label="Chiado">
+   ```javascript title="/warden-smart-contract/truffle-config.js"
+   const HDWalletProvider = require("@truffle/hdwallet-provider");
+   
+   // Keep your private key confidential, DO NOT commit to version control!
+   const PRIVATE_KEY = "your_private_key";
+   
+   // Chiado's EVM endpoint
+   const RPC_URL = "https://evm.chiado.wardenprotocol.org"; 
+   
+   module.exports = {
+     networks: {
+       warden: {
+         provider: function() {
+           return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
+         },
+         network_id: 10010, // The first number from the chain ID
+         gas: 5500000,
+         gasPrice: 20000000000 // award
+       },
+     },
+     compilers: {
+       solc: {
+       version: "0.8.20",
+       }
+     }
+   };
+   ```
+   </TabItem>
+   </Tabs>
 
-1. Replace `your_private_key` with your actual private key.
-2. If you're running a local chain on a different machine from where you're deploying the contract, check the chain's host address by executing `wardend status` on the machine hosting the chain. Then adjust the `RPC_URL` value accordingly.
-2. In `network_id`, specify the first number from the chain ID. For example, if your local chain ID is `warden_1337-1` or `chain_123-1`, specify `1337` or `123` respectively. The network ID of Chiado is `10010`. Alternatively, you can just use `"*"` to match any chain ID.
-3. If needed, adjust the gas limit and price – `gas` and `gasPrice`.
+2. Adjust the code and make sure all values are correct:
 
-<Tabs>
-<TabItem value="local" label="Local node">
-```javascript title="/warden-smart-contract/truffle-config.js"
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-
-// Keep your private key confidential, DO NOT commit to version control!
-const PRIVATE_KEY = "your_private_key";
-
-// The standard localhost address and the node's RPC port
-const RPC_URL = "127.0.0.1:8545";
-
-module.exports = {
-  networks: {
-    warden: {
-      provider: function() {
-        return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
-      }
-      network_id: 1337, // The first number from the chain ID
-      gas: 5500000,
-      gasPrice: 20000000000 // award
-    },
-  },
-  compilers: {
-    solc: {
-    version: "0.8.20",
-    }
-  }
-};
-```
-</TabItem>
-<TabItem value="chiado" label="Chiado">
-```javascript title="/warden-smart-contract/truffle-config.js"
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-
-// Keep your private key confidential, DO NOT commit to version control!
-const PRIVATE_KEY = "your_private_key";
-
-// Chiado's EVM endpoint
-const RPC_URL = "https://evm.chiado.wardenprotocol.org"; 
-
-module.exports = {
-  networks: {
-    warden: {
-      provider: function() {
-        return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
-      }
-      network_id: 10010, // The first number from the chain ID
-      gas: 5500000,
-      gasPrice: 20000000000 // award
-    },
-  },
-  compilers: {
-    solc: {
-    version: "0.8.20",
-    }
-  }
-};
-```
-</TabItem>
-</Tabs>
+   - `your_private_key`: Replace it with your actual private key from [Step 1](#1-prepare-the-chain).
+   - `RPC_URL`: If you're running a local chain and deploying the contract on the same machine, use the standard localhost address. Otherwise, check the chain's host address by executing `wardend status` on the machine hosting the chain. For Chiado, specify its EVM endpoint: `https://evm.chiado.wardenprotocol.org`.
+   - `network_id`: Specify the first number from the chain ID. For example, if your local chain ID is `warden_1337-1`, the network ID is `1337`. The correct value for Chiado is `10010`. Alternatively, you can just use `"*"` to match any chain ID.
+   - If needed, adjust the gas limit and price – `gas` and `gasPrice`.
 
 ## 5. Create a migration script
 

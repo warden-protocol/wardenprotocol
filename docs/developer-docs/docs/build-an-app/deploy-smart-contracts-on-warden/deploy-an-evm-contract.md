@@ -124,7 +124,7 @@ Make adjustments in the code using your chain settings from [Prerequisites](#pre
 ```javascript title="/warden-smart-contract/truffle-config.js"
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-// Your private key (keep this secret and never commit it to version control!)
+// Your private key (keep this confidential and never commit it to version control!)
 const PRIVATE_KEY = "your_private_key";
 
 module.exports = {
@@ -160,7 +160,7 @@ In `/migrations`, create a new file `2_deploy_hello_warden.js` with the followin
 const HelloWarden = artifacts.require("HelloWarden");
 
 module.exports = function(deployer) {
-deployer.deploy(HelloWarden);
+  deployer.deploy(HelloWarden);
 };
 ```
 

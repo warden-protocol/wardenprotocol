@@ -125,7 +125,7 @@ Before you start, complete the following prerequisites:
    ```
    :::
 
-5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
+5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address obtained in the previous step.
 
 6. Check your balance:
    

@@ -101,7 +101,7 @@ Before you start, complete the following prerequisites:
    ```
    :::
 
-5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
+5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address obtained in the previous step.
 
 6. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
    
@@ -248,7 +248,7 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
 
 If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
 
-To store your contract on-chain, run the command below. Specify your key name from [Step 1](##1-prepare-the-chain) in the `--from` flag, also set the chain ID.
+To store your contract on-chain, run the command below. Specify your key name from [Step 1](#1-prepare-the-chain) in the `--from` flag, also set the chain ID.
 
 <Tabs>
 <TabItem value="default" label="Default node settings">
@@ -291,7 +291,7 @@ The transaction should be successful without any errors.
 
 ## 7. Get the code ID
 
-Get the code ID that indentifies your Wasm code:
+Get the code ID that identifies your Wasm code:
 
 <Tabs>
 <TabItem value="local" label="Local chain">

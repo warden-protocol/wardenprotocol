@@ -36,11 +36,17 @@ Note that some default values may need to change depending on how you’ve set u
 
 The chain binary (`wardend`) has been altered to accept new options related to Connect.
 
-In order to point your binary to Connect, adjust your `app.toml` file. You can find it here: `$HOME/.warden/app.toml`.
+In order to point your binary to Connect, update the `[oracle]` section of your `app.toml` file with the settings below.
 
-Under the `[oracle]` heading, add the settings listed below. Make sure you correctly set `price_ttl` and `interval`.
+:::note
+- Make sure you correctly set `price_ttl` and `interval`.
+- The `metrics_enabled` setting is optional.
+:::
 
-```toml
+```toml title='/.warden/app.toml'
+###############################################################################
+###                                  Oracle                                 ###
+###############################################################################
 [oracle]
 
 # Enabled indicates whether the oracle is enabled.

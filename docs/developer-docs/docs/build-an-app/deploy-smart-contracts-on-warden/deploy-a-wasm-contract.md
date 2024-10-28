@@ -76,14 +76,14 @@ Before you start, complete the following prerequisites:
    ```bash
    git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
-   just build
-   just install
+   just wardend build
+   just wardend install
    wardend init my-chain-moniker
    ```
 
 3. Create a new key:
 
-   ```
+   ```bash
    wardend keys add my-key-name
    ```
 
@@ -96,7 +96,7 @@ Before you start, complete the following prerequisites:
    :::tip
    You can always check your public address by running this command:
 
-   ```
+   ```bash
    wardend keys show my-key-name --address
    ```
    :::
@@ -105,7 +105,7 @@ Before you start, complete the following prerequisites:
 
 6. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
    
-   ```
+   ```bash
    wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443
    ```
 
@@ -189,11 +189,6 @@ Now you need to modify files in the `/src` directory as shown in the steps below
        #[returns(String)]
        GetGreeting {},
    }
-   
-   #[cw_serde]
-   pub struct GetCountResponse {
-       pub count: i32,
-   }
    ```
 
 2. Open the `helpers.rs` file and replace its contents with this code:
@@ -251,58 +246,48 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
 
 ## 6. Store the contract on-chain
 
-1. If you're deploying your contract on a local chain, make sure it's running. You can start your chain by executing this command in a separate terminal window:
-      
-   ```bash
-   wardend start
-   ```
-   
-   If you're going to deploy on Chiado, skip this step.
+If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
 
-2. To store your contract on the Warden chain, run the command below. Specify your key name from [Prerequisites](#prerequisites) in the `--from` flag, also set the chain ID.
+To store your contract on-chain, run the command below. Specify your key name from [Step 1](##1-prepare-the-chain) in the `--from` flag, also set the chain ID.
 
-   <Tabs>
-   <TabItem value="default" label="Default node settings">
-   ```bash
-   wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
-     --from shulgin \
-     --gas auto \
-     --gas-adjustment 1.3 \
-     --gas-prices 100000000000award \
-     -y \
-     --chain-id warden_1337-1
-   ```
-   </TabItem>
-   <TabItem value="custom" label="Custom node settings">
-   ```bash
-   wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
-     --from my-key-name \
-     --gas auto \
-     --gas-adjustment 1.3 \
-     --gas-prices 100000000000award \
-     -y \
-     --chain-id chain_123-1
-   ```
-   </TabItem>
-   <TabItem value="chiado" label="Chiado">
-   ```bash
-   wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
-     --from my-key-name \
-     --gas auto \
-     --gas-adjustment 1.3 \
-     --gas-prices 100000000000award \
-     -y \
-     --chain-id chain_123-1 \
-     --node https://rpc.chiado.wardenprotocol.org:443
-   ```
-   </TabItem>
-   </Tabs>
-   
-   The transaction should be successful without any errors.
-   
-   :::tip
-   If you used a `just` script or a devnet snapshot to run your node, you can omit the `--chain-id` flag in this and the following commands.
-   :::
+<Tabs>
+<TabItem value="default" label="Default node settings">
+```bash
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
+  --from shulgin \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id warden_1337-1
+```
+</TabItem>
+<TabItem value="custom" label="Custom node settings">
+```bash
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
+  --from my-key-name \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id chain_123-1
+```
+</TabItem>
+<TabItem value="chiado" label="Chiado">
+```bash
+wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
+  --from my-key-name \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  --gas-prices 100000000000award \
+  -y \
+  --chain-id chain_123-1 \
+  --node https://rpc.chiado.wardenprotocol.org:443
+```
+</TabItem>
+</Tabs>
+
+The transaction should be successful without any errors.
 
 ## 7. Get the code ID
 

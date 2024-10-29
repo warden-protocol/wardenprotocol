@@ -227,7 +227,7 @@ Now you need to modify files in the `/src` directory as shown in the steps below
 
 ## 4. Compile the contract
 
-To compile the contract, run the following from the `hellow-world` directory:
+To compile the contract, run the following from the `hello-world` directory:
 
 ```bash
 cargo wasm

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Join Chiado
@@ -10,18 +10,7 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 
 ## Overview
 
-This tutorial explains how to run the Warden binary, `wardend`, and join the **Chiado testnet**:
-
-- The chain ID in queries: `chiado_10010-1`
-- Denomination: `award` / 0.000000000000000001 WARD
-- Endpoints: [networks repository > chiado](https://github.com/warden-protocol/networks/tree/main/testnets/chiado)
-- The current `wardend` version: **v0.5.2**
-
-## Version history
-
-| Release |
-| ------- |
-| v0.5.2  |
+This tutorial explains how to run the Warden binary, `wardend`, and join the **Chiado testnet**.
 
 ## Prerequisites
 

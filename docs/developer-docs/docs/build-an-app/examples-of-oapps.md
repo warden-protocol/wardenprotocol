@@ -22,4 +22,4 @@ YieldWard is a smart yield generator that automates and optimizes your earnings 
 
 - 👉 [Try YieldWard](https://yieldward.com)
 - 👉 [Visit YieldWard docs](https://docs.yieldward.com)
-- 👉 [YieldWard code on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/spaceward)
+- 👉 [YieldWard code on GitHub](https://github.com/eq-lab/warden-yield)

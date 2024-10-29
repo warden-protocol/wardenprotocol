@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"os"
@@ -14,7 +13,6 @@ import (
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
-	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -442,20 +440,6 @@ func New(
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
 
 	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
-
-	app.UpgradeKeeper.SetUpgradeHandler("v01-to-v02", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-		fromVM["capability"] = 1 // for some reason this is not set, but it should. If we don't do this the capability module will panic when trying to migrate.
-		for moduleName, version := range fromVM {
-			app.Logger().Info(fmt.Sprintf("Module: %s, Version: %d", moduleName, version))
-
-		}
-		versionMap, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
-		if err != nil {
-			return nil, err
-		}
-		app.Logger().Info(fmt.Sprintf("post migrate version map: %v", versionMap))
-		return versionMap, err
-	})
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

@@ -288,18 +288,9 @@ If you're deploying on a local chain, make sure it's running. You can start your
    
 To deploy the contract, run this:
 
-<Tabs>
-<TabItem value="local" label="Local node">
 ```bash
 truffle migrate --network warden
 ```
-</TabItem>
-<TabItem value="chiado" label="Chiado">
-```bash
-truffle migrate --network warden --node https://rpc.chiado.wardenprotocol.org:443
-```
-</TabItem>
-</Tabs>
 
 You should see the following output, confirming the successful deployment.
 

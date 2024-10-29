@@ -36,28 +36,45 @@ Note that some default values may need to change depending on how you’ve set u
 
 The chain binary (`wardend`) has been altered to accept new options related to Connect.
 
-In order to point your binary to Connect, adjust your `app.toml` file. You can find it here: `$HOME/.warden/app.toml`.
+In order to point your binary to Connect, update the `[oracle]` section of your `app.toml` file with the settings below.
 
-Under the `[oracle]` heading, add the following:
+:::note
+- Make sure you correctly set `price_ttl` and `interval`.
+- The `metrics_enabled` setting is optional.
+:::
 
-```toml
+```toml title='/.warden/app.toml'
+###############################################################################
+###                                  Oracle                                 ###
+###############################################################################
 [oracle]
-# This option indicates whether the oracle is enabled.
-enabled = "true"
 
-# This is the URL of the out-of-process oracle sidecar used to connect
-# to the oracle sidecar when the application boots up. Note that the address
+# Enabled indicates whether the oracle is enabled.
+enabled = true
+
+# Oracle Address is the URL of the out of process oracle sidecar. This is used to
+# connect to the oracle sidecar when the application boots up. Note that the address
 # can be modified at any point, but will only take effect after the application is
 # restarted. This can be the address of an oracle container running on the same
 # machine or a remote machine.
 oracle_address = "localhost:8080"
 
-# This is the time that the client is willing to wait for responses from
+# Client Timeout is the time that the client is willing to wait for responses from
 # the oracle before timing out.
 client_timeout = "2s"
 
-# This option determines whether oracle metrics are enabled. Specifically
+# MetricsEnabled determines whether oracle metrics are enabled. Specifically
 # this enables instrumentation of the oracle client and the interaction between
 # the oracle and the app.
-metrics_enabled = "true"
+metrics_enabled = true
+
+# PriceTTL is the maximum age of the latest price response before it is considered stale.
+# The recommended max age is 10 seconds (10s). If this is greater than 1 minute (1m), the app
+# will not start.
+price_ttl = "10s"
+
+# Interval is the time between each price update request. The recommended interval
+# is the block time of the chain. Otherwise, 1.5 seconds (1500ms) is a good default. If this
+# is greater than 1 minute (1m), the app will not start.
+interval = "5s"
 ```

@@ -18,7 +18,7 @@ After you execute the WASM contract on Warden, it'll be able to burn tokens from
 Note that this guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
 
 :::tip
-Axelar GMP will be soon available on our new testnet – [Chiado](/operate-a-node/chiado-testnet/join-chiado). Stay tuned in for updates!
+Axelar GMP will be soon available on our new testnet – [Chiado](/operate-a-node/chiado-testnet/chiado-overview). Stay tuned in for updates!
 :::
 
 ## 1. Deploy an EVM contract on Sepolia

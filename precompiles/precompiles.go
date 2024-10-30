@@ -6,6 +6,7 @@ import (
 
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
 	cmn "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	slinkyprecompile "github.com/warden-protocol/wardenprotocol/precompiles/slinky"
 	wardenprecompile "github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -50,6 +51,12 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventNewSignRequest", newWardenPrecompile.GetNewSignRequestEvent)
 	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", newWardenPrecompile.GetUpdateKeyEvent)
 	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", newWardenPrecompile.GetUpdateSpaceEvent)
+
+	newSlinkyPrecompile, err := slinkyprecompile.NewPrecompile(wardenkeeper, actkeeper, eventsRegistry)
+	if err != nil {
+		return nil, err
+	}
+	precompiles[newSlinkyPrecompile.Address()] = newSlinkyPrecompile
 
 	return precompiles, nil
 }

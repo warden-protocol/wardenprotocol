@@ -44,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * 
 
 ### Bug Fixes
-* 
+* Add `comet` alias to `tendermint` command
 
 ## [v0.5.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.2) - 2024-10-22
 

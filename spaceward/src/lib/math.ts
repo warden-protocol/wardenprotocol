@@ -85,7 +85,11 @@ export const bigintToFixed = (
 			plusOne = Boolean(fra % _unit);
 		}
 
-		fra = fra / _unit + BigInt(plusOne);
+		fra = fra / _unit;
+
+		if (plusOne && (fra + BigInt(1)) < BigInt(10) ** BigInt(display)) {
+			++fra;
+		}
 	}
 
 	const padded = fra.toString(10).padStart(display, "0");

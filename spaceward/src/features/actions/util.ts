@@ -1,5 +1,4 @@
-import { hexlify, Transaction } from "ethers";
-import { WalletManager } from "@cosmos-kit/core";
+import { toHex as hexlify } from "viem";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import type { QueryClient } from "@tanstack/react-query";
@@ -132,6 +131,9 @@ export const getActionHandler = ({
 			};
 			break;
 		}
+
+		case warden.warden.v1beta3.MsgAddSpaceOwnerResponse.typeUrl:
+		case warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse.typeUrl:
 		case warden.warden.v1beta3.MsgUpdateSpaceResponse.typeUrl: {
 			getStatus = async () => ({
 				pending: false,

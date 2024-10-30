@@ -8,9 +8,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import AddressAvatar from "./AddressAvatar";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { useAsset } from "@/hooks/useAsset";
-import { useChain } from "@cosmos-kit/react";
 import { env } from "@/env";
 
 import { Copy } from "@/components/ui/copy";
@@ -23,17 +21,22 @@ import {
 import { Icons } from "@/layouts/icons";
 import { wallets } from "cosmos-kit";
 import { bigintToFixed } from "@/lib/math";
+import { useConnectWallet } from "@web3-onboard/react";
+import { useBalance } from "wagmi";
 
 export function ConnectWallet() {
-	const { wallet, disconnect, username } = useChain(env.cosmoskitChainName);
-	const { address } = useAddressContext();
-
+	const [{ wallet }, , disconnect] = useConnectWallet()
+	const address = wallet?.accounts?.[0]?.address;
+	const username = wallet?.accounts?.[0]?.ens?.name ?? `${address?.slice(0, 6)}...${address?.slice(-4)}`;
 	const [showTooltip, setShowTooltip] = useState<Boolean>(false);
 	const [currentWallet, setCurrentWallet] = useState("");
 
-	const { balance } = useAsset("award");
-	const wardAmount = BigInt(balance?.amount || "0");
-	const ward = bigintToFixed(wardAmount, {
+	const balance = useBalance({
+		address: address,
+		chainId: env.evmChainId
+	});
+
+	const ward = bigintToFixed(balance.data?.value, {
 		ceil: true,
 		decimals: 18,
 		display: 2,
@@ -144,6 +147,7 @@ export function ConnectWallet() {
 								<TooltipProvider>
 									<Tooltip>
 										<TooltipTrigger
+											className="outline-none"
 											onMouseEnter={() =>
 												setShowTooltip(true)
 											}
@@ -152,7 +156,7 @@ export function ConnectWallet() {
 											}
 										>
 											<Icons.logOut
-												onClick={() => disconnect()}
+												onClick={() => disconnect(wallet)}
 												className="h-6 w-6 cursor-pointer "
 											/>
 										</TooltipTrigger>

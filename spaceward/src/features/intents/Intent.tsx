@@ -652,9 +652,9 @@ const IntentComponent = ({
 			) : (
 				<div className="flex gap-4">
 					<div className="flex items-center">
-						{intent.addresses.slice(0, 2).map((address, key) => (
-							<div className="w-6 h-6 rounded-full mr-[-8px]">
-								<AddressAvatar seed={address} key={key} sm />
+						{intent.addresses.slice(0, 2).map((address) => (
+							<div key={address} className="w-6 h-6 rounded-full mr-[-8px]">
+								<AddressAvatar seed={address} sm />
 							</div>
 						))}
 						{intent.addresses.length > 2 ? (

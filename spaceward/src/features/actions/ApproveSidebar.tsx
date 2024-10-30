@@ -1,20 +1,22 @@
 import clsx from "clsx";
 import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
-import { warden } from "@wardenprotocol/wardenjs";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { Button } from "@/components/ui/button";
-import { useQueryHooks, useTx } from "@/hooks/useClient";
+import { useQueryHooks } from "@/hooks/useClient";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import "./animate.css";
 import { ActionVoteType } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action_vote";
+import { usePublicClient, useWriteContract } from "wagmi";
+import actPrecompileAbi from "@/contracts/actPrecompileAbi";
+import { assertChain, handleContractWrite } from "@/utils/contract";
+import { useSetChain } from "@web3-onboard/react";
+import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
 
-const { voteForAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 export default function ApproveSidebar() {
 	const [open, setOpen] = useState(false);
 	const { address } = useAddressContext();
-	const { tx } = useTx();
 	const { isReady, useActionsByAddress } = useQueryHooks();
 
 	const { data } = useActionsByAddress({
@@ -27,6 +29,24 @@ export default function ApproveSidebar() {
 			enabled: isReady,
 		},
 	});
+
+	const { writeContractAsync } = useWriteContract();
+	const client = usePublicClient();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
+
+	async function voteFor(actionId: bigint, voteType: ActionVoteType) {
+		await assertChain(chains, connectedChain, setChain);
+
+		await handleContractWrite(
+			() => writeContractAsync({
+				address: PRECOMPILE_ACT_ADDRESS,
+				abi: actPrecompileAbi,
+				functionName: "voteForAction",
+				args: [actionId, voteType],
+			}),
+			client,
+		);
+	}
 
 	const actions = data?.actions.filter(
 		action => !action.votes.find(
@@ -111,11 +131,10 @@ export default function ApproveSidebar() {
 											return;
 										}
 
-										tx([voteForAction({
-											actionId: action.id,
-											participant: address,
-											voteType: ActionVoteType.VOTE_TYPE_APPROVED,
-										})], {});
+										voteFor(
+											action.id,
+											ActionVoteType.VOTE_TYPE_APPROVED,
+										)
 									}}
 								>
 									Approve
@@ -127,11 +146,10 @@ export default function ApproveSidebar() {
 											return;
 										}
 
-										tx([voteForAction({
-											actionId: action.id,
-											participant: address,
-											voteType: ActionVoteType.VOTE_TYPE_REJECTED,
-										})], {});
+										voteFor(
+											action.id,
+											ActionVoteType.VOTE_TYPE_REJECTED,
+										)
 									}}
 								>
 									Reject
@@ -141,6 +159,6 @@ export default function ApproveSidebar() {
 					</Popover.Portal>
 				</Popover.Root>
 			</div>
-		</div>
+		</div >
 	);
 }

@@ -1,4 +1,3 @@
-import { formatEther } from "ethers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useQueries } from "@tanstack/react-query";
@@ -7,12 +6,20 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getProvider } from "@/lib/eth";
+import { formatEther, isAddress } from "viem";
 
 const chainId = 11155111;
 const { provider } = getProvider("sepolia");
 
 async function getEthBalance(address: string) {
-	const balance = await provider.getBalance(address);
+	if (!isAddress(address)) {
+		throw new Error(`Invalid address ${address}`);
+	}
+
+	const balance = await provider.getBalance({
+		address,
+	});
+
 	return balance;
 }
 

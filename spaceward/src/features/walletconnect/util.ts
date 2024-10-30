@@ -1,6 +1,4 @@
 import { chains } from "chain-registry";
-import * as ethers from "ethers";
-// import ethers from "ethers";
 import { fromBech32, fromHex, toBech32 } from "@cosmjs/encoding";
 import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import type { PendingRequestTypes, ProposalTypes } from "@walletconnect/types";
@@ -22,6 +20,15 @@ import { getProviderByChainId, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
 import { fixAddress } from "../modals/ReceiveAssets";
 import { RemoteMessageType, type RemoteState } from "./types";
 import { COSMOS_CHAINS } from "@/config/tokens";
+import {
+	concat,
+	isAddress,
+	isHex,
+	keccak256,
+	toBytes,
+	TransactionSerializable,
+} from "viem";
+import { SignTypedDataVersion, TypedDataUtils } from "@metamask/eth-sig-util";
 
 export function decodeRemoteMessage(
 	message: Uint8Array,
@@ -263,12 +270,12 @@ export async function approveRequest({
 				const message =
 					"\x19Ethereum Signed Message:\n" + text.length + text;
 
-				const hash = ethers.keccak256(
+				const hash = keccak256(
 					Uint8Array.from(Buffer.from(message, "utf-8")),
 				);
 
 				// send signature request to Warden Protocol and wait response
-				storeId = await eth.signRaw(key.id, ethers.getBytes(hash), {
+				storeId = await eth.signRaw(key.id, toBytes(hash), {
 					requestId: req.id,
 					topic,
 				});
@@ -303,16 +310,31 @@ export async function approveRequest({
 					throw new Error(`Unknown chain id ${chainId}`);
 				}
 
-				const nonce = await provider.getTransactionCount(txParam.from);
-				const feeData = await provider.getFeeData();
+				if (!isAddress(txParam.from)) {
+					throw new Error(`Invalid from address ${txParam.from}`);
+				}
 
-				const tx = {
-					type: 2,
+				if (!isAddress(txParam.to)) {
+					throw new Error(`Invalid to address ${txParam.to}`);
+				}
+
+				if (!isHex(txParam.data)) {
+					throw new Error(`Invalid data ${txParam.data}`);
+				}
+
+				const nonce = await provider.getTransactionCount({
+					address: txParam.from,
+				});
+
+				const feeData = await provider.estimateFeesPerGas();
+
+				const tx: TransactionSerializable = {
+					type: "eip1559",
 					chainId: Number(chainId),
 					nonce,
 					to: txParam.to,
-					value: txParam.value,
-					gasLimit: txParam.gas,
+					value: BigInt(txParam.value),
+					gas: BigInt(txParam.gas),
 					data: txParam.data,
 					...feeData,
 				};
@@ -353,37 +375,31 @@ export async function approveRequest({
 				// create two different encoders.
 				const typesWithoutDomain = { ...data.types };
 				delete typesWithoutDomain.EIP712Domain;
-				const domainEncoder = new ethers.TypedDataEncoder({
-					EIP712Domain: data.types.EIP712Domain,
-				});
-				const messageEncoder = new ethers.TypedDataEncoder(
-					typesWithoutDomain,
-				);
 
 				// In short, we need to sign:
 				//   sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))
 				//
 				// See EIP-712 for the definition of the message to be signed.
 				// https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator
-				const domainSeparator = domainEncoder.hashStruct(
+				const domainSeparator = TypedDataUtils.hashStruct(
 					"EIP712Domain",
 					data.domain,
+					data.types.EIP712Domain,
+					SignTypedDataVersion.V4,
 				);
 
-				const message = messageEncoder.hashStruct(
+				const message = TypedDataUtils.hashStruct(
 					data.primaryType,
 					data.message,
+					data.types[data.primaryType],
+					SignTypedDataVersion.V4,
 				);
 
-				const toSign = ethers.keccak256(
-					ethers.concat([
-						ethers.getBytes("0x1901"),
-						ethers.getBytes(domainSeparator),
-						ethers.getBytes(message),
-					]),
+				const toSign = keccak256(
+					concat([toBytes("0x1901"), domainSeparator, message]),
 				);
 
-				storeId = await eth.signRaw(key.id, ethers.getBytes(toSign), {
+				storeId = await eth.signRaw(key.id, toBytes(toSign), {
 					requestId: req.id,
 					topic,
 				});
@@ -461,7 +477,7 @@ export async function approveRequest({
 				const key = await findKeyByAddress(
 					wsAddr,
 					toBech32(
-						chain.bech32_prefix,
+						chain.bech32_prefix!,
 						fromBech32(signerAddress).data,
 					),
 				);

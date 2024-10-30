@@ -11,12 +11,12 @@ import { env } from "@/env";
 import { useMetaMask } from "@/hooks/useMetaMask";
 import { useQuery } from "@tanstack/react-query";
 import { querySnapRequests } from "../metamask/queries";
-import { ethers } from "ethers";
 import { ETH_CHAIN_CONFIG, ETH_CHAINID_MAP, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
 import { SignTypedDataVersion, TypedDataUtils, TypedMessage } from "@metamask/eth-sig-util";
 import { AssetIcon } from "../assets/AssetRow";
 import { capitalize } from "./util";
 import { bigintToFixed } from "@/lib/math";
+import { fromHex, hashMessage, isHex, toBytes, TransactionSerializable } from "viem";
 
 interface SignTransactionParams {
 	chainId: string;
@@ -31,7 +31,10 @@ interface SignTransactionParams {
 	value: string;
 }
 
-async function buildSignTransaction(data: SignTransactionParams) {
+function buildSignTransaction(data: SignTransactionParams): TransactionSerializable {
+	console.warn("sign transaction", data);
+	throw new Error("not implemented");
+	/*
 	return ethers.Transaction.from({
 		chainId: data.chainId,
 		data: data.data,
@@ -43,6 +46,7 @@ async function buildSignTransaction(data: SignTransactionParams) {
 		type: ethers.getNumber(data.type),
 		value: data.value,
 	});
+	*/
 }
 
 const getNetwork = (req: KeyringRequest) => {
@@ -141,16 +145,17 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 					throw new Error("wrong params length");
 				}
 				const msgHex = req.request.params?.[0];
-				if (!msgHex) {
+				if (!msgHex || !isHex(msgHex)) {
 					throw new Error("Request has no message");
 				}
-				const msg = ethers.hashMessage(
-					ethers.getBytes(msgHex as string),
+
+				const msg = hashMessage(
+					{ raw: msgHex }
 				);
 
 				const storeId = await eth.signRaw(
 					keyId,
-					ethers.getBytes(msg),
+					toBytes(msg),
 					undefined,
 					{ requestId: req.id },
 				);
@@ -214,7 +219,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 
 				const storeId = await eth.signRaw(
 					keyId,
-					ethers.getBytes(toSign),
+					toSign,
 					undefined,
 					{ requestId: req.id },
 				);

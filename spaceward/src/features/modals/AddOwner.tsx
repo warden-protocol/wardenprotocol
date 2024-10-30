@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
-import { warden } from "@wardenprotocol/wardenjs";
+import { isAddress } from "viem";
 import { Button } from "@/components/ui/button";
 import { pasteFromClipboard } from "@/utils/browser";
 import type { ModalParams } from "./types";
@@ -8,25 +8,63 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
 import { Icons } from "@/components/ui/icons-assets";
 import { useOwnerSettingsState } from "../owners/state";
-import { useNewAction } from "@/hooks/useAction";
-import { isValidBech32 } from "@/utils/validate";
-import { useNonce } from "@/hooks/useNonce";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { useActionHandler } from "../actions/hooks";
+import { useQueryHooks } from "@/hooks/useClient";
+import { DEFAULT_EXPRESSION } from "../intents/hooks";
+import { shieldStringify } from "@/utils/shield";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 
-const { MsgAddSpaceOwner } = warden.warden.v1beta3;
 
 export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
-	const nonce = useNonce();
-	const { newAction, authority } = useNewAction(MsgAddSpaceOwner, true);
+	const {
+		isReady,
+		warden: {
+			act: { v1beta1: { useTemplateById } },
+			warden: { v1beta3: { useSpaceById } },
+		},
+	} = useQueryHooks();
+
+	const { spaceId } = useSpaceId();
+
+	const space = useSpaceById({
+		request: {
+			id: BigInt(spaceId!),
+		},
+		options: {
+			enabled: isReady && Boolean(spaceId),
+		},
+	}).data?.space;
+
+	const approveAdminTemplate = useTemplateById({
+		request: {
+			id: space?.approveAdminTemplateId ?? BigInt(0),
+		},
+		options: {
+			enabled: isReady && Boolean(space?.approveAdminTemplateId),
+		},
+	}).data?.template;
+
+	const { add } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"addSpaceOwner",
+	);
+
 	const { data, setData } = useOwnerSettingsState();
 	const { setData: setModal } = useModalState();
-	const { spaceId } = useSpaceId();
 
 	const [name, setName] = useState("");
 	const [address, setAddress] = useState("");
 	const [pending, setPending] = useState(false);
 
 	async function create() {
-		if (pending || !spaceId || !authority || !isValidBech32(address)) {
+		if (
+			pending ||
+			!spaceId ||
+			!space ||
+			!isAddress(address)
+		) {
 			return;
 		}
 
@@ -36,15 +74,25 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 
 		try {
 			setPending(true);
-			await newAction(
-				{
-					newOwner: address,
-					spaceId: BigInt(spaceId),
-					authority,
-					nonce,
-				},
-				{},
-			);
+
+			let expectedApproveExpression = DEFAULT_EXPRESSION;
+
+			if (approveAdminTemplate?.expression) {
+				expectedApproveExpression = shieldStringify(
+					approveAdminTemplate.expression,
+				);
+			}
+
+			add([
+				BigInt(spaceId),
+				address,
+				BigInt(space?.nonce ?? 0),
+				BigInt(0),
+				expectedApproveExpression,
+				DEFAULT_EXPRESSION,
+			], {
+				title: `Adding ${name} as owner`,
+			});
 
 			setData({ settings: { ...data?.settings, [address]: settings } });
 
@@ -74,7 +122,7 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 						"mb-8 rounded-lg text-left flex items-center justify-between gap-2 bg-fill-elevated border-[1px] px-4 h-[60px] border-border-quaternary",
 						{
 							"!border-negative":
-								address && !isValidBech32(address),
+								address && !isAddress(address),
 						},
 					)}
 				>

@@ -8,6 +8,20 @@ import { env } from "../../env";
 import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { TransactionLike } from "ethers";
 import { StdSignDoc } from "@cosmjs/amino";
+import { useWalletClient } from "wagmi";
+import {
+	Abi,
+	AbiStateMutability,
+	Account,
+	Chain,
+	ContractFunctionArgs,
+	ContractFunctionName,
+	encodeFunctionData,
+	TransactionReceipt,
+} from "viem";
+import { useCallback } from "react";
+import { assertChain } from "@/utils/contract";
+import { useSetChain } from "@web3-onboard/react";
 
 type TxRaw = Parameters<typeof cosmos.tx.v1beta1.TxRaw.encode>[0];
 
@@ -20,7 +34,8 @@ const defaultFee: StdFee = {
 };
 
 export enum QueuedActionStatus {
-	Signed = 0x00,
+	AwaitingSignature = 0x00,
+	Signed = 0x01,
 	Broadcast,
 	AwaitingApprovals,
 	ActionReady,
@@ -30,20 +45,44 @@ export enum QueuedActionStatus {
 	Failed = 0xff,
 }
 
+export interface WalletConnectParams {
+	requestId: number;
+	topic: string;
+}
+
+export interface SnapParams {
+	requestId: string;
+}
+
 export interface QueuedAction {
-	txRaw: TxRaw;
-	data: any;
-	id: string;
+	error?: unknown;
+	hash?: `0x${string}`;
+	receipt?: TransactionReceipt;
+	call?: {
+		abi: Abi;
+		functionName: string;
+		args: unknown;
+	};
+	request?: {
+		to: `0x${string}`;
+		data: `0x${string}`;
+		account: Account;
+		chain: Chain;
+	};
+	wc?: WalletConnectParams;
+	snap?: SnapParams;
 	chainName?: string;
+
+	txRaw?: TxRaw;
+	data?: any;
+	id: string;
 	status: QueuedActionStatus;
-	typeUrl: string;
+	typeUrl?: string;
 	response?: DeliverTxResponse;
 	actionId?: bigint;
 	action?: Action;
 	networkType?: "eth" | "eth-raw" | "cosmos";
 	value?: any;
-	/** @deprecated fix naming */
-	tx?: TransactionLike;
 	/** @deprecated fix naming */
 	signDoc?: StdSignDoc;
 	pubkey?: Uint8Array;
@@ -57,6 +96,87 @@ export interface QueuedAction {
 export const useActionsState = createPersistantState<
 	Record<string, QueuedAction | undefined>
 >("queued-actions", {});
+
+export function useActionHandler<
+	abi extends Abi = Abi,
+	mutability extends AbiStateMutability = AbiStateMutability,
+	functionName extends ContractFunctionName<
+		abi,
+		mutability
+	> = ContractFunctionName<abi, mutability>,
+>(address: `0x${string}`, _abi: abi, _functionName: functionName) {
+	const client = useWalletClient().data;
+	const { setData } = useActionsState();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
+
+	const add = useCallback(
+		async (
+			args: ContractFunctionArgs<abi, mutability, functionName>,
+			options?: {
+				chainName?: string;
+				title?: string;
+				keyThemeIndex?: number;
+				wc?: WalletConnectParams;
+				snap?: SnapParams;
+			},
+		) => {
+			await assertChain(chains, connectedChain, setChain);
+
+			if (!client) {
+				throw new Error("Wallet not connected");
+			}
+
+			const storeId = getActionId();
+			const account = client.account;
+
+			try {
+				const call = {
+					abi: _abi,
+					functionName: _functionName,
+					args,
+				};
+
+				const data = encodeFunctionData(call as any /** fixme types */);
+
+				const request = {
+					to: address,
+					data,
+					account,
+					chain: client.chain,
+				};
+
+				setData({
+					[storeId]: {
+						id: storeId,
+						status: QueuedActionStatus.AwaitingSignature,
+						call,
+						request,
+						chainName: options?.chainName,
+						keyThemeIndex: options?.keyThemeIndex,
+						title: options?.title,
+						wc: options?.wc,
+						snap: options?.snap,
+					},
+				});
+
+				return storeId;
+			} catch (e) {
+				console.error(e);
+
+				setData({
+					[storeId]: {
+						id: storeId,
+						status: QueuedActionStatus.Failed,
+						error: e,
+					},
+				});
+			}
+		},
+		[setData, client, chains, connectedChain, setChain],
+	);
+
+	return { add };
+}
 
 export function useEnqueueAction<Data>(
 	getMessage: ReturnType<typeof useNewAction<Data>>["getMessage"],

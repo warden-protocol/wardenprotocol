@@ -19,6 +19,7 @@ import { walletContext } from "@cosmos-kit/react-lite";
 import { BalanceEntry } from "../assets/types";
 import { useQuery } from "@tanstack/react-query";
 import { queryCosmosClients } from "../assets/queries";
+import { isAddress } from "viem";
 
 export default function SendAssetsModal({
 	// address,
@@ -79,6 +80,11 @@ export default function SendAssetsModal({
 		}
 
 		const { address, chainName, token } = selectedToken;
+
+		if (!isAddress(address) || !isAddress(destinationAddress)) {
+			throw new Error("invalid address");
+		}
+
 		setPending(true);
 
 		try {

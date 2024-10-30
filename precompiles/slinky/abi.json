@@ -1,0 +1,80 @@
+{
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"coinPrice(string,string)": "05744c62"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "base",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "quote",
+					"type": "string"
+				}
+			],
+			"name": "coinPrice",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "uint64",
+							"name": "decimals",
+							"type": "uint64"
+						},
+						{
+							"components": [
+								{
+									"internalType": "uint64",
+									"name": "blockHeight",
+									"type": "uint64"
+								},
+								{
+									"internalType": "int64",
+									"name": "blockTimestamp",
+									"type": "int64"
+								},
+								{
+									"internalType": "int64",
+									"name": "price",
+									"type": "int64"
+								}
+							],
+							"internalType": "struct QuotePrice",
+							"name": "price",
+							"type": "tuple"
+						}
+					],
+					"internalType": "struct CoinPriceResponse",
+					"name": "response",
+					"type": "tuple"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}

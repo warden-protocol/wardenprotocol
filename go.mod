@@ -52,7 +52,7 @@ require (
 	github.com/cosmos/ibc-go/modules/capability v1.0.1
 	github.com/cosmos/ibc-go/v8 v8.5.1
 	github.com/ethereum/go-ethereum v1.14.7
-	github.com/evmos/evmos/v20 v20.0.0-rc2
+	github.com/evmos/evmos/v20 v20.0.0
 	github.com/golang/protobuf v1.5.4
 	github.com/gorilla/mux v1.8.1
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0

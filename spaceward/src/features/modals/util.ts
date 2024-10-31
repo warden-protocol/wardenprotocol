@@ -35,16 +35,16 @@ import {
 	Transport,
 	SendTransactionRequest,
 	toBytes,
-	Transaction,
-	TransactionSerializable,
 	assertRequest,
 	formatTransactionRequest,
 	TransactionRequest,
+	isAddress,
 } from "viem";
 import { extract } from "viem/utils";
 import { parseAccount } from "viem/accounts";
+import { isValidBech32 } from "@/utils/validate";
 
-function prepareEth<
+export function prepareEth<
 	c extends Chain | undefined,
 	acc extends Account | undefined,
 	request extends SendTransactionRequest<c, chainOverride>,
@@ -57,7 +57,7 @@ function prepareEth<
 		account: account_ = client.account,
 		chain = client.chain,
 		accessList,
-		//authorizationList,
+		// authorizationList,
 		blobs,
 		data,
 		gas,
@@ -143,11 +143,15 @@ export async function buildTransaction({
 	amount: _amount,
 }: {
 	item: BalanceEntry;
-	from: `0x${string}`;
-	to: `0x${string}`;
+	from: string;
+	to: string;
 	amount: string;
 }) {
 	if (typedStartsWith("eip155:", item.type)) {
+		if (!isAddress(from) || !isAddress(to)) {
+			throw new Error("invalid eip155 address", { cause: { from, to } });
+		}
+
 		if (!isSupportedNetwork(item.chainName)) {
 			throw new Error(`Unsupported network: ${item.chainName}`);
 		}
@@ -212,6 +216,10 @@ export async function buildTransaction({
 		} else {
 			throw new Error(`unsupported type: ${item.type}`);
 		}
+	}
+
+	if (!isValidBech32(from) || !isValidBech32(to)) {
+		throw new Error("invalid cosmos address", { cause: { from, to } });
 	}
 
 	const { send } = cosmos.bank.v1beta1.MessageComposer.withTypeUrl;

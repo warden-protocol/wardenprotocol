@@ -1,4 +1,10 @@
-import { toHex as hexlify } from "viem";
+import {
+	fromBytes,
+	toHex,
+	serializeTransaction,
+	TransactionSerializable,
+	parseSignature,
+} from "viem";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import type { QueryClient } from "@tanstack/react-query";
@@ -13,6 +19,7 @@ import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { isUint8Array } from "@/lib/utils";
 import type { QueuedAction } from "./hooks";
 import { prepareTx } from "../modals/util";
+import { fromBech32 } from "@cosmjs/encoding";
 
 export type GetStatus = (
 	client: Awaited<ReturnType<typeof getClient>>,
@@ -26,7 +33,7 @@ export type GetStatus = (
 
 export const getActionHandler = ({
 	action,
-	data,
+	call,
 	snapRequestId,
 	walletConnectRequestId,
 	walletConnectTopic,
@@ -60,21 +67,30 @@ export const getActionHandler = ({
 						};
 					case warden.warden.v1beta3.SignRequestStatus
 						.SIGN_REQUEST_STATUS_FULFILLED:
-						const analyzers = (
-							data as Parameters<
-								typeof warden.warden.v1beta3.MsgNewSignRequest.encode
-							>[0]
-						).analyzers;
+						const analyzers = (call?.args as any)?.[2] as
+							| `0x${string}`[]
+							| undefined;
 
 						return {
 							pending: false,
 							error: false,
 							done: true,
-							next: analyzers.includes(
-								env.ethereumAnalyzerContract,
+							next: analyzers?.includes(
+								fromBytes(
+									fromBech32(env.ethereumAnalyzerContract)
+										.data,
+									"hex",
+								),
 							)
 								? "eth"
-								: analyzers.includes(env.aminoAnalyzerContract)
+								: analyzers?.includes(
+											fromBytes(
+												fromBech32(
+													env.aminoAnalyzerContract,
+												).data,
+												"hex",
+											),
+									  )
 									? "cosmos"
 									: // fixme
 										(walletConnectRequestId &&
@@ -187,7 +203,7 @@ export const handleEthRaw = async ({
 					response: {
 						jsonrpc: "2.0",
 						id: action.walletConnectRequestId!,
-						result: hexlify(value),
+						result: toHex(value),
 					},
 					// fixme
 				})
@@ -202,7 +218,7 @@ export const handleEthRaw = async ({
 				.approveRequest(
 					action.snapRequestId!,
 					{
-						result: hexlify(value),
+						result: toHex(value),
 					},
 					// fixme
 				)
@@ -222,16 +238,9 @@ export const handleEth = async ({
 	w: IWeb3Wallet | null;
 	queryClient: QueryClient;
 }) => {
-	const {
-		chainName,
-		value,
-		snapRequestId,
-		walletConnectRequestId,
-		walletConnectTopic,
-		tx,
-	} = action;
+	const { chainName, value, snap, wc, ethRequest } = action;
 
-	if (!tx || !value) {
+	if (!ethRequest || !value) {
 		throw new Error("missing tx or value");
 	}
 
@@ -239,17 +248,20 @@ export const handleEth = async ({
 		throw new Error("unsupported network");
 	}
 
-	const signedTx = Transaction.from({ ...tx });
-	signedTx.signature = hexlify(value);
+	const signature = parseSignature(toHex(value));
+	const serialized = serializeTransaction(
+		ethRequest as TransactionSerializable,
+		signature,
+	);
 
-	if (snapRequestId) {
+	if (snap) {
 		const keyringSnapClient = new KeyringSnapRpcClient(
 			env.snapOrigin,
 			window.ethereum,
 		);
 
-		const { r, s, yParity } = signedTx.signature!;
-		const req = await keyringSnapClient.getRequest(snapRequestId);
+		const { r, s, yParity } = signature;
+		const req = await keyringSnapClient.getRequest(snap.requestId);
 
 		return await keyringSnapClient
 			.approveRequest(req.id, {
@@ -264,26 +276,29 @@ export const handleEth = async ({
 	}
 
 	const { provider } = getProvider(chainName);
-	const res = await provider.broadcastTransaction(signedTx.serialized);
 
-	if (walletConnectRequestId && walletConnectTopic) {
+	const hash = await provider.sendRawTransaction({
+		serializedTransaction: serialized,
+	});
+
+	if (wc) {
 		if (!w) {
 			throw new Error("walletconnect not initialized");
 		}
 
 		await w.respondSessionRequest({
-			topic: walletConnectTopic,
+			topic: wc.topic,
 			response: {
 				jsonrpc: "2.0",
-				id: walletConnectRequestId,
-				result: res.hash,
+				id: wc.requestId,
+				result: hash,
 			},
 		});
 
 		return true;
 	}
 
-	return provider.waitForTransaction(res.hash).then(() => {
+	return provider.waitForTransactionReceipt({ hash }).then(() => {
 		queryClient.invalidateQueries({
 			queryKey: getBalanceQueryKey("eip155", chainName, "").slice(0, -1),
 		});

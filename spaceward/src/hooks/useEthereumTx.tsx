@@ -1,6 +1,6 @@
 import { env } from "@/env";
 import { SnapParams, useActionHandler, WalletConnectParams } from "@/features/actions/hooks";
-import { fromBytes, getAddress, serializeTransaction } from "viem";
+import { fromBytes, serializeTransaction, TransactionSerializable } from "viem";
 import { EthRequest } from "@/features/modals/util";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
@@ -87,11 +87,9 @@ export function useEthereumTx() {
 		}
 
 		if (!env.ethereumAnalyzerContract) {
-			console.warn(
+			throw new Error(
 				"Missing ethereumAnalyzerContract. Can't use Ethereum transactions.",
 			);
-
-			return;
 		}
 
 		const expectedApproveExpression = approveSignTemplate?.expression
@@ -99,14 +97,12 @@ export function useEthereumTx() {
 			: DEFAULT_EXPRESSION;
 
 		const analyzer = fromBytes(fromBech32(env.ethereumAnalyzerContract).data, "hex");
-		console.log("analyzer", analyzer);
-		console.log("tx", _tx);
 
 		return await add(
 			[
 				keyId,
-				serializeTransaction(_tx),
-				[getAddress(analyzer)],
+				serializeTransaction(_tx as TransactionSerializable),
+				[analyzer],
 				// todo implement encryption key
 				"0x",
 				// todo implement max keychain fees
@@ -116,7 +112,7 @@ export function useEthereumTx() {
 				expectedApproveExpression,
 				DEFAULT_EXPRESSION
 			],
-			{ ...options, chainName }
+			{ ...options, chainName, ethRequest: _tx }
 		);
 	};
 

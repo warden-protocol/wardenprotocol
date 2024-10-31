@@ -31,8 +31,8 @@ function createProviderCompat(type: SupportedNetwork) {
 		},
 		chain,
 		transport: fallback([
-			http(),
 			...rpcs.map((url) => http(url)),
+			http(),
 		]),
 	});
 

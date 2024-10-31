@@ -1,14 +1,4 @@
-import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { useChain } from "@cosmos-kit/react";
-import { cosmos } from "@wardenprotocol/wardenjs";
-import { createPersistantState } from "../../hooks/state";
-import { useNewAction } from "../../hooks/useAction";
-import { TxOptions, useTx } from "../../hooks/useClient";
-import { env } from "../../env";
-import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-import { TransactionLike } from "ethers";
-import { StdSignDoc } from "@cosmjs/amino";
-import { useWalletClient } from "wagmi";
+import { useCallback } from "react";
 import {
 	Abi,
 	AbiStateMutability,
@@ -19,19 +9,20 @@ import {
 	encodeFunctionData,
 	TransactionReceipt,
 } from "viem";
-import { useCallback } from "react";
-import { assertChain } from "@/utils/contract";
+import { useWalletClient } from "wagmi";
+import { StdSignDoc } from "@cosmjs/amino";
+import { DeliverTxResponse } from "@cosmjs/stargate";
+import { cosmos } from "@wardenprotocol/wardenjs";
+import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { useSetChain } from "@web3-onboard/react";
+import { createPersistantState } from "@/hooks/state";
+import { assertChain } from "@/utils/contract";
+import type { EthRequest } from "../modals/util";
 
 type TxRaw = Parameters<typeof cosmos.tx.v1beta1.TxRaw.encode>[0];
 
 const getActionId = () =>
 	`${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
-
-const defaultFee: StdFee = {
-	gas: "220000",
-	amount: [{ denom: "award", amount: "250000000000000" }],
-};
 
 export enum QueuedActionStatus {
 	AwaitingSignature = 0x00,
@@ -72,6 +63,8 @@ export interface QueuedAction {
 	wc?: WalletConnectParams;
 	snap?: SnapParams;
 	chainName?: string;
+
+	ethRequest?: EthRequest;
 
 	txRaw?: TxRaw;
 	data?: any;
@@ -114,10 +107,13 @@ export function useActionHandler<
 			args: ContractFunctionArgs<abi, mutability, functionName>,
 			options?: {
 				chainName?: string;
-				title?: string;
+				ethRequest?: EthRequest;
 				keyThemeIndex?: number;
 				wc?: WalletConnectParams;
 				snap?: SnapParams;
+				title?: string;
+				pubkey?: Uint8Array;
+				signDoc?: StdSignDoc;
 			},
 		) => {
 			await assertChain(chains, connectedChain, setChain);
@@ -137,6 +133,7 @@ export function useActionHandler<
 				};
 
 				const data = encodeFunctionData(call as any /** fixme types */);
+				// todo estimate gas?
 
 				const request = {
 					to: address,
@@ -152,6 +149,9 @@ export function useActionHandler<
 						call,
 						request,
 						chainName: options?.chainName,
+						ethRequest: options?.ethRequest,
+						pubkey: options?.pubkey,
+						signDoc: options?.signDoc,
 						keyThemeIndex: options?.keyThemeIndex,
 						title: options?.title,
 						wc: options?.wc,
@@ -176,74 +176,4 @@ export function useActionHandler<
 	);
 
 	return { add };
-}
-
-export function useEnqueueAction<Data>(
-	getMessage: ReturnType<typeof useNewAction<Data>>["getMessage"],
-) {
-	const { address } = useChain(env.cosmoskitChainName);
-	const { setData } = useActionsState();
-	const { sign } = useTx();
-
-	async function addAction(
-		data: Parameters<typeof getMessage>[0],
-		// fixme
-		_opts: TxOptions & {
-			chainName?: string;
-			tx?: TransactionLike;
-			signDoc?: StdSignDoc;
-			pubkey?: Uint8Array;
-			title?: string;
-			keyThemeIndex?: number;
-			walletConnectRequestId?: number;
-			walletConnectTopic?: string;
-			snapRequestId?: string;
-		} = {},
-		actionTimeoutHeight = 0,
-	) {
-		const {
-			chainName,
-			tx,
-			pubkey,
-			signDoc,
-			title,
-			snapRequestId,
-			keyThemeIndex,
-			walletConnectRequestId,
-			walletConnectTopic,
-			...opts
-		} = _opts;
-
-		if (!address) {
-			throw new Error("Wallet not connected");
-		}
-
-		const storeId = getActionId();
-		const msg = getMessage(data, actionTimeoutHeight);
-		const fee = opts.fee || defaultFee;
-		const signedTx = await sign([msg], { fee });
-
-		setData({
-			[storeId]: {
-				txRaw: signedTx,
-				id: storeId,
-				typeUrl: msg.typeUrl,
-				data,
-				status: QueuedActionStatus.Signed,
-				chainName,
-				pubkey,
-				signDoc,
-				title,
-				snapRequestId,
-				tx,
-				keyThemeIndex,
-				walletConnectRequestId,
-				walletConnectTopic,
-			},
-		});
-
-		return storeId;
-	}
-
-	return { addAction };
 }

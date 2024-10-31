@@ -117,15 +117,18 @@ function ActionItem({ single, ...item }: ItemProps) {
 							throw new Error("no request", { cause: { item } });
 						}
 
-						console.log("params", item.call, item.request);
-						const gas = await publicClient?.estimateContractGas({
+						if (!publicClient) {
+							throw new Error("no public client", { cause: { item } });
+						}
+
+						const gas = (await publicClient.estimateContractGas({
 							abi: item.call!.abi,
 							functionName: item.call!.functionName,
 							args: item.call!.args as any,
 							address: item.request.to,
-						})
+						})) * BigInt(2);
 
-						const hash = await sendTransaction({ ...item.request });
+						const hash = await sendTransaction({ ...item.request, gas });
 
 						setData({
 							[item.id]: {
@@ -192,7 +195,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 							},
 						});
 					} catch (e) {
-						console.error("failed to wait for receipt", e);
+						console.error("failed to wait for receipt", e, (e as any)?.cause);
 
 						setData({
 							[item.id]: {

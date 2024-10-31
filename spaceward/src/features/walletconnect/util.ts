@@ -29,6 +29,7 @@ import {
 	TransactionSerializable,
 } from "viem";
 import { SignTypedDataVersion, TypedDataUtils } from "@metamask/eth-sig-util";
+import { prepareEth } from "../modals/util";
 
 export function decodeRemoteMessage(
 	message: Uint8Array,
@@ -276,8 +277,7 @@ export async function approveRequest({
 
 				// send signature request to Warden Protocol and wait response
 				storeId = await eth.signRaw(key.id, toBytes(hash), {
-					requestId: req.id,
-					topic,
+					wc: { requestId: req.id, topic },
 				});
 
 				if (!storeId) {
@@ -328,27 +328,21 @@ export async function approveRequest({
 
 				const feeData = await provider.estimateFeesPerGas();
 
-				const tx: TransactionSerializable = {
-					type: "eip1559",
-					chainId: Number(chainId),
+				const { request } = prepareEth(provider, {
+					chain: provider.chain,
+					account: txParam.from,
 					nonce,
 					to: txParam.to,
-					value: BigInt(txParam.value),
+					value: BigInt(txParam.value ?? 0),
 					gas: BigInt(txParam.gas),
 					data: txParam.data,
 					...feeData,
-				};
+				});
 
-				storeId = await eth.signEthereumTx(
-					key.id,
-					tx,
-					chainName,
-					"Approve walletconnect request",
-					{
-						requestId: req.id,
-						topic,
-					},
-				);
+				storeId = await eth.signEthereumTx(key.id, request, chainName, {
+					wc: { requestId: req.id, topic },
+					title: "Approve walletconnect request",
+				});
 
 				if (!storeId) {
 					// todo error
@@ -400,8 +394,7 @@ export async function approveRequest({
 				);
 
 				storeId = await eth.signRaw(key.id, toBytes(toSign), {
-					requestId: req.id,
-					topic,
+					wc: { requestId: req.id, topic },
 				});
 
 				if (!storeId) {
@@ -508,10 +501,9 @@ export async function approveRequest({
 					{ key },
 					signDoc,
 					chain.chain_name,
-					"Approve walletconnect request",
 					{
-						requestId: req.id,
-						topic,
+						wc: { requestId: req.id, topic },
+						title: "Approve walletconnect request",
 					},
 				);
 

@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * 
 
 ### Bug Fixes
+* (precompiles) Fix analyzers address convert: change analyzers type from []address to []bytes in warden precompile.
 
 ## [v0.5.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.3) - 2024-10-31
 

@@ -44,7 +44,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * 
 
 ### Bug Fixes
+
+## [v0.5.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.3) - 2024-10-31
+
+### Bug Fixes
 * Add `comet` alias to `tendermint` command
+* Fix mempool to be NoOp, for evmos' transactions to work, fixing some non-determinism in the network caused by different mempool settings in `app.toml`
 
 ## [v0.5.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.2) - 2024-10-22
 

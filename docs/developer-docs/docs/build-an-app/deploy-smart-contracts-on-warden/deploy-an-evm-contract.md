@@ -9,9 +9,13 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They are written in **Solidity**.
+The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm) and written in **Solidity**.
 
-This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
+This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
+
+:::warning
+Please note that deployment on Chiado will be available only after the next Chiado upgrade.
+:::
 
 ## Prerequisites
 
@@ -38,6 +42,8 @@ Before you start, complete the following prerequisites:
 ## 1. Prepare the chain
 
 ### Option 1. Run a local chain
+
+To deploy an EVM contract locally, you need to run a local chain and make sure it's configured properly, as shown in the following steps:
 
 1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
@@ -92,6 +98,12 @@ Before you start, complete the following prerequisites:
    :::
 
 ### Option 2. Connect to Chiado
+
+:::warning
+Please note that deployment on Chiado will be available only after the next Chiado upgrade.
+:::
+
+To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), you need to install its binary and fund your key, as shown in the following steps:
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 

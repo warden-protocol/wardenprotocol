@@ -9,10 +9,9 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
+The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing **WebAssembly smart contracts** developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
-This guide explains how to create and deploy a simple "Hello World" WASM contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
-
+This guide explains how to create and deploy a simple "Hello World" WASM contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
@@ -41,6 +40,8 @@ Before you start, complete the following prerequisites:
 
 ### Option 1. Run a local chain
 
+To deploy a WASM contract locally, you need to run a local chain and make sure it's configured properly, as shown in the following steps:
+
 1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
 2. The next steps require your local account name, or key name. You can check the list of available keys by executing this command:
@@ -68,6 +69,8 @@ Before you start, complete the following prerequisites:
    </Tabs>
 
 ### Option 2. Connect to Chiado
+
+To deploy a WASM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), you need to install its binary and fund your key, as shown in the following steps:
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 

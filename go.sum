@@ -554,8 +554,8 @@ github.com/envoyproxy/protoc-gen-validate v1.0.4 h1:gVPz/FMfvh57HdSJQyvBtF00j8JU
 github.com/envoyproxy/protoc-gen-validate v1.0.4/go.mod h1:qys6tmnRsYrQqIhm2bvKZH4Blx/1gTIZ2UKVY1M+Yew=
 github.com/evmos/cosmos-sdk/store v0.0.0-20240718141609-414cbd051fbe h1:CKvjP3CcWckOiwffAARb9qe+t0+VWoVDiicYkQMvZfQ=
 github.com/evmos/cosmos-sdk/store v0.0.0-20240718141609-414cbd051fbe/go.mod h1:Bm6h8ZkYgVTytHK5vhHOMKw9OHyiumm3b1UbkYIJ/Ug=
-github.com/evmos/evmos/v20 v20.0.0-rc2 h1:q7C21asU/XHm6zQo20q7QoJQXYtuqDF8BdU2kGes5FY=
-github.com/evmos/evmos/v20 v20.0.0-rc2/go.mod h1:QslHUHSn613wH4l2axRfoyUxBu+OjyqwbNUM3XW8QsM=
+github.com/evmos/evmos/v20 v20.0.0 h1:/wXGE/wAknT8vbY5MaQoCiGVoUFmYeHkeSUz4opfxzw=
+github.com/evmos/evmos/v20 v20.0.0/go.mod h1:QslHUHSn613wH4l2axRfoyUxBu+OjyqwbNUM3XW8QsM=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fatih/color v1.13.0/go.mod h1:kLAiJbzzSOZDVNGyDpeOxJ47H46qBXwg5ILebYFFOfk=
 github.com/fatih/color v1.17.0 h1:GlRw1BRJxkpqUCBKzKOw098ed57fEsKeNjpTe3cSjK4=

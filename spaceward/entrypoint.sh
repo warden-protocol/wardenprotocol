@@ -22,6 +22,8 @@ if [ "$1" = 'nginx-fe' ]; then
         replace_var FAUCET_URL "$filename"
         replace_var WARDEN_RPC_URL "$filename"
         replace_var WARDEN_REST_URL "$filename"
+		replace_var WARDEN_EVM_URL "$filename"
+  		replace_var WARDEN_EMV_CHAIN_ID "$filename"
         replace_var WARDEN_CHAIN_ID "$filename"
         replace_var WARDEN_CHAIN_ID_NUM "$filename"
         replace_var WARDEN_CHAIN_NAME "$filename"

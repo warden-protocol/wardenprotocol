@@ -13,10 +13,6 @@ The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden modul
 
 This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
 
-:::warning
-Please note that deployment on Chiado will be available only after the next Chiado upgrade.
-:::
-
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
@@ -99,10 +95,6 @@ To deploy an EVM contract locally, you need to run a local chain and make sure i
 
 ### Option 2. Connect to Chiado
 
-:::warning
-Please note that deployment on Chiado will be available only after the next Chiado upgrade.
-:::
-
 To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), you need to install its binary and fund your key, as shown in the following steps:
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
@@ -110,7 +102,7 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
   
    ```bash
-   git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.3 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    just wardend build
    just wardend install

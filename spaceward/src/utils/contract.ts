@@ -23,6 +23,10 @@ export async function assertChain(
 	connectedChain: SetChainReturnType[0]["connectedChain"],
 	setChain: SetChainReturnType[1],
 ) {
+	if (!chains?.[0]?.id) {
+		return false;
+	}
+
 	try {
 		if (connectedChain?.id !== chains[0].id) {
 			if (

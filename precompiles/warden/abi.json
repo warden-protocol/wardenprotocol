@@ -33,7 +33,7 @@
       "keysBySpaceId((bytes,uint64,uint64,bool,bool),uint64,int32[])": "8f6c0508",
       "newKeyRequest(uint64,uint64,uint8,uint64,uint64,(string,uint256)[],uint64,uint64,string,string)": "90bfe071",
       "newKeychain(string,((string,uint256)[],(string,uint256)[]),string,string,string)": "7d4c42ad",
-      "newSignRequest(uint64,bytes,address[],bytes,(string,uint256)[],uint64,uint64,string,string)": "9c69bab0",
+      "newSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64,uint64,string,string)": "969dc46e",
       "newSpace(uint64,uint64,uint64,uint64,address[])": "c78f7667",
       "rejectKeyRequest(uint64,string)": "d9ac97be",
       "rejectSignRequest(uint64,string)": "b7cf0661",
@@ -1629,9 +1629,9 @@
           "type": "bytes"
         },
         {
-          "internalType": "address[]",
+          "internalType": "bytes[]",
           "name": "analyzers",
-          "type": "address[]"
+          "type": "bytes[]"
         },
         {
           "internalType": "bytes",

@@ -1,22 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { TxMsgDetails } from "@/components/TxMsgDetails";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import {
 	Action as ActionModel,
 	ActionStatus,
 } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Copy } from "@/components/ui/copy";
-import { warden } from "@wardenprotocol/wardenjs";
-import { useTx } from "@/hooks/useClient";
 import { timestampToDate } from "@/lib/datetime";
 import { ActionVoteType } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action_vote";
 import { createHumanReadableCondition } from "@/utils/shield";
+import { usePublicClient, useWriteContract } from "wagmi";
+import actPrecompileAbi from "@/contracts/actPrecompileAbi";
+import { assertChain, handleContractWrite } from "@/utils/contract";
+import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
+import { useSetChain } from "@web3-onboard/react";
 
 export function Action({ action }: { action: ActionModel }) {
-	const { address } = useAddressContext();
-	const { tx } = useTx();
-	const { voteForAction: approveAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
+	const { writeContractAsync } = useWriteContract();
+	const client = usePublicClient();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
+
+	async function voteFor(voteType: ActionVoteType) {
+		await assertChain(chains, connectedChain, setChain);
+
+		await handleContractWrite(
+			() => writeContractAsync({
+				address: PRECOMPILE_ACT_ADDRESS,
+				abi: actPrecompileAbi,
+				functionName: "voteForAction",
+				args: [action.id, voteType],
+			}),
+			client,
+		);
+	}
 
 	if (!action.msg) {
 		return <p>Missing action msg</p>;
@@ -92,18 +108,10 @@ export function Action({ action }: { action: ActionModel }) {
 					<Button
 						className="rounded-lg"
 						size={"default"}
-						disabled={action.votes.some((vote) => vote.participant === address && vote.voteType === ActionVoteType.VOTE_TYPE_APPROVED)}
+						disabled={action.votes.some(
+							(vote) => vote.participant === "FIXME" && ((console.log(vote) as any) ?? true) && vote.voteType === ActionVoteType.VOTE_TYPE_APPROVED)}
 						onClick={async () => {
-							tx(
-								[
-									approveAction({
-										participant: address,
-										voteType: ActionVoteType.VOTE_TYPE_APPROVED,
-										actionId: action.id,
-									}),
-								],
-								{},
-							);
+							await voteFor(ActionVoteType.VOTE_TYPE_APPROVED);
 						}}
 					>
 						Approve
@@ -111,20 +119,12 @@ export function Action({ action }: { action: ActionModel }) {
 
 					<Button
 						className="ml-2 rounded-lg"
-						disabled={action.votes.some((vote) => vote.participant === address && vote.voteType === ActionVoteType.VOTE_TYPE_REJECTED)}
+						disabled={action.votes.some(
+							(vote) => vote.participant === "FIXME" && ((console.log(vote) as any) ?? true) && vote.voteType === ActionVoteType.VOTE_TYPE_REJECTED)}
 						size={"default"}
 						variant={"destructive"}
 						onClick={async () => {
-							tx(
-								[
-									approveAction({
-										participant: address,
-										voteType: ActionVoteType.VOTE_TYPE_REJECTED,
-										actionId: action.id,
-									}),
-								],
-								{},
-							);
+							await voteFor(ActionVoteType.VOTE_TYPE_REJECTED);
 						}}
 					>
 						Reject

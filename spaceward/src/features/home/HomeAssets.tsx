@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
-import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { MoveUpRight, KeyIcon } from "lucide-react";
@@ -13,11 +12,18 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { getProvider } from "@/lib/eth";
+import { formatEther, isAddress } from "viem";
 
 const { provider } = getProvider("sepolia");
 
 async function getEthBalance(address: string) {
-	const balance = await provider.getBalance(address);
+	if (!isAddress(address)) {
+		throw new Error(`Invalid address ${address}`);
+	}
+
+	const balance = await provider.getBalance({
+		address,
+	});
 	return balance;
 }
 
@@ -157,7 +163,7 @@ function Sepolia({ address, keyId }: { address: string; keyId: bigint }) {
 		);
 	}
 
-	const eth = ethers.formatEther(query?.data || 0);
+	const eth = formatEther(query?.data ?? BigInt(0));
 
 	return (
 		<div className="flex flex-col md:flex-row justify-between gap-4 p-4">

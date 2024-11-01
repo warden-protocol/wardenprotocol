@@ -8,7 +8,6 @@ export * from "./Home";
 export * from "./Intents";
 export * from "./Keychains";
 export * from "./Keys";
-export * from "./NewTransaction";
 export * from "./Owners";
 export * from "./Root";
 export * from "./Settings";

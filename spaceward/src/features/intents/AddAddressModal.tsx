@@ -47,7 +47,7 @@ const AddAddressModal = ({
 		() =>
 			validateAddress(
 				addPersonValue,
-				type === "person" ? ["bech32"] : ["eth", "bech32"],
+				type === "person" ? ["eth"] : ["eth", "bech32"],
 			),
 		[addPersonValue],
 	);

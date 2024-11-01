@@ -60,6 +60,8 @@ func initRootCmd(
 		addModuleInitFlags,
 	)
 
+	AddTendermintCommandAlias(rootCmd)
+
 	// add keybase, auxiliary RPC, query, genesis, and tx child commands
 	rootCmd.AddCommand(
 		server.StatusCommand(),
@@ -75,6 +77,15 @@ func initRootCmd(
 		txCommand(),
 		evmosclient.KeyCommands(app.DefaultNodeHome),
 	)
+}
+
+func AddTendermintCommandAlias(rootCmd *cobra.Command) {
+	tendermintCmd, _, err := rootCmd.Find([]string{"tendermint"})
+	if err != nil {
+		panic(err)
+	} else {
+		tendermintCmd.Aliases = append(tendermintCmd.Aliases, "comet")
+	}
 }
 
 func addModuleInitFlags(startCmd *cobra.Command) {

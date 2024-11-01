@@ -8,9 +8,6 @@ import { Icons } from "@/components/ui/icons";
 import { env } from "@/env";
 import Plausible from "plausible-tracker";
 import { Wallet } from "@/features/wallet";
-import { useChain } from "@cosmos-kit/react";
-import useWallet from "@/hooks/useWallet";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
 import { NoSpaces } from "@/features/spaces";
 import cn from "clsx";
@@ -19,7 +16,10 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useConnectWallet } from "@web3-onboard/react";
+import { toBech32 } from "@cosmjs/encoding";
+import { toBytes } from "viem";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -30,8 +30,10 @@ const { enableAutoPageviews } = Plausible();
 enableAutoPageviews();
 
 export function Root() {
-	const { connectToWallet, signOut } = useWallet();
-	const { status, address } = useChain(env.cosmoskitChainName);
+	const [{ wallet }] = useConnectWallet();
+	const account = wallet?.accounts?.[0];
+	const address = account?.address;
+	const cosmosAddress = useMemo(() => address ? toBech32("warden", toBytes(address)) : undefined, [address]);
 	const { spaceId, setSpaceId } = useSpaceId();
 
 	const [chainId, setChainId] = useState<string>("");
@@ -45,33 +47,18 @@ export function Root() {
 	}, []);
 
 	const story = useStoryblok("config", { version: "published" });
+	const { useSpacesByOwner, isReady } = useQueryHooks();
 
-	const { address: connectedAddress } = useAddressContext();
-
-	if (
-		(status === "Connected" && !connectedAddress) ||
-		(address && address !== connectedAddress)
-	) {
-		connectToWallet(
-			() => null,
-			() => null,
-		);
-	}
-	if (status === "Disconnected" && address) {
-		signOut();
-	}
-
-	const { useSpacesByOwner } = useQueryHooks();
 	const { data: spacesQuery } = useSpacesByOwner({
 		request: {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			owner: address!,
+			owner: cosmosAddress!,
 			pagination: PageRequest.fromPartial({
 				limit: BigInt(100),
 			}),
 		},
 		options: {
-			enabled: !!address,
+			enabled: !!cosmosAddress && isReady,
 		},
 	});
 
@@ -190,11 +177,11 @@ export function Root() {
 						<main
 							className={cn(
 								"pb-2 pt-0 md:pt-[60px] max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
-								spaceCount === 0 && "mx-2",
+								{ "mx-2 md:pt-0": !spaceCount }
 							)}
 						>
 							<SiteHeader />
-							{spaceCount === 0 ? <NoSpaces /> : <Outlet />}
+							{!spaceCount ? <NoSpaces /> : <Outlet />}
 							<Toaster />
 						</main>
 						{spaceCount !== 0 && <RightSidebar />}

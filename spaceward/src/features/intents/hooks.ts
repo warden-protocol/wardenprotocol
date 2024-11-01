@@ -1,18 +1,30 @@
+import { useCallback, useMemo } from "react";
+import { toBytes } from "viem";
+import { usePublicClient, useWriteContract } from "wagmi";
+import { toBech32 } from "@cosmjs/encoding";
+import { Template } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/template";
 import { env } from "@/env";
-import { useNewAction } from "@/hooks/useAction";
-import { useQueryHooks, useTx } from "@/hooks/useClient";
+import actPrecompileAbi from "@/contracts/actPrecompileAbi";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { useQueryHooks } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import type { IntentParams, SimpleIntent } from "@/types/intent";
+import { assertChain, handleContractWrite } from "@/utils/contract";
 import { shieldStringify, validateAddressNumber } from "@/utils/shield";
-import { warden } from "@wardenprotocol/wardenjs";
-import { Template } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/template";
-import { useCallback, useMemo } from "react";
 import { useModalState } from "../modals/state";
-import { useEnqueueAction } from "../actions/hooks";
+import { useActionHandler } from "../actions/hooks";
+import { useSetChain } from "@web3-onboard/react";
+import { PRECOMPILE_ACT_ADDRESS, PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+
+export const DEFAULT_EXPRESSION = "any(1, warden.space.owners)";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
-		const { type, group, shield, expression } = condition;
+		const { type, group: _group, shield, expression } = condition;
+
+		const group = _group.map((addr) =>
+			addr.startsWith("0x") ? toBech32("warden", toBytes(addr)) : addr,
+		);
 
 		if (type === "joint") {
 			return `all([${group.join(", ")}])`;
@@ -46,16 +58,27 @@ const createDefinition = (intent: SimpleIntent) => {
 export const useRules = () => {
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
-	const queryHooks = useQueryHooks();
-	const useSpaceById = queryHooks.warden.warden.v1beta3.useSpaceById;
-	const useRules = queryHooks.warden.act.v1beta1.useTemplates;
-	const { tx } = useTx();
 
-	const { newTemplate: msgNewRule, updateTemplate: msgUpdateRule } =
-		warden.act.v1beta1.MessageComposer.withTypeUrl;
+	const {
+		isReady,
+		warden: {
+			act: {
+				v1beta1: { useTemplates, useTemplateById },
+			},
+			warden: {
+				v1beta3: { useSpaceById },
+			},
+		},
+	} = useQueryHooks();
+
+	const client = usePublicClient();
+	const { writeContractAsync } = useWriteContract();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
 
 	const newRule = useCallback(
-		async (creator: string, { simple, advanced }: IntentParams) => {
+		async ({ simple, advanced }: IntentParams) => {
+			await assertChain(chains, connectedChain, setChain);
+
 			const { name, definition: _definition } =
 				(simple
 					? { ...simple, definition: createDefinition(simple) }
@@ -71,24 +94,24 @@ export const useRules = () => {
 				? _definition
 				: `contains(warden.analyzer.xxx.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
-			const res = await tx(
-				[msgNewRule({ creator, name, definition })],
-				{},
+			await handleContractWrite(
+				() =>
+					writeContractAsync({
+						address: PRECOMPILE_ACT_ADDRESS,
+						abi: actPrecompileAbi,
+						functionName: "newTemplate",
+						args: [name, definition],
+					}),
+				client,
 			);
-
-			if (!res) {
-				throw new Error("failed to broadcast tx");
-			}
-
-			if (res.code !== 0) {
-				throw new Error(`tx failed: ${JSON.stringify(res)}`);
-			}
 		},
-		[msgNewRule, tx],
+		[writeContractAsync, client, chains, connectedChain, setChain],
 	);
 
 	const updateRule = useCallback(
-		async (creator: string, { simple, advanced }: IntentParams) => {
+		async ({ simple, advanced }: IntentParams) => {
+			await assertChain(chains, connectedChain, setChain);
+
 			const {
 				id,
 				name,
@@ -112,35 +135,48 @@ export const useRules = () => {
 				: // fixme waiting for the correct contract address
 					`contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
-			const res = await tx(
-				[msgUpdateRule({ id: BigInt(id), creator, name, definition })],
-				{},
+			await handleContractWrite(
+				() =>
+					writeContractAsync({
+						address: PRECOMPILE_ACT_ADDRESS,
+						abi: actPrecompileAbi,
+						functionName: "updateTemplate",
+						args: [BigInt(id), name, definition],
+					}),
+				client,
 			);
-
-			if (!res) {
-				throw new Error("failed to broadcast tx");
-			}
-
-			if (res.code !== 0) {
-				throw new Error(`tx failed: ${JSON.stringify(res)}`);
-			}
 		},
-		[msgUpdateRule, tx],
+		[writeContractAsync, client, chains, connectedChain, setChain],
 	);
 
-	const space = useSpaceById({ request: { id: BigInt(spaceId || "") } }).data
-		?.space;
+	const space = useSpaceById({
+		request: { id: BigInt(spaceId || "") },
+		options: {
+			enabled: isReady,
+		},
+	}).data?.space;
 
-	const { MsgUpdateSpace } = warden.warden.v1beta3;
-	const { getMessage, authority } = useNewAction(MsgUpdateSpace, true);
-	const { addAction } = useEnqueueAction(getMessage);
+	const approveAdminTemplate = useTemplateById({
+		request: {
+			id: space?.approveAdminTemplateId ?? BigInt(0),
+		},
+		options: {
+			enabled: isReady && Boolean(space?.approveAdminTemplateId),
+		},
+	}).data?.template;
 
-	const rules = useRules({
+	const { add } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"updateSpace",
+	);
+
+	const rules = useTemplates({
 		request: {
 			creator: space?.creator,
 		},
 		options: {
-			enabled: Boolean(space?.creator),
+			enabled: Boolean(space?.creator) && isReady,
 		},
 	});
 
@@ -162,8 +198,12 @@ export const useRules = () => {
 				return;
 			}
 
-			if (!authority) {
-				throw new Error("authority is required");
+			let expectedApproveExpression = DEFAULT_EXPRESSION;
+
+			if (approveAdminTemplate?.expression) {
+				expectedApproveExpression = shieldStringify(
+					approveAdminTemplate.expression,
+				);
 			}
 
 			let title = "Disabling current intent";
@@ -202,22 +242,19 @@ export const useRules = () => {
 				}
 			}
 
-			await addAction(
-				{
-					authority,
-					spaceId: BigInt(space.id),
-					approveAdminTemplateId: BigInt(0),
-					approveSignTemplateId: BigInt(id),
-					rejectAdminTemplateId: BigInt(0),
-					rejectSignTemplateId: BigInt(0),
-					nonce: space.nonce,
-				},
-				{
-					title,
-				},
-			);
+			await add([
+				BigInt(space.id),
+				space.nonce,
+				BigInt(0),
+				BigInt(0),
+				BigInt(id),
+				BigInt(0),
+				BigInt(0),
+				expectedApproveExpression,
+				DEFAULT_EXPRESSION,
+			], { title });
 		},
-		[authority, addAction, space, rulesById],
+		[add, space, rulesById],
 	);
 
 	return {

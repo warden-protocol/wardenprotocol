@@ -1,21 +1,40 @@
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { warden } from "@wardenprotocol/wardenjs";
-import { useNewAction } from "@/hooks/useAction";
 import { useQueryHooks } from "@/hooks/useClient";
 import { useModalState } from "@/features/modals/state";
 import { PlusIcon } from "lucide-react";
 import OwnerCard from "@/features/owners/OwnerCard";
-
-const { MsgRemoveSpaceOwner } = warden.warden.v1beta3;
+import { useActionHandler } from "@/features/actions/hooks";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { fromBytes, isAddress } from "viem";
+import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
+import { shieldStringify } from "@/utils/shield";
+import { fromBech32 } from "@cosmjs/encoding";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
 	const { setData: setModal } = useModalState();
 
-	const { newAction, authority } = useNewAction(MsgRemoveSpaceOwner);
+	const { add: removeSpaceOwner } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"removeSpaceOwner"
+	);
 
-	const { useSpaceById } = useQueryHooks();
-	const q = useSpaceById({ request: { id: BigInt(spaceId || "") } });
+
+	const { useSpaceById, useTemplateById, isReady } = useQueryHooks();
+
+	const q = useSpaceById({
+		request: { id: BigInt(spaceId || "") },
+		options: { enabled: isReady && Boolean(spaceId) },
+	});
+
+	const approveAdminTemplate = useTemplateById({
+		request: { id: q.data?.space?.approveAdminTemplateId ?? BigInt(0) },
+		options: {
+			enabled: isReady && Boolean(q.data?.space?.approveAdminTemplateId),
+		},
+	}).data?.template;
 
 	if (q.status === "loading") {
 		return <div>Loading...</div>;
@@ -27,16 +46,32 @@ export function OwnersPage() {
 	}
 
 	async function removeOwner(owner: string) {
-		if (!spaceId) return;
-		if (!authority) return;
-		await newAction(
-			{
-				owner,
-				spaceId: BigInt(spaceId),
-				authority,
-			},
-			{},
-		);
+		if (!space) {
+			throw new Error("Space not found");
+		}
+
+		if (!isAddress(owner)) {
+			throw new Error("Invalid owner address");
+		}
+
+		let expectedApproveExpression = DEFAULT_EXPRESSION;
+
+		if (approveAdminTemplate?.expression) {
+			expectedApproveExpression = shieldStringify(
+				approveAdminTemplate.expression,
+			);
+		}
+
+		await removeSpaceOwner([
+			space.id,
+			owner,
+			space.nonce,
+			BigInt(0),
+			expectedApproveExpression,
+			DEFAULT_EXPRESSION,
+		], {
+			title: "Remove owner",
+		});
 	}
 
 	return (
@@ -64,30 +99,34 @@ export function OwnersPage() {
 			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
 				<div className="flex flex-row flex-wrap -mx-3 -mt-4">
-					{space.owners.map((owner) => (
-						<div
-							className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4"
-							key={owner}
-						>
-							<OwnerCard
-								owner={owner}
-								onRemove={() => {
-									if (typeof window === "undefined") {
-										return;
-									}
+					{space.owners.map((ownerCosmos) => {
+						const owner = fromBytes(fromBech32(ownerCosmos).data, "hex");
 
-									const confirmed =
-										window.confirm("Are you sure?");
+						return (
+							<div
+								className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4"
+								key={owner}
+							>
+								<OwnerCard
+									owner={owner}
+									onRemove={() => {
+										if (typeof window === "undefined") {
+											return;
+										}
 
-									if (!confirmed) {
-										return;
-									}
+										const confirmed =
+											window.confirm("Are you sure?");
 
-									removeOwner(owner);
-								}}
-							/>
-						</div>
-					))}
+										if (!confirmed) {
+											return;
+										}
+
+										removeOwner(owner);
+									}}
+								/>
+							</div>
+						)
+					})}
 					<div className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4">
 						<div
 							className="rounded-xl border-[1px] border-solid border-border-edge h-60 w-full cursor-pointer flex flex-col bg-secondary"

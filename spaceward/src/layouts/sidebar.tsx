@@ -50,6 +50,8 @@ const spaceNavItems = [
 ];
 
 const globalNavItems = [
+// disabled until precompiles
+/*
 	{
 		label: "Staking",
 		icon: <Layers3 strokeWidth={1} className="h-5 w-5 mr-5" />,
@@ -60,6 +62,7 @@ const globalNavItems = [
 		icon: <CircleCheckBig strokeWidth={1} className="h-5 w-5 mr-5" />,
 		url: "/governance",
 	},
+*/
 	{
 		label: "Actions",
 		icon: <ArrowLeftRight strokeWidth={1} className="h-5 w-5 mr-5" />,

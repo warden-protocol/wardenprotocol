@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
-import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -14,6 +13,7 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getProvider } from "@/lib/eth";
+import { formatEther, isAddress } from "viem";
 
 const { provider } = getProvider("sepolia");
 
@@ -31,7 +31,11 @@ const GBP = new Intl.NumberFormat("en-US", {
 });
 
 async function getEthBalance(address: string) {
-	const balance = await provider.getBalance(address);
+	if (!isAddress(address)) {
+		throw new Error(`Invalid address ${address}`);
+	}
+
+	const balance = await provider.getBalance({ address });
 	return balance;
 }
 
@@ -202,20 +206,20 @@ function Sepolia({ address, keyId }: { address: string; keyId: bigint }) {
 				<span className="text-sm">Sepolia Ether</span>
 			</div>
 			<div className="flex flex-row gap-4 items-center text-sm">
-				{ethers.formatEther(query?.data || 0)} ETH
+				{formatEther(query?.data || BigInt(0))} ETH
 			</div>
 			<div className="flex flex-row gap-4 items-center text-sm">
 				{currency === "usd" &&
 					USDollar.format(
-						parseFloat(ethers.formatEther(query?.data || 0)) * 2940,
+						parseFloat(formatEther(query?.data || BigInt(0))) * 2940,
 					)}
 				{currency === "eur" &&
 					Euro.format(
-						parseFloat(ethers.formatEther(query?.data || 0)) * 2756,
+						parseFloat(formatEther(query?.data || BigInt(0))) * 2756,
 					)}
 				{currency === "gbp" &&
 					GBP.format(
-						parseFloat(ethers.formatEther(query?.data || 0)) * 2358,
+						parseFloat(formatEther(query?.data || BigInt(0))) * 2358,
 					)}
 			</div>
 			<div className="flex flex-row gap-4 items-center">

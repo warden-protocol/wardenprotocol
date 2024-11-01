@@ -19,6 +19,8 @@ import { walletContext } from "@cosmos-kit/react-lite";
 import { BalanceEntry } from "../assets/types";
 import { useQuery } from "@tanstack/react-query";
 import { queryCosmosClients } from "../assets/queries";
+import { isAddress } from "viem";
+import { isValidBech32 } from "@/utils/validate";
 
 export default function SendAssetsModal({
 	// address,
@@ -79,6 +81,7 @@ export default function SendAssetsModal({
 		}
 
 		const { address, chainName, token } = selectedToken;
+		const title = `Send ${amount} ${token}`;
 		setPending(true);
 
 		try {
@@ -89,11 +92,10 @@ export default function SendAssetsModal({
 				amount,
 			});
 
-			const title = `Send ${amount} ${token}`;
 
 			if (txBuild.type === "eth") {
 				const { tx } = txBuild;
-				const storeId = await signEthereumTx(key.key.id, tx, chainName, title);
+				const storeId = await signEthereumTx(key.key.id, tx, chainName, { title });
 
 				if (storeId) {
 					setModal({ type: undefined });
@@ -115,7 +117,7 @@ export default function SendAssetsModal({
 					address,
 				});
 
-				const storeId = await signAmino(key, signDoc, chainName, title);
+				const storeId = await signAmino(key, signDoc, chainName, { title });
 
 				if (storeId) {
 					setModal({ type: undefined });

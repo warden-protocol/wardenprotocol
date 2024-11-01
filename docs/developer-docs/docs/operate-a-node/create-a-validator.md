@@ -62,7 +62,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
 1. Obtain your validator public key by running the following command:
 
    ```bash
-   wardend tendermint show-validator
+   wardend comet show-validator
    ```
 
    The output will be similar to this (with a different key):
@@ -123,7 +123,7 @@ There are certain files you need to backup to be able to restore your validator 
 Check if your validator is in the active set by running this command:
 
 ```bash
-wardend query tendermint-validator-set | grep "$(wardend tendermint show-address)"
+wardend query comet-validator-set | grep "$(wardend comet show-address)"
 ```
 
 If the output is empty, your validator isn't in the active set.

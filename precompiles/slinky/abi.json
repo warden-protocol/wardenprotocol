@@ -53,14 +53,14 @@
 									"type": "uint64"
 								},
 								{
-									"internalType": "int64",
+									"internalType": "uint256",
 									"name": "blockTimestamp",
-									"type": "int64"
+									"type": "uint256"
 								},
 								{
-									"internalType": "int64",
+									"internalType": "uint256",
 									"name": "price",
-									"type": "int64"
+									"type": "uint256"
 								}
 							],
 							"internalType": "struct QuotePrice",

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity >=0.8.18;
 
-import "../common/Types.sol";
-
 /// @dev The ISlinky contract's address.
 address constant ISLINKY_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000902;
 
@@ -16,8 +14,8 @@ struct CoinPriceResponse {
 
 struct QuotePrice {
     uint64 blockHeight;
-    int64 blockTimestamp;
-    int64 price;
+    uint256 blockTimestamp;
+    uint256 price;
 }
 
 /**

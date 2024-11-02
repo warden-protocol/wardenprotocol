@@ -1,7 +1,9 @@
 package slinky
 
 import (
+	"errors"
 	"fmt"
+	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -18,7 +20,7 @@ const (
 	CoinPrice = "coinPrice"
 )
 
-// AllKeysMethod constructs QueryAllKeysRequest from args, passes it to query server and packs response into corresponding abi output.
+// CoinPriceQuery constructs GetPriceRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) CoinPriceQuery(
 	ctx sdk.Context,
 	origin common.Address,
@@ -44,21 +46,31 @@ func (p Precompile) CoinPriceQuery(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(out)
+	packedOutput, err := method.Outputs.Pack(out)
+	if err != nil {
+		return nil, fmt.Errorf("failed to pack output: %w", err)
+	}
+
+	return packedOutput, nil
 }
 
 func (o *CoinPriceResponse) FromResponse(res *oracletypes.GetPriceResponse) (*CoinPriceResponse, error) {
+	if res.Price == nil {
+		return nil, errors.New("received nil GetPriceResponse")
+	}
+
 	o.Decimals = res.Decimals
 	o.Price = QuotePrice{
-		BlockHeight: res.Price.BlockHeight,
-		Price:       res.Price.Price.Int64(),
+		BlockHeight:    res.Price.BlockHeight,
+		Price:          res.Price.Price.BigInt(),
+		BlockTimestamp: big.NewInt(res.Price.BlockTimestamp.Unix()),
 	}
 
 	return o, nil
 }
 
 func newGetPriceRequest(method *abi.Method, args []interface{}) (*oracletypes.GetPriceRequest, error) {
-	if len(args) != 1 {
+	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 

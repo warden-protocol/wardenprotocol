@@ -5,18 +5,15 @@ import (
 	"fmt"
 
 	"cosmossdk.io/log"
-
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
-
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	types "github.com/skip-mev/slinky/x/oracle/types"
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
@@ -26,10 +23,10 @@ var _ vm.PrecompiledContract = &Precompile{}
 //go:embed abi.json
 var f embed.FS
 
-// PrecompileAddress defines the contract address of the x/warden precompile.
+// PrecompileAddress defines the contract address of the slinky precompile.
 const PrecompileAddress = "0x0000000000000000000000000000000000000902"
 
-// Precompile defines the precompiled contract for x/warden.
+// Precompile defines the precompiled contract for slinky.
 type Precompile struct {
 	cmn.Precompile
 	oraclekeeper   oraclekeeper.Keeper
@@ -37,15 +34,15 @@ type Precompile struct {
 	queryServer    types.QueryServer
 }
 
-// LoadABI loads the x/warden ABI from the embedded abi.json file
-// for the x/warden precompile.
+// LoadABI loads the slinky ABI from the embedded abi.json file
+// for the slinky precompile.
 func LoadABI() (abi.ABI, error) {
 	return cmn.LoadABI(f, "abi.json")
 }
 
 func NewPrecompile(
 	oraclekee oraclekeeper.Keeper,
-	e *precommon.EthEventsRegistry) (*Precompile, error) {
+	eventRegistry *precommon.EthEventsRegistry) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -58,7 +55,7 @@ func NewPrecompile(
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
 		oraclekeeper:   oraclekee,
-		eventsRegistry: e,
+		eventsRegistry: eventRegistry,
 		queryServer:    oraclekeeper.NewQueryServer(oraclekee),
 	}
 
@@ -106,6 +103,9 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	// queries
 	case CoinPrice:
 		bz, err = p.CoinPriceQuery(ctx, evm.Origin, stateDB, method, args)
+
+	default:
+		return nil, fmt.Errorf("slinky precompile: method not exists: %s", method.Name)
 	}
 
 	if err != nil {

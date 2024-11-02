@@ -3,6 +3,7 @@ package precompiles
 import (
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
 	cmn "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -13,7 +14,7 @@ import (
 )
 
 // Single point of all wardenprotocol precompiles initialization, including precompiles and events registry
-func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
+func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper, oraclekeeper oraclekeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
 
@@ -52,7 +53,7 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateKey", newWardenPrecompile.GetUpdateKeyEvent)
 	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventUpdateSpace", newWardenPrecompile.GetUpdateSpaceEvent)
 
-	newSlinkyPrecompile, err := slinkyprecompile.NewPrecompile(wardenkeeper, actkeeper, eventsRegistry)
+	newSlinkyPrecompile, err := slinkyprecompile.NewPrecompile(oraclekeeper, eventsRegistry)
 	if err != nil {
 		return nil, err
 	}

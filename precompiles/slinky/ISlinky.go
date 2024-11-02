@@ -37,13 +37,13 @@ type CoinPriceResponse struct {
 // QuotePrice is an auto generated low-level Go binding around an user-defined struct.
 type QuotePrice struct {
 	BlockHeight    uint64
-	BlockTimestamp int64
-	Price          int64
+	BlockTimestamp *big.Int
+	Price          *big.Int
 }
 
 // ISlinkyMetaData contains all meta data concerning the ISlinky contract.
 var ISlinkyMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"base\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"quote\",\"type\":\"string\"}],\"name\":\"coinPrice\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"decimals\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockHeight\",\"type\":\"uint64\"},{\"internalType\":\"int64\",\"name\":\"blockTimestamp\",\"type\":\"int64\"},{\"internalType\":\"int64\",\"name\":\"price\",\"type\":\"int64\"}],\"internalType\":\"structQuotePrice\",\"name\":\"price\",\"type\":\"tuple\"}],\"internalType\":\"structCoinPriceResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"base\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"quote\",\"type\":\"string\"}],\"name\":\"coinPrice\",\"outputs\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"decimals\",\"type\":\"uint64\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockHeight\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"blockTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"internalType\":\"structQuotePrice\",\"name\":\"price\",\"type\":\"tuple\"}],\"internalType\":\"structCoinPriceResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // ISlinkyABI is the input ABI used to generate the binding from.
@@ -194,7 +194,7 @@ func (_ISlinky *ISlinkyTransactorRaw) Transact(opts *bind.TransactOpts, method s
 
 // CoinPrice is a free data retrieval call binding the contract method 0x05744c62.
 //
-// Solidity: function coinPrice(string base, string quote) view returns((uint64,(uint64,int64,int64)) response)
+// Solidity: function coinPrice(string base, string quote) view returns((uint64,(uint64,uint256,uint256)) response)
 func (_ISlinky *ISlinkyCaller) CoinPrice(opts *bind.CallOpts, base string, quote string) (CoinPriceResponse, error) {
 	var out []interface{}
 	err := _ISlinky.contract.Call(opts, &out, "coinPrice", base, quote)
@@ -211,14 +211,14 @@ func (_ISlinky *ISlinkyCaller) CoinPrice(opts *bind.CallOpts, base string, quote
 
 // CoinPrice is a free data retrieval call binding the contract method 0x05744c62.
 //
-// Solidity: function coinPrice(string base, string quote) view returns((uint64,(uint64,int64,int64)) response)
+// Solidity: function coinPrice(string base, string quote) view returns((uint64,(uint64,uint256,uint256)) response)
 func (_ISlinky *ISlinkySession) CoinPrice(base string, quote string) (CoinPriceResponse, error) {
 	return _ISlinky.Contract.CoinPrice(&_ISlinky.CallOpts, base, quote)
 }
 
 // CoinPrice is a free data retrieval call binding the contract method 0x05744c62.
 //
-// Solidity: function coinPrice(string base, string quote) view returns((uint64,(uint64,int64,int64)) response)
+// Solidity: function coinPrice(string base, string quote) view returns((uint64,(uint64,uint256,uint256)) response)
 func (_ISlinky *ISlinkyCallerSession) CoinPrice(base string, quote string) (CoinPriceResponse, error) {
 	return _ISlinky.Contract.CoinPrice(&_ISlinky.CallOpts, base, quote)
 }

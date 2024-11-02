@@ -56,7 +56,7 @@ func (p Precompile) CoinPriceQuery(
 
 func (o *CoinPriceResponse) FromResponse(res *oracletypes.GetPriceResponse) (*CoinPriceResponse, error) {
 	if res.Price == nil {
-		return nil, errors.New("received nil GetPriceResponse")
+		return nil, errors.New("received nil price in GetPriceResponse")
 	}
 
 	o.Decimals = res.Decimals

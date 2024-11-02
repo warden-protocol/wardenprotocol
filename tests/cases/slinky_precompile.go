@@ -37,4 +37,7 @@ func (c *Test_SlinkyPrecompile) Run(t *testing.T, ctx context.Context, _ framewo
 	// As I don't now how to run a test with slinky sidecar yet, I'm just testing the precompile can call the module
 	_, err = iSlinkyClient.CoinPrice(alice.CallOps(t), "ETH", "USDT")
 	require.Error(t, err, "no price / nonce reported for CurrencyPair: ETH/USDT, the module is not tracking this CurrencyPair")
+
+	_, err = iSlinkyClient.CoinPrice(alice.CallOps(t), "USDT", "ETH")
+	require.Error(t, err, "no price / nonce reported for CurrencyPair: USDT/ETH, the module is not tracking this CurrencyPair")
 }

@@ -132,7 +132,7 @@ func (*Precompile) IsTransaction(method string) bool {
 		return false
 	}
 
-	panic(fmt.Errorf("slinky precompile: method not exists: %s", method))
+	panic(fmt.Errorf("slinky precompile: method does not exist: %s", method))
 }
 
 // Logger returns a precompile-specific logger.

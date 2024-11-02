@@ -36,7 +36,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
     replace 's/aevmos/award/' ~/.warden/config/app.toml
-    jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901"]' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
+    jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901","0x0000000000000000000000000000000000000902"]' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets

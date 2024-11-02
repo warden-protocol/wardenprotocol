@@ -8,35 +8,46 @@ import {
 import AddressAvatar from "@/components/AddressAvatar";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useQueryHooks, useTx } from "@/hooks/useClient";
+import { useQueryHooks } from "@/hooks/useClient";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { warden } from "@wardenprotocol/wardenjs";
 import { useEffect, useMemo } from "react";
+import { usePublicClient, useSendTransaction, useWriteContract } from "wagmi";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { assertChain, handleContractWrite } from "@/utils/contract";
+import { parseEther } from "viem";
+import { env } from "@/env";
+import { useSetChain } from "@web3-onboard/react";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 
 export function SpaceSelector() {
 	const { isReady, useSpacesByOwner } = useQueryHooks();
 	const { address } = useAddressContext();
 	const { spaceId, setSpaceId } = useSpaceId();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-	const { tx } = useTx();
+	const { writeContractAsync } = useWriteContract();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
+	const client = usePublicClient();
 
 	async function sendMsgNewSpace() {
-		const { newSpace } = warden.warden.v1beta3.MessageComposer.withTypeUrl;
-		return await tx(
-			[
-				newSpace({
-					creator: address,
-					signRuleId: BigInt(0),
-					adminRuleId: BigInt(0),
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-					additionalOwners: undefined,
+		await assertChain(chains, connectedChain, setChain);
+
+		try {
+			const receipt = handleContractWrite(
+				() => writeContractAsync({
+					address: PRECOMPILE_WARDEN_ADDRESS,
+					abi: wardenPrecompileAbi,
+					functionName: "newSpace",
+					args: [BigInt(0), BigInt(0), BigInt(0), BigInt(0), []],
 				}),
-			],
-			{},
-		);
+				client,
+			);
+
+			console.log("receipt", receipt);
+		} catch (e) {
+			console.error("error", e);
+		}
 	}
 
 	const spacesQuery = useSpacesByOwner({
@@ -154,7 +165,7 @@ export function SpaceSelector() {
 					) : null}
 					<div>
 						<button
-							className="flex flex-row items-center justify-center mt-4 pb-2"
+							className="flex flex-row items-center justify-center mt-4 pb-2 outline-none"
 							onClick={() => sendMsgNewSpace()}
 						>
 							<div className="ring-foreground rounded-full hover:ring-2 w-12 h-12 flex items-center justify-center">

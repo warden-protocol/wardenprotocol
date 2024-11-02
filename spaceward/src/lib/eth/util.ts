@@ -1,13 +1,47 @@
-import { ethers } from "ethers";
-import { ETH_CHAINID_MAP, ETH_CHAIN_CONFIG } from "./constants";
+import { createPublicClient, http, fallback } from "viem";
+import * as chains from "viem/chains";
 import { capitalize } from "@/features/modals/util";
+import { ETH_CHAINID_MAP, ETH_CHAIN_CONFIG } from "./constants";
+
+type SupportedNetwork = keyof typeof ETH_CHAINID_MAP;
 
 export const REVERSE_ETH_CHAINID_MAP = Object.fromEntries(
 	Object.entries(ETH_CHAINID_MAP).map(([k, v]) => [v, k]),
 ) as Record<string, SupportedNetwork | undefined>;
 
-type SupportedNetwork = keyof typeof ETH_CHAINID_MAP;
-const providers: Partial<Record<SupportedNetwork, ethers.JsonRpcProvider>> = {};
+
+function createProviderCompat(type: SupportedNetwork) {
+	const chain = chains[type];
+
+	/** old provider params
+	 * batchMaxCount: 10,
+	 * batchStallTime: 100,
+	 * staticNetwork: ethers.Network.from(BigInt(chainId)),
+	 */
+
+	const rpcs = ETH_CHAIN_CONFIG[chain.id]?.rpc;
+
+	if (!rpcs) {
+		throw new Error(`Unsupported network: ${type}`);
+	}
+
+	const client = createPublicClient({
+		batch: {
+			multicall: true,
+		},
+		chain,
+		transport: fallback([
+			...rpcs.map((url) => http(url)),
+			http(),
+		]),
+	});
+
+	return client;
+}
+
+const providers: Partial<
+	Record<SupportedNetwork, ReturnType<typeof createProviderCompat>>
+> = {};
 
 export const isSupportedNetwork = (
 	network?: string,
@@ -26,33 +60,7 @@ export const getProvider = (type: SupportedNetwork) => {
 			throw new Error(`Unsupported network: ${type}`);
 		}
 
-		let retry = 0;
-		const getUrl = () => config.rpc[retry % config.rpc.length];
-		const url = getUrl();
-		const req = new ethers.FetchRequest(url);
-		req.timeout = 10000;
-		req.setThrottleParams({ maxAttempts: 12 });
-
-		req.retryFunc = async (request, response, attempt) => {
-			console.log("ethers.FetchRequest::retryFunc", {
-				request,
-				response,
-				attempt,
-				type,
-			});
-
-			retry++;
-			const url = getUrl();
-			console.log({ url, retry });
-			req.url = url;
-			return true;
-		};
-
-		providers[type] = new ethers.JsonRpcProvider(req, undefined, {
-			batchMaxCount: 10,
-			batchStallTime: 100,
-			staticNetwork: ethers.Network.from(BigInt(chainId)),
-		});
+		providers[type] = createProviderCompat(type);
 	}
 
 	const provider = providers[type];

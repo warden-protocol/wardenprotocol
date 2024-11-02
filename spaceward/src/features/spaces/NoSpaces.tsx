@@ -1,25 +1,31 @@
+import { useBalance, useWalletClient, useWriteContract } from "wagmi"
 import { Button } from "@/components/ui/button";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useAsset } from "@/hooks/useAsset";
 import FaucetButton from "@/components/FaucetButton";
-import { useTx } from "@/hooks/useClient";
-import { warden } from "@wardenprotocol/wardenjs";
 import { Icons } from "@/components/ui/icons";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import { env } from "@/env";
+import { assertChain, handleContractWrite } from "@/utils/contract";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 
 export function NoSpaces() {
-	const { address } = useAddressContext();
-	const { balance } = useAsset("award");
-	const { tx } = useTx();
-	const { newSpace } = warden.warden.v1beta3.MessageComposer.withTypeUrl;
+	const [{ wallet }] = useConnectWallet();
+	const { writeContractAsync } = useWriteContract();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
+	const client = useWalletClient();
 
-	const ward = parseInt(balance?.amount || "0") / 10 ** 18;
+	const balance = useBalance({
+		address: wallet?.accounts?.[0]?.address,
+		chainId: env.evmChainId
+	})
+
 	return (
 		<div className="relative w-full min-h-[calc(100vh-20px)] dark:bg-transparent  rounded-xl -mt-[48px] flex flex-col gap-4 items-center place-content-center text-center no-space">
 			<Icons.corner className="absolute top-0 left-0" />
 			<Icons.corner className="absolute top-0 right-0 rotate-90" />
 			<Icons.corner className="absolute bottom-0 right-0 rotate-180" />
 			<Icons.corner className="absolute bottom-0 left-0 -rotate-90" />
-			{ward > 0 ? (
+			{balance.data?.value && balance.data.value > BigInt(0) ? (
 				<>
 					<h1 className="text-5xl font-bold tracking-[0.24px] leading-[120%]">
 						Create your first space
@@ -30,7 +36,28 @@ export function NoSpaces() {
 					</p>
 					<Button
 						className="bg-fill-accent-primary hover:bg-fill-accent-hover h-[56px] px-8 rounded-xl font-semibold text-label-on-light"
-						onClick={() => {
+						onClick={async () => {
+							await assertChain(chains, connectedChain, setChain);
+
+							try {
+								const res = handleContractWrite(() => writeContractAsync({
+									address: PRECOMPILE_WARDEN_ADDRESS,
+									abi: wardenPrecompileAbi,
+									functionName: "newSpace",
+									chainId: env.evmChainId,
+									args: [
+										BigInt(0),
+										BigInt(0),
+										BigInt(0),
+										BigInt(0),
+										[],
+									],
+								}), client.data);
+								console.log("res", res);
+							} catch (e) {
+								console.log("error", e);
+							}
+							/*
 							tx(
 								[
 									newSpace({
@@ -43,7 +70,7 @@ export function NoSpaces() {
 									}),
 								],
 								{},
-							);
+							);*/
 						}}
 					>
 						Create Space

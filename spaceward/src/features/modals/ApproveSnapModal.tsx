@@ -11,12 +11,12 @@ import { env } from "@/env";
 import { useMetaMask } from "@/hooks/useMetaMask";
 import { useQuery } from "@tanstack/react-query";
 import { querySnapRequests } from "../metamask/queries";
-import { ethers } from "ethers";
-import { ETH_CHAIN_CONFIG, ETH_CHAINID_MAP, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
+import { ETH_CHAIN_CONFIG, ETH_CHAINID_MAP, getProvider, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
 import { SignTypedDataVersion, TypedDataUtils, TypedMessage } from "@metamask/eth-sig-util";
 import { AssetIcon } from "../assets/AssetRow";
-import { capitalize } from "./util";
+import { capitalize, prepareEth } from "./util";
 import { bigintToFixed } from "@/lib/math";
+import { hashMessage, isHex, toBytes } from "viem";
 
 interface SignTransactionParams {
 	chainId: string;
@@ -29,20 +29,6 @@ interface SignTransactionParams {
 	to: string;
 	type: string;
 	value: string;
-}
-
-async function buildSignTransaction(data: SignTransactionParams) {
-	return ethers.Transaction.from({
-		chainId: data.chainId,
-		data: data.data,
-		gasLimit: data.gasLimit,
-		maxFeePerGas: data.maxFeePerGas,
-		maxPriorityFeePerGas: data.maxPriorityFeePerGas,
-		nonce: ethers.getNumber(data.nonce),
-		to: data.to,
-		type: ethers.getNumber(data.type),
-		value: data.value,
-	});
 }
 
 const getNetwork = (req: KeyringRequest) => {
@@ -140,19 +126,21 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 				) {
 					throw new Error("wrong params length");
 				}
+
 				const msgHex = req.request.params?.[0];
-				if (!msgHex) {
+
+				if (!msgHex || !isHex(msgHex)) {
 					throw new Error("Request has no message");
 				}
-				const msg = ethers.hashMessage(
-					ethers.getBytes(msgHex as string),
+
+				const msg = hashMessage(
+					{ raw: msgHex }
 				);
 
 				const storeId = await eth.signRaw(
 					keyId,
-					ethers.getBytes(msg),
-					undefined,
-					{ requestId: req.id },
+					toBytes(msg),
+					{ snap: { requestId: req.id } },
 				);
 
 				if (!storeId) {
@@ -180,14 +168,17 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 					throw new Error(`chainId not supported: ${chainId}`);
 				}
 
-				const tx = await buildSignTransaction(txParam);
+				const { provider } = getProvider(chainName);
+				const { request } = prepareEth(provider, txParam as any /* fixme typing */);
+
 				const storeId = await eth.signEthereumTx(
 					keyId,
-					tx,
+					request,
 					chainName,
-					"Approve snap transaction",
-					undefined,
-					{ requestId: req.id },
+					{
+						snap: { requestId: req.id },
+						title: "Approve snap transaction",
+					},
 				);
 
 				if (!storeId) {
@@ -214,9 +205,8 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 
 				const storeId = await eth.signRaw(
 					keyId,
-					ethers.getBytes(toSign),
-					undefined,
-					{ requestId: req.id },
+					toSign,
+					{ snap: { requestId: req.id } },
 				);
 
 				if (!storeId) {

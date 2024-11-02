@@ -13,8 +13,11 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
 import { Icons } from "@/components/ui/icons-assets";
 import descriptions from "../keychains/description";
-import { useNewAction } from "@/hooks/useAction";
-import { useEnqueueAction } from "../actions/hooks";
+import { useActionHandler } from "../actions/hooks";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { DEFAULT_EXPRESSION } from "../intents/hooks";
+import { shieldStringify } from "@/utils/shield";
 
 const DESCRIPTION_MAP = Object.fromEntries(descriptions.map((d) => [d.key, d]));
 const THEME_DISPLAY_COUNT = 4;
@@ -25,41 +28,55 @@ export default function CreateKeyModal({
 	spaceId: selectedSpaceId,
 	keychainId,
 }: ModalParams<CreateKeyParams>) {
-	const { useKeychains, useSpaceById, isReady } = useQueryHooks();
+	const { useKeychains, useSpaceById, useTemplateById, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { setData: setModal } = useModalState();
 	const { spaceId: _spaceId } = useSpaceId();
 	const spaceId = selectedSpaceId ?? _spaceId;
-	const { data: space } = useSpaceById({ request: { id: BigInt(spaceId ?? 0) }, options: { enabled: !!spaceId && isReady } });
-	const { getMessage, authority } = useNewAction(warden.warden.v1beta3.MsgNewKeyRequest);
-	const { addAction } = useEnqueueAction(getMessage);
+
+	const space = useSpaceById({
+		request: { id: BigInt(spaceId ?? 0) },
+		options: { enabled: !!spaceId && isReady },
+	}).data?.space;
+
+	const approveSignTemplate = useTemplateById({
+		request: { id: BigInt(space?.approveSignTemplateId ?? 0) },
+		options: { enabled: !!space?.approveSignTemplateId && isReady },
+	}).data?.template;
+
+	const { add } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"newKeyRequest",
+	);
 	const [pending, setPending] = useState(false);
 
 	function requestKey(keychainId: bigint, spaceId: bigint, themeIndex: number) {
-		if (!authority) {
-			throw new Error("no authority");
-		}
-
-		if (!space?.space) {
+		if (!space) {
 			throw new Error("no space");
 		}
 
-		return addAction(
-			{
-				spaceId,
-				keychainId,
-				keyType: warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
-				authority,
-				approveTemplateId: space.space.approveSignTemplateId,
-				rejectTemplateId: space.space.rejectSignTemplateId,
-				nonce: space.space.nonce,
-				maxKeychainFees: undefined as any
-			},
-			{
-				keyThemeIndex: themeIndex,
-				title: "Creating key"
-			},
-		);
+		let expectedApproveExpression = DEFAULT_EXPRESSION;
+
+		if (approveSignTemplate?.expression) {
+			expectedApproveExpression = shieldStringify(approveSignTemplate.expression);
+		}
+
+		return add([
+			spaceId,
+			keychainId,
+			warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
+			space.approveSignTemplateId,
+			space.rejectSignTemplateId,
+			[],
+			BigInt(space.nonce),
+			BigInt(0),
+			expectedApproveExpression,
+			DEFAULT_EXPRESSION,
+		], {
+			keyThemeIndex: themeIndex,
+			title: "Creating key"
+		});
 	}
 
 	const keychainsQuery = useKeychains({

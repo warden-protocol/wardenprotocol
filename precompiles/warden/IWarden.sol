@@ -277,7 +277,7 @@ interface IWarden {
     function newSignRequest(
         uint64 keyId,
         bytes calldata input,
-        address[] calldata analyzers,
+        bytes[] calldata analyzers,
         bytes calldata encryptionKey,
         Types.Coin[] calldata maxKeychainFees,
         uint64 nonce,

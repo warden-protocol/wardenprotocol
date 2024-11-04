@@ -15,6 +15,7 @@ import { useModalState } from "../modals/state";
 import { useActionHandler } from "../actions/hooks";
 import { useSetChain } from "@web3-onboard/react";
 import { PRECOMPILE_ACT_ADDRESS, PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { useSpaceById } from "@/hooks/query/warden";
 
 export const DEFAULT_EXPRESSION = "any(1, warden.space.owners)";
 
@@ -64,9 +65,6 @@ export const useRules = () => {
 		warden: {
 			act: {
 				v1beta1: { useTemplates, useTemplateById },
-			},
-			warden: {
-				v1beta3: { useSpaceById },
 			},
 		},
 	} = useQueryHooks();
@@ -154,7 +152,7 @@ export const useRules = () => {
 		options: {
 			enabled: isReady,
 		},
-	}).data?.space;
+	}).data;
 
 	const approveAdminTemplate = useTemplateById({
 		request: {

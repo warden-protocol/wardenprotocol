@@ -14,6 +14,7 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { DEFAULT_EXPRESSION } from "../intents/hooks";
 import { shieldStringify } from "@/utils/shield";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { useSpaceById } from "@/hooks/query/warden";
 
 
 export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
@@ -21,7 +22,6 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 		isReady,
 		warden: {
 			act: { v1beta1: { useTemplateById } },
-			warden: { v1beta3: { useSpaceById } },
 		},
 	} = useQueryHooks();
 
@@ -32,9 +32,9 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 			id: BigInt(spaceId!),
 		},
 		options: {
-			enabled: isReady && Boolean(spaceId),
+			enabled: isReady,
 		},
-	}).data?.space;
+	}).data;
 
 	const approveAdminTemplate = useTemplateById({
 		request: {

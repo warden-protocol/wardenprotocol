@@ -10,10 +10,11 @@ import { shieldStringify } from "@/utils/shield";
 import { fromBech32 } from "@cosmjs/encoding";
 import { fromBytes } from "viem";
 import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
+import { useSpaceById } from "./query/warden";
 
 /** @deprecated todo rename */
 export function useKeychainSigner() {
-	const { isReady, useSpaceById, useTemplateById } = useQueryHooks();
+	const { isReady, useTemplateById } = useQueryHooks();
 	const spaceId = useSpaceId().spaceId;
 
 	const space = useSpaceById({
@@ -21,9 +22,9 @@ export function useKeychainSigner() {
 			id: BigInt(spaceId ?? 0)
 		},
 		options: {
-			enabled: !!spaceId && isReady
+			enabled: isReady
 		}
-	}).data?.space;
+	}).data;
 
 	const approveSignTemplate = useTemplateById({
 		request: {

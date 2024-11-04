@@ -1,5 +1,5 @@
 import type { useActionsByAddress } from "@/hooks/query/act";
-import type { useKeysBySpaceId } from "./warden";
+import type { useKeychains, useKeysBySpaceId } from "./warden";
 
 export interface QueryOptions {
 	enabled?: boolean;
@@ -19,4 +19,8 @@ export type ActionModel = NonNullable<
 
 export type KeyModel = NonNullable<
 	ReturnType<typeof useKeysBySpaceId>["data"]
+>[0][number];
+
+export type KeychainModel = NonNullable<
+	ReturnType<typeof useKeychains>["data"]
 >[0][number];

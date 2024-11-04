@@ -10,6 +10,7 @@ import { fromBytes, isAddress } from "viem";
 import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
 import { shieldStringify } from "@/utils/shield";
 import { fromBech32 } from "@cosmjs/encoding";
+import { useSpaceById } from "@/hooks/query/warden";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
@@ -21,18 +22,17 @@ export function OwnersPage() {
 		"removeSpaceOwner"
 	);
 
-
-	const { useSpaceById, useTemplateById, isReady } = useQueryHooks();
+	const { useTemplateById, isReady } = useQueryHooks();
 
 	const q = useSpaceById({
 		request: { id: BigInt(spaceId || "") },
-		options: { enabled: isReady && Boolean(spaceId) },
+		options: { enabled: isReady },
 	});
 
 	const approveAdminTemplate = useTemplateById({
-		request: { id: q.data?.space?.approveAdminTemplateId ?? BigInt(0) },
+		request: { id: q.data?.approveAdminTemplateId ?? BigInt(0) },
 		options: {
-			enabled: isReady && Boolean(q.data?.space?.approveAdminTemplateId),
+			enabled: isReady && Boolean(q.data?.approveAdminTemplateId),
 		},
 	}).data?.template;
 
@@ -40,7 +40,8 @@ export function OwnersPage() {
 		return <div>Loading...</div>;
 	}
 
-	const space = q.data?.space;
+	const space = q.data;
+
 	if (!space) {
 		return <p>Space not found</p>;
 	}

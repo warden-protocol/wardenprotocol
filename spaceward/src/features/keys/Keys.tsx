@@ -37,9 +37,10 @@ import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
 import { useAssetQueries } from "../assets/hooks";
 import { AddToMetaMaskButton } from "@/features/metamask/AddToMetaMaskButton";
+import { useKeychainById } from "@/hooks/query/warden";
 
 export const useKeyData = ({ key }: Pick<QueryKeyResponse, "key">) => {
-	const { isReady, useKeychainById } = useQueryHooks();
+	const { isReady } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
 	const name = settings?.name ?? `Key #${key.id.toString()}`;
@@ -168,7 +169,7 @@ function Key({
 
 			<div className="flex items-center">
 				<div className="max-w-[166px] overflow-hidden text-ellipsis whitespace-nowrap">
-					{keychain?.keychain?.description}
+					{keychain?.description}
 				</div>
 			</div>
 
@@ -370,7 +371,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 							))} */}
 							<div className="flex items-center justify-between my-1">
 								<div>Keychain</div>
-								<div>{keychain?.keychain?.description}</div>
+								<div>{keychain?.description}</div>
 							</div>
 							<div className="flex items-center justify-between my-1">
 								<div>Type</div>

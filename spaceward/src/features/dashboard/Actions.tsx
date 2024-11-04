@@ -14,10 +14,7 @@ import { prettyActionStatus } from "@/utils/formatting";
 const actionPagination = createPagination({ limit: BigInt(3), reverse: true });
 
 export function Actions() {
-	const {
-		isReady,
-	} = useQueryHooks();
-
+	const { isReady } = useQueryHooks();
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 

@@ -9,9 +9,10 @@ import { useQueryHooks } from "./useClient";
 import { useSpaceId } from "./useSpaceId";
 import { shieldStringify } from "@/utils/shield";
 import { fromBech32 } from "@cosmjs/encoding";
+import { useSpaceById } from "./query/warden";
 
 export function useEthereumTx() {
-	const { isReady, useSpaceById, useTemplateById } = useQueryHooks();
+	const { isReady, useTemplateById } = useQueryHooks();
 	const spaceId = useSpaceId().spaceId;
 
 	const space = useSpaceById({
@@ -19,9 +20,9 @@ export function useEthereumTx() {
 			id: BigInt(spaceId ?? 0)
 		},
 		options: {
-			enabled: !!spaceId && isReady
+			enabled: isReady
 		}
-	}).data?.space;
+	}).data;
 
 	const approveSignTemplate = useTemplateById({
 		request: {

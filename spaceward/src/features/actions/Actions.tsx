@@ -32,7 +32,7 @@ export function Actions() {
 			pagination: PageRequest.fromPartial({
 				reverse: true,
 			}),
-			status: ActionStatus.ACTION_STATUS_UNSPECIFIED,
+			 status: ActionStatus.ACTION_STATUS_UNSPECIFIED,
 		},
 		options: {
 			enabled: isReady,

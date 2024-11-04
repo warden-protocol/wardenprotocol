@@ -683,7 +683,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    ```
    
    :::tip
-   Buenavista uses the `cosmos.crypto.secp256k1` module for cryptographic operations. If your key is created with the `ethermint.crypto.v1.ethsecp256` module, downgrade your node to `v0.4.1` and create a key with `cosmos.crypto.secp256k1`.
+   Buenavista uses the `cosmos.crypto.secp256k1` module for cryptographic operations. If your key is created with the `ethermint.crypto.v1.ethsecp256k1` module, downgrade your node to `v0.4.1` and create a key with `cosmos.crypto.secp256k1`.
    :::
 
 2. Get the code ID that identifies your WASM contract:

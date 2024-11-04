@@ -23,15 +23,21 @@ Chiado now supports EVM Solidity contracts alongside CosmWasm. This dual VM arch
 ### Price feed oracles
 Chiado introduces consensus-validated price feed [oracles](/learn/oracle-services) to Warden, ensuring reliable data essential to a vast range of DeFi applications.
 
-### Mainnet readines
+### Mainnet readiness
 Chiado is prepared for real-world asset integration. As we transition to mainnet, developers will have a smooth experience bringing their projects from test environments into live deployments.
 
 ## Key changes
 
 When migrating ot Chiado, please keep in mind the following key changes:
 
-### New hashing mechanism
-To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1.ethsecp256k1` module, while Buenavista uses `cosmos.crypto.secp256k1`. As a result, the existing private keys now produce new public addresses, so Buenavista users should reimport their seeds to get new addresses.
+### A new signature scheme
+To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1.ethsecp256k1` module, while Buenavista uses `cosmos.crypto.secp256k1`. As a result, the existing private keys now produce new public addresses.
+
+No action from Buenavista users is required: your funds were automatically transferred to new addresses. To get your address by key name, use the following [node command](/operate-a-node/node-commands):
+
+```bash
+wardend keys show my-key-name --address
+```
 
 ### New denomination
 On Chiado, we've changed the denomination from `uward` to `award`.

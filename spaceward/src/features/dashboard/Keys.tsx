@@ -11,6 +11,7 @@ import Intent from "./Intent";
 import { useAssetQueries } from "../assets/hooks";
 import { useModalState } from "../modals/state";
 import { useRules } from "../intents/hooks";
+import { useSpaceById } from "@/hooks/query/warden";
 
 interface CurrentSpaceProps {
 	spaceId: bigint;
@@ -18,7 +19,7 @@ interface CurrentSpaceProps {
 
 export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const { setData: setModal } = useModalState();
-	const { useSpaceById, isReady } = useQueryHooks();
+	const { isReady } = useQueryHooks();
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
 
 	const spaceQuery = useSpaceById({
@@ -39,7 +40,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 	);
 
 	const { activeRuleId } = useRules();
-	const space = spaceQuery.data?.space;
+	const space = spaceQuery.data;
 	const isEmpty = !space || !queryKeys.data?.keys.length;
 
 	return (

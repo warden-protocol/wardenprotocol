@@ -138,6 +138,7 @@ const cosmosBalancesQuery = (params: {
 					logo:
 						asset.logo_URIs?.svg ??
 						asset.logo_URIs?.png ??
+						// @ts-ignore
 						asset.logo_URIs?.jpeg,
 				};
 			});

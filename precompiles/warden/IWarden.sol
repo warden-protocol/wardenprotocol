@@ -30,7 +30,7 @@ struct KeyResponse {
 }
 
 struct AddressesResponse {
-    address addressValue;
+    string addressValue;
     int32 addressType;
 }
 

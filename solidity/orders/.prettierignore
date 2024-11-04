@@ -1,4 +1,5 @@
 # directories
+broadcast
 cache
 coverage
 node_modules
@@ -9,12 +10,8 @@ out
 *.log
 .DS_Store
 .pnp.*
+bun.lockb
 lcov.info
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
-
-# broadcasts
-!broadcast
-broadcast/*
-broadcast/*/31337/

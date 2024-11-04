@@ -33,7 +33,7 @@ When migrating ot Chiado, please keep in mind the following key changes:
 ### A new signature scheme
 To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1.ethsecp256k1` module, while Buenavista uses `cosmos.crypto.secp256k1`. As a result, the existing private keys now produce new public addresses.
 
-No action from Buenavista users is required: your funds were automatically transferred to new addresses. To get your address by key name, use the following [node command](/operate-a-node/node-commands):
+No action from Buenavista users is required: your funds were automatically transferred to new addresses. To get your new address by key name, use the following [node command](/operate-a-node/node-commands):
 
 ```bash
 wardend keys show my-key-name --address

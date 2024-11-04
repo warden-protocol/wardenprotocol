@@ -687,7 +687,7 @@
                 {
                   "internalType": "address",
                   "name": "addressValue",
-                  "type": "address"
+                  "type": "string"
                 },
                 {
                   "internalType": "int32",
@@ -837,7 +837,7 @@
                 {
                   "internalType": "address",
                   "name": "addressValue",
-                  "type": "address"
+                  "type": "string"
                 },
                 {
                   "internalType": "int32",
@@ -1427,7 +1427,7 @@
                 {
                   "internalType": "address",
                   "name": "addressValue",
-                  "type": "address"
+                  "type": "string"
                 },
                 {
                   "internalType": "int32",

@@ -30,28 +30,6 @@ export function SpaceSelector() {
 	const [{ chains, connectedChain }, setChain] = useSetChain();
 	const client = usePublicClient();
 
-	/** only for testing */
-	const { sendTransactionAsync } = useSendTransaction();
-
-	async function sendWard() {
-		const params = {
-			to: "0x463E3466f6C332959969a99811A7A95D080FE0B2" as `0x${string}`,
-			value: parseEther("10"),
-		};
-
-		// const gas = (await client?.estimateGas(params) ?? BigInt(0)) * BigInt(2);
-
-		handleContractWrite(
-			() => sendTransactionAsync({
-				...params,
-				chainId: env.evmChainId,
-				gas: BigInt(21000),
-			}),
-			client,
-		);
-	}
-	/** todo remove above */
-
 	async function sendMsgNewSpace() {
 		await assertChain(chains, connectedChain, setChain);
 
@@ -197,22 +175,6 @@ export function SpaceSelector() {
 							</div>
 							<span className="ml-4 text-muted-foreground text-sm">
 								Create New Space
-							</span>
-						</button>
-					</div>
-					{/* todo remove below */}
-					<div>
-						<button
-							className="flex flex-row items-center justify-center mt-4 pb-2 outline-none"
-							onClick={() => sendWard()}
-						>
-							<div className="ring-foreground rounded-full hover:ring-2 w-12 h-12 flex items-center justify-center">
-								<div className="w-10 h-10 bg-foreground rounded-full flex items-center justify-center">
-									<Plus className="h-6 w-6 text-background" />
-								</div>
-							</div>
-							<span className="ml-4 text-muted-foreground text-sm">
-								Send WARD
 							</span>
 						</button>
 					</div>

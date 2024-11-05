@@ -5,7 +5,7 @@ sidebar_position: 2
 # Join Chiado
 
 :::important
-Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
+Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here.
 :::
 
 ## Overview

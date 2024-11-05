@@ -78,7 +78,7 @@ type keysOutput struct {
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, error) {
-	if res == nil || res.Keys == nil {
+	if res == nil {
 		return nil, errors.New("received nil QueryKeyResponse")
 	}
 

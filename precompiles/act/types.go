@@ -1,6 +1,7 @@
 package act
 
 import (
+	"encoding/json"
 	"time"
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -140,6 +141,16 @@ func mapAction(action types.Action) (Action, error) {
 		return Action{}, err
 	}
 
+	approveExpressionJson, err := json.Marshal(action.ApproveExpression)
+	if err != nil {
+		return Action{}, nil
+	}
+
+	rejectExpressionJson, err := json.Marshal(action.RejectExpression)
+	if err != nil {
+		return Action{}, nil
+	}
+
 	return Action{
 		Id:                action.Id,
 		Status:            uint8(action.Status),
@@ -149,8 +160,8 @@ func mapAction(action types.Action) (Action, error) {
 		TimeoutHeight:     action.TimeoutHeight,
 		CreatedAt:         mapTimestamp(action.CreatedAt),
 		UpdatedAt:         mapTimestamp(action.UpdatedAt),
-		ApproveExpression: action.ApproveExpression.String(),
-		RejectExpression:  action.RejectExpression.String(),
+		ApproveExpression: string(approveExpressionJson),
+		RejectExpression:  string(rejectExpressionJson),
 		Mentions:          mentions,
 		Votes:             mappedVotes,
 	}, nil

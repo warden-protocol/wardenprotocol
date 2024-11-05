@@ -41,7 +41,7 @@ To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1
 
 As a result of switching to a new signature scheme, the existing private keys now produce new public addresses.
 
-To use your private key created on Buenavista, take these steps:
+To continue using your private key created on Buenavista, take these steps:
 
 1. Restore the key using the [node command](/operate-a-node/node-commands) below. Replace `my-key-name` with a key name of your choice.
    

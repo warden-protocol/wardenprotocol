@@ -13,13 +13,14 @@ import { NoSpaces } from "@/features/spaces";
 import cn from "clsx";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useQueryHooks } from "@/hooks/useClient";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
 import { useState, useEffect, useMemo } from "react";
 import { useConnectWallet } from "@web3-onboard/react";
 import { toBech32 } from "@cosmjs/encoding";
 import { toBytes } from "viem";
+import { useSpacesByOwner } from "@/hooks/query/warden";
+import { createPagination } from "@/hooks/query/util";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -28,6 +29,8 @@ storyblokInit({
 
 const { enableAutoPageviews } = Plausible();
 enableAutoPageviews();
+
+const pagination = createPagination({ limit: BigInt(100) });
 
 export function Root() {
 	const [{ wallet }] = useConnectWallet();
@@ -47,25 +50,24 @@ export function Root() {
 	}, []);
 
 	const story = useStoryblok("config", { version: "published" });
-	const { useSpacesByOwner, isReady } = useQueryHooks();
+	const { isReady } = useQueryHooks();
 
-	const { data: spacesQuery } = useSpacesByOwner({
+	const { data } = useSpacesByOwner({
 		request: {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			owner: cosmosAddress!,
-			pagination: PageRequest.fromPartial({
-				limit: BigInt(100),
-			}),
+			owner: address,
+			pagination
 		},
 		options: {
 			enabled: !!cosmosAddress && isReady,
 		},
 	});
 
-	const spaceCount = spacesQuery?.spaces?.length || 0;
+	const spaces = data?.[0] || [];
+
+	const spaceCount = spaces.length;
 
 	if (spaceCount > 0 && address && !spaceId) {
-		setSpaceId(spacesQuery?.spaces?.[0]?.id.toString() || "");
+		setSpaceId(spaces[0]?.id.toString() || "");
 	}
 
 	const params = new URLSearchParams(window.location.search);

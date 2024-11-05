@@ -56,13 +56,14 @@ import { hashQueryKey } from "./utils/queryKeyHash.ts";
 import { DashboardPage } from "./pages/Dashboard.tsx";
 import { Web3OnboardProvider, init, useWagmiConfig } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
-import wagmi from "@web3-onboard/wagmi";
+import wagmi, { createConfig } from "@web3-onboard/wagmi";
 import { WagmiProvider } from "wagmi";
+import { defineChain, http } from "viem";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			refetchInterval: 1000,
+			refetchInterval: 2000,
 			queryKeyHashFn: hashQueryKey,
 		},
 	},
@@ -120,17 +121,33 @@ initializeFaro({
 	],
 });
 
+const chain = defineChain({
+	id: env.evmChainId,
+	rpcUrls: {
+		default: { http: [env.evmURL] },
+	},
+	name: env.chainName,
+	nativeCurrency: {
+		decimals: 18,
+		name: "Warden",
+		symbol: "WARD",
+	},
+});
+
+const defaultConfig = createConfig({
+	chains: [chain],
+	transports: [http()],
+})
+
 function InjectWagmi({ children }: { children: React.ReactNode }) {
 	const wagmiConfig = useWagmiConfig();
 
-	return wagmiConfig ?
-		<WagmiProvider config={wagmiConfig}>
+	return (
+		<WagmiProvider config={wagmiConfig ?? defaultConfig}>
 			{children}
-		</WagmiProvider> :
-		<>
-			{children}
-		</>;
-};
+		</WagmiProvider>
+	);
+}
 
 function App() {
 	const signerOptions: SignerOptions = {};

@@ -169,9 +169,11 @@ export const useRules = () => {
 		"updateSpace",
 	);
 
+	const bech32Address = space ? toBech32("warden", toBytes(space.creator)) : undefined;
+
 	const rules = useTemplates({
 		request: {
-			creator: space?.creator,
+			creator: bech32Address,
 		},
 		options: {
 			enabled: Boolean(space?.creator) && isReady,

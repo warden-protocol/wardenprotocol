@@ -37,7 +37,7 @@ func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build f
 func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
-	// dave := exec.NewWardend(c.w, "dave")
+	dave := exec.NewWardend(c.w, "dave")
 
 	// client := TestGRPCClient(*c.w.GRPCClient(t))
 	evmClient := c.w.EthClient(t)
@@ -225,6 +225,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 	})
 
 	t.Run("work with space", func(t *testing.T) {
+		spaces, err := iWardenClient.SpacesByOwner(dave.CallOps(t), warden.TypesPageRequest{}, dave.EthAddress(t))
+		require.NoError(t, err)
+		require.Equal(t, []warden.Space{}, spaces.Spaces)
+
 		additionalOwners := []common.Address{}
 		newSpaceTx, err := iWardenClient.NewSpace(alice.TransactOps(t, ctx, evmClient), 0, 0, 0, 0, additionalOwners)
 		require.NoError(t, err)

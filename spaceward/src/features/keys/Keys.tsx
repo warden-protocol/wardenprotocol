@@ -243,7 +243,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: KeyModel }) => {
 						<div className="flex flex-col justify-between w-full h-full">
 							<div className="flex flex-col p-4">
 								<div className="flex items-center">
-									<p className="font-bold font-sans text-lg ">
+									<p className="font-bold font-sans text-lg max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
 										{name}
 									</p>
 									<InfoIcon

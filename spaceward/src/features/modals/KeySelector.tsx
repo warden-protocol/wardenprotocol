@@ -187,9 +187,9 @@ const KeySelector = ({
 									seed={item.key.publicKey}
 									{...themeDicebar}
 								/>
-								<div>
-									<div className="text-xs text-label-secondary overflow-hidden text-ellipsis whitespace-nowrap max-w-[184px] text-left">
-										{name}
+								<div className="flex flex-col">
+									<div className="text-xs text-label-secondary overflow-hidden text-ellipsis whitespace-nowrap text-left">
+										{`${name.slice(0, 20)}${name.length > 20 ? "..." : ""}`}
 									</div>
 
 									<div className="">

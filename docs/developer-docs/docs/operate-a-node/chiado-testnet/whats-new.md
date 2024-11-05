@@ -33,6 +33,10 @@ Chiado is prepared for real-world asset integration. As we transition to mainnet
 
 When migrating ot Chiado, please keep in mind the following key changes:
 
+### New denomination
+
+On Chiado, we've changed the denomination from `uward` to `award`.
+
 ### A new signature scheme
 
 To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1.ethsecp256k1` module, while Buenavista uses `cosmos.crypto.secp256k1`.
@@ -59,5 +63,6 @@ To continue using your private key created on Buenavista, take these steps:
    
 Your funds will be automatically transferred to the new address.
    
-### New denomination
-On Chiado, we've changed the denomination from `uward` to `award`.
+### EVM wallets support
+
+We encourage users and application builders to store and delegate their test WARD with EVM wallets.

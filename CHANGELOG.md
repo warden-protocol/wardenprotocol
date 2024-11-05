@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 * (precompiles) Fix analyzers address convert: change analyzers type from []address to []bytes in warden precompile.
 * (precompiles) Fix address type convert and return derived addresses as strings
+* (precompiles) Fix error with empty keys in space.
+* (precompiles) Return expressions in json encoding.
 
 ## [v0.5.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.3) - 2024-10-31
 

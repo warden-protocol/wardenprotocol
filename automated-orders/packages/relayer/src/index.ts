@@ -1,0 +1,9 @@
+import { logError, logInfo } from '@warden-automated-orders/utils';
+
+async function main() {
+  logInfo('main');
+}
+
+main()
+  .catch((e) => logError(e))
+  .finally(() => process.exit());

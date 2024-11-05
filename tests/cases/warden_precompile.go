@@ -244,6 +244,16 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, alice.EthAddress(t), newSpaceEvents[0].Creator)
 		require.Equal(t, uint64(1), newSpaceEvents[0].OwnersCount)
 
+		keys, err := iWardenClient.KeysBySpaceId(alice.CallOps(t), warden.TypesPageRequest{
+			Key:        []byte{},
+			Offset:     0,
+			Limit:      0,
+			CountTotal: false,
+			Reverse:    false,
+		}, 2, []int32{1, 2})
+		require.NoError(t, err)
+		require.Equal(t, keys.Keys, []warden.KeyResponse{})
+
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
 		require.NoError(t, err)
 

@@ -2,8 +2,6 @@ import { assets, chains } from "chain-registry";
 import { fromBech32, toBech32 } from "@cosmjs/encoding";
 import type { ExtendedHttpEndpoint, WalletManager } from "@cosmos-kit/core";
 import { cosmos } from "@wardenprotocol/wardenjs";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import {
@@ -16,6 +14,8 @@ import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
 import { getCosmosChain } from "./util";
 import { getContract, isAddress } from "viem";
+import { KeyModel } from "@/hooks/query/types";
+import { AddressType } from "@/hooks/query/warden";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -313,11 +313,11 @@ const DEFAULT_BECH32_PREFIX = getCosmosChain("osmosis")!.bech32_prefix;
 
 export const balancesQueryCosmos = (
 	enabled: boolean,
-	keys?: QueryKeyResponse[],
+	keys?: KeyModel[],
 	clients?: [CosmosQueryClient, string, string][],
 	prices?: PriceMapSlinky,
 ) => {
-	const byAddress: Record<string, QueryKeyResponse> = {};
+	const byAddress: Record<string, KeyModel> = {};
 	// debug:
 	// cosmos1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep4tgu9q - cosmostation
 	// const debugAddress = "osmo1clpqr4nrk4khgkxj78fcwwh6dl3uw4epasmvnj"; // cosmostation
@@ -325,10 +325,10 @@ export const balancesQueryCosmos = (
 	const addresses =
 		keys?.flatMap((key) =>
 			key.addresses
-				.filter(({ type }) => type === AddressType.ADDRESS_TYPE_OSMOSIS)
-				.map(({ address }) => {
-					byAddress[address] = key;
-					return address;
+				.filter(({ addressType }) => addressType === AddressType.Osmosis)
+				.map(({ addressValue }) => {
+					byAddress[addressValue] = key;
+					return addressValue;
 				}),
 		) ?? [];
 
@@ -396,10 +396,10 @@ export const balancesQueryCosmos = (
 
 export const balancesQueryEth = (
 	enabled: boolean,
-	keys?: QueryKeyResponse[],
+	keys?: KeyModel[],
 	prices?: PriceMapSlinky,
 ) => {
-	const byAddress: Record<string, QueryKeyResponse> = {};
+	const byAddress: Record<string, KeyModel> = {};
 	// debug
 	// const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
 
@@ -407,11 +407,11 @@ export const balancesQueryEth = (
 		keys?.flatMap((key) =>
 			key.addresses
 				.filter(
-					({ type }) => type === AddressType.ADDRESS_TYPE_ETHEREUM,
+					({ addressType }) => addressType === AddressType.Ethereum,
 				)
-				.map(({ address }) => {
-					byAddress[address] = key;
-					return address;
+				.map(({ addressValue }) => {
+					byAddress[addressValue] = key;
+					return addressValue;
 				})
 				.filter(is0x),
 		) ?? [];

@@ -1,17 +1,5 @@
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
-
-import {
-	Key as KeyModel,
-	AddressType,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-
-import type {
-	AddressResponse,
-	QueryKeyResponse,
-	QueryKeysResponse,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
-
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { Accordion } from "@/components/ui/accordion";
 import {
@@ -37,9 +25,11 @@ import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import "@/assets/animate.css";
 import { useAssetQueries } from "../assets/hooks";
 import { AddToMetaMaskButton } from "@/features/metamask/AddToMetaMaskButton";
-import { useKeychainById } from "@/hooks/query/warden";
+import { AddressType, useKeychainById, useKeysBySpaceId } from "@/hooks/query/warden";
+import { KeyModel } from "@/hooks/query/types";
+import { toBytes } from "viem";
 
-export const useKeyData = ({ key }: Pick<QueryKeyResponse, "key">) => {
+export const useKeyData = ({ key }: Pick<KeyModel, "key">) => {
 	const { isReady } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
@@ -126,8 +116,8 @@ function Key({
 	keyData: key,
 	addresses,
 }: {
-	keyData: KeyModel;
-	addresses: AddressResponse[];
+	keyData: KeyModel["key"];
+	addresses: KeyModel["addresses"];
 }) {
 	const { avatar, name, targetDecimals, total, formatter, keychain } =
 		useKeyData({
@@ -150,7 +140,7 @@ function Key({
 					<div className="z-[-1] absolute left-0 top-0 w-full h-full bg-overlay-secondary" />
 
 					<div className="text-[10px] text-right text-white absolute right-1 bottom-1">
-						...{base64FromBytes(key.publicKey).slice(-4)}
+						...{base64FromBytes(toBytes(key.publicKey)).slice(-4)}
 					</div>
 				</div>
 
@@ -161,8 +151,9 @@ function Key({
 
 			<div className="flex justify-center flex-col">
 				{addresses.map((addr) => (
-					<p className="text-sm" key={addr.address}>
-						{addr.address.slice(0, 8)}..{addr.address.slice(-8)}
+					<p className="text-sm" key={addr.addressValue}>
+						{addr.addressValue.slice(0, 8)}..
+						{addr.addressValue.slice(-8)}
 					</p>
 				))}
 			</div>
@@ -175,7 +166,7 @@ function Key({
 
 			<div className="flex items-center">
 				<div className="max-w-[176px] overflow-hidden text-ellipsis whitespace-nowrap">
-					{prettyKeyType(key.type)}
+					{prettyKeyType(key.keyType)}
 				</div>
 			</div>
 
@@ -203,7 +194,7 @@ function Key({
 						setModal({
 							type: "send",
 							params: {
-								address: addresses[0].address,
+								address: addresses[0].addressValue,
 								keyResponse: { key, addresses },
 							},
 						});
@@ -216,7 +207,7 @@ function Key({
 	);
 }
 
-const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
+const KeyCard = ({ data: { addresses, key } }: { data: KeyModel }) => {
 	const { setData: setModal } = useModalState();
 	const [edit, setEdit] = useState(false);
 	const [flipped, setFlipped] = useState(false);
@@ -264,7 +255,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 							<div className="w-full flex justify-end mb-2 pr-1">
 								<AddToMetaMaskButton
 									keyId={key.id}
-									address={addresses[0].address}
+									address={addresses[0].addressValue}
 								/>
 							</div>
 						</div>
@@ -296,7 +287,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 										setModal({
 											type: "send",
 											params: {
-												address: addresses[0].address,
+												address: addresses[0].addressValue,
 												keyResponse: { key, addresses },
 											},
 										});
@@ -376,7 +367,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 							<div className="flex items-center justify-between my-1">
 								<div>Type</div>
 								<div className="text-xs px-2 flex items-center justify-center w-fit h-6 bg-fill-quaternary rounded-2xl	">
-									{prettyKeyType(key.type)}
+									{prettyKeyType(key.keyType)}
 								</div>
 							</div>
 						</div>
@@ -387,7 +378,7 @@ const KeyCard = ({ data: { addresses, key } }: { data: QueryKeyResponse }) => {
 	);
 };
 
-const ListView = ({ data }: { data?: QueryKeysResponse }) => {
+const ListView = ({ data }: { data?: KeyModel[] }) => {
 	return (
 		<div className="bg-card rounded-xl py-6 px-8">
 			<div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.85fr_0.6fr_0.5fr] gap-2 border-b-[1px] border-b-border-quaternary border-b-solid pb-[10px]">
@@ -398,7 +389,7 @@ const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 				<div className="text-sm	text-label-secondary">Balance</div>
 			</div>
 			<Accordion type="multiple" className="space-y-3">
-				{data?.keys.map((key) => (
+				{data?.map((key) => (
 					<Key
 						key={key.key.id.toString()}
 						keyData={key.key}
@@ -410,12 +401,12 @@ const ListView = ({ data }: { data?: QueryKeysResponse }) => {
 	);
 };
 
-const CardView = ({ data }: { data?: QueryKeysResponse }) => {
+const CardView = ({ data }: { data?: KeyModel[] }) => {
 	const { setData: setModal } = useModalState();
 
 	return (
 		<div className="flex flex-row flex-wrap -mx-3 -mt-4">
-			{data?.keys.map((k, i) => (
+			{data?.map((k, i) => (
 				<KeyCard data={k} key={k.key.id.toString()} />
 			))}
 
@@ -443,30 +434,30 @@ export function Keys({
 	spaceId: string;
 	view: "list" | "card";
 }) {
-	const { useKeysBySpaceId, isReady } = useQueryHooks();
+	const { isReady } = useQueryHooks();
 
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: BigInt(spaceId),
-			deriveAddresses: [
-				AddressType.ADDRESS_TYPE_ETHEREUM,
-				AddressType.ADDRESS_TYPE_OSMOSIS,
-			],
+			deriveAddresses: [AddressType.Ethereum, AddressType.Osmosis],
 		},
 		options: {
 			enabled: isReady,
 		},
 	});
 
+	console.log(query.data);
+
 	if (query.status === "loading") {
 		return <div>Loading...</div>;
 	}
 
 	const Component = view === "list" ? ListView : CardView;
+	const keys = query.data?.[0] as KeyModel[] | undefined;
 
 	return (
 		<>
-			{query.data?.keys?.length === 0 ? (
+			{keys?.length === 0 ? (
 				<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
 					<KeyIcon className="h-10 w-10" />
 					<span className="pt-4">No keys found in this space</span>
@@ -475,7 +466,7 @@ export function Keys({
 					</span>
 				</div>
 			) : (
-				<Component data={query.data} />
+				<Component data={keys} />
 			)}
 		</>
 	);

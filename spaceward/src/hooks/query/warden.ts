@@ -56,30 +56,45 @@ export const useKeyById = ({
 	});
 };
 
+interface GetKeysBySpaceIdRequest {
+	pagination?: Pagination;
+	spaceId: bigint;
+	deriveAddresses?: AddressType[];
+}
+
+const isGetKeysBySpaceIdRequestEnabled = (
+	request: Partial<GetKeysBySpaceIdRequest>,
+): request is GetKeysBySpaceIdRequest => Boolean(request.spaceId);
+
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+const writable = <T>(obj: T): Writeable<T> => obj;
+
+
+export const getKeysBySpaceIdArgs = (
+	request: GetKeysBySpaceIdRequest,
+) => {
+	const pagination = request?.pagination ?? DEFAULT_PAGINATION;
+	const deriveAddresses =
+		request?.deriveAddresses ?? (EMPTY_ARR as AddressType[]);
+
+	return writable([pagination, request.spaceId, deriveAddresses] as const);
+};
+
 export const useKeysBySpaceId = ({
 	options,
 	request,
 }: {
 	options?: QueryOptions;
-	request: {
-		pagination?: Pagination;
-		spaceId?: bigint;
-		deriveAddresses?: AddressType[];
-	};
+	request: Partial<GetKeysBySpaceIdRequest>;
 }) => {
-	const enabled =
-		Boolean(options?.enabled ?? true) && Boolean(request.spaceId);
-	const pagination = request?.pagination ?? DEFAULT_PAGINATION;
+	const enabled = Boolean(options?.enabled ?? true);
 
 	return useReadContract({
 		address: enabled ? PRECOMPILE_WARDEN_ADDRESS : undefined,
-		args: enabled
-			? [
-					pagination,
-					request.spaceId!,
-					request.deriveAddresses ?? EMPTY_ARR,
-				]
-			: undefined,
+		args:
+			enabled && isGetKeysBySpaceIdRequestEnabled(request)
+				? getKeysBySpaceIdArgs(request)
+				: undefined,
 		abi: wardenPrecompileAbi,
 		functionName: "keysBySpaceId",
 		chainId,

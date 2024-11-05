@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { ProposalTypes } from "@walletconnect/types";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { Button } from "@/components/ui/button";
 import { useQueryHooks } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
@@ -10,8 +8,9 @@ import clsx from "clsx";
 import { Input } from "@/components/ui/input";
 import { useModalState } from "./state";
 import AddressAvatar from "@/components/AddressAvatar";
-import { useSpacesByOwner } from "@/hooks/query/warden";
+import { AddressType, useKeysBySpaceId, useSpacesByOwner } from "@/hooks/query/warden";
 import { useConnectWallet } from "@web3-onboard/react";
+import { KeyModel } from "@/hooks/query/types";
 
 interface WCBindSpaceProps {
 	enabled: boolean;
@@ -19,11 +18,17 @@ interface WCBindSpaceProps {
 	onApprove: (
 		proposal: ProposalTypes.Struct,
 		spaceId: string,
-		addresses?: AddressResponse[],
+		addresses?: KeyModel["addresses"],
 	) => void;
 	onReject: (proposal: ProposalTypes.Struct) => void;
 	proposal: ProposalTypes.Struct;
 }
+
+const DERIVE_ADDRESSES = [
+	AddressType.Ethereum,
+	AddressType.Osmosis,
+];
+
 
 export default function WCBindSpace({
 	enabled: _enabled,
@@ -32,7 +37,7 @@ export default function WCBindSpace({
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
-	const { isReady, useKeysBySpaceId } = useQueryHooks();
+	const { isReady } = useQueryHooks();
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 	const { spaceId } = useSpaceId();
@@ -54,21 +59,20 @@ export default function WCBindSpace({
 	const keysQuery = useKeysBySpaceId({
 		request: {
 			spaceId: BigInt(pairedSpace),
-			deriveAddresses: [
-				AddressType.ADDRESS_TYPE_ETHEREUM,
-				AddressType.ADDRESS_TYPE_OSMOSIS,
-			],
+			deriveAddresses: DERIVE_ADDRESSES,
 		},
 		options: {
 			enabled: !!pairedSpace && _enabled,
 		},
 	});
 
+	const keys = keysQuery.data?.[0];
+
 	const enabled = Boolean(
-		keysQuery.data?.keys.length && spacesQuery.data?.[0].length,
+		keys?.length && spacesQuery.data?.[0].length,
 	);
 
-	const addresses = keysQuery.data?.keys.flatMap((keys) => keys.addresses);
+	const addresses = keys?.flatMap((k) => k.addresses);
 
 	return (
 		<div className="flex flex-col gap-12 text-center">
@@ -167,7 +171,7 @@ export default function WCBindSpace({
 			</div>
 
 			<div className="flex flex-col gap-2">
-				{!keysQuery.data?.keys.length ? (
+				{!keys?.length ? (
 					<Button
 						disabled={loading || !pairedSpace}
 						onClick={setModal.bind(null, {

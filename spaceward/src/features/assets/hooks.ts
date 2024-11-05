@@ -1,5 +1,4 @@
 import { walletContext } from "@cosmos-kit/react-lite";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useContext, useMemo } from "react";
 import { useQueryHooks } from "@/hooks/useClient";
@@ -10,15 +9,14 @@ import {
 	queryCosmosClients,
 } from "./queries";
 import type { PriceMapSlinky } from "./types";
+import { AddressType, useKeysBySpaceId } from "@/hooks/query/warden";
+import { KeyModel } from "@/hooks/query/types";
 
-const DERIVE_ADDRESSES = [
-	AddressType.ADDRESS_TYPE_ETHEREUM,
-	AddressType.ADDRESS_TYPE_OSMOSIS,
-];
+const DERIVE_ADDRESSES = [AddressType.Ethereum, AddressType.Osmosis];
 
 export const useAssetQueries = (spaceId?: string | null) => {
 	const { walletManager } = useContext(walletContext);
-	const { isReady, useKeysBySpaceId, slinky } = useQueryHooks();
+	const { isReady, slinky } = useQueryHooks();
 	const clients = useQuery(queryCosmosClients(walletManager)).data;
 
 	const pairs = slinky.oracle.v1.useGetAllCurrencyPairs({
@@ -92,18 +90,16 @@ export const useAssetQueries = (spaceId?: string | null) => {
 		},
 	});
 
+	const keys = queryKeys.data?.[0] as KeyModel[] | undefined;
+
 	const queryBalancesEth = useQueries(
-		balancesQueryEth(
-			isReady && Boolean(priceMap),
-			queryKeys.data?.keys,
-			priceMap,
-		),
+		balancesQueryEth(isReady && Boolean(priceMap), keys, priceMap),
 	);
 
 	const queryBalancesCosmos = useQueries(
 		balancesQueryCosmos(
 			isReady && Boolean(priceMap),
-			queryKeys.data?.keys,
+			keys,
 			clients,
 			priceMap,
 		),

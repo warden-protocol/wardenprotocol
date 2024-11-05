@@ -1,7 +1,5 @@
 import clsx from "clsx";
 import { useState, useMemo, useRef } from "react";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { shapes } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
@@ -14,6 +12,8 @@ import { useKeySettingsState } from "../keys/state";
 import { KEY_THEMES } from "../keys/assets";
 import { isOsmosis } from "@/features/assets/util";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { KeyModel } from "@/hooks/query/types";
+import { AddressType } from "@/hooks/query/warden";
 
 const KeySelector = ({
 	className,
@@ -23,15 +23,16 @@ const KeySelector = ({
 	onKeyChange
 }: {
 	className?: string;
-	currentKey?: QueryKeyResponse;
+	currentKey?: KeyModel;
 	dropdownClassName?: string;
 	token?: string;
-	onKeyChange?: (key: QueryKeyResponse) => void;
+	onKeyChange?: (key: KeyModel) => void;
 }) => {
 	const { spaceId } = useSpaceId();
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId?.toString());
+	const keys = queryKeys.data?.[0];
 	const refIsReady = useRef(false);
-	const currentKey = _currentKey ?? queryKeys.data?.keys[0];
+	const currentKey = _currentKey ?? keys?.[0];
 
 	if (!refIsReady.current) {
 		if (currentKey && !_currentKey) {
@@ -61,10 +62,10 @@ const KeySelector = ({
 		.filter((result) => token && result.keyId && result.token === token);
 
 	const addressType = isOsmosis(balances[0]?.type)
-		? AddressType.ADDRESS_TYPE_OSMOSIS
-		: AddressType.ADDRESS_TYPE_ETHEREUM;
+		? AddressType.Osmosis
+		: AddressType.Ethereum;
 
-	const address = addresses?.find((a) => a.type === addressType);
+	const address = addresses?.find((a) => a.addressType === addressType);
 
 	const avatar = useMemo(() => {
 		const themeIndex = settings?.themeIndex ?? 0;
@@ -102,7 +103,7 @@ const KeySelector = ({
 					<div className="z-[-1] absolute left-0 top-0 w-full h-full bg-overlay-secondary" />
 
 					<div className="text-[10px] text-right text-white absolute right-1 bottom-1">
-						...{address?.address.toString().slice(-4)}
+						...{address?.addressValue.toString().slice(-4)}
 					</div>
 				</div>
 
@@ -112,8 +113,8 @@ const KeySelector = ({
 					</div>
 
 					<div className="">
-						{address?.address.toString().slice(0, 8)}...
-						{address?.address.toString().slice(-8)}
+						{address?.addressValue.toString().slice(0, 8)}...
+						{address?.addressValue.toString().slice(-8)}
 					</div>
 				</div>
 
@@ -127,7 +128,7 @@ const KeySelector = ({
 
 			{keyDropdown && (
 				<div className={clsx(dropdownClassName, "absolute no-scrollbar overflow-scroll max-h-[200px] z-30 left-0 -bottom-2 translate-y-full w-full rounded-lg bg-card border-[1px] border-solid border-border-quaternary py-2")}>
-					{queryKeys.data?.keys.map((item) => {
+					{keys?.map((item) => {
 						const keySettings =
 							ks?.settings[item.key.id.toString()];
 
@@ -149,7 +150,7 @@ const KeySelector = ({
 						};
 
 						const address = item.addresses.find(
-							({ type }) => type === addressType,
+							(a) => a.addressType === addressType,
 						);
 
 						const total = balances.reduce(
@@ -192,9 +193,9 @@ const KeySelector = ({
 									</div>
 
 									<div className="">
-										{address?.address.slice(0, 8)}
+										{address?.addressValue.toString().slice(0, 8)}
 										...
-										{address?.address.toString().slice(-8)}
+										{address?.addressValue.toString().slice(-8)}
 									</div>
 								</div>
 

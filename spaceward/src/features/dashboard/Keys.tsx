@@ -21,6 +21,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const { setData: setModal } = useModalState();
 	const { isReady } = useQueryHooks();
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
+	const keys = queryKeys.data?.[0];
 
 	const spaceQuery = useSpaceById({
 		request: {
@@ -33,15 +34,15 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 
 	const addresses = useMemo(
 		() =>
-			queryKeys.data?.keys.flatMap(({ addresses, key }) =>
+			keys?.flatMap(({ addresses, key }) =>
 				addresses.map((x) => ({ ...x, keyId: key.id })),
 			),
-		[queryKeys.data?.keys],
+		[keys],
 	);
 
 	const { activeRuleId } = useRules();
 	const space = spaceQuery.data;
-	const isEmpty = !space || !queryKeys.data?.keys.length;
+	const isEmpty = !space || !keys?.length;
 
 	return (
 		<div className="grid gap-6 grid-cols-1 lg:grid-cols-[2fr_1fr]">
@@ -62,7 +63,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					<NewKeyButton className="mt-4 text-background bg-foreground rounded-lg font-semibold hover:bg-fill-accent-primary duration-200" />
 				</div>
 			) : (
-				<DashboardGraph addresses={addresses} />
+				<DashboardGraph />
 			)}
 
 			<div className="bg-card py-6 px-8 border-[1px] border-border-edge rounded-2xl">
@@ -75,7 +76,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						<LoaderCircle className="animate-spin mb-1" />
 					) : (
 						<div className="flex flex-wrap gap-2 justify-center w-full mb-4 max-w-96">
-							{queryKeys.data?.keys.map((item) => (
+							{keys?.map((item) => (
 								<Key
 									keyValue={item}
 									key={item.key.id}

@@ -9,7 +9,6 @@ import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { fromBytes, isAddress } from "viem";
 import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
 import { shieldStringify } from "@/utils/shield";
-import { fromBech32 } from "@cosmjs/encoding";
 import { useSpaceById } from "@/hooks/query/warden";
 
 export function OwnersPage() {
@@ -100,9 +99,7 @@ export function OwnersPage() {
 			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
 				<div className="flex flex-row flex-wrap -mx-3 -mt-4">
-					{space.owners.map((ownerCosmos) => {
-						const owner = fromBytes(fromBech32(ownerCosmos).data, "hex");
-
+					{space.owners.map((owner) => {
 						return (
 							<div
 								className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4"

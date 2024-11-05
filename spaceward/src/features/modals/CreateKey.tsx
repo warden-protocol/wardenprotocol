@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { warden } from "@wardenprotocol/wardenjs";
-import { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
 import { Button } from "@/components/ui/button";
 import { useQueryHooks } from "@/hooks/useClient";
 import { pasteFromClipboard } from "@/utils/browser";

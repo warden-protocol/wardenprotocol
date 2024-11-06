@@ -11,28 +11,17 @@ import TabItem from '@theme/TabItem';
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm) and written in **Solidity**.
 
-This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
+This guide explains how to create and deploy a simple "Counter" Solidity smart contract using Foundry's toolset on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
 
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
 
-- Install Node.js and npm by running the following command:
+- Install `foundry` by running the following command:
 
   ```bash
-  brew install node
-  ```
-
-- Install Truffle globally:
-
-  ```bash
-  npm install -g truffle
-  ```
-
-- Install HDWalletProvider:
-
-  ```bash
-  npm install @truffle/hdwallet-provider
+  curl -L https://foundry.paradigm.xyz | bash \ 
+  foundryup
   ```
 
 ## 1. Prepare the chain
@@ -152,10 +141,10 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
     cd warden-smart-contract
     ```
 
-2. Initialize a new Truffle project:
+2. Initialize a new Foundry project:
 
     ```bash
-    truffle init
+    forge init
     ```
 
 ## 3. Create a smart contract

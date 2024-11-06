@@ -203,11 +203,16 @@ func mapTemplate(value types.Template) (Template, error) {
 		return Template{}, err
 	}
 
+	expressionJson, err := json.Marshal(value.Expression)
+	if err != nil {
+		return Template{}, nil
+	}
+
 	return Template{
 		Id:         value.Id,
 		Creator:    creator,
 		Name:       value.Name,
-		Expression: value.Expression.String(),
+		Expression: string(expressionJson),
 	}, nil
 }
 

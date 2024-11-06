@@ -12,7 +12,8 @@ contract BasicOrder {
     bool public executed;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
-    error ConditionNotMetYet();
+    error ConditionNotMet();
+    event Executed();
 
     constructor(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees) {
         for(uint256 i = 0; i < maxKeychainFees.length; i++) {
@@ -58,7 +59,7 @@ contract BasicOrder {
         uint256 value
     ) external returns (bool) {
         if (!_canExecute()) {
-            revert ConditionNotMetYet();
+            revert ConditionNotMet();
         }
 
         IWarden warden = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
@@ -94,6 +95,10 @@ contract BasicOrder {
             orderData.signRequestData.expectedApproveExpression,
             orderData.signRequestData.expectedRejectExpression
         );
+
+        if (executed) {
+            emit Executed();
+        }
 
         return executed;
     }

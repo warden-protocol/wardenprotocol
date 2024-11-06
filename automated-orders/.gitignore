@@ -27,4 +27,5 @@ lib-cov
 *.env
 
 # exceptions
+!.vscode/launch.json
 !.vscode/settings.json

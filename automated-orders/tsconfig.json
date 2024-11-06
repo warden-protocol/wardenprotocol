@@ -18,6 +18,9 @@
   ],
   "references": [
     {
+      "path": "./packages/blockchain-library"
+    },
+    {
       "path": "./packages/utils-library"
     },
     {

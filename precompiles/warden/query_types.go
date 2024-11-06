@@ -78,7 +78,7 @@ type keysOutput struct {
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, error) {
-	if res == nil || res.Keys == nil {
+	if res == nil {
 		return nil, errors.New("received nil QueryKeyResponse")
 	}
 
@@ -512,7 +512,7 @@ type spacesOutput struct {
 }
 
 func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) (*spacesOutput, error) {
-	if res == nil || res.Spaces == nil {
+	if res == nil {
 		return nil, errors.New("received nil QuerySpacesResponse")
 	}
 	o.Spaces = make([]Space, len(res.Spaces))

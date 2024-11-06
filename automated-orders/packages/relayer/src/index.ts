@@ -15,7 +15,7 @@ async function main() {
 
   const newSignatureRequestProcess = new NewSignatureProcessor(
     ethereum,
-    warden.pollPendingSignatureRequests.bind(warden),
+    warden.pollSignatureRequests.bind(warden),
   ).start();
 
   await Promise.all([newSignatureRequestProcess]);

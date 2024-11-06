@@ -15,7 +15,7 @@ export class WardenClient {
     return await createRPCQueryClient({ rpcEndpoint: this.configuration.rpcURL });
   }
 
-  async *pollPendingSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
+  async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
     while (true) {
       await delay(this.configuration.pollingIntervalMsec);
 

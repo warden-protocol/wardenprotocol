@@ -16,8 +16,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
-      // TODO: implementation
-      await this.evm.broadcastTx();
+      await this.evm.broadcastTx(data.signedData);
 
       return true;
     } catch (error) {

@@ -4,48 +4,74 @@ import { SignRequest, SignRequestStatus } from '@wardenprotocol/wardenjs/codegen
 
 import { IWardenConfiguration } from '../types/warden/configuration.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
+import { QuerySignRequestsRequest } from '@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query';
+import { PageRequest } from '@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination';
 
 const { delay } = utils;
 const { createRPCQueryClient } = warden.ClientFactory;
 
 export class WardenClient {
-  constructor(private configuration: IWardenConfiguration) {}
+  constructor(private configuration: IWardenConfiguration) { }
+
+  private readonly entriesPerRequest = 100;
+  private readonly seenCache: utils.LruCache<bigint> = new utils.LruCache(this.entriesPerRequest);
 
   async query() {
     return await createRPCQueryClient({ rpcEndpoint: this.configuration.rpcURL });
   }
 
   async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
+    let nextKey: Uint8Array | undefined = new Uint8Array();
+
     while (true) {
       await delay(this.configuration.pollingIntervalMsec);
 
-      // TODO: query paged fulfilled sign requests
-      // const query = (await this.query()).warden.warden.v1beta3;
-      const signRequests: SignRequest[] = [
-        {
-          id: 1n,
-          creator: 'string',
-          keyId: 1n,
-          dataForSigning: new Uint8Array(),
-          status: SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED,
-          signedData: new Uint8Array(),
-          rejectReason: 'string',
-          encryptionKey: new Uint8Array(),
-          deductedKeychainFees: [],
-        },
-      ];
+      const { signRequests, pagination } = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest));
 
-      for (let i = 0; i < signRequests.length; i++) {
-        const request = signRequests[i];
+      yield* this.yieldNewRequests(signRequests);
 
-        if (!request.signedData) {
-          continue;
-        }
-
-        yield {
-          signedData: request.signedData!,
-        };
+      if (notEmpty(pagination?.nextKey)) {
+        nextKey = pagination!.nextKey;
       }
     }
   }
+
+  private *yieldNewRequests(signRequests: SignRequest[]) {
+    for (const request of signRequests) {
+      if (!request.signedData) {
+        continue;
+      }
+
+      if (this.seenCache.has(request.id.toString())) {
+        utils.logInfo(`Skipping already seen request ${request.id}`);
+        continue;
+      }
+
+      yield {
+        signedData: request.signedData!,
+      };
+
+      this.seenCache.put(request.id.toString(), request.id);
+    }
+  }
+
+  private async querySignRequests(nextKey: Uint8Array | undefined, limit: bigint) {
+    const page = nextKey
+      ? { key: nextKey, limit: limit }
+      : { offset: 0n, limit: limit };
+
+    const query = (await this.query()).warden.warden.v1beta3.signRequests(QuerySignRequestsRequest.fromPartial({
+      pagination: PageRequest.fromPartial(page),
+      status: SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED,
+      keychainId: 0n,
+    }));
+
+    const queryResponse = await query;
+
+    return { signRequests: queryResponse.signRequests, pagination: queryResponse.pagination};
+  }
+}
+
+function notEmpty(arr: Uint8Array | undefined) : boolean {
+  return arr && arr.length > 0 || false;
 }

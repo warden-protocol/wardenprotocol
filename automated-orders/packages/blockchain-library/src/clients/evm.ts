@@ -1,8 +1,8 @@
 import { delay, logError } from '@warden-automated-orders/utils';
 import { AbiEventFragment, AbiFunctionFragment, Bytes, EventLog, FeeData, Transaction, Web3 } from 'web3';
-
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
+import { serialize } from '@warden-automated-orders/utils';
 
 export class EvmClient {
   web3: Web3;
@@ -15,8 +15,8 @@ export class EvmClient {
     this.eventsFromBlocks = new Map<string, bigint>();
   }
 
-  public async broadcastTx(): Promise<void> {
-    // TODO: implementation
+  public async broadcastTx(signedTransaction: Uint8Array): Promise<void> {
+    await this.web3.eth.sendSignedTransaction(signedTransaction);
   }
 
   public async *pollEvents<T extends EventLog>(

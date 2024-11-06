@@ -1,5 +1,4 @@
 import { LoaderCircle } from "lucide-react";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { Icons } from "@/components/ui/icons-assets";
@@ -10,7 +9,6 @@ import DashboardGraph from "./DashboardGraph";
 import Intent from "./Intent";
 import { useAssetQueries } from "../assets/hooks";
 import { useModalState } from "../modals/state";
-import { useRules } from "../intents/hooks";
 import { useSpaceById } from "@/hooks/query/warden";
 
 interface CurrentSpaceProps {
@@ -32,16 +30,8 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 		},
 	});
 
-	const addresses = useMemo(
-		() =>
-			keys?.flatMap(({ addresses, key }) =>
-				addresses.map((x) => ({ ...x, keyId: key.id })),
-			),
-		[keys],
-	);
-
-	const { activeRuleId } = useRules();
 	const space = spaceQuery.data;
+	const activeRuleId = space?.approveSignTemplateId;
 	const isEmpty = !space || !keys?.length;
 
 	return (
@@ -146,7 +136,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					</div>
 
 					{activeRuleId ? (
-						<Intent activeIntentId={activeRuleId} />
+						<Intent activeIntentId={Number(activeRuleId)} />
 					) : (
 						<div className="text-label-accent flex items-center">
 							Add

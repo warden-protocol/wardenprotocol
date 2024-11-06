@@ -1,7 +1,6 @@
 import type { useActionsByAddress } from "@/hooks/query/act";
 import type { useKeychains, useKeysBySpaceId } from "./warden";
 
-
 export interface QueryOptions {
 	enabled?: boolean;
 }

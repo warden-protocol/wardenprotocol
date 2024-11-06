@@ -4,6 +4,7 @@ import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
 import { env } from "@/env";
 import { DEFAULT_PAGINATION } from "./constants";
 import type { Pagination, QueryOptions } from "./types";
+import { selectWithExpression } from "./util";
 
 // TODO lib should not be dependent on env
 const chainId = env.evmChainId;
@@ -71,17 +72,29 @@ export const useActionsByAddress = ({
 	const pagination = request.pagination ?? DEFAULT_PAGINATION;
 
 	return useReadContract({
-		address: enabled ? PRECOMPILE_ACT_ADDRESS : undefined,
-		args: enabled
-			? [
+		address: PRECOMPILE_ACT_ADDRESS,
+		args: !enabled
+			? undefined
+			: [
 					pagination,
 					request.address!,
 					request.status ?? ActionStatus.Unspecified,
-				]
-			: undefined,
+				],
 		abi: actPrecompileAbi,
 		functionName: "actionsByAddress",
 		chainId,
+		query: {
+			enabled,
+			select: ({ pagination, actions }) => ({
+				pagination,
+				actions: actions.map((x) =>
+					selectWithExpression(
+						"rejectExpression",
+						selectWithExpression("approveExpression", x),
+					),
+				),
+			}),
+		},
 	});
 };
 
@@ -111,14 +124,14 @@ export const useTemplateById = ({
 	request,
 }: {
 	options?: QueryOptions;
-	request: { templateId?: bigint };
+	request: { id?: bigint };
 }) => {
 	const enabled =
-		Boolean(options?.enabled ?? true) && Boolean(request.templateId);
+		Boolean(options?.enabled ?? true) && Boolean(request.id);
 
 	return useReadContract({
 		address: enabled ? PRECOMPILE_ACT_ADDRESS : undefined,
-		args: enabled ? [request.templateId!] : undefined,
+		args: enabled ? [request.id!] : undefined,
 		abi: actPrecompileAbi,
 		functionName: "templateById",
 		chainId,

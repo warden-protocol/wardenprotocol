@@ -5,6 +5,7 @@ import { getDelegationsData, getValidatorData } from "@/features/staking/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useQueryHooks } from "@/hooks/useClient";
 import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
+import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
@@ -40,7 +41,10 @@ export default function GovernanceDashboard() {
 	const comingSoon = true;
 
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+		<div className={clsx("grid grid-cols-1 lg:grid-cols-2 gap-6", {
+			// todo remove this once governance is ready
+			"h-0 overflow-hidden -mt-8": comingSoon
+		})}>
 			<Link
 				to={comingSoon ? "#" : "/governance"}
 				className="cursor-pointer group bg-fill-accent-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"

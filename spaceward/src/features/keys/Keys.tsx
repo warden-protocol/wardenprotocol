@@ -446,8 +446,6 @@ export function Keys({
 		},
 	});
 
-	console.log(query.data);
-
 	if (query.status === "loading") {
 		return <div>Loading...</div>;
 	}

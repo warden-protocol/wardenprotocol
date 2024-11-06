@@ -40,7 +40,7 @@ export function NoSpaces() {
 							await assertChain(chains, connectedChain, setChain);
 
 							try {
-								const res = handleContractWrite(() => writeContractAsync({
+								const res = await handleContractWrite(() => writeContractAsync({
 									address: PRECOMPILE_WARDEN_ADDRESS,
 									abi: wardenPrecompileAbi,
 									functionName: "newSpace",

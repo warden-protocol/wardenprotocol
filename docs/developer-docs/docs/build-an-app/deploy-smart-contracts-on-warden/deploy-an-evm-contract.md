@@ -271,6 +271,49 @@ Store the contract address for convenience
 
    This should return `0x000000000000000000000000000000000000000000000000000000000000002b` (hex for 43)
 
+## Understanding the Commands
+
+`cast call`
+
+- Used for reading data from the blockchain
+- Doesn't modify state
+- Free (no gas needed)
+- Format: cast call <contract-address> "<function-signature>" [arguments]
+
+`cast send`
+
+- Used for sending transactions that modify blockchain state
+- Requires gas
+- Requires signing with a private key
+- Format: cast send <contract-address> "<function-signature>" [arguments] --private-key <key>
+
+**Reading Transaction Results**
+When you send a transaction, check these fields in the receipt:
+
+- `status`: 1 means success
+- `gasUsed` shows how much gas was consumed
+- `transactionHash` can be used to look up the transaction
+- `blockNumber` shows which block included the transaction
+
+**Common Issues and Solutions**
+
+"null response" error
+
+Add --legacy flag to your cast send command
+Example: cast send $CONTRACT_ADDRESS "setNumber(uint256)" 42 --private-key $PRIVATE_KEY --rpc-url http://127.0.0.1:8545 --legacy
+
+**Transaction fails**
+
+Verify your private key is correct
+Check that you have enough funds in your account
+Verify the contract address exists using cast code $CONTRACT_ADDRESS --rpc-url http://127.0.0.1:8545
+
+**Reading hex values**
+
+Values are returned in hex format
+0x2a = 42 in decimal
+0x2b = 43 in decimal
+
 If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀

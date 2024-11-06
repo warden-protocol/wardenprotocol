@@ -41,7 +41,10 @@ export class LruCache<T> {
     }
     
     private refresh(key: string) {
-        const entry = this.values.get(key)!;
+        const entry = this.values.get(key);
+        if (entry === undefined) {
+            throw new Error(`Key ${key} not found in cache`);
+        }
         this.values.delete(key);
         this.values.set(key, entry);
         return entry;

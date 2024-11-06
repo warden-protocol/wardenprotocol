@@ -21,7 +21,7 @@ export class WardenClient {
   }
 
   async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
-    let nextKey: Uint8Array | undefined = new Uint8Array();
+    let nextKey: Uint8Array | undefined = undefined;
 
     while (true) {
       await delay(this.configuration.pollingIntervalMsec);

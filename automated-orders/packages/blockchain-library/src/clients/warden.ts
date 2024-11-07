@@ -7,6 +7,8 @@ import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { QuerySignRequestsRequest } from '@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query';
 import { PageRequest } from '@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination';
 
+import { LRUCache } from 'lru-cache'
+
 const { delay } = utils;
 const { createRPCQueryClient } = warden.ClientFactory;
 
@@ -14,7 +16,9 @@ export class WardenClient {
   constructor(private configuration: IWardenConfiguration) { }
 
   private readonly entriesPerRequest = 100;
-  private readonly seenCache: utils.LruCache<bigint> = new utils.LruCache(this.entriesPerRequest);
+  private readonly seenCache: LRUCache<bigint, bigint> = new LRUCache<bigint, bigint>({
+    max: this.entriesPerRequest * 2,
+  });
 
   async query() {
     return await createRPCQueryClient({ rpcEndpoint: this.configuration.rpcURL });
@@ -42,7 +46,7 @@ export class WardenClient {
         continue;
       }
 
-      if (this.seenCache.has(request.id.toString())) {
+      if (this.seenCache.has(request.id)) {
         utils.logInfo(`Skipping already seen request ${request.id}`);
         continue;
       }
@@ -51,7 +55,7 @@ export class WardenClient {
         signedData: request.signedData!,
       };
 
-      this.seenCache.put(request.id.toString(), request.id);
+      this.seenCache.set(request.id, request.id);
     }
   }
 

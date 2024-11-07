@@ -13,8 +13,9 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@wardenprotocol/wardenjs": "0.0.11",
     "@tanstack/react-query": "^4.36.1",
+    "@wardenprotocol/wardenjs": "0.0.11",
+    "lru-cache": "^11.0.2",
     "web3": "^4.14.0"
   },
   "devDependencies": {

@@ -45,7 +45,7 @@ The following is a brief overview explaining how to start using SpaceWard. For m
    - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
    - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
 
-7. 👉 [Use WalletConnect](use-dapps#use-walletconnect): Click the **WalletConnect** icon in the right part of the screen to access UniSwap or any other dApp supporting Sepolia.
+8. 👉 [Use WalletConnect](use-dapps#use-walletconnect): Click the **WalletConnect** icon in the right part of the screen to access UniSwap or any other dApp supporting Sepolia.
 
 Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
 

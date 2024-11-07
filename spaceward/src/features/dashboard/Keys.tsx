@@ -27,11 +27,10 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const keys = queryKeys.data?.[0];
 	const space = spaceQuery.data;
 	const activeRuleId = space?.approveSignTemplateId;
-	const isEmpty = !space || !keys?.length;
 
 	return (
 		<div className="grid gap-6 grid-cols-1 lg:grid-cols-[2fr_1fr]">
-			{isEmpty ? (
+			{!keys?.length ? (
 				<div className="relative min-h-72 isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl overflow-hidden">
 					<img
 						className="absolute blur-[12px] left-0 top-0 z-[-1] w-full h-full object-cover invert dark:invert-0"

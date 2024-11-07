@@ -46,7 +46,7 @@ export function Root() {
 
 	const story = useStoryblok("config", { version: "published" });
 
-	const { data } = useSpacesByOwner({
+	const { data, status } = useSpacesByOwner({
 		request: {
 			owner: address,
 			pagination
@@ -174,7 +174,7 @@ export function Root() {
 							)}
 						>
 							<SiteHeader />
-							{!spaceCount ? <NoSpaces /> : <Outlet />}
+							{!spaceCount ? <NoSpaces isLoading={status === "loading"} /> : <Outlet />}
 							<Toaster />
 						</main>
 						{spaceCount !== 0 && <RightSidebar />}

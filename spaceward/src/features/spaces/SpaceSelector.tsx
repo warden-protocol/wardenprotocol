@@ -37,6 +37,8 @@ export function SpaceSelector() {
 					abi: wardenPrecompileAbi,
 					functionName: "newSpace",
 					args: [BigInt(0), BigInt(0), BigInt(0), BigInt(0), []],
+					account: address,
+					connector: wallet?.wagmiConnector,
 				}),
 				client,
 			);

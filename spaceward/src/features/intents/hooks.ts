@@ -11,7 +11,7 @@ import { assertChain, handleContractWrite } from "@/utils/contract";
 import { shieldStringify, validateAddressNumber } from "@/utils/shield";
 import { useModalState } from "../modals/state";
 import { useActionHandler } from "../actions/hooks";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import {
 	PRECOMPILE_ACT_ADDRESS,
 	PRECOMPILE_WARDEN_ADDRESS,
@@ -60,6 +60,8 @@ const createDefinition = (intent: SimpleIntent) => {
 };
 
 export const useRules = () => {
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const client = usePublicClient();
@@ -92,11 +94,13 @@ export const useRules = () => {
 						abi: actPrecompileAbi,
 						functionName: "newTemplate",
 						args: [name, definition],
+						account: address,
+						connector: wallet?.wagmiConnector,
 					}),
 				client,
 			);
 		},
-		[writeContractAsync, client, chains, connectedChain, setChain],
+		[writeContractAsync, client, chains, connectedChain, setChain, address, wallet?.wagmiConnector],
 	);
 
 	const updateRule = useCallback(
@@ -133,11 +137,13 @@ export const useRules = () => {
 						abi: actPrecompileAbi,
 						functionName: "updateTemplate",
 						args: [BigInt(id), name, definition],
+						account: address,
+						connector: wallet?.wagmiConnector,
 					}),
 				client,
 			);
 		},
-		[writeContractAsync, client, chains, connectedChain, setChain],
+		[writeContractAsync, client, chains, connectedChain, setChain, address, wallet?.wagmiConnector],
 	);
 
 	const space = useSpaceById({

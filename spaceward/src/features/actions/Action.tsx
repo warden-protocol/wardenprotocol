@@ -31,6 +31,8 @@ export function Action({ action }: { action: ActionModel }) {
 				abi: actPrecompileAbi,
 				functionName: "voteForAction",
 				args: [action.id, voteType],
+				account: address,
+				connector: wallet?.wagmiConnector,
 			}),
 			client,
 		);

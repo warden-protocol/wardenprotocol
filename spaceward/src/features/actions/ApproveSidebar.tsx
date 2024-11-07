@@ -37,6 +37,8 @@ export default function ApproveSidebar() {
 				abi: actPrecompileAbi,
 				functionName: "voteForAction",
 				args: [actionId, voteType],
+				account: address,
+				connector: wallet?.wagmiConnector,
 			}),
 			client,
 		);

@@ -1,4 +1,4 @@
-import { useBalance, useWalletClient, useWriteContract } from "wagmi"
+import { useBalance, usePublicClient, useWriteContract } from "wagmi"
 import { Button } from "@/components/ui/button";
 import FaucetButton from "@/components/FaucetButton";
 import { Icons } from "@/components/ui/icons";
@@ -10,12 +10,12 @@ import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import { useState } from "react";
 import clsx from "clsx";
 
-export function NoSpaces() {
+export function NoSpaces(props: { isLoading?: boolean }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [{ wallet }] = useConnectWallet();
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
-	const client = useWalletClient();
+	const client = usePublicClient();
 
 	const balance = useBalance({
 		address: wallet?.accounts?.[0]?.address,
@@ -40,23 +40,30 @@ export function NoSpaces() {
 					<Button
 						className={clsx(
 							"bg-fill-accent-primary hover:bg-fill-accent-hover h-[56px] px-8 rounded-xl font-semibold text-label-on-light", {
-							"opacity-50": isLoading,
+							"opacity-50": isLoading || props.isLoading,
 						})}
 
 						onClick={async () => {
-							if (isLoading) {
+							if (isLoading || props.isLoading) {
 								return;
 							}
 
+							console.log("wallet", wallet);
 							setIsLoading(true);
-							await assertChain(chains, connectedChain, setChain);
 
 							try {
+								if (!await assertChain(chains, connectedChain, setChain)) {
+									setIsLoading(false);
+									return;
+								}
+
 								const res = await handleContractWrite(() => writeContractAsync({
+									connector: wallet?.wagmiConnector,
 									address: PRECOMPILE_WARDEN_ADDRESS,
 									abi: wardenPrecompileAbi,
 									functionName: "newSpace",
 									chainId: env.evmChainId,
+									account: wallet?.accounts?.[0]?.address,
 									args: [
 										BigInt(0),
 										BigInt(0),
@@ -64,7 +71,7 @@ export function NoSpaces() {
 										BigInt(0),
 										[],
 									],
-								}), client.data);
+								}), client);
 
 								console.log("res", res);
 							} catch (e) {

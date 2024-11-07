@@ -512,7 +512,7 @@ export const NetworkIconsTransparent: Record<
 					width="98.6667"
 					height="98.6666"
 					filterUnits="userSpaceOnUse"
-					color-interpolation-filters="sRGB"
+					colorInterpolationFilters="sRGB"
 				>
 					<feFlood floodOpacity="0" result="BackgroundImageFix" />
 					<feGaussianBlur in="BackgroundImageFix" stdDeviation="20" />

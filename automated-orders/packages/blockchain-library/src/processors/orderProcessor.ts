@@ -2,7 +2,7 @@ import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 
 import { EvmClient } from '../clients/evm.js';
 import { OrderCreated } from '../types/registry/events.js';
-import { CanExecuteOrderAbi } from '../types/registry/functions.js';
+import { CanExecuteOrderAbi, IsExecutedOrderAbi } from '../types/registry/functions.js';
 import { Processor } from './processor.js';
 
 export class OrderProcessor extends Processor<OrderCreated> {
@@ -20,6 +20,12 @@ export class OrderProcessor extends Processor<OrderCreated> {
       const exist = await this.evm.isContract(data.returnValues.order);
 
       if (!exist) {
+        return true;
+      }
+
+      const isExecuted = await this.evm.callView(data.returnValues.order, IsExecutedOrderAbi, []);
+
+      if (isExecuted) {
         return true;
       }
 

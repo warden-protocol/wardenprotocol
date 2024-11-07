@@ -14,3 +14,18 @@ export const CanExecuteOrderAbi: AbiFunctionFragment = {
   stateMutability: 'view',
   type: 'function',
 };
+
+export const IsExecutedOrderAbi: AbiFunctionFragment = {
+  constant: true,
+  inputs: [],
+  name: 'isExecuted',
+  outputs: [
+    {
+      name: '',
+      type: 'bool',
+    },
+  ],
+  payable: false,
+  stateMutability: 'view',
+  type: 'function',
+};

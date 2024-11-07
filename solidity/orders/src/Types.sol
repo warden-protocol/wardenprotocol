@@ -23,6 +23,7 @@ struct SignRequestData {
  // Data for execution
 struct OrderData {
     address to;
+    uint256 thresholdPrice;
     SwapData swapData;
     SignRequestData signRequestData;
 }

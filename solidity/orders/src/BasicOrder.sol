@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {OrderData, SignRequestData, UnsignedEthTx} from "./Types.sol";
+import {OrderData, UnsignedEthTx} from "./Types.sol";
 import {Types} from "precompile-common/Types.sol";
 import {IWarden, IWARDEN_PRECOMPILE_ADDRESS} from "precompile-warden/IWarden.sol";
 

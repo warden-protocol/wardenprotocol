@@ -4,10 +4,17 @@ import { Env } from './env.js';
 
 const schema: JSONSchemaType<Env> = {
   type: 'object',
-  required: ['ETHEREUM_NODE_RPC', 'ETHEREUM_REGISTRY_ADDRESS'],
+  required: [
+    'EVMOS_NODE_RPC',
+    'EVMOS_REGISTRY_ADDRESS',
+    'ETHEREUM_EVENTS_POLLING_BLOCKS',
+    'ETHEREUM_EVENTS_POLLING_INTERVAL_MSEC',
+  ],
   properties: {
-    ETHEREUM_NODE_RPC: { type: 'string' },
-    ETHEREUM_REGISTRY_ADDRESS: { type: 'string' },
+    EVMOS_NODE_RPC: { type: 'string' },
+    EVMOS_REGISTRY_ADDRESS: { type: 'string' },
+    ETHEREUM_EVENTS_POLLING_BLOCKS: { type: 'number' },
+    ETHEREUM_EVENTS_POLLING_INTERVAL_MSEC: { type: 'number' },
   },
 };
 

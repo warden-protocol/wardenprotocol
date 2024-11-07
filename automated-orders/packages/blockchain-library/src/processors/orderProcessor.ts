@@ -17,7 +17,7 @@ export class OrderProcessor extends Processor<OrderCreated> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
-      const exist = this.evm.isContract(data.returnValues.order);
+      const exist = await this.evm.isContract(data.returnValues.order);
 
       if (!exist) {
         return true;

@@ -7,6 +7,7 @@ import (
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -304,6 +305,7 @@ func (p Precompile) UpdateKeychainMethod(
 func (p Precompile) AddSpaceOwnerMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -322,23 +324,64 @@ func (p Precompile) AddSpaceOwnerMethod(
 		"args", args,
 	)
 
-	_, err = msgServer.NewAction(ctx, msgNewAction)
-
+	newActResult, err := msgServer.NewAction(ctx, msgNewAction)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
+	if err := p.tryVoteAsSender(ctx, msgServer, newActResult.Id, caller); err != nil {
+		return nil, err
+	}
+
+	if err := p.eventsRegistry.EmitEvents(ctx, stateDB, &origin); err != nil {
 		return nil, err
 	}
 
 	return method.Outputs.Pack(true)
 }
 
+// tryVoteAsSender attempts to vote for an action as the sender of the action.
+// This is useful if the contract attempts to vote for an action.
+// If the action is not in the pending state, this function does nothing.
+// If the action is in the pending state, it attempts to vote for the action
+// with an approved vote type. If the vote is successful, this function returns
+// nil. If the vote fails, this function returns the error.
+func (p Precompile) tryVoteAsSender(
+	ctx sdk.Context,
+	msgServer v1beta1.MsgServer,
+	actionId uint64,
+	caller common.Address) error {
+
+	actionResponse, err := p.actQueryServer.ActionById(ctx, &v1beta1.QueryActionByIdRequest{
+		Id: actionId,
+	})
+	if err != nil {
+		return err
+	}
+
+	action := actionResponse.Action
+
+	if action.GetStatus() != v1beta1.ActionStatus_ACTION_STATUS_PENDING {
+		return nil
+	}
+
+	_, err = msgServer.VoteForAction(ctx, &v1beta1.MsgVoteForAction{
+		Participant: caller.String(),
+		ActionId:    action.GetId(),
+		VoteType:    v1beta1.ActionVoteType_VOTE_TYPE_APPROVED,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // RemoveSpaceOwnerMethod constructs MsgRemoveSpaceOwner wrapped by MsgNewAction from args, passes it to msg server and packs corresponding abi output.
 func (p Precompile) RemoveSpaceOwnerMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -357,9 +400,12 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 		"args", args,
 	)
 
-	_, err = msgServer.NewAction(ctx, msgNewAction)
-
+	newActResult, err := msgServer.NewAction(ctx, msgNewAction)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := p.tryVoteAsSender(ctx, msgServer, newActResult.Id, caller); err != nil {
 		return nil, err
 	}
 
@@ -374,6 +420,7 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 func (p Precompile) NewKeyRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -392,9 +439,12 @@ func (p Precompile) NewKeyRequestMethod(
 		"args", args,
 	)
 
-	_, err = msgServer.NewAction(ctx, msgNewAction)
-
+	newActResult, err := msgServer.NewAction(ctx, msgNewAction)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := p.tryVoteAsSender(ctx, msgServer, newActResult.Id, caller); err != nil {
 		return nil, err
 	}
 
@@ -409,6 +459,7 @@ func (p Precompile) NewKeyRequestMethod(
 func (p Precompile) NewSignRequestMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -427,9 +478,12 @@ func (p Precompile) NewSignRequestMethod(
 		"args", args,
 	)
 
-	_, err = msgServer.NewAction(ctx, msgNewAction)
-
+	newActResult, err := msgServer.NewAction(ctx, msgNewAction)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := p.tryVoteAsSender(ctx, msgServer, newActResult.Id, caller); err != nil {
 		return nil, err
 	}
 
@@ -444,6 +498,7 @@ func (p Precompile) NewSignRequestMethod(
 func (p Precompile) UpdateKeyMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -462,9 +517,12 @@ func (p Precompile) UpdateKeyMethod(
 		"args", args,
 	)
 
-	_, err = msgServer.NewAction(ctx, msgNewAction)
-
+	newActResult, err := msgServer.NewAction(ctx, msgNewAction)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := p.tryVoteAsSender(ctx, msgServer, newActResult.Id, caller); err != nil {
 		return nil, err
 	}
 
@@ -479,6 +537,7 @@ func (p Precompile) UpdateKeyMethod(
 func (p Precompile) UpdateSpaceMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -497,9 +556,12 @@ func (p Precompile) UpdateSpaceMethod(
 		"args", args,
 	)
 
-	_, err = msgServer.NewAction(ctx, msgNewAction)
-
+	newActResult, err := msgServer.NewAction(ctx, msgNewAction)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := p.tryVoteAsSender(ctx, msgServer, newActResult.Id, caller); err != nil {
 		return nil, err
 	}
 

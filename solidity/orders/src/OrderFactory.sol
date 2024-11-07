@@ -14,7 +14,14 @@ contract OrderFactory {
     // Mapping from order contract to order creator
     mapping(address orderAddredd => address orderCreator) public orders;
 
+    // Registry of IExecution contracts
+    address public registry;
+
     event OrderCreated(address indexed orderCreator, address orderContact, OrderType orderType);
+
+    constructor(address _registry) {
+        registry = _registry;
+    }
 
     function createOrder(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees, OrderType orderType) public {
         if (orderType == OrderType.Basic) {
@@ -26,11 +33,19 @@ contract OrderFactory {
 
     function _createBasicOrder(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees) internal {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees);
-        orders[tx.origin] = address(basicOrder);
+        orders[address(basicOrder)] = tx.origin;
         emit OrderCreated(tx.origin, address(basicOrder), OrderType.Basic);
     }
 
     function _createAdvancedOrder(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees) internal {
         // TODO
+    }
+
+    function getCreator(address order) public view returns (address) {
+        return orders[order];
+    }
+    
+    function getRegistry() public view returns (address) {
+        return registry;
     }
 }

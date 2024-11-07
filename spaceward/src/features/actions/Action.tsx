@@ -60,16 +60,17 @@ export function Action({ action }: { action: ActionModel }) {
 					<span className="font-bold">Votes</span>
 					{action.votes.map((vote) => {
 						const date = timestampToDate(vote.votedAt);
-						const shortTime = new Intl.DateTimeFormat("en", {
-							timeStyle: "short",
-						});
+						const shortTime = new Intl.DateTimeFormat("en", { timeStyle: "short" });
+
 						return (
-							<div className="flex flex-row space-x-2 items-center">
+							<div
+								className="flex flex-row space-x-2 items-center"
+								key={vote.participant}
+							>
 								<div className="flex flex-col items-center">
-									<AddressAvatar
-										seed={vote.participant || ""}
-									/>
+									<AddressAvatar seed={vote.participant || ""} />
 								</div>
+
 								<div className="flex flex-col">
 									<span>
 										<Copy value={vote.participant} split />
@@ -95,7 +96,15 @@ export function Action({ action }: { action: ActionModel }) {
 							<p className="font-semibold basis-3/5 flex-grow-0 flex-shrink-0 break-words">Approved by<br />
 								{Object.values(approveParsed.references).map(_adr => {
 									const adr = fromBytes(fromBech32(_adr).data, "hex");
-									return <span className="mr-2 text-sm text-muted-foreground" key={adr}>{adr.slice(0, 8)}...{adr.slice(-8)} </span>
+
+									return (
+										<span
+											className="mr-2 text-sm text-muted-foreground"
+											key={adr}
+										>
+											{adr.slice(0, 8)}...{adr.slice(-8)}
+										</span>
+									);
 								})}
 							</p>
 							<p className="font-bold ml-auto basis-2/5 flex-grow-0 flex-shrink-0 break-words">{approveParsed.code}</p>
@@ -104,7 +113,15 @@ export function Action({ action }: { action: ActionModel }) {
 							<p className="font-semibold basis-3/5 flex-grow-0 flex-shrink-0 break-words">Rejected by<br />
 								{Object.values(rejectParsed.references).map(_adr => {
 									const adr = fromBytes(fromBech32(_adr).data, "hex");
-									return <span className="mr-2 text-sm text-muted-foreground" key={adr}>{adr.slice(0, 8)}...{adr.slice(-8)} </span>
+
+									return (
+										<span
+											className="mr-2 text-sm text-muted-foreground"
+											key={adr}
+										>
+											{adr.slice(0, 8)}...{adr.slice(-8)}
+										</span>
+									);
 								})}
 							</p>
 							<p className="font-bold ml-auto basis-2/5 flex-grow-0 flex-shrink-0 break-words">{rejectParsed.code}</p>

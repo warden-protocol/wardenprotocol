@@ -7,8 +7,11 @@ import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { env } from "@/env";
 import { assertChain, handleContractWrite } from "@/utils/contract";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { useState } from "react";
+import clsx from "clsx";
 
 export function NoSpaces() {
+	const [isLoading, setIsLoading] = useState(false);
 	const [{ wallet }] = useConnectWallet();
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
@@ -35,8 +38,17 @@ export function NoSpaces() {
 						of keys, assets and rules.
 					</p>
 					<Button
-						className="bg-fill-accent-primary hover:bg-fill-accent-hover h-[56px] px-8 rounded-xl font-semibold text-label-on-light"
+						className={clsx(
+							"bg-fill-accent-primary hover:bg-fill-accent-hover h-[56px] px-8 rounded-xl font-semibold text-label-on-light", {
+							"opacity-50": isLoading,
+						})}
+
 						onClick={async () => {
+							if (isLoading) {
+								return;
+							}
+
+							setIsLoading(true);
 							await assertChain(chains, connectedChain, setChain);
 
 							try {
@@ -53,24 +65,13 @@ export function NoSpaces() {
 										[],
 									],
 								}), client.data);
+
 								console.log("res", res);
 							} catch (e) {
 								console.log("error", e);
 							}
-							/*
-							tx(
-								[
-									newSpace({
-										creator: address,
-										signRuleId: BigInt(0),
-										adminRuleId: BigInt(0),
-										// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-										// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-										additionalOwners: undefined,
-									}),
-								],
-								{},
-							);*/
+
+							setIsLoading(false);
 						}}
 					>
 						Create Space

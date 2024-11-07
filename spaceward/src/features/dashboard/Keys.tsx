@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { Icons } from "@/components/ui/icons-assets";
 import { NewKeyButton } from "@/features/keys";
-import { useQueryHooks } from "@/hooks/useClient";
 import Key from "./Key";
 import DashboardGraph from "./DashboardGraph";
 import Intent from "./Intent";
@@ -17,19 +16,15 @@ interface CurrentSpaceProps {
 
 export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const { setData: setModal } = useModalState();
-	const { isReady } = useQueryHooks();
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
-	const keys = queryKeys.data?.[0];
 
 	const spaceQuery = useSpaceById({
 		request: {
 			id: spaceId,
-		},
-		options: {
-			enabled: isReady,
-		},
+		}
 	});
 
+	const keys = queryKeys.data?.[0];
 	const space = spaceQuery.data;
 	const activeRuleId = space?.approveSignTemplateId;
 	const isEmpty = !space || !keys?.length;
@@ -136,7 +131,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					</div>
 
 					{activeRuleId ? (
-						<Intent activeIntentId={Number(activeRuleId)} />
+						<Intent id={activeRuleId} />
 					) : (
 						<div className="text-label-accent flex items-center">
 							Add

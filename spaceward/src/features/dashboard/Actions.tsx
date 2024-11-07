@@ -4,7 +4,6 @@ import { useConnectWallet } from "@web3-onboard/react";
 import { Accordion } from "@/components/ui/accordion";
 import { Icons } from "@/components/ui/icons-assets";
 import { Icons as IconsDashboard } from "@/features/dashboard/icons";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useActionsByAddress } from "@/hooks/query/act";
 import type { ActionModel } from "@/hooks/query/types";
 import { createPagination } from "@/hooks/query/util";
@@ -14,7 +13,6 @@ import { prettyActionStatus } from "@/utils/formatting";
 const actionPagination = createPagination({ limit: BigInt(3), reverse: true });
 
 export function Actions() {
-	const { isReady } = useQueryHooks();
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 
@@ -22,10 +20,7 @@ export function Actions() {
 		request: {
 			address,
 			pagination: actionPagination,
-		},
-		options: {
-			enabled: isReady,
-		},
+		}
 	});
 
 	const actions = q.data?.actions || [];

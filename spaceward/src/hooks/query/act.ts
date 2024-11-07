@@ -111,11 +111,20 @@ export const useTemplates = ({
 	const pagination = request.pagination ?? DEFAULT_PAGINATION;
 
 	return useReadContract({
-		address: enabled ? PRECOMPILE_ACT_ADDRESS : undefined,
+		address: PRECOMPILE_ACT_ADDRESS,
 		args: enabled ? [pagination, request.creator!] : undefined,
 		abi: actPrecompileAbi,
 		functionName: "templates",
 		chainId,
+		query: {
+			enabled,
+			select: ({ pagination, templates }) => ({
+				pagination,
+				templates: templates.map((x) =>
+					selectWithExpression("expression", x),
+				),
+			}),
+		},
 	});
 };
 
@@ -126,14 +135,19 @@ export const useTemplateById = ({
 	options?: QueryOptions;
 	request: { id?: bigint };
 }) => {
-	const enabled =
-		Boolean(options?.enabled ?? true) && Boolean(request.id);
+	const enabled = Boolean(options?.enabled ?? true) && Boolean(request.id);
 
 	return useReadContract({
-		address: enabled ? PRECOMPILE_ACT_ADDRESS : undefined,
-		args: enabled ? [request.id!] : undefined,
+		address: PRECOMPILE_ACT_ADDRESS,
+		args: [request.id!],
 		abi: actPrecompileAbi,
 		functionName: "templateById",
 		chainId,
+		query: {
+			enabled,
+			select: ({ template }) => ({
+				template: selectWithExpression("expression", template),
+			}),
+		},
 	});
 };

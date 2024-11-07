@@ -5,7 +5,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useQueryHooks } from "@/hooks/useClient";
 import { createPagination } from "@/hooks/query/util";
 import { timestampToDate } from "@/lib/datetime";
 import { prettyActionStatus } from "@/utils/formatting";
@@ -18,15 +17,11 @@ const pagination = createPagination({ reverse: true });
 export function Actions() {
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
-	const { isReady } = useQueryHooks();
 
 	const q = useActionsByAddress({
 		request: {
 			address,
 			pagination
-		},
-		options: {
-			enabled: isReady,
 		},
 	});
 

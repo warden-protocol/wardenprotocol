@@ -10,45 +10,24 @@ import { Icons } from "@/components/ui/icons-assets";
 import { useOwnerSettingsState } from "../owners/state";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { useActionHandler } from "../actions/hooks";
-import { useQueryHooks } from "@/hooks/useClient";
-import { DEFAULT_EXPRESSION } from "../intents/hooks";
-import { shieldStringify } from "@/utils/shield";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import { useSpaceById } from "@/hooks/query/warden";
 
 
 export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
-	const {
-		isReady,
-		warden: {
-			act: { v1beta1: { useTemplateById } },
-		},
-	} = useQueryHooks();
-
 	const { spaceId } = useSpaceId();
 
 	const space = useSpaceById({
 		request: {
 			id: BigInt(spaceId!),
-		},
-		options: {
-			enabled: isReady,
-		},
+		}
 	}).data;
 
-	const approveAdminTemplate = useTemplateById({
-		request: {
-			id: space?.approveAdminTemplateId ?? BigInt(0),
-		},
-		options: {
-			enabled: isReady && Boolean(space?.approveAdminTemplateId),
-		},
-	}).data?.template;
-
-	const { add } = useActionHandler(
+	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
 		PRECOMPILE_WARDEN_ADDRESS,
 		wardenPrecompileAbi,
 		"addSpaceOwner",
+		true
 	);
 
 	const { data, setData } = useOwnerSettingsState();
@@ -75,21 +54,13 @@ export default function AddOwnerModal({ hidden }: ModalParams<{}>) {
 		try {
 			setPending(true);
 
-			let expectedApproveExpression = DEFAULT_EXPRESSION;
-
-			if (approveAdminTemplate?.expression) {
-				expectedApproveExpression = shieldStringify(
-					approveAdminTemplate.expression,
-				);
-			}
-
 			add([
 				BigInt(spaceId),
 				address,
 				BigInt(space?.nonce ?? 0),
 				BigInt(0),
 				expectedApproveExpression,
-				DEFAULT_EXPRESSION,
+				expectedRejectExpression,
 			], {
 				title: `Adding ${name} as owner`,
 			});

@@ -11,7 +11,6 @@ import {
 	Send,
 	XIcon,
 } from "lucide-react";
-import { useQueryHooks } from "@/hooks/useClient";
 import { prettyKeyType } from "@/utils/formatting";
 import clsx from "clsx";
 import { KEY_THEMES } from "./assets";
@@ -30,7 +29,6 @@ import { KeyModel } from "@/hooks/query/types";
 import { toBytes } from "viem";
 
 export const useKeyData = ({ key }: Pick<KeyModel, "key">) => {
-	const { isReady } = useQueryHooks();
 	const { data, setData: setSettings } = useKeySettingsState();
 	const settings = data?.settings[key.id.toString()];
 	const name = settings?.name ?? `Key #${key.id.toString()}`;
@@ -40,7 +38,6 @@ export const useKeyData = ({ key }: Pick<KeyModel, "key">) => {
 
 	const queryKeychain = useKeychainById({
 		request: { id: key.keychainId },
-		options: { enabled: isReady },
 	});
 
 	const { queryBalances } = useAssetQueries(spaceId.toString());
@@ -434,15 +431,10 @@ export function Keys({
 	spaceId: string;
 	view: "list" | "card";
 }) {
-	const { isReady } = useQueryHooks();
-
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: BigInt(spaceId),
 			deriveAddresses: [AddressType.Ethereum, AddressType.Osmosis],
-		},
-		options: {
-			enabled: isReady,
 		},
 	});
 

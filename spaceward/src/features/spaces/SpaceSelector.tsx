@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/popover";
 import AddressAvatar from "@/components/AddressAvatar";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useQueryHooks } from "@/hooks/useClient";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
@@ -20,7 +19,6 @@ import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import { useSpacesByOwner } from "@/hooks/query/warden";
 
 export function SpaceSelector() {
-	const { isReady } = useQueryHooks();
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 	const { spaceId, setSpaceId } = useSpaceId();
@@ -52,10 +50,7 @@ export function SpaceSelector() {
 	const spacesQuery = useSpacesByOwner({
 		request: {
 			owner: address,
-		},
-		options: {
-			enabled: isReady && Boolean(address),
-		},
+		}
 	});
 
 	const count = spacesQuery.data?.[0].length ?? 0;

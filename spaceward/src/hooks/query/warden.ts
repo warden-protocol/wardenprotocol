@@ -69,10 +69,7 @@ const isGetKeysBySpaceIdRequestEnabled = (
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 const writable = <T>(obj: T): Writeable<T> => obj;
 
-
-export const getKeysBySpaceIdArgs = (
-	request: GetKeysBySpaceIdRequest,
-) => {
+export const getKeysBySpaceIdArgs = (request: GetKeysBySpaceIdRequest) => {
 	const pagination = request?.pagination ?? DEFAULT_PAGINATION;
 	const deriveAddresses =
 		request?.deriveAddresses ?? (EMPTY_ARR as AddressType[]);
@@ -263,11 +260,14 @@ export const useSpaceById = ({
 	const enabled = Boolean(options?.enabled ?? true) && Boolean(request.id);
 
 	return useReadContract({
-		address: enabled ? PRECOMPILE_WARDEN_ADDRESS : undefined,
-		args: enabled ? [request.id!] : undefined,
+		address: PRECOMPILE_WARDEN_ADDRESS,
+		args: [request.id!],
 		abi: wardenPrecompileAbi,
 		functionName: "spaceById",
 		chainId,
+		query: {
+			enabled,
+		},
 	});
 };
 

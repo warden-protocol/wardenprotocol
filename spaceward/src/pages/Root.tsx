@@ -12,13 +12,10 @@ import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
 import { NoSpaces } from "@/features/spaces";
 import cn from "clsx";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useQueryHooks } from "@/hooks/useClient";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useConnectWallet } from "@web3-onboard/react";
-import { toBech32 } from "@cosmjs/encoding";
-import { toBytes } from "viem";
 import { useSpacesByOwner } from "@/hooks/query/warden";
 import { createPagination } from "@/hooks/query/util";
 
@@ -36,9 +33,7 @@ export function Root() {
 	const [{ wallet }] = useConnectWallet();
 	const account = wallet?.accounts?.[0];
 	const address = account?.address;
-	const cosmosAddress = useMemo(() => address ? toBech32("warden", toBytes(address)) : undefined, [address]);
 	const { spaceId, setSpaceId } = useSpaceId();
-
 	const [chainId, setChainId] = useState<string>("");
 	const [spacewardEnv, setSpacewardEnv] = useState<string>("");
 	const [maintenance, setMaintenance] = useState<boolean>(false);
@@ -50,16 +45,12 @@ export function Root() {
 	}, []);
 
 	const story = useStoryblok("config", { version: "published" });
-	const { isReady } = useQueryHooks();
 
 	const { data } = useSpacesByOwner({
 		request: {
 			owner: address,
 			pagination
-		},
-		options: {
-			enabled: !!cosmosAddress && isReady,
-		},
+		}
 	});
 
 	const spaces = data?.[0] || [];

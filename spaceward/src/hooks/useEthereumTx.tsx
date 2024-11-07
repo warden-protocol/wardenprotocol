@@ -4,36 +4,20 @@ import { fromBytes, serializeTransaction, TransactionSerializable } from "viem";
 import { EthRequest } from "@/features/modals/util";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
-import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
-import { useQueryHooks } from "./useClient";
 import { useSpaceId } from "./useSpaceId";
-import { shieldStringify } from "@/utils/shield";
 import { fromBech32 } from "@cosmjs/encoding";
 import { useSpaceById } from "./query/warden";
 
 export function useEthereumTx() {
-	const { isReady, useTemplateById } = useQueryHooks();
 	const spaceId = useSpaceId().spaceId;
 
 	const space = useSpaceById({
 		request: {
 			id: BigInt(spaceId ?? 0)
 		},
-		options: {
-			enabled: isReady
-		}
 	}).data;
 
-	const approveSignTemplate = useTemplateById({
-		request: {
-			id: BigInt(space?.approveSignTemplateId ?? 0)
-		},
-		options: {
-			enabled: !!space?.approveSignTemplateId && isReady
-		}
-	}).data?.template;
-
-	const { add } = useActionHandler(
+	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
 		PRECOMPILE_WARDEN_ADDRESS,
 		wardenPrecompileAbi,
 		"newSignRequest"
@@ -51,10 +35,6 @@ export function useEthereumTx() {
 			throw new Error("no space");
 		}
 
-		const expectedApproveExpression = approveSignTemplate?.expression
-			? shieldStringify(approveSignTemplate.expression)
-			: DEFAULT_EXPRESSION;
-
 		return await add(
 			[
 				keyId,
@@ -67,7 +47,7 @@ export function useEthereumTx() {
 				space.nonce,
 				BigInt(0),
 				expectedApproveExpression,
-				DEFAULT_EXPRESSION
+				expectedRejectExpression
 			],
 			options,
 		);
@@ -93,9 +73,6 @@ export function useEthereumTx() {
 			);
 		}
 
-		const expectedApproveExpression = approveSignTemplate?.expression
-			? shieldStringify(approveSignTemplate.expression)
-			: DEFAULT_EXPRESSION;
 
 		const analyzer = fromBytes(fromBech32(env.ethereumAnalyzerContract).data, "hex");
 
@@ -111,7 +88,7 @@ export function useEthereumTx() {
 				space.nonce,
 				BigInt(0),
 				expectedApproveExpression,
-				DEFAULT_EXPRESSION
+				expectedRejectExpression
 			],
 			{ ...options, chainName, ethRequest: _tx }
 		);

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ProposalTypes } from "@walletconnect/types";
 import { Button } from "@/components/ui/button";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import clsx from "clsx";
@@ -37,7 +36,6 @@ export default function WCBindSpace({
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
-	const { isReady } = useQueryHooks();
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 	const { spaceId } = useSpaceId();
@@ -49,7 +47,7 @@ export default function WCBindSpace({
 			owner: address!,
 		},
 		options: {
-			enabled: _enabled && isReady,
+			enabled: _enabled,
 		},
 	});
 

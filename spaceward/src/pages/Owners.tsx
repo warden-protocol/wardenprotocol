@@ -1,39 +1,26 @@
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useModalState } from "@/features/modals/state";
 import { PlusIcon } from "lucide-react";
 import OwnerCard from "@/features/owners/OwnerCard";
 import { useActionHandler } from "@/features/actions/hooks";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
-import { fromBytes, isAddress } from "viem";
-import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
-import { shieldStringify } from "@/utils/shield";
+import { isAddress } from "viem";
 import { useSpaceById } from "@/hooks/query/warden";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
 	const { setData: setModal } = useModalState();
 
-	const { add: removeSpaceOwner } = useActionHandler(
+	const { add: removeSpaceOwner, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
 		PRECOMPILE_WARDEN_ADDRESS,
 		wardenPrecompileAbi,
 		"removeSpaceOwner"
 	);
 
-	const { useTemplateById, isReady } = useQueryHooks();
-
 	const q = useSpaceById({
 		request: { id: BigInt(spaceId || "") },
-		options: { enabled: isReady },
 	});
-
-	const approveAdminTemplate = useTemplateById({
-		request: { id: q.data?.approveAdminTemplateId ?? BigInt(0) },
-		options: {
-			enabled: isReady && Boolean(q.data?.approveAdminTemplateId),
-		},
-	}).data?.template;
 
 	if (q.status === "loading") {
 		return <div>Loading...</div>;
@@ -54,21 +41,13 @@ export function OwnersPage() {
 			throw new Error("Invalid owner address");
 		}
 
-		let expectedApproveExpression = DEFAULT_EXPRESSION;
-
-		if (approveAdminTemplate?.expression) {
-			expectedApproveExpression = shieldStringify(
-				approveAdminTemplate.expression,
-			);
-		}
-
 		await removeSpaceOwner([
 			space.id,
 			owner,
 			space.nonce,
 			BigInt(0),
 			expectedApproveExpression,
-			DEFAULT_EXPRESSION,
+			expectedRejectExpression,
 		], {
 			title: "Remove owner",
 		});

@@ -1,4 +1,4 @@
-import type { useActionsByAddress } from "@/hooks/query/act";
+import type { useActionsByAddress, useTemplates } from "@/hooks/query/act";
 import type { useKeychains, useKeysBySpaceId } from "./warden";
 
 export interface QueryOptions {
@@ -24,3 +24,7 @@ export type KeyModel = NonNullable<
 export type KeychainModel = NonNullable<
 	ReturnType<typeof useKeychains>["data"]
 >[0][number];
+
+export type TemplateModel = NonNullable<
+	ReturnType<typeof useTemplates>["data"]
+>["templates"][number];

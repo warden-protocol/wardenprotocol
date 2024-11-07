@@ -1,15 +1,9 @@
 import DESCRIPTIONS from "@/features/keychains/description";
 import KeychainCard from "@/features/keychains/KeychainCard";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useKeychains } from "@/hooks/query/warden";
 
 export function KeychainsPage() {
-	const { isReady } = useQueryHooks();
-	const q = useKeychains({
-		options: {
-			enabled: isReady,
-		},
-	});
+	const q = useKeychains({});
 
 	if (q.status === "loading") {
 		return <div>Loading keychains...</div>;

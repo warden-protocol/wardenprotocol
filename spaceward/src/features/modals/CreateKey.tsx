@@ -3,7 +3,6 @@ import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { warden } from "@wardenprotocol/wardenjs";
 import { Button } from "@/components/ui/button";
-import { useQueryHooks } from "@/hooks/useClient";
 import { pasteFromClipboard } from "@/utils/browser";
 import type { CreateKeyParams, ModalParams } from "./types";
 import Assets, { KEY_THEMES } from "../keys/assets";
@@ -15,8 +14,6 @@ import descriptions from "../keychains/description";
 import { useActionHandler } from "../actions/hooks";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
-import { DEFAULT_EXPRESSION } from "../intents/hooks";
-import { shieldStringify } from "@/utils/shield";
 import { useKeychains, useSpaceById } from "@/hooks/query/warden";
 import { KeychainModel } from "@/hooks/query/types";
 
@@ -29,7 +26,6 @@ export default function CreateKeyModal({
 	spaceId: selectedSpaceId,
 	keychainId,
 }: ModalParams<CreateKeyParams>) {
-	const { useTemplateById, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { setData: setModal } = useModalState();
 	const { spaceId: _spaceId } = useSpaceId();
@@ -37,15 +33,9 @@ export default function CreateKeyModal({
 
 	const space = useSpaceById({
 		request: { id: BigInt(spaceId ?? 0) },
-		options: { enabled: isReady },
 	}).data;
 
-	const approveSignTemplate = useTemplateById({
-		request: { id: BigInt(space?.approveSignTemplateId ?? 0) },
-		options: { enabled: !!space?.approveSignTemplateId && isReady },
-	}).data?.template;
-
-	const { add } = useActionHandler(
+	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
 		PRECOMPILE_WARDEN_ADDRESS,
 		wardenPrecompileAbi,
 		"newKeyRequest",
@@ -55,12 +45,6 @@ export default function CreateKeyModal({
 	function requestKey(keychainId: bigint, spaceId: bigint, themeIndex: number) {
 		if (!space) {
 			throw new Error("no space");
-		}
-
-		let expectedApproveExpression = DEFAULT_EXPRESSION;
-
-		if (approveSignTemplate?.expression) {
-			expectedApproveExpression = shieldStringify(approveSignTemplate.expression);
 		}
 
 		return add([
@@ -73,18 +57,14 @@ export default function CreateKeyModal({
 			BigInt(space.nonce),
 			BigInt(0),
 			expectedApproveExpression,
-			DEFAULT_EXPRESSION,
+			expectedRejectExpression,
 		], {
 			keyThemeIndex: themeIndex,
 			title: "Creating key"
 		});
 	}
 
-	const keychains = useKeychains({
-		options: {
-			enabled: isReady,
-		},
-	}).data?.[0];
+	const keychains = useKeychains({}).data?.[0];
 
 	const keychain = keychains?.find(
 		(kc) => kc.id === keychainId,

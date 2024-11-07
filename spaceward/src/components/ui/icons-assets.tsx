@@ -142,7 +142,7 @@ export const Icons = {
 					filterUnits="userSpaceOnUse"
 					color-interpolation-filters="sRGB"
 				>
-					<feFlood flood-opacity="0" result="BackgroundImageFix" />
+					<feFlood floodOpacity="0" result="BackgroundImageFix" />
 					<feGaussianBlur in="BackgroundImageFix" stdDeviation="20" />
 					<feComposite
 						in2="SourceAlpha"

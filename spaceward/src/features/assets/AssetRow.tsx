@@ -90,7 +90,7 @@ const AssetRow = ({
 			</div>
 
 			<div className="ml-auto">
-				{bigintToFixed(asset.balance, { decimals: asset.decimals })}
+				{bigintToFixed(asset.balance, { decimals: asset.decimals, ceil: true, display: 4 })}
 			</div>
 		</div>
 	);

@@ -8,9 +8,6 @@ import { Icons } from "@/components/ui/icons";
 import { env } from "@/env";
 import Plausible from "plausible-tracker";
 import { Wallet } from "@/features/wallet";
-import { useChain } from "@cosmos-kit/react";
-import useWallet from "@/hooks/useWallet";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
 import { NoSpaces } from "@/features/spaces";
 import cn from "clsx";
@@ -19,6 +16,10 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
+import { useState, useEffect, useMemo } from "react";
+import { useConnectWallet } from "@web3-onboard/react";
+import { toBech32 } from "@cosmjs/encoding";
+import { toBytes } from "viem";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -29,38 +30,35 @@ const { enableAutoPageviews } = Plausible();
 enableAutoPageviews();
 
 export function Root() {
-	const { connectToWallet, signOut } = useWallet();
-	const { status, address } = useChain(env.cosmoskitChainName);
+	const [{ wallet }] = useConnectWallet();
+	const account = wallet?.accounts?.[0];
+	const address = account?.address;
+	const cosmosAddress = useMemo(() => address ? toBech32("warden", toBytes(address)) : undefined, [address]);
 	const { spaceId, setSpaceId } = useSpaceId();
 
+	const [chainId, setChainId] = useState<string>("");
+	const [spacewardEnv, setSpacewardEnv] = useState<string>("");
+	const [maintenance, setMaintenance] = useState<boolean>(false);
+
+	useEffect(() => {
+		setChainId(env.chainId);
+		setSpacewardEnv(env.spacewardEnv);
+		setMaintenance(env.maintenance);
+	}, []);
+
 	const story = useStoryblok("config", { version: "published" });
+	const { useSpacesByOwner, isReady } = useQueryHooks();
 
-	const { address: connectedAddress } = useAddressContext();
-
-	if (
-		(status === "Connected" && !connectedAddress) ||
-		(address && address !== connectedAddress)
-	) {
-		connectToWallet(
-			() => null,
-			() => null,
-		);
-	}
-	if (status === "Disconnected" && address) {
-		signOut();
-	}
-
-	const { useSpacesByOwner } = useQueryHooks();
 	const { data: spacesQuery } = useSpacesByOwner({
 		request: {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			owner: address!,
+			owner: cosmosAddress!,
 			pagination: PageRequest.fromPartial({
 				limit: BigInt(100),
 			}),
 		},
 		options: {
-			enabled: !!address,
+			enabled: !!cosmosAddress && isReady,
 		},
 	});
 
@@ -83,26 +81,54 @@ export function Root() {
 		);
 	}
 
-	if (
-		(env.spacewardEnv === "production" &&
-			env.chainId === "chiado_10010-1") ||
-		(env.spacewardEnv === "production" && env.maintenance) ||
-		(env.spacewardEnv === "production" &&
-			story.content &&
-			story.content.maintenance)
-	) {
-		return (
-			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
-					<Icons.logo className="h-12 w-auto mb-10" />
-					<h1 className="text-2xl font-bold">Upgrade in progress</h1>
-					<p className="text-muted-foreground text-center">
-						We are currently upgrading SpaceWard to a new version.
-						Please check back later.
-					</p>
-				</div>
-			</ThemeProvider>
-		);
+	if (spacewardEnv === "production") {
+		// TODO: remove once chaido is live
+		if (chainId === "chiado_10010-1") {
+			return (
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+				>
+					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+						<Icons.logo className="h-12 w-auto mb-10" />
+						<h1 className="text-2xl font-bold">
+							Chiado Coming Soon
+						</h1>
+						<p className="text-muted-foreground text-center">
+							We are currently upgrading SpaceWard to a new
+							version. Please check back later.
+						</p>
+					</div>
+				</ThemeProvider>
+			);
+		}
+
+		// Maintenance mode enabled
+		if (
+			(typeof maintenance === "string" && maintenance === "true") ||
+			(typeof maintenance === "boolean" && maintenance) ||
+			(story && story.content && story.content.maintenance)
+		) {
+			return (
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+				>
+					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+						<Icons.logo className="h-12 w-auto mb-10" />
+						<h1 className="text-2xl font-bold">
+							Upgrade in progress
+						</h1>
+						<p className="text-muted-foreground text-center">
+							We are currently upgrading SpaceWard to a new
+							version. Please check back later.
+						</p>
+					</div>
+				</ThemeProvider>
+			);
+		}
 	}
 
 	return (
@@ -151,11 +177,11 @@ export function Root() {
 						<main
 							className={cn(
 								"pb-2 pt-0 md:pt-[60px] max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
-								spaceCount === 0 && "mx-2",
+								{ "mx-2 md:pt-0": !spaceCount }
 							)}
 						>
 							<SiteHeader />
-							{spaceCount === 0 ? <NoSpaces /> : <Outlet />}
+							{!spaceCount ? <NoSpaces /> : <Outlet />}
 							<Toaster />
 						</main>
 						{spaceCount !== 0 && <RightSidebar />}

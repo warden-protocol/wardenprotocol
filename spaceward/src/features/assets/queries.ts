@@ -1,24 +1,21 @@
 import { assets, chains } from "chain-registry";
-import { ethers } from "ethers";
 import { fromBech32, toBech32 } from "@cosmjs/encoding";
 import type { ExtendedHttpEndpoint, WalletManager } from "@cosmos-kit/core";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
-import multicallAbi from "@/contracts/eip155/multicall3Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import {
 	COSMOS_CHAINS,
 	COSMOS_PRICES,
-	EIP_155_NATIVE_PRICE_FEEDS,
 	ENABLED_ETH_CHAINS,
 	ERC20_TOKENS,
-	MULTICALL3_ADDRESS,
 } from "@/config/tokens";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
-import { getAbiItem, getCosmosChain, getInterface } from "./util";
+import { getCosmosChain } from "./util";
+import { getContract, isAddress } from "viem";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -195,40 +192,28 @@ const eip155NativeBalanceQuery = ({
 		"native",
 	],
 	queryFn: async (): Promise<BalanceEntry> => {
-		if (!address) {
+		if (!address || !isAddress(address)) {
 			throw new Error("Address is required");
 		}
 
 		const { provider, tokenSymbol: token } = getProvider(chainName);
 		const slinkyPrice = prices?.[token];
-		const priceFeed = EIP_155_NATIVE_PRICE_FEEDS[chainName];
 
 		// fixme remove chainlink pricefeed when all tokens are in slinky
-		const priceFeedContract =
-			priceFeed && !slinkyPrice
-				? new ethers.Contract(
-						priceFeed,
-						aggregatorV3InterfaceABI,
-						provider,
-					)
-				: undefined;
 
-		const balance = await provider.getBalance(address);
-		const network = await provider.getNetwork();
+		const balance = await provider.getBalance({ address });
+		const network = provider.chain;
 
 		const price: bigint = slinkyPrice
 			? BigInt(slinkyPrice.price?.price ?? 0)
-			: ((priceFeedContract
-					? await priceFeedContract.latestRoundData()
-					: undefined
-				)?.answer ?? BigInt(0));
+			: BigInt(0);
 
 		const priceDecimals = slinkyPrice ? Number(slinkyPrice.decimals) : 8;
 
 		return {
 			address,
 			balance,
-			chainId: network.chainId.toString(),
+			chainId: network.id.toString(),
 			chainName,
 			decimals: 18,
 			price,
@@ -244,17 +229,6 @@ const eip155NativeBalanceQuery = ({
 	staleTime: 15000,
 	enabled: Boolean(address) && enabled,
 });
-
-const erc20BalanceOf = getAbiItem(erc20Abi, "balanceOf");
-const erc20Decimals = getAbiItem(erc20Abi, "decimals");
-const erc20Symbol = getAbiItem(erc20Abi, "symbol");
-const erc20Name = getAbiItem(erc20Abi, "name");
-const erc20Interface = new ethers.Interface([
-	getInterface(erc20BalanceOf),
-	getInterface(erc20Decimals),
-	getInterface(erc20Symbol),
-	getInterface(erc20Name),
-]);
 
 const eip155ERC20BalanceQuery = ({
 	enabled,
@@ -279,141 +253,53 @@ const eip155ERC20BalanceQuery = ({
 		`erc20:${token}`,
 	],
 	queryFn: async (): Promise<BalanceEntry> => {
-		if (!address || !token) {
+		if (!address || !isAddress(address) || !token || !isAddress(token)) {
 			throw new Error("Address and token are required");
 		}
 
 		const { provider } = getProvider(chainName);
 
-		const multicall = new ethers.Contract(
-			MULTICALL3_ADDRESS,
-			multicallAbi,
-			provider,
-		);
+		const contract = getContract({
+			address: token,
+			abi: erc20Abi,
+			client: provider,
+		});
 
-		// const contract = new ethers.Contract(token, erc20Abi, provider);
-		const balanceCall = {
-			target: token,
-			allowFailure: true,
-			callData: erc20Interface.encodeFunctionData("balanceOf", [address]),
-		};
+		const [balance, decimals, symbol, name] = await Promise.all([
+			contract.read.balanceOf([address]),
+			contract.read.decimals(),
+			contract.read.symbol(),
+			contract.read.name(),
+		]);
 
-		const decimalsCall = {
-			target: token,
-			allowFailure: true,
-			callData: erc20Interface.encodeFunctionData("decimals", []),
-		};
+		const network = provider.chain;
+		const slinkyPrice = prices?.[symbol];
 
-		const symbolCall = {
-			target: token,
-			allowFailure: true,
-			callData: erc20Interface.encodeFunctionData("symbol", []),
-		};
-
-		const nameCall = {
-			target: token,
-			allowFailure: true,
-			callData: erc20Interface.encodeFunctionData("name", []),
-		};
-
-		type Aggregate3Response = { success: boolean; returnData: string };
-
-		const resolverResults: Aggregate3Response[] =
-			await multicall.aggregate3.staticCall([
-				balanceCall,
-				decimalsCall,
-				symbolCall,
-				nameCall,
-			]);
-
-		const [balanceData, decimalsData, symbolData, nameData] =
-			resolverResults;
-
-		try {
-			const balance = balanceData.success
-				? erc20Interface.decodeFunctionResult(
-						"balanceOf",
-						balanceData.returnData,
-					)[0]
+		const price: bigint = stablecoin
+			? BigInt("100000000")
+			: slinkyPrice
+				? BigInt(slinkyPrice.price?.price ?? 0)
 				: BigInt(0);
 
-			const decimals = decimalsData.success
-				? erc20Interface.decodeFunctionResult(
-						"decimals",
-						decimalsData.returnData,
-					)[0]
-				: BigInt(0);
+		const priceDecimals = stablecoin
+			? 8
+			: slinkyPrice
+				? Number(slinkyPrice.decimals)
+				: 8;
 
-			const symbol = symbolData.success
-				? erc20Interface.decodeFunctionResult(
-						"symbol",
-						symbolData.returnData,
-					)[0]
-				: "";
-
-			const name = nameData.success
-				? erc20Interface.decodeFunctionResult(
-						"name",
-						nameData.returnData,
-					)[0]
-				: "";
-
-			const network = await provider.getNetwork();
-			const slinkyPrice = prices?.[symbol];
-
-			// fixme remove chainlink pricefeed when all tokens are in slinky
-			const priceFeedContract =
-				priceFeed && !slinkyPrice
-					? new ethers.Contract(
-							priceFeed,
-							aggregatorV3InterfaceABI,
-							provider,
-						)
-					: undefined;
-
-			const price: bigint = stablecoin
-				? BigInt("100000000")
-				: slinkyPrice
-					? BigInt(slinkyPrice.price?.price ?? 0)
-					: ((priceFeedContract
-							? await priceFeedContract.latestRoundData()
-							: undefined
-						)?.answer ?? BigInt(0));
-
-			const priceDecimals = stablecoin
-				? 8
-				: slinkyPrice
-					? Number(slinkyPrice.decimals)
-					: 8;
-
-			return {
-				address,
-				balance,
-				chainId: network.chainId.toString(),
-				chainName,
-				decimals: Number(decimals),
-				erc20Token: token,
-				price,
-				priceDecimals,
-				title: name,
-				token: symbol,
-				type: "eip155:erc20",
-			};
-		} catch (e) {
-			console.error(e);
-
-			console.warn("incorrect token data", {
-				balanceData,
-				decimalsData,
-				symbolData,
-				nameData,
-				chainName,
-				token,
-				address,
-			});
-
-			throw e;
-		}
+		return {
+			address,
+			balance,
+			chainId: network.id.toString(),
+			chainName,
+			decimals: Number(decimals),
+			erc20Token: token,
+			price,
+			priceDecimals,
+			title: name,
+			token: symbol,
+			type: "eip155:erc20",
+		};
 	},
 	refetchInterval: Infinity,
 	staleTime: 15000,
@@ -598,19 +484,19 @@ const fiatPriceQuery = (enabled: boolean, name: string) => {
 
 	const { provider } = getProvider("mainnet");
 
-	const priceFeedContract = new ethers.Contract(
-		FIAT_PRICE_FEEDS[name],
-		aggregatorV3InterfaceABI,
-		provider,
-	);
+	const contract = getContract({
+		address: FIAT_PRICE_FEEDS[name],
+		abi: aggregatorV3InterfaceABI,
+		client: provider,
+	});
 
 	return {
 		enabled,
 		queryKey: ["fiatPrice", name],
 		queryFn: async () => {
 			const price: bigint =
-				(await priceFeedContract.latestRoundData())?.answer ??
-				BigInt(0);
+				(await contract.read.latestRoundData())?.[1] ?? BigInt(0);
+			BigInt(0);
 
 			return {
 				name,

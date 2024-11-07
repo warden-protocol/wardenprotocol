@@ -9,6 +9,7 @@ on:
       - "cmd/faucet/**"
       - "cmd/wardend/**"
       - "warden/**"
+      - "precompiles/**"
     tags:
       - "faucet/v*"
       - "wardend/v*"
@@ -17,6 +18,7 @@ on:
       - "cmd/faucet/**"
       - "cmd/wardend/**"
       - "warden/**"
+      - "precompiles/**"
 
 env:
   modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/..."

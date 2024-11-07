@@ -18,7 +18,7 @@ After you execute the WASM contract on Warden, it'll be able to burn tokens from
 Note that this guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
 
 :::tip
-Axelar GMP will be soon available on our new testnet – [Chiado](/operate-a-node/chiado-testnet/join-chiado). Stay tuned in for updates!
+Axelar GMP will be soon available on our new testnet – [Chiado](/operate-a-node/chiado-testnet/chiado-overview). Stay tuned in for updates!
 :::
 
 ## 1. Deploy an EVM contract on Sepolia
@@ -45,7 +45,7 @@ Before you start, complete the following prerequisites:
 
 ### 1.1. Set up the project
 
-1. Create a new directory and initialize a Truffle project:
+1. Create a new directory `/burnable-token` and initialize a Truffle project:
 
    ```bash
    mkdir burnable-token
@@ -65,16 +65,16 @@ Before you start, complete the following prerequisites:
 
 3. In the root directory, create a file named `.env` to store your private key and the Infura project ID:
 
-   ```.env
+   ```ini title="/burnable-token/.env"
    PRIVATE_KEY=my-private-key
    INFURA_PROJECT_ID=my-infura-project-id
    ```
 
 ### 1.2. Add the contract
 
-1. Create a file named `contracts/BurnableToken.sol`. Paste the following contract code:
+1. In the `/contracts` directory, create a new file `BurnableToken.sol` with the following contents:
 
-```solidity
+```solidity title="/burnable-token/contracts/BurnableToken.sol"
 
     // SPDX-License-Identifier: MIT
     
@@ -143,9 +143,9 @@ Before you start, complete the following prerequisites:
 
 ### 1.3. Configure Truffle
 
-Update the `truffle-config.js` file to include the Sepolia network:
+In the root directory, update the `truffle-config.js` file to include the Sepolia network:
 
-```javascript
+```javascript title="/burnable-token/truffle-config.js"
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -173,9 +173,11 @@ module.exports = {
 
 ### 1.4. Create a migration script
 
-Now you need to add a migration script that will deploy the contract and mint the initial supply to the contract address. Create a file named `migrations/2_deploy_contracts.js` with the following contents:
+Now you need to add a migration script that will deploy the contract and mint the initial supply to the contract address.
 
-```javascript
+In `/migrations`, create a new file `migrations/2_deploy_contracts.js` with the following contents:
+
+```javascript title="/burnable-token/migrations/2_deploy_contracts.js"
 const BurnableToken = artifacts.require("BurnableToken");
 
 module.exports = async function (deployer, network, accounts) {
@@ -184,7 +186,7 @@ module.exports = async function (deployer, network, accounts) {
 
   // Define the initial supply – for example, 100 tokens with 18 decimals
   const initialSupply = web3.utils.toWei("100000000", "ether"); // Mints 100M tokens
-
+/burnable-token
   // Deploy the BurnableToken contract with the required constructor parameters
   await deployer.deploy(
     BurnableToken,
@@ -288,122 +290,126 @@ Before you start, do the following:
 
 ### 2.1. Create a WASM contract
 
-Start by creating a WASM contract that will burn tokens on the EVM contract.
+Start by creating a WASM contract that will burn tokens on the EVM contract:
 
-Create a file named `src/contract.rs` with the code below or update the existing contract file in [your CosmWasm project](deploy-a-wasm-contract#1-create-a-cosmwasm-project). Set `destination_address` to the EVM contract address from [Step 1.6](#16-deploy-the-contract). Optionally, modify the code to let users input the address during execution.
+1. Create a CosmWasm project. You can [use a template](deploy-a-wasm-contract#2-create-a-cosmwasm-project).
 
-```rust
-#[cfg(not(feature = "library"))]
-// Import standard CosmWasm libraries
-use cosmwasm_std::{Uint256, DepsMut, Env, MessageInfo, Response};
-// Import a library for Ethereum ABI encoding
-use ethabi::{encode, Token};
-// Import custom modules
-use serde_json_wasm::to_string;
-use crate::error::ContractError;
-use crate::msg::*;
+2. In the `/src` directory of your project, create a `contract.rs` file with the code below. If you've used a template, update the existing file.
 
-// This function is called when the contract is first deployed
-// It currently doesn't perform any initialization, just returns an empty response
-pub fn instantiate(
-    _deps: DepsMut,
-    _env: Env,
-    _info: MessageInfo,
-    _msg: InstantiateMsg,
-) -> Result<Response, ContractError> {
-    Ok(Response::new())
-}
-
-// This function is the main entry point for contract execution
-// It matches on the `ExecuteMsg` enum, currently only handling `SendMessageEvm`
-pub fn execute(
-    deps: DepsMut,
-    env: Env,
-    info: MessageInfo,
-    msg: ExecuteMsg,
-) -> Result<Response, ContractError> {
-    match msg {
-        ExecuteMsg::SendMessageEvm { amount_to_burn } => {
-            exec::send_message_evm(deps, env, info, amount_to_burn)
-        }
-    }
-}
-
-mod exec {
-    use super::*;
-    use ethabi::ethereum_types::U256;
-
-    // This function creates an Ethereum ABI payload for burning tokens
-    fn create_burn_payload(amount: Uint256) -> Result<Vec<u8>, ContractError> {
-        // Convert the Uint256 amount to burn to a big-endian byte array
-        let amount_bytes = amount.to_be_bytes();
-        // Convert the big-endian byte array to a U256
-        let amount_u256 = U256::from_big_endian(&amount_bytes);
-        // Wrap the amount in a token
-        let amount_token = Token::Uint(amount_u256);
-        // Encode the amount as an Ethereum ABI payload
-        Ok(encode(&[amount_token]))
-    }
-
-    // This function burns tokens on an EVM chain
-    // It sends a message through Axelar GMP to a given chain and address
-    pub fn send_message_evm(
-        _deps: DepsMut,
-        env: Env,
-        info: MessageInfo,
-        amount_to_burn: Uint256,  // The amount to burn
-    ) -> Result<Response, ContractError> {
-        
-        // Hardcode the destination chain and address
-        let destination_chain = "ethereum-sepolia".to_string();
-        let destination_address = "0x5388dE880a16Ba9602746F3799E850E78148cd57".to_string();
-
-        // Create a burn payload
-        let payload = create_burn_payload(amount_to_burn)?;
-
-        // Extract the coin sent with the transaction for gas fees
-        // It must contain only 1 token type
-        let coin: cosmwasm_std::Coin = cw_utils::one_coin(&info).unwrap();
-        
-        // Construct a GMP message with the hardcoded destination values
-        // Include the payload and fee information
-        let gmp_message: GmpMessage = GmpMessage {
-            destination_chain,
-            destination_address,
-            payload,
-            type_: 1,
-            fee: Some(Fee {
-                amount: coin.amount.to_string(),
-                recipient: "axelar1zl3rxpp70lmte2xr6c4lgske2fyuj3hupcsvcd".to_string(),
-            }),
-        };
-    
-        // Construct an IBC transfer message
-        // It'll send the GMP message to the Axelar network
-        let ibc_message = crate::ibc::MsgTransfer {
-            source_port: "transfer".to_string(),
-            source_channel: "channel-1".to_string(), // The Warden testnet
-            token: Some(coin.into()),
-            sender: env.contract.address.to_string(),
-            receiver: "axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5"
-                .to_string(),
-            timeout_height: None,
-            timeout_timestamp: Some(env.block.time.plus_seconds(604_800u64).nanos()),
-            memo: to_string(&gmp_message).unwrap(),
-        };
-    
-        Ok(Response::new().add_message(ibc_message))
-    }
-}   
-```
+   Set `destination_address` to the EVM contract address from [Step 1.6](#16-deploy-the-contract). Optionally, modify the code to let users input the address during execution.
+   
+   ```rust title="/my-wasm-project/src/contract.rs"
+   #[cfg(not(feature = "library"))]
+   // Import standard CosmWasm libraries
+   use cosmwasm_std::{Uint256, DepsMut, Env, MessageInfo, Response};
+   // Import a library for Ethereum ABI encoding
+   use ethabi::{encode, Token};
+   // Import custom modules
+   use serde_json_wasm::to_string;
+   use crate::error::ContractError;
+   use crate::msg::*;
+   
+   // This function is called when the contract is first deployed
+   // It currently doesn't perform any initialization, just returns an empty response
+   pub fn instantiate(
+       _deps: DepsMut,
+       _env: Env,
+       _info: MessageInfo,
+       _msg: InstantiateMsg,
+   ) -> Result<Response, ContractError> {
+       Ok(Response::new())
+   }
+   
+   // This function is the main entry point for contract execution
+   // It matches on the `ExecuteMsg` enum, currently only handling `SendMessageEvm`
+   pub fn execute(
+       deps: DepsMut,
+       env: Env,
+       info: MessageInfo,
+       msg: ExecuteMsg,
+   ) -> Result<Response, ContractError> {
+       match msg {
+           ExecuteMsg::SendMessageEvm { amount_to_burn } => {
+               exec::send_message_evm(deps, env, info, amount_to_burn)
+           }
+       }
+   }
+   
+   mod exec {
+       use super::*;
+       use ethabi::ethereum_types::U256;
+   
+       // This function creates an Ethereum ABI payload for burning tokens
+       fn create_burn_payload(amount: Uint256) -> Result<Vec<u8>, ContractError> {
+           // Convert the Uint256 amount to burn to a big-endian byte array
+           let amount_bytes = amount.to_be_bytes();
+           // Convert the big-endian byte array to a U256
+           let amount_u256 = U256::from_big_endian(&amount_bytes);
+           // Wrap the amount in a token
+           let amount_token = Token::Uint(amount_u256);
+           // Encode the amount as an Ethereum ABI payload
+           Ok(encode(&[amount_token]))
+       }
+   
+       // This function burns tokens on an EVM chain
+       // It sends a message through Axelar GMP to a given chain and address
+       pub fn send_message_evm(
+           _deps: DepsMut,
+           env: Env,
+           info: MessageInfo,
+           amount_to_burn: Uint256,  // The amount to burn
+       ) -> Result<Response, ContractError> {
+           
+           // Hardcode the destination chain and address
+           let destination_chain = "ethereum-sepolia".to_string();
+           let destination_address = "0x5388dE880a16Ba9602746F3799E850E78148cd57".to_string();
+   
+           // Create a burn payload
+           let payload = create_burn_payload(amount_to_burn)?;
+   
+           // Extract the coin sent with the transaction for gas fees
+           // It must contain only 1 token type
+           let coin: cosmwasm_std::Coin = cw_utils::one_coin(&info).unwrap();
+           
+           // Construct a GMP message with the hardcoded destination values
+           // Include the payload and fee information
+           let gmp_message: GmpMessage = GmpMessage {
+               destination_chain,
+               destination_address,
+               payload,
+               type_: 1,
+               fee: Some(Fee {
+                   amount: coin.amount.to_string(),
+                   recipient: "axelar1zl3rxpp70lmte2xr6c4lgske2fyuj3hupcsvcd".to_string(),
+               }),
+           };
+       
+           // Construct an IBC transfer message
+           // It'll send the GMP message to the Axelar network
+           let ibc_message = crate::ibc::MsgTransfer {
+               source_port: "transfer".to_string(),
+               source_channel: "channel-1".to_string(), // The Warden testnet
+               token: Some(coin.into()),
+               sender: env.contract.address.to_string(),
+               receiver: "axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5"
+                   .to_string(),
+               timeout_height: None,
+               timeout_timestamp: Some(env.block.time.plus_seconds(604_800u64).nanos()),
+               memo: to_string(&gmp_message).unwrap(),
+           };
+       
+           Ok(Response::new().add_message(ibc_message))
+       }
+   }   
+   ```
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll add files with supporting code for your contract or update the existing files in your [CosmWasm project](deploy-a-wasm-contract#1-create-a-cosmwasm-project).
+In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
 
-1. Create a file named `src/msg.rs` with the following code:
+1. Create a file named `msg.rs` with the following code:
    
-   ```rust
+   ```rust title="/my-wasm-project/src/msg.rs"
    use cosmwasm_schema::cw_serde;
    use cosmwasm_std::Uint256;
    
@@ -445,9 +451,9 @@ In the following steps, you'll add files with supporting code for your contract 
    }
    ```
 
-2. Create a file named `src/error.rs` with the following code:
+2. Create a file named `error.rs` with the following code:
    
-   ```rust
+   ```rust title="/my-wasm-project/src/error.rs"
    use cosmwasm_std::StdError;
    use thiserror::Error;
    
@@ -464,9 +470,9 @@ In the following steps, you'll add files with supporting code for your contract 
    }
    ```
 
-3. Create a file named `src/helpers.rs` file with the following code:
+3. Create a file named `helpers.rs` file with the following code:
 
-   ```rust
+   ```rust title="/my-wasm-project/src/helpers.rs"
    use schemars::JsonSchema;
    use serde::{Deserialize, Serialize};
    
@@ -496,9 +502,9 @@ In the following steps, you'll add files with supporting code for your contract 
    }
    ```
 
-4. Create a file named `src/ibc.rs` with the following code:
+4. Create a file named `ibc.rs` with the following code:
    
-   ```rust
+   ```rust title="/my-wasm-project/src/ibc.rs"
    use osmosis_std_derive::CosmwasmExt;
    #[derive(
        Clone,
@@ -556,9 +562,9 @@ In the following steps, you'll add files with supporting code for your contract 
    }
    ```
 
-5. Create a file named `src/lib.rs` with the following code:
+5. Create a file named `lib.rs` with the following code:
    
-   ```rust
+   ```rust title="/my-wasm-project/src/lib.rs"
    pub mod contract;
    mod error;
    mod ibc;
@@ -596,9 +602,9 @@ In the following steps, you'll add files with supporting code for your contract 
    }
    ```
 
-6. To define the state management logic, Create a file named `src/state.rs` with the following code:
+6. Create a file named `state.rs` with the following code:
    
-   ```rust
+   ```rust title="/my-wasm-project/src/state.rs"
    use cosmwasm_schema::cw_serde;
    use cw_storage_plus::Item;
    
@@ -613,7 +619,7 @@ In the following steps, you'll add files with supporting code for your contract 
 
 ### 2.3. Compile & optimize
 
-Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimize](deploy-a-wasm-contract#4-optimize-the-code) your contract.
+Now you can [compile](deploy-a-wasm-contract#4-compile-the-contract) and [optimize](deploy-a-wasm-contract#5-optimize-the-code) your contract.
 
 ### 2.4. Create a Warden account
 
@@ -659,8 +665,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    You can verify that your account is funded by running the command below. Specify the custom key name you chose before.
 
    ```bash
-   wardend query bank balances my-key-name \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query bank balances my-key-name --node https://rpc.buenavista.wardenprotocol.org:443
    ```
 
 ### 2.5. Deploy on Buenavista
@@ -670,20 +675,21 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    ```bash
    wardend tx wasm store target/wasm32-unknown-unknown/release/burn_tokens.wasm \
      --from my-key-name \
-     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward  -y \
+     --gas auto \
+     --gas-adjustment 1.5 \
+     --gas-prices 0.025uward  -y \
      --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
    :::tip
-   Buenavista uses the `cosmos.crypto.secp256k1` module for cryptographic operations. If your key is created with the `ethermint.crypto.v1.ethsecp256` module, downgrade your node to `v0.4.1` and create a key with `cosmos.crypto.secp256k1`.
+   Buenavista uses the `cosmos.crypto.secp256k1` module for cryptographic operations. If your key is created with the `ethermint.crypto.v1.ethsecp256k1` module, downgrade your node to `v0.4.1` and create a key with `cosmos.crypto.secp256k1`.
    :::
 
 2. Get the code ID that identifies your WASM contract:
    
    ```bash
-   wardend query wasm list-code \
-     --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query wasm list-code --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
    Note down `code_id` from the output.
@@ -694,8 +700,11 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 
    ```bash
    wardend tx wasm instantiate 1 '{}' \
-     --from my-key-name --label "Burn Tokens" \
-     --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward \
+     --from my-key-name \
+     --label "Burn Tokens" \
+     --gas auto \
+     --gas-adjustment 1.5 \
+     --gas-prices 0.025uward \
      --no-admin -y \
      --chain-id buenavista-1 \
      --node https://rpc.buenavista.wardenprotocol.org:443
@@ -704,8 +713,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
 4. To get the contract address, run the following command. Replace `1` with the actual `code_id`.
    
    ```bash
-   wardend query wasm list-contract-by-code 1 \
-    --node https://rpc.buenavista.wardenprotocol.org:443
+   wardend query wasm list-contract-by-code 1 --node https://rpc.buenavista.wardenprotocol.org:443
    ```
    
 5. Use the command below to execute your contract.
@@ -713,11 +721,13 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    Before you proceed, replace `my-contract-address` with your contract address and `my-key-name` with your key name. The `--amount` flag specifies the gas fee in the Axelar network – make sure you have enough AXL.
    
    ```bash
-   wardend tx wasm execute my-contract-address \
-    '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
+   wardend tx wasm execute my-contract-address '{"send_message_evm": {"amount_to_burn": "1000000"}}' \
     --from my-key-name \
     --amount 3000000ibc/0E1517E2771CA7C03F2ED3F9BAECCAEADF0BFD79B89679E834933BC0F179AD98 \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.025uward -y \
+    --gas auto \
+    --gas-adjustment 1.5 \
+    --gas-prices 0.025uward \
+    -y \
     --chain-id buenavista-1 \
     --node https://rpc.buenavista.wardenprotocol.org:443
    ```

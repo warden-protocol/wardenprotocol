@@ -71,10 +71,10 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
   
    ```bash
-   git clone --depth 1 --branch v0.4.2 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
-   just build
-   just install
+   just wardend build
+   just wardend install
    wardend init my-chain-moniker
    ```
 

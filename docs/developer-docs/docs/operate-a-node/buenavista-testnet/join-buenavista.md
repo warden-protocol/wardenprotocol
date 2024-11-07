@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import PersistentPeers from "@site/src/components/PersistentPeers";
@@ -7,24 +7,12 @@ import PersistentPeers from "@site/src/components/PersistentPeers";
 # Join Buenavista
 
 :::warning
-We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/join-chiado). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/chiado-overview). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
 :::
 
 ## Overview
 
-This tutorial explains how to run the Warden binary, `wardend`, and join the **Buenavista testnet**:
-
-- The chain ID in queries: `buenavista-1`
-- Endpoints: [networks repository > buenavista](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista)
-- The current `wardend` version: **v0.4.2**
-
-## Version history
-
-| Release | Upgrade block height | Upgrade date |
-| ------- | -------------------- | ------------ |
-| v0.3.0  | genesis              |              |
-| v0.4.1  | 1675700              | Aug 13, 2024 |
-| v0.4.2  | 1965400              | Sep 2, 2024  |
+This tutorial explains how to run the Warden binary, `wardend`, and join the **Buenavista testnet**.
 
 ## Prerequisites
 

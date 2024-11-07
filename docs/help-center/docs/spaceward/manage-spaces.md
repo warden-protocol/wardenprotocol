@@ -12,7 +12,7 @@ Note that a Space can have multiple [owners](manage-owners).
 
 ## Create your first Space
 
-After you connect a wallet for the first time, SpaceWard will prompt you to create your first Space, as shown in the [Quick start guide](chiado-quick-start).
+After you connect a wallet for the first time, SpaceWard will prompt you to create your first Space, as shown in the [Quick start guide](quick-start).
 
 To check an overview of your Space, click **Dashboard** in the left menu. To unlock more features, [request a key](manage-keys#request-a-key).
 

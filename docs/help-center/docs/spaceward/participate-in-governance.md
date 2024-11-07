@@ -8,7 +8,7 @@ sidebar_position: 11
 
 After [staking](stake-ward) your [WARD tokens](https://docs.wardenprotocol.org/tokens/ward-token/ward), you can **participate in governance**, which means voting on new proposals for the Warden protocol. It's possible only while your tokens are bonded (staked).
 
-Your [voting power](#voting-power) depends on the total amount of staked WARD. The more you stake, the stronger is your voice!
+Your voting power depends on the total amount of staked WARD. The more you stake, the stronger is your voice!
 
 ## Vote
 

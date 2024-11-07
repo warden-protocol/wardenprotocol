@@ -278,14 +278,14 @@ Store the contract address for convenience
 - Used for reading data from the blockchain
 - Doesn't modify state
 - Free (no gas needed)
-- Format: cast call <contract-address> "<function-signature>" [arguments]
+- Format: cast call `<contract-address>` `"<function-signature>"` [arguments]
 
 `cast send`
 
 - Used for sending transactions that modify blockchain state
 - Requires gas
 - Requires signing with a private key
-- Format: cast send <contract-address> "<function-signature>" [arguments] --private-key <key>
+- Format: cast send `<contract-address>` `"<function-signature>"` [arguments] --private-key `<key>`
 
 **Reading Transaction Results**
 When you send a transaction, check these fields in the receipt:

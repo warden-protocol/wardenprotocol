@@ -13,6 +13,7 @@ contract BasicOrder {
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
     error ConditionNotMet();
+    error ExecutedError();
     event Executed();
 
     constructor(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees) {
@@ -58,6 +59,10 @@ contract BasicOrder {
         uint256 chainId,
         uint256 value
     ) external returns (bool) {
+        if(executed) {
+            revert ExecutedError();
+        }
+        
         if (!_canExecute()) {
             revert ConditionNotMet();
         }
@@ -115,5 +120,9 @@ contract BasicOrder {
      */
     function calledByAIService() external view returns (bool) {
         return false;
+    }
+
+    function isExecuted() external view returns (bool) {
+        return executed;
     }
 }

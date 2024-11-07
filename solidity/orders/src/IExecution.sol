@@ -16,4 +16,6 @@ interface IExecution {
     function calledByAIService() external view returns (bool);
 
     function setByAIService(bytes calldata data) external returns (bool);
+
+    function isExecuted() external view returns (bool);
 }

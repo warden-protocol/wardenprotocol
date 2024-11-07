@@ -7,14 +7,16 @@ const schema: JSONSchemaType<Env> = {
   required: [
     'EVMOS_NODE_RPC',
     'EVMOS_REGISTRY_ADDRESS',
-    'ETHEREUM_EVENTS_POLLING_BLOCKS',
-    'ETHEREUM_EVENTS_POLLING_INTERVAL_MSEC',
+    'EVMOS_EVENTS_POLLING_BLOCKS',
+    'EVMOS_EVENTS_REGISTRY_START_POLLING_BLOCK',
+    'EVMOS_EVENTS_POLLING_INTERVAL_MSEC',
   ],
   properties: {
     EVMOS_NODE_RPC: { type: 'string' },
     EVMOS_REGISTRY_ADDRESS: { type: 'string' },
-    ETHEREUM_EVENTS_POLLING_BLOCKS: { type: 'number' },
-    ETHEREUM_EVENTS_POLLING_INTERVAL_MSEC: { type: 'number' },
+    EVMOS_EVENTS_POLLING_BLOCKS: { type: 'number' },
+    EVMOS_EVENTS_REGISTRY_START_POLLING_BLOCK: { type: 'number' },
+    EVMOS_EVENTS_POLLING_INTERVAL_MSEC: { type: 'number' },
   },
 };
 

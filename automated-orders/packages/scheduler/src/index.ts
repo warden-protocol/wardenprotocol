@@ -10,10 +10,16 @@ async function main() {
 
   const processor = new OrderProcessor(
     evmos,
-    evmos.pollEvents.bind(config.EVMOS_REGISTRY_ADDRESS, 0n, OrderCreatedAbi, {
-      pollingBlocks: BigInt(config.ETHEREUM_EVENTS_POLLING_BLOCKS),
-      pollingIntervalMsec: config.ETHEREUM_EVENTS_POLLING_INTERVAL_MSEC,
-    }),
+    evmos.pollEvents.bind(
+      evmos,
+      config.EVMOS_REGISTRY_ADDRESS,
+      config.EVMOS_EVENTS_REGISTRY_START_POLLING_BLOCK,
+      OrderCreatedAbi,
+      {
+        pollingBlocks: BigInt(config.EVMOS_EVENTS_POLLING_BLOCKS),
+        pollingIntervalMsec: config.EVMOS_EVENTS_POLLING_INTERVAL_MSEC,
+      },
+    ),
   ).start();
 
   await Promise.all([processor]);

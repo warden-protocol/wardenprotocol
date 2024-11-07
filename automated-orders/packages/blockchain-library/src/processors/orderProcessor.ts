@@ -1,22 +1,31 @@
 import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 
 import { EvmClient } from '../clients/evm.js';
-import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
+import { OrderCreated } from '../types/registry/events.js';
+import { CanExecuteOrderAbi } from '../types/registry/functions.js';
 import { Processor } from './processor.js';
 
-export class OrderProcessor extends Processor<INewSignatureRequest> {
-
-
+export class OrderProcessor extends Processor<OrderCreated> {
   constructor(
     private evm: EvmClient,
-    generator: () => AsyncGenerator<INewSignatureRequest, unknown, unknown>,
+    generator: () => AsyncGenerator<OrderCreated, unknown, unknown>,
   ) {
     super(generator);
   }
 
-  async handle(data: INewSignatureRequest): Promise<boolean> {
+  async handle(data: OrderCreated): Promise<boolean> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
+
+      const exist = this.evm.isContract(data.returnValues.order);
+
+      if (!exist) {
+        return true;
+      }
+
+      const canExecute = await this.evm.callView(data.returnValues.order, CanExecuteOrderAbi, []);
+
+      logInfo(`${canExecute}`);
 
       // TODO: implementation
 

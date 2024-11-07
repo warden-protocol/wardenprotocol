@@ -5,5 +5,8 @@ async function main() {
 }
 
 main()
-  .catch((e) => logError(e))
+  .catch((e) => {
+    logError(e);
+    process.exit(1);
+  })
   .finally(() => process.exit());

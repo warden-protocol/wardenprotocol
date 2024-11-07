@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@warden-automated-orders/utils": "1.0.0",
+    "@warden-automated-orders/blockchain": "1.0.0",
     "dotenv": "^16.4.5",
     "env-schema": "^6.0.0"
   },

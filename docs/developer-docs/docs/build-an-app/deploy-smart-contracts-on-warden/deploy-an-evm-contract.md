@@ -176,28 +176,36 @@ In the following steps, we're going to deploy this contract without modification
 
 ## 4. Compile and deploy the contract
 
-1. Export your private key from [Step 1](#1-prepare-the-chain) and the RPC URL as environmental variables:
+1. Export your private key from [Step 1](#1-prepare-the-chain):
+
+   ```bash
+   export PRIVATE_KEY=my-private-key
+   ```
+   
+   :::warning
+   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions.
+   :::
+
+1. Export the RPC URL. Specify the standard localhost address or Chiado's EVM endpoint:
 
    <Tabs>
    <TabItem value="local" label="Local node">
    ```bash
-   export PRIVATE_KEY=my-private-key
    export RPC_URL=http://127.0.0.1:8545 
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
    ```bash
-   export PRIVATE_KEY=my-private-key
    export RPC_URL=https://evm.chiado.wardenprotocol.org
    ```
    </TabItem>
    </Tabs>
-   
+
    :::tip
-   If you're running a local chain and deploying the contract on different machines, you need to set your chain's host address as `RPC_URL`. To get the address, just execute `wardend status` on the machine hosting the chain. Otherwise, specify the standard localhost address or Chiado's EVM endpoint, as shown in the code samples above.
+   If you're running a local chain and deploying the contract on different machines, you need to specify your chain's host address. To get it, just execute `wardend status` on the machine hosting the chain.
    :::
 
-2. To compile and deploy the contract, run this command:
+3. To compile and deploy the contract, run this command:
 
    ```bash
    forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Counter.sol:Counter
@@ -211,7 +219,7 @@ In the following steps, we're going to deploy this contract without modification
    Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-3. Note down the value returned as `Deployed to` – that's your **contract address**.
+4. Note down the value returned as `Deployed to` – that's your **contract address**.
 
 ## 5. Verify the deployment
 

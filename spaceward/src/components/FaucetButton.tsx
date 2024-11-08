@@ -1,12 +1,16 @@
 import clsx from "clsx";
 import { env } from "@/env";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { Button } from "@/components/ui/button";
+import { useConnectWallet } from "@web3-onboard/react";
 
 function FaucetButton({ className }: { className?: string }) {
-	const { address } = useAddressContext();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 	const u = new URL(env.faucetURL);
-	u.searchParams.set("addr", address);
+
+	if (address) {
+		u.searchParams.set("addr", address);
+	}
 
 	return (
 		<Button

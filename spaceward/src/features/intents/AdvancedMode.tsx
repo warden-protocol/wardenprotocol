@@ -31,6 +31,8 @@ import {
 } from "./util/code";
 
 import type { CNode } from "./util/types";
+import { isAddress, toBytes } from "viem";
+import { toBech32 } from "@cosmjs/encoding";
 
 interface Result {
 	code: string;
@@ -343,6 +345,18 @@ export default function AdvancedMode({
 		arrNodes.length && !arrNodes.flatMap((node) => node.tokens).length,
 	);
 
+	const getCode = () => {
+		let code = input.shield?.value ?? "";
+
+		for (const address of addresses) {
+			if (isAddress(address)) {
+				code = code.replace(address, toBech32("warden", toBytes(address)));
+			}
+		}
+
+		return code;
+	}
+
 	return (
 		<div>
 			{!hideHeader ? (
@@ -405,7 +419,7 @@ export default function AdvancedMode({
 					>
 						{
 							/* fixme pass parenthesis parsing error at position */ error ||
-							error ? (
+								error ? (
 								<div
 									className={clsx(
 										"flex justify-center flex-col h-12 w-full px-3 cursor-pointer text",
@@ -420,9 +434,9 @@ export default function AdvancedMode({
 												error.type === "parseError"
 													? error.i
 													: getTokenPosition(
-															error.tokenIndex,
-															error.node,
-														);
+														error.tokenIndex,
+														error.node,
+													);
 
 											input.setPosition(position);
 										}
@@ -461,7 +475,7 @@ export default function AdvancedMode({
 			</form>
 
 			{children?.({
-				code: input.shield?.value ?? "",
+				code: getCode(),
 				error:
 					addresses.length && !warning
 						? error?.message

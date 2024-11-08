@@ -6,6 +6,7 @@ import { config } from './config/config.js';
 async function main() {
   const evmos = new EvmClient({
     rpcURL: config.EVMOS_NODE_RPC,
+    callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
   });
 
   const processor = new OrderProcessor(

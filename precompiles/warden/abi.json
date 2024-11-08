@@ -1905,6 +1905,11 @@
               "internalType": "struct Types.Coin[]",
               "name": "deductedKeychainFees",
               "type": "tuple[]"
+            },
+            {
+              "internalType": "int32",
+              "name": "broadcastType",
+              "type": "int32"
             }
           ],
           "internalType": "struct SignRequest",
@@ -1957,6 +1962,11 @@
         {
           "internalType": "int32",
           "name": "status",
+          "type": "int32"
+        },
+        {
+          "internalType": "int32",
+          "name": "broadcastType",
           "type": "int32"
         }
       ],
@@ -2015,6 +2025,11 @@
               "internalType": "struct Types.Coin[]",
               "name": "deductedKeychainFees",
               "type": "tuple[]"
+            },
+            {
+              "internalType": "int32",
+              "name": "broadcastType",
+              "type": "int32"
             }
           ],
           "internalType": "struct SignRequest[]",

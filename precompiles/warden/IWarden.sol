@@ -68,7 +68,7 @@ struct SignRequest {
     bytes result;
     bytes encryptionKey;
     Types.Coin[] deductedKeychainFees;
-    int32 type;
+    int32 broadcastType;
 }
 
 struct Space {

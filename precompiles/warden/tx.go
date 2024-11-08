@@ -6,6 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
+	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -365,8 +366,10 @@ func (p Precompile) tryVoteAsSender(
 		return nil
 	}
 
+	participant := wardencommon.Bech32StrFromAddress(caller)
+
 	_, err = msgServer.VoteForAction(ctx, &v1beta1.MsgVoteForAction{
-		Participant: caller.String(),
+		Participant: participant,
 		ActionId:    action.GetId(),
 		VoteType:    v1beta1.ActionVoteType_VOTE_TYPE_APPROVED,
 	})

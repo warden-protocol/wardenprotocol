@@ -12,7 +12,9 @@ import (
 	"sync"
 	"time"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/rs/zerolog"
 
 	"github.com/warden-protocol/wardenprotocol/cmd/faucet/pkg/config"
@@ -49,6 +51,7 @@ func execute(cmdString string) (Out, error) {
 	if err != nil {
 		return Out{}, fmt.Errorf("error getting stdout pipe: %w", err)
 	}
+
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		return Out{}, fmt.Errorf("error getting stderr pipe: %w", err)
@@ -202,7 +205,26 @@ func addressInBatch(batch []string, addr string) bool {
 	return false
 }
 
+func convertHexToBech32(hexAddr string) (string, error) {
+	if common.IsHexAddress(hexAddr) {
+		addr := common.HexToAddress(hexAddr).Bytes()
+		bech32Addr, err := sdk.Bech32ifyAddressBytes("warden", addr)
+		// 	addr, err = bech32.ConvertAndEncode("warden", []byte(addr))
+		if err != nil {
+			return "", fmt.Errorf(
+				"error converting hex address to bech32: %w",
+				err,
+			)
+		}
+		return bech32Addr, nil
+	}
+	return "", fmt.Errorf(
+		"error converting hex address to bech32: address is not hex",
+	)
+}
+
 func (f *Faucet) Send(addr string, force bool) (string, int, error) {
+	var err error
 	f.Lock()
 	defer f.Unlock()
 
@@ -210,6 +232,14 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		return "",
 			http.StatusTooManyRequests,
 			fmt.Errorf("no tokens available, please come back tomorrow")
+	}
+
+	// if the address is a hex string, convert it to bech32
+	if strings.HasPrefix(addr, "0x") {
+		addr, err = convertHexToBech32(addr)
+		if err != nil {
+			return "", http.StatusUnprocessableEntity, err
+		}
 	}
 
 	if len(f.Batch) < f.config.BatchLimit && !force {
@@ -268,7 +298,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	}
 
 	if err = json.Unmarshal(out.Stdout, &result); err != nil {
-		return "", http.StatusInternalServerError, fmt.Errorf("error unmarshalling tx result: %w", err)
+		return "", http.StatusInternalServerError, fmt.Errorf(
+			"error unmarshalling tx result: %w",
+			err,
+		)
 	}
 
 	if result.Code != 0 {

@@ -144,14 +144,14 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 2. Initialize a new Foundry project:
 
     ```bash
-    forge init
+    forge init --no-commit
     ```
 
 ## 3. Create a smart contract
 
 Your contract is already created at `src/Counter.sol`. We will reuse and deploy the same contract.
 
-## 4. Compile and Deploy the contract
+## 4. Compile and deploy the contract
 
 To compile & deploy your contract, run this command:
 
@@ -271,7 +271,7 @@ Store the contract address for convenience
 
    This should return `0x000000000000000000000000000000000000000000000000000000000000002b` (hex for 43)
 
-## Understanding the Commands
+## Understanding the commands
 
 `cast call`
 

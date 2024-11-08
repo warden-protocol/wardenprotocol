@@ -474,6 +474,7 @@ const IntentComponent = ({
 											}
 
 											const isNewIntent = !intent.id;
+											console.log(result, intent);
 
 											await onIntentSave({
 												advanced: {

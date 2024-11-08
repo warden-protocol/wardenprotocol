@@ -8,7 +8,6 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import AddressAvatar from "./AddressAvatar";
-import { useAsset } from "@/hooks/useAsset";
 import { env } from "@/env";
 
 import { Copy } from "@/components/ui/copy";

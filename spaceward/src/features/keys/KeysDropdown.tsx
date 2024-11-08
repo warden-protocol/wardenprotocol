@@ -1,26 +1,18 @@
-import {
-	AddressResponse,
-	QueryKeyResponse,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { Icons } from "@/components/ui/icons-assets";
 import { useKeyData } from "./Keys";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
+import { KeyModel } from "@/hooks/query/types";
 
 export const KeysDropdownItem = ({
 	onClick,
 	keyResponse,
 	isActive,
-	addresses,
 }: {
 	onClick: () => void;
-	keyResponse: QueryKeyResponse;
+	keyResponse: KeyModel;
 	isActive: boolean;
-	addresses: AddressResponse[];
 }) => {
-	const { avatar, name } = useKeyData({
-		key: keyResponse.key,
-		addresses,
-	});
+	const { avatar, name } = useKeyData({ ...keyResponse });
 
 	return (
 		<div

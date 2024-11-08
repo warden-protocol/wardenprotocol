@@ -4,7 +4,6 @@ export * from "./AppsOpen";
 export * from "./Assets";
 export * from "./BlockByHeight";
 export * from "./Explorer";
-export * from "./Home";
 export * from "./Intents";
 export * from "./Keychains";
 export * from "./Keys";

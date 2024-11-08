@@ -7,15 +7,14 @@ import { Icons } from "../dashboard/icons";
 import KeySelect from "./KeySelector";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAssetQueries } from "../assets/hooks";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import SelectAsset from "./AssetSelector";
 import { AssetIcon } from "@/features/assets/AssetRow";
 import { capitalize } from "./util";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getCosmosChain, isOsmosis } from "../assets/util";
-import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { fromBech32, toBech32 } from "@cosmjs/encoding";
 import { useModalState } from "./state";
+import { KeyModel } from "@/hooks/query/types";
 
 const TokenSelect = ({
 	chainName,
@@ -75,7 +74,7 @@ const getQrValue = (_chainName: string, address: string) => {
 
 /** @deprecated refactor chain select */
 export const fixAddress = (
-	addressResponse?: AddressResponse,
+	addressResponse?: KeyModel["addresses"][number],
 	chainName?: string,
 ) => {
 	if (!addressResponse) {
@@ -91,9 +90,9 @@ export const fixAddress = (
 
 		return {
 			...addressResponse,
-			address: toBech32(
+			addressValue: toBech32(
 				chain.bech32_prefix,
-				fromBech32(addressResponse.address).data,
+				fromBech32(addressResponse.addressValue).data,
 			),
 		};
 	} else {
@@ -118,7 +117,7 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 		: AddressType.ADDRESS_TYPE_ETHEREUM;
 
 	const address = fixAddress(
-		key?.addresses?.find((a) => a.type === addressType),
+		key?.addresses?.find((a) => a.addressType === addressType),
 		chainName,
 	);
 
@@ -188,8 +187,8 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 								margin: "0 auto",
 							}}
 							value={
-								chainName && address?.address
-									? getQrValue(chainName, address.address)
+								chainName && address?.addressValue
+									? getQrValue(chainName, address.addressValue)
 									: ""
 							}
 							viewBox={`0 0 240 240`}
@@ -201,7 +200,7 @@ export default function ReceiveAssetsModal(props: TransferParams) {
 								address
 							</div>
 							<div>
-								<Copy ref={copyRef} value={address?.address} />
+								<Copy ref={copyRef} value={address?.addressValue} />
 							</div>
 
 							<button className="bg-pixel-pink cursor-pointer rounded px-5 h-10 flex items-center justify-center font-semibold text-black duration-300 hover:bg-fill-accent-hover mt-4" onClick={() => {

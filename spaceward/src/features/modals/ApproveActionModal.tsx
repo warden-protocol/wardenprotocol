@@ -9,6 +9,7 @@ import { Assets } from "@/features/walletconnect/assets";
 import { ModalParams } from "./types";
 import { useModalState } from "./state";
 import clsx from "clsx";
+import { usePublicClient } from "wagmi";
 
 export default function ApproveModal({ hidden }: ModalParams<{}>) {
 	const { w, sessionRequests, activeSessions } = useWeb3Wallet(
@@ -22,6 +23,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 	const { resolvedTheme } = useTheme();
 	const [request /*, ...awaitingRequests*/] = sessionRequests;
 	const session = activeSessions.find((s) => s.topic === request?.topic);
+	const client = usePublicClient();
 
 	if (!request) {
 		setModal({ type: undefined, params: undefined });
@@ -78,6 +80,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 									eth,
 									cosm,
 									req,
+									client,
 								});
 
 								if (close) {

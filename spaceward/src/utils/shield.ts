@@ -123,17 +123,20 @@ export const shieldStringify = (
 		const { elements, token } = expression.arrayLiteral;
 
 		const open = token?.literal;
+		const checkArrayToken = false;
 
-		// todo maybe an error
-		if (typeof open === "undefined") {
-			console.log({ expression, opts, parent });
-			throw new Error("incorrect open token");
-		}
+		if (checkArrayToken) {
+			// todo maybe an error
+			if (typeof open === "undefined") {
+				console.log({ expression, opts, parent });
+				throw new Error("incorrect open token");
+			}
 
-		const close = cp[open];
+			const close = cp[open];
 
-		if (typeof close === "undefined") {
-			throw new Error("incorrect close token");
+			if (typeof close === "undefined") {
+				throw new Error("incorrect close token");
+			}
 		}
 
 		const args = elements.map((x) => shieldStringify(x, opts, expression));

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
 	Abi,
 	AbiStateMutability,
@@ -18,6 +18,11 @@ import { useSetChain } from "@web3-onboard/react";
 import { createPersistantState } from "@/hooks/state";
 import { assertChain } from "@/utils/contract";
 import type { EthRequest } from "../modals/util";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import { useSpaceById } from "@/hooks/query/warden";
+import { useTemplateById } from "@/hooks/query/act";
+import { shieldStringify } from "@/utils/shield";
+import { DEFAULT_EXPRESSION } from "../intents/hooks";
 
 type TxRaw = Parameters<typeof cosmos.tx.v1beta1.TxRaw.encode>[0];
 
@@ -97,10 +102,45 @@ export function useActionHandler<
 		abi,
 		mutability
 	> = ContractFunctionName<abi, mutability>,
->(address: `0x${string}`, _abi: abi, _functionName: functionName) {
+>(
+	address: `0x${string}`,
+	_abi: abi,
+	_functionName: functionName,
+	admin?: boolean,
+) {
+	const spaceId = useSpaceId();
 	const client = useWalletClient().data;
 	const { setData } = useActionsState();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
+	const id = spaceId.spaceId ? BigInt(spaceId.spaceId) : undefined;
+
+	const space = useSpaceById({ request: { id } });
+
+	const approveTemplate = useTemplateById({
+		request: {
+			id: admin
+				? space.data?.approveAdminTemplateId
+				: space.data?.approveSignTemplateId,
+		},
+	});
+
+	const rejectTemplate = useTemplateById({
+		request: {
+			id: admin
+				? space.data?.rejectAdminTemplateId
+				: space.data?.rejectSignTemplateId,
+		},
+	});
+
+	const expectedApproveExpression = useMemo(() => {
+		const expression = approveTemplate.data?.template.expression;
+		return expression ? shieldStringify(expression) : DEFAULT_EXPRESSION;
+	}, [approveTemplate.data?.template.expression])
+
+	const expectedRejectExpression = useMemo(() => {
+		const expression = rejectTemplate.data?.template.expression;
+		return expression ? shieldStringify(expression) : DEFAULT_EXPRESSION;
+	}, [rejectTemplate.data?.template.expression])
 
 	const add = useCallback(
 		async (
@@ -175,5 +215,5 @@ export function useActionHandler<
 		[setData, client, chains, connectedChain, setChain],
 	);
 
-	return { add };
+	return { add, expectedApproveExpression, expectedRejectExpression };
 }

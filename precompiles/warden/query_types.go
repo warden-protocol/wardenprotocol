@@ -399,6 +399,7 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 		Pagination: &input.PageRequest,
 		KeychainId: input.KeychainId,
 		Status:     types.SignRequestStatus(input.Status),
+		Type:       types.SignRequestType(input.Type),
 	}, nil
 }
 
@@ -406,6 +407,7 @@ type signRequestsInput struct {
 	PageRequest query.PageRequest
 	KeychainId  uint64
 	Status      int32
+	Type        int32
 }
 
 type signRequestsOutput struct {

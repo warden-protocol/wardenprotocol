@@ -27,6 +27,20 @@ enum SignRequestStatus {
   SIGN_REQUEST_STATUS_REJECTED = 3;
 }
 
+// SignRequestType indicates the type of a signature request.
+//
+// This specifies how the transaction should be broadcasted.
+enum SignRequestType {
+  // The request is missing the type field.
+  SIGN_REQUEST_TYPE_UNSPECIFIED = 0;
+
+  // The transaction should be broadcasted by client.
+  SIGN_REQUEST_TYPE_MANUAL_BROADCAST = 1;
+
+  // The transaction is to be broadcasted by worker.
+  SIGN_REQUEST_TYPE_AUTOMATED_BROADCAST = 2;
+}
+
 
 // SignRequest is the request from a user (creator) to a Keychain to sign a
 // message (data_for_signing).
@@ -67,5 +81,8 @@ message SignRequest {
     (amino.dont_omitempty)   = true,
     (amino.encoding)         = "legacy_coins"
   ];
+
+  // Type of the sign request, indicating how the transaction should be broadcasted.
+  SignRequestType type = 10;
 }
 

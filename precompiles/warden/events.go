@@ -3,13 +3,14 @@ package warden
 import (
 	"bytes"
 	"fmt"
+	"math/big"
+	"reflect"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
-	"math/big"
-	"reflect"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -601,7 +602,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeyId())))))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
-
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetType())))))
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {

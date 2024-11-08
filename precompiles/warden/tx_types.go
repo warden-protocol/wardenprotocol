@@ -488,6 +488,7 @@ type newSignRequestInput struct {
 	ActionTimeoutHeight       uint64
 	ExpectedApproveExpression string
 	ExpectedRejectExpression  string
+	Type                      uint8
 }
 
 func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
@@ -515,6 +516,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 		EncryptionKey:   input.EncryptionKey,
 		MaxKeychainFees: input.MaxKeychainFees,
 		Nonce:           input.Nonce,
+		Type:            types.SignRequestType(input.Type),
 	}
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewSignRequest)

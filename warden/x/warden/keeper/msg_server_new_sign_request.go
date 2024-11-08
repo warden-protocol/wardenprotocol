@@ -52,6 +52,7 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 		Status:               types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 		EncryptionKey:        msg.EncryptionKey,
 		DeductedKeychainFees: keychain.Fees.SigReq,
+		Type:                 msg.Type,
 	}
 
 	id, err := k.signRequests.Append(ctx, req)
@@ -64,6 +65,7 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 		Id:      id,
 		KeyId:   req.KeyId,
 		Creator: req.Creator,
+		Type:    req.Type,
 	}); err != nil {
 		return nil, err
 	}

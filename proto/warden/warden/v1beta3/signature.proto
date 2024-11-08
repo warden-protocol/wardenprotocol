@@ -78,6 +78,6 @@ message SignRequest {
   ];
 
   // Broadcast type of the sign request, indicating how the transaction should be broadcasted.
-  BroadcastType type = 10;
+  BroadcastType broadcast_type = 10;
 }
 

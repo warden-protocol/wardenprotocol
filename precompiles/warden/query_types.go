@@ -396,18 +396,18 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 	}
 
 	return &types.QuerySignRequestsRequest{
-		Pagination: &input.PageRequest,
-		KeychainId: input.KeychainId,
-		Status:     types.SignRequestStatus(input.Status),
-		Type:       types.BroadcastType(input.Type),
+		Pagination:    &input.PageRequest,
+		KeychainId:    input.KeychainId,
+		Status:        types.SignRequestStatus(input.Status),
+		BroadcastType: types.BroadcastType(input.BroadcastType),
 	}, nil
 }
 
 type signRequestsInput struct {
-	PageRequest query.PageRequest
-	KeychainId  uint64
-	Status      int32
-	Type        int32
+	PageRequest   query.PageRequest
+	KeychainId    uint64
+	Status        int32
+	BroadcastType int32
 }
 
 type signRequestsOutput struct {

@@ -252,7 +252,7 @@ message MsgNewSignRequest {
     (amino.encoding) = "legacy_coins"
   ];
   uint64 nonce = 7;
-  BroadcastType type = 8;
+  BroadcastType broadcast_type = 8;
 }
 
 message MsgNewSignRequestResponse {

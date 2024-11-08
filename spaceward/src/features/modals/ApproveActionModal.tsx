@@ -45,7 +45,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 							target.onerror = null;
 						}}
 						src={
-							session?.peer.metadata.icons[0].startsWith("http")
+							session?.peer.metadata.icons[0]?.startsWith("http")
 								? session?.peer.metadata.icons[0]
 								: `${session?.peer.metadata.url}${session?.peer.metadata.icons[0]}`
 						}

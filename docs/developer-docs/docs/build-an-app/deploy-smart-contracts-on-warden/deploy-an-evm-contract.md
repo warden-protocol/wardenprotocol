@@ -340,7 +340,7 @@ Here are solutions for the common issues you may encounter when interacting with
 
   - Verify that your private key is correct. See [Step 1](#1-prepare-the-chain).
   - Make sure you have enough funds in your account, as shown in [Step 1](#1-prepare-the-chain). If funds are insufficient, you may need to [run a local chain](/operate-a-node/run-a-local-chain) from scratch or use [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
-  - Verify your contract address, as shown in [Step 5](http://localhost:3000/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract#5-verify-the-deployment).
+  - Verify your contract address, as shown in [Step 5](#5-verify-the-deployment).
 
 - If you get the "null response" error, add the `--legacy` flag to your `cast send` command. You'll send a legacy transaction instead of the EIP-1559 one.
   

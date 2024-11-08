@@ -1,41 +1,26 @@
 import { LoaderCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useConnectWallet } from "@web3-onboard/react";
 import { Accordion } from "@/components/ui/accordion";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { prettyActionStatus } from "@/utils/formatting";
 import { Icons } from "@/components/ui/icons-assets";
 import { Icons as IconsDashboard } from "@/features/dashboard/icons";
-import { useQueryHooks } from "@/hooks/useClient";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import {
-	Action as ActionModel,
-	ActionStatus,
-} from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { useActionsByAddress } from "@/hooks/query/act";
+import type { ActionModel } from "@/hooks/query/types";
+import { createPagination } from "@/hooks/query/util";
 import { timestampToDate } from "@/lib/datetime";
+import { prettyActionStatus } from "@/utils/formatting";
+
+const actionPagination = createPagination({ limit: BigInt(3), reverse: true });
 
 export function Actions() {
-	const { address } = useAddressContext();
-	const {
-		isReady,
-		warden: {
-			act: {
-				v1beta1: { useActionsByAddress },
-			},
-		},
-	} = useQueryHooks();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 
 	const q = useActionsByAddress({
 		request: {
 			address,
-			status: ActionStatus.ACTION_STATUS_UNSPECIFIED,
-			pagination: PageRequest.fromPartial({
-				reverse: true,
-				limit: BigInt(3),
-			}),
-		},
-		options: {
-			enabled: isReady,
-		},
+			pagination: actionPagination,
+		}
 	});
 
 	const actions = q.data?.actions || [];
@@ -45,9 +30,11 @@ export function Actions() {
 			const date = timestampToDate(action.createdAt)
 				.toISOString()
 				.split("T")[0];
+
 			if (!groups[date]) {
 				groups[date] = [];
 			}
+
 			groups[date].push(action);
 			return groups;
 		},

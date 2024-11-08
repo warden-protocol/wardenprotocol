@@ -225,7 +225,7 @@ const _ENABLED_ETH_CHAINS: {
 	{ chainName: "avalanche" },
 	{ chainName: "base" },
 	{ chainName: "bsc" },
-	{ chainName: "ethereumClassic" },
+	{ chainName: "classic" },
 	{ chainName: "mainnet" },
 	{ chainName: "optimism" },
 	{ chainName: "polygon" },

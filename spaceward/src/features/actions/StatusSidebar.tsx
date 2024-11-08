@@ -46,21 +46,6 @@ const waitForVisibility = () => {
 	});
 };
 
-class DetailedError<T> extends Error {
-	constructor(message: string, public detail: T) {
-		super(message);
-	}
-}
-
-function isDetailedError<T>(e?: unknown): e is DetailedError<T> {
-	if (!e) {
-		return false;
-	}
-
-	return "detail" in (e as {});
-}
-
-
 function ActionItem({ single, ...item }: ItemProps) {
 	const publicClient = usePublicClient();
 	const walletClient = useWalletClient().data;

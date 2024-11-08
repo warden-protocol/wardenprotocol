@@ -1,8 +1,10 @@
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { Actions } from "@/features/actions";
+import { useConnectWallet } from "@web3-onboard/react";
 
 export function ActionsPage() {
-	const { address } = useAddressContext();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
+
 	if (!address) {
 		return (
 			<div className="px-4 mt-10">

@@ -2,19 +2,23 @@ import { useCallback, useMemo } from "react";
 import { toBytes } from "viem";
 import { usePublicClient, useWriteContract } from "wagmi";
 import { toBech32 } from "@cosmjs/encoding";
-import { Template } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/template";
 import { env } from "@/env";
 import actPrecompileAbi from "@/contracts/actPrecompileAbi";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import type { IntentParams, SimpleIntent } from "@/types/intent";
 import { assertChain, handleContractWrite } from "@/utils/contract";
 import { shieldStringify, validateAddressNumber } from "@/utils/shield";
 import { useModalState } from "../modals/state";
 import { useActionHandler } from "../actions/hooks";
-import { useSetChain } from "@web3-onboard/react";
-import { PRECOMPILE_ACT_ADDRESS, PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import {
+	PRECOMPILE_ACT_ADDRESS,
+	PRECOMPILE_WARDEN_ADDRESS,
+} from "@/contracts/constants";
+import { useTemplates } from "@/hooks/query/act";
+import { useSpaceById } from "@/hooks/query/warden";
+import type { TemplateModel } from "@/hooks/query/types";
 
 export const DEFAULT_EXPRESSION = "any(1, warden.space.owners)";
 
@@ -56,21 +60,10 @@ const createDefinition = (intent: SimpleIntent) => {
 };
 
 export const useRules = () => {
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
-
-	const {
-		isReady,
-		warden: {
-			act: {
-				v1beta1: { useTemplates, useTemplateById },
-			},
-			warden: {
-				v1beta3: { useSpaceById },
-			},
-		},
-	} = useQueryHooks();
-
 	const client = usePublicClient();
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
@@ -101,11 +94,13 @@ export const useRules = () => {
 						abi: actPrecompileAbi,
 						functionName: "newTemplate",
 						args: [name, definition],
+						account: address,
+						connector: wallet?.wagmiConnector,
 					}),
 				client,
 			);
 		},
-		[writeContractAsync, client, chains, connectedChain, setChain],
+		[writeContractAsync, client, chains, connectedChain, setChain, address, wallet?.wagmiConnector],
 	);
 
 	const updateRule = useCallback(
@@ -142,48 +137,38 @@ export const useRules = () => {
 						abi: actPrecompileAbi,
 						functionName: "updateTemplate",
 						args: [BigInt(id), name, definition],
+						account: address,
+						connector: wallet?.wagmiConnector,
 					}),
 				client,
 			);
 		},
-		[writeContractAsync, client, chains, connectedChain, setChain],
+		[writeContractAsync, client, chains, connectedChain, setChain, address, wallet?.wagmiConnector],
 	);
 
 	const space = useSpaceById({
 		request: { id: BigInt(spaceId || "") },
-		options: {
-			enabled: isReady,
-		},
-	}).data?.space;
+	}).data;
 
-	const approveAdminTemplate = useTemplateById({
-		request: {
-			id: space?.approveAdminTemplateId ?? BigInt(0),
-		},
-		options: {
-			enabled: isReady && Boolean(space?.approveAdminTemplateId),
-		},
-	}).data?.template;
-
-	const { add } = useActionHandler(
-		PRECOMPILE_WARDEN_ADDRESS,
-		wardenPrecompileAbi,
-		"updateSpace",
-	);
+	const { add, expectedApproveExpression, expectedRejectExpression } =
+		useActionHandler(
+			PRECOMPILE_WARDEN_ADDRESS,
+			wardenPrecompileAbi,
+			"updateSpace",
+			true,
+		);
 
 	const rules = useTemplates({
 		request: {
 			creator: space?.creator,
-		},
-		options: {
-			enabled: Boolean(space?.creator) && isReady,
-		},
+		}
 	});
+
 
 	const rulesBySpace = rules.data?.templates ?? [];
 
 	const rulesById = useMemo(() => {
-		const rulesById: Record<string, Template> = {};
+		const rulesById: Record<string, TemplateModel> = {};
 
 		for (const rule of rules.data?.templates ?? []) {
 			rulesById[rule.id.toString()] = rule;
@@ -196,14 +181,6 @@ export const useRules = () => {
 		async (id: number) => {
 			if (!space?.id) {
 				return;
-			}
-
-			let expectedApproveExpression = DEFAULT_EXPRESSION;
-
-			if (approveAdminTemplate?.expression) {
-				expectedApproveExpression = shieldStringify(
-					approveAdminTemplate.expression,
-				);
 			}
 
 			let title = "Disabling current intent";
@@ -242,19 +219,28 @@ export const useRules = () => {
 				}
 			}
 
-			await add([
-				BigInt(space.id),
-				space.nonce,
-				BigInt(0),
-				BigInt(0),
-				BigInt(id),
-				BigInt(0),
-				BigInt(0),
-				expectedApproveExpression,
-				DEFAULT_EXPRESSION,
-			], { title });
+			await add(
+				[
+					BigInt(space.id),
+					space.nonce,
+					BigInt(0),
+					BigInt(0),
+					BigInt(id),
+					BigInt(0),
+					BigInt(0),
+					expectedApproveExpression,
+					expectedRejectExpression,
+				],
+				{ title },
+			);
 		},
-		[add, space, rulesById],
+		[
+			add,
+			space,
+			rulesById,
+			expectedApproveExpression,
+			expectedRejectExpression,
+		],
 	);
 
 	return {

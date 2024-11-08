@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm) and written in **Solidity**.
 
-This guide explains how to create and deploy a simple "Counter" Solidity smart contract using Foundry's toolset on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
+This guide explains how to create and deploy a Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview). You'll deploy a simple counter contract using [Foundry](https://book.getfoundry.sh)'s toolset.
 
 ## Prerequisites
 
@@ -149,75 +149,123 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 
 ## 3. Create a smart contract
 
-Your contract is already created at `src/Counter.sol`. We will reuse and deploy the same contract.
+After you initialize a Foundry project, the script will automatically create a sample contract named `Counter` in the `/src` directory:
+
+```sol title="/warden-smart-contract/src/Counter.sol"
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+contract Counter {
+    uint256 public number;
+
+    // a function for setting a new number
+    function setNumber(uint256 newNumber) public {
+        number = newNumber;
+    }
+
+    // a function for incrementing the number
+    function increment() public {
+        number++;
+    }
+}
+```
+
+This is a counter contract with two functions: for changing the `number` variable and for incrementing it.
+
+In the following steps, we're going to deploy this contract without modification.
 
 ## 4. Compile and deploy the contract
 
-To compile & deploy your contract, run this command:
+1. Export your private key from [Step 1](#1-prepare-the-chain) and the RPC URL as environmental variables:
 
-```bash
-export PRIVATE_KEY=<your-private-key>
-```
+   <Tabs>
+   <TabItem value="local" label="Local node">
+   ```bash
+   export PRIVATE_KEY=my-private-key
+   export RPC_URL=http://127.0.0.1:8545 
+   ```
+   </TabItem>
+   <TabItem value="chiado" label="Chiado">
+   ```bash
+   export PRIVATE_KEY=my-private-key
+   export RPC_URL=https://evm.chiado.wardenprotocol.org
+   ```
+   </TabItem>
+   </Tabs>
+   
+   :::tip
+   If you're running a local chain and deploying the contract on different machines, you need to set your chain's host address as `RPC_URL`. To get the address, just execute `wardend status` on the machine hosting the chain. Otherwise, specify the standard localhost address or Chiado's EVM endpoint, as shown in the code samples above.
+   :::
 
-```bash
-forge create --rpc-url http://127.0.0.1:8545 --private-key $PRIVATE_KEY src/Counter.sol:Counter
-```
-
-You'll see an output similar to the following:
-
-```bash
-Deployer: 0x6Ea8aC1673402989e7B653aE4e83b54173719C30
-Deployed to: 0x2AAbb1a9b8EdE05f183FfD90A324ce02A349F6e5
-Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
-```
-
-## 5. Interact with the contract
-
-1. Set up the Contract Address
-
-Store the contract address for convenience
+2. To compile and deploy the contract, run this command:
 
    ```bash
-   export CONTRACT_ADDRESS=<your-deployed-contract-address>
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Counter.sol:Counter
+   ```
+   
+   You'll see an output similar to the following:
+   
+   ```bash
+   Deployer: 0x6Ea8aC1673402989e7B653aE4e83b54173719C30
+   Deployed to: 0x2AAbb1a9b8EdE05f183FfD90A324ce02A349F6e5
+   Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-   Note: The contract address is "Deployed to" address you would have seen in your previous step.
+3. Note down the value returned as `Deployed to` – that's your **contract address**.
 
-   You can also verify if the contract has been deployed on this address by:
+## 5. Verify the deployment
+
+1. Export your contract address as a variable by running the following command. Specify the address returned in the previous step.
 
    ```bash
-   cast code $CONTRACT_ADDRESS --rpc-url http://127.0.0.1:8545 
+   export CONTRACT_ADDRESS=my-contract-address
    ```
 
-   You will see the following output:
+2. Verify that the contract has been deployed on this address:
+
+   ```bash
+   cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
+   ```
+
+   You'll see an output similar to the following:
 
    ```bash
    0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60006001820160ba57634e487b7160e01b600052601160045260246000fd5b506001019056fea26469706673582212201c88540d2739bb0e4f6179275ef6ff63cf1c34ed53189691f9dd0033f4382a0264736f6c634300081c0033
    ```
+
+## 6. Interact with the contract
+
+Now you can interact with the contract: adjust and increment the counter number.
    
-2. Read the current number
+1. Get the current number:
 
    ```bash
-   cast call $CONTRACT_ADDRESS "number()" --rpc-url http://127.0.0.1:8545
+   cast call $CONTRACT_ADDRESS "number()" --rpc-url $RPC_URL
    ```
+   
+   :::note
+   The [`cast call`](https://book.getfoundry.sh/reference/cast/cast-call) Foundry command allows you to read data from the chain. In this example, it calls the `number()` getter function: the Solidity compiler automatically generated it from the `number` variable in the sample contract.
+   :::
 
-   This will return a hex value like:
+   This will return a hex value representing 0:
 
    ```bash
    0x0000000000000000000000000000000000000000000000000000000000000000
    ```
 
-   (representing 0)
-
-3. Set a New Number
+2. Set a new number:
 
    ```bash
    cast send $CONTRACT_ADDRESS "setNumber(uint256)" 42 \
-    --private-key $PRIVATE_KEY \
-    --rpc-url http://127.0.0.1:8545
-   ```     
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
 
-   You will see the following output:
+   :::note
+   The [`cast send`](https://book.getfoundry.sh/reference/cast/cast-send) Foundry command allows you to send transactions. Note that it requires signing a transaction with your private key. In this example, `cast send` calls the `setNumber()` function of the sample contract.
+   :::    
+
+   The output will include `status: 1 (success)` indicating that the transaction was successful. You'll also see the block number and hash, the gas used, the transaction hash, and other details:
 
    ```bash
    blockHash               0x1e755e7f98361a33b81f98018b75f6aa935b8070a61bf4656991551b657d1c96
@@ -229,8 +277,10 @@ Store the contract address for convenience
    gasUsed                 43494
    logs                    []
    logsBloom               0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-   root                    
+   root
+   # highlight-next-line                    
    status                  1 (success)
+   # highlight-next-line
    transactionHash         0xaed1d70baf7d277cad64935146ec46fc6c3842c6d965c88371a75c458fff7533
    transactionIndex        0
    type                    2
@@ -240,80 +290,59 @@ Store the contract address for convenience
    to                      0xb9dE7e835C44D6301A8EEF6658720198a17b0B3A
    ```
 
-   Your tx transaction receipt will include:
-
-   - status: 1 (success) indicating the transaction was successful
-   - blockNumber, transactionHash, and other transaction details
-
-4. Verify the Number Changed
+3. Verify the number change:
 
    ```bash
-   cast call $CONTRACT_ADDRESS "number()" --rpc-url http://127.0.0.1:8545
+   cast call $CONTRACT_ADDRESS "number()" --rpc-url $RPC_URL
    ```
 
-   This should return `0x000000000000000000000000000000000000000000000000000000000000002a` (hex for 42)
+   This should return a hex value representing 42:
 
-5. Increment the Number
+   ```
+   0x000000000000000000000000000000000000000000000000000000000000002a
+   ```
+
+4. Increment the number:
 
    ```bash
    cast send $CONTRACT_ADDRESS "increment()" \
-    --private-key $PRIVATE_KEY \
-    --rpc-url http://127.0.0.1:8545
-    ```
-
-   Again, you will see a message similar to message above with `1` indicating success.
-
-6. Verify Increment
-
-   ```bash
-   cast call $CONTRACT_ADDRESS "number()" --rpc-url http://127.0.0.1:8545
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
    ```
 
-   This should return `0x000000000000000000000000000000000000000000000000000000000000002b` (hex for 43)
+   In the output, you'll see the transaction details again, including the status code `1`, indicating success.
 
-## Understanding the commands
+6. Verify the increment:
 
-`cast call`
+   ```bash
+   cast call $CONTRACT_ADDRESS "number()" --rpc-url $RPC_URL
+   ```
 
-- Used for reading data from the blockchain
-- Doesn't modify state
-- Free (no gas needed)
-- Format: cast call `<contract-address>` `"<function-signature>"` [arguments]
+   This should return a hex value representing 43
 
-`cast send`
+   ```
+   0x000000000000000000000000000000000000000000000000000000000000002b
+   ```
 
-- Used for sending transactions that modify blockchain state
-- Requires gas
-- Requires signing with a private key
-- Format: cast send `<contract-address>` `"<function-signature>"` [arguments] --private-key `<key>`
+## Troubleshooting
 
-**Reading Transaction Results**
-When you send a transaction, check these fields in the receipt:
+Here are solutions for the common issues you may encounter when interacting with the contract:
 
-- `status`: 1 means success
-- `gasUsed` shows how much gas was consumed
-- `transactionHash` can be used to look up the transaction
-- `blockNumber` shows which block included the transaction
+- If your transaction fails, try the following:
 
-**Common Issues and Solutions**
+  - Verify that your private key is correct. See [Step 1](#1-prepare-the-chain).
+  - Make sure you have enough funds in your account, as shown in [Step 1](#1-prepare-the-chain). If funds are insufficient, you may need to [run a local chain](/operate-a-node/run-a-local-chain) from scratch or use [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
+  - Verify your contract address, as shown in [Step 5](http://localhost:3000/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract#5-verify-the-deployment).
 
-"null response" error
+- If you get the "null response" error, add the `--legacy` flag to your `cast send` command. You'll send a legacy transaction instead of the EIP-1559 one.
+  
+  ```
+  cast send $CONTRACT_ADDRESS "setNumber(uint256)" 42 \
+    --private-key $PRIVATE_KEY
+    --rpc-url $RPC_URL \
+    --legacy
+  ```
 
-Add --legacy flag to your cast send command
-Example: cast send $CONTRACT_ADDRESS "setNumber(uint256)" 42 --private-key $PRIVATE_KEY --rpc-url http://127.0.0.1:8545 --legacy
-
-**Transaction fails**
-
-Verify your private key is correct
-Check that you have enough funds in your account
-Verify the contract address exists using cast code $CONTRACT_ADDRESS --rpc-url http://127.0.0.1:8545
-
-**Reading hex values**
-
-Values are returned in hex format
-0x2a = 42 in decimal
-0x2b = 43 in decimal
-
-If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀

@@ -158,12 +158,12 @@ pragma solidity ^0.8.13;
 contract Counter {
     uint256 public number;
 
-    // a function for setting a new number
+    // A function for setting a new number
     function setNumber(uint256 newNumber) public {
         number = newNumber;
     }
 
-    // a function for incrementing the number
+    // A function for incrementing the number
     function increment() public {
         number++;
     }
@@ -235,6 +235,10 @@ In the following steps, we're going to deploy this contract without modification
    cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
    ```
 
+   :::note
+   The [`cast code`](https://book.getfoundry.sh/reference/cast/cast-code) Foundry command allows you to get the bytecode of a contract.
+   :::
+
    You'll see an output similar to the following:
 
    ```bash
@@ -288,7 +292,6 @@ Now you can interact with the contract: adjust and increment the counter number.
    root
    # highlight-next-line                    
    status                  1 (success)
-   # highlight-next-line
    transactionHash         0xaed1d70baf7d277cad64935146ec46fc6c3842c6d965c88371a75c458fff7533
    transactionIndex        0
    type                    2

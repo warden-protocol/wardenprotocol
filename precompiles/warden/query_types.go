@@ -399,7 +399,7 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 		Pagination: &input.PageRequest,
 		KeychainId: input.KeychainId,
 		Status:     types.SignRequestStatus(input.Status),
-		Type:       types.SignRequestType(input.Type),
+		Type:       types.BroadcastType(input.Type),
 	}, nil
 }
 

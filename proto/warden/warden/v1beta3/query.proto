@@ -182,7 +182,7 @@ message QuerySignRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 keychain_id = 2;
   SignRequestStatus status = 3 [ (gogoproto.nullable) = true ];
-  SignRequestType type = 4 [ (gogoproto.nullable) = true ];
+  BroadcastType type = 4 [ (gogoproto.nullable) = true ];
 }
 
 message QuerySignRequestsResponse {

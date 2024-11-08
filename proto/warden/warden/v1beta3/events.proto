@@ -149,8 +149,8 @@ message EventNewSignRequest {
   // address of the account that requested the signature
   string creator = 3;
 
-  // type of the signature request
-  SignRequestType type = 4;
+  // broadcast type of the signature request
+  BroadcastType type = 4;
 }
 
 // EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled

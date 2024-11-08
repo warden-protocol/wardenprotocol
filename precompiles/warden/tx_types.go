@@ -516,7 +516,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 		EncryptionKey:   input.EncryptionKey,
 		MaxKeychainFees: input.MaxKeychainFees,
 		Nonce:           input.Nonce,
-		Type:            types.SignRequestType(input.Type),
+		Type:            types.BroadcastType(input.Type),
 	}
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewSignRequest)

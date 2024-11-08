@@ -75,28 +75,6 @@ export function Root() {
 	}
 
 	if (spacewardEnv === "production") {
-		// TODO: remove once chaido is live
-		if (chainId === "chiado_10010-1") {
-			return (
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="dark"
-					enableSystem
-				>
-					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
-						<Icons.logo className="h-12 w-auto mb-10" />
-						<h1 className="text-2xl font-bold">
-							Chiado Coming Soon
-						</h1>
-						<p className="text-muted-foreground text-center">
-							We are currently upgrading SpaceWard to a new
-							version. Please check back later.
-						</p>
-					</div>
-				</ThemeProvider>
-			);
-		}
-
 		// Maintenance mode enabled
 		if (
 			(typeof maintenance === "string" && maintenance === "true") ||

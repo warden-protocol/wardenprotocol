@@ -57,6 +57,7 @@ import { DashboardPage } from "./pages/Dashboard.tsx";
 import { Web3OnboardProvider, init, useWagmiConfig } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 import wagmi, { createConfig } from "@web3-onboard/wagmi";
+import walletConnect from "@web3-onboard/walletconnect";
 import { WagmiProvider } from "wagmi";
 import { defineChain, http } from "viem";
 
@@ -69,7 +70,19 @@ const queryClient = new QueryClient({
 	},
 });
 
+
+const projectId = "5ac86584b1de10a7953c6d7b19b52dad";
+
 const web3Onboard = init({
+	appMetadata: {
+		name: "Warden Protocol Wallets",
+		description: "Warden Protocol WalletConnect",
+		logo: "https://avatars.githubusercontent.com/u/158038121",
+		recommendedInjectedWallets: [
+			{ name: "MetaMask", url: "https://metamask.io" },
+			{ name: "Keplr", url: "https://keplr.app" }
+		]
+	},
 	chains: [{
 		/*
 			0x271a(10010) - chiado
@@ -81,7 +94,14 @@ const web3Onboard = init({
 		rpcUrl: env.evmURL,
 	}],
 	connect: { autoConnectAllPreviousWallet: true },
-	wallets: [injectedModule()],
+	wallets: [injectedModule(), walletConnect({
+		handleUri: (uri: any) => {
+			console.log("wcuri", uri);
+		},
+		projectId,
+		dappUrl: "https://wardenprotocol.org/",
+	})
+	],
 	wagmi,
 });
 

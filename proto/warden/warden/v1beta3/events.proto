@@ -150,7 +150,7 @@ message EventNewSignRequest {
   string creator = 3;
 
   // type of the signature request
-  SignRequestType type = 8;
+  SignRequestType type = 4;
 }
 
 // EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled

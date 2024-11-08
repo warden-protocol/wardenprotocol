@@ -133,6 +133,15 @@ func (w *WardenNode) PrintDebugLogsAtTheEnd(t *testing.T, ctx context.Context) {
 	}()
 }
 
+func (w *WardenNode) NewKey(t *testing.T, ctx context.Context, name string) {
+	err := w.run(ctx, "keys", "add", name, "--keyring-backend", "test", "--home", w.Home, "--keyring-dir", w.Home)
+	if errors.Is(ctx.Err(), context.Canceled) {
+		return
+	}
+
+	require.NoError(t, err)
+}
+
 func (w *WardenNode) grpcAddr() string {
 	return fmt.Sprintf("127.0.0.1:%d", w.grpcPort)
 }

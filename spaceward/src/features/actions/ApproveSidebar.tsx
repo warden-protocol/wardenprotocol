@@ -1,33 +1,27 @@
 import clsx from "clsx";
 import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
-import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { Button } from "@/components/ui/button";
-import { useQueryHooks } from "@/hooks/useClient";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import "./animate.css";
 import { ActionVoteType } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action_vote";
 import { usePublicClient, useWriteContract } from "wagmi";
 import actPrecompileAbi from "@/contracts/actPrecompileAbi";
 import { assertChain, handleContractWrite } from "@/utils/contract";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
-
+import { ActionStatus, useActionsByAddress } from "@/hooks/query/act";
+import { isAddressEqual } from "viem";
 
 export default function ApproveSidebar() {
 	const [open, setOpen] = useState(false);
-	const { address } = useAddressContext();
-	const { isReady, useActionsByAddress } = useQueryHooks();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 
 	const { data } = useActionsByAddress({
 		request: {
-			address: address,
-			// status: ActionStatus.ACTION_STATUS_UNSPECIFIED
-			status: ActionStatus.ACTION_STATUS_PENDING
-		},
-		options: {
-			enabled: isReady,
-		},
+			address,
+			status: ActionStatus.Pending
+		}
 	});
 
 	const { writeContractAsync } = useWriteContract();
@@ -43,6 +37,8 @@ export default function ApproveSidebar() {
 				abi: actPrecompileAbi,
 				functionName: "voteForAction",
 				args: [actionId, voteType],
+				account: address,
+				connector: wallet?.wagmiConnector,
 			}),
 			client,
 		);
@@ -50,7 +46,7 @@ export default function ApproveSidebar() {
 
 	const actions = data?.actions.filter(
 		action => !action.votes.find(
-			vote => vote.participant === address
+			vote => isAddressEqual(vote.participant, address ?? "0x")
 		)
 	);
 
@@ -119,7 +115,7 @@ export default function ApproveSidebar() {
 						<Popover.Content
 							side="left"
 							sideOffset={20}
-							className="p-0 select-none"
+							className="p-0 select-none z-50"
 						>
 							<div className="flex flex-col p-2 w-96 bg-secondary m-2 rounded-lg border-border-edge border-2">
 								<p className="text-lg font-semibold">{title}</p>

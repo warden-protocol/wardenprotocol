@@ -28,6 +28,12 @@ struct OrderData {
     SignRequestData signRequestData;
 }
 
+struct CreatorDefinedTxFields {
+    uint256 value;
+    uint256 chainId;
+}
+
+// Raw unsigned transaction fields
 struct UnsignedEthTx {
     uint256 nonce;
     uint256 maxFeePerGas;

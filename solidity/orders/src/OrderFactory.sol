@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {OrderData} from "./Types.sol";
+import {CreatorDefinedTxFields, OrderData} from "./Types.sol";
 import {Types} from "precompile-common/Types.sol";
 import {BasicOrder} from "./BasicOrder.sol";
 
@@ -23,16 +23,26 @@ contract OrderFactory {
         registry = _registry;
     }
 
-    function createOrder(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees, OrderType orderType) public {
+    function createOrder(
+        OrderData memory _orderData,
+        Types.Coin[] memory maxKeychainFees,
+        CreatorDefinedTxFields memory txFields,
+        address _scheduler,
+        OrderType orderType) public {
         if (orderType == OrderType.Basic) {
-            _createBasicOrder(_orderData, maxKeychainFees);
+            _createBasicOrder(_orderData, maxKeychainFees, txFields, _scheduler);
         } else if (orderType == OrderType.Advanced) {
             _createAdvancedOrder(_orderData, maxKeychainFees);
         }
     }
 
-    function _createBasicOrder(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees) internal {
-        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees);
+    function _createBasicOrder(
+        OrderData memory _orderData,
+        Types.Coin[] memory maxKeychainFees,
+        CreatorDefinedTxFields memory _txFields,
+        address _scheduler
+        ) internal {
+        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _txFields, _scheduler);
         orders[address(basicOrder)] = tx.origin;
         emit OrderCreated(tx.origin, address(basicOrder), OrderType.Basic);
     }

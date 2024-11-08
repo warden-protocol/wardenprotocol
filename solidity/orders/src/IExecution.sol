@@ -7,15 +7,15 @@ interface IExecution {
     function execute(
         uint256 nonce,
         uint256 maxPriorityFeePerGas,
-        uint256 maxFeePerGas,
-        uint256 chainId,
-        uint256 value) external returns (bool);
+        uint256 maxFeePerGas) external returns (bool);
 
-    function calledByScheduler() external view returns (bool);
+    function calledByScheduler() external returns (bool);
 
-    function calledByAIService() external view returns (bool);
+    function calledByAIService() external returns (bool);
 
     function setByAIService(bytes calldata data) external returns (bool);
 
-    function isExecuted() external view returns (bool);
+    function isExecuted() external returns (bool);
+
+    function executionData() external returns (address caller, uint256 chainId);
 }

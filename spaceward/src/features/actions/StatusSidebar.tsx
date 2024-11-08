@@ -61,8 +61,8 @@ function ActionItem({ single, ...item }: ItemProps) {
 	const { setData } = useActionsState();
 
 	const type = typeof item.keyThemeIndex !== "undefined" ?
-		"key" : (["walletConnectRequestId", "walletConnectTopic"] as const).every(key => typeof item[key] !== "undefined") ?
-			"wc" : typeof item.snapRequestId ?
+		"key" : item.wc ?
+			"wc" : item.snap ?
 				"snap" : undefined
 
 	const ready = Boolean(walletClient && publicClient);
@@ -149,7 +149,9 @@ function ActionItem({ single, ...item }: ItemProps) {
 							throw new Error("no hash", { cause: { item } });
 						}
 
+						console.log("waiting for receipt", item.hash);
 						const receipt = await publicClient?.waitForTransactionReceipt({ hash: item.hash });
+						console.log("receipt", receipt);
 
 						if (receipt?.status !== "success") {
 							throw new Error("transaction failed", { cause: { item, receipt } });

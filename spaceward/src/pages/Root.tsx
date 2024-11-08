@@ -12,14 +12,12 @@ import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
 import { NoSpaces } from "@/features/spaces";
 import cn from "clsx";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useQueryHooks } from "@/hooks/useClient";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import MobileAssistant from "./MobileAssistant";
 import ModalRoot from "@/features/modals";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useConnectWallet } from "@web3-onboard/react";
-import { toBech32 } from "@cosmjs/encoding";
-import { toBytes } from "viem";
+import { useSpacesByOwner } from "@/hooks/query/warden";
+import { createPagination } from "@/hooks/query/util";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -29,13 +27,13 @@ storyblokInit({
 const { enableAutoPageviews } = Plausible();
 enableAutoPageviews();
 
+const pagination = createPagination({ limit: BigInt(100) });
+
 export function Root() {
 	const [{ wallet }] = useConnectWallet();
 	const account = wallet?.accounts?.[0];
 	const address = account?.address;
-	const cosmosAddress = useMemo(() => address ? toBech32("warden", toBytes(address)) : undefined, [address]);
 	const { spaceId, setSpaceId } = useSpaceId();
-
 	const [chainId, setChainId] = useState<string>("");
 	const [spacewardEnv, setSpacewardEnv] = useState<string>("");
 	const [maintenance, setMaintenance] = useState<boolean>(false);
@@ -47,25 +45,20 @@ export function Root() {
 	}, []);
 
 	const story = useStoryblok("config", { version: "published" });
-	const { useSpacesByOwner, isReady } = useQueryHooks();
 
-	const { data: spacesQuery } = useSpacesByOwner({
+	const { data, status } = useSpacesByOwner({
 		request: {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			owner: cosmosAddress!,
-			pagination: PageRequest.fromPartial({
-				limit: BigInt(100),
-			}),
-		},
-		options: {
-			enabled: !!cosmosAddress && isReady,
-		},
+			owner: address,
+			pagination
+		}
 	});
 
-	const spaceCount = spacesQuery?.spaces?.length || 0;
+	const spaces = data?.[0] || [];
+
+	const spaceCount = spaces.length;
 
 	if (spaceCount > 0 && address && !spaceId) {
-		setSpaceId(spacesQuery?.spaces?.[0]?.id.toString() || "");
+		setSpaceId(spaces[0]?.id.toString() || "");
 	}
 
 	const params = new URLSearchParams(window.location.search);
@@ -82,28 +75,6 @@ export function Root() {
 	}
 
 	if (spacewardEnv === "production") {
-		// TODO: remove once chaido is live
-		if (chainId === "chiado_10010-1") {
-			return (
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="dark"
-					enableSystem
-				>
-					<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
-						<Icons.logo className="h-12 w-auto mb-10" />
-						<h1 className="text-2xl font-bold">
-							Chiado Coming Soon
-						</h1>
-						<p className="text-muted-foreground text-center">
-							We are currently upgrading SpaceWard to a new
-							version. Please check back later.
-						</p>
-					</div>
-				</ThemeProvider>
-			);
-		}
-
 		// Maintenance mode enabled
 		if (
 			(typeof maintenance === "string" && maintenance === "true") ||
@@ -181,7 +152,7 @@ export function Root() {
 							)}
 						>
 							<SiteHeader />
-							{!spaceCount ? <NoSpaces /> : <Outlet />}
+							{!spaceCount ? <NoSpaces isLoading={status === "loading"} /> : <Outlet />}
 							<Toaster />
 						</main>
 						{spaceCount !== 0 && <RightSidebar />}

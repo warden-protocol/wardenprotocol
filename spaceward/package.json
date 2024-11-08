@@ -84,6 +84,7 @@
 		"@web3-onboard/react": "^2.10.0",
 		"@web3-onboard/transaction-preview": "^2.1.2",
 		"@web3-onboard/wagmi": "^2.0.1",
+		"@web3-onboard/walletconnect": "^2.6.1",
 		"buffer": "^6.0.3",
 		"chain-registry": "^1.29.1",
 		"chart.js": "^4.4.3",

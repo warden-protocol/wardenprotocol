@@ -53,6 +53,7 @@ export function AssetsPage() {
 	// fixme we have a situation where balances did not fetch on this page but were ok in receive modal
 	// possible caused error did cancel query update?
 	const { queryKeys, queryBalances, queryPrices } = useAssetQueries(spaceId);
+	const keys = queryKeys.data?.[0];
 
 	const _results = queryBalances
 		.filter((q) => Boolean(q.data?.results.length))
@@ -141,7 +142,7 @@ export function AssetsPage() {
 		return { chains: Array.from(chains), totalBalance, noAssets };
 	}, [results]);
 
-	const noKeys = !queryKeys.data?.keys.length;
+	const noKeys = !keys?.length;
 
 	const { data } = useKeySettingsState();
 	const settings = data?.settings[state.keyFilter.toString()];
@@ -390,12 +391,8 @@ export function AssetsPage() {
 														<Icons.check className="ml-auto invert dark:invert-0" />
 													)}
 												</div>
-												{queryKeys.data?.keys.map(
-													(item) => (
+												{keys?.map((item) => (
 														<KeysDropdownItem
-															addresses={
-																item.addresses
-															}
 															keyResponse={item}
 															onClick={() => {
 																dispatch({

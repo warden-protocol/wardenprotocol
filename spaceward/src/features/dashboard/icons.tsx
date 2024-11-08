@@ -127,7 +127,7 @@ export const Icons = {
 			{...props}
 		>
 			<circle cx="20" cy="20" r="20" fill="white" />
-			<g clip-path="url(#clip0_3858_27515)">
+			<g clipPath="url(#clip0_3858_27515)">
 				<mask
 					id="mask0_3858_27515"
 					style={{ maskType: "luminance" }}

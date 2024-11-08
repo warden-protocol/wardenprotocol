@@ -638,7 +638,7 @@ export default (
 									{
 										internalType: "address",
 										name: "addressValue",
-										type: "address",
+										type: "string",
 									},
 									{
 										internalType: "int32",
@@ -788,7 +788,7 @@ export default (
 									{
 										internalType: "address",
 										name: "addressValue",
-										type: "address",
+										type: "string",
 									},
 									{
 										internalType: "int32",
@@ -1378,7 +1378,7 @@ export default (
 									{
 										internalType: "address",
 										name: "addressValue",
-										type: "address",
+										type: "string",
 									},
 									{
 										internalType: "int32",

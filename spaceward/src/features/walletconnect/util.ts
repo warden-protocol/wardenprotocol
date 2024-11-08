@@ -1,35 +1,34 @@
-import { chains } from "chain-registry";
 import { fromBech32, fromHex, toBech32 } from "@cosmjs/encoding";
-import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import type { PendingRequestTypes, ProposalTypes } from "@walletconnect/types";
+import { IWeb3Wallet } from "@walletconnect/web3wallet";
+import { chains } from "chain-registry";
 
 import {
-	getSdkError,
 	buildApprovedNamespaces,
 	BuildApprovedNamespacesParams,
+	getSdkError,
 } from "@walletconnect/utils";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
-import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 
-import { getClient } from "@/hooks/useClient";
-import type { CommonActions } from "@/utils/common";
+import { COSMOS_CHAINS } from "@/config/tokens";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { AddressType } from "@/hooks/query/warden";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import type { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { getProviderByChainId, REVERSE_ETH_CHAINID_MAP } from "@/lib/eth";
-import { fixAddress } from "../modals/ReceiveAssets";
-import { RemoteMessageType, type RemoteState } from "./types";
-import { COSMOS_CHAINS } from "@/config/tokens";
-import {
-	concat,
-	isAddress,
-	isHex,
-	keccak256,
-	toBytes,
-	TransactionSerializable,
-} from "viem";
+import type { CommonActions } from "@/utils/common";
 import { SignTypedDataVersion, TypedDataUtils } from "@metamask/eth-sig-util";
+import { concat, isAddress, isHex, keccak256, toBytes } from "viem";
+import { usePublicClient } from "wagmi";
+import { fixAddress } from "../modals/ReceiveAssets";
 import { prepareEth } from "../modals/util";
+import { RemoteMessageType, type RemoteState } from "./types";
+
+import { KeyModel } from "@/hooks/query/types";
+import { getKeysBySpaceIdArgs } from "@/hooks/query/warden";
+
+type PublicClient = ReturnType<typeof usePublicClient>;
 
 export function decodeRemoteMessage(
 	message: Uint8Array,
@@ -101,7 +100,7 @@ export async function approveSession(
 	w: IWeb3Wallet,
 	spaceId: string,
 	proposal: ProposalTypes.Struct,
-	addresses?: AddressResponse[],
+	addresses?: KeyModel["addresses"],
 ) {
 	const { id, relays, optionalNamespaces, requiredNamespaces } = proposal;
 
@@ -114,7 +113,7 @@ export async function approveSession(
 
 	if (requestedNamespaces.eip155) {
 		const eth = addresses?.filter(
-			(a) => a.type === AddressType.ADDRESS_TYPE_ETHEREUM,
+			(a) => a.addressType === AddressType.Ethereum,
 		);
 
 		if (!eth?.length) {
@@ -126,7 +125,7 @@ export async function approveSession(
 
 		for (const chain of chains) {
 			for (const address of eth) {
-				accounts.push(`${chain}:${address.address}`);
+				accounts.push(`${chain}:${address.addressValue}`);
 			}
 		}
 
@@ -135,7 +134,7 @@ export async function approveSession(
 
 	if (requestedNamespaces.cosmos) {
 		const cosmos = addresses?.filter(
-			(a) => a.type === AddressType.ADDRESS_TYPE_OSMOSIS,
+			(a) => a.addressType === AddressType.Osmosis,
 		);
 
 		if (!cosmos?.length) {
@@ -147,7 +146,7 @@ export async function approveSession(
 
 		for (const chain of chains) {
 			for (const address of cosmos) {
-				accounts.push(`${chain}:${address.address}`);
+				accounts.push(`${chain}:${address.addressValue}`);
 			}
 		}
 
@@ -177,21 +176,49 @@ export async function approveSession(
 	}
 }
 
-async function findKeyByAddress(spaceId: string, address: string) {
-	const client = await getClient();
-	const queryKeys = client.warden.warden.v1beta3.keysBySpaceId;
+const queryKeys = ({
+	args,
+	client,
+}: {
+	args: ReturnType<typeof getKeysBySpaceIdArgs>;
+	client: PublicClient;
+}) => {
+	if (!client) {
+		throw new Error("Client not found");
+	}
 
-	const res = await queryKeys({
+	return client.readContract({
+		address: PRECOMPILE_WARDEN_ADDRESS,
+		abi: wardenPrecompileAbi,
+		functionName: "keysBySpaceId",
+		args: [args[0] as never, args[1], args[2]],
+	});
+};
+
+async function findKeyByAddress({
+	client,
+	spaceId,
+	address,
+}: {
+	client?: PublicClient;
+	spaceId: string;
+	address: string;
+}) {
+	if (!client) {
+		throw new Error("Client not found");
+	}
+
+	const args = getKeysBySpaceIdArgs({
 		spaceId: BigInt(spaceId),
-		deriveAddresses: [
-			AddressType.ADDRESS_TYPE_ETHEREUM,
-			AddressType.ADDRESS_TYPE_OSMOSIS,
-		],
+		deriveAddresses: [AddressType.Ethereum, AddressType.Osmosis],
 	});
 
-	return res.keys?.find((key) =>
+	const res = await queryKeys({ args, client });
+	const keys = res?.[0];
+
+	return keys?.find((key) =>
 		key.addresses
-			?.map((w) => w.address?.toLowerCase())
+			?.map((w) => w.addressValue.toLowerCase())
 			.includes(address.toLowerCase()),
 	)?.key;
 }
@@ -223,11 +250,13 @@ export async function approveRequest({
 	req,
 	eth,
 	cosm,
+	client,
 }: {
 	w?: IWeb3Wallet | null;
 	req: PendingRequestTypes.Struct;
 	eth: ReturnType<typeof useEthereumTx>;
 	cosm: ReturnType<typeof useKeychainSigner>;
+	client: ReturnType<typeof usePublicClient>;
 }) {
 	if (!w) {
 		throw new Error("WalletConnect not initialized");
@@ -257,7 +286,11 @@ export async function approveRequest({
 				}
 
 				const address = req.params.request.params[1];
-				const key = await findKeyByAddress(wsAddr, address);
+				const key = await findKeyByAddress({
+					spaceId: wsAddr,
+					address,
+					client,
+				});
 
 				if (!key) {
 					console.error("Unknown address", address);
@@ -297,7 +330,11 @@ export async function approveRequest({
 					throw new Error("Invalid transaction parameters");
 				}
 
-				const key = await findKeyByAddress(wsAddr, txParam.from);
+				const key = await findKeyByAddress({
+					spaceId: wsAddr,
+					address: txParam.from,
+					client,
+				});
 
 				if (!key) {
 					throw new Error(`Unknown address ${txParam.from}`);
@@ -353,7 +390,12 @@ export async function approveRequest({
 			}
 			case "eth_signTypedData_v4": {
 				const from = req.params.request.params[0];
-				const key = await findKeyByAddress(wsAddr, from);
+				const key = await findKeyByAddress({
+					spaceId: wsAddr,
+					address: from,
+					client,
+				});
+
 				if (!key) {
 					throw new Error(`Unknown address ${from}`);
 				}
@@ -417,15 +459,15 @@ export async function approveRequest({
 					throw new Error(`Unknown chain id ${chainId}`);
 				}
 
-				const client = await getClient();
-				const queryKeys = client.warden.warden.v1beta3.keysBySpaceId;
-
-				const res = await queryKeys({
+				const args = getKeysBySpaceIdArgs({
 					spaceId: BigInt(wsAddr),
-					deriveAddresses: [AddressType.ADDRESS_TYPE_OSMOSIS],
+					deriveAddresses: [AddressType.Osmosis],
 				});
 
-				const addresses = res.keys.flatMap((key) =>
+				const data = await queryKeys({ args, client });
+				const keys = data?.[0];
+
+				const addresses = keys?.flatMap((key) =>
 					key.addresses.map((addr) => ({
 						...fixAddress(addr, chain.chain_name),
 						publicKey: key.key.publicKey,
@@ -433,10 +475,10 @@ export async function approveRequest({
 				);
 
 				const response = {
-					result: addresses?.map(({ address, publicKey }) => ({
-						address,
+					result: addresses?.map(({ addressValue, publicKey }) => ({
+						address: addressValue,
 						algo: "secp256k1",
-						pubkey: base64FromBytes(publicKey),
+						pubkey: base64FromBytes(toBytes(publicKey)),
 					})),
 					id: req.id,
 					jsonrpc: "2.0",
@@ -467,13 +509,17 @@ export async function approveRequest({
 					signDoc: any;
 				} = request.params;
 
-				const key = await findKeyByAddress(
-					wsAddr,
-					toBech32(
+				// todo check if working okay
+				const key = await findKeyByAddress({
+					client,
+					spaceId: wsAddr,
+					address: toBech32(
 						chain.bech32_prefix!,
 						fromBech32(signerAddress).data,
 					),
-				);
+				});
+
+				console.log("key", key);
 
 				if (!key) {
 					throw new Error(`Unknown address ${signerAddress}`);

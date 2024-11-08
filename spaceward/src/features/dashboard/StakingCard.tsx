@@ -9,12 +9,13 @@ interface CardProps {
 	isLoading?: boolean;
 	stakedWard?: bigint;
 	total?: DecCoin[];
+	comingSoon?: boolean;
 }
 
 export default function StakingCard(props: CardProps) {
 	return (
 		<Link
-			to="/staking"
+			to={props.comingSoon ? "#" : "/staking"}
 			className="cursor-pointer group border-[1px] border-solid border-border-edge bg-staking-bg overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 		>
 			<img
@@ -47,7 +48,11 @@ export default function StakingCard(props: CardProps) {
 					) : null}
 				</div>
 				<div className="text-label-accent">
-					{props.total ? (
+					{props.comingSoon ? (
+						<div className="rounded h-10 px-5 font-semibold">
+							Coming soon
+						</div>
+					) : props.total ? (
 						formatReward(props.total)
 					) : (
 						<div className="rounded h-10 px-5 font-semibold bg-fill-quaternary duration-300 ease-out hover:bg-fill-accent-secondary text-foreground flex items-center justify-center">

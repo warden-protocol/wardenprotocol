@@ -2,7 +2,7 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import {CreatorDefinedTxFields, OrderData, UnsignedEthTx} from "./Types.sol";
-import {IExecution} from "./IExecution.sol";
+import {ExecutionData, IExecution} from "./IExecution.sol";
 import {Types} from "precompile-common/Types.sol";
 import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warden/IWarden.sol";
 
@@ -10,6 +10,7 @@ import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warde
 contract BasicOrder is IExecution {
     OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
+    IWarden wardenPrecompile;
 
     Types.Coin[] private coins;
     bool private executed;
@@ -33,9 +34,9 @@ contract BasicOrder is IExecution {
             coins.push(maxKeychainFees[i]);
         }
 
-        IWarden warden = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-        KeyResponse memory keyResponse = warden.keyById(_orderData.signRequestData.keyId, new int32[](0));
-        keyAddress = address(bytes20(keyResponse.key.publicKey));
+        wardenPrecompile = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
+        KeyResponse memory keyResponse = wardenPrecompile.keyById(_orderData.signRequestData.keyId, new int32[](0));
+        keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
         
 
         orderData = _orderData;
@@ -71,6 +72,8 @@ contract BasicOrder is IExecution {
      */
     function execute(
         uint256 nonce,
+        uint256 gas,
+        uint256 gasPrice,
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas
     ) external returns (bool) {
@@ -86,20 +89,16 @@ contract BasicOrder is IExecution {
             revert ConditionNotMet();
         }
 
-        IWarden warden = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-        
-        bytes memory data = abi.encodeWithSignature(
-                SWAP_EXACT_ETH_FOR_TOKENS,
-                orderData.swapData.amountIn,
-                orderData.swapData.path,
-                orderData.swapData.to,
-                orderData.swapData.deadline);
+        bytes memory data = _packSwapData();
         
         address to = orderData.to;
 
         CreatorDefinedTxFields storage _txFields = txFields;
 
         bytes memory signRequestInput = abi.encode(UnsignedEthTx({
+            from: keyAddress,
+            gas: gas,
+            gasPrice: gasPrice,
             nonce: nonce,
             maxFeePerGas: maxFeePerGas,
             maxPriorityFeePerGas: maxPriorityFeePerGas,
@@ -110,7 +109,7 @@ contract BasicOrder is IExecution {
         }));
 
 
-        executed = warden.newSignRequest(
+        executed = wardenPrecompile.newSignRequest(
             orderData.signRequestData.keyId,
             signRequestInput,
             orderData.signRequestData.analyzers,
@@ -147,13 +146,29 @@ contract BasicOrder is IExecution {
         return executed;
     }
 
-    function executionData() external view returns (address caller, uint256 chainId) {
+    function executionData() external view returns (ExecutionData memory data) {
         CreatorDefinedTxFields storage _txFields = txFields;
-        return (keyAddress, _txFields.chainId);
+        bytes memory d = _packSwapData();
+        data = ExecutionData({
+            caller: keyAddress,
+            to: orderData.to,
+            chainId: _txFields.chainId,
+            value: _txFields.value,
+            data: d
+        });
     }
 
     function setByAIService(bytes calldata data) external pure returns (bool) {
         return false;
     }
 
+
+    function _packSwapData() internal view returns (bytes memory data) {
+        data = abi.encodeWithSignature(
+                SWAP_EXACT_ETH_FOR_TOKENS,
+                orderData.swapData.amountIn,
+                orderData.swapData.path,
+                orderData.swapData.to,
+                orderData.swapData.deadline);
+    }
 }

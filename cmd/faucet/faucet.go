@@ -12,7 +12,9 @@ import (
 	"sync"
 	"time"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/rs/zerolog"
 
 	"github.com/warden-protocol/wardenprotocol/cmd/faucet/pkg/config"
@@ -31,6 +33,7 @@ type Faucet struct {
 	Amount          float64
 	Batch           []string
 	LatestTXHash    string
+	DisplayTokens   bool
 	*sync.Mutex
 }
 
@@ -49,6 +52,7 @@ func execute(cmdString string) (Out, error) {
 	if err != nil {
 		return Out{}, fmt.Errorf("error getting stdout pipe: %w", err)
 	}
+
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		return Out{}, fmt.Errorf("error getting stderr pipe: %w", err)
@@ -152,6 +156,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
 		Amount:          float64(amount),
+		DisplayTokens:   bool(cfg.DisplayTokens),
 	}
 
 	dailySupply.Set(f.DailySupply)
@@ -183,7 +188,7 @@ func (f *Faucet) batchProcessInterval() {
 					reqErrorCount.Inc()
 					f.log.Error().Msgf("error sending batch: %s", err)
 				} else {
-					f.log.Info().Msgf("tx hash %s", txHash)
+					f.log.Debug().Msgf("tx hash %s", txHash)
 					f.LatestTXHash = txHash
 					batchSendCount.Inc()
 					batchSize.Set(0)
@@ -202,7 +207,26 @@ func addressInBatch(batch []string, addr string) bool {
 	return false
 }
 
+func convertHexToBech32(hexAddr string) (string, error) {
+	if common.IsHexAddress(hexAddr) {
+		addr := common.HexToAddress(hexAddr).Bytes()
+		bech32Addr, err := sdk.Bech32ifyAddressBytes("warden", addr)
+		// 	addr, err = bech32.ConvertAndEncode("warden", []byte(addr))
+		if err != nil {
+			return "", fmt.Errorf(
+				"error converting hex address to bech32: %w",
+				err,
+			)
+		}
+		return bech32Addr, nil
+	}
+	return "", fmt.Errorf(
+		"error converting hex address to bech32: address is not hex",
+	)
+}
+
 func (f *Faucet) Send(addr string, force bool) (string, int, error) {
+	var err error
 	f.Lock()
 	defer f.Unlock()
 
@@ -210,6 +234,14 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		return "",
 			http.StatusTooManyRequests,
 			fmt.Errorf("no tokens available, please come back tomorrow")
+	}
+
+	// if the address is a hex string, convert it to bech32
+	if strings.HasPrefix(addr, "0x") {
+		addr, err = convertHexToBech32(addr)
+		if err != nil {
+			return "", http.StatusUnprocessableEntity, err
+		}
 	}
 
 	if len(f.Batch) < f.config.BatchLimit && !force {
@@ -230,10 +262,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Info().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
+	f.log.Debug().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
 
 	amount := f.config.Amount + strings.Repeat("0", f.config.Decimals) + f.config.Denom
-	f.log.Info().Msg(amount)
+	f.log.Debug().Msg(amount)
 
 	cmd := strings.Join([]string{
 		f.config.CliName,
@@ -250,12 +282,16 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		f.config.ChainID,
 		"--node",
 		f.config.Node,
-		"--gas-prices",
+		"--fees",
 		f.config.Fees,
+		"--gas",
+		"auto",
+		"--gas-adjustment",
+		"1.6",
 		"-o",
 		"json",
 	}, " ")
-	f.log.Info().Msg(cmd)
+	f.log.Debug().Msg(cmd)
 
 	out, err := execute(cmd)
 	if err != nil {
@@ -268,7 +304,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	}
 
 	if err = json.Unmarshal(out.Stdout, &result); err != nil {
-		return "", http.StatusInternalServerError, fmt.Errorf("error unmarshalling tx result: %w", err)
+		return "", http.StatusInternalServerError, fmt.Errorf(
+			"error unmarshalling tx result: %w",
+			err,
+		)
 	}
 
 	if result.Code != 0 {
@@ -280,7 +319,8 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	}
 
 	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount)
-	f.log.Info().Msgf("tokens available: %f", f.TokensAvailable)
+	f.log.Debug().Msgf("tokens available: %f", f.TokensAvailable)
+	f.log.Info().Msgf("tokens sent to %v", f.Batch)
 	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}

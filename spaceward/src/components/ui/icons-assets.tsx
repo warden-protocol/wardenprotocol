@@ -140,9 +140,9 @@ export const Icons = {
 					width="112"
 					height="112"
 					filterUnits="userSpaceOnUse"
-					color-interpolation-filters="sRGB"
+					colorInterpolationFilters="sRGB"
 				>
-					<feFlood flood-opacity="0" result="BackgroundImageFix" />
+					<feFlood floodOpacity="0" result="BackgroundImageFix" />
 					<feGaussianBlur in="BackgroundImageFix" stdDeviation="20" />
 					<feComposite
 						in2="SourceAlpha"
@@ -230,7 +230,7 @@ export const Icons = {
 			{...props}
 		>
 			<circle cx="12" cy="12" r="12" fill="white" />
-			<g clip-path="url(#clip0_1540_2030)">
+			<g clipPath="url(#clip0_1540_2030)">
 				<path
 					fillRule="evenodd"
 					clipRule="evenodd"
@@ -535,7 +535,7 @@ export const Icons = {
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
-			<g id="icon/user-group" clip-path="url(#clip0_2592_2792)">
+			<g id="icon/user-group" clipPath="url(#clip0_2592_2792)">
 				<g id="Union">
 					<path
 						fillRule="evenodd"

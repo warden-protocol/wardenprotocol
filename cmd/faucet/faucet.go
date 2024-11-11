@@ -320,6 +320,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 
 	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount)
 	f.log.Debug().Msgf("tokens available: %f", f.TokensAvailable)
+	f.log.Info().Msgf("tokens sent to %v", f.Batch)
 	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}

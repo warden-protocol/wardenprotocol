@@ -143,13 +143,13 @@ func main() {
 
 		page.Form.CSRFToken = c.Get("csrf").(string)
 		page.Form.Address = c.QueryParam("addr")
-		logger.Info().Msgf("page.Form: %v", page.Form)
+		logger.Debug().Msgf("page.Form: %v", page.Form)
 		return c.Render(http.StatusOK, "index", page)
 	})
 
 	e.GET("/check-tx", func(c echo.Context) error {
 		logger.Debug().Msg("checking tx")
-		logger.Info().Msgf("f.Batch: %v", f.Batch)
+		logger.Debug().Msgf("Batch: %v", f.Batch)
 		if len(f.Batch) == 0 {
 			page.Data.TXHash = f.LatestTXHash
 			return c.Render(http.StatusOK, "tx-result", page.Data)

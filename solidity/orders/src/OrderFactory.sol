@@ -5,14 +5,14 @@ import {CreatorDefinedTxFields, OrderData} from "./Types.sol";
 import {Types} from "precompile-common/Types.sol";
 import {BasicOrder} from "./BasicOrder.sol";
 
-contract OrderFactory {
-    enum OrderType {
-        Basic,
-        Advanced
-    }
+enum OrderType {
+    Basic,
+    Advanced
+}
 
+contract OrderFactory {
     // Mapping from order contract to order creator
-    mapping(address orderAddredd => address orderCreator) public orders;
+    mapping(address orderAddress => address orderCreator) public orders;
 
     // Registry of IExecution contracts
     address public registry;
@@ -28,11 +28,11 @@ contract OrderFactory {
         Types.Coin[] memory maxKeychainFees,
         CreatorDefinedTxFields memory txFields,
         address _scheduler,
-        OrderType orderType) public {
+        OrderType orderType) public returns (address order) {
         if (orderType == OrderType.Basic) {
-            _createBasicOrder(_orderData, maxKeychainFees, txFields, _scheduler);
+            return _createBasicOrder(_orderData, maxKeychainFees, txFields, _scheduler);
         } else if (orderType == OrderType.Advanced) {
-            _createAdvancedOrder(_orderData, maxKeychainFees);
+            return _createAdvancedOrder(_orderData, maxKeychainFees);
         }
     }
 
@@ -41,14 +41,19 @@ contract OrderFactory {
         Types.Coin[] memory maxKeychainFees,
         CreatorDefinedTxFields memory _txFields,
         address _scheduler
-        ) internal {
+        ) internal returns (address) {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _txFields, _scheduler);
         orders[address(basicOrder)] = tx.origin;
+        // TODO: register in regisry
         emit OrderCreated(tx.origin, address(basicOrder), OrderType.Basic);
+
+        return address(basicOrder);
     }
 
-    function _createAdvancedOrder(OrderData memory _orderData, Types.Coin[] memory maxKeychainFees) internal {
-        // TODO
+    function _createAdvancedOrder(
+        OrderData memory _orderData,
+        Types.Coin[] memory maxKeychainFees) internal returns (address) {
+        revert("Unimplemented");
     }
 
     function getCreator(address order) public view returns (address) {

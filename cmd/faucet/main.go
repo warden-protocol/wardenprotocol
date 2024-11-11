@@ -135,6 +135,10 @@ func main() {
 	e.File("/js/circle.js", "js/circle.js")
 
 	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
+
 	e.GET("/", func(c echo.Context) error {
 		if err != nil {
 			logger.Error().Msgf("unable to get session %v", err)

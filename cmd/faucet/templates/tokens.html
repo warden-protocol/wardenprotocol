@@ -26,16 +26,16 @@
       />
     </svg>
   </div>
-  {{ if .DisplayTokens }}
   <div
     class="tokens"
     id="tokenInfo"
     data-tokens-available="{{.TokensAvailablePercent}}"
   >
+  {{ if .DisplayTokens }}
     Daily WARD Amount </br>
     {{ .TokensAvailable }} / {{ .TokenSupply }} 
-  </div>
   {{ end }}
+  </div>
   {{ end}}
 </div>
 {{ end }}

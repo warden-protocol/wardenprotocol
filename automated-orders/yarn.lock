@@ -625,6 +625,7 @@
   dependencies:
     "@tanstack/react-query" "^4.36.1"
     "@wardenprotocol/wardenjs" "0.0.11"
+    lru-cache "^11.0.2"
     web3 "^4.14.0"
 
 "@warden-automated-orders/relayer@file:/home/backs/work/eqlab/sources/wardenprotocol/automated-orders/packages/relayer":
@@ -835,6 +836,11 @@ chalk@^4.0.0:
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
+
+cockatiel@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/cockatiel/-/cockatiel-3.2.1.tgz"
+  integrity sha512-gfrHV6ZPkquExvMh9IOkKsBzNDk6sDuZ6DdBGUBkvFnTCqCxzpuq48RySgP0AnaqQkw2zynOFj9yly6T1Q2G5Q==
 
 color-convert@^1.9.0:
   version "1.9.3"

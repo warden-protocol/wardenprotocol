@@ -34,7 +34,7 @@ export class WardenClient {
 
       yield* this.yieldNewRequests(signRequests);
 
-      if (notEmpty(pagination?.nextKey)) {
+      if (utils.notEmpty(pagination?.nextKey)) {
         nextKey = pagination!.nextKey;
       }
     }
@@ -42,7 +42,7 @@ export class WardenClient {
 
   private *yieldNewRequests(signRequests: SignRequest[]) {
     for (const request of signRequests) {
-      if (!request.signedData) {
+      if (utils.empty(request.signedData)) {
         continue;
       }
 
@@ -64,18 +64,17 @@ export class WardenClient {
       ? { key: nextKey, limit: limit }
       : { offset: 0n, limit: limit };
 
-    const query = (await this.query()).warden.warden.v1beta3.signRequests(QuerySignRequestsRequest.fromPartial({
-      pagination: PageRequest.fromPartial(page),
-      status: SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED,
-      keychainId: 0n,
-    }));
+    const query = (await this.query()).warden.warden.v1beta3;
 
-    const queryResponse = await query;
+    // TODO AT: Need to add filter by SignRequest type, when implemented
+    const response = await query.signRequests(
+      QuerySignRequestsRequest.fromPartial({
+        pagination: PageRequest.fromPartial(page),
+        status: SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED,
+        keychainId: 0n,
+      })
+    );
 
-    return { signRequests: queryResponse.signRequests, pagination: queryResponse.pagination};
+    return { signRequests: response.signRequests, pagination: response.pagination };
   }
-}
-
-function notEmpty(arr: Uint8Array | undefined) : boolean {
-  return arr && arr.length > 0 || false;
 }

@@ -12,6 +12,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/rs/zerolog"
+
+	"github.com/warden-protocol/wardenprotocol/cmd/faucet/pkg/config"
 )
 
 const totalPercent = 100
@@ -84,6 +86,21 @@ func main() {
 		log.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
 	).Level(log.InfoLevel).With().Timestamp().Logger()
 
+	// set cookieSecure
+	cookieSecure := false
+	if config.GetEnvironment() == "production" {
+		cookieSecure = true
+	}
+
+	e.Use(middleware.Recover())
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup:    "header:X-CSRF-Token",
+		CookieName:     "_csrf",
+		CookieMaxAge:   3600,
+		CookieHTTPOnly: true,
+		CookieSecure:   cookieSecure,
+	}))
+
 	page := newPage()
 	e.Renderer = newTemplate()
 
@@ -119,9 +136,14 @@ func main() {
 
 	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	e.GET("/", func(c echo.Context) error {
-		csrfToken, _ := c.Get(middleware.DefaultCSRFConfig.ContextKey).(string)
-		page.Form.CSRFToken = csrfToken
+		if err != nil {
+			logger.Error().Msgf("unable to get session %v", err)
+			return c.Render(http.StatusInternalServerError, "index", page)
+		}
+
+		page.Form.CSRFToken = c.Get("csrf").(string)
 		page.Form.Address = c.QueryParam("addr")
+		logger.Info().Msgf("page.Form: %v", page.Form)
 		return c.Render(http.StatusOK, "index", page)
 	})
 
@@ -140,6 +162,7 @@ func main() {
 		var httpStatusCode int
 
 		reqCount.Inc()
+
 		txHash, httpStatusCode, err = f.Send(c.FormValue("address"), false)
 		if err != nil {
 			logger.Error().Msgf("error sending tokens: %s", err)

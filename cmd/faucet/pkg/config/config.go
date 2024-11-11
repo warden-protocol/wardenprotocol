@@ -37,6 +37,15 @@ type Config struct {
 	Chain          string        `env:"CHAIN"          envDefault:"Chiado"                                    mapstructure:"CHAIN"`
 	Decimals       int           `env:"DECIMALS"       envDefault:"18"                                        mapstructure:"DECIMALS"`
 	DisplayTokens  bool          `env:"DISPLAY_TOKENS" envDefault:"true"                                      mapstructure:"DISPLAY_TOKENS"`
+	Environment    string        `env:"ENVIRONMENT"    envDefault:"development"                               mapstructure:"ENVIRONMENT"`
+}
+
+func GetEnvironment() string {
+	cfg, err := LoadConfig()
+	if err != nil {
+		return "development"
+	}
+	return cfg.Environment
 }
 
 func LoadConfig() (Config, error) {

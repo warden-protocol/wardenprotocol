@@ -38,6 +38,7 @@ type Config struct {
 	Decimals       int           `env:"DECIMALS"       envDefault:"18"                                        mapstructure:"DECIMALS"`
 	DisplayTokens  bool          `env:"DISPLAY_TOKENS" envDefault:"true"                                      mapstructure:"DISPLAY_TOKENS"`
 	Environment    string        `env:"ENVIRONMENT"    envDefault:"development"                               mapstructure:"ENVIRONMENT"`
+	Blacklist      string        `env:"BLACKLIST"      envDefault:""                                          mapstructure:"BLACKLIST"`
 }
 
 func GetEnvironment() string {

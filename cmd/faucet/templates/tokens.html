@@ -26,6 +26,7 @@
       />
     </svg>
   </div>
+  {{ if .DisplayTokens }}
   <div
     class="tokens"
     id="tokenInfo"
@@ -34,6 +35,7 @@
     Daily WARD Amount </br>
     {{ .TokensAvailable }} / {{ .TokenSupply }} 
   </div>
+  {{ end }}
   {{ end}}
 </div>
 {{ end }}

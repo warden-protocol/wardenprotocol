@@ -33,6 +33,7 @@ type Faucet struct {
 	Amount          float64
 	Batch           []string
 	LatestTXHash    string
+	DisplayTokens   bool
 	*sync.Mutex
 }
 
@@ -155,6 +156,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
 		Amount:          float64(amount),
+		DisplayTokens:   bool(cfg.DisplayTokens),
 	}
 
 	dailySupply.Set(f.DailySupply)
@@ -186,7 +188,7 @@ func (f *Faucet) batchProcessInterval() {
 					reqErrorCount.Inc()
 					f.log.Error().Msgf("error sending batch: %s", err)
 				} else {
-					f.log.Info().Msgf("tx hash %s", txHash)
+					f.log.Debug().Msgf("tx hash %s", txHash)
 					f.LatestTXHash = txHash
 					batchSendCount.Inc()
 					batchSize.Set(0)
@@ -260,10 +262,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Info().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
+	f.log.Debug().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
 
 	amount := f.config.Amount + strings.Repeat("0", f.config.Decimals) + f.config.Denom
-	f.log.Info().Msg(amount)
+	f.log.Debug().Msg(amount)
 
 	cmd := strings.Join([]string{
 		f.config.CliName,
@@ -280,12 +282,16 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		f.config.ChainID,
 		"--node",
 		f.config.Node,
-		"--gas-prices",
+		"--fees",
 		f.config.Fees,
+		"--gas",
+		"auto",
+		"--gas-adjustment",
+		"1.6",
 		"-o",
 		"json",
 	}, " ")
-	f.log.Info().Msg(cmd)
+	f.log.Debug().Msg(cmd)
 
 	out, err := execute(cmd)
 	if err != nil {
@@ -313,7 +319,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	}
 
 	f.TokensAvailable = (f.TokensAvailable - float64(len(f.Batch))*f.Amount)
-	f.log.Info().Msgf("tokens available: %f", f.TokensAvailable)
+	f.log.Debug().Msgf("tokens available: %f", f.TokensAvailable)
 	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}

@@ -18,31 +18,30 @@ func configError(msg string) error {
 }
 
 type Config struct {
-	Port           string        `env:"PORT" envDefault:"8081" mapstructure:"PORT"`
-	EnvFile        string        `env:"ENV_FILE" envDefault:""`
-	PurgeInterval  string        `env:"PURGE_INTERVAL" envDefault:"10s" mapstructure:"PURGE_INTERVAL"`
-	Mnemonic       string        `env:"MNEMONIC" envDefault:"" mapstructure:"MNEMONIC"`
-	Node           string        `env:"NODE" envDefault:"https://rpc.buenavista.wardenprotocol.org:443" mapstructure:"NODE"`
-	ChainID        string        `env:"CHAIN_ID" envDefault:"buenavista-1" mapstructure:"CHAIN_ID"`
-	CliName        string        `env:"CLI_NAME" envDefault:"wardend" mapstructure:"CLI_NAME"`
-	AccountName    string        `env:"ACCOUNT_NAME" envDefault:"faucet" mapstructure:"ACCOUNT_NAME"`
-	Denom          string        `env:"DENOM" envDefault:"award" mapstructure:"DENOM"`
-	Amount         string        `env:"AMOUNT" envDefault:"1" mapstructure:"AMOUNT"`
-	Fees           string        `env:"FEES" envDefault:"25000000000000award" mapstructure:"FEES"`
-	KeyringBackend string        `env:"KEYRING" envDefault:"test" mapstructure:"KEYRING"`
-	BatchInterval  time.Duration `env:"BATCH_INTERVAL" envDefault:"5s" mapstructure:"BATCH_INTERVAL"`
-	DailyLimit     int64         `env:"DAILY_LIMIT" envDefault:"100000" mapstructure:"DAILY_LIMIT"`
-	BatchLimit     int           `env:"BATCH_LIMIT" envDefault:"10" mapstructure:"BATCH_LIMIT"`
-	TXRetry        int           `env:"TX_RETRY" envDefault:"10" mapstructure:"TX_RETRY"`
-	Chain          string        `env:"CHAIN" envDefault:"Buenavista" mapstructure:"CHAIN"`
-	Decimals       int           `env:"DECIMALS" envDefault:"18" mapstructure:"DECIMALS"`
+	Port           string        `env:"PORT"           envDefault:"8081"                                      mapstructure:"PORT"`
+	EnvFile        string        `env:"ENV_FILE"       envDefault:""`
+	PurgeInterval  string        `env:"PURGE_INTERVAL" envDefault:"10s"                                       mapstructure:"PURGE_INTERVAL"`
+	Mnemonic       string        `env:"MNEMONIC"       envDefault:""                                          mapstructure:"MNEMONIC"`
+	Node           string        `env:"NODE"           envDefault:"https://rpc.chiado.wardenprotocol.org:443" mapstructure:"NODE"`
+	ChainID        string        `env:"CHAIN_ID"       envDefault:"chiado_10010-1"                            mapstructure:"CHAIN_ID"`
+	CliName        string        `env:"CLI_NAME"       envDefault:"wardend"                                   mapstructure:"CLI_NAME"`
+	AccountName    string        `env:"ACCOUNT_NAME"   envDefault:"faucet"                                    mapstructure:"ACCOUNT_NAME"`
+	Denom          string        `env:"DENOM"          envDefault:"award"                                     mapstructure:"DENOM"`
+	Amount         string        `env:"AMOUNT"         envDefault:"1"                                         mapstructure:"AMOUNT"`
+	Fees           string        `env:"FEES"           envDefault:"25000000000000award"                       mapstructure:"FEES"`
+	KeyringBackend string        `env:"KEYRING"        envDefault:"test"                                      mapstructure:"KEYRING"`
+	BatchInterval  time.Duration `env:"BATCH_INTERVAL" envDefault:"5s"                                        mapstructure:"BATCH_INTERVAL"`
+	DailyLimit     int64         `env:"DAILY_LIMIT"    envDefault:"100000"                                    mapstructure:"DAILY_LIMIT"`
+	BatchLimit     int           `env:"BATCH_LIMIT"    envDefault:"10"                                        mapstructure:"BATCH_LIMIT"`
+	TXRetry        int           `env:"TX_RETRY"       envDefault:"10"                                        mapstructure:"TX_RETRY"`
+	Chain          string        `env:"CHAIN"          envDefault:"Chiado"                                    mapstructure:"CHAIN"`
+	Decimals       int           `env:"DECIMALS"       envDefault:"18"                                        mapstructure:"DECIMALS"`
+	DisplayTokens  bool          `env:"DISPLAY_TOKENS" envDefault:"true"                                      mapstructure:"DISPLAY_TOKENS"`
 }
 
 func LoadConfig() (Config, error) {
 	cfg := Config{}
 	var err error
-
-	// setDefaults(*cfg)
 
 	if err = env.Parse(&cfg); err != nil {
 		return Config{}, configError(err.Error())

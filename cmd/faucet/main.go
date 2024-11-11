@@ -35,6 +35,7 @@ type Data struct {
 	TokensAvailable        float64
 	TokensAvailablePercent float64
 	TokenSupply            float64
+	DisplayTokens          bool
 	Denom                  string
 	TXHash                 string
 	Chain                  string
@@ -45,6 +46,7 @@ func newData() Data {
 		TokensAvailable:        0,
 		TokensAvailablePercent: 0,
 		TokenSupply:            0,
+		DisplayTokens:          true,
 		Denom:                  "",
 		TXHash:                 "",
 	}
@@ -84,7 +86,6 @@ func main() {
 
 	page := newPage()
 	e.Renderer = newTemplate()
-	e.Use(middleware.Logger())
 
 	f, err := InitFaucet(logger)
 	if err != nil {
@@ -98,6 +99,7 @@ func main() {
 		TokenSupply:            f.TokensAvailable,
 		Denom:                  f.config.Denom,
 		Chain:                  f.config.Chain,
+		DisplayTokens:          f.config.DisplayTokens,
 	}
 	amount, err := strconv.Atoi(f.config.Amount)
 	if err != nil {
@@ -124,7 +126,7 @@ func main() {
 	})
 
 	e.GET("/check-tx", func(c echo.Context) error {
-		logger.Info().Msg("checking tx")
+		logger.Debug().Msg("checking tx")
 		logger.Info().Msgf("f.Batch: %v", f.Batch)
 		if len(f.Batch) == 0 {
 			page.Data.TXHash = f.LatestTXHash

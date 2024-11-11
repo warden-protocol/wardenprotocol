@@ -1,20 +1,19 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {CreatorDefinedTxFields, OrderData, UnsignedEthTx} from "./Types.sol";
+import {Types} from "./Types.sol";
 import {ExecutionData, IExecution} from "./IExecution.sol";
-import {Types} from "precompile-common/Types.sol";
+import {Types as CommonTypes} from "precompile-common/Types.sol";
 import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warden/IWarden.sol";
 
 
 contract BasicOrder is IExecution {
-    OrderData public orderData;
+    Types.OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
     IWarden wardenPrecompile;
 
-    Types.Coin[] private coins;
+    CommonTypes.Coin[] private coins;
     bool private executed;
-    CreatorDefinedTxFields private txFields;
     address private scheduler;
     address private keyAddress;
 
@@ -25,9 +24,8 @@ contract BasicOrder is IExecution {
     event Executed();
 
     constructor(
-        OrderData memory _orderData,
-        Types.Coin[] memory maxKeychainFees,
-        CreatorDefinedTxFields memory _txFields,
+        Types.OrderData memory _orderData,
+        CommonTypes.Coin[] memory maxKeychainFees,
         address _scheduler
         ) {
         for(uint256 i = 0; i < maxKeychainFees.length; i++) {
@@ -41,7 +39,6 @@ contract BasicOrder is IExecution {
 
         orderData = _orderData;
         executed = false;
-        txFields = _txFields;
         scheduler = _scheduler;
     }
 
@@ -91,21 +88,17 @@ contract BasicOrder is IExecution {
 
         bytes memory data = _packSwapData();
         
-        address to = orderData.to;
-
-        CreatorDefinedTxFields storage _txFields = txFields;
-
-        bytes memory signRequestInput = abi.encode(UnsignedEthTx({
+        bytes memory signRequestInput = abi.encode(Types.UnsignedEthTx({
             from: keyAddress,
             gas: gas,
             gasPrice: gasPrice,
             nonce: nonce,
             maxFeePerGas: maxFeePerGas,
             maxPriorityFeePerGas: maxPriorityFeePerGas,
-            to: to,
-            value: _txFields.value,
+            to: orderData.creatorDefinedTxFields.to,
+            value: orderData.creatorDefinedTxFields.value,
             data: data,
-            chainId: _txFields.chainId
+            chainId: orderData.creatorDefinedTxFields.chainId
         }));
 
 
@@ -147,13 +140,12 @@ contract BasicOrder is IExecution {
     }
 
     function executionData() external view returns (ExecutionData memory data) {
-        CreatorDefinedTxFields storage _txFields = txFields;
         bytes memory d = _packSwapData();
         data = ExecutionData({
             caller: keyAddress,
-            to: orderData.to,
-            chainId: _txFields.chainId,
-            value: _txFields.value,
+            to: orderData.creatorDefinedTxFields.to,
+            chainId: orderData.creatorDefinedTxFields.chainId,
+            value: orderData.creatorDefinedTxFields.value,
             data: d
         });
     }

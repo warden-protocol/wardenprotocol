@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {CreatorDefinedTxFields, OrderData} from "./Types.sol";
-import {Types} from "precompile-common/Types.sol";
+import {Types} from "./Types.sol";
+import {Types as CommonTypes} from "precompile-common/Types.sol";
 import {BasicOrder} from "./BasicOrder.sol";
 
 enum OrderType {
@@ -24,25 +24,23 @@ contract OrderFactory {
     }
 
     function createOrder(
-        OrderData memory _orderData,
-        Types.Coin[] memory maxKeychainFees,
-        CreatorDefinedTxFields memory txFields,
+        Types.OrderData memory _orderData,
+        CommonTypes.Coin[] memory maxKeychainFees,
         address _scheduler,
         OrderType orderType) public returns (address order) {
         if (orderType == OrderType.Basic) {
-            return _createBasicOrder(_orderData, maxKeychainFees, txFields, _scheduler);
+            return _createBasicOrder(_orderData, maxKeychainFees, _scheduler);
         } else if (orderType == OrderType.Advanced) {
             return _createAdvancedOrder(_orderData, maxKeychainFees);
         }
     }
 
     function _createBasicOrder(
-        OrderData memory _orderData,
-        Types.Coin[] memory maxKeychainFees,
-        CreatorDefinedTxFields memory _txFields,
+        Types.OrderData memory _orderData,
+        CommonTypes.Coin[] memory maxKeychainFees,
         address _scheduler
         ) internal returns (address) {
-        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _txFields, _scheduler);
+        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
         orders[address(basicOrder)] = tx.origin;
         // TODO: register in regisry
         emit OrderCreated(tx.origin, address(basicOrder), OrderType.Basic);
@@ -51,8 +49,8 @@ contract OrderFactory {
     }
 
     function _createAdvancedOrder(
-        OrderData memory _orderData,
-        Types.Coin[] memory maxKeychainFees) internal returns (address) {
+        Types.OrderData memory _orderData,
+        CommonTypes.Coin[] memory maxKeychainFees) internal returns (address) {
         revert("Unimplemented");
     }
 

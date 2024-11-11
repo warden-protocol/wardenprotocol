@@ -8,12 +8,12 @@
   },
   "scripts": {
     "clean": "rm -rf cache out",
-    "build": "forge build",
+    "build": "forge build src",
     "lint": "yarn run lint:sol && yarn run prettier:check",
     "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",
     "prettier:write": "prettier --write \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",
-    "test": "forge test",
+    "test": "forge test --via-ir",
     "test:coverage": "forge coverage",
     "test:coverage:report": "forge coverage --report lcov && genhtml lcov.info --branch-coverage --output-dir coverage"
   }

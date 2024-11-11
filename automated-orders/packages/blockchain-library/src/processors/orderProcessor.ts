@@ -1,19 +1,21 @@
 import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 
 import { EvmClient } from '../clients/evm.js';
-import { OrderCreated } from '../types/registry/events.js';
+import { OrderCreated } from '../types/order/events.js';
 import {
   CanExecuteOrderAbi,
   ExecuteAbi,
   ExecutionDataAbi,
   IExecutionData,
   IsExecutedOrderAbi,
-} from '../types/registry/functions.js';
+} from '../types/order/functions.js';
 import { Processor } from './processor.js';
 
 export class OrderProcessor extends Processor<OrderCreated> {
   constructor(
-    private evm: EvmClient,
+    private evmos: EvmClient,
+    private ethereum: EvmClient,
+    private supportedChainIds: Map<bigint, undefined>,
     generator: () => AsyncGenerator<OrderCreated, unknown, unknown>,
   ) {
     super(generator);
@@ -23,23 +25,23 @@ export class OrderProcessor extends Processor<OrderCreated> {
     try {
       logInfo(`New Signature request ${serialize(event)}`);
 
-      const exist = await this.evm.isContract(event.returnValues.order);
+      const exist = await this.evmos.isContract(event.returnValues.order);
 
       if (!exist) {
-        this.evm.events.delete(this.evm.getEventId(event));
+        this.evmos.events.delete(this.evmos.getEventId(event));
 
         return true;
       }
 
-      const isExecuted = await this.evm.callView<boolean>(event.returnValues.order, IsExecutedOrderAbi, []);
+      const isExecuted = await this.evmos.callView<boolean>(event.returnValues.order, IsExecutedOrderAbi, []);
 
       if (isExecuted) {
-        this.evm.events.delete(this.evm.getEventId(event));
+        this.evmos.events.delete(this.evmos.getEventId(event));
 
         return true;
       }
 
-      const canExecute = await this.evm.callView<boolean>(event.returnValues.order, CanExecuteOrderAbi, []);
+      const canExecute = await this.evmos.callView<boolean>(event.returnValues.order, CanExecuteOrderAbi, []);
 
       if (!canExecute) {
         // TODO: cache and try check later
@@ -48,21 +50,45 @@ export class OrderProcessor extends Processor<OrderCreated> {
 
       logInfo(`${canExecute}`);
 
-      const orderDetails = await this.evm.callView<IExecutionData>(event.returnValues.order, ExecutionDataAbi, []);
+      const orderDetails = await this.evmos.callView<IExecutionData>(event.returnValues.order, ExecutionDataAbi, []);
 
-      logInfo(`${serialize(orderDetails.caller)}`);
+      logInfo(`${serialize(orderDetails)}`);
 
-      const nonce = this.evm.getNextNonce(orderDetails.caller);
+      if (!this.supportedChainIds.has(orderDetails.chainId)) {
+        this.evmos.events.delete(this.evmos.getEventId(event));
 
-      // TODO: add missing args (gas settings)
-      const executed = await this.evm.sendTransaction(event.returnValues.order, ExecuteAbi, [nonce]);
+        logError(`Chain id = ${orderDetails.chainId} is not supported`);
+
+        return true;
+      }
+
+      const nonce = await this.ethereum.getNextNonce(orderDetails.caller);
+      const gas = await this.ethereum.getGasFees(
+        orderDetails.caller,
+        orderDetails.to,
+        orderDetails.data,
+        nonce,
+        orderDetails.value,
+      );
+
+      if (!gas.gasLimit || !gas.feeData) {
+        return true;
+      }
+
+      const executed = await this.evmos.sendTransaction(event.returnValues.order, ExecuteAbi, [
+        nonce,
+        gas.gasLimit,
+        gas.feeData.gasPrice,
+        gas.feeData.maxPriorityFeePerGas,
+        gas.feeData.maxFeePerGas,
+      ]);
 
       if (!executed) {
         return true;
       }
 
       // TODO: 3 attempts to execute()
-      this.evm.events.delete(this.evm.getEventId(event));
+      this.evmos.events.delete(this.evmos.getEventId(event));
 
       return true;
     } catch (error) {

@@ -1,8 +1,11 @@
-import { AbiFunctionFragment } from 'web3';
+import { AbiFunctionFragment, Bytes } from 'web3';
 
 export interface IExecutionData {
   caller: string;
+  to: string;
   chainId: bigint;
+  data: Bytes;
+  value: bigint;
 }
 
 export const CanExecuteOrderAbi: AbiFunctionFragment = {
@@ -39,14 +42,36 @@ export const ExecutionDataAbi: AbiFunctionFragment = {
   inputs: [],
   outputs: [
     {
-      name: 'caller',
-      type: 'address',
-      internalType: 'address',
-    },
-    {
-      name: 'chainId',
-      type: 'uint256',
-      internalType: 'uint256',
+      name: 'executionData',
+      type: 'tuple',
+      internalType: 'struct ExecutionData',
+      components: [
+        {
+          name: 'caller',
+          type: 'address',
+          internalType: 'address',
+        },
+        {
+          name: 'to',
+          type: 'address',
+          internalType: 'address',
+        },
+        {
+          name: 'chainId',
+          type: 'uint256',
+          internalType: 'uint256',
+        },
+        {
+          name: 'data',
+          type: 'bytes',
+          internalType: 'bytes',
+        },
+        {
+          name: 'value',
+          type: 'uint256',
+          internalType: 'uint256',
+        },
+      ],
     },
   ],
   stateMutability: 'nonpayable',
@@ -58,6 +83,16 @@ export const ExecuteAbi: AbiFunctionFragment = {
   inputs: [
     {
       name: 'nonce',
+      type: 'uint256',
+      internalType: 'uint256',
+    },
+    {
+      name: 'gas',
+      type: 'uint256',
+      internalType: 'uint256',
+    },
+    {
+      name: 'gasPrice',
       type: 'uint256',
       internalType: 'uint256',
     },

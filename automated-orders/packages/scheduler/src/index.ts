@@ -1,4 +1,4 @@
-import { EvmClient, OrderCreatedAbi, OrderProcessor } from '@warden-automated-orders/blockchain';
+import { ChainIds, EvmClient, OrderCreatedAbi, OrderProcessor } from '@warden-automated-orders/blockchain';
 import { logError } from '@warden-automated-orders/utils';
 
 import { config } from './config/config.js';
@@ -8,9 +8,16 @@ async function main() {
     rpcURL: config.EVMOS_NODE_RPC,
     callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
   });
+  const etheruem = new EvmClient({
+    rpcURL: config.ETHEREUM_NODE_RPC,
+  });
+
+  const chainIds = new Map([[BigInt(ChainIds.Sepolia), undefined]]);
 
   const processor = new OrderProcessor(
     evmos,
+    etheruem,
+    chainIds,
     evmos.pollEvents.bind(
       evmos,
       config.EVMOS_REGISTRY_ADDRESS,

@@ -35,7 +35,7 @@ func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, ctx context.Contex
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 
-	c.w.PrintLogsAtTheEnd(t, ctx)
+	c.w.PrintLogsAtTheEnd(t, ctx, []string{"FIND ME", "DBG"})
 }
 
 func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {

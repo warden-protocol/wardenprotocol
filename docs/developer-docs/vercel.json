@@ -9,7 +9,6 @@
         {"source":"/learn/keychains/Keychain%20Onboarding","destination":"/build-a-keychain/operate-a-keychain/create-a-keychain", "statusCode": 301},
         {"source":"/category/spaceward","destination":"https://help.wardenprotocol.org", "statusCode": 301},
         {"source":"/learn/spaceward/spaceward-intro","destination":"https://help.wardenprotocol.org", "statusCode": 301},
-        {"source":"/learn/spaceward/spaceward-intro","destination":"https://help.wardenprotocol.org/spaceward/quick-start", "statusCode": 301},
         {"source":"/learn/spaceward/connect-your-cosmos-wallet","destination":"https://help.wardenprotocol.org/spaceward/connect-your-wallet", "statusCode": 301},
         {"source":"/learn/spaceward/ward-faucet","destination":"https://help.wardenprotocol.org/spaceward/get-test-ward", "statusCode": 301},
         {"source":"/learn/spaceward/new-space-creation","destination":"https://help.wardenprotocol.org/spaceward/create-a-space", "statusCode": 301},

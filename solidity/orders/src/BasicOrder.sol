@@ -13,8 +13,8 @@ error Unauthorized();
 contract BasicOrder is IExecution {
     Types.OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
-    IWarden wardenPrecompile;
 
+    IWarden private wardenPrecompile;
     CommonTypes.Coin[] private coins;
     bool private executed;
     address private scheduler;
@@ -51,15 +51,22 @@ contract BasicOrder is IExecution {
 
     /**
      * @dev Internal canExecute implementation.
-     * @return A boolean value indicating that the execution can be pushed.
+     * @return value A boolean value indicating that the execution can be executed.
      */
-    function _canExecute() internal view returns (bool) {
+    function _canExecute() internal view returns (bool value) {
         // TODO: check price
-        return false;
+        Types.PriceCondition condition = orderData.priceCondition;
+        if(condition == Types.PriceCondition.MoreOrEqual) {
+            value=false;
+        } else if(condition == Types.PriceCondition.LessOrEqual) {
+            value=false;
+        }
+
+        value = false;
     }
 
     /**
-     * @dev Creates action for new sign request from stored oder data.
+     * @dev Creates action for new sign request from stored order data.
      * If action created successfully then emit Executed method.
      * @param nonce The key account nonce.
      * @param maxPriorityFeePerGas maxPriorityFeePerGas param in eth transaction.

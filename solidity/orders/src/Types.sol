@@ -21,9 +21,15 @@ library Types {
         string expectedRejectExpression;
     }
 
+    enum PriceCondition {
+        LessOrEqual,
+        MoreOrEqual
+    }
+
     // Data for execution
     struct OrderData {
         uint256 thresholdPrice;
+        PriceCondition priceCondition;
         CreatorDefinedTxFields creatorDefinedTxFields;
         SwapData swapData;
         SignRequestData signRequestData;

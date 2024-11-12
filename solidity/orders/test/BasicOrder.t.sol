@@ -22,6 +22,8 @@ contract BasicOrderTest is Test {
         address(bytes20(bytes("0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3")));
     address private constant RECEIVER = address(bytes20(bytes("0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db")));
 
+    event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
+
     function setUp() public {
         // placeholder till registry unimplemented
         address registry = address(this);
@@ -74,13 +76,16 @@ contract BasicOrderTest is Test {
 
         CommonTypes.Coin[] memory maxKeychainFees;
 
+        vm.expectEmit(true, true, false, false);
+
+        emit OrderCreated(tx.origin, OrderType.Basic, address(this));
+
         testData.orderFactory.createOrder(
             orderData,
             maxKeychainFees,
             testData.scheduler,
             OrderType.Basic
         );
-
-        // todo: check event
+        
     }
 }

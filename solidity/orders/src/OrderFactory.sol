@@ -17,7 +17,7 @@ contract OrderFactory {
     // Registry of IExecution contracts
     address public registry;
 
-    event OrderCreated(address indexed orderCreator, address orderContact, OrderType orderType);
+    event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
 
     constructor(address _registry) {
         registry = _registry;
@@ -43,7 +43,7 @@ contract OrderFactory {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
         orders[address(basicOrder)] = tx.origin;
         // TODO: register in regisry
-        emit OrderCreated(tx.origin, address(basicOrder), OrderType.Basic);
+        emit OrderCreated(tx.origin, OrderType.Basic, address(basicOrder));
 
         return address(basicOrder);
     }

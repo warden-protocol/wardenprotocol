@@ -3,8 +3,10 @@ pragma solidity >=0.8.25 <0.9.0;
 import {Test} from "forge-std/src/Test.sol";
 import {Types} from "../src/Types.sol";
 import {OrderFactory, OrderType} from "../src/OrderFactory.sol";
+import {IExecution} from "../src/IExecution.sol";
 import {MockWardenPrecompile} from "./mocks/MockWardenPrecompile.sol";
 import {Types as CommonTypes} from "precompile-common/Types.sol";
+import {ConditionNotMet} from "../src/BasicOrder.sol";
 
 struct TestData {
     OrderFactory orderFactory;
@@ -17,12 +19,25 @@ struct TestData {
 
 contract BasicOrderTest is Test {
     TestData private testData;
+    IExecution order;
 
     address private constant SEPOLIA_UNISWAP_V2_ROUTER =
         address(bytes20(bytes("0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3")));
     address private constant RECEIVER = address(bytes20(bytes("0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db")));
 
     event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
+
+    function beforeTestSetup(
+        bytes4 testSelector
+    ) public pure returns (bytes[] memory beforeTestCalldata) {
+        if (testSelector == this.test_BasicOrder_StateBeforeExecution.selector) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature("test_BasicOrder_Create(bool)", true);
+        } else if (testSelector == this.test_basicOrderRevertWhenConditionNotMet.selector) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature("test_BasicOrder_Create(bool)", true);
+        }
+    }
 
     function setUp() public {
         // placeholder till registry unimplemented
@@ -43,15 +58,20 @@ contract BasicOrderTest is Test {
             thresholPrice: 2,
             goodKeyId: goodKeyId,
             badKeyId: badKeyId,
-            scheduler: address(this)
+            scheduler: tx.origin
         });
     }
 
-    function test_createBasicOrder() public {
+    function test_BasicOrder_Create(bool goodOrder) public {
         address[] memory path;
-
         bytes[] memory analyzers;
         bytes memory encryptionKey; 
+        uint64 keyId;
+        if(goodOrder) {
+            keyId = testData.goodKeyId;
+        } else {
+            keyId = testData.badKeyId;
+        }
 
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: testData.thresholPrice,
@@ -61,7 +81,7 @@ contract BasicOrderTest is Test {
             to: RECEIVER,
             deadline: 0}),
             signRequestData: Types.SignRequestData({
-                keyId: testData.goodKeyId,
+                keyId: keyId,
                 analyzers: analyzers,
                 encryptionKey: encryptionKey,
                 spaceNonce: 0,
@@ -80,12 +100,28 @@ contract BasicOrderTest is Test {
 
         emit OrderCreated(tx.origin, OrderType.Basic, address(this));
 
-        testData.orderFactory.createOrder(
+        address orderAddress = testData.orderFactory.createOrder(
             orderData,
             maxKeychainFees,
             testData.scheduler,
             OrderType.Basic
         );
-        
+
+        order = IExecution(orderAddress);
+    }
+
+    function test_BasicOrder_StateBeforeExecution() public {
+        assert(!order.canExecute());
+        assert(!order.isExecuted());
+        assert(order.calledByScheduler());
+        assert(!order.calledByAIService());
+    }
+
+    function test_basicOrderRevertWhenConditionNotMet() public {
+        assert(!order.canExecute());
+        assert(!order.isExecuted());
+       
+       vm.expectRevert(ConditionNotMet.selector);
+       order.execute(1, 1, 1, 1, 1);
     }
 }

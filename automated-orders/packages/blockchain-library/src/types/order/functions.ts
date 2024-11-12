@@ -6,7 +6,7 @@ export interface IExecutionData {
   chainId: bigint;
   data: Bytes;
   value: bigint;
-}
+};
 
 export const CanExecuteOrderAbi: AbiFunctionFragment = {
   type: 'function',

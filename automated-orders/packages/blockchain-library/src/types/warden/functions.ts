@@ -1,6 +1,6 @@
 import { AbiFunctionFragment, Bytes } from 'web3';
 
-export declare enum SignRequestStatus {
+export enum SignRequestStatus {
   /** SIGN_REQUEST_STATUS_UNSPECIFIED - The request is missing the status field. */
   SIGN_REQUEST_STATUS_UNSPECIFIED = 0,
   /**
@@ -13,7 +13,7 @@ export declare enum SignRequestStatus {
   /** SIGN_REQUEST_STATUS_REJECTED - The request was rejected. This is a final state for a request. */
   SIGN_REQUEST_STATUS_REJECTED = 3,
   UNRECOGNIZED = -1
-}
+};
 
 export interface IPageRequest {
   key: Bytes;
@@ -21,12 +21,12 @@ export interface IPageRequest {
   limit: bigint | undefined;
   countTotal: boolean;
   reverse: boolean;
-}
+};
 
 export interface ICoin {
   denom: string;
   amount: bigint;
-}
+};
 
 export interface ISignRequest {
   id: bigint;
@@ -37,17 +37,17 @@ export interface ISignRequest {
   result: Bytes;
   encryptionKey: Bytes;
   deductedKeychainFees: ICoin[];
-}
+};
 
 export interface IPageResponse {
   nextKey: Bytes;
   total: bigint;
-}
+};
 
 export interface ISignRequestResponse {
   signRequests: ISignRequest[];
   pageResponse: IPageResponse;
-}
+};
 
 export const SignRequestsAbi: AbiFunctionFragment = {
   type: "function",

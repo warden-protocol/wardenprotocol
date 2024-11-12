@@ -3,7 +3,7 @@ import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 import { EvmClient } from '../clients/evm.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { Processor } from './processor.js';
-import { circuitBreaker, ConsecutiveBreaker, ExponentialBackoff, handleAll, IPolicy, retry, RetryPolicy, wrap } from 'cockatiel';
+import { circuitBreaker, ConsecutiveBreaker, ExponentialBackoff, handleAll, IPolicy, retry, wrap } from 'cockatiel';
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   constructor(
@@ -28,11 +28,11 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
-      await this.retryPolicy.execute(async () => await this.evm.broadcastTx(data.signedData))
+      await this.retryPolicy.execute(() => this.evm.broadcastTx(data.signedData));
 
       return true;
     } catch (error) {
-      logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error.stack}`);
+      logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error?.stack}`);
 
       return false;
     }

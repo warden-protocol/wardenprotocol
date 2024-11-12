@@ -4,15 +4,19 @@ import { logError } from '@warden-automated-orders/utils';
 import { config } from './config/config.js';
 
 async function main() {
+  const wardenEvm = new EvmClient({
+    rpcURL: config.WARDEN_EVM_RPC_URL,
+  });
+
   const warden = new WardenClient({
     rpcURL: config.WARDEN_RPC_URL,
     pollingIntervalMsec: config.WARDEN_POLLING_INTERVAL_MSEC,
-  });
-
+  }, wardenEvm);
+  
   const ethereum = new EvmClient({
     rpcURL: config.ETHEREUM_NODE_RPC,
   });
-
+  
   const newSignatureRequestProcess = new NewSignatureProcessor(
     ethereum,
     warden.pollSignatureRequests.bind(warden),

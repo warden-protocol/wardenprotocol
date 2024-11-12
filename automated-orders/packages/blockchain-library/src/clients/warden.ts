@@ -6,7 +6,7 @@ import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { LRUCache } from 'lru-cache'
 import { EvmClient } from './evm.js';
 import { IPageRequest, ISignRequest, ISignRequestResponse, SignRequestsAbi, SignRequestStatus } from '../types/warden/functions.js';
-import web3 from 'web3';
+import web3, { Bytes } from 'web3';
 
 const { delay } = utils;
 
@@ -34,39 +34,28 @@ export class WardenClient {
 
       yield* this.yieldNewRequests(signRequests);
 
-      nextKey = this.getNextKey(nextKey, pageResponse.nextKey);
-    }
-  }
-
-  private getNextKey(currentKey: Uint8Array | undefined, newKey: web3.Bytes | undefined) : Uint8Array | undefined { 
-    if (newKey) {
-      try {
-        const key = web3.utils.bytesToUint8Array(newKey);
-        if (utils.notEmpty(key)) {
-          return key;
-        }
-      }
-      catch {
-        // do nothing
+      const newKey = this.tryConvertBytesToUint8Array(pageResponse.nextKey)
+      if(utils.notEmpty(newKey)) { 
+        nextKey = newKey;
       }
     }
-
-    return currentKey;
   }
 
   private *yieldNewRequests(signRequests: ISignRequest[]) {
     for (const request of signRequests) {
-      if (request.result) {
+      const signedData = this.tryConvertBytesToUint8Array(request.result)
+      if (utils.empty(signedData)) {
+        utils.logError(`Signed data is empty, but request "${request.id}" is fulfilled`)
         continue;
       }
 
       if (this.seenCache.has(request.id)) {
-        utils.logInfo(`Skipping already seen request ${request.id}`);
+        utils.logInfo(`Skipping already seen request "${request.id}"`);
         continue;
       }
 
       yield {
-        signedData: web3.utils.bytesToUint8Array(request.result!),
+        signedData: signedData!,
       };
 
       this.seenCache.set(request.id, request.id);
@@ -80,8 +69,24 @@ export class WardenClient {
 
     // TODO AT: Need to add filter by SignRequest type, when implemented
     const response = await this.evm.callView<ISignRequestResponse>(
-      this.precompileAddress, SignRequestsAbi, [pagination, SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED, 0n])
+      this.precompileAddress, 
+      SignRequestsAbi, 
+      [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED])
 
     return response;
+  }
+
+  private tryConvertBytesToUint8Array(bytes: Bytes) : Uint8Array | undefined { 
+    try {
+      const arr = web3.utils.bytesToUint8Array(bytes);
+      if (utils.notEmpty(arr)) {
+        return arr;
+      }
+    }
+    catch(err) {
+      utils.logError(`Error while converting Bytes to Uint8Array ${bytes}: ${utils.serialize(err)}`)
+    }
+
+    return undefined;
   }
 }

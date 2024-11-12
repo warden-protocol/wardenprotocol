@@ -226,7 +226,8 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			2,
 			0,
 			"any(1, warden.space.owners)",
-			"any(1, warden.space.owners)")
+			"any(1, warden.space.owners)",
+			0)
 		require.NoError(t, err)
 
 		newSignRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newSignRequestTx)
@@ -245,7 +246,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions4.Actions, 4)
 
-		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
+		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING), 0)
 
 		require.NoError(t, err)
 		require.Len(t, signRequests.SignRequests, 1)

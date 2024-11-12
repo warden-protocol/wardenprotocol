@@ -17,7 +17,6 @@ export function notEmpty(arr: Uint8Array | undefined): boolean {
   return arr && arr.length > 0 || false;
 }
 
-
 export function empty(arr: Uint8Array | undefined): boolean {
   return !notEmpty(arr);
 }

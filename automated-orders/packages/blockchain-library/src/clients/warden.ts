@@ -1,28 +1,28 @@
 import * as utils from '@warden-automated-orders/utils';
-import { warden } from '@wardenprotocol/wardenjs';
-import { SignRequest, SignRequestStatus } from '@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/signature';
 
 import { IWardenConfiguration } from '../types/warden/configuration.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
-import { QuerySignRequestsRequest } from '@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query';
-import { PageRequest } from '@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination';
 
 import { LRUCache } from 'lru-cache'
+import { EvmClient } from './evm.js';
+import { IPageRequest, ISignRequest, ISignRequestResponse, SignRequestsAbi, SignRequestStatus } from '../types/warden/functions.js';
+import web3 from 'web3';
 
 const { delay } = utils;
-const { createRPCQueryClient } = warden.ClientFactory;
 
 export class WardenClient {
-  constructor(private configuration: IWardenConfiguration) { }
+  
+  constructor(
+    private configuration: IWardenConfiguration,
+    private evm: EvmClient
+  ) { }
+  
+  private readonly precompileAddress = '0x0000000000000000000000000000000000000900';
 
   private readonly entriesPerRequest = 100;
   private readonly seenCache: LRUCache<bigint, bigint> = new LRUCache<bigint, bigint>({
     max: this.entriesPerRequest * 2,
   });
-
-  async query() {
-    return await createRPCQueryClient({ rpcEndpoint: this.configuration.rpcURL });
-  }
 
   async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
     let nextKey: Uint8Array | undefined = undefined;
@@ -30,19 +30,33 @@ export class WardenClient {
     while (true) {
       await delay(this.configuration.pollingIntervalMsec);
 
-      const { signRequests, pagination } = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest));
+      const { signRequests, pageResponse } = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest))
 
       yield* this.yieldNewRequests(signRequests);
 
-      if (utils.notEmpty(pagination?.nextKey)) {
-        nextKey = pagination!.nextKey;
-      }
+      nextKey = this.getNextKey(nextKey, pageResponse.nextKey);
     }
   }
 
-  private *yieldNewRequests(signRequests: SignRequest[]) {
+  private getNextKey(currentKey: Uint8Array | undefined, newKey: web3.Bytes | undefined) : Uint8Array | undefined { 
+    if (newKey) {
+      try {
+        const key = web3.utils.bytesToUint8Array(newKey);
+        if (utils.notEmpty(key)) {
+          return key;
+        }
+      }
+      catch {
+        // do nothing
+      }
+    }
+
+    return currentKey;
+  }
+
+  private *yieldNewRequests(signRequests: ISignRequest[]) {
     for (const request of signRequests) {
-      if (utils.empty(request.signedData)) {
+      if (request.result) {
         continue;
       }
 
@@ -52,29 +66,22 @@ export class WardenClient {
       }
 
       yield {
-        signedData: request.signedData!,
+        signedData: web3.utils.bytesToUint8Array(request.result!),
       };
 
       this.seenCache.set(request.id, request.id);
     }
   }
 
-  private async querySignRequests(nextKey: Uint8Array | undefined, limit: bigint) {
-    const page = nextKey
-      ? { key: nextKey, limit: limit }
-      : { offset: 0n, limit: limit };
-
-    const query = (await this.query()).warden.warden.v1beta3;
+  private async querySignRequests(nextKey: Uint8Array | undefined, limit: bigint): Promise<ISignRequestResponse> {
+    const pagination: IPageRequest = nextKey
+      ? { key: nextKey, limit: limit, offset: undefined, countTotal: false, reverse: false }
+      : { offset: BigInt(0), limit: limit, key: new Uint8Array(), countTotal: false, reverse: false };
 
     // TODO AT: Need to add filter by SignRequest type, when implemented
-    const response = await query.signRequests(
-      QuerySignRequestsRequest.fromPartial({
-        pagination: PageRequest.fromPartial(page),
-        status: SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED,
-        keychainId: 0n,
-      })
-    );
+    const response = await this.evm.callView<ISignRequestResponse>(
+      this.precompileAddress, SignRequestsAbi, [pagination, SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED, 0n])
 
-    return { signRequests: response.signRequests, pagination: response.pagination };
+    return response;
   }
 }

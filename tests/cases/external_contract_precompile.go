@@ -136,7 +136,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.Equal(t, warden.Space{
 			Id:                     1,
 			Creator:                alice.EthAddress(t),
-			Nonce:                  3,
+			Nonce:                  2,
 			ApproveAdminTemplateId: 1,
 			ApproveSignTemplateId:  0,
 			RejectAdminTemplateId:  0,

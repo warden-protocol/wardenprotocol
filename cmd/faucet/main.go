@@ -92,22 +92,11 @@ func main() {
 		log.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
 	).Level(logLevel).With().Timestamp().Logger()
 
-	// set cookieSecure
-	cookieSecure := false
-	if config.GetEnvironment() == "production" {
-		cookieSecure = true
-	}
-
-	e.Use(middleware.Recover())
 	if logger.GetLevel() == log.DebugLevel {
 		e.Use(middleware.Logger())
 	}
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
-		TokenLookup:    "header:X-CSRF-Token",
-		CookieName:     "_csrf",
-		CookieMaxAge:   3600,
-		CookieHTTPOnly: true,
-		CookieSecure:   cookieSecure,
+		TokenLookup: "header:X-CSRF-Token",
 	}))
 
 	page := newPage()
@@ -142,6 +131,7 @@ func main() {
 	e.File("/css/style.css", "css/style.css")
 	e.File("/js/tx.js", "js/tx.js")
 	e.File("/js/circle.js", "js/circle.js")
+	e.File("/favicon.ico", "images/favicon.ico")
 
 	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	e.GET("/healthz", func(c echo.Context) error {

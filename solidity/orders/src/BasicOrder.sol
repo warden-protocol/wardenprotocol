@@ -6,6 +6,9 @@ import {ExecutionData, IExecution} from "./IExecution.sol";
 import {Types as CommonTypes} from "precompile-common/Types.sol";
 import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warden/IWarden.sol";
 
+error ConditionNotMet();
+error ExecutedError();
+error Unauthorized();
 
 contract BasicOrder is IExecution {
     Types.OrderData public orderData;
@@ -16,10 +19,6 @@ contract BasicOrder is IExecution {
     bool private executed;
     address private scheduler;
     address private keyAddress;
-
-    error ConditionNotMet();
-    error ExecutedError();
-    error Unauthorized();
 
     event Executed();
 
@@ -56,7 +55,7 @@ contract BasicOrder is IExecution {
      */
     function _canExecute() internal view returns (bool) {
         // TODO: check price
-        return true;
+        return false;
     }
 
     /**

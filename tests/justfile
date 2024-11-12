@@ -209,6 +209,6 @@ snapshot-many-users:
 
 # regenerate caller contract
 contract-caller:
-  solc --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
-  solc --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
+  solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
+  solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go

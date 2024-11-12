@@ -31,8 +31,10 @@
     id="tokenInfo"
     data-tokens-available="{{.TokensAvailablePercent}}"
   >
+  {{ if .DisplayTokens }}
     Daily WARD Amount </br>
     {{ .TokensAvailable }} / {{ .TokenSupply }} 
+  {{ end }}
   </div>
   {{ end}}
 </div>

@@ -1,30 +1,34 @@
 import { Warning } from "./Warning";
 import {
 	ButtonConnect,
-	ButtonConnected,
 	ButtonConnecting,
+	/* ButtonConnected,
 	ButtonDisconnected,
 	ButtonError,
 	ButtonNotExist,
-	ButtonRejected,
+	ButtonRejected, */
 } from "./Connect";
 import { useConnectWallet } from "@web3-onboard/react";
+import { useState } from "react";
 
 export function Wallet() {
-	const [{ wallet, connecting }, connect] = useConnectWallet();
-	const message = "";
+	const [{ connecting }, connect] = useConnectWallet();
+	const [message, setMessage] = useState("");
 
-	const ConnectButton = connecting ? <ButtonConnecting /> : /*{
-		[WalletStatus.Connected]: <ButtonConnected onClick={openView} />,
-		[WalletStatus.Connecting]: <ButtonConnecting />,
-		[WalletStatus.Disconnected]: <ButtonDisconnected onClick={connect} />,
-		[WalletStatus.Error]: <ButtonError onClick={openView} />,
-		[WalletStatus.Rejected]: <ButtonRejected onClick={connect} />,
-		[WalletStatus.NotExist]: <ButtonNotExist onClick={openView} />,
-	}[status] ||*/ <ButtonConnect onClick={async () => {
-			const wallets = await connect()
-			console.log(wallets)
-		}} />;
+	const ConnectButton = connecting ? <ButtonConnecting /> : <ButtonConnect onClick={async () => {
+		setMessage("");
+
+		try {
+			const res = await connect();
+
+			if (!res.length) {
+				throw new Error("Connection refused")
+			}
+		} catch (e) {
+			console.log("error", e)
+			setMessage((e as Error)?.message)
+		}
+	}} />;
 
 	return (
 		<div>
@@ -33,7 +37,7 @@ export function Wallet() {
 				{message /* &&
 					[WalletStatus.Error, WalletStatus.Rejected].includes(status) */ ? (
 						<div className="text-sm pt-4 max-w-48">
-							<Warning text={`${(wallet as any)?.prettyName}: ${message}`} />
+							<Warning text={`${message}`} />
 						</div>
 					) : null}
 			</div>

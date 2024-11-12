@@ -5,6 +5,7 @@ import { getDelegationsData, getValidatorData } from "@/features/staking/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useQueryHooks } from "@/hooks/useClient";
 import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
+import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
@@ -37,10 +38,15 @@ export default function GovernanceDashboard() {
 	});
 
 	const proposalsVoting = proposalsQuery.data?.proposals.length;
+	const comingSoon = true;
+
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+		<div className={clsx("grid grid-cols-1 lg:grid-cols-2 gap-6", {
+			// todo remove this once governance is ready
+			"h-0 overflow-hidden -mt-8": comingSoon
+		})}>
 			<Link
-				to="/governance"
+				to={comingSoon ? "#" : "/governance"}
 				className="cursor-pointer group bg-fill-accent-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 			>
 				<img
@@ -62,7 +68,11 @@ export default function GovernanceDashboard() {
 					)}
 				</div>
 
-				{proposalsQuery.status === "loading" ? (
+				{comingSoon ? (
+					<div className="w-full flex gap-3 items-center text-label-accent text-right">
+						<p className="ml-auto">Coming soon</p>
+					</div>
+				) : proposalsQuery.status === "loading" ? (
 					<LoaderCircle className="animate-spin mt-2" />
 				) : proposalsVoting ? (
 					<div className="flex gap-3 items-center">
@@ -79,6 +89,7 @@ export default function GovernanceDashboard() {
 			</Link>
 
 			<StakingCard
+				comingSoon={comingSoon}
 				isLoading={queryTotalRewards.isLoading}
 				total={queryTotalRewards.data?.total}
 				stakedWard={stakedWard}

@@ -1,16 +1,14 @@
 import { LoaderCircle } from "lucide-react";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { Icons } from "@/components/ui/icons-assets";
 import { NewKeyButton } from "@/features/keys";
-import { useQueryHooks } from "@/hooks/useClient";
 import Key from "./Key";
 import DashboardGraph from "./DashboardGraph";
 import Intent from "./Intent";
 import { useAssetQueries } from "../assets/hooks";
 import { useModalState } from "../modals/state";
-import { useRules } from "../intents/hooks";
+import { useSpaceById } from "@/hooks/query/warden";
 
 interface CurrentSpaceProps {
 	spaceId: bigint;
@@ -18,33 +16,21 @@ interface CurrentSpaceProps {
 
 export default function Keys({ spaceId }: CurrentSpaceProps) {
 	const { setData: setModal } = useModalState();
-	const { useSpaceById, isReady } = useQueryHooks();
 	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
 
 	const spaceQuery = useSpaceById({
 		request: {
 			id: spaceId,
-		},
-		options: {
-			enabled: isReady,
-		},
+		}
 	});
 
-	const addresses = useMemo(
-		() =>
-			queryKeys.data?.keys.flatMap(({ addresses, key }) =>
-				addresses.map((x) => ({ ...x, keyId: key.id })),
-			),
-		[queryKeys.data?.keys],
-	);
-
-	const { activeRuleId } = useRules();
-	const space = spaceQuery.data?.space;
-	const isEmpty = !space || !queryKeys.data?.keys.length;
+	const keys = queryKeys.data?.[0];
+	const space = spaceQuery.data;
+	const activeRuleId = space?.approveSignTemplateId;
 
 	return (
 		<div className="grid gap-6 grid-cols-1 lg:grid-cols-[2fr_1fr]">
-			{isEmpty ? (
+			{!keys?.length ? (
 				<div className="relative min-h-72 isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-edge rounded-2xl overflow-hidden">
 					<img
 						className="absolute blur-[12px] left-0 top-0 z-[-1] w-full h-full object-cover invert dark:invert-0"
@@ -61,7 +47,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					<NewKeyButton className="mt-4 text-background bg-foreground rounded-lg font-semibold hover:bg-fill-accent-primary duration-200" />
 				</div>
 			) : (
-				<DashboardGraph addresses={addresses} />
+				<DashboardGraph />
 			)}
 
 			<div className="bg-card py-6 px-8 border-[1px] border-border-edge rounded-2xl">
@@ -74,7 +60,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						<LoaderCircle className="animate-spin mb-1" />
 					) : (
 						<div className="flex flex-wrap gap-2 justify-center w-full mb-4 max-w-96">
-							{queryKeys.data?.keys.map((item) => (
+							{keys?.map((item) => (
 								<Key
 									keyValue={item}
 									key={item.key.id}
@@ -144,7 +130,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 					</div>
 
 					{activeRuleId ? (
-						<Intent activeIntentId={activeRuleId} />
+						<Intent id={activeRuleId} />
 					) : (
 						<div className="text-label-accent flex items-center">
 							Add

@@ -56,19 +56,33 @@ import { hashQueryKey } from "./utils/queryKeyHash.ts";
 import { DashboardPage } from "./pages/Dashboard.tsx";
 import { Web3OnboardProvider, init, useWagmiConfig } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
-import wagmi from "@web3-onboard/wagmi";
+import wagmi, { createConfig } from "@web3-onboard/wagmi";
+import walletConnect from "@web3-onboard/walletconnect";
 import { WagmiProvider } from "wagmi";
+import { defineChain, http } from "viem";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			refetchInterval: 1000,
+			refetchInterval: 2000,
 			queryKeyHashFn: hashQueryKey,
 		},
 	},
 });
 
+
+const projectId = "5ac86584b1de10a7953c6d7b19b52dad";
+
 const web3Onboard = init({
+	appMetadata: {
+		name: "Warden Protocol Wallets",
+		description: "Warden Protocol WalletConnect",
+		logo: "https://avatars.githubusercontent.com/u/158038121",
+		recommendedInjectedWallets: [
+			{ name: "MetaMask", url: "https://metamask.io" },
+			{ name: "Keplr", url: "https://keplr.app" }
+		]
+	},
 	chains: [{
 		/*
 			0x271a(10010) - chiado
@@ -80,7 +94,14 @@ const web3Onboard = init({
 		rpcUrl: env.evmURL,
 	}],
 	connect: { autoConnectAllPreviousWallet: true },
-	wallets: [injectedModule()],
+	wallets: [injectedModule(), walletConnect({
+		handleUri: (uri: any) => {
+			console.log("wcuri", uri);
+		},
+		projectId,
+		dappUrl: "https://wardenprotocol.org/",
+	})
+	],
 	wagmi,
 });
 
@@ -120,17 +141,33 @@ initializeFaro({
 	],
 });
 
+const chain = defineChain({
+	id: env.evmChainId,
+	rpcUrls: {
+		default: { http: [env.evmURL] },
+	},
+	name: env.chainName,
+	nativeCurrency: {
+		decimals: 18,
+		name: "Warden",
+		symbol: "WARD",
+	},
+});
+
+const defaultConfig = createConfig({
+	chains: [chain],
+	transports: [http()],
+})
+
 function InjectWagmi({ children }: { children: React.ReactNode }) {
 	const wagmiConfig = useWagmiConfig();
 
-	return wagmiConfig ?
-		<WagmiProvider config={wagmiConfig}>
+	return (
+		<WagmiProvider config={wagmiConfig ?? defaultConfig}>
 			{children}
-		</WagmiProvider> :
-		<>
-			{children}
-		</>;
-};
+		</WagmiProvider>
+	);
+}
 
 function App() {
 	const signerOptions: SignerOptions = {};

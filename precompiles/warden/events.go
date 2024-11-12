@@ -602,7 +602,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeyId())))))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetBroadcastType())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetBroadcastType())))
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {

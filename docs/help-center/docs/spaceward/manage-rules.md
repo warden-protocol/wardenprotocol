@@ -18,7 +18,9 @@ Each approver is identified by Warden address – an address that is assigned to
 
 To create a Rule, do this:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Rules**.
 3. Click **Create a new Rule**.
 4. Select the preferred Rule type:
@@ -35,13 +37,16 @@ To create a Rule, do this:
 
 You can edit your Rule at any moment:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Rules**.
-2. Click the pencil symbol on your Rule. Click **Edit**.
-3. You can make the following adjustments:
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+2. Navigate to **Rules**.
+3. Click the pencil symbol on your Rule, then click **Edit**.
+4. You can make the following adjustments:
     - To add an approver, click **Add approver** and enter a Warden address. Approvers are accounts participating in your Rule, which includes you as the default approver. Other SpaceWard users can also add you to their Rules. The number of approvers isn't limited.
     - To add a condition, click the plus button and select **Add Approval Condition**. This will result in a Rule operating under multiple conditions: the one you selected when initially setting the Rule type and the additional conditions you added after.
     - To add a whitelist address, click the plus button and select **Add whitelist address**. Only transactions to these addresses will be approved.
-4. Click **Save**.
+5. Click **Save**.
 
 ![Edit a Rule 1](../../static/img/edit-rule-1.png)
 
@@ -53,9 +58,12 @@ You can edit your Rule at any moment:
 
 To configure an advanced Rule, take these steps:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Rules**.
-2. Click the pencil symbol on your Rule. Click **Edit in Advanced mode**.
-3. Enter a custom expression for your Rule.
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+2. Navigate to **Rules**.
+3. Click the pencil symbol on your Rule. Click **Edit in Advanced mode**.
+4. Enter a custom expression for your Rule.
 
 ![Edit an advanced Rule](../../static/img/edit-rule-advanced.png)
 

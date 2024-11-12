@@ -29,7 +29,7 @@ enum SignRequestStatus {
 
 // BroadcastType specifies how the transaction should be broadcasted.
 enum BroadcastType {
-  // The signature should not be broadcasted.
+  // The signature should be broadcasted manually by the caller.
   BROADCAST_TYPE_DISABLED = 0;
   
   // The signature should be automatically broadcasted by an offchain relayer.

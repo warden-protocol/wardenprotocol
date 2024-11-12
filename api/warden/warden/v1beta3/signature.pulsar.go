@@ -1149,7 +1149,7 @@ func (SignRequestStatus) EnumDescriptor() ([]byte, []int) {
 type BroadcastType int32
 
 const (
-	// The signature should not be broadcasted.
+	// The signature should be broadcasted manually by the caller.
 	BroadcastType_BROADCAST_TYPE_DISABLED BroadcastType = 0
 	// The signature should be automatically broadcasted by an offchain relayer.
 	BroadcastType_BROADCAST_TYPE_AUTOMATIC BroadcastType = 1

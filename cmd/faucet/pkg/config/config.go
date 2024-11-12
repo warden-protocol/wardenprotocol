@@ -39,6 +39,15 @@ type Config struct {
 	DisplayTokens  bool          `env:"DISPLAY_TOKENS" envDefault:"true"                                      mapstructure:"DISPLAY_TOKENS"`
 	Environment    string        `env:"ENVIRONMENT"    envDefault:"development"                               mapstructure:"ENVIRONMENT"`
 	Blacklist      string        `env:"BLACKLIST"      envDefault:""                                          mapstructure:"BLACKLIST"`
+	LogLevel       string        `env:"LOG_LEVEL"      envDefault:"Info"                                      mapstructure:"LOG_LEVEL"`
+}
+
+func GetLogLevel() string {
+	cfg, err := LoadConfig()
+	if err != nil {
+		return "Info"
+	}
+	return cfg.LogLevel
 }
 
 func GetEnvironment() string {

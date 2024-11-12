@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -82,9 +83,14 @@ func newPage() Page {
 
 func main() {
 	e := echo.New()
+	logLevel, err := log.ParseLevel(config.GetLogLevel())
+	if err != nil {
+		fmt.Printf("error parsing log level: %s", err)
+		logLevel = log.InfoLevel
+	}
 	logger := log.New(
 		log.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
-	).Level(log.InfoLevel).With().Timestamp().Logger()
+	).Level(logLevel).With().Timestamp().Logger()
 
 	// set cookieSecure
 	cookieSecure := false
@@ -93,6 +99,9 @@ func main() {
 	}
 
 	e.Use(middleware.Recover())
+	if logger.GetLevel() == log.DebugLevel {
+		e.Use(middleware.Logger())
+	}
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
 		TokenLookup:    "header:X-CSRF-Token",
 		CookieName:     "_csrf",

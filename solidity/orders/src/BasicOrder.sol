@@ -41,18 +41,10 @@ contract BasicOrder is IExecution {
         scheduler = _scheduler;
     }
 
-    /**
-     * @dev Indicates if an order can be executed.
-     * @return A boolean value indicating that the order can be executed.
-     */
     function canExecute() external view returns (bool) {
         return _canExecute();
     }
 
-    /**
-     * @dev Internal canExecute implementation.
-     * @return value A boolean value indicating that the execution can be executed.
-     */
     function _canExecute() internal view returns (bool value) {
         // TODO: check price
         Types.PriceCondition condition = orderData.priceCondition;
@@ -65,14 +57,6 @@ contract BasicOrder is IExecution {
         value = false;
     }
 
-    /**
-     * @dev Creates action for new sign request from stored order data.
-     * If action created successfully then emit Executed method.
-     * @param nonce The key account nonce.
-     * @param maxPriorityFeePerGas maxPriorityFeePerGas param in eth transaction.
-     * @param maxFeePerGas maxFeePerGas param in eth transaction.
-     * @return A boolean value indicating that action was created.
-     */
     function execute(
         uint256 nonce,
         uint256 gas,
@@ -127,16 +111,10 @@ contract BasicOrder is IExecution {
         return executed;
     }
 
-    /**
-     * @dev Indicates if this contract intended to be called by scheduler.
-     */
     function calledByScheduler() external pure returns (bool) {
         return true;
     }
 
-    /**
-     * @dev Indicates if this contract intended to be called by AI service.
-     */
     function calledByAIService() external pure returns (bool) {
         return false;
     }
@@ -156,8 +134,8 @@ contract BasicOrder is IExecution {
         });
     }
 
-    function setByAIService(bytes calldata data) external pure returns (bool) {
-        return false;
+    function setByAIService(bytes calldata data) external pure returns (bool success) {
+        success = false;
     }
 
 

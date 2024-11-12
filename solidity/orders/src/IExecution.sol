@@ -10,8 +10,22 @@ struct ExecutionData {
 }
 
 interface IExecution {
+    /**
+     * @dev Indicates if an order can be executed.
+     * @return A boolean value indicating that the order can be executed.
+     */
     function canExecute() external view returns (bool);
 
+    /**
+     * @dev Creates action for new sign request from stored order data.
+     * If action created successfully then emit Executed event.
+     * @param nonce The key account nonce.
+     * @param gas gas parameter in eth transaction.
+     * @param gasPrice gasPrice parameter in eth transaction.
+     * @param maxPriorityFeePerGas maxPriorityFeePerGas parameter in eth transaction.
+     * @param maxFeePerGas maxFeePerGas parameter in eth transaction.
+     * @return A boolean value indicating parameter action was created.
+     */
     function execute(
         uint256 nonce,
         uint256 gas,
@@ -19,13 +33,31 @@ interface IExecution {
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas) external returns (bool);
 
+    /**
+     * @dev Indicates if this contract intended to be called by scheduler.
+     */
     function calledByScheduler() external returns (bool);
 
+    /**
+     * @dev Indicates if this contract intended to be called by AI service.
+     */
     function calledByAIService() external returns (bool);
 
-    function setByAIService(bytes calldata data) external returns (bool);
+    /**
+     * @dev Receives data by AI service.
+     * @param data Data from AI service.
+     * @return success A boolean value indicating whenever data was processed correctly.
+     */
+    function setByAIService(bytes calldata data) external returns (bool success);
 
+    /**
+     * @dev Indicates if execution was executed already.
+     */
     function isExecuted() external returns (bool);
 
+    /**
+     * @dev Returns data necessary for scheduler.
+     * @return executionData Data that scheduler needs to call execute method.
+     */
     function executionData() external returns (ExecutionData calldata executionData);
 }

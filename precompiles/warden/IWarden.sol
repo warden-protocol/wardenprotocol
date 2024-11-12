@@ -284,7 +284,8 @@ interface IWarden {
         uint64 nonce,
         uint64 actionTimeoutHeight,
         string calldata expectedApproveExpression,
-        string calldata expectedRejectExpression
+        string calldata expectedRejectExpression,
+        int32 broadcastType
     ) external returns (bool success);
 
     /// @dev Defines a method to update a key.
@@ -404,12 +405,14 @@ interface IWarden {
     /// @param pageRequest The pagination details
     /// @param keychainId The id of the keychain
     /// @param status The sign requests status
+    /// @param broadcastType The broadcast type
     /// @return signRequests An array of `SignRequest` structs containing the retrieved sign requests
     /// @return pageResponse  pagination details
     function signRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
-        int32 status
+        int32 status,
+        int32 broadcastType
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
     /// @dev Defines a method to query space by id.
@@ -520,7 +523,8 @@ interface IWarden {
     /// @param id The id of the signature request
     /// @param keyId The id of the Key to be used for signing
     /// @param creator The creator address
-    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator);
+    /// @param broadcastType The broadcast type
+    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator, int32 broadcastType);
 
     /// @dev UpdateKey defines an Event emitted when a key is updated.
     /// @param id The id of the key

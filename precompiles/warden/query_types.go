@@ -394,6 +394,9 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 	if _, ok := types.SignRequestStatus_name[input.Status]; !ok {
 		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
 	}
+	if _, ok := types.BroadcastType_name[input.BroadcastType]; !ok {
+		return nil, fmt.Errorf("invalid BroadcastType value: %d", input.BroadcastType)
+	}
 
 	return &types.QuerySignRequestsRequest{
 		Pagination:    &input.PageRequest,

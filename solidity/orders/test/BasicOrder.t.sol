@@ -31,8 +31,10 @@ import {
     InvalidTxTo,
     Unauthorized
 } from "../src/BasicOrder.sol";
+import { Registry, Registered } from "../src/Registry.sol";
 
 struct TestData {
+    Registry registry;
     OrderFactory orderFactory;
     MockWardenPrecompile wardenPrecompile;
     MockSlinkyPrecompile mockSlinkyPrecompile;
@@ -92,11 +94,10 @@ contract BasicOrderTest is Test {
     }
 
     function setUp() public {
-        // placeholder till registry unimplemented
-        address registry = address(this);
+        Registry registry = new Registry();
         address scheduler = address(this);
         address owner = address(this);
-        OrderFactory orderFactory = new OrderFactory(registry, scheduler, owner);
+        OrderFactory orderFactory = new OrderFactory(address(registry), scheduler, owner);
 
         MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
@@ -112,6 +113,7 @@ contract BasicOrderTest is Test {
         wardenPrecompile.addKey(badKeyId, false);
 
         _testData = TestData({
+            registry: registry,
             orderFactory: orderFactory,
             wardenPrecompile: wardenPrecompile,
             mockSlinkyPrecompile: mockSlinkyPrecompile,
@@ -174,11 +176,16 @@ contract BasicOrderTest is Test {
 
         CommonTypes.Coin[] memory maxKeychainFees;
 
-        vm.expectEmit(true, true, false, false);
+        vm.expectEmit(true, false, false, false);
+        emit Registered(address(_testData.orderFactory), address(this));
 
+        vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
         address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+
+        assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
+        assertEq(address(this), _testData.orderFactory.orders(orderAddress));
 
         _order = IExecution(orderAddress);
     }

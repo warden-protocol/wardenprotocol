@@ -5,7 +5,7 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
-import {Registry} from "./Registry.sol";
+import { Registry } from "./Registry.sol";
 
 enum OrderType {
     Basic,
@@ -80,7 +80,7 @@ contract OrderFactory is Ownable {
     {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
         orders[address(basicOrder)] = msg.sender;
-        
+
         registry.register(address(basicOrder));
 
         emit OrderCreated(msg.sender, OrderType.Basic, address(basicOrder));

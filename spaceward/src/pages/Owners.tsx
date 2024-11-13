@@ -1,42 +1,56 @@
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { warden } from "@wardenprotocol/wardenjs";
-import { useNewAction } from "@/hooks/useAction";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useModalState } from "@/features/modals/state";
 import { PlusIcon } from "lucide-react";
 import OwnerCard from "@/features/owners/OwnerCard";
-
-const { MsgRemoveSpaceOwner } = warden.warden.v1beta3;
+import { useActionHandler } from "@/features/actions/hooks";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { isAddress } from "viem";
+import { useSpaceById } from "@/hooks/query/warden";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
 	const { setData: setModal } = useModalState();
 
-	const { newAction, authority } = useNewAction(MsgRemoveSpaceOwner);
+	const { add: removeSpaceOwner, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"removeSpaceOwner"
+	);
 
-	const { useSpaceById } = useQueryHooks();
-	const q = useSpaceById({ request: { id: BigInt(spaceId || "") } });
+	const q = useSpaceById({
+		request: { id: BigInt(spaceId || "") },
+	});
 
 	if (q.status === "loading") {
 		return <div>Loading...</div>;
 	}
 
-	const space = q.data?.space;
+	const space = q.data;
+
 	if (!space) {
 		return <p>Space not found</p>;
 	}
 
 	async function removeOwner(owner: string) {
-		if (!spaceId) return;
-		if (!authority) return;
-		await newAction(
-			{
-				owner,
-				spaceId: BigInt(spaceId),
-				authority,
-			},
-			{},
-		);
+		if (!space) {
+			throw new Error("Space not found");
+		}
+
+		if (!isAddress(owner)) {
+			throw new Error("Invalid owner address");
+		}
+
+		await removeSpaceOwner([
+			space.id,
+			owner,
+			space.nonce,
+			BigInt(0),
+			expectedApproveExpression,
+			expectedRejectExpression,
+		], {
+			title: "Remove owner",
+		});
 	}
 
 	return (
@@ -64,30 +78,32 @@ export function OwnersPage() {
 			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
 				<div className="flex flex-row flex-wrap -mx-3 -mt-4">
-					{space.owners.map((owner) => (
-						<div
-							className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4"
-							key={owner}
-						>
-							<OwnerCard
-								owner={owner}
-								onRemove={() => {
-									if (typeof window === "undefined") {
-										return;
-									}
+					{space.owners.map((owner) => {
+						return (
+							<div
+								className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4"
+								key={owner}
+							>
+								<OwnerCard
+									owner={owner}
+									onRemove={() => {
+										if (typeof window === "undefined") {
+											return;
+										}
 
-									const confirmed =
-										window.confirm("Are you sure?");
+										const confirmed =
+											window.confirm("Are you sure?");
 
-									if (!confirmed) {
-										return;
-									}
+										if (!confirmed) {
+											return;
+										}
 
-									removeOwner(owner);
-								}}
-							/>
-						</div>
-					))}
+										removeOwner(owner);
+									}}
+								/>
+							</div>
+						)
+					})}
 					<div className="flex basis-1/4 flex-grow-0 flex-shrink-0 p-4">
 						<div
 							className="rounded-xl border-[1px] border-solid border-border-edge h-60 w-full cursor-pointer flex flex-col bg-secondary"

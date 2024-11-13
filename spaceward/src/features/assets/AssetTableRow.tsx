@@ -1,5 +1,3 @@
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { AssetIcon } from "@/features/assets/AssetRow";
 import { useModalState } from "@/features/modals/state";
 import { useSpaceId } from "@/hooks/useSpaceId";
@@ -10,6 +8,8 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useKeyData } from "../keys/Keys";
 import { BalanceEntry } from "./types";
+import { KeyModel } from "@/hooks/query/types";
+import { AddressType } from "@/hooks/query/warden";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -23,7 +23,7 @@ const AssetTableRow = ({
 	keyResponse,
 }: {
 	item: BalanceEntry;
-	keyResponse?: QueryKeyResponse;
+	keyResponse?: KeyModel;
 }) => {
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
@@ -128,8 +128,8 @@ const AssetTableRow = ({
 							chainName: item.chainName,
 							token: item.token,
 							type: item.type.startsWith("eip155:")
-								? AddressType.ADDRESS_TYPE_ETHEREUM
-								: AddressType.ADDRESS_TYPE_OSMOSIS,
+								? AddressType.Ethereum
+								: AddressType.Osmosis,
 							keyResponse: keyResponse,
 						},
 					})}
@@ -145,8 +145,8 @@ const AssetTableRow = ({
 							chainName: item.chainName,
 							token: item.token,
 							type: item.type.startsWith("eip155:")
-								? AddressType.ADDRESS_TYPE_ETHEREUM
-								: AddressType.ADDRESS_TYPE_OSMOSIS,
+								? AddressType.Ethereum
+								: AddressType.Osmosis,
 							keyResponse: keyResponse,
 						},
 					})}

@@ -292,7 +292,7 @@ Before you start, do the following:
 
 Start by creating a WASM contract that will burn tokens on the EVM contract:
 
-1. Create a CosmWasm project. You can [use a template](deploy-a-wasm-contract#1-create-a-cosmwasm-project).
+1. Create a CosmWasm project. You can [use a template](deploy-a-wasm-contract#2-create-a-cosmwasm-project).
 
 2. In the `/src` directory of your project, create a `contract.rs` file with the code below. If you've used a template, update the existing file.
 
@@ -405,7 +405,7 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](deploy-a-wasm-contract#1-create-a-cosmwasm-project), just update the existing files.
+In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
 
 1. Create a file named `msg.rs` with the following code:
    
@@ -619,7 +619,7 @@ In the following steps, you'll create files in the `/src` folder to add supporti
 
 ### 2.3. Compile & optimize
 
-Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimize](deploy-a-wasm-contract#4-optimize-the-code) your contract.
+Now you can [compile](deploy-a-wasm-contract#4-compile-the-contract) and [optimize](deploy-a-wasm-contract#5-optimize-the-code) your contract.
 
 ### 2.4. Create a Warden account
 
@@ -683,7 +683,7 @@ Now you can [compile](deploy-a-wasm-contract#3-compile-the-contract) and [optimi
    ```
    
    :::tip
-   Buenavista uses the `cosmos.crypto.secp256k1` module for cryptographic operations. If your key is created with the `ethermint.crypto.v1.ethsecp256` module, downgrade your node to `v0.4.1` and create a key with `cosmos.crypto.secp256k1`.
+   Buenavista uses the `cosmos.crypto.secp256k1` module for cryptographic operations. If your key is created with the `ethermint.crypto.v1.ethsecp256k1` module, downgrade your node to `v0.4.1` and create a key with `cosmos.crypto.secp256k1`.
    :::
 
 2. Get the code ID that identifies your WASM contract:

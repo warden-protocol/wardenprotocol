@@ -37,6 +37,7 @@ export default function ConnectedModal(props: ModalParams<{}>) {
 
 				{Object.entries(sessionsByApp).map(([url, sessions]) => {
 					const [s] = sessions;
+					console.log(s.peer.metadata.icons);
 
 					return (
 						<div key={url}>
@@ -49,7 +50,7 @@ export default function ConnectedModal(props: ModalParams<{}>) {
 									<img
 										className="w-10 h-10 stroke-current shrink-0 rounded-[10px]"
 										src={
-											s.peer.metadata.icons[0].startsWith(
+											s.peer.metadata.icons[0]?.startsWith(
 												"http",
 											)
 												? s.peer.metadata.icons[0]

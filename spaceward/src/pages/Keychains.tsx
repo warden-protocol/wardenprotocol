@@ -1,16 +1,15 @@
 import DESCRIPTIONS from "@/features/keychains/description";
 import KeychainCard from "@/features/keychains/KeychainCard";
-import { useQueryHooks } from "@/hooks/useClient";
+import { useKeychains } from "@/hooks/query/warden";
 
 export function KeychainsPage() {
-	const { useKeychains } = useQueryHooks();
 	const q = useKeychains({});
 
 	if (q.status === "loading") {
 		return <div>Loading keychains...</div>;
 	}
 
-	const keychains = q.data?.keychains;
+	const keychains = q.data?.[0];
 
 	if (!keychains || keychains.length === 0) {
 		return (

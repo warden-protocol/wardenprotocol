@@ -1,0 +1,20 @@
+bracketSpacing: true
+printWidth: 120
+proseWrap: 'always'
+singleQuote: true
+tabWidth: 2
+trailingComma: 'all'
+endOfLine: lf
+plugins:
+  - '@trivago/prettier-plugin-sort-imports'
+importOrder:
+  - '^@core/(.*)$'
+  - '<THIRD_PARTY_MODULES>'
+  - '^@server/(.*)$'
+  - '^@ui/(.*)$'
+  - '^[./]'
+importOrderParserPlugins:
+  - 'typescript'
+  - 'decorators-legacy'
+importOrderSeparation: true
+importOrderSortSpecifiers: true

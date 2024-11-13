@@ -1,26 +1,37 @@
-import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { useChain } from "@cosmos-kit/react";
-import { cosmos } from "@wardenprotocol/wardenjs";
-import { createPersistantState } from "../../hooks/state";
-import { useNewAction } from "../../hooks/useAction";
-import { TxOptions, useTx } from "../../hooks/useClient";
-import { env } from "../../env";
-import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-import { TransactionLike } from "ethers";
+import { useCallback, useMemo } from "react";
+import {
+	Abi,
+	AbiStateMutability,
+	Account,
+	Chain,
+	ContractFunctionArgs,
+	ContractFunctionName,
+	encodeFunctionData,
+	TransactionReceipt,
+} from "viem";
+import { useWalletClient } from "wagmi";
 import { StdSignDoc } from "@cosmjs/amino";
+import { DeliverTxResponse } from "@cosmjs/stargate";
+import { cosmos } from "@wardenprotocol/wardenjs";
+import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { useSetChain } from "@web3-onboard/react";
+import { createPersistantState } from "@/hooks/state";
+import { assertChain } from "@/utils/contract";
+import type { EthRequest } from "../modals/util";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import { useSpaceById } from "@/hooks/query/warden";
+import { useTemplateById } from "@/hooks/query/act";
+import { shieldStringify } from "@/utils/shield";
+import { DEFAULT_EXPRESSION } from "../intents/hooks";
 
 type TxRaw = Parameters<typeof cosmos.tx.v1beta1.TxRaw.encode>[0];
 
 const getActionId = () =>
 	`${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
 
-const defaultFee: StdFee = {
-	gas: "220000",
-	amount: [{ denom: "award", amount: "250000000000000" }],
-};
-
 export enum QueuedActionStatus {
-	Signed = 0x00,
+	AwaitingSignature = 0x00,
+	Signed = 0x01,
 	Broadcast,
 	AwaitingApprovals,
 	ActionReady,
@@ -30,20 +41,46 @@ export enum QueuedActionStatus {
 	Failed = 0xff,
 }
 
+export interface WalletConnectParams {
+	requestId: number;
+	topic: string;
+}
+
+export interface SnapParams {
+	requestId: string;
+}
+
 export interface QueuedAction {
-	txRaw: TxRaw;
-	data: any;
-	id: string;
+	error?: unknown;
+	hash?: `0x${string}`;
+	receipt?: TransactionReceipt;
+	call?: {
+		abi: Abi;
+		functionName: string;
+		args: unknown;
+	};
+	request?: {
+		to: `0x${string}`;
+		data: `0x${string}`;
+		account: Account;
+		chain: Chain;
+	};
+	wc?: WalletConnectParams;
+	snap?: SnapParams;
 	chainName?: string;
+
+	ethRequest?: EthRequest;
+
+	txRaw?: TxRaw;
+	data?: any;
+	id: string;
 	status: QueuedActionStatus;
-	typeUrl: string;
+	typeUrl?: string;
 	response?: DeliverTxResponse;
 	actionId?: bigint;
 	action?: Action;
 	networkType?: "eth" | "eth-raw" | "cosmos";
 	value?: any;
-	/** @deprecated fix naming */
-	tx?: TransactionLike;
 	/** @deprecated fix naming */
 	signDoc?: StdSignDoc;
 	pubkey?: Uint8Array;
@@ -58,72 +95,125 @@ export const useActionsState = createPersistantState<
 	Record<string, QueuedAction | undefined>
 >("queued-actions", {});
 
-export function useEnqueueAction<Data>(
-	getMessage: ReturnType<typeof useNewAction<Data>>["getMessage"],
+export function useActionHandler<
+	abi extends Abi = Abi,
+	mutability extends AbiStateMutability = AbiStateMutability,
+	functionName extends ContractFunctionName<
+		abi,
+		mutability
+	> = ContractFunctionName<abi, mutability>,
+>(
+	address: `0x${string}`,
+	_abi: abi,
+	_functionName: functionName,
+	admin?: boolean,
 ) {
-	const { address } = useChain(env.cosmoskitChainName);
+	const spaceId = useSpaceId();
+	const client = useWalletClient().data;
 	const { setData } = useActionsState();
-	const { sign } = useTx();
+	const [{ chains, connectedChain }, setChain] = useSetChain();
+	const id = spaceId.spaceId ? BigInt(spaceId.spaceId) : undefined;
 
-	async function addAction(
-		data: Parameters<typeof getMessage>[0],
-		// fixme
-		_opts: TxOptions & {
-			chainName?: string;
-			tx?: TransactionLike;
-			signDoc?: StdSignDoc;
-			pubkey?: Uint8Array;
-			title?: string;
-			keyThemeIndex?: number;
-			walletConnectRequestId?: number;
-			walletConnectTopic?: string;
-			snapRequestId?: string;
-		} = {},
-		actionTimeoutHeight = 0,
-	) {
-		const {
-			chainName,
-			tx,
-			pubkey,
-			signDoc,
-			title,
-			snapRequestId,
-			keyThemeIndex,
-			walletConnectRequestId,
-			walletConnectTopic,
-			...opts
-		} = _opts;
+	const space = useSpaceById({ request: { id } });
 
-		if (!address) {
-			throw new Error("Wallet not connected");
-		}
+	const approveTemplate = useTemplateById({
+		request: {
+			id: admin
+				? space.data?.approveAdminTemplateId
+				: space.data?.approveSignTemplateId,
+		},
+	});
 
-		const storeId = getActionId();
-		const msg = getMessage(data, actionTimeoutHeight);
-		const fee = opts.fee || defaultFee;
-		const signedTx = await sign([msg], { fee });
+	const rejectTemplate = useTemplateById({
+		request: {
+			id: admin
+				? space.data?.rejectAdminTemplateId
+				: space.data?.rejectSignTemplateId,
+		},
+	});
 
-		setData({
-			[storeId]: {
-				txRaw: signedTx,
-				id: storeId,
-				typeUrl: msg.typeUrl,
-				data,
-				status: QueuedActionStatus.Signed,
-				chainName,
-				pubkey,
-				signDoc,
-				title,
-				snapRequestId,
-				tx,
-				keyThemeIndex,
-				walletConnectRequestId,
-				walletConnectTopic,
+	const expectedApproveExpression = useMemo(() => {
+		const expression = approveTemplate.data?.template.expression;
+		return expression ? shieldStringify(expression) : DEFAULT_EXPRESSION;
+	}, [approveTemplate.data?.template.expression])
+
+	const expectedRejectExpression = useMemo(() => {
+		const expression = rejectTemplate.data?.template.expression;
+		return expression ? shieldStringify(expression) : DEFAULT_EXPRESSION;
+	}, [rejectTemplate.data?.template.expression])
+
+	const add = useCallback(
+		async (
+			args: ContractFunctionArgs<abi, mutability, functionName>,
+			options?: {
+				chainName?: string;
+				ethRequest?: EthRequest;
+				keyThemeIndex?: number;
+				wc?: WalletConnectParams;
+				snap?: SnapParams;
+				title?: string;
+				pubkey?: Uint8Array;
+				signDoc?: StdSignDoc;
 			},
-		});
+		) => {
+			await assertChain(chains, connectedChain, setChain);
 
-		return storeId;
-	}
+			if (!client) {
+				throw new Error("Wallet not connected");
+			}
 
-	return { addAction };
+			const storeId = getActionId();
+			const account = client.account;
+
+			try {
+				const call = {
+					abi: _abi,
+					functionName: _functionName,
+					args,
+				};
+
+				const data = encodeFunctionData(call as any /** fixme types */);
+				// todo estimate gas?
+
+				const request = {
+					to: address,
+					data,
+					account,
+					chain: client.chain,
+				};
+
+				setData({
+					[storeId]: {
+						id: storeId,
+						status: QueuedActionStatus.AwaitingSignature,
+						call,
+						request,
+						chainName: options?.chainName,
+						ethRequest: options?.ethRequest,
+						pubkey: options?.pubkey,
+						signDoc: options?.signDoc,
+						keyThemeIndex: options?.keyThemeIndex,
+						title: options?.title,
+						wc: options?.wc,
+						snap: options?.snap,
+					},
+				});
+
+				return storeId;
+			} catch (e) {
+				console.error(e);
+
+				setData({
+					[storeId]: {
+						id: storeId,
+						status: QueuedActionStatus.Failed,
+						error: e,
+					},
+				});
+			}
+		},
+		[setData, client, chains, connectedChain, setChain],
+	);
+
+	return { add, expectedApproveExpression, expectedRejectExpression };
 }

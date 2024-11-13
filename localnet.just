@@ -46,6 +46,7 @@ start bin="wardend" install="true":
 
     post_start () {
       sleep 3
+
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
       if [ -f $ethereum_analyzer_wasm ]; then
         just deploy-contract $ethereum_analyzer_wasm
@@ -58,6 +59,21 @@ start bin="wardend" install="true":
           just deploy-contract $ethereum_analyzer_wasm
         else
           echo "Could not build ethereum_analyzer.wasm, giving up deploying it."
+        fi
+      fi
+
+      osmosis_analyzer_wasm="./contracts/artifacts/osmosis_analyzer.wasm"
+      if [ -f $osmosis_analyzer_wasm ]; then
+        just deploy-contract $osmosis_analyzer_wasm
+      else
+        echo "$osmosis_analyzer_wasm not found, will try to build it"
+        pushd contracts
+        just compile osmosis-analyzer
+        popd
+        if [ -f $osmosis_analyzer_wasm ]; then
+          just deploy-contract $ethereum_analyzer_wasm
+        else
+          echo "Could not build osmosis_analyzer.wasm, giving up deploying it."
         fi
       fi
     }

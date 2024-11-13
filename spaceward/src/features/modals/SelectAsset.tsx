@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
-import { NetworkIcons } from "@/components/ui/icons-crypto";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import AssetRow, { AssetIcon } from "../assets/AssetRow";
 import { useAssetQueries } from "../assets/hooks";

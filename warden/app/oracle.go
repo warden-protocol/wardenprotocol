@@ -14,6 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/mempool"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
@@ -72,12 +73,16 @@ func (app *App) initializeOracle(appOpts types.AppOptions) {
 }
 
 func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
+	noopMempool := mempool.NoOpMempool{}
+	app.SetMempool(noopMempool)
+	baseHandler := baseapp.NewDefaultProposalHandler(noopMempool, app)
+
 	// Create the proposal handler that will be used to fill proposals with
 	// transactions and oracle data.
 	proposalHandler := proposals.NewProposalHandler(
 		app.Logger(),
-		baseapp.NoOpPrepareProposal(),
-		baseapp.NoOpProcessProposal(),
+		baseHandler.PrepareProposalHandler(),
+		baseHandler.ProcessProposalHandler(),
 		ve.NewDefaultValidateVoteExtensionsFn(app.StakingKeeper),
 		compression.NewCompressionVoteExtensionCodec(
 			compression.NewDefaultVoteExtensionCodec(),

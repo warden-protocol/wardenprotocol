@@ -1,15 +1,15 @@
 import { Icons } from "@/components/ui/icons-assets";
 import { useMemo } from "react";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import { shapes } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
+import { KeyModel } from "@/hooks/query/types";
 
 const Key = ({
 	keyValue,
 	onClick,
 }: {
-	keyValue: QueryKeyResponse;
+	keyValue: KeyModel;
 	onClick: () => void;
 }) => {
 	const seedStr = String(keyValue.key.publicKey);

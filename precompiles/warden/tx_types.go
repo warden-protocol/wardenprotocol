@@ -481,7 +481,7 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 type newSignRequestInput struct {
 	KeyId                     uint64
 	Input                     []byte
-	Analyzers                 []common.Address
+	Analyzers                 [][]byte
 	EncryptionKey             []byte
 	MaxKeychainFees           []cosmosTypes.Coin
 	Nonce                     uint64
@@ -502,7 +502,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 
 	var analyzers []string
 	for _, a := range input.Analyzers {
-		analyzers = append(analyzers, wardencommon.Bech32StrFromAddress(a))
+		analyzers = append(analyzers, wardencommon.Bech32StrFromBytes(a))
 	}
 
 	authority := wardencommon.Bech32StrFromAddress(origin)

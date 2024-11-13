@@ -10,6 +10,10 @@ func Bech32StrFromAddress(address common.Address) string {
 	return sdk.AccAddress(address.Bytes()).String()
 }
 
+func Bech32StrFromBytes(address []byte) string {
+	return sdk.AccAddress(address).String()
+}
+
 // AddressFromBech32Str Creates eth address from bech32 address string
 func AddressFromBech32Str(address string) (common.Address, error) {
 	accAddress, err := sdk.AccAddressFromBech32(address)

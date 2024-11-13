@@ -37,7 +37,7 @@ func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build f
 func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
-	// dave := exec.NewWardend(c.w, "dave")
+	dave := exec.NewWardend(c.w, "dave")
 
 	// client := TestGRPCClient(*c.w.GRPCClient(t))
 	evmClient := c.w.EthClient(t)
@@ -225,6 +225,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 	})
 
 	t.Run("work with space", func(t *testing.T) {
+		spaces, err := iWardenClient.SpacesByOwner(dave.CallOps(t), warden.TypesPageRequest{}, dave.EthAddress(t))
+		require.NoError(t, err)
+		require.Equal(t, []warden.Space{}, spaces.Spaces)
+
 		additionalOwners := []common.Address{}
 		newSpaceTx, err := iWardenClient.NewSpace(alice.TransactOps(t, ctx, evmClient), 0, 0, 0, 0, additionalOwners)
 		require.NoError(t, err)
@@ -243,6 +247,16 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, uint64(0), newSpaceEvents[0].RejectSignTemplateId)
 		require.Equal(t, alice.EthAddress(t), newSpaceEvents[0].Creator)
 		require.Equal(t, uint64(1), newSpaceEvents[0].OwnersCount)
+
+		keys, err := iWardenClient.KeysBySpaceId(alice.CallOps(t), warden.TypesPageRequest{
+			Key:        []byte{},
+			Offset:     0,
+			Limit:      0,
+			CountTotal: false,
+			Reverse:    false,
+		}, 2, []int32{1, 2})
+		require.NoError(t, err)
+		require.Equal(t, keys.Keys, []warden.KeyResponse{})
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
 		require.NoError(t, err)

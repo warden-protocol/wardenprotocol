@@ -1,11 +1,5 @@
 import clsx from "clsx";
 import { useMemo, useRef, useState } from "react";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
-import {
-	NetworkIcons,
-	NetworkIconsTransparent,
-	TokenIcons,
-} from "@/components/ui/icons-crypto";
 import { AssetIcon } from "@/features/assets/AssetRow";
 import { Icons } from "@/features/dashboard/icons";
 import { useClickOutside } from "@/hooks/useClickOutside";
@@ -15,6 +9,7 @@ import useFiatConversion from "@/hooks/useFiatConversion";
 import { useModalState } from "./state";
 import { useAssetQueries } from "../assets/hooks";
 import { capitalize } from "./util";
+import { KeyModel } from "@/hooks/query/types";
 
 const Network = ({
 	className,
@@ -41,7 +36,7 @@ const AssetSelector = ({
 }: {
 	onClose: () => void;
 	spaceId: string;
-	selectedKey?: QueryKeyResponse;
+	selectedKey?: KeyModel;
 }) => {
 	const [searchValue, setSearchValue] = useState("");
 	const { setData: setModal, data } = useModalState();

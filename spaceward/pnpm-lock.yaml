@@ -224,6 +224,9 @@ importers:
       '@web3-onboard/wagmi':
         specifier: ^2.0.1
         version: 2.0.1(@tanstack/query-core@4.36.1)(@types/react@18.3.12)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
+      '@web3-onboard/walletconnect':
+        specifier: ^2.6.1
+        version: 2.6.1(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -4819,6 +4822,9 @@ packages:
 
   '@web3-onboard/wagmi@2.0.1':
     resolution: {integrity: sha512-j/WQ85MaMJzf0MbRMlPh/7xt72u7F6dUifhwjnlr6yWtl56PB5fNgc/LLD0ax923Zd0cRujUvkw4LW8OtRUxbg==}
+
+  '@web3-onboard/walletconnect@2.6.1':
+    resolution: {integrity: sha512-GNpsOwnZ+fN62JqZq+KIRR7lR1/ZsPXPjaF4r2lcw8sfbYpalR+Vi25DHQSklwzGqNFHrP5oNkroTS7ICoI1cw==}
 
   abi-wan-kanabi@2.2.3:
     resolution: {integrity: sha512-JlqiAl9CPvTm5kKG0QXmVCWNWoC/XyRMOeT77cQlbxXWllgjf6SqUmaNqFon72C2o5OSZids+5FvLdsw6dvWaw==}
@@ -16735,6 +16741,34 @@ snapshots:
       - '@types/react'
       - bufferutil
       - immer
+      - react
+      - typescript
+      - utf-8-validate
+      - zod
+
+  '@web3-onboard/walletconnect@2.6.1(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)':
+    dependencies:
+      '@walletconnect/ethereum-provider': 2.13.0(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10)
+      '@web3-onboard/common': 2.4.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
+      joi: 17.9.1
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@types/react'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - encoding
+      - ioredis
       - react
       - typescript
       - utf-8-validate

@@ -10,7 +10,7 @@ export const Assets = {
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
-			<g clip-path="url(#clip0_3308_168178)">
+			<g clipPath="url(#clip0_3308_168178)">
 				{locked ? (
 					<path
 						fillRule="evenodd"

@@ -16,7 +16,7 @@
         {"source":"/learn/spaceward/blockexplorer","destination":"https://help.wardenprotocol.org/spaceward/manage-spaces#view-details-activity", "statusCode": 301},
         {"source":"/learn/spaceward/apps","destination":"https://help.wardenprotocol.org/spaceward/use-dapps", "statusCode": 301},
         {"source":"/learn/spaceward/WalletConnect","destination":"https://help.wardenprotocol.org/spaceward/use-dapps#use-walletconnect", "statusCode": 301},
-        {"source":"/learn/spaceward/tutorial-spaceward","destination":"https://help.wardenprotocol.org/spaceward/buenavista-quick-start", "statusCode": 301},
+        {"source":"/learn/spaceward/tutorial-spaceward","destination":"https://help.wardenprotocol.org/spaceward/quick-start", "statusCode": 301},
         {"source":"/learn/spaceward/tutorial-warden-metamask-snap","destination":"https://help.wardenprotocol.org/spaceward/use-dapps#use-metamask-snap", "statusCode": 301},
         {"source":"/learn/spaceward/Setting-Intents","destination":"https://help.wardenprotocol.org/spaceward/manage-rules", "statusCode": 301},
         {"source":"/ward","destination":"/tokens/ward-token/ward", "statusCode": 301},

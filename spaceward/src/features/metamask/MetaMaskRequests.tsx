@@ -10,15 +10,15 @@ import { useMetaMask } from "@/hooks/useMetaMask";
 import { isLocalSnap, shouldDisplayReconnectButton } from "@/lib/metamask";
 import { querySnapRequests } from "./queries";
 import KeySelector from "../modals/KeySelector";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { toast } from "@/components/ui/use-toast";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { useModalState } from "../modals/state";
+import { KeyModel } from "@/hooks/query/types";
+import { AddressType } from "@/hooks/query/warden";
 
 export function MetaMaskRequests() {
 	const { setData: setModal, data: modal } = useModalState();
 	const { isFlask, snapsDetected, installedSnap } = useMetaMask();
-	const [currentKey, setCurrentKey] = useState<QueryKeyResponse>();
+	const [currentKey, setCurrentKey] = useState<KeyModel>();
 
 	const isMetaMaskReady = isLocalSnap(env.snapOrigin)
 		? isFlask
@@ -123,7 +123,7 @@ export function MetaMaskRequests() {
 								variant="outline"
 								onClick={async () => {
 									if (currentKey) {
-										const address = currentKey.addresses.find(a => a.type === AddressType.ADDRESS_TYPE_ETHEREUM)?.address;
+										const address = currentKey.addresses.find(a => a.addressType === AddressType.Ethereum)?.addressValue;
 
 										const { update, id } = toast({
 											title: "Confirm account creation in MetaMask...",

@@ -1,7 +1,7 @@
 {{ define "tokens-section" }}
 <div
   id="token-display"
-  hx-trigger="every 5s"
+  hx-trigger="every 30s"
   hx-get="/update-tokens"
   hx-target="this"
 >
@@ -31,8 +31,10 @@
     id="tokenInfo"
     data-tokens-available="{{.TokensAvailablePercent}}"
   >
+  {{ if .DisplayTokens }}
     Daily WARD Amount </br>
     {{ .TokensAvailable }} / {{ .TokenSupply }} 
+  {{ end }}
   </div>
   {{ end}}
 </div>

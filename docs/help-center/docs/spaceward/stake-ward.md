@@ -18,7 +18,9 @@ When you [stake](https://docs.wardenprotocol.org/learn/glossary#staking) tokens,
 
 To stake WARD, do the following:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Staking**.
 3. Navigate to the **Validators** tab, where you'll find a list of available validators.
 4. Select your preferred validator and click **Stake** next to it.
@@ -35,8 +37,10 @@ If you initiate a redelegation to another validator or unstaking, you'll have to
 
 To manage your stake, do the following:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org) and navigate to **Staking**
-2. Navigate to the **My staking** tab with the list of your stakes.
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+2. Navigate to **Staking** and open the **My staking** tab with the list of your stakes.
 3. Click your staked amount in the table to open details of the stake.
 4. Select one of the available options:
     - **Redelegate**

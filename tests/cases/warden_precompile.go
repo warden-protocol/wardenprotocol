@@ -413,6 +413,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			Result:               signedData,
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
+			BroadcastType:        0,
 		}, signRequest)
 		// reject sign request
 		newSignReqTx = alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
@@ -442,6 +443,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			Result:               result,
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
+			BroadcastType:        0,
 		}, signRequest)
 	})
 }

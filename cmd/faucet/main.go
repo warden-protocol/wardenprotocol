@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -12,6 +13,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/rs/zerolog"
+
+	"github.com/warden-protocol/wardenprotocol/cmd/faucet/pkg/config"
 )
 
 const totalPercent = 100
@@ -35,6 +38,7 @@ type Data struct {
 	TokensAvailable        float64
 	TokensAvailablePercent float64
 	TokenSupply            float64
+	DisplayTokens          bool
 	Denom                  string
 	TXHash                 string
 	Chain                  string
@@ -45,6 +49,7 @@ func newData() Data {
 		TokensAvailable:        0,
 		TokensAvailablePercent: 0,
 		TokenSupply:            0,
+		DisplayTokens:          true,
 		Denom:                  "",
 		TXHash:                 "",
 	}
@@ -78,13 +83,24 @@ func newPage() Page {
 
 func main() {
 	e := echo.New()
+	logLevel, err := log.ParseLevel(config.GetLogLevel())
+	if err != nil {
+		fmt.Printf("error parsing log level: %s", err)
+		logLevel = log.InfoLevel
+	}
 	logger := log.New(
 		log.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
-	).Level(log.InfoLevel).With().Timestamp().Logger()
+	).Level(logLevel).With().Timestamp().Logger()
+
+	if logger.GetLevel() == log.DebugLevel {
+		e.Use(middleware.Logger())
+	}
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup: "header:X-CSRF-Token",
+	}))
 
 	page := newPage()
 	e.Renderer = newTemplate()
-	e.Use(middleware.Logger())
 
 	f, err := InitFaucet(logger)
 	if err != nil {
@@ -98,6 +114,7 @@ func main() {
 		TokenSupply:            f.TokensAvailable,
 		Denom:                  f.config.Denom,
 		Chain:                  f.config.Chain,
+		DisplayTokens:          f.config.DisplayTokens,
 	}
 	amount, err := strconv.Atoi(f.config.Amount)
 	if err != nil {
@@ -114,18 +131,28 @@ func main() {
 	e.File("/css/style.css", "css/style.css")
 	e.File("/js/tx.js", "js/tx.js")
 	e.File("/js/circle.js", "js/circle.js")
+	e.File("/favicon.ico", "images/favicon.ico")
 
 	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
+
 	e.GET("/", func(c echo.Context) error {
-		csrfToken, _ := c.Get(middleware.DefaultCSRFConfig.ContextKey).(string)
-		page.Form.CSRFToken = csrfToken
+		if err != nil {
+			logger.Error().Msgf("unable to get session %v", err)
+			return c.Render(http.StatusInternalServerError, "index", page)
+		}
+
+		page.Form.CSRFToken = c.Get("csrf").(string)
 		page.Form.Address = c.QueryParam("addr")
+		logger.Debug().Msgf("page.Form: %v", page.Form)
 		return c.Render(http.StatusOK, "index", page)
 	})
 
 	e.GET("/check-tx", func(c echo.Context) error {
-		logger.Info().Msg("checking tx")
-		logger.Info().Msgf("f.Batch: %v", f.Batch)
+		logger.Debug().Msg("checking tx")
+		logger.Debug().Msgf("Batch: %v", f.Batch)
 		if len(f.Batch) == 0 {
 			page.Data.TXHash = f.LatestTXHash
 			return c.Render(http.StatusOK, "tx-result", page.Data)
@@ -138,6 +165,7 @@ func main() {
 		var httpStatusCode int
 
 		reqCount.Inc()
+
 		txHash, httpStatusCode, err = f.Send(c.FormValue("address"), false)
 		if err != nil {
 			logger.Error().Msgf("error sending tokens: %s", err)

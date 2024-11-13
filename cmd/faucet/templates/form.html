@@ -1,6 +1,10 @@
 {{ block "form" . }}
-<form hx-swap="outerHTML" hx-post="/send-tokens" hx-swap="innerHTML">
-  <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}" />
+<form
+  hx-swap="outerHTML"
+  hx-headers='{"X-CSRF-Token": "{{ .CSRFToken }}"}'
+  hx-post="/send-tokens"
+  hx-swap="innerHTML"
+>
   <input
     type="text"
     id="address"

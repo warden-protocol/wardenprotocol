@@ -382,8 +382,8 @@ func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
 }
 
 func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.QuerySignRequestsRequest, error) {
-	if len(args) != 3 {
-		return nil, wardencommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+	if len(args) != 4 {
+		return nil, wardencommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
 
 	var input signRequestsInput

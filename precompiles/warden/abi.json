@@ -33,14 +33,14 @@
       "keysBySpaceId((bytes,uint64,uint64,bool,bool),uint64,int32[])": "8f6c0508",
       "newKeyRequest(uint64,uint64,uint8,uint64,uint64,(string,uint256)[],uint64,uint64,string,string)": "90bfe071",
       "newKeychain(string,((string,uint256)[],(string,uint256)[]),string,string,string)": "7d4c42ad",
-      "newSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64,uint64,string,string,int32)": "0xf061e9ae",
+      "newSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64,uint64,string,string,uint8)": "07d145e9",
       "newSpace(uint64,uint64,uint64,uint64,address[])": "c78f7667",
       "rejectKeyRequest(uint64,string)": "d9ac97be",
       "rejectSignRequest(uint64,string)": "b7cf0661",
       "removeKeychainAdmin(uint64,address)": "7225e3fa",
       "removeSpaceOwner(uint64,address,uint64,uint64,string,string)": "60c88db5",
       "signRequestById(uint64)": "a657df94",
-      "signRequests((bytes,uint64,uint64,bool,bool),uint64,int32,int32)": "0x59336c08",
+      "signRequests((bytes,uint64,uint64,bool,bool),uint64,int32,int32)": "59336c08",
       "spaceById(uint64)": "e4c1fc79",
       "spaces((bytes,uint64,uint64,bool,bool))": "5f73892e",
       "spacesByOwner((bytes,uint64,uint64,bool,bool),address)": "88cd3f61",
@@ -267,7 +267,7 @@
         {
           "internalType": "int32",
           "name": "broadcastType",
-          "type": "int32"
+          "type": "uint8"
         }
       ],
       "name": "NewSignRequest",
@@ -1681,9 +1681,9 @@
           "type": "string"
         },
         {
-          "internalType": "int32",
+          "internalType": "enum BroadcastType",
           "name": "broadcastType",
-          "type": "int32"
+          "type": "uint8"
         }
       ],
       "name": "newSignRequest",

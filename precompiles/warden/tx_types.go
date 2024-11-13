@@ -492,8 +492,8 @@ type newSignRequestInput struct {
 }
 
 func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
-	if len(args) != 9 {
-		return nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
+	if len(args) != 10 {
+		return nil, wardencommon.WrongArgsNumber{Expected: 10, Got: len(args)}
 	}
 
 	var input newSignRequestInput

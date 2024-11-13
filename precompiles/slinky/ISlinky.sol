@@ -7,7 +7,7 @@ address constant ISLINKY_PRECOMPILE_ADDRESS = 0x00000000000000000000000000000000
 /// @dev The ISlinky contract's instance.
 ISlinky constant ISLINKY_CONTRACT = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
 
-struct CoinPriceResponse {
+struct GetPriceResponse {
     uint64 decimals;
     QuotePrice price;
 }

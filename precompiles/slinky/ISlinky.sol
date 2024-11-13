@@ -29,7 +29,7 @@ interface ISlinky {
     /// @param base The base coin name for the price
     /// @param quote The quote coin name for the price
     /// @return response The coin price if found
-    function coinPrice(
+    function getPrice(
         string calldata base,
         string calldata quote
     ) external view returns (CoinPriceResponse memory response);

@@ -1,4 +1,4 @@
-import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
+import { logError, logInfo, logWarning, serialize } from '@warden-automated-orders/utils';
 
 import { EvmClient } from '../clients/evm.js';
 import { OrderCreated } from '../types/order/events.js';
@@ -16,46 +16,58 @@ export class OrderProcessor extends Processor<OrderCreated> {
     private evmos: EvmClient,
     private ethereum: EvmClient,
     private supportedChainIds: Map<bigint, undefined>,
+    private retryAttempts: number,
     generator: () => AsyncGenerator<OrderCreated, unknown, unknown>,
   ) {
     super(generator);
   }
 
-  async handle(event: OrderCreated): Promise<boolean> {
-    try {
-      logInfo(`New Signature request ${serialize(event)}`);
+  async handle(event: OrderCreated, retryAttempt?: number): Promise<boolean> {
+    if (retryAttempt && retryAttempt >= this.retryAttempts) {
+      return true;
+    }
 
-      const exist = await this.evmos.isContract(event.returnValues.order);
+    try {
+      logInfo(`New order: ${serialize(event)}`);
+
+      const id = this.evmos.getEventId(event);
+
+      const exist = await this.evmos.isContract(event.returnValues.execution);
 
       if (!exist) {
-        this.evmos.events.delete(this.evmos.getEventId(event));
+        logWarning(`Order is not a contract: ${id}`);
+
+        this.evmos.events.delete(id);
 
         return true;
       }
 
-      const isExecuted = await this.evmos.callView<boolean>(event.returnValues.order, IsExecutedOrderAbi, []);
+      const isExecuted = await this.evmos.callView<boolean>(event.returnValues.execution, IsExecutedOrderAbi, []);
 
       if (isExecuted) {
-        this.evmos.events.delete(this.evmos.getEventId(event));
+        logWarning(`Order was already executed: ${id}`);
+
+        this.evmos.events.delete(id);
 
         return true;
       }
 
-      const canExecute = await this.evmos.callView<boolean>(event.returnValues.order, CanExecuteOrderAbi, []);
+      const canExecute = await this.evmos.callView<boolean>(event.returnValues.execution, CanExecuteOrderAbi, []);
 
       if (!canExecute) {
-        // TODO: cache and try check later
+        logWarning(`Order is not ready yet: ${id}`);
+
         return true;
       }
 
-      logInfo(`${canExecute}`);
-
-      const orderDetails = await this.evmos.callView<IExecutionData>(event.returnValues.order, ExecutionDataAbi, []);
-
-      logInfo(`${serialize(orderDetails)}`);
+      const orderDetails = await this.evmos.callView<IExecutionData>(
+        event.returnValues.execution,
+        ExecutionDataAbi,
+        [],
+      );
 
       if (!this.supportedChainIds.has(orderDetails.chainId)) {
-        this.evmos.events.delete(this.evmos.getEventId(event));
+        this.evmos.events.delete(id);
 
         logError(`Chain id = ${orderDetails.chainId} is not supported`);
 
@@ -71,11 +83,7 @@ export class OrderProcessor extends Processor<OrderCreated> {
         orderDetails.value,
       );
 
-      if (!gas.gasLimit || !gas.feeData) {
-        return true;
-      }
-
-      const executed = await this.evmos.sendTransaction(event.returnValues.order, ExecuteAbi, [
+      const executed = await this.evmos.sendTransaction(event.returnValues.execution, ExecuteAbi, [
         nonce,
         gas.gasLimit,
         gas.feeData.gasPrice,
@@ -84,17 +92,20 @@ export class OrderProcessor extends Processor<OrderCreated> {
       ]);
 
       if (!executed) {
+        logError(`Failed to execute order: ${id}`);
+
         return true;
       }
 
-      // TODO: 3 attempts to execute()
-      this.evmos.events.delete(this.evmos.getEventId(event));
+      this.evmos.events.delete(id);
 
       return true;
     } catch (error) {
-      logError(`New Signature error ${serialize(event)}. Error: ${error}, Stack trace: ${error.stack}`);
+      logError(`New order error ${serialize(event)}. Error: ${error}, Stack trace: ${error.stack}`);
 
-      return false;
+      retryAttempt = retryAttempt ?? 1;
+
+      return await this.handle(event, ++retryAttempt);
     }
   }
 }

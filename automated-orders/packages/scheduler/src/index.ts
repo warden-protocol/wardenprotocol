@@ -1,4 +1,4 @@
-import { ChainIds, EvmClient, OrderCreatedAbi, OrderProcessor } from '@warden-automated-orders/blockchain';
+import { ChainIds, EvmClient, OrderProcessor, OrderRegisteredAbi } from '@warden-automated-orders/blockchain';
 import { logError } from '@warden-automated-orders/utils';
 
 import { config } from './config/config.js';
@@ -6,6 +6,7 @@ import { config } from './config/config.js';
 async function main() {
   const evmos = new EvmClient({
     rpcURL: config.EVMOS_NODE_RPC,
+    eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
     callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
   });
   const etheruem = new EvmClient({
@@ -18,11 +19,12 @@ async function main() {
     evmos,
     etheruem,
     chainIds,
+    config.EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS,
     evmos.pollEvents.bind(
       evmos,
       config.EVMOS_REGISTRY_ADDRESS,
       config.EVMOS_EVENTS_REGISTRY_START_POLLING_BLOCK,
-      OrderCreatedAbi,
+      OrderRegisteredAbi,
       {
         pollingBlocks: BigInt(config.EVMOS_EVENTS_POLLING_BLOCKS),
         pollingIntervalMsec: config.EVMOS_EVENTS_POLLING_INTERVAL_MSEC,

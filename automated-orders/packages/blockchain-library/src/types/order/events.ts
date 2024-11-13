@@ -2,13 +2,17 @@ import { AbiEventFragment, EventLog } from 'web3';
 
 export interface OrderCreated extends EventLog {
   returnValues: {
-    order: string;
+    creator: string;
+    execution: string;
   };
 }
 
-export const OrderCreatedAbi: AbiEventFragment = {
+export const OrderRegisteredAbi: AbiEventFragment = {
   anonymous: false,
-  inputs: [{ indexed: true, internalType: 'address', name: 'order', type: 'address' }],
-  name: 'OrderCreated',
+  inputs: [
+    { indexed: true, internalType: 'address', name: 'creator', type: 'address' },
+    { indexed: false, internalType: 'address', name: 'execution', type: 'address' },
+  ],
+  name: 'Registered',
   type: 'event',
 };

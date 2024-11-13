@@ -17,7 +17,7 @@ This guide explains how to create and deploy a Solidity smart contract on a Ward
 
 Before you start, complete the following prerequisites:
 
-- Install `foundry` by running the following command:
+- [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running the following command:
 
   ```bash
   curl -L https://foundry.paradigm.xyz | bash \ 
@@ -337,22 +337,11 @@ Now you can interact with the contract: adjust and increment the counter number.
 
 ## Troubleshooting
 
-Here are solutions for the common issues you may encounter when interacting with the contract:
-
 - If your transaction fails, try the following:
 
   - Verify that your private key is correct. See [Step 1](#1-prepare-the-chain).
   - Make sure you have enough funds in your account, as shown in [Step 1](#1-prepare-the-chain). If funds are insufficient, you may need to [run a local chain](/operate-a-node/run-a-local-chain) from scratch or use [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
   - Verify your contract address, as shown in [Step 5](#5-verify-the-deployment).
-
-- If you get the "null response" error, add the `--legacy` flag to your `cast send` command. You'll send a legacy transaction instead of the EIP-1559 one.
-  
-  ```
-  cast send $CONTRACT_ADDRESS "setNumber(uint256)" 42 \
-    --private-key $PRIVATE_KEY
-    --rpc-url $RPC_URL \
-    --legacy
-  ```
 
 If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
 

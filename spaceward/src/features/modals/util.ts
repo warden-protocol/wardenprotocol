@@ -1,14 +1,4 @@
 import { assets } from "chain-registry";
-import {
-	AbiCoder,
-	concat,
-	ethers,
-	keccak256,
-	parseUnits,
-	toUtf8Bytes,
-	//	Transaction,
-	TransactionLike,
-} from "ethers";
 
 import {
 	encodePubkey,
@@ -32,6 +22,98 @@ import { encodeSecp256k1Pubkey, makeSignDoc, StdSignDoc } from "@cosmjs/amino";
 import { Int53 } from "@cosmjs/math";
 import { SignMode } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/signing/v1beta1/signing";
 import { COSMOS_CHAINS } from "@/config/tokens";
+import {
+	Account,
+	concat,
+	Chain,
+	Client,
+	encodeAbiParameters,
+	SendTransactionParameters,
+	getContract,
+	keccak256,
+	parseUnits,
+	Transport,
+	SendTransactionRequest,
+	toBytes,
+	assertRequest,
+	formatTransactionRequest,
+	TransactionRequest,
+	isAddress,
+	encodeFunctionData,
+} from "viem";
+import { extract } from "viem/utils";
+import { parseAccount } from "viem/accounts";
+import { isValidBech32 } from "@/utils/validate";
+
+export function prepareEth<
+	c extends Chain | undefined,
+	acc extends Account | undefined,
+	request extends SendTransactionRequest<c, chainOverride>,
+	chainOverride extends Chain | undefined = undefined,
+>(
+	client: Client<Transport, c, acc>,
+	parameters: SendTransactionParameters<c, acc, chainOverride, request>,
+) {
+	const {
+		account: account_ = client.account,
+		chain = client.chain,
+		accessList,
+		// authorizationList,
+		blobs,
+		data,
+		gas,
+		gasPrice,
+		maxFeePerBlobGas,
+		maxFeePerGas,
+		maxPriorityFeePerGas,
+		nonce,
+		value,
+		...rest
+	} = parameters;
+
+	if (typeof account_ === "undefined") throw new Error("account not found");
+	const account = account_ ? parseAccount(account_) : null;
+	const to = rest.to;
+
+	assertRequest(parameters);
+
+	if (account?.type === "json-rpc" || account === null) {
+		const chainId = client.chain?.id;
+		if (!chainId) throw new Error("chainId not found");
+
+		const chainFormat =
+			client.chain?.formatters?.transactionRequest?.format;
+		const format: typeof formatTransactionRequest =
+			chainFormat || formatTransactionRequest;
+
+		const request = {
+			// Pick out extra data that might exist on the chain's transaction request type.
+			...extract(rest, { format: chainFormat }),
+			accessList,
+			// authorizationList,
+			blobs,
+			chainId,
+			data,
+			from: account?.address,
+			gas,
+			gasPrice,
+			maxFeePerBlobGas,
+			maxFeePerGas,
+			maxPriorityFeePerGas,
+			nonce,
+			to,
+			value,
+		} as TransactionRequest;
+
+		return { request, format };
+	}
+
+	throw new Error(`unsupported account type: ${account?.type}`);
+}
+
+type EthPrepare = ReturnType<typeof prepareEth>;
+export type EthRequest = EthPrepare["request"];
+export type EthFormat = EthPrepare["format"];
 
 function typedStartsWith<T extends string>(
 	prefix: T,
@@ -43,7 +125,7 @@ function typedStartsWith<T extends string>(
 type TxType = "eth" | "cosmos";
 export type TxBuild<T extends TxType> = T extends "eth"
 	? {
-			tx: TransactionLike;
+			tx: EthPrepare["request"];
 			type: T;
 		}
 	: {
@@ -67,72 +149,72 @@ export async function buildTransaction({
 	amount: string;
 }) {
 	if (typedStartsWith("eip155:", item.type)) {
+		if (!isAddress(from) || !isAddress(to)) {
+			throw new Error("invalid eip155 address", { cause: { from, to } });
+		}
+
 		if (!isSupportedNetwork(item.chainName)) {
 			throw new Error(`Unsupported network: ${item.chainName}`);
 		}
 
 		const amount = parseUnits(_amount, item.decimals);
 		const { provider } = getProvider(item.chainName);
-		const nonce = await provider.getTransactionCount(from);
-		const feeData = await provider.getFeeData();
+		const nonce = await provider.getTransactionCount({ address: from });
+		const feeData = await provider.estimateFeesPerGas();
 		const gasLimit = BigInt(21000);
 
 		if (item.type === "eip155:native") {
-			const tx: TransactionLike = {
-				type: 2, // 2: Dynamic fee transaction
-				chainId: item.chainId,
+			const { request } = prepareEth(provider, {
+				account: from,
+				chain: provider.chain,
 				nonce,
 				to,
 				value: amount,
+				gas: gasLimit,
 				...feeData,
-				gasLimit,
-			};
+			});
 
-			return { tx, type: "eth" };
+			return { tx: request, type: "eth" };
 		} else if (item.type === "eip155:erc20") {
 			if (!item.erc20Token) {
 				throw new Error("missing token contract address");
 			}
 
-			const contract = new ethers.Contract(
-				item.erc20Token,
-				erc20Abi,
-				provider,
-			);
+			const contract = getContract({
+				address: item.erc20Token,
+				abi: erc20Abi,
+				client: provider,
+			});
 
-			const abiItem = getAbiItem(erc20Abi, "transfer")!;
-			const signature = `${abiItem.name}(${abiItem.inputs.map((x) => x.type).join(",")})`;
-			const sigHash = keccak256(toUtf8Bytes(signature));
-			const selector = sigHash.slice(0, 10);
-			const abiCoder = AbiCoder.defaultAbiCoder();
+			const data = encodeFunctionData({
+				abi: erc20Abi,
+				functionName: "transfer",
+				args: [to, amount],
+			});
 
-			const params = abiCoder.encode(
-				abiItem.inputs.map((x) => x.type),
-				[to, amount],
-			);
-
-			const data = concat([selector, params]);
-
-			const tx: TransactionLike = {
-				type: 2, // 2: Dynamic fee transaction
-				chainId: item.chainId,
+			const { request } = prepareEth(provider, {
+				account: from,
+				chain: provider.chain,
 				nonce,
-				data,
 				to: item.erc20Token,
+				data,
 				...feeData,
-			};
+			});
 
 			// fixme gas limit
-			const gasLimit = await provider.estimateGas({
-				...(await contract.transfer.populateTransaction(to, amount)),
-				from,
-			}) * BigInt(2);
+			const gasLimit =
+				(await contract.estimateGas.transfer([to, amount], {})) *
+				BigInt(2);
 
-			tx.gasLimit = gasLimit;
-			return { tx, type: "eth" } as TxBuild<"eth">;
+			request.gas = gasLimit;
+			return { tx: request, type: "eth" } as TxBuild<"eth">;
 		} else {
 			throw new Error(`unsupported type: ${item.type}`);
 		}
+	}
+
+	if (!isValidBech32(from) || !isValidBech32(to)) {
+		throw new Error("invalid cosmos address", { cause: { from, to } });
 	}
 
 	const { send } = cosmos.bank.v1beta1.MessageComposer.withTypeUrl;

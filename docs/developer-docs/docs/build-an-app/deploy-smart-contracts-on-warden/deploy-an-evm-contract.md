@@ -9,9 +9,9 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They are written in **Solidity**.
+The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm) and written in **Solidity**.
 
-This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on the Warden chain. Since it's intended for testing purposes, you'll be running a local chain.
+This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
 
 ## Prerequisites
 
@@ -34,44 +34,116 @@ Before you start, complete the following prerequisites:
   ```bash
   npm install @truffle/hdwallet-provider
   ```
-- [Run a local chain](/operate-a-node/run-a-local-chain) and make sure you have `wardend` correctly installed. Get the information required for the next steps:
 
-  - Check the list of available keys (local accounts) and note down your key name.
+## 1. Prepare the chain
 
-     ```bash
-     wardend keys list
-     ```
+### Option 1. Run a local chain
 
-     :::tip
-     If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
-     :::
+To deploy an EVM contract locally, you need to run a local chain and make sure it's configured properly, as shown in the following steps:
 
-   - Execute a command for getting the private key associated with this key name. You'll need it in [Step 3](#3-configure-truffle).
+1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
-     <Tabs>
-     <TabItem value="default" label="Default node settings">
-     ```bash
-     wardend keys export shulgin --unarmored-hex --unsafe
-     ```
-     </TabItem>
-     <TabItem value="custom" label="Custom node settings">
-     ```bash
-     wardend keys export my-key-name --unarmored-hex --unsafe
-     ```
-     </TabItem>
-     </Tabs>
+2. Check the list of available keys (local accounts) and note down your key name.
 
-  - You'll also need your chain ID. Run the following and note down the value from the `network` field:
+   ```bash
+   wardend keys list
+   ```
 
-     ```
-     wardend status
-     ```
+   :::tip
+   If you used our `just` script to run the node with default settings, the local account name is `shulgin`.
+   :::
 
-     :::tip
-     If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
-     :::
+3. Check the local account balance to make sure it has funds:
+   
+   <Tabs>
+   <TabItem value="local-default" label="Local node: default settings">
+   ```bash
+   wardend query bank balances shulgin
+   ```
+   </TabItem>
+   <TabItem value="local-custom" label="Local node: custom settings">
+   ```bash
+   wardend query bank balances my-key-name
+   ```
+   </TabItem>
+   </Tabs>
 
-## 1. Create an EVM project
+4. The next steps require the private key associated with this account. To get it, run this:
+
+   <Tabs>
+   <TabItem value="default" label="Default node settings">
+   ```bash
+   wardend keys export shulgin --unarmored-hex --unsafe
+   ```
+   </TabItem>
+   <TabItem value="custom" label="Custom node settings">
+   ```bash
+   wardend keys export my-key-name --unarmored-hex --unsafe
+   ```
+   </TabItem>
+   </Tabs>
+
+5. You'll also need your chain ID. Run the following and note down the value from the `network` field:
+
+   ```bash
+   wardend status
+   ```
+
+   :::tip
+   If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
+   :::
+
+### Option 2. Connect to Chiado
+
+To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), you need to install its binary and fund your key, as shown in the following steps:
+
+1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
+
+2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
+  
+   ```bash
+   git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
+   cd wardenprotocol
+   just wardend build
+   just wardend install
+   wardend init my-chain-moniker
+   ```
+
+3. Create a new key:
+
+   ```bash
+   wardend keys add my-key-name
+   ```
+
+4. Write down the **mnemonic phrase** and the **address** of the new account. You'll need this information to interact with the chain and restore the account.
+
+   :::warning
+   The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
+   :::
+
+   :::tip
+   You can always check your public address by running this command:
+
+   ```bash
+   wardend keys show my-key-name --address
+   ```
+   :::
+
+5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address obtained in the previous step.
+
+6. Check your balance:
+   
+   ```bash
+   wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443
+   ```
+
+7. The next steps require the private key associated with this account. To get it, run this:
+
+   ```bash
+   wardend keys export my-key-name --unarmored-hex --unsafe
+   ```
+
+## 2. Create an EVM project
 
 1. Create a new directory `/warden-smart-contract` for your project and navigate there:
 
@@ -86,7 +158,7 @@ Before you start, complete the following prerequisites:
     truffle init
     ```
 
-## 2. Create a smart contract
+## 3. Create a smart contract
 
 In the `/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
 
@@ -111,48 +183,79 @@ contract HelloWarden {
 }
 ```
 
-## 3. Configure Truffle
+## 4. Configure Truffle
 
-In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with the code below.
+1. In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with this code:
 
-Make adjustments in the code using your chain settings from [Prerequisites](#prerequisites):
-
-1. Replace `your_private_key` with your actual private key.
-2. In `network_id`, specify the first number from your chain ID. For example, if your chain ID is `warden_1337-1` or `chain_123-1`, specify `1337` or `123` respectively. Alternatively, you can just use `"*"` to match any chain ID.
-3. If needed, adjust the gas limit and price – `gas` and `gasPrice`.
-
-```javascript title="/warden-smart-contract/truffle-config.js"
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-
-// Your private key (keep this secret and never commit it to version control!)
-const PRIVATE_KEY = "your_private_key";
-
-module.exports = {
-  networks: {
-    warden: {
-      provider: function() {
-        return new HDWalletProvider(PRIVATE_KEY, "http://localhost:8545");
-      },
-      network_id: 1337, // The first number from your chain ID
-      host: "127.0.0.1",
-      port: 8545,
-      gas: 5500000,
-      gasPrice: 20000000000 // award
-    },
-  },
-  compilers: {
-    solc: {
-    version: "0.8.20",
-    }
-  }
-};
+   <Tabs>
+   <TabItem value="local" label="Local node">
+   ```javascript title="/warden-smart-contract/truffle-config.js"
+   const HDWalletProvider = require("@truffle/hdwallet-provider");
+   
+   // Keep your private key confidential, DO NOT commit to version control!
+   const PRIVATE_KEY = "your_private_key";
+   
+   // The standard localhost address and the node's RPC port
+   const RPC_URL = "http://127.0.0.1:8545";
+   
+   module.exports = {
+     networks: {
+       warden: {
+         provider: function() {
+           return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
+         },
+         network_id: 1337, // The first number from the chain ID
+         gas: 5500000,
+         gasPrice: 20000000000 // award
+       },
+     },
+     compilers: {
+       solc: {
+       version: "0.8.20",
+       }
+     }
+   };
    ```
+   </TabItem>
+   <TabItem value="chiado" label="Chiado">
+   ```javascript title="/warden-smart-contract/truffle-config.js"
+   const HDWalletProvider = require("@truffle/hdwallet-provider");
+   
+   // Keep your private key confidential, DO NOT commit to version control!
+   const PRIVATE_KEY = "your_private_key";
+   
+   // Chiado's EVM endpoint
+   const RPC_URL = "https://evm.chiado.wardenprotocol.org"; 
+   
+   module.exports = {
+     networks: {
+       warden: {
+         provider: function() {
+           return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
+         },
+         network_id: 10010, // The first number from the chain ID
+         gas: 5500000,
+         gasPrice: 20000000000 // award
+       },
+     },
+     compilers: {
+       solc: {
+       version: "0.8.20",
+       }
+     }
+   };
+   ```
+   </TabItem>
+   </Tabs>
 
-:::note
-The `host` and `port` values are the standard localhost address and the RPC port of the node. `HDWalletProvider` uses the same URL to connect to the node. If you're running your node on the same machine where you're deploying the contract, you don't need to change these settings. Otherwise, run `wardend status` to check the host address and adjust the configuration accordingly. 
-:::
+2. Adjust the code and make sure all values are correct:
 
-## 4. Create a migration script
+   - `your_private_key`: Replace it with your actual private key from [Step 1](#1-prepare-the-chain).
+   - `RPC_URL`: If you're running a local chain and deploying the contract on the same machine, use the standard localhost address. Otherwise, check the chain's host address by executing `wardend status` on the machine hosting the chain. For Chiado, specify its EVM endpoint: `https://evm.chiado.wardenprotocol.org`.
+   - `network_id`: Specify the first number from the chain ID. For example, if your local chain ID is `warden_1337-1`, the network ID is `1337`. The correct value for Chiado is `10010`. Alternatively, you can just use `"*"` to match any chain ID.
+   - If needed, adjust the gas limit and price – `gas` and `gasPrice`.
+
+## 5. Create a migration script
 
 In `/migrations`, create a new file `2_deploy_hello_warden.js` with the following contents:
 
@@ -160,11 +263,11 @@ In `/migrations`, create a new file `2_deploy_hello_warden.js` with the followin
 const HelloWarden = artifacts.require("HelloWarden");
 
 module.exports = function(deployer) {
-deployer.deploy(HelloWarden);
+  deployer.deploy(HelloWarden);
 };
 ```
 
-## 5. Compile the contract
+## 6. Compile the contract
 
 To compile your contract, run this command:
 
@@ -183,8 +286,10 @@ Compiling your contracts...
    - solc: 0.8.20+commit.c7dfd78e.Emscripten.clang
 ```
 
-## 6. Deploy the contract
+## 7. Deploy the contract
 
+If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
+   
 To deploy the contract, run this:
 
 ```bash
@@ -237,7 +342,7 @@ Summary
 Due to Evmos default settings, this log displays prices in ETH and gwei. However, the contract itself uses Warden's currency – WARD, denominated in award.
 :::
 
-## 7. Interact with the contract
+## 8. Interact with the contract
 
 1. To interact with your contract, open the Truffle console:
    

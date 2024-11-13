@@ -2,9 +2,7 @@ import clsx from "clsx";
 import { Circle, Dice5Icon, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { warden } from "@wardenprotocol/wardenjs";
-import { Keychain } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/keychain";
 import { Button } from "@/components/ui/button";
-import { useQueryHooks } from "@/hooks/useClient";
 import { pasteFromClipboard } from "@/utils/browser";
 import type { CreateKeyParams, ModalParams } from "./types";
 import Assets, { KEY_THEMES } from "../keys/assets";
@@ -13,8 +11,11 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { useModalState } from "./state";
 import { Icons } from "@/components/ui/icons-assets";
 import descriptions from "../keychains/description";
-import { useNewAction } from "@/hooks/useAction";
-import { useEnqueueAction } from "../actions/hooks";
+import { useActionHandler } from "../actions/hooks";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { useKeychains, useSpaceById } from "@/hooks/query/warden";
+import { KeychainModel } from "@/hooks/query/types";
 
 const DESCRIPTION_MAP = Object.fromEntries(descriptions.map((d) => [d.key, d]));
 const THEME_DISPLAY_COUNT = 4;
@@ -25,50 +26,47 @@ export default function CreateKeyModal({
 	spaceId: selectedSpaceId,
 	keychainId,
 }: ModalParams<CreateKeyParams>) {
-	const { useKeychains, useSpaceById, isReady } = useQueryHooks();
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { setData: setModal } = useModalState();
 	const { spaceId: _spaceId } = useSpaceId();
 	const spaceId = selectedSpaceId ?? _spaceId;
-	const { data: space } = useSpaceById({ request: { id: BigInt(spaceId ?? 0) }, options: { enabled: !!spaceId && isReady } });
-	const { getMessage, authority } = useNewAction(warden.warden.v1beta3.MsgNewKeyRequest);
-	const { addAction } = useEnqueueAction(getMessage);
+
+	const space = useSpaceById({
+		request: { id: BigInt(spaceId ?? 0) },
+	}).data;
+
+	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"newKeyRequest",
+	);
 	const [pending, setPending] = useState(false);
 
 	function requestKey(keychainId: bigint, spaceId: bigint, themeIndex: number) {
-		if (!authority) {
-			throw new Error("no authority");
-		}
-
-		if (!space?.space) {
+		if (!space) {
 			throw new Error("no space");
 		}
 
-		return addAction(
-			{
-				spaceId,
-				keychainId,
-				keyType: warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
-				authority,
-				approveTemplateId: space.space.approveSignTemplateId,
-				rejectTemplateId: space.space.rejectSignTemplateId,
-				nonce: space.space.nonce,
-				maxKeychainFees: undefined as any
-			},
-			{
-				keyThemeIndex: themeIndex,
-				title: "Creating key"
-			},
-		);
+		return add([
+			spaceId,
+			keychainId,
+			warden.warden.v1beta3.KeyType.KEY_TYPE_ECDSA_SECP256K1,
+			space.approveSignTemplateId,
+			space.rejectSignTemplateId,
+			[],
+			BigInt(space.nonce),
+			BigInt(0),
+			expectedApproveExpression,
+			expectedRejectExpression,
+		], {
+			keyThemeIndex: themeIndex,
+			title: "Creating key"
+		});
 	}
 
-	const keychainsQuery = useKeychains({
-		options: {
-			enabled: isReady,
-		},
-	});
+	const keychains = useKeychains({}).data?.[0];
 
-	const keychain = keychainsQuery.data?.keychains.find(
+	const keychain = keychains?.find(
 		(kc) => kc.id === keychainId,
 	);
 	const [selected, setSelected] = useState(0);
@@ -77,8 +75,9 @@ export default function CreateKeyModal({
 	const [themeIndex, setThemeIndex] = useState(0);
 	const [themeOffset, setThemeOffset] = useState(0);
 
-	function setKeychain(keychain: Keychain | undefined) {
+	function setKeychain(keychain: KeychainModel | undefined) {
 		const keychainId = keychain?.id;
+
 		setModal({
 			params: {
 				next,
@@ -116,7 +115,7 @@ export default function CreateKeyModal({
 	const desc =
 		selected >= 0
 			? DESCRIPTION_MAP[
-			keychainsQuery.data?.keychains[selected]?.description ?? ""
+			keychains?.[selected]?.description ?? ""
 			]
 			: undefined;
 
@@ -175,7 +174,7 @@ export default function CreateKeyModal({
 						return;
 					}
 
-					const keychain = keychainsQuery.data?.keychains[selected];
+					const keychain = keychains?.[selected];
 
 					if (!keychain) {
 						return;
@@ -218,12 +217,12 @@ export default function CreateKeyModal({
 				<div
 					className={clsx(
 						"mt-12 text-left flex flex-col gap-4 max-h-[400px] relative",
-						(keychainsQuery.data?.keychains.length ?? 0) >= 3
+						(keychains?.length ?? 0) >= 3
 							? "before:content-[''] before:fixed no-scrollbar overflow-scroll before:left-0 before:bottom-0 before:w-full before:h-[0] before:z-20 before:bg-gradient-to-b before:from-[transparent] before:to-[#222]"
 							: "",
 					)}
 				>
-					{keychainsQuery.data?.keychains.map((item, i) => {
+					{keychains?.map((item, i) => {
 						const desc = DESCRIPTION_MAP[item.name];
 
 						if (desc && !desc.disabled) {
@@ -417,7 +416,7 @@ export default function CreateKeyModal({
 						}
 
 						const keychain =
-							keychainsQuery.data?.keychains[selected];
+							keychains?.[selected];
 
 						if (!keychain || desc?.disabled) {
 							return;

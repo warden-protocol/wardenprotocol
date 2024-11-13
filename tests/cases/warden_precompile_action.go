@@ -220,7 +220,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
-			[]common.Address{},
+			[][]byte{},
 			[]byte{},
 			[]warden.TypesCoin{},
 			2,

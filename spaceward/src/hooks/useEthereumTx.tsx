@@ -1,99 +1,96 @@
-import { ethers } from "ethers";
-import { warden } from "@wardenprotocol/wardenjs";
 import { env } from "@/env";
-import { useEnqueueAction } from "@/features/actions/hooks";
-import { useNewAction } from "./useAction";
-import { useNonce } from "./useNonce";
+import { SnapParams, useActionHandler, WalletConnectParams } from "@/features/actions/hooks";
+import { fromBytes, serializeTransaction, TransactionSerializable } from "viem";
+import { EthRequest } from "@/features/modals/util";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
+import { useSpaceId } from "./useSpaceId";
+import { fromBech32 } from "@cosmjs/encoding";
+import { useSpaceById } from "./query/warden";
 
 export function useEthereumTx() {
-	const nonce = useNonce();
-	const { getMessage, authority } = useNewAction(
-		warden.warden.v1beta3.MsgNewSignRequest,
-	);
+	const spaceId = useSpaceId().spaceId;
 
-	const { addAction } = useEnqueueAction(getMessage);
+	const space = useSpaceById({
+		request: {
+			id: BigInt(spaceId ?? 0)
+		},
+	}).data;
+
+	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"newSignRequest"
+	);
 
 	const signRaw = async (
 		keyId: bigint,
 		input: Uint8Array,
-
-		wc?: {
-			requestId: number;
-			topic: string;
-		},
-		snap?: {
-			requestId: string;
+		options?: {
+			wc?: WalletConnectParams;
+			snap?: SnapParams;
 		}
 	) => {
-		if (!authority) {
-			throw new Error("no authority");
+		if (!space) {
+			throw new Error("no space");
 		}
 
-		return await addAction(
-			{
-				authority,
+		return await add(
+			[
 				keyId,
-				analyzers: [],
-				input,
-				nonce,
-				// fixme
-				encryptionKey: undefined as any,
-				maxKeychainFees: undefined as any,
-			},
-			{
-				walletConnectRequestId: wc?.requestId,
-				walletConnectTopic: wc?.topic,
-				snapRequestId: snap?.requestId
-			},
+				fromBytes(input, "hex"),
+				[],
+				// todo implement encryption key
+				"0x",
+				// todo implement max keychain fees
+				[],
+				space.nonce,
+				BigInt(0),
+				expectedApproveExpression,
+				expectedRejectExpression
+			],
+			options,
 		);
 	};
 
 	const signEthereumTx = async (
 		keyId: bigint,
-		_tx: ethers.TransactionLike,
+		_tx: EthRequest,
 		chainName: string,
-		title: string,
-		wc?: {
-			requestId: number;
-			topic: string;
-		},
-		snap?: {
-			requestId: string;
+		options?: {
+			wc?: WalletConnectParams;
+			snap?: SnapParams;
+			title?: string;
 		}
 	) => {
-		if (!authority) {
-			throw new Error("no authority");
+		if (!space) {
+			throw new Error("no space");
 		}
 
 		if (!env.ethereumAnalyzerContract) {
-			console.warn(
+			throw new Error(
 				"Missing ethereumAnalyzerContract. Can't use Ethereum transactions.",
 			);
-
-			return;
 		}
 
-		const tx = ethers.Transaction.from(_tx);
 
-		return await addAction(
-			{
-				analyzers: [env.ethereumAnalyzerContract],
-				authority,
-				input: ethers.getBytes(tx.unsignedSerialized),
+		const analyzer = fromBytes(fromBech32(env.ethereumAnalyzerContract).data, "hex");
+
+		return await add(
+			[
 				keyId,
-				nonce,
-				// fixme
-				encryptionKey: undefined as any,
-				maxKeychainFees: undefined as any,
-			},
-			{
-				tx: _tx,
-				chainName,
-				walletConnectRequestId: wc?.requestId,
-				walletConnectTopic: wc?.topic,
-				snapRequestId: snap?.requestId,
-				title
-			},
+				serializeTransaction(_tx as TransactionSerializable),
+				[analyzer],
+				// todo implement encryption key
+				"0x",
+				// todo implement max keychain fees
+				[],
+				space.nonce,
+				BigInt(0),
+				expectedApproveExpression,
+				expectedRejectExpression
+			],
+			{ ...options, chainName, ethRequest: _tx }
 		);
 	};
 

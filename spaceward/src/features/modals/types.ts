@@ -1,7 +1,7 @@
-import type { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
+import type { ReactNode } from "react";
+import type { AddressType } from "@/hooks/query/warden";
+import type { KeyModel } from "@/hooks/query/types";
 import type { ModalType } from "./state";
-import { ReactNode } from "react";
 
 export interface CreateKeyParams {
 	next?: ModalType;
@@ -14,11 +14,11 @@ export interface TransferParams {
 	type?: AddressType;
 	token?: string;
 	chainName?: string;
-	keyResponse?: QueryKeyResponse;
+	keyResponse?: KeyModel;
 }
 
 export interface SelectAssetParams {
-	keyResponse?: QueryKeyResponse;
+	keyResponse?: KeyModel;
 }
 
 export interface ConfirmParams {

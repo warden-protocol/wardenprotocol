@@ -22,16 +22,21 @@ func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllK
 		return nil, fmt.Errorf("error while unpacking args to allKeysInput struct: %w", err)
 	}
 
+	deriveAddresses := []types.AddressType{}
+	for _, da := range input.DeriveAddresses {
+		deriveAddresses = append(deriveAddresses, types.AddressType(da))
+	}
+
 	pagination := mapEthPageRequest(input.PageRequest)
 	return &types.QueryAllKeysRequest{
 		Pagination:      &pagination,
-		DeriveAddresses: input.DeriveAddresses,
+		DeriveAddresses: deriveAddresses,
 	}, nil
 }
 
 type allKeysInput struct {
 	PageRequest     TypesPageRequest
-	DeriveAddresses []types.AddressType
+	DeriveAddresses []int32
 }
 
 func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, error) {
@@ -50,15 +55,9 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 	}
 
 	addresses := make([]AddressesResponse, len(res.Addresses))
-
 	for j, a := range res.Addresses {
-		ethAddress, err := wardencommon.AddressFromBech32Str(a.Address)
-		if err != nil {
-			return nil, err
-		}
-
 		addresses[j] = AddressesResponse{
-			AddressValue: ethAddress,
+			AddressValue: a.GetAddress(),
 			AddressType:  int32(a.Type),
 		}
 	}
@@ -79,7 +78,7 @@ type keysOutput struct {
 }
 
 func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, error) {
-	if res == nil || res.Keys == nil {
+	if res == nil {
 		return nil, errors.New("received nil QueryKeyResponse")
 	}
 
@@ -115,15 +114,20 @@ func newKeyByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyB
 		return nil, fmt.Errorf("error while unpacking args to keyByIdInput struct: %w", err)
 	}
 
+	deriveAddresses := []types.AddressType{}
+	for _, da := range input.DeriveAddresses {
+		deriveAddresses = append(deriveAddresses, types.AddressType(da))
+	}
+
 	return &types.QueryKeyByIdRequest{
 		Id:              input.Id,
-		DeriveAddresses: input.DeriveAddresses,
+		DeriveAddresses: deriveAddresses,
 	}, nil
 }
 
 type keyByIdInput struct {
 	Id              uint64
-	DeriveAddresses []types.AddressType
+	DeriveAddresses []int32
 }
 
 func newKeysBySpaceIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeysBySpaceIdRequest, error) {
@@ -136,17 +140,22 @@ func newKeysBySpaceIdRequest(method *abi.Method, args []interface{}) (*types.Que
 		return nil, fmt.Errorf("error while unpacking args to keysBySpaceIdInput struct: %w", err)
 	}
 
+	deriveAddresses := []types.AddressType{}
+	for _, da := range input.DeriveAddresses {
+		deriveAddresses = append(deriveAddresses, types.AddressType(da))
+	}
+
 	return &types.QueryKeysBySpaceIdRequest{
 		Pagination:      &input.PageRequest,
 		SpaceId:         input.SpaceId,
-		DeriveAddresses: input.DeriveAddresses,
+		DeriveAddresses: deriveAddresses,
 	}, nil
 }
 
 type keysBySpaceIdInput struct {
 	PageRequest     query.PageRequest
 	SpaceId         uint64
-	DeriveAddresses []types.AddressType
+	DeriveAddresses []int32
 }
 
 func newKeyRequestByIdRequest(method *abi.Method, args []interface{}) (*types.QueryKeyRequestByIdRequest, error) {
@@ -503,7 +512,7 @@ type spacesOutput struct {
 }
 
 func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) (*spacesOutput, error) {
-	if res == nil || res.Spaces == nil {
+	if res == nil {
 		return nil, errors.New("received nil QuerySpacesResponse")
 	}
 	o.Spaces = make([]Space, len(res.Spaces))

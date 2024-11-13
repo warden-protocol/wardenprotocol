@@ -6,47 +6,19 @@ import { InstallMetaMaskSnapButton } from "@/features/metamask";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import { env } from "@/env";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
 import { useMetaMask } from "@/hooks/useMetaMask";
 import { isLocalSnap, shouldDisplayReconnectButton } from "@/lib/metamask";
 import { querySnapRequests } from "./queries";
 import KeySelector from "../modals/KeySelector";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { toast } from "@/components/ui/use-toast";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { useModalState } from "../modals/state";
-
-interface SignTransactionParams {
-	chainId: string;
-	data: string;
-	from: string;
-	gasLimit: string;
-	maxFeePerGas: string;
-	maxPriorityFeePerGas: string;
-	nonce: string;
-	to: string;
-	type: string;
-	value: string;
-}
-
-async function buildSignTransaction(data: SignTransactionParams) {
-	return ethers.Transaction.from({
-		chainId: data.chainId,
-		data: data.data,
-		gasLimit: data.gasLimit,
-		maxFeePerGas: data.maxFeePerGas,
-		maxPriorityFeePerGas: data.maxPriorityFeePerGas,
-		nonce: ethers.getNumber(data.nonce),
-		to: data.to,
-		type: ethers.getNumber(data.type),
-		value: data.value,
-	});
-}
+import { KeyModel } from "@/hooks/query/types";
+import { AddressType } from "@/hooks/query/warden";
 
 export function MetaMaskRequests() {
 	const { setData: setModal, data: modal } = useModalState();
 	const { isFlask, snapsDetected, installedSnap } = useMetaMask();
-	const [currentKey, setCurrentKey] = useState<QueryKeyResponse>();
+	const [currentKey, setCurrentKey] = useState<KeyModel>();
 
 	const isMetaMaskReady = isLocalSnap(env.snapOrigin)
 		? isFlask
@@ -151,7 +123,7 @@ export function MetaMaskRequests() {
 								variant="outline"
 								onClick={async () => {
 									if (currentKey) {
-										const address = currentKey.addresses.find(a => a.type === AddressType.ADDRESS_TYPE_ETHEREUM)?.address;
+										const address = currentKey.addresses.find(a => a.addressType === AddressType.Ethereum)?.addressValue;
 
 										const { update, id } = toast({
 											title: "Confirm account creation in MetaMask...",

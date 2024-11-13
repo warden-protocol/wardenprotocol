@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { ProposalTypes } from "@walletconnect/types";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
-import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { Button } from "@/components/ui/button";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useQueryHooks } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
 import clsx from "clsx";
 import { Input } from "@/components/ui/input";
 import { useModalState } from "./state";
 import AddressAvatar from "@/components/AddressAvatar";
+import { AddressType, useKeysBySpaceId, useSpacesByOwner } from "@/hooks/query/warden";
+import { useConnectWallet } from "@web3-onboard/react";
+import { KeyModel } from "@/hooks/query/types";
 
 interface WCBindSpaceProps {
 	enabled: boolean;
@@ -18,11 +17,17 @@ interface WCBindSpaceProps {
 	onApprove: (
 		proposal: ProposalTypes.Struct,
 		spaceId: string,
-		addresses?: AddressResponse[],
+		addresses?: KeyModel["addresses"],
 	) => void;
 	onReject: (proposal: ProposalTypes.Struct) => void;
 	proposal: ProposalTypes.Struct;
 }
+
+const DERIVE_ADDRESSES = [
+	AddressType.Ethereum,
+	AddressType.Osmosis,
+];
+
 
 export default function WCBindSpace({
 	enabled: _enabled,
@@ -31,9 +36,9 @@ export default function WCBindSpace({
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
-	const { useSpacesByOwner, useKeysBySpaceId } = useQueryHooks();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 	const { spaceId } = useSpaceId();
-	const { address } = useAddressContext();
 	const [isSelectVesisble, setIsSelectVisible] = useState(false);
 	const { setData: setModal } = useModalState();
 
@@ -42,31 +47,30 @@ export default function WCBindSpace({
 			owner: address!,
 		},
 		options: {
-			enabled: !!address && _enabled,
+			enabled: _enabled,
 		},
 	});
 
-	const defaultSpace = spaceId ?? spacesQuery.data?.spaces[0]?.id.toString();
+	const defaultSpace = spaceId ?? spacesQuery.data?.[0]?.[0]?.id.toString();
 	const [pairedSpace, setPairedSpace] = useState(defaultSpace ?? "");
 
 	const keysQuery = useKeysBySpaceId({
 		request: {
 			spaceId: BigInt(pairedSpace),
-			deriveAddresses: [
-				AddressType.ADDRESS_TYPE_ETHEREUM,
-				AddressType.ADDRESS_TYPE_OSMOSIS,
-			],
+			deriveAddresses: DERIVE_ADDRESSES,
 		},
 		options: {
 			enabled: !!pairedSpace && _enabled,
 		},
 	});
 
+	const keys = keysQuery.data?.[0];
+
 	const enabled = Boolean(
-		keysQuery.data?.keys.length && spacesQuery.data?.spaces.length,
+		keys?.length && spacesQuery.data?.[0].length,
 	);
 
-	const addresses = keysQuery.data?.keys.flatMap((keys) => keys.addresses);
+	const addresses = keys?.flatMap((k) => k.addresses);
 
 	return (
 		<div className="flex flex-col gap-12 text-center">
@@ -123,14 +127,14 @@ export default function WCBindSpace({
 					onChange={(e) => e.preventDefault}
 					disabled
 				/>
-				{(spacesQuery.data?.spaces.length ?? 0) > 1 && (
+				{(spacesQuery.data?.[0].length ?? 0) > 1 && (
 					<IconsAssets.chevronDown className="absolute right-4 top-1/2 -translate-y-1/2" />
 				)}
 
 				{isSelectVesisble &&
-					(spacesQuery.data?.spaces.length ?? 0) > 1 && (
+					(spacesQuery.data?.[0].length ?? 0) > 1 && (
 						<div className="absolute left-0 -bottom-[6px] translate-y-full bg-card rounded-xl w-full py-2 text-left">
-							{spacesQuery.data?.spaces.map((w) =>
+							{spacesQuery.data?.[0].map((w) =>
 								w ? (
 									<div
 										className="flex items-center gap-3 py-3 px-5 hover:bg-fill-quaternary transition-all duration-200 cursor-pointer"
@@ -165,7 +169,7 @@ export default function WCBindSpace({
 			</div>
 
 			<div className="flex flex-col gap-2">
-				{!keysQuery.data?.keys.length ? (
+				{!keys?.length ? (
 					<Button
 						disabled={loading || !pairedSpace}
 						onClick={setModal.bind(null, {

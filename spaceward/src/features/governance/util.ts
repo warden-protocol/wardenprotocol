@@ -29,9 +29,20 @@ export function parseMetadata(metadata: string): MetadataJSON {
 	}
 }
 
-export function parseTimestamp(timestamp?: Timestamp) {
-	const sec = parseInt(timestamp?.seconds.toString() ?? "0");
-	const ms = timestamp?.nanos ? Math.floor(timestamp.nanos / 1e6) : 0;
+interface EthTimestamp {
+	secs: bigint;
+	nanos: bigint;
+}
+
+export function parseTimestamp(timestamp?: Timestamp | EthTimestamp) {
+	const secs = timestamp
+		? "secs" in timestamp
+			? timestamp.secs
+			: timestamp.seconds
+		: BigInt(0);
+
+	const sec = parseInt(secs.toString());
+	const ms = timestamp?.nanos ? Math.floor(Number(timestamp.nanos) / 1e6) : 0;
 	return 1000 * sec + ms;
 }
 

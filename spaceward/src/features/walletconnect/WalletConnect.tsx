@@ -94,7 +94,7 @@ export function WalletConnect() {
 											target.onerror = null;
 										}}
 										src={
-											s.peer.metadata.icons[0].startsWith(
+											s.peer.metadata.icons[0]?.startsWith(
 												"http",
 											)
 												? s.peer.metadata.icons[0]

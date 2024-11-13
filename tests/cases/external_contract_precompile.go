@@ -34,8 +34,6 @@ func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, ctx context.Contex
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
-
-	c.w.PrintLogsAtTheEnd(t, ctx, []string{"FIND ME", "DBG"})
 }
 
 func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
@@ -48,9 +46,6 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 
 	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), evmClient)
 	require.NoError(t, err)
-
-	// c.w.NewKey(t, ctx, "caller")
-	// callerContract := exec.NewWardend(c.w, "caller")
 
 	address, _, instance, err := caller.DeployCaller(alice.TransactOps(t, ctx, evmClient), evmClient)
 	if err != nil {
@@ -111,16 +106,6 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)
-
-		// addSpaceOwnerTx, err := iWardenClient.AddSpaceOwner(
-		// 	alice.TransactOps(t, context.Background(), evmClient),
-		// 	1,
-		// 	bob.EthAddress(t),
-		// 	0,
-		// 	0,
-		// 	contractApprovedTemplated,
-		// 	"any(1, warden.space.owners)")
-		// require.NoError(t, err)
 
 		_, err = bind.WaitMined(ctx, evmClient, addSpaceOwnerTx)
 		require.NoError(t, err)

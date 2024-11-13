@@ -68,7 +68,7 @@ struct SignRequest {
     bytes result;
     bytes encryptionKey;
     Types.Coin[] deductedKeychainFees;
-    int32 broadcastType;
+    BroadcastType broadcastType;
 }
 
 struct Space {
@@ -86,6 +86,11 @@ enum KeyType {
     Unspecified,
     EcdsaSecp256k1,
     EddsaEd25519
+}
+
+enum BroadcastType {
+    Disabled,
+    Automatic
 }
 
 /**
@@ -274,6 +279,7 @@ interface IWarden {
     /// @param actionTimeoutHeight The block height up until this action can be executed
     /// @param expectedApproveExpression The definition of expected approval expression the action is created with
     /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @param broadcastType The broadcast type
     /// @return success If execution was successful
     function newSignRequest(
         uint64 keyId,
@@ -285,7 +291,7 @@ interface IWarden {
         uint64 actionTimeoutHeight,
         string calldata expectedApproveExpression,
         string calldata expectedRejectExpression,
-        int32 broadcastType
+        BroadcastType broadcastType
     ) external returns (bool success);
 
     /// @dev Defines a method to update a key.
@@ -412,7 +418,7 @@ interface IWarden {
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         int32 status,
-        int32 broadcastType
+        BroadcastType broadcastType
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
     /// @dev Defines a method to query space by id.
@@ -524,7 +530,7 @@ interface IWarden {
     /// @param keyId The id of the Key to be used for signing
     /// @param creator The creator address
     /// @param broadcastType The broadcast type
-    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator, int32 broadcastType);
+    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator, BroadcastType broadcastType);
 
     /// @dev UpdateKey defines an Event emitted when a key is updated.
     /// @param id The id of the key

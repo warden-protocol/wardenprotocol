@@ -1,11 +1,13 @@
 import { toast, ToasterToast } from "@/components/ui/use-toast";
 import { useSetChain } from "@web3-onboard/react";
-import type { PublicClient } from "viem";
+import { waitForTransactionReceipt } from "viem/actions";
 import type { useWriteContract } from "wagmi";
 
 type WriteContractData = Awaited<
 	ReturnType<ReturnType<typeof useWriteContract>["writeContractAsync"]>
 >;
+
+type Client = Parameters<typeof waitForTransactionReceipt>[0];
 
 enum TxStatus {
 	Failed = "Transaction Failed",
@@ -45,7 +47,7 @@ export async function assertChain(
 
 export async function handleContractWrite(
 	writeContract: () => Promise<WriteContractData>,
-	client?: PublicClient,
+	client?: Client,
 	options?: {
 		toast?: Partial<ToasterToast>;
 	},
@@ -69,7 +71,7 @@ export async function handleContractWrite(
 			description: "Waiting for transaction to be included in the block",
 		});
 
-		const receipt = await client.waitForTransactionReceipt({
+		const receipt = await waitForTransactionReceipt(client, {
 			hash,
 		});
 

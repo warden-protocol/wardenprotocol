@@ -11,13 +11,14 @@ import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
 import { ActionStatus, useActionsByAddress } from "@/hooks/query/act";
 import { isAddressEqual } from "viem";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ApproveSidebar() {
 	const [open, setOpen] = useState(false);
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 
-	const { data } = useActionsByAddress({
+	const { data, queryKey } = useActionsByAddress({
 		request: {
 			address,
 			status: ActionStatus.Pending
@@ -26,6 +27,7 @@ export default function ApproveSidebar() {
 
 	const { writeContractAsync } = useWriteContract();
 	const client = usePublicClient();
+	const queryClient = useQueryClient();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
 
 	async function voteFor(actionId: bigint, voteType: ActionVoteType) {
@@ -42,6 +44,8 @@ export default function ApproveSidebar() {
 			}),
 			client,
 		);
+
+		queryClient.invalidateQueries({ queryKey });
 	}
 
 	const actions = data?.actions.filter(

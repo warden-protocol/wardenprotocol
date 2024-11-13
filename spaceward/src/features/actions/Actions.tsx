@@ -123,6 +123,7 @@ export function Actions() {
 													<div className="space-y-4">
 														<Action
 															action={action}
+															queryKey={q.queryKey}
 														/>
 													</div>
 												</AccordionContent>

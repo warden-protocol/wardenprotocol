@@ -27,17 +27,22 @@ func (c *Test_SlinkyPrecompile) Setup(t *testing.T, ctx context.Context, build f
 	c.w.WaitRunning(t)
 }
 
+const (
+    testPairETHUSDT = "ETH/USDT"
+    testPairUSDTETH = "USDT/ETH"
+)
+
+// TODO(backsapc): Implement positive test cases with slinky sidecar integration
 func (c *Test_SlinkyPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
-	alice := exec.NewWardend(c.w, "alice")
+    alice := exec.NewWardend(c.w, "alice")
 
-	evmClient := c.w.EthClient(t)
-	iSlinkyClient, err := slinky.NewISlinky(common.HexToAddress(slinky.PrecompileAddress), evmClient)
-	require.NoError(t, err)
+    evmClient := c.w.EthClient(t)
+    iSlinkyClient, err := slinky.NewISlinky(common.HexToAddress(slinky.PrecompileAddress), evmClient)
+    require.NoError(t, err)
 
-	// As I don't now how to run a test with slinky sidecar yet, I'm just testing the precompile can call the module
-	_, err = iSlinkyClient.CoinPrice(alice.CallOps(t), "ETH", "USDT")
-	require.Error(t, err, "no price / nonce reported for CurrencyPair: ETH/USDT, the module is not tracking this CurrencyPair")
+    _, err = iSlinkyClient.CoinPrice(alice.CallOps(t), "ETH", "USDT")
+    require.ErrorContains(t, err, "no price / nonce reported for CurrencyPair: " + testPairETHUSDT)
 
-	_, err = iSlinkyClient.CoinPrice(alice.CallOps(t), "USDT", "ETH")
-	require.Error(t, err, "no price / nonce reported for CurrencyPair: USDT/ETH, the module is not tracking this CurrencyPair")
+    _, err = iSlinkyClient.CoinPrice(alice.CallOps(t), "USDT", "ETH")
+    require.ErrorContains(t, err, "no price / nonce reported for CurrencyPair: " + testPairUSDTETH)
 }

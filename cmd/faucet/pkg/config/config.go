@@ -37,16 +37,16 @@ type Config struct {
 	Chain          string        `env:"CHAIN"          envDefault:"Chiado"                                    mapstructure:"CHAIN"`
 	Decimals       int           `env:"DECIMALS"       envDefault:"18"                                        mapstructure:"DECIMALS"`
 	DisplayTokens  bool          `env:"DISPLAY_TOKENS" envDefault:"true"                                      mapstructure:"DISPLAY_TOKENS"`
-	Environment    string        `env:"ENVIRONMENT"    envDefault:"development"                               mapstructure:"ENVIRONMENT"`
 	Blacklist      string        `env:"BLACKLIST"      envDefault:""                                          mapstructure:"BLACKLIST"`
+	LogLevel       string        `env:"LOG_LEVEL"      envDefault:"Info"                                      mapstructure:"LOG_LEVEL"`
 }
 
-func GetEnvironment() string {
+func GetLogLevel() string {
 	cfg, err := LoadConfig()
 	if err != nil {
-		return "development"
+		return "Info"
 	}
-	return cfg.Environment
+	return cfg.LogLevel
 }
 
 func LoadConfig() (Config, error) {

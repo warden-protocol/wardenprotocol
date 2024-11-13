@@ -8,6 +8,8 @@ address constant ISLINKY_PRECOMPILE_ADDRESS = 0x00000000000000000000000000000000
 ISlinky constant ISLINKY_CONTRACT = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
 
 struct GetPriceResponse {
+    uint64 id;
+    uint64 nonce;
     uint64 decimals;
     QuotePrice price;
 }
@@ -32,5 +34,5 @@ interface ISlinky {
     function getPrice(
         string calldata base,
         string calldata quote
-    ) external view returns (CoinPriceResponse memory response);
+    ) external view returns (GetPriceResponse memory response);
 }

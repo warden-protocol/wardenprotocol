@@ -101,8 +101,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 
 	switch method.Name {
 	// queries
-	case CoinPrice:
-		bz, err = p.CoinPriceQuery(ctx, evm.Origin, stateDB, method, args)
+	case GetPrice:
+		bz, err = p.GetPriceQuery(ctx, evm.Origin, stateDB, method, args)
 
 	default:
 		return nil, fmt.Errorf("slinky precompile: method not exists: %s", method.Name)
@@ -128,7 +128,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 // IsTransaction checks if the given method name corresponds to a transaction or query.
 func (*Precompile) IsTransaction(method string) bool {
 	switch method {
-	case CoinPrice:
+	case GetPrice:
 		return false
 	}
 

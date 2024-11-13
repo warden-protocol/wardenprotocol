@@ -17,11 +17,11 @@ import (
 )
 
 const (
-	CoinPrice = "coinPrice"
+	GetPrice = "getPrice"
 )
 
-// CoinPriceQuery constructs GetPriceRequest from args, passes it to query server and packs response into corresponding abi output.
-func (p Precompile) CoinPriceQuery(
+// GetPriceQuery constructs GetPriceRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p Precompile) GetPriceQuery(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -41,7 +41,7 @@ func (p Precompile) CoinPriceQuery(
 		return nil, fmt.Errorf("received nil response from query server")
 	}
 
-	out, err := new(CoinPriceResponse).FromResponse(response)
+	out, err := new(GetPriceResponse).FromResponse(response)
 	if err != nil {
 		return nil, err
 	}
@@ -54,11 +54,13 @@ func (p Precompile) CoinPriceQuery(
 	return packedOutput, nil
 }
 
-func (o *CoinPriceResponse) FromResponse(res *oracletypes.GetPriceResponse) (*CoinPriceResponse, error) {
+func (o *GetPriceResponse) FromResponse(res *oracletypes.GetPriceResponse) (*GetPriceResponse, error) {
 	if res.Price == nil {
 		return nil, errors.New("received nil price in get price response")
 	}
 
+	o.Id = res.Id
+	o.Nonce = res.Nonce
 	o.Decimals = res.Decimals
 	o.Price = QuotePrice{
 		BlockHeight:    res.Price.BlockHeight,

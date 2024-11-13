@@ -19,7 +19,7 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
-			"coinPrice(string,string)": "05744c62"
+			"getPrice(string,string)": "3d0f34da"
 		}
 	},
 	"abi": [
@@ -36,10 +36,20 @@
 					"type": "string"
 				}
 			],
-			"name": "coinPrice",
+			"name": "getPrice",
 			"outputs": [
 				{
 					"components": [
+						{
+							"internalType": "uint64",
+							"name": "id",
+							"type": "uint64"
+						},
+						{
+							"internalType": "uint64",
+							"name": "nonce",
+							"type": "uint64"
+						},
 						{
 							"internalType": "uint64",
 							"name": "decimals",
@@ -68,7 +78,7 @@
 							"type": "tuple"
 						}
 					],
-					"internalType": "struct CoinPriceResponse",
+					"internalType": "struct GetPriceResponse",
 					"name": "response",
 					"type": "tuple"
 				}

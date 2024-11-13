@@ -21,6 +21,8 @@ focus name:
 _rm_rf dir:
   rm -rf {{dir}}
 
+precompile_addresses := ["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902"]
+
 # regenerate all snapshots
 snapshot: snapshot-base snapshot-keychain snapshot-many-users
 
@@ -50,7 +52,7 @@ snapshot-base:
   wardend genesis add-genesis-account alice 10000000000000000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
-  jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901","0x0000000000000000000000000000000000000902"]' $WARDEND_HOME/config/genesis.json > temp.json && mv temp.json $WARDEND_HOME/config/genesis.json
+  jq --arg addresses "$precompile_addresses" '.app_state.evm.params.active_static_precompiles += ($addresses | fromjson)' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
   wardend genesis gentx alice 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
 
@@ -112,7 +114,7 @@ snapshot-keychain:
   wardend genesis add-genesis-keychain $(wardend keys show -a writer --keyring-backend test --home $WARDEND_HOME) "Test Keychain" "{\"key_req\":[{\"denom\":\"award\",\"amount\":\"2\"}],\"sig_req\":[{\"denom\":\"award\",\"amount\": \"2\"}]}" --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
-  jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901","0x0000000000000000000000000000000000000902"]' $WARDEND_HOME/config/genesis.json > temp.json && mv temp.json $WARDEND_HOME/config/genesis.json
+  jq --arg addresses "$precompile_addresses" '.app_state.evm.params.active_static_precompiles += ($addresses | fromjson)' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
   wardend genesis gentx val 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
 
@@ -177,7 +179,7 @@ snapshot-many-users:
   wardend genesis add-genesis-space $(wardend keys show -a alice --keyring-backend test --home $WARDEND_HOME) --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
-  jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901","0x0000000000000000000000000000000000000902"]' $WARDEND_HOME/config/genesis.json > temp.json && mv temp.json $WARDEND_HOME/config/genesis.json
+  jq --arg addresses "$precompile_addresses" '.app_state.evm.params.active_static_precompiles += ($addresses | fromjson)' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
   wardend genesis gentx alice 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
 

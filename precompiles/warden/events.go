@@ -588,6 +588,17 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
+	mapBroadcastType := func(broadcastType wardentypes.BroadcastType) (uint8, error) {
+		switch broadcastType {
+		case wardentypes.BroadcastType_BROADCAST_TYPE_DISABLED:
+			return uint8(wardentypes.BroadcastType_BROADCAST_TYPE_DISABLED), nil
+		case wardentypes.BroadcastType_BROADCAST_TYPE_AUTOMATIC:
+			return uint8(wardentypes.BroadcastType_BROADCAST_TYPE_AUTOMATIC), nil
+		default:
+			return 0, fmt.Errorf("broadcast type is not supported: %v", broadcastType)
+		}
+	}
+
 	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventNewSignRequest{}
@@ -600,9 +611,14 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 		return nil, err
 	}
 
+	broadcastType, err := mapBroadcastType(typedEvent.GetBroadcastType())
+	if err != nil {
+		return nil, fmt.Errorf("NewSignRequest: invalid broadcast type")
+	}
+
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeyId())))))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetBroadcastType())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(broadcastType)))
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {

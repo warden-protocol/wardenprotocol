@@ -263,6 +263,15 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			BroadcastType:        0,
 		}, signRequests.SignRequests[0])
 
+		signRequests1, err := iWardenClient.SignRequests(
+			alice.CallOps(t),
+			warden.TypesPageRequest{},
+			1,
+			int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			1)
+		require.NoError(t, err)
+		require.Len(t, signRequests1.SignRequests, 0)
+
 		// updateKey
 		newTemplateTx, err := iActClient.NewTemplate(
 			alice.TransactOps(t, context.Background(), evmClient),

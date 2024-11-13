@@ -14,12 +14,14 @@ import { ActionModel } from "@/hooks/query/types";
 import { fromBytes, isAddressEqual, toBytes } from "viem";
 import { ActionStatus } from "@/hooks/query/act";
 import { fromBech32 } from "@cosmjs/encoding";
+import { QueryKey, useQueryClient } from "@tanstack/react-query";
 
-export function Action({ action }: { action: ActionModel }) {
+export function Action({ action, queryKey }: { action: ActionModel, queryKey: QueryKey }) {
 	const [{ wallet }] = useConnectWallet();
 	const address = wallet?.accounts[0].address;
 	const { writeContractAsync } = useWriteContract();
 	const client = usePublicClient();
+	const queryClient = useQueryClient();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
 
 	async function voteFor(voteType: ActionVoteType) {
@@ -36,6 +38,8 @@ export function Action({ action }: { action: ActionModel }) {
 			}),
 			client,
 		);
+
+		queryClient.invalidateQueries({ queryKey });
 	}
 
 	if (!action.msg) {

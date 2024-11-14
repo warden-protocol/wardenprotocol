@@ -84,6 +84,19 @@ FROM node:lts-alpine AS node-build-env
 RUN apk add --no-cache python3 build-base
 RUN npm install -g pnpm@9
 
+## automated-orders libs
+FROM node-build-env AS automated-orders-libs
+USER node
+WORKDIR /app
+COPY --chown=node:node automated-orders/yarn.lock yarn.lock
+COPY --chown=node:node automated-orders/package.json package.json
+COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
+COPY --chown=node:node automated-orders/packages/utils-library packages/utils-library
+COPY --chown=node:node automated-orders/packages/blockchain-library packages/blockchain-library
+RUN yarn install --frozen-lockfile && \
+    yarn build:libs && \
+    rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
+ 
 ## snap
 FROM node-build-env AS snap-builder
 WORKDIR /snap
@@ -158,3 +171,29 @@ COPY --chown=nobody:nogroup --from=wardenjs-builder /wardenjs /wardenprotocol/wa
 RUN pnpm install
 USER nobody
 ENTRYPOINT ["pnpm", "relay"]
+
+FROM node-build-env AS scheduler
+USER node
+WORKDIR /app
+COPY --chown=node:node automated-orders/yarn.lock yarn.lock
+COPY --chown=node:node automated-orders/package.json package.json
+COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
+COPY --chown=node:node automated-orders/packages/scheduler packages/scheduler
+COPY --chown=node:node --from=automated-orders-libs ["/app/packages", "./packages"]
+RUN yarn install --frozen-lockfile && \
+    yarn build:scheduler && \
+    rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
+CMD ["yarn", "scheduler"]
+
+FROM node-build-env AS relayer
+USER node
+WORKDIR /app
+COPY --chown=node:node automated-orders/yarn.lock yarn.lock
+COPY --chown=node:node automated-orders/package.json package.json
+COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
+COPY --chown=node:node automated-orders/packages/relayer packages/relayer
+COPY --chown=node:node --from=automated-orders-libs ["/app/packages", "./packages"]
+RUN yarn install --frozen-lockfile && \
+    yarn build:relayer && \
+    rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
+CMD ["yarn", "relayer"]

@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Unreleased (v0.0.10)
 
--
+- Add broadcastType to SignRequest
 
 ### [v0.0.9]
 

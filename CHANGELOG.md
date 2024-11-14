@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 * (precompiles) Add slinky precompiled contract
+* (x/warden) Add broadcastType to SignRequest
+* (precompiles) Add broadcastType to SignRequest
 
 ### Bug Fixes
 

@@ -3,7 +3,6 @@ package act
 import (
 	"bytes"
 	"fmt"
-	"math/big"
 	"reflect"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -68,7 +67,7 @@ func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.Id)))
 
 	return &b, nil
 }
@@ -113,7 +112,7 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.Id)))
 
 	return &b, nil
 }
@@ -158,7 +157,7 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.Id)))
 
 	return &b, nil
 }
@@ -203,8 +202,8 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(int32(typedEvent.VoteType))))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.Id)))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.VoteType)))
 
 	return &b, nil
 }
@@ -249,9 +248,9 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	b.Write(cmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.Id)))))
-	b.Write(cmn.PackNum(reflect.ValueOf(int32(typedEvent.PreviousStatus))))
-	b.Write(cmn.PackNum(reflect.ValueOf(int32(typedEvent.NewStatus))))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.Id)))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.PreviousStatus)))
+	b.Write(cmn.PackNum(reflect.ValueOf(typedEvent.NewStatus)))
 
 	return &b, nil
 }

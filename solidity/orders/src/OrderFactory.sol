@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {Types} from "./Types.sol";
-import {Types as CommonTypes} from "precompile-common/Types.sol";
-import {BasicOrder} from "./BasicOrder.sol";
+import { Types } from "./Types.sol";
+import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { BasicOrder } from "./BasicOrder.sol";
 
 enum OrderType {
     Basic,
@@ -17,6 +17,8 @@ contract OrderFactory {
     // Registry of IExecution contracts
     address public registry;
 
+    error Unimplemented();
+
     event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
 
     constructor(address _registry) {
@@ -27,7 +29,11 @@ contract OrderFactory {
         Types.OrderData memory _orderData,
         CommonTypes.Coin[] memory maxKeychainFees,
         address _scheduler,
-        OrderType orderType) public returns (address order) {
+        OrderType orderType
+    )
+        public
+        returns (address order)
+    {
         if (orderType == OrderType.Basic) {
             return _createBasicOrder(_orderData, maxKeychainFees, _scheduler);
         } else if (orderType == OrderType.Advanced) {
@@ -39,7 +45,10 @@ contract OrderFactory {
         Types.OrderData memory _orderData,
         CommonTypes.Coin[] memory maxKeychainFees,
         address _scheduler
-        ) internal returns (address) {
+    )
+        internal
+        returns (address)
+    {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
         orders[address(basicOrder)] = msg.sender;
         // TODO: register in regisry
@@ -48,16 +57,14 @@ contract OrderFactory {
         return address(basicOrder);
     }
 
-    function _createAdvancedOrder(
-        Types.OrderData memory,
-        CommonTypes.Coin[] memory) internal pure returns (address) {
-        revert("Unimplemented");
+    function _createAdvancedOrder(Types.OrderData memory, CommonTypes.Coin[] memory) internal pure returns (address) {
+        revert Unimplemented();
     }
 
     function getCreator(address order) public view returns (address) {
         return orders[order];
     }
-    
+
     function getRegistry() public view returns (address) {
         return registry;
     }

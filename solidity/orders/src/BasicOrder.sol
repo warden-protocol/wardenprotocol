@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {Types as CommonTypes} from "precompile-common/Types.sol";
-import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warden/IWarden.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS} from "precompile-slinky/ISlinky.sol";
-import {ExecutionData, IExecution} from "./IExecution.sol";
-import {Types} from "./Types.sol";
+import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
+import { ExecutionData, IExecution } from "./IExecution.sol";
+import { Types } from "./Types.sol";
 
 error ConditionNotMet();
 error ExecutedError();
@@ -26,12 +26,8 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 
     event Executed();
 
-    constructor(
-        Types.OrderData memory _orderData,
-        CommonTypes.Coin[] memory maxKeychainFees,
-        address _scheduler
-        ) {
-        for(uint256 i = 0; i < maxKeychainFees.length; i++) {
+    constructor(Types.OrderData memory _orderData, CommonTypes.Coin[] memory maxKeychainFees, address _scheduler) {
+        for (uint256 i = 0; i < maxKeychainFees.length; i++) {
             coins.push(maxKeychainFees[i]);
         }
 
@@ -39,7 +35,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         KeyResponse memory keyResponse = wardenPrecompile.keyById(_orderData.signRequestData.keyId, new int32[](0));
         keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
 
-        slinkyPrecompile = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);        
+        slinkyPrecompile = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
 
         orderData = _orderData;
         executed = false;
@@ -51,17 +47,16 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     }
 
     function _canExecute() internal view returns (bool value) {
-        GetPriceResponse memory priceResponse = slinkyPrecompile.getPrice(
-            orderData.pricePair.base,
-            orderData.pricePair.quote);
+        GetPriceResponse memory priceResponse =
+            slinkyPrecompile.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
         Types.PriceCondition condition = orderData.priceCondition;
-        if(condition == Types.PriceCondition.GTE) {
+        if (condition == Types.PriceCondition.GTE) {
             value = priceResponse.price.price >= orderData.thresholdPrice;
-        } else if(condition == Types.PriceCondition.LTE) {
+        } else if (condition == Types.PriceCondition.LTE) {
             value = priceResponse.price.price <= orderData.thresholdPrice;
         } else {
             revert InvalidPriceCondition();
-        }   
+        }
     }
 
     function execute(
@@ -70,33 +65,39 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         uint256 gasPrice,
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas
-    ) external nonReentrant returns (bool) {
-        if(msg.sender != scheduler) {
+    )
+        external
+        nonReentrant
+        returns (bool)
+    {
+        if (msg.sender != scheduler) {
             revert Unauthorized();
         }
 
-        if(executed) {
+        if (executed) {
             revert ExecutedError();
         }
-        
+
         if (!_canExecute()) {
             revert ConditionNotMet();
         }
 
         bytes memory data = _packSwapData();
-        
-        bytes memory signRequestInput = abi.encode(Types.UnsignedEthTx({
-            from: keyAddress,
-            gas: gas,
-            gasPrice: gasPrice,
-            nonce: nonce,
-            maxFeePerGas: maxFeePerGas,
-            maxPriorityFeePerGas: maxPriorityFeePerGas,
-            to: orderData.creatorDefinedTxFields.to,
-            value: orderData.creatorDefinedTxFields.value,
-            data: data,
-            chainId: orderData.creatorDefinedTxFields.chainId
-        }));
+
+        bytes memory signRequestInput = abi.encode(
+            Types.UnsignedEthTx({
+                from: keyAddress,
+                gas: gas,
+                gasPrice: gasPrice,
+                nonce: nonce,
+                maxFeePerGas: maxFeePerGas,
+                maxPriorityFeePerGas: maxPriorityFeePerGas,
+                to: orderData.creatorDefinedTxFields.to,
+                value: orderData.creatorDefinedTxFields.value,
+                data: data,
+                chainId: orderData.creatorDefinedTxFields.chainId
+            })
+        );
 
         executed = wardenPrecompile.newSignRequest(
             orderData.signRequestData.keyId,
@@ -144,13 +145,13 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         success = false;
     }
 
-
     function _packSwapData() internal view returns (bytes memory data) {
         data = abi.encodeWithSignature(
-                SWAP_EXACT_ETH_FOR_TOKENS,
-                orderData.swapData.amountIn,
-                orderData.swapData.path,
-                orderData.swapData.to,
-                orderData.swapData.deadline);
+            SWAP_EXACT_ETH_FOR_TOKENS,
+            orderData.swapData.amountIn,
+            orderData.swapData.path,
+            orderData.swapData.to,
+            orderData.swapData.deadline
+        );
     }
 }

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {IWarden, KeyResponse} from "precompile-warden/IWarden.sol";
-import {Types} from "precompile-common/Types.sol";
+import { KeyResponse } from "precompile-warden/IWarden.sol";
+import { Types } from "precompile-common/Types.sol";
 
 contract MockWardenPrecompile {
     mapping(uint64 keyId => KeyResponse keyResponse) private keys;
     mapping(uint64 keyId => bool isGood) private goodKeys;
-    
+
     function keyById(uint64 id, int32[] calldata) external view returns (KeyResponse memory key) {
         return keys[id];
     }
@@ -22,7 +22,11 @@ contract MockWardenPrecompile {
         uint64,
         string calldata,
         string calldata
-    ) external view returns (bool isGood) {
+    )
+        external
+        view
+        returns (bool isGood)
+    {
         isGood = goodKeys[keyId];
     }
 

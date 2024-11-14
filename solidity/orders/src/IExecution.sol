@@ -31,7 +31,10 @@ interface IExecution {
         uint256 gas,
         uint256 gasPrice,
         uint256 maxPriorityFeePerGas,
-        uint256 maxFeePerGas) external returns (bool);
+        uint256 maxFeePerGas
+    )
+        external
+        returns (bool);
 
     /**
      * @dev Indicates if this contract intended to be called by scheduler.

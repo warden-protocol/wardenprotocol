@@ -49,8 +49,8 @@ contract OrderFactory {
     }
 
     function _createAdvancedOrder(
-        Types.OrderData memory _orderData,
-        CommonTypes.Coin[] memory maxKeychainFees) internal returns (address) {
+        Types.OrderData memory,
+        CommonTypes.Coin[] memory) internal pure returns (address) {
         revert("Unimplemented");
     }
 

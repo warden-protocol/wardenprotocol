@@ -22,17 +22,23 @@ library Types {
     }
 
     enum PriceCondition {
-        LessOrEqual,
-        MoreOrEqual
+        LTE,
+        GTE
     }
 
     // Data for execution
     struct OrderData {
         uint256 thresholdPrice;
         PriceCondition priceCondition;
+        PricePair pricePair;
         CreatorDefinedTxFields creatorDefinedTxFields;
         SwapData swapData;
         SignRequestData signRequestData;
+    }
+
+    struct PricePair {
+        string base;
+        string quote;
     }
 
     struct CreatorDefinedTxFields {

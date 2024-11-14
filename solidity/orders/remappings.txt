@@ -1,3 +1,4 @@
 forge-std/=node_modules/forge-std/
-precompile-warden=../../precompiles/warden
 precompile-common=../../precompiles/common
+precompile-warden=../../precompiles/warden
+precompile-slinky=../../precompiles/slinky

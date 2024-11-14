@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import {Types} from "./Types.sol";
-import {ExecutionData, IExecution} from "./IExecution.sol";
 import {Types as CommonTypes} from "precompile-common/Types.sol";
 import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warden/IWarden.sol";
+import {GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS} from "precompile-slinky/ISlinky.sol";
+import {ExecutionData, IExecution} from "./IExecution.sol";
+import {Types} from "./Types.sol";
 
 error ConditionNotMet();
 error ExecutedError();
@@ -15,6 +16,7 @@ contract BasicOrder is IExecution {
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
     IWarden private wardenPrecompile;
+    ISlinky private slinkyPrecompile;
     CommonTypes.Coin[] private coins;
     bool private executed;
     address private scheduler;
@@ -34,7 +36,8 @@ contract BasicOrder is IExecution {
         wardenPrecompile = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
         KeyResponse memory keyResponse = wardenPrecompile.keyById(_orderData.signRequestData.keyId, new int32[](0));
         keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
-        
+
+        slinkyPrecompile = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);        
 
         orderData = _orderData;
         executed = false;
@@ -46,15 +49,17 @@ contract BasicOrder is IExecution {
     }
 
     function _canExecute() internal view returns (bool value) {
-        // TODO: check price
+        GetPriceResponse memory priceResponse = slinkyPrecompile.getPrice(
+            orderData.pricePair.base,
+            orderData.pricePair.quote);
         Types.PriceCondition condition = orderData.priceCondition;
-        if(condition == Types.PriceCondition.MoreOrEqual) {
-            value=false;
-        } else if(condition == Types.PriceCondition.LessOrEqual) {
-            value=false;
-        }
-
-        value = false;
+        if(condition == Types.PriceCondition.GTE) {
+            value = priceResponse.price.price >= orderData.thresholdPrice;
+        } else if(condition == Types.PriceCondition.LTE) {
+            value = priceResponse.price.price <= orderData.thresholdPrice;
+        } else {
+            value = false;
+        }   
     }
 
     function execute(
@@ -90,7 +95,6 @@ contract BasicOrder is IExecution {
             data: data,
             chainId: orderData.creatorDefinedTxFields.chainId
         }));
-
 
         executed = wardenPrecompile.newSignRequest(
             orderData.signRequestData.keyId,
@@ -134,7 +138,7 @@ contract BasicOrder is IExecution {
         });
     }
 
-    function setByAIService(bytes calldata data) external pure returns (bool success) {
+    function setByAIService(bytes calldata) external pure returns (bool success) {
         success = false;
     }
 

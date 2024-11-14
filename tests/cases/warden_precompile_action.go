@@ -175,7 +175,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, newKeyRequestEvents[0].KeychainId, uint64(1))
 		require.Equal(t, newKeyRequestEvents[0].ApproveTemplateId, uint64(0))
 		require.Equal(t, newKeyRequestEvents[0].RejectTemplateId, uint64(0))
-		require.Equal(t, newKeyRequestEvents[0].KeyType, uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1))
+		require.Equal(t, newKeyRequestEvents[0].KeyType, int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1))
 		require.Equal(t, newKeyRequestEvents[0].Creator, alice.EthAddress(t))
 
 		actions3, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
@@ -240,7 +240,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, newSignRequestEvents[0].Id, uint64(1))
 		require.Equal(t, newSignRequestEvents[0].KeyId, uint64(1))
 		require.Equal(t, newSignRequestEvents[0].Creator, alice.EthAddress(t))
-		require.Equal(t, newSignRequestEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
+		require.Equal(t, newSignRequestEvents[0].BroadcastType, int32(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 
 		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 

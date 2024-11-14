@@ -1,54 +1,4 @@
 {
-  "data": {
-    "bytecode": {
-      "functionDebugData": {},
-      "generatedSources": [],
-      "linkReferences": {},
-      "object": "",
-      "opcodes": "",
-      "sourceMap": ""
-    },
-    "deployedBytecode": {
-      "functionDebugData": {},
-      "generatedSources": [],
-      "immutableReferences": {},
-      "linkReferences": {},
-      "object": "",
-      "opcodes": "",
-      "sourceMap": ""
-    },
-    "gasEstimates": null,
-    "methodIdentifiers": {
-      "addKeychainAdmin(uint64,address)": "df9c1808",
-      "addKeychainWriter(uint64,address)": "49fb21b3",
-      "addSpaceOwner(uint64,address,uint64,uint64,string,string)": "2bf40208",
-      "allKeys((bytes,uint64,uint64,bool,bool),int32[])": "ed65c53c",
-      "fulfilKeyRequest(uint64,bytes)": "1cf2c987",
-      "fulfilSignRequest(uint64,bytes)": "84f61386",
-      "keyById(uint64,int32[])": "338c1f51",
-      "keyRequestById(uint64)": "69964bd6",
-      "keyRequests((bytes,uint64,uint64,bool,bool),uint64,int32,uint64)": "40710374",
-      "keychainById(uint64)": "ba664dc2",
-      "keychains((bytes,uint64,uint64,bool,bool))": "7e5a6446",
-      "keysBySpaceId((bytes,uint64,uint64,bool,bool),uint64,int32[])": "8f6c0508",
-      "newKeyRequest(uint64,uint64,uint8,uint64,uint64,(string,uint256)[],uint64,uint64,string,string)": "90bfe071",
-      "newKeychain(string,((string,uint256)[],(string,uint256)[]),string,string,string)": "7d4c42ad",
-      "newSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64,uint64,string,string,uint8)": "07d145e9",
-      "newSpace(uint64,uint64,uint64,uint64,address[])": "c78f7667",
-      "rejectKeyRequest(uint64,string)": "d9ac97be",
-      "rejectSignRequest(uint64,string)": "b7cf0661",
-      "removeKeychainAdmin(uint64,address)": "7225e3fa",
-      "removeSpaceOwner(uint64,address,uint64,uint64,string,string)": "60c88db5",
-      "signRequestById(uint64)": "a657df94",
-      "signRequests((bytes,uint64,uint64,bool,bool),uint64,int32,int32)": "59336c08",
-      "spaceById(uint64)": "e4c1fc79",
-      "spaces((bytes,uint64,uint64,bool,bool))": "5f73892e",
-      "spacesByOwner((bytes,uint64,uint64,bool,bool),address)": "88cd3f61",
-      "updateKey(uint64,uint64,uint64,uint64,string,string)": "fecc57ec",
-      "updateKeychain(uint64,string,((string,uint256)[],(string,uint256)[]),string,string,string)": "4c683562",
-      "updateSpace(uint64,uint64,uint64,uint64,uint64,uint64,uint64,string,string)": "7f903050"
-    }
-  },
   "abi": [
     {
       "anonymous": false,
@@ -210,9 +160,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint8",
+          "internalType": "int32",
           "name": "keyType",
-          "type": "uint8"
+          "type": "int32"
         },
         {
           "indexed": false,
@@ -265,9 +215,10 @@
           "type": "address"
         },
         {
+          "indexed": false,
           "internalType": "int32",
           "name": "broadcastType",
-          "type": "uint8"
+          "type": "int32"
         }
       ],
       "name": "NewSignRequest",
@@ -478,7 +429,7 @@
         {
           "indexed": true,
           "internalType": "uint64",
-          "name": "space_id",
+          "name": "spaceId",
           "type": "uint64"
         },
         {
@@ -690,7 +641,7 @@
             {
               "components": [
                 {
-                  "internalType": "address",
+                  "internalType": "string",
                   "name": "addressValue",
                   "type": "string"
                 },
@@ -840,7 +791,7 @@
             {
               "components": [
                 {
-                  "internalType": "address",
+                  "internalType": "string",
                   "name": "addressValue",
                   "type": "string"
                 },
@@ -1430,7 +1381,7 @@
             {
               "components": [
                 {
-                  "internalType": "address",
+                  "internalType": "string",
                   "name": "addressValue",
                   "type": "string"
                 },

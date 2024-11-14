@@ -56,7 +56,7 @@ import { hashQueryKey } from "./utils/queryKeyHash.ts";
 import { DashboardPage } from "./pages/Dashboard.tsx";
 import { Web3OnboardProvider, init, useWagmiConfig } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
-import wagmi, { createConfig } from "@web3-onboard/wagmi";
+import wagmi, { createConfig } from "./utils/web3-onboard/wagmi";
 import walletConnect from "@web3-onboard/walletconnect";
 import { WagmiProvider } from "wagmi";
 import { defineChain, http } from "viem";
@@ -64,7 +64,7 @@ import { defineChain, http } from "viem";
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			refetchInterval: 2000,
+			staleTime: 15_000,
 			queryKeyHashFn: hashQueryKey,
 		},
 	},
@@ -156,7 +156,14 @@ const chain = defineChain({
 
 const defaultConfig = createConfig({
 	chains: [chain],
-	transports: [http()],
+	transports: {
+		[chain.id]: http(undefined, {
+			batch: {
+				batchSize: 1000,
+				wait: 16
+			},
+		})
+	},
 })
 
 function InjectWagmi({ children }: { children: React.ReactNode }) {

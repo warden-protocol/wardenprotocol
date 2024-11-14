@@ -84,8 +84,7 @@ contract BasicOrderTest is Test {
             pricePair: Types.PricePair({ base: "ETH", quote: "DOGE" }),
             goodKeyId: goodKeyId,
             badKeyId: badKeyId,
-            // solhint-disable-next-line
-            scheduler: tx.origin
+            scheduler: address(this)
         });
     }
 
@@ -178,6 +177,7 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
+        // vm.prank(msgSender);
         bool executed = order.execute(1, 1, 1, 1, 1);
 
         assert(executed);

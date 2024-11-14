@@ -1,5 +1,5 @@
 ---
-name: scheduler
+name: Automated Orders Relayer
 
 on:
   push:
@@ -10,17 +10,17 @@ on:
       - "automated-orders/tsconfig.json"
       - "automated-orders/yarn.lock"
       - "automated-orders/packages/blockchain-library/**"
-      - "automated-orders/packages/scheduler/**"
+      - "automated-orders/packages/relayer/**"
       - "automated-orders/packages/utils-library/**"
     tags:
-      - "scheduler/v*"
+      - "automated-orders-relayer/v*"
   pull_request:
     paths:
       - "automated-orders/package.json"
       - "automated-orders/tsconfig.json"
       - "automated-orders/yarn.lock"
       - "automated-orders/packages/blockchain-library/**"
-      - "automated-orders/packages/scheduler/**"
+      - "automated-orders/packages/relayer/**"
       - "automated-orders/packages/utils-library/**"
 jobs:
   build:
@@ -41,18 +41,14 @@ jobs:
         run: yarn install
         working-directory: "automated-orders/"
 
-      - name: Run linter
+      - name: Yarn  build
         working-directory: ./automated-orders
-        run: yarn lint
-
-      - name: TypeScript build
-        working-directory: ./automated-orders
-        run: tsc --build --force --verbose
+        run: yarn build
 
   build-and-push:
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/scheduler/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/automated-orders-relayer/v')
     needs: [build]
     uses: ./.github/workflows/build_push.yml
     with:
-      service_name: scheduler
+      service_name: automated-orders-relayer
     secrets: inherit

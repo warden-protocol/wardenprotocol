@@ -1,5 +1,5 @@
 ---
-name: relayer
+name: Automated Orders Scheduler 
 
 on:
   push:
@@ -10,17 +10,17 @@ on:
       - "automated-orders/tsconfig.json"
       - "automated-orders/yarn.lock"
       - "automated-orders/packages/blockchain-library/**"
-      - "automated-orders/packages/relayer/**"
+      - "automated-orders/packages/scheduler/**"
       - "automated-orders/packages/utils-library/**"
     tags:
-      - "relayer/v*"
+      - "automated-orders-scheduler/v*"
   pull_request:
     paths:
       - "automated-orders/package.json"
       - "automated-orders/tsconfig.json"
       - "automated-orders/yarn.lock"
       - "automated-orders/packages/blockchain-library/**"
-      - "automated-orders/packages/relayer/**"
+      - "automated-orders/packages/scheduler/**"
       - "automated-orders/packages/utils-library/**"
 jobs:
   build:
@@ -50,9 +50,9 @@ jobs:
         run: tsc --build --force --verbose
 
   build-and-push:
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/relayer/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/automated-orders-scheduler/v')
     needs: [build]
     uses: ./.github/workflows/build_push.yml
     with:
-      service_name: relayer
+      service_name: automated-orders-scheduler
     secrets: inherit

@@ -172,7 +172,7 @@ RUN pnpm install
 USER nobody
 ENTRYPOINT ["pnpm", "relay"]
 
-FROM node-build-env AS scheduler
+FROM node-build-env AS automated-orders-scheduler
 USER node
 WORKDIR /app
 COPY --chown=node:node automated-orders/yarn.lock yarn.lock
@@ -185,7 +185,7 @@ RUN yarn install --frozen-lockfile && \
     rm -rf packages/*/src packages/*/node_modules packages/*/tsconfig*
 CMD ["yarn", "scheduler"]
 
-FROM node-build-env AS relayer
+FROM node-build-env AS automated-orders-relayer
 USER node
 WORKDIR /app
 COPY --chown=node:node automated-orders/yarn.lock yarn.lock

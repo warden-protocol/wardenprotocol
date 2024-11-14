@@ -14,8 +14,8 @@ on:
           - faucet
           - wardenkms
           - spaceward-relay
-          - scheduler
-          - relayer
+          - automated-orders-scheduler
+          - automated-orders-relayer
   workflow_call:
     inputs:
       service_name:

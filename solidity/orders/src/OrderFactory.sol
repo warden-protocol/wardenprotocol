@@ -18,6 +18,7 @@ contract OrderFactory {
     address public registry;
 
     error Unimplemented();
+    error UnsupportedOrder();
 
     event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
 
@@ -38,6 +39,8 @@ contract OrderFactory {
             return _createBasicOrder(_orderData, maxKeychainFees, _scheduler);
         } else if (orderType == OrderType.Advanced) {
             return _createAdvancedOrder(_orderData, maxKeychainFees);
+        } else {
+            revert UnsupportedOrder();
         }
     }
 

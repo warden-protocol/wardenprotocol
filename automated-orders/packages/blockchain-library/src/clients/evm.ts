@@ -91,9 +91,9 @@ export class EvmClient {
 
   public async callView<T>(contractAddress: string, functionAbi: AbiFunctionFragment, args: unknown[]): Promise<T> {
     const contract = new this.web3.eth.Contract([functionAbi], contractAddress);
-    const method = contract.methods[functionAbi.name].call(this, ...args);
+    const result = await contract.methods[functionAbi.name](...args).call();
 
-    return (await method.call()) as T;
+    return result as T;
   }
 
   public getEventId(event: EventLog): string {
@@ -103,14 +103,13 @@ export class EvmClient {
   public async getNextNonce(account: string): Promise<bigint> {
     const transactionsCount = await this.web3.eth.getTransactionCount(account);
 
-    return transactionsCount + 1n;
+    return transactionsCount;
   }
 
   public async getGasFees(
     from: string,
     to: string,
     data: Bytes,
-    nonce: bigint,
     value: bigint,
   ): Promise<{ feeData: FeeData; gasLimit: bigint }> {
     const feeData = await this.web3.eth.calculateFeeData();
@@ -119,7 +118,6 @@ export class EvmClient {
       from: from,
       to: to,
       value: value,
-      nonce: nonce,
       data: data,
     });
 
@@ -132,10 +130,10 @@ export class EvmClient {
     args: unknown[],
   ): Promise<boolean> {
     const contract = new this.web3.eth.Contract([functionAbi], contractAddress);
-    const data = contract.methods[functionAbi.name].call(this, ...args).encodeABI();
+    const data = contract.methods[functionAbi.name](...args).encodeABI();
 
     const nonce = await this.getNextNonce(this.signer);
-    const gas = await this.getGasFees(this.signer, contractAddress, data, nonce, 0n);
+    const gas = await this.getGasFees(this.signer, contractAddress, data, 0n);
 
     const tx: Transaction = {
       from: this.signer,
@@ -144,6 +142,7 @@ export class EvmClient {
       gas: gas.gasLimit,
       maxFeePerGas: gas.feeData.maxFeePerGas,
       maxPriorityFeePerGas: gas.feeData.maxPriorityFeePerGas,
+      nonce: nonce,
     };
 
     const signedTx = await this.web3.eth.accounts.signTransaction(tx, this.configuration.callerPrivateKey!);

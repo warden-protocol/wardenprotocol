@@ -1,7 +1,7 @@
 import { logError, logInfo, logWarning, serialize } from '@warden-automated-orders/utils';
 
 import { EvmClient } from '../clients/evm.js';
-import { OrderCreated } from '../types/order/events.js';
+import { OrderRegistered } from '../types/order/events.js';
 import {
   CanExecuteOrderAbi,
   ExecuteAbi,
@@ -11,20 +11,20 @@ import {
 } from '../types/order/functions.js';
 import { Processor } from './processor.js';
 
-export class OrderProcessor extends Processor<OrderCreated> {
+export class OrderProcessor extends Processor<OrderRegistered> {
   constructor(
     private evmos: EvmClient,
     private ethereum: EvmClient,
     private supportedChainIds: Map<bigint, undefined>,
     private retryAttempts: number,
-    generator: () => AsyncGenerator<OrderCreated, unknown, unknown>,
+    generator: () => AsyncGenerator<OrderRegistered, unknown, unknown>,
   ) {
     super(generator);
   }
 
-  async handle(event: OrderCreated, retryAttempt?: number): Promise<boolean> {
+  async handle(event: OrderRegistered, retryAttempt?: number): Promise<void> {
     if (retryAttempt && retryAttempt >= this.retryAttempts) {
-      return true;
+      return;
     }
 
     try {
@@ -39,7 +39,7 @@ export class OrderProcessor extends Processor<OrderCreated> {
 
         this.evmos.events.delete(id);
 
-        return true;
+        return;
       }
 
       const isExecuted = await this.evmos.callView<boolean>(event.returnValues.execution, IsExecutedOrderAbi, []);
@@ -49,7 +49,7 @@ export class OrderProcessor extends Processor<OrderCreated> {
 
         this.evmos.events.delete(id);
 
-        return true;
+        return;
       }
 
       const canExecute = await this.evmos.callView<boolean>(event.returnValues.execution, CanExecuteOrderAbi, []);
@@ -57,7 +57,7 @@ export class OrderProcessor extends Processor<OrderCreated> {
       if (!canExecute) {
         logWarning(`Order is not ready yet: ${id}`);
 
-        return true;
+        return;
       }
 
       const orderDetails = await this.evmos.callView<IExecutionData>(
@@ -71,7 +71,7 @@ export class OrderProcessor extends Processor<OrderCreated> {
 
         logError(`Chain id = ${orderDetails.chainId} is not supported`);
 
-        return true;
+        return;
       }
 
       const nonce = await this.ethereum.getNextNonce(orderDetails.caller);
@@ -79,7 +79,6 @@ export class OrderProcessor extends Processor<OrderCreated> {
         orderDetails.caller,
         orderDetails.to,
         orderDetails.data,
-        nonce,
         orderDetails.value,
       );
 
@@ -94,18 +93,16 @@ export class OrderProcessor extends Processor<OrderCreated> {
       if (!executed) {
         logError(`Failed to execute order: ${id}`);
 
-        return true;
+        return;
       }
 
       this.evmos.events.delete(id);
-
-      return true;
     } catch (error) {
       logError(`New order error ${serialize(event)}. Error: ${error}, Stack trace: ${error.stack}`);
 
       retryAttempt = retryAttempt ?? 1;
 
-      return await this.handle(event, ++retryAttempt);
+      await this.handle(event, ++retryAttempt);
     }
   }
 }

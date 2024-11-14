@@ -1,6 +1,6 @@
 import { AbiEventFragment, EventLog } from 'web3';
 
-export interface OrderCreated extends EventLog {
+export interface OrderRegistered extends EventLog {
   returnValues: {
     creator: string;
     execution: string;

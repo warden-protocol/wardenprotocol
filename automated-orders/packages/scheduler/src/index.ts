@@ -9,7 +9,7 @@ async function main() {
     eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
     callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
   });
-  const etheruem = new EvmClient({
+  const ethereum = new EvmClient({
     rpcURL: config.ETHEREUM_NODE_RPC,
   });
 
@@ -17,7 +17,7 @@ async function main() {
 
   const processor = new OrderProcessor(
     evmos,
-    etheruem,
+    ethereum,
     chainIds,
     config.EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS,
     evmos.pollEvents.bind(

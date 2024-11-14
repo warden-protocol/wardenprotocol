@@ -33,7 +33,7 @@ export const IsExecutedOrderAbi: AbiFunctionFragment = {
       internalType: 'bool',
     },
   ],
-  stateMutability: 'nonpayable',
+  stateMutability: 'view',
 };
 
 export const ExecutionDataAbi: AbiFunctionFragment = {
@@ -74,7 +74,7 @@ export const ExecutionDataAbi: AbiFunctionFragment = {
       ],
     },
   ],
-  stateMutability: 'nonpayable',
+  stateMutability: 'view',
 };
 
 export const ExecuteAbi: AbiFunctionFragment = {

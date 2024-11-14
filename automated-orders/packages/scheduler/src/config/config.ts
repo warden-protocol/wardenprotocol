@@ -18,12 +18,12 @@ const schema: JSONSchemaType<Env> = {
   properties: {
     EVMOS_NODE_RPC: { type: 'string' },
     EVMOS_REGISTRY_ADDRESS: { type: 'string' },
-    EVMOS_EVENTS_POLLING_BLOCKS: { type: 'number' },
-    EVMOS_EVENTS_REGISTRY_START_POLLING_BLOCK: { type: 'number' },
-    EVMOS_EVENTS_POLLING_INTERVAL_MSEC: { type: 'number' },
+    EVMOS_EVENTS_POLLING_BLOCKS: { type: 'number', minimum: 1 },
+    EVMOS_EVENTS_REGISTRY_START_POLLING_BLOCK: { type: 'number', minimum: 1 },
+    EVMOS_EVENTS_POLLING_INTERVAL_MSEC: { type: 'number', minimum: 1 },
     EVMOS_CALLER_PRIVATE_KEY: { type: 'string' },
-    EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS: { type: 'number' },
-    EVMOS_EVENTS_CACHE_SIZE: { type: 'number' },
+    EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS: { type: 'number', minimum: 1 },
+    EVMOS_EVENTS_CACHE_SIZE: { type: 'number', minimum: 1 },
     ETHEREUM_NODE_RPC: { type: 'string' },
   },
 };

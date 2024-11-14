@@ -3,6 +3,7 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import {Types as CommonTypes} from "precompile-common/Types.sol";
 import {IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse} from "precompile-warden/IWarden.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS} from "precompile-slinky/ISlinky.sol";
 import {ExecutionData, IExecution} from "./IExecution.sol";
 import {Types} from "./Types.sol";
@@ -10,8 +11,9 @@ import {Types} from "./Types.sol";
 error ConditionNotMet();
 error ExecutedError();
 error Unauthorized();
+error InvalidPriceCondition();
 
-contract BasicOrder is IExecution {
+contract BasicOrder is IExecution, ReentrancyGuard {
     Types.OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
@@ -58,7 +60,7 @@ contract BasicOrder is IExecution {
         } else if(condition == Types.PriceCondition.LTE) {
             value = priceResponse.price.price <= orderData.thresholdPrice;
         } else {
-            value = false;
+            revert InvalidPriceCondition();
         }   
     }
 
@@ -68,8 +70,8 @@ contract BasicOrder is IExecution {
         uint256 gasPrice,
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas
-    ) external returns (bool) {
-        if(tx.origin != scheduler) {
+    ) external nonReentrant returns (bool) {
+        if(msg.sender != scheduler) {
             revert Unauthorized();
         }
 

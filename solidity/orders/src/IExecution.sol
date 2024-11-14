@@ -59,5 +59,5 @@ interface IExecution {
      * @dev Returns data necessary for scheduler.
      * @return executionData Data that scheduler needs to call execute method.
      */
-    function executionData() external returns (ExecutionData calldata executionData);
+    function executionData() external returns (ExecutionData memory executionData);
 }

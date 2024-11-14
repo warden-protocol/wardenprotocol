@@ -41,9 +41,9 @@ contract OrderFactory {
         address _scheduler
         ) internal returns (address) {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
-        orders[address(basicOrder)] = tx.origin;
+        orders[address(basicOrder)] = msg.sender;
         // TODO: register in regisry
-        emit OrderCreated(tx.origin, OrderType.Basic, address(basicOrder));
+        emit OrderCreated(msg.sender, OrderType.Basic, address(basicOrder));
 
         return address(basicOrder);
     }

@@ -6,6 +6,9 @@
     "prettier": "^3.0.0",
     "solhint": "^3.6.2"
   },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1"
+  },
   "scripts": {
     "clean": "rm -rf cache out",
     "build": "forge build src",

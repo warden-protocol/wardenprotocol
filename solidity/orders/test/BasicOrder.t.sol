@@ -2,17 +2,23 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import {Test} from "forge-std/src/Test.sol";
+import {console} from "forge-std/src/console.sol";
+import {GetPriceResponse, ISLINKY_PRECOMPILE_ADDRESS} from "precompile-slinky/ISlinky.sol";
+import {IWarden, IWARDEN_PRECOMPILE_ADDRESS} from "precompile-warden/IWarden.sol";
 import {Types} from "../src/Types.sol";
 import {OrderFactory, OrderType} from "../src/OrderFactory.sol";
 import {IExecution} from "../src/IExecution.sol";
 import {MockWardenPrecompile} from "./mocks/MockWardenPrecompile.sol";
+import {MockSlinkyPrecompile} from "./mocks/MockSlinkyPrecompile.sol";
 import {Types as CommonTypes} from "precompile-common/Types.sol";
-import {ConditionNotMet} from "../src/BasicOrder.sol";
+import {ConditionNotMet, ExecutedError, Unauthorized} from "../src/BasicOrder.sol";
 
 struct TestData {
     OrderFactory orderFactory;
     MockWardenPrecompile wardenPrecompile;
-    uint256 thresholPrice;
+    MockSlinkyPrecompile mockSlinkyPrecompile;
+    uint256 thresholdPrice;
+    Types.PricePair pricePair;
     uint64 goodKeyId;
     uint64 badKeyId;
     address scheduler;
@@ -27,6 +33,7 @@ contract BasicOrderTest is Test {
     address private constant RECEIVER = address(bytes20(bytes("0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db")));
 
     event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
+    event Executed();
 
     function beforeTestSetup(
         bytes4 testSelector
@@ -36,20 +43,32 @@ contract BasicOrderTest is Test {
             beforeTestCalldata[0] = abi.encodeWithSignature(
                 "test_BasicOrder_Create(bool,uint8)",
                 true,
-                Types.PriceCondition.LessOrEqual);
+                Types.PriceCondition.LTE);
         } else if (testSelector == this.test_basicOrderRevertWhenConditionNotMet.selector) {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] = abi.encodeWithSignature(
                 "test_BasicOrder_Create(bool,uint8)",
                 true,
-                Types.PriceCondition.LessOrEqual);
+                Types.PriceCondition.LTE);
+        } else if (testSelector == this.test_basicOrderRevertWhenUnauthorized.selector) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature(
+                "test_BasicOrder_Create(bool,uint8)",
+                true,
+                Types.PriceCondition.LTE);
+        } else if (testSelector == this.test_basicOrderExecuteWhenPriceMovesDown.selector) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature(
+                "test_BasicOrder_Create(bool,uint8)",
+                true,
+                Types.PriceCondition.LTE);
+        } else if (testSelector == this.test_basicOrderExecuteWhenPriceMovesUp.selector) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature(
+                "test_BasicOrder_Create(bool,uint8)",
+                true,
+                Types.PriceCondition.GTE);
         }
-        
-        // TODO: after oracle integration
-        // else if (testSelector == this.test_basicOrderRevertWhenUnauthorized.selector) {
-        //     beforeTestCalldata = new bytes[](1);
-        //     beforeTestCalldata[0] = abi.encodeWithSignature("test_BasicOrder_Create(bool)", true);
-        // }
     }
 
     function setUp() public {
@@ -57,9 +76,14 @@ contract BasicOrderTest is Test {
         address registry = address(this);
         OrderFactory orderFactory = new OrderFactory(registry);
         
-        MockWardenPrecompile wardenPrecompile = new MockWardenPrecompile();
-        vm.etch(0x0000000000000000000000000000000000000900, address(wardenPrecompile).code);
+        MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
+        vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
+        MockWardenPrecompile wardenPrecompile = MockWardenPrecompile(IWARDEN_PRECOMPILE_ADDRESS);
         
+        MockSlinkyPrecompile mSlinkyPrecompile = new MockSlinkyPrecompile();
+        vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinkyPrecompile).code);
+        MockSlinkyPrecompile mockSlinkyPrecompile = MockSlinkyPrecompile(ISLINKY_PRECOMPILE_ADDRESS);
+
         uint64 goodKeyId = 1;
         uint64 badKeyId = 2;
         wardenPrecompile.addKey(goodKeyId, true);
@@ -68,7 +92,12 @@ contract BasicOrderTest is Test {
         testData = TestData({
             orderFactory: orderFactory,
             wardenPrecompile: wardenPrecompile,
-            thresholPrice: 2,
+            mockSlinkyPrecompile: mockSlinkyPrecompile,
+            thresholdPrice: 5,
+            pricePair: Types.PricePair({
+                base: "ETH",
+                quote: "DOGE"
+            }),
             goodKeyId: goodKeyId,
             badKeyId: badKeyId,
             scheduler: tx.origin
@@ -89,9 +118,24 @@ contract BasicOrderTest is Test {
         } else {
             keyId = testData.badKeyId;
         }
+
+        Types.PriceCondition cond = Types.PriceCondition(condition);
+        if(cond == Types.PriceCondition.LTE) {
+            testData.mockSlinkyPrecompile.setPrice(
+                testData.pricePair.base,
+                testData.pricePair.quote,
+                testData.thresholdPrice + 1);
+        } else {
+            testData.mockSlinkyPrecompile.setPrice(
+                testData.pricePair.base,
+                testData.pricePair.quote,
+                testData.thresholdPrice - 1);
+        }
+
         Types.OrderData memory orderData = Types.OrderData({
-            thresholdPrice: testData.thresholPrice,
-            priceCondition: Types.PriceCondition(condition),
+            thresholdPrice: testData.thresholdPrice,
+            priceCondition: cond,
+            pricePair: testData.pricePair,
             swapData: Types.SwapData({
             amountIn: 1,
             path: path,
@@ -115,7 +159,7 @@ contract BasicOrderTest is Test {
 
         vm.expectEmit(true, true, false, false);
 
-        emit OrderCreated(tx.origin, OrderType.Basic, address(this));
+        emit OrderCreated(address(this), OrderType.Basic, address(this));
 
         address orderAddress = testData.orderFactory.createOrder(
             orderData,
@@ -142,15 +186,47 @@ contract BasicOrderTest is Test {
        order.execute(1, 1, 1, 1, 1);
     }
 
-    // TODO: after oracle integration
-    // function test_basicOrderExecute() public {
-    //     // move price to threshold
-    //    order.execute(1, 1, 1, 1, 1);
-    // }
+    function test_basicOrderRevertWhenUnauthorized() public {
+       vm.expectRevert(Unauthorized.selector);
+       vm.broadcast(address(0));
+       order.execute(1, 1, 1, 1, 1);
+    }
 
-    // function test_basicOrderRevertWhenUnauthorized() public {
-    //    vm.expectRevert(Unauthorized.selector);
-    //    vm.prank(address(0));
-    //    order.execute(1, 1, 1, 1, 1);
-    // }
+    function test_basicOrderExecuteWhenPriceMovesDown() public {
+        uint256 price = testData.thresholdPrice - 1;
+        testData.mockSlinkyPrecompile.setPrice(testData.pricePair.base, testData.pricePair.quote, price);
+        
+        assert(order.canExecute());
+
+        vm.expectEmit(false, false, false, false);
+        emit Executed();
+
+        bool executed = order.execute(1, 1, 1, 1, 1);
+
+        assert(executed);
+
+        assert(order.isExecuted());
+
+        vm.expectRevert(ExecutedError.selector);
+        order.execute(1, 1, 1, 1, 1);
+    }
+
+    function test_basicOrderExecuteWhenPriceMovesUp() public {
+        uint256 price = testData.thresholdPrice + 1;
+        testData.mockSlinkyPrecompile.setPrice(testData.pricePair.base, testData.pricePair.quote, price);
+        
+        assert(order.canExecute());
+
+        vm.expectEmit(false, false, false, false);
+        emit Executed();
+
+        bool executed = order.execute(1, 1, 1, 1, 1);
+
+        assert(executed);
+
+        assert(order.isExecuted());
+
+        vm.expectRevert(ExecutedError.selector);
+        order.execute(1, 1, 1, 1, 1);
+    }
 }

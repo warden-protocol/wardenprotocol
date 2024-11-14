@@ -1,3 +1,4 @@
+@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
 forge-std/=node_modules/forge-std/
 precompile-common=../../precompiles/common
 precompile-warden=../../precompiles/warden

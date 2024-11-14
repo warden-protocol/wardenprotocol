@@ -10,10 +10,11 @@ import { ModalParams } from "./types";
 import { useModalState } from "./state";
 import clsx from "clsx";
 import { usePublicClient } from "wagmi";
+import { env } from "@/env";
 
 export default function ApproveModal({ hidden }: ModalParams<{}>) {
 	const { w, sessionRequests, activeSessions } = useWeb3Wallet(
-		"wss://relay.walletconnect.org",
+		env.wcWalletRelayUrl,
 	);
 
 	const eth = useEthereumTx();

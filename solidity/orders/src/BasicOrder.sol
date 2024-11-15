@@ -26,8 +26,8 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     Types.OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
-    IWarden private _wardenPrecompile;
-    ISlinky private _slinkyPrecompile;
+    IWarden private immutable WARDEN_PRECOMPILE;
+    ISlinky private immutable SLINKY_PRECOMPILE;
     Caller[] private _callers;
     CommonTypes.Coin[] private _coins;
     bool private _executed;
@@ -68,12 +68,12 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             revert InvalidTxTo();
         }
 
-        _wardenPrecompile = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-        KeyResponse memory keyResponse = _wardenPrecompile.keyById(_orderData.signRequestData.keyId, new int32[](0));
+        WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
+        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(_orderData.signRequestData.keyId, new int32[](0));
         _keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
 
-        _slinkyPrecompile = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
-        _slinkyPrecompile.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
+        SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
+        SLINKY_PRECOMPILE.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
 
         orderData = _orderData;
         _scheduler = scheduler;
@@ -82,7 +82,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 
     function canExecute() public view returns (bool value) {
         GetPriceResponse memory priceResponse =
-            _slinkyPrecompile.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
+            SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
         Types.PriceCondition condition = orderData.priceCondition;
         if (condition == Types.PriceCondition.GTE) {
             value = priceResponse.price.price >= orderData.thresholdPrice;
@@ -135,7 +135,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 
         bytes memory signRequestInput = abi.encodePacked(keccak256(unsignedTx));
 
-        _executed = _wardenPrecompile.newSignRequest(
+        _executed = WARDEN_PRECOMPILE.newSignRequest(
             orderData.signRequestData.keyId,
             signRequestInput,
             orderData.signRequestData.analyzers,

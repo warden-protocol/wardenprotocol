@@ -1,4 +1,4 @@
-import { useBalance, usePublicClient, useWriteContract } from "wagmi"
+import { useBalance, useBlockNumber, usePublicClient, useWriteContract } from "wagmi"
 import { Button } from "@/components/ui/button";
 import FaucetButton from "@/components/FaucetButton";
 import { Icons } from "@/components/ui/icons";
@@ -7,20 +7,35 @@ import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { env } from "@/env";
 import { assertChain, handleContractWrite } from "@/utils/contract";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
+import { useQueryClient, QueryKey } from "@tanstack/react-query";
 
-export function NoSpaces(props: { isLoading?: boolean }) {
+export function NoSpaces(props: { isLoading?: boolean, queryKey: QueryKey }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [{ wallet }] = useConnectWallet();
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
 	const client = usePublicClient();
+	const queryClient = useQueryClient();
 
 	const balance = useBalance({
 		address: wallet?.accounts?.[0]?.address,
-		chainId: env.evmChainId
-	})
+		chainId: env.evmChainId,
+	});
+
+	const noBalance = !balance.data?.value;
+
+	const { data: blockNumber } = useBlockNumber({
+		chainId: env.evmChainId,
+		watch: noBalance
+	});
+
+	useEffect(() => {
+		if (blockNumber) {
+			queryClient.invalidateQueries({ queryKey: balance.queryKey });
+		}
+	}, [blockNumber]);
 
 	return (
 		<div className="relative w-full min-h-[calc(100vh-20px)] dark:bg-transparent  rounded-xl -mt-[48px] flex flex-col gap-4 items-center place-content-center text-center no-space">
@@ -57,7 +72,7 @@ export function NoSpaces(props: { isLoading?: boolean }) {
 									return;
 								}
 
-								const res = await handleContractWrite(() => writeContractAsync({
+								await handleContractWrite(() => writeContractAsync({
 									connector: wallet?.wagmiConnector,
 									address: PRECOMPILE_WARDEN_ADDRESS,
 									abi: wardenPrecompileAbi,
@@ -73,7 +88,7 @@ export function NoSpaces(props: { isLoading?: boolean }) {
 									],
 								}), client);
 
-								console.log("res", res);
+								queryClient.invalidateQueries({ queryKey: props.queryKey });
 							} catch (e) {
 								console.log("error", e);
 							}

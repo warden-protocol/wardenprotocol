@@ -559,6 +559,7 @@ func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
 // GetSubspace returns a param subspace for a given module name.
 func (app *App) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
+
 	return subspace
 }
 

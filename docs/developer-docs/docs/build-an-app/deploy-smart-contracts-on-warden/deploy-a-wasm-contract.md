@@ -12,6 +12,7 @@ import TabItem from '@theme/TabItem';
 The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing **WebAssembly smart contracts** developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
 This guide explains how to create and deploy a simple "Hello World" WASM contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
+
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
@@ -77,7 +78,7 @@ To deploy a WASM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
   
    ```bash
-   git clone --depth 1 --branch v0.5.3 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    just wardend build
    just wardend install

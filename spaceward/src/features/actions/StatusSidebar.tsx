@@ -1,8 +1,12 @@
 import "./animate.css";
 import clsx from "clsx";
 import { useContext, useEffect, useRef, useState } from "react";
+import { sendTransaction as _sendTransaction } from "viem/actions";
+import { getAction, parseEventLogs } from "viem/utils";
+import { useConfig, usePublicClient, useWalletClient } from "wagmi";
+import { readContractQueryOptions } from "wagmi/query"
 import { walletContext } from "@cosmos-kit/react-lite";
-import { Action, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { useToast } from "@/components/ui/use-toast";
 
 import {
@@ -17,13 +21,12 @@ import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
 import { getActionHandler, GetStatus, handleCosmos, handleEth, handleEthRaw } from "./util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { QueryKey, useQuery, useQueryClient } from "@tanstack/react-query";
 import { capitalize } from "../modals/util";
 import { queryCosmosClients } from "../assets/queries";
-import { sendTransaction as _sendTransaction } from "viem/actions";
-import { getAction, parseEventLogs } from "viem/utils";
-import { usePublicClient, useWalletClient } from "wagmi";
 import actPrecompileAbi from "@/contracts/actPrecompileAbi";
+import { env } from "@/env";
+import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -54,10 +57,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
 	const clientsRef = useRef(cosmosClients);
 	clientsRef.current = cosmosClients;
-
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
-	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
+	const config = useConfig();
+	const { w } = useWeb3Wallet(env.wcWalletRelayUrl);
 	const { setData } = useActionsState();
 
 	const type = typeof item.keyThemeIndex !== "undefined" ?
@@ -209,13 +212,22 @@ function ActionItem({ single, ...item }: ItemProps) {
 							return;
 						}
 
-						const client = await getClient();
-						let action: Action | undefined;
+						const queryOptions = readContractQueryOptions(config, {
+							chainId: env.evmChainId,
+							address: PRECOMPILE_ACT_ADDRESS,
+							abi: actPrecompileAbi,
+							functionName: "actionById",
+							args: [item.actionId],
+						});
+
+						let action: Awaited<ReturnType<typeof queryOptions.queryFn>>["action"] | undefined;
 
 						try {
-							const res = await client.warden.act.v1beta1.actionById({
-								id: item.actionId,
-							});
+
+							const res = await queryClient.fetchQuery(
+								// @ts-expect-error fixme update @tanstack/react-query version to > 5
+								queryOptions
+							);
 
 							action = res.action;
 						} catch (e) {
@@ -278,10 +290,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 				}
 
 				case QueuedActionStatus.ActionReady: {
-					let getStatus: GetStatus | undefined;
+					let [getStatus, queryKeys]: [GetStatus | undefined, QueryKey[]] = [undefined, []];
 
 					try {
-						getStatus = getActionHandler(item).getStatus;
+						const res = getActionHandler(item);
+						getStatus = res.getStatus;
+						queryKeys = res.queryKeys;
 					} catch (e) {
 						console.error(e);
 
@@ -324,6 +338,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 						} else if (status.pending) {
 							setTimeout(checkResult, 1000);
 						} else if (status.done) {
+							for (const queryKey of queryKeys) {
+								queryClient.invalidateQueries({ queryKey });
+							}
+
 							if (!status.next) {
 								toast({
 									title: "Success",

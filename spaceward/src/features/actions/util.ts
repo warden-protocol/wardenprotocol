@@ -4,10 +4,12 @@ import {
 	serializeTransaction,
 	TransactionSerializable,
 	parseSignature,
+	toBytes,
 } from "viem";
+import { fromBech32 } from "@cosmjs/encoding";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
-import type { QueryClient } from "@tanstack/react-query";
+import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
@@ -19,7 +21,9 @@ import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { isUint8Array } from "@/lib/utils";
 import type { QueuedAction } from "./hooks";
 import { prepareTx } from "../modals/util";
-import { fromBech32 } from "@cosmjs/encoding";
+import { readContractQueryKey } from "wagmi/query";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 
 export type GetStatus = (
 	client: Awaited<ReturnType<typeof getClient>>,
@@ -31,6 +35,12 @@ export type GetStatus = (
 	value?: any;
 }>;
 
+const getStatusDefault = async () => ({
+	pending: false,
+	error: false,
+	done: true,
+});
+
 export const getActionHandler = ({
 	action,
 	call,
@@ -38,6 +48,7 @@ export const getActionHandler = ({
 	snap,
 }: QueuedAction) => {
 	let getStatus: GetStatus;
+	const queryKeys: QueryKey[] = [];
 
 	if (!action?.result) {
 		throw new Error("invalid action result");
@@ -48,7 +59,9 @@ export const getActionHandler = ({
 	switch (typeUrl) {
 		case warden.warden.v1beta3.MsgNewSignRequestResponse.typeUrl: {
 			const { id } =
-				warden.warden.v1beta3.MsgNewSignRequestResponse.decode(value);
+				warden.warden.v1beta3.MsgNewSignRequestResponse.decode(
+					toBytes(value),
+				);
 
 			getStatus = async (client) => {
 				const { signRequest } =
@@ -108,8 +121,19 @@ export const getActionHandler = ({
 			break;
 		}
 		case warden.warden.v1beta3.MsgNewKeyRequestResponse.typeUrl: {
+			queryKeys.push(
+				readContractQueryKey({
+					chainId: env.evmChainId,
+					address: PRECOMPILE_WARDEN_ADDRESS,
+					abi: wardenPrecompileAbi,
+					functionName: "keysBySpaceId",
+				}),
+			);
+
 			const { id } =
-				warden.warden.v1beta3.MsgNewKeyRequestResponse.decode(value);
+				warden.warden.v1beta3.MsgNewKeyRequestResponse.decode(
+					toBytes(value),
+				);
 
 			getStatus = async (client) => {
 				const { keyRequest } =
@@ -144,22 +168,31 @@ export const getActionHandler = ({
 			break;
 		}
 
+		case warden.warden.v1beta3.MsgUpdateSpaceResponse.typeUrl:
 		case warden.warden.v1beta3.MsgAddSpaceOwnerResponse.typeUrl:
-		case warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse.typeUrl:
-		case warden.warden.v1beta3.MsgUpdateSpaceResponse.typeUrl: {
-			getStatus = async () => ({
-				pending: false,
-				error: false,
-				done: true,
-			});
+		case warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse.typeUrl: {
+			const _spaceId = BigInt((call?.args as any)?.[0] ?? 0);
 
+			if (_spaceId) {
+				queryKeys.push(
+					readContractQueryKey({
+						chainId: env.evmChainId,
+						address: PRECOMPILE_WARDEN_ADDRESS,
+						abi: wardenPrecompileAbi,
+						functionName: "spaceById",
+						args: [_spaceId],
+					}),
+				);
+			}
+
+			getStatus = getStatusDefault;
 			break;
 		}
 		default:
 			throw new Error(`action type not implemented: ${typeUrl}`);
 	}
 
-	return { getStatus };
+	return { getStatus, queryKeys };
 };
 
 export const handleEthRaw = async ({

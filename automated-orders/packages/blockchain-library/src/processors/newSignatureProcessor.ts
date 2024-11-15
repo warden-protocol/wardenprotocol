@@ -12,18 +12,14 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     super(generator);
   }
 
-  async handle(data: INewSignatureRequest): Promise<boolean> {
+  async handle(data: INewSignatureRequest): Promise<void> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
       // TODO: implementation
       await this.evm.broadcastTx();
-
-      return true;
     } catch (error) {
       logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error.stack}`);
-
-      return false;
     }
   }
 }

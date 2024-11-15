@@ -4,6 +4,7 @@ cache
 coverage
 node_modules
 out
+lib
 
 # files
 *.env

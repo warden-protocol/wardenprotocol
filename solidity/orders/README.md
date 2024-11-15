@@ -1,14 +1,19 @@
 ## Automated uniswap contracts
 
 ### Commands
-Use [foundry](https://github.com/foundry-rs/foundry) to run related commands.
+
+Before using commands install dependencies with `yarn install`.
+
 #### Build
+
 ```sh
-forge build
+yarn build
 ```
+
 #### Tests
+
 ```sh
-forge test
+yarn test
 ```
 
 ### Order

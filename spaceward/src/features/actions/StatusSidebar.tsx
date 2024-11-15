@@ -152,7 +152,9 @@ function ActionItem({ single, ...item }: ItemProps) {
 							throw new Error("no hash", { cause: { item } });
 						}
 
+						console.log("waiting for receipt", item.hash);
 						const receipt = await publicClient?.waitForTransactionReceipt({ hash: item.hash });
+						console.log("receipt", receipt);
 
 						if (receipt?.status !== "success") {
 							throw new Error("transaction failed", { cause: { item, receipt } });

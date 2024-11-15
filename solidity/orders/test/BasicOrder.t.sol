@@ -31,7 +31,7 @@ import {
     InvalidTxTo,
     Unauthorized
 } from "../src/BasicOrder.sol";
-import { Registry, Registered } from "../src/Registry.sol";
+import { InvalidExecutionAddress, Registry, Registered } from "../src/Registry.sol";
 
 struct TestData {
     Registry registry;
@@ -372,5 +372,10 @@ contract BasicOrderTest is Test {
         factory.setScheduler(address(0));
 
         assertEq(factory.scheduler(), address(this));
+    }
+
+    function test_RegistryRevertWhenBadAddress() public {
+        vm.expectRevert(InvalidExecutionAddress.selector);
+        _testData.registry.register(address(0));
     }
 }

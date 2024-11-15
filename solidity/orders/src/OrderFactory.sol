@@ -26,13 +26,13 @@ contract OrderFactory is Ownable {
     mapping(address orderAddress => address orderCreator) public orders;
 
     // Registry of IExecution contracts
-    Registry public registry;
+    Registry public immutable REGISTRY;
 
     // Scheduler address
     address public scheduler;
 
-    constructor(address _registry, address _scheduler, address owner) Ownable(owner) {
-        if (_registry == address(0)) {
+    constructor(address registry, address _scheduler, address owner) Ownable(owner) {
+        if (registry == address(0)) {
             revert InvalidRegistryAddress();
         }
 
@@ -40,7 +40,7 @@ contract OrderFactory is Ownable {
             revert InvalidSchedulerAddress();
         }
 
-        registry = Registry(_registry);
+        REGISTRY = Registry(registry);
         scheduler = _scheduler;
     }
 
@@ -81,7 +81,7 @@ contract OrderFactory is Ownable {
         BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
         orders[address(basicOrder)] = msg.sender;
 
-        registry.register(address(basicOrder));
+        REGISTRY.register(address(basicOrder));
 
         emit OrderCreated(msg.sender, OrderType.Basic, address(basicOrder));
 

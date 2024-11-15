@@ -1,4 +1,3 @@
-export { WardenClient } from './clients/warden.js';
 export { EvmClient } from './clients/evm.js';
 export { ChainIds } from './types/evm/constants.js';
 export { NewSignatureProcessor } from './processors/newSignatureProcessor.js';

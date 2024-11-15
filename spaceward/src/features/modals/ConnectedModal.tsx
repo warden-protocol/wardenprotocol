@@ -5,11 +5,10 @@ import { SessionTypes } from "@walletconnect/types";
 import { useModalState } from "./state";
 import { ModalParams } from "./types";
 import AddressAvatar from "@/components/AddressAvatar";
+import { env } from "@/env";
 
 export default function ConnectedModal(props: ModalParams<{}>) {
-	const { w, activeSessions } = useWeb3Wallet(
-		"wss://relay.walletconnect.org",
-	);
+	const { w, activeSessions } = useWeb3Wallet(env.wcWalletRelayUrl);
 
 	const { setData: setModal } = useModalState();
 

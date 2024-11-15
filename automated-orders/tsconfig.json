@@ -18,10 +18,10 @@
   ],
   "references": [
     {
-      "path": "./packages/blockchain-library"
+      "path": "./packages/utils-library"
     },
     {
-      "path": "./packages/utils-library"
+      "path": "./packages/blockchain-library"
     },
     {
       "path": "./packages/relayer"

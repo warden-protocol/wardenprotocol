@@ -9,11 +9,11 @@ import {
 	encodeFunctionData,
 	TransactionReceipt,
 } from "viem";
-import { useWalletClient } from "wagmi";
+import { Config, useWalletClient } from "wagmi";
+import { readContractQueryOptions } from "wagmi/query";
 import { StdSignDoc } from "@cosmjs/amino";
 import { DeliverTxResponse } from "@cosmjs/stargate";
 import { cosmos } from "@wardenprotocol/wardenjs";
-import { Action } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { useSetChain } from "@web3-onboard/react";
 import { createPersistantState } from "@/hooks/state";
 import { assertChain } from "@/utils/contract";
@@ -23,6 +23,9 @@ import { useSpaceById } from "@/hooks/query/warden";
 import { useTemplateById } from "@/hooks/query/act";
 import { shieldStringify } from "@/utils/shield";
 import { DEFAULT_EXPRESSION } from "../intents/hooks";
+import actPrecompileAbi from "@/contracts/actPrecompileAbi";
+import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
+import { env } from "@/env";
 
 type TxRaw = Parameters<typeof cosmos.tx.v1beta1.TxRaw.encode>[0];
 
@@ -49,6 +52,21 @@ export interface WalletConnectParams {
 export interface SnapParams {
 	requestId: string;
 }
+
+export const getActionByIdQueryOptions = (config: Config, actionId: bigint) =>
+	readContractQueryOptions(config, {
+		chainId: env.evmChainId,
+		address: PRECOMPILE_ACT_ADDRESS,
+		abi: actPrecompileAbi,
+		functionName: "actionById",
+		args: [actionId],
+	});
+
+type ActionQueryOptions = ReturnType<typeof getActionByIdQueryOptions>;
+
+type Action =
+	| Awaited<ReturnType<ActionQueryOptions["queryFn"]>>["action"]
+	| undefined;
 
 export interface QueuedAction {
 	error?: unknown;
@@ -86,9 +104,6 @@ export interface QueuedAction {
 	pubkey?: Uint8Array;
 	title?: string;
 	keyThemeIndex?: number;
-	walletConnectRequestId?: number;
-	walletConnectTopic?: string;
-	snapRequestId?: string;
 }
 
 export const useActionsState = createPersistantState<
@@ -135,12 +150,12 @@ export function useActionHandler<
 	const expectedApproveExpression = useMemo(() => {
 		const expression = approveTemplate.data?.template.expression;
 		return expression ? shieldStringify(expression) : DEFAULT_EXPRESSION;
-	}, [approveTemplate.data?.template.expression])
+	}, [approveTemplate.data?.template.expression]);
 
 	const expectedRejectExpression = useMemo(() => {
 		const expression = rejectTemplate.data?.template.expression;
 		return expression ? shieldStringify(expression) : DEFAULT_EXPRESSION;
-	}, [rejectTemplate.data?.template.expression])
+	}, [rejectTemplate.data?.template.expression]);
 
 	const add = useCallback(
 		async (
@@ -215,5 +230,11 @@ export function useActionHandler<
 		[setData, client, chains, connectedChain, setChain],
 	);
 
-	return { add, expectedApproveExpression, expectedRejectExpression };
+	return {
+		add,
+		expectedApproveExpression,
+		expectedApproveQueryKey: approveTemplate.queryKey,
+		expectedRejectExpression,
+		expectedRejectQueryKey: rejectTemplate.queryKey,
+	};
 }

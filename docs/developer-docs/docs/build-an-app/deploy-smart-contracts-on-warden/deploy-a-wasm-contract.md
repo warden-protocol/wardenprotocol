@@ -12,6 +12,7 @@ import TabItem from '@theme/TabItem';
 The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing **WebAssembly smart contracts** developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
 This guide explains how to create and deploy a simple "Hello World" WASM contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
+
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
@@ -424,6 +425,6 @@ wardend query wasm contract-state smart my-contract-address '{"get_greeting":{}}
 
 In the output, you should see this: `data: Hello, World!`
 
-If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀

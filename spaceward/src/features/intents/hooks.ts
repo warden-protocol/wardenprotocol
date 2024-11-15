@@ -19,6 +19,7 @@ import {
 import { useTemplates } from "@/hooks/query/act";
 import { useSpaceById } from "@/hooks/query/warden";
 import type { TemplateModel } from "@/hooks/query/types";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const DEFAULT_EXPRESSION = "any(1, warden.space.owners)";
 
@@ -65,8 +66,32 @@ export const useRules = () => {
 	const { setData: setModal } = useModalState();
 	const { spaceId } = useSpaceId();
 	const client = usePublicClient();
+	const queryClient = useQueryClient();
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
+
+	const space = useSpaceById({
+		request: { id: BigInt(spaceId || "") },
+	}).data;
+
+	const rules = useTemplates({
+		request: {
+			creator: space?.creator,
+		},
+	});
+
+	const {
+		add,
+		expectedApproveExpression,
+		expectedApproveQueryKey,
+		expectedRejectExpression,
+		expectedRejectQueryKey,
+	} = useActionHandler(
+		PRECOMPILE_WARDEN_ADDRESS,
+		wardenPrecompileAbi,
+		"updateSpace",
+		true,
+	);
 
 	const newRule = useCallback(
 		async ({ simple, advanced }: IntentParams) => {
@@ -99,8 +124,19 @@ export const useRules = () => {
 					}),
 				client,
 			);
+
+			queryClient.invalidateQueries({ queryKey: rules.queryKey });
 		},
-		[writeContractAsync, client, chains, connectedChain, setChain, address, wallet?.wagmiConnector],
+		[
+			writeContractAsync,
+			client,
+			chains,
+			connectedChain,
+			setChain,
+			address,
+			wallet?.wagmiConnector,
+			rules.queryKey,
+		],
 	);
 
 	const updateRule = useCallback(
@@ -142,28 +178,28 @@ export const useRules = () => {
 					}),
 				client,
 			);
+
+			queryClient.invalidateQueries({ queryKey: rules.queryKey });
+
+			queryClient.invalidateQueries({
+				queryKey: expectedApproveQueryKey,
+			});
+
+			queryClient.invalidateQueries({ queryKey: expectedRejectQueryKey });
 		},
-		[writeContractAsync, client, chains, connectedChain, setChain, address, wallet?.wagmiConnector],
+		[
+			writeContractAsync,
+			client,
+			chains,
+			connectedChain,
+			setChain,
+			address,
+			wallet?.wagmiConnector,
+			rules.queryKey,
+			expectedApproveQueryKey,
+			expectedRejectQueryKey,
+		],
 	);
-
-	const space = useSpaceById({
-		request: { id: BigInt(spaceId || "") },
-	}).data;
-
-	const { add, expectedApproveExpression, expectedRejectExpression } =
-		useActionHandler(
-			PRECOMPILE_WARDEN_ADDRESS,
-			wardenPrecompileAbi,
-			"updateSpace",
-			true,
-		);
-
-	const rules = useTemplates({
-		request: {
-			creator: space?.creator,
-		}
-	});
-
 
 	const rulesBySpace = rules.data?.templates ?? [];
 

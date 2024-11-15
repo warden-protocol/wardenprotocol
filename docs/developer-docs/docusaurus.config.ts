@@ -103,7 +103,7 @@ const config: Config = {
                     position: "left",
                 },
                 {
-                    href: "https://discord.com/invite/warden",
+                    href: "https://discord.com/invite/wardenprotocol",
                     label: "Discord",
                     position: "right",
                 },

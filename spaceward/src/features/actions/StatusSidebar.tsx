@@ -60,7 +60,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
 	const config = useConfig();
-	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
+	const { w } = useWeb3Wallet(env.wcWalletRelayUrl);
 	const { setData } = useActionsState();
 
 	const type = typeof item.keyThemeIndex !== "undefined" ?
@@ -152,7 +152,9 @@ function ActionItem({ single, ...item }: ItemProps) {
 							throw new Error("no hash", { cause: { item } });
 						}
 
+						console.log("waiting for receipt", item.hash);
 						const receipt = await publicClient?.waitForTransactionReceipt({ hash: item.hash });
+						console.log("receipt", receipt);
 
 						if (receipt?.status !== "success") {
 							throw new Error("transaction failed", { cause: { item, receipt } });
@@ -209,8 +211,6 @@ function ActionItem({ single, ...item }: ItemProps) {
 						if (canceled || !item.actionId) {
 							return;
 						}
-
-						const client = await getClient();
 
 						const queryOptions = readContractQueryOptions(config, {
 							chainId: env.evmChainId,
@@ -290,8 +290,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				}
 
 				case QueuedActionStatus.ActionReady: {
-					let getStatus: GetStatus | undefined;
-					let queryKeys: QueryKey[] = [];
+					let [getStatus, queryKeys]: [GetStatus | undefined, QueryKey[]] = [undefined, []];
 
 					try {
 						const res = getActionHandler(item);

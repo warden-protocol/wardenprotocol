@@ -60,7 +60,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
 	const config = useConfig();
-	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
+	const { w } = useWeb3Wallet(env.wcWalletRelayUrl);
 	const { setData } = useActionsState();
 
 	const type = typeof item.keyThemeIndex !== "undefined" ?
@@ -210,8 +210,6 @@ function ActionItem({ single, ...item }: ItemProps) {
 							return;
 						}
 
-						const client = await getClient();
-
 						const queryOptions = readContractQueryOptions(config, {
 							chainId: env.evmChainId,
 							address: PRECOMPILE_ACT_ADDRESS,
@@ -290,8 +288,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				}
 
 				case QueuedActionStatus.ActionReady: {
-					let getStatus: GetStatus | undefined;
-					let queryKeys: QueryKey[] = [];
+					let [getStatus, queryKeys]: [GetStatus | undefined, QueryKey[]] = [undefined, []];
 
 					try {
 						const res = getActionHandler(item);

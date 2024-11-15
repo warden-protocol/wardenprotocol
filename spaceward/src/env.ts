@@ -25,8 +25,14 @@ const aminoAnalyzerContract =
 const p2pRelayURL =
 	import.meta.env.VITE_P2P_RELAY_URL ||
 	"https://relay.devnet.wardenprotocol.org:443";
+
 const networkVisibility: "testnet" | "mainnet" | "all" =
 	import.meta.env.VITE_WARDEN_NETWORK_VISIBILITY || "testnet";
+
+const wcWalletRelayUrl =
+	import.meta.env.VITE_WC_WALLET_RELAY_URL ||
+	"wss://relay.walletconnect.org";
+
 
 export const env = {
 	apiURL,
@@ -47,4 +53,5 @@ export const env = {
 	aminoAnalyzerContract,
 	p2pRelayURL,
 	networkVisibility,
+	wcWalletRelayUrl,
 };

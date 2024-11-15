@@ -134,5 +134,5 @@ You're now all set to start validating! You can take these next steps:
 
 - To learn how to operate an oracle service, see [Operate Skip:Connect](operate-skip-connect).
 - To learn more about `wardend` commands for interacting with the node, see [Node commands](node-commands).
-- Don't forget to join our community in [Discord](https://discord.com/invite/warden).
+- Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).
 

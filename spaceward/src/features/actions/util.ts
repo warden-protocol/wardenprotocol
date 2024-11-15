@@ -44,9 +44,8 @@ const getStatusDefault = async () => ({
 export const getActionHandler = ({
 	action,
 	call,
-	snapRequestId,
-	walletConnectRequestId,
-	walletConnectTopic,
+	wc,
+	snap,
 }: QueuedAction) => {
 	let getStatus: GetStatus;
 	const queryKeys: QueryKey[] = [];
@@ -105,10 +104,7 @@ export const getActionHandler = ({
 											),
 									  )
 									? "cosmos"
-									: // fixme
-										(walletConnectRequestId &&
-												walletConnectTopic) ||
-										  snapRequestId
+									: wc || snap
 										? "eth-raw"
 										: undefined,
 							value: signRequest?.signedData,
@@ -216,45 +212,47 @@ export const handleEthRaw = async ({
 	const type =
 		typeof action.keyThemeIndex !== "undefined"
 			? "key"
-			: (["walletConnectRequestId", "walletConnectTopic"] as const).every(
-						(key) => typeof action[key] !== "undefined",
-				  )
+			: action.wc
 				? "wc"
-				: typeof action.snapRequestId
+				: action.snap
 					? "snap"
 					: undefined;
 
 	switch (type) {
 		case "wc":
+			if (!action.wc) {
+				throw new Error("walletconnect params not set");
+			}
+
 			if (!w) {
 				throw new Error("walletconnect not initialized");
 			}
 
 			return await w
 				.respondSessionRequest({
-					topic: action.walletConnectTopic!,
+					topic: action.wc.topic,
 					response: {
 						jsonrpc: "2.0",
-						id: action.walletConnectRequestId!,
+						id: action.wc.requestId,
 						result: toHex(value),
 					},
 					// fixme
 				})
 				.then(() => true);
 		case "snap":
+			if (!action.snap) {
+				throw new Error("snap params not set");
+			}
+
 			const keyringSnapClient = new KeyringSnapRpcClient(
 				env.snapOrigin,
 				window.ethereum,
 			);
 
 			return await keyringSnapClient
-				.approveRequest(
-					action.snapRequestId!,
-					{
-						result: toHex(value),
-					},
-					// fixme
-				)
+				.approveRequest(action.snap.requestId, {
+					result: toHex(value),
+				})
 				.then(() => true);
 		case "key": // should never happen in this case
 		default:
@@ -356,8 +354,7 @@ export const handleCosmos = async ({
 		value,
 		signDoc,
 		pubkey,
-		walletConnectRequestId,
-		walletConnectTopic,
+		wc
 	} = action;
 
 	if (!chainName || !signDoc || !pubkey) {
@@ -384,17 +381,17 @@ export const handleCosmos = async ({
 		throw new Error("unexpected signature length");
 	}
 
-	if (walletConnectRequestId && walletConnectTopic) {
+	if (wc) {
 		if (!w) {
 			throw new Error("walletconnect not initialized");
 		}
 
 		return await w
 			.respondSessionRequest({
-				topic: walletConnectTopic,
+				topic: wc.topic,
 				response: {
 					jsonrpc: "2.0",
-					id: walletConnectRequestId,
+					id: wc.requestId,
 					result: {
 						signed: signDoc,
 						signature: {

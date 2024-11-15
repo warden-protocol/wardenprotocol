@@ -73,6 +73,13 @@ const queryClient = new QueryClient({
 
 const projectId = "5ac86584b1de10a7953c6d7b19b52dad";
 
+const injectedWallet = injectedModule();
+
+const walletConnectWallet = walletConnect({
+	projectId,
+	dappUrl: "https://wardenprotocol.org/",
+});
+
 const web3Onboard = init({
 	appMetadata: {
 		name: "Warden Protocol Wallets",
@@ -94,14 +101,7 @@ const web3Onboard = init({
 		rpcUrl: env.evmURL,
 	}],
 	connect: { autoConnectAllPreviousWallet: true },
-	wallets: [injectedModule(), walletConnect({
-		handleUri: (uri: any) => {
-			console.log("wcuri", uri);
-		},
-		projectId,
-		dappUrl: "https://wardenprotocol.org/",
-	})
-	],
+	wallets: [injectedWallet, walletConnectWallet],
 	wagmi,
 });
 
@@ -178,41 +178,14 @@ function InjectWagmi({ children }: { children: React.ReactNode }) {
 
 function App() {
 	const signerOptions: SignerOptions = {};
-	const supportedWallets = wallets.for("keplr", "leap", "cosmostation");
 
 	return (
 		<React.StrictMode>
 			<FaroErrorBoundary>
 				<ChainProvider
-					chains={[
-						...chains,
-						wardenprotocollocal,
-						wardenprotocoldevnet,
-						wardenprotocolbuenavista,
-						wardenprotocolchiado,
-					]}
-					assetLists={[
-						...assets,
-						wardenprotocollocalAssets,
-						wardenprotocoldevnetAssets,
-						wardenprotocolbuenavistaAssets,
-						wardenprotocolchiadoAssets,
-					]}
-					wallets={supportedWallets}
-					walletConnectOptions={{
-						signClient: {
-							projectId: "5ac86584b1de10a7953c6d7b19b52dad",
-							relayUrl: "wss://relay.walletconnect.org",
-							metadata: {
-								name: "Warden Protocol Wallets",
-								description: "Warden Protocol WalletConnect",
-								url: "https://wardenprotocol.org/",
-								icons: [
-									"https://avatars.githubusercontent.com/u/158038121",
-								],
-							},
-						},
-					}}
+					chains={chains}
+					assetLists={assets}
+					wallets={[]}
 					signerOptions={signerOptions}
 				>
 					<Web3OnboardProvider web3Onboard={web3Onboard}>
@@ -220,92 +193,90 @@ function App() {
 							<QueryClientProvider client={queryClient}>
 								<MetaMaskProvider>
 									<AddressProvider>
-										<WalletProvider>
-											<DenomProvider>
-												<BrowserRouter>
-													<FaroRoutes>
-														<Route element={<Root />}>
-															<Route
-																path="/"
-																element={
-																	<DashboardPage />
-																}
-															/>
-															<Route
-																path="/rules"
-																element={
-																	<IntentsPage />
-																}
-															/>
-															<Route
-																path="/staking"
-																element={
-																	<StakingPage />
-																}
-															/>
-															<Route
-																path="/governance"
-																element={
-																	<GovernancePage />
-																}
-															/>
-															<Route
-																path="/actions"
-																element={
-																	<ActionsPage />
-																}
-															/>
-															<Route
-																path="/explorer"
-																element={
-																	<ExplorerPage />
-																}
-															/>
-															<Route
-																path="/explorer/block-by-height/:height"
-																element={
-																	<BlockByHeightPage />
-																}
-															/>
-															<Route
-																path="/keys"
-																element={<KeysPage />}
-															/>
-															<Route
-																path="/keychains"
-																element={
-																	<KeychainsPage />
-																}
-															/>
-															<Route
-																path="/assets"
-																element={<AssetsPage />}
-															/>
-															<Route
-																path="/apps"
-																element={<AppsPage />}
-															/>
-															<Route
-																path="/apps/open"
-																element={
-																	<AppsOpenPage />
-																}
-															/>
-															<Route
-																path="/settings"
-																element={
-																	<SettingsPage />
-																}
-															/>
-															<Route
-																path="/owners"
-																element={<OwnersPage />}
-															/>
-														</Route>
-													</FaroRoutes>
-												</BrowserRouter>
-											</DenomProvider>
-										</WalletProvider>
+										<DenomProvider>
+											<BrowserRouter>
+												<FaroRoutes>
+													<Route element={<Root />}>
+														<Route
+															path="/"
+															element={
+																<DashboardPage />
+															}
+														/>
+														<Route
+															path="/rules"
+															element={
+																<IntentsPage />
+															}
+														/>
+														<Route
+															path="/staking"
+															element={
+																<StakingPage />
+															}
+														/>
+														<Route
+															path="/governance"
+															element={
+																<GovernancePage />
+															}
+														/>
+														<Route
+															path="/actions"
+															element={
+																<ActionsPage />
+															}
+														/>
+														<Route
+															path="/explorer"
+															element={
+																<ExplorerPage />
+															}
+														/>
+														<Route
+															path="/explorer/block-by-height/:height"
+															element={
+																<BlockByHeightPage />
+															}
+														/>
+														<Route
+															path="/keys"
+															element={<KeysPage />}
+														/>
+														<Route
+															path="/keychains"
+															element={
+																<KeychainsPage />
+															}
+														/>
+														<Route
+															path="/assets"
+															element={<AssetsPage />}
+														/>
+														<Route
+															path="/apps"
+															element={<AppsPage />}
+														/>
+														<Route
+															path="/apps/open"
+															element={
+																<AppsOpenPage />
+															}
+														/>
+														<Route
+															path="/settings"
+															element={
+																<SettingsPage />
+															}
+														/>
+														<Route
+															path="/owners"
+															element={<OwnersPage />}
+														/>
+													</Route>
+												</FaroRoutes>
+											</BrowserRouter>
+										</DenomProvider>
 									</AddressProvider>
 								</MetaMaskProvider>
 							</QueryClientProvider>

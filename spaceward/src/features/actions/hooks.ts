@@ -104,9 +104,6 @@ export interface QueuedAction {
 	pubkey?: Uint8Array;
 	title?: string;
 	keyThemeIndex?: number;
-	walletConnectRequestId?: number;
-	walletConnectTopic?: string;
-	snapRequestId?: string;
 }
 
 export const useActionsState = createPersistantState<

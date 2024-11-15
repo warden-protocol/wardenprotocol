@@ -1,18 +1,38 @@
+import {
+  Config,
+  createConfig,
+  estimateFeesPerGas,
+  estimateGas,
+  getBlockNumber,
+  getBytecode,
+  getTransactionCount,
+  http,
+} from '@wagmi/core';
+import { sepolia } from '@wagmi/core/chains';
 import { delay } from '@warden-automated-orders/utils';
 import { LRUCache } from 'lru-cache';
-import { AbiEventFragment, AbiFunctionFragment, Bytes, EventLog, FeeData, Transaction, Web3 } from 'web3';
+import { Hex, createWalletClient } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { AbiEventFragment, AbiFunctionFragment, Bytes, EventLog } from 'web3';
 
 import { IEvmConfiguration } from '../types/evm/configuration.js';
+import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
 
 export class EvmClient {
-  web3: Web3;
-  signer: string;
+  signer: Hex;
   eventsFromBlocks: Map<string, bigint>;
   events: LRUCache<string, EventLog>;
+  config: Config;
 
   constructor(private configuration: IEvmConfiguration) {
-    this.web3 = new Web3(this.configuration.rpcURL);
+    this.config = createConfig({
+      chains: [sepolia],
+      transports: {
+        [sepolia.id]: http(this.configuration.rpcURL),
+      },
+    });
+
     this.eventsFromBlocks = new Map<string, bigint>();
 
     if (this.configuration.eventsCacheSize) {
@@ -22,7 +42,7 @@ export class EvmClient {
     }
 
     if (this.configuration.callerPrivateKey) {
-      this.signer = this.web3.eth.accounts.privateKeyToAccount(this.configuration.callerPrivateKey!).address;
+      this.signer = privateKeyToAccount(this.configuration.callerPrivateKey as Hex).address;
     }
   }
 
@@ -44,7 +64,7 @@ export class EvmClient {
       }
 
       const contract = new this.web3.eth.Contract([eventAbi], contractAddress);
-      const endBlock = await this.web3.eth.getBlockNumber();
+      const endBlock = await getBlockNumber(this.config);
 
       let fromBlock = BigInt(this.eventsFromBlocks.get(eventAbi.name) ?? startBlock);
       let toBlock = endBlock;
@@ -85,8 +105,8 @@ export class EvmClient {
   }
 
   public async isContract(address: string): Promise<boolean> {
-    const code = await this.web3.eth.getCode(address);
-    return Buffer.from(code.replace('0x', ''), 'hex').length > 0;
+    const code = await getBytecode(this.config, { address: address as Hex });
+    return (code?.length ?? 0) > 0;
   }
 
   public async callView<T>(contractAddress: string, functionAbi: AbiFunctionFragment, args: unknown[]): Promise<T> {
@@ -100,54 +120,59 @@ export class EvmClient {
     return `bk_${event.blockNumber}_ix_${event.logIndex}`;
   }
 
-  public async getNextNonce(account: string): Promise<bigint> {
-    const transactionsCount = await this.web3.eth.getTransactionCount(account);
+  public async getNextNonce(account: string): Promise<number> {
+    const transactionsCount = await getTransactionCount(this.config, {
+      address: account as Hex,
+    });
 
     return transactionsCount;
   }
 
-  public async getGasFees(
-    from: string,
-    to: string,
-    data: Bytes,
-    value: bigint,
-  ): Promise<{ feeData: FeeData; gasLimit: bigint }> {
-    const feeData = await this.web3.eth.calculateFeeData();
+  public async getGasFees(from: string, to: string, data: Bytes, value: bigint): Promise<GasFeeData> {
+    const feeData = await estimateFeesPerGas(this.config);
 
-    const gasLimit = await this.web3.eth.estimateGas({
-      from: from,
-      to: to,
+    const gasLimit = await estimateGas(this.config, {
+      account: from as Hex,
+      to: to as Hex,
       value: value,
-      data: data,
+      data: data as Hex,
     });
 
-    return { feeData, gasLimit };
+    return {
+      gasLimit,
+      gasPrice: feeData.gasPrice,
+      maxFeePerGas: feeData.maxFeePerGas,
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+    };
   }
 
   public async sendTransaction(
     contractAddress: string,
     functionAbi: AbiFunctionFragment,
     args: unknown[],
-  ): Promise<boolean> {
+  ): Promise<void> {
     const contract = new this.web3.eth.Contract([functionAbi], contractAddress);
     const data = contract.methods[functionAbi.name](...args).encodeABI();
 
-    const nonce = await this.getNextNonce(this.signer);
     const gas = await this.getGasFees(this.signer, contractAddress, data, 0n);
 
-    const tx: Transaction = {
-      from: this.signer,
-      to: contractAddress,
-      data: data,
+    const wallet = createWalletClient({
+      transport: http(this.configuration.rpcURL),
+      key: this.configuration.callerPrivateKey,
+    });
+
+    const signedTx = await wallet.signTransaction({
+      chain: this.config.chains[0], // TODO: !!!
+      account: this.signer as Hex,
+      to: contractAddress as Hex,
+      data: data as Hex,
       gas: gas.gasLimit,
-      maxFeePerGas: gas.feeData.maxFeePerGas,
-      maxPriorityFeePerGas: gas.feeData.maxPriorityFeePerGas,
-      nonce: nonce,
-    };
+      maxFeePerGas: gas.maxFeePerGas,
+      maxPriorityFeePerGas: gas.maxPriorityFeePerGas,
+    });
 
-    const signedTx = await this.web3.eth.accounts.signTransaction(tx, this.configuration.callerPrivateKey!);
-    const receipt = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction!);
-
-    return receipt.status == 1;
+    await wallet.sendRawTransaction({
+      serializedTransaction: signedTx,
+    });
   }
 }

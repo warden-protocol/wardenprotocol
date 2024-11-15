@@ -82,19 +82,13 @@ export class OrderProcessor extends Processor<OrderRegistered> {
         orderDetails.value,
       );
 
-      const executed = await this.evmos.sendTransaction(event.returnValues.execution, ExecuteAbi, [
+      await this.evmos.sendTransaction(event.returnValues.execution, ExecuteAbi, [
         nonce,
         gas.gasLimit,
-        gas.feeData.gasPrice,
-        gas.feeData.maxPriorityFeePerGas,
-        gas.feeData.maxFeePerGas,
+        gas.gasPrice,
+        gas.maxPriorityFeePerGas,
+        gas.maxFeePerGas,
       ]);
-
-      if (!executed) {
-        logError(`Failed to execute order: ${id}`);
-
-        return;
-      }
 
       this.evmos.events.delete(id);
     } catch (error) {

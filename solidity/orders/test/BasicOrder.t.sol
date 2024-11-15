@@ -336,24 +336,33 @@ contract BasicOrderTest is Test {
         new OrderFactory(address(this), address(0), address(this));
     }
 
-    function test_FactoryChangeScheduler() public {
+    function test_FactorySetScheduler() public {
         OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
 
         vm.expectEmit(true, true, false, false);
 
         emit SchedulerChanged(address(this), RECEIVER);
 
-        factory.changeScheduler(RECEIVER);
+        factory.setScheduler(RECEIVER);
 
         assertEq(factory.scheduler(), RECEIVER);
     }
 
-    function test_FactoryRevertWhenChangeSchedulerNotOwner() public {
+    function test_FactoryRevertWhenSetSchedulerNotOwner() public {
         OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
 
         vm.expectRevert(abi.encodeWithSelector(OwnableUnauthorizedAccount.selector, RECEIVER));
         vm.prank(RECEIVER);
-        factory.changeScheduler(RECEIVER);
+        factory.setScheduler(RECEIVER);
+
+        assertEq(factory.scheduler(), address(this));
+    }
+
+    function test_FactoryRevertWhenSetSchedulerInvalid() public {
+        OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
+
+        vm.expectRevert(InvalidSchedulerAddress.selector);
+        factory.setScheduler(address(0));
 
         assertEq(factory.scheduler(), address(this));
     }

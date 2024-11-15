@@ -60,9 +60,13 @@ contract OrderFactory is Ownable {
         }
     }
 
-    function changeScheduler(address _scheduler) public onlyOwner {
-        emit SchedulerChanged(scheduler, _scheduler);
+    function setScheduler(address _scheduler) public onlyOwner {
+        if (_scheduler == address(0)) {
+            revert InvalidSchedulerAddress();
+        }
+        address oldScheduler = scheduler;
         scheduler = _scheduler;
+        emit SchedulerChanged(oldScheduler, scheduler);
     }
 
     function _createBasicOrder(

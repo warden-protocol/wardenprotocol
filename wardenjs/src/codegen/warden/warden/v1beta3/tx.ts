@@ -3,7 +3,7 @@ import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
 import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key.js";
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin.js";
-import { SignRequestStatus, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
+import { BroadcastType, SignRequestStatus, broadcastTypeFromJSON, broadcastTypeToJSON, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -588,6 +588,7 @@ export interface MsgNewSignRequest {
   encryptionKey: Uint8Array;
   maxKeychainFees: Coin[];
   nonce: bigint;
+  broadcastType: BroadcastType;
 }
 export interface MsgNewSignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.MsgNewSignRequest";
@@ -601,6 +602,7 @@ export interface MsgNewSignRequestAmino {
   encryption_key?: string;
   max_keychain_fees: CoinAmino[];
   nonce?: string;
+  broadcast_type?: BroadcastType;
 }
 export interface MsgNewSignRequestAminoMsg {
   type: "/warden.warden.v1beta3.MsgNewSignRequest";
@@ -614,6 +616,7 @@ export interface MsgNewSignRequestSDKType {
   encryption_key: Uint8Array;
   max_keychain_fees: CoinSDKType[];
   nonce: bigint;
+  broadcast_type: BroadcastType;
 }
 export interface MsgNewSignRequestResponse {
   id: bigint;
@@ -3212,7 +3215,8 @@ function createBaseMsgNewSignRequest(): MsgNewSignRequest {
     analyzers: [],
     encryptionKey: new Uint8Array(),
     maxKeychainFees: [],
-    nonce: BigInt(0)
+    nonce: BigInt(0),
+    broadcastType: 0
   };
 }
 export const MsgNewSignRequest = {
@@ -3238,6 +3242,9 @@ export const MsgNewSignRequest = {
     }
     if (message.nonce !== BigInt(0)) {
       writer.uint32(56).uint64(message.nonce);
+    }
+    if (message.broadcastType !== 0) {
+      writer.uint32(64).int32(message.broadcastType);
     }
     return writer;
   },
@@ -3269,6 +3276,9 @@ export const MsgNewSignRequest = {
         case 7:
           message.nonce = reader.uint64();
           break;
+        case 8:
+          message.broadcastType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3284,7 +3294,8 @@ export const MsgNewSignRequest = {
       analyzers: Array.isArray(object?.analyzers) ? object.analyzers.map((e: any) => String(e)) : [],
       encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array(),
       maxKeychainFees: Array.isArray(object?.maxKeychainFees) ? object.maxKeychainFees.map((e: any) => Coin.fromJSON(e)) : [],
-      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0)
+      nonce: isSet(object.nonce) ? BigInt(object.nonce.toString()) : BigInt(0),
+      broadcastType: isSet(object.broadcastType) ? broadcastTypeFromJSON(object.broadcastType) : -1
     };
   },
   toJSON(message: MsgNewSignRequest): JsonSafe<MsgNewSignRequest> {
@@ -3304,6 +3315,7 @@ export const MsgNewSignRequest = {
       obj.maxKeychainFees = [];
     }
     message.nonce !== undefined && (obj.nonce = (message.nonce || BigInt(0)).toString());
+    message.broadcastType !== undefined && (obj.broadcastType = broadcastTypeToJSON(message.broadcastType));
     return obj;
   },
   fromPartial(object: Partial<MsgNewSignRequest>): MsgNewSignRequest {
@@ -3315,6 +3327,7 @@ export const MsgNewSignRequest = {
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
     message.maxKeychainFees = object.maxKeychainFees?.map(e => Coin.fromPartial(e)) || [];
     message.nonce = object.nonce !== undefined && object.nonce !== null ? BigInt(object.nonce.toString()) : BigInt(0);
+    message.broadcastType = object.broadcastType ?? 0;
     return message;
   },
   fromAmino(object: MsgNewSignRequestAmino): MsgNewSignRequest {
@@ -3336,6 +3349,9 @@ export const MsgNewSignRequest = {
     if (object.nonce !== undefined && object.nonce !== null) {
       message.nonce = BigInt(object.nonce);
     }
+    if (object.broadcast_type !== undefined && object.broadcast_type !== null) {
+      message.broadcastType = object.broadcast_type;
+    }
     return message;
   },
   toAmino(message: MsgNewSignRequest): MsgNewSignRequestAmino {
@@ -3355,6 +3371,7 @@ export const MsgNewSignRequest = {
       obj.max_keychain_fees = message.maxKeychainFees;
     }
     obj.nonce = message.nonce !== BigInt(0) ? (message.nonce?.toString)() : undefined;
+    obj.broadcast_type = message.broadcastType === 0 ? undefined : message.broadcastType;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignRequestAminoMsg): MsgNewSignRequest {

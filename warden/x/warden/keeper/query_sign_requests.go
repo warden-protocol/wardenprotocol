@@ -32,6 +32,10 @@ func (k Keeper) SignRequests(goCtx context.Context, req *types.QuerySignRequests
 			return false, nil
 		}
 
+		if value.BroadcastType != req.BroadcastType {
+			return false, nil
+		}
+
 		return true, nil
 	}, func(key uint64, value types.SignRequest) (*types.SignRequest, error) { return &value, nil })
 

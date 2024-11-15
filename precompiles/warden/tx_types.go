@@ -488,11 +488,12 @@ type newSignRequestInput struct {
 	ActionTimeoutHeight       uint64
 	ExpectedApproveExpression string
 	ExpectedRejectExpression  string
+	BroadcastType             uint8
 }
 
 func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.Address, act string) (*actTypes.MsgNewAction, error) {
-	if len(args) != 9 {
-		return nil, wardencommon.WrongArgsNumber{Expected: 9, Got: len(args)}
+	if len(args) != 10 {
+		return nil, wardencommon.WrongArgsNumber{Expected: 10, Got: len(args)}
 	}
 
 	var input newSignRequestInput
@@ -507,6 +508,22 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 
 	authority := wardencommon.Bech32StrFromAddress(origin)
 
+	mapBroadcastType := func(broadcastType uint8) (types.BroadcastType, error) {
+		switch broadcastType {
+		case uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED):
+			return types.BroadcastType_BROADCAST_TYPE_DISABLED, nil
+		case uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC):
+			return types.BroadcastType_BROADCAST_TYPE_AUTOMATIC, nil
+		default:
+			return -1, fmt.Errorf("broadcast type is not supported: %v", broadcastType)
+		}
+	}
+
+	broadcastType, err := mapBroadcastType(input.BroadcastType)
+	if err != nil {
+		return nil, err
+	}
+
 	msgNewSignRequest := types.MsgNewSignRequest{
 		Authority:       act,
 		KeyId:           input.KeyId,
@@ -515,6 +532,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 		EncryptionKey:   input.EncryptionKey,
 		MaxKeychainFees: input.MaxKeychainFees,
 		Nonce:           input.Nonce,
+		BroadcastType:   broadcastType,
 	}
 
 	anyMsg, err := codecTypes.NewAnyWithValue(&msgNewSignRequest)

@@ -181,6 +181,9 @@ export class LCDQueryClient {
     if (typeof params?.status !== "undefined") {
       options.params.status = params.status;
     }
+    if (typeof params?.broadcastType !== "undefined") {
+      options.params.broadcast_type = params.broadcastType;
+    }
     const endpoint = `warden/warden/v1beta3/get_sign_requests`;
     return await this.req.get<QuerySignRequestsResponseSDKType>(endpoint, options);
   }

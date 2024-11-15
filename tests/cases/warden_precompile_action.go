@@ -240,7 +240,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, newSignRequestEvents[0].Id, uint64(1))
 		require.Equal(t, newSignRequestEvents[0].KeyId, uint64(1))
 		require.Equal(t, newSignRequestEvents[0].Creator, alice.EthAddress(t))
-		require.Equal(t, newSignRequestEvents[0].BroadcastType, int32(types.BroadcastType_BROADCAST_TYPE_DISABLED))
+		require.Equal(t, newSignRequestEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 
 		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
@@ -260,7 +260,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			DataForSigning:       []byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			DeductedKeychainFees: []warden.TypesCoin{},
 			Result:               []byte{},
-			BroadcastType:        int32(types.BroadcastType_BROADCAST_TYPE_DISABLED),
+			BroadcastType:        uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED),
 		}, signRequests.SignRequests[0])
 
 		signRequestsAutomatic, err := iWardenClient.SignRequests(
@@ -268,7 +268,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			warden.TypesPageRequest{},
 			1,
 			int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
-			int32(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
+			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
 		require.ErrorContains(t, err, "received nil QuerySignRequestsResponse")
 		require.Len(t, signRequestsAutomatic.SignRequests, 0)
 

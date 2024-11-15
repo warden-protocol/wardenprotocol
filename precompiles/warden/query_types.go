@@ -373,6 +373,7 @@ func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignReque
 
 	o.EncryptionKey = signRequest.EncryptionKey
 	o.DeductedKeychainFees = mapSdkCoins(signRequest.DeductedKeychainFees)
+	o.BroadcastType = uint8(signRequest.BroadcastType)
 
 	return o, nil
 }
@@ -394,7 +395,7 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 	if _, ok := types.SignRequestStatus_name[input.Status]; !ok {
 		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
 	}
-	if _, ok := types.BroadcastType_name[input.BroadcastType]; !ok {
+	if _, ok := types.BroadcastType_name[int32(input.BroadcastType)]; !ok {
 		return nil, fmt.Errorf("invalid BroadcastType value: %d", input.BroadcastType)
 	}
 
@@ -402,7 +403,7 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 		Pagination:    &input.PageRequest,
 		KeychainId:    input.KeychainId,
 		Status:        types.SignRequestStatus(input.Status),
-		BroadcastType: types.BroadcastType(input.BroadcastType),
+		BroadcastType: types.BroadcastType(int32(input.BroadcastType)),
 	}, nil
 }
 
@@ -410,7 +411,7 @@ type signRequestsInput struct {
 	PageRequest   query.PageRequest
 	KeychainId    uint64
 	Status        int32
-	BroadcastType int32
+	BroadcastType uint8
 }
 
 type signRequestsOutput struct {

@@ -68,7 +68,7 @@ struct SignRequest {
     bytes result;
     bytes encryptionKey;
     Types.Coin[] deductedKeychainFees;
-    int32 broadcastType;
+    BroadcastType broadcastType;
 }
 
 struct Space {
@@ -418,7 +418,7 @@ interface IWarden {
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         int32 status,
-        int32 broadcastType
+        BroadcastType broadcastType
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
     /// @dev Defines a method to query space by id.
@@ -530,7 +530,7 @@ interface IWarden {
     /// @param keyId The id of the Key to be used for signing
     /// @param creator The creator address
     /// @param broadcastType The broadcast type
-    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator, int32 broadcastType);
+    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator, BroadcastType broadcastType);
 
     /// @dev UpdateKey defines an Event emitted when a key is updated.
     /// @param id The id of the key

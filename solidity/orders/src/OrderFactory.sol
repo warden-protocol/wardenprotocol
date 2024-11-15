@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
@@ -10,33 +11,48 @@ enum OrderType {
     Advanced
 }
 
-contract OrderFactory {
+error Unimplemented();
+error UnsupportedOrder();
+error InvalidRegistryAddress();
+error InvalidSchedulerAddress();
+
+event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address indexed orderContact);
+
+event SchedulerChanged(address indexed oldScheduler, address indexed newScheduler);
+
+contract OrderFactory is Ownable {
     // Mapping from order contract to order creator
     mapping(address orderAddress => address orderCreator) public orders;
 
     // Registry of IExecution contracts
     address public registry;
 
-    error Unimplemented();
-    error UnsupportedOrder();
+    // Scheduler address
+    address public scheduler;
 
-    event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
+    constructor(address _registry, address _scheduler, address owner) Ownable(owner) {
+        if (_registry == address(0)) {
+            revert InvalidRegistryAddress();
+        }
 
-    constructor(address _registry) {
+        if (_scheduler == address(0)) {
+            revert InvalidSchedulerAddress();
+        }
+
         registry = _registry;
+        scheduler = _scheduler;
     }
 
     function createOrder(
-        Types.OrderData memory _orderData,
-        CommonTypes.Coin[] memory maxKeychainFees,
-        address _scheduler,
+        Types.OrderData calldata _orderData,
+        CommonTypes.Coin[] calldata maxKeychainFees,
         OrderType orderType
     )
         public
         returns (address order)
     {
         if (orderType == OrderType.Basic) {
-            return _createBasicOrder(_orderData, maxKeychainFees, _scheduler);
+            return _createBasicOrder(_orderData, maxKeychainFees, scheduler);
         } else if (orderType == OrderType.Advanced) {
             return _createAdvancedOrder(_orderData, maxKeychainFees);
         } else {
@@ -44,9 +60,14 @@ contract OrderFactory {
         }
     }
 
+    function changeScheduler(address _scheduler) public onlyOwner {
+        emit SchedulerChanged(scheduler, _scheduler);
+        scheduler = _scheduler;
+    }
+
     function _createBasicOrder(
-        Types.OrderData memory _orderData,
-        CommonTypes.Coin[] memory maxKeychainFees,
+        Types.OrderData calldata _orderData,
+        CommonTypes.Coin[] calldata maxKeychainFees,
         address _scheduler
     )
         internal
@@ -60,15 +81,14 @@ contract OrderFactory {
         return address(basicOrder);
     }
 
-    function _createAdvancedOrder(Types.OrderData memory, CommonTypes.Coin[] memory) internal pure returns (address) {
+    function _createAdvancedOrder(
+        Types.OrderData calldata,
+        CommonTypes.Coin[] calldata
+    )
+        internal
+        pure
+        returns (address)
+    {
         revert Unimplemented();
-    }
-
-    function getCreator(address order) public view returns (address) {
-        return orders[order];
-    }
-
-    function getRegistry() public view returns (address) {
-        return registry;
     }
 }

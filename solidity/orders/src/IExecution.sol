@@ -9,6 +9,11 @@ struct ExecutionData {
     uint256 value;
 }
 
+enum Caller {
+    Scheduler,
+    AI
+}
+
 interface IExecution {
     /**
      * @dev Indicates if an order can be executed.
@@ -37,14 +42,9 @@ interface IExecution {
         returns (bool);
 
     /**
-     * @dev Indicates if this contract intended to be called by scheduler.
+     * @dev Returns the list of intended callers.
      */
-    function calledByScheduler() external returns (bool);
-
-    /**
-     * @dev Indicates if this contract intended to be called by AI service.
-     */
-    function calledByAIService() external returns (bool);
+    function callers() external returns (Caller[] memory callersList);
 
     /**
      * @dev Receives data by AI service.

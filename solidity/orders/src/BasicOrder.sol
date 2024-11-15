@@ -1,54 +1,88 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
-import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { ExecutionData, IExecution } from "./IExecution.sol";
+import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
 import { Types } from "./Types.sol";
 
 error ConditionNotMet();
 error ExecutedError();
 error Unauthorized();
 error InvalidPriceCondition();
+error InvalidScheduler();
+error InvalidSwapDataAmountIn();
+error InvalidSwapDataTo();
+error InvalidExpectedApproveExpression();
+error InvalidExpectedRejectExpression();
+error InvalidThresholdPrice();
+error InvalidTxTo();
+
+event Executed();
 
 contract BasicOrder is IExecution, ReentrancyGuard {
     Types.OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
-    IWarden private wardenPrecompile;
-    ISlinky private slinkyPrecompile;
-    CommonTypes.Coin[] private coins;
-    bool private executed;
-    address private scheduler;
-    address private keyAddress;
+    IWarden private _wardenPrecompile;
+    ISlinky private _slinkyPrecompile;
+    Caller[] private _callers;
+    CommonTypes.Coin[] private _coins;
+    bool private _executed;
+    address private _scheduler;
+    address private _keyAddress;
 
-    event Executed();
-
-    constructor(Types.OrderData memory _orderData, CommonTypes.Coin[] memory maxKeychainFees, address _scheduler) {
+    // solhint-disable-next-line
+    constructor(Types.OrderData memory _orderData, CommonTypes.Coin[] memory maxKeychainFees, address scheduler) {
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {
-            coins.push(maxKeychainFees[i]);
+            _coins.push(maxKeychainFees[i]);
         }
 
-        wardenPrecompile = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-        KeyResponse memory keyResponse = wardenPrecompile.keyById(_orderData.signRequestData.keyId, new int32[](0));
-        keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
+        if (scheduler == address(0)) {
+            revert InvalidScheduler();
+        }
 
-        slinkyPrecompile = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
+        if (_orderData.swapData.amountIn == 0) {
+            revert InvalidSwapDataAmountIn();
+        }
+
+        if (_orderData.swapData.to == address(0)) {
+            revert InvalidSwapDataTo();
+        }
+
+        if (bytes(_orderData.signRequestData.expectedApproveExpression).length == 0) {
+            revert InvalidExpectedApproveExpression();
+        }
+
+        if (bytes(_orderData.signRequestData.expectedRejectExpression).length == 0) {
+            revert InvalidExpectedRejectExpression();
+        }
+
+        if (_orderData.thresholdPrice == 0) {
+            revert InvalidThresholdPrice();
+        }
+
+        if (_orderData.creatorDefinedTxFields.to == address(0)) {
+            revert InvalidTxTo();
+        }
+
+        _wardenPrecompile = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
+        KeyResponse memory keyResponse = _wardenPrecompile.keyById(_orderData.signRequestData.keyId, new int32[](0));
+        _keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
+
+        _slinkyPrecompile = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
+        _slinkyPrecompile.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
 
         orderData = _orderData;
-        executed = false;
-        scheduler = _scheduler;
+        _scheduler = scheduler;
+        _callers.push(Caller.Scheduler);
     }
 
-    function canExecute() external view returns (bool) {
-        return _canExecute();
-    }
-
-    function _canExecute() internal view returns (bool value) {
+    function canExecute() public view returns (bool value) {
         GetPriceResponse memory priceResponse =
-            slinkyPrecompile.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
+            _slinkyPrecompile.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
         Types.PriceCondition condition = orderData.priceCondition;
         if (condition == Types.PriceCondition.GTE) {
             value = priceResponse.price.price >= orderData.thresholdPrice;
@@ -70,23 +104,23 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         nonReentrant
         returns (bool)
     {
-        if (msg.sender != scheduler) {
+        if (msg.sender != _scheduler) {
             revert Unauthorized();
         }
 
-        if (executed) {
+        if (_executed) {
             revert ExecutedError();
         }
 
-        if (!_canExecute()) {
+        if (!canExecute()) {
             revert ConditionNotMet();
         }
 
         bytes memory data = _packSwapData();
 
-        bytes memory signRequestInput = abi.encode(
+        bytes memory unsignedTx = abi.encode(
             Types.UnsignedEthTx({
-                from: keyAddress,
+                from: _keyAddress,
                 gas: gas,
                 gasPrice: gasPrice,
                 nonce: nonce,
@@ -99,41 +133,39 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             })
         );
 
-        executed = wardenPrecompile.newSignRequest(
+        bytes memory signRequestInput = abi.encodePacked(keccak256(unsignedTx));
+
+        _executed = _wardenPrecompile.newSignRequest(
             orderData.signRequestData.keyId,
             signRequestInput,
             orderData.signRequestData.analyzers,
             orderData.signRequestData.encryptionKey,
-            coins,
+            _coins,
             orderData.signRequestData.spaceNonce,
             orderData.signRequestData.actionTimeoutHeight,
             orderData.signRequestData.expectedApproveExpression,
             orderData.signRequestData.expectedRejectExpression
         );
 
-        if (executed) {
+        if (_executed) {
             emit Executed();
         }
 
-        return executed;
+        return _executed;
     }
 
-    function calledByScheduler() external pure returns (bool) {
-        return true;
-    }
-
-    function calledByAIService() external pure returns (bool) {
-        return false;
+    function callers() external view returns (Caller[] memory callersList) {
+        return _callers;
     }
 
     function isExecuted() external view returns (bool) {
-        return executed;
+        return _executed;
     }
 
     function executionData() external view returns (ExecutionData memory data) {
         bytes memory d = _packSwapData();
         data = ExecutionData({
-            caller: keyAddress,
+            caller: _keyAddress,
             to: orderData.creatorDefinedTxFields.to,
             chainId: orderData.creatorDefinedTxFields.chainId,
             value: orderData.creatorDefinedTxFields.value,

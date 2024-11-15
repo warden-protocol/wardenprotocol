@@ -5,12 +5,32 @@ import { Test } from "forge-std/src/Test.sol";
 import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
 import { Types } from "../src/Types.sol";
-import { OrderFactory, OrderType } from "../src/OrderFactory.sol";
-import { IExecution } from "../src/IExecution.sol";
+import {
+    OrderCreated,
+    OrderFactory,
+    OrderType,
+    InvalidRegistryAddress,
+    InvalidSchedulerAddress,
+    SchedulerChanged
+} from "../src/OrderFactory.sol";
+import { Caller, IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "./mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "./mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { ConditionNotMet, ExecutedError, Unauthorized } from "../src/BasicOrder.sol";
+import {
+    BasicOrder,
+    Executed,
+    ConditionNotMet,
+    ExecutedError,
+    InvalidScheduler,
+    InvalidSwapDataAmountIn,
+    InvalidSwapDataTo,
+    InvalidExpectedApproveExpression,
+    InvalidExpectedRejectExpression,
+    InvalidThresholdPrice,
+    InvalidTxTo,
+    Unauthorized
+} from "../src/BasicOrder.sol";
 
 struct TestData {
     OrderFactory orderFactory;
@@ -24,15 +44,17 @@ struct TestData {
 }
 
 contract BasicOrderTest is Test {
-    TestData private testData;
-    IExecution private order;
+    TestData private _testData;
+    Types.OrderData private _orderData;
+    IExecution private _order;
+    Caller[] private _expectedCallers;
+
+    // @openzeppelin Ownable.sol
+    error OwnableUnauthorizedAccount(address account);
 
     address private constant SEPOLIA_UNISWAP_V2_ROUTER =
         address(bytes20(bytes("0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3")));
     address private constant RECEIVER = address(bytes20(bytes("0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db")));
-
-    event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address orderContact);
-    event Executed();
 
     function beforeTestSetup(bytes4 testSelector) public pure returns (bytes[] memory beforeTestCalldata) {
         if (testSelector == this.test_BasicOrder_StateBeforeExecution.selector) {
@@ -55,13 +77,26 @@ contract BasicOrderTest is Test {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] =
                 abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.GTE);
+        } else if (
+            testSelector == this.test_BasicOrderRevertWhenInvalidScheduler.selector
+                || testSelector == this.test_BasicOrderRevertWhenInvalidAmountIn.selector
+                || testSelector == this.test_BasicOrderRevertWhenInvalidSwapDataTo.selector
+                || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedApproveExpression.selector
+                || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedRejectExpression.selector
+                || testSelector == this.test_BasicOrderRevertWhenInvalidThresholdPrice.selector
+                || testSelector == this.test_BasicOrderRevertWhenInvalidTxTo.selector
+        ) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature("saveOrderData()");
         }
     }
 
     function setUp() public {
         // placeholder till registry unimplemented
         address registry = address(this);
-        OrderFactory orderFactory = new OrderFactory(registry);
+        address scheduler = address(this);
+        address owner = address(this);
+        OrderFactory orderFactory = new OrderFactory(registry, scheduler, owner);
 
         MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
@@ -76,7 +111,7 @@ contract BasicOrderTest is Test {
         wardenPrecompile.addKey(goodKeyId, true);
         wardenPrecompile.addKey(badKeyId, false);
 
-        testData = TestData({
+        _testData = TestData({
             orderFactory: orderFactory,
             wardenPrecompile: wardenPrecompile,
             mockSlinkyPrecompile: mockSlinkyPrecompile,
@@ -84,8 +119,10 @@ contract BasicOrderTest is Test {
             pricePair: Types.PricePair({ base: "ETH", quote: "DOGE" }),
             goodKeyId: goodKeyId,
             badKeyId: badKeyId,
-            scheduler: address(this)
+            scheduler: scheduler
         });
+
+        _expectedCallers.push(Caller.Scheduler);
     }
 
     function test_BasicOrder_Create(bool goodOrder, uint8 condition) public {
@@ -98,26 +135,26 @@ contract BasicOrderTest is Test {
         bytes memory encryptionKey;
         uint64 keyId;
         if (goodOrder) {
-            keyId = testData.goodKeyId;
+            keyId = _testData.goodKeyId;
         } else {
-            keyId = testData.badKeyId;
+            keyId = _testData.badKeyId;
         }
 
         Types.PriceCondition cond = Types.PriceCondition(condition);
         if (cond == Types.PriceCondition.LTE) {
-            testData.mockSlinkyPrecompile.setPrice(
-                testData.pricePair.base, testData.pricePair.quote, testData.thresholdPrice + 1
+            _testData.mockSlinkyPrecompile.setPrice(
+                _testData.pricePair.base, _testData.pricePair.quote, _testData.thresholdPrice + 1
             );
         } else {
-            testData.mockSlinkyPrecompile.setPrice(
-                testData.pricePair.base, testData.pricePair.quote, testData.thresholdPrice - 1
+            _testData.mockSlinkyPrecompile.setPrice(
+                _testData.pricePair.base, _testData.pricePair.quote, _testData.thresholdPrice - 1
             );
         }
 
         Types.OrderData memory orderData = Types.OrderData({
-            thresholdPrice: testData.thresholdPrice,
+            thresholdPrice: _testData.thresholdPrice,
             priceCondition: cond,
-            pricePair: testData.pricePair,
+            pricePair: _testData.pricePair,
             swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
                 keyId: keyId,
@@ -125,8 +162,8 @@ contract BasicOrderTest is Test {
                 encryptionKey: encryptionKey,
                 spaceNonce: 0,
                 actionTimeoutHeight: 0,
-                expectedApproveExpression: "",
-                expectedRejectExpression: ""
+                expectedApproveExpression: "expectedApproveExpression",
+                expectedRejectExpression: "expectedRejectExpression"
             }),
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
@@ -141,69 +178,183 @@ contract BasicOrderTest is Test {
 
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
-        address orderAddress =
-            testData.orderFactory.createOrder(orderData, maxKeychainFees, testData.scheduler, OrderType.Basic);
+        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic);
 
-        order = IExecution(orderAddress);
+        _order = IExecution(orderAddress);
     }
 
     function test_BasicOrder_StateBeforeExecution() public {
-        assert(!order.canExecute());
-        assert(!order.isExecuted());
-        assert(order.calledByScheduler());
-        assert(!order.calledByAIService());
+        assert(!_order.canExecute());
+        assert(!_order.isExecuted());
+        assert(_order.callers().length == 1);
+        assert(_order.callers()[0] == _expectedCallers[0]);
     }
 
     function test_basicOrderRevertWhenConditionNotMet() public {
-        assert(!order.canExecute());
-        assert(!order.isExecuted());
+        assert(!_order.canExecute());
+        assert(!_order.isExecuted());
 
         vm.expectRevert(ConditionNotMet.selector);
-        order.execute(1, 1, 1, 1, 1);
+        _order.execute(1, 1, 1, 1, 1);
     }
 
     function test_basicOrderRevertWhenUnauthorized() public {
         vm.expectRevert(Unauthorized.selector);
         vm.broadcast(address(0));
-        order.execute(1, 1, 1, 1, 1);
+        _order.execute(1, 1, 1, 1, 1);
     }
 
     function test_basicOrderExecuteWhenPriceMovesDown() public {
-        uint256 price = testData.thresholdPrice - 1;
-        testData.mockSlinkyPrecompile.setPrice(testData.pricePair.base, testData.pricePair.quote, price);
+        uint256 price = _testData.thresholdPrice - 1;
+        _testData.mockSlinkyPrecompile.setPrice(_testData.pricePair.base, _testData.pricePair.quote, price);
 
-        assert(order.canExecute());
+        assert(_order.canExecute());
 
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        // vm.prank(msgSender);
-        bool executed = order.execute(1, 1, 1, 1, 1);
+        bool executed = _order.execute(1, 1, 1, 1, 1);
 
         assert(executed);
 
-        assert(order.isExecuted());
+        assert(_order.isExecuted());
 
         vm.expectRevert(ExecutedError.selector);
-        order.execute(1, 1, 1, 1, 1);
+        _order.execute(1, 1, 1, 1, 1);
     }
 
     function test_basicOrderExecuteWhenPriceMovesUp() public {
-        uint256 price = testData.thresholdPrice + 1;
-        testData.mockSlinkyPrecompile.setPrice(testData.pricePair.base, testData.pricePair.quote, price);
+        uint256 price = _testData.thresholdPrice + 1;
+        _testData.mockSlinkyPrecompile.setPrice(_testData.pricePair.base, _testData.pricePair.quote, price);
 
-        assert(order.canExecute());
+        assert(_order.canExecute());
 
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        bool executed = order.execute(1, 1, 1, 1, 1);
+        bool executed = _order.execute(1, 1, 1, 1, 1);
 
         assert(executed);
 
-        assert(order.isExecuted());
+        assert(_order.isExecuted());
 
         vm.expectRevert(ExecutedError.selector);
-        order.execute(1, 1, 1, 1, 1);
+        _order.execute(1, 1, 1, 1, 1);
+    }
+
+    function saveOrderData() public {
+        address[] memory path;
+        bytes[] memory analyzers;
+        bytes memory encryptionKey;
+        Types.OrderData memory orderData = Types.OrderData({
+            thresholdPrice: _testData.thresholdPrice,
+            priceCondition: Types.PriceCondition.LTE,
+            pricePair: _testData.pricePair,
+            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
+            signRequestData: Types.SignRequestData({
+                keyId: 0,
+                analyzers: analyzers,
+                encryptionKey: encryptionKey,
+                spaceNonce: 0,
+                actionTimeoutHeight: 0,
+                expectedApproveExpression: "expectedApproveExpression",
+                expectedRejectExpression: "expectedRejectExpression"
+            }),
+            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
+                value: 0,
+                chainId: 11_155_111,
+                to: SEPOLIA_UNISWAP_V2_ROUTER
+            })
+        });
+
+        _orderData = orderData;
+    }
+
+    function test_BasicOrderRevertWhenInvalidScheduler() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+
+        vm.expectRevert(InvalidScheduler.selector);
+
+        new BasicOrder(_orderData, maxKeychainFees, address(0));
+    }
+
+    function test_BasicOrderRevertWhenInvalidAmountIn() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _orderData.swapData.amountIn = 0;
+        vm.expectRevert(InvalidSwapDataAmountIn.selector);
+
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+    }
+
+    function test_BasicOrderRevertWhenInvalidSwapDataTo() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _orderData.swapData.to = address(0);
+        vm.expectRevert(InvalidSwapDataTo.selector);
+
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+    }
+
+    function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _orderData.signRequestData.expectedApproveExpression = "";
+        vm.expectRevert(InvalidExpectedApproveExpression.selector);
+
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+    }
+
+    function test_BasicOrderRevertWhenInvalidExpectedRejectExpression() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _orderData.signRequestData.expectedRejectExpression = "";
+        vm.expectRevert(InvalidExpectedRejectExpression.selector);
+
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+    }
+
+    function test_BasicOrderRevertWhenInvalidThresholdPrice() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _orderData.thresholdPrice = 0;
+        vm.expectRevert(InvalidThresholdPrice.selector);
+
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+    }
+
+    function test_BasicOrderRevertWhenInvalidTxTo() public {
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _orderData.creatorDefinedTxFields.to = address(0);
+        vm.expectRevert(InvalidTxTo.selector);
+
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+    }
+
+    function test_FactoryConstructorRevertWhenInvalidRegistry() public {
+        vm.expectRevert(InvalidRegistryAddress.selector);
+        new OrderFactory(address(0), address(this), address(this));
+    }
+
+    function test_FactoryConstructorRevertWhenInvalidScheduler() public {
+        vm.expectRevert(InvalidSchedulerAddress.selector);
+        new OrderFactory(address(this), address(0), address(this));
+    }
+
+    function test_FactoryChangeScheduler() public {
+        OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
+
+        vm.expectEmit(true, true, false, false);
+
+        emit SchedulerChanged(address(this), RECEIVER);
+
+        factory.changeScheduler(RECEIVER);
+
+        assertEq(factory.scheduler(), RECEIVER);
+    }
+
+    function test_FactoryRevertWhenChangeSchedulerNotOwner() public {
+        OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
+
+        vm.expectRevert(abi.encodeWithSelector(OwnableUnauthorizedAccount.selector, RECEIVER));
+        vm.prank(RECEIVER);
+        factory.changeScheduler(RECEIVER);
+
+        assertEq(factory.scheduler(), address(this));
     }
 }

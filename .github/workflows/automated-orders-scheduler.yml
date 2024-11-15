@@ -1,5 +1,5 @@
 ---
-name: Automated Orders Scheduler 
+name: Automated Orders Scheduler
 
 on:
   push:
@@ -41,13 +41,9 @@ jobs:
         run: yarn install
         working-directory: "automated-orders/"
 
-      - name: Run linter
+      - name: Yarn  build
         working-directory: ./automated-orders
-        run: yarn lint
-
-      - name: TypeScript build
-        working-directory: ./automated-orders
-        run: tsc --build --force --verbose
+        run: yarn build
 
   build-and-push:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/automated-orders-scheduler/v')

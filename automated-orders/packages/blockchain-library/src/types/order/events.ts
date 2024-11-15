@@ -1,7 +1,9 @@
 import { AbiEvent } from 'viem';
 
-export interface OrderRegistered extends EventLog {
-  returnValues: {
+import { IEvent } from '../evm/event.js';
+
+export interface IOrderRegistered extends IEvent {
+  args: {
     creator: string;
     execution: string;
   };

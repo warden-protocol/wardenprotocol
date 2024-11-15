@@ -1,17 +1,25 @@
+import { sepolia } from '@wagmi/core/chains';
 import { ChainIds, EvmClient, OrderProcessor, OrderRegisteredAbi } from '@warden-automated-orders/blockchain';
 import { logError } from '@warden-automated-orders/utils';
 
 import { config } from './config/config.js';
 
 async function main() {
-  const evmos = new EvmClient({
-    rpcURL: config.EVMOS_NODE_RPC,
-    eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
-    callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
-  });
-  const ethereum = new EvmClient({
-    rpcURL: config.ETHEREUM_NODE_RPC,
-  });
+  const evmos = new EvmClient(
+    {
+      rpcURL: config.EVMOS_NODE_RPC,
+      eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
+      callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
+    },
+    sepolia, // TODO: replace this with defineChain({ ... }) from "import { defineChain } from 'viem';" to define the Warden EvmOs chain
+  );
+
+  const ethereum = new EvmClient(
+    {
+      rpcURL: config.ETHEREUM_NODE_RPC,
+    },
+    sepolia,
+  );
 
   const chainIds = new Set([BigInt(ChainIds.Sepolia)]);
 

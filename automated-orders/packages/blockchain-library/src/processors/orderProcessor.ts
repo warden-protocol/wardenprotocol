@@ -15,7 +15,7 @@ export class OrderProcessor extends Processor<OrderRegistered> {
   constructor(
     private evmos: EvmClient,
     private ethereum: EvmClient,
-    private supportedChainIds: Map<bigint, undefined>,
+    private supportedChainIds: Set<bigint>,
     private retryAttempts: number,
     generator: () => AsyncGenerator<OrderRegistered, unknown, unknown>,
   ) {

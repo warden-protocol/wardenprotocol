@@ -13,7 +13,7 @@ async function main() {
     rpcURL: config.ETHEREUM_NODE_RPC,
   });
 
-  const chainIds = new Map([[BigInt(ChainIds.Sepolia), undefined]]);
+  const chainIds = new Set([BigInt(ChainIds.Sepolia)]);
 
   const processor = new OrderProcessor(
     evmos,

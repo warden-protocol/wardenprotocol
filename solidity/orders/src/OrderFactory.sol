@@ -78,7 +78,7 @@ contract OrderFactory is Ownable {
         internal
         returns (address)
     {
-        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
+        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler, address(REGISTRY));
         orders[address(basicOrder)] = msg.sender;
 
         REGISTRY.register(address(basicOrder));

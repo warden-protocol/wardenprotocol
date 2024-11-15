@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta3.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta3.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta3.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta3.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta3.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta3.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta3.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta3.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta3.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta3.MsgFulfilKeyRequest", MsgFulfilKeyRequest], ["/warden.warden.v1beta3.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta3.MsgNewSignRequest", MsgNewSignRequest], ["/warden.warden.v1beta3.MsgFulfilSignRequest", MsgFulfilSignRequest]];
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest, MsgAddKeychainAdminRequest, MsgRemoveKeychainAdminRequest } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta3.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta3.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta3.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta3.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta3.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta3.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta3.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta3.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta3.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta3.MsgFulfilKeyRequest", MsgFulfilKeyRequest], ["/warden.warden.v1beta3.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta3.MsgNewSignRequest", MsgNewSignRequest], ["/warden.warden.v1beta3.MsgFulfilSignRequest", MsgFulfilSignRequest], ["/warden.warden.v1beta3.MsgAddKeychainAdminRequest", MsgAddKeychainAdminRequest], ["/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest", MsgRemoveKeychainAdminRequest]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -86,6 +86,18 @@ export const MessageComposer = {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.encode(value).finish()
       };
+    },
+    addKeychainAdmin(value: MsgAddKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+        value: MsgAddKeychainAdminRequest.encode(value).finish()
+      };
+    },
+    removeKeychainAdmin(value: MsgRemoveKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+        value: MsgRemoveKeychainAdminRequest.encode(value).finish()
+      };
     }
   },
   withTypeUrl: {
@@ -164,6 +176,18 @@ export const MessageComposer = {
     fulfilSignRequest(value: MsgFulfilSignRequest) {
       return {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
+        value
+      };
+    },
+    addKeychainAdmin(value: MsgAddKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+        value
+      };
+    },
+    removeKeychainAdmin(value: MsgRemoveKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
         value
       };
     }
@@ -246,6 +270,18 @@ export const MessageComposer = {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.toJSON(value)
       };
+    },
+    addKeychainAdmin(value: MsgAddKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+        value: MsgAddKeychainAdminRequest.toJSON(value)
+      };
+    },
+    removeKeychainAdmin(value: MsgRemoveKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+        value: MsgRemoveKeychainAdminRequest.toJSON(value)
+      };
     }
   },
   fromJSON: {
@@ -326,6 +362,18 @@ export const MessageComposer = {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.fromJSON(value)
       };
+    },
+    addKeychainAdmin(value: any) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+        value: MsgAddKeychainAdminRequest.fromJSON(value)
+      };
+    },
+    removeKeychainAdmin(value: any) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+        value: MsgRemoveKeychainAdminRequest.fromJSON(value)
+      };
     }
   },
   fromPartial: {
@@ -405,6 +453,18 @@ export const MessageComposer = {
       return {
         typeUrl: "/warden.warden.v1beta3.MsgFulfilSignRequest",
         value: MsgFulfilSignRequest.fromPartial(value)
+      };
+    },
+    addKeychainAdmin(value: MsgAddKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+        value: MsgAddKeychainAdminRequest.fromPartial(value)
+      };
+    },
+    removeKeychainAdmin(value: MsgRemoveKeychainAdminRequest) {
+      return {
+        typeUrl: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+        value: MsgRemoveKeychainAdminRequest.fromPartial(value)
       };
     }
   }

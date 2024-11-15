@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest } from "./tx.js";
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest, MsgAddKeychainAdminRequest, MsgRemoveKeychainAdminRequest } from "./tx.js";
 export const AminoConverter = {
   "/warden.warden.v1beta3.MsgUpdateParams": {
     aminoType: "warden/x/warden/MsgUpdateParams",
@@ -65,5 +65,15 @@ export const AminoConverter = {
     aminoType: "/warden.warden.v1beta3.MsgFulfilSignRequest",
     toAmino: MsgFulfilSignRequest.toAmino,
     fromAmino: MsgFulfilSignRequest.fromAmino
+  },
+  "/warden.warden.v1beta3.MsgAddKeychainAdminRequest": {
+    aminoType: "/warden.warden.v1beta3.MsgAddKeychainAdminRequest",
+    toAmino: MsgAddKeychainAdminRequest.toAmino,
+    fromAmino: MsgAddKeychainAdminRequest.fromAmino
+  },
+  "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest": {
+    aminoType: "/warden.warden.v1beta3.MsgRemoveKeychainAdminRequest",
+    toAmino: MsgRemoveKeychainAdminRequest.toAmino,
+    fromAmino: MsgRemoveKeychainAdminRequest.fromAmino
   }
 };

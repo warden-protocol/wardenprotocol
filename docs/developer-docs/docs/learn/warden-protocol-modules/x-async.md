@@ -1,287 +1,131 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 2.5
 ---
 
-# x/warden
+# x/async
 
 ## Overview
 
-The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network/) module allowing users to create and manage their Spaces and request Keychains to sign payloads.
+The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) for running off-chain heavyweight computations asynchronously and storing the results on-chain.
 
-This module implements Warden's core concepts, which you can find in our Glossary:
+This module implements the following concepts, which you can find in our Glossary:
 
-- [Space](/learn/glossary#space)
-- [Keychain](/learn/glossary#keychain)
-- [Key](/learn/glossary#key)
+- [Future](/learn/glossary#future)
+- [Prophet](/learn/glossary#prophet)
+
+## Usage (?)
+
+Users are able to request a new computation on-chain, specifying an input and a *handler*. (?)
+
+Validators are running a sidecar process called **Prophet**. Prophets have two responsibilities:
+
+- Fetching new requests for executing them
+- Fetching requests satisfied by other validators to add its vote (?)
+
+![image.png](../../../static/img/x-async-1.png)
 
 ## Concepts
 
-### Space
+### Future
 
-A **Space** is a collection of users (owners) that share a common set of [Rules](/learn/warden-protocol-modules/x-act#rule):
+A **Future** is something (?) that is executed asynchronously. One validator provides the result and other validators vote on its correctness.
 
-- **Admin Rule**: It's a applied to all admin operations such as adding or removing Space owners.
-- **Signing Rule**: It's applied to all signature operations such as [requesting a new key](/learn/glossary#key-request) or [signature](/learn/glossary#signature-request).
-- **Default Rule**: It's applied if no Rule is specified, allowing any operation if at least 1 of the Space owners approves it.
+Each Future contains a *handler* ID (?), which determines *how* (?) to interpret the input and what to do with it in order to retrieve the result.
 
-See also [Glossary: Space](/learn/glossary#space).
+### Prophet
 
-### Key
+A **Prophet** is a separate process running on validator nodes, alongside with `wardend`. Not all validators are required to run Prophets.
 
-A **Key** is the public part of a key pair, which is stored on-chain. Every Key belongs to a certain [Space](#space).
+Prophets are responsible for executing handlers associated with [Futures](#future), without blocking consensus.
 
-Keys have unique identifiers used to refer to them when requesting a [Keychain](#keychain) to sign a payload.
-
-See also [Glossary: Key](/learn/glossary#key).
-
-### Keychain
-
-A Keychain fulfills [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request) from users. Optionally, it can set a fee for each request.
-
-Keychains can be registered on-chain. Each Keychain has the following:
-
-- A list of admins that can update the Keychain information
-- A list of [Writers](/learn/glossary#keychain-writer) – the only addresses authorized to send updates to requests
-
-See also [Glossary: Keychain](/learn/glossary#keychain), [Request flow](/learn/request-flow).
-
-### Analyzer
-
-An **Analyzer** is a [CosmWasm](https://cosmwasm.com) contract that can intercept a payload before it's signed by a [Keychain](#keychain). Using Analyzers allows Keychains to receive the final payload without the need to have any knowledge of its content.
-
-This is what Analyzers can do:
-
-- Extract payload metadata, which then can be referenced in [Rule](/learn/warden-protocol-modules/x-act#rule) expressions
-- Manipulate the payload before it's signed — for example, hash it following a specific algorithm
-
-To illustrate this, it's possible to write an Ethereum Analyzer that will do the following:
-
-- Extract information: the value being sent and the destination address
-- Hash the payload using Ethereum's Keccak256 algorithm
-
-You can learn more in the [Analyzers](#analyzers) section of this article.
+This architecture is similar to [how skip:connect works](https://docs.skip.build/connect/learn/architecture).
 
 ## State
 
-The `x/warden` module keeps the state of the following primary objects:
+The `x/async` module keeps track of [Futures](#future).
 
-- Spaces
-- Keys
-- Keychains
-- KeyRequests
-- SignRequests
-
-To manage this state, the module also keeps the following indexes:
-
-- Keys by Space ID
-- Spaces by owner address
-
-## Rules
-
-The `x/warden` module provides the following variables to be used in [Rules](/learn/warden-protocol-modules/x-act#rule):
-
-- `warden.space.owners`: The list of [Space](#space) owners
-- `warden.analyzers.<addr>.<name>`: The [Analyzer](#analyzer) name and address
+Completed Futures are pruned after some time, to avoid state bloat.
 
 ## Messages
 
-### MsgNewSpace
+### MsgAddFuture
 
-Creates a new [Space](#space), optionally specifying the following:
+Creates a new [Future](#future), providing a `[]byte` input and a `string` ID for the handler (?) to use.
 
-- The Admin Rule
-- The Signing Rule
-- Additional owners
+The [Future](#future) is in a `pending` state until it has a result. Users can query Futures by their IDs to check the progress.
 
-**Note**: If not specified, both the Admin and Signing Rules are set to the default Rule allowing any operation if at least 1 of the Space owners approves it.
+## Prophet (sidecar)
 
-This message is expected to fail in the following cases:
+### Executing Futures
 
-- An owner is specified twice.
+Prophet will continuously poll the chain to discover new pending Futures, maintaining a local queue for them.
 
-### MsgNewKeychain
+Concurrently, Futures are taken from the queue and the associated handler’s code it’s executed (this usually involves calling an external service).
 
-Creates a new [Keychain](#keychain), specifying the following:
+The results will be stored in memory for the blockchain node to fetch it later.
 
-- A human-readable description
-- A [key request fee](/learn/glossary#key-request-fee) (optionally)
-- A [signature request fee](/learn/glossary#signature-request-fee) (optionally)
+### Voting Future results
 
-**Note**: The Keychain creator will be its first admin.
+Prophet will continuously poll the chain to discover Futures that have a result submitted by another validator, maintaining a local queue for them.
 
-This message is expected to fail in the following cases:
+Concurrently, Futures are taken from the queue and validated (this usually involves calling an external service).
 
-- The description is empty.
+The votes will be stored in memory for the blockchain node to fetch it later.
 
-### MsgUpdateKeychain
+## ABCI lifecycle
 
-Updates a [Keychain](#keychain) by ID, specifying the following:
+![image.png](../../../static/img/x-async-2.png)
 
-- A human-readable description
-- A [key request fee](/learn/glossary#key-request-fee)
-- A [signature request fee](/learn/glossary#signature-request-fee)
+From the POV of a node: if the validator is the proposer for the next block, it’ll fetch results from Prophet and include them in a special transaction at the beginning of the block proposal. Every validator (even non-proposers) will broadcast their voting on existing Futures as vote extensions.
 
-This message is expected to fail in the following cases:
+When the proposal is processed (i.e. the block is finalized) all the new results and new votes are persisted in the blockchain storage.
 
-- The description is empty.
-- The creator isn't an admin of the Keychain.
+## Sequence diagram
 
-### MsgAddKeychainWriter
+```mermaid
+sequenceDiagram
+    participant Alice
+    box Purple Validator 1
+        participant Node1
+        participant Prophet1
+        participant MathHandler1
+    end
+    box Purple Validator 2
+        participant Node2
+        participant Prophet2
+        participant MathHandler2
+    end
 
-Adds a new [Writer](/learn/glossary#keychain-writer) to a [Keychain](#keychain).
 
-This message is expected to fail in the following cases:
+        critical Block H
+        Alice->>+Node1: AddFuture("MathHandler", "2+4")
+      Node1->>-Alice: Future ID: 143
+      Node1<<->>Node2: p2p
+    end
+    
+    
+    Prophet1->>+Node1: Any new futures to execute?
+    Node1->>-Prophet1: Future 143
+    Prophet1->>+MathHandler1: "2+4"
+    MathHandler1->>-Prophet1: "6"
+    
+        critical Block H+N, proposer=Node1
+          Node1->>+Prophet1: Any result ready?
+          Prophet1->>-Node1: Future 143: "6"
+          Node1->Node1: record result in block H+N
+          Node1<<->>Node2: p2p
+        end
 
-- The Writer is already a Writer of the Keychain.
-- The creator isn't an admin of the Keychain.
+    Prophet2->>+Node2: Any futures to verify?
+    Node2->>-Prophet2: Future 143: ("2+4", "6")
+    Prophet2->>+MathHandler2: "2+4"
+    MathHandler2->>-Prophet2: "6"
 
-### MsgFulfilKeyRequest
-
-Updates a [key request](/learn/glossary#key-request) (`KeyRequest`) by ID:
-
-- On success, submits the [public key](#key) bytes.
-- On failure, submits a human-readable reason.
-
-This message is expected to fail in the following cases:
-
-- The request isn't found.
-- The creator isn't a [Writer](/learn/glossary#keychain-writer) of the Keychain.
-- The status field doesn't match the contents of the result field.
-
-Learn more: [Key request flow](/learn/request-flow#key-request-flow)
-
-### MsgFulfilSignRequest
-
-Updates a [signature request](/learn/glossary#signature-request) (`SignRequest`) by ID:
-
-- On success, submits the signature bytes.
-- On failure, submits a human-readable reason.
-
-This message is expected to fail in the following cases:
-
-- The request isn't found.
-- The creator isn't a [Writer](/learn/glossary#keychain-writer) of the Keychain.
-- The status field doesn't match the content of the result field.
-
-Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
-
-## Actions
-
-The following messages must be wrapped inside [Actions](/learn/warden-protocol-modules/x-act#action) from the `x/act` module (instead of being executed directly by users).
-
-### MsgAddSpaceOwner
-
-Adds an owner to a [Space](#space).
-
-The Rule applied: `Space.AdminRule` if present, the default Rule otherwise.
-
-This message is expected to fail in the following cases:
-
-- The owner is already a member of the Space.
-
-### MsgRemoveSpaceOwner
-
-Removes an owner from a [Space](#space).
-
-The Rule applied: `Space.AdminRule` if present, the default Rule otherwise.
-
-This message is expected to fail in the following cases:
-
-- The owner isn't a member of the Space.
-
-### MsgUpdateSpace
-
-Updates the Admin Rule and Signing Rule of a [Space](#space).
-
-The Rule applied: `Space.AdminRule` if present, the default Rule otherwise.
-
-This message is expected to fail in the following cases:
-
-- The specified Admin Rule ID doesn't exist.
-- The specified Signing Rule ID doesn't exist.
-
-### MsgNewKeyRequest
-
-Creates a new [key request](/learn/glossary#key-request) (`KeyRequest`) for a given [Keychain](#keychain). The resulting [Key](#key) will belong to a given [Space](#space). Optionally, the following can be specified:
-
-- A Rule that will be applied to the signing operations of the new Key
-
-The Rule applied: `Space.SigningRule` if present, the default Rule otherwise.
-
-This message is expected to fail in the following cases:
-
-- The Space doesn't exist.
-- The Keychain doesn't exist.
-- The Rule doesn't exist.
-
-Learn more: [Key request flow](/learn/request-flow#key-request-flow)
-
-### MsgUpdateKey
-
-Updates a [Key](#key) by ID, specifying the following:
-
-- A new Rule for the Key
-
-The Rule applied: `Key.Rule` if present, `Space.SigningRule` if present, the default Rule otherwise.
-
-This message is expected to fail in the following cases:
-
-- The Key doesn't exist.
-- The Rule doesn't exist.
-
-### MsgNewSignRequest
-
-Creates a new [signature request](/learn/glossary#signature-request) (`SignRequest`) for a given [Key](#key) and the [Keychain](#keychain) that created it. The following can be specified:
-
-- A list of [Analyzer](#analyzer) addresses. They will be invoked as part of this message to extract information from the payload.
-
-The Rule applied: `Key.Rule` if present, `Space.SigningRule` if present, the default Rule otherwise.
-
-This message is expected to fail in the following cases:
-
-- The Key doesn't exist.
-- One of the Analyzers doesn't exist.
-- One of the invoked Analyzers fails.
-- More than one Analyzer returns the `data_for_signing` field.
-
-Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
-
-## Events
-
-See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/main/proto/warden/warden/v1beta2/events.proto).
-
-## Analyzers
-
-[Analyzers](#analyzer) are CosmWasm smart contracts that implement the interface described below.
-
-See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/contracts/contracts/basic-analyzer/src).
-
-### Input
-
-An `Analyze` message is expected to be handled by the `execute` function of the Analyzer contract.
-
-The `input` field of the message is the binary payload submitted by a user in [`MsgNewSignRequest`](#msgnewsignrequest).
-
-```rust
-pub enum ExecuteMsg {
-    Analyze { input: Binary },
-}
+        critical Block H+N+M
+          Node2->>+Prophet2: Any vote ready?
+          Prophet2->>-Node2: Future 143: "correct"
+          Node1<<->>Node2: Broadcast as vote extension to be included in block H+N+M+1
+        end
 ```
 
-### Output
-
-As a result, the Analyzer contract should return a `Response` where the data field is populated with a JSON-encoded `AnalyzeResult`:
-
-```rust
-pub struct AnalyzeResult<T> {
-    pub data_for_signing: Option<Binary>,
-    pub result: T,
-}
-```
-
-In this code, `T` is another struct specific to the Analyzer, containing numeric or string fields.
-
-The `data_for_signing` field is the data that will be signed by the [Keychain](#keychain) when the `MsgNewSignRequest` message is executed.
-
-The fields of the `result` struct will be available for [Rules](/learn/warden-protocol-modules/x-act#rule) to reference.
-
+Sequence diagram showing a user named Alice that inserts a new Future for a handler called “MathHandler”, with input “2+4”. Node1 asynchronously executes it, and when is elected proposer for a block (H+N) it inserts the result (”6”) to be recorded. Node2 notices the new result for a future and invokes its MathHandler to verify the result, the verification will be broadcasted as vote extensions and eventually recorded at height H+N+M+1 (the +1 is due to how vote extension works, as they’re only committed to the state only in the next block).

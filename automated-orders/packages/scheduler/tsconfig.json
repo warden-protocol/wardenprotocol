@@ -8,6 +8,7 @@
     "noFallthroughCasesInSwitch": false,
     "outDir": "dist",
     "rootDir": "src",
+    "strict": true,
     "composite": true
   },
   "include": [

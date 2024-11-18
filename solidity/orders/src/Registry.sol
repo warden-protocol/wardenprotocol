@@ -41,7 +41,7 @@ contract Registry is ReentrancyGuard {
         emit Registered(msg.sender, execution);
     }
 
-    function addTransaction(bytes32 txHash) public {
+    function addTransaction(bytes32 txHash) public nonReentrant {
         if (executions[msg.sender] == address(0)) {
             revert UnauthorizedToAddTx();
         }

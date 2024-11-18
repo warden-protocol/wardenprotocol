@@ -1,17 +1,33 @@
 import { sepolia } from '@wagmi/core/chains';
 import { ChainIds, EvmClient, OrderProcessor, OrderRegisteredAbi } from '@warden-automated-orders/blockchain';
 import { logError } from '@warden-automated-orders/utils';
+import { defineChain } from 'viem';
 
 import { config } from './config/config.js';
 
 async function main() {
+  const evmosChain = defineChain({
+    id: config.WARDEN_EVM_CHAIN_ID,
+    name: "Warden",
+    nativeCurrency: {
+      decimals: 18,
+      name: "Warden",
+      symbol: "WARD"
+    },
+    rpcUrls: {
+      default: {
+        http: []
+      }
+    }
+  });
+  
   const evmos = new EvmClient(
     {
       rpcURL: config.EVMOS_NODE_RPC,
       eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
       callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
     },
-    sepolia, // TODO: replace this with defineChain({ ... }) from "import { defineChain } from 'viem';" to define the Warden EvmOs chain
+    evmosChain,
   );
 
   const ethereum = new EvmClient(

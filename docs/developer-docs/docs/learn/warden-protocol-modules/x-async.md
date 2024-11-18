@@ -6,9 +6,14 @@ sidebar_position: 2.5
 
 ## Overview
 
-The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) for running off-chain heavyweight computations asynchronously and storing the results on-chain.
+The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running off-chain heavyweight computations asynchronously and storing the results on-chain.
 
-This module implements the following concepts, which you can find in our Glossary:
+This module is implemented using the following tools:
+
+- [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/)
+- [Vote Extensions](https://docs.cosmos.network/main/build/abci/vote-extensions)
+
+The `x/async` module implements the following concepts, which you can find in our Glossary:
 
 - [Future](/learn/glossary#future)
 - [Prophet](/learn/glossary#prophet)
@@ -28,7 +33,7 @@ Validators are running a sidecar process called **Prophet**. Prophets have two r
 
 ### Future
 
-A **Future** is something (?) that is executed asynchronously. One validator provides the result and other validators vote on its correctness.
+A **Future** is an off-chain task that is executed asynchronously. One validator provides the result and other validators vote on its correctness.
 
 Each Future contains a *handler* ID (?), which determines *how* (?) to interpret the input and what to do with it in order to retrieve the result.
 
@@ -52,17 +57,17 @@ Completed Futures are pruned after some time, to avoid state bloat.
 
 Creates a new [Future](#future), providing a `[]byte` input and a `string` ID for the handler (?) to use.
 
-The [Future](#future) is in a `pending` state until it has a result. Users can query Futures by their IDs to check the progress.
+**Note**: The [Future](#future) is in a `pending` state until it has a result. Users can query Futures by their IDs to check the progress.
 
 ## Prophet (sidecar)
 
 ### Executing Futures
 
-Prophet will continuously poll the chain to discover new pending Futures, maintaining a local queue for them.
+A Prophet continuously polls the chain to discover new pending [Futures](#future), maintaining a local queue for them.
 
-Concurrently, Futures are taken from the queue and the associated handler’s code it’s executed (this usually involves calling an external service).
+At the same time, Futures are taken from the queue and the handler (?) code associated with them is executed. This usually involves calling an external service.
 
-The results will be stored in memory for the blockchain node to fetch it later.
+The results will be stored in the memory for the blockchain node to fetch it later.
 
 ### Voting Future results
 
@@ -74,58 +79,71 @@ The votes will be stored in memory for the blockchain node to fetch it later.
 
 ## ABCI lifecycle
 
+The diagram below represents the application blockchain interface (ABCI) lifecyle:
+
 ![image.png](../../../static/img/x-async-2.png)
 
-From the POV of a node: if the validator is the proposer for the next block, it’ll fetch results from Prophet and include them in a special transaction at the beginning of the block proposal. Every validator (even non-proposers) will broadcast their voting on existing Futures as vote extensions.
+From the point of view of a node, the following happens:
 
-When the proposal is processed (i.e. the block is finalized) all the new results and new votes are persisted in the blockchain storage.
+1. If the validator is the proposer for the next block, it fetches results from the [Prophet](#prophet) and includes them in a special transaction at the beginning of the block proposal.
+2. All validators, even non-proposers, broadcast their votes on existing [Futures](#future) as vote extensions.
+3. When the proposal is processed (for example, the block is finalized), all the new results and new votes are persisted in the blockchain storage.
 
-## Sequence diagram
+## Sequence diagram (?)
+
+This diagram shows... (?)
 
 ```mermaid
 sequenceDiagram
     participant Alice
     box Purple Validator 1
-        participant Node1
-        participant Prophet1
-        participant MathHandler1
+        participant Node 1
+        participant Prophet 1
+        participant MathHandler 1
     end
     box Purple Validator 2
-        participant Node2
-        participant Prophet2
-        participant MathHandler2
+        participant Node 2
+        participant Prophet 2
+        participant MathHandler 2
     end
 
 
         critical Block H
-        Alice->>+Node1: AddFuture("MathHandler", "2+4")
-      Node1->>-Alice: Future ID: 143
-      Node1<<->>Node2: p2p
+        Alice->>+Node 1: AddFuture("MathHandler", "2+4")
+      Node 1->>-Alice: Future ID: 143
+      Node 1<<->>Node 2: p2p
     end
     
     
-    Prophet1->>+Node1: Any new futures to execute?
-    Node1->>-Prophet1: Future 143
-    Prophet1->>+MathHandler1: "2+4"
-    MathHandler1->>-Prophet1: "6"
+    Prophet 1->>+Node 1: Any new Futures to execute?
+    Node 1->>-Prophet 1: Future 143
+    Prophet 1->>+MathHandler 1: "2+4"
+    MathHandler 1->>-Prophet 1: "6"
     
         critical Block H+N, proposer=Node1
-          Node1->>+Prophet1: Any result ready?
-          Prophet1->>-Node1: Future 143: "6"
-          Node1->Node1: record result in block H+N
-          Node1<<->>Node2: p2p
+          Node 1->>+Prophet 1: Any result ready?
+          Prophet 1->>-Node 1: Future 143: "6"
+          Node 1->Node 1: record result in block H+N
+          Node 1<<->>Node 2: p2p
         end
 
-    Prophet2->>+Node2: Any futures to verify?
-    Node2->>-Prophet2: Future 143: ("2+4", "6")
-    Prophet2->>+MathHandler2: "2+4"
-    MathHandler2->>-Prophet2: "6"
+    Prophet 2->>+Node 2: Any Futures to verify?
+    Node 2->>-Prophet 2: Future 143: ("2+4", "6")
+    Prophet 2->>+MathHandler 2: "2+4"
+    MathHandler 2->>-Prophet 2: "6"
 
         critical Block H+N+M
-          Node2->>+Prophet2: Any vote ready?
-          Prophet2->>-Node2: Future 143: "correct"
-          Node1<<->>Node2: Broadcast as vote extension to be included in block H+N+M+1
+          Node 2->>+Prophet 2: Any vote ready?
+          Prophet 2->>-Node 2: Future 143: "correct"
+          Node 1<<->>Node 2: Broadcast as vote extension to be included in block H+N+M+1
         end
 ```
 
-Sequence diagram showing a user named Alice that inserts a new Future for a handler called “MathHandler”, with input “2+4”. Node1 asynchronously executes it, and when is elected proposer for a block (H+N) it inserts the result (”6”) to be recorded. Node2 notices the new result for a future and invokes its MathHandler to verify the result, the verification will be broadcasted as vote extensions and eventually recorded at height H+N+M+1 (the +1 is due to how vote extension works, as they’re only committed to the state only in the next block).
+From the point of view of a user, the following happens: (?)
+
+1. A user (Alice) inserts a new [Future](#future) with a handler (`MathHandler`) and an input (`2+4`).
+2. Node 1 asynchronously executes the Future.
+3. When is elected proposer for a block (H+N) it inserts the result (`6`) to be recorded. (?)
+4. Node 2 notices the new result for the Future and invokes its handler (`MathHandler`) to verify the result.
+5. The verification will be broadcasted as vote extensions and eventually recorded at height H+N+M+1  
+  **Note**: Vote extensions are committed to the state only in the next block).

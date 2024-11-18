@@ -32,11 +32,12 @@ import {
     Unauthorized
 } from "../src/BasicOrder.sol";
 import {
+    ExecutionAlreadyRegistered,
     InvalidExecutionAddress,
     NewTx,
     Registry,
     Registered,
-    UnathorizedToAddTx,
+    UnauthorizedToAddTx,
     NotExecuted,
     TxAlreadyAdded,
     InvalidHash
@@ -77,6 +78,7 @@ contract BasicOrderTest is Test {
                 || testSelector == this.test_basicOrderExecuteWhenPriceMovesDown.selector
                 || testSelector == this.test_RegistryRevertAddTransactionWhenInvalidHash.selector
                 || testSelector == this.test_RegistryRevertAddTransactionWhenNotExecuted.selector
+                || testSelector == this.test_RegistryRevertWhenAlreadyRegistered.selector
         ) {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] =
@@ -402,8 +404,13 @@ contract BasicOrderTest is Test {
         _testData.registry.register(address(0));
     }
 
+    function test_RegistryRevertWhenAlreadyRegistered() public {
+        vm.expectRevert(ExecutionAlreadyRegistered.selector);
+        _testData.registry.register(address(_order));
+    }
+
     function test_RegistryRevertAddTransactionWhenNotOrder() public {
-        vm.expectRevert(UnathorizedToAddTx.selector);
+        vm.expectRevert(UnauthorizedToAddTx.selector);
         _testData.registry.addTransaction(keccak256(bytes("test")));
     }
 

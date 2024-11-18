@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { IExecution } from "./IExecution.sol";
 
 error InvalidExecutionAddress();
-error UnathorizedToAddTx();
+error UnauthorizedToAddTx();
 error TxAlreadyAdded();
 error InvalidHash();
 error NotExecuted();
+error ExecutionAlreadyRegistered();
 
 event Registered(address indexed creator, address indexed execution);
 
 event NewTx(address indexed execution, bytes32 indexed txHash);
 
-contract Registry {
+contract Registry is ReentrancyGuard {
     mapping(address executionAddress => address orderCreator) public executions;
     mapping(bytes32 txHash => bytes tx) public transactions;
 
@@ -21,13 +23,18 @@ contract Registry {
         if (execution == address(0)) {
             revert InvalidExecutionAddress();
         }
+
+        if (executions[execution] != address(0)) {
+            revert ExecutionAlreadyRegistered();
+        }
+
         executions[execution] = msg.sender;
         emit Registered(msg.sender, execution);
     }
 
     function addTransaction(bytes32 txHash) public {
         if (executions[msg.sender] == address(0)) {
-            revert UnathorizedToAddTx();
+            revert UnauthorizedToAddTx();
         }
 
         if (txHash == bytes32(0)) {
@@ -40,8 +47,12 @@ contract Registry {
 
         IExecution execution = IExecution(msg.sender);
 
-        if (!execution.isExecuted()) {
-            revert NotExecuted();
+        try execution.isExecuted() returns (bool executed) {
+            if (!executed) {
+                revert NotExecuted();
+            }
+        } catch {
+            revert InvalidExecutionAddress();
         }
 
         transactions[txHash] = execution.getTx();

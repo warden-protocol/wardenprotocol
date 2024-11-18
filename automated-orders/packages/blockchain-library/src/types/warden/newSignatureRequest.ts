@@ -1,3 +1,6 @@
+import { Bytes } from "web3";
+
 export interface INewSignatureRequest {
-  signedData: Uint8Array;
+  signedData: Bytes;
+  dataForSigning: Bytes;
 }

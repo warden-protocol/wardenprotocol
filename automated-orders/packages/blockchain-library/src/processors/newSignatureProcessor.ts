@@ -28,7 +28,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
-      await this.retryPolicy.execute(() => this.evm.broadcastTx(data.signedData));
+      await this.retryPolicy.execute(() => this.evm.broadcastTx(data.signedData, data.dataForSigning));
 
       return true;
     } catch (error) {

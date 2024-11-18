@@ -29,6 +29,13 @@ import { privateKeyToAccount, signTransaction } from 'viem/accounts';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
+import {
+  toHex,
+  serializeTransaction,
+  TransactionSerializable,
+  parseTransaction,
+  parseSignature,
+ } from "viem";
 
 export class EvmClient {
   signer: Hex;
@@ -66,8 +73,20 @@ export class EvmClient {
     }
   }
 
-  public async broadcastTx(): Promise<void> {
-    // TODO: implementation
+  public async broadcastTx(signedTransaction: Hex, dataForSigning: Hex): Promise<void> {
+    const hexTrans = toHex(utils.bytesToUint8Array(dataForSigning));
+    const ethRequest = parseTransaction(hexTrans);
+    const hexSign = toHex(utils.bytesToUint8Array(signedTransaction));
+    const signature = parseSignature(hexSign);
+    
+    const serialized = serializeTransaction(
+      ethRequest as TransactionSerializable,
+      signature,
+    );
+
+    
+    const promi = this.web3.eth.sendSignedTransaction(serialized);
+    await promi.then();
   }
 
   public async *pollEvents<T>(

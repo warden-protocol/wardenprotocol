@@ -43,8 +43,7 @@ export class WardenClient {
 
   private *yieldNewRequests(signRequests: ISignRequest[]) {
     for (const request of signRequests) {
-      const signedData = this.tryConvertBytesToUint8Array(request.result)
-      if (utils.empty(signedData)) {
+      if (!request.result) {
         utils.logError(`Signed data is empty, but request "${request.id}" is fulfilled`)
         continue;
       }
@@ -55,7 +54,8 @@ export class WardenClient {
       }
 
       yield {
-        signedData: signedData!,
+        signedData: request.result!,
+        dataForSigning: request.dataForSigning!,
       };
 
       this.seenCache.set(request.id, request.id);

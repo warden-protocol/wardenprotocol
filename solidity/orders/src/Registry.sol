@@ -9,6 +9,7 @@ error UnauthorizedToAddTx();
 error TxAlreadyAdded();
 error InvalidHash();
 error NotExecuted();
+error Executed();
 error ExecutionAlreadyRegistered();
 
 event Registered(address indexed creator, address indexed execution);
@@ -26,6 +27,14 @@ contract Registry is ReentrancyGuard {
 
         if (executions[execution] != address(0)) {
             revert ExecutionAlreadyRegistered();
+        }
+        
+        try IExecution(execution).isExecuted() returns (bool executed) {
+            if (executed) {
+                revert Executed();
+            }
+        } catch {
+            revert InvalidExecutionAddress();
         }
 
         executions[execution] = msg.sender;

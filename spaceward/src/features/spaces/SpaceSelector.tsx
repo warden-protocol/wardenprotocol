@@ -6,45 +6,46 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import AddressAvatar from "@/components/AddressAvatar";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useQueryHooks } from "@/hooks/useClient";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useEffect, useMemo } from "react";
-import { usePublicClient, useSendTransaction, useWriteContract } from "wagmi";
+import { usePublicClient, useWriteContract } from "wagmi";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { assertChain, handleContractWrite } from "@/utils/contract";
-import { parseEther } from "viem";
-import { env } from "@/env";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import { useSpacesByOwner } from "@/hooks/query/warden";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function SpaceSelector() {
-	const { isReady, useSpacesByOwner } = useQueryHooks();
-	const { address } = useAddressContext();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 	const { spaceId, setSpaceId } = useSpaceId();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
 	const client = usePublicClient();
+	const queryClient = useQueryClient();
 
 	async function sendMsgNewSpace() {
 		await assertChain(chains, connectedChain, setChain);
 
 		try {
-			const receipt = handleContractWrite(
+			await handleContractWrite(
 				() => writeContractAsync({
 					address: PRECOMPILE_WARDEN_ADDRESS,
 					abi: wardenPrecompileAbi,
 					functionName: "newSpace",
 					args: [BigInt(0), BigInt(0), BigInt(0), BigInt(0), []],
+					account: address,
+					connector: wallet?.wagmiConnector,
 				}),
 				client,
 			);
 
-			console.log("receipt", receipt);
+			queryClient.invalidateQueries({ queryKey: spacesQuery.queryKey });
 		} catch (e) {
 			console.error("error", e);
 		}
@@ -53,23 +54,20 @@ export function SpaceSelector() {
 	const spacesQuery = useSpacesByOwner({
 		request: {
 			owner: address,
-		},
-		options: {
-			enabled: isReady && Boolean(address),
-		},
+		}
 	});
 
-	const count = spacesQuery.data?.spaces.length ?? 0;
+	const count = spacesQuery.data?.[0].length ?? 0;
 
 	const currentSpaceIncluded = useMemo(
 		() =>
-			spacesQuery.data?.spaces.some(
+			spacesQuery.data?.[0].some(
 				(space) => space.id.toString() === spaceId,
 			),
 		[spaceId, spacesQuery.data],
 	);
 
-	const nextSpace = spacesQuery.data?.spaces[0]?.id;
+	const nextSpace = spacesQuery.data?.[0][0]?.id;
 	const ready = spacesQuery.status === "success";
 
 	useEffect(() => {
@@ -135,7 +133,7 @@ export function SpaceSelector() {
 				<div className=" max-h-[324px] scroll-visible">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">
-							{spacesQuery.data?.spaces.map((space) => (
+							{spacesQuery.data?.[0].map((space) => (
 								<div
 									key={space.id.toString()}
 									onClick={() =>

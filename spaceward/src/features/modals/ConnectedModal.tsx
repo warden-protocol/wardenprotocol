@@ -5,11 +5,10 @@ import { SessionTypes } from "@walletconnect/types";
 import { useModalState } from "./state";
 import { ModalParams } from "./types";
 import AddressAvatar from "@/components/AddressAvatar";
+import { env } from "@/env";
 
 export default function ConnectedModal(props: ModalParams<{}>) {
-	const { w, activeSessions } = useWeb3Wallet(
-		"wss://relay.walletconnect.org",
-	);
+	const { w, activeSessions } = useWeb3Wallet(env.wcWalletRelayUrl);
 
 	const { setData: setModal } = useModalState();
 
@@ -37,6 +36,7 @@ export default function ConnectedModal(props: ModalParams<{}>) {
 
 				{Object.entries(sessionsByApp).map(([url, sessions]) => {
 					const [s] = sessions;
+					console.log(s.peer.metadata.icons);
 
 					return (
 						<div key={url}>
@@ -49,7 +49,7 @@ export default function ConnectedModal(props: ModalParams<{}>) {
 									<img
 										className="w-10 h-10 stroke-current shrink-0 rounded-[10px]"
 										src={
-											s.peer.metadata.icons[0].startsWith(
+											s.peer.metadata.icons[0]?.startsWith(
 												"http",
 											)
 												? s.peer.metadata.icons[0]

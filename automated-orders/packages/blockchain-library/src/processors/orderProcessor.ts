@@ -1,7 +1,7 @@
-import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
+import { logError, logInfo, logWarning, serialize } from '@warden-automated-orders/utils';
 
 import { EvmClient } from '../clients/evm.js';
-import { OrderCreated } from '../types/order/events.js';
+import { IOrderRegistered } from '../types/order/events.js';
 import {
   CanExecuteOrderAbi,
   ExecuteAbi,
@@ -11,55 +11,63 @@ import {
 } from '../types/order/functions.js';
 import { Processor } from './processor.js';
 
-export class OrderProcessor extends Processor<OrderCreated> {
+export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
   constructor(
     private evmos: EvmClient,
     private ethereum: EvmClient,
-    private supportedChainIds: Map<bigint, undefined>,
-    generator: () => AsyncGenerator<OrderCreated, unknown, unknown>,
+    private supportedChainIds: Set<bigint>,
+    private retryAttempts: number,
+    generator: () => AsyncGenerator<[string, IOrderRegistered], unknown, unknown>,
   ) {
     super(generator);
   }
 
-  async handle(event: OrderCreated): Promise<boolean> {
-    try {
-      logInfo(`New Signature request ${serialize(event)}`);
+  async handle(event: [string, IOrderRegistered], retryAttempt?: number): Promise<void> {
+    if (retryAttempt && retryAttempt >= this.retryAttempts) {
+      return;
+    }
 
-      const exist = await this.evmos.isContract(event.returnValues.order);
+    try {
+      const [key, data] = event;
+
+      logInfo(`New order: ${serialize(event)}`);
+
+      const exist = await this.evmos.isContract(data.args.execution);
 
       if (!exist) {
-        this.evmos.events.delete(this.evmos.getEventId(event));
+        logWarning(`Order is not a contract: ${key}`);
 
-        return true;
+        this.evmos.events.delete(key);
+
+        return;
       }
 
-      const isExecuted = await this.evmos.callView<boolean>(event.returnValues.order, IsExecutedOrderAbi, []);
+      const isExecuted = await this.evmos.callView<boolean>(data.args.execution, IsExecutedOrderAbi, []);
 
       if (isExecuted) {
-        this.evmos.events.delete(this.evmos.getEventId(event));
+        logWarning(`Order was already executed: ${key}`);
 
-        return true;
+        this.evmos.events.delete(key);
+
+        return;
       }
 
-      const canExecute = await this.evmos.callView<boolean>(event.returnValues.order, CanExecuteOrderAbi, []);
+      const canExecute = await this.evmos.callView<boolean>(data.args.execution, CanExecuteOrderAbi, []);
 
       if (!canExecute) {
-        // TODO: cache and try check later
-        return true;
+        logWarning(`Order is not ready yet: ${key}`);
+
+        return;
       }
 
-      logInfo(`${canExecute}`);
-
-      const orderDetails = await this.evmos.callView<IExecutionData>(event.returnValues.order, ExecutionDataAbi, []);
-
-      logInfo(`${serialize(orderDetails)}`);
+      const orderDetails = await this.evmos.callView<IExecutionData>(data.args.execution, ExecutionDataAbi, []);
 
       if (!this.supportedChainIds.has(orderDetails.chainId)) {
-        this.evmos.events.delete(this.evmos.getEventId(event));
+        this.evmos.events.delete(key);
 
         logError(`Chain id = ${orderDetails.chainId} is not supported`);
 
-        return true;
+        return;
       }
 
       const nonce = await this.ethereum.getNextNonce(orderDetails.caller);
@@ -67,34 +75,24 @@ export class OrderProcessor extends Processor<OrderCreated> {
         orderDetails.caller,
         orderDetails.to,
         orderDetails.data,
-        nonce,
         orderDetails.value,
       );
 
-      if (!gas.gasLimit || !gas.feeData) {
-        return true;
-      }
-
-      const executed = await this.evmos.sendTransaction(event.returnValues.order, ExecuteAbi, [
+      await this.evmos.sendTransaction(data.args.execution, ExecuteAbi, [
         nonce,
         gas.gasLimit,
-        gas.feeData.gasPrice,
-        gas.feeData.maxPriorityFeePerGas,
-        gas.feeData.maxFeePerGas,
+        gas.gasPrice,
+        gas.maxPriorityFeePerGas,
+        gas.maxFeePerGas,
       ]);
 
-      if (!executed) {
-        return true;
-      }
-
-      // TODO: 3 attempts to execute()
-      this.evmos.events.delete(this.evmos.getEventId(event));
-
-      return true;
+      this.evmos.events.delete(key);
     } catch (error) {
-      logError(`New Signature error ${serialize(event)}. Error: ${error}, Stack trace: ${error.stack}`);
+      logError(`New order error ${serialize(event)}. Error: ${error}, Stack trace: ${error.stack}`);
 
-      return false;
+      retryAttempt = retryAttempt ?? 1;
+
+      await this.handle(event, ++retryAttempt);
     }
   }
 }

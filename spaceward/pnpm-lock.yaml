@@ -191,6 +191,9 @@ importers:
       '@uidotdev/usehooks':
         specifier: ^2.4.1
         version: 2.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@wagmi/core':
+        specifier: 2.10.4
+        version: 2.10.4(@tanstack/query-core@4.36.1)(@types/react@18.3.12)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(viem@2.12.0(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
       '@walletconnect/auth-client':
         specifier: ^2.1.2
         version: 2.1.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -209,6 +212,9 @@ importers:
       '@wardenprotocol/wardenjs':
         specifier: file:../wardenjs
         version: file:../wardenjs(@tanstack/react-query@4.36.1(react-dom@18.3.1(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1))(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@web3-onboard/common':
+        specifier: 2.4.2
+        version: 2.4.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@web3-onboard/core':
         specifier: ^2.23.0
         version: 2.23.0(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
@@ -221,9 +227,9 @@ importers:
       '@web3-onboard/transaction-preview':
         specifier: ^2.1.2
         version: 2.1.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
-      '@web3-onboard/wagmi':
-        specifier: ^2.0.1
-        version: 2.0.1(@tanstack/query-core@4.36.1)(@types/react@18.3.12)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
+      '@web3-onboard/walletconnect':
+        specifier: ^2.6.1
+        version: 2.6.1(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -254,6 +260,12 @@ importers:
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
         version: 0.3.0(esbuild@0.21.5)
+      eventemitter3:
+        specifier: 5.0.1
+        version: 5.0.1
+      joi:
+        specifier: ^17.13.3
+        version: 17.13.3
       js-sha256:
         specifier: ^0.10.1
         version: 0.10.1
@@ -326,6 +338,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.14)
+      unstorage:
+        specifier: 1.12.0
+        version: 1.12.0(idb-keyval@6.2.1)
       use-debounce:
         specifier: ^9.0.4
         version: 9.0.4(react@18.3.1)
@@ -4817,8 +4832,8 @@ packages:
   '@web3-onboard/transaction-preview@2.1.2':
     resolution: {integrity: sha512-PshzgNU6f33okV0Hie05OLerLxmvJM4cfCAs0R7ghKIhS/ix5/4Ia4LUEWU2i9pPC9kQJYoYeKdyQr/17whiRQ==}
 
-  '@web3-onboard/wagmi@2.0.1':
-    resolution: {integrity: sha512-j/WQ85MaMJzf0MbRMlPh/7xt72u7F6dUifhwjnlr6yWtl56PB5fNgc/LLD0ax923Zd0cRujUvkw4LW8OtRUxbg==}
+  '@web3-onboard/walletconnect@2.6.1':
+    resolution: {integrity: sha512-GNpsOwnZ+fN62JqZq+KIRR7lR1/ZsPXPjaF4r2lcw8sfbYpalR+Vi25DHQSklwzGqNFHrP5oNkroTS7ICoI1cw==}
 
   abi-wan-kanabi@2.2.3:
     resolution: {integrity: sha512-JlqiAl9CPvTm5kKG0QXmVCWNWoC/XyRMOeT77cQlbxXWllgjf6SqUmaNqFon72C2o5OSZids+5FvLdsw6dvWaw==}
@@ -6698,6 +6713,9 @@ packages:
   jiti@2.3.3:
     resolution: {integrity: sha512-EX4oNDwcXSivPrw2qKH2LB5PoFxEvgtv2JgwW0bU858HoLQ+kutSvjLMUqBd0PeJYEinLWhoI9Ol0eYMqj/wNQ==}
     hasBin: true
+
+  joi@17.13.3:
+    resolution: {integrity: sha512-otDA4ldcIx+ZXsKHWmp0YizCweVRZG96J10b0FevjfuncLO1oX59THoAmHkNubYJ+9gWsYsp5k8v4ib6oDv1fA==}
 
   joi@17.9.1:
     resolution: {integrity: sha512-FariIi9j6QODKATGBrEX7HZcja8Bsh3rfdGYy/Sb65sGlZWK/QWesU1ghk7aJWDj95knjXlQfSmzFSPPkLVsfw==}
@@ -16723,18 +16741,29 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@web3-onboard/wagmi@2.0.1(@tanstack/query-core@4.36.1)(@types/react@18.3.12)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)':
+  '@web3-onboard/walletconnect@2.6.1(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
-      '@wagmi/core': 2.10.4(@tanstack/query-core@4.36.1)(@types/react@18.3.12)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(viem@2.12.0(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(zod@3.23.8)
+      '@walletconnect/ethereum-provider': 2.13.0(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10)
       '@web3-onboard/common': 2.4.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
-      eventemitter3: 4.0.7
       joi: 17.9.1
-      viem: 2.12.0(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
+      rxjs: 7.8.1
     transitivePeerDependencies:
-      - '@tanstack/query-core'
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
       - '@types/react'
+      - '@upstash/redis'
+      - '@vercel/kv'
       - bufferutil
-      - immer
+      - encoding
+      - ioredis
       - react
       - typescript
       - utf-8-validate
@@ -18969,6 +18998,14 @@ snapshots:
   jiti@1.21.6: {}
 
   jiti@2.3.3: {}
+
+  joi@17.13.3:
+    dependencies:
+      '@hapi/hoek': 9.3.0
+      '@hapi/topo': 5.1.0
+      '@sideway/address': 4.1.5
+      '@sideway/formula': 3.0.1
+      '@sideway/pinpoint': 2.0.0
 
   joi@17.9.1:
     dependencies:

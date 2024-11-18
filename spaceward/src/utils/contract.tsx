@@ -1,5 +1,7 @@
+import { ToastActionElement } from "@/components/ui/toast";
 import { toast, ToasterToast } from "@/components/ui/use-toast";
 import { useSetChain } from "@web3-onboard/react";
+import { isHex } from "viem";
 import { waitForTransactionReceipt } from "viem/actions";
 import type { useWriteContract } from "wagmi";
 
@@ -23,23 +25,42 @@ export async function assertChain(
 	connectedChain: SetChainReturnType[0]["connectedChain"],
 	setChain: SetChainReturnType[1],
 ) {
-	if (!chains?.[0]?.id) {
+	const chainId = chains?.[0]?.id;
+
+	if (!chainId) {
 		return false;
 	}
 
 	try {
-		if (connectedChain?.id !== chains[0].id) {
+		console.log(connectedChain?.id, chainId);
+		if (connectedChain?.id !== chainId) {
 			if (
 				!(await setChain({
-					chainId: chains[0].id,
+					chainId,
 				}))
 			) {
-				throw new Error("Failed to switch chain");
+				throw new Error("Failed to switch chain; if problem persists, visit chainlist to manually add network to your wallet", {
+					cause: { chainId },
+				});
 			}
 		}
 
 		return true;
 	} catch (e) {
+		const chainId: `0x${string}` | undefined = (e as any)?.cause?.chainId;
+
+		if (isHex(chainId)) {
+			const id = parseInt(chainId.slice(2), 16);
+			let toastResult: ReturnType<typeof toast>;
+
+			toastResult = toast({
+				title: "Error",
+				description:
+					(e as any)?.message ?? "An unexpected error has occured",
+				action: <a href={`https://chainlist.org/chain/${id}`} target="_blank" onClick={() => toastResult.dismiss()}>ChainList</a>,
+				duration: 999999,
+			});
+		}
 		console.error("error", e);
 		throw e;
 	}

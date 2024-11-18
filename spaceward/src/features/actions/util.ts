@@ -4,10 +4,12 @@ import {
 	serializeTransaction,
 	TransactionSerializable,
 	parseSignature,
+	toBytes,
 } from "viem";
+import { fromBech32 } from "@cosmjs/encoding";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
-import type { QueryClient } from "@tanstack/react-query";
+import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
@@ -19,7 +21,9 @@ import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { isUint8Array } from "@/lib/utils";
 import type { QueuedAction } from "./hooks";
 import { prepareTx } from "../modals/util";
-import { fromBech32 } from "@cosmjs/encoding";
+import { readContractQueryKey } from "wagmi/query";
+import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
+import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 
 export type GetStatus = (
 	client: Awaited<ReturnType<typeof getClient>>,
@@ -31,14 +35,20 @@ export type GetStatus = (
 	value?: any;
 }>;
 
+const getStatusDefault = async () => ({
+	pending: false,
+	error: false,
+	done: true,
+});
+
 export const getActionHandler = ({
 	action,
 	call,
-	snapRequestId,
-	walletConnectRequestId,
-	walletConnectTopic,
+	wc,
+	snap,
 }: QueuedAction) => {
 	let getStatus: GetStatus;
+	const queryKeys: QueryKey[] = [];
 
 	if (!action?.result) {
 		throw new Error("invalid action result");
@@ -49,7 +59,9 @@ export const getActionHandler = ({
 	switch (typeUrl) {
 		case warden.warden.v1beta3.MsgNewSignRequestResponse.typeUrl: {
 			const { id } =
-				warden.warden.v1beta3.MsgNewSignRequestResponse.decode(value);
+				warden.warden.v1beta3.MsgNewSignRequestResponse.decode(
+					toBytes(value),
+				);
 
 			getStatus = async (client) => {
 				const { signRequest } =
@@ -92,10 +104,7 @@ export const getActionHandler = ({
 											),
 									  )
 									? "cosmos"
-									: // fixme
-										(walletConnectRequestId &&
-												walletConnectTopic) ||
-										  snapRequestId
+									: wc || snap
 										? "eth-raw"
 										: undefined,
 							value: signRequest?.signedData,
@@ -112,8 +121,19 @@ export const getActionHandler = ({
 			break;
 		}
 		case warden.warden.v1beta3.MsgNewKeyRequestResponse.typeUrl: {
+			queryKeys.push(
+				readContractQueryKey({
+					chainId: env.evmChainId,
+					address: PRECOMPILE_WARDEN_ADDRESS,
+					abi: wardenPrecompileAbi,
+					functionName: "keysBySpaceId",
+				}),
+			);
+
 			const { id } =
-				warden.warden.v1beta3.MsgNewKeyRequestResponse.decode(value);
+				warden.warden.v1beta3.MsgNewKeyRequestResponse.decode(
+					toBytes(value),
+				);
 
 			getStatus = async (client) => {
 				const { keyRequest } =
@@ -148,22 +168,31 @@ export const getActionHandler = ({
 			break;
 		}
 
+		case warden.warden.v1beta3.MsgUpdateSpaceResponse.typeUrl:
 		case warden.warden.v1beta3.MsgAddSpaceOwnerResponse.typeUrl:
-		case warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse.typeUrl:
-		case warden.warden.v1beta3.MsgUpdateSpaceResponse.typeUrl: {
-			getStatus = async () => ({
-				pending: false,
-				error: false,
-				done: true,
-			});
+		case warden.warden.v1beta3.MsgRemoveSpaceOwnerResponse.typeUrl: {
+			const _spaceId = BigInt((call?.args as any)?.[0] ?? 0);
 
+			if (_spaceId) {
+				queryKeys.push(
+					readContractQueryKey({
+						chainId: env.evmChainId,
+						address: PRECOMPILE_WARDEN_ADDRESS,
+						abi: wardenPrecompileAbi,
+						functionName: "spaceById",
+						args: [_spaceId],
+					}),
+				);
+			}
+
+			getStatus = getStatusDefault;
 			break;
 		}
 		default:
 			throw new Error(`action type not implemented: ${typeUrl}`);
 	}
 
-	return { getStatus };
+	return { getStatus, queryKeys };
 };
 
 export const handleEthRaw = async ({
@@ -183,45 +212,47 @@ export const handleEthRaw = async ({
 	const type =
 		typeof action.keyThemeIndex !== "undefined"
 			? "key"
-			: (["walletConnectRequestId", "walletConnectTopic"] as const).every(
-						(key) => typeof action[key] !== "undefined",
-				  )
+			: action.wc
 				? "wc"
-				: typeof action.snapRequestId
+				: action.snap
 					? "snap"
 					: undefined;
 
 	switch (type) {
 		case "wc":
+			if (!action.wc) {
+				throw new Error("walletconnect params not set");
+			}
+
 			if (!w) {
 				throw new Error("walletconnect not initialized");
 			}
 
 			return await w
 				.respondSessionRequest({
-					topic: action.walletConnectTopic!,
+					topic: action.wc.topic,
 					response: {
 						jsonrpc: "2.0",
-						id: action.walletConnectRequestId!,
+						id: action.wc.requestId,
 						result: toHex(value),
 					},
 					// fixme
 				})
 				.then(() => true);
 		case "snap":
+			if (!action.snap) {
+				throw new Error("snap params not set");
+			}
+
 			const keyringSnapClient = new KeyringSnapRpcClient(
 				env.snapOrigin,
 				window.ethereum,
 			);
 
 			return await keyringSnapClient
-				.approveRequest(
-					action.snapRequestId!,
-					{
-						result: toHex(value),
-					},
-					// fixme
-				)
+				.approveRequest(action.snap.requestId, {
+					result: toHex(value),
+				})
 				.then(() => true);
 		case "key": // should never happen in this case
 		default:
@@ -323,8 +354,7 @@ export const handleCosmos = async ({
 		value,
 		signDoc,
 		pubkey,
-		walletConnectRequestId,
-		walletConnectTopic,
+		wc
 	} = action;
 
 	if (!chainName || !signDoc || !pubkey) {
@@ -351,17 +381,17 @@ export const handleCosmos = async ({
 		throw new Error("unexpected signature length");
 	}
 
-	if (walletConnectRequestId && walletConnectTopic) {
+	if (wc) {
 		if (!w) {
 			throw new Error("walletconnect not initialized");
 		}
 
 		return await w
 			.respondSessionRequest({
-				topic: walletConnectTopic,
+				topic: wc.topic,
 				response: {
 					jsonrpc: "2.0",
-					id: walletConnectRequestId,
+					id: wc.requestId,
 					result: {
 						signed: signDoc,
 						signature: {

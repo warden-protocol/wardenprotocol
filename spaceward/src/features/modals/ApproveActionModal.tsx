@@ -9,10 +9,12 @@ import { Assets } from "@/features/walletconnect/assets";
 import { ModalParams } from "./types";
 import { useModalState } from "./state";
 import clsx from "clsx";
+import { usePublicClient } from "wagmi";
+import { env } from "@/env";
 
 export default function ApproveModal({ hidden }: ModalParams<{}>) {
 	const { w, sessionRequests, activeSessions } = useWeb3Wallet(
-		"wss://relay.walletconnect.org",
+		env.wcWalletRelayUrl,
 	);
 
 	const eth = useEthereumTx();
@@ -22,6 +24,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 	const { resolvedTheme } = useTheme();
 	const [request /*, ...awaitingRequests*/] = sessionRequests;
 	const session = activeSessions.find((s) => s.topic === request?.topic);
+	const client = usePublicClient();
 
 	if (!request) {
 		setModal({ type: undefined, params: undefined });
@@ -43,7 +46,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 							target.onerror = null;
 						}}
 						src={
-							session?.peer.metadata.icons[0].startsWith("http")
+							session?.peer.metadata.icons[0]?.startsWith("http")
 								? session?.peer.metadata.icons[0]
 								: `${session?.peer.metadata.url}${session?.peer.metadata.icons[0]}`
 						}
@@ -78,6 +81,7 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 									eth,
 									cosm,
 									req,
+									client,
 								});
 
 								if (close) {

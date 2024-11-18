@@ -1,47 +1,32 @@
 import type { StdSignDoc } from "@keplr-wallet/types";
 import { env } from "@/env";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { useActionHandler } from "@/features/actions/hooks";
-import { useQueryHooks } from "./useClient";
 import { useSpaceId } from "./useSpaceId";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
-import { shieldStringify } from "@/utils/shield";
 import { fromBech32 } from "@cosmjs/encoding";
-import { fromBytes } from "viem";
-import { DEFAULT_EXPRESSION } from "@/features/intents/hooks";
+import { fromBytes, toBytes } from "viem";
+import { useSpaceById } from "./query/warden";
+import { KeyModel } from "./query/types";
 
 /** @deprecated todo rename */
 export function useKeychainSigner() {
-	const { isReady, useSpaceById, useTemplateById } = useQueryHooks();
 	const spaceId = useSpaceId().spaceId;
 
 	const space = useSpaceById({
 		request: {
 			id: BigInt(spaceId ?? 0)
 		},
-		options: {
-			enabled: !!spaceId && isReady
-		}
-	}).data?.space;
+	}).data;
 
-	const approveSignTemplate = useTemplateById({
-		request: {
-			id: BigInt(space?.approveSignTemplateId ?? 0)
-		},
-		options: {
-			enabled: !!space?.approveSignTemplateId && isReady
-		}
-	}).data?.template;
-
-	const { add } = useActionHandler(
+	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
 		PRECOMPILE_WARDEN_ADDRESS,
 		wardenPrecompileAbi,
 		"newSignRequest"
 	);
 
 	async function signAmino(
-		key: Pick<QueryKeyResponse, "key">,
+		key: Pick<KeyModel, "key">,
 		signDoc: StdSignDoc,
 		chainName: string,
 		options?: {
@@ -62,9 +47,6 @@ export function useKeychainSigner() {
 				"Missing aminoAnalyzerContract. Can't use Osmosis transactions.",
 			);
 		}
-		const expectedApproveExpression = approveSignTemplate?.expression
-			? shieldStringify(approveSignTemplate.expression)
-			: DEFAULT_EXPRESSION;
 
 		const analyzer = fromBytes(fromBech32(env.aminoAnalyzerContract).data, "hex");
 
@@ -83,10 +65,10 @@ export function useKeychainSigner() {
 				space.nonce,
 				BigInt(0),
 				expectedApproveExpression,
-				DEFAULT_EXPRESSION
+				expectedRejectExpression
 			],
 			{
-				pubkey: key.key.publicKey,
+				pubkey: toBytes(key.key.publicKey),
 				chainName,
 				signDoc,
 				wc: options?.wc,

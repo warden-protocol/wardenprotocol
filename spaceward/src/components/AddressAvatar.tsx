@@ -1,4 +1,3 @@
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import {
 	Tooltip,
@@ -11,6 +10,7 @@ import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { useMemo } from "react";
 import clsx from "clsx";
+import { useConnectWallet } from "@web3-onboard/react";
 
 export default function AddressAvatar({
 	seed,
@@ -65,7 +65,9 @@ export default function AddressAvatar({
 		theme.shape3Color,
 	]);
 
-	const { address: myAddress } = useAddressContext();
+	const [{ wallet }] = useConnectWallet();
+	const myAddress = wallet?.accounts[0].address;
+
 	return (
 		<span
 			className={clsx(

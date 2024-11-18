@@ -11,7 +11,14 @@
   ],
   "scripts": {
     "build": "yarn lint && tsc --build --force --verbose",
-    "lint": "eslint --ext .ts --ignore-path .eslintignore ."
+    "lint": "eslint --ext .ts --ignore-path .eslintignore .",
+    "build:blockchain-lib": "yarn workspace @warden-automated-orders/blockchain build",
+    "build:utils": "yarn workspace @warden-automated-orders/utils build",
+    "build:libs": "yarn build:utils && yarn build:blockchain-lib",
+    "build:scheduler": "yarn workspace @warden-automated-orders/scheduler build",
+    "build:relayer": "yarn workspace @warden-automated-orders/relayer build",
+    "scheduler": "yarn workspace @warden-automated-orders/scheduler start",
+    "relayer": "yarn workspace @warden-automated-orders/relayer start"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

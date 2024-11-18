@@ -24,6 +24,9 @@
       "path": "./packages/utils-library"
     },
     {
+      "path": "./packages/blockchain-library"
+    },
+    {
       "path": "./packages/relayer"
     },
     {

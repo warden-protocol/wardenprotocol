@@ -1,4 +1,4 @@
-import { AbiFunctionFragment, Bytes } from 'web3';
+import { AbiFunction, Hex } from 'viem';
 
 export enum SignRequestStatus {
   /** SIGN_REQUEST_STATUS_UNSPECIFIED - The request is missing the status field. */
@@ -16,7 +16,7 @@ export enum SignRequestStatus {
 };
 
 export interface IPageRequest {
-  key: Bytes;
+  key: Hex;
   offset: bigint | undefined;
   limit: bigint | undefined;
   countTotal: boolean;
@@ -32,15 +32,15 @@ export interface ISignRequest {
   id: bigint;
   creator: string;
   keyId: bigint;
-  dataForSigning: Bytes;
+  dataForSigning: Hex;
   status: number;
-  result: Bytes;
-  encryptionKey: Bytes;
+  result: Hex;
+  encryptionKey: Hex;
   deductedKeychainFees: ICoin[];
 };
 
 export interface IPageResponse {
-  nextKey: Bytes;
+  nextKey: Hex;
   total: bigint;
 };
 
@@ -49,7 +49,7 @@ export interface ISignRequestResponse {
   pageResponse: IPageResponse;
 };
 
-export const SignRequestsAbi: AbiFunctionFragment = {
+export const SignRequestsAbi: AbiFunction = {
   type: "function",
   name: "signRequests",
   inputs: [

@@ -6,7 +6,7 @@ import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { LRUCache } from 'lru-cache'
 import { EvmClient } from './evm.js';
 import { IPageRequest, ISignRequest, ISignRequestResponse, SignRequestsAbi, SignRequestStatus } from '../types/warden/functions.js';
-import web3, { Bytes } from 'web3';
+import { hexToBigInt } from 'viem';
 
 const { delay } = utils;
 
@@ -65,7 +65,7 @@ export class WardenClient {
   private async querySignRequests(nextKey: Uint8Array | undefined, limit: bigint): Promise<ISignRequestResponse> {
     const pagination: IPageRequest = nextKey
       ? { key: nextKey, limit: limit, offset: undefined, countTotal: false, reverse: false }
-      : { offset: BigInt(0), limit: limit, key: new Uint8Array(), countTotal: false, reverse: false };
+      : { offset: BigInt(0), limit: limit, key: null, countTotal: false, reverse: false };
 
     // TODO AT: Need to add filter by SignRequest type, when implemented
     const response = await this.evm.callView<ISignRequestResponse>(

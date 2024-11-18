@@ -61,6 +61,41 @@ export function signRequestStatusToJSON(object: SignRequestStatus): string {
       return "UNRECOGNIZED";
   }
 }
+/** BroadcastType specifies how the transaction should be broadcasted. */
+export enum BroadcastType {
+  /** BROADCAST_TYPE_DISABLED - The signature should be broadcasted manually by the caller. */
+  BROADCAST_TYPE_DISABLED = 0,
+  /** BROADCAST_TYPE_AUTOMATIC - The signature should be automatically broadcasted by an offchain relayer. */
+  BROADCAST_TYPE_AUTOMATIC = 1,
+  UNRECOGNIZED = -1,
+}
+export const BroadcastTypeSDKType = BroadcastType;
+export const BroadcastTypeAmino = BroadcastType;
+export function broadcastTypeFromJSON(object: any): BroadcastType {
+  switch (object) {
+    case 0:
+    case "BROADCAST_TYPE_DISABLED":
+      return BroadcastType.BROADCAST_TYPE_DISABLED;
+    case 1:
+    case "BROADCAST_TYPE_AUTOMATIC":
+      return BroadcastType.BROADCAST_TYPE_AUTOMATIC;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BroadcastType.UNRECOGNIZED;
+  }
+}
+export function broadcastTypeToJSON(object: BroadcastType): string {
+  switch (object) {
+    case BroadcastType.BROADCAST_TYPE_DISABLED:
+      return "BROADCAST_TYPE_DISABLED";
+    case BroadcastType.BROADCAST_TYPE_AUTOMATIC:
+      return "BROADCAST_TYPE_AUTOMATIC";
+    case BroadcastType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 /**
  * SignRequest is the request from a user (creator) to a Keychain to sign a
  * message (data_for_signing).
@@ -84,6 +119,8 @@ export interface SignRequest {
   encryptionKey: Uint8Array;
   /** Amount of fees deducted during new sign request */
   deductedKeychainFees: Coin[];
+  /** Broadcast type of the sign request, indicating how the transaction should be broadcasted. */
+  broadcastType: BroadcastType;
 }
 export interface SignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.SignRequest";
@@ -112,6 +149,8 @@ export interface SignRequestAmino {
   encryption_key?: string;
   /** Amount of fees deducted during new sign request */
   deducted_keychain_fees: CoinAmino[];
+  /** Broadcast type of the sign request, indicating how the transaction should be broadcasted. */
+  broadcast_type?: BroadcastType;
 }
 export interface SignRequestAminoMsg {
   type: "/warden.warden.v1beta3.SignRequest";
@@ -134,6 +173,7 @@ export interface SignRequestSDKType {
   reject_reason?: string;
   encryption_key: Uint8Array;
   deducted_keychain_fees: CoinSDKType[];
+  broadcast_type: BroadcastType;
 }
 function createBaseSignRequest(): SignRequest {
   return {
@@ -145,7 +185,8 @@ function createBaseSignRequest(): SignRequest {
     signedData: undefined,
     rejectReason: undefined,
     encryptionKey: new Uint8Array(),
-    deductedKeychainFees: []
+    deductedKeychainFees: [],
+    broadcastType: 0
   };
 }
 export const SignRequest = {
@@ -177,6 +218,9 @@ export const SignRequest = {
     }
     for (const v of message.deductedKeychainFees) {
       Coin.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.broadcastType !== 0) {
+      writer.uint32(80).int32(message.broadcastType);
     }
     return writer;
   },
@@ -214,6 +258,9 @@ export const SignRequest = {
         case 9:
           message.deductedKeychainFees.push(Coin.decode(reader, reader.uint32()));
           break;
+        case 10:
+          message.broadcastType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -231,7 +278,8 @@ export const SignRequest = {
       signedData: isSet(object.signedData) ? bytesFromBase64(object.signedData) : undefined,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined,
       encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array(),
-      deductedKeychainFees: Array.isArray(object?.deductedKeychainFees) ? object.deductedKeychainFees.map((e: any) => Coin.fromJSON(e)) : []
+      deductedKeychainFees: Array.isArray(object?.deductedKeychainFees) ? object.deductedKeychainFees.map((e: any) => Coin.fromJSON(e)) : [],
+      broadcastType: isSet(object.broadcastType) ? broadcastTypeFromJSON(object.broadcastType) : -1
     };
   },
   toJSON(message: SignRequest): JsonSafe<SignRequest> {
@@ -249,6 +297,7 @@ export const SignRequest = {
     } else {
       obj.deductedKeychainFees = [];
     }
+    message.broadcastType !== undefined && (obj.broadcastType = broadcastTypeToJSON(message.broadcastType));
     return obj;
   },
   fromPartial(object: Partial<SignRequest>): SignRequest {
@@ -262,6 +311,7 @@ export const SignRequest = {
     message.rejectReason = object.rejectReason ?? undefined;
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
     message.deductedKeychainFees = object.deductedKeychainFees?.map(e => Coin.fromPartial(e)) || [];
+    message.broadcastType = object.broadcastType ?? 0;
     return message;
   },
   fromAmino(object: SignRequestAmino): SignRequest {
@@ -291,6 +341,9 @@ export const SignRequest = {
       message.encryptionKey = bytesFromBase64(object.encryption_key);
     }
     message.deductedKeychainFees = object.deducted_keychain_fees?.map(e => Coin.fromAmino(e)) || [];
+    if (object.broadcast_type !== undefined && object.broadcast_type !== null) {
+      message.broadcastType = object.broadcast_type;
+    }
     return message;
   },
   toAmino(message: SignRequest): SignRequestAmino {
@@ -308,6 +361,7 @@ export const SignRequest = {
     } else {
       obj.deducted_keychain_fees = message.deductedKeychainFees;
     }
+    obj.broadcast_type = message.broadcastType === 0 ? undefined : message.broadcastType;
     return obj;
   },
   fromAminoMsg(object: SignRequestAminoMsg): SignRequest {

@@ -11,28 +11,17 @@ import TabItem from '@theme/TabItem';
 
 The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing **Ethereum Virtual Machine (EVM)** contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm) and written in **Solidity**.
 
-This guide explains how to create and deploy a simple "Hello World" Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
+This guide explains how to create and deploy a Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview). You'll deploy a simple counter contract using [Foundry](https://book.getfoundry.sh)'s toolset.
 
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
 
-- Install Node.js and npm by running the following command:
+- [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running the following command:
 
   ```bash
-  brew install node
-  ```
-
-- Install Truffle globally:
-
-  ```bash
-  npm install -g truffle
-  ```
-
-- Install HDWalletProvider:
-
-  ```bash
-  npm install @truffle/hdwallet-provider
+  curl -L https://foundry.paradigm.xyz | bash \ 
+  foundryup
   ```
 
 ## 1. Prepare the chain
@@ -152,249 +141,208 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
     cd warden-smart-contract
     ```
 
-2. Initialize a new Truffle project:
+2. Initialize a new Foundry project:
 
     ```bash
-    truffle init
+    forge init --no-commit
     ```
 
 ## 3. Create a smart contract
 
-In the `/contracts` directory, create a new file `HelloWarden.sol` with the following contents:
+After you initialize a Foundry project, the script will automatically create a sample contract named `Counter` in the `/src` directory:
 
-```solidity title="/warden-smart-contract/contracts/HelloWarden.sol"
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+```sol title="/warden-smart-contract/src/Counter.sol"
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
 
-contract HelloWarden {
-    string public message;
+contract Counter {
+    uint256 public number;
 
-    constructor() {
-        message = "Hello, Warden!";
+    // A function for setting a new number
+    function setNumber(uint256 newNumber) public {
+        number = newNumber;
     }
 
-    function setMessage(string memory newMessage) public {
-        message = newMessage;
-    }
-
-    function getMessage() public view returns (string memory) {
-        return message;
+    // A function for incrementing the number
+    function increment() public {
+        number++;
     }
 }
 ```
 
-## 4. Configure Truffle
+This is a counter contract with two functions: for changing the `number` variable and for incrementing it.
 
-1. In the `/warden-smart-contract` directory, find the `truffle-config.js` file and update it with this code:
+In the following steps, we're going to deploy this contract without modification.
+
+## 4. Compile and deploy the contract
+
+1. Export your private key from [Step 1](#1-prepare-the-chain):
+
+   ```bash
+   export PRIVATE_KEY=my-private-key
+   ```
+   
+   :::warning
+   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions.
+   :::
+
+1. Export the RPC URL. Specify the standard localhost address or Chiado's EVM endpoint:
 
    <Tabs>
    <TabItem value="local" label="Local node">
-   ```javascript title="/warden-smart-contract/truffle-config.js"
-   const HDWalletProvider = require("@truffle/hdwallet-provider");
-   
-   // Keep your private key confidential, DO NOT commit to version control!
-   const PRIVATE_KEY = "your_private_key";
-   
-   // The standard localhost address and the node's RPC port
-   const RPC_URL = "http://127.0.0.1:8545";
-   
-   module.exports = {
-     networks: {
-       warden: {
-         provider: function() {
-           return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
-         },
-         network_id: 1337, // The first number from the chain ID
-         gas: 5500000,
-         gasPrice: 20000000000 // award
-       },
-     },
-     compilers: {
-       solc: {
-       version: "0.8.20",
-       }
-     }
-   };
+   ```bash
+   export RPC_URL=http://127.0.0.1:8545 
    ```
    </TabItem>
    <TabItem value="chiado" label="Chiado">
-   ```javascript title="/warden-smart-contract/truffle-config.js"
-   const HDWalletProvider = require("@truffle/hdwallet-provider");
-   
-   // Keep your private key confidential, DO NOT commit to version control!
-   const PRIVATE_KEY = "your_private_key";
-   
-   // Chiado's EVM endpoint
-   const RPC_URL = "https://evm.chiado.wardenprotocol.org"; 
-   
-   module.exports = {
-     networks: {
-       warden: {
-         provider: function() {
-           return new HDWalletProvider(PRIVATE_KEY, RPC_URL);
-         },
-         network_id: 10010, // The first number from the chain ID
-         gas: 5500000,
-         gasPrice: 20000000000 // award
-       },
-     },
-     compilers: {
-       solc: {
-       version: "0.8.20",
-       }
-     }
-   };
+   ```bash
+   export RPC_URL=https://evm.chiado.wardenprotocol.org
    ```
    </TabItem>
    </Tabs>
 
-2. Adjust the code and make sure all values are correct:
+   :::tip
+   If you're running a local chain and deploying the contract on different machines, you need to specify your chain's host address. To get it, just execute `wardend status` on the machine hosting the chain.
+   :::
 
-   - `your_private_key`: Replace it with your actual private key from [Step 1](#1-prepare-the-chain).
-   - `RPC_URL`: If you're running a local chain and deploying the contract on the same machine, use the standard localhost address. Otherwise, check the chain's host address by executing `wardend status` on the machine hosting the chain. For Chiado, specify its EVM endpoint: `https://evm.chiado.wardenprotocol.org`.
-   - `network_id`: Specify the first number from the chain ID. For example, if your local chain ID is `warden_1337-1`, the network ID is `1337`. The correct value for Chiado is `10010`. Alternatively, you can just use `"*"` to match any chain ID.
-   - If needed, adjust the gas limit and price – `gas` and `gasPrice`.
+3. To compile and deploy the contract, run this command:
 
-## 5. Create a migration script
-
-In `/migrations`, create a new file `2_deploy_hello_warden.js` with the following contents:
-
-```javascript title="/warden-smart-contract/migrations/2_deploy_hello_warden.js"
-const HelloWarden = artifacts.require("HelloWarden");
-
-module.exports = function(deployer) {
-  deployer.deploy(HelloWarden);
-};
-```
-
-## 6. Compile the contract
-
-To compile your contract, run this command:
-
-```bash
-truffle compile
-```
-
-You'll see an output similar to the following:
-
-```bash
-Compiling your contracts...
-===========================
-> Compiling ./contracts/HelloWarden.sol
-> Artifacts written to /build/contracts
-> Compiled successfully using:
-   - solc: 0.8.20+commit.c7dfd78e.Emscripten.clang
-```
-
-## 7. Deploy the contract
-
-If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
+   ```bash
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Counter.sol:Counter
+   ```
    
-To deploy the contract, run this:
-
-```bash
-truffle migrate --network warden
-```
-
-You should see the following output, confirming the successful deployment.
-
-```bash
-Compiling your contracts...
-===========================
-> Everything is up to date, there is nothing to compile.
-
-
-Starting migrations...
-======================
-> Network name:    'warden'
-> Network id:      1337
-> Block gas limit: 4294967295 (0xffffffff)
-
-
-2_deploy_hello_warden.js
-========================
-
-   Deploying 'HelloWarden'
-   -----------------------
-   > transaction hash:    0x14ed62fcb105a3b5d315738767f288101f4db2d13ee4924a217090080abe0fef
-   > Blocks: 0            Seconds: 0
-   > contract address:    0x2AAbb1a9b8EdE05f183FfD90A324ce02A349F6e5
-   > block number:        2993
-   > block timestamp:     1725617534
-   > account:             0x6Ea8aC1673402989e7B653aE4e83b54173719C30
-   > balance:             9999999.83499999999011708
-   > gas used:            2750000 (0x29f630)
-   > gas price:           20 gwei
-   > value sent:          0 ETH
-   > total cost:          0.055 ETH
-
-   > Saving artifacts
-   -------------------------------------
-   > Total cost:               0.055 ETH
-
-Summary
-=======
-> Total deployments:   1
-> Final cost:          0.055 ETH
-```
-
-:::note
-Due to Evmos default settings, this log displays prices in ETH and gwei. However, the contract itself uses Warden's currency – WARD, denominated in award.
-:::
-
-## 8. Interact with the contract
-
-1. To interact with your contract, open the Truffle console:
+   You'll see an output similar to the following:
    
    ```bash
-   truffle console --network warden
+   Deployer: 0x6Ea8aC1673402989e7B653aE4e83b54173719C30
+   Deployed to: 0x2AAbb1a9b8EdE05f183FfD90A324ce02A349F6e5
+   Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
+   ```
+
+4. Note down the value returned as `Deployed to` – that's your **contract address**.
+
+## 5. Verify the deployment
+
+1. Export your contract address as a variable by running the following command. Specify the address returned in the previous step.
+
+   ```bash
+   export CONTRACT_ADDRESS=my-contract-address
+   ```
+
+2. Verify that the contract has been deployed on this address:
+
+   ```bash
+   cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
+   ```
+
+   :::note
+   The [`cast code`](https://book.getfoundry.sh/reference/cast/cast-code) Foundry command allows you to get the bytecode of a contract.
+   :::
+
+   You'll see an output similar to the following:
+
+   ```bash
+   0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60006001820160ba57634e487b7160e01b600052601160045260246000fd5b506001019056fea26469706673582212201c88540d2739bb0e4f6179275ef6ff63cf1c34ed53189691f9dd0033f4382a0264736f6c634300081c0033
+   ```
+
+## 6. Interact with the contract
+
+Now you can interact with the contract: adjust and increment the counter number.
+   
+1. Get the current number:
+
+   ```bash
+   cast call $CONTRACT_ADDRESS "number()" --rpc-url $RPC_URL
    ```
    
-2. Retrieve the deployed instance of the contract:
-   
-   ```javascript
-   let instance = await HelloWarden.deployed();
+   :::note
+   The [`cast call`](https://book.getfoundry.sh/reference/cast/cast-call) Foundry command allows you to read data from the chain. In this example, it calls the `number()` getter function: the Solidity compiler automatically generated it from the `number` variable in the sample contract.
+   :::
+
+   This will return a hex value representing 0:
+
+   ```bash
+   0x0000000000000000000000000000000000000000000000000000000000000000
    ```
 
-3. Retrieve the stored message by calling the `getMessage()` function in your contract:
-   
-   ```javascript
-   let message = await instance.getMessage();
+2. Set a new number:
+
+   ```bash
+   cast send $CONTRACT_ADDRESS "setNumber(uint256)" 42 \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
    ```
 
-4. Print the message:
+   :::note
+   The [`cast send`](https://book.getfoundry.sh/reference/cast/cast-send) Foundry command allows you to send transactions. Note that it requires signing a transaction with your private key. In this example, `cast send` calls the `setNumber()` function of the sample contract.
+   :::    
 
-   ```javascript
-   console.log(message);
+   The output will include `status: 1 (success)` indicating that the transaction was successful. You'll also see the block number and hash, the gas used, the transaction hash, and other details:
+
+   ```bash
+   blockHash               0x1e755e7f98361a33b81f98018b75f6aa935b8070a61bf4656991551b657d1c96
+   blockNumber             14640
+   contractAddress         
+   cumulativeGasUsed       43494
+   effectiveGasPrice       8
+   from                    0x6Ea8aC1673402989e7B653aE4e83b54173719C30
+   gasUsed                 43494
+   logs                    []
+   logsBloom               0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+   root
+   # highlight-next-line                    
+   status                  1 (success)
+   transactionHash         0xaed1d70baf7d277cad64935146ec46fc6c3842c6d965c88371a75c458fff7533
+   transactionIndex        0
+   type                    2
+   blobGasPrice            
+   blobGasUsed             
+   authorizationList       
+   to                      0xb9dE7e835C44D6301A8EEF6658720198a17b0B3A
    ```
 
-   The console log should print `Hello, Warden!`
+3. Verify the number change:
 
-5. Update the message in the contract with `setMessage()`:
-   
-   ```javascript
-   await instance.setMessage("Hello, EVM on Warden!");
+   ```bash
+   cast call $CONTRACT_ADDRESS "number()" --rpc-url $RPC_URL
    ```
 
-6. Call `getMessage()` again to retrieve the updated message:
-   
-   ```javascript
-   message = await instance.getMessage();
-   ```
-
-7. Print the updated message:
-   
-   ```javascript
-   console.log(message);
-   ```
-   The console log should print `Hello, EVM on Warden!`
-
-8. To exit the console, run this:
+   This should return a hex value representing 42:
 
    ```
-   .exit
+   0x000000000000000000000000000000000000000000000000000000000000002a
    ```
 
-   If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
+4. Increment the number:
 
-   Happy coding! 🚀
+   ```bash
+   cast send $CONTRACT_ADDRESS "increment()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+
+   In the output, you'll see the transaction details again, including the status code `1`, indicating success.
+
+6. Verify the increment:
+
+   ```bash
+   cast call $CONTRACT_ADDRESS "number()" --rpc-url $RPC_URL
+   ```
+
+   This should return a hex value representing 43
+
+   ```
+   0x000000000000000000000000000000000000000000000000000000000000002b
+   ```
+
+## Troubleshooting
+
+- If your transaction fails, try the following:
+
+  - Verify that your private key is correct. See [Step 1](#1-prepare-the-chain).
+  - Make sure you have enough funds in your account, as shown in [Step 1](#1-prepare-the-chain). If funds are insufficient, you may need to [run a local chain](/operate-a-node/run-a-local-chain) from scratch or use [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
+  - Verify your contract address, as shown in [Step 5](#5-verify-the-deployment).
+
+If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
+
+Happy coding! 🚀

@@ -16,6 +16,7 @@ import {
 	Web3WalletTypes,
 } from "@walletconnect/web3wallet";
 import { createGlobalState } from "./state";
+import { IndexedDb as Storage } from "@/utils/custom-kv-storage";
 
 interface Web3WalletState {
 	w: IWeb3Wallet | null;
@@ -58,6 +59,9 @@ export function useWeb3Wallet(relayUrl: string) {
 			projectId: "4fda584de3c28e97dfa5847023e337c8",
 			relayUrl,
 			logger: "info",
+			storage: new Storage(
+				"WALLET_CONNECT_V2_INDEXED_DB_WARDEN_INTERNAL",
+			),
 		});
 
 		Web3Wallet.init({

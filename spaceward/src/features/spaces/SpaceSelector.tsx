@@ -17,6 +17,7 @@ import { assertChain, handleContractWrite } from "@/utils/contract";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import { useSpacesByOwner } from "@/hooks/query/warden";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function SpaceSelector() {
 	const [{ wallet }] = useConnectWallet();
@@ -26,12 +27,13 @@ export function SpaceSelector() {
 	const { writeContractAsync } = useWriteContract();
 	const [{ chains, connectedChain }, setChain] = useSetChain();
 	const client = usePublicClient();
+	const queryClient = useQueryClient();
 
 	async function sendMsgNewSpace() {
 		await assertChain(chains, connectedChain, setChain);
 
 		try {
-			const receipt = handleContractWrite(
+			await handleContractWrite(
 				() => writeContractAsync({
 					address: PRECOMPILE_WARDEN_ADDRESS,
 					abi: wardenPrecompileAbi,
@@ -43,7 +45,7 @@ export function SpaceSelector() {
 				client,
 			);
 
-			console.log("receipt", receipt);
+			queryClient.invalidateQueries({ queryKey: spacesQuery.queryKey });
 		} catch (e) {
 			console.error("error", e);
 		}

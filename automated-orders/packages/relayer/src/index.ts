@@ -1,6 +1,6 @@
 import { sepolia } from '@wagmi/core/chains';
 import { EvmClient, NewSignatureProcessor, WardenClient } from '@warden-automated-orders/blockchain';
-import { logError, logInfo } from '@warden-automated-orders/utils';
+import { logError } from '@warden-automated-orders/utils';
 import { config } from './config/config.js';
 import { defineChain } from 'viem';
 

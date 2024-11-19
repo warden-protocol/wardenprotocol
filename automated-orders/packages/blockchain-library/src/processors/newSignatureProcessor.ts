@@ -6,7 +6,8 @@ import { Processor } from './processor.js';
 import { circuitBreaker, ConsecutiveBreaker, ExponentialBackoff, handleAll, IPolicy, retry, wrap } from 'cockatiel';
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
-  retryPolicy: any;
+  private retryPolicy: IPolicy;
+
   constructor(
     private evm: EvmClient,
     generator: () => AsyncGenerator<INewSignatureRequest, unknown, unknown>,

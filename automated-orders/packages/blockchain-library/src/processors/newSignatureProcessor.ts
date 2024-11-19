@@ -30,9 +30,13 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
-      const transaction = await this.registryClient.getTransaction(data.transactionHash);
+      const transaction = await this.retryPolicy.execute(
+        async () => await this.registryClient.getTransaction(data.transactionHash)
+      );
       if(transaction) {
-        await this.retryPolicy.execute(() => this.evm.broadcastTx(data.transactionHash, data.signature));
+        await this.retryPolicy.execute(
+          () => this.evm.broadcastTx(data.transactionHash, data.signature)
+        );
       }
     } catch (error) {
       logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error.stack}`);

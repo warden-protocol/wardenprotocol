@@ -19,10 +19,14 @@ import {
   Hex,
   Log,
   PublicClient,
+  TransactionSerializable,
   createPublicClient,
   createWalletClient,
   decodeEventLog,
   encodeFunctionData,
+  parseTransaction,
+  parseSignature,
+  serializeTransaction,
 } from 'viem';
 import { privateKeyToAccount, signTransaction } from 'viem/accounts';
 
@@ -66,8 +70,23 @@ export class EvmClient {
     }
   }
 
-  public async broadcastTx(): Promise<void> {
-    // TODO: implementation
+  public async broadcastTx(rawTransaction: Hex, transactionSignature: Hex) : Promise<void> {
+    const ethRequest = parseTransaction(rawTransaction);
+    const signature = parseSignature(transactionSignature);
+
+    const serialized = serializeTransaction(
+      ethRequest as TransactionSerializable,
+      signature,
+    );
+
+    const wallet = createWalletClient({
+      transport: http(this.configuration.rpcURL),
+      key: this.configuration.callerPrivateKey,
+    });
+
+    await wallet.sendRawTransaction({
+      serializedTransaction: serialized,
+    });
   }
 
   public async *pollEvents<T>(

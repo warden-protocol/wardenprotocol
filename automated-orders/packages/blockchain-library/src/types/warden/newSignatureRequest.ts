@@ -1,3 +1,6 @@
+import { Hex } from "viem";
+
 export interface INewSignatureRequest {
-  signedData: Uint8Array;
+  signature: Hex;
+  transactionHash: Hex;
 }

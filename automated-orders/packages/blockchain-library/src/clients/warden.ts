@@ -23,8 +23,6 @@ export class WardenClient {
     private evm: EvmClient
   ) { }
 
-  private readonly precompileAddress = '0x0000000000000000000000000000000000000900';
-
   private readonly entriesPerRequest = 100;
   private readonly seenCache: LRUCache<bigint, bigint> = new LRUCache<bigint, bigint>({
     max: this.entriesPerRequest * 2,
@@ -75,7 +73,7 @@ export class WardenClient {
 
     // TODO AT: Need to add filter by SignRequest type, when implemented
     const response = await this.evm.callView<ISignRequestResponse>(
-      this.precompileAddress, 
+      this.configuration.wardenPrecompileAddress, 
       SignRequestsAbi, 
       [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED])
 

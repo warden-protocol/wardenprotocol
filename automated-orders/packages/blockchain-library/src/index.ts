@@ -9,7 +9,14 @@ export {
     ISignRequest, 
     IPageRequest,
     ISignRequestResponse, 
-    SignRequestsAbi
+    SignRequestsAbi,
 } from './types/warden/functions.js';
 
 export { WardenClient } from './clients/warden.js';
+
+export {
+    AddTransactionAbi ,
+    ExecutionsAbi ,
+    RegisterAbi,
+    TransactionsAbi,
+} from './types/registry/functions.js';

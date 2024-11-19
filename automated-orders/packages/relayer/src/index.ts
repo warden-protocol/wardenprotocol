@@ -3,6 +3,7 @@ import { EvmClient, NewSignatureProcessor, WardenClient } from '@warden-automate
 import { logError } from '@warden-automated-orders/utils';
 import { config } from './config/config.js';
 import { defineChain } from 'viem';
+import { WardenRegistryClient } from '@warden-automated-orders/blockchain/dist/clients/registry.js';
 
 async function main() {
   const evmosChain = defineChain({
@@ -30,8 +31,12 @@ async function main() {
   );
 
   const warden = new WardenClient({
-    rpcURL: config.WARDEN_RPC_URL,
+    wardenPrecompileAddress: '0x0000000000000000000000000000000000000900',
     pollingIntervalMsec: config.WARDEN_POLLING_INTERVAL_MSEC,
+  }, evmos);
+
+  const registry = new WardenRegistryClient({
+    contractAddress: config.EVMOS_REGISTRY_ADDRESS,
   }, evmos);
 
   const ethereum = new EvmClient(
@@ -43,6 +48,7 @@ async function main() {
 
   const processor = new NewSignatureProcessor(
     ethereum,
+    registry,
     warden.pollSignatureRequests.bind(warden),
   ).start();
 

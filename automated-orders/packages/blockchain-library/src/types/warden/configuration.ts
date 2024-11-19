@@ -1,4 +1,4 @@
 export interface IWardenConfiguration {
-  rpcURL: string;
   pollingIntervalMsec: number;
+  wardenPrecompileAddress: string;
 }

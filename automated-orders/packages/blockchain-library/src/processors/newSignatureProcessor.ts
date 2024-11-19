@@ -4,12 +4,14 @@ import { EvmClient } from '../clients/evm.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { Processor } from './processor.js';
 import { circuitBreaker, ConsecutiveBreaker, ExponentialBackoff, handleAll, IPolicy, retry, wrap } from 'cockatiel';
+import { WardenRegistryClient } from '../clients/registry.js';
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   private retryPolicy: IPolicy;
 
   constructor(
     private evm: EvmClient,
+    private registryClient: WardenRegistryClient,
     generator: () => AsyncGenerator<INewSignatureRequest, unknown, unknown>,
   ) {
     super(generator);
@@ -28,8 +30,10 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
 
-      // TODO AT: Replace transaction hash with the transaction itself
-      await this.retryPolicy.execute(() => this.evm.broadcastTx(data.transactionHash, data.signature));
+      const transaction = await this.registryClient.getTransaction(data.transactionHash);
+      if(transaction) {
+        await this.retryPolicy.execute(() => this.evm.broadcastTx(data.transactionHash, data.signature));
+      }
     } catch (error) {
       logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error.stack}`);
     }

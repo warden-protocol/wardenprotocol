@@ -8,4 +8,5 @@ export interface Env {
   EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS: number;
   EVMOS_EVENTS_CACHE_SIZE: number;
   ETHEREUM_NODE_RPC: string;
+  WARDEN_EVM_CHAIN_ID: number;
 }

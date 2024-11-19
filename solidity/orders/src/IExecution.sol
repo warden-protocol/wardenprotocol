@@ -29,7 +29,7 @@ interface IExecution {
      * @param gasPrice gasPrice parameter in eth transaction.
      * @param maxPriorityFeePerGas maxPriorityFeePerGas parameter in eth transaction.
      * @param maxFeePerGas maxFeePerGas parameter in eth transaction.
-     * @return A boolean value indicating parameter action was created.
+     * @return A boolean value indicating parameter action was created and transaction hash.
      */
     function execute(
         uint256 nonce,
@@ -39,7 +39,7 @@ interface IExecution {
         uint256 maxFeePerGas
     )
         external
-        returns (bool);
+        returns (bool, bytes32);
 
     /**
      * @dev Returns the list of intended callers.
@@ -63,4 +63,10 @@ interface IExecution {
      * @return executionData Data that scheduler needs to call execute method.
      */
     function executionData() external returns (ExecutionData memory executionData);
+
+    /**
+     * @dev Returns builded unsigned transaction.
+     * @return tx Unsigned transaction.
+     */
+    function getTx() external returns (bytes memory tx);
 }

@@ -5,6 +5,7 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
+import { Registry } from "./Registry.sol";
 
 enum OrderType {
     Basic,
@@ -25,13 +26,13 @@ contract OrderFactory is Ownable {
     mapping(address orderAddress => address orderCreator) public orders;
 
     // Registry of IExecution contracts
-    address public registry;
+    Registry public immutable REGISTRY;
 
     // Scheduler address
     address public scheduler;
 
-    constructor(address _registry, address _scheduler, address owner) Ownable(owner) {
-        if (_registry == address(0)) {
+    constructor(address registry, address _scheduler, address owner) Ownable(owner) {
+        if (registry == address(0)) {
             revert InvalidRegistryAddress();
         }
 
@@ -39,7 +40,7 @@ contract OrderFactory is Ownable {
             revert InvalidSchedulerAddress();
         }
 
-        registry = _registry;
+        REGISTRY = Registry(registry);
         scheduler = _scheduler;
     }
 
@@ -77,9 +78,11 @@ contract OrderFactory is Ownable {
         internal
         returns (address)
     {
-        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler);
+        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler, address(REGISTRY));
         orders[address(basicOrder)] = msg.sender;
-        // TODO: register in regisry
+
+        REGISTRY.register(address(basicOrder));
+
         emit OrderCreated(msg.sender, OrderType.Basic, address(basicOrder));
 
         return address(basicOrder);

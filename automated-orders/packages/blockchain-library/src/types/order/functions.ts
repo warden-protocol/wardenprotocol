@@ -1,14 +1,14 @@
-import { AbiFunctionFragment, Bytes } from 'web3';
+import { AbiFunction, Hex } from 'viem';
 
 export interface IExecutionData {
-  caller: string;
-  to: string;
+  caller: Hex;
+  to: Hex;
   chainId: bigint;
-  data: Bytes;
+  data: Hex;
   value: bigint;
 }
 
-export const CanExecuteOrderAbi: AbiFunctionFragment = {
+export const CanExecuteOrderAbi: AbiFunction = {
   type: 'function',
   name: 'canExecute',
   inputs: [],
@@ -22,7 +22,7 @@ export const CanExecuteOrderAbi: AbiFunctionFragment = {
   stateMutability: 'view',
 };
 
-export const IsExecutedOrderAbi: AbiFunctionFragment = {
+export const IsExecutedOrderAbi: AbiFunction = {
   type: 'function',
   name: 'isExecuted',
   inputs: [],
@@ -36,7 +36,7 @@ export const IsExecutedOrderAbi: AbiFunctionFragment = {
   stateMutability: 'view',
 };
 
-export const ExecutionDataAbi: AbiFunctionFragment = {
+export const ExecutionDataAbi: AbiFunction = {
   type: 'function',
   name: 'executionData',
   inputs: [],
@@ -77,7 +77,7 @@ export const ExecutionDataAbi: AbiFunctionFragment = {
   stateMutability: 'view',
 };
 
-export const ExecuteAbi: AbiFunctionFragment = {
+export const ExecuteAbi: AbiFunction = {
   type: 'function',
   name: 'execute',
   inputs: [

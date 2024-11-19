@@ -1,13 +1,15 @@
-import { AbiEventFragment, EventLog } from 'web3';
+import { AbiEvent } from 'viem';
 
-export interface OrderRegistered extends EventLog {
-  returnValues: {
+import { IEvent } from '../evm/event.js';
+
+export interface IOrderRegistered extends IEvent {
+  args: {
     creator: string;
     execution: string;
   };
 }
 
-export const OrderRegisteredAbi: AbiEventFragment = {
+export const OrderRegisteredAbi: AbiEvent = {
   anonymous: false,
   inputs: [
     { indexed: true, internalType: 'address', name: 'creator', type: 'address' },

@@ -7,12 +7,14 @@ import { IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-war
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
 import { Types } from "./Types.sol";
+import { Registry } from "./Registry.sol";
 
 error ConditionNotMet();
 error ExecutedError();
 error Unauthorized();
 error InvalidPriceCondition();
 error InvalidScheduler();
+error InvalidRegistry();
 error InvalidSwapDataAmountIn();
 error InvalidSwapDataTo();
 error InvalidExpectedApproveExpression();
@@ -28,20 +30,31 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 
     IWarden private immutable WARDEN_PRECOMPILE;
     ISlinky private immutable SLINKY_PRECOMPILE;
+    Registry private immutable REGISTRY;
     Caller[] private _callers;
     CommonTypes.Coin[] private _coins;
     bool private _executed;
     address private _scheduler;
     address private _keyAddress;
+    bytes private _unsignedTx;
 
     // solhint-disable-next-line
-    constructor(Types.OrderData memory _orderData, CommonTypes.Coin[] memory maxKeychainFees, address scheduler) {
+    constructor(
+        Types.OrderData memory _orderData,
+        CommonTypes.Coin[] memory maxKeychainFees,
+        address scheduler,
+        address registry
+    ) {
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {
             _coins.push(maxKeychainFees[i]);
         }
 
         if (scheduler == address(0)) {
             revert InvalidScheduler();
+        }
+
+        if (registry == address(0)) {
+            revert InvalidRegistry();
         }
 
         if (_orderData.swapData.amountIn == 0) {
@@ -75,6 +88,8 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
         SLINKY_PRECOMPILE.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
 
+        REGISTRY = Registry(registry);
+
         orderData = _orderData;
         _scheduler = scheduler;
         _callers.push(Caller.Scheduler);
@@ -102,13 +117,13 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     )
         external
         nonReentrant
-        returns (bool)
+        returns (bool, bytes32)
     {
         if (msg.sender != _scheduler) {
             revert Unauthorized();
         }
 
-        if (_executed) {
+        if (isExecuted()) {
             revert ExecutedError();
         }
 
@@ -133,7 +148,10 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             })
         );
 
-        bytes memory signRequestInput = abi.encodePacked(keccak256(unsignedTx));
+        _unsignedTx = unsignedTx;
+
+        bytes32 txHash = keccak256(unsignedTx);
+        bytes memory signRequestInput = abi.encodePacked(txHash);
 
         _executed = WARDEN_PRECOMPILE.newSignRequest(
             orderData.signRequestData.keyId,
@@ -151,14 +169,16 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             emit Executed();
         }
 
-        return _executed;
+        REGISTRY.addTransaction(txHash);
+
+        return (_executed, txHash);
     }
 
     function callers() external view returns (Caller[] memory callersList) {
         return _callers;
     }
 
-    function isExecuted() external view returns (bool) {
+    function isExecuted() public view returns (bool) {
         return _executed;
     }
 
@@ -175,6 +195,14 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 
     function setByAIService(bytes calldata) external pure returns (bool success) {
         success = false;
+    }
+
+    function getTx() external view returns (bytes memory transaction) {
+        if (!isExecuted()) {
+            revert ExecutedError();
+        }
+
+        transaction = _unsignedTx;
     }
 
     function _packSwapData() internal view returns (bytes memory data) {

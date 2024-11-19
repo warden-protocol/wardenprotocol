@@ -31,8 +31,20 @@ import {
     InvalidTxTo,
     Unauthorized
 } from "../src/BasicOrder.sol";
+import {
+    ExecutionAlreadyRegistered,
+    InvalidExecutionAddress,
+    NewTx,
+    Registry,
+    Registered,
+    UnauthorizedToAddTx,
+    NotExecuted,
+    TxAlreadyAdded,
+    InvalidHash
+} from "../src/Registry.sol";
 
 struct TestData {
+    Registry registry;
     OrderFactory orderFactory;
     MockWardenPrecompile wardenPrecompile;
     MockSlinkyPrecompile mockSlinkyPrecompile;
@@ -48,6 +60,7 @@ contract BasicOrderTest is Test {
     Types.OrderData private _orderData;
     IExecution private _order;
     Caller[] private _expectedCallers;
+    bytes32 private _txHash;
 
     // @openzeppelin Ownable.sol
     error OwnableUnauthorizedAccount(address account);
@@ -57,19 +70,16 @@ contract BasicOrderTest is Test {
     address private constant RECEIVER = address(bytes20(bytes("0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db")));
 
     function beforeTestSetup(bytes4 testSelector) public pure returns (bytes[] memory beforeTestCalldata) {
-        if (testSelector == this.test_BasicOrder_StateBeforeExecution.selector) {
-            beforeTestCalldata = new bytes[](1);
-            beforeTestCalldata[0] =
-                abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.LTE);
-        } else if (testSelector == this.test_basicOrderRevertWhenConditionNotMet.selector) {
-            beforeTestCalldata = new bytes[](1);
-            beforeTestCalldata[0] =
-                abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.LTE);
-        } else if (testSelector == this.test_basicOrderRevertWhenUnauthorized.selector) {
-            beforeTestCalldata = new bytes[](1);
-            beforeTestCalldata[0] =
-                abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.LTE);
-        } else if (testSelector == this.test_basicOrderExecuteWhenPriceMovesDown.selector) {
+        if (
+            testSelector == this.test_BasicOrder_StateBeforeExecution.selector
+                || testSelector == this.test_basicOrderRevertWhenConditionNotMet.selector
+                || testSelector == this.test_basicOrderRevertWhenUnauthorized.selector
+                || testSelector == this.test_basicOrderRevertGetTxWhenNotExecuted.selector
+                || testSelector == this.test_basicOrderExecuteWhenPriceMovesDown.selector
+                || testSelector == this.test_RegistryRevertAddTransactionWhenInvalidHash.selector
+                || testSelector == this.test_RegistryRevertAddTransactionWhenNotExecuted.selector
+                || testSelector == this.test_RegistryRevertWhenAlreadyRegistered.selector
+        ) {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] =
                 abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.LTE);
@@ -77,6 +87,11 @@ contract BasicOrderTest is Test {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] =
                 abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.GTE);
+        } else if (testSelector == this.test_RegistryRevertAddTransactionWhenAlreadyAdded.selector) {
+            beforeTestCalldata = new bytes[](2);
+            beforeTestCalldata[0] =
+                abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.GTE);
+            beforeTestCalldata[1] = abi.encodeWithSignature("test_basicOrderExecuteWhenPriceMovesUp()");
         } else if (
             testSelector == this.test_BasicOrderRevertWhenInvalidScheduler.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidAmountIn.selector
@@ -92,11 +107,10 @@ contract BasicOrderTest is Test {
     }
 
     function setUp() public {
-        // placeholder till registry unimplemented
-        address registry = address(this);
+        Registry registry = new Registry();
         address scheduler = address(this);
         address owner = address(this);
-        OrderFactory orderFactory = new OrderFactory(registry, scheduler, owner);
+        OrderFactory orderFactory = new OrderFactory(address(registry), scheduler, owner);
 
         MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
@@ -112,6 +126,7 @@ contract BasicOrderTest is Test {
         wardenPrecompile.addKey(badKeyId, false);
 
         _testData = TestData({
+            registry: registry,
             orderFactory: orderFactory,
             wardenPrecompile: wardenPrecompile,
             mockSlinkyPrecompile: mockSlinkyPrecompile,
@@ -174,11 +189,16 @@ contract BasicOrderTest is Test {
 
         CommonTypes.Coin[] memory maxKeychainFees;
 
-        vm.expectEmit(true, true, false, false);
+        vm.expectEmit(true, false, false, false);
+        emit Registered(address(_testData.orderFactory), address(this));
 
+        vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
         address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+
+        assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
+        assertEq(address(this), _testData.orderFactory.orders(orderAddress));
 
         _order = IExecution(orderAddress);
     }
@@ -200,8 +220,13 @@ contract BasicOrderTest is Test {
 
     function test_basicOrderRevertWhenUnauthorized() public {
         vm.expectRevert(Unauthorized.selector);
-        vm.broadcast(address(0));
+        vm.prank(address(0));
         _order.execute(1, 1, 1, 1, 1);
+    }
+
+    function test_basicOrderRevertGetTxWhenNotExecuted() public {
+        vm.expectRevert(ExecutedError.selector);
+        _order.getTx();
     }
 
     function test_basicOrderExecuteWhenPriceMovesDown() public {
@@ -213,8 +238,11 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        bool executed = _order.execute(1, 1, 1, 1, 1);
+        vm.expectEmit(true, false, false, false);
+        emit NewTx(address(_order), bytes32(0));
 
+        (bool executed, bytes32 txHash) = _order.execute(1, 1, 1, 1, 1);
+        assertEq(_testData.registry.transactions(txHash), _order.getTx());
         assert(executed);
 
         assert(_order.isExecuted());
@@ -232,14 +260,18 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        bool executed = _order.execute(1, 1, 1, 1, 1);
+        vm.expectEmit(true, false, false, false);
+        emit NewTx(address(_order), bytes32(0));
 
+        (bool executed, bytes32 txHash) = _order.execute(1, 1, 1, 1, 1);
+        assertEq(_testData.registry.transactions(txHash), _order.getTx());
         assert(executed);
 
         assert(_order.isExecuted());
 
         vm.expectRevert(ExecutedError.selector);
         _order.execute(1, 1, 1, 1, 1);
+        _txHash = txHash;
     }
 
     function saveOrderData() public {
@@ -275,7 +307,7 @@ contract BasicOrderTest is Test {
 
         vm.expectRevert(InvalidScheduler.selector);
 
-        new BasicOrder(_orderData, maxKeychainFees, address(0));
+        new BasicOrder(_orderData, maxKeychainFees, address(0), address(_testData.registry));
     }
 
     function test_BasicOrderRevertWhenInvalidAmountIn() public {
@@ -365,5 +397,38 @@ contract BasicOrderTest is Test {
         factory.setScheduler(address(0));
 
         assertEq(factory.scheduler(), address(this));
+    }
+
+    function test_RegistryRevertWhenBadAddress() public {
+        vm.expectRevert(InvalidExecutionAddress.selector);
+        _testData.registry.register(address(0));
+    }
+
+    function test_RegistryRevertWhenAlreadyRegistered() public {
+        vm.expectRevert(ExecutionAlreadyRegistered.selector);
+        _testData.registry.register(address(_order));
+    }
+
+    function test_RegistryRevertAddTransactionWhenNotOrder() public {
+        vm.expectRevert(UnauthorizedToAddTx.selector);
+        _testData.registry.addTransaction(keccak256(bytes("test")));
+    }
+
+    function test_RegistryRevertAddTransactionWhenInvalidHash() public {
+        vm.expectRevert(InvalidHash.selector);
+        vm.prank(address(_order));
+        _testData.registry.addTransaction(bytes32(0));
+    }
+
+    function test_RegistryRevertAddTransactionWhenAlreadyAdded() public {
+        vm.expectRevert(TxAlreadyAdded.selector);
+        vm.prank(address(_order));
+        _testData.registry.addTransaction(_txHash);
+    }
+
+    function test_RegistryRevertAddTransactionWhenNotExecuted() public {
+        vm.expectRevert(NotExecuted.selector);
+        vm.prank(address(_order));
+        _testData.registry.addTransaction(keccak256(bytes("test")));
     }
 }

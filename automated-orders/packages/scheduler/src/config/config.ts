@@ -14,6 +14,7 @@ const schema: JSONSchemaType<Env> = {
     'EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS',
     'EVMOS_EVENTS_CACHE_SIZE',
     'ETHEREUM_NODE_RPC',
+    'WARDEN_EVM_CHAIN_ID'
   ],
   properties: {
     EVMOS_NODE_RPC: { type: 'string' },
@@ -25,6 +26,7 @@ const schema: JSONSchemaType<Env> = {
     EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS: { type: 'number', minimum: 1 },
     EVMOS_EVENTS_CACHE_SIZE: { type: 'number', minimum: 1 },
     ETHEREUM_NODE_RPC: { type: 'string' },
+    WARDEN_EVM_CHAIN_ID: { type: 'number' }
   },
 };
 

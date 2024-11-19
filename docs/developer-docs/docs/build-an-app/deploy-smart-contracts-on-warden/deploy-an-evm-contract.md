@@ -337,7 +337,7 @@ Now you can interact with the contract: adjust and increment the counter number.
 
 ## Troubleshooting
 
-- If your transaction fails, try the following:
+If your transaction fails, try the following:
 
   - Verify that your private key is correct. See [Step 1](#1-prepare-the-chain).
   - Make sure you have enough funds in your account, as shown in [Step 1](#1-prepare-the-chain). If funds are insufficient, you may need to [run a local chain](/operate-a-node/run-a-local-chain) from scratch or use [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
@@ -346,3 +346,13 @@ Now you can interact with the contract: adjust and increment the counter number.
 If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀
+
+## Next steps
+
+After deploying a basic EVM smart contract, start using Warden precompiles to call Warden modules in your contract. This will allow you to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on.
+
+See the following sections:
+
+- [Call Warden modules in your contract](/category/call-warden-modules-in-a-smart-contract)
+- [Solidity precompiles](/category/solidity-precompiles)
+

@@ -1,15 +1,8 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 3
 ---
 
 # Useful links
-
-## Overview
-
-The main part of any Omnichain Application is a smart contract that allows signing transactions and messages at any destination chain. This section contains links to resources you can use for deploying Omnichain Contracts of two types:
-
-- **EVM** contracts written in **Solidity**, charged by Evmos
-- **CosmWasm** contracts written in **Rust**
 
 ## EVM contracts
 

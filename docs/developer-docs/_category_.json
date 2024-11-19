@@ -1,11 +1,11 @@
 {
-  "position": 3,
-  "label": "Deploy smart contracts on Warden",
+  "position": 4,
+  "label": "Precompiles reference",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Deploy smart contracts on Warden"
+    "title": "Precompiles reference"
   },
   "customProps": {}
 }

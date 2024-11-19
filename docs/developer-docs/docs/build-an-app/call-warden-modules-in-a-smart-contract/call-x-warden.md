@@ -41,7 +41,7 @@ pragma solidity ^0.8.13;
 // An interface for interacting with the IWarden precompile
 interface IWarden {
 
-  // A function for fetching Space data by its ID
+  // A function for fetching a Space by ID
   function spaceById(uint64) external view returns (Space memory);
 
   // Data structure representing a Warden Space

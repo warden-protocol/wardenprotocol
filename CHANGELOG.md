@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
+### Features (non-breaking)
+* (relayer) #992 Added a service to relay transactions into Ethereum
+
 ### Consensus Breaking Changes
 * (precompiles) Add slinky precompiled contract
 * (x/warden) Add broadcastType to SignRequest

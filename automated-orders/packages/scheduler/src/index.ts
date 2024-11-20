@@ -25,10 +25,18 @@ async function main() {
     {
       rpcURL: config.EVMOS_NODE_RPC,
       eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
-      callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
+      fordefiConfiguration: {
+        awsKmsRegion: config.AWS_KMS_REGION,
+        awsKmsKeyId: config.AWS_KMS_KEY_ID,
+        fordefiAPIEndpoint: config.FORDEFI_API_ENDPOINT,
+        accessToken: config.FORDEFI_ACCESS_TOKEN,
+      },
+      vaultName: config.FORDEFI_VAULT_NAME,
     },
     evmosChain,
   );
+
+  await evmos.initializeSigner();
 
   const ethereum = new EvmClient(
     {

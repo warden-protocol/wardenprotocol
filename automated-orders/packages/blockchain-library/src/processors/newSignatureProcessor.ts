@@ -35,7 +35,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
       );
       if(transaction) {
         await this.retryPolicy.execute(
-          () => this.evm.broadcastTx(data.transactionHash, data.signature)
+          async () => await this.evm.broadcastTx(transaction, data.signature)
         );
       }
     } catch (error) {

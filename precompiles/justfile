@@ -4,15 +4,16 @@ tmpdir := `mktemp -d`
 all: abi
 
 _tools:
-  go install \
-    github.com/ethereum/go-ethereum/cmd/abigen
+    @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
+    go install github.com/ethereum/go-ethereum/cmd/abigen
 
 abi: _tools
-  cat {{git_root / "precompiles/act/abi.json"}} | jq '.abi' > {{tmpdir / "act.json"}}
-  abigen --abi {{tmpdir / "act.json"}}  --pkg act --type IAct --out {{git_root / "precompiles/act/IAct.go"}}
+  just generate_artifacts act IAct
+  just generate_artifacts warden IWarden
+  just generate_artifacts slinky ISlinky
 
-  cat {{git_root / "precompiles/warden/abi.json"}} | jq '.abi' > {{tmpdir / "warden.json"}}
-  abigen --abi {{tmpdir / "warden.json"}}  --pkg warden --type IWarden --out {{git_root / "precompiles/warden/IWarden.go"}}
-
-  cat {{git_root / "precompiles/slinky/abi.json"}} | jq '.abi' > {{tmpdir / "slinky.json"}}
-  abigen --abi {{tmpdir / "slinky.json"}}  --pkg slinky --type ISlinky --out {{git_root / "precompiles/slinky/ISlinky.go"}}
+generate_artifacts target type:
+  solc --evm-version paris --abi {{git_root}}/precompiles/{{target}}/{{type}}.sol -o {{tmpdir}} --overwrite
+  cat {{tmpdir}}/{{type}}.abi | jq '.' > {{git_root}}/precompiles/{{target}}/abi.json
+  abigen --abi {{git_root}}/precompiles/{{target}}/abi.json --pkg {{target}} --type {{type}} --out {{git_root}}/precompiles/{{target}}/{{type}}.go
+  cat {{tmpdir}}/{{type}}.abi | jq '. | {abi: .}' > {{git_root}}/precompiles/{{target}}/abi.json

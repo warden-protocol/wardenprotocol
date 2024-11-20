@@ -18,7 +18,7 @@ struct Key {
     uint64 id;
     uint64 spaceId;
     uint64 keychainId;
-    int32 keyType;
+    KeyType keyType;
     bytes publicKey;
     uint64 approveTemplateId;
     uint64 rejectTemplateId;
@@ -31,7 +31,7 @@ struct KeyResponse {
 
 struct AddressesResponse {
     string addressValue;
-    int32 addressType;
+    AddressType addressType;
 }
 
 struct KeyRequest {
@@ -39,8 +39,8 @@ struct KeyRequest {
     address creator;
     uint64 spaceId;
     uint64 keychainId;
-    int32 keyType;
-    int32 status;
+    KeyType keyType;
+    KeyRequestStatus status;
     string rejectReason;
     uint64 approveTemplateId;
     uint64 rejectTemplateId;
@@ -64,7 +64,7 @@ struct SignRequest {
     address creator;
     uint64 keyId;
     bytes dataForSigning;
-    int32 status;
+    SignRequestStatus status;
     bytes result;
     bytes encryptionKey;
     Types.Coin[] deductedKeychainFees;
@@ -82,10 +82,30 @@ struct Space {
     uint64 rejectSignTemplateId;
 }
 
+enum AddressType {
+    Unspecified,
+    Ethereum,
+    Osmosis
+}
+
 enum KeyType {
     Unspecified,
     EcdsaSecp256k1,
     EddsaEd25519
+}
+
+enum KeyRequestStatus {
+    Unspecified,
+    Pending,
+    Fulfilled,
+    Rejected
+}
+
+enum SignRequestStatus {
+    Unspecified,
+    Pending,
+    Fulfilled,
+    Rejected
 }
 
 enum BroadcastType {
@@ -381,7 +401,7 @@ interface IWarden {
     function keyRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
-        int32 status,
+        KeyRequestStatus status,
         uint64 spaceId
     ) external view returns(KeyRequest[] memory keyRequests, Types.PageResponse memory pageResponse);
 
@@ -417,7 +437,7 @@ interface IWarden {
     function signRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
-        int32 status,
+        SignRequestStatus status,
         BroadcastType broadcastType
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
@@ -465,7 +485,7 @@ interface IWarden {
     /// @param keychainId The keychain id
     /// @param approveTemplateId The approve template id
     /// @param rejectTemplateId The reject template id
-    event NewKey(uint64 indexed id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
+    event NewKey(uint64 indexed id, KeyType keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev RejectKeyRequest defines an Event emitted when a key request rejected.
     /// @param id The request id
@@ -523,7 +543,7 @@ interface IWarden {
     /// @param rejectTemplateId The reject template id
     /// @param keyType The key type
     /// @param creator The creator address
-    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, int32 keyType, address creator);
+    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, KeyType keyType, address creator);
 
     /// @dev NewSignRequest defines an Event emitted when a new signature request is created.
     /// @param id The id of the signature request

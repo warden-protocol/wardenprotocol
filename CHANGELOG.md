@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 * (precompiles) Add an ability for contracts to approve actions
+* (go-client) Return transaction hash from SendWaitTx
 
 ### Consensus Breaking Changes
 * (precompiles) Add slinky precompiled contract

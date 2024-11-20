@@ -59,10 +59,10 @@ importers:
         version: 8.10.0(eslint@8.45.0)
       eslint-plugin-prettier:
         specifier: ^4.2.1
-        version: 4.2.1(eslint-config-prettier@8.10.0)(eslint@8.45.0)(prettier@2.8.8)
+        version: 4.2.1(eslint-config-prettier@8.10.0(eslint@8.45.0))(eslint@8.45.0)(prettier@2.8.8)
       jest:
         specifier: ^29.5.0
-        version: 29.7.0
+        version: 29.7.0(@types/node@22.7.4)
       jest-in-case:
         specifier: ^1.0.2
         version: 1.0.2
@@ -80,7 +80,7 @@ importers:
         version: 5.0.10
       ts-jest:
         specifier: ^29.1.0
-        version: 29.2.5(@babel/core@7.25.7)(jest@29.7.0)(typescript@5.6.2)
+        version: 29.2.5(@babel/core@7.25.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.7))(jest@29.7.0(@types/node@22.7.4))(typescript@5.6.2)
       typescript:
         specifier: ^5.4.3
         version: 5.6.2
@@ -1396,8 +1396,8 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
 
-  cross-spawn@7.0.3:
-    resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
+  cross-spawn@7.0.6:
+    resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
   d@1.0.2:
@@ -1474,8 +1474,8 @@ packages:
   electron-to-chromium@1.5.32:
     resolution: {integrity: sha512-M+7ph0VGBQqqpTT2YrabjNKSQ2fEl9PVx6AK3N558gDH9NO8O6XN9SXXFWRo9u9PbEg/bWq+tjXQr+eXmxubCw==}
 
-  elliptic@6.5.7:
-    resolution: {integrity: sha512-ESVCtTwiA+XhY3wyh24QqRGBoP3rEdDUl3EDUUo9tft074fi19IrdpH7hLCMMP3CIj7jb3W96rn8lt/BqIlt5Q==}
+  elliptic@6.6.1:
+    resolution: {integrity: sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -1556,6 +1556,7 @@ packages:
   eslint@8.45.0:
     resolution: {integrity: sha512-pd8KSxiQpdYRfYa9Wufvdoct3ZPQQuVuU5O6scNgMuOMYuxvH0IGaYK0wUFjo4UYYQQCUndlXiMbnxopwvvTiw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -2893,8 +2894,8 @@ snapshots:
       '@babel/helpers': 7.25.7
       '@babel/parser': 7.25.7
       '@babel/template': 7.25.7
-      '@babel/traverse': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/traverse': 7.25.7
+      '@babel/types': 7.25.7
       convert-source-map: 1.9.0
       debug: 4.3.7
       gensync: 1.0.0-beta.2
@@ -2925,7 +2926,7 @@ snapshots:
 
   '@babel/generator@7.18.12':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.25.7
       '@jridgewell/gen-mapping': 0.3.5
       jsesc: 2.5.2
 
@@ -3104,7 +3105,7 @@ snapshots:
 
   '@babel/parser@7.18.11':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.25.7
 
   '@babel/parser@7.25.7':
     dependencies:
@@ -3727,7 +3728,7 @@ snapshots:
       '@babel/plugin-transform-unicode-escapes': 7.25.7(@babel/core@7.18.10)
       '@babel/plugin-transform-unicode-regex': 7.25.7(@babel/core@7.18.10)
       '@babel/preset-modules': 0.1.6(@babel/core@7.18.10)
-      '@babel/types': 7.23.6
+      '@babel/types': 7.25.7
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.18.10)
       babel-plugin-polyfill-corejs3: 0.5.3(@babel/core@7.18.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.18.10)
@@ -3742,7 +3743,7 @@ snapshots:
       '@babel/helper-plugin-utils': 7.25.7
       '@babel/plugin-proposal-unicode-property-regex': 7.18.6(@babel/core@7.18.10)
       '@babel/plugin-transform-dotall-regex': 7.25.7(@babel/core@7.18.10)
-      '@babel/types': 7.23.6
+      '@babel/types': 7.25.7
       esutils: 2.0.3
 
   '@babel/preset-typescript@7.25.7(@babel/core@7.18.10)':
@@ -3775,7 +3776,7 @@ snapshots:
       '@babel/helper-hoist-variables': 7.24.7
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.25.7
-      '@babel/types': 7.23.6
+      '@babel/types': 7.25.7
       debug: 4.3.7
       globals: 11.12.0
     transitivePeerDependencies:
@@ -3790,7 +3791,7 @@ snapshots:
       '@babel/helper-hoist-variables': 7.24.7
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.25.7
-      '@babel/types': 7.23.6
+      '@babel/types': 7.25.7
       debug: 4.3.7
       globals: 11.12.0
     transitivePeerDependencies:
@@ -3847,7 +3848,7 @@ snapshots:
       '@cosmjs/utils': 0.32.4
       '@noble/hashes': 1.5.0
       bn.js: 5.2.1
-      elliptic: 6.5.7
+      elliptic: 6.6.1
       libsodium-wrappers-sumo: 0.7.15
 
   '@cosmjs/encoding@0.32.4':
@@ -4229,7 +4230,7 @@ snapshots:
 
   '@jest/transform@28.1.3':
     dependencies:
-      '@babel/core': 7.18.10
+      '@babel/core': 7.25.7
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.25
       babel-plugin-istanbul: 6.1.1
@@ -4785,7 +4786,7 @@ snapshots:
 
   cosmjs-types@0.9.0: {}
 
-  create-jest@29.7.0:
+  create-jest@29.7.0(@types/node@22.7.4):
     dependencies:
       '@jest/types': 29.6.3
       chalk: 4.1.2
@@ -4800,7 +4801,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  cross-spawn@7.0.3:
+  cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
       shebang-command: 2.0.0
@@ -4857,7 +4858,7 @@ snapshots:
 
   electron-to-chromium@1.5.32: {}
 
-  elliptic@6.5.7:
+  elliptic@6.6.1:
     dependencies:
       bn.js: 4.12.0
       brorand: 1.1.0
@@ -4920,12 +4921,13 @@ snapshots:
     dependencies:
       eslint: 8.45.0
 
-  eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0)(eslint@8.45.0)(prettier@2.8.8):
+  eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0(eslint@8.45.0))(eslint@8.45.0)(prettier@2.8.8):
     dependencies:
       eslint: 8.45.0
-      eslint-config-prettier: 8.10.0(eslint@8.45.0)
       prettier: 2.8.8
       prettier-linter-helpers: 1.0.0
+    optionalDependencies:
+      eslint-config-prettier: 8.10.0(eslint@8.45.0)
 
   eslint-scope@7.2.2:
     dependencies:
@@ -4945,7 +4947,7 @@ snapshots:
       '@nodelib/fs.walk': 1.2.8
       ajv: 6.12.6
       chalk: 4.1.2
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       debug: 4.3.7
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
@@ -5010,7 +5012,7 @@ snapshots:
 
   execa@5.1.1:
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       get-stream: 6.0.1
       human-signals: 2.1.0
       is-stream: 2.0.1
@@ -5102,7 +5104,7 @@ snapshots:
 
   foreground-child@3.3.0:
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
   form-data@4.0.0:
@@ -5170,7 +5172,7 @@ snapshots:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 5.1.0
+      minimatch: 5.1.6
       once: 1.4.0
 
   glob@8.1.0:
@@ -5431,13 +5433,13 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@29.7.0:
+  jest-cli@29.7.0(@types/node@22.7.4):
     dependencies:
       '@jest/core': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
       chalk: 4.1.2
-      create-jest: 29.7.0
+      create-jest: 29.7.0(@types/node@22.7.4)
       exit: 0.1.2
       import-local: 3.2.0
       jest-config: 29.7.0(@types/node@22.7.4)
@@ -5455,7 +5457,6 @@ snapshots:
       '@babel/core': 7.25.7
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.7.4
       babel-jest: 29.7.0(@babel/core@7.25.7)
       chalk: 4.1.2
       ci-info: 3.9.0
@@ -5475,6 +5476,8 @@ snapshots:
       pretty-format: 29.7.0
       slash: 3.0.0
       strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 22.7.4
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -5574,7 +5577,7 @@ snapshots:
       jest-util: 29.7.0
 
   jest-pnp-resolver@1.2.3(jest-resolve@29.7.0):
-    dependencies:
+    optionalDependencies:
       jest-resolve: 29.7.0
 
   jest-regex-util@28.0.2: {}
@@ -5729,12 +5732,12 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@29.7.0:
+  jest@29.7.0(@types/node@22.7.4):
     dependencies:
       '@jest/core': 29.7.0
       '@jest/types': 29.6.3
       import-local: 3.2.0
-      jest-cli: 29.7.0
+      jest-cli: 29.7.0(@types/node@22.7.4)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -6304,13 +6307,12 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  ts-jest@29.2.5(@babel/core@7.25.7)(jest@29.7.0)(typescript@5.6.2):
+  ts-jest@29.2.5(@babel/core@7.25.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.7))(jest@29.7.0(@types/node@22.7.4))(typescript@5.6.2):
     dependencies:
-      '@babel/core': 7.25.7
       bs-logger: 0.2.6
       ejs: 3.1.10
       fast-json-stable-stringify: 2.1.0
-      jest: 29.7.0
+      jest: 29.7.0(@types/node@22.7.4)
       jest-util: 29.7.0
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -6318,6 +6320,11 @@ snapshots:
       semver: 7.6.3
       typescript: 5.6.2
       yargs-parser: 21.1.1
+    optionalDependencies:
+      '@babel/core': 7.25.7
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.25.7)
 
   tslib@1.14.1: {}
 

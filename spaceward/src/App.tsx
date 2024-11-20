@@ -43,11 +43,9 @@ import {
 	AssetsPage,
 	BlockByHeightPage,
 	ExplorerPage,
-	HomePage,
 	IntentsPage,
 	KeychainsPage,
 	KeysPage,
-	NewTransactionPage,
 	OwnersPage,
 	Root,
 	SettingsPage,
@@ -56,14 +54,55 @@ import {
 import { GovernancePage } from "./pages/Governance.tsx";
 import { hashQueryKey } from "./utils/queryKeyHash.ts";
 import { DashboardPage } from "./pages/Dashboard.tsx";
+import { Web3OnboardProvider, init, useWagmiConfig } from "@web3-onboard/react";
+import injectedModule from "@web3-onboard/injected-wallets";
+import wagmi, { createConfig } from "./utils/web3-onboard/wagmi";
+import walletConnect from "@web3-onboard/walletconnect";
+import { WagmiProvider } from "wagmi";
+import { defineChain, http } from "viem";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			refetchInterval: 1000,
+			staleTime: 15_000,
 			queryKeyHashFn: hashQueryKey,
 		},
 	},
+});
+
+
+const projectId = "5ac86584b1de10a7953c6d7b19b52dad";
+
+const injectedWallet = injectedModule();
+
+const walletConnectWallet = walletConnect({
+	projectId,
+	dappUrl: "https://wardenprotocol.org/",
+});
+
+const web3Onboard = init({
+	appMetadata: {
+		name: "Warden Protocol Wallets",
+		description: "Warden Protocol WalletConnect",
+		logo: "https://avatars.githubusercontent.com/u/158038121",
+		recommendedInjectedWallets: [
+			{ name: "MetaMask", url: "https://metamask.io" },
+			{ name: "Keplr", url: "https://keplr.app" }
+		]
+	},
+	chains: [{
+		/*
+			0x271a(10010) - chiado
+			0x3039(12345) - devnet
+		*/
+		id: env.evmChainId,
+		token: "WARD",
+		label: env.chainName,
+		rpcUrl: env.evmURL,
+	}],
+	connect: { autoConnectAllPreviousWallet: true },
+	wallets: [injectedWallet, walletConnectWallet],
+	wagmi,
 });
 
 initializeFaro({
@@ -102,143 +141,147 @@ initializeFaro({
 	],
 });
 
+const chain = defineChain({
+	id: env.evmChainId,
+	rpcUrls: {
+		default: { http: [env.evmURL] },
+	},
+	name: env.chainName,
+	nativeCurrency: {
+		decimals: 18,
+		name: "Warden",
+		symbol: "WARD",
+	},
+});
+
+const defaultConfig = createConfig({
+	chains: [chain],
+	transports: {
+		[chain.id]: http(undefined, {
+			batch: {
+				batchSize: 1000,
+				wait: 16
+			},
+		})
+	},
+})
+
+function InjectWagmi({ children }: { children: React.ReactNode }) {
+	const wagmiConfig = useWagmiConfig();
+
+	return (
+		<WagmiProvider config={wagmiConfig ?? defaultConfig}>
+			{children}
+		</WagmiProvider>
+	);
+}
+
 function App() {
 	const signerOptions: SignerOptions = {};
-	const supportedWallets = wallets.for("keplr", "leap", "cosmostation");
 
 	return (
 		<React.StrictMode>
 			<FaroErrorBoundary>
 				<ChainProvider
-					chains={[
-						...chains,
-						wardenprotocollocal,
-						wardenprotocoldevnet,
-						wardenprotocolbuenavista,
-						wardenprotocolchiado,
-					]}
-					assetLists={[
-						...assets,
-						wardenprotocollocalAssets,
-						wardenprotocoldevnetAssets,
-						wardenprotocolbuenavistaAssets,
-						wardenprotocolchiadoAssets,
-					]}
-					wallets={supportedWallets}
-					walletConnectOptions={{
-						signClient: {
-							projectId: "5ac86584b1de10a7953c6d7b19b52dad",
-							relayUrl: "wss://relay.walletconnect.org",
-							metadata: {
-								name: "Warden Protocol Wallets",
-								description: "Warden Protocol WalletConnect",
-								url: "https://wardenprotocol.org/",
-								icons: [
-									"https://avatars.githubusercontent.com/u/158038121",
-								],
-							},
-						},
-					}}
+					chains={chains}
+					assetLists={assets}
+					wallets={[]}
 					signerOptions={signerOptions}
 				>
-					<QueryClientProvider client={queryClient}>
-						<MetaMaskProvider>
-							<AddressProvider>
-								<WalletProvider>
-									<DenomProvider>
-										<BrowserRouter>
-											<FaroRoutes>
-												<Route element={<Root />}>
-													<Route
-														path="/"
-														element={
-															<DashboardPage />
-														}
-													/>
-													<Route
-														path="/rules"
-														element={
-															<IntentsPage />
-														}
-													/>
-													<Route
-														path="/staking"
-														element={
-															<StakingPage />
-														}
-													/>
-													<Route
-														path="/governance"
-														element={
-															<GovernancePage />
-														}
-													/>
-													<Route
-														path="/actions"
-														element={
-															<ActionsPage />
-														}
-													/>
-													<Route
-														path="/explorer"
-														element={
-															<ExplorerPage />
-														}
-													/>
-													<Route
-														path="/explorer/block-by-height/:height"
-														element={
-															<BlockByHeightPage />
-														}
-													/>
-													<Route
-														path="/keys"
-														element={<KeysPage />}
-													/>
-													<Route
-														path="/keychains"
-														element={
-															<KeychainsPage />
-														}
-													/>
-													<Route
-														path="/assets"
-														element={<AssetsPage />}
-													/>
-													<Route
-														path="/apps"
-														element={<AppsPage />}
-													/>
-													<Route
-														path="/apps/open"
-														element={
-															<AppsOpenPage />
-														}
-													/>
-													<Route
-														path="/settings"
-														element={
-															<SettingsPage />
-														}
-													/>
-													<Route
-														path="/new-transaction"
-														element={
-															<NewTransactionPage />
-														}
-													/>
-													<Route
-														path="/owners"
-														element={<OwnersPage />}
-													/>
-												</Route>
-											</FaroRoutes>
-										</BrowserRouter>
-									</DenomProvider>
-								</WalletProvider>
-							</AddressProvider>
-						</MetaMaskProvider>
-					</QueryClientProvider>
+					<Web3OnboardProvider web3Onboard={web3Onboard}>
+						<InjectWagmi>
+							<QueryClientProvider client={queryClient}>
+								<MetaMaskProvider>
+									<AddressProvider>
+										<DenomProvider>
+											<BrowserRouter>
+												<FaroRoutes>
+													<Route element={<Root />}>
+														<Route
+															path="/"
+															element={
+																<DashboardPage />
+															}
+														/>
+														<Route
+															path="/rules"
+															element={
+																<IntentsPage />
+															}
+														/>
+														<Route
+															path="/staking"
+															element={
+																<StakingPage />
+															}
+														/>
+														<Route
+															path="/governance"
+															element={
+																<GovernancePage />
+															}
+														/>
+														<Route
+															path="/actions"
+															element={
+																<ActionsPage />
+															}
+														/>
+														<Route
+															path="/explorer"
+															element={
+																<ExplorerPage />
+															}
+														/>
+														<Route
+															path="/explorer/block-by-height/:height"
+															element={
+																<BlockByHeightPage />
+															}
+														/>
+														<Route
+															path="/keys"
+															element={<KeysPage />}
+														/>
+														<Route
+															path="/keychains"
+															element={
+																<KeychainsPage />
+															}
+														/>
+														<Route
+															path="/assets"
+															element={<AssetsPage />}
+														/>
+														<Route
+															path="/apps"
+															element={<AppsPage />}
+														/>
+														<Route
+															path="/apps/open"
+															element={
+																<AppsOpenPage />
+															}
+														/>
+														<Route
+															path="/settings"
+															element={
+																<SettingsPage />
+															}
+														/>
+														<Route
+															path="/owners"
+															element={<OwnersPage />}
+														/>
+													</Route>
+												</FaroRoutes>
+											</BrowserRouter>
+										</DenomProvider>
+									</AddressProvider>
+								</MetaMaskProvider>
+							</QueryClientProvider>
+						</InjectWagmi>
+					</Web3OnboardProvider>
 				</ChainProvider>
 			</FaroErrorBoundary>
 		</React.StrictMode>

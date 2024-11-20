@@ -5,7 +5,7 @@ sidebar_position: 2
 # Join Chiado
 
 :::important
-Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here. Also note that on Chiado we've changed the denomination to `award`.
+Chiado is our new and improved testnet. Please make sure to transition all your testing and development processes here.
 :::
 
 ## Overview
@@ -29,10 +29,10 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 ### Option 1: Use the prebuilt binary
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.2) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) and unzip it. The archive contains the `wardend` binary.
 
 2. Navigate to the directory containing the binary and initialize the node:
-  
+
    ```bash
    ./wardend init my-chain-moniker
    ```
@@ -46,7 +46,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 1. Clone the repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
@@ -88,8 +88,9 @@ To configure `wardend`, do the following:
 2. In the `app.toml` file, set the mandatory options: the minimum gas price and a list of seeds nodes.
 
    ```bash
-   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "250000000000000award"/' app.toml
+   sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "2000award"/' app.toml
    ```
+
    ```bash
    sed -i 's/seeds = ""/seeds = "2d2c7af1c2d28408f437aef3d034087f40b85401@52.51.132.79:26656"/' config.toml
    ```
@@ -164,4 +165,4 @@ After joining Chiado, you can take these steps:
 
 - If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
 - To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
-- Don't forget to join our community in [Discord](https://discord.com/invite/warden).
+- Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).

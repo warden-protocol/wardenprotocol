@@ -1,6 +1,7 @@
 chain_id := "warden_1337-1"
 shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902"]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
 start bin="wardend" install="true":
@@ -36,7 +37,7 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
     replace 's/aevmos/award/' ~/.warden/config/app.toml
-    jq '.app_state.evm.params.active_static_precompiles += ["0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901"]' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
+    jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
@@ -45,6 +46,7 @@ start bin="wardend" install="true":
 
     post_start () {
       sleep 3
+
       ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
       if [ -f $ethereum_analyzer_wasm ]; then
         just deploy-contract $ethereum_analyzer_wasm
@@ -57,6 +59,21 @@ start bin="wardend" install="true":
           just deploy-contract $ethereum_analyzer_wasm
         else
           echo "Could not build ethereum_analyzer.wasm, giving up deploying it."
+        fi
+      fi
+
+      osmosis_analyzer_wasm="./contracts/artifacts/osmosis_analyzer.wasm"
+      if [ -f $osmosis_analyzer_wasm ]; then
+        just deploy-contract $osmosis_analyzer_wasm
+      else
+        echo "$osmosis_analyzer_wasm not found, will try to build it"
+        pushd contracts
+        just compile osmosis-analyzer
+        popd
+        if [ -f $osmosis_analyzer_wasm ]; then
+          just deploy-contract $ethereum_analyzer_wasm
+        else
+          echo "Could not build osmosis_analyzer.wasm, giving up deploying it."
         fi
       fi
     }

@@ -1,5 +1,4 @@
 import { CreateIntentModal, Intent } from "@/features/intents";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import { ConditionType, IntentParams, SimpleIntent } from "@/types/intent";
 import { Expression } from "@/types/shield";
 import { getSimpleIntent } from "@/utils/shield";
@@ -13,7 +12,6 @@ import { toast } from "@/components/ui/use-toast";
 export function IntentsPage() {
 	const { newRule, updateRule, rulesBySpace, activeRuleId, setActiveRule } =
 		useRules();
-	const { address } = useAddressContext();
 	const [isCreateModal, setIsCreateModal] = useState(false);
 	const [_rules, setRules] = useState<SimpleIntent[]>([]);
 
@@ -80,9 +78,9 @@ export function IntentsPage() {
 	const onRuleSave = useCallback(
 		async ({ simple, advanced }: IntentParams) => {
 			const fn = simple?.id || advanced?.id ? updateRule : newRule;
-			await fn(address, { simple, advanced });
+			await fn({ simple, advanced });
 		},
-		[address, updateRule, newRule],
+		[updateRule, newRule],
 	);
 
 	return (
@@ -95,9 +93,6 @@ export function IntentsPage() {
 						generate and sign transactions.
 					</p> */}
 				</div>
-				{/* <div>
-					<NewIntentButton onClick={() => setIsCreateModal(true)} />
-				</div> */}
 			</div>
 
 			{isCreateModal && (

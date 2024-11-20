@@ -1,9 +1,12 @@
+import "./animate.css";
 import clsx from "clsx";
 import { useContext, useEffect, useRef, useState } from "react";
-import { DeliverTxResponse, isDeliverTxSuccess } from "@cosmjs/stargate";
-import { useChain, walletContext } from "@cosmos-kit/react-lite";
-import { cosmos, warden } from "@wardenprotocol/wardenjs";
-import { Action, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { sendTransaction as _sendTransaction } from "viem/actions";
+import { getAction, parseEventLogs } from "viem/utils";
+import { useConfig, usePublicClient, useWalletClient } from "wagmi";
+import { readContractQueryOptions } from "wagmi/query"
+import { walletContext } from "@cosmos-kit/react-lite";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import { useToast } from "@/components/ui/use-toast";
 
 import {
@@ -12,17 +15,18 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { env } from "@/env";
-import { getClient, getSigningClient } from "@/hooks/useClient";
+import { getClient } from "@/hooks/useClient";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
-import "./animate.css";
 import { QueuedAction, QueuedActionStatus, useActionsState } from "./hooks";
 import { getActionHandler, GetStatus, handleCosmos, handleEth, handleEthRaw } from "./util";
 import { TEMP_KEY, useKeySettingsState } from "../keys/state";
 import Assets from "../keys/assets";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { QueryKey, useQuery, useQueryClient } from "@tanstack/react-query";
 import { capitalize } from "../modals/util";
 import { queryCosmosClients } from "../assets/queries";
+import actPrecompileAbi from "@/contracts/actPrecompileAbi";
+import { env } from "@/env";
+import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -45,43 +49,32 @@ const waitForVisibility = () => {
 	});
 };
 
-class DetailedError<T> extends Error {
-	constructor(message: string, public detail: T) {
-		super(message);
-	}
-}
-
-function isDetailedError<T>(e?: unknown): e is DetailedError<T> {
-	if (!e) {
-		return false;
-	}
-
-	return "detail" in (e as {});
-}
-
-
 function ActionItem({ single, ...item }: ItemProps) {
+	const publicClient = usePublicClient();
+	const walletClient = useWalletClient().data;
 	const queryClient = useQueryClient();
 	const { walletManager } = useContext(walletContext);
 	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
 	const clientsRef = useRef(cosmosClients);
 	clientsRef.current = cosmosClients;
-
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
 	const { toast } = useToast()
-	const { w } = useWeb3Wallet("wss://relay.walletconnect.org");
+	const config = useConfig();
+	const { w } = useWeb3Wallet(env.wcWalletRelayUrl);
 	const { setData } = useActionsState();
 
-	const { getOfflineSignerDirect: getOfflineSigner } = useChain(
-		env.cosmoskitChainName,
-	);
-
 	const type = typeof item.keyThemeIndex !== "undefined" ?
-		"key" : (["walletConnectRequestId", "walletConnectTopic"] as const).every(key => typeof item[key] !== "undefined") ?
-			"wc" : typeof item.snapRequestId ?
+		"key" : item.wc ?
+			"wc" : item.snap ?
 				"snap" : undefined
 
+	const ready = Boolean(walletClient && publicClient);
+
 	useEffect(() => {
+		if (!ready) {
+			return;
+		}
+
 		let canceled = false;
 		let cancel: () => void;
 		let timeout: number | undefined;
@@ -93,112 +86,148 @@ function ActionItem({ single, ...item }: ItemProps) {
 			}
 		})
 
+		const sendTransaction = getAction(
+			walletClient!,
+			_sendTransaction,
+			"sendTransaction",
+		);
+
+		console.log("processing", item);
 		async function processItem() {
 			if (canceled) {
 				return;
 			}
 
 			switch (item.status) {
-				case QueuedActionStatus.Signed: {
-					const signer = getOfflineSigner();
-					const client = await getSigningClient(signer);
-					const txRaw = cosmos.tx.v1beta1.TxRaw.encode(item.txRaw);
+				case QueuedActionStatus.AwaitingSignature: {
 					try {
-						const res = await client.broadcastTx(Uint8Array.from(txRaw.finish()));
-
-						if (isDeliverTxSuccess(res)) {
-							setData({
-								[item.id]: {
-									...item,
-									status: QueuedActionStatus.Broadcast,
-									response: res,
-								},
-							});
-						} else {
-							console.error("Failed to broadcast", res);
-							throw new DetailedError("Could not broadcast transaction", res);
-
+						if (!item.request) {
+							throw new Error("no request", { cause: { item } });
 						}
-					} catch (e) {
-						if (isDetailedError<DeliverTxResponse>(e)) {
-							toast({
-								title: "Failed",
-								description: "Could not broadcast transaction",
-								duration: 10000,
-							});
 
-							setData({
-								[item.id]: {
-									...item,
-									status: QueuedActionStatus.Failed,
-									response: e.detail,
-								},
-							});
-						} else {
-							toast({
-								title: "Failed",
-								description: (e as Error)?.message ?? "Unexpected error",
-								duration: 10000,
-							});
-
-							setData({
-								[item.id]: {
-									...item,
-									status: QueuedActionStatus.Failed,
-								},
-							});
+						if (!publicClient) {
+							throw new Error("no public client", { cause: { item } });
 						}
-					}
 
-					break;
-				}
+						const gas = (await publicClient.estimateContractGas({
+							abi: item.call!.abi,
+							functionName: item.call!.functionName,
+							args: item.call!.args as any,
+							address: item.request.to,
+						})) * BigInt(2);
 
-				case QueuedActionStatus.Broadcast: {
-					const actionCreatedAny = item.response?.msgResponses[0];
-					let actionId: bigint | undefined;
+						const hash = await sendTransaction({ ...item.request, gas });
 
-					if (!actionCreatedAny) {
-						console.error("no action created");
-						return;
-					}
-
-					if (item.typeUrl === warden.act.v1beta1.MsgNewAction.typeUrl) {
-						const actionCreated =
-							warden.act.v1beta1.MsgNewActionResponse.decode(
-								actionCreatedAny.value,
-							);
-
-						actionId = actionCreated.id;
-					} else {
-						console.error("unexpected action type", item.typeUrl);
-					}
-
-					if (actionId) {
 						setData({
 							[item.id]: {
 								...item,
-								actionId,
-								status: QueuedActionStatus.AwaitingApprovals,
+								hash,
+								status: QueuedActionStatus.Signed,
 							},
+						});
+					} catch (e) {
+						console.error("failed to sign", e);
+
+						setData({
+							[item.id]: {
+								...item,
+								error: e,
+								status: QueuedActionStatus.Failed,
+							},
+						});
+
+						toast({
+							title: "Failed",
+							description: (e as any)?.message ?? "Could not sign transaction",
+							duration: 10000,
 						});
 					}
 
 					break;
 				}
 
+				case QueuedActionStatus.Signed: {
+					try {
+						if (!item.hash) {
+							throw new Error("no hash", { cause: { item } });
+						}
+
+						console.log("waiting for receipt", item.hash);
+						const receipt = await publicClient?.waitForTransactionReceipt({ hash: item.hash });
+						console.log("receipt", receipt);
+
+						if (receipt?.status !== "success") {
+							throw new Error("transaction failed", { cause: { item, receipt } });
+						}
+
+						let actionId: bigint | undefined;
+
+						for (const log of parseEventLogs({ abi: actPrecompileAbi, logs: receipt.logs })) {
+							if (log.eventName !== "CreateAction") {
+								continue;
+							}
+
+							actionId = log.args.actionId;
+						}
+
+						if (!actionId) {
+							throw new Error("no action id", { cause: { item, receipt } });
+						}
+
+						console.log("action id", actionId);
+
+						setData({
+							[item.id]: {
+								...item,
+								actionId,
+								receipt,
+								status: QueuedActionStatus.Broadcast,
+							},
+						});
+					} catch (e) {
+						console.error("failed to wait for receipt", e, (e as any)?.cause);
+
+						setData({
+							[item.id]: {
+								...item,
+								error: e,
+								status: QueuedActionStatus.Failed,
+							},
+						});
+
+						toast({
+							title: "Failed",
+							description: (e as any)?.message ?? "Transaction encountered an error",
+							duration: 10000,
+						});
+					}
+
+					break;
+				}
+
+				case QueuedActionStatus.Broadcast:
 				case QueuedActionStatus.AwaitingApprovals: {
 					async function checkAction() {
 						if (canceled || !item.actionId) {
 							return;
 						}
 
-						const client = await getClient();
-						let action: Action | undefined;
+						const queryOptions = readContractQueryOptions(config, {
+							chainId: env.evmChainId,
+							address: PRECOMPILE_ACT_ADDRESS,
+							abi: actPrecompileAbi,
+							functionName: "actionById",
+							args: [item.actionId],
+						});
+
+						let action: Awaited<ReturnType<typeof queryOptions.queryFn>>["action"] | undefined;
 
 						try {
-							const res = await client.warden.act.v1beta1.actionById({
-								id: item.actionId,
-							});
+
+							const res = await queryClient.fetchQuery(
+								// @ts-expect-error fixme update @tanstack/react-query version to > 5
+								queryOptions
+							);
 
 							action = res.action;
 						} catch (e) {
@@ -261,10 +290,12 @@ function ActionItem({ single, ...item }: ItemProps) {
 				}
 
 				case QueuedActionStatus.ActionReady: {
-					let getStatus: GetStatus | undefined;
+					let [getStatus, queryKeys]: [GetStatus | undefined, QueryKey[]] = [undefined, []];
 
 					try {
-						getStatus = getActionHandler(item).getStatus;
+						const res = getActionHandler(item);
+						getStatus = res.getStatus;
+						queryKeys = res.queryKeys;
 					} catch (e) {
 						console.error(e);
 
@@ -307,6 +338,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 						} else if (status.pending) {
 							setTimeout(checkResult, 1000);
 						} else if (status.done) {
+							for (const queryKey of queryKeys) {
+								queryClient.invalidateQueries({ queryKey });
+							}
+
 							if (!status.next) {
 								toast({
 									title: "Success",
@@ -424,7 +459,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 				clearTimeout(timeout);
 			}
 		}
-	}, [item.status]);
+	}, [item.status, ready]);
 
 	return (
 		<div

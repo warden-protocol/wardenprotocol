@@ -9,7 +9,7 @@ sidebar_position: 7
 Within your [Space](manage-spaces), you can receive or send assets across different chains. Assets are associated with your [keys](manage-keys) (wallets).
 
 :::warning
-SpaceWard currently operates on the **Buenavista testnet**, so you should use **only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.
+SpaceWard currently operates on the **Chiado testnet**, so you should use **only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.
 :::
 
 ![Manage assets](../../static/img/manage-assets.png)
@@ -18,7 +18,9 @@ SpaceWard currently operates on the **Buenavista testnet**, so you should use **
 
 To receive assets, take these steps:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Assets**. You'll see a list of assets you hold.
 3. Click **Receive**.
 4. Select the key you wish to use and the asset & network pair.
@@ -34,7 +36,9 @@ For **Sepolia ETH**, you can use these faucets:
 
 To send assets, do the following:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org).
+1. Connect to SpaceWard:
+   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
+   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Assets**. You'll see a list of assets you hold.
 3. Click **Send**.
 4. Select the key you wish to use. Specify the amount, asset, and the destination address.

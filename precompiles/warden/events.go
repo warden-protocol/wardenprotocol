@@ -3,13 +3,13 @@ package warden
 import (
 	"bytes"
 	"fmt"
+	"reflect"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
-	"math/big"
-	"reflect"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -76,7 +76,7 @@ func (p Precompile) GetAddKeychainAdminEvent(ctx sdk.Context, adminAddress *comm
 	}
 
 	b.Write(append(make([]byte, 12), newAdminAddress.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetAdminsCount())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetAdminsCount())))
 
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
@@ -120,7 +120,7 @@ func (p Precompile) GetAddKeychainWriterEvent(ctx sdk.Context, writerAddress *co
 	}
 
 	b.Write(append(make([]byte, 12), newWriterAddress.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetWritersCount())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetWritersCount())))
 
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
@@ -334,11 +334,11 @@ func (p Precompile) GetNewSpaceEvent(ctx sdk.Context, creator *common.Address, e
 	}
 
 	b.Write(append(make([]byte, 12), creator.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetOwnersCount())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveAdminTemplateId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectAdminTemplateId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveSignTemplateId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectSignTemplateId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetOwnersCount())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetApproveAdminTemplateId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetRejectAdminTemplateId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetApproveSignTemplateId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetRejectSignTemplateId())))
 
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
@@ -383,7 +383,7 @@ func (p Precompile) GetRemoveKeychainAdminEvent(ctx sdk.Context, admin *common.A
 	}
 
 	b.Write(append(make([]byte, 12), adminAddress.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetAdminsCount())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetAdminsCount())))
 
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
@@ -527,19 +527,6 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 	topics := make([]common.Hash, 2)
 	topics[0] = event.ID
 
-	mapKeyType := func(keyType wardentypes.KeyType) (uint8, error) {
-		switch keyType {
-		case wardentypes.KeyType_KEY_TYPE_UNSPECIFIED:
-			return uint8(wardentypes.KeyType_KEY_TYPE_UNSPECIFIED), nil
-		case wardentypes.KeyType_KEY_TYPE_ECDSA_SECP256K1:
-			return uint8(wardentypes.KeyType_KEY_TYPE_ECDSA_SECP256K1), nil
-		case wardentypes.KeyType_KEY_TYPE_EDDSA_ED25519:
-			return uint8(wardentypes.KeyType_KEY_TYPE_EDDSA_ED25519), nil
-		default:
-			return 0, fmt.Errorf("key type is not supported: %v", keyType)
-		}
-	}
-
 	var b bytes.Buffer
 
 	typedEvent := wardentypes.EventNewKeyRequest{}
@@ -547,21 +534,16 @@ func (p Precompile) GetNewKeyRequestEvent(ctx sdk.Context, _ *common.Address, ne
 		return nil, err
 	}
 
-	keyType, err := mapKeyType(typedEvent.GetKeyType())
-	if err != nil {
-		return nil, fmt.Errorf("NewKeyRequest: invalid key type")
-	}
-
 	creatorAddress, err := precommon.AddressFromBech32Str(typedEvent.GetCreator())
 	if err != nil {
 		return nil, err
 	}
 
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetSpaceId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeychainId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetApproveTemplateId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetRejectTemplateId())))))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(keyType)))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetSpaceId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetKeychainId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetApproveTemplateId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetRejectTemplateId())))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetKeyType())))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
 
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
@@ -599,9 +581,9 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 		return nil, err
 	}
 
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(big.NewInt(int64(typedEvent.GetKeyId())))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetKeyId())))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
-
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(uint8(typedEvent.GetBroadcastType()))))
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {

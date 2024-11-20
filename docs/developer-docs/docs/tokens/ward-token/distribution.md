@@ -27,7 +27,7 @@ Note that WARD distribution will be characterized by the following:
 | Public goods | 10% | Incentivized testnet and genesis airdrop, and public good initiatives |Available at genesis
 |Ecosystem & community | 20%| Allocated for initiatives that contribute to the Warden Protocol's ecosystem and community projects|Available at genesis locked to governance
 | Developer incentives|16%|Developer and builder incentives  | Available at genesis locked to governance
-| Validators and operators |10%| Initial delegated WARD to Mainnet and Operator Validators |Available at genesis but bonded
+| Validators and operators |10%| Initial amount delegated to mainnet validators and operators | Available at genesis but bonded
 | Treasury & R&D | 24% |Long term treasury and research programmes | 10M available at genesis, linear unlock two year weekly vest
 | Core contributors | 20% | Reserved for the development team, advisors and early contributors | 6 month cliff, two year linear weekly vest
 

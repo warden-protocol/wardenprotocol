@@ -28,7 +28,7 @@ contract Registry is ReentrancyGuard {
         if (executions[execution] != address(0)) {
             revert ExecutionAlreadyRegistered();
         }
-        
+
         try IExecution(execution).isExecuted() returns (bool executed) {
             if (executed) {
                 revert Executed();

@@ -34,13 +34,18 @@ export class WardenClient {
     while (true) {
       await delay(this.configuration.pollingIntervalMsec);
 
-      const { signRequests, pageResponse } = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest))
+      try {
+        const { signRequests, pageResponse } = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest))
 
-      yield* this.yieldNewRequests(signRequests);
+        yield* this.yieldNewRequests(signRequests);
 
-      const newKey = this.tryConvertBytesToUint8Array(pageResponse.nextKey)
-      if(utils.notEmpty(newKey)) { 
-        nextKey = newKey;
+        const newKey = this.tryConvertBytesToUint8Array(pageResponse.nextKey)
+        if (utils.notEmpty(newKey)) {
+          nextKey = newKey;
+        }
+      }
+      catch (err) {
+        utils.logError(`Error while polling for new signature requests: ${utils.serialize(err)}`)
       }
     }
   }

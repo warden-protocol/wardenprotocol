@@ -2,6 +2,7 @@ package act
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -122,18 +123,16 @@ func mapAction(action types.Action) (Action, error) {
 	mentions := make([]common.Address, 0, len(action.Mentions))
 	for _, mention := range action.Mentions {
 		mentionAddress, err := precommon.AddressFromBech32Str(mention)
-
 		if err != nil {
-			return Action{}, err
+			return Action{}, fmt.Errorf("invalid mention %s: %w", mention, err)
 		}
 
 		mentions = append(mentions, mentionAddress)
 	}
 
 	creator, err := precommon.AddressFromBech32Str(action.Creator)
-
 	if err != nil {
-		return Action{}, err
+		return Action{}, fmt.Errorf("invalid creator: %w", err)
 	}
 
 	mappedVotes, err := mapVotes(action.Votes)

@@ -1,9 +1,10 @@
 package act
 
 import (
-	"cosmossdk.io/log"
 	"embed"
 	"fmt"
+
+	"cosmossdk.io/log"
 
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -108,7 +109,7 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	case UpdateTemplateMethod:
 		bz, err = p.UpdateTemplateMethod(ctx, evm.Origin, stateDB, method, args)
 	case VoteForActionMethod:
-		bz, err = p.VoteForActionMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.VoteForActionMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 	// queries
 	case ActionsQuery:
 		bz, err = p.ActionsQuery(ctx, contract, method, args)

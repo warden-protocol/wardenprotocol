@@ -10,6 +10,7 @@ import (
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -251,6 +252,7 @@ func newMsgUpdateTemplate(args []interface{}, origin common.Address) (*acttypes.
 func (p *Precompile) VoteForActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
+	caller common.Address,
 	stateDB vm.StateDB,
 	method *abi.Method,
 	args []interface{},
@@ -270,8 +272,11 @@ func (p *Precompile) VoteForActionMethod(
 	)
 
 	response, err := msgServer.VoteForAction(ctx, message)
-
 	if err != nil {
+		return nil, err
+	}
+
+	if err := p.tryVoteAsSender(ctx, msgServer, message.ActionId, caller); err != nil {
 		return nil, err
 	}
 
@@ -304,4 +309,43 @@ func newMsgVoteForAction(args []interface{}, origin common.Address) (*acttypes.M
 		ActionId:    actionId,
 		VoteType:    acttypes.ActionVoteType(voteType),
 	}, nil
+}
+
+// tryVoteAsSender attempts to vote for an action as the sender of the action.
+// This is useful if the contract attempts to vote for an action.
+// If the action is not in the pending state, this function does nothing.
+// If the action is in the pending state, it attempts to vote for the action
+// with an approved vote type. If the vote is successful, this function returns
+// nil. If the vote fails, this function returns the error.
+func (p Precompile) tryVoteAsSender(
+	ctx sdk.Context,
+	msgServer v1beta1.MsgServer,
+	actionId uint64,
+	caller common.Address) error {
+
+	actionResponse, err := p.queryServer.ActionById(ctx, &v1beta1.QueryActionByIdRequest{
+		Id: actionId,
+	})
+	if err != nil {
+		return err
+	}
+
+	action := actionResponse.Action
+
+	if action.GetStatus() != v1beta1.ActionStatus_ACTION_STATUS_PENDING {
+		return nil
+	}
+
+	participant := precommon.Bech32StrFromAddress(caller)
+
+	_, err = msgServer.VoteForAction(ctx, &v1beta1.MsgVoteForAction{
+		Participant: participant,
+		ActionId:    action.GetId(),
+		VoteType:    v1beta1.ActionVoteType_VOTE_TYPE_APPROVED,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

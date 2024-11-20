@@ -3,13 +3,14 @@ package exec
 import (
 	"context"
 	"crypto/ecdsa"
+	"math/big"
+	"testing"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/stretchr/testify/require"
-	"math/big"
-	"testing"
 )
 
 func (cli *Wardend) CallOps(t *testing.T) *bind.CallOpts {
@@ -51,8 +52,8 @@ func (cli *Wardend) TransactOps(
 	require.NoError(t, err)
 
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(0)     // in wei
-	auth.GasLimit = uint64(300000) // in units
+	auth.Value = big.NewInt(0)      // in wei
+	auth.GasLimit = uint64(1000000) // in units
 	auth.GasPrice = gasPrice
 
 	return auth

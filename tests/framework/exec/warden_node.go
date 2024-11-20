@@ -105,31 +105,29 @@ func (w *WardenNode) WaitRunning(t *testing.T) {
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")
 }
 
-func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context) {
+func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context, filters []string) {
 	go func() {
-		select {
-		case _, _ = <-ctx.Done():
-			t.Logf("Node logs: \n %s", w.Stdout.String())
-		}
-	}()
-}
+		<-ctx.Done()
 
-func (w *WardenNode) PrintDebugLogsAtTheEnd(t *testing.T, ctx context.Context) {
-	go func() {
-		select {
-		case <-ctx.Done():
-			// Split the logs into individual lines
-			logs := strings.Split(w.Stdout.String(), "\n")
-			// Filter out lines that contain "INF "
-			var filteredLogs []string
-			for _, line := range logs {
-				if strings.Contains(line, "TEST_DEBUG") {
+		if len(filters) == 0 {
+			t.Logf("Node logs: \n %s", w.Stdout.String())
+			return
+		}
+
+		// Split the logs into individual lines
+		logs := strings.Split(w.Stdout.String(), "\n")
+		// Filter out lines that contain filter
+		var filteredLogs []string
+		for _, line := range logs {
+			for _, filter := range filters {
+				if strings.Contains(line, filter) {
 					filteredLogs = append(filteredLogs, line)
+					break
 				}
 			}
-			// Join the filtered lines back and print them
-			t.Logf("Node logs: \n %s", strings.Join(filteredLogs, "\n"))
 		}
+		// Join the filtered lines back and print them
+		t.Logf("Node logs: \n %s", strings.Join(filteredLogs, "\n"))
 	}()
 }
 

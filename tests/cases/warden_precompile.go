@@ -31,7 +31,7 @@ func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build f
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 
-	c.w.PrintDebugLogsAtTheEnd(t, ctx)
+	c.w.PrintLogsAtTheEnd(t, ctx, []string{"TEST_DEBUG"})
 }
 
 func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {

@@ -6,44 +6,36 @@ sidebar_position: 2.5
 
 ## Overview
 
-The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running off-chain heavyweight computations asynchronously and storing the results on-chain.
+The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running off-chain heavyweight computations asynchronously and storing the results on-chain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework
+and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions).
 
-This module is implemented using the following tools:
-
-- [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/)
-- [Vote Extensions](https://docs.cosmos.network/main/build/abci/vote-extensions)
-
-The `x/async` module implements the following concepts, which you can find in our Glossary:
+This module implements the following concepts, which you can find in our Glossary:
 
 - [Future](/learn/glossary#future)
 - [Prophet](/learn/glossary#prophet)
-
-## Usage (?)
-
-Users are able to request a new computation on-chain, specifying an input and a *handler*. (?)
-
-Validators are running a sidecar process called **Prophet**. Prophets have two responsibilities:
-
-- Fetching new requests for executing them
-- Fetching requests satisfied by other validators to add its vote (?)
-
-![image.png](../../../static/img/x-async-1.png)
 
 ## Concepts
 
 ### Future
 
-A **Future** is an off-chain task that is executed asynchronously. One validator provides the result and other validators vote on its correctness.
+A **Future** is an off-chain user-defined computational task that is executed asynchronously. The result is stored on-chain.
 
-Each Future contains a *handler* ID (?), which determines *how* (?) to interpret the input and what to do with it in order to retrieve the result.
+A user can request a Future, specifying an **input** and a **handler** (referenced by ID), which determines how to interpret the input and what to do with it in order to retrieve the result.
+
+After that, one [validator](/learn/glossary#validator) executes the Future and provides the result, and then other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 
 ### Prophet
 
-A **Prophet** is a separate process running on validator nodes, alongside with `wardend`. Not all validators are required to run Prophets.
+A **Prophet** is a sidecar process running on [validator](/learn/glossary#validator) nodes, which has two responsibilities:
 
-Prophets are responsible for executing handlers associated with [Futures](#future), without blocking consensus.
+- Fetching [Future](#future) requests and executing handlers associated with Futures
+- Fetching requests satisfied by other validators to vote on the results
+
+Prophets run on validator nodes separately from the [`wardend`](/learn/glossary#warden-protocol-node) process, without blocking consensus. Running a Prophet is optional for a validator.
 
 This architecture is similar to [how skip:connect works](https://docs.skip.build/connect/learn/architecture).
+
+![image.png](../../../static/img/x-async-1.png)
 
 ## State
 
@@ -55,9 +47,9 @@ Completed Futures are pruned after some time, to avoid state bloat.
 
 ### MsgAddFuture
 
-Creates a new [Future](#future), providing a `[]byte` input and a `string` ID for the handler (?) to use.
+Creates a new [Future](#future), providing a `[]byte` input and a `string` ID for the handler to use.
 
-**Note**: The [Future](#future) is in a `pending` state until it has a result. Users can query Futures by their IDs to check the progress.
+**Note**: The [Future](#future) has the `pending` status until it has a result. Users can query Futures by their IDs to check the progress.
 
 ## Prophet (sidecar)
 
@@ -65,7 +57,7 @@ Creates a new [Future](#future), providing a `[]byte` input and a `string` ID fo
 
 A Prophet continuously polls the chain to discover new pending [Futures](#future), maintaining a local queue for them.
 
-At the same time, Futures are taken from the queue and the handler (?) code associated with them is executed. This usually involves calling an external service.
+At the same time, Futures are taken from the queue and the handler code associated with them is executed. This usually involves calling an external service.
 
 The results will be stored in the memory for the blockchain node to fetch it later.
 
@@ -79,19 +71,24 @@ The votes will be stored in memory for the blockchain node to fetch it later.
 
 ## ABCI lifecycle
 
-The diagram below represents the application blockchain interface (ABCI) lifecyle:
+The [ABCI](https://docs.cometbft.com/v1.0/spec/abci/) (Application Blockchain Interface) lifecycle includes these steps:
+
+1. If the validator is the proposer for the next block, it fetches results from the [Prophet](#prophet) and includes them in a special transaction at the beginning of the block proposal.
+2. All validators, even non-proposers, broadcast their votes on existing [Futures](#future) as [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions).
+3. When the proposal is processed (for example, the block is finalized), all new results and new votes are persisted in the blockchain storage.
 
 ![image.png](../../../static/img/x-async-2.png)
 
-From the point of view of a node, the following happens:
+## Future execution flow
 
-1. If the validator is the proposer for the next block, it fetches results from the [Prophet](#prophet) and includes them in a special transaction at the beginning of the block proposal.
-2. All validators, even non-proposers, broadcast their votes on existing [Futures](#future) as vote extensions.
-3. When the proposal is processed (for example, the block is finalized), all the new results and new votes are persisted in the blockchain storage.
+Future execution includes the following steps, as shown in the diagram below:
 
-## Sequence diagram (?)
+1. A user (Alice) inserts a new [Future](#future) with a handler (`MathHandler`) and an input (`2+4`).
+2. Node 1 asynchronously executes the Future.
+3. When Node 1 is elected as the proposer for a block (H+N), it inserts the result (`6`) to be recorded.
+4. Node 2 notices the new result for the Future and invokes its handler (`MathHandler`) to verify the result.
+5. The verification is be broadcasted as vote extensions and eventually recorded at height H+N+M+1 since [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) are committed to the state only in the next block.
 
-This diagram shows... (?)
 
 ```mermaid
 sequenceDiagram
@@ -138,12 +135,3 @@ sequenceDiagram
           Node 1<<->>Node 2: Broadcast as vote extension to be included in block H+N+M+1
         end
 ```
-
-From the point of view of a user, the following happens: (?)
-
-1. A user (Alice) inserts a new [Future](#future) with a handler (`MathHandler`) and an input (`2+4`).
-2. Node 1 asynchronously executes the Future.
-3. When is elected proposer for a block (H+N) it inserts the result (`6`) to be recorded. (?)
-4. Node 2 notices the new result for the Future and invokes its handler (`MathHandler`) to verify the result.
-5. The verification will be broadcasted as vote extensions and eventually recorded at height H+N+M+1  
-  **Note**: Vote extensions are committed to the state only in the next block).

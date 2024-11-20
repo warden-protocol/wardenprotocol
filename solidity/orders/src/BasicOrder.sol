@@ -3,7 +3,7 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
+import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
 import { Types } from "./Types.sol";
@@ -162,7 +162,8 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             orderData.signRequestData.spaceNonce,
             orderData.signRequestData.actionTimeoutHeight,
             orderData.signRequestData.expectedApproveExpression,
-            orderData.signRequestData.expectedRejectExpression
+            orderData.signRequestData.expectedRejectExpression,
+            BroadcastType.Automatic
         );
 
         if (_executed) {

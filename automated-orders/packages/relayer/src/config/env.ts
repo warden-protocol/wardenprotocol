@@ -1,8 +1,6 @@
 export interface Env {
   EVMOS_NODE_RPC: string;
   EVMOS_REGISTRY_ADDRESS: string;
-  EVMOS_CALLER_PRIVATE_KEY: string;
-  EVMOS_EVENTS_CACHE_SIZE: number;
   WARDEN_RPC_URL: string;
   ETHEREUM_NODE_RPC: string;
   WARDEN_EVM_CHAIN_ID: number;

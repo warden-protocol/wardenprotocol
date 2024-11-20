@@ -79,12 +79,7 @@ export class EvmClient {
       signature,
     );
 
-    const wallet = createWalletClient({
-      transport: http(this.configuration.rpcURL),
-      key: this.configuration.callerPrivateKey,
-    });
-
-    await wallet.sendRawTransaction({
+    await this.client.sendRawTransaction({
       serializedTransaction: serialized,
     });
   }

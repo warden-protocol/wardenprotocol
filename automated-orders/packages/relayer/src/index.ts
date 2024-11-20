@@ -21,14 +21,9 @@ async function main() {
     }
   });
   
-  const evmos = new EvmClient(
-    {
-      rpcURL: config.EVMOS_NODE_RPC,
-      eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
-      callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
-    },
-    evmosChain,
-  );
+  const evmos = new EvmClient({
+    rpcURL: config.EVMOS_NODE_RPC,
+  }, evmosChain);
 
   const warden = new WardenClient({
     wardenPrecompileAddress: '0x0000000000000000000000000000000000000900',
@@ -39,12 +34,9 @@ async function main() {
     contractAddress: config.EVMOS_REGISTRY_ADDRESS,
   }, evmos);
 
-  const ethereum = new EvmClient(
-    {
-      rpcURL: config.ETHEREUM_NODE_RPC,
-    },
-    sepolia,
-  );
+  const ethereum = new EvmClient({
+    rpcURL: config.ETHEREUM_NODE_RPC,
+  }, sepolia);
 
   const processor = new NewSignatureProcessor(
     ethereum,

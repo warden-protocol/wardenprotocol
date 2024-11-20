@@ -210,4 +210,8 @@ snapshot-many-users:
   mv $WARDEND_HOME/config/client.toml $WARDEND_HOME/config/client.toml.tmpl
   mv $WARDEND_HOME/config/config.toml $WARDEND_HOME/config/config.toml.tmpl
 
-
+# regenerate caller contract
+contract-caller:
+  solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
+  solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
+  abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go

@@ -1,0 +1,10 @@
+orders: build-orders lint-orders test-orders
+
+build-orders:
+    cd orders && yarn && yarn build
+
+lint-orders:
+    cd orders && yarn lint
+
+test-orders:
+    cd orders && yarn test

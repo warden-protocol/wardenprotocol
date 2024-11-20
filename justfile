@@ -18,6 +18,9 @@ wardenjs:
 # regenerate precompiles abi and clients
 mod precompiles
 
+# solidity contracts build, test and deploy
+mod solidity
+
 # deploy a .wasm binary to the chain and return the contract address
 deploy-contract contract from="shulgin" label="":
     #!/usr/bin/env bash

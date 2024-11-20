@@ -14,6 +14,9 @@ export {
 
 export { WardenClient } from './clients/warden.js';
 
+export { WardenRegistryClient } from './clients/registry.js';
+export { IWardenRegistryConfiguration } from './types/registry/configuration.js';
+
 export {
     AddTransactionAbi ,
     ExecutionsAbi ,

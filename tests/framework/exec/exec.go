@@ -3,6 +3,7 @@ package exec
 import (
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -12,6 +13,7 @@ import (
 type Exec struct {
 	Bin    string
 	Args   []string
+	Env    []string
 	Pwd    string
 	Stdin  string
 	Stdout *iowriter.IOWriter
@@ -20,6 +22,7 @@ type Exec struct {
 
 func (e *Exec) Run(ctx context.Context) error {
 	cmd := exec.CommandContext(ctx, e.Bin, e.Args...)
+	cmd.Env = append(os.Environ(), e.Env...)
 	cmd.Dir = e.Pwd
 	if e.Stdin != "" {
 		cmd.Stdin = strings.NewReader(e.Stdin)

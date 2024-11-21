@@ -15,10 +15,7 @@ const schema: JSONSchemaType<Env> = {
     'ETHEREUM_NODE_RPC',
     'WARDEN_EVM_CHAIN_ID',
     'AWS_KMS_KEY_ID',
-    'AWS_KMS_REGION',
-    'FORDEFI_API_ENDPOINT',
-    'FORDEFI_ACCESS_TOKEN',
-    'FORDEFI_VAULT_NAME'
+    'AWS_KMS_REGION'
   ],
   properties: {
     EVMOS_NODE_RPC: { type: 'string' },
@@ -31,10 +28,7 @@ const schema: JSONSchemaType<Env> = {
     ETHEREUM_NODE_RPC: { type: 'string' },
     WARDEN_EVM_CHAIN_ID: { type: 'number' },
     AWS_KMS_KEY_ID: { type: 'string' },
-    AWS_KMS_REGION: { type: 'string' },
-    FORDEFI_API_ENDPOINT: { type: 'string' },
-    FORDEFI_ACCESS_TOKEN: { type: 'string' },
-    FORDEFI_VAULT_NAME: { type: 'string' }
+    AWS_KMS_REGION: { type: 'string' }
   },
 };
 

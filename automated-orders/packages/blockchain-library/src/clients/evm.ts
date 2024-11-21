@@ -36,7 +36,7 @@ import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
 
-import { FordefiService } from '@warden/fordefi-library';
+import { FordefiService } from '../../../aws-kms-signer/dist/index.js';
 import * as asn1 from '@lapo/asn1js';
 import * as secp256k1 from '@noble/secp256k1';
 

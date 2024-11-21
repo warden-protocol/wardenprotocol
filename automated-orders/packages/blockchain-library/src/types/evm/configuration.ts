@@ -1,8 +1,7 @@
-import { IFordefiConfiguration } from "@warden/fordefi-library/dist/types/vault/configuration.js";
+import { IAwsKmsConfiguration } from "../../../../aws-kms-signer/dist/types/configuration.js";
 
 export interface IEvmConfiguration {
   rpcURL: string;
   eventsCacheSize?: number;
-  fordefiConfiguration: IFordefiConfiguration;
-  vaultName: string;
+  awsKmsSignerConfig: IAwsKmsConfiguration;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@warden/fordefi-library",
+  "name": "@warden/aws-kms-signer",
   "version": "1.0.0",
   "author": "",
   "license": "ISC",
@@ -14,12 +14,11 @@
     "dev": "ts-node src/index.ts"
   },
   "devDependencies": {
-    "@types/node": "^20.4.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.3.3"
+    "@types/node": "^22.9.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@aws-sdk/client-kms": "^3.577.0",
-    "axios": "^1.6.8"
+    "@aws-sdk/client-kms": "^3.696.0"
   }
 }

@@ -10,7 +10,4 @@ export interface Env {
   WARDEN_EVM_CHAIN_ID: number;
   AWS_KMS_KEY_ID: string;
   AWS_KMS_REGION: string;
-  FORDEFI_API_ENDPOINT: string;
-  FORDEFI_ACCESS_TOKEN: string;
-  FORDEFI_VAULT_NAME: string;
 }

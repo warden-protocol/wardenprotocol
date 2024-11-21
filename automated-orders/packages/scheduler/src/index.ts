@@ -27,11 +27,8 @@ async function main() {
       eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
       fordefiConfiguration: {
         awsKmsRegion: config.AWS_KMS_REGION,
-        awsKmsKeyId: config.AWS_KMS_KEY_ID,
-        fordefiAPIEndpoint: config.FORDEFI_API_ENDPOINT,
-        accessToken: config.FORDEFI_ACCESS_TOKEN,
-      },
-      vaultName: config.FORDEFI_VAULT_NAME,
+        awsKmsKeyId: config.AWS_KMS_KEY_ID
+      }
     },
     evmosChain,
   );

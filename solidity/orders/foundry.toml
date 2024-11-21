@@ -28,8 +28,3 @@
   quote_style = "double"
   tab_width = 4
   wrap_comments = true
-
-[rpc_endpoints]
-chiado = "${CHIADO_RPC_URL}"
-warden-devnet = "${WARDEN_DEVNET_RPC_URL}"
-localnet = "${LOCALNET_RPC_URL}"

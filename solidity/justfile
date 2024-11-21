@@ -1,3 +1,6 @@
+shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+shulgin := "0x6EA8AC1673402989E7B653AE4E83B54173719C30"
+
 orders: build-orders lint-orders test-orders
 
 build-orders:
@@ -8,3 +11,6 @@ lint-orders:
 
 test-orders:
     cd orders && yarn test
+
+localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
+    cd orders && yarn deploy

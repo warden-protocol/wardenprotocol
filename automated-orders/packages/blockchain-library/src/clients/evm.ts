@@ -15,30 +15,27 @@ import { LRUCache } from 'lru-cache';
 import {
   AbiEvent,
   AbiFunction,
-  Account,
   Chain,
   Hex,
   Log,
   PublicClient,
-  TransactionSerializable,
-  bytesToHex,
+  TransactionSerializableEIP1559,
   createPublicClient,
-  createWalletClient,
   decodeEventLog,
   encodeFunctionData,
-  hexToBytes,
-  keccak256,
-  serializeTransaction,
 } from 'viem';
-import { privateKeyToAccount, signTransaction } from 'viem/accounts';
-
+import { keccak256, hexToBytes, serializeTransaction } from 'viem';
+import { AwsKmsSigner } from '@warden/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
+import * as asn1 from 'asn1.js';
+import * as secp256k1 from 'secp256k1';
 
-import { FordefiService } from '../../../aws-kms-signer/dist/index.js';
-import * as asn1 from '@lapo/asn1js';
-import * as secp256k1 from '@noble/secp256k1';
+const EcdsaSigAsnParse = asn1.define('EcdsaSig', function () {
+  // @ts-ignore
+  this.seq().obj(this.key('r').int(), this.key('s').int());
+});
 
 export class EvmClient {
   signer: Hex;
@@ -46,12 +43,9 @@ export class EvmClient {
   events: LRUCache<string, Log>;
   config: Config;
   client: PublicClient;
-  fordefiService: FordefiService;
+  awsKmsSigner: AwsKmsSigner;
 
-  constructor(
-    private configuration: IEvmConfiguration,
-    chain: Chain,
-  ) {
+  constructor(private configuration: IEvmConfiguration, chain: Chain) {
     this.config = createConfig({
       chains: [chain],
       transports: {
@@ -72,28 +66,13 @@ export class EvmClient {
       });
     }
 
-    if (this.configuration.fordefiConfiguration) {
-      this.fordefiService = new FordefiService(this.configuration.fordefiConfiguration);
+    if (this.configuration.awsKmsSignerConfig) {
+      this.awsKmsSigner = new AwsKmsSigner(this.configuration.awsKmsSignerConfig);
     }
   }
 
-  public async initializeSigner() {
-    const vaultName = this.configuration.vaultName;
-
-    const vault = await this.fordefiService.getVault(vaultName);
-
-    if (!vault) {
-      throw new Error('Vault not found');
-    }
-
-    let uncompressedPublicKey = vault.public_key;
-    if (uncompressedPublicKey[0] === 0x04) {
-      uncompressedPublicKey = uncompressedPublicKey.slice(1);
-    }
-
-    const address = '0x' + bytesToHex(keccak256(uncompressedPublicKey).slice(-20));
-
-    this.signer = address as Hex;
+  public async init() {
+    this.signer = (await this.awsKmsSigner.getAddress()) as Hex;
   }
 
   public async broadcastTx(): Promise<void> {
@@ -154,7 +133,11 @@ export class EvmClient {
     return (code?.length ?? 0) > 0;
   }
 
-  public async callView<T>(contractAddress: string, functionAbi: AbiFunction, args: unknown[]): Promise<T> {
+  public async callView<T>(
+    contractAddress: string,
+    functionAbi: AbiFunction,
+    args: unknown[],
+  ): Promise<T> {
     const result = await readContract(this.config, {
       abi: [functionAbi],
       functionName: functionAbi.name,
@@ -178,7 +161,12 @@ export class EvmClient {
     return transactionsCount;
   }
 
-  public async getGasFees(from: string, to: string, data: string, value: bigint): Promise<GasFeeData> {
+  public async getGasFees(
+    from: string,
+    to: string,
+    data: string,
+    value: bigint,
+  ): Promise<GasFeeData> {
     const feeData = await estimateFeesPerGas(this.config);
     const gasPrice = await getGasPrice(this.config);
     const gasLimit = await estimateGas(this.config, {
@@ -196,37 +184,83 @@ export class EvmClient {
     };
   }
 
-  public async sendTransaction(contractAddress: string, functionAbi: AbiFunction, args: unknown[]): Promise<void> {
+  public async sendTransaction(
+    contractAddress: string,
+    functionAbi: AbiFunction,
+    args: unknown[],
+  ): Promise<void> {
     const data = encodeFunctionData({
       abi: [functionAbi],
       functionName: functionAbi.name,
       args: args,
     });
-  
+
     const gas = await this.getGasFees(this.signer, contractAddress, data, 0n);
     const nonce = await this.getNextNonce(this.signer);
-  
-    const transaction = {
-      chainId: BigInt(this.config.chains[0].id),
+
+    const transaction: TransactionSerializableEIP1559 = {
+      chainId: this.config.chains[0].id,
       to: contractAddress as Hex,
       data: data as Hex,
-      gasLimit: gas.gasLimit,
+      gas: gas.gasLimit,
       maxFeePerGas: gas.maxFeePerGas,
       maxPriorityFeePerGas: gas.maxPriorityFeePerGas,
-      nonce: BigInt(nonce),
+      nonce: nonce,
+      type: 'eip1559',
       value: 0n,
     };
-  
-    const fordAccount = new FordefiAccount(this.signer, this.fordefiService, Number(transaction.chainId));
-  
-    const wallet = createWalletClient({
-      transport: http(this.configuration.rpcURL),
-      account: fordAccount,
-    });
-  
-    await wallet.sendTransaction({
-      ...transaction,
-      account: fordAccount,
+
+    const unsignedSerializedTransaction = serializeTransaction(transaction);
+
+    const transactionHash = keccak256(unsignedSerializedTransaction as Hex);
+    const hashBytes = hexToBytes(transactionHash);
+
+    const signatureDER = await this.awsKmsSigner.signTransactionHash(hashBytes);
+
+    const decodedSignature = EcdsaSigAsnParse.decode(signatureDER, 'der');
+
+    const r = decodedSignature.r;
+    const s = decodedSignature.s;
+
+    const rBuffer = r.toArrayLike(Buffer, 'be', 32);
+    const sBuffer = s.toArrayLike(Buffer, 'be', 32);
+
+    const signatureCompact = Uint8Array.from(Buffer.concat([rBuffer, sBuffer]));
+
+    let vValue: bigint | undefined;
+
+    for (let recovery = 0; recovery <= 3; recovery++) {
+      const recoveredPublicKey = secp256k1.ecdsaRecover(
+        signatureCompact,
+        recovery,
+        hashBytes,
+        false,
+      );
+      const recoveredAddress =
+        '0x' + keccak256(recoveredPublicKey.slice(1)).slice(-40);
+      if (recoveredAddress.toLowerCase() === this.signer.toLowerCase()) {
+        vValue = BigInt(recovery);
+        break;
+      }
+    }
+
+    if (vValue === undefined) {
+      throw new Error('Failed to recover public key from signature.');
+    }
+
+    const signature = {
+      v: vValue,
+      r: ('0x' + rBuffer.toString('hex')) as Hex,
+      s: ('0x' + sBuffer.toString('hex')) as Hex,
+    };
+
+    const serializedSignedTransaction = serializeTransaction(transaction, signature);
+
+    const serializedSignedTransactionHex = serializedSignedTransaction as Hex;
+
+    await this.client.request({
+      method: 'eth_sendRawTransaction',
+      params: [serializedSignedTransactionHex],
     });
   }
 
@@ -237,81 +271,4 @@ export class EvmClient {
       data: log.data,
     }) as T;
   }
-}
-
-class FordefiAccount implements Account {
-  address: Hex;
-  type: 'json-rpc' = 'json-rpc'; // Account type set to 'json-rpc'
-  fordefiService: FordefiService;
-  chainId: number;
-
-  constructor(address: Hex, fordefiService: FordefiService, chainId: number) {
-    this.address = address;
-    this.fordefiService = fordefiService;
-    this.chainId = chainId;
-  }
-
-  async signTransaction(transaction: TransactionSerializable): Promise<Hex> {
-    // Serialize the transaction without signature
-    const unsignedTransaction = serializeTransaction(transaction);
-
-    // Compute the Keccak256 hash of the serialized transaction
-    const transactionHashBytes = keccak256(unsignedTransaction);
-
-    // Sign the transaction hash using FordefiService
-    const signatureDER = await this.fordefiService.signTransactionHash(transactionHashBytes);
-
-    // Parse the DER-encoded signature to extract r and s
-    const { r, s } = derDecode(signatureDER);
-
-    // Compute the recovery parameter v
-    const recoveryParam = await getRecoveryParam(transactionHashBytes, r, s, this.address);
-
-    const v = BigInt(recoveryParam + this.chainId * 2 + 35);
-
-    // Build the signed transaction
-    const signedTransaction = serializeTransaction(transaction, { r, s, v });
-
-    return signedTransaction as Hex;
-  }
-}
-
-function derDecode(signature: Uint8Array): { r: bigint; s: bigint } {
-  const asn1obj = asn1.decode(signature);
-
-  if (asn1obj.typeName() !== 'SEQUENCE' || asn1obj.sub.length !== 2) {
-    throw new Error('Invalid DER signature format');
-  }
-
-  const r = BigInt('0x' + asn1obj.sub[0].toHexString().replace(/^0x/, ''));
-  const s = BigInt('0x' + asn1obj.sub[1].toHexString().replace(/^0x/, ''));
-
-  return { r, s };
-}
-
-async function getRecoveryParam(
-  msgHash: Uint8Array,
-  r: bigint,
-  s: bigint,
-  expectedAddress: Hex,
-): Promise<number> {
-  const signature = new Uint8Array(64);
-  signature.set(hexToBytes(r.toString(16).padStart(64, '0')), 0);
-  signature.set(hexToBytes(s.toString(16).padStart(64, '0')), 32);
-
-  for (let recoveryParam = 0; recoveryParam < 2; recoveryParam++) {
-    const publicKey = secp256k1.recoverPublicKey(msgHash, signature, recoveryParam, false);
-
-    const publicKeyBytes = hexToBytes(publicKey);
-
-    // Compute the Ethereum address from the public key
-    const addressBytes = keccak256(publicKeyBytes.slice(1)).slice(-20);
-    const address = '0x' + bytesToHex(addressBytes);
-
-    if (address.toLowerCase() === expectedAddress.toLowerCase()) {
-      return recoveryParam;
-    }
-  }
-
-  throw new Error('Failed to compute recovery parameter');
 }

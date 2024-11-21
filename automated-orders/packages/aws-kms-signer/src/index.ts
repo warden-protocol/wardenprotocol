@@ -1,8 +1,17 @@
 import { KMS } from '@aws-sdk/client-kms';
-
 import { IAwsKmsConfiguration } from './types/configuration.js';
+import { keccak256 } from 'viem';
+import * as asn1 from 'asn1.js';
 
-export class FordefiService {
+const EcdsaPubKey = asn1.define('EcdsaPubKey', function () {
+  // @ts-ignore
+  this.seq().obj(
+    this.seq().obj(this.objid(), this.objid()),
+    this.bitstr()
+  );
+});
+
+export class AwsKmsSigner {
   configuration: IAwsKmsConfiguration;
   kms: KMS;
 
@@ -13,7 +22,7 @@ export class FordefiService {
     });
   }
 
-  async signTransactionHash(hashBytes: Uint8Array): Promise<Uint8Array> {
+  public async signTransactionHash(hashBytes: Uint8Array): Promise<Uint8Array> {
     const signatureResponse = await this.kms.sign({
       KeyId: this.configuration.awsKmsKeyId,
       Message: hashBytes,
@@ -21,18 +30,36 @@ export class FordefiService {
       MessageType: 'DIGEST',
     });
 
-    const signature = signatureResponse.Signature as Uint8Array;
+    const signature = new Uint8Array(signatureResponse.Signature as ArrayBuffer);
 
     return signature;
+  }
 
-    // const signatureResponse = await this.kms.sign({
-    //   KeyId: this.configuration.awsKmsKeyId,
-    //   Message: Buffer.from(payload, 'utf-8'),
-    //   SigningAlgorithm: 'ECDSA_SHA_256',
-    //   MessageType: 'RAW',
-    // });
+  public async getAddress(): Promise<string> {
+    const publicKeyResponse = await this.kms.getPublicKey({
+      KeyId: this.configuration.awsKmsKeyId,
+    });
 
-    // const signature = Buffer.from(signatureResponse.Signature!).toString('base64');
-    // return signature;
+    const publicKeyDer = new Uint8Array(publicKeyResponse.PublicKey as ArrayBuffer);
+
+    const publicKeyBytes = this.getPublicKeyBytes(publicKeyDer);
+
+    const address = this.publicKeyToAddress(publicKeyBytes);
+
+    return address;
+  }
+
+  private getPublicKeyBytes(publicKeyDer: Uint8Array): Uint8Array {
+    const decoded = EcdsaPubKey.decode(publicKeyDer, 'der');
+    const publicKeyBuffer = decoded.pubKey.data;
+    return new Uint8Array(publicKeyBuffer);
+  }
+
+  private publicKeyToAddress(publicKeyBytes: Uint8Array): string {
+    const uncompressedPublicKey = publicKeyBytes;
+    const hash = keccak256(uncompressedPublicKey.slice(1));
+    const address = '0x' + hash.slice(-40);
+
+    return address;
   }
 }

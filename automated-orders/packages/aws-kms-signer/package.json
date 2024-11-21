@@ -19,6 +19,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@aws-sdk/client-kms": "^3.696.0"
+    "@aws-sdk/client-kms": "^3.696.0",
+    "asn1.js": "^5.4.1"
   }
 }

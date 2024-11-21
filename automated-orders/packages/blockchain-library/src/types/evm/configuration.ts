@@ -3,5 +3,5 @@ import { IAwsKmsConfiguration } from "../../../../aws-kms-signer/dist/types/conf
 export interface IEvmConfiguration {
   rpcURL: string;
   eventsCacheSize?: number;
-  awsKmsSignerConfig: IAwsKmsConfiguration;
+  awsKmsSignerConfig?: IAwsKmsConfiguration;
 }

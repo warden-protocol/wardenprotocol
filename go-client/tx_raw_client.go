@@ -54,17 +54,17 @@ func NewRawTxClient(id Identity, chainID string, c *grpc.ClientConn, accountFetc
 }
 
 // Send a transaction and wait for it to be included in a block.
-func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
+func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) (string, error) {
 	hash, err := c.SendTx(ctx, txBytes)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if err = c.WaitForTx(ctx, hash); err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return hash, nil
 }
 
 type Msger interface {

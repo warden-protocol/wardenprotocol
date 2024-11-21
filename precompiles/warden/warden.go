@@ -14,7 +14,8 @@ import (
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -34,9 +35,10 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000900"
 type Precompile struct {
 	cmn.Precompile
 	wardenkeeper   wardenmodulekeeper.Keeper
-	actkeeper      actkeeper.Keeper
+	actkeeper      actmodulekeeper.Keeper
 	eventsRegistry *precommon.EthEventsRegistry
 	queryServer    types.QueryServer
+	actQueryServer acttypes.QueryServer
 }
 
 // LoadABI loads the x/warden ABI from the embedded abi.json file
@@ -45,7 +47,10 @@ func LoadABI() (abi.ABI, error) {
 	return cmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile(wardenkeeper wardenmodulekeeper.Keeper, actkeeper actkeeper.Keeper, e *precommon.EthEventsRegistry) (*Precompile, error) {
+func NewPrecompile(
+	wardenkeeper wardenmodulekeeper.Keeper,
+	actkeeper actmodulekeeper.Keeper,
+	e *precommon.EthEventsRegistry) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -61,6 +66,7 @@ func NewPrecompile(wardenkeeper wardenmodulekeeper.Keeper, actkeeper actkeeper.K
 		actkeeper:      actkeeper,
 		eventsRegistry: e,
 		queryServer:    wardenmodulekeeper.NewQueryServerImpl(wardenkeeper),
+		actQueryServer: actmodulekeeper.NewQueryServerImpl(actkeeper),
 	}
 
 	p.SetAddress(common.HexToAddress(PrecompileAddress))
@@ -126,17 +132,17 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	case UpdateKeychainMethod:
 		bz, err = p.UpdateKeychainMethod(ctx, evm.Origin, stateDB, method, args)
 	case AddSpaceOwnerMethod:
-		bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.AddSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 	case RemoveSpaceOwnerMethod:
-		bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.RemoveSpaceOwnerMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 	case NewKeyRequestMethod:
-		bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.NewKeyRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 	case NewSignRequestMethod:
-		bz, err = p.NewSignRequestMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.NewSignRequestMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 	case UpdateKeyMethod:
-		bz, err = p.UpdateKeyMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.UpdateKeyMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 	case UpdateSpaceMethod:
-		bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, stateDB, method, args)
+		bz, err = p.UpdateSpaceMethod(ctx, evm.Origin, contract.CallerAddress, stateDB, method, args)
 
 	// queries
 	case AllKeysMethod:

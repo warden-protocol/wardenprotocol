@@ -1,5 +1,5 @@
 ---
-name: contracts
+name: Solidity Contracts
 
 on:
   push:

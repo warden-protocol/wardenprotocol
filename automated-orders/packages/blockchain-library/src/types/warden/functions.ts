@@ -45,14 +45,11 @@ export enum BroadcastType {
 };
 
 export interface IPageResponse {
-  nextKey: Hex;
+  nextKey: Hex | undefined;
   total: bigint;
 };
 
-export interface ISignRequestResponse {
-  signRequests: ISignRequest[];
-  pageResponse: IPageResponse;
-};
+export type ISignRequestResponse = [ISignRequest[], IPageResponse];
 
 export const SignRequestsAbi: AbiFunction = {
   inputs: [

@@ -9,11 +9,11 @@ import {
   BroadcastType,
   IPageRequest,
   ISignRequest,
-  ISignRequestResponse,
   SignRequestsAbi,
-  SignRequestStatus
+  SignRequestStatus,
+  ISignRequestResponse as Response
 } from '../types/warden/functions.js';
-import { bytesToHex, Hex, hexToBytes } from 'viem';
+import { Hex } from 'viem';
 
 const { delay } = utils;
 
@@ -30,18 +30,20 @@ export class WardenClient {
   });
 
   async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
-    let nextKey: Uint8Array | undefined = undefined;
+    let nextKey: Hex | undefined = undefined;
 
     while (true) {
       await delay(this.configuration.pollingIntervalMsec);
 
       try {
-        const { signRequests, pageResponse } = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest))
+        const [signRequests, pageResponse] = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest))
 
-        yield* this.yieldNewRequests(signRequests);
+        if (signRequests) { 
+          yield* this.yieldNewRequests(signRequests);
+        }
 
-        const newKey = this.tryConvertBytesToUint8Array(pageResponse.nextKey)
-        if (utils.notEmpty(newKey)) {
+        const newKey = pageResponse?.nextKey
+        if (newKey && newKey != `0x`) {
           nextKey = newKey;
         }
       }
@@ -72,32 +74,21 @@ export class WardenClient {
     }
   }
 
-  private async querySignRequests(nextKey: Uint8Array | undefined, limit: bigint): Promise<ISignRequestResponse> {
-    const pagination: IPageRequest = nextKey
-      ? { key: bytesToHex(nextKey), limit: limit, offset: undefined, countTotal: false, reverse: false }
-      : { offset: BigInt(0), limit: limit, key: undefined, countTotal: false, reverse: false };
+  private async querySignRequests(nextKey: Hex | undefined, limit: bigint): Promise<Response> {
+    const pagination: IPageRequest = { 
+      key: nextKey ?? `0x`, 
+      limit: limit,
+      offset: BigInt(0), 
+      countTotal: false, 
+      reverse: false 
+    };
 
-    // TODO AT: Need to add filter by SignRequest type, when implemented
     const args: unknown[] = [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED, BroadcastType.AUTOMATIC];
-    const response = await this.evm.callView<ISignRequestResponse>(
+    const response = await this.evm.callView<Response>(
       this.configuration.wardenPrecompileAddress,
       SignRequestsAbi,
       args)
 
     return response;
-  }
-
-  private tryConvertBytesToUint8Array(bytes: Hex): Uint8Array | undefined {
-    try {
-      const arr = hexToBytes(bytes);
-      if (utils.notEmpty(arr)) {
-        return arr;
-      }
-    }
-    catch (err) {
-      utils.logError(`Error while converting Bytes to Uint8Array ${bytes}: ${utils.serialize(err)}`)
-    }
-
-    return undefined;
   }
 }

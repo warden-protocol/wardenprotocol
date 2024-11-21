@@ -1,0 +1,28 @@
+---
+name: contracts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "solidity/orders/**"
+  pull_request:
+    paths:
+      - "solidity/orders/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "solidity/orders/"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: Install dependencies
+        run: yarn install
+      - name: Run lint
+        run: yarn run lint
+      - name: Run test
+        run: yarn run test

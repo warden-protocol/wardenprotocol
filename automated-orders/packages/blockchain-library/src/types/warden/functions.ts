@@ -12,7 +12,6 @@ export enum SignRequestStatus {
   SIGN_REQUEST_STATUS_FULFILLED = 2,
   /** SIGN_REQUEST_STATUS_REJECTED - The request was rejected. This is a final state for a request. */
   SIGN_REQUEST_STATUS_REJECTED = 3,
-  UNRECOGNIZED = -1
 };
 
 export interface IPageRequest {
@@ -37,6 +36,12 @@ export interface ISignRequest {
   result: Hex;
   encryptionKey: Hex;
   deductedKeychainFees: ICoin[];
+  broadcastType: number;
+};
+
+export enum BroadcastType {
+  DISABLED = 0,
+  AUTOMATIC = 1,
 };
 
 export interface IPageResponse {
@@ -50,8 +55,6 @@ export interface ISignRequestResponse {
 };
 
 export const SignRequestsAbi: AbiFunction = {
-  type: "function",
-  name: "signRequests",
   inputs: [
     {
       components: [
@@ -91,11 +94,17 @@ export const SignRequestsAbi: AbiFunction = {
       type: "uint64"
     },
     {
-      internalType: "int32",
+      internalType: "enum SignRequestStatus",
       name: "status",
-      type: "int32"
+      type: "uint8"
+    },
+    {
+      internalType: "enum BroadcastType",
+      name: "broadcastType",
+      type: "uint8"
     }
   ],
+  name: "signRequests",
   outputs: [
     {
       components: [
@@ -120,9 +129,9 @@ export const SignRequestsAbi: AbiFunction = {
           type: "bytes"
         },
         {
-          internalType: "int32",
+          internalType: "enum SignRequestStatus",
           name: "status",
-          type: "int32"
+          type: "uint8"
         },
         {
           internalType: "bytes",
@@ -150,6 +159,11 @@ export const SignRequestsAbi: AbiFunction = {
           internalType: "struct Types.Coin[]",
           name: "deductedKeychainFees",
           type: "tuple[]"
+        },
+        {
+          internalType: "enum BroadcastType",
+          name: "broadcastType",
+          type: "uint8"
         }
       ],
       internalType: "struct SignRequest[]",
@@ -175,4 +189,5 @@ export const SignRequestsAbi: AbiFunction = {
     }
   ],
   stateMutability: "view",
+  type: "function"
 };

@@ -5,12 +5,13 @@ import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 
 import { LRUCache } from 'lru-cache'
 import { EvmClient } from './evm.js';
-import { 
-    IPageRequest, 
-    ISignRequest, 
-    ISignRequestResponse, 
-    SignRequestsAbi, 
-    SignRequestStatus 
+import {
+  BroadcastType,
+  IPageRequest,
+  ISignRequest,
+  ISignRequestResponse,
+  SignRequestsAbi,
+  SignRequestStatus
 } from '../types/warden/functions.js';
 import { bytesToHex, Hex, hexToBytes } from 'viem';
 
@@ -77,22 +78,23 @@ export class WardenClient {
       : { offset: BigInt(0), limit: limit, key: undefined, countTotal: false, reverse: false };
 
     // TODO AT: Need to add filter by SignRequest type, when implemented
+    const args: unknown[] = [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED, BroadcastType.AUTOMATIC];
     const response = await this.evm.callView<ISignRequestResponse>(
-      this.configuration.wardenPrecompileAddress, 
-      SignRequestsAbi, 
-      [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED])
+      this.configuration.wardenPrecompileAddress,
+      SignRequestsAbi,
+      args)
 
     return response;
   }
 
-  private tryConvertBytesToUint8Array(bytes: Hex) : Uint8Array | undefined { 
+  private tryConvertBytesToUint8Array(bytes: Hex): Uint8Array | undefined {
     try {
       const arr = hexToBytes(bytes);
       if (utils.notEmpty(arr)) {
         return arr;
       }
     }
-    catch(err) {
+    catch (err) {
       utils.logError(`Error while converting Bytes to Uint8Array ${bytes}: ${utils.serialize(err)}`)
     }
 

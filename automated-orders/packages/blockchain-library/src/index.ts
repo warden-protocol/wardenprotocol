@@ -5,7 +5,8 @@ export { OrderProcessor } from './processors/orderProcessor.js';
 export { INewSignatureRequest } from './types/warden/newSignatureRequest.js';
 export { IOrderRegistered, OrderRegisteredAbi } from './types/order/events.js';
 export {
-    SignRequestStatus, 
+    SignRequestStatus,
+    BroadcastType,
     ISignRequest, 
     IPageRequest,
     ISignRequestResponse, 

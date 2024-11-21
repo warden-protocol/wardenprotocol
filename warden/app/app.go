@@ -83,7 +83,6 @@ import (
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 
 	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
-	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 )
@@ -172,7 +171,7 @@ type App struct {
 	HooksICS4Wrapper ibchooks.ICS4Middleware
 
 	// processes
-	oracleClient oracleclient.OracleClient
+	slinkyClient *SlinkyClient
 }
 
 func init() {
@@ -384,7 +383,7 @@ func New(
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
 
 	// oracle initialization
-	app.initializeOracle(appOpts)
+	app.initializeOracles(appOpts)
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)

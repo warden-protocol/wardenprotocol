@@ -19,10 +19,15 @@ import {
   Hex,
   Log,
   PublicClient,
+  TransactionSerializable,
   createPublicClient,
   createWalletClient,
   decodeEventLog,
   encodeFunctionData,
+  parseTransaction,
+  parseSignature,
+  serializeTransaction,
+  TransactionReceiptNotFoundError,
 } from 'viem';
 import { privateKeyToAccount, signTransaction } from 'viem/accounts';
 
@@ -66,8 +71,34 @@ export class EvmClient {
     }
   }
 
-  public async broadcastTx(): Promise<void> {
-    // TODO: implementation
+  public async broadcastTx(rawTransaction: Hex, transactionSignature: Hex) : Promise<void> {
+    const ethRequest = parseTransaction(rawTransaction);
+    const signature = parseSignature(transactionSignature);
+
+    const serialized = serializeTransaction(
+      ethRequest as TransactionSerializable,
+      signature,
+    );
+
+    await this.client.sendRawTransaction({
+      serializedTransaction: serialized,
+    });
+  }
+
+  public async transactionExists(transactionHash: Hex): Promise<boolean> {
+    try {
+      await this.client.getTransactionReceipt({
+        hash: transactionHash,
+      });
+    } catch (error) {
+      if (error instanceof TransactionReceiptNotFoundError) { 
+        return false;
+      }
+
+      throw error;
+    }
+
+    return true;
   }
 
   public async *pollEvents<T>(

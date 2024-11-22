@@ -16,5 +16,4 @@ yarn.lock
 
 # broadcasts
 !broadcast
-broadcast/*
-broadcast/*/31337/
+broadcast/*/1337/

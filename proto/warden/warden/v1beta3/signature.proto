@@ -27,6 +27,15 @@ enum SignRequestStatus {
   SIGN_REQUEST_STATUS_REJECTED = 3;
 }
 
+// BroadcastType specifies how the transaction should be broadcasted.
+enum BroadcastType {
+  // The signature should be broadcasted manually by the caller.
+  BROADCAST_TYPE_DISABLED = 0;
+  
+  // The signature should be automatically broadcasted by an offchain relayer.
+  BROADCAST_TYPE_AUTOMATIC = 1;
+}
+
 
 // SignRequest is the request from a user (creator) to a Keychain to sign a
 // message (data_for_signing).
@@ -67,5 +76,8 @@ message SignRequest {
     (amino.dont_omitempty)   = true,
     (amino.encoding)         = "legacy_coins"
   ];
+
+  // Broadcast type of the sign request, indicating how the transaction should be broadcasted.
+  BroadcastType broadcast_type = 10;
 }
 

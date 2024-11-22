@@ -1,7 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 import { useCurrency } from "./useCurrency";
 import { fiatPricesQuery } from "@/features/assets/queries";
-import { useQueryHooks } from "./useClient";
 import { useMemo } from "react";
 
 const USDollar = new Intl.NumberFormat("en-US", {
@@ -28,10 +27,9 @@ export const FIAT_FORMAT = {
 type Currency = keyof typeof FIAT_FORMAT;
 
 export default function useFiatConversion() {
-	const { isReady } = useQueryHooks();
 	const currency = useCurrency().currency as Currency;
 	const formatter = FIAT_FORMAT[currency];
-	const queryPrices = useQueries(fiatPricesQuery(isReady))
+	const queryPrices = useQueries(fiatPricesQuery(true))
 
 	const fiatConversion = useMemo(() => {
 		if (currency === "usd") {

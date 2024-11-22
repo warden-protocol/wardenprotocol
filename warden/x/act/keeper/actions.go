@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
@@ -47,7 +48,6 @@ func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
 func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
 	actExpression := types.ActExpression(act.ApproveExpression)
 	approved, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
-
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,6 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 
 	actExpression := types.ActExpression(act.RejectExpression)
 	rejected, err := actExpression.EvalExpression(ctx, ActionRejectedVotesEnv(act.Votes))
-
 	if err != nil {
 		return err
 	}
@@ -83,6 +82,7 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	return nil
 }
 
+//nolint:govet //fixme :printf: non-constant format string in call to cosmossdk.io/errors.Wrapf (govet)
 func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	cacheCtx, writeCache := prepareHandlerContext(sdkCtx, act.Creator)
@@ -134,7 +134,12 @@ func safeExecuteHandler(ctx sdk.Context, msg sdk.Msg, handler baseapp.MsgService
 ) (res *sdk.Result, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("handling x/act action msg [%s] PANICKED: %v\n%s", msg, r, string(debug.Stack()))
+			err = fmt.Errorf(
+				"handling x/act action msg [%s] PANICKED: %v\n%s",
+				msg,
+				r,
+				string(debug.Stack()),
+			)
 		}
 	}()
 	res, err = handler(ctx, msg)
@@ -165,7 +170,14 @@ type actionCreatorKey struct{}
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64, expectedApproveExpression *ast.Expression, expectedRejectExpression *ast.Expression) (*types.Action, error) {
+func (k Keeper) AddAction(
+	ctx context.Context,
+	creator string,
+	msg sdk.Msg,
+	timeoutHeight uint64,
+	expectedApproveExpression *ast.Expression,
+	expectedRejectExpression *ast.Expression,
+) (*types.Action, error) {
 	if err := k.validateActionMsgSigners(msg); err != nil {
 		return nil, err
 	}
@@ -190,7 +202,10 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
-	preprocessedApproveExpr, approveMentions, err := k.preprocessTemplate(ctxWithMsg, approveTemplate)
+	preprocessedApproveExpr, approveMentions, err := k.preprocessTemplate(
+		ctxWithMsg,
+		approveTemplate,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -236,6 +251,8 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 }
 
 // assert that the x/act module account is the only signer of the message
+//
+//nolint:govet //fixme :printf: non-constant format string in call to cosmossdk.io/errors.Wrapf (govet)
 func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	signers, _, err := k.cdc.GetMsgV1Signers(msg)
 	if err != nil {

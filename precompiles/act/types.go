@@ -1,6 +1,8 @@
 package act
 
 import (
+	"encoding/json"
+	"fmt"
 	"time"
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -121,23 +123,31 @@ func mapAction(action types.Action) (Action, error) {
 	mentions := make([]common.Address, 0, len(action.Mentions))
 	for _, mention := range action.Mentions {
 		mentionAddress, err := precommon.AddressFromBech32Str(mention)
-
 		if err != nil {
-			return Action{}, err
+			return Action{}, fmt.Errorf("invalid mention %s: %w", mention, err)
 		}
 
 		mentions = append(mentions, mentionAddress)
 	}
 
 	creator, err := precommon.AddressFromBech32Str(action.Creator)
-
 	if err != nil {
-		return Action{}, err
+		return Action{}, fmt.Errorf("invalid creator: %w", err)
 	}
 
 	mappedVotes, err := mapVotes(action.Votes)
 	if err != nil {
 		return Action{}, err
+	}
+
+	approveExpressionJson, err := json.Marshal(action.ApproveExpression)
+	if err != nil {
+		return Action{}, nil
+	}
+
+	rejectExpressionJson, err := json.Marshal(action.RejectExpression)
+	if err != nil {
+		return Action{}, nil
 	}
 
 	return Action{
@@ -149,8 +159,8 @@ func mapAction(action types.Action) (Action, error) {
 		TimeoutHeight:     action.TimeoutHeight,
 		CreatedAt:         mapTimestamp(action.CreatedAt),
 		UpdatedAt:         mapTimestamp(action.UpdatedAt),
-		ApproveExpression: action.ApproveExpression.String(),
-		RejectExpression:  action.RejectExpression.String(),
+		ApproveExpression: string(approveExpressionJson),
+		RejectExpression:  string(rejectExpressionJson),
 		Mentions:          mentions,
 		Votes:             mappedVotes,
 	}, nil
@@ -192,11 +202,16 @@ func mapTemplate(value types.Template) (Template, error) {
 		return Template{}, err
 	}
 
+	expressionJson, err := json.Marshal(value.Expression)
+	if err != nil {
+		return Template{}, nil
+	}
+
 	return Template{
 		Id:         value.Id,
 		Creator:    creator,
 		Name:       value.Name,
-		Expression: value.Expression.String(),
+		Expression: string(expressionJson),
 	}, nil
 }
 

@@ -30,12 +30,14 @@ func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build f
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
+
+	c.w.PrintLogsAtTheEnd(t, ctx, []string{"TEST_DEBUG"})
 }
 
 func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
-	// dave := exec.NewWardend(c.w, "dave")
+	dave := exec.NewWardend(c.w, "dave")
 
 	// client := TestGRPCClient(*c.w.GRPCClient(t))
 	evmClient := c.w.EthClient(t)
@@ -223,6 +225,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 	})
 
 	t.Run("work with space", func(t *testing.T) {
+		spaces, err := iWardenClient.SpacesByOwner(dave.CallOps(t), warden.TypesPageRequest{}, dave.EthAddress(t))
+		require.NoError(t, err)
+		require.Equal(t, []warden.Space{}, spaces.Spaces)
+
 		additionalOwners := []common.Address{}
 		newSpaceTx, err := iWardenClient.NewSpace(alice.TransactOps(t, ctx, evmClient), 0, 0, 0, 0, additionalOwners)
 		require.NoError(t, err)
@@ -241,6 +247,16 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, uint64(0), newSpaceEvents[0].RejectSignTemplateId)
 		require.Equal(t, alice.EthAddress(t), newSpaceEvents[0].Creator)
 		require.Equal(t, uint64(1), newSpaceEvents[0].OwnersCount)
+
+		keys, err := iWardenClient.KeysBySpaceId(alice.CallOps(t), warden.TypesPageRequest{
+			Key:        []byte{},
+			Offset:     0,
+			Limit:      0,
+			CountTotal: false,
+			Reverse:    false,
+		}, 2, []int32{1, 2})
+		require.NoError(t, err)
+		require.Equal(t, keys.Keys, []warden.KeyResponse{})
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
 		require.NoError(t, err)
@@ -263,7 +279,8 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		newKeyReqTx := alice.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newKeyReqTx)
 		// fulfil key request
-		pubKey, err := hex.DecodeString("a5d4105f9c22b101f3bb0f53f4b96e9b931dbae0542858a98b8ff9aeedc1d09f09")
+
+		pubKey, err := hex.DecodeString("04698b4299b6d5a097dadfa74f7b36413422102308160840d5c07b6124aa95d6972dd03c5db4fd57c01fc2152bc01362c298351a9e6c8876f5e533037fe11b82bf")
 		require.NoError(t, err)
 
 		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(alice.TransactOps(t, ctx, evmClient), 1, pubKey)
@@ -277,7 +294,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 
 		require.Len(t, newKeyEvents, 1)
 		require.Equal(t, uint64(1), newKeyEvents[0].Id)
-		require.Equal(t, int32(1), newKeyEvents[0].KeyType)
+		require.Equal(t, uint8(1), newKeyEvents[0].KeyType)
 		require.Equal(t, uint64(1), newKeyEvents[0].KeychainId)
 		require.Equal(t, uint64(1), newKeyEvents[0].SpaceId)
 		require.Equal(t, uint64(0), newKeyEvents[0].ApproveTemplateId)
@@ -301,11 +318,17 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			DeductedKeychainFees: deductedKeychainFees,
 		}, keyRequest)
 
-		deriveAddresses := []int32{}
-		addresses := []warden.AddressesResponse{}
-		key, err := iWardenClient.KeyById(alice.CallOps(t), 1, deriveAddresses)
+		deriveAddresses := []int32{1, 2}
+		keysBySpaceIdResponse, err := iWardenClient.KeysBySpaceId(alice.CallOps(t), warden.TypesPageRequest{
+			Key:        []byte{},
+			Offset:     0,
+			Limit:      0,
+			CountTotal: false,
+			Reverse:    false,
+		}, 1, deriveAddresses)
 		require.NoError(t, err)
-		require.Equal(t, warden.KeyResponse{
+
+		expectedKeyReponse := warden.KeyResponse{
 			Key: warden.Key{
 				Id:                1,
 				SpaceId:           1,
@@ -315,8 +338,16 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 				ApproveTemplateId: 0,
 				RejectTemplateId:  0,
 			},
-			Addresses: addresses,
-		}, key)
+			Addresses: []warden.AddressesResponse{
+				{AddressValue: "0xFe6daba2b91dd41b776A228F7367D4cFddd8471B", AddressType: 1},
+				{AddressValue: "osmo1x3l2t9fs25lhs27v6shxqvg92dnc6wc6md3fdu", AddressType: 2},
+			},
+		}
+		require.Equal(t, []warden.KeyResponse{expectedKeyReponse}, keysBySpaceIdResponse.Keys)
+
+		key, err := iWardenClient.KeyById(alice.CallOps(t), 1, deriveAddresses)
+		require.NoError(t, err)
+		require.Equal(t, expectedKeyReponse, key)
 
 		// reject key request
 		newKeyReqTx = alice.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1award\" --nonce 0")
@@ -382,6 +413,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			Result:               signedData,
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
+			BroadcastType:        0,
 		}, signRequest)
 		// reject sign request
 		newSignReqTx = alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
@@ -411,6 +443,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			Result:               result,
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
+			BroadcastType:        0,
 		}, signRequest)
 	})
 }

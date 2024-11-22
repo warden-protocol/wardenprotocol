@@ -25,8 +25,8 @@ import {
 	cosmosProtoRegistry,
 	wardenProtoRegistry,
 } from "@wardenprotocol/wardenjs";
-import { useQueryHooks } from "@/hooks/useClient";
 import { extReplacer } from "@/utils/formatting";
+import { useTemplateById } from "@/hooks/query/act";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
@@ -202,9 +202,8 @@ function MsgNewKeychainDetails({ msg }: { msg: MsgNewKeychain }) {
 	);
 }
 
-function TemplateName({ id }: { id: bigint }) {
-	const { isReady, useTemplateById } = useQueryHooks();
-	const { data } = useTemplateById({ request: { id }, options: { enabled: isReady } });
+export function TemplateName({ id }: { id: bigint }) {
+	const { data } = useTemplateById({ request: { id } });
 	return <span>{data?.template?.name ?? "Default Template"}</span>;
 }
 

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignRequest, MsgNewSignRequestResponse, MsgFulfilSignRequest, MsgFulfilSignRequestResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignRequest, MsgNewSignRequestResponse, MsgFulfilSignRequest, MsgFulfilSignRequestResponse, MsgAddKeychainAdminRequest, MsgAddKeychainAdminResponse, MsgRemoveKeychainAdminRequest, MsgRemoveKeychainAdminResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -33,6 +33,10 @@ export interface Msg {
   newSignRequest(request: MsgNewSignRequest): Promise<MsgNewSignRequestResponse>;
   /** Fulfil or reject a SignRequest. */
   fulfilSignRequest(request: MsgFulfilSignRequest): Promise<MsgFulfilSignRequestResponse>;
+  /** Add a new admin to a Keychain */
+  addKeychainAdmin(request: MsgAddKeychainAdminRequest): Promise<MsgAddKeychainAdminResponse>;
+  /** Remove admin from a Keychain */
+  removeKeychainAdmin(request: MsgRemoveKeychainAdminRequest): Promise<MsgRemoveKeychainAdminResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -51,6 +55,8 @@ export class MsgClientImpl implements Msg {
     this.updateKey = this.updateKey.bind(this);
     this.newSignRequest = this.newSignRequest.bind(this);
     this.fulfilSignRequest = this.fulfilSignRequest.bind(this);
+    this.addKeychainAdmin = this.addKeychainAdmin.bind(this);
+    this.removeKeychainAdmin = this.removeKeychainAdmin.bind(this);
   }
   updateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -116,5 +122,15 @@ export class MsgClientImpl implements Msg {
     const data = MsgFulfilSignRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta3.Msg", "FulfilSignRequest", data);
     return promise.then(data => MsgFulfilSignRequestResponse.decode(new BinaryReader(data)));
+  }
+  addKeychainAdmin(request: MsgAddKeychainAdminRequest): Promise<MsgAddKeychainAdminResponse> {
+    const data = MsgAddKeychainAdminRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta3.Msg", "AddKeychainAdmin", data);
+    return promise.then(data => MsgAddKeychainAdminResponse.decode(new BinaryReader(data)));
+  }
+  removeKeychainAdmin(request: MsgRemoveKeychainAdminRequest): Promise<MsgRemoveKeychainAdminResponse> {
+    const data = MsgRemoveKeychainAdminRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta3.Msg", "RemoveKeychainAdmin", data);
+    return promise.then(data => MsgRemoveKeychainAdminResponse.decode(new BinaryReader(data)));
   }
 }

@@ -123,7 +123,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.Len(t, actionsByAddress.Actions, 1)
 
 		tx = alice.Tx(t,
-			fmt.Sprintf("warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1"))
+			"warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1")
 		checks.SuccessTx(t, tx)
 		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 

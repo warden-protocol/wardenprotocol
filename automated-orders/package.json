@@ -1,0 +1,32 @@
+{
+  "name": "warden-automated-orders",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn lint && tsc --build --force --verbose",
+    "lint": "eslint --ext .ts --ignore-path .eslintignore .",
+    "build:blockchain-lib": "yarn workspace @warden-automated-orders/blockchain build",
+    "build:utils": "yarn workspace @warden-automated-orders/utils build",
+    "build:libs": "yarn build:utils && yarn build:blockchain-lib",
+    "build:scheduler": "yarn workspace @warden-automated-orders/scheduler build",
+    "build:relayer": "yarn workspace @warden-automated-orders/relayer build",
+    "scheduler": "yarn workspace @warden-automated-orders/scheduler start",
+    "relayer": "yarn workspace @warden-automated-orders/relayer start"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/parser": "^8.13.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.6.3"
+  }
+}

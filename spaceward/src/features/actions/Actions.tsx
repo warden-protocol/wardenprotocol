@@ -5,37 +5,23 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useQueryHooks } from "@/hooks/useClient";
+import { createPagination } from "@/hooks/query/util";
 import { timestampToDate } from "@/lib/datetime";
 import { prettyActionStatus } from "@/utils/formatting";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import {
-	Action as ActionModel,
-	ActionStatus,
-} from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { useConnectWallet } from "@web3-onboard/react";
+import { useActionsByAddress } from "@/hooks/query/act";
+import { ActionModel } from "@/hooks/query/types";
+
+const pagination = createPagination({ reverse: true });
 
 export function Actions() {
-	const { address } = useAddressContext();
-	const {
-		warden: {
-			act: {
-				v1beta1: { useActionsByAddress },
-			},
-		},
-		isReady,
-	} = useQueryHooks();
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts[0].address;
 
 	const q = useActionsByAddress({
 		request: {
 			address,
-			pagination: PageRequest.fromPartial({
-				reverse: true,
-			}),
-			status: ActionStatus.ACTION_STATUS_UNSPECIFIED,
-		},
-		options: {
-			enabled: isReady,
+			pagination
 		},
 	});
 
@@ -137,6 +123,7 @@ export function Actions() {
 													<div className="space-y-4">
 														<Action
 															action={action}
+															queryKey={q.queryKey}
 														/>
 													</div>
 												</AccordionContent>

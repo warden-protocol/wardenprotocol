@@ -19,8 +19,6 @@ import { walletContext } from "@cosmos-kit/react-lite";
 import { BalanceEntry } from "../assets/types";
 import { useQuery } from "@tanstack/react-query";
 import { queryCosmosClients } from "../assets/queries";
-import { isAddress } from "viem";
-import { isValidBech32 } from "@/utils/validate";
 
 export default function SendAssetsModal({
 	// address,

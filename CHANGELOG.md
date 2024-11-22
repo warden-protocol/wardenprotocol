@@ -41,10 +41,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased changes
 
 ### Features (non-breaking)
-* 
+* (precompiles) Add an ability for contracts to approve actions
+* (go-client) Return transaction hash from SendWaitTx
+* (keychain-sdk) Log transaction hashes of broadcasted transactions
+
+### Consensus Breaking Changes
+* (precompiles) Add slinky precompiled contract
+* (x/warden) Add broadcastType to SignRequest
+* (precompiles) Add broadcastType to SignRequest
+* (precompiles) #1077 Change status fields from int32 to enums/uint8 in precompile ABIs for improved type safety and consistency
+
+### Bug Fixes
+
+## [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) - 2024-11-07
 
 ### Bug Fixes
 * (precompiles) Fix analyzers address convert: change analyzers type from []address to []bytes in warden precompile.
+* (precompiles) Fix address type convert and return derived addresses as strings
+* (precompiles) Fix error with empty keys in space.
+* (precompiles) Return expressions in json encoding.
+* (precompiles) Fix spacesByOwner when no spaces.
 
 ## [v0.5.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.3) - 2024-10-31
 

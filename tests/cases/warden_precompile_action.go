@@ -29,7 +29,7 @@ func (c *Test_WardenPrecompileAction) Setup(t *testing.T, ctx context.Context, b
 
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
-	c.w.PrintDebugLogsAtTheEnd(t, ctx)
+	c.w.PrintLogsAtTheEnd(t, ctx, []string{"TEST_DEBUG"})
 }
 
 func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
@@ -183,7 +183,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, actions3.Actions, 3)
 
-		keyRequests1, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING), 1)
+		keyRequests1, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING), 1)
 
 		require.NoError(t, err)
 		require.Len(t, keyRequests1.KeyRequests, 1)
@@ -194,8 +194,8 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			KeychainId:           1,
 			ApproveTemplateId:    0,
 			RejectTemplateId:     0,
-			Status:               int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING),
-			KeyType:              int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
+			Status:               uint8(types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING),
+			KeyType:              uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
 			DeductedKeychainFees: []warden.TypesCoin{},
 			RejectReason:         "",
 		}, keyRequests1.KeyRequests[0])
@@ -210,7 +210,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		_, err = bind.WaitMined(ctx, evmClient, fulfilKeyRequestTx)
 		require.NoError(t, err)
 
-		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
+		keyRequests2, err := iWardenClient.KeyRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED), 1)
 
 		require.NoError(t, err)
 		require.Len(t, keyRequests2.KeyRequests, 1)
@@ -226,7 +226,8 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			2,
 			0,
 			"any(1, warden.space.owners)",
-			"any(1, warden.space.owners)")
+			"any(1, warden.space.owners)",
+			uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 		require.NoError(t, err)
 
 		newSignRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newSignRequestTx)
@@ -239,13 +240,14 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, newSignRequestEvents[0].Id, uint64(1))
 		require.Equal(t, newSignRequestEvents[0].KeyId, uint64(1))
 		require.Equal(t, newSignRequestEvents[0].Creator, alice.EthAddress(t))
+		require.Equal(t, newSignRequestEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 
 		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
 		require.NoError(t, err)
 		require.Len(t, actions4.Actions, 4)
 
-		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING))
+		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING), 0)
 
 		require.NoError(t, err)
 		require.Len(t, signRequests.SignRequests, 1)
@@ -253,12 +255,22 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			Id:                   1,
 			Creator:              alice.EthAddress(t),
 			KeyId:                1,
-			Status:               int32(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			Status:               uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
 			EncryptionKey:        []byte{},
 			DataForSigning:       []byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			DeductedKeychainFees: []warden.TypesCoin{},
 			Result:               []byte{},
+			BroadcastType:        uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED),
 		}, signRequests.SignRequests[0])
+
+		signRequestsAutomatic, err := iWardenClient.SignRequests(
+			alice.CallOps(t),
+			warden.TypesPageRequest{},
+			1,
+			uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
+		require.ErrorContains(t, err, "received nil QuerySignRequestsResponse")
+		require.Len(t, signRequestsAutomatic.SignRequests, 0)
 
 		// updateKey
 		newTemplateTx, err := iActClient.NewTemplate(
@@ -309,7 +321,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			ApproveTemplateId: 1,
 			RejectTemplateId:  1,
 			KeychainId:        1,
-			KeyType:           int32(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
+			KeyType:           uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
 			PublicKey:         []byte{3, 127, 233, 231, 7, 1, 37, 58, 229, 52, 192, 74, 160, 180, 120, 109, 158, 81, 170, 197, 189, 110, 90, 124, 50, 198, 188, 78, 49, 207, 247, 159, 237},
 		}, key.Key)
 

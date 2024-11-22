@@ -7,14 +7,11 @@ import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { Icons } from "@/components/ui/icons";
 import { useModalState } from "../modals/state";
 import { useEffect, useRef } from "react";
+import { env } from "@/env";
 
 export function WalletConnect() {
 	const { resolvedTheme } = useTheme();
-
-	const { sessionRequests, activeSessions } = useWeb3Wallet(
-		"wss://relay.walletconnect.org",
-	);
-
+	const { sessionRequests, activeSessions, w } = useWeb3Wallet(env.wcWalletRelayUrl);
 	const reqCount = sessionRequests.length;
 	const prevRC = useRef(reqCount);
 
@@ -94,7 +91,7 @@ export function WalletConnect() {
 											target.onerror = null;
 										}}
 										src={
-											s.peer.metadata.icons[0].startsWith(
+											s.peer.metadata.icons[0]?.startsWith(
 												"http",
 											)
 												? s.peer.metadata.icons[0]

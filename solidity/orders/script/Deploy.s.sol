@@ -11,13 +11,20 @@ contract Deploy is Script {
     address internal factoryOwner;
     address internal registryAddress;
 
+    error InvalidScheduler();
+    error InvalidFactory();
+
     constructor() {
         (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
         scheduler = vm.envAddress("SCHEDULER_ADDRESS");
         factoryOwner = vm.envAddress("FACTORY_OWNER_ADDRESS");
         registryAddress = vm.envOr("REGISTRY_ADDRESS", address(0));
-        require(scheduler != address(0), "Invalid scheduler address");
-        require(factoryOwner != address(0), "Invalid factory owner address");
+        if (scheduler == address(0)) {
+            revert InvalidScheduler();
+        }
+        if (factoryOwner == address(0)) {
+            revert InvalidFactory();
+        }
     }
 
     function run() external {

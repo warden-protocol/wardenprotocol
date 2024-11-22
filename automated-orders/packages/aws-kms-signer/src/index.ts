@@ -3,11 +3,15 @@ import { IAwsKmsConfiguration } from './types/configuration.js';
 import { keccak256 } from 'viem';
 import * as asn1 from 'asn1.js';
 
-const EcdsaPubKey = asn1.define('EcdsaPubKey', function () {
-  // @ts-ignore
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const EcdsaPubKey = asn1.define('EcdsaPubKey', function (this: any) {
+  // https://tools.ietf.org/html/rfc5480#section-2
   this.seq().obj(
-    this.seq().obj(this.objid(), this.objid()),
-    this.bitstr()
+    this.key('algo').seq().obj(
+      this.key('algorithm').objid(),
+      this.key('parameters').objid(),
+    ),
+    this.key('pubKey').bitstr()
   );
 });
 

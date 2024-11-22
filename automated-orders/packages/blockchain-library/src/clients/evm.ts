@@ -32,9 +32,12 @@ import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js
 import * as asn1 from 'asn1.js';
 import * as secp256k1 from 'secp256k1';
 
-const EcdsaSigAsnParse = asn1.define('EcdsaSig', function () {
-  // @ts-ignore
-  this.seq().obj(this.key('r').int(), this.key('s').int());
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const EcdsaSigAsnParse = asn1.define('EcdsaSig', function(this: any) {
+  this.seq().obj(
+      this.key('r').int(),
+      this.key('s').int(),
+  );
 });
 
 export class EvmClient {

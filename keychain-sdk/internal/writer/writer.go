@@ -136,11 +136,12 @@ func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 		return err
 	}
 
-	if err = w.Client.SendWaitTx(ctx, tx); err != nil {
+	hash, err := w.Client.SendWaitTx(ctx, tx)
+	if err != nil {
 		return err
 	}
 
-	w.Logger.Info("flush complete")
+	w.Logger.Info("flush complete", "tx_hash", hash)
 
 	return nil
 }

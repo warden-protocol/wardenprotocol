@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"os"
@@ -14,7 +13,6 @@ import (
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
-	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -67,9 +65,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
-	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -444,45 +440,6 @@ func New(
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
 
 	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
-
-	app.UpgradeKeeper.SetUpgradeHandler("v01-to-v02", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-		fromVM["capability"] = 1 // for some reason this is not set, but it should. If we don't do this the capability module will panic when trying to migrate.
-		for moduleName, version := range fromVM {
-			app.Logger().Info(fmt.Sprintf("Module: %s, Version: %d", moduleName, version))
-
-		}
-		versionMap, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
-		if err != nil {
-			return nil, err
-		}
-		app.Logger().Info(fmt.Sprintf("post migrate version map: %v", versionMap))
-		return versionMap, err
-	})
-
-	// Slinky upgrader
-	slinkyUpgrade := createSlinkyUpgrader(app)
-	app.UpgradeKeeper.SetUpgradeHandler(slinkyUpgrade.Name, slinkyUpgrade.Handler) // includes v0.4 upgrade
-
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
-	}
-	if upgradeInfo.Name == slinkyUpgrade.Name {
-		// add slinky stores if this upgrade is the slinky upgrade.
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
-			Added: append(
-				slinkyUpgrade.StoreUpgrade.Added,
-				gmptypes.StoreKey,
-				ibchookstypes.StoreKey,
-			),
-			Renamed: []storetypes.StoreRename{
-				{
-					OldKey: "intent",
-					NewKey: acttypes.ModuleName,
-				},
-			},
-		}))
-	}
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

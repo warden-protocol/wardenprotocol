@@ -106,7 +106,7 @@ func (cp *ClientsPool) BuildTx(
 func (cp *ClientsPool) SendWaitTx(ctx context.Context, txBytes []byte) error {
 	liveClient, err := cp.liveTxClient()
 	if err != nil {
-		return fmt.Errorf("failed to aquire live client for SendWaitTx: %w", err)
+		return fmt.Errorf("failed to acquire live client for SendWaitTx: %w", err)
 	}
 
 	return liveClient.SendWaitTx(ctx, txBytes)

@@ -10,11 +10,11 @@ The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blo
 
 In this article, you'll find a full list of available methods and events. You can use them for querying and managing the following components:
 
-- [Spaces](#spaces)
-- [Keys](#keys)
-- [Keychains](#keychains)
-- [Key requests](#key-requests)
-- [Signature requests](#signature-requests)
+- [Spaces](/learn/glossary#space)
+- [Keys](/learn/glossary#key)
+- [Keychains](/learn/glossary#keychain)
+- [Key requests](/learn/glossary#key-request)
+- [Signature requests](/learn/glossary#signature-request)
 
 ## Precompile address
 
@@ -40,13 +40,12 @@ To reference the `IWarden` precompile in your code, use the following precompile
   @return pageResponse  pagination details
   ```
 
-### Query a Space by owner
+### Query Spaces by owner
 
 - **Method**: `spacesByOwner()`
 - **Description**: Returns a list of Spaces by owner.
 - **Parameters**:  
   ```sol
-  @dev Defines a method to query spaces by owner.
   @param pageRequest The pagination details
   @param owner The owner address
   ```
@@ -127,7 +126,6 @@ To reference the `IWarden` precompile in your code, use the following precompile
 - **Description**: Removes an owner from a Space.
 - **Parameters**:    
   ```sol
-  @dev Defines a method to remove a space owner.
   @param spaceId The space id
   @param owner The owner
   @param nonce The nonce
@@ -475,7 +473,6 @@ To reference the `IWarden` precompile in your code, use the following precompile
 - **Description**: An event emitted when [a new Space is created](#create-a-new-space).
 - **Parameters**:  
   ```sol
-  @dev NewSpace defines an Event emitted when a new space is created.
   @param id The space id
   @param creator The creator address
   @param ownersCount The count of space owners

@@ -22,7 +22,7 @@ func Main() {
 			Logger: logger, // not required, but recommended
 
 			// setup the connection to the Warden Protocol node
-			ChainID: "warden",
+			ChainID: "warden_1337-1",
 
 			// setup the account used to write txs
 			KeychainID: 1,

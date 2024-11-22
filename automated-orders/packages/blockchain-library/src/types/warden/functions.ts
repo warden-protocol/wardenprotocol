@@ -32,11 +32,11 @@ export interface ISignRequest {
   creator: string;
   keyId: bigint;
   dataForSigning: Hex;
-  status: number;
+  status: SignRequestStatus;
   result: Hex;
   encryptionKey: Hex;
   deductedKeychainFees: ICoin[];
-  broadcastType: number;
+  broadcastType: BroadcastType;
 };
 
 export enum BroadcastType {

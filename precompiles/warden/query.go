@@ -269,8 +269,6 @@ func (p Precompile) SignRequestsMethod(
 		return nil, err
 	}
 
-	fmt.Printf("request: %v\n", req)
-
 	response, err := p.queryServer.SignRequests(ctx, req)
 	if err != nil {
 		return nil, err
@@ -279,11 +277,8 @@ func (p Precompile) SignRequestsMethod(
 		return nil, fmt.Errorf("received nil response from query server")
 	}
 
-	fmt.Printf("response: %v\n", response)
-
 	out, err := new(signRequestsOutput).FromResponse(response)
 	if err != nil {
-		fmt.Printf("err res: %v\n", response)
 		return nil, err
 	}
 

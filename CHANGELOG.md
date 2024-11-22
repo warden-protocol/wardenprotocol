@@ -42,12 +42,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 * (precompiles) Add an ability for contracts to approve actions
+* (go-client) Return transaction hash from SendWaitTx
+* (keychain-sdk) Log transaction hashes of broadcasted transactions
 
 ### Consensus Breaking Changes
 * (precompiles) Add slinky precompiled contract
 * (x/warden) Add broadcastType to SignRequest
 * (precompiles) Add broadcastType to SignRequest
-
+* (precompiles) #1077 Change status fields from int32 to enums/uint8 in precompile ABIs for improved type safety and consistency
 
 ### Bug Fixes
 

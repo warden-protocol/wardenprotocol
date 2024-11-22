@@ -153,7 +153,7 @@ func (p Precompile) GetNewKeyEvent(ctx sdk.Context, _ *common.Address, eventNewK
 	}
 
 	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetKeyType(),
+		uint8(typedEvent.GetKeyType()),
 		typedEvent.GetSpaceId(),
 		typedEvent.GetKeychainId(),
 		typedEvent.GetApproveTemplateId(),
@@ -583,7 +583,7 @@ func (p Precompile) GetNewSignRequestEvent(ctx sdk.Context, _ *common.Address, n
 
 	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetKeyId())))
 	b.Write(append(make([]byte, 12), creatorAddress.Bytes()...))
-	b.Write(evmoscmn.PackNum(reflect.ValueOf(uint8(typedEvent.GetBroadcastType()))))
+	b.Write(evmoscmn.PackNum(reflect.ValueOf(typedEvent.GetBroadcastType())))
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
 
 	if err != nil {

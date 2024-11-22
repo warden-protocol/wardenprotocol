@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { KeyResponse } from "precompile-warden/IWarden.sol";
+import { BroadcastType, KeyResponse } from "precompile-warden/IWarden.sol";
 import { Types } from "precompile-common/Types.sol";
 
 contract MockWardenPrecompile {
@@ -21,7 +21,8 @@ contract MockWardenPrecompile {
         uint64,
         uint64,
         string calldata,
-        string calldata
+        string calldata,
+        BroadcastType
     )
         external
         view

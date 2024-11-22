@@ -18,28 +18,26 @@ import { Hex } from 'viem';
 const { delay } = utils;
 
 export class WardenClient {
-
   constructor(
     private configuration: IWardenConfiguration,
     private evm: EvmClient
   ) { }
 
-  private readonly entriesPerRequest = 100;
-  private readonly seenCache: LRUCache<bigint, bigint> = new LRUCache<bigint, bigint>({
-    max: this.entriesPerRequest * 2,
-  });
-
   async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
     let nextKey: Hex | undefined = undefined;
+    const recentSignRequests: LRUCache<bigint, bigint> = new LRUCache<bigint, bigint>({
+      max: this.configuration.signatureRequestsPageSize * 2,
+    });
 
     while (true) {
-      await delay(this.configuration.pollingIntervalMsec);
+      await delay(this.configuration.signatureRequestsPoolingIntervalMsec);
 
       try {
-        const [signRequests, pageResponse] = await this.querySignRequests(nextKey, BigInt(this.entriesPerRequest))
+        const [signRequests, pageResponse] = await this.querySignRequests(
+          nextKey, BigInt(this.configuration.signatureRequestsPageSize))
 
         if (signRequests) { 
-          yield* this.yieldNewRequests(signRequests);
+          yield* this.yieldNewRequests(signRequests, recentSignRequests);
         }
 
         const newKey = pageResponse?.nextKey
@@ -53,14 +51,16 @@ export class WardenClient {
     }
   }
 
-  private *yieldNewRequests(signRequests: ISignRequest[]) {
+  private *yieldNewRequests(
+    signRequests: ISignRequest[], 
+    recentSignRequests: LRUCache<bigint, bigint, unknown>) {
     for (const request of signRequests) {
       if (!request.result) {
         utils.logError(`Signed data is empty, but request "${request.id}" is fulfilled`)
         continue;
       }
 
-      if (this.seenCache.has(request.id)) {
+      if (recentSignRequests.has(request.id)) {
         utils.logInfo(`Skipping already seen request "${request.id}"`);
         continue;
       }
@@ -70,7 +70,7 @@ export class WardenClient {
         transactionHash: request.dataForSigning!,
       };
 
-      this.seenCache.set(request.id, request.id);
+      recentSignRequests.set(request.id, request.id);
     }
   }
 

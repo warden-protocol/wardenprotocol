@@ -29,15 +29,19 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   async handle(data: INewSignatureRequest): Promise<void> {
     try {
       logInfo(`New Signature request ${serialize(data)}`);
+      
+      await this.retryPolicy.execute(async () => { 
+        const transactionExists = await this.evm.transactionExists(data.transactionHash);
+        if(transactionExists) {
+          logInfo(`Transaction ${data.transactionHash} already exists`);
+          return;
+        }
 
-      const transaction = await this.retryPolicy.execute(
-        async () => await this.registryClient.getTransaction(data.transactionHash)
-      );
-      if(transaction) {
-        await this.retryPolicy.execute(
-          async () => await this.evm.broadcastTx(transaction, data.signature)
-        );
-      }
+        const transaction = await this.registryClient.getTransaction(data.transactionHash);
+        if(transaction) {
+          await this.evm.broadcastTx(transaction, data.signature);
+        }
+      });
     } catch (error) {
       logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error.stack}`);
     }

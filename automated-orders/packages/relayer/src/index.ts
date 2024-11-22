@@ -26,7 +26,8 @@ async function main() {
 
   const warden = new WardenClient({
     wardenPrecompileAddress: '0x0000000000000000000000000000000000000900',
-    pollingIntervalMsec: config.WARDEN_POLLING_INTERVAL_MSEC,
+    signatureRequestsPageSize: config.WARDEN_SIGN_REQUESTS_PAGE_SIZE,
+    signatureRequestsPoolingIntervalMsec: config.WARDEN_SIGN_REQUESTS_POLLING_INTERVAL_MSEC,
   }, evmos);
 
   const registry = new WardenRegistryClient({

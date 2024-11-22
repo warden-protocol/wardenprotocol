@@ -27,6 +27,7 @@ import {
   parseTransaction,
   parseSignature,
   serializeTransaction,
+  TransactionReceiptNotFoundError,
 } from 'viem';
 import { privateKeyToAccount, signTransaction } from 'viem/accounts';
 
@@ -82,6 +83,22 @@ export class EvmClient {
     await this.client.sendRawTransaction({
       serializedTransaction: serialized,
     });
+  }
+
+  public async transactionExists(transactionHash: Hex): Promise<boolean> {
+    try {
+      await this.client.getTransactionReceipt({
+        hash: transactionHash,
+      });
+    } catch (error) {
+      if (error instanceof TransactionReceiptNotFoundError) { 
+        return false;
+      }
+
+      throw error;
+    }
+
+    return true;
   }
 
   public async *pollEvents<T>(

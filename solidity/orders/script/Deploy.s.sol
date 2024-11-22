@@ -16,8 +16,8 @@ contract Deploy is Script {
         scheduler = vm.envAddress("SCHEDULER_ADDRESS");
         factoryOwner = vm.envAddress("FACTORY_OWNER_ADDRESS");
         registryAddress = vm.envOr("REGISTRY_ADDRESS", address(0));
-        require(scheduler != address(0), "Invalid scheduler address");  
-        require(factoryOwner != address(0), "Invalid factory owner address");  
+        require(scheduler != address(0), "Invalid scheduler address");
+        require(factoryOwner != address(0), "Invalid factory owner address");
     }
 
     function run() external {

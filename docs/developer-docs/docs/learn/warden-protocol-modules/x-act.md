@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # x/act
@@ -13,6 +13,10 @@ This module implements the following concepts, which you can find in our Glossar
 - [Approval Rule](/learn/glossary#approval-rule)
 - [Action](/learn/glossary#action)
 - [Intent-Specific Language](/learn/glossary#intent-specific-language)
+
+## Usage
+
+You can call the `x/act` module from your [EVM smart contract](/category/deploy-smart-contracts-on-warden) using the [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol).
 
 ## Concepts
 

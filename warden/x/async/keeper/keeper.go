@@ -1,9 +1,7 @@
 package keeper
 
 import (
-	"context"
 	"fmt"
-	"time"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
@@ -23,7 +21,16 @@ type (
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
 		authority string
+
+		futures *FutureKeeper
 	}
+)
+
+var (
+	FutureSeqPrefix       = collections.NewPrefix(0)
+	FuturesPrefix         = collections.NewPrefix(1)
+	FutureByAddressPrefix = collections.NewPrefix(2)
+	ResultsPrefix         = collections.NewPrefix(3)
 )
 
 func NewKeeper(
@@ -38,6 +45,8 @@ func NewKeeper(
 
 	sb := collections.NewSchemaBuilder(storeService)
 
+	futures := NewFutureKeeper(sb, cdc)
+
 	_, err := sb.Build()
 	if err != nil {
 		panic(fmt.Sprintf("failed to build schema: %s", err))
@@ -48,6 +57,8 @@ func NewKeeper(
 		storeService: storeService,
 		authority:    authority,
 		logger:       logger,
+
+		futures: futures,
 	}
 }
 
@@ -60,4 +71,3 @@ func (k Keeper) GetAuthority() string {
 func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
-

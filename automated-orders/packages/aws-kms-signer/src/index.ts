@@ -33,7 +33,6 @@ export class AwsKmsSigner {
       SigningAlgorithm: 'ECDSA_SHA_256',
       MessageType: 'DIGEST',
     });
-
     const signature = new Uint8Array(signatureResponse.Signature as ArrayBuffer);
 
     return signature;
@@ -43,11 +42,8 @@ export class AwsKmsSigner {
     const publicKeyResponse = await this.kms.getPublicKey({
       KeyId: this.configuration.awsKmsKeyId,
     });
-
     const publicKeyDer = new Uint8Array(publicKeyResponse.PublicKey as ArrayBuffer);
-
     const publicKeyBytes = this.getPublicKeyBytes(publicKeyDer);
-
     const address = this.publicKeyToAddress(publicKeyBytes);
 
     return address;
@@ -56,6 +52,7 @@ export class AwsKmsSigner {
   private getPublicKeyBytes(publicKeyDer: Uint8Array): Uint8Array {
     const decoded = EcdsaPubKey.decode(publicKeyDer, 'der');
     const publicKeyBuffer = decoded.pubKey.data;
+
     return new Uint8Array(publicKeyBuffer);
   }
 

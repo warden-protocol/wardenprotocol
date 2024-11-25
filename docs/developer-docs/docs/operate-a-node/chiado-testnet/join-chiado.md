@@ -71,6 +71,10 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
    :::
 
+### Option 3: Use Cosmovisor
+
+You can also use [Cosmovisor](https://docs.cosmos.network/main/build/tooling/cosmovisor) – a utility for managing binary versions of Cosmos SDK-based chains. Its primary function is to enable binary upgrades without manual intervention.
+
 ## 2. Configure
 
 To configure `wardend`, do the following:

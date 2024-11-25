@@ -100,6 +100,10 @@ To configure `wardend`, do the following:
 
    These commands will update the `minimum-gas-prices` and `persistent_peers` fields in `$HOME/.warden/app.toml`. Alternatively, you can adjust the file manually.
 
+### Option 3: Use Cosmovisor
+
+You can also use [Cosmovisor](https://docs.cosmos.network/main/build/tooling/cosmovisor) – a utility for managing binary versions of Cosmos SDK-based chains. Its primary function is to enable binary upgrades without manual intervention.
+
 ## 3. Set up the state sync
 
 :::tip

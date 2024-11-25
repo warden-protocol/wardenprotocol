@@ -21,7 +21,6 @@ import {
   PublicClient,
   TransactionSerializable,
   createPublicClient,
-  createWalletClient,
   decodeEventLog,
   encodeFunctionData,
   parseTransaction,
@@ -29,11 +28,21 @@ import {
   serializeTransaction,
   TransactionReceiptNotFoundError,
 } from 'viem';
-import { privateKeyToAccount, signTransaction } from 'viem/accounts';
-
+import { keccak256, hexToBytes } from 'viem';
+import { AwsKmsSigner } from '@warden/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
+import * as asn1 from 'asn1.js';
+import * as secp256k1 from 'secp256k1';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const EcdsaSigAsnParse = asn1.define('EcdsaSig', function(this: any) {
+  this.seq().obj(
+      this.key('r').int(),
+      this.key('s').int(),
+  );
+});
 
 export class EvmClient {
   signer: Hex;
@@ -41,11 +50,9 @@ export class EvmClient {
   events: LRUCache<string, Log>;
   config: Config;
   client: PublicClient;
+  awsKmsSigner: AwsKmsSigner;
 
-  constructor(
-    private configuration: IEvmConfiguration,
-    chain: Chain,
-  ) {
+  constructor(private configuration: IEvmConfiguration, chain: Chain) {
     this.config = createConfig({
       chains: [chain],
       transports: {
@@ -66,9 +73,13 @@ export class EvmClient {
       });
     }
 
-    if (this.configuration.callerPrivateKey) {
-      this.signer = privateKeyToAccount(this.configuration.callerPrivateKey as Hex).address;
+    if (this.configuration.awsKmsSignerConfig) {
+      this.awsKmsSigner = new AwsKmsSigner(this.configuration.awsKmsSignerConfig);
     }
+  }
+
+  public async init() {
+    this.signer = (await this.awsKmsSigner.getAddress()) as Hex;
   }
 
   public async broadcastTx(rawTransaction: Hex, transactionSignature: Hex) : Promise<void> {
@@ -155,7 +166,11 @@ export class EvmClient {
     return (code?.length ?? 0) > 0;
   }
 
-  public async callView<T>(contractAddress: string, functionAbi: AbiFunction, args: unknown[]): Promise<T> {
+  public async callView<T>(
+    contractAddress: string,
+    functionAbi: AbiFunction,
+    args: unknown[],
+  ): Promise<T> {
     const result = await readContract(this.config, {
       abi: [functionAbi],
       functionName: functionAbi.name,
@@ -179,7 +194,12 @@ export class EvmClient {
     return transactionsCount;
   }
 
-  public async getGasFees(from: string, to: string, data: string, value: bigint): Promise<GasFeeData> {
+  public async getGasFees(
+    from: string,
+    to: string,
+    data: string,
+    value: bigint,
+  ): Promise<GasFeeData> {
     const feeData = await estimateFeesPerGas(this.config);
     const gasPrice = await getGasPrice(this.config);
     const gasLimit = await estimateGas(this.config, {
@@ -197,7 +217,11 @@ export class EvmClient {
     };
   }
 
-  public async sendTransaction(contractAddress: string, functionAbi: AbiFunction, args: unknown[]): Promise<void> {
+  public async sendTransaction(
+    contractAddress: string,
+    functionAbi: AbiFunction,
+    args: unknown[],
+  ): Promise<void> {
     const data = encodeFunctionData({
       abi: [functionAbi],
       functionName: functionAbi.name,
@@ -207,26 +231,69 @@ export class EvmClient {
     const gas = await this.getGasFees(this.signer, contractAddress, data, 0n);
     const nonce = await this.getNextNonce(this.signer);
 
-    const wallet = createWalletClient({
-      transport: http(this.configuration.rpcURL),
-      key: this.configuration.callerPrivateKey,
-    });
+    const transaction: TransactionSerializable = {
+      chainId: this.config.chains[0].id,
+      to: contractAddress as Hex,
+      data: data as Hex,
+      gas: gas.gasLimit,
+      maxFeePerGas: gas.maxFeePerGas,
+      maxPriorityFeePerGas: gas.maxPriorityFeePerGas,
+      nonce: nonce,
+      type: 'eip1559',
+      value: 0n,
+    };
 
-    const signedTx = await signTransaction({
-      privateKey: this.configuration.callerPrivateKey! as Hex,
-      transaction: {
-        chainId: this.config.chains[0].id,
-        to: contractAddress as Hex,
-        data: data as Hex,
-        gas: gas.gasLimit,
-        maxFeePerGas: gas.maxFeePerGas,
-        maxPriorityFeePerGas: gas.maxPriorityFeePerGas,
-        nonce: nonce,
-      },
-    });
+    const unsignedSerializedTransaction = serializeTransaction(transaction);
 
-    await wallet.sendRawTransaction({
-      serializedTransaction: signedTx,
+    const transactionHash = keccak256(unsignedSerializedTransaction as Hex);
+    const hashBytes = hexToBytes(transactionHash);
+
+    const signatureDER = await this.awsKmsSigner.signTransactionHash(hashBytes);
+
+    const decodedSignature = EcdsaSigAsnParse.decode(signatureDER, 'der');
+
+    const r = decodedSignature.r;
+    const s = decodedSignature.s;
+
+    const rBuffer = r.toArrayLike(Buffer, 'be', 32);
+    const sBuffer = s.toArrayLike(Buffer, 'be', 32);
+
+    const signatureCompact = Uint8Array.from(Buffer.concat([rBuffer, sBuffer]));
+
+    let vValue: bigint | undefined;
+
+    for (let recovery = 0; recovery <= 3; recovery++) {
+      const recoveredPublicKey = secp256k1.ecdsaRecover(
+        signatureCompact,
+        recovery,
+        hashBytes,
+        false,
+      );
+      const recoveredAddress =
+        '0x' + keccak256(recoveredPublicKey.slice(1)).slice(-40);
+      if (recoveredAddress.toLowerCase() === this.signer.toLowerCase()) {
+        vValue = BigInt(recovery);
+        break;
+      }
+    }
+
+    if (vValue === undefined) {
+      throw new Error('Failed to recover public key from signature.');
+    }
+
+    const signature = {
+      v: vValue,
+      r: ('0x' + rBuffer.toString('hex')) as Hex,
+      s: ('0x' + sBuffer.toString('hex')) as Hex,
+    };
+
+    const serializedSignedTransaction = serializeTransaction(transaction, signature);
+
+    const serializedSignedTransactionHex = serializedSignedTransaction as Hex;
+
+    await this.client.request({
+      method: 'eth_sendRawTransaction',
+      params: [serializedSignedTransactionHex],
     });
   }
 

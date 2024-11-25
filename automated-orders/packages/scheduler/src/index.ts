@@ -20,15 +20,17 @@ async function main() {
       }
     }
   });
-  
+
   const evmos = new EvmClient(
     {
       rpcURL: config.EVMOS_NODE_RPC,
       eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
-      callerPrivateKey: config.EVMOS_CALLER_PRIVATE_KEY,
+      awsKmsSignerConfig: { awsKmsRegion: config.AWS_KMS_REGION, awsKmsKeyId: config.AWS_KMS_KEY_ID }
     },
     evmosChain,
   );
+
+  await evmos.init();
 
   const ethereum = new EvmClient(
     {

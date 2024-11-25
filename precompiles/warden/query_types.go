@@ -420,7 +420,7 @@ type signRequestsOutput struct {
 }
 
 func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) (*signRequestsOutput, error) {
-	if res == nil || res.SignRequests == nil {
+	if res == nil {
 		return nil, errors.New("received nil QuerySignRequestsResponse")
 	}
 

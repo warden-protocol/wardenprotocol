@@ -8,6 +8,7 @@ import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompil
 import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
 import { Types } from "./Types.sol";
 import { Registry } from "./Registry.sol";
+import { RLPEncode } from "./RLPEncode.sol";
 
 error ConditionNotMet();
 error ExecutedError();
@@ -111,7 +112,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     function execute(
         uint256 nonce,
         uint256 gas,
-        uint256 gasPrice,
+        uint256,
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas
     )
@@ -132,21 +133,20 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         }
 
         bytes memory data = _packSwapData();
-
-        bytes memory unsignedTx = abi.encode(
-            Types.UnsignedEthTx({
-                from: _keyAddress,
-                gas: gas,
-                gasPrice: gasPrice,
-                nonce: nonce,
-                maxFeePerGas: maxFeePerGas,
-                maxPriorityFeePerGas: maxPriorityFeePerGas,
-                to: orderData.creatorDefinedTxFields.to,
-                value: orderData.creatorDefinedTxFields.value,
-                data: data,
-                chainId: orderData.creatorDefinedTxFields.chainId
-            })
-        );
+        bytes memory emptyAccessList;
+        uint256 txType = 2; // eip1559 tx type
+        bytes[] memory txArray = new bytes[](9);
+        txArray[0] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.chainId);
+        txArray[1] = RLPEncode.encodeUint(nonce);
+        txArray[2] = RLPEncode.encodeUint(maxPriorityFeePerGas);
+        txArray[3] = RLPEncode.encodeUint(maxFeePerGas);
+        txArray[4] = RLPEncode.encodeUint(gas);
+        txArray[5] = RLPEncode.encodeAddress(orderData.creatorDefinedTxFields.to);
+        txArray[6] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.value);
+        txArray[7] = RLPEncode.encodeBytes(data);
+        txArray[8] = RLPEncode.encodeBytes(emptyAccessList);
+        bytes memory unsignedTxEncoded = RLPEncode.encodeList(txArray);
+        bytes memory unsignedTx = abi.encodePacked(RLPEncode.encodeUint(txType), unsignedTxEncoded);
 
         _unsignedTx = unsignedTx;
 

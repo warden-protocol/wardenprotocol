@@ -19,12 +19,16 @@ import {
   Hex,
   Log,
   PublicClient,
-  TransactionSerializableEIP1559,
+  TransactionSerializable,
   createPublicClient,
   decodeEventLog,
   encodeFunctionData,
+  parseTransaction,
+  parseSignature,
+  serializeTransaction,
+  TransactionReceiptNotFoundError,
 } from 'viem';
-import { keccak256, hexToBytes, serializeTransaction } from 'viem';
+import { keccak256, hexToBytes } from 'viem';
 import { AwsKmsSigner } from '@warden/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
@@ -78,8 +82,34 @@ export class EvmClient {
     this.signer = (await this.awsKmsSigner.getAddress()) as Hex;
   }
 
-  public async broadcastTx(): Promise<void> {
-    // TODO: implementation
+  public async broadcastTx(rawTransaction: Hex, transactionSignature: Hex) : Promise<void> {
+    const ethRequest = parseTransaction(rawTransaction);
+    const signature = parseSignature(transactionSignature);
+
+    const serialized = serializeTransaction(
+      ethRequest as TransactionSerializable,
+      signature,
+    );
+
+    await this.client.sendRawTransaction({
+      serializedTransaction: serialized,
+    });
+  }
+
+  public async transactionExists(transactionHash: Hex): Promise<boolean> {
+    try {
+      await this.client.getTransactionReceipt({
+        hash: transactionHash,
+      });
+    } catch (error) {
+      if (error instanceof TransactionReceiptNotFoundError) { 
+        return false;
+      }
+
+      throw error;
+    }
+
+    return true;
   }
 
   public async *pollEvents<T>(
@@ -201,7 +231,7 @@ export class EvmClient {
     const gas = await this.getGasFees(this.signer, contractAddress, data, 0n);
     const nonce = await this.getNextNonce(this.signer);
 
-    const transaction: TransactionSerializableEIP1559 = {
+    const transaction: TransactionSerializable = {
       chainId: this.config.chains[0].id,
       to: contractAddress as Hex,
       data: data as Hex,

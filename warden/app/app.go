@@ -65,6 +65,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -153,6 +154,7 @@ type App struct {
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	ActKeeper    actmodulekeeper.Keeper
+	AsyncKeeper  asyncmodulekeeper.Keeper
 
 	// Slinky
 	OracleKeeper    *oraclekeeper.Keeper
@@ -339,6 +341,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.ActKeeper,
+		&app.AsyncKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition

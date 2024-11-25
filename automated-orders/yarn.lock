@@ -841,7 +841,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@lapo/asn1js@^2.0.4":
+"@lapo/asn1js@2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@lapo/asn1js/-/asn1js-2.0.4.tgz#424b853880d3fe3d5f36fa74dd2c47845a88dc3e"
   integrity sha512-KJD3wQAZxozcraJdWp3utDU6DEZgAVBGp9INCdptUpZaXCEYkpwNb7h7wyYh5y6DxtpvIud8k0suhWJ/z2rKvw==
@@ -857,11 +857,6 @@
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.5.0.tgz#abadc5ca20332db2b1b2aa3e496e9af1213570b0"
   integrity sha512-1j6kQFb7QRru7eKN3ZDvRcP13rugwdxZqCjbiAVZfIJwgj2A65UmT4TgARXGlXgnRkORLTDTrO19ZErt7+QXgA==
-
-"@noble/secp256k1@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-2.1.0.tgz#71d829a0b8ce84aea137708f82273977eea84597"
-  integrity sha512-XLEQQNdablO0XZOIniFQimiXsZDNwaYgL96dZwC54Q30imSbAOFf3NKtepc+cXyuZf5Q1HCgbqgZ2UFFuHVcEw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -2622,7 +2617,7 @@ safer-buffer@^2.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-secp256k1@^5.0.1:
+secp256k1@5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/secp256k1/-/secp256k1-5.0.1.tgz#dc2c86187d48ff2da756f0f7e96417ee03c414b1"
   integrity sha512-lDFs9AAIaWP9UCdtWrotXWWF9t8PWgQDcxqgAnpM9rMqxb3Oaq2J0thzPVSxBwdJgyQtkU/sYtFtbM1RSt/iYA==

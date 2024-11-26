@@ -14,3 +14,19 @@ test-orders:
 
 localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
     cd orders && yarn deploy
+
+create-order thresholdPrice priceCondition pricePair txFields swapData signRequestData $FACTORY_ADDRESS $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic:
+    cd orders && \
+    forge script \
+    --chain $CHAIN_ID \
+    script/CreateOrder.s.sol:CreateOrder \
+    {{thresholdPrice}} \
+    {{priceCondition}} \
+    {{pricePair}} \
+    {{txFields}} \
+    {{swapData}} \
+    {{signRequestData}} \
+    --sig 'run(uint256,uint8,(string,string),(uint256,uint256,address),(uint256,address[],address,uint256),(uint64,bytes[],bytes,uint64,uint64,string,string))' \
+    --rpc-url $RPC_URL \
+    --broadcast \
+    -vvvv

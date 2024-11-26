@@ -15,13 +15,14 @@ async function main() {
     },
     rpcUrls: {
       default: {
-        http: []
+        http: [config.EVMOS_NODE_RPC]
       }
     }
   });
   
   const evmos = new EvmClient({
     rpcURL: config.EVMOS_NODE_RPC,
+    publicClientTimeout: config.EVMOS_PUBLIC_CLIENT_TIMEOUT,
   }, evmosChain);
 
   const warden = new WardenClient({

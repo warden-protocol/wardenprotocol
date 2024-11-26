@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (precompiles) Add broadcastType to SignRequest
 * (precompiles) #1077 Change status fields from int32 to enums/uint8 in precompile ABIs for improved type safety and consistency
 * (wardend) Bump IAVL to v1.2.2. Fixes some potential apphash mismatches that happen in some rare cases.
+* (x/async) Scaffold new module with create/read operations
 
 ### Bug Fixes
 

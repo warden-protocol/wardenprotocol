@@ -13,7 +13,6 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@lapo/asn1js": "2.0.4",
     "@wagmi/core": "^2.14.6",
     "@wardenprotocol/wardenjs": "0.0.11",
     "asn1.js": "^5.4.1",

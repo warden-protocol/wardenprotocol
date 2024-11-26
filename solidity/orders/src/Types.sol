@@ -46,18 +46,4 @@ library Types {
         uint256 chainId;
         address to;
     }
-
-    // Raw unsigned transaction fields
-    struct UnsignedEthTx {
-        address from;
-        uint256 gas;
-        uint256 gasPrice;
-        uint256 nonce;
-        uint256 maxFeePerGas;
-        uint256 maxPriorityFeePerGas;
-        address to;
-        uint256 value;
-        bytes data;
-        uint256 chainId;
-    }
 }

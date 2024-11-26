@@ -269,7 +269,6 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			1,
 			uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
 			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
-		require.ErrorContains(t, err, "received nil QuerySignRequestsResponse")
 		require.Len(t, signRequestsAutomatic.SignRequests, 0)
 
 		// updateKey

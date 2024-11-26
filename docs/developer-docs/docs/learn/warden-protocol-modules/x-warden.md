@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # x/warden
@@ -13,6 +13,10 @@ This module implements Warden's core concepts, which you can find in our Glossar
 - [Space](/learn/glossary#space)
 - [Keychain](/learn/glossary#keychain)
 - [Key](/learn/glossary#key)
+
+## Usage
+
+You can call the `x/warden` module from your [EVM smart contract](/category/deploy-smart-contracts-on-warden) using the [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol).
 
 ## Concepts
 

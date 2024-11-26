@@ -33,11 +33,14 @@ import { AwsKmsSigner } from '@warden/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
-import * as asn1 from 'asn1.js';
-import * as secp256k1 from 'secp256k1';
+
+import asn1 from 'asn1.js';
+const { define } = asn1;
+import secp256k1 from 'secp256k1';
+const { ecdsaRecover } = secp256k1;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const EcdsaSigAsnParse = asn1.define('EcdsaSig', function(this: any) {
+const EcdsaSigAsnParse = define('EcdsaSig', function(this: any) {
   this.seq().obj(
       this.key('r').int(),
       this.key('s').int(),
@@ -263,7 +266,7 @@ export class EvmClient {
     let vValue: bigint | undefined;
 
     for (let recovery = 0; recovery <= 3; recovery++) {
-      const recoveredPublicKey = secp256k1.ecdsaRecover(
+      const recoveredPublicKey = ecdsaRecover(
         signatureCompact,
         recovery,
         hashBytes,

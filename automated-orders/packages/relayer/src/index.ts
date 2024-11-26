@@ -22,7 +22,7 @@ async function main() {
   
   const evmos = new EvmClient({
     rpcURL: config.EVMOS_NODE_RPC,
-    publicClientTimeout: config.EVMOS_PUBLIC_CLIENT_TIMEOUT,
+    publicClientTimeout: config.EVMOS_PUBLIC_CLIENT_TIMEOUT_MSEC,
   }, evmosChain);
 
   const warden = new WardenClient({

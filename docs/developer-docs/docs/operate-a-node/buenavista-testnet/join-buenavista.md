@@ -162,6 +162,10 @@ path-to-binary/wardend start
 
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
 
+:::tip
+We recommend [using Cosmovisor](https://docs.cosmos.network/v0.45/run-node/cosmovisor.html) for running a node. It's a utility for managing binary versions of Cosmos SDK-based chains, allowing you to enable binary upgrades without manual intervention.
+:::
+
 ## Next steps
 
 After joining Buenavista, you can take these steps:

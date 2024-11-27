@@ -1,9 +1,10 @@
-import { useReadContract } from "wagmi";
+import { useReadContract, useWatchContractEvent } from "wagmi";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { env } from "@/env";
 import { DEFAULT_PAGINATION } from "./constants";
 import type { Pagination, QueryOptions } from "./types";
+import { useQueryClient } from "@tanstack/react-query";
 
 export enum AddressType {
 	Unspecified = 0,
@@ -281,13 +282,15 @@ export const useSpaces = ({
 	const enabled = Boolean(options?.enabled ?? true);
 	const pagination = request?.pagination ?? DEFAULT_PAGINATION;
 
-	return useReadContract({
+	const query = useReadContract({
 		address: enabled ? PRECOMPILE_WARDEN_ADDRESS : undefined,
 		args: enabled ? [pagination] : undefined,
 		abi: wardenPrecompileAbi,
 		functionName: "spaces",
 		chainId,
 	});
+
+	return query;
 };
 
 export const useSpacesByOwner = ({
@@ -300,11 +303,13 @@ export const useSpacesByOwner = ({
 	const enabled = Boolean(options?.enabled ?? true) && Boolean(request.owner);
 	const pagination = request?.pagination ?? DEFAULT_PAGINATION;
 
-	return useReadContract({
+	const query = useReadContract({
 		address: enabled ? PRECOMPILE_WARDEN_ADDRESS : undefined,
 		args: enabled ? [pagination, request.owner!] : undefined,
 		abi: wardenPrecompileAbi,
 		functionName: "spacesByOwner",
 		chainId,
 	});
+
+	return query;
 };

@@ -17,24 +17,19 @@ import { cosmos } from "@wardenprotocol/wardenjs";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import type { BalanceEntry } from "../assets/types";
-import { getAbiItem } from "../assets/util";
 import { encodeSecp256k1Pubkey, makeSignDoc, StdSignDoc } from "@cosmjs/amino";
 import { Int53 } from "@cosmjs/math";
 import { SignMode } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/signing/v1beta1/signing";
 import { COSMOS_CHAINS } from "@/config/tokens";
 import {
 	Account,
-	concat,
 	Chain,
 	Client,
-	encodeAbiParameters,
 	SendTransactionParameters,
 	getContract,
-	keccak256,
 	parseUnits,
 	Transport,
 	SendTransactionRequest,
-	toBytes,
 	assertRequest,
 	formatTransactionRequest,
 	TransactionRequest,

@@ -245,6 +245,10 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	}
 
 	if len(f.Batch) < f.config.BatchLimit && !force {
+		if strings.Contains(f.config.Blacklist, addr) {
+			return "", http.StatusUnprocessableEntity, fmt.Errorf("address %s is blacklisted", addr)
+		}
+
 		if err := validAddress(addr); err != nil {
 			return "", http.StatusUnprocessableEntity, err
 		}

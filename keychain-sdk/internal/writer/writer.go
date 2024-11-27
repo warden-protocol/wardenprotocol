@@ -138,11 +138,12 @@ func (w *W) sendWaitTx(ctx context.Context, txClient SyncTxClient, msgs ...clien
 		return err
 	}
 
-	if err = txClient.SendWaitTx(ctx, tx); err != nil {
+	hash, err := txClient.SendWaitTx(ctx, tx)
+	if err != nil {
 		return err
 	}
 
-	w.Logger.Info("flush complete")
+	w.Logger.Info("flush complete", "tx_hash", hash)
 
 	return nil
 }

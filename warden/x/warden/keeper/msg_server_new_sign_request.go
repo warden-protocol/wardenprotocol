@@ -52,6 +52,7 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 		Status:               types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 		EncryptionKey:        msg.EncryptionKey,
 		DeductedKeychainFees: keychain.Fees.SigReq,
+		BroadcastType:        msg.BroadcastType,
 	}
 
 	id, err := k.signRequests.Append(ctx, req)
@@ -61,9 +62,10 @@ func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequ
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewSignRequest{
-		Id:      id,
-		KeyId:   req.KeyId,
-		Creator: req.Creator,
+		Id:            id,
+		KeyId:         req.KeyId,
+		Creator:       req.Creator,
+		BroadcastType: req.BroadcastType,
 	}); err != nil {
 		return nil, err
 	}

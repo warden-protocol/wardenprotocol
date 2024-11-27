@@ -31,7 +31,7 @@ func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build f
 	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 
-	c.w.PrintDebugLogsAtTheEnd(t, ctx)
+	c.w.PrintLogsAtTheEnd(t, ctx, []string{"TEST_DEBUG"})
 }
 
 func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
@@ -294,7 +294,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 
 		require.Len(t, newKeyEvents, 1)
 		require.Equal(t, uint64(1), newKeyEvents[0].Id)
-		require.Equal(t, int32(1), newKeyEvents[0].KeyType)
+		require.Equal(t, uint8(1), newKeyEvents[0].KeyType)
 		require.Equal(t, uint64(1), newKeyEvents[0].KeychainId)
 		require.Equal(t, uint64(1), newKeyEvents[0].SpaceId)
 		require.Equal(t, uint64(0), newKeyEvents[0].ApproveTemplateId)
@@ -413,6 +413,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			Result:               signedData,
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
+			BroadcastType:        0,
 		}, signRequest)
 		// reject sign request
 		newSignReqTx = alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
@@ -442,6 +443,7 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			Result:               result,
 			EncryptionKey:        encryptionKey,
 			DeductedKeychainFees: deductedKeychainFees,
+			BroadcastType:        0,
 		}, signRequest)
 	})
 }

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # x/act
@@ -13,6 +13,10 @@ This module implements the following concepts, which you can find in our Glossar
 - [Approval Rule](/learn/glossary#approval-rule)
 - [Action](/learn/glossary#action)
 - [Intent-Specific Language](/learn/glossary#intent-specific-language)
+
+## Usage
+
+You can call the `x/act` module from your [EVM smart contract](/category/deploy-smart-contracts-on-warden) using the [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol).
 
 ## Concepts
 
@@ -173,7 +177,7 @@ When an Action is created, the Rule gets preprocessed by the expander, resulting
 This feature is still in development and is not available yet.
 :::
 
-The `x/act` module re-evaluates the [Rules](#rule) of pending [Actions](#action) to check if they are satisfied by the current state of the blockchain.
+The `x/act` module re-evaluates the [Rules](#rule) of pending [Actions](#action) to check if they're satisfied by the current state of the blockchain.
 
 Every time an Action is approved, it gets re-evaluated. During evaluation, all identifiers left after [preprocessing](#rule-preprocessing) must have an associated value in the **environment**.
 

@@ -1,5 +1,6 @@
 //@ts-nocheck
 import { KeyType, keyTypeFromJSON, keyTypeToJSON } from "./key.js";
+import { BroadcastType, broadcastTypeFromJSON, broadcastTypeToJSON } from "./signature.js";
 import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
@@ -323,6 +324,8 @@ export interface EventNewSignRequest {
   keyId: bigint;
   /** address of the account that requested the signature */
   creator: string;
+  /** broadcast type of the signature request */
+  broadcastType: BroadcastType;
 }
 export interface EventNewSignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.EventNewSignRequest";
@@ -336,6 +339,8 @@ export interface EventNewSignRequestAmino {
   key_id?: string;
   /** address of the account that requested the signature */
   creator?: string;
+  /** broadcast type of the signature request */
+  broadcast_type?: BroadcastType;
 }
 export interface EventNewSignRequestAminoMsg {
   type: "/warden.warden.v1beta3.EventNewSignRequest";
@@ -346,6 +351,7 @@ export interface EventNewSignRequestSDKType {
   id: bigint;
   key_id: bigint;
   creator: string;
+  broadcast_type: BroadcastType;
 }
 /** EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled */
 export interface EventFulfilSignRequest {
@@ -1512,7 +1518,8 @@ function createBaseEventNewSignRequest(): EventNewSignRequest {
   return {
     id: BigInt(0),
     keyId: BigInt(0),
-    creator: ""
+    creator: "",
+    broadcastType: 0
   };
 }
 export const EventNewSignRequest = {
@@ -1526,6 +1533,9 @@ export const EventNewSignRequest = {
     }
     if (message.creator !== "") {
       writer.uint32(26).string(message.creator);
+    }
+    if (message.broadcastType !== 0) {
+      writer.uint32(32).int32(message.broadcastType);
     }
     return writer;
   },
@@ -1545,6 +1555,9 @@ export const EventNewSignRequest = {
         case 3:
           message.creator = reader.string();
           break;
+        case 4:
+          message.broadcastType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1556,7 +1569,8 @@ export const EventNewSignRequest = {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
-      creator: isSet(object.creator) ? String(object.creator) : ""
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      broadcastType: isSet(object.broadcastType) ? broadcastTypeFromJSON(object.broadcastType) : -1
     };
   },
   toJSON(message: EventNewSignRequest): JsonSafe<EventNewSignRequest> {
@@ -1564,6 +1578,7 @@ export const EventNewSignRequest = {
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
+    message.broadcastType !== undefined && (obj.broadcastType = broadcastTypeToJSON(message.broadcastType));
     return obj;
   },
   fromPartial(object: Partial<EventNewSignRequest>): EventNewSignRequest {
@@ -1571,6 +1586,7 @@ export const EventNewSignRequest = {
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
+    message.broadcastType = object.broadcastType ?? 0;
     return message;
   },
   fromAmino(object: EventNewSignRequestAmino): EventNewSignRequest {
@@ -1584,6 +1600,9 @@ export const EventNewSignRequest = {
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
+    if (object.broadcast_type !== undefined && object.broadcast_type !== null) {
+      message.broadcastType = object.broadcast_type;
+    }
     return message;
   },
   toAmino(message: EventNewSignRequest): EventNewSignRequestAmino {
@@ -1591,6 +1610,7 @@ export const EventNewSignRequest = {
     obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.key_id = message.keyId !== BigInt(0) ? (message.keyId?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
+    obj.broadcast_type = message.broadcastType === 0 ? undefined : message.broadcastType;
     return obj;
   },
   fromAminoMsg(object: EventNewSignRequestAminoMsg): EventNewSignRequest {

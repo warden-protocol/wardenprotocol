@@ -48,7 +48,7 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 		Id:                res.Key.Id,
 		SpaceId:           res.Key.SpaceId,
 		KeychainId:        res.Key.KeychainId,
-		KeyType:           int32(res.Key.Type),
+		KeyType:           uint8(res.Key.Type),
 		PublicKey:         res.Key.PublicKey,
 		ApproveTemplateId: res.Key.ApproveTemplateId,
 		RejectTemplateId:  res.Key.RejectTemplateId,
@@ -58,7 +58,7 @@ func (o *KeyResponse) FromResponse(res *types.QueryKeyResponse) (*KeyResponse, e
 	for j, a := range res.Addresses {
 		addresses[j] = AddressesResponse{
 			AddressValue: a.GetAddress(),
-			AddressType:  int32(a.Type),
+			AddressType:  uint8(a.Type),
 		}
 	}
 
@@ -194,14 +194,14 @@ func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.Query
 		return nil, fmt.Errorf("error while unpacking args to keyRequestsInput struct: %w", err)
 	}
 
-	if _, ok := types.KeyRequestStatus_name[input.Status]; !ok {
+	if _, ok := types.KeyRequestStatus_name[int32(input.Status)]; !ok {
 		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
 	}
 
 	return &types.QueryKeyRequestsRequest{
 		Pagination: &input.PageRequest,
 		KeychainId: input.KeychainId,
-		Status:     types.KeyRequestStatus(input.Status),
+		Status:     types.KeyRequestStatus(int32(input.Status)),
 		SpaceId:    input.SpaceId,
 	}, nil
 }
@@ -209,7 +209,7 @@ func newKeyRequestsRequest(method *abi.Method, args []interface{}) (*types.Query
 type keyRequestsInput struct {
 	PageRequest query.PageRequest
 	KeychainId  uint64
-	Status      int32
+	Status      uint8
 	SpaceId     uint64
 }
 
@@ -354,7 +354,7 @@ func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignReque
 	o.Id = signRequest.Id
 	o.KeyId = signRequest.KeyId
 	o.DataForSigning = signRequest.DataForSigning
-	o.Status = int32(signRequest.Status)
+	o.Status = uint8(signRequest.Status)
 
 	result := signRequest.Result
 	if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
@@ -373,6 +373,7 @@ func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignReque
 
 	o.EncryptionKey = signRequest.EncryptionKey
 	o.DeductedKeychainFees = mapSdkCoins(signRequest.DeductedKeychainFees)
+	o.BroadcastType = uint8(signRequest.BroadcastType)
 
 	return o, nil
 }
@@ -382,8 +383,8 @@ func (o *SignRequest) Pack(args abi.Arguments) ([]byte, error) {
 }
 
 func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.QuerySignRequestsRequest, error) {
-	if len(args) != 3 {
-		return nil, wardencommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+	if len(args) != 4 {
+		return nil, wardencommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
 
 	var input signRequestsInput
@@ -391,21 +392,26 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 		return nil, fmt.Errorf("error while unpacking args to signRequestsInput struct: %w", err)
 	}
 
-	if _, ok := types.SignRequestStatus_name[input.Status]; !ok {
+	if _, ok := types.SignRequestStatus_name[int32(input.Status)]; !ok {
 		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
+	}
+	if _, ok := types.BroadcastType_name[int32(input.BroadcastType)]; !ok {
+		return nil, fmt.Errorf("invalid BroadcastType value: %d", input.BroadcastType)
 	}
 
 	return &types.QuerySignRequestsRequest{
-		Pagination: &input.PageRequest,
-		KeychainId: input.KeychainId,
-		Status:     types.SignRequestStatus(input.Status),
+		Pagination:    &input.PageRequest,
+		KeychainId:    input.KeychainId,
+		Status:        types.SignRequestStatus(int32(input.Status)),
+		BroadcastType: types.BroadcastType(int32(input.BroadcastType)),
 	}, nil
 }
 
 type signRequestsInput struct {
-	PageRequest query.PageRequest
-	KeychainId  uint64
-	Status      int32
+	PageRequest   query.PageRequest
+	KeychainId    uint64
+	Status        uint8
+	BroadcastType uint8
 }
 
 type signRequestsOutput struct {
@@ -414,7 +420,7 @@ type signRequestsOutput struct {
 }
 
 func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) (*signRequestsOutput, error) {
-	if res == nil || res.SignRequests == nil {
+	if res == nil {
 		return nil, errors.New("received nil QuerySignRequestsResponse")
 	}
 
@@ -572,8 +578,8 @@ func (kr *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, e
 	kr.Creator = ethCreator
 	kr.SpaceId = keyRequest.SpaceId
 	kr.KeychainId = keyRequest.KeychainId
-	kr.KeyType = int32(keyRequest.KeyType)
-	kr.Status = int32(keyRequest.Status)
+	kr.KeyType = uint8(keyRequest.KeyType)
+	kr.Status = uint8(keyRequest.Status)
 	kr.RejectReason = keyRequest.RejectReason
 	kr.ApproveTemplateId = keyRequest.ApproveTemplateId
 	kr.RejectTemplateId = keyRequest.RejectTemplateId

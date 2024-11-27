@@ -29,7 +29,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 ### Option 1: Use the prebuilt binary
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.3) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) and unzip it. The archive contains the `wardend` binary.
 
 2. Navigate to the directory containing the binary and initialize the node:
 
@@ -46,7 +46,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 1. Clone the repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.5.3 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
@@ -159,10 +159,14 @@ path-to-binary/wardend start
 
 It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
 
+:::tip
+We recommend [using Cosmovisor](https://docs.cosmos.network/v0.45/run-node/cosmovisor.html) for running a node. It's a utility for managing binary versions of Cosmos SDK-based chains, allowing you to enable binary upgrades without manual intervention.
+:::
+
 ## Next steps
 
 After joining Chiado, you can take these steps:
 
 - If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
 - To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
-- Don't forget to join our community in [Discord](https://discord.com/invite/warden).
+- Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).

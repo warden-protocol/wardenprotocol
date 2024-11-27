@@ -8,15 +8,7 @@ export abstract class Processor<T> {
     while (true) {
       try {
         for await (const request of this.generator()) {
-          let result = false;
-
-          while (result !== true) {
-            result = await this.handle(request);
-
-            if (!result) {
-              await delay(1_000);
-            }
-          }
+          await this.handle(request);
         }
       } catch (error) {
         logError(error);
@@ -26,5 +18,5 @@ export abstract class Processor<T> {
     }
   }
 
-  abstract handle(data: T): Promise<boolean>;
+  abstract handle(data: T): Promise<void>;
 }

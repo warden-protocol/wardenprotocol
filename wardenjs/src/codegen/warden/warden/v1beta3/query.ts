@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination.js";
 import { KeyRequestStatus, AddressType, KeyRequest, KeyRequestAmino, KeyRequestSDKType, Key, KeyAmino, KeySDKType, keyRequestStatusFromJSON, keyRequestStatusToJSON, addressTypeFromJSON, addressTypeToJSON } from "./key.js";
-import { SignRequestStatus, SignRequest, SignRequestAmino, SignRequestSDKType, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
+import { SignRequestStatus, BroadcastType, SignRequest, SignRequestAmino, SignRequestSDKType, signRequestStatusFromJSON, broadcastTypeFromJSON, signRequestStatusToJSON, broadcastTypeToJSON } from "./signature.js";
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Space, SpaceAmino, SpaceSDKType } from "./space.js";
 import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain.js";
@@ -413,6 +413,7 @@ export interface QuerySignRequestsRequest {
   pagination?: PageRequest;
   keychainId: bigint;
   status?: SignRequestStatus;
+  broadcastType?: BroadcastType;
 }
 export interface QuerySignRequestsRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta3.QuerySignRequestsRequest";
@@ -422,6 +423,7 @@ export interface QuerySignRequestsRequestAmino {
   pagination?: PageRequestAmino;
   keychain_id?: string;
   status?: SignRequestStatus;
+  broadcast_type?: BroadcastType;
 }
 export interface QuerySignRequestsRequestAminoMsg {
   type: "/warden.warden.v1beta3.QuerySignRequestsRequest";
@@ -431,6 +433,7 @@ export interface QuerySignRequestsRequestSDKType {
   pagination?: PageRequestSDKType;
   keychain_id: bigint;
   status?: SignRequestStatus;
+  broadcast_type?: BroadcastType;
 }
 export interface QuerySignRequestsResponse {
   pagination?: PageResponse;
@@ -2282,7 +2285,8 @@ function createBaseQuerySignRequestsRequest(): QuerySignRequestsRequest {
   return {
     pagination: undefined,
     keychainId: BigInt(0),
-    status: undefined
+    status: undefined,
+    broadcastType: undefined
   };
 }
 export const QuerySignRequestsRequest = {
@@ -2296,6 +2300,9 @@ export const QuerySignRequestsRequest = {
     }
     if (message.status !== undefined) {
       writer.uint32(24).int32(message.status);
+    }
+    if (message.broadcastType !== undefined) {
+      writer.uint32(32).int32(message.broadcastType);
     }
     return writer;
   },
@@ -2315,6 +2322,9 @@ export const QuerySignRequestsRequest = {
         case 3:
           message.status = reader.int32() as any;
           break;
+        case 4:
+          message.broadcastType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2326,7 +2336,8 @@ export const QuerySignRequestsRequest = {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
-      status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : undefined
+      status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : undefined,
+      broadcastType: isSet(object.broadcastType) ? broadcastTypeFromJSON(object.broadcastType) : undefined
     };
   },
   toJSON(message: QuerySignRequestsRequest): JsonSafe<QuerySignRequestsRequest> {
@@ -2334,6 +2345,7 @@ export const QuerySignRequestsRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.status !== undefined && (obj.status = signRequestStatusToJSON(message.status));
+    message.broadcastType !== undefined && (obj.broadcastType = broadcastTypeToJSON(message.broadcastType));
     return obj;
   },
   fromPartial(object: Partial<QuerySignRequestsRequest>): QuerySignRequestsRequest {
@@ -2341,6 +2353,7 @@ export const QuerySignRequestsRequest = {
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.status = object.status ?? undefined;
+    message.broadcastType = object.broadcastType ?? undefined;
     return message;
   },
   fromAmino(object: QuerySignRequestsRequestAmino): QuerySignRequestsRequest {
@@ -2354,6 +2367,9 @@ export const QuerySignRequestsRequest = {
     if (object.status !== undefined && object.status !== null) {
       message.status = object.status;
     }
+    if (object.broadcast_type !== undefined && object.broadcast_type !== null) {
+      message.broadcastType = object.broadcast_type;
+    }
     return message;
   },
   toAmino(message: QuerySignRequestsRequest): QuerySignRequestsRequestAmino {
@@ -2361,6 +2377,7 @@ export const QuerySignRequestsRequest = {
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     obj.keychain_id = message.keychainId !== BigInt(0) ? (message.keychainId?.toString)() : undefined;
     obj.status = message.status === null ? undefined : message.status;
+    obj.broadcast_type = message.broadcastType === null ? undefined : message.broadcastType;
     return obj;
   },
   fromAminoMsg(object: QuerySignRequestsRequestAminoMsg): QuerySignRequestsRequest {

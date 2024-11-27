@@ -5,6 +5,7 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
+import "warden/warden/v1beta3/signature.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3";
 
@@ -147,6 +148,9 @@ message EventNewSignRequest {
 
   // address of the account that requested the signature
   string creator = 3;
+
+  // broadcast type of the signature request
+  BroadcastType broadcast_type = 4;
 }
 
 // EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled

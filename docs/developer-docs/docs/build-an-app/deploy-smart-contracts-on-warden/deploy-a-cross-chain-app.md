@@ -744,6 +744,6 @@ Now you can verify the deployment and see how the EVM and WASM contracts interac
 
 3. To verify the token burn, visit [Etherscan](https://sepolia.etherscan.io/token/0x5388de880a16ba9602746f3799e850e78148cd57?a=0x5388dE880a16Ba9602746F3799E850E78148cd57).
 
-If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/warden) or [Twitter](https://twitter.com/wardenprotocol).
+If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀

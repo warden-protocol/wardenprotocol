@@ -288,7 +288,7 @@ See also: [Bonded validator](#bonded-validator), [Unbonding validator](#unbondin
 
 An unbonding validator is a validator that is transitioning from [bonded](#bonded-validator) to [unbonded](#unbonded-validator).
 
-Validators enter this state either when they decide to stop participating in [staking](#staking) or when they are slashed for misbehavior. During the unbonding period, validators aren't participating in the consensus process and aren't earning rewards.
+Validators enter this state either when they decide to stop participating in [staking](#staking) or when they're slashed for misbehavior. During the unbonding period, validators aren't participating in the consensus process and aren't earning rewards.
 
 ---
 

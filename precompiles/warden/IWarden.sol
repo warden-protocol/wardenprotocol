@@ -18,7 +18,7 @@ struct Key {
     uint64 id;
     uint64 spaceId;
     uint64 keychainId;
-    int32 keyType;
+    KeyType keyType;
     bytes publicKey;
     uint64 approveTemplateId;
     uint64 rejectTemplateId;
@@ -31,7 +31,7 @@ struct KeyResponse {
 
 struct AddressesResponse {
     string addressValue;
-    int32 addressType;
+    AddressType addressType;
 }
 
 struct KeyRequest {
@@ -39,8 +39,8 @@ struct KeyRequest {
     address creator;
     uint64 spaceId;
     uint64 keychainId;
-    int32 keyType;
-    int32 status;
+    KeyType keyType;
+    KeyRequestStatus status;
     string rejectReason;
     uint64 approveTemplateId;
     uint64 rejectTemplateId;
@@ -64,10 +64,11 @@ struct SignRequest {
     address creator;
     uint64 keyId;
     bytes dataForSigning;
-    int32 status;
+    SignRequestStatus status;
     bytes result;
     bytes encryptionKey;
     Types.Coin[] deductedKeychainFees;
+    BroadcastType broadcastType;
 }
 
 struct Space {
@@ -81,10 +82,35 @@ struct Space {
     uint64 rejectSignTemplateId;
 }
 
+enum AddressType {
+    Unspecified,
+    Ethereum,
+    Osmosis
+}
+
 enum KeyType {
     Unspecified,
     EcdsaSecp256k1,
     EddsaEd25519
+}
+
+enum KeyRequestStatus {
+    Unspecified,
+    Pending,
+    Fulfilled,
+    Rejected
+}
+
+enum SignRequestStatus {
+    Unspecified,
+    Pending,
+    Fulfilled,
+    Rejected
+}
+
+enum BroadcastType {
+    Disabled,
+    Automatic
 }
 
 /**
@@ -273,6 +299,7 @@ interface IWarden {
     /// @param actionTimeoutHeight The block height up until this action can be executed
     /// @param expectedApproveExpression The definition of expected approval expression the action is created with
     /// @param expectedRejectExpression The definition of expected reject expression the action is created with
+    /// @param broadcastType The broadcast type
     /// @return success If execution was successful
     function newSignRequest(
         uint64 keyId,
@@ -283,7 +310,8 @@ interface IWarden {
         uint64 nonce,
         uint64 actionTimeoutHeight,
         string calldata expectedApproveExpression,
-        string calldata expectedRejectExpression
+        string calldata expectedRejectExpression,
+        BroadcastType broadcastType
     ) external returns (bool success);
 
     /// @dev Defines a method to update a key.
@@ -373,7 +401,7 @@ interface IWarden {
     function keyRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
-        int32 status,
+        KeyRequestStatus status,
         uint64 spaceId
     ) external view returns(KeyRequest[] memory keyRequests, Types.PageResponse memory pageResponse);
 
@@ -403,12 +431,14 @@ interface IWarden {
     /// @param pageRequest The pagination details
     /// @param keychainId The id of the keychain
     /// @param status The sign requests status
+    /// @param broadcastType The broadcast type
     /// @return signRequests An array of `SignRequest` structs containing the retrieved sign requests
     /// @return pageResponse  pagination details
     function signRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
-        int32 status
+        SignRequestStatus status,
+        BroadcastType broadcastType
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
     /// @dev Defines a method to query space by id.
@@ -455,7 +485,7 @@ interface IWarden {
     /// @param keychainId The keychain id
     /// @param approveTemplateId The approve template id
     /// @param rejectTemplateId The reject template id
-    event NewKey(uint64 indexed id, int32 keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
+    event NewKey(uint64 indexed id, KeyType keyType, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId);
 
     /// @dev RejectKeyRequest defines an Event emitted when a key request rejected.
     /// @param id The request id
@@ -513,13 +543,14 @@ interface IWarden {
     /// @param rejectTemplateId The reject template id
     /// @param keyType The key type
     /// @param creator The creator address
-    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, int32 keyType, address creator);
+    event NewKeyRequest(uint64 indexed id, uint64 spaceId, uint64 keychainId, uint64 approveTemplateId, uint64 rejectTemplateId, KeyType keyType, address creator);
 
     /// @dev NewSignRequest defines an Event emitted when a new signature request is created.
     /// @param id The id of the signature request
     /// @param keyId The id of the Key to be used for signing
     /// @param creator The creator address
-    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator);
+    /// @param broadcastType The broadcast type
+    event NewSignRequest(uint64 indexed id, uint64 keyId, address creator, BroadcastType broadcastType);
 
     /// @dev UpdateKey defines an Event emitted when a key is updated.
     /// @param id The id of the key

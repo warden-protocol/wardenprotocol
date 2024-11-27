@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -82,23 +83,20 @@ func newPage() Page {
 
 func main() {
 	e := echo.New()
+	logLevel, err := log.ParseLevel(config.GetLogLevel())
+	if err != nil {
+		fmt.Printf("error parsing log level: %s", err)
+		logLevel = log.InfoLevel
+	}
 	logger := log.New(
 		log.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
-	).Level(log.InfoLevel).With().Timestamp().Logger()
+	).Level(logLevel).With().Timestamp().Logger()
 
-	// set cookieSecure
-	cookieSecure := false
-	if config.GetEnvironment() == "production" {
-		cookieSecure = true
+	if logger.GetLevel() == log.DebugLevel {
+		e.Use(middleware.Logger())
 	}
-
-	e.Use(middleware.Recover())
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
-		TokenLookup:    "header:X-CSRF-Token",
-		CookieName:     "_csrf",
-		CookieMaxAge:   3600,
-		CookieHTTPOnly: true,
-		CookieSecure:   cookieSecure,
+		TokenLookup: "header:X-CSRF-Token",
 	}))
 
 	page := newPage()
@@ -133,6 +131,7 @@ func main() {
 	e.File("/css/style.css", "css/style.css")
 	e.File("/js/tx.js", "js/tx.js")
 	e.File("/js/circle.js", "js/circle.js")
+	e.File("/favicon.ico", "images/favicon.ico")
 
 	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	e.GET("/healthz", func(c echo.Context) error {

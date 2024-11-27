@@ -7,7 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-type BasicConfig struct {
+// Config is the configuration for the Keychain.
+type Config struct {
 	// Logger is the logger to use for the Keychain.
 	// If nil, no logging will be done.
 	Logger *slog.Logger
@@ -48,26 +49,20 @@ type BasicConfig struct {
 	// If the transaction isn't included in a block, it will be considered as
 	// failed (but the blockchain might still include in a block later).
 	TxTimeout time.Duration
-}
-
-// Config is the configuration for the Keychain.
-type Config struct {
-	BasicConfig
 
 	// ConsensusNodeThreshold represents the number of nodes required to execute a pending key/sign request.
 	ConsensusNodeThreshold uint8
 
-	// GRPCURLs is the list of URLs of the gRPC server to connect to.
-	// e.g. "localhost:9090"
-	GRPCConfigs []GrpcNodeConfig
+	// Nodes is the list of URLs of the gRPC server to connect to.
+	Nodes []GRPCNodeConfig
 }
 
-type GrpcNodeConfig struct {
-	// GRPCInsecure determines whether to allow an insecure connection to the
+type GRPCNodeConfig struct {
+	// Insecure determines whether to allow an insecure connection to the
 	// gRPC server.
-	GRPCInsecure bool
+	Insecure bool
 
-	// GRPCURL is the URL of the gRPC server to connect to.
+	// Host is the URL of the gRPC server to connect to.
 	// e.g. "localhost:9090"
-	GRPCURL string
+	Host string
 }

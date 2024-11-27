@@ -69,7 +69,7 @@ func (w *signResponseWriter) Reject(reason string) error {
 	return err
 }
 
-func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest, appClient *AppClient) {
+func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest, appClient *wardenClient) {
 	for {
 		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		signRequests, err := appClient.signRequests(reqCtx, a.config.BatchSize, a.config.KeychainID)
@@ -86,15 +86,15 @@ func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest, a
 	}
 }
 
-func (a *App) ingestSignRequest(signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *AppClient) {
-	action, err := a.keyRequestTracker.Ingest(signRequest.Id, appClient.grpcUrl)
+func (a *App) ingestSignRequest(signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *wardenClient) {
+	action, err := a.keyRequestTracker.Ingest(signRequest.Id, appClient.grpcURL)
 	if err != nil {
-		a.logger().Error("failed to ingest sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl, "error", err)
+		a.logger().Error("failed to ingest sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcURL, "error", err)
 		return
 	}
 
 	if action == tracker.ActionSkip {
-		a.logger().Debug("skipping sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcUrl)
+		a.logger().Debug("skipping sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcURL)
 		return
 	}
 
@@ -140,6 +140,6 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 	}()
 }
 
-func (a *AppClient) signRequests(ctx context.Context, batchSize int, keychainId uint64) ([]*wardentypes.SignRequest, error) {
+func (a *wardenClient) signRequests(ctx context.Context, batchSize int, keychainId uint64) ([]*wardentypes.SignRequest, error) {
 	return a.query.PendingSignRequests(ctx, &client.PageRequest{Limit: uint64(batchSize)}, keychainId)
 }

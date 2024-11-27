@@ -57,7 +57,7 @@ func (w *keyResponseWriter) Reject(reason string) error {
 	return err
 }
 
-func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest, client *AppClient) {
+func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest, client *wardenClient) {
 	for {
 		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		keyRequests, err := client.keyRequests(reqCtx, a.config.BatchSize, a.config.KeychainID)
@@ -77,15 +77,15 @@ func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest, clie
 func (a *App) ingestRequest(
 	keyRequestsCh chan *wardentypes.KeyRequest,
 	keyRequest *wardentypes.KeyRequest,
-	client *AppClient) {
-	action, err := a.keyRequestTracker.Ingest(keyRequest.Id, client.grpcUrl)
+	client *wardenClient) {
+	action, err := a.keyRequestTracker.Ingest(keyRequest.Id, client.grpcURL)
 	if err != nil {
-		a.logger().Error("failed to ingest key request", "id", keyRequest.Id, "grpcUrl", client.grpcUrl, "error", err)
+		a.logger().Error("failed to ingest key request", "id", keyRequest.Id, "grpcUrl", client.grpcURL, "error", err)
 		return
 	}
 
 	if action == tracker.ActionSkip {
-		a.logger().Debug("skipping key request", "id", keyRequest.Id, "grpcUrl", client.grpcUrl)
+		a.logger().Debug("skipping key request", "id", keyRequest.Id, "grpcUrl", client.grpcURL)
 		return
 	}
 
@@ -123,6 +123,6 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 	}()
 }
 
-func (a *AppClient) keyRequests(ctx context.Context, batchSize int, keychainId uint64) ([]*wardentypes.KeyRequest, error) {
+func (a *wardenClient) keyRequests(ctx context.Context, batchSize int, keychainId uint64) ([]*wardentypes.KeyRequest, error) {
 	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(batchSize)}, keychainId)
 }

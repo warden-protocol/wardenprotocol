@@ -58,25 +58,23 @@ func main() {
 		return
 	}
 
-	var grpcConfigs []keychain.GrpcNodeConfig
+	var grpcConfigs []keychain.GRPCNodeConfig
 	if err := json.Unmarshal([]byte(cfg.GRPCURLs), &grpcConfigs); err != nil {
 		logger.Error("failed to initialize grpc configs", "error", err)
 		return
 	}
 
 	app := keychain.NewApp(keychain.Config{
-		BasicConfig: keychain.BasicConfig{
-			Logger:        logger,
-			ChainID:       cfg.ChainID,
-			Mnemonic:      cfg.Mnemonic,
-			KeychainID:    cfg.KeychainId,
-			GasLimit:      cfg.GasLimit,
-			BatchInterval: cfg.BatchInterval,
-			BatchSize:     cfg.BatchSize,
-			TxTimeout:     cfg.TxTimeout,
-			TxFees:        sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
-		},
-		GRPCConfigs:            grpcConfigs,
+		Logger:                 logger,
+		ChainID:                cfg.ChainID,
+		Mnemonic:               cfg.Mnemonic,
+		KeychainID:             cfg.KeychainId,
+		GasLimit:               cfg.GasLimit,
+		BatchInterval:          cfg.BatchInterval,
+		BatchSize:              cfg.BatchSize,
+		TxTimeout:              cfg.TxTimeout,
+		TxFees:                 sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
+		Nodes:                  grpcConfigs,
 		ConsensusNodeThreshold: cfg.ConsensusNodeThreshold,
 	})
 

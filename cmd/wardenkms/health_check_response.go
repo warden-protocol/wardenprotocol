@@ -1,23 +1,23 @@
 package main
 
 type HealthCheckResponse struct {
-	// The number of nodes that are online
+	// Online is the number of nodes that are online
 	Online uint `json:"online"`
 
-	// The total number of nodes
+	// Total is the total number of nodes
 	Total uint `json:"total"`
 
-	// The consensus threshold
+	// Threshold is the consensus threshold
 	Threshold uint8 `json:"threshold"`
 
-	// Node statuses
+	// Nodes is a node statuses collection
 	Nodes []NodeStatus `json:"nodes"`
 }
 
 type NodeStatus struct {
-	// The address of the node
+	// Address is the address of the node
 	Address string `json:"address"`
 
-	// The status of the node
+	// Status is the status of the node
 	Status string `json:"status"`
 }

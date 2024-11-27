@@ -30,7 +30,7 @@ type App struct {
 	keyRequestTracker  *tracker.T
 	signRequestTracker *tracker.T
 
-	clientsPool *ClientsPool
+	clientsPool *clientsPool
 }
 
 // NewApp creates a new Keychain application, using the given configuration.
@@ -64,7 +64,7 @@ func (a *App) SetSignRequestHandler(handler SignRequestHandler) {
 func (a *App) Start(ctx context.Context) error {
 	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainID)
 
-	clientsPool := NewClientsPool(a.config)
+	clientsPool := newClientsPool(a.config)
 	if err := clientsPool.initConnections(a.logger()); err != nil {
 		return fmt.Errorf("failed to init connections: %w", err)
 	}

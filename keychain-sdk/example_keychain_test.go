@@ -18,23 +18,20 @@ func Main() {
 	}))
 
 	app := keychain.NewApp(keychain.Config{
-		BasicConfig: keychain.BasicConfig{
-			Logger: logger, // not required, but recommended
+		Logger: logger, // not required, but recommended
 
-			// setup the connection to the Warden Protocol node
-			ChainID: "warden_1337-1",
+		// setup the connection to the Warden Protocol node
+		ChainID: "warden_1337-1",
 
-			// setup the account used to write txs
-			KeychainID: 1,
-			Mnemonic:   "virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick",
+		// setup the account used to write txs
+		KeychainID: 1,
+		Mnemonic:   "virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick",
 
-			// setup throughput for batching responses
-			GasLimit:      400000,
-			BatchInterval: 8 * time.Second,
-			BatchSize:     10,
-		},
-
-		GRPCConfigs:            []keychain.GrpcNodeConfig{{GRPCURL: "localhost:9090", GRPCInsecure: false}},
+		// setup throughput for batching responses
+		GasLimit:               400000,
+		BatchInterval:          8 * time.Second,
+		BatchSize:              10,
+		Nodes:                  []keychain.GRPCNodeConfig{{Host: "localhost:9090", Insecure: false}},
 		ConsensusNodeThreshold: 1,
 	})
 

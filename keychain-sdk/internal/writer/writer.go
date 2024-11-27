@@ -33,7 +33,7 @@ type W struct {
 }
 
 type SyncTxClient interface {
-	SendWaitTx(ctx context.Context, txBytes []byte) error
+	SendWaitTx(ctx context.Context, txBytes []byte) (string, error)
 	BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coins, msgers ...client.Msger) ([]byte, error)
 }
 

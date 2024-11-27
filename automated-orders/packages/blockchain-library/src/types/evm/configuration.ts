@@ -4,4 +4,5 @@ export interface IEvmConfiguration {
   rpcURL: string;
   eventsCacheSize?: number;
   awsKmsSignerConfig?: IAwsKmsConfiguration;
+  publicClientTimeout?: number;
 }

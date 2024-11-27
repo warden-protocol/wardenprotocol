@@ -25,7 +25,8 @@ async function main() {
     {
       rpcURL: config.EVMOS_NODE_RPC,
       eventsCacheSize: config.EVMOS_EVENTS_CACHE_SIZE,
-      awsKmsSignerConfig: { awsKmsRegion: config.AWS_KMS_REGION, awsKmsKeyId: config.AWS_KMS_KEY_ID }
+      awsKmsSignerConfig: { awsKmsRegion: config.AWS_KMS_REGION, awsKmsKeyId: config.AWS_KMS_KEY_ID },
+      publicClientTimeout: config.EVMOS_PUBLIC_CLIENT_TIMEOUT_MSEC,
     },
     evmosChain,
   );

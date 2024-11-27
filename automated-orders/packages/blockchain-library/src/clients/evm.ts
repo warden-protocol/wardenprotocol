@@ -65,7 +65,9 @@ export class EvmClient {
 
     this.client = createPublicClient({
       chain: chain,
-      transport: http(this.configuration.rpcURL),
+      transport: http(this.configuration.rpcURL, {
+        timeout: this.configuration.publicClientTimeout,
+      }),
     });
 
     this.eventsFromBlocks = new Map<string, bigint>();

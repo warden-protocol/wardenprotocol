@@ -1,10 +1,12 @@
 import { KMS } from '@aws-sdk/client-kms';
 import { IAwsKmsConfiguration } from './types/configuration.js';
 import { keccak256 } from 'viem';
-import * as asn1 from 'asn1.js';
+
+import asn1 from 'asn1.js';
+const { define } = asn1;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const EcdsaPubKey = asn1.define('EcdsaPubKey', function (this: any) {
+const EcdsaPubKey = define('EcdsaPubKey', function (this: any) {
   // https://tools.ietf.org/html/rfc5480#section-2
   this.seq().obj(
     this.key('algo').seq().obj(

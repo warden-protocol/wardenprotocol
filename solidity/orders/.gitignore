@@ -15,5 +15,6 @@ pnpm-lock.yaml
 yarn.lock
 
 # broadcasts
-!broadcast
-broadcast/*/1337/
+!broadcast/Deploy.s.sol/*
+broadcast/Deploy.s.sol/1337/
+broadcast/*

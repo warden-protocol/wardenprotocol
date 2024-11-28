@@ -14,8 +14,8 @@ import {
     SchedulerChanged
 } from "../src/OrderFactory.sol";
 import { Caller, IExecution } from "../src/IExecution.sol";
-import { MockWardenPrecompile } from "./mocks/MockWardenPrecompile.sol";
-import { MockSlinkyPrecompile } from "./mocks/MockSlinkyPrecompile.sol";
+import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
+import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import {
     BasicOrder,

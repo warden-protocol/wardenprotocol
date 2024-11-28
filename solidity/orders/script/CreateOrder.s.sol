@@ -1,8 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
+import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
+import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { Script } from "forge-std/src/Script.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
+import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { OrderFactory, OrderType } from "../src/OrderFactory.sol";
 import { Types } from "../src/Types.sol";
 
@@ -28,10 +32,28 @@ contract CreateOrder is Script {
         Types.PricePair calldata pricePair,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
         Types.SwapData calldata swapData,
-        Types.SignRequestData calldata signRequestData
-    ) external {
-        vm.startBroadcast(broadcaster);
+        uint64 keyId,
+        uint64 spaceNonce,
+        uint64 actionTimeoutHeight,
+        bytes calldata expectedApproveExpression,
+        bytes calldata expectedRejectExpression
+    )
+        external
+    {
+        MockSlinkyPrecompile mSlinkyPrecompile = new MockSlinkyPrecompile();
+        MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
 
+        bytes[] memory analyzers = new bytes[](0);
+        bytes memory encryptionKey = new bytes(0);
+        Types.SignRequestData memory signRequestData = Types.SignRequestData({
+            keyId: keyId,
+            analyzers: analyzers,
+            encryptionKey: encryptionKey,
+            spaceNonce: spaceNonce,
+            actionTimeoutHeight: actionTimeoutHeight,
+            expectedApproveExpression: string(expectedApproveExpression),
+            expectedRejectExpression: string(expectedRejectExpression)
+        });
         CommonTypes.Coin[] memory maxKeychainFees = new CommonTypes.Coin[](0);
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: thresholdPrice,
@@ -41,11 +63,12 @@ contract CreateOrder is Script {
             swapData: swapData,
             signRequestData: signRequestData
         });
-        FACTORY.createOrder(
-            orderData,
-            maxKeychainFees,
-            OrderType.Basic
-        );
+        vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinkyPrecompile).code);
+        MockSlinkyPrecompile mockSlinkyPrecompile = MockSlinkyPrecompile(ISLINKY_PRECOMPILE_ADDRESS);
+        mockSlinkyPrecompile.setPrice(pricePair.base, pricePair.quote, thresholdPrice);
+        vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
+        vm.startBroadcast(broadcaster);
+        FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic);
 
         vm.stopBroadcast();
     }

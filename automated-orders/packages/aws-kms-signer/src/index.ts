@@ -52,7 +52,7 @@ export class AwsKmsSigner {
   }
 
   private getPublicKeyBytes(publicKeyDer: Uint8Array): Uint8Array {
-    const decoded = EcdsaPubKey.decode(publicKeyDer, 'der');
+    const decoded = EcdsaPubKey.decode(Buffer.from(publicKeyDer), 'der');
     const publicKeyBuffer = decoded.pubKey.data;
 
     return new Uint8Array(publicKeyBuffer);

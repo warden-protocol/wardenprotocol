@@ -255,7 +255,7 @@ export class EvmClient {
 
     const signatureDER = await this.awsKmsSigner.signTransactionHash(hashBytes);
 
-    const decodedSignature = EcdsaSigAsnParse.decode(signatureDER, 'der');
+    const decodedSignature = EcdsaSigAsnParse.decode(Buffer.from(signatureDER), 'der');
 
     const r = decodedSignature.r;
     const s = decodedSignature.s;

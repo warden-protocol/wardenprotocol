@@ -15,7 +15,7 @@ test-orders:
 localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
     cd orders && yarn deploy
 
-# example:
+# Example:
 # just solidity create-order \
 # 3324181371 \
 # 0 \
@@ -25,13 +25,11 @@ localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shul
 # 1 \
 # 0 \
 # 1000000000 \
-# 0x616e7928312c2077617264656e2e73706163652e6f776e65727329 \
+# 0x616e7928312c2077617264656e2e73706163652e6f776e65727329 \ # <- any(1, warden.space.owners) in hex
 # 0x616e7928312c2077617264656e2e73706163652e6f776e65727329 \
 # 0xdee286687809c640a7d56c34cea7b8d3fcdaee2c \
-# 7b3cffc9f592d702245d75ff9dac1c5712c00c5cb3a249f7541760f3e8d46e77 \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-
 create-order thresholdPrice priceCondition pricePair txFields swapData keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression $FACTORY_ADDRESS $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \

@@ -14,14 +14,13 @@ contract CreateOrder is Script {
     address internal broadcaster;
     OrderFactory private immutable FACTORY;
 
-    error InvalidScheduler();
     error InvalidFactory();
 
     constructor() {
         (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
         address factory = vm.envAddress("FACTORY_ADDRESS");
         if (factory == address(0)) {
-            revert InvalidScheduler();
+            revert InvalidFactory();
         }
         FACTORY = OrderFactory(factory);
     }

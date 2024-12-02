@@ -86,18 +86,109 @@ The above snippet creates a newSpace with the specified parameters
 ### Update a Space
 
 ```solidity
+function updateSpace(
+    uint64 spaceId,
+    uint64 nonce,
+    uint64 approveAdminTemplateId,
+    uint64 rejectAdminTemplateId,
+    uint64 approveSignTemplateId,
+    uint64 rejectSignTemplateId,
+    uint64 actionTimeoutHeight,
+    string calldata expectedApproveExpression,
+    string calldata expectedRejectExpression
+) external returns (bool success);
 
+contract wardenSpace {
+    // The IWarden precompile address
+    address constant WARDEN_ADDRESS = 0x0000000000000000000000000000000000000900;
+    IWarden public warden;
+
+    constructor() {
+        warden = IWarden(WARDEN_ADDRESS);
+    }
+
+     // Add a new owner to a space
+    function addOwner(
+        uint64 spaceId,
+        address newOwner,
+        uint64 nonce,
+        uint64 actionTimeout,
+        string calldata approveExpression,
+        string calldata rejectExpression
+    ) external returns (bool) {
+        return warden.addSpaceOwner(
+            spaceId,
+            newOwner,
+            nonce,
+            actionTimeout,
+            approveExpression,
+            rejectExpression
+        );
+    }
+}
 ```
 
 ### Add a Space Owner
 
 ```solidity
+function addSpaceOwner(
+    uint64 spaceId,
+    address newOwner,
+    uint64 nonce,
+    uint64 actionTimeoutHeight,
+    string calldata expectedApproveExpression, 
+    string calldata expectedRejectExpression
+) external returns (bool success);
 
+contract wardenSpace {
+    // The IWarden precompile address
+    address constant WARDEN_ADDRESS = 0x0000000000000000000000000000000000000900;
+    IWarden public warden;
+
+    constructor() {
+        warden = IWarden(WARDEN_ADDRESS);
+    }
 ```
 
 ### Remove a Space Owner
 
 ```solidity
+function removeSpaceOwner(
+    uint64 spaceId,
+    address owner,
+    uint64 nonce,
+    uint64 actionTimeoutHeight,
+    string calldata expectedApproveExpression,
+    string calldata expectedRejectExpression
+) external returns (bool success);
+
+contract wardenSpace {
+    // The IWarden precompile address
+    address constant WARDEN_ADDRESS = 0x0000000000000000000000000000000000000900;
+    IWarden public warden;
+
+    constructor() {
+        warden = IWarden(WARDEN_ADDRESS);
+    }
+
+    function removeOwner(
+        uint64 spaceId,
+        address owner,
+        uint64 nonce,
+        uint64 actionTimeout,
+        string calldata approveExpression,
+        string calldata rejectExpression
+    ) external returns (bool) {
+        return warden.removeSpaceOwner(
+            spaceId,
+            owner,
+            nonce,
+            actionTimeout,
+            approveExpression,
+            rejectExpression
+        );
+    }
+}
 ```
 
 ### Query a Space

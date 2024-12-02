@@ -13,7 +13,7 @@ export const OrderRegisteredAbi: AbiEvent = {
   anonymous: false,
   inputs: [
     { indexed: true, internalType: 'address', name: 'creator', type: 'address' },
-    { indexed: false, internalType: 'address', name: 'execution', type: 'address' },
+    { indexed: true, internalType: 'address', name: 'execution', type: 'address' },
   ],
   name: 'Registered',
   type: 'event',

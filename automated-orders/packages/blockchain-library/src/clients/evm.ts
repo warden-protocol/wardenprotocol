@@ -307,7 +307,6 @@ export class EvmClient {
       abi: [eventAbi],
       topics: log.topics,
       data: log.data,
-      strict: false,
     }) as T;
   }
 }

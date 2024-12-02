@@ -37,11 +37,16 @@ cd warden-space
 
 2. Install dependencies and add any required `solidity` libraries or dependencies.
 
-3. Create the contract named `WardenSpace.sol` in the `src` directory. 
+3. Create the contract named `WardenKeychain.sol` in the `src` directory.
 
-*Note: For sake of simplicity, we will only add snippets of code related to the `space` function of IWarden precompile. If you would like to refer to the entire smart contract, you can check it here.*
+*Note: For sake of simplicity, we will only add snippets of code related to the `keychain` function of IWarden precompile. If you would like to refer to the entire smart contract, you can check it here.*
 
 ### Query Keychains
+
+```solidity
+```
+
+### Query Keychains by ID
 
 ```solidity
 ```
@@ -93,7 +98,7 @@ forge build
 Deploy the contract using Foundry's forge create command.
 
 ```bash
-forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/WardenSpace.sol:WardenSpace
+forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/WardenKeychain.sol:WardenKeychain
 ```
 
 4. Verify the Deployment To verify the contract is deployed, run the following:
@@ -112,7 +117,7 @@ export CONTRACT_ADDRESS=0xContractAddress
 
 ## Interacting with Keychains
 
-Now that the contract is deployed, we’ll proceed to interact with the IWarden functions one by one to demonstrate their usage. This step focuses on creating and querying Spaces.
+Now that the contract is deployed, we’ll proceed to interact with the IWarden functions one by one to demonstrate their usage. This step focuses on creating and querying Keychain.
 
 ### Query all Keychains
 

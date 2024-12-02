@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-In this section you will learn how to query and manage spaces. If you would like to get an overview of all functions available for IWarden precompile, you can refer to this.
+In this section you will learn how to query and manage `spaces.` If you would like to get an overview of all functions available for IWarden precompile, you can refer to this.
 
 By the end of this tutorial, you will be able to:
 
@@ -78,10 +78,7 @@ contract wardenSpace {
         );
     }
 }
-
 ```
-
-The above snippet creates a newSpace with the specified parameters
 
 ### Update a Space
 

@@ -30,61 +30,72 @@ To understand how to setup your project, please refer to the [Prequisites](../ca
 ### Query Keychains
 
 ```solidity
-function getKeychains() public view returns (Keychain[] memory keychains, Types.PageResponse memory pageResponse) {
-        Types.PageRequest memory pageRequest = Types.PageRequest({
+function keychains(TypesPageRequest calldata pageRequest) 
+    external view returns (Keychain[] memory keychains, TypesPageResponse memory pageResponse);
+
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+    function getKeychains(uint64 limit) external view returns (
+        IWarden.Keychain[] memory keychains,
+        IWarden.TypesPageResponse memory pageResponse
+    ) {
+        IWarden.TypesPageRequest memory pageRequest = IWarden.TypesPageRequest({
             key: new bytes(0),
             offset: 0,
-            limit: 10,
+            limit: limit,
             countTotal: true,
             reverse: false
         });
 
-        return IWarden(WARDEN_ADDRESS).keychains(pageRequest);
+        return WARDEN.keychains(pageRequest);
     }
+}
 ```
 
 ### Query Keychains by ID
 
 ```solidity
-function getKeychainById(uint64 id) public view returns (Keychain memory keychain) {
-    return IWarden(WARDEN_ADDRESS).keychainById(id);
+function keychainById(uint64 id) external view returns (Keychain memory keychain);
+
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+    function getKeychainById(uint64 keychainId) external view returns (IWarden.Keychain memory) {
+        return WARDEN.keychainById(keychainId);
+    }
 }
 ```
 
 ### Create a new Keychain
 
 ```solidity
-function createKeychain(
-    string memory name,
-    string memory description,
-    string memory url,
-    string memory keybaseId
-) public returns (uint64) {
-    // Set up keychain fees
-    Types.Coin[] memory keyReqFees = new Types.Coin[](1);
-    keyReqFees[0] = Types.Coin({
-        denom: "award",
-        amount: 100000000000000000 // 0.1 WARD
-    });
+function newKeychain(
+    string calldata name,
+    KeychainFees calldata keychainFees,
+    string calldata description,
+    string calldata url,
+    string calldata keybaseId
+) external returns (uint64 id);
 
-    Types.Coin[] memory sigReqFees = new Types.Coin[](1);
-    sigReqFees[0] = Types.Coin({
-        denom: "award",
-        amount: 50000000000000000 // 0.05 WARD
-    });
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
 
-    KeychainFees memory fees = KeychainFees({
-        keyReq: keyReqFees,
-        sigReq: sigReqFees
-    });
+    function createKeychain(
+        string calldata name,
+        Types.Coin[] calldata keyReqFees,
+        Types.Coin[] calldata sigReqFees,
+        string calldata description,
+        string calldata url,
+        string calldata keybaseId
+    ) external returns (uint64) {
+        IWarden.KeychainFees memory fees = IWarden.KeychainFees({
+            keyReq: keyReqFees,
+            sigReq: sigReqFees
+        });
 
-    return IWarden(WARDEN_ADDRESS).newKeychain(
-        name,
-        fees,
-        description,
-        url,
-        keybaseId
-    );
+        return WARDEN.newKeychain(name, fees, description, url, keybaseId);
+    }
 }
 ```
 
@@ -93,50 +104,74 @@ function createKeychain(
 ```solidity
 function updateKeychain(
     uint64 keychainId,
-    string memory name,
-    string memory description,
-    string memory url,
-    string memory keybaseId,
-    Types.Coin[] memory keyReqFees,
-    Types.Coin[] memory sigReqFees
-) public returns (bool) {
-    KeychainFees memory fees = KeychainFees({
-        keyReq: keyReqFees,
-        sigReq: sigReqFees
-    });
+    string calldata name,
+    KeychainFees calldata keychainFees,
+    string calldata description,
+    string calldata url,
+    string calldata keybaseId
+) external returns (bool success);
 
-    return IWarden(WARDEN_ADDRESS).updateKeychain(
-        keychainId,
-        name,
-        fees, 
-        description,
-        url,
-        keybaseId
-    );
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+      function updateKeychain(
+        uint64 keychainId,
+        string calldata name,
+        Types.Coin[] calldata keyReqFees,
+        Types.Coin[] calldata sigReqFees,
+        string calldata description,
+        string calldata url,
+        string calldata keybaseId
+    ) external returns (bool) {
+        IWarden.KeychainFees memory fees = IWarden.KeychainFees({
+            keyReq: keyReqFees,
+            sigReq: sigReqFees
+        });
+
+        return WARDEN.updateKeychain(keychainId, name, fees, description, url, keybaseId);
+    }
 }
 ```
 
 ### Add Keychain admin
 
 ```solidity
-function addKeychainAdmin(uint64 keychainId, address newAdmin) public returns (bool) {
-    return IWarden(WARDEN_ADDRESS).addKeychainAdmin(keychainId, newAdmin);
+function addKeychainAdmin(uint64 keychainId, address newAdmin) external returns (bool success);
+
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+    function addAdmin(uint64 keychainId, address newAdmin) external returns (bool) {
+        return WARDEN.addKeychainAdmin(keychainId, newAdmin);
+    }
 }
 ```
 
 ### Remove Keychain admin
 
 ```solidity
-function removeKeychainAdmin(uint64 keychainId, address admin) public returns (bool) {
-    return IWarden(WARDEN_ADDRESS).removeKeychainAdmin(keychainId, admin);
+function removeKeychainAdmin(uint64 keychainId, address admin) external returns (bool success);
+
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+    function removeAdmin(uint64 keychainId, address admin) external returns (bool) {
+        return WARDEN.removeKeychainAdmin(keychainId, admin);
+    }
 }
 ```
 
 ### Add a Keychain writer
 
 ```solidity
-function addKeychainWriter(uint64 keychainId, address newWriter) public returns (bool) {
-    return IWarden(WARDEN_ADDRESS).addKeychainWriter(keychainId, newWriter);
+function addKeychainWriter(uint64 keychainId, address newWriter) external returns (bool success);
+
+contract WardenKeychain {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+ function addWriter(uint64 keychainId, address newWriter) external returns (bool) {
+        return WARDEN.addKeychainWriter(keychainId, newWriter);
+    }
 }
 ```
 

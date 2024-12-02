@@ -25,6 +25,8 @@ By the end of this tutorial, you will be able to:
 
 To understand how to setup your project, please refer to the [Prequisites](../call-x-warden.md) section.
 
+*Note: For sake of simplicity, we will only add snippets of code related to the `spaces` function of IWarden precompile. If you would like to refer to the entire smart contract, you can check it here.*
+
 ### Create a new Space
 
 ```solidity

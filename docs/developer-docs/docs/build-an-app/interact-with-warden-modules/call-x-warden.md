@@ -9,118 +9,65 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The [`x/warden`](/learn/warden-protocol-modules/x-warden) Warden module allows users to create and manage their Spaces and request Keychains to sign payloads.
+The [`x/warden`](/learn/warden-protocol-modules/x-warden) Warden module allows users to create and manage their `Spaces`, `Keys`, `Keychains`, `Keyrequests` and `Signaturerequests`.
 
-This guide explains how to use the [`IWarden` precompile](../solidity-precompiles/iwarden) for calling the `x/warden` module in a Solidity smart contract. You'll create a contract allowing to query a [Space](/learn/glossary#space) by ID and get its creator address.
+This guide will walk you through how to use the [`x/warden`](/learn/warden-protocol-modules/x-warden) module in a Solidity smart contract.
 
-## 1. Prepare the chain and project
+Note: This guide will help you understand how to define the structure of a smart contract and how to interact with it. The next section of this guide will go into detail on how to use individual function of the `x/warden` module.
 
-To prepare the chain and your EVM project, you can take initial steps from [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract):
+## Getting Started
 
-- [Connect to Chiado](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#option-2-connect-to-chiado)
-- [Create an EVM project](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#2-create-an-evm-project)
+- Ensure you have a working environment with Foundry
+- Set up your private key and RPC URL for your preferred testnet or local node.
 
-Note that our guide uses [Foundry](https://book.getfoundry.sh)'s toolset to create an EVM project and interact with the contract. However, you can use other tools if you wish.
+## Create Project
 
-## 2. Create a smart contract
-
-To interact with the [`IWarden` precompile](../solidity-precompiles/iwarden), your contract code should contain the following main components:
-
-- The interface for interacting with the precompile: an `IWarden` function and the data structure
-- A function for calling the `IWarden` function and returning the data
-- The `IWarden` address, specified when calling it: `0x0000000000000000000000000000000000000900`
-
-In this guide, we'll show how to create a smart contract using the [`spaceByID()`](../solidity-precompiles/iwarden#query-a-space-by-id) method from `IWarden` to query a [Space](/learn/glossary#space) by ID and fetch its creator address.
-
-In your EVM project folder, create a new file `Space.sol` and paste the following code:
-
-```sol title="/warden-smart-contract/src/Space.sol"
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
-
-// An interface for interacting with the IWarden precompile
-interface IWarden {
-
-  // A function for fetching a Space by ID
-  function spaceById(uint64) external view returns (Space memory);
-
-  // Data structure representing a Warden Space
-  struct Space {
-    uint64 id; // The Space ID
-    address creator; // The Space creator address
-    address[] owners;
-    uint64 nonce;
-    uint64 approveAdminTemplateId;
-    uint64 rejectAdminTemplateId;
-    uint64 approveSignTemplateId;
-    uint64 rejectSignTemplateId;
-  }
-
-}
-
-// A contract for interacting with the IWarden precompile
-contract querySpace {
-
-  // The IWarden precompile address
-  address constant PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000900;
-  
-  // A function for getting the Space creator address by Space ID
-  function getSpaceOwner(uint64 id) public view returns (address) {
-
-    // Call the spaceById() IWarden function to get the Space details
-    IWarden.Space memory space = IWarden(PRECOMPILE_ADDRESS).spaceById(id);
-
-    // Return the space creator address from the fetched data
-    return space.creator;
-
-  }
-}
-```
-
-## 3. Compile and deploy the contract
-
-Then compile and deploy your contract, as shown below:
-
-1. Export your private key and the RPC URL:
-
-   ```bash
-   export PRIVATE_KEY=my-private-key
-   export RPC_URL=https://evm.chiado.wardenprotocol.org
-   ```
-
-   :::warning
-   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions.
-   :::
-
-2. Compile and deploy your contract. If you're using Foundry, navigate to your project folder and run this command:
-
-   ```bash
-   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Space.sol:querySpace
-   ```
-3. Export your contract address returned in `Deployed to`:
-
-   ```
-   export CONTRACT_ADDRESS=my-contract-address
-   ```
-
-4. If needed, [verify the deployment](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#5-verify-the-deployment).
-
-## 4. Interact with the contract
-
-Now you can call `getSpaceOwner()` function of your contract to get the Space creator address:
-
-If you're using Foundry, run the command below. Specify the Space ID – for example, `1`:
+1. Initialize a Project using Foundry. If you don't have Foundry installed, refer to this [guide](https://book.getfoundry.sh/getting-started/installation).
 
 ```bash
-cast call $CONTRACT_ADDRESS "getSpaceCreator(uint64)" 1 --rpc-url $RPC_URL
+forge init warden-space --no-commit
+cd warden-space
 ```
 
-In the output, you'll see the Space creator address, similar to the following:
+2. Install Dependencies Add any required Solidity libraries or dependencies.
 
+3. Create a new Contract `warden.sol` in the `src` directory.
+
+## Deploy the contract
+
+1. Set Up Environment Variables Export your private key and RPC URL as environment variables:
+
+```bash
+export PRIVATE_KEY=<your-private-key>
+export RPC_URL=http://localhost:8545  # Example: Replace with your RPC URL
 ```
-0x0000000000000000000000000c3ab26fcbcf3f9628a6c65b93d3b89c621586e1
+
+*Note: Use secure key storage solutions like `.env` for storing private keys in production.*
+
+2. Compile the Contract Using Foundry, compile the contract:
+
+```bash
+forge build
 ```
 
-## Next steps
+3. Deploy the Contract
 
-You can expand your smart contract by calling more functions listed in the [`IWarden` precompile reference](../solidity-precompiles/iwarden).
+Deploy the contract using Foundry's forge create command.
+
+```bash
+forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Warden.sol:WardenContract
+```
+
+4. Verify the Deployment To verify the contract is deployed, run the following:
+
+```bash
+cast code 0xContractAddress --rpc-url $RPC_URL
+```
+
+5. Save Contract Address Save the contract address in an environment variable for future use:
+
+```bash
+export CONTRACT_ADDRESS=0xContractAddress
+```
+
+6. Prepare for Interaction Ensure you have a functional cast tool (Foundry) or equivalent to interact with the deployed contract.

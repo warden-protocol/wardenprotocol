@@ -5,15 +5,18 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Demonstrate using keys
+# Keys
 
 ## Overview
 
-We will create a Solidity contract to interact with the IWarden precompile. This contract will implement the following functionalities:
+In this section you will learn how to query and manage `keys.` If you would like to get an overview of all functions available for IWarden precompile, you can refer to this.
 
-- Query all keys
+By the end of this tutorial, you will be able to:
+
+- Query keys
+- Query keys by Id
 - Query Keys by spaceId
-- Update a space
+- Update a key
 
 ## Prerequisites
 
@@ -22,7 +25,7 @@ We will create a Solidity contract to interact with the IWarden precompile. This
 
 ## Create Project
 
-1. Initialize a Project using Foundry:
+1. Initialize a Project using Foundry. If you don't have Foundry installed, refer to this [guide](https://book.getfoundry.sh/getting-started/installation).
 
 ```bash
 forge init warden-space --no-commit
@@ -31,223 +34,114 @@ cd warden-space
 
 2. Install Dependencies Add any required Solidity libraries or dependencies.
 
-3. Create the Contract Create a file named `Wardenkey.sol` in the `src` directory and add the following code:
+3. Create the Contract Create a file named `Wardenkey.sol` in the `src` directory.
+
+*Note: For sake of simplicity, we will only add snippets of code related to the `keys` function of IWarden precompile. If you would like to refer to the entire smart contract, you can check it here.*
+
+### Query keys
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+function allKeys(TypesPageRequest calldata pageRequest, int32[] calldata deriveAddresses) 
+    external view returns(KeyResponse[] memory keys, TypesPageResponse memory pageResponse);
 
-interface IWarden {
-    // Existing structures from previous version...
-    struct Key {
-        uint64 id;
-        uint64 spaceId;
-        uint64 keychainId;
-        KeyType keyType;
-        bytes publicKey;
-        uint64 approveTemplateId;
-        uint64 rejectTemplateId;
-    }
+contract WardenKey {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
 
-    struct KeyResponse {
-        Key key;
-        AddressesResponse[] addresses;
-    }
-
-    struct AddressesResponse {
-        string addressValue;
-        AddressType addressType;
-    }
-
-    struct PageRequest {
-        bytes key;
-        uint64 offset;
-        uint64 limit;
-        bool countTotal;
-        bool reverse;
-    }
-
-    struct PageResponse {
-        bytes nextKey;
-        uint64 total;
-    }
-
-    enum KeyType {
-        Unspecified,
-        EcdsaSecp256k1,
-        EddsaEd25519
-    }
-
-    enum AddressType {
-        Unspecified,
-        Ethereum,
-        Osmosis
-    }
-
-    // Query functions
-    function allKeys(PageRequest calldata pageRequest, int32[] calldata deriveAddresses) 
-        external view returns(KeyResponse[] memory keys, PageResponse memory pageResponse);
-    
-    function keyById(uint64 id, int32[] calldata deriveAddresses)
-        external view returns(KeyResponse memory key);
-    
-    function keysBySpaceId(PageRequest calldata pageRequest, uint64 spaceId, int32[] calldata deriveAddresses)
-        external view returns(KeyResponse[] memory keys, PageResponse memory pageResponse);
-    
-    function updateKey(
-        uint64 keyId,
-        uint64 approveTemplateId,
-        uint64 rejectTemplateId,
-        uint64 actionTimeoutHeight,
-        string calldata expectedApproveExpression,
-        string calldata expectedRejectExpression
-    ) external returns(bool success);
-}
-
-contract KeyManager {
-    // IWarden precompile interface
-    IWarden private constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
-    
-    // Events for tracking operations
-    event KeyQueried(uint64 indexed keyId, address indexed querier);
-    event KeysQueriedBySpace(uint64 indexed spaceId, address indexed querier, uint64 count);
-    event KeyUpdateAttempted(uint64 indexed keyId, address indexed updater, bool success);
-    event KeyQueryError(string reason);
-    
-    // Error definitions
-    error InvalidKeyId(uint64 keyId);
-    error InvalidSpaceId(uint64 spaceId);
-    error InvalidPagination(uint64 limit);
-    error UpdateKeyFailed(uint64 keyId);
-
-    // Function to query all keys with better error handling
-    function queryAllKeys(uint64 limit) external view returns (
+    // Query all keys with pagination
+    function getAllKeys(uint64 limit, int32[] calldata addressTypes) external view returns (
         IWarden.KeyResponse[] memory keys,
-        IWarden.PageResponse memory pageResponse,
-        bool success,
-        string memory error
+        IWarden.TypesPageResponse memory pageResponse
     ) {
-        if (limit == 0 || limit > 100) {
-            return (new IWarden.KeyResponse[](0), pageResponse, false, "Invalid limit: must be between 1 and 100");
-        }
-
-        try WARDEN.allKeys(
-            IWarden.PageRequest({
-                key: new bytes(0),
-                offset: 0,
-                limit: limit,
-                countTotal: true,
-                reverse: false
-            }),
-            getDefaultDeriveAddresses()
-        ) returns (IWarden.KeyResponse[] memory _keys, IWarden.PageResponse memory _pageResponse) {
-            return (_keys, _pageResponse, true, "");
-        } catch Error(string memory reason) {
-            return (new IWarden.KeyResponse[](0), pageResponse, false, reason);
-        }
+        IWarden.TypesPageRequest memory pageRequest = IWarden.TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return WARDEN.allKeys(pageRequest, addressTypes);
     }
+}   
+```
 
-    // Function to query a specific key by ID
-    function queryKeyById(uint64 keyId) external returns (
-        IWarden.KeyResponse memory keyResponse,
-        bool success,
-        string memory error
+### Query keys by Id
+
+```solidity
+function keyById(uint64 id, int32[] calldata deriveAddresses)
+    external view returns(KeyResponse memory key);
+
+contract WardenKey {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+    // Query a specific key by ID
+    function getKeyById(uint64 keyId, int32[] calldata addressTypes) external view returns (
+        IWarden.KeyResponse memory
     ) {
-        if (keyId == 0) {
-            emit KeyQueryError("Invalid key ID: cannot be 0");
-            return (keyResponse, false, "Invalid key ID: cannot be 0");
-        }
-
-        try WARDEN.keyById(keyId, getDefaultDeriveAddresses()) returns (IWarden.KeyResponse memory _keyResponse) {
-            emit KeyQueried(keyId, msg.sender);
-            return (_keyResponse, true, "");
-        } catch Error(string memory reason) {
-            emit KeyQueryError(reason);
-            return (keyResponse, false, reason);
-        }
-    }
-
-    // Function to query keys by space ID
-    function queryKeysBySpaceId(uint64 spaceId, uint64 limit) external returns (
-        IWarden.KeyResponse[] memory keys,
-        IWarden.PageResponse memory pageResponse,
-        bool success,
-        string memory error
-    ) {
-        if (spaceId == 0) {
-            emit KeyQueryError("Invalid space ID: cannot be 0");
-            return (new IWarden.KeyResponse[](0), pageResponse, false, "Invalid space ID: cannot be 0");
-        }
-
-        if (limit == 0 || limit > 100) {
-            emit KeyQueryError("Invalid limit: must be between 1 and 100");
-            return (new IWarden.KeyResponse[](0), pageResponse, false, "Invalid limit: must be between 1 and 100");
-        }
-
-        try WARDEN.keysBySpaceId(
-            IWarden.PageRequest({
-                key: new bytes(0),
-                offset: 0,
-                limit: limit,
-                countTotal: true,
-                reverse: false
-            }),
-            spaceId,
-            getDefaultDeriveAddresses()
-        ) returns (IWarden.KeyResponse[] memory _keys, IWarden.PageResponse memory _pageResponse) {
-            emit KeysQueriedBySpace(spaceId, msg.sender, uint64(_keys.length));
-            return (_keys, _pageResponse, true, "");
-        } catch Error(string memory reason) {
-            emit KeyQueryError(reason);
-            return (new IWarden.KeyResponse[](0), pageResponse, false, reason);
-        }
-    }
-
-    // Function to update a key
-    function updateKey(
-        uint64 keyId,
-        uint64 approveTemplateId,
-        uint64 rejectTemplateId,
-        uint64 actionTimeoutHeight,
-        string calldata expectedApproveExpression,
-        string calldata expectedRejectExpression
-    ) external returns (bool success, string memory error) {
-        if (keyId == 0) {
-            emit KeyQueryError("Invalid key ID: cannot be 0");
-            return (false, "Invalid key ID: cannot be 0");
-        }
-
-        try WARDEN.updateKey(
-            keyId,
-            approveTemplateId,
-            rejectTemplateId,
-            actionTimeoutHeight,
-            expectedApproveExpression,
-            expectedRejectExpression
-        ) returns (bool _success) {
-            emit KeyUpdateAttempted(keyId, msg.sender, _success);
-            return (_success, "");
-        } catch Error(string memory reason) {
-            emit KeyUpdateAttempted(keyId, msg.sender, false);
-            return (false, reason);
-        }
-    }
-
-    // Helper function to get default derive addresses
-    function getDefaultDeriveAddresses() internal pure returns (int32[] memory) {
-        int32[] memory deriveAddresses = new int32[](2);
-        deriveAddresses[0] = int32(uint32(IWarden.AddressType.Ethereum));
-        deriveAddresses[1] = int32(uint32(IWarden.AddressType.Osmosis));
-        return deriveAddresses;
+        return WARDEN.keyById(keyId, addressTypes);
     }
 }
 ```
 
-Explanation of the Code
+### Query Keys by spaceId
 
-Interface: The IWarden interface defines methods for interacting with the precompile.
+```solidity
+function keysBySpaceId(TypesPageRequest calldata pageRequest, uint64 spaceId, int32[] calldata deriveAddresses)
+    external view returns(KeyResponse[] memory keys, TypesPageResponse memory pageResponse);
 
-Contract: The WardenSpace contract implements wrapper methods that call the corresponding IWarden functions.
+contract WardenKey {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+
+
+    // Query keys by space ID with pagination
+    function getKeysBySpaceId(uint64 spaceId, uint64 limit, int32[] calldata addressTypes) external view returns (
+        IWarden.KeyResponse[] memory keys,
+        IWarden.TypesPageResponse memory pageResponse
+    ) {
+        IWarden.TypesPageRequest memory pageRequest = IWarden.TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return WARDEN.keysBySpaceId(pageRequest, spaceId, addressTypes);
+    }
+}
+```
+
+### Update a key
+
+```solidity
+function updateKey(
+    uint64 keyId,
+    uint64 approveTemplateId,
+    uint64 rejectTemplateId,
+    uint64 actionTimeoutHeight,
+    string calldata expectedApproveExpression,
+    string calldata expectedRejectExpression
+) external returns (bool success);
+
+contract WardenKey {
+    IWarden constant WARDEN = IWarden(0x0000000000000000000000000000000000000900);
+    function updateKeyConfig(
+        uint64 keyId,
+        uint64 approveTemplateId,
+        uint64 rejectTemplateId,
+        uint64 actionTimeoutHeight
+    ) external returns (bool) {
+        return WARDEN.updateKey(
+            keyId,
+            approveTemplateId,
+            rejectTemplateId,
+            actionTimeoutHeight,
+            "", // expectedApproveExpression - empty for this example
+            ""  // expectedRejectExpression - empty for this example
+        );
+    }
+}
+```
 
 ## Deploy the contract
 
@@ -258,7 +152,7 @@ export PRIVATE_KEY=<your-private-key>
 export RPC_URL=http://localhost:8545  # Example: Replace with your RPC URL
 ```
 
-Note: Use secure key storage solutions like `.env` for storing private keys in production.
+*Note: Use secure key storage solutions like `.env` for storing private keys in production.*
 
 2. Compile the Contract Using Foundry, compile the contract:
 
@@ -266,41 +160,18 @@ Note: Use secure key storage solutions like `.env` for storing private keys in p
 forge build
 ```
 
-If everything is ok, it should compile successfully.
-
-```bash
-[⠊] Compiling...
-[⠒] Compiling 28 files with Solc 0.8.28
-[⠆] Solc 0.8.28 finished in 1.12s
-Compiler run successful!
-```
-
 3. Deploy the Contract
 
 Deploy the contract using Foundry's forge create command.
 
 ```bash
-forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/WardenSpace.sol:WardenSpace
-```
-
-Once deployed, you will see the following output:
-
-```bash
-Deployer: 0x6Ea8aC1673402989e7B653aE4e83b54173719C30
-Deployed to: 0xF7b573e5B822136778053BA9Ff7bF2b87748a202
-Transaction hash: 0xe9820d9a9e38fd557553cfcfb0f0646d19ecb5440160e0c1ddaa4c8b3ea0292f
+forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/WardenKey.sol:WardenKey
 ```
 
 4. Verify the Deployment To verify the contract is deployed, run the following:
 
 ```bash
 cast code 0xContractAddress --rpc-url $RPC_URL
-```
-
-You will see the output as byte code:
-
-```bash
-0x608060405234801561001057600080fd5b506004361061004c5760003560e01c806345d585f7146100515780635ed86b3d1461007c57806398ec80881461009f578063fecc57ec146100b2575b600080fd5b61006461005f366004610a80565b6100d3565b60405161007393929190610c63565b60405180910390f35b61008f61008a366004610a80565b610288565b6040516100739493929190610ccc565b61008f6100ad366004610d62565b610457565b6100c56100c0366004610de3565b6107d3565b604051610073929190610ea0565b6100db610a1a565b60006060836001600160401b031660000361015f5760008051602061166183398151915260405161012b906020808252601b90820152600080516020611681833981519152604082015260600190565b60405180910390a1505060408051808201909152601b81526000805160206116818339815191526020820152600090610281565b61090063338c1f51856101706109a0565b6040518363ffffffff1660e01b815260040161018d929190610f02565b600060405180830381865afa9250505080156101cb57506040513d6000823e601f3d908101601f191682016040526101c89190810190611279565b60015b610232576101d76112ad565b806308c379a00361022657506101eb6112c8565b806101f65750610228565b60008051602061166183398151915281604051610213919061134b565b60405180910390a1600092509050610281565b505b3d6000803e3d6000fd5b60405133906001600160401b038716907f2450a28d1d25b0a2d614b2c630dac524cc31ece1735d0e2f2bd4b71045f8231690600090a36040805160208101909152600081529093506001925090505b9193909250565b6040805180820190915260608082526000602083015290600060606001600160401b03851615806102c257506064856001600160401b0316115b156103225760408051600080825260208201909252906102f8565b6102e5610a1a565b8152602001906001900390816102dd5790505b50836000604051806060016040528060288152602001611639602891399350935093509350610450565b60408051600060a0820181815260c0830184528252602082018190526001600160401b038816928201929092526001606082015260808101919091526109009063ed65c53c906103706109a0565b6040518363ffffffff1660e01b815260040161038d9291906113bd565b600060405180830381865afa9250505080156103cb57506040513d6000823e601f3d908101601f191682016040526103c89190810190611443565b60015b610435576103d76112ad565b806308c379a00361022657506103eb6112c8565b806103f65750610228565b6040805160008082526020820190925290610427565b610414610a1a565b81526020019060019003908161040c5790505b509450600092509050610450565b60408051602081019091526000815291955093506001925090505b9193509193565b604080518082019091526060808252600060208301529060006060856001600160401b031660000361054c576000805160206116618339815191526040516104d0906020808252601d908201527f496e76616c69642073706163652049443a2063616e6e6f742062652030000000604082015260600190565b60405180910390a16040805160008082526020820190925290610509565b6104f6610a1a565b8152602001906001900390816104ee5790505b5060408051808201909152601d81527f496e76616c69642073706163652049443a2063616e6e6f74206265203000000060208201529094506000925090506107ca565b6001600160401b038516158061056b57506064856001600160401b0316115b15610631576000805160206116618339815191526040516105ce9060208082526028908201527f496e76616c6964206c696d69743a206d757374206265206265747765656e2031604082015267020616e64203130360c41b606082015260800190565b60405180910390a16040805160008082526020820190925290610607565b6105f4610a1a565b8152602001906001900390816105ec5790505b508360006040518060600160405280602881526020016116396028913993509350935093506107ca565b60408051600060a0820181815260c0830184528252602082018190526001600160401b0388169282019290925260016060820152608081019190915261090090638f6c050890886106806109a0565b6040518463ffffffff1660e01b815260040161069e93929190611531565b600060405180830381865afa9250505080156106dc57506040513d6000823e601f3d908101601f191682016040526106d99190810190611443565b60015b61076b576106e86112ad565b806308c379a00361022657506106fc6112c8565b806107075750610228565b60008051602061166183398151915281604051610724919061134b565b60405180910390a1604080516000808252602082019092529061075d565b61074a610a1a565b8152602001906001900390816107425790505b5094506000925090506107ca565b81516040516001600160401b03918216815233918a16907f8169e753030f1afcfead150d50b7622cfb770aaee96f4951e910222c596cb05a9060200160405180910390a360408051602081019091526000815291955093506001925090505b92959194509250565b60006060896001600160401b031660000361085757600080516020611661833981519152604051610823906020808252601b90820152600080516020611681833981519152604082015260600190565b60405180910390a1505060408051808201909152601b81526000805160206116818339815191526020820152600090610993565b604051633fb315fb60e21b81526109009063fecc57ec9061088a908d908d908d908d908d908d908d908d9060040161158e565b6020604051808303816000875af19250505080156108c5575060408051601f3d908101601f191682019092526108c291810190611600565b60015b61093c576108d16112ad565b806308c379a00361022657506108e56112c8565b806108f05750610228565b6040516000815233906001600160401b038d16907ff4e20fe753ff6358264f51c0e2834c0c35511eee0d4d5267c3c2a53afb4dc3179060200160405180910390a3600092509050610993565b604051811515815233906001600160401b038d16907ff4e20fe753ff6358264f51c0e2834c0c35511eee0d4d5267c3c2a53afb4dc3179060200160405180910390a360408051602081019091526000815290925090505b9850989650505050505050565b604080516002808252606080830184529260009291906020830190803683370190505090506001816000815181106109da576109da611622565b60039290920b60209283029190910190910152600281600181518110610a0257610a02611622565b60039290920b60209283029190910190910152919050565b6040805161012081018252600091810182815260608083018490526080830184905260a0830184905260c083015260e082018390526101008201929092529081908152602001606081525090565b6001600160401b0381168114610a7d57600080fd5b50565b600060208284031215610a9257600080fd5b8135610a9d81610a68565b9392505050565b60038110610a7d57634e487b7160e01b600052602160045260246000fd5b610acb81610aa4565b9052565b60005b83811015610aea578181015183820152602001610ad2565b50506000910152565b60008151808452610b0b816020860160208601610acf565b601f01601f19169290920160200192915050565b600082825180855260208501945060208160051b8301016020850160005b83811015610b9057601f198584030188528151805160408552610b636040860182610af3565b905060208201519150610b7582610aa4565b60209485019190915297830197929190910190600101610b3d565b50909695505050505050565b60008151604084526001600160401b0381511660408501526001600160401b0360208201511660608501526001600160401b0360408201511660808501526060810151610bec60a0860182610ac2565b50608081015160e060c0860152610c07610120860182610af3565b905060a0820151610c2360e08701826001600160401b03169052565b5060c08201519150610c416101008601836001600160401b03169052565b602084015191508481036020860152610c5a8183610b1f565b95945050505050565b606081526000610c766060830186610b9c565b84151560208401528281036040840152610c908185610af3565b9695505050505050565b6000815160408452610caf6040850182610af3565b6020938401516001600160401b0316949093019390935250919050565b6000608082016080835280875180835260a08501915060a08160051b86010192506020890160005b82811015610d2557609f19878603018452610d10858351610b9c565b94506020938401939190910190600101610cf4565b505050508281036020840152610d3b8187610c9a565b851515604085015290508281036060840152610d578185610af3565b979650505050505050565b60008060408385031215610d7557600080fd5b8235610d8081610a68565b91506020830135610d9081610a68565b809150509250929050565b60008083601f840112610dad57600080fd5b5081356001600160401b03811115610dc457600080fd5b602083019150836020828501011115610ddc57600080fd5b9250929050565b60008060008060008060008060c0898b031215610dff57600080fd5b8835610e0a81610a68565b97506020890135610e1a81610a68565b96506040890135610e2a81610a68565b95506060890135610e3a81610a68565b945060808901356001600160401b03811115610e5557600080fd5b610e618b828c01610d9b565b90955093505060a08901356001600160401b03811115610e8057600080fd5b610e8c8b828c01610d9b565b999c989b5096995094979396929594505050565b8215158152604060208201526000610ebb6040830184610af3565b949350505050565b600081518084526020840193506020830160005b82811015610ef857815160030b865260209586019590910190600101610ed7565b5093949350505050565b6001600160401b0383168152604060208201526000610ebb6040830184610ec3565b634e487b7160e01b600052604160045260246000fd5b604081018181106001600160401b0382111715610f5957610f59610f24565b60405250565b601f8201601f191681016001600160401b0381118282101715610f8457610f84610f24565b6040525050565b604051610f9960e082610f5f565b90565b8051610fa781610a68565b919050565b60038110610a7d57600080fd5b8051610fa781610fac565b6000806001600160401b03841115610fde57610fde610f24565b50604051601f8401601f191660200190610ff88282610f5f565b80925084815285858501111561100d57600080fd5b61101b856020830186610acf565b50509392505050565b600082601f83011261103557600080fd5b610a9d83835160208501610fc4565b60006001600160401b0382111561105d5761105d610f24565b5060051b60200190565b600082601f83011261107857600080fd5b815161108381611044565b6040516110908282610f5f565b80915082815260208101915060208360051b8601019250858311156110b457600080fd5b602085015b8381101561115e5780516001600160401b038111156110d757600080fd5b86016040818903601f190112156110ed57600080fd5b6040516110f981610f3a565b60208201516001600160401b0381111561111257600080fd5b82016020810190603f018a1361112757600080fd5b6111368a825160208401610fc4565b8252506040820151915061114982610fac565b602081810192909252845292830192016110b9565b5095945050505050565b60006040828403121561117a57600080fd5b60405161118681610f3a565b80915082516001600160401b0381111561119f57600080fd5b830160e081860312156111b157600080fd5b6111b9610f8b565b6111c282610f9c565b81526111d060208301610f9c565b60208201526111e160408301610f9c565b60408201526111f260608301610fb9565b606082015260808201516001600160401b0381111561121057600080fd5b61121c87828501611024565b60808301525061122e60a08301610f9c565b60a082015261123f60c08301610f9c565b60c082015282525060208301516001600160401b0381111561126057600080fd5b61126c85828601611067565b6020830152505092915050565b60006020828403121561128b57600080fd5b81516001600160401b038111156112a157600080fd5b610ebb84828501611168565b600060033d1115610f995760046000803e5060005160e01c90565b600060443d10156112d65790565b6040513d600319016004823e80513d60248201116001600160401b03821117156112ff57505090565b80820180516001600160401b0381111561131a575050505090565b3d8401600319018282016020011115611334575050505090565b61134360208285010185610f5f565b509392505050565b602081526000610a9d6020830184610af3565b6000815160a0845261137360a0850182610af3565b90506001600160401b0360208401511660208501526001600160401b0360408401511660408501526060830151151560608501526080830151151560808501528091505092915050565b6040815260006113d0604083018561135e565b8281036020840152610c5a8185610ec3565b6000604082840312156113f457600080fd5b60405161140081610f3a565b80915082516001600160401b0381111561141957600080fd5b61142585828601611024565b825250602083015161143681610a68565b6020919091015292915050565b6000806040838503121561145657600080fd5b82516001600160401b0381111561146c57600080fd5b8301601f8101851361147d57600080fd5b805161148881611044565b6040516114958282610f5f565b80915082815260208101915060208360051b8501019250878311156114b957600080fd5b602084015b838110156114fa5780516001600160401b038111156114dc57600080fd5b6114eb8a602083890101611168565b845250602092830192016114be565b508095505050505060208301516001600160401b0381111561151b57600080fd5b611527858286016113e2565b9150509250929050565b606081526000611544606083018661135e565b6001600160401b03851660208401528281036040840152610c908185610ec3565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b6001600160401b03891681526001600160401b03881660208201526001600160401b03871660408201526001600160401b038616606082015260c0608082015260006115de60c083018688611565565b82810360a08401526115f1818587611565565b9b9a5050505050505050505050565b60006020828403121561161257600080fd5b81518015158114610a9d57600080fd5b634e487b7160e01b600052603260045260246000fdfe496e76616c6964206c696d69743a206d757374206265206265747765656e203120616e6420313030b9c212cbfcacdd1dd6aab18acb925669c8294c2f3c8031855c39de5814594b61496e76616c6964206b65792049443a2063616e6e6f7420626520300000000000a26469706673582212204cd7176f665afb3ae20c901144e445990807e43f0695a73926c7c4831b6bfabc64736f6c634300081c0033
 ```
 
 5. Save Contract Address Save the contract address in an environment variable for future use:
@@ -311,41 +182,38 @@ export CONTRACT_ADDRESS=0xContractAddress
 
 6. Prepare for Interaction Ensure you have a functional cast tool (Foundry) or equivalent to interact with the deployed contract.
 
-## Work with Keys
+## Interacting with Keys
 
 Now that the contract is deployed, we’ll proceed to interact with the IWarden functions one by one to demonstrate their usage. This step focuses on creating and querying Keys.
 
 ### Query all keys
 
-Use the queryAllKeys function to retrieve all keys.
+Use the `allKeys` function to retrieve all keys.
 
 ```bash
-# Call queryAllKeys with a limit of 10
-cast call $CONTRACT_ADDRESS "queryAllKeys(uint64)" 10 --rpc-url $RPC_URL
+cast call $CONTRACT_ADDRESS "getAllKeys(uint64,int32[])" 10 [] --rpc-url $RPC_URL
 ```
 
-This should return an encoded response that includes any keys in the system (might be empty if no keys exist yet).
+### Query keys by ID
 
-You will see the following output:
+Use the `keyById` function to retrieve a specific key by its ID.
 
 ```bash
-0x000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+cast call $CONTRACT_ADDRESS "getKeyById(uint64,int32[])" 1 [] --rpc-url $RPC_URL
 ```
 
-The byte code indicates there are no keys associated with the space.
+### Query Keys by SpaceId
 
-### Query keys by SpaceID
-
-Retrieve a specific space by its ID.
+Use the `keysBySpaceId` function to retrieve keys by space ID.
 
 ```bash
-# Query keys by space ID (limit 10)
-cast call $CONTRACT_ADDRESS "queryKeysBySpaceId(uint64,uint64)" 1 10 --rpc-url $RPC_URL
+cast call $CONTRACT_ADDRESS "getKeysBySpaceId(uint64,uint64,int32[])" 100 10 [] --rpc-url $RPC_URL
 ```
 
-You will see the following output:
+### Update key
+
+Use the `updateKey` function to update a key.
 
 ```bash
-0x000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+cast send $CONTRACT_ADDRESS "updateKeyConfig(uint64,uint64,uint64,uint64)" 1 100 200 300 --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
-The byte code indicates there are no keys associated with the space.

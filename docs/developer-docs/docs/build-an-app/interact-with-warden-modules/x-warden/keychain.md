@@ -219,8 +219,5 @@ cast send $CONTRACT_ADDRESS "removeKeychainAdmin(uint64,address)" 1 0xAdminToRem
 ### Add Keychain writer
 
 ```bash
-cast send $CONTRACT_ADDRESS "addKeychainWriter(uint64,address)" \
-    1 0xYourWriterAddress \
-    --rpc-url $RPC_URL \
-    --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "addKeychainWriter(uint64,address)" 1 0xYourWriterAddress --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```

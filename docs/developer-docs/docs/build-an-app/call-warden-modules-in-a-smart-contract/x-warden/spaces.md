@@ -346,6 +346,30 @@ Use the `createSpace` function to create a new Space.
 cast send $CONTRACT_ADDRESS "createSpace(uint64,uint64,uint64,uint64,address[])" 1 2 3 4 \[\] --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
+### Update Space
+
+Use the `updateSpace` function to update an existing Space.
+
+```bash
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateSpace(uint64,uint64,uint64,uint64,uint64,uint64,uint64,string,string)" 1 0 100 101 102 103 100000 "" ""
+```
+
+### Add Space Owner
+
+Use the `addOwner` function to add an owner to a Space.
+
+```bash
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "addSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xYourNewOwnerAddress 0 100000 "" ""
+```
+
+### Remove Space Owner
+
+Use the `removeOwner` function to remove an owner from a Space.
+
+```bash
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "removeSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xOwnerToRemove 0 100000 "" ""
+```
+
 ### Query Spaces
 
 Use the `getAllSpaces` function to create a new Space.

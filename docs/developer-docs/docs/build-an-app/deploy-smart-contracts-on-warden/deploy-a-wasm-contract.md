@@ -431,5 +431,5 @@ Happy coding! 🚀
 
 ## Next steps
 
-After deploying a basic WASM smart contract, you can [deploy a cross-chain app using GMP](../call-warden-modules-in-a-smart-contract/deploy-a-cross-chain-app).
+After deploying a basic WASM smart contract, you can [deploy a cross-chain app using GMP](deploy-a-cross-chain-app).
 

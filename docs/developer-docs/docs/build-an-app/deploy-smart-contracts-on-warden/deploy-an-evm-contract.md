@@ -353,6 +353,6 @@ After deploying a basic EVM smart contract, start using Warden precompiles to ca
 
 See the following sections:
 
-- [Call Warden modules in your contract](/category/call-warden-modules-in-a-smart-contract)
+- [Call Warden modules in your contract](/category/interact-with-warden-modules)
 - [Solidity precompiles](/category/solidity-precompiles)
 

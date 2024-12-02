@@ -29,7 +29,7 @@ To learn more, see the following:
 - [Cosmos GMP documentation](https://docs.axelar.dev/dev/cosmos-gmp)
 - [Axelar GMP SDK on GitHub](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity)
 - [Warden docs: Bridging](/learn/bridging)
-- [Warden docs: Deploy a cross-chain app](/build-an-app/call-warden-modules-in-a-smart-contract/deploy-a-cross-chain-app)
+- [Warden docs: Deploy a cross-chain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
 
 ## x/oracle
 

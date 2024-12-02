@@ -34,7 +34,7 @@ Here you can find a full list of available OApps.
 - [Deploy smart contracts on Warden](/category/deploy-smart-contracts-on-warden)  
 Get started with OApps: deploy a basic [WASM](deploy-smart-contracts-on-warden/deploy-a-wasm-contract) or [EVM](deploy-smart-contracts-on-warden/deploy-an-evm-contract) smart contract on Warden.
 
-- [Call Warden modules in a smart contract](/category/call-warden-modules-in-a-smart-contract)  
+- [Call Warden modules in a smart contract](/category/interact-with-warden-modules)  
 Call Warden modules in your contract to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on.
 
 - [Solidity precompiles](/category/solidity-precompiles)  

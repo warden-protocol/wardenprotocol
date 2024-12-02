@@ -1,11 +1,11 @@
 {
   "position": 4,
-  "label": "Call Warden modules in a smart contract",
+  "label": "Interacting with Warden Modules",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Call Warden modules in a smart contract"
+    "title": "Interacting with Warden Modules"
   },
   "customProps": {}
 }

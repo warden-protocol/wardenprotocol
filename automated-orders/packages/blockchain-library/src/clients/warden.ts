@@ -36,8 +36,10 @@ export class WardenClient {
         const [signRequests, pageResponse] = await this.querySignRequests(
           nextKey, BigInt(this.configuration.signatureRequestsPageSize))
 
-        if (signRequests) { 
+        if (signRequests && signRequests.length > 0) { 
           yield* this.yieldNewRequests(signRequests, recentSignRequests);
+        } else { 
+          utils.logInfo(`No new sign requests found`);
         }
 
         const newKey = pageResponse?.nextKey

@@ -9,6 +9,7 @@ import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
 import { Types } from "./Types.sol";
 import { Registry } from "./Registry.sol";
 import { RLPEncode } from "./RLPEncode.sol";
+import { Strings } from "./Strings.sol";
 
 error ConditionNotMet();
 error ExecutedError();
@@ -26,6 +27,8 @@ error InvalidTxTo();
 event Executed();
 
 contract BasicOrder is IExecution, ReentrancyGuard {
+    using Strings for *;
+
     Types.OrderData public orderData;
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
@@ -83,8 +86,10 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         }
 
         WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(_orderData.signRequestData.keyId, new int32[](0));
-        _keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
+        int32[] memory deriveAddresses = new int32[](1);
+        deriveAddresses[0] = 1;
+        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(_orderData.signRequestData.keyId, deriveAddresses);
+        _keyAddress = keyResponse.addresses[0].addressValue.parseAddress();
 
         SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
         SLINKY_PRECOMPILE.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);

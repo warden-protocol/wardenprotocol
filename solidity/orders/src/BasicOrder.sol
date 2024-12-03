@@ -41,6 +41,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     address private _scheduler;
     address private _keyAddress;
     bytes private _unsignedTx;
+    int32 private constant ETHEREUM_ADDRESS_TYPE = 1;
 
     // solhint-disable-next-line
     constructor(
@@ -86,9 +87,9 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         }
 
         WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
-        int32[] memory deriveAddresses = new int32[](1);
-        deriveAddresses[0] = 1;
-        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(_orderData.signRequestData.keyId, deriveAddresses);
+        int32[] memory addressTypes = new int32[](1);
+        addressTypes[0] = ETHEREUM_ADDRESS_TYPE;
+        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(_orderData.signRequestData.keyId, addressTypes);
         _keyAddress = keyResponse.addresses[0].addressValue.parseAddress();
 
         SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);

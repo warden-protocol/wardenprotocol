@@ -1,0 +1,11 @@
+{
+  "position": 6,
+  "label": "Build a basic Warden Agent",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Build a basic Warden Agent"
+  },
+  "customProps": {}
+}

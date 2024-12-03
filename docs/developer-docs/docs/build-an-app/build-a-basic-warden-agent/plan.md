@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Build a basic Warden Agent 2
+# PLAN: Build a basic Warden Agent
 
 ## Overview
 
@@ -44,11 +44,17 @@ This sections explains how to create the project containing the Agent's logic, s
 
 ## 2. Build the on-chain logic
 
-### 2.1. Build the logic for creating orders
+### 2.1. Create a transaction
+
+1. Create an unsigned transaction
+
+2. Create a signature request
+
+### 2.2. Build the logic for creating orders
 
 This section explains how to build the main part – the logic for the automatic deployment of orders (smart contracts). It's probably located in the [`/script`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/script) directory.
 
-### 2.2. Build the logic for managing orders
+### 2.3. Build the logic for managing orders
 
 This section explains how to deploy the [`Registry`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol) and [`IExecution`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol) smart contracts, which allow managing orders created by users.
 

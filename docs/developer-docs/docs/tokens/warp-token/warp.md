@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-**WARP** is the dynamic counterpart to WARD, adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
+**WARP** is the dynamic counterpart to [WARD](../ward-token/ward), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
 
 This section explains how WARP is distributed, where to get it, and other details.
 

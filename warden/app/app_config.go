@@ -77,9 +77,12 @@ import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
 	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
+	asyncmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/async/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
 	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/async/module" // import for side-effects
+	asyncmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
 	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -162,6 +165,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
+		asyncmoduletypes.ModuleName,
 		gmpmoduletypes.ModuleName,
 		ibchookstypes.ModuleName,
 		// wasm module
@@ -200,6 +204,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
+		asyncmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
@@ -230,6 +235,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
+		asyncmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
@@ -257,6 +263,7 @@ var (
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
 		{Account: actmoduletypes.ModuleName},
+		{Account: asyncmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
 		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
@@ -406,6 +413,10 @@ func moduleConfig() depinject.Config {
 				{
 					Name:   actmoduletypes.ModuleName,
 					Config: appconfig.WrapAny(&actmodulev1.Module{}),
+				},
+				{
+					Name:   asyncmoduletypes.ModuleName,
+					Config: appconfig.WrapAny(&asyncmodulev1.Module{}),
 				},
 				{
 					Name: marketmaptypes.ModuleName,

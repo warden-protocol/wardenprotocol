@@ -5,10 +5,10 @@ import { cosmos } from "@wardenprotocol/wardenjs";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
 import {
-	COSMOS_CHAINS,
 	COSMOS_PRICES,
-	ENABLED_ETH_CHAINS,
 	ERC20_TOKENS,
+	getEnabledCosmosChains,
+	getEnabledEthChains,
 } from "@/config/tokens";
 import { getProvider } from "@/lib/eth";
 import { BalanceEntry, CosmosQueryClient, PriceMapSlinky } from "./types";
@@ -396,9 +396,11 @@ export const balancesQueryCosmos = (
 
 export const balancesQueryEth = (
 	enabled: boolean,
+	address: `0x${string}`,
 	keys?: KeyModel[],
 	prices?: PriceMapSlinky,
 ) => {
+	const enabledEthChains = getEnabledEthChains(address)
 	const byAddress: Record<string, KeyModel> = {};
 	// debug
 	// const debugAddress = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"; // vitalik.eth
@@ -437,7 +439,7 @@ export const balancesQueryEth = (
 	});
 
 	const queries = [
-		...ENABLED_ETH_CHAINS.flatMap(({ chainName }) => {
+		...enabledEthChains.flatMap(({ chainName }) => {
 			return eth.map((address) => ({
 				...eip155NativeBalanceQuery({
 					enabled,
@@ -450,7 +452,7 @@ export const balancesQueryEth = (
 		}),
 		...ERC20_TOKENS.filter(({ chainName }) =>
 			// fixme not optimal
-			ENABLED_ETH_CHAINS.find((x) => x.chainName === chainName),
+			enabledEthChains.find((x) => x.chainName === chainName),
 		).flatMap(({ chainName, address: token, priceFeed, stablecoin }) =>
 			eth.map((address) => ({
 				...eip155ERC20BalanceQuery({
@@ -552,14 +554,16 @@ const checkHealth = async (
 	return isChainIdValid;
 };
 
-export const queryCosmosClients = (walletManager: WalletManager) => {
+export const queryCosmosClients = (walletManager: WalletManager, address: `0x${string}`) => {
+	const enabledCosmosChains = getEnabledCosmosChains(address)
+
 	return {
 		queryKey: ["cosmos", "rpcClients"],
 		queryFn: async () => {
 			const clients: [CosmosQueryClient, string, string][] = [];
 
-			for (let i = 0; i < COSMOS_CHAINS.length; i++) {
-				const { chainName, rpc } = COSMOS_CHAINS[i];
+			for (let i = 0; i < enabledCosmosChains.length; i++) {
+				const { chainName, rpc } = enabledCosmosChains[i];
 				const retries = (rpc?.length ?? 0) + 1;
 
 				for (let i = 0; i < retries; i++) {

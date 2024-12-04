@@ -20,7 +20,7 @@ import type { BalanceEntry } from "../assets/types";
 import { encodeSecp256k1Pubkey, makeSignDoc, StdSignDoc } from "@cosmjs/amino";
 import { Int53 } from "@cosmjs/math";
 import { SignMode } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/signing/v1beta1/signing";
-import { COSMOS_CHAINS } from "@/config/tokens";
+import { getEnabledCosmosChains } from "@/config/tokens";
 import {
 	Account,
 	Chain,
@@ -133,11 +133,13 @@ export function capitalize<T extends string>(s?: T): Capitalize<T> {
 	return (!s ? "" : s.charAt(0).toUpperCase() + s.slice(1)) as Capitalize<T>;
 }
 export async function buildTransaction({
+	address,
 	item,
 	from,
 	to,
 	amount: _amount,
 }: {
+	address: `0x${string}`;
 	item: BalanceEntry;
 	from: string;
 	to: string;
@@ -238,8 +240,8 @@ export async function buildTransaction({
 	}
 
 	const feeAmount =
-		COSMOS_CHAINS.find((x) => x.chainName === item.chainName)?.feeAmount ??
-		"225";
+		getEnabledCosmosChains(address).find((x) => x.chainName === item.chainName)
+			?.feeAmount ?? "225";
 
 	const fee: StdFee = {
 		// fixme remove hardcoded fees

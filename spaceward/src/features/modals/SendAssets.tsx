@@ -19,6 +19,7 @@ import { walletContext } from "@cosmos-kit/react-lite";
 import { BalanceEntry } from "../assets/types";
 import { useQuery } from "@tanstack/react-query";
 import { queryCosmosClients } from "../assets/queries";
+import { useConnectWallet } from "@web3-onboard/react";
 
 export default function SendAssetsModal({
 	// address,
@@ -29,10 +30,12 @@ export default function SendAssetsModal({
 	const { walletManager } = useContext(walletContext);
 	const { setData: setModal } = useModalState();
 	const { formatter, fiatConversion } = useFiatConversion();
+	const [{ wallet }] = useConnectWallet();
+	const evmAddress = wallet?.accounts?.[0]?.address;
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances } = useAssetQueries(spaceId);
-	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
+	const cosmosClients = useQuery({ ...(evmAddress ? queryCosmosClients(walletManager, evmAddress) : {}), enabled: Boolean(evmAddress) }).data;
 
 	const results: (BalanceEntry & { refetch: () => void })[] = queryBalances
 		.filter((result) => result.data?.key?.key?.id === key?.key?.id)
@@ -74,7 +77,7 @@ export default function SendAssetsModal({
 	const { signAmino } = useKeychainSigner();
 
 	async function submit() {
-		if (!key || !selectedToken) {
+		if (!key || !selectedToken || !evmAddress) {
 			return;
 		}
 
@@ -84,6 +87,7 @@ export default function SendAssetsModal({
 
 		try {
 			const txBuild = await buildTransaction({
+				address: evmAddress,
 				item: selectedToken,
 				from: address,
 				to: destinationAddress,

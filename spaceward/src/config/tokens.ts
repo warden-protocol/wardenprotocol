@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { getProvider } from "../lib/eth";
+import { ALLOWED_MAINNET_ADDRESSES } from "./whitelists";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -232,6 +233,15 @@ const _ENABLED_ETH_CHAINS: {
 	{ chainName: "sepolia", testnet: true },
 ];
 
+export const getEnabledEthChains = (address: `0x${string}`) => {
+	const isAllowed = ALLOWED_MAINNET_ADDRESSES.includes(address.toLowerCase() as `0x${string}`);
+
+	return _ENABLED_ETH_CHAINS.filter(({ testnet }) =>
+		isAllowed ? true : Boolean(testnet),
+	);
+}
+
+/** @deprecated in favor of whitelists */
 export const ENABLED_ETH_CHAINS = _ENABLED_ETH_CHAINS.filter(({ testnet }) =>
 	env.networkVisibility === "all"
 		? true
@@ -285,6 +295,15 @@ const _COSMOS_CHAINS: {
 	},
 ];
 
+export const getEnabledCosmosChains = (address: `0x${string}`) => {
+	const isAllowed = ALLOWED_MAINNET_ADDRESSES.includes(address.toLowerCase() as `0x${string}`);
+
+	return _COSMOS_CHAINS.filter(({ testnet }) =>
+		isAllowed ? true : Boolean(testnet),
+	);
+}
+
+/** @deprecated in favor of whitelists */
 export const COSMOS_CHAINS = _COSMOS_CHAINS.filter(({ testnet }) =>
 	env.networkVisibility === "all"
 		? true

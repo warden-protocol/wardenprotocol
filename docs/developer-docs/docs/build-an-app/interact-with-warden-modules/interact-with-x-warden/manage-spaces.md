@@ -2,32 +2,23 @@
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-# Spaces
+# Manage Spaces
 
 ## Overview
 
-In this section you will learn how to query and manage `spaces.` If you would like to get an overview of all functions available for IWarden precompile, you can refer to this.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
 
-By the end of this tutorial, you will be able to:
+This article explains how to use `x/warden` to manage [Spaces](/learn/glossary#space). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
-- Create a new space
-- Update a space
-- Add space owner
-- Remove space owner
-- Query space
-- Query space by owner
-- Query a space by ID
+To understand how to set up and deploy your project, see [Get started](../get-started.md).
 
-## Prerequisites
+:::tip
+For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#spaces)
+:::
 
-To understand how to setup your project, please refer to the [Prequisites](../call-x-warden.md) section.
+## Create a new Space
 
-*Note: For sake of simplicity, we will only add snippets of code related to the `spaces` function of IWarden precompile. If you would like to refer to the entire smart contract, you can check it here.*
-
-### Create a new Space
+To create a new Space, use the following code in your contract. It calls the [`newSpace()`](../../precompiles/x-warden#create-a-new-space) function of the precompile.
 
 ```solidity
 function newSpace(
@@ -66,7 +57,15 @@ contract wardenSpace {
 }
 ```
 
-### Update a Space
+After deploying your contract, you can interact with it by calling the `createSpace()` function:
+
+```bash
+cast send $CONTRACT_ADDRESS "createSpace(uint64,uint64,uint64,uint64,address[])" 1 2 3 4 \[\] --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+```
+
+## Update a Space
+
+To update a Space, use the following code in your contract. It calls the [`updateSpace()`](../../precompiles/x-warden#update-a-space) function of the precompile.
 
 ```solidity
 function updateSpace(
@@ -111,7 +110,15 @@ contract wardenSpace {
 }
 ```
 
-### Add a Space Owner
+After deploying your contract, you can interact with it by calling the `updateSpace()` function:
+
+```bash
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateSpace(uint64,uint64,uint64,uint64,uint64,uint64,uint64,string,string)" 1 0 100 101 102 103 100000 "" ""
+```
+
+## Add a Space owner
+
+To add an owner to a Space, use the following code in your contract. It calls the [`addSpaceOwner()`](../../precompiles/x-warden#add-a-space-owner) function of the precompile.
 
 ```solidity
 function addSpaceOwner(
@@ -133,7 +140,15 @@ contract wardenSpace {
     }
 ```
 
-### Remove a Space Owner
+After deploying your contract, you can interact with it by calling the `addOwner()` function:
+
+```bash
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "addSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xYourNewOwnerAddress 0 100000 "" ""
+```
+
+## Remove a Space owner
+
+To remove an owner from a Space, use the following code in your contract. It calls the [`removeSpaceOwner()`](../../precompiles/x-warden#remove-a-space-owner) function of the precompile.
 
 ```solidity
 function removeSpaceOwner(
@@ -174,7 +189,15 @@ contract wardenSpace {
 }
 ```
 
-### Query a Space
+After deploying your contract, you can interact with it by calling the `removeOwner()` function:
+
+```bash
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "removeSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xOwnerToRemove 0 100000 "" ""
+```
+
+## Query Spaces
+
+To get a list of all Spaces, use the following code in your contract. It calls the [`spaces()`](../../precompiles/x-warden#query-spaces) function of the precompile.
 
 ```solidity
 function spaces(PageRequest calldata pageRequest) external view returns (Space[] memory spaces, PageResponse memory pageResponse);
@@ -216,26 +239,15 @@ contract SpaceQuery {
 }
 ```
 
-### Query a Space by ID
+After deploying your contract, you can interact with it by calling the `getAllSpaces()` function:
 
-```solidity
-function spaceById(uint64 id) external view returns (Space memory space);
-
-contract SpaceQuery {
-    address constant WARDEN_ADDRESS = 0x0000000000000000000000000000000000000900;
-    IWarden public warden;
-
-    constructor() {
-        warden = IWarden(WARDEN_ADDRESS);
-    }
-
-    function getSpaceById(uint64 spaceId) external view returns (IWarden.Space memory) {
-        return warden.spaceById(spaceId);
-    }
-}
+```bash
+cast call $CONTRACT_ADDRESS "getAllSpaces(uint64,uint64,bool)" 10 0 true --rpc-url $RPC_URL
 ```
 
-### Query a Space by Owner
+## Query Spaces by owner
+
+To get a list of Spaces by owner, use the following code in your contract. It calls the [`spacesByOwner()`](../../precompiles/x-warden#query-spaces-by-owner) function of the precompile.
 
 ```solidity
 function spacesByOwner(PageRequest calldata pageRequest, address owner) external view returns (Space[] memory spaces, PageResponse memory pageResponse);
@@ -278,66 +290,35 @@ contract SpaceQuery {
 }
 ```
 
-## Deploy the contract
-
-To understand how to deploy your project, please refer to the [Prequisites](../call-x-warden.md) section.
-
-## Interacting with Spaces
-
-Now that the contract is deployed, we’ll proceed to interact with the IWarden functions one by one to demonstrate their usage. This step focuses on creating and querying Spaces.
-
-### Create a Space
-
-Use the `createSpace` function to create a new Space.
-
-```bash
-cast send $CONTRACT_ADDRESS "createSpace(uint64,uint64,uint64,uint64,address[])" 1 2 3 4 \[\] --rpc-url $RPC_URL --private-key $PRIVATE_KEY
-```
-
-### Update Space
-
-Use the `updateSpace` function to update an existing Space.
-
-```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateSpace(uint64,uint64,uint64,uint64,uint64,uint64,uint64,string,string)" 1 0 100 101 102 103 100000 "" ""
-```
-
-### Add Space Owner
-
-Use the `addOwner` function to add an owner to a Space.
-
-```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "addSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xYourNewOwnerAddress 0 100000 "" ""
-```
-
-### Remove Space Owner
-
-Use the `removeOwner` function to remove an owner from a Space.
-
-```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "removeSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xOwnerToRemove 0 100000 "" ""
-```
-
-### Query Spaces
-
-Use the `getAllSpaces` function to create a new Space.
-
-```bash
-cast call $CONTRACT_ADDRESS "getAllSpaces(uint64,uint64,bool)" 10 0 true --rpc-url $RPC_URL
-```
-
-### Query Space by ID
-
-Use the `spaceById` function to create a new Space.
-
-```bash
-cast call $CONTRACT_ADDRESS "getSpaceById(uint64)" 1 --rpc-url $RPC_URL
-```
-
-### Query Spaces by Owner
-
-Use the `spacesByOwner` function to create a new Space.
+After deploying your contract, you can interact with it by calling the `spacesByOwner()` function:
 
 ```bash
 cast call $CONTRACT_ADDRESS "getSpacesByOwner(address,uint64,uint64,bool)" 0x6ea8ac1673402989e7b653ae4e83b54173719c30 10 0 true --rpc-url $RPC_URL
+```
+
+## Query a Space by ID
+
+To get a Space by ID, use the following code in your contract. It calls the [`spaceById()`](../../precompiles/x-warden#query-a-space-by-id) function of the precompile.
+
+```solidity
+function spaceById(uint64 id) external view returns (Space memory space);
+
+contract SpaceQuery {
+    address constant WARDEN_ADDRESS = 0x0000000000000000000000000000000000000900;
+    IWarden public warden;
+
+    constructor() {
+        warden = IWarden(WARDEN_ADDRESS);
+    }
+
+    function getSpaceById(uint64 spaceId) external view returns (IWarden.Space memory) {
+        return warden.spaceById(spaceId);
+    }
+}
+```
+
+After deploying your contract, you can interact with it by calling the `spaceById()` function:
+
+```bash
+cast call $CONTRACT_ADDRESS "getSpaceById(uint64)" 1 --rpc-url $RPC_URL
 ```

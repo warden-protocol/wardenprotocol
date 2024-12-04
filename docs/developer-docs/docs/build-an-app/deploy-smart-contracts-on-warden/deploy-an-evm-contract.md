@@ -183,7 +183,7 @@ In the following steps, we're going to deploy this contract without modification
    ```
    
    :::warning
-   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions.
+   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions like `env`.
    :::
 
 1. Export the RPC URL. Specify the standard localhost address or Chiado's EVM endpoint:
@@ -219,31 +219,29 @@ In the following steps, we're going to deploy this contract without modification
    Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-4. Note down the value returned as `Deployed to` – that's your **contract address**.
-
-## 5. Verify the deployment
-
-1. Export your contract address as a variable by running the following command. Specify the address returned in the previous step.
+4. Note down the value returned as `Deployed to` – that's your **contract address**. Export it as a variable: 
 
    ```bash
    export CONTRACT_ADDRESS=my-contract-address
    ```
 
-2. Verify that the contract has been deployed on this address:
+## 5. Verify the deployment
 
-   ```bash
-   cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
-   ```
+To verify that the contract has been deployed on the address from the previous step, run this:
 
-   :::note
-   The [`cast code`](https://book.getfoundry.sh/reference/cast/cast-code) Foundry command allows you to get the bytecode of a contract.
-   :::
+```bash
+cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
+```
 
-   You'll see an output similar to the following:
+:::note
+The [`cast code`](https://book.getfoundry.sh/reference/cast/cast-code) Foundry command allows you to get the bytecode of a contract.
+:::
 
-   ```bash
-   0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60006001820160ba57634e487b7160e01b600052601160045260246000fd5b506001019056fea26469706673582212201c88540d2739bb0e4f6179275ef6ff63cf1c34ed53189691f9dd0033f4382a0264736f6c634300081c0033
-   ```
+You'll see an output similar to the following:
+
+```bash
+0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60006001820160ba57634e487b7160e01b600052601160045260246000fd5b506001019056fea26469706673582212201c88540d2739bb0e4f6179275ef6ff63cf1c34ed53189691f9dd0033f4382a0264736f6c634300081c0033
+```
 
 ## 6. Interact with the contract
 
@@ -354,5 +352,5 @@ After deploying a basic EVM smart contract, start using Warden precompiles to ca
 See the following sections:
 
 - [Call Warden modules in your contract](/category/interact-with-warden-modules)
-- [Solidity precompiles](/category/solidity-precompiles)
+- [Solidity precompiles](/category/precompiles)
 

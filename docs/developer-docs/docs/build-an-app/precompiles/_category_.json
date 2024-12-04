@@ -1,6 +1,6 @@
 {
   "position": 6,
-  "label": "Solidity precompiles",
+  "label": "Precompiles",
   "collapsible": true,
   "collapsed": false,
   "link": {

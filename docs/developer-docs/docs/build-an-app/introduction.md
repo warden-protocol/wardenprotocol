@@ -37,7 +37,7 @@ Get started with OApps: deploy a basic [WASM](deploy-smart-contracts-on-warden/d
 - [Call Warden modules in a smart contract](/category/interact-with-warden-modules)  
 Call Warden modules in your contract to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on.
 
-- [Solidity precompiles](/category/solidity-precompiles)  
+- [Solidity precompiles](/category/precompiles)  
 Solidity precompiles allow you to call Warden modules in EVM contracts. Browse this section to discover full lists of methods available for each precompile.
 
 - [Build with WardenJS](wardenjs)  

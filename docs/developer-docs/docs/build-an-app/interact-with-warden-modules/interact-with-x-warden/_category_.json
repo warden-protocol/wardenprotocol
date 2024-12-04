@@ -1,11 +1,11 @@
 {
     "position": 2,
-    "label": "X warden module",
+    "label": "Interact with x/warden",
     "collapsible": true,
-    "collapsed": false,
+    "collapsed": true,
     "link": {
       "type": "generated-index",
-      "title": "X warden module"
+      "title": "Interact with x/warden"
     },
     "customProps": {}
   }

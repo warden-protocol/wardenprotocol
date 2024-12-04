@@ -68,7 +68,6 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokens – WARD and WARP
-- **Tools**: API and function references
 - [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
 
 ## Contribute

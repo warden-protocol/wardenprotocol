@@ -65,6 +65,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -83,7 +84,6 @@ import (
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 
 	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
-	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 )
@@ -154,6 +154,7 @@ type App struct {
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	ActKeeper    actmodulekeeper.Keeper
+	AsyncKeeper  asyncmodulekeeper.Keeper
 
 	// Slinky
 	OracleKeeper    *oraclekeeper.Keeper
@@ -172,7 +173,7 @@ type App struct {
 	HooksICS4Wrapper ibchooks.ICS4Middleware
 
 	// processes
-	oracleClient oracleclient.OracleClient
+	slinkyClient *SlinkyClient
 }
 
 func init() {
@@ -340,6 +341,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.ActKeeper,
+		&app.AsyncKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
@@ -384,7 +386,7 @@ func New(
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
 
 	// oracle initialization
-	app.initializeOracle(appOpts)
+	app.initializeOracles(appOpts)
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)

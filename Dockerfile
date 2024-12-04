@@ -92,6 +92,7 @@ COPY --chown=node:node automated-orders/yarn.lock yarn.lock
 COPY --chown=node:node automated-orders/package.json package.json
 COPY --chown=node:node automated-orders/tsconfig.json tsconfig.json
 COPY --chown=node:node automated-orders/packages/utils-library packages/utils-library
+COPY --chown=node:node automated-orders/packages/aws-kms-signer packages/aws-kms-signer
 COPY --chown=node:node automated-orders/packages/blockchain-library packages/blockchain-library
 RUN yarn install --frozen-lockfile && \
     yarn build:libs && \

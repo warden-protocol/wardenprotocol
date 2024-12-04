@@ -14,7 +14,7 @@ import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { env } from "@/env";
-import { COSMOS_CHAINS } from "@/config/tokens";
+import { getEnabledCosmosChains } from "@/config/tokens";
 import type { getClient } from "@/hooks/useClient";
 import { getBalanceQueryKey } from "@/features/assets/queries";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
@@ -339,11 +339,13 @@ export const handleEth = async ({
 };
 
 export const handleCosmos = async ({
+	address,
 	action,
 	w,
 	queryClient,
 	rpcEndpoint,
 }: {
+	address: `0x${string}`;
 	action: QueuedAction;
 	w: IWeb3Wallet | null;
 	rpcEndpoint?: string;
@@ -361,7 +363,7 @@ export const handleCosmos = async ({
 		throw new Error("missing chainName, signDoc, pubkey");
 	}
 
-	const chain = COSMOS_CHAINS.find((item) => item.chainName === chainName);
+	const chain = getEnabledCosmosChains(address).find((item) => item.chainName === chainName);
 
 	if (!chain) {
 		throw new Error("chain not found");

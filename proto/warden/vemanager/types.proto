@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package warden.vemanager;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/app/vemanager";
+
+// ABCI treats a VoteExtensions as a byte array, but we need to distinguish
+// between multiple extensions coming from different sources, i.e. we want an
+// array of byte arrays, which is what this type represents.
+message VoteExtensions {
+  repeated bytes extensions = 1;
+}

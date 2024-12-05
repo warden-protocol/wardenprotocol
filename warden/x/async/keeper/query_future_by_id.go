@@ -19,7 +19,20 @@ func (k Keeper) FutureById(ctx context.Context, req *types.QueryFutureByIdReques
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	return &types.QueryFutureByIdResponse{
+	result, err := k.futures.GetResult(ctx, req.Id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	votes, err := k.GetFutureVotes(ctx, req.Id)
+
+	futureResponse := types.FutureResponse{
 		Future: future,
+		Result: &result,
+		Votes:  votes,
+	}
+
+	return &types.QueryFutureByIdResponse{
+		Future: futureResponse,
 	}, nil
 }

@@ -16,10 +16,12 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
+	pvm "github.com/cometbft/cometbft/privval"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -86,6 +88,8 @@ import (
 	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+
+	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
 const (
@@ -112,6 +116,8 @@ type App struct {
 	appCodec          codec.Codec
 	txConfig          client.TxConfig
 	interfaceRegistry codectypes.InterfaceRegistry
+
+	prophet *prophet.P
 
 	// keepers
 	AccountKeeper         authkeeper.AccountKeeper
@@ -240,6 +246,12 @@ func New(
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
+	valConsAddr := getValidatorAddress(appOpts)
+	prophetP, err := prophet.New()
+	if err != nil {
+		panic(fmt.Errorf("failed to create prophet: %w", err))
+	}
+
 	var (
 		app        = &App{}
 		appBuilder *runtime.AppBuilder
@@ -262,6 +274,11 @@ func New(
 				app.GetFeemarketKeeper,
 				// Supply the logger
 				logger,
+				// Supply this node validator address
+				valConsAddr,
+				// Supply the prophet
+				prophetP,
+
 				func() ast.Expander {
 					// I don't know if a lazy function is the best way to do this.
 					// x/act wants to access this ExpanderManager, but the
@@ -323,6 +340,7 @@ func New(
 		&app.legacyAmino,
 		&app.txConfig,
 		&app.interfaceRegistry,
+		&app.prophet,
 		&app.AccountKeeper,
 		&app.BankKeeper,
 		&app.StakingKeeper,
@@ -387,6 +405,10 @@ func New(
 
 	// oracle initialization
 	app.initializeOracles(appOpts)
+
+	if err := app.prophet.Run(); err != nil {
+		panic(fmt.Errorf("failed to run prophet: %w", err))
+	}
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)
@@ -625,4 +647,12 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 
 	// Set the AnteHandler for the app
 	app.SetAnteHandler(anteHandler)
+}
+
+func getValidatorAddress(appOpts servertypes.AppOptions) sdk.ConsAddress {
+	root := appOpts.Get(flags.FlagHome).(string)
+	keyfile := filepath.Join(root, appOpts.Get("priv_validator_key_file").(string))
+	statefile := filepath.Join(root, appOpts.Get("priv_validator_state_file").(string))
+	privValidator := pvm.LoadFilePV(keyfile, statefile)
+	return (sdk.ConsAddress)(privValidator.GetAddress())
 }

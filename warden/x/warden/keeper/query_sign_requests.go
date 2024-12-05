@@ -32,7 +32,7 @@ func (k Keeper) SignRequests(goCtx context.Context, req *types.QuerySignRequests
 			return false, nil
 		}
 
-		if value.BroadcastType != req.BroadcastType {
+		if req.OptionalBroadcastType != nil && value.BroadcastType != req.GetBroadcastType() {
 			return false, nil
 		}
 

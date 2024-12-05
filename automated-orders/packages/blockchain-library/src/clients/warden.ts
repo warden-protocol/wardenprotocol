@@ -6,12 +6,12 @@ import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { LRUCache } from 'lru-cache'
 import { EvmClient } from './evm.js';
 import {
-  BroadcastType,
   IPageRequest,
   ISignRequest,
   SignRequestsAbi,
   SignRequestStatus,
-  ISignRequestResponse as Response
+  ISignRequestResponse as Response,
+  OptionalBroadcastType
 } from '../types/warden/functions.js';
 import { Hex } from 'viem';
 
@@ -85,7 +85,7 @@ export class WardenClient {
       reverse: false 
     };
 
-    const args: unknown[] = [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED, BroadcastType.AUTOMATIC];
+    const args: unknown[] = [pagination, BigInt(1), SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED, OptionalBroadcastType.AUTOMATIC];
     const response = await this.evm.callView<Response>(
       this.configuration.wardenPrecompileAddress,
       SignRequestsAbi,

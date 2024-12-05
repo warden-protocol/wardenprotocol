@@ -39,6 +39,12 @@ export interface ISignRequest {
   broadcastType: BroadcastType;
 };
 
+export enum OptionalBroadcastType {
+  UNSPECIFIED = 0,
+  DISABLED = 1,
+  AUTOMATIC = 2,
+};
+
 export enum BroadcastType {
   DISABLED = 0,
   AUTOMATIC = 1,
@@ -96,8 +102,8 @@ export const SignRequestsAbi: AbiFunction = {
       type: "uint8"
     },
     {
-      internalType: "enum BroadcastType",
-      name: "broadcastType",
+      internalType: "enum OptionalBroadcastType",
+      name: "optionalBroadcastType",
       type: "uint8"
     }
   ],

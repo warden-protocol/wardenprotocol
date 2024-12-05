@@ -18,7 +18,7 @@ For an overview of `x/act` functions, refer to [Precompiles: x/act](../../precom
 
 ## Vote for an Action
 
-To vote for an Action, use the following code in your contract. It calls the [`voteForAction()`](../../precompiles/x-warden#vote-for-an-action) function of the precompile.
+To vote for an Action, use the following code in your contract. It calls the [`voteForAction()`](../../precompiles/x-act#vote-for-an-action) function of the precompile.
 
 ```solidity
 function voteForAction(
@@ -46,7 +46,7 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "voteForAction(XXX)" XXX
 
 ## Revoke an Action
 
-To revoke an Action, use the following code in your contract. It calls the [`revokeAction()`](../../precompiles/x-warden#revoke-an-action) function of the precompile.
+To revoke an Action, use the following code in your contract. It calls the [`revokeAction()`](../../precompiles/x-act#revoke-an-action) function of the precompile.
 
 ```solidity
 function revokeAction(uint64 actionId) external returns (bool);
@@ -75,7 +75,7 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "revokeAction(uint64)" 1
 
 ## Query Actions
 
-To get a list of all Actions, use the following code in your contract. It calls the [`actions()`](../../precompiles/x-warden#query-actions) function of the precompile.
+To get a list of all Actions, use the following code in your contract. It calls the [`actions()`](../../precompiles/x-act#query-actions) function of the precompile.
 
 ```solidity
 function actions(XXX) external view returns (XXX);
@@ -99,7 +99,7 @@ cast call $CONTRACT_ADDRESS "getAllActions(XXX)" XXX --rpc-url $RPC_URL
 
 ## Query Actions by address
 
-To get a list of Actions by participant address, use the following code in your contract. It calls the [`actionsByAddress()`](../../precompiles/x-warden#query-actions-by-address) function of the precompile.
+To get a list of Actions by participant address, use the following code in your contract. It calls the [`actionsByAddress()`](../../precompiles/x-act#query-actions-by-address) function of the precompile.
 
 ```solidity
 function actionsByAddress(XXX) external view returns (ActionsByAddressResponse memory response);
@@ -123,7 +123,7 @@ cast call $CONTRACT_ADDRESS "getActionsByAddress(XXX)" XXX
 
 ## Query an Action by ID
 
-To get an Action by ID, use the following code in your contract. It calls the [`actionById()`](../../precompiles/x-warden#query-an-action-by-id) function of the precompile.
+To get an Action by ID, use the following code in your contract. It calls the [`actionById()`](../../precompiles/x-act#query-an-action-by-id) function of the precompile.
 
 ```solidity
 function actionById(uint64 actionId) 
@@ -148,7 +148,7 @@ cast call $CONTRACT_ADDRESS "getActionById(uint64)" 1 --rpc-url $RPC_URL
 
 ## Query the Action status by ID
 
-To get the status of an Action with a given ID, use the following code in your contract. It calls the [`checkAction()`](../../precompiles/x-warden#query-the-action-status-by-id) function of the precompile.
+To get the status of an Action with a given ID, use the following code in your contract. It calls the [`checkAction()`](../../precompiles/x-act#query-the-action-status-by-id) function of the precompile.
 
 ```solidity
 function checkAction(uint64 actionId) 

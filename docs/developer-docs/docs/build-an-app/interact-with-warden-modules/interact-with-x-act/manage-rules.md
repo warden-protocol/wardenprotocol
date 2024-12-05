@@ -8,7 +8,7 @@ sidebar_position: 1
 
 The [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IAct.sol) allows calling the [`x/act`](/learn/warden-protocol-modules/x-act) module from EVM smart contracts.
 
-This article explains how to use `x/act` to manage [Rules](/learn/glossary#rule). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
+This article explains how to use `x/act` to manage [Rules](/learn/glossary#approval-rule). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
 To understand how to set up and deploy your project, see [Get started](../get-started.md).
 
@@ -18,7 +18,7 @@ For an overview of `x/act` functions, refer to [Precompiles: x/warden](../../pre
 
 ## Create a new Rule
 
-To create a new Rule, use the following code in your contract. It calls the [`newTemplate()`](../../precompiles/x-warden#create-a-new-rule) function of the precompile.
+To create a new Rule, use the following code in your contract. It calls the [`newTemplate()`](../../precompiles/x-act#create-a-new-rule) function of the precompile.
 
 ```solidity
 function newTemplate(
@@ -46,7 +46,7 @@ cast send $CONTRACT_ADDRESS "createRule(XXX)" XXX --rpc-url $RPC_URL --private-k
 
 ## Update a Rule
 
-To update a Rule, use the following code in your contract. It calls the [`updateTemplate()`](../../precompiles/x-warden#update-a-rule) function of the precompile.
+To update a Rule, use the following code in your contract. It calls the [`updateTemplate()`](../../precompiles/x-act#update-a-rule) function of the precompile.
 
 ```solidity
 function updateTemplate(
@@ -75,7 +75,7 @@ cast send send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateRule(XXX)" X
 
 ## Query Rules
 
-To get a list of all Rules, use the following code in your contract. It calls the [`templates()`](../../precompiles/x-warden#query-rules) function of the precompile.
+To get a list of all Rules, use the following code in your contract. It calls the [`templates()`](../../precompiles/x-act#query-rules) function of the precompile.
 
 ```solidity
 function templates(XXX) external view returns (XXX);
@@ -99,7 +99,7 @@ cast call $CONTRACT_ADDRESS "getAllRules(XXX)" XXX --rpc-url $RPC_URL
 
 ## Query a Rule by ID
 
-To get a Rule by ID, use the following code in your contract. It calls the [`templateById()`](../../precompiles/x-warden#query-a-rule-by-id) function of the precompile.
+To get a Rule by ID, use the following code in your contract. It calls the [`templateById()`](../../precompiles/x-act#query-a-rule-by-id) function of the precompile.
 
 ```solidity
 function templateById(uint64 templateId) 

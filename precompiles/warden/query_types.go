@@ -395,23 +395,36 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 	if _, ok := types.SignRequestStatus_name[int32(input.Status)]; !ok {
 		return nil, fmt.Errorf("invalid Status value: %d", input.Status)
 	}
-	if _, ok := types.BroadcastType_name[int32(input.BroadcastType)]; !ok {
-		return nil, fmt.Errorf("invalid BroadcastType value: %d", input.BroadcastType)
-	}
 
-	return &types.QuerySignRequestsRequest{
-		Pagination:    &input.PageRequest,
-		KeychainId:    input.KeychainId,
-		Status:        types.SignRequestStatus(int32(input.Status)),
-		BroadcastType: types.BroadcastType(int32(input.BroadcastType)),
-	}, nil
+	if input.OptionalBroadcastType != 0 {
+		if _, ok := types.BroadcastType_name[int32(input.OptionalBroadcastType-1)]; !ok {
+			return nil, fmt.Errorf("invalid BroadcastType value: %d", input.OptionalBroadcastType-1)
+		}
+
+		broadcastType := types.QuerySignRequestsRequest_BroadcastType{
+			BroadcastType: types.BroadcastType(int32(input.OptionalBroadcastType - 1)),
+		}
+		return &types.QuerySignRequestsRequest{
+			Pagination:            &input.PageRequest,
+			KeychainId:            input.KeychainId,
+			Status:                types.SignRequestStatus(int32(input.Status)),
+			OptionalBroadcastType: &broadcastType,
+		}, nil
+	} else {
+		return &types.QuerySignRequestsRequest{
+			Pagination:            &input.PageRequest,
+			KeychainId:            input.KeychainId,
+			Status:                types.SignRequestStatus(int32(input.Status)),
+			OptionalBroadcastType: nil,
+		}, nil
+	}
 }
 
 type signRequestsInput struct {
-	PageRequest   query.PageRequest
-	KeychainId    uint64
-	Status        uint8
-	BroadcastType uint8
+	PageRequest           query.PageRequest
+	KeychainId            uint64
+	Status                uint8
+	OptionalBroadcastType uint8
 }
 
 type signRequestsOutput struct {

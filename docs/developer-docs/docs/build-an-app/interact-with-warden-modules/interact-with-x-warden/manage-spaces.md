@@ -317,7 +317,7 @@ contract SpaceQuery {
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `spaceById()` function:
+After deploying your contract, you can interact with it by calling the `getSpaceById()` function:
 
 ```bash
 cast call $CONTRACT_ADDRESS "getSpaceById(uint64)" 1 --rpc-url $RPC_URL

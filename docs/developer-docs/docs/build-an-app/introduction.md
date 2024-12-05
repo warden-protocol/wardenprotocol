@@ -28,15 +28,17 @@ The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden mod
 
 ## Section overview
 
-- [Deploy smart contracts on Warden](/category/deploy-smart-contracts-on-warden)  
-Get started with OApps: deploy a basic [WASM](deploy-smart-contracts-on-warden/deploy-a-wasm-contract) or [EVM](deploy-smart-contracts-on-warden/deploy-an-evm-contract) smart contract on Warden. Then deploy a [cross-chain app](deploy-smart-contracts-on-warden/deploy-a-cross-chain-app) for burning tokens.
-
-- [Build with WardenJS](build-with-wardenjs)  
-Here you'll find information on WardenJS – a tool used for building the frontend part of your application. Stay tuned in for more frontend guides.
-
-- [Useful links](useful-links)  
-To learn more about building smart contracts, check our list of developer resources.
-
 - [Examples of OApps](examples-of-oapps)  
 Here you can find a full list of available OApps.
 
+- [Deploy smart contracts on Warden](/category/deploy-smart-contracts-on-warden)  
+Get started with OApps: deploy a basic [WASM](deploy-smart-contracts-on-warden/deploy-a-wasm-contract) or [EVM](deploy-smart-contracts-on-warden/deploy-an-evm-contract) smart contract on Warden.
+
+- [Call Warden modules in a smart contract](/category/interact-with-warden-modules)  
+Call Warden modules in your contract to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on.
+
+- [Precompiles](/category/precompiles)  
+Warden precompiles allow you to call Warden modules in EVM contracts. Browse this section to discover full lists of methods available for each precompile.
+
+- [Build with WardenJS](wardenjs)  
+Here you'll find information on WardenJS – a tool used for building the frontend part of your application.

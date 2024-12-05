@@ -1,0 +1,11 @@
+{
+    "position": 2,
+    "label": "Interact with x/warden",
+    "collapsible": true,
+    "collapsed": true,
+    "link": {
+      "type": "generated-index",
+      "title": "Interact with x/warden"
+    },
+    "customProps": {}
+  }

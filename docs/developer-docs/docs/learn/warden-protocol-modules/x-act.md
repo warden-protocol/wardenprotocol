@@ -16,7 +16,7 @@ This module implements the following concepts, which you can find in our Glossar
 
 ## Usage
 
-You can call the `x/act` module from your [EVM smart contract](/category/deploy-smart-contracts-on-warden) using the [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol).
+You can call the `x/act` module from your EVM smart contract using the [`x/act` precompile](/build-an-app/precompiles/x-act).
 
 ## Concepts
 

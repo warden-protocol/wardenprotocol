@@ -283,8 +283,8 @@ Here are the key points of this contract:
 
 Before you start, do the following:
 
-- If you wish to learn the basics, follow this guide: [Deploy a WASM contract](deploy-a-wasm-contract).
-- Install Rust and set up the CosmWasm environment, as shown in [the guide](deploy-a-wasm-contract#prerequisites).
+- If you wish to learn the basics, follow this guide: [Deploy a WASM contract](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract).
+- Install Rust and set up the CosmWasm environment, as shown in [the guide](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#prerequisites).
 - For interacting with the node, [install Go](https://go.dev/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 - Obtain some AXL tokens in the Axelar network.
 
@@ -292,7 +292,7 @@ Before you start, do the following:
 
 Start by creating a WASM contract that will burn tokens on the EVM contract:
 
-1. Create a CosmWasm project. You can [use a template](deploy-a-wasm-contract#2-create-a-cosmwasm-project).
+1. Create a CosmWasm project. You can [use a template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project).
 
 2. In the `/src` directory of your project, create a `contract.rs` file with the code below. If you've used a template, update the existing file.
 
@@ -405,7 +405,7 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
+In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
 
 1. Create a file named `msg.rs` with the following code:
    
@@ -619,7 +619,7 @@ In the following steps, you'll create files in the `/src` folder to add supporti
 
 ### 2.3. Compile & optimize
 
-Now you can [compile](deploy-a-wasm-contract#4-compile-the-contract) and [optimize](deploy-a-wasm-contract#5-optimize-the-code) your contract.
+Now you can [compile](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#4-compile-the-contract) and [optimize](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#5-optimize-the-code) your contract.
 
 ### 2.4. Create a Warden account
 

@@ -16,7 +16,7 @@ This module implements Warden's core concepts, which you can find in our Glossar
 
 ## Usage
 
-You can call the `x/warden` module from your [EVM smart contract](/category/deploy-smart-contracts-on-warden) using the [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol).
+You can call the `x/warden` module from your EVM smart contract using the [`x/warden` precompile](/build-an-app/precompiles/x-warden), as show in this section: [Interact with x/warden](/category/interact-with-xwarden).
 
 ## Concepts
 

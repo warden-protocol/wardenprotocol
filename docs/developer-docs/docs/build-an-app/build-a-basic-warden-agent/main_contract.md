@@ -117,15 +117,11 @@ contract UniswapTradeAgent is ITradeAgent {
 
 ### Flow
 
-CopyCheck Price Conditions
-      ↓
-If Conditions Met → Approve Token Spend
-      ↓
-Setup Trading Path
-      ↓
-Execute Uniswap Swap
-      ↓
-Mark as Executed & Emit Event
+1. Check price conditions
+2. If conditions are met, then approve token spend
+3. Setup trading path
+4. Execute Uniswap swap
+5. Mark as executed & emit event
 
 ### Safety Features
 

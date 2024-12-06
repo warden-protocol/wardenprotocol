@@ -17,6 +17,7 @@ error Unimplemented();
 error UnsupportedOrder();
 error InvalidRegistryAddress();
 error InvalidSchedulerAddress();
+error OrderAlreadyExists();
 
 event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address indexed orderContact);
 
@@ -84,6 +85,12 @@ contract OrderFactory is Ownable {
         bytes memory creationCode = abi.encodePacked(
             type(BasicOrder).creationCode, abi.encode(_orderData, maxKeychainFees, _scheduler, address(REGISTRY))
         );
+
+        bytes32 hash = keccak256(abi.encodePacked(bytes1(0xff), address(this), salt, keccak256(creationCode)));
+        address expectedAddress = address(uint160(uint256(hash)));
+        if (expectedAddress.code.length != 0) {
+            revert OrderAlreadyExists();
+        }
 
         address basicOrder = Create2.deploy(0, salt, creationCode);
 

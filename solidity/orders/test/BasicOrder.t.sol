@@ -11,7 +11,8 @@ import {
     OrderType,
     InvalidRegistryAddress,
     InvalidSchedulerAddress,
-    SchedulerChanged
+    SchedulerChanged,
+    OrderAlreadyExists
 } from "../src/OrderFactory.sol";
 import { Caller, IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
@@ -356,6 +357,47 @@ contract BasicOrderTest is Test {
         vm.expectRevert(InvalidTxTo.selector);
 
         _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
+    }
+
+    function test_BasicOrderRevertWhenOrderAlreadyExists() public {
+        address[] memory path;
+        bytes[] memory analyzers;
+        bytes memory encryptionKey;
+        uint64 keyId = _testData.goodKeyId;
+        _testData.mockSlinkyPrecompile.setPrice(
+            _testData.pricePair.base, _testData.pricePair.quote, _testData.thresholdPrice + 1
+        );
+
+        Types.OrderData memory orderData = Types.OrderData({
+            thresholdPrice: _testData.thresholdPrice,
+            priceCondition: Types.PriceCondition.LTE,
+            pricePair: _testData.pricePair,
+            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
+            signRequestData: Types.SignRequestData({
+                keyId: keyId,
+                analyzers: analyzers,
+                encryptionKey: encryptionKey,
+                spaceNonce: 0,
+                actionTimeoutHeight: 0,
+                expectedApproveExpression: "expectedApproveExpression",
+                expectedRejectExpression: "expectedRejectExpression"
+            }),
+            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
+                value: 0,
+                chainId: 11_155_111,
+                to: SEPOLIA_UNISWAP_V2_ROUTER
+            })
+        });
+
+        CommonTypes.Coin[] memory maxKeychainFees;
+        bytes32 salt = bytes32(uint256(0x01));
+
+        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        assertTrue(orderAddress != address(0));
+
+        vm.expectRevert(OrderAlreadyExists.selector);
+        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
     }
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {

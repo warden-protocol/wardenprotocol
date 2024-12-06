@@ -23,8 +23,6 @@ import {
     ConditionNotMet,
     ExecutedError,
     InvalidScheduler,
-    InvalidSwapDataAmountIn,
-    InvalidSwapDataTo,
     InvalidExpectedApproveExpression,
     InvalidExpectedRejectExpression,
     InvalidThresholdPrice,
@@ -93,8 +91,6 @@ contract BasicOrderTest is Test {
             beforeTestCalldata[1] = abi.encodeWithSignature("test_basicOrderExecuteWhenPriceMovesUp()");
         } else if (
             testSelector == this.test_BasicOrderRevertWhenInvalidScheduler.selector
-                || testSelector == this.test_BasicOrderRevertWhenInvalidAmountIn.selector
-                || testSelector == this.test_BasicOrderRevertWhenInvalidSwapDataTo.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedApproveExpression.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedRejectExpression.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidThresholdPrice.selector
@@ -144,7 +140,6 @@ contract BasicOrderTest is Test {
             condition = 0;
         }
 
-        address[] memory path;
         bytes[] memory analyzers;
         bytes memory encryptionKey;
         uint64 keyId;
@@ -165,11 +160,13 @@ contract BasicOrderTest is Test {
             );
         }
 
+        bytes memory data =
+        // solhint-disable-next-line
+            hex"7ff36ab500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000080000000000000000000000000ee567fe1712faf6149d80da1e6934e354124cfe300000000000000000000000000000000000000000000000000000000676d2f8a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5";
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: cond,
             pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
                 keyId: keyId,
                 analyzers: analyzers,
@@ -182,7 +179,8 @@ contract BasicOrderTest is Test {
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: data
             })
         });
 
@@ -274,14 +272,15 @@ contract BasicOrderTest is Test {
     }
 
     function saveOrderData() public {
-        address[] memory path;
         bytes[] memory analyzers;
         bytes memory encryptionKey;
+        bytes memory data =
+        // solhint-disable-next-line
+            hex"7ff36ab500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000080000000000000000000000000ee567fe1712faf6149d80da1e6934e354124cfe300000000000000000000000000000000000000000000000000000000676d2f8a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5";
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: Types.PriceCondition.LTE,
             pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
                 keyId: 0,
                 analyzers: analyzers,
@@ -294,7 +293,8 @@ contract BasicOrderTest is Test {
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: data
             })
         });
 
@@ -307,22 +307,6 @@ contract BasicOrderTest is Test {
         vm.expectRevert(InvalidScheduler.selector);
 
         new BasicOrder(_orderData, maxKeychainFees, address(0), address(_testData.registry));
-    }
-
-    function test_BasicOrderRevertWhenInvalidAmountIn() public {
-        CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.swapData.amountIn = 0;
-        vm.expectRevert(InvalidSwapDataAmountIn.selector);
-
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
-    }
-
-    function test_BasicOrderRevertWhenInvalidSwapDataTo() public {
-        CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.swapData.to = address(0);
-        vm.expectRevert(InvalidSwapDataTo.selector);
-
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {

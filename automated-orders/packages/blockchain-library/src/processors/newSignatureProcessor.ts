@@ -41,7 +41,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         if(transaction) {
           await this.evm.broadcastTx(transaction, data.signature);
         } else { 
-          logError(`Transaction ${data.transactionHash} not found in registry`)
+          logError(`Transaction with hash "${data.transactionHash}" not found in registry`)
         }
       });
     } catch (error) {

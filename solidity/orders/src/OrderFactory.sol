@@ -6,6 +6,7 @@ import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
 import { Registry } from "./Registry.sol";
+import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 
 enum OrderType {
     Basic,
@@ -47,13 +48,14 @@ contract OrderFactory is Ownable {
     function createOrder(
         Types.OrderData calldata _orderData,
         CommonTypes.Coin[] calldata maxKeychainFees,
-        OrderType orderType
+        OrderType orderType,
+        bytes32 salt
     )
         public
         returns (address order)
     {
         if (orderType == OrderType.Basic) {
-            return _createBasicOrder(_orderData, maxKeychainFees, scheduler);
+            return _createBasicOrder(_orderData, maxKeychainFees, scheduler, salt);
         } else if (orderType == OrderType.Advanced) {
             return _createAdvancedOrder(_orderData, maxKeychainFees);
         } else {
@@ -73,19 +75,23 @@ contract OrderFactory is Ownable {
     function _createBasicOrder(
         Types.OrderData calldata _orderData,
         CommonTypes.Coin[] calldata maxKeychainFees,
-        address _scheduler
+        address _scheduler,
+        bytes32 salt
     )
         internal
         returns (address)
     {
-        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler, address(REGISTRY));
-        orders[address(basicOrder)] = msg.sender;
+        bytes memory creationCode = abi.encodePacked(
+            type(BasicOrder).creationCode, abi.encode(_orderData, maxKeychainFees, _scheduler, address(REGISTRY))
+        );
 
-        REGISTRY.register(address(basicOrder));
+        address basicOrder = Create2.deploy(0, salt, creationCode);
 
-        emit OrderCreated(msg.sender, OrderType.Basic, address(basicOrder));
+        orders[basicOrder] = msg.sender;
+        REGISTRY.register(basicOrder);
+        emit OrderCreated(msg.sender, OrderType.Basic, basicOrder);
 
-        return address(basicOrder);
+        return basicOrder;
     }
 
     function _createAdvancedOrder(

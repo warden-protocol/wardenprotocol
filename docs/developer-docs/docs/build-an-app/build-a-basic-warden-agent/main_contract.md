@@ -2,9 +2,9 @@
 sidebar_position: 3
 ---
 
-# Implementing the Trading Agent Contract
+# Trading Agent Contract
 
-## Let's create our main trading agent contract that implements our interface. 
+## Let's create our main trading agent contract that implements our interface
 
 We'll create `UniswapTradeAgent.sol:`
 

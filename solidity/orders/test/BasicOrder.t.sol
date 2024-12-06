@@ -194,7 +194,8 @@ contract BasicOrderTest is Test {
         vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
-        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+        address orderAddress =
+            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
 
         assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
@@ -314,7 +315,7 @@ contract BasicOrderTest is Test {
         _orderData.swapData.amountIn = 0;
         vm.expectRevert(InvalidSwapDataAmountIn.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
     }
 
     function test_BasicOrderRevertWhenInvalidSwapDataTo() public {
@@ -322,7 +323,7 @@ contract BasicOrderTest is Test {
         _orderData.swapData.to = address(0);
         vm.expectRevert(InvalidSwapDataTo.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {
@@ -330,7 +331,7 @@ contract BasicOrderTest is Test {
         _orderData.signRequestData.expectedApproveExpression = "";
         vm.expectRevert(InvalidExpectedApproveExpression.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedRejectExpression() public {
@@ -338,7 +339,7 @@ contract BasicOrderTest is Test {
         _orderData.signRequestData.expectedRejectExpression = "";
         vm.expectRevert(InvalidExpectedRejectExpression.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
     }
 
     function test_BasicOrderRevertWhenInvalidThresholdPrice() public {
@@ -346,7 +347,7 @@ contract BasicOrderTest is Test {
         _orderData.thresholdPrice = 0;
         vm.expectRevert(InvalidThresholdPrice.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
     }
 
     function test_BasicOrderRevertWhenInvalidTxTo() public {
@@ -354,7 +355,7 @@ contract BasicOrderTest is Test {
         _orderData.creatorDefinedTxFields.to = address(0);
         vm.expectRevert(InvalidTxTo.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
     }
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {

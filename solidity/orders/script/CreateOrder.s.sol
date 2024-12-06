@@ -67,7 +67,7 @@ contract CreateOrder is Script {
         mockSlinkyPrecompile.setPrice(pricePair.base, pricePair.quote, thresholdPrice);
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
         vm.startBroadcast(broadcaster);
-        FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+        FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic, bytes32(0));
 
         vm.stopBroadcast();
     }

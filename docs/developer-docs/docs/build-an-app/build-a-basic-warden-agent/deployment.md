@@ -6,7 +6,9 @@ sidebar_position: 6
 
 ## To Deploy the Warden Agent
 
-### Set up the environment file (.env)
+### Basic Deployment Steps
+
+1.Set up the environment file (.env)
 
 ```bash
 PRIVATE_KEY=your_private_key
@@ -17,21 +19,19 @@ PRICE_FEED=price_feed_address
 RPC_URL=your_rpc_url
 ```
 
-### Basic Deployment Steps
-
-1.Install dependencies:
+2.Install dependencies:
 
 ```bash
 forge install
 ```
 
-2.Compile the contract:
+3.Compile the contract:
 
 ```bash
 forge build
 ```
 
-3.Deploy the contract:
+4.Deploy the contract:
 
 ```bash
 forge script script/Deploy.s.sol:DeployScript \
@@ -40,7 +40,7 @@ forge script script/Deploy.s.sol:DeployScript \
 --verify
 ```
 
-4.Verify deployment:
+5.Verify deployment:
 
 ```bash
 cast call $FACTORY_ADDRESS "agentOwners(address)" $AGENT_ADDRESS

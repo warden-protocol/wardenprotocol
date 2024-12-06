@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Basic Trading Agent Structure
+# Trading Agent Structure
 
 Let's create the fundamental structure for our trading agent. We'll break this into clear, manageable parts:
 

@@ -140,20 +140,46 @@ contract BasicOrderTest is Test {
         _expectedCallers.push(Caller.Scheduler);
     }
 
+    function _buildOrderData(
+        uint64 keyId,
+        Types.PriceCondition priceCondition,
+        Types.PricePair memory pricePair,
+        uint256 thresholdPrice,
+        address receiver,
+        address to
+    )
+        internal
+        pure
+        returns (Types.OrderData memory)
+    {
+        address[] memory path;
+        bytes[] memory analyzers;
+        bytes memory encryptionKey;
+
+        return Types.OrderData({
+            thresholdPrice: thresholdPrice,
+            priceCondition: priceCondition,
+            pricePair: pricePair,
+            swapData: Types.SwapData({ amountIn: 1, path: path, to: receiver, deadline: 0 }),
+            signRequestData: Types.SignRequestData({
+                keyId: keyId,
+                analyzers: analyzers,
+                encryptionKey: encryptionKey,
+                spaceNonce: 0,
+                actionTimeoutHeight: 0,
+                expectedApproveExpression: "expectedApproveExpression",
+                expectedRejectExpression: "expectedRejectExpression"
+            }),
+            creatorDefinedTxFields: Types.CreatorDefinedTxFields({ value: 0, chainId: 11_155_111, to: to })
+        });
+    }
+
     function test_BasicOrder_Create(bool goodOrder, uint8 condition) public {
         if (condition > 1) {
             condition = 0;
         }
 
-        address[] memory path;
-        bytes[] memory analyzers;
-        bytes memory encryptionKey;
-        uint64 keyId;
-        if (goodOrder) {
-            keyId = _testData.goodKeyId;
-        } else {
-            keyId = _testData.badKeyId;
-        }
+        uint64 keyId = goodOrder ? _testData.goodKeyId : _testData.badKeyId;
 
         Types.PriceCondition cond = Types.PriceCondition(condition);
         if (cond == Types.PriceCondition.LTE) {
@@ -166,26 +192,9 @@ contract BasicOrderTest is Test {
             );
         }
 
-        Types.OrderData memory orderData = Types.OrderData({
-            thresholdPrice: _testData.thresholdPrice,
-            priceCondition: cond,
-            pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
-            signRequestData: Types.SignRequestData({
-                keyId: keyId,
-                analyzers: analyzers,
-                encryptionKey: encryptionKey,
-                spaceNonce: 0,
-                actionTimeoutHeight: 0,
-                expectedApproveExpression: "expectedApproveExpression",
-                expectedRejectExpression: "expectedRejectExpression"
-            }),
-            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
-                value: 0,
-                chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
-            })
-        });
+        Types.OrderData memory orderData = _buildOrderData(
+            keyId, cond, _testData.pricePair, _testData.thresholdPrice, RECEIVER, SEPOLIA_UNISWAP_V2_ROUTER
+        );
 
         CommonTypes.Coin[] memory maxKeychainFees;
 
@@ -360,34 +369,20 @@ contract BasicOrderTest is Test {
     }
 
     function test_BasicOrderRevertWhenOrderAlreadyExists() public {
-        address[] memory path;
-        bytes[] memory analyzers;
-        bytes memory encryptionKey;
         uint64 keyId = _testData.goodKeyId;
+
         _testData.mockSlinkyPrecompile.setPrice(
             _testData.pricePair.base, _testData.pricePair.quote, _testData.thresholdPrice + 1
         );
 
-        Types.OrderData memory orderData = Types.OrderData({
-            thresholdPrice: _testData.thresholdPrice,
-            priceCondition: Types.PriceCondition.LTE,
-            pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
-            signRequestData: Types.SignRequestData({
-                keyId: keyId,
-                analyzers: analyzers,
-                encryptionKey: encryptionKey,
-                spaceNonce: 0,
-                actionTimeoutHeight: 0,
-                expectedApproveExpression: "expectedApproveExpression",
-                expectedRejectExpression: "expectedRejectExpression"
-            }),
-            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
-                value: 0,
-                chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
-            })
-        });
+        Types.OrderData memory orderData = _buildOrderData(
+            keyId,
+            Types.PriceCondition.LTE,
+            _testData.pricePair,
+            _testData.thresholdPrice,
+            RECEIVER,
+            SEPOLIA_UNISWAP_V2_ROUTER
+        );
 
         CommonTypes.Coin[] memory maxKeychainFees;
         bytes32 salt = bytes32(uint256(0x01));

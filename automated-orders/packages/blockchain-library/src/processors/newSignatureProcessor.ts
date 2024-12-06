@@ -40,6 +40,8 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         const transaction = await this.registryClient.getTransaction(data.transactionHash);
         if(transaction) {
           await this.evm.broadcastTx(transaction, data.signature);
+        } else { 
+          logError(`Transaction with hash "${data.transactionHash}" not found in registry`)
         }
       });
     } catch (error) {

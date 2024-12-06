@@ -1,81 +1,61 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
-# PLAN: Build a basic Warden Agent
+# Build a Basic Warden Agent
 
 ## Overview
 
-This tutorial explains how to build an basic (non-AI) **Warden Agent** automatically executing scheduled **Uniswap orders**.
+This tutorial will guide you through the process of building a basic **Warden Agent.** In this basic version of the tutorial, we'll focus on automated token trading based on price conditions. It will allow you to create orders that automatically execute token swaps on Uniswap when certain price thresholds are met.
 
-You can find the full sample code on GitHub: XXX.
+In the more advanced tutorial you will learn how to build a **Warden Agent** that executes orders based on AI predictions.
+
+You can find the full sample code on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity)
 
 ## Architecture
 
 The Agent architecture will include the following components:
 
-- **An EVM smart contract deployed on Warden**: It'll build unsigned transactions.
-- **An off-chain relayer**: It'll monitor the contract state and build the final Ethereum transaction.
-- **A scheduler** It'll automatically trigger the contract.
+- **OrderAgent:** Core contract that monitors prices and executes trades
+- **AgentFactory:** Creates and manages agent instances
+- **Registry:** Tracks all agents and their transaction history
+- **Configuration:** Defines trading parameters and conditions
+- **External Integrations:** Price feeds and transaction authorization
 
-(Most likely, this description is incomplete. For example, should we add the logic for deploying orders?)
+The system follows a factory pattern with the `OrderFactory` creating `BasicOrder` instances, which are tracked in the Registry. The orders interact with external services through precompiles for `price feeds` and `transaction signing.`
 
 ## User flow
 
-Here are the main steps of the user flow:
-
-1. The user, a [Space](/learn/glossary#space) owner, creates a key.
-2. The user creates an order: a smart contract that is automatically deployed.
-3. The order address is registered in [SpaceWard](/learn/glossary#spaceward).
-4. The scheduler calls the contract.
-5. If the user-defined conditions ([Rules](/learn/glossary#rule)) are met, the smart contract creates an [Action](/learn/glossary#action) containing a [signature request](/learn/glossary#signature-request).
-6. The Action is approved, and a [Keychain](/learn/glossary#keychain) fulfills the signature request.
-7. The relayer collects the signed transactions and broadcasts them to the Ethereum network.
+1. Define trading strategy:
+    - Price threshold and condition (greater/less than)
+    - Token pair to monitor
+    - Swap details (amount, path, recipient, deadline)
+    - Transaction signing details
+2. Implement agent contract:
+    - OrderFactory deploys a new BasicOrder contract and registers it in the Registry
+3. The BasicOrder continuously monitors price conditions through Slinky price feed
+4. When price conditions are met:
+    - Order constructs the swap transaction
+    - Sends it to Warden for signing
+    - Records the transaction in Registry
+    - Executes the swap on Uniswap
+5. Transaction details are stored in Registry for verification/tracking
+6. Deploy and create agent instances
+7. Monitor and manage agents
 
 ## Prerequisites
 
-Before you start, complete the following prerequisites:
+You are expected to posses the following knowledge:
 
-- XXX
+- Solidity (especially inheritance, interfaces, events)
+- Basic understanding of Uniswap V2
+- Familiarity with price oracles
+- Understanding of RLP encoding for transactions
 
-## 1. Create a project
+Environment Setup:
 
-This sections explains how to create the project containing the Agent's logic, smart contracts, etc.
+- Foundry for development and testing
+- Local blockchain for testing
+- Access to testnet (preferably Sepolia)
 
-## 2. Build the on-chain logic
-
-### 2.1. Create a transaction
-
-1. Create an unsigned transaction
-
-2. Create a signature request
-
-### 2.2. Build the logic for creating orders
-
-This section explains how to build the main part – the logic for the automatic deployment of orders (smart contracts). It's probably located in the [`/script`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/script) directory.
-
-### 2.3. Build the logic for managing orders
-
-This section explains how to deploy the [`Registry`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol) and [`IExecution`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol) smart contracts, which allow managing orders created by users.
-
-There are other contracts in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, but probably they don't need to be documented.
-
-## 3. Implement tests
-
-Maybe we don't need to break down it in detail. But we can direct users to the [`/tests`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory.
-
-## 4. Build off-chain services
-
-This section could be brief, perhaps we shouldn't explain in detail how to build these services
-
-### 4.1. Build a relayer
-
-### 4.2. Build a scheduler
-
-## 5. Test the Agent
-
-## Next steps
-
-After building a basic Warden Agent, you can build an **AI Agent**, as shown in the following tutorial:
-
-- XXX
+In the next chapter you will learn how to implement the basic structure for trading agent.

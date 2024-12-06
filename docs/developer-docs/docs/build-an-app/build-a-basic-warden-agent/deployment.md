@@ -4,9 +4,9 @@ sidebar_position: 6
 
 # Deploy Trading Agent
 
-## To Deploy the Warden Agent
+## The following implementation will guide you through the process of how To Deploy & Test the Warden Agent
 
-### Basic Deployment Steps
+### Deployment Steps
 
 1.Set up the environment file (.env)
 
@@ -44,4 +44,45 @@ forge script script/Deploy.s.sol:DeployScript \
 
 ```bash
 cast call $FACTORY_ADDRESS "agentOwners(address)" $AGENT_ADDRESS
+```
+
+### Using the Trading Agent
+
+1.Find deployed addresses from deployment output:
+
+```bash
+FACTORY=<factory_address>
+AGENT=<agent_address>
+```
+
+2.Monitor agent status:
+
+```bash
+# Check if conditions met
+cast call $AGENT "checkConditions()" --rpc-url $RPC_URL
+
+# Check execution status
+cast call $AGENT "isExecuted()" --rpc-url $RPC_URL
+```
+
+3.Create new agent through factory:
+
+```bash
+# Approve tokens first
+cast send $TOKEN_IN "approve(address,uint256)" $AGENT 1000000000000000000
+
+# Create agent with config
+cast send $FACTORY "createAgent((...))" --rpc-url $RPC_URL
+```
+
+4.Execute trade when conditions met:
+
+```bash
+cast send $AGENT "executeTrade()" --rpc-url $RPC_URL
+```
+
+5.View Events:
+
+```bash
+cast logs $AGENT "TradeExecuted(address,address,uint256,uint256)"
 ```

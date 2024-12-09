@@ -4,6 +4,7 @@ package warden.warden.v1beta3;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
@@ -181,8 +182,11 @@ message AddressResponse {
 message QuerySignRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 keychain_id = 2;
-  SignRequestStatus status = 3 [ (gogoproto.nullable) = true ];
-  BroadcastType broadcast_type = 4 [ (gogoproto.nullable) = true ];
+  SignRequestStatus status = 3 [(gogoproto.nullable) = true];
+  oneof optional_broadcast_type {
+    google.protobuf.NullValue null = 4;
+    BroadcastType broadcast_type = 5;
+  }
 }
 
 message QuerySignRequestsResponse {

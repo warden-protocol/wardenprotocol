@@ -1,133 +1,290 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Trading Agent Contract
 
 ## Let's create our main trading agent contract that implements our interface
 
-We'll create `UniswapTradeAgent.sol:`
+We'll create `src/BasicOrder.sol:`
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.8.25;
+pragma solidity >=0.8.25 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
-import "./ITradeAgent.sol";
-import "./Types.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
+import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
+import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
+import { Types } from "./Types.sol";
+import { Registry } from "./Registry.sol";
+import { RLPEncode } from "./RLPEncode.sol";
 
-contract UniswapTradeAgent is ITradeAgent {
-    // State variables
-    Types.AgentConfig private config;
-    bool private executed;
-    IUniswapV2Router02 private immutable uniswapRouter;
-    
-    // Errors
-    error AlreadyExecuted();
-    error ConditionsNotMet();
-    error TradeExecutionFailed();
-    
+error ConditionNotMet();
+error ExecutedError();
+error Unauthorized();
+error InvalidPriceCondition();
+error InvalidScheduler();
+error InvalidRegistry();
+error InvalidSwapDataAmountIn();
+error InvalidSwapDataTo();
+error InvalidExpectedApproveExpression();
+error InvalidExpectedRejectExpression();
+error InvalidThresholdPrice();
+error InvalidTxTo();
+
+event Executed();
+
+contract BasicOrder is IExecution, ReentrancyGuard {
+    Types.OrderData public orderData;
+    string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
+
+    IWarden private immutable WARDEN_PRECOMPILE;
+    ISlinky private immutable SLINKY_PRECOMPILE;
+    Registry private immutable REGISTRY;
+    Caller[] private _callers;
+    CommonTypes.Coin[] private _coins;
+    bool private _executed;
+    address private _scheduler;
+    address private _keyAddress;
+    bytes private _unsignedTx;
+
     constructor(
-        Types.AgentConfig memory _config,
-        address _uniswapRouter
+        Types.OrderData memory _orderData,
+        CommonTypes.Coin[] memory maxKeychainFees,
+        address scheduler,
+        address registry
     ) {
-        config = _config;
-        uniswapRouter = IUniswapV2Router02(_uniswapRouter);
-        executed = false;
+        for (uint256 i = 0; i < maxKeychainFees.length; i++) {
+            _coins.push(maxKeychainFees[i]);
+        }
+
+        if (scheduler == address(0)) {
+            revert InvalidScheduler();
+        }
+
+        if (registry == address(0)) {
+            revert InvalidRegistry();
+        }
+
+        if (_orderData.swapData.amountIn == 0) {
+            revert InvalidSwapDataAmountIn();
+        }
+
+        if (_orderData.swapData.to == address(0)) {
+            revert InvalidSwapDataTo();
+        }
+
+        if (bytes(_orderData.signRequestData.expectedApproveExpression).length == 0) {
+            revert InvalidExpectedApproveExpression();
+        }
+
+        if (bytes(_orderData.signRequestData.expectedRejectExpression).length == 0) {
+            revert InvalidExpectedRejectExpression();
+        }
+
+        if (_orderData.thresholdPrice == 0) {
+            revert InvalidThresholdPrice();
+        }
+
+        if (_orderData.creatorDefinedTxFields.to == address(0)) {
+            revert InvalidTxTo();
+        }
+
+        WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
+        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(_orderData.signRequestData.keyId, new int32[](0));
+        _keyAddress = address(bytes20(keccak256(keyResponse.key.publicKey)));
+
+        SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
+        SLINKY_PRECOMPILE.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
+
+        REGISTRY = Registry(registry);
+
+        orderData = _orderData;
+        _scheduler = scheduler;
+        _callers.push(Caller.Scheduler);
     }
-    
-    function checkConditions() public view override returns (bool) {
-        if (executed) return false;
-        
-        // Get current price from price feed
-        // In practice, you'd want to implement proper price feed integration
-        uint256 currentPrice = getCurrentPrice();
-        
-        if (config.priceCondition.isGreaterThan) {
-            return currentPrice > config.priceCondition.targetPrice;
+
+    function canExecute() public view returns (bool value) {
+        GetPriceResponse memory priceResponse =
+            SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
+        Types.PriceCondition condition = orderData.priceCondition;
+        if (condition == Types.PriceCondition.GTE) {
+            value = priceResponse.price.price >= orderData.thresholdPrice;
+        } else if (condition == Types.PriceCondition.LTE) {
+            value = priceResponse.price.price <= orderData.thresholdPrice;
         } else {
-            return currentPrice < config.priceCondition.targetPrice;
+            revert InvalidPriceCondition();
         }
     }
-    
-    function executeTrade() external override returns (bool) {
-        if (executed) revert AlreadyExecuted();
-        if (!checkConditions()) revert ConditionsNotMet();
-        
-        // Approve router to spend token
-        IERC20(config.trade.tokenIn).approve(
-            address(uniswapRouter),
-            config.trade.amountIn
+
+    function execute(
+        uint256 nonce,
+        uint256 gas,
+        uint256,
+        uint256 maxPriorityFeePerGas,
+        uint256 maxFeePerGas
+    )
+        external
+        nonReentrant
+        returns (bool, bytes32)
+    {
+        if (msg.sender != _scheduler) {
+            revert Unauthorized();
+        }
+
+        if (isExecuted()) {
+            revert ExecutedError();
+        }
+
+        if (!canExecute()) {
+            revert ConditionNotMet();
+        }
+
+        bytes memory data = _packSwapData();
+        bytes memory emptyAccessList;
+        uint256 txType = 2; // eip1559 tx type
+        bytes[] memory txArray = new bytes[](9);
+        txArray[0] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.chainId);
+        txArray[1] = RLPEncode.encodeUint(nonce);
+        txArray[2] = RLPEncode.encodeUint(maxPriorityFeePerGas);
+        txArray[3] = RLPEncode.encodeUint(maxFeePerGas);
+        txArray[4] = RLPEncode.encodeUint(gas);
+        txArray[5] = RLPEncode.encodeAddress(orderData.creatorDefinedTxFields.to);
+        txArray[6] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.value);
+        txArray[7] = RLPEncode.encodeBytes(data);
+        txArray[8] = RLPEncode.encodeBytes(emptyAccessList);
+        bytes memory unsignedTxEncoded = RLPEncode.encodeList(txArray);
+        bytes memory unsignedTx = abi.encodePacked(RLPEncode.encodeUint(txType), unsignedTxEncoded);
+
+        _unsignedTx = unsignedTx;
+
+        bytes32 txHash = keccak256(unsignedTx);
+        bytes memory signRequestInput = abi.encodePacked(txHash);
+
+        _executed = WARDEN_PRECOMPILE.newSignRequest(
+            orderData.signRequestData.keyId,
+            signRequestInput,
+            orderData.signRequestData.analyzers,
+            orderData.signRequestData.encryptionKey,
+            _coins,
+            orderData.signRequestData.spaceNonce,
+            orderData.signRequestData.actionTimeoutHeight,
+            orderData.signRequestData.expectedApproveExpression,
+            orderData.signRequestData.expectedRejectExpression,
+            BroadcastType.Automatic
         );
-        
-        // Setup path for swap
-        address[] memory path = new address[](2);
-        path[0] = config.trade.tokenIn;
-        path[1] = config.trade.tokenOut;
-        
-        // Execute swap
-        try uniswapRouter.swapExactTokensForTokens(
-            config.trade.amountIn,
-            config.trade.minAmountOut,
-            path,
-            config.beneficiary,
-            config.trade.deadline
-        ) returns (uint256[] memory amounts) {
-            executed = true;
-            emit TradeExecuted(
-                config.trade.tokenIn,
-                config.trade.tokenOut,
-                amounts[0],
-                amounts[1]
-            );
-            return true;
-        } catch {
-            revert TradeExecutionFailed();
+
+        if (_executed) {
+            emit Executed();
         }
+
+        REGISTRY.addTransaction(txHash);
+
+        return (_executed, txHash);
     }
-    
-    function isExecuted() external view override returns (bool) {
-        return executed;
+
+    function callers() external view returns (Caller[] memory callersList) {
+        return _callers;
     }
-    
-    function getConfig() external view override returns (Types.AgentConfig memory) {
-        return config;
+
+    function isExecuted() public view returns (bool) {
+        return _executed;
     }
-    
-    // Internal helper function - in practice, implement proper price feed
-    function getCurrentPrice() internal view returns (uint256) {
-        // Implement price feed integration here
-        return 0;
+
+    function executionData() external view returns (ExecutionData memory data) {
+        bytes memory d = _packSwapData();
+        data = ExecutionData({
+            caller: _keyAddress,
+            to: orderData.creatorDefinedTxFields.to,
+            chainId: orderData.creatorDefinedTxFields.chainId,
+            value: orderData.creatorDefinedTxFields.value,
+            data: d
+        });
+    }
+
+    function setByAIService(bytes calldata) external pure returns (bool success) {
+        success = false;
+    }
+
+    function getTx() external view returns (bytes memory transaction) {
+        if (!isExecuted()) {
+            revert ExecutedError();
+        }
+
+        transaction = _unsignedTx;
+    }
+
+    function _packSwapData() internal view returns (bytes memory data) {
+        data = abi.encodeWithSignature(
+            SWAP_EXACT_ETH_FOR_TOKENS,
+            orderData.swapData.amountIn,
+            orderData.swapData.path,
+            orderData.swapData.to,
+            orderData.swapData.deadline
+        );
     }
 }
 ```
 
-### Code Explanation
-
-- Monitors token prices and executes trades on Uniswap when price conditions are met
-- Acts as a self-executing trading bot on-chain
-
 ### Main Components
 
-- **Config Storage:** Stores trading parameters, price conditions, and beneficiary
-- **State Tracking:** Tracks if trade has been executed
-- **Price Checking:** `checkConditions()` verifies if price conditions are met
-- **Trade Execution:** `executeTrade()` performs the actual Uniswap swap
+1.Integration
+
+```solidity
+IWarden private immutable WARDEN_PRECOMPILE;     // For tx signing
+ISlinky private immutable SLINKY_PRECOMPILE;     // For price feeds
+Registry private immutable REGISTRY;              // For tracking orders
+```
+
+2.State Variables
+
+```solidity
+Types.OrderData public orderData;    // Order configuration
+Caller[] private _callers;           // Who can call this contract
+bool private _executed;              // Has order executed
+bytes private _unsignedTx;          // Raw transaction data
+```
 
 ### Flow
 
-1. Check price conditions
-2. If conditions are met, then approve token spend
-3. Setup trading path
-4. Execute Uniswap swap
-5. Mark as executed & emit event
+1.Construction:
 
-### Safety Features
+- Validates all inputs (scheduler, registry, price conditions)
+- Sets up price feed and signing service connections
+- Initializes order parameters
 
-- Prevents double execution
-- Ensures conditions are met before trading
-- Has try/catch for swap execution
-- Uses immutable router address
+2.Price Monitoring (`canExecute`):
 
-The contract acts like a limit order on a centralized exchange - you set a price condition, and when met, it automatically executes the trade on Uniswap.
+- Check if price meets conditions.
+
+3.Trade Execution (`execute`):
+
+a. Verify caller and conditions
+b. Pack swap data for Uniswap
+c. Create and encode transaction
+d. Request signature through Warden
+e. Register transaction in Registry
+f. Return execution status
+
+### Key Features
+
+**Security:**
+
+1. ReentrancyGuard
+2. Input validation
+3. Access controls
+
+**Transaction Building:**
+
+1. RLP encoding for transactions
+2. EIP-1559 transaction support
+3. Automatic signature requesting
+
+**Integration Points:**
+
+1. Uniswap for swaps
+2. Warden for signing
+3. Slinky for prices
+4. Registry for tracking

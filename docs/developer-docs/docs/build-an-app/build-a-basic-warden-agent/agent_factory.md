@@ -1,63 +1,132 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
-# Agent Factory Contract
+# Order Factory Contract
 
-## Implementing the Agent Factory Contract
+## Implementing the Order Factory Contract
+
+Create - `src/OrderFactory.sol`:
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.8.25;
+pragma solidity >=0.8.25 <0.9.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "./UniswapTradeAgent.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { Types } from "./Types.sol";
+import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { BasicOrder } from "./BasicOrder.sol";
+import { Registry } from "./Registry.sol";
 
-contract TradeAgentFactory is Ownable {
-    address public immutable uniswapRouter; // Can't be changed after deployment
-    mapping(address => address) public agentOwners; // Tracks who owns which agent
-    
-    event AgentCreated(address indexed owner, address indexed agent);
-    
-    constructor(address _uniswapRouter) Ownable(msg.sender) {
-        uniswapRouter = _uniswapRouter;
+enum OrderType {
+    Basic,
+    Advanced
+}
+
+error Unimplemented();
+error UnsupportedOrder();
+error InvalidRegistryAddress();
+error InvalidSchedulerAddress();
+
+event OrderCreated(address indexed orderCreator, OrderType indexed orderType, address indexed orderContact);
+event SchedulerChanged(address indexed oldScheduler, address indexed newScheduler);
+
+contract OrderFactory is Ownable {
+    // Mapping from order contract to order creator
+    mapping(address orderAddress => address orderCreator) public orders;
+
+    // Registry of IExecution contracts
+    Registry public immutable REGISTRY;
+
+    // Scheduler address
+    address public scheduler;
+
+    constructor(address registry, address _scheduler, address owner) Ownable(owner) {
+        if (registry == address(0)) {
+            revert InvalidRegistryAddress();
+        }
+
+        if (_scheduler == address(0)) {
+            revert InvalidSchedulerAddress();
+        }
+
+        REGISTRY = Registry(registry);
+        scheduler = _scheduler;
     }
-    
-    function createAgent(Types.AgentConfig memory config) // Creates new agent with given config
-        external 
+
+    function createOrder(
+        Types.OrderData calldata _orderData,
+        CommonTypes.Coin[] calldata maxKeychainFees,
+        OrderType orderType
+    )
+        public
+        returns (address order)
+    {
+        if (orderType == OrderType.Basic) {
+            return _createBasicOrder(_orderData, maxKeychainFees, scheduler);
+        } else if (orderType == OrderType.Advanced) {
+            return _createAdvancedOrder(_orderData, maxKeychainFees);
+        } else {
+            revert UnsupportedOrder();
+        }
+    }
+
+    function setScheduler(address _scheduler) public onlyOwner {
+        if (_scheduler == address(0)) {
+            revert InvalidSchedulerAddress();
+        }
+        address oldScheduler = scheduler;
+        scheduler = _scheduler;
+        emit SchedulerChanged(oldScheduler, scheduler);
+    }
+
+    function _createBasicOrder(
+        Types.OrderData calldata _orderData,
+        CommonTypes.Coin[] calldata maxKeychainFees,
+        address _scheduler
+    )
+        internal
         returns (address)
     {
-        UniswapTradeAgent agent = new UniswapTradeAgent(
-            config,
-            uniswapRouter
-        );
-        
-        agentOwners[address(agent)] = msg.sender;
-        emit AgentCreated(msg.sender, address(agent));
-        
-        return address(agent);
+        BasicOrder basicOrder = new BasicOrder(_orderData, maxKeychainFees, _scheduler, address(REGISTRY));
+        orders[address(basicOrder)] = msg.sender;
+
+        REGISTRY.register(address(basicOrder));
+
+        emit OrderCreated(msg.sender, OrderType.Basic, address(basicOrder));
+
+        return address(basicOrder);
     }
-    
-    function isAgentOwner(address agent, address owner) // Verifies agent ownership
-        external 
-        view 
-        returns (bool)
+
+    function _createAdvancedOrder(
+        Types.OrderData calldata,
+        CommonTypes.Coin[] calldata
+    )
+        internal
+        pure
+        returns (address)
     {
-        return agentOwners[agent] == owner;
+        revert Unimplemented();
     }
 }
 ```
 
-The `TradeAgentFactory` contract serves as a factory pattern implementation for **creating** and **managing** trading agents. Here's what it does:
+**Key Features:**
 
-### Core Functionality
+1.Factory Pattern:
 
-1. Creates new `UniswapTradeAgent` instances
-2. Maintains a registry of agent ownership
-3. Ensures consistent Uniswap router usage across all agents
+- Creates new order instances
+- Tracks order creators
+- Supports multiple order types
 
-### Main Security Features
+2.Management:
 
-1. Ownable for factory management
-2. Immutable router address
-3. Transparent ownership tracking
+- Ownable for admin control
+- Scheduler management
+- Registry integration
+
+3.Order Creation:
+
+- Basic orders supported
+- Advanced orders placeholder
+- Order registration in Registry

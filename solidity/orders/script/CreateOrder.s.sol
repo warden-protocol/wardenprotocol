@@ -30,7 +30,6 @@ contract CreateOrder is Script {
         Types.PriceCondition priceCondition,
         Types.PricePair calldata pricePair,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
-        Types.SwapData calldata swapData,
         uint64 keyId,
         uint64 spaceNonce,
         uint64 actionTimeoutHeight,
@@ -59,7 +58,6 @@ contract CreateOrder is Script {
             priceCondition: priceCondition,
             pricePair: pricePair,
             creatorDefinedTxFields: creatorDefinedTxFields,
-            swapData: swapData,
             signRequestData: signRequestData
         });
         vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinkyPrecompile).code);

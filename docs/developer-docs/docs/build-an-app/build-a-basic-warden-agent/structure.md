@@ -10,72 +10,101 @@ Let's create the fundamental structure for our trading agent. We'll break this i
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.8.25;
+pragma solidity >=0.8.25 <0.9.0;
 
 library Types {
-    // Definition for trade parameters
-    struct TradeConfig {
-        uint256 thresholdPrice;    // Price threshold for trade execution
-        address tokenIn;           // Token being sold
-        address tokenOut;          // Token being bought
-        uint256 amountIn;         // Amount of tokenIn to sell
-        uint256 minAmountOut;     // Minimum amount of tokenOut to receive
-        uint256 deadline;         // Deadline for trade execution
+    // Data for swapExactETHForTokens method
+    struct SwapData {
+        uint256 amountIn;
+        address[] path;
+        address to;
+        uint256 deadline;
     }
 
-    // Price monitoring configuration
-    struct PriceCondition {
-        bool isGreaterThan;       // true for price >, false for price 
-        uint256 targetPrice;      // Target price to compare against
-        address priceFeed;        // Address of price feed contract
+    // Sign request data
+    struct SignRequestData {
+        uint64 keyId;
+        bytes[] analyzers;
+        bytes encryptionKey;
+        uint64 spaceNonce;
+        uint64 actionTimeoutHeight;
+        string expectedApproveExpression;
+        string expectedRejectExpression;
     }
 
-    // Complete agent configuration
-    struct AgentConfig {
-        TradeConfig trade;
+    enum PriceCondition {
+        LTE,
+        GTE
+    }
+
+    struct OrderData {
+        uint256 thresholdPrice;
         PriceCondition priceCondition;
-        address beneficiary;      // Address to receive traded tokens
+        PricePair pricePair;
+        CreatorDefinedTxFields creatorDefinedTxFields;
+        SwapData swapData;
+        SignRequestData signRequestData;
+    }
+
+    struct PricePair {
+        string base;
+        string quote;
+    }
+
+    struct CreatorDefinedTxFields {
+        uint256 value;
+        uint256 chainId;
+        address to;
     }
 }
 ```
 
-## Create the interface for our agent in `ITradeAgent.sol:`
+## Create the interface for our agent in `src/IExecution.sol:`
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.8.25;
+pragma solidity >=0.8.25 <0.9.0;
 
-import "./Types.sol";
+struct ExecutionData {
+    address caller;
+    address to;
+    uint256 chainId;
+    bytes data;
+    uint256 value;
+}
 
-interface ITradeAgent {
-    // Core functionality
-    function checkConditions() external view returns (bool);
-    function executeTrade() external returns (bool);
+enum Caller {
+    Scheduler,
+    AI
+}
+
+interface IExecution {
+    function canExecute() external view returns (bool);
     
-    // State checks
-    function isExecuted() external view returns (bool);
-    function getConfig() external view returns (Types.AgentConfig memory);
+    function execute(
+        uint256 nonce,
+        uint256 gas,
+        uint256 gasPrice,
+        uint256 maxPriorityFeePerGas,
+        uint256 maxFeePerGas
+    ) external returns (bool, bytes32);
     
-    // Events
-    event TradeExecuted(
-        address indexed tokenIn,
-        address indexed tokenOut,
-        uint256 amountIn,
-        uint256 amountOut
-    );
+    function callers() external returns (Caller[] memory callersList);
+    
+    function setByAIService(bytes calldata data) external returns (bool success);
+    
+    function isExecuted() external returns (bool);
+    
+    function executionData() external returns (ExecutionData memory executionData);
+    
+    function getTx() external returns (bytes memory tx);
 }
 ```
 
-This sets up the foundation for building our agent. The key components we've defined:
+These two files establish the foundational types and interfaces for our project. They create a framework for:
 
-- Clear data structures for configuration
-- Interface defining core functionality
-- Event for tracking trade execution
-- Basic state management
-
-Explanation of the components:
-
-- **TradeConfig:** Defines the parameters for the Uniswap trade
-- **PriceCondition:** Specifies when a trade should execute
-- **AgentConfig:** Combines all configuration into one structure
-- **ITradeAgent:** Defines the required functionality for any trading agent
+- Defining trade parameters
+- Setting price conditions
+- Managing transaction signing
+- Executing trades through Uniswap
+- Tracking trade status

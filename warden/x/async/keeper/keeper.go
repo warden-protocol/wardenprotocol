@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
+	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
@@ -25,6 +26,8 @@ type (
 
 		futures *FutureKeeper
 		votes   collections.Map[collections.Pair[uint64, []byte], int32]
+
+		p *prophet.P
 	}
 )
 
@@ -41,6 +44,7 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
+	p *prophet.P,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -70,6 +74,8 @@ func NewKeeper(
 
 		futures: futures,
 		votes:   votes,
+
+		p: p,
 	}
 }
 

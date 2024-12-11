@@ -6,6 +6,7 @@ import (
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/prophet"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
 func (k Keeper) BeginBlocker(ctx context.Context) error {
@@ -36,14 +37,42 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 
 func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 	return func(ctx sdk.Context, req *cometabci.RequestExtendVote) (*cometabci.ResponseExtendVote, error) {
+		pResults, done := k.p.Results()
+		defer done()
+
+		results := make([]*types.VEResultItem, len(pResults))
+		for i, r := range pResults {
+			results[i] = &types.VEResultItem{
+				FutureId: r.ID,
+				Output:   r.Output,
+			}
+		}
+
+		asyncve := types.AsyncVoteExtension{
+			Results: results,
+		}
+
+		asyncveBytes, err := asyncve.Marshal()
+		if err != nil {
+			return nil, err
+		}
+
 		return &cometabci.ResponseExtendVote{
-			VoteExtension: nil,
+			VoteExtension: asyncveBytes,
 		}, nil
 	}
 }
 
 func (k Keeper) VerifyVoteExtensionHandler() sdk.VerifyVoteExtensionHandler {
 	return func(ctx sdk.Context, req *cometabci.RequestVerifyVoteExtension) (*cometabci.ResponseVerifyVoteExtension, error) {
+		var ve types.AsyncVoteExtension
+		err := ve.Unmarshal(req.VoteExtension)
+		if err != nil {
+			return &cometabci.ResponseVerifyVoteExtension{
+				Status: cometabci.ResponseVerifyVoteExtension_REJECT,
+			}, nil
+		}
+
 		return &cometabci.ResponseVerifyVoteExtension{
 			Status: cometabci.ResponseVerifyVoteExtension_ACCEPT,
 		}, nil

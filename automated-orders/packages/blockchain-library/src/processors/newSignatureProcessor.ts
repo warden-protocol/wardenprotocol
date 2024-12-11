@@ -3,7 +3,7 @@ import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 import { EvmClient } from '../clients/evm.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { Processor } from './processor.js';
-import { circuitBreaker, ConsecutiveBreaker, ExponentialBackoff, handleAll, IPolicy, retry, wrap } from 'cockatiel';
+import { ExponentialBackoff, handleAll, IPolicy, retry } from 'cockatiel';
 import { WardenRegistryClient } from '../clients/registry.js';
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {

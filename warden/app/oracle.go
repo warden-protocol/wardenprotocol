@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -13,20 +14,23 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/mempool"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	slinkytypes "github.com/skip-mev/slinky/pkg/types"
-
 	oraclepreblock "github.com/skip-mev/slinky/abci/preblock/oracle"
 	"github.com/skip-mev/slinky/abci/proposals"
 	"github.com/skip-mev/slinky/abci/strategies/aggregator"
+	"github.com/skip-mev/slinky/abci/strategies/codec"
 	compression "github.com/skip-mev/slinky/abci/strategies/codec"
 	"github.com/skip-mev/slinky/abci/strategies/currencypair"
 	"github.com/skip-mev/slinky/abci/ve"
+	vetypes "github.com/skip-mev/slinky/abci/ve/types"
 	slinkyaggregator "github.com/skip-mev/slinky/aggregator"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 	"github.com/skip-mev/slinky/pkg/math/voteweighted"
+	slinkytypes "github.com/skip-mev/slinky/pkg/types"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	servicemetrics "github.com/skip-mev/slinky/service/metrics"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
 )
 
 func (app *App) initializeOracles(appOpts types.AppOptions) {
@@ -120,10 +124,12 @@ func NewSlinkyClient(
 		cfg:     cfg,
 		metrics: metrics,
 		client:  client,
-		veCodec: compression.NewCompressionVoteExtensionCodec(
-			compression.NewDefaultVoteExtensionCodec(),
-			compression.NewZLibCompressor(),
-		),
+		veCodec: &WardenSlinkyCodec{
+			slinkyCodec: compression.NewCompressionVoteExtensionCodec(
+				compression.NewDefaultVoteExtensionCodec(),
+				compression.NewZLibCompressor(),
+			),
+		},
 		extCommitCodec: compression.NewCompressionExtendedCommitCodec(
 			compression.NewDefaultExtendedCommitCodec(),
 			compression.NewZStdCompressor(),
@@ -143,10 +149,7 @@ func (sc *SlinkyClient) ProposalHandler(
 		processProposalHandler,
 		ve.NewDefaultValidateVoteExtensionsFn(sc.stakingKeeper),
 		sc.veCodec,
-		compression.NewCompressionExtendedCommitCodec(
-			compression.NewDefaultExtendedCommitCodec(),
-			compression.NewZStdCompressor(),
-		),
+		sc.extCommitCodec,
 		currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
 		sc.metrics,
 	)
@@ -210,11 +213,48 @@ func (app *App) setupABCILifecycle(
 	slinkyPreBlockHandler := app.slinkyClient.PreblockHandler()
 	slinkyVEHandler := app.slinkyClient.VoteExtensionHandler()
 
-	app.SetPrepareProposal(slinkyProposalHandler.PrepareProposalHandler())
 	app.SetProcessProposal(slinkyProposalHandler.ProcessProposalHandler())
 	app.SetPreBlocker(slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager))
-	app.SetExtendVoteHandler(slinkyVEHandler.ExtendVoteHandler())
-	app.SetVerifyVoteExtensionHandler(slinkyVEHandler.VerifyVoteExtensionHandler())
+	veManager := vemanager.NewVoteExtensionManager()
+
+	// register slinky handlers
+	veManager.Register(
+		slinkyVEHandler.ExtendVoteHandler(),
+		slinkyVEHandler.VerifyVoteExtensionHandler(),
+		slinkyProposalHandler.PrepareProposalHandler(),
+	)
+
+	app.SetPrepareProposal(veManager.PrepareProposalHandler())
+	app.SetExtendVoteHandler(veManager.ExtendVoteHandler())
+	app.SetVerifyVoteExtensionHandler(veManager.VerifyVoteExtensionHandler())
+}
+
+// WardenSlinkyCodec wraps slinky's codec.VoteExtensionCodec to support our
+// custom vote extension format (vemanager.VE).
+type WardenSlinkyCodec struct {
+	slinkyCodec codec.VoteExtensionCodec
+}
+
+var _ compression.VoteExtensionCodec = (*WardenSlinkyCodec)(nil)
+
+// Decode a vote extension []byte into a vemanager.VE, then decode the first
+// vote extension item using the wrapped slinky codec.
+func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error) {
+	var w vemanager.VoteExtensions
+
+	if err := w.Unmarshal(b); err != nil {
+		return vetypes.OracleVoteExtension{}, err
+	}
+
+	if len(w.Extensions) == 0 {
+		return vetypes.OracleVoteExtension{}, fmt.Errorf("no vote extension")
+	}
+
+	return a.slinkyCodec.Decode(w.Extensions[0])
+}
+
+func (a *WardenSlinkyCodec) Encode(ve vetypes.OracleVoteExtension) ([]byte, error) {
+	return a.slinkyCodec.Encode(ve)
 }
 
 type AppUpgrade struct {

@@ -17,13 +17,8 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     super(generator);
 
     const retryPolicy = retry(handleAll, { maxAttempts: 3, backoff: new ExponentialBackoff() });
-
-    const circuitBreakerPolicy = circuitBreaker(handleAll, {
-      halfOpenAfter: 10 * 1000,
-      breaker: new ConsecutiveBreaker(5),
-    });
-
-    this.retryPolicy = wrap(retryPolicy, circuitBreakerPolicy);
+    // TODO AT: Add circuit breaker
+    this.retryPolicy = retryPolicy;
   }
 
   async handle(data: INewSignatureRequest): Promise<void> {

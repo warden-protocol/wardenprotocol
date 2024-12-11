@@ -2,11 +2,13 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/skip-mev/slinky/abci/ve"
 	"github.com/warden-protocol/wardenprotocol/prophet"
+	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
@@ -141,8 +143,65 @@ func (k Keeper) ProcessProposalHandler() sdk.ProcessProposalHandler {
 func (k Keeper) PreBlocker() sdk.PreBlocker {
 	return func(ctx sdk.Context, req *cometabci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
 		resp := &sdk.ResponsePreBlock{}
+		if !ve.VoteExtensionsEnabled(ctx) || len(req.Txs) < 2 {
+			return resp, nil
+		}
+
+		log := ctx.Logger().With("module", "x/async")
+		asyncTx := req.Txs[1]
+		if len(asyncTx) == 0 {
+			return resp, nil
+		}
+
+		var tx types.AsyncInjectedTx
+		if err := tx.Unmarshal(asyncTx); err != nil {
+			log.Error("failed to unmarshal async tx", "err", err, "tx", asyncTx)
+			// probably not an async tx?
+			// but slinky in this case rejects their proposal so maybe we
+			// should do the same?
+			return resp, nil
+		}
+
+		for _, v := range tx.ExtendedVotesInfo {
+			var w vemanager.VoteExtensions
+			if err := w.Unmarshal(v.VoteExtension); err != nil {
+				return resp, fmt.Errorf("failed to unmarshal vote extension wrapper: %w", err)
+			}
+
+			// todo: check VE signature, or maybe do it in the verify ve handler?
+
+			if len(w.Extensions) < 2 {
+				continue
+			}
+
+			var asyncve types.AsyncVoteExtension
+			if err := asyncve.Unmarshal(w.Extensions[1]); err != nil {
+				return resp, fmt.Errorf("failed to unmarshal x/async vote extension: %w", err)
+			}
+
+			if err := k.processVE(ctx, v.Validator.Address, asyncve); err != nil {
+				return resp, fmt.Errorf("failed to process vote extension: %w", err)
+			}
+		}
+
 		return resp, nil
 	}
+}
+
+func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteExtension) error {
+	for _, r := range ve.Results {
+		if err := k.AddFutureResult(ctx, r.FutureId, fromAddr, r.Output); err != nil {
+			return fmt.Errorf("failed to add future result: %w", err)
+		}
+	}
+
+	for _, vote := range ve.Votes {
+		if err := k.SetFutureVote(ctx, vote.FutureId, fromAddr, vote.Vote); err != nil {
+			return fmt.Errorf("failed to set task vote: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func (k Keeper) buildAsyncTx(votes []cometabci.ExtendedVoteInfo) ([]byte, error) {

@@ -165,7 +165,9 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             emit Executed();
         }
 
-        REGISTRY.addTransaction(txHash);
+        // origin always creator of sign request
+        // solhint-disable-next-line
+        REGISTRY.addTransaction(tx.origin, txHash);
 
         return (_executed, txHash);
     }

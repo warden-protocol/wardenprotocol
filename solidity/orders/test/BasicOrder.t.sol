@@ -30,6 +30,7 @@ import {
     Unauthorized
 } from "../src/BasicOrder.sol";
 import {
+    BadCreatorAddress,
     ExecutionAlreadyRegistered,
     InvalidExecutionAddress,
     NewTx,
@@ -233,11 +234,13 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        vm.expectEmit(true, false, false, false);
-        emit NewTx(address(_order), bytes32(0));
+        vm.expectEmit(true, true, false, false);
+        // solhint-disable-next-line
+        emit NewTx(address(_order), tx.origin, bytes32(0));
 
         (bool executed, bytes32 txHash) = _order.execute(1, 1, 1, 1, 1);
-        assertEq(_testData.registry.transactions(txHash), _order.getTx());
+        // solhint-disable-next-line
+        assertEq(_testData.registry.transactions(tx.origin, txHash), _order.getTx());
         assert(executed);
 
         assert(_order.isExecuted());
@@ -255,11 +258,13 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        vm.expectEmit(true, false, false, false);
-        emit NewTx(address(_order), bytes32(0));
+        vm.expectEmit(true, true, false, false);
+        // solhint-disable-next-line
+        emit NewTx(address(_order), tx.origin, bytes32(0));
 
         (bool executed, bytes32 txHash) = _order.execute(1, 1, 1, 1, 1);
-        assertEq(_testData.registry.transactions(txHash), _order.getTx());
+        // solhint-disable-next-line
+        assertEq(_testData.registry.transactions(tx.origin, txHash), _order.getTx());
         assert(executed);
 
         assert(_order.isExecuted());
@@ -390,25 +395,35 @@ contract BasicOrderTest is Test {
 
     function test_RegistryRevertAddTransactionWhenNotOrder() public {
         vm.expectRevert(UnauthorizedToAddTx.selector);
-        _testData.registry.addTransaction(keccak256(bytes("test")));
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, keccak256(bytes("test")));
     }
 
     function test_RegistryRevertAddTransactionWhenInvalidHash() public {
         vm.expectRevert(InvalidHash.selector);
         vm.prank(address(_order));
-        _testData.registry.addTransaction(bytes32(0));
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, bytes32(0));
     }
 
     function test_RegistryRevertAddTransactionWhenAlreadyAdded() public {
         vm.expectRevert(TxAlreadyAdded.selector);
         vm.prank(address(_order));
-        _testData.registry.addTransaction(_txHash);
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, _txHash);
     }
 
     function test_RegistryRevertAddTransactionWhenNotExecuted() public {
         vm.expectRevert(NotExecuted.selector);
         vm.prank(address(_order));
-        _testData.registry.addTransaction(keccak256(bytes("test")));
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, keccak256(bytes("test")));
+    }
+
+    function test_RegistryRevertAddTransactionWhenBadCreatorAddress() public {
+        vm.expectRevert(BadCreatorAddress.selector);
+        vm.prank(address(_order));
+        _testData.registry.addTransaction(address(0), keccak256(bytes("test")));
     }
 
     function getTestSwapData() internal view returns (bytes memory) {

@@ -23,8 +23,6 @@ import {
     ConditionNotMet,
     ExecutedError,
     InvalidScheduler,
-    InvalidSwapDataAmountIn,
-    InvalidSwapDataTo,
     InvalidExpectedApproveExpression,
     InvalidExpectedRejectExpression,
     InvalidThresholdPrice,
@@ -93,8 +91,6 @@ contract BasicOrderTest is Test {
             beforeTestCalldata[1] = abi.encodeWithSignature("test_basicOrderExecuteWhenPriceMovesUp()");
         } else if (
             testSelector == this.test_BasicOrderRevertWhenInvalidScheduler.selector
-                || testSelector == this.test_BasicOrderRevertWhenInvalidAmountIn.selector
-                || testSelector == this.test_BasicOrderRevertWhenInvalidSwapDataTo.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedApproveExpression.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedRejectExpression.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidThresholdPrice.selector
@@ -144,7 +140,6 @@ contract BasicOrderTest is Test {
             condition = 0;
         }
 
-        address[] memory path;
         bytes[] memory analyzers;
         bytes memory encryptionKey;
         uint64 keyId;
@@ -165,11 +160,11 @@ contract BasicOrderTest is Test {
             );
         }
 
+        bytes memory data = getTestSwapData();
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: cond,
             pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
                 keyId: keyId,
                 analyzers: analyzers,
@@ -182,7 +177,8 @@ contract BasicOrderTest is Test {
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: data
             })
         });
 
@@ -274,14 +270,13 @@ contract BasicOrderTest is Test {
     }
 
     function saveOrderData() public {
-        address[] memory path;
         bytes[] memory analyzers;
         bytes memory encryptionKey;
+        bytes memory data = getTestSwapData();
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: Types.PriceCondition.LTE,
             pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
                 keyId: 0,
                 analyzers: analyzers,
@@ -294,7 +289,8 @@ contract BasicOrderTest is Test {
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: data
             })
         });
 
@@ -307,22 +303,6 @@ contract BasicOrderTest is Test {
         vm.expectRevert(InvalidScheduler.selector);
 
         new BasicOrder(_orderData, maxKeychainFees, address(0), address(_testData.registry));
-    }
-
-    function test_BasicOrderRevertWhenInvalidAmountIn() public {
-        CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.swapData.amountIn = 0;
-        vm.expectRevert(InvalidSwapDataAmountIn.selector);
-
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
-    }
-
-    function test_BasicOrderRevertWhenInvalidSwapDataTo() public {
-        CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.swapData.to = address(0);
-        vm.expectRevert(InvalidSwapDataTo.selector);
-
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {
@@ -429,5 +409,21 @@ contract BasicOrderTest is Test {
         vm.expectRevert(NotExecuted.selector);
         vm.prank(address(_order));
         _testData.registry.addTransaction(keccak256(bytes("test")));
+    }
+
+    function getTestSwapData() internal view returns (bytes memory) {
+        // Encode Uniswap V2 swapExactTokensForTokens parameters
+        address[] memory path = new address[](2);
+        path[0] = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14; // sepolia WETH
+        path[1] = 0xE5a71132Ae99691ef35F68459aDde842118A86a5; // sepolia test token
+        bytes4 functionSelector =
+            bytes4(keccak256(abi.encodePacked("swapExactETHForTokens(uint256,address[],address, uint256)")));
+        return abi.encodeWithSelector(
+            functionSelector,
+            1, // amountOutMin
+            path,
+            RECEIVER,
+            type(uint256).max // deadline
+        );
     }
 }

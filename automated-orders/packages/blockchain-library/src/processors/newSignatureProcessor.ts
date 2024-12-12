@@ -45,7 +45,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
 
   private async handleInternal(data: INewSignatureRequest) : Promise<void> {
     await this.retryPolicy.execute(async () => {
-      const transaction = await this.registryClient.getTransaction(data.transactionHash);
+      const transaction = await this.registryClient.getTransaction(data.transactionHash, data.creator);
       if (!transaction) {
         logError(`Transaction with hash "${data.transactionHash}" not found in registry`);
         return;

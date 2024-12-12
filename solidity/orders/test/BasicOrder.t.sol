@@ -423,7 +423,7 @@ contract BasicOrderTest is Test {
             1, // amountOutMin
             path,
             RECEIVER,
-            block.timestamp // deadline
+            type(uint256).max // deadline
         );
     }
 }

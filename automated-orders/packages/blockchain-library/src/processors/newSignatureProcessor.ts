@@ -51,15 +51,15 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         return;
       }
 
-      await this.evm.broadcastTx(transaction, data.signature);
-      this.recentSignRequests.set(data.id, data.id);
-
       const transactionExists = await this.evm.transactionExists(transaction, data.signature);
       if (transactionExists) {
         logInfo(`Transaction ${data.transactionHash} already exists`);
         this.recentSignRequests.set(data.id, data.id);
         return;
       }
+
+      await this.evm.broadcastTx(transaction, data.signature);
+      this.recentSignRequests.set(data.id, data.id);
     });
   }
 }

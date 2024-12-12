@@ -43,6 +43,7 @@ async function main() {
     ethereum,
     registry,
     warden.pollSignatureRequests.bind(warden),
+    config.SIGN_REQUESTS_PROCESSOR_SEEN_CACHE_ELEMENTS_SIZE,
   ).start();
 
   await Promise.all([processor]);

@@ -160,9 +160,7 @@ contract BasicOrderTest is Test {
             );
         }
 
-        bytes memory data =
-        // solhint-disable-next-line
-            hex"7ff36ab500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000080000000000000000000000000ee567fe1712faf6149d80da1e6934e354124cfe300000000000000000000000000000000000000000000000000000000676d2f8a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5";
+        bytes memory data = getTestSwapData();
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: cond,
@@ -274,9 +272,7 @@ contract BasicOrderTest is Test {
     function saveOrderData() public {
         bytes[] memory analyzers;
         bytes memory encryptionKey;
-        bytes memory data =
-        // solhint-disable-next-line
-            hex"7ff36ab500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000080000000000000000000000000ee567fe1712faf6149d80da1e6934e354124cfe300000000000000000000000000000000000000000000000000000000676d2f8a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5";
+        bytes memory data = getTestSwapData();
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: Types.PriceCondition.LTE,
@@ -413,5 +409,21 @@ contract BasicOrderTest is Test {
         vm.expectRevert(NotExecuted.selector);
         vm.prank(address(_order));
         _testData.registry.addTransaction(keccak256(bytes("test")));
+    }
+
+    function getTestSwapData() internal view returns (bytes memory) {
+        // Encode Uniswap V2 swapExactTokensForTokens parameters
+        address[] memory path = new address[](2);
+        path[0] = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14;
+        path[1] = 0xE5a71132Ae99691ef35F68459aDde842118A86a5;
+        bytes4 functionSelector =
+            bytes4(keccak256(abi.encodePacked("swapExactETHForTokens(uint256,address[],address, uint256)")));
+        return abi.encodeWithSelector(
+            functionSelector,
+            1, // amountOutMin
+            path,
+            RECEIVER,
+            block.timestamp // deadline
+        );
     }
 }

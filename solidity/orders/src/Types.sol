@@ -2,14 +2,6 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 library Types {
-    // Data for swapExactETHForTokens method
-    struct SwapData {
-        uint256 amountIn;
-        address[] path;
-        address to;
-        uint256 deadline;
-    }
-
     // Sign request data
     struct SignRequestData {
         uint64 keyId;
@@ -32,7 +24,6 @@ library Types {
         PriceCondition priceCondition;
         PricePair pricePair;
         CreatorDefinedTxFields creatorDefinedTxFields;
-        SwapData swapData;
         SignRequestData signRequestData;
     }
 
@@ -45,5 +36,6 @@ library Types {
         uint256 value;
         uint256 chainId;
         address to;
+        bytes data;
     }
 }

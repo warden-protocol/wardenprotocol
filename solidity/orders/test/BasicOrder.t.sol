@@ -414,8 +414,8 @@ contract BasicOrderTest is Test {
     function getTestSwapData() internal view returns (bytes memory) {
         // Encode Uniswap V2 swapExactTokensForTokens parameters
         address[] memory path = new address[](2);
-        path[0] = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14;
-        path[1] = 0xE5a71132Ae99691ef35F68459aDde842118A86a5;
+        path[0] = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14; // sepolia WETH
+        path[1] = 0xE5a71132Ae99691ef35F68459aDde842118A86a5; // sepolia test token
         bytes4 functionSelector =
             bytes4(keccak256(abi.encodePacked("swapExactETHForTokens(uint256,address[],address, uint256)")));
         return abi.encodeWithSelector(

@@ -20,6 +20,6 @@
     "test": "forge test --via-ir",
     "test:coverage": "forge coverage",
     "test:coverage:report": "forge coverage --report lcov && genhtml lcov.info --branch-coverage --output-dir coverage",
-    "deploy": "forge script --chain $CHAIN_ID script/Deploy.s.sol:Deploy --rpc-url $RPC_URL --broadcast -vvvv"
+    "deploy": "forge script script/Deploy.s.sol:Deploy --chain $CHAIN_ID --rpc-url $RPC_URL --broadcast -vvvv"
   }
 }

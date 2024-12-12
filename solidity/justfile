@@ -20,8 +20,7 @@ localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shul
 # 3324181371 \
 # 0 \
 # '\("ETH","USD"\)' \
-# '\(100000000000000,11155111,0x467b9D1B03683C8177155Be990238bEeB1d5461f\)' \
-# '\(1,[0xfff9976782d46cc05630d1f6ebab18b2324d6b14,0xb4f1737af37711e9a5890d9510c9bb60e170cb0d],0x5feAeD593ef59efEf78d97721F78c0AAC16F3dC5,1735208842\)' \
+# '\(100000000000000,11155111,0x467b9D1B03683C8177155Be990238bEeB1d5461f, 0x7ff36ab500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000080000000000000000000000000ee567fe1712faf6149d80da1e6934e354124cfe300000000000000000000000000000000000000000000000000000000676d2f8a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5\)' \
 # 1 \
 # 0 \
 # 1000000000 \
@@ -30,7 +29,7 @@ localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shul
 # 0xdee286687809c640a7d56c34cea7b8d3fcdaee2c \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-create-order thresholdPrice priceCondition pricePair txFields swapData keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression $FACTORY_ADDRESS $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic:
+create-order thresholdPrice priceCondition pricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression $FACTORY_ADDRESS $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \
     --via-ir \
@@ -42,13 +41,12 @@ create-order thresholdPrice priceCondition pricePair txFields swapData keyId spa
     {{priceCondition}} \
     {{pricePair}} \
     {{txFields}} \
-    {{swapData}} \
     {{keyId}} \
     {{spaceNonce}} \
     {{actionTimeoutHeight}} \
     {{expectedApproveExpression}} \
     {{expectedRejectExpression}} \
-    --sig 'run(uint256,uint8,(string,string),(uint256,uint256,address),(uint256,address[],address,uint256),uint64,uint64,uint64,bytes,bytes)' \
+    --sig 'run(uint256,uint8,(string,string),(uint256,uint256,address,bytes),uint64,uint64,uint64,bytes,bytes)' \
     --rpc-url $RPC_URL \
     --broadcast \
     -vvvv

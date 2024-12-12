@@ -17,8 +17,6 @@ error Unauthorized();
 error InvalidPriceCondition();
 error InvalidScheduler();
 error InvalidRegistry();
-error InvalidSwapDataAmountIn();
-error InvalidSwapDataTo();
 error InvalidExpectedApproveExpression();
 error InvalidExpectedRejectExpression();
 error InvalidThresholdPrice();
@@ -60,14 +58,6 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 
         if (registry == address(0)) {
             revert InvalidRegistry();
-        }
-
-        if (_orderData.swapData.amountIn == 0) {
-            revert InvalidSwapDataAmountIn();
-        }
-
-        if (_orderData.swapData.to == address(0)) {
-            revert InvalidSwapDataTo();
         }
 
         if (bytes(_orderData.signRequestData.expectedApproveExpression).length == 0) {
@@ -138,8 +128,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             revert ConditionNotMet();
         }
 
-        bytes memory data = _packSwapData();
-        bytes memory emptyAccessList;
+        bytes[] memory emptyAccessList = new bytes[](0);
         uint256 txType = 2; // eip1559 tx type
         bytes[] memory txArray = new bytes[](9);
         txArray[0] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.chainId);
@@ -149,10 +138,10 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         txArray[4] = RLPEncode.encodeUint(gas);
         txArray[5] = RLPEncode.encodeAddress(orderData.creatorDefinedTxFields.to);
         txArray[6] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.value);
-        txArray[7] = RLPEncode.encodeBytes(data);
-        txArray[8] = RLPEncode.encodeBytes(emptyAccessList);
+        txArray[7] = RLPEncode.encodeBytes(orderData.creatorDefinedTxFields.data);
+        txArray[8] = RLPEncode.encodeList(emptyAccessList);
         bytes memory unsignedTxEncoded = RLPEncode.encodeList(txArray);
-        bytes memory unsignedTx = abi.encodePacked(RLPEncode.encodeUint(txType), unsignedTxEncoded);
+        bytes memory unsignedTx = RLPEncode.concat(RLPEncode.encodeUint(txType), unsignedTxEncoded);
 
         _unsignedTx = unsignedTx;
 
@@ -190,13 +179,12 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     }
 
     function executionData() external view returns (ExecutionData memory data) {
-        bytes memory d = _packSwapData();
         data = ExecutionData({
             caller: _keyAddress,
             to: orderData.creatorDefinedTxFields.to,
             chainId: orderData.creatorDefinedTxFields.chainId,
             value: orderData.creatorDefinedTxFields.value,
-            data: d
+            data: orderData.creatorDefinedTxFields.data
         });
     }
 
@@ -210,15 +198,5 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         }
 
         transaction = _unsignedTx;
-    }
-
-    function _packSwapData() internal view returns (bytes memory data) {
-        data = abi.encodeWithSignature(
-            SWAP_EXACT_ETH_FOR_TOKENS,
-            orderData.swapData.amountIn,
-            orderData.swapData.path,
-            orderData.swapData.to,
-            orderData.swapData.deadline
-        );
     }
 }

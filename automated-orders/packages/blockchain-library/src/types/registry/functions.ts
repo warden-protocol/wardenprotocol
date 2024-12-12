@@ -53,6 +53,11 @@ export const TransactionsAbi: AbiFunction = {
     name: "transactions",
     inputs: [
         {
+            name: "creator",
+            type: "address",
+            internalType: "address"
+        },
+        {
             name: "txHash",
             type: "bytes32",
             internalType: "bytes32"

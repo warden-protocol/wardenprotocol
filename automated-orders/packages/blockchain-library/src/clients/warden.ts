@@ -39,6 +39,7 @@ export class WardenClient {
 
             yield {
               id: request.id,
+              creator: request.creator,
               signature: request.result!,
               transactionHash: request.dataForSigning!,
             };

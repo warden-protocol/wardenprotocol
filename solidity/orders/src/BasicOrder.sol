@@ -128,7 +128,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
             revert ConditionNotMet();
         }
 
-        bytes memory emptyAccessList;
+        bytes[] memory emptyAccessList = new bytes[](0);
         uint256 txType = 2; // eip1559 tx type
         bytes[] memory txArray = new bytes[](9);
         txArray[0] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.chainId);
@@ -139,9 +139,9 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         txArray[5] = RLPEncode.encodeAddress(orderData.creatorDefinedTxFields.to);
         txArray[6] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.value);
         txArray[7] = RLPEncode.encodeBytes(orderData.creatorDefinedTxFields.data);
-        txArray[8] = RLPEncode.encodeBytes(emptyAccessList);
+        txArray[8] = RLPEncode.encodeList(emptyAccessList);
         bytes memory unsignedTxEncoded = RLPEncode.encodeList(txArray);
-        bytes memory unsignedTx = abi.encodePacked(RLPEncode.encodeUint(txType), unsignedTxEncoded);
+        bytes memory unsignedTx = RLPEncode.concat(RLPEncode.encodeUint(txType), unsignedTxEncoded);
 
         _unsignedTx = unsignedTx;
 

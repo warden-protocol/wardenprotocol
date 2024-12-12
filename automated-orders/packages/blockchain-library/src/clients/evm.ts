@@ -101,13 +101,23 @@ export class EvmClient {
     });
   }
 
-  public async transactionExists(transactionHash: Hex): Promise<boolean> {
+  public async transactionExists(transaction: Hex, transactionSignature: Hex): Promise<boolean> {
     try {
+      const ethRequest = parseTransaction(transaction);
+      const signature = parseSignature(transactionSignature);
+
+      const serialized = serializeTransaction(
+        ethRequest as TransactionSerializable,
+        signature,
+      );
+
+      const transactionHash = keccak256(serialized);
+
       await this.client.getTransactionReceipt({
         hash: transactionHash,
       });
     } catch (error) {
-      if (error instanceof TransactionReceiptNotFoundError) { 
+      if (error instanceof TransactionReceiptNotFoundError) {
         return false;
       }
 

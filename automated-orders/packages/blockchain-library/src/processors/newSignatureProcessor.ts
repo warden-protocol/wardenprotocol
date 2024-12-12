@@ -37,24 +37,29 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
     logInfo(`New Signature request ${serialize(data)}`);
 
     try {
-      await this.retryPolicy.execute(async () => {
-        const transactionExists = await this.evm.transactionExists(data.transactionHash);
-        if (transactionExists) {
-          logInfo(`Transaction ${data.transactionHash} already exists`);
-          this.recentSignRequests.set(data.id, data.id);
-          return;
-        }
-
-        const transaction = await this.registryClient.getTransaction(data.transactionHash);
-        if (transaction) {
-          await this.evm.broadcastTx(transaction, data.signature);
-          this.recentSignRequests.set(data.id, data.id);
-        } else {
-          logError(`Transaction with hash "${data.transactionHash}" not found in registry`)
-        }
-      });
+      await this.handleInternal(data);
     } catch (error) {
       logError(`New Signature error ${serialize(data)}. Error: ${error}, Stack trace: ${error.stack}`);
     }
+  }
+
+  private async handleInternal(data: INewSignatureRequest) : Promise<void> {
+    await this.retryPolicy.execute(async () => {
+      const transaction = await this.registryClient.getTransaction(data.transactionHash);
+      if (!transaction) {
+        logError(`Transaction with hash "${data.transactionHash}" not found in registry`);
+        return;
+      }
+
+      await this.evm.broadcastTx(transaction, data.signature);
+      this.recentSignRequests.set(data.id, data.id);
+
+      const transactionExists = await this.evm.transactionExists(transaction, data.signature);
+      if (transactionExists) {
+        logInfo(`Transaction ${data.transactionHash} already exists`);
+        this.recentSignRequests.set(data.id, data.id);
+        return;
+      }
+    });
   }
 }

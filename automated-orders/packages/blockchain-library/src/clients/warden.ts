@@ -3,11 +3,9 @@ import * as utils from '@warden-automated-orders/utils';
 import { IWardenConfiguration } from '../types/warden/configuration.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 
-import { LRUCache } from 'lru-cache'
 import { EvmClient } from './evm.js';
 import {
   IPageRequest,
-  ISignRequest,
   SignRequestsAbi,
   SignRequestStatus,
   ISignRequestResponse as Response,
@@ -25,10 +23,6 @@ export class WardenClient {
 
   async *pollSignatureRequests(): AsyncGenerator<INewSignatureRequest> {
     let nextKey: Hex | undefined = undefined;
-    const recentSignRequests: LRUCache<bigint, bigint> = new LRUCache<bigint, bigint>({
-      max: this.configuration.signatureRequestsPageSize * 2,
-    });
-
     while (true) {
       await delay(this.configuration.signatureRequestsPoolingIntervalMsec);
 
@@ -37,42 +31,28 @@ export class WardenClient {
           nextKey, BigInt(this.configuration.signatureRequestsPageSize))
 
         if (signRequests && signRequests.length > 0) { 
-          yield* this.yieldNewRequests(signRequests, recentSignRequests);
+          for (const request of signRequests) {
+            if (!request.result) {
+              utils.logError(`Signed data is empty, but request "${request.id}" is fulfilled`)
+              continue;
+            }
+
+            yield {
+              id: request.id,
+              creator: request.creator,
+              signature: request.result!,
+              transactionHash: request.dataForSigning!,
+            };
+          }
         } else { 
           utils.logInfo(`No new sign requests found`);
         }
 
-        const newKey = pageResponse?.nextKey
-        if (newKey && newKey != `0x`) {
-          nextKey = newKey;
-        }
+        nextKey = pageResponse?.nextKey;
       }
       catch (err) {
         utils.logError(`Error while polling for new signature requests: ${utils.serialize(err)}`)
       }
-    }
-  }
-
-  private *yieldNewRequests(
-    signRequests: ISignRequest[], 
-    recentSignRequests: LRUCache<bigint, bigint, unknown>) {
-    for (const request of signRequests) {
-      if (!request.result) {
-        utils.logError(`Signed data is empty, but request "${request.id}" is fulfilled`)
-        continue;
-      }
-
-      if (recentSignRequests.has(request.id)) {
-        utils.logInfo(`Skipping already seen request "${request.id}"`);
-        continue;
-      }
-
-      yield {
-        signature: request.result!,
-        transactionHash: request.dataForSigning!,
-      };
-
-      recentSignRequests.set(request.id, request.id);
     }
   }
 

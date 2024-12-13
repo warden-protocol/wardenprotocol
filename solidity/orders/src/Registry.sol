@@ -11,14 +11,15 @@ error InvalidHash();
 error NotExecuted();
 error Executed();
 error ExecutionAlreadyRegistered();
+error BadCreatorAddress();
 
 event Registered(address indexed creator, address indexed execution);
 
-event NewTx(address indexed execution, bytes32 indexed txHash);
+event NewTx(address indexed execution, address indexed creator, bytes32 indexed txHash);
 
 contract Registry is ReentrancyGuard {
     mapping(address executionAddress => address orderCreator) public executions;
-    mapping(bytes32 txHash => bytes tx) public transactions;
+    mapping(address creator => mapping(bytes32 txHash => bytes tx)) public transactions;
 
     function register(address execution) public {
         if (execution == address(0)) {
@@ -41,7 +42,11 @@ contract Registry is ReentrancyGuard {
         emit Registered(msg.sender, execution);
     }
 
-    function addTransaction(bytes32 txHash) public nonReentrant {
+    function addTransaction(address creator, bytes32 txHash) public nonReentrant {
+        if (creator == address(0)) {
+            revert BadCreatorAddress();
+        }
+
         if (executions[msg.sender] == address(0)) {
             revert UnauthorizedToAddTx();
         }
@@ -50,7 +55,7 @@ contract Registry is ReentrancyGuard {
             revert InvalidHash();
         }
 
-        if (transactions[txHash].length != 0) {
+        if (transactions[creator][txHash].length != 0) {
             revert TxAlreadyAdded();
         }
 
@@ -64,8 +69,8 @@ contract Registry is ReentrancyGuard {
             revert InvalidExecutionAddress();
         }
 
-        transactions[txHash] = execution.getTx();
+        transactions[creator][txHash] = execution.getTx();
 
-        emit NewTx(msg.sender, txHash);
+        emit NewTx(msg.sender, creator, txHash);
     }
 }

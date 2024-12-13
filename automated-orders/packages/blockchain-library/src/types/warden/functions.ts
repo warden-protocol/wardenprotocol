@@ -1,4 +1,4 @@
-import { AbiFunction, Hex } from 'viem';
+import { AbiFunction, Address, Hex } from 'viem';
 
 export enum SignRequestStatus {
   /** SIGN_REQUEST_STATUS_UNSPECIFIED - The request is missing the status field. */
@@ -29,7 +29,7 @@ export interface ICoin {
 
 export interface ISignRequest {
   id: bigint;
-  creator: string;
+  creator: Address;
   keyId: bigint;
   dataForSigning: Hex;
   status: SignRequestStatus;

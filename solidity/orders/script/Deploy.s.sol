@@ -31,14 +31,17 @@ contract Deploy is Script {
     function run() external {
         vm.startBroadcast(broadcaster);
 
+        bytes11 registrySaltValue = bytes11(vm.envOr("REGISTRY_SALT", bytes11(uint88(1001))));
+        bytes11 factorySaltValue = bytes11(vm.envOr("FACTORY_SALT", bytes11(uint88(1002))));
+
         if (registryAddress == address(0)) {
-            bytes32 registrySalt = bytes32(abi.encodePacked(broadcaster, hex"00", bytes11(uint88(1001))));
+            bytes32 registrySalt = bytes32(abi.encodePacked(broadcaster, hex"00", registrySaltValue));
             bytes memory registryInitCode = type(Registry).creationCode;
 
             registryAddress = deployWithCreate2(registrySalt, registryInitCode, "Registry");
         }
 
-        bytes32 factorySalt = bytes32(abi.encodePacked(broadcaster, hex"00", bytes11(uint88(1002))));
+        bytes32 factorySalt = bytes32(abi.encodePacked(broadcaster, hex"00", factorySaltValue));
         bytes memory factoryInitCode =
             abi.encodePacked(type(OrderFactory).creationCode, abi.encode(registryAddress, scheduler, factoryOwner));
 

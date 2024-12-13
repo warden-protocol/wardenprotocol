@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
+// From https://book.getfoundry.sh/tutorials/create2-tutorial
 contract Create2 {
     error Create2EmptyBytecode();
 

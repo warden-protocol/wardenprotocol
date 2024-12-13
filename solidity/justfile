@@ -1,5 +1,7 @@
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 shulgin := "0x6EA8AC1673402989E7B653AE4E83B54173719C30"
+rpc_url := "http://127.0.0.1:8545"
+chain_id := "1337"
 
 orders: build-orders lint-orders test-orders
 
@@ -12,7 +14,7 @@ lint-orders:
 test-orders:
     cd orders && yarn test
 
-localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
+localnet-orders $RPC_URL=rpc_url $CHAIN_ID=chain_id $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
     cd orders && yarn deploy
 
 # Example:
@@ -30,7 +32,7 @@ localnet-orders $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shul
 # 0xdee286687809c640a7d56c34cea7b8d3fcdaee2c \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-create-order thresholdPrice priceCondition pricePair txFields swapData keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression $FACTORY_ADDRESS $RPC_URL="http://127.0.0.1:8545" $CHAIN_ID="1337" $MNEMONIC=shulgin_mnemonic:
+create-order thresholdPrice priceCondition pricePair txFields swapData keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression $FACTORY_ADDRESS $RPC_URL=rpc_url $CHAIN_ID=chain_id $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \
     --via-ir \

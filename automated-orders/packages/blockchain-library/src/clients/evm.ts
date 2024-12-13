@@ -33,6 +33,7 @@ import { AwsKmsSigner } from '@warden/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
+import BN from 'bn.js';
 
 import asn1 from 'asn1.js';
 const { define } = asn1;
@@ -268,7 +269,10 @@ export class EvmClient {
     const decodedSignature = EcdsaSigAsnParse.decode(Buffer.from(signatureDER), 'der');
 
     const r = decodedSignature.r;
-    const s = decodedSignature.s;
+
+    const secp256k1N = new BN("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", 16); // max value on the curve
+    const secp256k1halfN = secp256k1N.div(new BN(2)); // half of the curve
+    const s = decodedSignature.s.gt(secp256k1halfN) ? secp256k1N.sub(decodedSignature.s) : decodedSignature.s;
 
     const rBuffer = r.toArrayLike(Buffer, 'be', 32);
     const sBuffer = s.toArrayLike(Buffer, 'be', 32);

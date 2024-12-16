@@ -10,7 +10,7 @@ import {
   http,
   readContract,
 } from '@wagmi/core';
-import { delay } from '@warden-automated-orders/utils';
+import { delay, logInfo } from '@warden-automated-orders/utils';
 import { LRUCache } from 'lru-cache';
 import {
   AbiEvent,
@@ -310,10 +310,9 @@ export class EvmClient {
 
     const serializedSignedTransactionHex = serializedSignedTransaction as Hex;
 
-    await this.client.request({
-      method: 'eth_sendRawTransaction',
-      params: [serializedSignedTransactionHex],
-    });
+    const txHash = await this.client.sendRawTransaction({ serializedTransaction: serializedSignedTransactionHex });
+
+    logInfo(`Tx hash ${txHash}`);
   }
 
   private decodeEventLog<T>(eventAbi: AbiEvent, log: Log): T {

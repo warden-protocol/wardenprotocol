@@ -16,4 +16,4 @@ The main features supported by WardenConnect are listed below. Please note that 
 2. [Manage Spaces](manage-spaces) (Pro)
 3. [Manage keys](manage-keys) (Pro)
 4. [Manage assets](manage-assets)
-5. [Use dApps](use-dapp)
+5. [Use dApps](use-dapps)

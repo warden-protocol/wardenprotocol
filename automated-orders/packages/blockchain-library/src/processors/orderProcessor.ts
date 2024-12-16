@@ -86,7 +86,7 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
         gas.maxFeePerGas,
       ]);
 
-      const receipt = await this.evmos.client.getTransactionReceipt({ hash: txHash });
+      const receipt = await this.evmos.client.waitForTransactionReceipt({ hash: txHash });
       if (receipt.status != "success") {
         throw new Error(`Tx with hash ${txHash} not executed: ${receipt}`);
       }

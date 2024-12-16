@@ -10,8 +10,8 @@ To start using WardenConnect, you need to create an **account** (profile).
 
 There are two types of accounts available:
 
-- **Basic**: It allows you to use WardenConnect as a wallet.
-- **Pro**: It allows you to create [Spaces](manage-spaces), [keys](manage-keys), and use other features.
+- **Basic account**: It allows you to use WardenConnect as a wallet.
+- **Pro account**: It allows you to create [Spaces](manage-spaces), [keys](manage-keys), and use other features.
 
 You can create multiple accounts and switch between them.
 
@@ -31,7 +31,7 @@ After creating an account, you'll see a dashboard with your wallet and assets.
 
 ## Create a Pro account
 
-The **Pro account** allows you to hold multiple wallets ([keys](manage-keys)) and group them [Spaces](manage-spaces). For enhanced security, keys are managed by [Keychains](manage-keys#view-keychains).
+The **Pro account** allows you to hold multiple wallets ([keys](manage-keys)) and group them in [Spaces](manage-spaces). For enhanced security, keys are managed by [Keychains](manage-keys#view-keychains).
 
 To create a Pro account, take these steps:
 

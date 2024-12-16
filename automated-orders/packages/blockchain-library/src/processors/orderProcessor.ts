@@ -78,7 +78,7 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
         orderDetails.value,
       );
 
-      await this.evmos.sendTransaction(data.args.execution, ExecuteAbi, [
+      const txHash = await this.evmos.sendTransaction(data.args.execution, ExecuteAbi, [
         nonce,
         gas.gasLimit,
         gas.gasPrice,
@@ -86,7 +86,12 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
         gas.maxFeePerGas,
       ]);
 
+      const receipt = await this.evmos.client.getTransactionReceipt({ hash: txHash });
+      if (receipt.status != "success") {
+        throw new Error(`Tx with hash ${txHash} not executed: ${receipt}`);
+      }
       this.evmos.events.delete(key);
+
     } catch (error) {
       logError(`New order error ${serialize(event)}. Error: ${error}, Stack trace: ${error.stack}`);
 

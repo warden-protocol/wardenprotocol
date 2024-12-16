@@ -27,6 +27,7 @@ import {
   parseSignature,
   serializeTransaction,
   TransactionReceiptNotFoundError,
+  Hash,
 } from 'viem';
 import { keccak256, hexToBytes } from 'viem';
 import { AwsKmsSigner } from '@warden/aws-kms-signer';
@@ -237,7 +238,7 @@ export class EvmClient {
     contractAddress: string,
     functionAbi: AbiFunction,
     args: unknown[],
-  ): Promise<void> {
+  ): Promise<Hash> {
     const data = encodeFunctionData({
       abi: [functionAbi],
       functionName: functionAbi.name,
@@ -312,7 +313,9 @@ export class EvmClient {
 
     const txHash = await this.client.sendRawTransaction({ serializedTransaction: serializedSignedTransactionHex });
 
-    logInfo(`Tx hash ${txHash}`);
+    logInfo(`Call to ${contractAddress}, tx hash ${txHash}`);
+
+    return txHash;
   }
 
   private decodeEventLog<T>(eventAbi: AbiEvent, log: Log): T {

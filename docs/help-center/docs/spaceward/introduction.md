@@ -44,7 +44,7 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 
 SpaceWard allows you to securely carry out operations across multiple blockchains.
 
-You need to create a **key** (wallet) associated with a certain **Keychain** – a custodian that generates and stores keys and signs transactions. The Keychain will sign your transaction only it meets the **Approval Rule** you created. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
+You need to create a **key** (wallet) associated with a certain **Keychain** – a custodian that generates and stores keys and signs transactions. The Keychain will sign your transaction only if it meets the **Approval Rule** you created. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
 
 This is how it works:
 

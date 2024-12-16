@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # Manage keys
@@ -43,7 +43,9 @@ To get your key (wallet) address in a certain network, do the following:
 
 ## View Keychains
 
-You can access a list of all available Keychains – custodians that generate and store keys and sign transactions:
+Keychains are custodians that generate and store keys and sign transactions. Learn more: [Glossary: Keychain](https://docs.wardenprotocol.org/learn/glossary#keychain).
+
+You can access a list of all available Keychains:
 
 1. Connect to SpaceWard:
    - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)

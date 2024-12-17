@@ -34,7 +34,8 @@ contract CreateOrder is Script {
         uint64 spaceNonce,
         uint64 actionTimeoutHeight,
         bytes calldata expectedApproveExpression,
-        bytes calldata expectedRejectExpression
+        bytes calldata expectedRejectExpression,
+        bytes32 salt
     )
         external
     {
@@ -65,7 +66,6 @@ contract CreateOrder is Script {
         mockSlinkyPrecompile.setPrice(pricePair.base, pricePair.quote, thresholdPrice);
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
         vm.startBroadcast(broadcaster);
-        bytes32 salt = keccak256(abi.encodePacked(broadcaster, block.number));
         FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
 
         vm.stopBroadcast();

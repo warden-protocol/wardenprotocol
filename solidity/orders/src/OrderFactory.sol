@@ -6,7 +6,7 @@ import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
 import { Registry } from "./Registry.sol";
-import { Create3 } from "./Create3.sol";
+import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 
 enum OrderType {
     Basic,

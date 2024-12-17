@@ -32,7 +32,7 @@ import {
     TxAlreadyAdded,
     InvalidHash
 } from "../src/Registry.sol";
-import { Create3 } from "../src/Create3.sol";
+import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 
 struct TestData {
     Registry registry;

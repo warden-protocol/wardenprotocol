@@ -53,6 +53,15 @@ contract OrderFactory is Ownable {
     }
 
     /**
+     * @notice Computes the deterministic address of a BasicOrder without deploying it
+     * @param salt The unique salt provided by the frontend
+     * @return The computed address of the BasicOrder
+     */
+    function computeOrderAddress(bytes32 salt) external view returns (address) {
+        return Create3.addressOf(salt);
+    }
+
+    /**
      * @notice Creates a new order (Basic or Advanced) using CREATE3
      * @param _orderData The data required to create the order
      * @param maxKeychainFees The maximum fees allowed

@@ -424,7 +424,7 @@ contract BasicOrderTest is Test {
         _testData.registry.addTransaction(address(0), keccak256(bytes("test")));
     }
 
-    function getTestSwapData() internal view returns (bytes memory) {
+    function getTestSwapData() internal pure returns (bytes memory) {
         // Encode Uniswap V2 swapExactTokensForTokens parameters
         address[] memory path = new address[](2);
         path[0] = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14; // sepolia WETH

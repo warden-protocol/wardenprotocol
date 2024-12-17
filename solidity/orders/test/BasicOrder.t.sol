@@ -18,16 +18,7 @@ import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import {
-    BasicOrder,
-    Executed,
-    ConditionNotMet,
-    ExecutedError,
-    InvalidScheduler,
-    InvalidExpectedApproveExpression,
-    InvalidExpectedRejectExpression,
-    InvalidThresholdPrice,
-    InvalidTxTo,
-    Unauthorized
+    BasicOrder, Executed, ConditionNotMet, ExecutedError, InvalidScheduler, Unauthorized
 } from "../src/BasicOrder.sol";
 import {
     BadCreatorAddress,
@@ -41,6 +32,7 @@ import {
     TxAlreadyAdded,
     InvalidHash
 } from "../src/Registry.sol";
+import { Create3 } from "../src/Create3.sol";
 
 struct TestData {
     Registry registry;
@@ -182,6 +174,7 @@ contract BasicOrderTest is Test {
                 data: data
             })
         });
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "ValidOrder"));
 
         CommonTypes.Coin[] memory maxKeychainFees;
 
@@ -191,7 +184,8 @@ contract BasicOrderTest is Test {
         vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
-        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+        address orderAddress =
+            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, orderSalt);
 
         assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
@@ -313,33 +307,37 @@ contract BasicOrderTest is Test {
     function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.signRequestData.expectedApproveExpression = "";
-        vm.expectRevert(InvalidExpectedApproveExpression.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidApproveExpression"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedRejectExpression() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.signRequestData.expectedRejectExpression = "";
-        vm.expectRevert(InvalidExpectedRejectExpression.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidRejectExpression"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_BasicOrderRevertWhenInvalidThresholdPrice() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.thresholdPrice = 0;
-        vm.expectRevert(InvalidThresholdPrice.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidThresholdPrice"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_BasicOrderRevertWhenInvalidTxTo() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.creatorDefinedTxFields.to = address(0);
-        vm.expectRevert(InvalidTxTo.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidTxTo"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {

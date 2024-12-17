@@ -58,7 +58,10 @@ contract OrderFactory is Ownable {
      * @return The computed address of the BasicOrder
      */
     function computeOrderAddress(bytes32 salt) external view returns (address) {
-        return Create3.addressOf(salt);
+        // front-running protection
+        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(msg.sender)), salt));
+
+        return Create3.addressOf(guardedSalt);
     }
 
     /**
@@ -78,17 +81,20 @@ contract OrderFactory is Ownable {
         external
         returns (address order)
     {
-        if (usedSalts[salt]) {
+        // front-running protection
+        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(msg.sender)), salt));
+
+        if (usedSalts[guardedSalt]) {
             revert SaltAlreadyUsed();
         }
 
-        usedSalts[salt] = true;
-        emit SaltUsed(salt, msg.sender);
+        usedSalts[guardedSalt] = true;
+        emit SaltUsed(guardedSalt, msg.sender);
 
         if (orderType == OrderType.Basic) {
-            return _createBasicOrder(salt, _orderData, maxKeychainFees, scheduler);
+            return _createBasicOrder(guardedSalt, _orderData, maxKeychainFees, scheduler);
         } else if (orderType == OrderType.Advanced) {
-            return _createAdvancedOrder(salt, _orderData, maxKeychainFees);
+            return _createAdvancedOrder(guardedSalt, _orderData, maxKeychainFees);
         } else {
             revert UnsupportedOrder();
         }

@@ -10,7 +10,7 @@ import {
   http,
   readContract,
 } from '@wagmi/core';
-import { delay } from '@warden-automated-orders/utils';
+import { delay, logInfo } from '@warden-automated-orders/utils';
 import { LRUCache } from 'lru-cache';
 import {
   AbiEvent,
@@ -27,12 +27,14 @@ import {
   parseSignature,
   serializeTransaction,
   TransactionReceiptNotFoundError,
+  Hash,
 } from 'viem';
 import { keccak256, hexToBytes } from 'viem';
 import { AwsKmsSigner } from '@warden/aws-kms-signer';
 import { IEvmConfiguration } from '../types/evm/configuration.js';
 import { GasFeeData } from '../types/evm/gas.js';
 import { IEventPollingConfiguration } from '../types/evm/pollingConfiguration.js';
+import BN from 'bn.js';
 
 import asn1 from 'asn1.js';
 const { define } = asn1;
@@ -236,7 +238,7 @@ export class EvmClient {
     contractAddress: string,
     functionAbi: AbiFunction,
     args: unknown[],
-  ): Promise<void> {
+  ): Promise<Hash> {
     const data = encodeFunctionData({
       abi: [functionAbi],
       functionName: functionAbi.name,
@@ -268,7 +270,10 @@ export class EvmClient {
     const decodedSignature = EcdsaSigAsnParse.decode(Buffer.from(signatureDER), 'der');
 
     const r = decodedSignature.r;
-    const s = decodedSignature.s;
+
+    const secp256k1N = new BN("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", 16); // max value on the curve
+    const secp256k1halfN = secp256k1N.div(new BN(2)); // half of the curve
+    const s = decodedSignature.s.gt(secp256k1halfN) ? secp256k1N.sub(decodedSignature.s) : decodedSignature.s;
 
     const rBuffer = r.toArrayLike(Buffer, 'be', 32);
     const sBuffer = s.toArrayLike(Buffer, 'be', 32);
@@ -306,10 +311,11 @@ export class EvmClient {
 
     const serializedSignedTransactionHex = serializedSignedTransaction as Hex;
 
-    await this.client.request({
-      method: 'eth_sendRawTransaction',
-      params: [serializedSignedTransactionHex],
-    });
+    const txHash = await this.client.sendRawTransaction({ serializedTransaction: serializedSignedTransactionHex });
+
+    logInfo(`Call to ${contractAddress}, tx hash ${txHash}`);
+
+    return txHash;
   }
 
   private decodeEventLog<T>(eventAbi: AbiEvent, log: Log): T {

@@ -7,6 +7,7 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
 import { Registry } from "./Registry.sol";
 import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 enum OrderType {
     Basic,
@@ -26,7 +27,7 @@ event SchedulerChanged(address indexed oldScheduler, address indexed newSchedule
 
 event SaltUsed(bytes32 indexed salt, address indexed creator);
 
-contract OrderFactory is Ownable {
+contract OrderFactory is Ownable, ReentrancyGuard {
     // Mapping from order contract to order creator
     mapping(address orderAddress => address orderCreator) public orders;
 
@@ -79,6 +80,7 @@ contract OrderFactory is Ownable {
         bytes32 salt
     )
         external
+        nonReentrant
         returns (address order)
     {
         // front-running protection
@@ -134,7 +136,8 @@ contract OrderFactory is Ownable {
 
         address orderAddress = Create3.create3(salt, bytecode);
 
-        if (orderAddress == address(0)) {
+        address expectedAddress = Create3.addressOf(salt);
+        if (orderAddress == address(0) || orderAddress != expectedAddress) {
             revert OrderDeploymentFailed(salt);
         }
 

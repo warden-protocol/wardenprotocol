@@ -40,22 +40,15 @@ forge script script/Deploy.s.sol:Deploy \
 4.Create an order
 
 ```bash
-# Example order creation command
 forge script script/CreateOrder.s.sol:CreateOrder \
     --rpc-url $RPC_URL \
-    --chain-id $CHAIN_ID \
     --broadcast \
     --sig "run(uint256,uint8,(string,string),(uint256,uint256,address),(uint256,address[],address,uint256),uint64,uint64,uint64,bytes,bytes)" \
-    3324181371 \
-    0 \
-    '("ETH","USD")' \
-    '(100000000000000,11155111,0x467b9D1B03683C8177155Be990238bEeB1d5461f)' \
-    '(1,[0xfff9976782d46cc05630d1f6ebab18b2324d6b14,0xb4f1737af37711e9a5890d9510c9bb60e170cb0d],0x5feAeD593ef59efEf78d97721F78c0AAC16F3dC5,1735208842)' \
-    1 \
-    0 \
-    1000000000 \
-    0x616e7928312c2077617264656e2e73706163652e6f776e65727329 \
-    0x616e7928312c2077617264656e2e73706163652e6f776e65727329
+    3324181371 \  # threshold price
+    0 \          # LTE condition
+    '("ETH","USD")' \  # price pair
+    '(100000000000000,11155111,0x467b...)' \  # tx fields
+    # ... other parameters
 ```
 
 **Key Parameters Explained:**

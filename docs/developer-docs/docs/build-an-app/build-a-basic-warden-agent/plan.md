@@ -14,15 +14,23 @@ You can find the full sample code on [GitHub](https://github.com/warden-protocol
 
 ## Architecture
 
-The Agent architecture will include the following components:
+**BasicOrder Contract:** *Core trading logic*
 
-- **OrderAgent:** Core contract that monitors prices and executes trades
-- **AgentFactory:** Creates and manages agent instances
-- **Registry:** Tracks all agents and their transaction history
-- **Configuration:** Defines trading parameters and conditions
-- **External Integrations:** Price feeds and transaction authorization
+- Price monitoring
+- Transaction building
+- Uniswap integration
 
-The system follows a factory pattern with the `OrderFactory` creating `BasicOrder` instances, which are tracked in the Registry. The orders interact with external services through precompiles for `price feeds` and `transaction signing.`
+**Factory & Registry:** *Management layer*
+
+- Agent deployment
+- Transaction tracking
+- Access control
+
+**External Services:**
+
+- Slinky for price feeds
+- Warden for transaction signing
+- Uniswap V2 for swaps
 
 ## User flow
 
@@ -90,10 +98,11 @@ wrap_comments = true
 
 ```bash
   uniswap-trading-agent
-├── src/
-├── test/
-├── script/
-└── mocks/
+warden-trading-agent/
+├── src/              # Core contracts
+├── scripts/          # Deployment scripts
+├── test/             # Test files
+└── mocks/            # Mock services
 ```
 
 In the next chapter you will learn how to implement the basic structure for trading agent.

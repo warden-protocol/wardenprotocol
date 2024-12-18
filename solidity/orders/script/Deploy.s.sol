@@ -45,9 +45,18 @@ contract Deploy is Script {
         bytes memory factoryInitCode =
             abi.encodePacked(type(OrderFactory).creationCode, abi.encode(registryAddress, scheduler, factoryOwner));
 
-        deployWithCreate2(factorySalt, factoryInitCode, "OrderFactory");
+        address factoryAddress = deployWithCreate2(factorySalt, factoryInitCode, "OrderFactory");
 
         vm.stopBroadcast();
+
+        string memory output = "output";
+        string memory registryK = "registry";
+        string memory factoryK = "orderFactory";
+        vm.serializeString(output, registryK, vm.toString(registryAddress));
+        string memory o2 = vm.serializeString(output, factoryK, vm.toString(factoryAddress));
+        string memory chainId =vm.envString('CHAIN_ID');
+        string memory path = string.concat('./broadcast/Deploy.s.sol/', chainId, '/latest.json');
+        vm.writeJson(o2, path);
     }
 
     function deployWithCreate2(bytes32 salt, bytes memory initCode, string memory name) internal returns (address) {

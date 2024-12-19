@@ -21,6 +21,7 @@ import (
 	// this line is used by starport scaffolding # 1
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/async/module"
+	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -190,6 +191,8 @@ type ModuleInputs struct {
 
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
+
+	Prophet *prophet.P `optional:"true"`
 }
 
 type ModuleOutputs struct {
@@ -211,6 +214,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.StoreService,
 		in.Logger,
 		authority.String(),
+		in.Prophet,
 	)
 	m := NewAppModule(
 		in.Cdc,

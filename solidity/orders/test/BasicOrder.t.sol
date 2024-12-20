@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { console } from "forge-std/src/console.sol";
 import { Test } from "forge-std/src/Test.sol";
 import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";

@@ -49,14 +49,14 @@ contract Deploy is Script {
 
         vm.stopBroadcast();
 
+        string memory chainId = vm.envString("CHAIN_ID");
         string memory output = "output";
         string memory registryK = "registry";
         string memory factoryK = "orderFactory";
         vm.serializeString(output, registryK, vm.toString(registryAddress));
-        string memory o2 = vm.serializeString(output, factoryK, vm.toString(factoryAddress));
-        string memory chainId =vm.envString('CHAIN_ID');
-        string memory path = string.concat('./broadcast/Deploy.s.sol/', chainId, '/latest.json');
-        vm.writeJson(o2, path);
+        string memory out = vm.serializeString(output, factoryK, vm.toString(factoryAddress));
+        string memory path = string.concat("./broadcast/Deploy.s.sol/", chainId, "/latest.json");
+        vm.writeJson(out, path);
     }
 
     function deployWithCreate2(bytes32 salt, bytes memory initCode, string memory name) internal returns (address) {

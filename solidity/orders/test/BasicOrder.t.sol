@@ -471,7 +471,8 @@ contract BasicOrderTest is Test {
         bytes32 salt = keccak256(abi.encodePacked("unique_salt"));
 
         // Compute the expected order address
-        address computedAddress = _testData.orderFactory.computeOrderAddress(salt);
+        // solhint-disable-next-line
+        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
 
         // Create the order
         Types.OrderData memory orderData = _orderData;
@@ -491,7 +492,8 @@ contract BasicOrderTest is Test {
         );
 
         // Compute the expected order address before deployment
-        address computedAddress = _testData.orderFactory.computeOrderAddress(salt);
+        // solhint-disable-next-line
+        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
 
         // Ensure that no contract is deployed at the computed address yet
         assertEq(computedAddress.code.length, 0, "Order address should not be deployed yet");
@@ -528,7 +530,7 @@ contract BasicOrderTest is Test {
 
         // Change the caller to a different address
         address newSender = address(0xBEEF);
-        vm.prank(newSender);
+        vm.prank(address(this), newSender);
 
         // This should succeed because the salt is guarded by msg.sender
         _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
@@ -538,7 +540,8 @@ contract BasicOrderTest is Test {
         bytes32 salt = keccak256(abi.encodePacked("guarded_salt"));
 
         // Compute order address with original sender
-        address computedAddressOriginal = _testData.orderFactory.computeOrderAddress(salt);
+        // solhint-disable-next-line
+        address computedAddressOriginal = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
 
         // Create order with original sender
         Types.OrderData memory orderData = _orderData;
@@ -555,11 +558,10 @@ contract BasicOrderTest is Test {
 
         // Compute order address with a different sender
         address differentSender = address(0xDEAD);
-        vm.prank(differentSender);
-        address computedAddressDifferent = _testData.orderFactory.computeOrderAddress(salt);
+        address computedAddressDifferent = _testData.orderFactory.computeOrderAddress(differentSender, salt);
 
         // Create order with different sender
-        vm.prank(differentSender);
+        vm.prank(address(this), differentSender);
         address orderAddressDifferent =
             _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
 

@@ -55,12 +55,13 @@ contract OrderFactory is Ownable, ReentrancyGuard {
 
     /**
      * @notice Computes the deterministic address of a BasicOrder without deploying it
+     * @param origin The potential order creator
      * @param salt The unique salt provided by the frontend
      * @return The computed address of the BasicOrder
      */
-    function computeOrderAddress(bytes32 salt) external view returns (address) {
+    function computeOrderAddress(address origin, bytes32 salt) external view returns (address) {
         // front-running protection
-        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(msg.sender)), salt));
+        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(origin)), salt));
 
         return Create3.addressOf(guardedSalt);
     }
@@ -84,14 +85,17 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         returns (address order)
     {
         // front-running protection
-        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(msg.sender)), salt));
+        // we use tx.origin here as msg.sender the same for all orders created through factory
+        // solhint-disable-next-line
+        address origin = tx.origin;
+        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(origin)), salt));
 
         if (usedSalts[guardedSalt]) {
             revert SaltAlreadyUsed();
         }
 
         usedSalts[guardedSalt] = true;
-        emit SaltUsed(guardedSalt, msg.sender);
+        emit SaltUsed(guardedSalt, origin);
 
         if (orderType == OrderType.Basic) {
             return _createBasicOrder(guardedSalt, _orderData, maxKeychainFees, scheduler);

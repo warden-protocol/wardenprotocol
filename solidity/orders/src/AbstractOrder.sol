@@ -12,8 +12,11 @@ abstract contract AbstractOrder {
         uint256 maxFeePerGas,
         bytes[] calldata accessList,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields
-
-    ) public pure returns (bytes memory unsignedTx, bytes32 txHash) {
+    )
+        public
+        pure
+        returns (bytes memory unsignedTx, bytes32 txHash)
+    {
         uint256 txType = 2; // eip1559 tx type
         bytes[] memory txArray = new bytes[](9);
         txArray[0] = RLPEncode.encodeUint(creatorDefinedTxFields.chainId);

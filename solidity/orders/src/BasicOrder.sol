@@ -130,12 +130,7 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
 
         bytes[] memory emptyAccessList = new bytes[](0);
         (bytes memory unsignedTx, bytes32 txHash) = this.encodeUnsignedEIP1559(
-            nonce,
-            gas,
-            maxPriorityFeePerGas,
-            maxFeePerGas,
-            emptyAccessList,
-            orderData.creatorDefinedTxFields
+            nonce, gas, maxPriorityFeePerGas, maxFeePerGas, emptyAccessList, orderData.creatorDefinedTxFields
         );
 
         _unsignedTx = unsignedTx;

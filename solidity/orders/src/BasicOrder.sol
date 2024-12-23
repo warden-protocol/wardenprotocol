@@ -6,9 +6,9 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
+import { AbstractOrder } from "./AbstractOrder.sol";
 import { Types } from "./Types.sol";
 import { Registry } from "./Registry.sol";
-import { RLPEncode } from "./RLPEncode.sol";
 import { Strings } from "./Strings.sol";
 
 error ConditionNotMet();
@@ -24,7 +24,7 @@ error InvalidTxTo();
 
 event Executed();
 
-contract BasicOrder is IExecution, ReentrancyGuard {
+contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
     using Strings for *;
 
     Types.OrderData public orderData;
@@ -129,23 +129,17 @@ contract BasicOrder is IExecution, ReentrancyGuard {
         }
 
         bytes[] memory emptyAccessList = new bytes[](0);
-        uint256 txType = 2; // eip1559 tx type
-        bytes[] memory txArray = new bytes[](9);
-        txArray[0] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.chainId);
-        txArray[1] = RLPEncode.encodeUint(nonce);
-        txArray[2] = RLPEncode.encodeUint(maxPriorityFeePerGas);
-        txArray[3] = RLPEncode.encodeUint(maxFeePerGas);
-        txArray[4] = RLPEncode.encodeUint(gas);
-        txArray[5] = RLPEncode.encodeAddress(orderData.creatorDefinedTxFields.to);
-        txArray[6] = RLPEncode.encodeUint(orderData.creatorDefinedTxFields.value);
-        txArray[7] = RLPEncode.encodeBytes(orderData.creatorDefinedTxFields.data);
-        txArray[8] = RLPEncode.encodeList(emptyAccessList);
-        bytes memory unsignedTxEncoded = RLPEncode.encodeList(txArray);
-        bytes memory unsignedTx = RLPEncode.concat(RLPEncode.encodeUint(txType), unsignedTxEncoded);
+        (bytes memory unsignedTx, bytes32 txHash) = this.encodeUnsignedEIP1559(
+            nonce,
+            gas,
+            maxPriorityFeePerGas,
+            maxFeePerGas,
+            emptyAccessList,
+            orderData.creatorDefinedTxFields
+        );
 
         _unsignedTx = unsignedTx;
 
-        bytes32 txHash = keccak256(unsignedTx);
         bytes memory signRequestInput = abi.encodePacked(txHash);
 
         _executed = WARDEN_PRECOMPILE.newSignRequest(

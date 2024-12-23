@@ -37,7 +37,6 @@ var (
 	FutureByAddressPrefix = collections.NewPrefix(2)
 	ResultsPrefix         = collections.NewPrefix(3)
 	VotesPrefix           = collections.NewPrefix(4)
-	PendingFuturesPrefix  = collections.NewPrefix(5)
 )
 
 func NewKeeper(

@@ -5,32 +5,13 @@ import (
 
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
 func (k Keeper) BeginBlocker(ctx context.Context) error {
 	return nil
 }
 
-// EndBlocker schedules some pending futures to the Prophet's process.
-//
-// Note: if a future remains pending for more blocks, it could be re-added to
-// Prophet even if it's already in the Prophet's queue or it's being processed.
-// This is not a problem as Prophet filters out incoming duplicate futures.
 func (k Keeper) EndBlocker(ctx context.Context) error {
-	futures, err := k.futures.PendingFutures(ctx, 10)
-	if err != nil {
-		return err
-	}
-
-	for _, f := range futures {
-		k.p.AddFuture(prophet.Future{
-			ID:      f.Id,
-			Handler: f.Handler,
-			Input:   f.Input,
-		})
-	}
-
 	return nil
 }
 

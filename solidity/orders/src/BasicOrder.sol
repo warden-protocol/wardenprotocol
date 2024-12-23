@@ -184,10 +184,6 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
         });
     }
 
-    function setByAIService(bytes calldata) external pure returns (bool success) {
-        success = false;
-    }
-
     function getTx() external view returns (bytes memory transaction) {
         if (!isExecuted()) {
             revert ExecutedError();

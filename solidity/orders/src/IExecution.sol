@@ -10,8 +10,7 @@ struct ExecutionData {
 }
 
 enum Caller {
-    Scheduler,
-    AI
+    Scheduler
 }
 
 interface IExecution {
@@ -45,13 +44,6 @@ interface IExecution {
      * @dev Returns the list of intended callers.
      */
     function callers() external returns (Caller[] memory callersList);
-
-    /**
-     * @dev Receives data by AI service.
-     * @param data Data from AI service.
-     * @return success A boolean value indicating whenever data was processed correctly.
-     */
-    function setByAIService(bytes calldata data) external returns (bool success);
 
     /**
      * @dev Indicates if execution was executed already.

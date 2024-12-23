@@ -46,7 +46,6 @@ func NewKeeper(
 	logger log.Logger,
 	authority string,
 	p *prophet.P,
-	//selfValAddr sdk.ConsAddress,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -89,29 +88,6 @@ func (k Keeper) GetAuthority() string {
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
-}
-
-func (k Keeper) AddFutureResult(ctx context.Context, id uint64, submitter, output []byte) error {
-	if err := k.futures.SetResult(ctx, types.FutureResult{
-		Id:        id,
-		Output:    output,
-		Submitter: submitter,
-	}); err != nil {
-		return err
-	}
-
-	if err := k.SetFutureVote(ctx, id, submitter, types.FutureVoteType_VOTE_TYPE_VERIFIED); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (k Keeper) SetFutureVote(ctx context.Context, id uint64, voter []byte, vote types.FutureVoteType) error {
-	if !vote.IsValid() {
-		return fmt.Errorf("invalid vote type: %v", vote)
-	}
-	return k.votes.Set(ctx, collections.Join(id, voter), int32(vote))
 }
 
 func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.FutureVote, error) {

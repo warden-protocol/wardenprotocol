@@ -5,7 +5,6 @@ import (
 
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/skip-mev/slinky/abci/ve"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -85,51 +84,12 @@ func (k Keeper) PrepareProposalHandler() sdk.PrepareProposalHandler {
 		resp := &cometabci.ResponsePrepareProposal{
 			Txs: req.Txs,
 		}
-
-		if !ve.VoteExtensionsEnabled(ctx) {
-			return resp, nil
-		}
-
-		log := ctx.Logger().With("module", "prophet")
-		asyncTx, err := k.buildAsyncTx(req.LocalLastCommit.Votes)
-		if err != nil {
-			log.Error("failed to build async tx", "err", err)
-			return resp, nil
-		}
-		resp.Txs = trimExcessBytes(resp.Txs, req.MaxTxBytes-int64(len(asyncTx)))
-		resp.Txs = injectTx(asyncTx, 1, resp.Txs)
-
 		return resp, nil
 	}
 }
 
 func (k Keeper) ProcessProposalHandler() sdk.ProcessProposalHandler {
 	return func(ctx sdk.Context, req *cometabci.RequestProcessProposal) (*cometabci.ResponseProcessProposal, error) {
-		resp := &cometabci.ResponseProcessProposal{
-			Status: cometabci.ResponseProcessProposal_ACCEPT,
-		}
-
-		if !ve.VoteExtensionsEnabled(ctx) || len(req.Txs) < 2 {
-			return resp, nil
-		}
-
-		log := ctx.Logger().With("module", "prophet")
-		asyncTx := req.Txs[1]
-		if len(asyncTx) == 0 {
-			return resp, nil
-		}
-
-		var tx types.AsyncInjectedTx
-		if err := tx.Unmarshal(asyncTx); err != nil {
-			log.Error("failed to unmarshal async tx", "err", err)
-			// probably not an async tx?
-			// but slinky in this case rejects their proposal so maybe we
-			// should do the same?
-			return &cometabci.ResponseProcessProposal{
-				Status: cometabci.ResponseProcessProposal_ACCEPT,
-			}, nil
-		}
-
 		return &cometabci.ResponseProcessProposal{
 			Status: cometabci.ResponseProcessProposal_ACCEPT,
 		}, nil
@@ -143,48 +103,4 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 		resp := &sdk.ResponsePreBlock{}
 		return resp, nil
 	}
-}
-
-func (k Keeper) buildAsyncTx(votes []cometabci.ExtendedVoteInfo) ([]byte, error) {
-	tx := types.AsyncInjectedTx{
-		ExtendedVotesInfo: votes,
-	}
-
-	txBytes, err := tx.Marshal()
-	if err != nil {
-		return nil, err
-	}
-
-	return txBytes, nil
-}
-
-func injectTx(newTx []byte, position int, appTxs [][]byte) [][]byte {
-	if position < 0 {
-		panic("position must be >= 0")
-	}
-
-	if position == 0 {
-		return append([][]byte{newTx}, appTxs...)
-	}
-
-	if position >= len(appTxs) {
-		return append(appTxs, newTx)
-	}
-
-	return append(appTxs[:position], append([][]byte{newTx}, appTxs[position:]...)...)
-}
-
-func trimExcessBytes(txs [][]byte, maxSizeBytes int64) [][]byte {
-	var (
-		returnedTxs   [][]byte
-		consumedBytes int64
-	)
-	for _, tx := range txs {
-		consumedBytes += int64(len(tx))
-		if consumedBytes > maxSizeBytes {
-			break
-		}
-		returnedTxs = append(returnedTxs, tx)
-	}
-	return returnedTxs
 }

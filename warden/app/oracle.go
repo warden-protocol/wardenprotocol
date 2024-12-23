@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
-	cometabci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -212,16 +211,8 @@ func (app *App) setupABCILifecycle(
 	slinkyPreBlockHandler := app.slinkyClient.PreblockHandler()
 	slinkyVEHandler := app.slinkyClient.VoteExtensionHandler()
 
-	app.SetProcessProposal(combineProcessProposal(
-		slinkyProposalHandler.ProcessProposalHandler(),
-		app.AsyncKeeper.ProcessProposalHandler(),
-	))
-
-	app.SetPreBlocker(combinePreBlocker(
-		slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager),
-		app.AsyncKeeper.PreBlocker(),
-	))
-
+	app.SetProcessProposal(slinkyProposalHandler.ProcessProposalHandler())
+	app.SetPreBlocker(slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager))
 	veManager := vemanager.NewVoteExtensionManager()
 
 	// register slinky handlers
@@ -231,45 +222,9 @@ func (app *App) setupABCILifecycle(
 		slinkyProposalHandler.PrepareProposalHandler(),
 	)
 
-	// register x/async handlers
-	veManager.Register(
-		app.AsyncKeeper.ExtendVoteHandler(),
-		app.AsyncKeeper.VerifyVoteExtensionHandler(),
-		app.AsyncKeeper.PrepareProposalHandler(),
-	)
-
 	app.SetPrepareProposal(veManager.PrepareProposalHandler())
 	app.SetExtendVoteHandler(veManager.ExtendVoteHandler())
 	app.SetVerifyVoteExtensionHandler(veManager.VerifyVoteExtensionHandler())
-}
-
-func combineProcessProposal(a, b sdk.ProcessProposalHandler) sdk.ProcessProposalHandler {
-	return func(ctx sdk.Context, req *cometabci.RequestProcessProposal) (*cometabci.ResponseProcessProposal, error) {
-		resp, err := a(ctx, req)
-		if err != nil || resp.Status == cometabci.ResponseProcessProposal_REJECT {
-			return resp, err
-		}
-
-		return b(ctx, req)
-	}
-}
-
-func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker {
-	return func(ctx sdk.Context, req *cometabci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
-		respA, err := a(ctx, req)
-		if err != nil {
-			return respA, err
-		}
-
-		respB, err := b(ctx, req)
-		if err != nil {
-			return respB, err
-		}
-
-		return &sdk.ResponsePreBlock{
-			ConsensusParamsChanged: respA.ConsensusParamsChanged || respB.ConsensusParamsChanged,
-		}, nil
-	}
 }
 
 // WardenSlinkyCodec wraps slinky's codec.VoteExtensionCodec to support our

@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
+	storetypes "cosmossdk.io/store/types"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -253,4 +255,10 @@ func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error
 
 func (a *WardenSlinkyCodec) Encode(ve vetypes.OracleVoteExtension) ([]byte, error) {
 	return a.slinkyCodec.Encode(ve)
+}
+
+type AppUpgrade struct {
+	Name         string
+	Handler      upgradetypes.UpgradeHandler
+	StoreUpgrade storetypes.StoreUpgrades
 }

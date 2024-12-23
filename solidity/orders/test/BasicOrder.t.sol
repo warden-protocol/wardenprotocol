@@ -18,9 +18,8 @@ import { Caller, IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import {
-    BasicOrder, Executed, ConditionNotMet, ExecutedError, InvalidScheduler, Unauthorized
-} from "../src/BasicOrder.sol";
+import { InvalidScheduler } from "../src/AbstractOrder.sol";
+import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/BasicOrder.sol";
 import {
     BadCreatorAddress,
     ExecutionAlreadyRegistered,

@@ -13,7 +13,7 @@
   },
   "scripts": {
     "clean": "rm -rf cache out",
-    "build": "forge build src",
+    "build": "forge build src --via-ir",
     "lint": "yarn run lint:sol && yarn run prettier:check",
     "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\" --ignore-path \".prettierignore\"",

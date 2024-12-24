@@ -25,11 +25,11 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type AsyncInjectedTx struct {
+	// The results of the execution of the Futures.
+	Results []*FutureResult `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
 	// All the vote extensions gathered for this block.
-	//
-	// FIXME: slinky also does that, so technically we're duplicating information
-	// and wasting block space.
-	ExtendedVotesInfo []types.ExtendedVoteInfo `protobuf:"bytes,1,rep,name=extended_votes_info,json=extendedVotesInfo,proto3" json:"extended_votes_info"`
+	// TODO: slinky also does that, so technically we're duplicating information and wasting block space.
+	ExtendedVotesInfo []types.ExtendedVoteInfo `protobuf:"bytes,2,rep,name=extended_votes_info,json=extendedVotesInfo,proto3" json:"extended_votes_info"`
 }
 
 func (m *AsyncInjectedTx) Reset()         { *m = AsyncInjectedTx{} }
@@ -65,6 +65,13 @@ func (m *AsyncInjectedTx) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_AsyncInjectedTx proto.InternalMessageInfo
 
+func (m *AsyncInjectedTx) GetResults() []*FutureResult {
+	if m != nil {
+		return m.Results
+	}
+	return nil
+}
+
 func (m *AsyncInjectedTx) GetExtendedVotesInfo() []types.ExtendedVoteInfo {
 	if m != nil {
 		return m.ExtendedVotesInfo
@@ -72,11 +79,10 @@ func (m *AsyncInjectedTx) GetExtendedVotesInfo() []types.ExtendedVoteInfo {
 	return nil
 }
 
-// A vote extension coming from a validator. It contains results and votes for
-// some futures.
+// A vote extension coming from a validator. It contains multiple votes for
+// different Futures.
 type AsyncVoteExtension struct {
-	Results []*VEResultItem `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
-	Votes   []*VEVoteItem   `protobuf:"bytes,2,rep,name=votes,proto3" json:"votes,omitempty"`
+	Votes []*AsyncVoteExtensionItem `protobuf:"bytes,1,rep,name=votes,proto3" json:"votes,omitempty"`
 }
 
 func (m *AsyncVoteExtension) Reset()         { *m = AsyncVoteExtension{} }
@@ -112,89 +118,30 @@ func (m *AsyncVoteExtension) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_AsyncVoteExtension proto.InternalMessageInfo
 
-func (m *AsyncVoteExtension) GetResults() []*VEResultItem {
-	if m != nil {
-		return m.Results
-	}
-	return nil
-}
-
-func (m *AsyncVoteExtension) GetVotes() []*VEVoteItem {
+func (m *AsyncVoteExtension) GetVotes() []*AsyncVoteExtensionItem {
 	if m != nil {
 		return m.Votes
 	}
 	return nil
 }
 
-type VEResultItem struct {
-	FutureId uint64 `protobuf:"varint,1,opt,name=future_id,json=futureId,proto3" json:"future_id,omitempty"`
-	Output   []byte `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
-}
-
-func (m *VEResultItem) Reset()         { *m = VEResultItem{} }
-func (m *VEResultItem) String() string { return proto.CompactTextString(m) }
-func (*VEResultItem) ProtoMessage()    {}
-func (*VEResultItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e3e24cf4461cf67a, []int{2}
-}
-func (m *VEResultItem) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *VEResultItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_VEResultItem.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *VEResultItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_VEResultItem.Merge(m, src)
-}
-func (m *VEResultItem) XXX_Size() int {
-	return m.Size()
-}
-func (m *VEResultItem) XXX_DiscardUnknown() {
-	xxx_messageInfo_VEResultItem.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_VEResultItem proto.InternalMessageInfo
-
-func (m *VEResultItem) GetFutureId() uint64 {
-	if m != nil {
-		return m.FutureId
-	}
-	return 0
-}
-
-func (m *VEResultItem) GetOutput() []byte {
-	if m != nil {
-		return m.Output
-	}
-	return nil
-}
-
-type VEVoteItem struct {
+type AsyncVoteExtensionItem struct {
 	FutureId uint64         `protobuf:"varint,1,opt,name=future_id,json=futureId,proto3" json:"future_id,omitempty"`
 	Vote     FutureVoteType `protobuf:"varint,2,opt,name=vote,proto3,enum=warden.async.v1beta1.FutureVoteType" json:"vote,omitempty"`
 }
 
-func (m *VEVoteItem) Reset()         { *m = VEVoteItem{} }
-func (m *VEVoteItem) String() string { return proto.CompactTextString(m) }
-func (*VEVoteItem) ProtoMessage()    {}
-func (*VEVoteItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e3e24cf4461cf67a, []int{3}
+func (m *AsyncVoteExtensionItem) Reset()         { *m = AsyncVoteExtensionItem{} }
+func (m *AsyncVoteExtensionItem) String() string { return proto.CompactTextString(m) }
+func (*AsyncVoteExtensionItem) ProtoMessage()    {}
+func (*AsyncVoteExtensionItem) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3e24cf4461cf67a, []int{2}
 }
-func (m *VEVoteItem) XXX_Unmarshal(b []byte) error {
+func (m *AsyncVoteExtensionItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *VEVoteItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *AsyncVoteExtensionItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_VEVoteItem.Marshal(b, m, deterministic)
+		return xxx_messageInfo_AsyncVoteExtensionItem.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -204,26 +151,26 @@ func (m *VEVoteItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *VEVoteItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_VEVoteItem.Merge(m, src)
+func (m *AsyncVoteExtensionItem) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AsyncVoteExtensionItem.Merge(m, src)
 }
-func (m *VEVoteItem) XXX_Size() int {
+func (m *AsyncVoteExtensionItem) XXX_Size() int {
 	return m.Size()
 }
-func (m *VEVoteItem) XXX_DiscardUnknown() {
-	xxx_messageInfo_VEVoteItem.DiscardUnknown(m)
+func (m *AsyncVoteExtensionItem) XXX_DiscardUnknown() {
+	xxx_messageInfo_AsyncVoteExtensionItem.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_VEVoteItem proto.InternalMessageInfo
+var xxx_messageInfo_AsyncVoteExtensionItem proto.InternalMessageInfo
 
-func (m *VEVoteItem) GetFutureId() uint64 {
+func (m *AsyncVoteExtensionItem) GetFutureId() uint64 {
 	if m != nil {
 		return m.FutureId
 	}
 	return 0
 }
 
-func (m *VEVoteItem) GetVote() FutureVoteType {
+func (m *AsyncVoteExtensionItem) GetVote() FutureVoteType {
 	if m != nil {
 		return m.Vote
 	}
@@ -233,39 +180,36 @@ func (m *VEVoteItem) GetVote() FutureVoteType {
 func init() {
 	proto.RegisterType((*AsyncInjectedTx)(nil), "warden.async.v1beta1.AsyncInjectedTx")
 	proto.RegisterType((*AsyncVoteExtension)(nil), "warden.async.v1beta1.AsyncVoteExtension")
-	proto.RegisterType((*VEResultItem)(nil), "warden.async.v1beta1.VEResultItem")
-	proto.RegisterType((*VEVoteItem)(nil), "warden.async.v1beta1.VEVoteItem")
+	proto.RegisterType((*AsyncVoteExtensionItem)(nil), "warden.async.v1beta1.AsyncVoteExtensionItem")
 }
 
 func init() { proto.RegisterFile("warden/async/v1beta1/ve.proto", fileDescriptor_e3e24cf4461cf67a) }
 
 var fileDescriptor_e3e24cf4461cf67a = []byte{
-	// 390 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x52, 0x4f, 0x6b, 0xe2, 0x40,
-	0x14, 0xcf, 0xb8, 0xae, 0xbb, 0x3b, 0x2b, 0xbb, 0x6c, 0x56, 0x4a, 0x50, 0x9a, 0xc6, 0xd0, 0x83,
-	0x97, 0xce, 0xa0, 0x85, 0xd2, 0x43, 0x2f, 0xb5, 0x28, 0xe4, 0x1a, 0xc4, 0x42, 0x2f, 0x36, 0x7f,
-	0x46, 0x1b, 0xd1, 0x99, 0x90, 0x4c, 0xac, 0x7e, 0x85, 0x9e, 0xfa, 0xb1, 0x3c, 0x7a, 0xec, 0xa9,
-	0x14, 0xfd, 0x22, 0x65, 0x26, 0x23, 0x4a, 0xb1, 0xbd, 0xcd, 0x7b, 0xbf, 0x7f, 0x8f, 0x37, 0x0f,
-	0x1e, 0x3f, 0x7a, 0x49, 0x48, 0x28, 0xf6, 0xd2, 0x05, 0x0d, 0xf0, 0xac, 0xe9, 0x13, 0xee, 0x35,
-	0xf1, 0x8c, 0xa0, 0x38, 0x61, 0x9c, 0xe9, 0x95, 0x1c, 0x46, 0x12, 0x46, 0x0a, 0xae, 0x56, 0x46,
-	0x6c, 0xc4, 0x24, 0x01, 0x8b, 0x57, 0xce, 0xad, 0xd6, 0x38, 0xa1, 0x21, 0x49, 0xa6, 0x11, 0xe5,
-	0xd8, 0xf3, 0x83, 0x08, 0xf3, 0x45, 0x4c, 0x52, 0x05, 0xd6, 0x0f, 0xe6, 0x0c, 0x33, 0x9e, 0x25,
-	0x2a, 0xcb, 0x1e, 0xc3, 0xbf, 0xd7, 0x02, 0x75, 0xe8, 0x98, 0x04, 0x9c, 0x84, 0xbd, 0xb9, 0x7e,
-	0x0b, 0xff, 0x93, 0xb9, 0xb4, 0x0d, 0x07, 0x33, 0xc6, 0x49, 0x3a, 0x88, 0xe8, 0x90, 0x19, 0xc0,
-	0xfa, 0xd6, 0xf8, 0xdd, 0xaa, 0xa3, 0x5d, 0x20, 0x12, 0x81, 0xa8, 0xa3, 0xb8, 0x7d, 0xc6, 0x89,
-	0x43, 0x87, 0xac, 0x5d, 0x5c, 0xbe, 0x9e, 0x68, 0xee, 0x3f, 0xb2, 0xd7, 0x4f, 0x05, 0x60, 0x3f,
-	0x01, 0xa8, 0xcb, 0x30, 0xd1, 0x92, 0xb2, 0x34, 0x62, 0x54, 0xbf, 0x82, 0x3f, 0x12, 0x92, 0x66,
-	0x13, 0x9e, 0xaa, 0x0c, 0x1b, 0x1d, 0x5a, 0x00, 0xea, 0x77, 0x5c, 0x49, 0x73, 0x38, 0x99, 0xba,
-	0x5b, 0x89, 0x7e, 0x01, 0xbf, 0xcb, 0x21, 0x8d, 0x82, 0xd4, 0x5a, 0x9f, 0x69, 0xe5, 0x78, 0x42,
-	0x99, 0xd3, 0xed, 0x1b, 0x58, 0xde, 0x37, 0xd4, 0x6b, 0xf0, 0x57, 0xbe, 0x98, 0x41, 0x14, 0x1a,
-	0xc0, 0x02, 0x8d, 0xa2, 0xfb, 0x33, 0x6f, 0x38, 0xa1, 0x7e, 0x04, 0x4b, 0x2c, 0xe3, 0x71, 0xc6,
-	0x8d, 0x82, 0x05, 0x1a, 0x65, 0x57, 0x55, 0x76, 0x00, 0xe1, 0xce, 0xf9, 0x6b, 0x8b, 0x4b, 0x58,
-	0x14, 0xc1, 0xd2, 0xe0, 0x4f, 0xeb, 0xf4, 0xf0, 0x98, 0x5d, 0xc9, 0x16, 0x86, 0xbd, 0x45, 0x4c,
-	0x5c, 0xa9, 0x68, 0xdf, 0x2f, 0xd7, 0x26, 0x58, 0xad, 0x4d, 0xf0, 0xb6, 0x36, 0xc1, 0xf3, 0xc6,
-	0xd4, 0x56, 0x1b, 0x53, 0x7b, 0xd9, 0x98, 0xda, 0x5d, 0x77, 0x14, 0xf1, 0x87, 0xcc, 0x47, 0x01,
-	0x9b, 0xe2, 0xdc, 0xef, 0x4c, 0xfe, 0x6a, 0xc0, 0x26, 0xaa, 0xfe, 0x50, 0xe2, 0xb9, 0xba, 0x05,
-	0x79, 0x25, 0xdb, 0x8b, 0xf0, 0x4b, 0x92, 0x76, 0xfe, 0x1e, 0x00, 0x00, 0xff, 0xff, 0x46, 0xd4,
-	0x19, 0x03, 0x98, 0x02, 0x00, 0x00,
+	// 367 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x51, 0xcb, 0x4e, 0xf2, 0x40,
+	0x14, 0xee, 0xf0, 0xf3, 0xdf, 0xc6, 0x44, 0x63, 0x25, 0xa6, 0x81, 0x58, 0xa1, 0x71, 0xc1, 0x42,
+	0x67, 0x02, 0x6e, 0x5c, 0xb8, 0x91, 0x44, 0x92, 0x6e, 0x1b, 0xa2, 0xc6, 0x0d, 0xf6, 0x72, 0xc0,
+	0x1a, 0x98, 0x21, 0xed, 0x14, 0xe1, 0x2d, 0x7c, 0x0c, 0x1f, 0x85, 0x25, 0x4b, 0x57, 0xc6, 0xc0,
+	0x8b, 0x98, 0x99, 0x0e, 0xd1, 0x68, 0xe3, 0x6e, 0xe6, 0x7c, 0x97, 0xf3, 0xe5, 0x7c, 0xf8, 0xe0,
+	0xd1, 0x4f, 0x22, 0x60, 0xd4, 0x4f, 0xe7, 0x2c, 0xa4, 0xd3, 0x56, 0x00, 0xc2, 0x6f, 0xd1, 0x29,
+	0x90, 0x49, 0xc2, 0x05, 0x37, 0x2b, 0x39, 0x4c, 0x14, 0x4c, 0x34, 0x5c, 0xad, 0x0c, 0xf9, 0x90,
+	0x2b, 0x02, 0x95, 0xaf, 0x9c, 0x5b, 0xad, 0x09, 0x60, 0x11, 0x24, 0xe3, 0x98, 0x09, 0xea, 0x07,
+	0x61, 0x4c, 0xc5, 0x7c, 0x02, 0xa9, 0x06, 0x1b, 0x85, 0x7b, 0x06, 0x99, 0xc8, 0x12, 0xbd, 0xcb,
+	0x79, 0x46, 0x78, 0xe7, 0x42, 0xc2, 0x2e, 0x7b, 0x80, 0x50, 0x40, 0xd4, 0x9b, 0x99, 0xe7, 0xf8,
+	0x6f, 0x02, 0x69, 0x36, 0x12, 0xa9, 0x85, 0xea, 0xbf, 0x9a, 0x5b, 0x6d, 0x87, 0x14, 0x25, 0x22,
+	0x5d, 0x65, 0xe4, 0x29, 0xaa, 0xb7, 0x91, 0x98, 0xd7, 0x78, 0x0f, 0x66, 0x2a, 0x55, 0xd4, 0x9f,
+	0x72, 0x01, 0x69, 0x3f, 0x66, 0x03, 0x6e, 0x95, 0x94, 0x53, 0x83, 0x7c, 0xe4, 0x25, 0x32, 0x2f,
+	0xb9, 0xd4, 0xdc, 0x2b, 0x2e, 0xc0, 0x65, 0x03, 0xde, 0x29, 0x2f, 0x5e, 0x0f, 0x0d, 0x6f, 0x17,
+	0x3e, 0xcd, 0x53, 0x09, 0x38, 0x37, 0xd8, 0x54, 0x49, 0xe5, 0x44, 0xa9, 0xd2, 0x98, 0x33, 0xb3,
+	0x83, 0x7f, 0xab, 0x2d, 0x3a, 0xea, 0x71, 0x71, 0xd4, 0xef, 0x42, 0x57, 0xc0, 0xd8, 0xcb, 0xa5,
+	0x0e, 0xc7, 0xfb, 0xc5, 0x04, 0xb3, 0x86, 0xff, 0xe7, 0xe7, 0xea, 0xc7, 0x91, 0x85, 0xea, 0xa8,
+	0x59, 0xf6, 0xfe, 0xe5, 0x03, 0x37, 0x32, 0xcf, 0x70, 0x59, 0xea, 0xad, 0x52, 0x1d, 0x35, 0xb7,
+	0xdb, 0x47, 0x3f, 0x1d, 0x49, 0x3a, 0xf7, 0xe6, 0x13, 0xf0, 0x94, 0xa2, 0x73, 0xb7, 0x58, 0xd9,
+	0x68, 0xb9, 0xb2, 0xd1, 0xdb, 0xca, 0x46, 0x4f, 0x6b, 0xdb, 0x58, 0xae, 0x6d, 0xe3, 0x65, 0x6d,
+	0x1b, 0xb7, 0xdd, 0x61, 0x2c, 0xee, 0xb3, 0x80, 0x84, 0x7c, 0x4c, 0x73, 0xbf, 0x13, 0x55, 0x54,
+	0xc8, 0x47, 0xfa, 0xff, 0xe5, 0x4b, 0x67, 0xba, 0x5e, 0x55, 0xfc, 0xa6, 0xe4, 0xe0, 0x8f, 0xa2,
+	0x9d, 0xbe, 0x07, 0x00, 0x00, 0xff, 0xff, 0xae, 0x79, 0x85, 0xd7, 0x6b, 0x02, 0x00, 0x00,
 }
 
 func (m *AsyncInjectedTx) Marshal() (dAtA []byte, err error) {
@@ -292,6 +236,20 @@ func (m *AsyncInjectedTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		for iNdEx := len(m.ExtendedVotesInfo) - 1; iNdEx >= 0; iNdEx-- {
 			{
 				size, err := m.ExtendedVotesInfo[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintVe(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Results) > 0 {
+		for iNdEx := len(m.Results) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Results[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -336,27 +294,13 @@ func (m *AsyncVoteExtension) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintVe(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.Results) > 0 {
-		for iNdEx := len(m.Results) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Results[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintVe(dAtA, i, uint64(size))
-			}
-			i--
 			dAtA[i] = 0xa
 		}
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *VEResultItem) Marshal() (dAtA []byte, err error) {
+func (m *AsyncVoteExtensionItem) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -366,47 +310,12 @@ func (m *VEResultItem) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *VEResultItem) MarshalTo(dAtA []byte) (int, error) {
+func (m *AsyncVoteExtensionItem) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *VEResultItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Output) > 0 {
-		i -= len(m.Output)
-		copy(dAtA[i:], m.Output)
-		i = encodeVarintVe(dAtA, i, uint64(len(m.Output)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.FutureId != 0 {
-		i = encodeVarintVe(dAtA, i, uint64(m.FutureId))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *VEVoteItem) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *VEVoteItem) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *VEVoteItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *AsyncVoteExtensionItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -441,6 +350,12 @@ func (m *AsyncInjectedTx) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if len(m.Results) > 0 {
+		for _, e := range m.Results {
+			l = e.Size()
+			n += 1 + l + sovVe(uint64(l))
+		}
+	}
 	if len(m.ExtendedVotesInfo) > 0 {
 		for _, e := range m.ExtendedVotesInfo {
 			l = e.Size()
@@ -456,12 +371,6 @@ func (m *AsyncVoteExtension) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.Results) > 0 {
-		for _, e := range m.Results {
-			l = e.Size()
-			n += 1 + l + sovVe(uint64(l))
-		}
-	}
 	if len(m.Votes) > 0 {
 		for _, e := range m.Votes {
 			l = e.Size()
@@ -471,23 +380,7 @@ func (m *AsyncVoteExtension) Size() (n int) {
 	return n
 }
 
-func (m *VEResultItem) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.FutureId != 0 {
-		n += 1 + sovVe(uint64(m.FutureId))
-	}
-	l = len(m.Output)
-	if l > 0 {
-		n += 1 + l + sovVe(uint64(l))
-	}
-	return n
-}
-
-func (m *VEVoteItem) Size() (n int) {
+func (m *AsyncVoteExtensionItem) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -538,6 +431,40 @@ func (m *AsyncInjectedTx) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Results", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVe
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthVe
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthVe
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Results = append(m.Results, &FutureResult{})
+			if err := m.Results[len(m.Results)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ExtendedVotesInfo", wireType)
 			}
@@ -623,40 +550,6 @@ func (m *AsyncVoteExtension) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Results", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowVe
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthVe
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthVe
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Results = append(m.Results, &VEResultItem{})
-			if err := m.Results[len(m.Results)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Votes", wireType)
 			}
 			var msglen int
@@ -684,7 +577,7 @@ func (m *AsyncVoteExtension) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Votes = append(m.Votes, &VEVoteItem{})
+			m.Votes = append(m.Votes, &AsyncVoteExtensionItem{})
 			if err := m.Votes[len(m.Votes)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -710,7 +603,7 @@ func (m *AsyncVoteExtension) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *VEResultItem) Unmarshal(dAtA []byte) error {
+func (m *AsyncVoteExtensionItem) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -733,113 +626,10 @@ func (m *VEResultItem) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: VEResultItem: wiretype end group for non-group")
+			return fmt.Errorf("proto: AsyncVoteExtensionItem: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: VEResultItem: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FutureId", wireType)
-			}
-			m.FutureId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowVe
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.FutureId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowVe
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthVe
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthVe
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Output = append(m.Output[:0], dAtA[iNdEx:postIndex]...)
-			if m.Output == nil {
-				m.Output = []byte{}
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipVe(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthVe
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *VEVoteItem) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowVe
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: VEVoteItem: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: VEVoteItem: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: AsyncVoteExtensionItem: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

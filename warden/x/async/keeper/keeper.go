@@ -10,7 +10,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
@@ -26,8 +25,6 @@ type (
 
 		futures *FutureKeeper
 		votes   collections.Map[collections.Pair[uint64, []byte], int32]
-
-		p *prophet.P
 	}
 )
 
@@ -37,7 +34,6 @@ var (
 	FutureByAddressPrefix = collections.NewPrefix(2)
 	ResultsPrefix         = collections.NewPrefix(3)
 	VotesPrefix           = collections.NewPrefix(4)
-	PendingFuturesPrefix  = collections.NewPrefix(5)
 )
 
 func NewKeeper(
@@ -45,8 +41,6 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
-	p *prophet.P,
-	//selfValAddr sdk.ConsAddress,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -76,8 +70,6 @@ func NewKeeper(
 
 		futures: futures,
 		votes:   votes,
-
-		p: p,
 	}
 }
 
@@ -89,29 +81,6 @@ func (k Keeper) GetAuthority() string {
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
-}
-
-func (k Keeper) AddFutureResult(ctx context.Context, id uint64, submitter, output []byte) error {
-	if err := k.futures.SetResult(ctx, types.FutureResult{
-		Id:        id,
-		Output:    output,
-		Submitter: submitter,
-	}); err != nil {
-		return err
-	}
-
-	if err := k.SetFutureVote(ctx, id, submitter, types.FutureVoteType_VOTE_TYPE_VERIFIED); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (k Keeper) SetFutureVote(ctx context.Context, id uint64, voter []byte, vote types.FutureVoteType) error {
-	if !vote.IsValid() {
-		return fmt.Errorf("invalid vote type: %v", vote)
-	}
-	return k.votes.Set(ctx, collections.Join(id, voter), int32(vote))
 }
 
 func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.FutureVote, error) {

@@ -86,9 +86,6 @@ import (
 	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
-
-	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
 )
 
 const (
@@ -115,8 +112,6 @@ type App struct {
 	appCodec          codec.Codec
 	txConfig          client.TxConfig
 	interfaceRegistry codectypes.InterfaceRegistry
-
-	prophet *prophet.P
 
 	// keepers
 	AccountKeeper         authkeeper.AccountKeeper
@@ -245,12 +240,6 @@ func New(
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
-	prophet.Register("echo", echo.Handler{})
-	prophetP, err := prophet.New()
-	if err != nil {
-		panic(fmt.Errorf("failed to create prophet: %w", err))
-	}
-
 	var (
 		app        = &App{}
 		appBuilder *runtime.AppBuilder
@@ -273,10 +262,6 @@ func New(
 				app.GetFeemarketKeeper,
 				// Supply the logger
 				logger,
-
-				// Supply the prophet
-				prophetP,
-
 				func() ast.Expander {
 					// I don't know if a lazy function is the best way to do this.
 					// x/act wants to access this ExpanderManager, but the
@@ -338,7 +323,6 @@ func New(
 		&app.legacyAmino,
 		&app.txConfig,
 		&app.interfaceRegistry,
-		&app.prophet,
 		&app.AccountKeeper,
 		&app.BankKeeper,
 		&app.StakingKeeper,
@@ -403,10 +387,6 @@ func New(
 
 	// oracle initialization
 	app.initializeOracles(appOpts)
-
-	if err := app.prophet.Run(); err != nil {
-		panic(fmt.Errorf("failed to run prophet: %w", err))
-	}
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)

@@ -87,8 +87,8 @@ You can find the full code on GitHub: [`/src/Registry.sol`](https://github.com/w
 :::
 
 ```solidity title="/src/Registry.sol"
-contract Registry is ReentrancyGuard {  // NEW: Added ReentrancyGuard
-    // Track the order creators
+contract Registry is ReentrancyGuard {
+    // Track creators of the order
     mapping(address executionAddress => address orderCreator) public executions;
     
     // Store the transaction data

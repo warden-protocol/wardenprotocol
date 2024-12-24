@@ -10,7 +10,10 @@ Mock precompiles are essential for end-to-end testing of the Basic Agent.
 
 This article explains how to build and test two mock precompiles: Slinky and Warden. Before you proceed, create a `/mock` directory for storing them.
 
-You can learn about mock precompiles in the [Mock Precompiles](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/mocks) section and test under [Test Scenarios](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test).
+:::note
+- For the full code of mock precompiles, see GitHub: [/orders/mock](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+- You can test the precompiles in [/orders/test](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test)
+:::
 
 
 ## 1. Create mock precompiles

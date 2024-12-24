@@ -1,16 +1,18 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
-# Order Factory Contract
+# Create the OrderFactory contract
 
-## Implementing the Order Factory Contract
+The `OrderFactory` contract manages agent creation and tracking with enhanced security features.
 
-The OrderFactory contract manages agent creation and tracking with enhanced security features:
+Create a contract `OrderFactory.sol`.
 
-Create - `src/OrderFactory.sol`:
+:::note GitHub
+You can find the full code on GitHub: [`/src/OrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/OrderFactory.sol)
+:::
 
-```solidity
+```solidity title="/src/OrderFactory.sol"
 contract OrderFactory is Ownable {
     // NEW: Enhanced tracking and security
     mapping(address orderAddress => address orderCreator) public orders;
@@ -37,24 +39,24 @@ contract OrderFactory is Ownable {
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/OrderFactory.sol)
+**Key features:**
 
-**Key Features:**
+1. Factory pattern:
+   
+   - Creates new order instances
+   - Tracks order creators
+   - Supports multiple order types
+   
+2. Management:
+   
+   - Ownable for admin control
+   - Scheduler management
+   - Registry integration
+   
+3. Order creation:
+   
+   - Basic orders supported
+   - Advanced orders placeholder
+   - Order registration in Registry
 
-1.Factory Pattern:
-
-- Creates new order instances
-- Tracks order creators
-- Supports multiple order types
-
-2.Management:
-
-- Ownable for admin control
-- Scheduler management
-- Registry integration
-
-3.Order Creation:
-
-- Basic orders supported
-- Advanced orders placeholder
-- Order registration in Registry
+After creating the Orderfactory contract, you can [implement the deployment scripts](deploy_script).

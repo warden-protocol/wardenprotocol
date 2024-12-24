@@ -1,35 +1,43 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Trading Agent Structure
+# Create the trading Agent structure
 
-Let's build the foundation of our trading agent by implementing the core data structures and interfaces.
+## Overview
 
-## Define Trading Types (`src/Types.sol`)
+The main part of the Basic Warden Agent is the trading Agent executing orders created by users. 
 
-First, let's create our essential data structures.
+This article will guide you through building a foundation for the trading Agent: you'll implement the core data structures and interfaces in the `/src` directory.
 
-```solidity
+## 1. Define trading types
+
+First, create a library `Types.sol`  with the core data structures:
+
+:::note GitHub
+You can find the full code on GitHub: [`/src/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Types.sol)
+:::
+
+```solidity title="/src/Types.sol"
 library Types {
     // Define swap parameters for Uniswap
     struct SwapData {
-        uint256 amountIn;          // Amount of input token
-        address[] path;            // Trading path through Uniswap
-        address to;                // Recipient address
-        uint256 deadline;          // Transaction deadline
+        uint256 amountIn;          // The amount of input tokens
+        address[] path;            // The trading path through Uniswap
+        address to;                // The recipient address
+        uint256 deadline;          // The transaction deadline
     }
 
-    // NEW: Price condition enum for flexible trading
+    // A price condition for flexible trading
     enum PriceCondition {
         LTE,    // Less than or equal to threshold
         GTE     // Greater than or equal to threshold
     }
 
-    // Main order configuration
+    // The main order configuration
     struct OrderData {
         uint256 thresholdPrice;
-        PriceCondition priceCondition;  // NEW: Price condition type
+        PriceCondition priceCondition;
         PricePair pricePair;
         CreatorDefinedTxFields creatorDefinedTxFields;
         SwapData swapData;
@@ -38,49 +46,55 @@ library Types {
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Types.sol)
+## 2. Create the execution interface
 
-## Create Execution Interface (`src/IExecution.sol`)
+The execution interface defines the trading Agent's core functionality. It allows executing an order, getting a list of authorized callers, and checking the execution status.
 
-The execution interface defines the core functionality of our agent with new security and validation features:
+Implement the execution interface in a file `IExecution.sol`:
 
-```solidity
+:::note GitHub
+You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
+:::
+
+```solidity title="/src/IExecution.sol"
 interface IExecution {
-    // Check if order can execute based on conditions
+    // Check whether an order can be executed
     function canExecute() external view returns (bool);
     
-    // Execute trade with enhanced security parameters
+    // Execute an order
     function execute(
         uint256 nonce,
         uint256 gas,
         uint256 gasPrice,
-        uint256 maxPriorityFeePerGas,  // NEW: EIP-1559 support
-        uint256 maxFeePerGas           // NEW: EIP-1559 support
+        uint256 maxPriorityFeePerGas,  // for EIP-1559 transactions
+        uint256 maxFeePerGas           // for EIP-1559 transactions
     ) external returns (bool, bytes32);
     
-    // NEW: Get list of authorized callers
+    // Get a list of authorized callers
     function callers() external returns (Caller[] memory callersList);
     
-    // Check execution status
+    // Check the execution status
     function isExecuted() external returns (bool);
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
+## 3. Implement the registry
 
-## Registry Implementation (`src/Registry.sol`)
+In a file `Registry.sol`, implement a registry for tracking transactions:
 
-The registry now includes enhanced security features and better transaction tracking:
+:::note GitHub
+You can find the full code on GitHub: [`/src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
+:::
 
-```solidity
+```solidity title="/src/Registry.sol"
 contract Registry is ReentrancyGuard {  // NEW: Added ReentrancyGuard
-    // Track agent creators
+    // Track the order creators
     mapping(address executionAddress => address orderCreator) public executions;
     
-    // Store transaction data
+    // Store the transaction data
     mapping(bytes32 txHash => bytes tx) public transactions;
 
-    // NEW: Enhanced registration with validation
+    // Register an order with additional validation
     function register(address execution) public {
         if (execution == address(0)) {
             revert InvalidExecutionAddress();
@@ -93,15 +107,17 @@ contract Registry is ReentrancyGuard {  // NEW: Added ReentrancyGuard
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
+## 4. Implement the RLP encoding
 
-## RLP Transaction Encoding (`src/RLPEncode.sol`)
+To support EIP-1559 transactions, create an `RLPEncode.sol` file implementing the RLP encoding:
 
-Implement RLP encoding for EIP-1559 transaction support:
+:::note GitHub
+You can find the full code on GitHub: [`/src/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/RLPEncode.sol)
+:::
 
-```solidity
+```solidity title="/src/RLPEncode.sol"
 library RLPEncode {
-    // NEW: Enhanced encoding for EIP-1559 transactions
+    // Implement the RLP encoding for EIP-1559 transactions
     function encodeTransaction(
         Types.OrderData memory orderData,
         uint256 nonce,
@@ -116,4 +132,6 @@ library RLPEncode {
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/RLPEncode.sol)
+## Next steps
+
+After building the structure of the trading Agent, you can [create mock precompiles](precompiles).

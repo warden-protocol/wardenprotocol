@@ -2,11 +2,11 @@
 sidebar_position: 1
 ---
 
-# Build a Basic Warden Agent
+# Introduction
 
-## Overview
+## Basic Warden Agent
 
-This tutorial will guide you through the process of building a basic **Warden Agent.** In this basic version of the tutorial, we'll focus on automated token trading based on price conditions. It will allow you to create orders that automatically execute token swaps on Uniswap when certain price thresholds are met.
+This tutorial will guide you through the process of building a **Basic Warden Agent.** In this basic version of the tutorial, we'll focus on automated token trading based on price conditions. It will allow you to create orders that automatically execute token swaps on Uniswap when certain price thresholds are met.
 
 In the more advanced tutorial you will learn how to build a **Warden Agent** that executes orders based on AI predictions.
 
@@ -50,59 +50,3 @@ You can find the full sample code on [GitHub](https://github.com/warden-protocol
 5. Transaction details are stored in Registry for verification/tracking
 6. Deploy and create agent instances
 7. Monitor and manage agents
-
-## Prerequisites
-
-### You are expected to posses the following knowledge
-
-- Solidity (especially inheritance, interfaces, events)
-- Basic understanding of Uniswap V2
-- Familiarity with price oracles
-- Understanding of RLP encoding for transactions
-
-### Environment Setup
-
-1.Install required dependencies:
-
-```bash
-forge install OpenZeppelin/openzeppelin-contracts
-forge install Uniswap/v2-periphery
-```
-
-2.Configure foundry.toml:
-
-```bash
-[profile.default]
-auto_detect_solc = false
-block_timestamp = 1_680_220_800
-bytecode_hash = "none"
-evm_version = "paris"
-fuzz = { runs = 1_000 }
-gas_reports = ["*"]
-optimizer = true
-optimizer_runs = 10_000
-solc = "0.8.25"
-
-[fmt]
-bracket_spacing = true
-int_types = "long"
-line_length = 120
-multiline_func_header = "all"
-number_underscore = "thousands"
-quote_style = "double"
-tab_width = 4
-wrap_comments = true
-```
-
-### Directory Structure
-
-```bash
-  uniswap-trading-agent
-warden-trading-agent/
-├── src/              # Core contracts
-├── scripts/          # Deployment scripts
-├── test/             # Test files
-└── mocks/            # Mock services
-```
-
-In the next chapter you will learn how to implement the basic structure for trading agent.

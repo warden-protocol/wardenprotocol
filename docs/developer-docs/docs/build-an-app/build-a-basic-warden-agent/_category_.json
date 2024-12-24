@@ -1,11 +1,11 @@
 {
   "position": 6,
-  "label": "Basic Warden Agent",
+  "label": "Build a Basic Warden Agent",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Basic Warden Agent"
+    "title": "Build a Basic Warden Agent"
   },
   "customProps": {}
 }

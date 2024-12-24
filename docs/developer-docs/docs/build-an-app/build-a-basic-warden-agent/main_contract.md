@@ -1,18 +1,24 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
-# Trading Agent Implementation
+# Create the trading Agent
+
+## Overview
 
 Let's create our main trading agent that implements the automated Uniswap trading logic.
 
-## BasicOrder Contract (`src/BasicOrder.sol`)
+Create the `BasicOrder` contract
 
-### Core Components
+:::note GitHub
+You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
+:::
+
+## 1. Create the core components
 
 First, let's define our state variables and imports:
 
-```solidity
+```solidity title="/src/BasicOrder.sol"
 contract BasicOrder is IExecution, ReentrancyGuard {
     // NEW: Constant for Uniswap interface
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = 
@@ -31,9 +37,9 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 }
 ```
 
-### Constructor with Validations
+## 2. Create a constructor with validations
 
-```solidity
+```solidity title="/src/BasicOrder.sol"
 constructor(
     Types.OrderData memory _orderData,
     CommonTypes.Coin[] memory maxKeychainFees,
@@ -53,9 +59,9 @@ constructor(
 }
 ```
 
-### Price Monitoring Logic
+## 3. Create the price monitoring logic
 
-```solidity
+```solidity title="/src/BasicOrder.sol"
 function canExecute() public view returns (bool value) {
     // NEW: Enhanced price condition checking
     GetPriceResponse memory priceResponse = 
@@ -72,9 +78,9 @@ function canExecute() public view returns (bool value) {
 }
 ```
 
-### Trade Execution
+## 4. Implement the trade execution
 
-```solidity
+```solidity title="/src/BasicOrder.sol"
 function execute(
     uint256 nonce,
     uint256 gas,
@@ -103,8 +109,6 @@ function execute(
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
-
 ## Flow
 
 1.Construction:
@@ -113,11 +117,11 @@ function execute(
 - Sets up price feed and signing service connections
 - Initializes order parameters
 
-2.Price Monitoring (`canExecute`):
+2.Price monitoring (`canExecute`):
 
 - Check if price meets conditions.
 
-3.Trade Execution (`execute`):
+3.Trade execution (`execute`):
 
 a. Verify caller and conditions
 b. Pack swap data for Uniswap
@@ -126,14 +130,14 @@ d. Request signature through Warden
 e. Register transaction in Registry
 f. Return execution status
 
-## Key Security Features
+## Key security features
 
-1.**ReentrancyGuard Protection**
+1.**ReentrancyGuard protection**
 
 - Prevents reentrancy attacks during execution
 - Guards critical state changes
 
-2.**Input Validation**
+2.**Input validation**
 
 ```solidity
 // Example of comprehensive validation
@@ -141,13 +145,13 @@ if (_orderData.thresholdPrice == 0) revert InvalidThresholdPrice();
 if (_orderData.creatorDefinedTxFields.to == address(0)) revert InvalidTxTo();
 ```
 
-3.**Transaction Safety**
+3.**Transaction safety**
 
 - EIP-1559 transaction support
 - Secure RLP encoding
 - Transaction hash verification
 
-## Monitoring and Events
+## Monitoring and events
 
 ```solidity
 event Executed();
@@ -155,34 +159,38 @@ event PriceConditionMet(uint256 currentPrice, uint256 thresholdPrice);
 event TransactionRegistered(bytes32 indexed txHash);
 ```
 
-## Testing Considerations
+## Testing considerations
 
-1.**Test price conditions**
+1. **Test price conditions**
+   
+   ```solidity
+   function test_priceConditions() public {
+       // Test GTE condition
+       vm.mockCall(
+           address(SLINKY_PRECOMPILE),
+           abi.encodeWithSelector(ISlinky.getPrice.selector),
+           abi.encode(price)
+       );
+       assertTrue(order.canExecute());
+   }
+   ```
 
-```solidity
-function test_priceConditions() public {
-    // Test GTE condition
-    vm.mockCall(
-        address(SLINKY_PRECOMPILE),
-        abi.encodeWithSelector(ISlinky.getPrice.selector),
-        abi.encode(price)
-    );
-    assertTrue(order.canExecute());
-}
-```
+2. **Test the execution flow**
+   
+   ```solidity
+   function test_execution() public {
+       vm.startPrank(scheduler);
+       (bool success, bytes32 txHash) = order.execute(
+           1, // nonce
+           200000, // gas
+           0, // unused
+           2 gwei, // maxPriorityFeePerGas
+           100 gwei // maxFeePerGas
+       );
+       assertTrue(success);
+   }
+   ```
 
-2.**Test Execution Flow**
+## Next steps
 
-```solidity
-function test_execution() public {
-    vm.startPrank(scheduler);
-    (bool success, bytes32 txHash) = order.execute(
-        1, // nonce
-        200000, // gas
-        0, // unused
-        2 gwei, // maxPriorityFeePerGas
-        100 gwei // maxFeePerGas
-    );
-    assertTrue(success);
-}
-```
+After creating the trading Agent, you can [create the OrderFactory contract](agent_factory).

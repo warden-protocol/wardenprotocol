@@ -1,14 +1,20 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
-# Deploy Script
+# Implement the deployment scripts
+
+## Overview
 
 Let's implement the deployment scripts. We'll need two scripts: one for deployment and one for creating orders.
 
-## Create `script/Deploy.s.sol:`
+## 1. Implement a script for deployment
 
-```solidity
+:::note GitHub
+You can find the full code on GitHub: [`/script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
+:::
+
+```solidity title="/script/Deploy.s.sol"
 contract Deploy is Script {
     function run() external {
         vm.startBroadcast(broadcaster);
@@ -29,11 +35,19 @@ contract Deploy is Script {
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
+This script handles the following tasks:
 
-## Create `script/CreateOrder.s.sol:`
+1. Registry deployment
+2. Factory deployment
+3. Environment configuration
 
-```solidity
+## 2. Implement a script for creating orders
+
+:::note GitHub
+You can find the full code on GitHub: [`/script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
+:::
+
+```solidity title="/script/CreateOrder.s.sol"
 contract CreateOrder is Script {
     function run(
         uint256 thresholdPrice,
@@ -50,18 +64,12 @@ contract CreateOrder is Script {
 }
 ```
 
-[Code Reference](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
-
-### These scripts handle the following tasks
-
-**Deploy.s.sol:**
-
-1. Registry deployment
-2. Factory deployment
-3. Environment configuration
-
-**CreateOrder.s.sol:**
+This script handles the following tasks:
 
 1. Order creation through factory
 2. Mock precompiles setup
 3. Parameter configuration
+
+## Next steps
+
+After creating implementing the deployment scripts, you can finally [deploy the trading Agent](deployment).

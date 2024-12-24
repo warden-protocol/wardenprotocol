@@ -1,18 +1,33 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# Mock Precompiles
+# Create mock precompiles
 
-In this section we will create mock precompiles that are essential for testing our Agent end to end.
+## Overview
 
-Before you proceed, please create a `mock` directory where these functions will reside.
+Mock precompiles are essential for end-to-end testing of the Basic Agent.
 
-## Setting up mock precompiles
+This article explains how to build and test two mock precompiles: Slinky and Warden. Before you proceed, create a `/mock` directory for storing them.
 
-### Create `mocks/MockSlinkyPrecompile.sol`
+You can learn about mock precompiles in the [Mock Precompiles](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/mocks) section and test under [Test Scenarios](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test).
 
-```solidity
+
+## 1. Create mock precompiles
+
+### 1.1. Create a Slinky precompile
+
+In a file `MockSlinkyPrecompile.sol`, implement a mock Slinky precompile with the following features:
+
+- Price feed functionality
+- Price setting for testing
+- Error handling for missing prices
+
+:::note GitHub
+You can find the full code on GitHub: [`/mocks/MockSlinkyPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockSlinkyPrecompile.sol)
+:::
+
+```solidity title="/mocks/MockSlinkyPrecompile.sol"
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
@@ -28,9 +43,9 @@ contract MockSlinkyPrecompile is ISlinky {
         uint256 price = prices[base][quote];
         require(price != 0, "Price not set");
 
-        // NEW: Enhanced price data with additional metadata
+        // Price data with additional metadata
         QuotePrice memory quotePrice = QuotePrice({
-            blockHeight: block.number,    // Current block for testing
+            blockHeight: block.number,    // The current block for testing
             blockTimestamp: block.timestamp,
             price: price
         });
@@ -45,14 +60,24 @@ contract MockSlinkyPrecompile is ISlinky {
 }
 ```
 
-### Create `mocks/MockWardenPrecompile.sol`
+### 1.2. Create a Warden precompile
 
-```solidity
+In a file `MockWardenPrecompile.sol`, implement a mock Warden precompile with the following features:
+
+- Key management
+- Managing transaction signing requests
+- Key validation
+
+:::note GitHub
+You can find the full code on GitHub: [`/mocks/MockWardenPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockWardenPrecompile.sol)
+:::
+
+```solidity title="/mocks/MockWardenPrecompile.sol"
 contract MockWardenPrecompile {
     mapping(uint64 => KeyResponse) private keys;
     mapping(uint64 => bool) private goodKeys;
 
-    // NEW: Enhanced key response simulation
+    // A key response simulation
     function keyById(
         uint64 id, 
         int32[] calldata
@@ -68,7 +93,7 @@ contract MockWardenPrecompile {
         });
     }
 
-    // NEW: Realistic signing behavior
+    // Realistic signing behavior
     function newSignRequest(
         uint64 keyId,
         bytes calldata txHash,
@@ -90,23 +115,9 @@ contract MockWardenPrecompile {
 }
 ```
 
-These mock contracts simulate the behavior of:
+## 2. Implement integration testing
 
-**MockSlinkyPrecompile:**
-
-- Price feed functionality
-- Price setting for testing
-- Error handling for missing prices
-
-**MockWardenPrecompile:**
-
-- Key management
-- Transaction signing requests
-- Key validation
-
-## Integration Testing
-
-### Test Setup Helper
+Create a helper contract for testing mock precompiles:
 
 ```solidity
 contract PrecompileTestHelper {
@@ -123,7 +134,7 @@ contract PrecompileTestHelper {
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(warden).code);
     }
 
-    // NEW: Price scenario helper
+    // A price scenario helper
     function setupPriceScenario(
         string memory base,
         string memory quote,
@@ -133,7 +144,7 @@ contract PrecompileTestHelper {
         MockSlinkyPrecompile(ISLINKY_PRECOMPILE_ADDRESS)
             .setPrice(base, quote, initialPrice);
             
-        // Simulate price change
+        // Simulate a price change
         skip(1 hours);
         MockSlinkyPrecompile(ISLINKY_PRECOMPILE_ADDRESS)
             .setPrice(base, quote, targetPrice);
@@ -141,19 +152,21 @@ contract PrecompileTestHelper {
 }
 ```
 
-## Test Scenarios
+## 3. Create test scenarios
 
-### Price Feed Testing
+### 3.1. Test the price feed
+
+To create a scenario for testing the price feed, use the following code:
 
 ```solidity
 contract SlinkyTest is PrecompileTestHelper {
     function testPriceMovement() public {
-        // Setup price scenario
+        // Set up a price scenario
         setupPriceScenario("ETH", "USD", 3000e9, 3500e9);
         
-        // Test order execution
+        // Test the order execution
         Types.OrderData memory orderData = createTestOrder(
-            3200e9,  // threshold
+            3200e9,  // The threshold
             Types.PriceCondition.GTE
         );
         
@@ -174,15 +187,17 @@ contract SlinkyTest is PrecompileTestHelper {
 }
 ```
 
+### 3.2. Test transaction signing
 
-### Transaction Signing Testing
+To create a scenario for testing transaction signing, use the following code:
+
 
 ```solidity
 contract WardenTest is PrecompileTestHelper {
     function testSigningFlow() public {
-        // Setup keys
-        warden.addKey(1, true);  // Valid key
-        warden.addKey(2, false); // Invalid key
+        // Set up keys
+        warden.addKey(1, true);  // A valid key
+        warden.addKey(2, false); // An invalid key
         
         // Test successful signing
         Types.SignRequestData memory goodRequest = createSignRequest(1);
@@ -202,7 +217,9 @@ contract WardenTest is PrecompileTestHelper {
 }
 ```
 
-## Usage in Scripts
+## 4. Use precompiles in scripts
+
+This is how you can use precompiles in scripts:
 
 ```solidity
 contract CreateOrder is Script {
@@ -211,18 +228,18 @@ contract CreateOrder is Script {
         Types.PriceCondition priceCondition,
         Types.PricePair memory pricePair
     ) public {
-        // Setup mock precompiles
+        // Set up mock precompiles
         MockSlinkyPrecompile mSlinky = new MockSlinkyPrecompile();
         MockWardenPrecompile mWarden = new MockWardenPrecompile();
         
-        // Configure initial state
+        // Configure the initial state
         vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinky).code);
         mSlinky.setPrice(pricePair.base, pricePair.quote, thresholdPrice);
         
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(mWarden).code);
         mWarden.addKey(1, true);
         
-        // Create and verify order
+        // Create and verify an order
         vm.broadcast();
         BasicOrder order = createOrder(/* params */);
         require(order.canExecute(), "Order cannot execute");
@@ -230,4 +247,6 @@ contract CreateOrder is Script {
 }
 ```
 
-You can learn about mock precompiles in the [Mock Precompiles](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/mocks) section and test under [Test Scenarios](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test)
+## Next steps
+
+After creating mock precompiles, you can [create the trading Agent](main_contract).

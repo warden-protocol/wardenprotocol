@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-Let's create our main trading agent that implements the automated Uniswap trading logic.
+Let's create our main **trading Agent** that implements the automated Uniswap trading logic.
 
 Create the `BasicOrder` contract
 

@@ -6,9 +6,11 @@ sidebar_position: 3
 
 ## Overview
 
-The main part of the Basic Warden Agent is the trading Agent executing orders created by users. 
+The main part of the Basic Warden Agent is the **trading Agent** that executes orders. This article will guide you through building a foundation for the trading Agent: you'll implement the core data structures and interfaces.
 
-This article will guide you through building a foundation for the trading Agent: you'll implement the core data structures and interfaces in the `/src` directory.
+:::note Directory
+Store the trading Agent structure in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory.
+:::
 
 ## 1. Define trading types
 
@@ -88,7 +90,7 @@ You can find the full code on GitHub: [`/src/Registry.sol`](https://github.com/w
 
 ```solidity title="/src/Registry.sol"
 contract Registry is ReentrancyGuard {
-    // Track creators of the order
+    // Track order creators
     mapping(address executionAddress => address orderCreator) public executions;
     
     // Store the transaction data

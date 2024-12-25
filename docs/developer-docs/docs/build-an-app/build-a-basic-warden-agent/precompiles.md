@@ -6,15 +6,12 @@ sidebar_position: 4
 
 ## Overview
 
-Mock precompiles are essential for end-to-end testing of the Basic Agent.
+**Mock precompiles** are essential for end-to-end testing of the Basic Agent. This article explains how to build and test two mock precompiles: Slinky and Warden.
 
-This article explains how to build and test two mock precompiles: Slinky and Warden. Before you proceed, create a `/mock` directory for storing them.
-
-:::note
-- For the full code of mock precompiles, see GitHub: [/orders/mock](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
-- You can test the precompiles in [/orders/test](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test)
+:::note Structure
+- Before you proceed, create a [`/mocks`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory for storing mock precompiles.
+- You can test the precompiles in [/orders/test](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test).
 :::
-
 
 ## 1. Create mock precompiles
 
@@ -117,8 +114,9 @@ contract MockWardenPrecompile {
     }
 }
 ```
+## 2. Test precompiles
 
-## 2. Implement integration testing
+### 2.1. Create a helper contract
 
 Create a helper contract for testing mock precompiles:
 
@@ -155,72 +153,68 @@ contract PrecompileTestHelper {
 }
 ```
 
-## 3. Create test scenarios
+### 2.3. Create test scenarios
 
-### 3.1. Test the price feed
+1. To create a scenario for testing the price feed, use code below:
+   
+   ```solidity
+   contract SlinkyTest is PrecompileTestHelper {
+       function testPriceMovement() public {
+           // Set up a price scenario
+           setupPriceScenario("ETH", "USD", 3000e9, 3500e9);
+           
+           // Test the order execution
+           Types.OrderData memory orderData = createTestOrder(
+               3200e9,  // The threshold
+               Types.PriceCondition.GTE
+           );
+           
+           BasicOrder order = new BasicOrder(
+               orderData,
+               new CommonTypes.Coin[](0),
+               address(this),
+               address(registry)
+           );
+           
+           assertTrue(order.canExecute());
+       }
+   
+       function testPriceFeedErrors() public {
+           vm.expectRevert("Price not set");
+           slinky.getPrice("UNKNOWN", "PAIR");
+       }
+   }
+   ```
+   
+2. To test transaction signing, use the following:
+   
+   
+   ```solidity
+   contract WardenTest is PrecompileTestHelper {
+       function testSigningFlow() public {
+           // Set up keys
+           warden.addKey(1, true);  // A valid key
+           warden.addKey(2, false); // An invalid key
+           
+           // Test successful signing
+           Types.SignRequestData memory goodRequest = createSignRequest(1);
+           assertTrue(executeOrder(goodRequest));
+           
+           // Test failed signing
+           Types.SignRequestData memory badRequest = createSignRequest(2);
+           assertFalse(executeOrder(badRequest));
+       }
+   
+       function testInvalidInputs() public {
+           vm.expectRevert("Empty approve expression");
+           Types.SignRequestData memory invalidRequest = createSignRequest(1);
+           invalidRequest.expectedApproveExpression = "";
+           executeOrder(invalidRequest);
+       }
+   }
+   ```
 
-To create a scenario for testing the price feed, use the following code:
-
-```solidity
-contract SlinkyTest is PrecompileTestHelper {
-    function testPriceMovement() public {
-        // Set up a price scenario
-        setupPriceScenario("ETH", "USD", 3000e9, 3500e9);
-        
-        // Test the order execution
-        Types.OrderData memory orderData = createTestOrder(
-            3200e9,  // The threshold
-            Types.PriceCondition.GTE
-        );
-        
-        BasicOrder order = new BasicOrder(
-            orderData,
-            new CommonTypes.Coin[](0),
-            address(this),
-            address(registry)
-        );
-        
-        assertTrue(order.canExecute());
-    }
-
-    function testPriceFeedErrors() public {
-        vm.expectRevert("Price not set");
-        slinky.getPrice("UNKNOWN", "PAIR");
-    }
-}
-```
-
-### 3.2. Test transaction signing
-
-To create a scenario for testing transaction signing, use the following code:
-
-
-```solidity
-contract WardenTest is PrecompileTestHelper {
-    function testSigningFlow() public {
-        // Set up keys
-        warden.addKey(1, true);  // A valid key
-        warden.addKey(2, false); // An invalid key
-        
-        // Test successful signing
-        Types.SignRequestData memory goodRequest = createSignRequest(1);
-        assertTrue(executeOrder(goodRequest));
-        
-        // Test failed signing
-        Types.SignRequestData memory badRequest = createSignRequest(2);
-        assertFalse(executeOrder(badRequest));
-    }
-
-    function testInvalidInputs() public {
-        vm.expectRevert("Empty approve expression");
-        Types.SignRequestData memory invalidRequest = createSignRequest(1);
-        invalidRequest.expectedApproveExpression = "";
-        executeOrder(invalidRequest);
-    }
-}
-```
-
-## 4. Use precompiles in scripts
+## 3. Use precompiles in scripts
 
 This is how you can use precompiles in scripts:
 

@@ -10,7 +10,7 @@ This tutorial will guide you through the process of building a **Basic Warden Ag
 
 In the more advanced tutorial you will learn how to build a **Warden Agent** that executes orders based on AI predictions.
 
-You can find the full sample code on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity)
+You can find the full sample code on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
 
 ## Architecture
 

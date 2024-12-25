@@ -340,7 +340,12 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
 	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
-	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(app.WardenKeeper, app.ActKeeper, *app.OracleKeeper)
+	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(
+		app.WardenKeeper,
+		app.ActKeeper,
+		*app.OracleKeeper,
+		app.AsyncKeeper,
+	)
 	if err != nil {
 		panic(err)
 	}

@@ -60,7 +60,7 @@ func newMsgAddFuture(args []interface{}, origin common.Address, method *abi.Meth
 
 	var input addFutureInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to keysBySpaceIdInput struct: %w", err)
+		return nil, fmt.Errorf("error while unpacking args to addFutureInput struct: %w", err)
 	}
 
 	return &acttypes.MsgAddFuture{

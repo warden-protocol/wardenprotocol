@@ -10,18 +10,18 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-// ActionsInput needed to unmarshal Pagination field and pass it to types.QueryActionsRequest
+// FuturesInput needed to unmarshal Pagination field and pass it to types.QueryFuturesRequest
 type FuturesInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 	Creator    common.Address    `abi:"creator"`
 }
 
-// FromResponse needed to map QueryActionsResponse to ActionsResponse
+// FromResponse needed to map QueryFuturesResponse to FuturesResponse
 func (r *FuturesResponse) FromResponse(res *types.QueryFuturesResponse) (FuturesResponse, error) {
 	if res != nil {
 		futures := make([]FutureResponse, 0, len(res.Futures))
-		for _, action := range res.Futures {
-			mappedFuture, err := mapFutureResponse(action)
+		for _, future := range res.Futures {
+			mappedFuture, err := mapFutureResponse(future)
 			if err != nil {
 				return FuturesResponse{}, err
 			}
@@ -36,12 +36,12 @@ func (r *FuturesResponse) FromResponse(res *types.QueryFuturesResponse) (Futures
 	return *r, nil
 }
 
-// FromResponse needed to map QueryActionByIdResponse to ActionByIdResponse
+// FromResponse needed to map QueryPendingFuturesResponse to PendingFuturesResponse
 func (r *PendingFuturesResponse) FromResponse(res *types.QueryPendingFuturesResponse) (PendingFuturesResponse, error) {
 	if res != nil {
 		futures := make([]Future, 0, len(res.Futures))
-		for _, action := range res.Futures {
-			mappedFuture, err := mapFuture(action)
+		for _, future := range res.Futures {
+			mappedFuture, err := mapFuture(future)
 			if err != nil {
 				return PendingFuturesResponse{}, err
 			}
@@ -56,7 +56,7 @@ func (r *PendingFuturesResponse) FromResponse(res *types.QueryPendingFuturesResp
 	return *r, nil
 }
 
-// FromResponse needed to map QueryActionByIdResponse to ActionByIdResponse
+// FromResponse needed to map QueryFutureByIdResponse to FutureByIdResponse
 func (r *FutureByIdResponse) FromResponse(res *types.QueryFutureByIdResponse) (FutureByIdResponse, error) {
 	if res != nil {
 		mappedFuture, err := mapFuture(res.Future)
@@ -70,17 +70,17 @@ func (r *FutureByIdResponse) FromResponse(res *types.QueryFutureByIdResponse) (F
 	return *r, nil
 }
 
-func mapFuture(action types.Future) (Future, error) {
-	creator, err := precommon.AddressFromBech32Str(action.Creator)
+func mapFuture(future types.Future) (Future, error) {
+	creator, err := precommon.AddressFromBech32Str(future.Creator)
 	if err != nil {
 		return Future{}, fmt.Errorf("invalid creator: %w", err)
 	}
 
 	return Future{
-		Id:      action.Id,
+		Id:      future.Id,
 		Creator: creator,
-		Handler: action.Handler,
-		Input:   action.Input,
+		Handler: future.Handler,
+		Input:   future.Input,
 	}, nil
 }
 

@@ -71,7 +71,7 @@ interface IAsync {
     ) external returns (uint64 futureId);
 
     /// @dev Defines a method to query future by id.
-    /// @param futureId The pagination details
+    /// @param futureId The future id
     /// @return response The future
     function futureById(
         uint64 futureId

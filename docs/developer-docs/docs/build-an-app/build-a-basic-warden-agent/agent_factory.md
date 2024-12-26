@@ -6,27 +6,9 @@ sidebar_position: 6
 
 ## Overview
 
-The **`OrderFactory` contract** securely manages the creation and tracking of orders.
+The `OrderFactory` contract securely manages the creation and tracking of orders – instances of the [`BasicOrder`](main_contract) contract that monitor price feeds and perform swaps when price conditions are met.
 
-**Key features:**
-
-1. Factory pattern:
-   
-   - Creates new order instances
-   - Tracks order creators
-   - Supports multiple order types
-   
-2. Management:
-   
-   - Ownable for admin control
-   - Scheduler management
-   - Registry integration
-   
-3. Order creation:
-   
-   - Basic orders supported
-   - Advanced orders placeholder
-   - Order registration in Registry
+When triggered by a user, `OrderFactory` deploys a new [`BasicOrder`](main_contract) contract and registers it in the [registry](structure#3-implement-the-registry).
 
 ## Create the `OrderFactory` contract
 

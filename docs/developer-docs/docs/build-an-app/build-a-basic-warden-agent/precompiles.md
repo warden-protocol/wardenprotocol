@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Overview
 
-**Mock precompiles** are essential for end-to-end testing of the Basic Agent. This article explains how to build and test two mock precompiles: Slinky and Warden.
+**Mock precompiles** are essential for end-to-end testing of the Basic Agent. This article explains how to build and test two mock precompiles: **Slinky** and **Warden**.
 
 :::note Structure
 - Before you proceed, create a [`/mocks`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory for storing mock precompiles.
@@ -247,3 +247,5 @@ contract CreateOrder is Script {
 ## Next steps
 
 After creating mock precompiles, you can [create the trading Agent](main_contract).
+
+**Note:** When you deploy the Basic Agent, you'll be able to [get data from precompiles](deployment#get-data-from-precompiles).

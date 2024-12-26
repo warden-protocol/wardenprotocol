@@ -2,13 +2,22 @@
 sidebar_position: 7
 ---
 
-# Implement the deployment scripts
+# Implement deployment scripts
 
 ## Overview
 
-Let's implement the deployment scripts. We'll need two scripts: one for deployment and one for creating orders.
+This tutorial explains how to implement the main deployment script and the script for creating orders.
 
-## 1. Implement a script for deployment
+
+## 1. Implement the main deployment script
+
+The main deployment script handles the following tasks:
+
+- Deploying [`Registry`](structure#3-implement-the-registry)
+- Deploying [`OrderFactory`](agent_factory)
+- Environment configuration
+
+To implement this script, use the following code:
 
 :::note GitHub
 You can find the full code on GitHub: [`/script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
@@ -35,13 +44,16 @@ contract Deploy is Script {
 }
 ```
 
-This script handles the following tasks:
+## 2. Implement the script for creating orders
 
-1. Registry deployment
-2. Factory deployment
-3. Environment configuration
 
-## 2. Implement a script for creating orders
+This script for creating orders handles the following tasks:
+
+- Deploying [`BasicOrder`](main_contract) through [`OrderFactory`](agent_factory)
+- Setting up [mock precompiles](precompiles)
+- Parameter configuration
+
+To implement this script, use the following code:
 
 :::note GitHub
 You can find the full code on GitHub: [`/script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
@@ -63,12 +75,6 @@ contract CreateOrder is Script {
     }
 }
 ```
-
-This script handles the following tasks:
-
-1. Order creation through factory
-2. Mock precompiles setup
-3. Parameter configuration
 
 ## Next steps
 

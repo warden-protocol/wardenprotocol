@@ -6,13 +6,15 @@ sidebar_position: 3
 
 ## Overview
 
-The main part of the Basic Warden Agent is the **trading Agent** that executes orders. This article will guide you through building a foundation for the trading Agent: you'll implement the core data structures and interfaces.
+The main part of the Basic Warden Agent is the **trading Agent**. It executes and manages **orders** – instances of the [`BasicOrder`](main_contract) contract that monitor prices and automatically perform swaps.
+
+This article will guide you through building a foundation for the trading Agent: you'll define the core data structures and interfaces for managing orders.
 
 :::note Directory
 Store the trading Agent structure in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory.
 :::
 
-## 1. Define trading types
+## 1. Define data structures
 
 First, create a library `Types.sol`  with the core data structures:
 
@@ -60,7 +62,7 @@ You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com
 
 ```solidity title="/src/IExecution.sol"
 interface IExecution {
-    // Check whether an order can be executed
+    // Check if an order can be executed
     function canExecute() external view returns (bool);
     
     // Execute an order
@@ -137,3 +139,5 @@ library RLPEncode {
 ## Next steps
 
 After building the structure of the trading Agent, you can [create mock precompiles](precompiles).
+
+**Note:** When you deploy the Basic Agent, you'll be able to [get data from the registry](deployment#get-data-from-the-registry).

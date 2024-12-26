@@ -2,11 +2,13 @@
 sidebar_position: 5
 ---
 
-# Create the trading Agent
+# Create the `BasicOrder` contract
 
 ## Overview
 
-Let's create our main **trading Agent** that implements the automated Uniswap trading logic.
+The `BasicOrder` contract implements **orders** that monitor prices and automatically perform swaps. It's the main part of the **trading Agent** and the core of the Basic Warden Agent.
+
+To create an order, a user triggers the [`OrderFactory`](agent_factory) contract, and it deploys an instance of the `BasicOrder` contract. Then the trading Agent executes and manages orders, as shown in [Create the trading Agent structure](structure).
 
 Create the `BasicOrder` contract
 

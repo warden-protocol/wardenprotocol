@@ -19,7 +19,6 @@ event Executed();
 
 contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
     Types.OrderData public orderData;
-    string public constant SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens(uint256,address[],address,uint256)";
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;

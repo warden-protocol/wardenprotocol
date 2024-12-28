@@ -10,6 +10,10 @@ The `OrderFactory` contract securely manages the creation and tracking of orders
 
 When triggered by a user, `OrderFactory` deploys a new [`BasicOrder`](main_contract) contract and registers it in the [registry](structure#3-implement-the-registry).
 
+:::note Directory
+Store `OrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+:::
+
 ## Create the `OrderFactory` contract
 
 Implement order creation and tracking in a file `OrderFactory.sol`:

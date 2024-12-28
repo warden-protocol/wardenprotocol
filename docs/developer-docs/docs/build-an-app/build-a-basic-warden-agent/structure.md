@@ -34,8 +34,8 @@ library Types {
 
     // A price condition for flexible trading
     enum PriceCondition {
-        LTE,    // Less than or equal to threshold
-        GTE     // Greater than or equal to threshold
+        LTE,    // Less than or equal to the threshold
+        GTE     // Greater than or equal to the threshold
     }
 
     // The main order configuration

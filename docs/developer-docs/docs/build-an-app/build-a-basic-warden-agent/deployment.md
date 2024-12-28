@@ -48,19 +48,19 @@ To deploy the Agent, take the following steps:
        --broadcast \
        --sig "run(uint256,uint8,(string,string),(uint256,uint256,address),(uint256,address[],address,uint256),uint64,uint64,   uint64,bytes,bytes)" \
        3324181371 \  # the threshold price
-       0 \ # LTE condition
-       '("ETH","USD")' \  # the price pair
+       0 \ # the LTE condition
+       '("ETH","USD")' \  # the currency pair
        '(100000000000000,11155111,0x467b...)' \  # tx fields
        # ... other parameters
    ```
    
    The key parameters to specify include the following:
    
-   - `thresholdPrice`: The price threshold to trigger execution
-   - `priceCondition`: 0 for LTE, 1 for GTE
-   - `pricePair`: The trading pair – e.g., "ETH/USD"
+   - `thresholdPrice`: The price threshold to trigger the execution of an order
+   - `priceCondition`: The price condition: 0 for LTE (`<=`), 1 for GTE (`>=`)
+   - `pricePair`: The currency pair
    - `creatorDefinedTxFields`: The chain and transaction details
-   - `swapData`: Uniswap swap parameters
+   - `swapData`: Swap parameters for Uniswap
    - `keyId`: The ID of the Warden key for signing transactions
    - `spaceNonce`: The nonce for the signing space
    - `actionTimeoutHeight`: The timeout for execution
@@ -113,13 +113,13 @@ After deploying the Basic Agent, you can monitor and manage orders using the com
 
 ### Monitor events
 
-- Monitor the `Executed` [event](main_contract#monitoring-and-events):
+- Monitor the `Executed()` event emitted by the [`execute()`](main_contract#4-implement-trade-execution) function of the `BasicOrder` contract:
    
    ```bash
    cast logs $ORDER_ADDRESS "Executed()"
    ```
 
-- Monitor the `NewTx` [event](main_contract#monitoring-and-events):
+- Monitor the `NewTx()` event emitted by the [registry](structure#3-implement-the-registry):
    
    ```bash
    cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"

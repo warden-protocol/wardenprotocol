@@ -8,14 +8,17 @@ sidebar_position: 7
 
 This tutorial explains how to implement the main deployment script and the script for creating orders.
 
+:::note Directory
+Before you proceed, create a [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory for storing your scripts
+:::
 
 ## 1. Implement the main deployment script
 
 The main deployment script handles the following tasks:
 
-- Deploying [`Registry`](structure#3-implement-the-registry)
-- Deploying [`OrderFactory`](agent_factory)
-- Environment configuration
+- Deploys [`Registry`](structure#3-implement-the-registry)
+- Deploys [`OrderFactory`](agent_factory)
+- Configures the environment
 
 To implement this script, use the following code:
 
@@ -49,9 +52,9 @@ contract Deploy is Script {
 
 This script for creating orders handles the following tasks:
 
-- Deploying [`BasicOrder`](main_contract) through [`OrderFactory`](agent_factory)
-- Setting up [mock precompiles](precompiles)
-- Parameter configuration
+- Deploys [`BasicOrder`](main_contract) through [`OrderFactory`](agent_factory)
+- Sets up [mock precompiles](precompiles)
+- Configures parameters
 
 To implement this script, use the following code:
 

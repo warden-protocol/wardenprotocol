@@ -10,19 +10,23 @@ The `BasicOrder` contract implements **orders** that monitor prices and automati
 
 To create an order, a user triggers the [`OrderFactory`](agent_factory) contract, and it deploys an instance of the `BasicOrder` contract. Then the trading Agent executes and manages orders, as shown in [Create the trading Agent structure](structure).
 
-Create the `BasicOrder` contract
+This article will guide you through creating the `BasicOrder` contract.
+
+:::note Directory
+Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+:::
 
 :::note GitHub
 You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
 :::
 
-## 1. Create the core components
+## 1. Create core components
 
-First, let's define our state variables and imports:
+First, define the state variables and imports:
 
 ```solidity title="/src/BasicOrder.sol"
 contract BasicOrder is IExecution, ReentrancyGuard {
-    // NEW: Constant for Uniswap interface
+    // A constant for the Uniswap interface
     string public constant SWAP_EXACT_ETH_FOR_TOKENS = 
         "swapExactETHForTokens(uint256,address[],address,uint256)";
 
@@ -31,7 +35,7 @@ contract BasicOrder is IExecution, ReentrancyGuard {
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;
 
-    // NEW: Enhanced state tracking
+    // State tracking
     Caller[] private _callers;
     bool private _executed;
     address private _keyAddress;
@@ -39,7 +43,13 @@ contract BasicOrder is IExecution, ReentrancyGuard {
 }
 ```
 
-## 2. Create a constructor with validations
+## 2. Create a constructor
+
+Now create a `constructor` with validations. As shown in the code below, your constructor should handle the following tasks:
+
+- Validate all inputs (the scheduler, the registry, price conditions)
+- Set up connections with the price feed and the signing service
+- Initialize order parameters
 
 ```solidity title="/src/BasicOrder.sol"
 constructor(
@@ -48,27 +58,31 @@ constructor(
     address scheduler,
     address registry
 ) {
-    // NEW: Enhanced input validation
+    // Input validation
     if (scheduler == address(0)) revert InvalidScheduler();
     if (registry == address(0)) revert InvalidRegistry();
     if (_orderData.swapData.amountIn == 0) revert InvalidSwapDataAmountIn();
     if (_orderData.swapData.to == address(0)) revert InvalidSwapDataTo();
     
-    // Initialize services and state
+    // Initialize services and the state
     WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
     SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
     _callers.push(Caller.Scheduler);
 }
 ```
 
-## 3. Create the price monitoring logic
+## 3. Implement price monitoring
+
+In the `canExecute()` function, implement the logic for monitoring prices. This function should handle these tasks:
+
+- Retrieve a price from the [Slinky mock precompile](precompiles#11-create-a-slinky-precompile)
+- Check if the price meets a given condition: `>=` or `<=` than the threshold  
+  (see the `PriceCondtion` enum in [`Types.sol`](structure#1-define-data-structures))
 
 ```solidity title="/src/BasicOrder.sol"
 function canExecute() public view returns (bool value) {
-    // NEW: Enhanced price condition checking
     GetPriceResponse memory priceResponse = 
         SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
-    
     Types.PriceCondition condition = orderData.priceCondition;
     if (condition == Types.PriceCondition.GTE) {
         value = priceResponse.price.price >= orderData.thresholdPrice;
@@ -80,7 +94,17 @@ function canExecute() public view returns (bool value) {
 }
 ```
 
-## 4. Implement the trade execution
+## 4. Implement trade execution
+
+In the `execute()` function, implement the logic for executing trades. This function should do the following:
+
+- Verify the caller and conditions
+- Pack swap data for Uniswap
+- Create and encode a transaction
+- Request a signature through Warden
+- Emit the `Executed()` event
+- Register the transaction in the [registry](structure#3-implement-the-registry)
+- Return the execution status
 
 ```solidity title="/src/BasicOrder.sol"
 function execute(
@@ -90,17 +114,17 @@ function execute(
     uint256 maxPriorityFeePerGas,
     uint256 maxFeePerGas
 ) external nonReentrant returns (bool, bytes32) {
-    // NEW: Security checks
+    // Security checks
     if (msg.sender != _scheduler) revert Unauthorized();
     if (isExecuted()) revert ExecutedError();
     if (!canExecute()) revert ConditionNotMet();
 
-    // Build and encode transaction
+    // Build and encode a transaction
     bytes memory unsignedTx = _buildTransaction(
         nonce, gas, maxPriorityFeePerGas, maxFeePerGas
     );
     
-    // Request signature and register transaction
+    // Request a signature and register the transaction
     _executed = _requestSignature(unsignedTx);
     if (_executed) {
         emit Executed();
@@ -111,87 +135,54 @@ function execute(
 }
 ```
 
-## Flow
+## 5. Test the contract
 
-1.Construction:
+To test price conditions, use the following code:
+   
+```solidity
+function test_priceConditions() public {
+    // Test the GTE condition
+    vm.mockCall(
+        address(SLINKY_PRECOMPILE),
+        abi.encodeWithSelector(ISlinky.getPrice.selector),
+        abi.encode(price)
+    );
+    assertTrue(order.canExecute());
+}
+```
 
-- Validates all inputs (scheduler, registry, price conditions)
-- Sets up price feed and signing service connections
-- Initializes order parameters
+To test the execution flow, use this:
 
-2.Price monitoring (`canExecute`):
-
-- Check if price meets conditions.
-
-3.Trade execution (`execute`):
-
-a. Verify caller and conditions
-b. Pack swap data for Uniswap
-c. Create and encode transaction
-d. Request signature through Warden
-e. Register transaction in Registry
-f. Return execution status
+```solidity
+function test_execution() public {
+    vm.startPrank(scheduler);
+    (bool success, bytes32 txHash) = order.execute(
+        1, // nonce
+        200000, // gas
+        0, // unused
+        2 gwei, // maxPriorityFeePerGas
+        100 gwei // maxFeePerGas
+    );
+    assertTrue(success);
+}
+```
 
 ## Key security features
 
-1.**ReentrancyGuard protection**
-
-- Prevents reentrancy attacks during execution
-- Guards critical state changes
-
-2.**Input validation**
-
-```solidity
-// Example of comprehensive validation
-if (_orderData.thresholdPrice == 0) revert InvalidThresholdPrice();
-if (_orderData.creatorDefinedTxFields.to == address(0)) revert InvalidTxTo();
-```
-
-3.**Transaction safety**
-
-- EIP-1559 transaction support
-- Secure RLP encoding
-- Transaction hash verification
-
-## Monitoring and events
-
-```solidity
-event Executed();
-event PriceConditionMet(uint256 currentPrice, uint256 thresholdPrice);
-event TransactionRegistered(bytes32 indexed txHash);
-```
-
-## Testing considerations
-
-1. **Test price conditions**
-   
+Key security features of the `BasicOrder` contract include the following:
+- **ReentrancyGuard protection**
+   - Preventing reentrancy attacks during execution
+   - Guarding critical state changes
+- **Input validation**
    ```solidity
-   function test_priceConditions() public {
-       // Test GTE condition
-       vm.mockCall(
-           address(SLINKY_PRECOMPILE),
-           abi.encodeWithSelector(ISlinky.getPrice.selector),
-           abi.encode(price)
-       );
-       assertTrue(order.canExecute());
-   }
+   // An example of comprehensive validation
+   if (_orderData.thresholdPrice == 0) revert InvalidThresholdPrice();
+   if (_orderData.creatorDefinedTxFields.to == address(0)) revert InvalidTxTo();
    ```
-
-2. **Test the execution flow**
-   
-   ```solidity
-   function test_execution() public {
-       vm.startPrank(scheduler);
-       (bool success, bytes32 txHash) = order.execute(
-           1, // nonce
-           200000, // gas
-           0, // unused
-           2 gwei, // maxPriorityFeePerGas
-           100 gwei // maxFeePerGas
-       );
-       assertTrue(success);
-   }
-   ```
+- **Transaction safety**   
+   - The support of EIP-1559 transactions
+   - Secure RLP encoding
+   - Transaction hash verification
 
 ## Next steps
 

@@ -3,3 +3,4 @@ forge-std/=node_modules/forge-std/
 precompile-common=../../precompiles/common
 precompile-warden=../../precompiles/warden
 precompile-slinky=../../precompiles/slinky
+precompile-async=../../precompiles/async

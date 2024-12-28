@@ -81,4 +81,4 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-After creating implementing the deployment scripts, you can finally [deploy the trading Agent](deployment).
+After implementing the deployment scripts, you can finally [deploy the trading Agent](deployment).

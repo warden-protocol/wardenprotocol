@@ -18,7 +18,8 @@ error InvalidThresholdPrice();
 event Executed();
 
 contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
-    Types.OrderData public orderData;
+    Types.BasicOrderData public orderData;
+    Types.CommonExecutionData public commonExecutionData;
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;
@@ -30,12 +31,13 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
 
     // solhint-disable-next-line
     constructor(
-        Types.OrderData memory _orderData,
+        Types.BasicOrderData memory _orderData,
+        Types.CommonExecutionData memory _executionData,
         CommonTypes.Coin[] memory maxKeychainFees,
         address scheduler,
         address registry
     )
-        AbstractOrder(_orderData.signRequestData, _orderData.creatorDefinedTxFields, scheduler, registry)
+        AbstractOrder(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
     {
         if (_orderData.thresholdPrice == 0) {
             revert InvalidThresholdPrice();
@@ -51,6 +53,7 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
         }
 
         orderData = _orderData;
+        commonExecutionData = _executionData;
         _scheduler = scheduler;
         _callers.push(Caller.Scheduler);
     }
@@ -93,14 +96,14 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
 
         bytes[] memory emptyAccessList = new bytes[](0);
         (bytes memory unsignedTx, bytes32 txHash) = this.encodeUnsignedEIP1559(
-            nonce, gas, maxPriorityFeePerGas, maxFeePerGas, emptyAccessList, orderData.creatorDefinedTxFields
+            nonce, gas, maxPriorityFeePerGas, maxFeePerGas, emptyAccessList, commonExecutionData.creatorDefinedTxFields
         );
 
         _unsignedTx = unsignedTx;
 
         bytes memory signRequestInput = abi.encodePacked(txHash);
 
-        _executed = this.createSignRequest(orderData.signRequestData, signRequestInput, _coins);
+        _executed = this.createSignRequest(commonExecutionData.signRequestData, signRequestInput, _coins);
 
         if (_executed) {
             emit Executed();
@@ -122,7 +125,7 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
     }
 
     function executionData() external view returns (ExecutionData memory data) {
-        data = this.buildExecutionData(orderData.creatorDefinedTxFields);
+        data = this.buildExecutionData(commonExecutionData.creatorDefinedTxFields);
     }
 
     function getTx() external view returns (bytes memory transaction) {

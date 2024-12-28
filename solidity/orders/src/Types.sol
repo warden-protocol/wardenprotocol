@@ -18,11 +18,22 @@ library Types {
         GTE
     }
 
-    // Data for execution
-    struct OrderData {
+    // Data for basic order creation
+    struct BasicOrderData {
         uint256 thresholdPrice;
         PriceCondition priceCondition;
         PricePair pricePair;
+    }
+
+    // Data for advanced order creation
+    struct AdvancedOrderData {
+        uint64 futureId;
+        PriceCondition priceCondition;
+        PricePair pricePair;
+    }
+
+    // Data for execution
+    struct CommonExecutionData {
         CreatorDefinedTxFields creatorDefinedTxFields;
         SignRequestData signRequestData;
     }

@@ -3,11 +3,21 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
+import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AbstractOrder } from "./AbstractOrder.sol";
 import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
+import { Registry } from "./Registry.sol";
+import { Types } from "./Types.sol";
+
+error ConditionNotMet();
+error ExecutedError();
+error Unauthorized();
+
+event Executed();
 
 contract AdvancedOrder is AbstractOrder, IExecution {
-    Types.OrderData public orderData;
+    Types.AdvancedOrderData public orderData;
+    Types.CommonExecutionData public commonExecutionData;
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     IAsync private immutable ASYNC_PRECOMPILE;
@@ -20,12 +30,13 @@ contract AdvancedOrder is AbstractOrder, IExecution {
     uint256 private _validUntil;
 
     constructor(
-        Types.OrderData memory _orderData,
+        Types.AdvancedOrderData memory _orderData,
+        Types.CommonExecutionData memory _executionData,
         CommonTypes.Coin[] memory maxKeychainFees,
         address scheduler,
         address registry
     )
-        AbstractOrder(_orderData.signRequestData, _orderData.creatorDefinedTxFields, scheduler, registry)
+        AbstractOrder(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
     {
         SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
         SLINKY_PRECOMPILE.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
@@ -39,13 +50,14 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         }
 
         orderData = _orderData;
+        commonExecutionData = _executionData;
         _scheduler = scheduler;
         _callers.push(Caller.Scheduler);
         _validUntil = block.timestamp + 24 hours;
     }
 
-    function canExecute() external view override returns (bool) {
-        if(block.timestamp > _validUntil) {
+    function canExecute() public view override returns (bool) {
+        if (block.timestamp > _validUntil) {
             return false;
         }
         // TODO:
@@ -69,7 +81,11 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         uint256,
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas
-    ) external override returns (bool, bytes32) {
+    )
+        external
+        override
+        returns (bool, bytes32)
+    {
         if (msg.sender != _scheduler) {
             revert Unauthorized();
         }
@@ -84,14 +100,14 @@ contract AdvancedOrder is AbstractOrder, IExecution {
 
         bytes[] memory emptyAccessList = new bytes[](0);
         (bytes memory unsignedTx, bytes32 txHash) = this.encodeUnsignedEIP1559(
-            nonce, gas, maxPriorityFeePerGas, maxFeePerGas, emptyAccessList, orderData.creatorDefinedTxFields
+            nonce, gas, maxPriorityFeePerGas, maxFeePerGas, emptyAccessList, commonExecutionData.creatorDefinedTxFields
         );
 
         _unsignedTx = unsignedTx;
 
         bytes memory signRequestInput = abi.encodePacked(txHash);
 
-        _executed = this.createSignRequest(orderData.signRequestData, signRequestInput, _coins);
+        _executed = this.createSignRequest(commonExecutionData.signRequestData, signRequestInput, _coins);
 
         if (_executed) {
             emit Executed();
@@ -102,20 +118,18 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         REGISTRY.addTransaction(tx.origin, txHash);
 
         return (_executed, txHash);
-
     }
 
     function callers() external view override returns (Caller[] memory callersList) {
         return _callers;
     }
 
-    function isExecuted() external view override returns (bool) {
+    function isExecuted() public view override returns (bool) {
         return _executed;
     }
 
-
     function executionData() external view returns (ExecutionData memory data) {
-        data = this.buildExecutionData(orderData.creatorDefinedTxFields);
+        data = this.buildExecutionData(commonExecutionData.creatorDefinedTxFields);
     }
 
     function getTx() external view returns (bytes memory transaction) {

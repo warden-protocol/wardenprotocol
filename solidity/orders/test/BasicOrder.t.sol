@@ -48,7 +48,8 @@ struct TestData {
 
 contract BasicOrderTest is Test {
     TestData private _testData;
-    Types.OrderData private _orderData;
+    Types.BasicOrderData private _orderData;
+    Types.CommonExecutionData private _executionData;
     IExecution private _order;
     Caller[] private _expectedCallers;
     bytes32 private _txHash;
@@ -148,10 +149,13 @@ contract BasicOrderTest is Test {
 
         // Initialize _orderData with valid values
         bytes[] memory analyzers;
-        _orderData = Types.OrderData({
+        _orderData = Types.BasicOrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: Types.PriceCondition.LTE,
-            pricePair: _testData.pricePair,
+            pricePair: _testData.pricePair
+        });
+
+        _executionData = Types.CommonExecutionData({
             signRequestData: Types.SignRequestData({
                 keyId: _testData.goodKeyId,
                 analyzers: analyzers,
@@ -196,10 +200,12 @@ contract BasicOrderTest is Test {
         }
 
         bytes memory data = getTestSwapData();
-        Types.OrderData memory orderData = Types.OrderData({
+        Types.BasicOrderData memory orderData = Types.BasicOrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: cond,
-            pricePair: _testData.pricePair,
+            pricePair: _testData.pricePair
+        });
+        Types.CommonExecutionData memory executionData = Types.CommonExecutionData({
             signRequestData: Types.SignRequestData({
                 keyId: keyId,
                 analyzers: analyzers,
@@ -226,8 +232,9 @@ contract BasicOrderTest is Test {
         vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
-        address orderAddress =
-            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, orderSalt);
+        address orderAddress = _testData.orderFactory.createOrder(
+            abi.encode(orderData), executionData, maxKeychainFees, OrderType.Basic, orderSalt
+        );
 
         assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
@@ -314,10 +321,13 @@ contract BasicOrderTest is Test {
         bytes[] memory analyzers;
         bytes memory encryptionKey;
         bytes memory data = getTestSwapData();
-        Types.OrderData memory orderData = Types.OrderData({
+        Types.BasicOrderData memory orderData = Types.BasicOrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: Types.PriceCondition.LTE,
-            pricePair: _testData.pricePair,
+            pricePair: _testData.pricePair
+        });
+
+        Types.CommonExecutionData memory executionData = Types.CommonExecutionData({
             signRequestData: Types.SignRequestData({
                 keyId: _testData.goodKeyId,
                 analyzers: analyzers,
@@ -336,6 +346,7 @@ contract BasicOrderTest is Test {
         });
 
         _orderData = orderData;
+        _executionData = executionData;
     }
 
     function test_BasicOrderRevertWhenInvalidScheduler() public {
@@ -343,25 +354,29 @@ contract BasicOrderTest is Test {
 
         vm.expectRevert(InvalidScheduler.selector);
 
-        new BasicOrder(_orderData, maxKeychainFees, address(0), address(_testData.registry));
+        new BasicOrder(_orderData, _executionData, maxKeychainFees, address(0), address(_testData.registry));
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {
         CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.signRequestData.expectedApproveExpression = "";
+        _executionData.signRequestData.expectedApproveExpression = "";
         vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
         bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidApproveExpression"));
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
+        _testData.orderFactory.createOrder(
+            abi.encode(_orderData), _executionData, maxKeychainFees, OrderType.Basic, orderSalt
+        );
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedRejectExpression() public {
         CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.signRequestData.expectedRejectExpression = "";
+        _executionData.signRequestData.expectedRejectExpression = "";
         vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
         bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidRejectExpression"));
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
+        _testData.orderFactory.createOrder(
+            abi.encode(_orderData), _executionData, maxKeychainFees, OrderType.Basic, orderSalt
+        );
     }
 
     function test_BasicOrderRevertWhenInvalidThresholdPrice() public {
@@ -370,16 +385,20 @@ contract BasicOrderTest is Test {
         vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
         bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidThresholdPrice"));
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
+        _testData.orderFactory.createOrder(
+            abi.encode(_orderData), _executionData, maxKeychainFees, OrderType.Basic, orderSalt
+        );
     }
 
     function test_BasicOrderRevertWhenInvalidTxTo() public {
         CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.creatorDefinedTxFields.to = address(0);
+        _executionData.creatorDefinedTxFields.to = address(0);
         vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
         bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidTxTo"));
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
+        _testData.orderFactory.createOrder(
+            abi.encode(_orderData), _executionData, maxKeychainFees, OrderType.Basic, orderSalt
+        );
     }
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {
@@ -474,9 +493,11 @@ contract BasicOrderTest is Test {
         address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
 
         // Create the order
-        Types.OrderData memory orderData = _orderData;
+        bytes memory orderData = abi.encode(_orderData);
+        Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
-        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        address orderAddress =
+            _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Assert that the computed address matches the deployed order address
         assertEq(computedAddress, orderAddress, "Computed address does not match deployed order address");
@@ -498,9 +519,10 @@ contract BasicOrderTest is Test {
         assertEq(computedAddress.code.length, 0, "Order address should not be deployed yet");
 
         // Create the order
-        Types.OrderData memory orderData = _orderData;
+        bytes memory orderData = abi.encode(_orderData);
+        Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
-        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Now, the contract should be deployed
         assertEq(computedAddress.code.length > 0, true, "Order contract was not deployed at computed address");
@@ -510,29 +532,31 @@ contract BasicOrderTest is Test {
         bytes32 salt = keccak256(abi.encodePacked("reused_salt"));
 
         // First creation should succeed
-        Types.OrderData memory orderData = _orderData;
+        bytes memory orderData = abi.encode(_orderData);
+        Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
-        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Expect revert when using the same salt again
         vm.expectRevert(SaltAlreadyUsed.selector);
-        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
     }
 
     function test_createOrderWithDifferentSenderCanUseSameSalt() public {
         bytes32 salt = keccak256(abi.encodePacked("shared_salt"));
 
         // Create order with original sender
-        Types.OrderData memory orderData = _orderData;
+        bytes memory orderData = abi.encode(_orderData);
+        Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
-        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Change the caller to a different address
         address newSender = address(0xBEEF);
         vm.prank(address(this), newSender);
 
         // This should succeed because the salt is guarded by msg.sender
-        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
     }
 
     function test_computeOrderAddressGuardedBySender() public {
@@ -543,10 +567,11 @@ contract BasicOrderTest is Test {
         address computedAddressOriginal = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
 
         // Create order with original sender
-        Types.OrderData memory orderData = _orderData;
+        bytes memory orderData = abi.encode(_orderData);
+        Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
         address orderAddressOriginal =
-            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+            _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Assert that the computed address matches the deployed address for original sender
         assertEq(
@@ -562,7 +587,7 @@ contract BasicOrderTest is Test {
         // Create order with different sender
         vm.prank(address(this), differentSender);
         address orderAddressDifferent =
-            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+            _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Assert that the computed address matches the deployed address for different sender
         assertEq(

@@ -54,10 +54,12 @@ contract CreateOrder is Script {
             expectedRejectExpression: string(expectedRejectExpression)
         });
         CommonTypes.Coin[] memory maxKeychainFees = new CommonTypes.Coin[](0);
-        Types.OrderData memory orderData = Types.OrderData({
+        Types.BasicOrderData memory orderData = Types.BasicOrderData({
             thresholdPrice: thresholdPrice,
             priceCondition: priceCondition,
-            pricePair: pricePair,
+            pricePair: pricePair
+        });
+        Types.CommonExecutionData memory commonExecutionData = Types.CommonExecutionData({
             creatorDefinedTxFields: creatorDefinedTxFields,
             signRequestData: signRequestData
         });
@@ -66,7 +68,7 @@ contract CreateOrder is Script {
         mockSlinkyPrecompile.setPrice(pricePair.base, pricePair.quote, thresholdPrice);
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
         vm.startBroadcast(broadcaster);
-        FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+        FACTORY.createOrder(abi.encode(orderData), commonExecutionData, maxKeychainFees, OrderType.Basic, salt);
 
         vm.stopBroadcast();
     }

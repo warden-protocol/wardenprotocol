@@ -5,6 +5,7 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { BasicOrder } from "./BasicOrder.sol";
+import { AdvancedOrder } from "./AdvancedOrder.sol";
 import { Registry } from "./Registry.sol";
 import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -75,7 +76,8 @@ contract OrderFactory is Ownable, ReentrancyGuard {
      * @return order The address of the newly created order
      */
     function createOrder(
-        Types.OrderData calldata _orderData,
+        bytes calldata _orderData,
+        Types.CommonExecutionData calldata _executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         OrderType orderType,
         bytes32 salt
@@ -98,9 +100,11 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         emit SaltUsed(guardedSalt, origin);
 
         if (orderType == OrderType.Basic) {
-            return _createBasicOrder(guardedSalt, _orderData, maxKeychainFees, scheduler);
+            Types.BasicOrderData memory basicOrderData = abi.decode(_orderData, (Types.BasicOrderData));
+            return _createBasicOrder(guardedSalt, basicOrderData, _executionData, maxKeychainFees, scheduler);
         } else if (orderType == OrderType.Advanced) {
-            return _createAdvancedOrder(guardedSalt, _orderData, maxKeychainFees);
+            Types.AdvancedOrderData memory advancedOrderData = abi.decode(_orderData, (Types.AdvancedOrderData));
+            return _createAdvancedOrder(guardedSalt, advancedOrderData, _executionData, maxKeychainFees, scheduler);
         } else {
             revert UnsupportedOrder();
         }
@@ -123,20 +127,22 @@ contract OrderFactory is Ownable, ReentrancyGuard {
      * @notice Internal function to create a BasicOrder using CREATE3
      * @param salt The unique salt provided by the frontend
      * @param _orderData The data required to create the order
+     * @param _executionData The data required for order execution
      * @param maxKeychainFees The maximum fees allowed
      * @param _scheduler The scheduler address
      * @return The address of the newly created BasicOrder
      */
     function _createBasicOrder(
         bytes32 salt,
-        Types.OrderData calldata _orderData,
+        Types.BasicOrderData memory _orderData,
+        Types.CommonExecutionData calldata _executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address _scheduler
     )
         internal
         returns (address)
     {
-        bytes memory bytecode = getBasicOrderBytecode(_orderData, maxKeychainFees, _scheduler);
+        bytes memory bytecode = getBasicOrderBytecode(_orderData, _executionData, maxKeychainFees, _scheduler);
 
         address orderAddress = Create3.create3(salt, bytecode);
 
@@ -155,26 +161,44 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     }
 
     function _createAdvancedOrder(
-        bytes32,
-        Types.OrderData calldata,
-        CommonTypes.Coin[] calldata
+        bytes32 salt,
+        Types.AdvancedOrderData memory _orderData,
+        Types.CommonExecutionData calldata _executionData,
+        CommonTypes.Coin[] calldata maxKeychainFees,
+        address _scheduler
     )
         internal
-        pure
         returns (address)
     {
-        revert Unimplemented();
+        bytes memory bytecode = getAdvancedOrderBytecode(_orderData, _executionData, maxKeychainFees, _scheduler);
+
+        address orderAddress = Create3.create3(salt, bytecode);
+
+        address expectedAddress = Create3.addressOf(salt);
+        if (orderAddress == address(0) || orderAddress != expectedAddress) {
+            revert OrderDeploymentFailed(salt);
+        }
+
+        orders[orderAddress] = msg.sender;
+
+        REGISTRY.register(orderAddress);
+
+        emit OrderCreated(msg.sender, OrderType.Advanced, orderAddress);
+
+        return orderAddress;
     }
 
     /**
      * @notice Prepares the creation bytecode for BasicOrder
      * @param _orderData The data required to create the order
+     * @param _executionData The data required for order execution
      * @param maxKeychainFees The maximum fees allowed
      * @param _scheduler The scheduler address
      * @return The bytecode for deploying BasicOrder
      */
     function getBasicOrderBytecode(
-        Types.OrderData calldata _orderData,
+        Types.BasicOrderData memory _orderData,
+        Types.CommonExecutionData calldata _executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address _scheduler
     )
@@ -183,7 +207,32 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         returns (bytes memory)
     {
         return abi.encodePacked(
-            type(BasicOrder).creationCode, abi.encode(_orderData, maxKeychainFees, _scheduler, address(REGISTRY))
+            type(BasicOrder).creationCode,
+            abi.encode(_orderData, _executionData, maxKeychainFees, _scheduler, address(REGISTRY))
+        );
+    }
+
+    /**
+     * @notice Prepares the creation bytecode for AdvancedOrder
+     * @param _orderData The data required to create the order
+     * @param _executionData The data required for order execution
+     * @param maxKeychainFees The maximum fees allowed
+     * @param _scheduler The scheduler address
+     * @return The bytecode for deploying AdvancedOrder
+     */
+    function getAdvancedOrderBytecode(
+        Types.AdvancedOrderData memory _orderData,
+        Types.CommonExecutionData calldata _executionData,
+        CommonTypes.Coin[] calldata maxKeychainFees,
+        address _scheduler
+    )
+        internal
+        view
+        returns (bytes memory)
+    {
+        return abi.encodePacked(
+            type(AdvancedOrder).creationCode,
+            abi.encode(_orderData, _executionData, maxKeychainFees, _scheduler, address(REGISTRY))
         );
     }
 }

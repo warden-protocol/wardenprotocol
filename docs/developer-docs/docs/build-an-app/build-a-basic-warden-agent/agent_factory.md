@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Overview
 
-The `OrderFactory` contract securely manages the creation and tracking of orders – instances of the [`BasicOrder`](main_contract) contract that monitor price feeds and perform swaps when price conditions are met.
+The `OrderFactory` contract securely manages the creation and tracking of orders – instances of the [`BasicOrder`](main_contract) contract that monitor price feeds and perform swaps when price thresholds are met.
 
 When triggered by a user, `OrderFactory` deploys a new [`BasicOrder`](main_contract) contract and registers it in the [registry](structure#3-implement-the-registry).
 
@@ -14,11 +14,11 @@ When triggered by a user, `OrderFactory` deploys a new [`BasicOrder`](main_contr
 Store `OrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
 :::
 
-## Create the `OrderFactory` contract
+## Create the contract
 
 Implement order creation and tracking in a file `OrderFactory.sol`:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/src/OrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/OrderFactory.sol)
 :::
 

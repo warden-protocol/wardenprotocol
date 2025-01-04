@@ -99,13 +99,13 @@ After deploying the Basic Agent, you can monitor and manage orders using the com
 
 ### Get data from the registry
 
-- Retrieve the order creator from the registry:
+- Retrieve the order creator from the [registry](structure#3-implement-the-registry):
 
    ```bash
    cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
    ```
 
-- Retrieve the transaction details from the registry:
+- Retrieve the transaction details from the [registry](structure#3-implement-the-registry):
 
    ```bash
    cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
@@ -133,7 +133,7 @@ After deploying the Basic Agent, you can monitor and manage orders using the com
     cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
     ```
 
-- Check the Warden key status from the [Warden precompile](precompiles#11-create-a-warden-precompile):
+- Check the Warden key status from the [Warden precompile](precompiles#12-create-a-warden-precompile):
 
     ```
     cast call $WARDEN_PRECOMPILE "keyById(uint64,int32[])" $KEY_ID []

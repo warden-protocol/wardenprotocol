@@ -18,7 +18,7 @@ Store the trading Agent structure in the [`/src`](https://github.com/warden-prot
 
 First, create a library `Types.sol`  with the core data structures:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/src/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Types.sol)
 :::
 
@@ -56,7 +56,7 @@ The execution interface defines the trading Agent's core functionality. It allow
 
 Implement the execution interface in a file `IExecution.sol`:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
 :::
 
@@ -86,7 +86,7 @@ interface IExecution {
 
 In a file `Registry.sol`, implement a registry for tracking transactions:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
 :::
 
@@ -115,7 +115,7 @@ contract Registry is ReentrancyGuard {
 
 To support EIP-1559 transactions, create an `RLPEncode.sol` file implementing the RLP encoding:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/src/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/RLPEncode.sol)
 :::
 
@@ -138,6 +138,5 @@ library RLPEncode {
 
 ## Next steps
 
-After building the structure of the trading Agent, you can [create mock precompiles](precompiles).
-
-**Note:** When you deploy the Basic Agent, you'll be able to [get data from the registry](deployment#get-data-from-the-registry).
+- After building the structure of the trading Agent, you can [create mock precompiles](precompiles).
+- Later, when you deploy the Basic Agent, you'll be able to [get data from the registry](deployment#get-data-from-the-registry).

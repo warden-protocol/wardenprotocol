@@ -9,7 +9,7 @@ sidebar_position: 7
 This tutorial explains how to implement the main deployment script and the script for creating orders.
 
 :::note Directory
-Before you proceed, create a [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory for storing your scripts
+Store your scriptw in the [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
 :::
 
 ## 1. Implement the main deployment script
@@ -22,7 +22,7 @@ The main deployment script handles the following tasks:
 
 To implement this script, use the following code:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
 :::
 
@@ -58,7 +58,7 @@ This script for creating orders handles the following tasks:
 
 To implement this script, use the following code:
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
 :::
 

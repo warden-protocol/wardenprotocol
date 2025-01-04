@@ -6,47 +6,45 @@ sidebar_position: 1
 
 ## Basic Warden Agent
 
-This tutorial will guide you through the process of building a **Basic Warden Agent.** In this basic version of the tutorial, we'll focus on automated token trading based on price conditions. It will allow you to create orders that automatically execute token swaps on Uniswap when certain price thresholds are met.
+This section explains how to build a **Basic Warden Agent**.
 
-In the more advanced tutorial you will learn how to build a **Warden Agent** that executes orders based on AI predictions.
+The Basic Agent allows users to automatically execute token swaps on **Uniswap** when user-defined price thresholds are met.
 
-You can find the full sample code on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
+:::note Full code
+Please note that the articles in this section typically contain only fragments of code.  
+You can find the full code of the Basic Warden Agent on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
+:::
 
 ## Architecture
 
-**BasicOrder Contract:** *Core trading logic*
+The architecture of the Basic Warden Agent includes the following components:
 
-- Price monitoring
-- Transaction building
-- Uniswap integration
-
-**Factory & Registry:** *Management layer*
-
-- Agent deployment
-- Transaction tracking
-- Access control
-
-**External Services:**
-
-- Slinky for price feeds
-- Warden for transaction signing
-- Uniswap V2 for swaps
+- **Core trading logic**  
+  - [`BasicOrder`](main_contract): A contract implementing **orders** that monitor prices and trade on Uniswap
+- **Management layer**
+  - [`OrderFactory`](agent_factory): A contract for creating and tracking orders
+  - [`Registry`](structure#3-implement-the-registry): A contract implementing a registry for storing the order and transaction data
+- **Services**
+  - [Warden](precompiles#12-create-a-warden-precompile): A mock precompile for signing transactions
+  - [Slinky](precompiles#11-create-a-slinky-precompile): A mock precompile for fetching prices
+  - Uniswap V2: An external service that allows executing token swaps
 
 ## User flow
 
-1. Define trading strategy:
-    - Price threshold and condition (greater/less than)
-    - Token pair to monitor
-    - Swap details (amount, path, recipient, deadline)
+Each Basic Agent user can create and manage multiple Uniswap orders.
+
+The user flow for executing a swap includes the following steps:
+
+1. The user defines the trading strategy details:
+    - The price threshold and condition (greater/less than)
+    - The token pair to monitor
+    - Swap details such as amount, path, recipient, deadline
     - Transaction signing details
-2. Implement agent contract:
-    - OrderFactory deploys a new BasicOrder contract and registers it in the Registry
-3. The BasicOrder continuously monitors price conditions through Slinky price feed
-4. When price conditions are met:
-    - Order constructs the swap transaction
-    - Sends it to Warden for signing
-    - Records the transaction in Registry
+2. The [`OrderFactory` ](agent_factory) contract deploys a new [`BasicOrder`](main_contract) contract (order) and registers it in the [registry](structure#3-implement-the-registry).
+3. The order continuously monitors prices using [Slinky](precompiles#11-create-a-slinky-precompile).
+4. When the price threshold is met, the order executes a swap:
+    - Constructs a swap transaction
+    - Sends the transaction to [Warden](precompiles#12-create-a-warden-precompile) for signing
+    - Records the transaction in the [registry](structure#3-implement-the-registry)
     - Executes the swap on Uniswap
-5. Transaction details are stored in Registry for verification/tracking
-6. Deploy and create agent instances
-7. Monitor and manage agents
+5. Transaction details are stored in the [registry](structure#3-implement-the-registry) for verification and tracking.

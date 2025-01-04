@@ -16,7 +16,7 @@ This article will guide you through creating the `BasicOrder` contract.
 Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
 :::
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
 :::
 

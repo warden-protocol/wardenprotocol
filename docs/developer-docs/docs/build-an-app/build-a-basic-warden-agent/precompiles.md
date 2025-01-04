@@ -9,7 +9,7 @@ sidebar_position: 4
 **Mock precompiles** are essential for end-to-end testing of the Basic Agent. This article explains how to build and test two mock precompiles: **Slinky** and **Warden**.
 
 :::note Directories
-- Before you proceed, create a [`/mocks`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory for storing mock precompiles.
+- Store mock precompiles in the [`/mocks`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
 - You can test the precompiles in [`/orders/test`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test).
 :::
 
@@ -23,7 +23,7 @@ In a file `MockSlinkyPrecompile.sol`, implement a mock Slinky precompile with th
 - Price setting for testing
 - Error handling for missing prices
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/mocks/MockSlinkyPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockSlinkyPrecompile.sol)
 :::
 
@@ -68,7 +68,7 @@ In a file `MockWardenPrecompile.sol`, implement a mock Warden precompile with th
 - Managing transaction signing requests
 - Key validation
 
-:::note GitHub
+:::note Full code
 You can find the full code on GitHub: [`/mocks/MockWardenPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockWardenPrecompile.sol)
 :::
 
@@ -246,6 +246,5 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-After creating mock precompiles, you can [create the trading Agent](main_contract).
-
-**Note:** When you deploy the Basic Agent, you'll be able to [get data from precompiles](deployment#get-data-from-precompiles).
+- After creating mock precompiles, you can [create the trading Agent](main_contract).
+- Later, when you deploy the Basic Agent, you'll be able to [get data from precompiles](deployment#get-data-from-precompiles).

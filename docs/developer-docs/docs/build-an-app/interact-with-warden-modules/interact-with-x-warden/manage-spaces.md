@@ -22,11 +22,11 @@ To create a new Space, use the following code in your contract. It calls the [`n
 
 ```solidity
 function newSpace(
-        uint64 approveAdminTemplateId,
-        uint64 rejectAdminTemplateId,
-        uint64 approveSignTemplateId,
-        uint64 rejectSignTemplateId,
-        address[] calldata additionalOwners
+    uint64 approveAdminTemplateId,
+    uint64 rejectAdminTemplateId,
+    uint64 approveSignTemplateId,
+    uint64 rejectSignTemplateId,
+    address[] calldata additionalOwners
 ) external returns (uint64 id);
 
 contract wardenSpace {

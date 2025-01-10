@@ -149,7 +149,7 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 
 ## 3. Create a smart contract
 
-After you initialize a Foundry project, the script will automatically create a sample contract named `Counter` in the `/src` directory:
+After you initialize a Foundry project, the script will automatically create a sample contract named `Counter.sol` in the `/src` directory:
 
 ```sol title="/warden-smart-contract/src/Counter.sol"
 // SPDX-License-Identifier: UNLICENSED

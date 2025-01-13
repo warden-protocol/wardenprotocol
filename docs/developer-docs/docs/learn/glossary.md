@@ -203,7 +203,7 @@ An Omnichain Contract is a smart contract that allows signing transactions and m
 
 ## Oracle service
 
-An oracle is a third-party service that enables smart contracts access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction) – an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written on-chain.
+An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction) – an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written on-chain.
 
 Learn more: [Oracle services](oracle-services)
 

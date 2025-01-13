@@ -66,8 +66,8 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         // store future id in orderData
         // decode future response
         // 2) get price from slinky
-        GetPriceResponse memory priceResponse =
-            SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
+        // GetPriceResponse memory priceResponse =
+        //     SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
         // 3) compare prices and decide if can execute:
         // 3.1) if price from slinky is higher than price from async and PriceCondition == GTE => true
         // 3.2) if price from slinky is less than price from async and PriceCondition == LTE => true

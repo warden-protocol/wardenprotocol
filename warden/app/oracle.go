@@ -68,6 +68,7 @@ type SlinkyClient struct {
 	metrics        servicemetrics.Metrics
 	client         oracleclient.OracleClient
 	veCodec        compression.VoteExtensionCodec
+	wrappedVECodec compression.VoteExtensionCodec
 	extCommitCodec compression.ExtendedCommitCodec
 	stakingKeeper  *stakingkeeper.Keeper
 	oracleKeeper   *oraclekeeper.Keeper
@@ -118,16 +119,19 @@ func NewSlinkyClient(
 		logger.Info("started oracle client", "address", cfg.OracleAddress)
 	}()
 
+	veCodec := compression.NewCompressionVoteExtensionCodec(
+		compression.NewDefaultVoteExtensionCodec(),
+		compression.NewZLibCompressor(),
+	)
+
 	return &SlinkyClient{
 		logger:  logger,
 		cfg:     cfg,
 		metrics: metrics,
 		client:  client,
-		veCodec: &WardenSlinkyCodec{
-			slinkyCodec: compression.NewCompressionVoteExtensionCodec(
-				compression.NewDefaultVoteExtensionCodec(),
-				compression.NewZLibCompressor(),
-			),
+		veCodec: veCodec,
+		wrappedVECodec: &WardenSlinkyCodec{
+			slinkyCodec: veCodec,
 		},
 		extCommitCodec: compression.NewCompressionExtendedCommitCodec(
 			compression.NewDefaultExtendedCommitCodec(),
@@ -147,7 +151,7 @@ func (sc *SlinkyClient) ProposalHandler(
 		prepareProposalHandler,
 		processProposalHandler,
 		ve.NewDefaultValidateVoteExtensionsFn(sc.stakingKeeper),
-		sc.veCodec,
+		sc.wrappedVECodec,
 		sc.extCommitCodec,
 		currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
 		sc.metrics,
@@ -171,7 +175,7 @@ func (sc *SlinkyClient) PreblockHandler() *oraclepreblock.PreBlockHandler {
 		sc.oracleKeeper,
 		sc.metrics,
 		currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
-		sc.veCodec,
+		sc.wrappedVECodec,
 		sc.extCommitCodec,
 	)
 }
@@ -193,7 +197,7 @@ func (sc *SlinkyClient) VoteExtensionHandler() *ve.VoteExtensionHandler {
 				currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
 			),
 			sc.oracleKeeper,
-			sc.veCodec,
+			sc.wrappedVECodec,
 			sc.extCommitCodec,
 			sc.logger,
 		),
@@ -286,7 +290,7 @@ func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error
 	var w vemanager.VoteExtensions
 
 	if err := w.Unmarshal(b); err != nil {
-		return vetypes.OracleVoteExtension{}, err
+		return vetypes.OracleVoteExtension{}, fmt.Errorf("failed to unmarshal vemanager.VoteExtensions: %w", err)
 	}
 
 	if len(w.Extensions) == 0 {

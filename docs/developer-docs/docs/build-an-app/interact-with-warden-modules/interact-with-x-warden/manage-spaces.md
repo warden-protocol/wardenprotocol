@@ -311,8 +311,8 @@ contract SpaceQuery {
         warden = IWarden(WARDEN_ADDRESS);
     }
 
-    function getSpaceById(uint64 spaceId) external view returns (IWarden.Space memory) {
-        return warden.spaceById(spaceId);
+    function getSpaceById(uint64 id) external view returns (IWarden.Space memory) {
+        return warden.spaceById(id);
     }
 }
 ```

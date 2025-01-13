@@ -11,7 +11,9 @@ import TabItem from '@theme/TabItem';
 
 You can interact with [Warden Protocol modules](/category/warden-protocol-modules) in your EVM smart contract by calling [Warden precompiles](/category/precompiles).
 
-This guide shows how to deploy a simple EVM contract calling the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of the [`x/warden`](/category/interact-with-xwarden) module. After that, you'll be able to expand you contract code with other functions, which are documented in the subsections below.
+This guide shows how to deploy a simple EVM contract calling the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of the [`x/warden`](../precompiles/x-warden) module. After that, you'll be able to expand you contract code with other functions, which are documented in the subsections below.
+
+To learn the basics of deploying contracts on Warden, refer to [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract).
 
 ## Prerequisites
 
@@ -24,25 +26,26 @@ Before you start, complete the following prerequisites:
    foundryup
    ```
 
-- [Prepare the chain](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain), setting up your private key.
+- Prepare the chain, setting up your private key. You can either run a local chain or join the Chiado testnet, as shown in [Deploy an EVM smart contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain).
 
 ## 1. Create your project and contract
 
-1. Initialize a new Foundry project and navigate to its directory by running the commands below. Alternatively, you can use an existing project.
-     
+1. Initialize a new Foundry project and navigate to its directory:
+
    ```bash
    forge init warden-smart-contract --no-commit
    cd warden-smart-contract
    ```
-2. In the `/src` directory, create a new contract named `Warden.sol`.
+   
+   Alternatively, you can use an existing project – for example, the one you created when following the [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract) guide.
 
-3. Finally, prepare the contract code:
+2. In the `/src` directory, create a new contract named `Warden.sol`:
 
-   - Define an interface for interacting with a [Warden precompile](/category/precompiles).
-   - Reference the precompile address.
-   - Add functions for interacting with the contract.
+   - Define an `interface` for interacting with a [Warden precompile](/category/precompiles).
+   - Add a `contract` with functions calling the precompile.
+   - In the `contract` section, you should also reference the precompile address.
 
-   You can use the example contract below. It calls the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of the [`x/warden`](/category/interact-with-xwarden) module to return a Space and its creator by Space ID:
+   You can use the example contract below. It calls the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of [`x/warden`](../precompiles/x-warden) to return a Space and its creator by Space ID:
 
    ```solidity title="/warden-smart-contract/src/Warden.sol"
    // SPDX-License-Identifier: UNLICENSED
@@ -139,7 +142,7 @@ Before you start, complete the following prerequisites:
 
 ## 3. Interact with the contract
 
-Now you can interact with the contract:
+Now you can interact with the contract.
 
 1. If you're using a local chain, make sure it's running and there is at least one Space:
    

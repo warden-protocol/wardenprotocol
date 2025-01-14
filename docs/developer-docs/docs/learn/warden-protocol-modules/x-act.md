@@ -16,7 +16,7 @@ This module implements the following concepts, which you can find in our Glossar
 
 ## Usage
 
-You can call the `x/act` module from your EVM smart contract using the [`x/act` precompile](/build-an-app/precompiles/x-act), as show in this section: [Interact with x/act](/category/interact-with-xact).
+You can call the `x/act` module from your EVM smart contract using the [`x/act` precompile](/build-an-app/precompiles/x-act), as show in the [Interact with x/act](/category/interact-with-xact) section.
 
 ## Concepts
 

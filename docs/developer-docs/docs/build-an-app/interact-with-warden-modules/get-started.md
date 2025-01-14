@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,39 +9,91 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-This guide explains how to prepare an EVM smart contract for interacting with [Warden Protocol modules](/category/warden-protocol-modules). In your contract, you're going to use functions from [Warden precompiles](/category/precompiles).
+You can interact with [Warden Protocol modules](/category/warden-protocol-modules) in your EVM smart contract by calling [Warden precompiles](/category/precompiles).
+
+This guide shows how to deploy a simple EVM contract calling the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of the [`x/warden`](../precompiles/x-warden) module. After that, you'll be able to expand your contract code with other functions, which are documented in the subsections below.
+
+To learn the basics of deploying contracts on Warden, refer to [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract).
 
 ## Prerequisites
 
 Before you start, complete the following prerequisites:
 
-1. [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running this command:
+- [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running this command:
 
    ```bash
    curl -L https://foundry.paradigm.xyz | bash \ 
    foundryup
    ```
 
-2. [Prepare the chain](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain), setting up your private key.
+- Prepare the chain, setting up your private key. You can either run a local chain or join the Chiado testnet, as shown in [Deploy an EVM smart contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain).
 
-## 1. Create a project and contract
+## 1. Create your project and contract
 
 1. Initialize a new Foundry project and navigate to its directory:
-     
+
    ```bash
    forge init warden-smart-contract --no-commit
    cd warden-smart-contract
    ```
+   
+   Alternatively, you can use an existing project – for example, the one you created when following the [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract) guide.
 
 2. In the `/src` directory, create a new contract named `Warden.sol`.
 
-3. Finally, prepare the contract code. Note that to call a precompile, you should reference its address in your code. See the sections below for code samples and lists of available functions.
+   To call a precompile in your contract, do this::
 
-   |  Functions                                    | Code samples                                              | Precompile address                           |
-   | --------------------------------------------- | --------------------------------------------------------- |--------------------------------------------- |
-   | [x/warden functions](../precompiles/x-warden) | [Interact with x/warden](/category/interact-with-xwarden) | `0x0000000000000000000000000000000000000900` |
-   | [x/act functions](../precompiles/x-act)       | [Interact with x/act](/category/interact-with-xact)       | `0x0000000000000000000000000000000000000901` |
+   - Define an `interface` for interacting with a [Warden precompile](/category/precompiles).
+   - Add a `contract` with functions calling the precompile.
+   - In the `contract` section, you should also reference the precompile address.
+
+   You can use the example contract below. It calls the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of [`x/warden`](../precompiles/x-warden) to return a Space and its creator by Space ID:
+
+   ```solidity title="/warden-smart-contract/src/Warden.sol"
+   // SPDX-License-Identifier: UNLICENSED
+   pragma solidity ^0.8.13;
    
+   // An interface for interacting with the IWarden precompile
+   interface IWarden {
+   
+       // A function for getting a Space by its ID
+       function spaceById(uint64) external view returns (Space memory);
+   
+       // Data structure representing a Warden Space
+       struct Space {
+           uint64 id; // The Space ID
+           address creator; // The Space creator address
+           address[] owners;
+           uint64 nonce;
+           uint64 approveAdminTemplateId;
+           uint64 rejectAdminTemplateId;
+           uint64 approveSignTemplateId;
+           uint64 rejectSignTemplateId;
+       }
+   }
+   
+   // A contract for interacting with the IWarden precompile
+   contract querySpace {
+   
+       // The IWarden precompile address
+       address constant WARDEN_ADDRESS = 0x0000000000000000000000000000000000000900;
+       IWarden public warden;
+   
+       constructor() {
+           warden = IWarden(WARDEN_ADDRESS);
+       }
+   
+       // A function for getting a Space by Space ID
+       function getSpace(uint64 id) external view returns (IWarden.Space memory) {
+           return warden.spaceById(id);
+       }
+   
+       // A function for getting the Space creator address by Space ID
+       function getSpaceCreator(uint64 id) external view returns (address) {
+           return warden.spaceById(id).creator;
+       }
+   }
+   ```
 
 ## 2. Compile and deploy the contract
 
@@ -75,7 +127,7 @@ Before you start, complete the following prerequisites:
 3. Deploy the contract:
 
    ```bash
-   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Warden.sol:WardenContract
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Warden.sol:querySpace
    ```
 
 4. Export your contract address returned in `Deployed to`:
@@ -90,9 +142,47 @@ Before you start, complete the following prerequisites:
    cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
    ```
 
+## 3. Interact with the contract
+
+Now you can interact with the contract.
+
+1. If you're using a local chain, make sure it's running and there is at least one Space:
+   
+   ```
+   wardend query warden spaces
+   ```
+
+   If nothing is returned, [create a Space](/operate-a-node/run-a-local-chain#create-a-space). 
+
+2. Get a Space by its ID – for example, `1`:
+   
+   ```
+   cast call $CONTRACT_ADDRESS "getSpace(uint64)" 1 --rpc-url $RPC_URL
+   ```
+
+   The result will look like this:
+
+   ```
+   0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006ea8ac1673402989e7b653ae4e83b54173719c3000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006ea8ac1673402989e7b653ae4e83b54173719c30
+   ```
+
+3. Get the Space creator by Space ID – for example, `1`:
+   
+   ```
+   cast call $CONTRACT_ADDRESS "getSpaceCreator(uint64)" 1 --rpc-url $RPC_URL
+   ```
+
+   The result will look like this:
+
+   ```
+   0x0000000000000000000000006ea8ac1673402989e7b653ae4e83b54173719c30
+   ```
+
 ## Next steps
 
-- To dive deeper and find code samples for each function from Warden precompiles, see the following guides:
+Now you can dive deeper and expand your contract with other functions from Warden precompiles:
+
+- To find code samples for each function, see the following guides:
   - [Interact with x/warden](/category/interact-with-xwarden)
   - [Interact with x/act](/category/interact-with-xact)
-- For an overview of the functions, refer to the [Precompiles](/category/precompiles) section.
+- For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.

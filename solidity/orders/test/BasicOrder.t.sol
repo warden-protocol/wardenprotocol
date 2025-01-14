@@ -14,6 +14,7 @@ import {
     SchedulerChanged,
     SaltAlreadyUsed
 } from "../src/OrderFactory.sol";
+import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
 import { Caller, IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
@@ -36,6 +37,7 @@ import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 
 struct TestData {
     Registry registry;
+    BasicOrderFactory basicOrderFactory;
     OrderFactory orderFactory;
     MockWardenPrecompile wardenPrecompile;
     MockSlinkyPrecompile mockSlinkyPrecompile;
@@ -118,7 +120,8 @@ contract BasicOrderTest is Test {
         Registry registry = new Registry();
         address scheduler = address(this);
         address owner = address(this);
-        OrderFactory orderFactory = new OrderFactory(address(registry), scheduler, owner);
+        BasicOrderFactory basicOrderFactory = new BasicOrderFactory(address(registry));
+        OrderFactory orderFactory = new OrderFactory(address(registry), scheduler, owner, address(basicOrderFactory));
 
         MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
@@ -135,6 +138,7 @@ contract BasicOrderTest is Test {
 
         _testData = TestData({
             registry: registry,
+            basicOrderFactory: basicOrderFactory,
             orderFactory: orderFactory,
             wardenPrecompile: wardenPrecompile,
             mockSlinkyPrecompile: mockSlinkyPrecompile,
@@ -227,7 +231,7 @@ contract BasicOrderTest is Test {
         CommonTypes.Coin[] memory maxKeychainFees;
 
         vm.expectEmit(true, false, false, false);
-        emit Registered(address(_testData.orderFactory), address(this));
+        emit Registered(address(_testData.basicOrderFactory), address(this));
 
         vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
@@ -236,7 +240,7 @@ contract BasicOrderTest is Test {
             abi.encode(orderData), executionData, maxKeychainFees, OrderType.Basic, orderSalt
         );
 
-        assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
+        assertEq(address(_testData.basicOrderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
 
         _order = IExecution(orderAddress);
@@ -403,16 +407,16 @@ contract BasicOrderTest is Test {
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {
         vm.expectRevert(InvalidRegistryAddress.selector);
-        new OrderFactory(address(0), address(this), address(this));
+        new OrderFactory(address(0), address(this), address(this), address(this));
     }
 
     function test_FactoryConstructorRevertWhenInvalidScheduler() public {
         vm.expectRevert(InvalidSchedulerAddress.selector);
-        new OrderFactory(address(this), address(0), address(this));
+        new OrderFactory(address(this), address(0), address(this), address(this));
     }
 
     function test_FactorySetScheduler() public {
-        OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
+        OrderFactory factory = new OrderFactory(address(this), address(this), address(this), address(this));
 
         vm.expectEmit(true, true, false, false);
 
@@ -424,7 +428,7 @@ contract BasicOrderTest is Test {
     }
 
     function test_FactoryRevertWhenSetSchedulerNotOwner() public {
-        OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
+        OrderFactory factory = new OrderFactory(address(this), address(this), address(this), address(this));
 
         vm.expectRevert(abi.encodeWithSelector(OwnableUnauthorizedAccount.selector, RECEIVER));
         vm.prank(RECEIVER);
@@ -434,7 +438,7 @@ contract BasicOrderTest is Test {
     }
 
     function test_FactoryRevertWhenSetSchedulerInvalid() public {
-        OrderFactory factory = new OrderFactory(address(this), address(this), address(this));
+        OrderFactory factory = new OrderFactory(address(this), address(this), address(this), address(this));
 
         vm.expectRevert(InvalidSchedulerAddress.selector);
         factory.setScheduler(address(0));

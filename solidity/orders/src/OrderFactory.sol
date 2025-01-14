@@ -4,9 +4,9 @@ pragma solidity >=0.8.25 <0.9.0;
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { BasicOrder } from "./BasicOrder.sol";
 import { AdvancedOrder } from "./AdvancedOrder.sol";
 import { Registry } from "./Registry.sol";
+import { BasicOrderFactory } from "./BasicOrderFactory.sol";
 import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
@@ -35,13 +35,15 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     // Registry of IExecution contracts
     Registry public immutable REGISTRY;
 
+    BasicOrderFactory public immutable BASIC_ORDER_FACTORY;
+
     // Scheduler address
     address public scheduler;
 
     // Mapping to track used salts to prevent reuse
     mapping(bytes32 salt => bool used) public usedSalts;
 
-    constructor(address registry, address _scheduler, address owner) Ownable(owner) {
+    constructor(address registry, address _scheduler, address owner, address basicOrderFactory) Ownable(owner) {
         if (registry == address(0)) {
             revert InvalidRegistryAddress();
         }
@@ -51,14 +53,15 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         }
 
         REGISTRY = Registry(registry);
+        BASIC_ORDER_FACTORY = BasicOrderFactory(basicOrderFactory);
         scheduler = _scheduler;
     }
 
     /**
-     * @notice Computes the deterministic address of a BasicOrder without deploying it
+     * @notice Computes the deterministic address of a order without deploying it
      * @param origin The potential order creator
      * @param salt The unique salt provided by the frontend
-     * @return The computed address of the BasicOrder
+     * @return The computed address of the order
      */
     function computeOrderAddress(address origin, bytes32 salt) external view returns (address) {
         // front-running protection
@@ -142,18 +145,11 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         internal
         returns (address)
     {
-        bytes memory bytecode = getBasicOrderBytecode(_orderData, _executionData, maxKeychainFees, _scheduler);
-
-        address orderAddress = Create3.create3(salt, bytecode);
-
-        address expectedAddress = Create3.addressOf(salt);
-        if (orderAddress == address(0) || orderAddress != expectedAddress) {
-            revert OrderDeploymentFailed(salt);
-        }
+        address orderAddress = BASIC_ORDER_FACTORY.createBasicOrder(
+            _orderData, _executionData, maxKeychainFees, _scheduler, address(REGISTRY), salt
+        );
 
         orders[orderAddress] = msg.sender;
-
-        REGISTRY.register(orderAddress);
 
         emit OrderCreated(msg.sender, OrderType.Basic, orderAddress);
 
@@ -186,30 +182,6 @@ contract OrderFactory is Ownable, ReentrancyGuard {
         emit OrderCreated(msg.sender, OrderType.Advanced, orderAddress);
 
         return orderAddress;
-    }
-
-    /**
-     * @notice Prepares the creation bytecode for BasicOrder
-     * @param _orderData The data required to create the order
-     * @param _executionData The data required for order execution
-     * @param maxKeychainFees The maximum fees allowed
-     * @param _scheduler The scheduler address
-     * @return The bytecode for deploying BasicOrder
-     */
-    function getBasicOrderBytecode(
-        Types.BasicOrderData memory _orderData,
-        Types.CommonExecutionData calldata _executionData,
-        CommonTypes.Coin[] calldata maxKeychainFees,
-        address _scheduler
-    )
-        internal
-        view
-        returns (bytes memory)
-    {
-        return abi.encodePacked(
-            type(BasicOrder).creationCode,
-            abi.encode(_orderData, _executionData, maxKeychainFees, _scheduler, address(REGISTRY))
-        );
     }
 
     /**

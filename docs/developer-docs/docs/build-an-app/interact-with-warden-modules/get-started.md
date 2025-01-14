@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 You can interact with [Warden Protocol modules](/category/warden-protocol-modules) in your EVM smart contract by calling [Warden precompiles](/category/precompiles).
 
-This guide shows how to deploy a simple EVM contract calling the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of the [`x/warden`](../precompiles/x-warden) module. After that, you'll be able to expand you contract code with other functions, which are documented in the subsections below.
+This guide shows how to deploy a simple EVM contract calling the [`spaceById()`](../precompiles/x-warden#query-a-space-by-id) function of the [`x/warden`](../precompiles/x-warden) module. After that, you'll be able to expand your contract code with other functions, which are documented in the subsections below.
 
 To learn the basics of deploying contracts on Warden, refer to [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract).
 
@@ -39,7 +39,9 @@ Before you start, complete the following prerequisites:
    
    Alternatively, you can use an existing project – for example, the one you created when following the [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract) guide.
 
-2. In the `/src` directory, create a new contract named `Warden.sol`:
+2. In the `/src` directory, create a new contract named `Warden.sol`.
+
+   To call a precompile in your contract, do this::
 
    - Define an `interface` for interacting with a [Warden precompile](/category/precompiles).
    - Add a `contract` with functions calling the precompile.

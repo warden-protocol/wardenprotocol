@@ -86,7 +86,7 @@ A full node is a server running a software (binary) that maintains a complete up
 
 A Future is an off-chain user-defined computational task that is executed asynchronously. The result is stored on-chain.
 
-A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prohpet) executes the Future and provides the result. Other validators vote on correctness of the result. It doesn't slow the blockchain down thanks to asynchronous execution.
+A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It doesn't slow the blockchain down thanks to asynchronous execution.
 
 ---
 

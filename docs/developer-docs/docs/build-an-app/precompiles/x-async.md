@@ -22,7 +22,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 ## Futures
 
-### Create a Future
+### Create a new Future
 
 - **Method**: `addFuture()`
 - **Description**: Creates a Future. Emits the [`CreateFuture`](#createfuture) event.
@@ -35,11 +35,12 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   ```sol
   @return futureId The id of the future
   ```
+- **Usage example**: [Create a new Future](../interact-with-warden-modules/interact-with-x-async#create-a-new-future)
 
 ### Query Futures
 
 - **Method**: `futures()`
-- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse`](#futuresresponse) struct.
+- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse`](#futureresponse) struct.
 - **Parameters** :
   ```sol
   @param pagination The pagination details
@@ -50,6 +51,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   ```sol
   @return response The paged futures
   ```
+- **Usage example**: [Query Futures](../interact-with-warden-modules/interact-with-x-async#query-futures)
 
 ### Query pending Futures
 
@@ -63,11 +65,12 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   ```sol
   @return response The paged futures
   ```
+- **Usage example**: [Query pending Futures](../interact-with-warden-modules/interact-with-x-async#query-pending-futures)
 
 ### Query a Future by ID
 
 - **Method**: `futureById()`
-- **Description**: Returns a Future by ID (pending Futures included). See the [`FutureByIdResponse `](#futurebyidresponse) struct.
+- **Description**: Returns a Future by ID (pending Futures included). See the [`FutureByIdResponse`](#futurebyidresponse) struct.
 - **Parameters** :
   ```sol
   @param futureId The future id   
@@ -76,6 +79,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   ```sol
   @return response The future
   ```
+- **Usage example**: [Query a Future by ID](../interact-with-warden-modules/interact-with-x-async#query-a-future-by-id)
 
 ## Structs
 
@@ -100,7 +104,7 @@ bytes Voter;
 FutureVoteType vote;
 ```
 
-### `FutureResult `
+### `FutureResult`
 
 - **Description**: A struct representing the result of a Future.
 
@@ -153,7 +157,7 @@ Rejected
 
 ### `CreateFuture`
 
-- **Description**: An event emitted when [a Future is created](#create-a-future).
+- **Description**: An event emitted when [a Future is created](#create-a-new-future).
 - **Parameters**:  
   ```sol
   @param creator The address of the creator

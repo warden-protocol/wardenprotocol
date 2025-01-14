@@ -10,7 +10,7 @@ import {
 } from "@walletconnect/utils";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 
-import { COSMOS_CHAINS } from "@/config/tokens";
+import { getEnabledCosmosChains } from "@/config/tokens";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { AddressType } from "@/hooks/query/warden";
@@ -246,12 +246,14 @@ const isValidEthParams = (params: any): params is EthParams => {
 };
 
 export async function approveRequest({
+	address,
 	w,
 	req,
 	eth,
 	cosm,
 	client,
 }: {
+	address: `0x${string}`;
 	w?: IWeb3Wallet | null;
 	req: PendingRequestTypes.Struct;
 	eth: ReturnType<typeof useEthereumTx>;
@@ -525,7 +527,7 @@ export async function approveRequest({
 					throw new Error(`Unknown address ${signerAddress}`);
 				}
 
-				const feeAmount = COSMOS_CHAINS.find(
+				const feeAmount = getEnabledCosmosChains(address).find(
 					({ chainName }) => chainName === chain.chain_name,
 				)?.feeAmount;
 

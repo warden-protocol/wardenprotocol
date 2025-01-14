@@ -1,3 +1,8 @@
+import { Address, Hex } from "viem";
+
 export interface INewSignatureRequest {
-  signedData: Uint8Array;
+  id: bigint;
+  creator: Address;
+  signature: Hex;
+  transactionHash: Hex;
 }

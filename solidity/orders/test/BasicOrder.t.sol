@@ -11,27 +11,17 @@ import {
     OrderType,
     InvalidRegistryAddress,
     InvalidSchedulerAddress,
-    SchedulerChanged
+    SchedulerChanged,
+    SaltAlreadyUsed
 } from "../src/OrderFactory.sol";
 import { Caller, IExecution } from "../src/IExecution.sol";
-import { MockWardenPrecompile } from "./mocks/MockWardenPrecompile.sol";
-import { MockSlinkyPrecompile } from "./mocks/MockSlinkyPrecompile.sol";
+import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
+import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { InvalidScheduler } from "../src/AbstractOrder.sol";
+import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/BasicOrder.sol";
 import {
-    BasicOrder,
-    Executed,
-    ConditionNotMet,
-    ExecutedError,
-    InvalidScheduler,
-    InvalidSwapDataAmountIn,
-    InvalidSwapDataTo,
-    InvalidExpectedApproveExpression,
-    InvalidExpectedRejectExpression,
-    InvalidThresholdPrice,
-    InvalidTxTo,
-    Unauthorized
-} from "../src/BasicOrder.sol";
-import {
+    BadCreatorAddress,
     ExecutionAlreadyRegistered,
     InvalidExecutionAddress,
     NewTx,
@@ -42,6 +32,7 @@ import {
     TxAlreadyAdded,
     InvalidHash
 } from "../src/Registry.sol";
+import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 
 struct TestData {
     Registry registry;
@@ -65,9 +56,10 @@ contract BasicOrderTest is Test {
     // @openzeppelin Ownable.sol
     error OwnableUnauthorizedAccount(address account);
 
-    address private constant SEPOLIA_UNISWAP_V2_ROUTER =
-        address(bytes20(bytes("0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3")));
-    address private constant RECEIVER = address(bytes20(bytes("0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db")));
+    address private constant SEPOLIA_UNISWAP_V2_ROUTER = address(uint160(0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3));
+    address private constant RECEIVER = address(uint160(0x18517Cb2779186B86b1F8947dFdB6078C1B9C9db));
+    address private constant SEPOLIA_WETH = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14;
+    address private constant SEPOLIA_TEST_TOKEN = 0xE5a71132Ae99691ef35F68459aDde842118A86a5;
 
     function beforeTestSetup(bytes4 testSelector) public pure returns (bytes[] memory beforeTestCalldata) {
         if (
@@ -94,8 +86,6 @@ contract BasicOrderTest is Test {
             beforeTestCalldata[1] = abi.encodeWithSignature("test_basicOrderExecuteWhenPriceMovesUp()");
         } else if (
             testSelector == this.test_BasicOrderRevertWhenInvalidScheduler.selector
-                || testSelector == this.test_BasicOrderRevertWhenInvalidAmountIn.selector
-                || testSelector == this.test_BasicOrderRevertWhenInvalidSwapDataTo.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedApproveExpression.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidExpectedRejectExpression.selector
                 || testSelector == this.test_BasicOrderRevertWhenInvalidThresholdPrice.selector
@@ -103,6 +93,23 @@ contract BasicOrderTest is Test {
         ) {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] = abi.encodeWithSignature("saveOrderData()");
+        } else if (
+            testSelector == this.test_computeOrderAddressMatchesCreateOrder.selector
+                || testSelector == this.test_computeOrderAddressGuardedBySender.selector
+        ) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] =
+                abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.LTE);
+        } else if (testSelector == this.test_computeOrderAddressBeforeDeployment.selector) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] = abi.encodeWithSignature("saveOrderData()");
+        } else if (
+            testSelector == this.test_createOrderRevertsWithUsedSalt.selector
+                || testSelector == this.test_createOrderWithDifferentSenderCanUseSameSalt.selector
+        ) {
+            beforeTestCalldata = new bytes[](1);
+            beforeTestCalldata[0] =
+                abi.encodeWithSignature("test_BasicOrder_Create(bool,uint8)", true, Types.PriceCondition.LTE);
         }
     }
 
@@ -138,6 +145,29 @@ contract BasicOrderTest is Test {
         });
 
         _expectedCallers.push(Caller.Scheduler);
+
+        // Initialize _orderData with valid values
+        bytes[] memory analyzers;
+        _orderData = Types.OrderData({
+            thresholdPrice: _testData.thresholdPrice,
+            priceCondition: Types.PriceCondition.LTE,
+            pricePair: _testData.pricePair,
+            signRequestData: Types.SignRequestData({
+                keyId: _testData.goodKeyId,
+                analyzers: analyzers,
+                encryptionKey: "",
+                spaceNonce: 0,
+                actionTimeoutHeight: 0,
+                expectedApproveExpression: "expectedApproveExpression",
+                expectedRejectExpression: "expectedRejectExpression"
+            }),
+            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
+                value: 0,
+                chainId: 11_155_111,
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: getTestSwapData()
+            })
+        });
     }
 
     function test_BasicOrder_Create(bool goodOrder, uint8 condition) public {
@@ -145,7 +175,6 @@ contract BasicOrderTest is Test {
             condition = 0;
         }
 
-        address[] memory path;
         bytes[] memory analyzers;
         bytes memory encryptionKey;
         uint64 keyId;
@@ -166,11 +195,11 @@ contract BasicOrderTest is Test {
             );
         }
 
+        bytes memory data = getTestSwapData();
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: cond,
             pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
                 keyId: keyId,
                 analyzers: analyzers,
@@ -183,9 +212,11 @@ contract BasicOrderTest is Test {
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: data
             })
         });
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "ValidOrder"));
 
         CommonTypes.Coin[] memory maxKeychainFees;
 
@@ -195,7 +226,8 @@ contract BasicOrderTest is Test {
         vm.expectEmit(true, true, false, false);
         emit OrderCreated(address(this), OrderType.Basic, address(this));
 
-        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+        address orderAddress =
+            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, orderSalt);
 
         assertEq(address(_testData.orderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
@@ -238,11 +270,13 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        vm.expectEmit(true, false, false, false);
-        emit NewTx(address(_order), bytes32(0));
+        vm.expectEmit(true, true, false, false);
+        // solhint-disable-next-line
+        emit NewTx(address(_order), tx.origin, bytes32(0));
 
         (bool executed, bytes32 txHash) = _order.execute(1, 1, 1, 1, 1);
-        assertEq(_testData.registry.transactions(txHash), _order.getTx());
+        // solhint-disable-next-line
+        assertEq(_testData.registry.transactions(tx.origin, txHash), _order.getTx());
         assert(executed);
 
         assert(_order.isExecuted());
@@ -260,11 +294,13 @@ contract BasicOrderTest is Test {
         vm.expectEmit(false, false, false, false);
         emit Executed();
 
-        vm.expectEmit(true, false, false, false);
-        emit NewTx(address(_order), bytes32(0));
+        vm.expectEmit(true, true, false, false);
+        // solhint-disable-next-line
+        emit NewTx(address(_order), tx.origin, bytes32(0));
 
         (bool executed, bytes32 txHash) = _order.execute(1, 1, 1, 1, 1);
-        assertEq(_testData.registry.transactions(txHash), _order.getTx());
+        // solhint-disable-next-line
+        assertEq(_testData.registry.transactions(tx.origin, txHash), _order.getTx());
         assert(executed);
 
         assert(_order.isExecuted());
@@ -275,16 +311,15 @@ contract BasicOrderTest is Test {
     }
 
     function saveOrderData() public {
-        address[] memory path;
         bytes[] memory analyzers;
         bytes memory encryptionKey;
+        bytes memory data = getTestSwapData();
         Types.OrderData memory orderData = Types.OrderData({
             thresholdPrice: _testData.thresholdPrice,
             priceCondition: Types.PriceCondition.LTE,
             pricePair: _testData.pricePair,
-            swapData: Types.SwapData({ amountIn: 1, path: path, to: RECEIVER, deadline: 0 }),
             signRequestData: Types.SignRequestData({
-                keyId: 0,
+                keyId: _testData.goodKeyId,
                 analyzers: analyzers,
                 encryptionKey: encryptionKey,
                 spaceNonce: 0,
@@ -295,7 +330,8 @@ contract BasicOrderTest is Test {
             creatorDefinedTxFields: Types.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
-                to: SEPOLIA_UNISWAP_V2_ROUTER
+                to: SEPOLIA_UNISWAP_V2_ROUTER,
+                data: data
             })
         });
 
@@ -310,52 +346,40 @@ contract BasicOrderTest is Test {
         new BasicOrder(_orderData, maxKeychainFees, address(0), address(_testData.registry));
     }
 
-    function test_BasicOrderRevertWhenInvalidAmountIn() public {
-        CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.swapData.amountIn = 0;
-        vm.expectRevert(InvalidSwapDataAmountIn.selector);
-
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
-    }
-
-    function test_BasicOrderRevertWhenInvalidSwapDataTo() public {
-        CommonTypes.Coin[] memory maxKeychainFees;
-        _orderData.swapData.to = address(0);
-        vm.expectRevert(InvalidSwapDataTo.selector);
-
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
-    }
-
     function test_BasicOrderRevertWhenInvalidExpectedApproveExpression() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.signRequestData.expectedApproveExpression = "";
-        vm.expectRevert(InvalidExpectedApproveExpression.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidApproveExpression"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_BasicOrderRevertWhenInvalidExpectedRejectExpression() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.signRequestData.expectedRejectExpression = "";
-        vm.expectRevert(InvalidExpectedRejectExpression.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidRejectExpression"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_BasicOrderRevertWhenInvalidThresholdPrice() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.thresholdPrice = 0;
-        vm.expectRevert(InvalidThresholdPrice.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidThresholdPrice"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_BasicOrderRevertWhenInvalidTxTo() public {
         CommonTypes.Coin[] memory maxKeychainFees;
         _orderData.creatorDefinedTxFields.to = address(0);
-        vm.expectRevert(InvalidTxTo.selector);
+        vm.expectRevert(Create3.ErrorCreatingContract.selector);
 
-        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic);
+        bytes32 orderSalt = keccak256(abi.encodePacked(address(this), block.number, "InvalidTxTo"));
+        _testData.orderFactory.createOrder(_orderData, maxKeychainFees, OrderType.Basic, orderSalt);
     }
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {
@@ -411,24 +435,163 @@ contract BasicOrderTest is Test {
 
     function test_RegistryRevertAddTransactionWhenNotOrder() public {
         vm.expectRevert(UnauthorizedToAddTx.selector);
-        _testData.registry.addTransaction(keccak256(bytes("test")));
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, keccak256(bytes("test")));
     }
 
     function test_RegistryRevertAddTransactionWhenInvalidHash() public {
         vm.expectRevert(InvalidHash.selector);
         vm.prank(address(_order));
-        _testData.registry.addTransaction(bytes32(0));
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, bytes32(0));
     }
 
     function test_RegistryRevertAddTransactionWhenAlreadyAdded() public {
         vm.expectRevert(TxAlreadyAdded.selector);
         vm.prank(address(_order));
-        _testData.registry.addTransaction(_txHash);
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, _txHash);
     }
 
     function test_RegistryRevertAddTransactionWhenNotExecuted() public {
         vm.expectRevert(NotExecuted.selector);
         vm.prank(address(_order));
-        _testData.registry.addTransaction(keccak256(bytes("test")));
+        // solhint-disable-next-line
+        _testData.registry.addTransaction(tx.origin, keccak256(bytes("test")));
+    }
+
+    function test_RegistryRevertAddTransactionWhenBadCreatorAddress() public {
+        vm.expectRevert(BadCreatorAddress.selector);
+        vm.prank(address(_order));
+        _testData.registry.addTransaction(address(0), keccak256(bytes("test")));
+    }
+
+    function test_computeOrderAddressMatchesCreateOrder() public {
+        bytes32 salt = keccak256(abi.encodePacked("unique_salt"));
+
+        // Compute the expected order address
+        // solhint-disable-next-line
+        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
+
+        // Create the order
+        Types.OrderData memory orderData = _orderData;
+        CommonTypes.Coin[] memory maxKeychainFees;
+        address orderAddress = _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        // Assert that the computed address matches the deployed order address
+        assertEq(computedAddress, orderAddress, "Computed address does not match deployed order address");
+    }
+
+    function test_computeOrderAddressBeforeDeployment() public {
+        bytes32 salt = keccak256(abi.encodePacked("another_unique_salt"));
+
+        // Ensure that the MockSlinkyPrecompile is set up properly
+        _testData.mockSlinkyPrecompile.setPrice(
+            _testData.pricePair.base, _testData.pricePair.quote, _testData.thresholdPrice + 1
+        );
+
+        // Compute the expected order address before deployment
+        // solhint-disable-next-line
+        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
+
+        // Ensure that no contract is deployed at the computed address yet
+        assertEq(computedAddress.code.length, 0, "Order address should not be deployed yet");
+
+        // Create the order
+        Types.OrderData memory orderData = _orderData;
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        // Now, the contract should be deployed
+        assertEq(computedAddress.code.length > 0, true, "Order contract was not deployed at computed address");
+    }
+
+    function test_createOrderRevertsWithUsedSalt() public {
+        bytes32 salt = keccak256(abi.encodePacked("reused_salt"));
+
+        // First creation should succeed
+        Types.OrderData memory orderData = _orderData;
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        // Expect revert when using the same salt again
+        vm.expectRevert(SaltAlreadyUsed.selector);
+        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+    }
+
+    function test_createOrderWithDifferentSenderCanUseSameSalt() public {
+        bytes32 salt = keccak256(abi.encodePacked("shared_salt"));
+
+        // Create order with original sender
+        Types.OrderData memory orderData = _orderData;
+        CommonTypes.Coin[] memory maxKeychainFees;
+        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        // Change the caller to a different address
+        address newSender = address(0xBEEF);
+        vm.prank(address(this), newSender);
+
+        // This should succeed because the salt is guarded by msg.sender
+        _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+    }
+
+    function test_computeOrderAddressGuardedBySender() public {
+        bytes32 salt = keccak256(abi.encodePacked("guarded_salt"));
+
+        // Compute order address with original sender
+        // solhint-disable-next-line
+        address computedAddressOriginal = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
+
+        // Create order with original sender
+        Types.OrderData memory orderData = _orderData;
+        CommonTypes.Coin[] memory maxKeychainFees;
+        address orderAddressOriginal =
+            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        // Assert that the computed address matches the deployed address for original sender
+        assertEq(
+            computedAddressOriginal,
+            orderAddressOriginal,
+            "Computed address does not match deployed order address for original sender"
+        );
+
+        // Compute order address with a different sender
+        address differentSender = address(0xDEAD);
+        address computedAddressDifferent = _testData.orderFactory.computeOrderAddress(differentSender, salt);
+
+        // Create order with different sender
+        vm.prank(address(this), differentSender);
+        address orderAddressDifferent =
+            _testData.orderFactory.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
+
+        // Assert that the computed address matches the deployed address for different sender
+        assertEq(
+            computedAddressDifferent,
+            orderAddressDifferent,
+            "Computed address does not match deployed order address for different sender"
+        );
+
+        // Ensure that the two order addresses are different
+        assertEq(
+            orderAddressOriginal == orderAddressDifferent,
+            false,
+            "Order addresses for different senders should not be the same"
+        );
+    }
+
+    function getTestSwapData() internal pure returns (bytes memory) {
+        // Encode Uniswap V2 swapExactTokensForTokens parameters
+        address[] memory path = new address[](2);
+        path[0] = SEPOLIA_WETH;
+        path[1] = SEPOLIA_TEST_TOKEN;
+        bytes4 functionSelector =
+            bytes4(keccak256(abi.encodePacked("swapExactETHForTokens(uint256,address[],address, uint256)")));
+        return abi.encodeWithSelector(
+            functionSelector,
+            1, // amountOutMin
+            path,
+            RECEIVER,
+            type(uint256).max // deadline
+        );
     }
 }

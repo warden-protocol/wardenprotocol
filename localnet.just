@@ -1,7 +1,7 @@
 chain_id := "warden_1337-1"
 shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
-warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902"]'
+warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903"]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
 start bin="wardend" install="true":

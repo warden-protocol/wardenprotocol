@@ -12,6 +12,7 @@ on:
       - "automated-orders/packages/blockchain-library/**"
       - "automated-orders/packages/scheduler/**"
       - "automated-orders/packages/utils-library/**"
+      - "automated-orders/packages/aws-kms-signer/**"
     tags:
       - "automated-orders-scheduler/v*"
   pull_request:
@@ -22,6 +23,7 @@ on:
       - "automated-orders/packages/blockchain-library/**"
       - "automated-orders/packages/scheduler/**"
       - "automated-orders/packages/utils-library/**"
+      - "automated-orders/packages/aws-kms-signer/**"
 jobs:
   build:
     runs-on: ubuntu-latest

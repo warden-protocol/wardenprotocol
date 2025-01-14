@@ -21,6 +21,9 @@
       "path": "./packages/utils-library"
     },
     {
+      "path": "./packages/aws-kms-signer"
+    },
+    {
       "path": "./packages/blockchain-library"
     },
     {

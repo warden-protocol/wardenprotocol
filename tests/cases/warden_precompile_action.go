@@ -215,8 +215,65 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 		require.Len(t, keyRequests2.KeyRequests, 1)
 
-		// newSignRequest
-		newSignRequestTx, err := iWardenClient.NewSignRequest(
+		// newSignRequest automatic
+		signRequestAutomatic, err := iWardenClient.NewSignRequest(
+			alice.TransactOps(t, context.Background(), evmClient),
+			1,
+			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
+			[][]byte{},
+			[]byte{},
+			[]warden.TypesCoin{},
+			2,
+			0,
+			"any(1, warden.space.owners)",
+			"any(1, warden.space.owners)",
+			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
+		require.NoError(t, err)
+
+		newSignRequestAutomaticTxReceipt, err := bind.WaitMined(ctx, evmClient, signRequestAutomatic)
+		require.NoError(t, err)
+
+		newSignRequestAutomaticEvents, err := checks.GetParsedEventsOnly(newSignRequestAutomaticTxReceipt, iWardenClient.ParseNewSignRequest)
+		require.NoError(t, err)
+
+		require.Len(t, newSignRequestAutomaticEvents, 1)
+		require.Equal(t, newSignRequestAutomaticEvents[0].Id, uint64(1))
+		require.Equal(t, newSignRequestAutomaticEvents[0].KeyId, uint64(1))
+		require.Equal(t, newSignRequestAutomaticEvents[0].Creator, alice.EthAddress(t))
+		require.Equal(t, newSignRequestAutomaticEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
+
+		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
+
+		require.NoError(t, err)
+		require.Len(t, actions4.Actions, 4)
+
+		signRequestsAutomatic, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING), uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC)+1)
+
+		require.NoError(t, err)
+		require.Len(t, signRequestsAutomatic.SignRequests, 1)
+		require.Equal(t, warden.SignRequest{
+			Id:                   1,
+			Creator:              alice.EthAddress(t),
+			KeyId:                1,
+			Status:               uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			EncryptionKey:        []byte{},
+			DataForSigning:       []byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
+			DeductedKeychainFees: []warden.TypesCoin{},
+			Result:               []byte{},
+			BroadcastType:        uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC),
+		}, signRequestsAutomatic.SignRequests[0])
+
+		signRequestsDisabled, err := iWardenClient.SignRequests(
+			alice.CallOps(t),
+			warden.TypesPageRequest{},
+			1,
+			uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED+1))
+		require.NoError(t, err)
+		require.Len(t, signRequestsDisabled.SignRequests, 0)
+
+		// newSignRequest disabled
+		newSignRequestDisabledTx, err := iWardenClient.NewSignRequest(
 			alice.TransactOps(t, context.Background(), evmClient),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
@@ -230,29 +287,29 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 		require.NoError(t, err)
 
-		newSignRequestTxReceipt, err := bind.WaitMined(ctx, evmClient, newSignRequestTx)
+		newSignRequestDisabledTxReceipt, err := bind.WaitMined(ctx, evmClient, newSignRequestDisabledTx)
 		require.NoError(t, err)
 
-		newSignRequestEvents, err := checks.GetParsedEventsOnly(newSignRequestTxReceipt, iWardenClient.ParseNewSignRequest)
+		newSignRequestDisabledEvents, err := checks.GetParsedEventsOnly(newSignRequestDisabledTxReceipt, iWardenClient.ParseNewSignRequest)
 		require.NoError(t, err)
 
-		require.Len(t, newSignRequestEvents, 1)
-		require.Equal(t, newSignRequestEvents[0].Id, uint64(1))
-		require.Equal(t, newSignRequestEvents[0].KeyId, uint64(1))
-		require.Equal(t, newSignRequestEvents[0].Creator, alice.EthAddress(t))
-		require.Equal(t, newSignRequestEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
+		require.Len(t, newSignRequestDisabledEvents, 1)
+		require.Equal(t, newSignRequestDisabledEvents[0].Id, uint64(2))
+		require.Equal(t, newSignRequestDisabledEvents[0].KeyId, uint64(1))
+		require.Equal(t, newSignRequestDisabledEvents[0].Creator, alice.EthAddress(t))
+		require.Equal(t, newSignRequestDisabledEvents[0].BroadcastType, uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED))
 
-		actions4, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
-
-		require.NoError(t, err)
-		require.Len(t, actions4.Actions, 4)
-
-		signRequests, err := iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING), 0)
+		actions5, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Len(t, signRequests.SignRequests, 1)
+		require.Len(t, actions5.Actions, 5)
+
+		signRequestsDisabled, err = iWardenClient.SignRequests(alice.CallOps(t), warden.TypesPageRequest{}, 1, uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING), uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED)+1)
+
+		require.NoError(t, err)
+		require.Len(t, signRequestsDisabled.SignRequests, 1)
 		require.Equal(t, warden.SignRequest{
-			Id:                   1,
+			Id:                   2,
 			Creator:              alice.EthAddress(t),
 			KeyId:                1,
 			Status:               uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
@@ -261,16 +318,25 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			DeductedKeychainFees: []warden.TypesCoin{},
 			Result:               []byte{},
 			BroadcastType:        uint8(types.BroadcastType_BROADCAST_TYPE_DISABLED),
-		}, signRequests.SignRequests[0])
+		}, signRequestsDisabled.SignRequests[0])
 
-		signRequestsAutomatic, err := iWardenClient.SignRequests(
+		signRequestsAutomatic, err = iWardenClient.SignRequests(
 			alice.CallOps(t),
 			warden.TypesPageRequest{},
 			1,
 			uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
-			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC))
-		require.ErrorContains(t, err, "received nil QuerySignRequestsResponse")
-		require.Len(t, signRequestsAutomatic.SignRequests, 0)
+			uint8(types.BroadcastType_BROADCAST_TYPE_AUTOMATIC+1))
+		require.NoError(t, err)
+		require.Len(t, signRequestsAutomatic.SignRequests, 1)
+
+		signRequests, err := iWardenClient.SignRequests(
+			alice.CallOps(t),
+			warden.TypesPageRequest{},
+			1,
+			uint8(types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING),
+			0)
+		require.NoError(t, err)
+		require.Len(t, signRequests.SignRequests, 2)
 
 		// updateKey
 		newTemplateTx, err := iActClient.NewTemplate(
@@ -303,10 +369,10 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, updateKeyEvents[0].ApproveTemplateId, uint64(1))
 		require.Equal(t, updateKeyEvents[0].RejectTemplateId, uint64(1))
 
-		actions5, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
+		actions6, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Len(t, actions5.Actions, 5)
+		require.Len(t, actions6.Actions, 6)
 
 		key, err := iWardenClient.KeyById(
 			alice.CallOps(t),
@@ -352,10 +418,10 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Equal(t, updateSpaceEvents[0].ApproveSignTemplateId, uint64(1))
 		require.Equal(t, updateSpaceEvents[0].RejectSignTemplateId, uint64(1))
 
-		actions6, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
+		actions7, err := iActClient.Actions(alice.CallOps(t), act.TypesPageRequest{})
 
 		require.NoError(t, err)
-		require.Len(t, actions6.Actions, 6)
+		require.Len(t, actions7.Actions, 7)
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 1)
 

@@ -27,6 +27,3 @@ Here are the main steps to take:
 4. To interact with a node, use the [Node API](node-api-reference) and [node commands](node-commands).
 5. You can also learn about our [delegation plan](delegation-plan).
 
-:::tip
-We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-node/cosmovisor) – a utility for managing binary versions of Cosmos SDK-based chains. Its primary function is to enable binary upgrades without manual intervention.
-:::

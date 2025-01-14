@@ -39,7 +39,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Query Futures
 
 - **Method**: `futures()`
-- **Description**: Returns a list of all Futures that have been voted on. See the [`FuturesResponse`](#futuresresponse) struct.
+- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse`](#futuresresponse) struct.
 - **Parameters** :
   ```sol
   @param pagination The pagination details
@@ -49,19 +49,6 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 - **Output**:  
   ```sol
   @return response The paged futures
-  ```
-
-### Query a Future by ID
-
-- **Method**: `futureById()`
-- **Description**: Returns a Future that has been voted on by its ID. See the [`FutureByIdResponse `](#futurebyidresponse) struct.
-- **Parameters** :
-  ```sol
-  @param futureId The future id   
-  ```
-- **Output**:  
-  ```sol
-  @return response The future
   ```
 
 ### Query pending Futures
@@ -75,6 +62,19 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 - **Output**:  
   ```sol
   @return response The paged futures
+  ```
+
+### Query a Future by ID
+
+- **Method**: `futureById()`
+- **Description**: Returns a Future by ID (pending Futures included). See the [`FutureByIdResponse `](#futurebyidresponse) struct.
+- **Parameters** :
+  ```sol
+  @param futureId The future id   
+  ```
+- **Output**:  
+  ```sol
+  @return response The future
   ```
 
 ## Structs
@@ -120,14 +120,6 @@ FutureVote[] votes;
 FutureResult result;
 ```
 
-### `FutureByIdResponse`
-
-- **Description**: The response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`Future`](#future) struct.
-
-```
-Future future;
-```
-
 ### `PendingFuturesResponse`
 
 - **Description**: The response returned when you [query pending Futures](#query-pending-futures). Includes the [`Future`](#future) struct.
@@ -135,6 +127,14 @@ Future future;
 ```
 Types.PageResponse pagination;
 Future[] futures;
+```
+
+### `FutureByIdResponse`
+
+- **Description**: The response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`Future`](#future) struct.
+
+```
+Future future;
 ```
 
 ## Enums

@@ -14,6 +14,10 @@ This module implements the following concepts, which you can find in our Glossar
 - [Future](/learn/glossary#future)
 - [Prophet](/learn/glossary#prophet)
 
+## Usage
+
+You can call the `x/async` module from your EVM smart contract using the [`x/async` precompile](/build-an-app/precompiles/x-async).
+
 ## Concepts
 
 ### Future

@@ -15,7 +15,7 @@ test-orders:
     cd orders && yarn test
 
 localnet-orders $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic $SCHEDULER_ADDRESS=shulgin $FACTORY_OWNER_ADDRESS=shulgin:
-    cd orders && yarn deploy
+    cd orders && CHAIN_ID=$CHAIN_ID RPC_URL=$RPC_URL yarn deploy
 
 # Example:
 # just solidity create-order \

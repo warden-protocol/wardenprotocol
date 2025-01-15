@@ -13,7 +13,8 @@ This article explains how to use `x/warden` to manage [Spaces](/learn/glossary#s
 To understand how to set up and deploy your project, see [Get started](../get-started.md).
 
 :::tip
-For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#spaces)
+- For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#spaces).
+- The precompile address is `0x0000000000000000000000000000000000000900`.
 :::
 
 ## Create a new Space
@@ -22,11 +23,11 @@ To create a new Space, use the following code in your contract. It calls the [`n
 
 ```solidity
 function newSpace(
-        uint64 approveAdminTemplateId,
-        uint64 rejectAdminTemplateId,
-        uint64 approveSignTemplateId,
-        uint64 rejectSignTemplateId,
-        address[] calldata additionalOwners
+    uint64 approveAdminTemplateId,
+    uint64 rejectAdminTemplateId,
+    uint64 approveSignTemplateId,
+    uint64 rejectSignTemplateId,
+    address[] calldata additionalOwners
 ) external returns (uint64 id);
 
 contract wardenSpace {
@@ -311,13 +312,13 @@ contract SpaceQuery {
         warden = IWarden(WARDEN_ADDRESS);
     }
 
-    function getSpaceById(uint64 spaceId) external view returns (IWarden.Space memory) {
-        return warden.spaceById(spaceId);
+    function getSpaceById(uint64 id) external view returns (IWarden.Space memory) {
+        return warden.spaceById(id);
     }
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `spaceById()` function:
+After deploying your contract, you can interact with it by calling the `getSpaceById()` function:
 
 ```bash
 cast call $CONTRACT_ADDRESS "getSpaceById(uint64)" 1 --rpc-url $RPC_URL

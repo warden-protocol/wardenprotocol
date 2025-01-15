@@ -24,7 +24,7 @@ Before you start, complete the following prerequisites:
 - [Install just](https://github.com/casey/just) 1.34.0 or later.
 
 :::tip
-You can install `just` it using `brew`:
+You can install `just` by using `brew`:
    
 ```bash
 brew install just
@@ -209,7 +209,7 @@ In the previous steps, you configured your node with the minimum settings requir
 
 #### Create a Keychain
 
-To create a Keychain and add a Keychain Writer, take steps from this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
+To create a Keychain and add a Keychain Writer, take steps from this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain#2-register-a-keychain).
 
 
 ## Result

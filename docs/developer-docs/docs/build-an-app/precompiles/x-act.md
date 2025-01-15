@@ -23,33 +23,6 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 
 ## Rules
 
-### Query Rules
-
-- **Method**: `templates()`
-- **Description**: Returns a list of all Rules (templates). See the [`TemplatesResponse`](#templatesresponse) struct.
-- **Parameters** :
-  ```sol
-  @param pagination The pagination details
-  @param creator The template creator
-  ```
-- **Output**:  
-  ```sol
-  @return response The paged templates
-  ```
-
-### Query a Rule by ID
-
-- **Method**: `templateById()`
-- **Description**: Returns a Rule (template) by ID. See the [`TemplateByIdResponse`](#templatebyidresponse) struct.
-- **Parameters** :
-  ```sol
-  @param templateId The id of the template
-  ```
-- **Output**:  
-  ```sol
-  @return response The template
-  ```
-
 ### Create a new Rule
 
 - **Method**: `newTemplate()`
@@ -79,7 +52,61 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   @return true If execution was successful
   ```
 
+### Query Rules
+
+- **Method**: `templates()`
+- **Description**: Returns a list of all Rules (templates). See the [`TemplatesResponse`](#templatesresponse) struct.
+- **Parameters** :
+  ```sol
+  @param pagination The pagination details
+  @param creator The template creator
+  ```
+- **Output**:  
+  ```sol
+  @return response The paged templates
+  ```
+
+### Query a Rule by ID
+
+- **Method**: `templateById()`
+- **Description**: Returns a Rule (template) by ID. See the [`TemplateByIdResponse`](#templatebyidresponse) struct.
+- **Parameters** :
+  ```sol
+  @param templateId The id of the template
+  ```
+- **Output**:  
+  ```sol
+  @return response The template
+  ```
+
 ## Actions
+
+### Vote for an Action
+
+- **Method**: `voteForAction()`
+- **Description**: Votes for an Action. Emits the [`ActionVoted`](#actionvoted) event, returns [`ActionStatus`](#actionstatus).
+- **Parameters** :
+  ```sol
+  @param actionId The id of the action
+  @param voteType The type of the vote
+  ```
+- **Output**:  
+  ```sol
+  @return action status
+  ```
+
+### Revoke an Action
+
+- **Method**: `revokeAction()`
+- **Description**: Revokes an Action.
+- **Parameters** :
+  ```sol
+  @param actionId The id of the action
+  ```
+- **Output**:  
+  ```sol
+  return true If execution was successful
+  ```
 
 ### Query Actions
 
@@ -133,33 +160,6 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 - **Output**:  
   ```sol
   @return action status
-  ```
-
-### Vote for an Action
-
-- **Method**: `voteForAction()`
-- **Description**: Votes for an Action. Emits the [`ActionVoted`](#actionvoted) event, returns [`ActionStatus`](#actionstatus).
-- **Parameters** :
-  ```sol
-  @param actionId The id of the action
-  @param voteType The type of the vote
-  ```
-- **Output**:  
-  ```sol
-  @return action status
-  ```
-
-### Revoke an Action
-
-- **Method**: `revokeAction()`
-- **Description**: Revokes an Action.
-- **Parameters** :
-  ```sol
-  @param actionId The id of the action
-  ```
-- **Output**:  
-  ```sol
-  return true If execution was successful
   ```
 
 ## Structs
@@ -318,4 +318,3 @@ enum VoteType { None, Approve, Reject }
   @param actionId The action Id
   @param voteType The type of the vote
   ```
-

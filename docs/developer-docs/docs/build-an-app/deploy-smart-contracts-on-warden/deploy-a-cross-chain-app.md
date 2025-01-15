@@ -38,10 +38,10 @@ Here are the key features of this contract:
 
 Before you start, complete the following prerequisites:
 
-1. Install `node.js` and `npm`.
-2. Install `truffle`  globally: `npm install -g truffle`.
-3. Create a wallet and get Sepolia ETH – for example, from the [PoW Sepolia Faucet](https://sepolia-faucet.pk910.de).
-4. Create an [Infura](https://www.infura.io) account for accessing the Sepolia network.
+- Install `node.js` and `npm`.
+- Install `truffle`  globally: `npm install -g truffle`.
+- Create a wallet and get Sepolia ETH – for example, from the [PoW Sepolia Faucet](https://sepolia-faucet.pk910.de).
+- Create an [Infura](https://www.infura.io) account for accessing the Sepolia network.
 
 ### 1.1. Set up the project
 

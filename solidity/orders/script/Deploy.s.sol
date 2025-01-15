@@ -5,6 +5,8 @@ import { Create2 } from "../src/Create2.sol";
 import { Script } from "forge-std/src/Script.sol";
 import { Registry } from "../src/Registry.sol";
 import { OrderFactory } from "../src/OrderFactory.sol";
+import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
+import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
 
 contract Deploy is Script {
     address internal broadcaster;
@@ -42,8 +44,21 @@ contract Deploy is Script {
         }
 
         bytes32 factorySalt = bytes32(abi.encodePacked(broadcaster, hex"00", factorySaltValue));
-        bytes memory factoryInitCode =
-            abi.encodePacked(type(OrderFactory).creationCode, abi.encode(registryAddress, scheduler, factoryOwner));
+
+        bytes memory basicFactoryInitCode =
+            abi.encodePacked(type(BasicOrderFactory).creationCode, abi.encode(registryAddress));
+
+        address basicFactoryAddress = deployWithCreate2(factorySalt, basicFactoryInitCode, "BasicOrder");
+
+        bytes memory advancedFactoryInitCode =
+            abi.encodePacked(type(AdvancedOrderFactory).creationCode, abi.encode(registryAddress));
+
+        address advancedFactoryAddress = deployWithCreate2(factorySalt, advancedFactoryInitCode, "AdvancedOrder");
+
+        bytes memory factoryInitCode = abi.encodePacked(
+            type(OrderFactory).creationCode,
+            abi.encode(registryAddress, scheduler, factoryOwner, basicFactoryAddress, advancedFactoryAddress)
+        );
 
         address factoryAddress = deployWithCreate2(factorySalt, factoryInitCode, "OrderFactory");
 

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2.5
+sidebar_position: 4
 ---
 
 # x/async
@@ -26,7 +26,7 @@ A **Future** is an off-chain user-defined computational task that is executed as
 
 A user can request a Future, specifying an **input** and a **handler** (referenced by ID), which determines how to interpret the input and what to do with it in order to retrieve the result.
 
-After that, one [validator](/learn/glossary#validator) executes the Future and provides the result, and then other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
+After that, a [validator](/learn/glossary#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 
 ### Prophet
 
@@ -63,15 +63,15 @@ A Prophet continuously polls the chain to discover new pending [Futures](#future
 
 At the same time, Futures are taken from the queue and the handler code associated with them is executed. This usually involves calling an external service.
 
-The results will be stored in the memory for the blockchain node to fetch it later.
+The results are stored in the memory for the blockchain node to fetch it later.
 
-### Voting Future results
+### Voting on Future results
 
-Prophet will continuously poll the chain to discover Futures that have a result submitted by another validator, maintaining a local queue for them.
+Prophet continuously polls the chain to discover Futures that have a result submitted by another validator, maintaining a local queue for them.
 
 Concurrently, Futures are taken from the queue and validated (this usually involves calling an external service).
 
-The votes will be stored in memory for the blockchain node to fetch it later.
+The votes are stored in memory for the blockchain node to fetch it later.
 
 ## ABCI lifecycle
 

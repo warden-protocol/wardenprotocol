@@ -252,7 +252,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Events
 
-See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/main/proto/warden/warden/v1beta2/events.proto).
+See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/main/proto/warden/warden/v1beta3/events.proto).
 
 ## Analyzers
 

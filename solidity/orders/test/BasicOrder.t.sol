@@ -15,6 +15,7 @@ import {
     SaltAlreadyUsed
 } from "../src/OrderFactory.sol";
 import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
+import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
 import { Caller, IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
@@ -38,6 +39,7 @@ import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 struct TestData {
     Registry registry;
     BasicOrderFactory basicOrderFactory;
+    AdvancedOrderFactory advancedOrderFactory;
     OrderFactory orderFactory;
     MockWardenPrecompile wardenPrecompile;
     MockSlinkyPrecompile mockSlinkyPrecompile;
@@ -121,7 +123,10 @@ contract BasicOrderTest is Test {
         address scheduler = address(this);
         address owner = address(this);
         BasicOrderFactory basicOrderFactory = new BasicOrderFactory(address(registry));
-        OrderFactory orderFactory = new OrderFactory(address(registry), scheduler, owner, address(basicOrderFactory));
+        AdvancedOrderFactory advancedOrderFactory = new AdvancedOrderFactory(address(registry));
+        OrderFactory orderFactory = new OrderFactory(
+            address(registry), scheduler, owner, address(basicOrderFactory), address(advancedOrderFactory)
+        );
 
         MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
@@ -139,6 +144,7 @@ contract BasicOrderTest is Test {
         _testData = TestData({
             registry: registry,
             basicOrderFactory: basicOrderFactory,
+            advancedOrderFactory: advancedOrderFactory,
             orderFactory: orderFactory,
             wardenPrecompile: wardenPrecompile,
             mockSlinkyPrecompile: mockSlinkyPrecompile,
@@ -407,16 +413,17 @@ contract BasicOrderTest is Test {
 
     function test_FactoryConstructorRevertWhenInvalidRegistry() public {
         vm.expectRevert(InvalidRegistryAddress.selector);
-        new OrderFactory(address(0), address(this), address(this), address(this));
+        new OrderFactory(address(0), address(this), address(this), address(this), address(this));
     }
 
     function test_FactoryConstructorRevertWhenInvalidScheduler() public {
         vm.expectRevert(InvalidSchedulerAddress.selector);
-        new OrderFactory(address(this), address(0), address(this), address(this));
+        new OrderFactory(address(this), address(0), address(this), address(this), address(this));
     }
 
     function test_FactorySetScheduler() public {
-        OrderFactory factory = new OrderFactory(address(this), address(this), address(this), address(this));
+        OrderFactory factory =
+            new OrderFactory(address(this), address(this), address(this), address(this), address(this));
 
         vm.expectEmit(true, true, false, false);
 
@@ -428,7 +435,8 @@ contract BasicOrderTest is Test {
     }
 
     function test_FactoryRevertWhenSetSchedulerNotOwner() public {
-        OrderFactory factory = new OrderFactory(address(this), address(this), address(this), address(this));
+        OrderFactory factory =
+            new OrderFactory(address(this), address(this), address(this), address(this), address(this));
 
         vm.expectRevert(abi.encodeWithSelector(OwnableUnauthorizedAccount.selector, RECEIVER));
         vm.prank(RECEIVER);
@@ -438,7 +446,8 @@ contract BasicOrderTest is Test {
     }
 
     function test_FactoryRevertWhenSetSchedulerInvalid() public {
-        OrderFactory factory = new OrderFactory(address(this), address(this), address(this), address(this));
+        OrderFactory factory =
+            new OrderFactory(address(this), address(this), address(this), address(this), address(this));
 
         vm.expectRevert(InvalidSchedulerAddress.selector);
         factory.setScheduler(address(0));
@@ -494,7 +503,7 @@ contract BasicOrderTest is Test {
 
         // Compute the expected order address
         // solhint-disable-next-line
-        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
+        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt, OrderType.Basic);
 
         // Create the order
         bytes memory orderData = abi.encode(_orderData);
@@ -517,7 +526,7 @@ contract BasicOrderTest is Test {
 
         // Compute the expected order address before deployment
         // solhint-disable-next-line
-        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
+        address computedAddress = _testData.orderFactory.computeOrderAddress(tx.origin, salt, OrderType.Basic);
 
         // Ensure that no contract is deployed at the computed address yet
         assertEq(computedAddress.code.length, 0, "Order address should not be deployed yet");
@@ -526,7 +535,10 @@ contract BasicOrderTest is Test {
         bytes memory orderData = abi.encode(_orderData);
         Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
-        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
+        address o = _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
+        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(tx.origin)), salt));
+        address order = Create3.addressOf(guardedSalt);
+        assertEq(o, computedAddress, "Not match computed address");
 
         // Now, the contract should be deployed
         assertEq(computedAddress.code.length > 0, true, "Order contract was not deployed at computed address");
@@ -568,7 +580,7 @@ contract BasicOrderTest is Test {
 
         // Compute order address with original sender
         // solhint-disable-next-line
-        address computedAddressOriginal = _testData.orderFactory.computeOrderAddress(tx.origin, salt);
+        address computedAddressOriginal = _testData.orderFactory.computeOrderAddress(tx.origin, salt, OrderType.Basic);
 
         // Create order with original sender
         bytes memory orderData = abi.encode(_orderData);
@@ -586,7 +598,8 @@ contract BasicOrderTest is Test {
 
         // Compute order address with a different sender
         address differentSender = address(0xDEAD);
-        address computedAddressDifferent = _testData.orderFactory.computeOrderAddress(differentSender, salt);
+        address computedAddressDifferent =
+            _testData.orderFactory.computeOrderAddress(differentSender, salt, OrderType.Basic);
 
         // Create order with different sender
         vm.prank(address(this), differentSender);

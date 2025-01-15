@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { BasicOrder } from "./BasicOrder.sol";
 import { Types } from "./Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
@@ -12,7 +13,7 @@ error SaltAlreadyUsed();
 
 event SaltUsed(bytes32 indexed salt, address indexed creator);
 
-contract BasicOrderFactory {
+contract BasicOrderFactory is ReentrancyGuard {
     // Event emitted when a new BasicOrder is created
     event BasicOrderCreated(address indexed creator, address orderAddress);
 
@@ -32,7 +33,6 @@ contract BasicOrderFactory {
      * @param executionData Common execution data.
      * @param maxKeychainFees Maximum fees for keychain operations.
      * @param scheduler Address of the scheduler.
-     * @param registry Address of the registry contract.
      * @return orderAddress Address of the newly created BasicOrder contract.
      */
     function createBasicOrder(
@@ -40,10 +40,10 @@ contract BasicOrderFactory {
         Types.CommonExecutionData calldata executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address scheduler,
-        address registry,
         bytes32 salt
     )
         external
+        nonReentrant
         returns (address orderAddress)
     {
         // front-running protection
@@ -59,20 +59,32 @@ contract BasicOrderFactory {
         emit SaltUsed(guardedSalt, origin);
 
         bytes memory bytecode = abi.encodePacked(
-            type(BasicOrder).creationCode, abi.encode(orderData, executionData, maxKeychainFees, scheduler, registry)
+            type(BasicOrder).creationCode,
+            abi.encode(orderData, executionData, maxKeychainFees, scheduler, address(REGISTRY))
         );
 
-        orderAddress = Create3.create3(salt, bytecode);
-
-        address expectedAddress = Create3.addressOf(salt);
+        orderAddress = Create3.create3(guardedSalt, bytecode);
+        address expectedAddress = Create3.addressOf(guardedSalt);
         if (orderAddress == address(0) || orderAddress != expectedAddress) {
-            revert OrderDeploymentFailed(salt);
+            revert OrderDeploymentFailed(guardedSalt);
         }
 
         REGISTRY.register(orderAddress);
+        usedSalts[guardedSalt] = true;
 
         emit BasicOrderCreated(msg.sender, orderAddress);
+    }
 
-        return address(orderAddress);
+    /**
+     * @notice Computes the deterministic address of a order without deploying it
+     * @param origin The potential order creator
+     * @param salt The unique salt provided by the frontend
+     * @return The computed address of the order
+     */
+    function computeOrderAddress(address origin, bytes32 salt) external view returns (address) {
+        // front-running protection
+        bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(origin)), salt));
+
+        return Create3.addressOf(guardedSalt);
     }
 }

@@ -12,6 +12,8 @@ In this article, you'll find a full list of available methods and events. You ca
 
 - [Futures](/learn/glossary#future)
 
+To learn how to use this precompile, refer to [Interact with `x/async`](/category/interact-with-xasync).
+
 ## Precompile address
 
 To reference the `IAsync` precompile in your code, use the following precompile address:
@@ -116,7 +118,7 @@ bytes submitter;
 
 ### `FutureResponse`
 
-- **Description**: The response returned when you [query Futures](#query-futures). Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
+- **Description**: A response returned when you [query Futures](#query-futures). Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
 
 ```
 Future future;
@@ -126,7 +128,7 @@ FutureResult result;
 
 ### `PendingFuturesResponse`
 
-- **Description**: The response returned when you [query pending Futures](#query-pending-futures). Includes the [`Future`](#future) struct.
+- **Description**: A response returned when you [query pending Futures](#query-pending-futures). Includes the [`Future`](#future) struct.
 
 ```
 Types.PageResponse pagination;
@@ -135,7 +137,7 @@ Future[] futures;
 
 ### `FutureByIdResponse`
 
-- **Description**: The response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`Future`](#future) struct.
+- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`Future`](#future) struct.
 
 ```
 Future future;

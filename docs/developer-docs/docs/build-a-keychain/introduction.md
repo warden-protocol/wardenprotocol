@@ -17,7 +17,7 @@ This section contains three main parts, each covering different aspects of Keych
 - [Operate a Keychain](/category/operate-a-keychain)  
 Get started as a Keychain operator: create and configure a Keychain entity on-chain and then run a Keychain from CLI.
 
-- [Build a Keyhcain app](build-a-keychain-app)  
+- [Build a Keychain app](build-a-keychain-app)  
 Build a basic Keychain application in Go.
 
 - [Implementations](/category/implementations)  

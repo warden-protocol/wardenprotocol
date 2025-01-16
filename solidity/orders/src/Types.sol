@@ -15,7 +15,9 @@ library Types {
 
     enum PriceCondition {
         LTE,
-        GTE
+        GTE,
+        LT,
+        GT
     }
 
     // Data for basic order creation
@@ -27,9 +29,8 @@ library Types {
 
     // Data for advanced order creation
     struct AdvancedOrderData {
-        uint64 futureId;
-        PriceCondition priceCondition;
-        PricePair pricePair;
+        PricePair oraclePricePair;
+        PricePair predictPricePair;
     }
 
     // Data for execution
@@ -38,6 +39,7 @@ library Types {
         SignRequestData signRequestData;
     }
 
+    // Price pair for oracle/prediction requests
     struct PricePair {
         string base;
         string quote;

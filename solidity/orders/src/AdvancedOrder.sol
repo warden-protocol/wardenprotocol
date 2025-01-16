@@ -18,6 +18,8 @@ event Executed();
 contract AdvancedOrder is AbstractOrder, IExecution {
     Types.AdvancedOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
+    uint64 public futureId;
+    string public constant HANDLER = "pricepred";
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     IAsync private immutable ASYNC_PRECOMPILE;
@@ -39,9 +41,14 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         AbstractOrder(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
     {
         SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
-        SLINKY_PRECOMPILE.getPrice(_orderData.pricePair.base, _orderData.pricePair.quote);
+        SLINKY_PRECOMPILE.getPrice(_orderData.oraclePricePair.base, _orderData.oraclePricePair.quote);
 
         ASYNC_PRECOMPILE = IAsync(IASYNC_PRECOMPILE_ADDRESS);
+
+        string[] memory predictTokens = new string[](2);
+        predictTokens[0] = _orderData.predictPricePair.base;
+        predictTokens[1] = _orderData.predictPricePair.quote;
+        futureId = ASYNC_PRECOMPILE.addFuture(HANDLER, abi.encode(predictTokens));
 
         REGISTRY = Registry(registry);
 

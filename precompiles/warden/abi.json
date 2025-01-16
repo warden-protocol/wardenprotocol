@@ -1926,8 +1926,8 @@
           "type": "uint8"
         },
         {
-          "internalType": "enum BroadcastType",
-          "name": "broadcastType",
+          "internalType": "enum OptionalBroadcastType",
+          "name": "optionalBroadcastType",
           "type": "uint8"
         }
       ],

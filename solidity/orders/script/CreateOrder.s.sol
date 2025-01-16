@@ -30,12 +30,12 @@ contract CreateOrder is Script {
         Types.PriceCondition priceCondition,
         Types.PricePair calldata pricePair,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
-        Types.SwapData calldata swapData,
         uint64 keyId,
         uint64 spaceNonce,
         uint64 actionTimeoutHeight,
         bytes calldata expectedApproveExpression,
-        bytes calldata expectedRejectExpression
+        bytes calldata expectedRejectExpression,
+        bytes32 salt
     )
         external
     {
@@ -59,7 +59,6 @@ contract CreateOrder is Script {
             priceCondition: priceCondition,
             pricePair: pricePair,
             creatorDefinedTxFields: creatorDefinedTxFields,
-            swapData: swapData,
             signRequestData: signRequestData
         });
         vm.etch(ISLINKY_PRECOMPILE_ADDRESS, address(mSlinkyPrecompile).code);
@@ -67,7 +66,7 @@ contract CreateOrder is Script {
         mockSlinkyPrecompile.setPrice(pricePair.base, pricePair.quote, thresholdPrice);
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(wPrecompile).code);
         vm.startBroadcast(broadcaster);
-        FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic);
+        FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic, salt);
 
         vm.stopBroadcast();
     }

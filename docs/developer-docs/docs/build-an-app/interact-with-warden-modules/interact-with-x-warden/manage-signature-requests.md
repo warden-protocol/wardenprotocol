@@ -13,7 +13,8 @@ This article explains how to use `x/warden` to manage [signature requests](/lear
 To understand how to set up and deploy your project, see [Get started](../get-started.md).
 
 :::tip
-For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#signature-requests)
+- For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#signature-requests).
+- The precompile address is `0x0000000000000000000000000000000000000900`.
 :::
 
 ## Create a new signature request

@@ -221,7 +221,7 @@ library RLPEncode {
      * @param _postBytes Second byte string.
      * @return Both byte string combined.
      */
-    function concat(bytes memory _preBytes, bytes memory _postBytes) private pure returns (bytes memory) {
+    function concat(bytes memory _preBytes, bytes memory _postBytes) internal pure returns (bytes memory) {
         bytes memory tempBytes;
 
         assembly {

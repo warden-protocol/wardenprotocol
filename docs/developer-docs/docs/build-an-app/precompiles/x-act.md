@@ -318,4 +318,3 @@ enum VoteType { None, Approve, Reject }
   @param actionId The action Id
   @param voteType The type of the vote
   ```
-

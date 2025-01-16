@@ -13,7 +13,8 @@ This article explains how to use `x/warden` to manage [Keychains](/learn/glossar
 To understand how to set up and deploy your project, see [Get started](../get-started.md).
 
 :::tip
-For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#keychains)
+- For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#keychains).
+- The precompile address is `0x0000000000000000000000000000000000000900`.
 :::
 
 ## Create a new Keychain

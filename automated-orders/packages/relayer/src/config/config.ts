@@ -12,6 +12,7 @@ const schema: JSONSchemaType<Env> = {
     'WARDEN_EVM_CHAIN_ID', 
     'WARDEN_SIGN_REQUESTS_POLLING_INTERVAL_MSEC',
     'WARDEN_SIGN_REQUESTS_PAGE_SIZE',
+    'SIGN_REQUESTS_PROCESSOR_SEEN_CACHE_ELEMENTS_SIZE',
   ],
   properties: {
     EVMOS_NODE_RPC: { type: 'string' },
@@ -21,6 +22,7 @@ const schema: JSONSchemaType<Env> = {
     WARDEN_EVM_CHAIN_ID: { type: 'number' },
     WARDEN_SIGN_REQUESTS_POLLING_INTERVAL_MSEC: { type: 'number', minimum: 100 },
     WARDEN_SIGN_REQUESTS_PAGE_SIZE: { type: 'number', minimum: 1 },
+    SIGN_REQUESTS_PROCESSOR_SEEN_CACHE_ELEMENTS_SIZE: { type: 'number', minimum: 1 },
   },
 };
 

@@ -42,7 +42,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Query Futures
 
 - **Method**: `futures()`
-- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FutureResponse`](#futureresponse) struct.
+- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse`](#futureresponse) struct.
 - **Parameters** :
   ```sol
   @param pagination The pagination details
@@ -79,7 +79,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   ```
 - **Output**:  
   ```sol
-  @return response The future
+  @return response The future response
   ```
 - **Usage example**: [Query a Future by ID](../interact-with-warden-modules/interact-with-x-async#query-a-future-by-id)
 
@@ -118,12 +118,21 @@ bytes submitter;
 
 ### `FutureResponse`
 
-- **Description**: A response returned when you [query Futures](#query-futures). Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
+- **Description**: A struct representing a Future and its data. Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
 
 ```
 Future future;
 FutureVote[] votes;
 FutureResult result;
+```
+
+### `FuturesResponse`
+
+- **Description**: A response returned when you [query Futures](#query-futures). Includes the [`FutureResponse`](#futureresponse) struct.
+
+```
+Types.PageResponse pagination;
+FutureResponse[] futures;
 ```
 
 ### `PendingFuturesResponse`
@@ -137,10 +146,10 @@ Future[] futures;
 
 ### `FutureByIdResponse`
 
-- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`Future`](#future) struct.
+- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [Includes the [`FutureResponse`](#futureresponse) struct.
 
 ```
-Future future;
+FutureResponse futureResponse;
 ```
 
 ## Enums

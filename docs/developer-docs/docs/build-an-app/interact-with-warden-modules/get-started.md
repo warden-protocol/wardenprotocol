@@ -184,6 +184,6 @@ Now you can dive deeper and expand your contract with other functions from Warde
 
 - To find code samples for each function, see the following guides:
   - [Interact with `x/warden`](/category/interact-with-xwarden)
-  - [Interact with `x/async`](/category/interact-with-xasync)
+  - [Interact with `x/async`](interact-with-x-async)
   - *Interact with `x/act`: coming soon*
 - For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.

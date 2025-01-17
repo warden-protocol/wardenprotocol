@@ -13,8 +13,6 @@ In this article, you'll find a full list of available methods and events. You ca
 - [Rules](/learn/glossary#approval-rule)
 - [Actions](/learn/glossary#action)
 
-To learn how to use this precompile, refer to [Interact with `x/act`](/category/interact-with-xact).
-
 ## Precompile address
 
 To reference the `IAct` precompile in your code, use the following precompile address:

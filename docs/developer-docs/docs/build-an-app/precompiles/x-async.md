@@ -12,7 +12,7 @@ In this article, you'll find a full list of available methods and events. You ca
 
 - [Futures](/learn/glossary#future)
 
-To learn how to use this precompile, refer to [Interact with `x/async`](/category/interact-with-xasync).
+To learn how to use this precompile, refer to [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async).
 
 ## Precompile address
 
@@ -146,7 +146,7 @@ Future[] futures;
 
 ### `FutureByIdResponse`
 
-- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [Includes the [`FutureResponse`](#futureresponse) struct.
+- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`FutureResponse`](#futureresponse) struct.
 
 ```
 FutureResponse futureResponse;

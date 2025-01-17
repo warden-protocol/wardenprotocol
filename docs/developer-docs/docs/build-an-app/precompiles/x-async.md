@@ -42,7 +42,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Query Futures
 
 - **Method**: `futures()`
-- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse`](#futureresponse) struct.
+- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FutureResponse`](#futureresponse) struct.
 - **Parameters** :
   ```sol
   @param pagination The pagination details

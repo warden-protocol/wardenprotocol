@@ -51,7 +51,7 @@ struct FuturesResponse {
 }
 
 struct FutureByIdResponse {
-    Future future;
+    FutureResponse futureResponse;
 }
 
 /**
@@ -72,7 +72,7 @@ interface IAsync {
 
     /// @dev Defines a method to query future by id.
     /// @param futureId The future id
-    /// @return response The future
+    /// @return response The future reponse
     function futureById(
         uint64 futureId
     ) external view returns (FutureByIdResponse memory response);

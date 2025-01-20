@@ -294,7 +294,7 @@ func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error
 	}
 
 	if len(w.Extensions) == 0 {
-		return vetypes.OracleVoteExtension{}, fmt.Errorf("no vote extension")
+		return a.slinkyCodec.Decode(nil)
 	}
 
 	return a.slinkyCodec.Decode(w.Extensions[0])

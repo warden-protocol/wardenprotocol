@@ -64,28 +64,79 @@
             {
               "components": [
                 {
-                  "internalType": "uint64",
-                  "name": "id",
-                  "type": "uint64"
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "creator",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "handler",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "input",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Future",
+                  "name": "future",
+                  "type": "tuple"
                 },
                 {
-                  "internalType": "address",
-                  "name": "creator",
-                  "type": "address"
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "futureId",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "Voter",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "enum FutureVoteType",
+                      "name": "vote",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct FutureVote[]",
+                  "name": "votes",
+                  "type": "tuple[]"
                 },
                 {
-                  "internalType": "string",
-                  "name": "handler",
-                  "type": "string"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "input",
-                  "type": "bytes"
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "output",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "submitter",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct FutureResult",
+                  "name": "result",
+                  "type": "tuple"
                 }
               ],
-              "internalType": "struct Future",
-              "name": "future",
+              "internalType": "struct FutureResponse",
+              "name": "futureResponse",
               "type": "tuple"
             }
           ],

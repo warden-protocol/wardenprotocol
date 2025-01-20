@@ -59,12 +59,12 @@ func (r *PendingFuturesResponse) FromResponse(res *types.QueryPendingFuturesResp
 // FromResponse needed to map QueryFutureByIdResponse to FutureByIdResponse
 func (r *FutureByIdResponse) FromResponse(res *types.QueryFutureByIdResponse) (FutureByIdResponse, error) {
 	if res != nil {
-		mappedFuture, err := mapFuture(res.Future)
+		mappedFutureResponse, err := mapFutureResponse(res.FutureResponse)
 		if err != nil {
 			return FutureByIdResponse{}, err
 		}
 
-		r.Future = mappedFuture
+		r.FutureResponse = mappedFutureResponse
 	}
 
 	return *r, nil

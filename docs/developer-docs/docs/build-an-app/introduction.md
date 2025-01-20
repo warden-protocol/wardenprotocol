@@ -42,3 +42,9 @@ Warden precompiles allow you to call Warden modules in EVM contracts. Browse thi
 
 - [Build with WardenJS](wardenjs)  
 Here you'll find information on WardenJS – a tool used for building the frontend part of your application.
+
+## Get started
+
+You can get started with OApps by following this guide:
+
+- [Deploy an EVM contract](deploy-smart-contracts-on-warden/deploy-an-evm-contract)

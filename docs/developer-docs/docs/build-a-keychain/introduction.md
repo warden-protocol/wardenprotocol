@@ -17,8 +17,14 @@ This section contains three main parts, each covering different aspects of Keych
 - [Operate a Keychain](/category/operate-a-keychain)  
 Get started as a Keychain operator: create and configure a Keychain entity on-chain and then run a Keychain from CLI.
 
-- [Build a Keyhcain app](build-a-keychain-app)  
+- [Build a Keychain app](build-a-keychain-app)  
 Build a basic Keychain application in Go.
 
 - [Implementations](/category/implementations)  
 Here you'll find reference docs explaining how Keychains are implemented in Warden. See the detailed breakdown of three main Keychain components: [WardenKMS](implementations/wardenkms) , [CLIchain](implementations/clichain), and [Keychain SDK](implementations/keychain-sdk).
+
+## Get started
+
+You can get started with Keychains by following this guide:
+
+- [Create a Keychain](operate-a-keychain/create-a-keychain)

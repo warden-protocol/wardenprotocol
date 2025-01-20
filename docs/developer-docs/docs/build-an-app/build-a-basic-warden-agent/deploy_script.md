@@ -2,7 +2,7 @@
 sidebar_position: 7
 ---
 
-# Implement deployment scripts
+# Create deployment scripts
 
 ## Overview
 

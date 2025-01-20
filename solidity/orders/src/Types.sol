@@ -29,8 +29,12 @@ library Types {
 
     // Data for advanced order creation
     struct AdvancedOrderData {
+        // Which pair use to get price for oracle
         PricePair oraclePricePair;
+        // Which pair use to get price for prediction handler
         PricePair predictPricePair;
+        // Price condition for execution: should be executing if current price meets condition to prediced price
+        PriceCondition priceCondition;
     }
 
     // Data for execution

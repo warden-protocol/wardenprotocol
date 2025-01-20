@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.25 <0.9.0;
 
-import { ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
+import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
+import { FutureByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AbstractOrder } from "./AbstractOrder.sol";
 import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
@@ -20,6 +20,7 @@ contract AdvancedOrder is AbstractOrder, IExecution {
     Types.CommonExecutionData public commonExecutionData;
     uint64 public futureId;
     string public constant HANDLER = "pricepred";
+    uint256 public constant PRICE_PREDICTION_DECIMALS = 16;
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     IAsync private immutable ASYNC_PRECOMPILE;
@@ -67,18 +68,41 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         if (block.timestamp > _validUntil) {
             return false;
         }
-        // TODO:
-        // 1) get price from async
-        // ASYNC_PRECOMPILE.futureById(); - need to get future response by future id
-        // store future id in orderData
-        // decode future response
-        // 2) get price from slinky
-        // GetPriceResponse memory priceResponse =
-        //     SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
-        // 3) compare prices and decide if can execute:
-        // 3.1) if price from slinky is higher than price from async and PriceCondition == GTE => true
-        // 3.2) if price from slinky is less than price from async and PriceCondition == LTE => true
-        // 3.3) else => false
+        FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
+        if (future.futureResponse.future.id == 0) {
+            return false;
+        }
+        uint256[] memory predictedPrices = this.decodeFutureReponse(future.futureResponse.result.output);
+        GetPriceResponse memory priceResponse =
+            SLINKY_PRECOMPILE.getPrice(orderData.oraclePricePair.base, orderData.oraclePricePair.quote);
+        
+        uint256 predictedPrice = 
+            getPriceInQuoteToken(predictedPrices[0], predictedPrices[1], PRICE_PREDICTION_DECIMALS);
+        (
+            uint256 oracleNormalized, 
+            uint256 predictedNormalized
+        ) = normalizePrices(
+            priceResponse.price.price, 
+            predictedPrice, 
+            priceResponse.decimals, 
+            PRICE_PREDICTION_DECIMALS
+        );
+        
+        if ((orderData.priceCondition == Types.PriceCondition.GTE ||
+            orderData.priceCondition == Types.PriceCondition.GT) && oracleNormalized > predictedNormalized) {
+            return true;
+        }
+
+        if ((orderData.priceCondition == Types.PriceCondition.LTE ||
+            orderData.priceCondition == Types.PriceCondition.LT) && oracleNormalized < predictedNormalized) {
+            return true;
+        }
+
+        if ((orderData.priceCondition == Types.PriceCondition.LTE ||
+            orderData.priceCondition == Types.PriceCondition.GTE) && oracleNormalized == predictedNormalized) {
+            return true;
+        }
+
         return false;
     }
 
@@ -145,5 +169,47 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         }
 
         transaction = _unsignedTx;
+    }
+
+    function decodeFutureReponse(bytes calldata futureOutput) public pure returns (uint256[] memory res) {
+        res = abi.decode(futureOutput, (uint256[]));
+    }
+
+    function normalizePrices(
+        uint256 price1, 
+        uint256 price2, 
+        uint256 decimals1,
+        uint256 decimals2
+    )
+        internal
+        pure
+        returns (uint256 normalizedPrice1, uint256 normalizedPrice2)
+    {
+        uint256 maxDecimals = decimals1 > decimals2 ? decimals1 : decimals2;
+
+        if (decimals1 == decimals2) {
+            normalizedPrice1 = price1;
+            normalizedPrice2 = price2;
+        } else {
+            if (maxDecimals > decimals1) {
+                normalizedPrice1 = price1 * (10**(maxDecimals - decimals1));
+            }
+
+            if (maxDecimals > decimals2) {
+                normalizedPrice2 = price2 * (10**(maxDecimals - decimals2));
+            }
+        }
+    }
+
+    function getPriceInQuoteToken(
+        uint256 priceA,
+        uint256 priceB,
+        uint256 decimals
+    )
+        internal
+        pure
+        returns (uint256 priceAInB)
+    {
+        priceAInB = (priceA * 10 ** decimals) / priceB;
     }
 }

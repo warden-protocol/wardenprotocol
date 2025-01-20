@@ -10,7 +10,7 @@ sidebar_position: 4
 
 :::note Directories
 - Store mock precompiles in the [`/mocks`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
-- You can test the precompiles in [`/orders/test`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test).
+- You can test the precompiles in the [`/test`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test) directory.
 :::
 
 ## 1. Create mock precompiles

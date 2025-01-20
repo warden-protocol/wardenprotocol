@@ -5,7 +5,7 @@ import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompil
 import { FutureByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AbstractOrder } from "./AbstractOrder.sol";
-import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
+import { ExecutionData, IExecution } from "./IExecution.sol";
 import { Registry } from "./Registry.sol";
 import { Types } from "./Types.sol";
 
@@ -19,13 +19,13 @@ contract AdvancedOrder is AbstractOrder, IExecution {
     Types.AdvancedOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
     uint64 public futureId;
-    string public constant HANDLER = "pricepred";
+
     uint256 public constant PRICE_PREDICTION_DECIMALS = 16;
 
-    ISlinky private immutable SLINKY_PRECOMPILE;
-    IAsync private immutable ASYNC_PRECOMPILE;
+    ISlinky private immutable SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
+    IAsync private immutable ASYNC_PRECOMPILE = IAsync(IASYNC_PRECOMPILE_ADDRESS);
     Registry private immutable REGISTRY;
-    Caller[] private _callers;
+
     CommonTypes.Coin[] private _coins;
     bool private _executed;
     address private _scheduler;
@@ -41,16 +41,11 @@ contract AdvancedOrder is AbstractOrder, IExecution {
     )
         AbstractOrder(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
     {
-        SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
-        SLINKY_PRECOMPILE.getPrice(_orderData.oraclePricePair.base, _orderData.oraclePricePair.quote);
-
-        ASYNC_PRECOMPILE = IAsync(IASYNC_PRECOMPILE_ADDRESS);
-
         string[] memory predictTokens = new string[](2);
         predictTokens[0] = _orderData.predictPricePair.base;
         predictTokens[1] = _orderData.predictPricePair.quote;
-        futureId = ASYNC_PRECOMPILE.addFuture(HANDLER, abi.encode(predictTokens));
 
+        futureId = ASYNC_PRECOMPILE.addFuture("pricepred", abi.encode(predictTokens));
         REGISTRY = Registry(registry);
 
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {
@@ -60,50 +55,29 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         orderData = _orderData;
         commonExecutionData = _executionData;
         _scheduler = scheduler;
-        _callers.push(Caller.Scheduler);
         _validUntil = block.timestamp + 24 hours;
     }
 
     function canExecute() public view override returns (bool) {
-        if (block.timestamp > _validUntil) {
-            return false;
-        }
+        if (block.timestamp > _validUntil) return false;
+
         FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
-        if (future.futureResponse.future.id == 0) {
-            return false;
-        }
-        uint256[] memory predictedPrices = this.decodeFutureReponse(future.futureResponse.result.output);
+        if (future.futureResponse.future.id == 0) return false;
+
+        uint256[] memory predictedPrices = abi.decode(future.futureResponse.result.output, (uint256[]));
         GetPriceResponse memory priceResponse =
             SLINKY_PRECOMPILE.getPrice(orderData.oraclePricePair.base, orderData.oraclePricePair.quote);
-        
-        uint256 predictedPrice = 
-            getPriceInQuoteToken(predictedPrices[0], predictedPrices[1], PRICE_PREDICTION_DECIMALS);
-        (
-            uint256 oracleNormalized, 
-            uint256 predictedNormalized
-        ) = normalizePrices(
-            priceResponse.price.price, 
-            predictedPrice, 
-            priceResponse.decimals, 
-            PRICE_PREDICTION_DECIMALS
-        );
-        
-        if ((orderData.priceCondition == Types.PriceCondition.GTE ||
-            orderData.priceCondition == Types.PriceCondition.GT) && oracleNormalized > predictedNormalized) {
-            return true;
-        }
 
-        if ((orderData.priceCondition == Types.PriceCondition.LTE ||
-            orderData.priceCondition == Types.PriceCondition.LT) && oracleNormalized < predictedNormalized) {
-            return true;
-        }
+        uint256 predictedPrice = _getPriceInQuote(predictedPrices[0], predictedPrices[1], PRICE_PREDICTION_DECIMALS);
+        (uint256 oracleNormalized, uint256 predictedNormalized) =
+            _normalizePrices(
+                priceResponse.price.price,
+                predictedPrice,
+                priceResponse.decimals,
+                PRICE_PREDICTION_DECIMALS
+            );
 
-        if ((orderData.priceCondition == Types.PriceCondition.LTE ||
-            orderData.priceCondition == Types.PriceCondition.GTE) && oracleNormalized == predictedNormalized) {
-            return true;
-        }
-
-        return false;
+        return _checkCondition(oracleNormalized, predictedNormalized);
     }
 
     function execute(
@@ -117,17 +91,9 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         override
         returns (bool, bytes32)
     {
-        if (msg.sender != _scheduler) {
-            revert Unauthorized();
-        }
-
-        if (isExecuted()) {
-            revert ExecutedError();
-        }
-
-        if (!canExecute()) {
-            revert ConditionNotMet();
-        }
+        if (msg.sender != _scheduler) revert Unauthorized();
+        if (_executed) revert ExecutedError();
+        if (!canExecute()) revert ConditionNotMet();
 
         bytes[] memory emptyAccessList = new bytes[](0);
         (bytes memory unsignedTx, bytes32 txHash) = this.encodeUnsignedEIP1559(
@@ -135,81 +101,52 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         );
 
         _unsignedTx = unsignedTx;
+        _executed = this.createSignRequest(commonExecutionData.signRequestData, abi.encodePacked(txHash), _coins);
 
-        bytes memory signRequestInput = abi.encodePacked(txHash);
-
-        _executed = this.createSignRequest(commonExecutionData.signRequestData, signRequestInput, _coins);
-
-        if (_executed) {
-            emit Executed();
-        }
+        if (_executed) emit Executed();
 
         // origin always creator of sign request
         // solhint-disable-next-line
         REGISTRY.addTransaction(tx.origin, txHash);
-
         return (_executed, txHash);
-    }
-
-    function callers() external view override returns (Caller[] memory callersList) {
-        return _callers;
     }
 
     function isExecuted() public view override returns (bool) {
         return _executed;
     }
 
+    function getTx() external view returns (bytes memory) {
+        if (!_executed) revert ExecutedError();
+        return _unsignedTx;
+    }
+
     function executionData() external view returns (ExecutionData memory data) {
         data = this.buildExecutionData(commonExecutionData.creatorDefinedTxFields);
     }
 
-    function getTx() external view returns (bytes memory transaction) {
-        if (!isExecuted()) {
-            revert ExecutedError();
-        }
-
-        transaction = _unsignedTx;
-    }
-
-    function decodeFutureReponse(bytes calldata futureOutput) public pure returns (uint256[] memory res) {
-        res = abi.decode(futureOutput, (uint256[]));
-    }
-
-    function normalizePrices(
-        uint256 price1, 
-        uint256 price2, 
-        uint256 decimals1,
-        uint256 decimals2
-    )
-        internal
-        pure
-        returns (uint256 normalizedPrice1, uint256 normalizedPrice2)
-    {
+    function _normalizePrices(
+        uint256 price1, uint256 price2, uint256 decimals1, uint256 decimals2
+    ) internal pure returns (uint256 normalizedPrice1, uint256 normalizedPrice2) {
         uint256 maxDecimals = decimals1 > decimals2 ? decimals1 : decimals2;
-
-        if (decimals1 == decimals2) {
-            normalizedPrice1 = price1;
-            normalizedPrice2 = price2;
-        } else {
-            if (maxDecimals > decimals1) {
-                normalizedPrice1 = price1 * (10**(maxDecimals - decimals1));
-            }
-
-            if (maxDecimals > decimals2) {
-                normalizedPrice2 = price2 * (10**(maxDecimals - decimals2));
-            }
-        }
+        normalizedPrice1 = price1 * (10**(maxDecimals - decimals1));
+        normalizedPrice2 = price2 * (10**(maxDecimals - decimals2));
     }
 
-    function getPriceInQuoteToken(
-        uint256 priceA,
-        uint256 priceB,
-        uint256 decimals
-    )
-        internal
-        pure
-        returns (uint256 priceAInB)
-    {
-        priceAInB = (priceA * 10 ** decimals) / priceB;
+    function _getPriceInQuote(
+        uint256 priceA, uint256 priceB, uint256 decimals
+    ) internal pure returns (uint256) {
+        return (priceA * 10**decimals) / priceB;
+    }
+
+    function _checkCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {
+        if (
+            (orderData.priceCondition == Types.PriceCondition.GTE && oraclePrice >= predictedPrice) ||
+            (orderData.priceCondition == Types.PriceCondition.LTE && oraclePrice <= predictedPrice) ||
+            (orderData.priceCondition == Types.PriceCondition.GT && oraclePrice > predictedPrice) ||
+            (orderData.priceCondition == Types.PriceCondition.LT && oraclePrice < predictedPrice)
+        ) {
+            return true;
+        }
+        return false;
     }
 }

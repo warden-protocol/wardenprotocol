@@ -4,7 +4,7 @@ pragma solidity >=0.8.25 <0.9.0;
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { Caller, ExecutionData, IExecution } from "./IExecution.sol";
+import { ExecutionData, IExecution } from "./IExecution.sol";
 import { AbstractOrder } from "./AbstractOrder.sol";
 import { Types } from "./Types.sol";
 import { Registry } from "./Registry.sol";
@@ -23,7 +23,6 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;
-    Caller[] private _callers;
     CommonTypes.Coin[] private _coins;
     bool private _executed;
     address private _scheduler;
@@ -55,7 +54,6 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
         orderData = _orderData;
         commonExecutionData = _executionData;
         _scheduler = scheduler;
-        _callers.push(Caller.Scheduler);
     }
 
     function canExecute() public view returns (bool value) {
@@ -114,10 +112,6 @@ contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
         REGISTRY.addTransaction(tx.origin, txHash);
 
         return (_executed, txHash);
-    }
-
-    function callers() external view returns (Caller[] memory callersList) {
-        return _callers;
     }
 
     function isExecuted() public view returns (bool) {

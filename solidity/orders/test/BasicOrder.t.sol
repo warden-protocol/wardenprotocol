@@ -16,7 +16,7 @@ import {
 } from "../src/OrderFactory.sol";
 import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
 import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
-import { Caller, IExecution } from "../src/IExecution.sol";
+import { IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
@@ -55,7 +55,6 @@ contract BasicOrderTest is Test {
     Types.BasicOrderData private _orderData;
     Types.CommonExecutionData private _executionData;
     IExecution private _order;
-    Caller[] private _expectedCallers;
     bytes32 private _txHash;
 
     // @openzeppelin Ownable.sol
@@ -155,8 +154,6 @@ contract BasicOrderTest is Test {
             scheduler: scheduler
         });
 
-        _expectedCallers.push(Caller.Scheduler);
-
         // Initialize _orderData with valid values
         bytes[] memory analyzers;
         _orderData = Types.BasicOrderData({
@@ -255,8 +252,6 @@ contract BasicOrderTest is Test {
     function test_BasicOrder_StateBeforeExecution() public {
         assert(!_order.canExecute());
         assert(!_order.isExecuted());
-        assert(_order.callers().length == 1);
-        assert(_order.callers()[0] == _expectedCallers[0]);
     }
 
     function test_basicOrderRevertWhenConditionNotMet() public {

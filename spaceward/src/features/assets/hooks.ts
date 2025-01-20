@@ -11,13 +11,15 @@ import {
 import type { PriceMapSlinky } from "./types";
 import { AddressType, useKeysBySpaceId } from "@/hooks/query/warden";
 import { KeyModel } from "@/hooks/query/types";
-
+import { useConnectWallet } from "@web3-onboard/react";
 const DERIVE_ADDRESSES = [AddressType.Ethereum, AddressType.Osmosis];
 
 export const useAssetQueries = (spaceId?: string | null) => {
+	const [{ wallet }] = useConnectWallet();
+	const evmAddress = wallet?.accounts?.[0]?.address;
 	const { walletManager } = useContext(walletContext);
 	const { isReady, slinky } = useQueryHooks();
-	const clients = useQuery(queryCosmosClients(walletManager)).data;
+	const clients = useQuery({ ...(evmAddress ? queryCosmosClients(walletManager, evmAddress) : {}), enabled: Boolean(evmAddress) }).data;
 
 	const pairs = slinky.oracle.v1.useGetAllCurrencyPairs({
 		options: { enabled: isReady, refetchInterval: Infinity },
@@ -93,7 +95,7 @@ export const useAssetQueries = (spaceId?: string | null) => {
 	const keys = queryKeys.data?.[0] as KeyModel[] | undefined;
 
 	const queryBalancesEth = useQueries(
-		balancesQueryEth(isReady && Boolean(priceMap), keys, priceMap),
+		balancesQueryEth(isReady && Boolean(priceMap), evmAddress ?? "0x", keys, priceMap),
 	);
 
 	const queryBalancesCosmos = useQueries(

@@ -6,15 +6,21 @@ import (
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
+	asyncprecompile "github.com/warden-protocol/wardenprotocol/precompiles/async"
 	cmn "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	slinkyprecompile "github.com/warden-protocol/wardenprotocol/precompiles/slinky"
 	wardenprecompile "github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	asynckeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
 // Single point of all wardenprotocol precompiles initialization, including precompiles and events registry
-func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.Keeper, oraclekeeper oraclekeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
+func NewWardenPrecompiles(
+	wardenkeeper wardenkeeper.Keeper,
+	actkeeper actkeeper.Keeper,
+	oraclekeeper oraclekeeper.Keeper,
+	asynckeeper asynckeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
 
@@ -58,6 +64,14 @@ func NewWardenPrecompiles(wardenkeeper wardenkeeper.Keeper, actkeeper actkeeper.
 		return nil, err
 	}
 	precompiles[newSlinkyPrecompile.Address()] = newSlinkyPrecompile
+
+	newAsyncPrecompile, err := asyncprecompile.NewPrecompile(asynckeeper, eventsRegistry)
+	if err != nil {
+		return nil, err
+	}
+	precompiles[newAsyncPrecompile.Address()] = newAsyncPrecompile
+
+	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateFuture", newAsyncPrecompile.GetCreateFutureEvent)
 
 	return precompiles, nil
 }

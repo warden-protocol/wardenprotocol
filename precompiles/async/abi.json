@@ -1,0 +1,392 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint64",
+          "name": "futureId",
+          "type": "uint64"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "handler",
+          "type": "string"
+        }
+      ],
+      "name": "CreateFuture",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "handler",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        }
+      ],
+      "name": "addFuture",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "futureId",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "futureId",
+          "type": "uint64"
+        }
+      ],
+      "name": "futureById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "creator",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "handler",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "input",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Future",
+                  "name": "future",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "futureId",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "Voter",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "enum FutureVoteType",
+                      "name": "vote",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct FutureVote[]",
+                  "name": "votes",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "output",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "submitter",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct FutureResult",
+                  "name": "result",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct FutureResponse",
+              "name": "futureResponse",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct FutureByIdResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "futures",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "creator",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "handler",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "input",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Future",
+                  "name": "future",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "futureId",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "Voter",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "enum FutureVoteType",
+                      "name": "vote",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct FutureVote[]",
+                  "name": "votes",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "output",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "submitter",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct FutureResult",
+                  "name": "result",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct FutureResponse[]",
+              "name": "futures",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct FuturesResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        }
+      ],
+      "name": "pendingFutures",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "id",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "address",
+                  "name": "creator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "handler",
+                  "type": "string"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct Future[]",
+              "name": "futures",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct PendingFuturesResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

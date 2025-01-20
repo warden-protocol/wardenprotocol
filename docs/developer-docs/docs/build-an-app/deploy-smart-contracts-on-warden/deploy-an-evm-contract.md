@@ -72,16 +72,6 @@ To deploy an EVM contract locally, you need to run a local chain and make sure i
    </TabItem>
    </Tabs>
 
-5. You'll also need your chain ID. Run the following and note down the value from the `network` field:
-
-   ```bash
-   wardend status
-   ```
-
-   :::tip
-   If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
-   :::
-
 ### Option 2. Connect to Chiado
 
 To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), you need to install its binary and fund your key, as shown in the following steps:
@@ -134,22 +124,16 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 
 ## 2. Create an EVM project
 
-1. Create a new directory `/warden-smart-contract` for your project and navigate there:
+Initialize a new Foundry project and navigate to its directory:
 
-    ```bash
-    mkdir warden-smart-contract
-    cd warden-smart-contract
-    ```
-
-2. Initialize a new Foundry project:
-
-    ```bash
-    forge init --no-commit
-    ```
+```bash
+forge init warden-smart-contract --no-commit
+cd warden-smart-contract
+```
 
 ## 3. Create a smart contract
 
-After you initialize a Foundry project, the script will automatically create a sample contract named `Counter` in the `/src` directory:
+After you initialize a Foundry project, the script will automatically create a sample contract named `Counter.sol` in the `/src` directory:
 
 ```sol title="/warden-smart-contract/src/Counter.sol"
 // SPDX-License-Identifier: UNLICENSED
@@ -183,7 +167,7 @@ In the following steps, we're going to deploy this contract without modification
    ```
    
    :::warning
-   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions.
+   In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions like `env`.
    :::
 
 1. Export the RPC URL. Specify the standard localhost address or Chiado's EVM endpoint:
@@ -219,31 +203,29 @@ In the following steps, we're going to deploy this contract without modification
    Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-4. Note down the value returned as `Deployed to` – that's your **contract address**.
-
-## 5. Verify the deployment
-
-1. Export your contract address as a variable by running the following command. Specify the address returned in the previous step.
+4. Note down the value returned as `Deployed to` – that's your **contract address**. Export it as a variable: 
 
    ```bash
    export CONTRACT_ADDRESS=my-contract-address
    ```
 
-2. Verify that the contract has been deployed on this address:
+## 5. Verify the deployment
 
-   ```bash
-   cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
-   ```
+To verify that the contract has been deployed on the address from the previous step, run this:
 
-   :::note
-   The [`cast code`](https://book.getfoundry.sh/reference/cast/cast-code) Foundry command allows you to get the bytecode of a contract.
-   :::
+```bash
+cast code $CONTRACT_ADDRESS --rpc-url $RPC_URL
+```
 
-   You'll see an output similar to the following:
+:::note
+The [`cast code`](https://book.getfoundry.sh/reference/cast/cast-code) Foundry command allows you to get the bytecode of a contract.
+:::
 
-   ```bash
-   0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60006001820160ba57634e487b7160e01b600052601160045260246000fd5b506001019056fea26469706673582212201c88540d2739bb0e4f6179275ef6ff63cf1c34ed53189691f9dd0033f4382a0264736f6c634300081c0033
-   ```
+You'll see an output similar to the following:
+
+```bash
+0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60006001820160ba57634e487b7160e01b600052601160045260246000fd5b506001019056fea26469706673582212201c88540d2739bb0e4f6179275ef6ff63cf1c34ed53189691f9dd0033f4382a0264736f6c634300081c0033
+```
 
 ## 6. Interact with the contract
 
@@ -337,7 +319,7 @@ Now you can interact with the contract: adjust and increment the counter number.
 
 ## Troubleshooting
 
-- If your transaction fails, try the following:
+If your transaction fails, try the following:
 
   - Verify that your private key is correct. See [Step 1](#1-prepare-the-chain).
   - Make sure you have enough funds in your account, as shown in [Step 1](#1-prepare-the-chain). If funds are insufficient, you may need to [run a local chain](/operate-a-node/run-a-local-chain) from scratch or use [Chiado faucet](https://faucet.chiado.wardenprotocol.org).
@@ -346,3 +328,13 @@ Now you can interact with the contract: adjust and increment the counter number.
 If you encounter any other issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀
+
+## Next steps
+
+After deploying a basic EVM smart contract, start using Warden precompiles to call Warden modules in your contract. This will allow you to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on.
+
+See the following sections:
+
+- [Call Warden modules in your contract](/category/interact-with-warden-modules)
+- [Precompiles](/category/precompiles)
+

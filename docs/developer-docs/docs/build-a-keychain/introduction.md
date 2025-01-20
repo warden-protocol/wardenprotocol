@@ -22,3 +22,9 @@ Build a basic Keychain application in Go.
 
 - [Implementations](/category/implementations)  
 Here you'll find reference docs explaining how Keychains are implemented in Warden. See the detailed breakdown of three main Keychain components: [WardenKMS](implementations/wardenkms) , [CLIchain](implementations/clichain), and [Keychain SDK](implementations/keychain-sdk).
+
+## Get started
+
+You can get started with Keychains by following this guide:
+
+- [Create a Keychain](operate-a-keychain/create-a-keychain)

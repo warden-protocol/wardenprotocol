@@ -62,4 +62,4 @@ Before you start, take the following steps:
    └── mocks/            # Mock services
    ```
    
-After meeting these prerequisites, you can start [creating the trading Agent structure](structure).
+After meeting these prerequisites, you can start [creating helper libraries and contracts](structure).

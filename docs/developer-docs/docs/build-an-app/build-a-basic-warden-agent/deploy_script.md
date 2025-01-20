@@ -31,7 +31,7 @@ contract Deploy is Script {
     function run() external {
         vm.startBroadcast(broadcaster);
         
-        // NEW: Optional registry reuse
+        // An optional registry reuse
         Registry registry = registryAddress != address(0) 
             ? Registry(registryAddress)
             : new Registry();
@@ -81,4 +81,4 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-After implementing the deployment scripts, you can finally [deploy the trading Agent](deployment).
+After implementing the deployment scripts, you can finally [deploy the Basic Agent](deployment).

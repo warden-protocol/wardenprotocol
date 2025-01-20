@@ -246,5 +246,5 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-- After creating mock precompiles, you can [create the trading Agent](main_contract).
+- After creating mock precompiles, you can [create the `BasicOrder` contract](main_contract).
 - Later, when you deploy the Basic Agent, you'll be able to [get data from precompiles](deployment#get-data-from-precompiles).

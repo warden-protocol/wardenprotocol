@@ -20,7 +20,7 @@ You can find the full code of the Basic Warden Agent on [GitHub](https://github.
 The architecture of the Basic Warden Agent includes the following components:
 
 - **Core trading logic**  
-  - [`BasicOrder`](main_contract): A contract implementing **orders** that monitor prices and trade on Uniswap
+  - [`BasicOrder`](main_contract): A contract implementing **basic orders** that monitor prices and trade on Uniswap
 - **Management layer**
   - [`OrderFactory`](agent_factory): A contract for creating and tracking orders
   - [`Registry`](structure#3-implement-the-registry): A contract implementing a registry for storing the order and transaction data

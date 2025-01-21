@@ -21,10 +21,7 @@ For an overview of `x/act` functions, refer to [Precompiles: x/act](../../precom
 To vote for an Action, use the following code in your contract. It calls the [`voteForAction()`](../../precompiles/x-act#vote-for-an-action) function of the precompile.
 
 ```solidity
-function voteForAction(
-    uint64 actionId,
-    VoteType voteType
-) external returns (XXX);
+enum VoteType { None, Approve, Reject }
 
 contract WardenAction {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
@@ -32,8 +29,8 @@ contract WardenAction {
     function voteForAction(
         uint64 actionId,
         VoteType voteType
-    ) external returns (XXX) {
-        return XXX;
+    ) external returns (string memory) {
+        return ACT.voteForAction(actionId, uint8(voteType));
     }
 }
 ```
@@ -41,7 +38,11 @@ contract WardenAction {
 After deploying your contract, you can interact with it by calling the `voteForAction()` function:
 
 ```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "voteForAction(XXX)" XXX
+# Vote to approve action #1
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "voteForAction(uint64,uint8)" 1 1
+
+# Vote to reject action #1
+cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "voteForAction(uint64,uint8)" 1 2
 ```
 
 ## Revoke an Action
@@ -49,20 +50,13 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "voteForAction(XXX)" XXX
 To revoke an Action, use the following code in your contract. It calls the [`revokeAction()`](../../precompiles/x-act#revoke-an-action) function of the precompile.
 
 ```solidity
-function revokeAction(uint64 actionId) external returns (bool);
-
-contract WardenAction {
-    IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
-    XXX
-}
-
 contract WardenAction {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
     function revokeAction(
         uint64 actionId
-    ) external returns (XXX) {
-        return XXX;
+    ) external returns (bool) {
+        return ACT.revokeAction(actionId);
     }
 }
 ```
@@ -78,15 +72,13 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "revokeAction(uint64)" 1
 To get a list of all Actions, use the following code in your contract. It calls the [`actions()`](../../precompiles/x-act#query-actions) function of the precompile.
 
 ```solidity
-function actions(XXX) external view returns (XXX);
-
 contract WardenAction {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
-    function revokeAction(
-        XXX
-    ) external returns (XXX) {
-        return XXX;
+    function getAllActions(
+        Types.PageRequest calldata pagination
+    ) external view returns (IAct.ActionsResponse memory) {
+        return ACT.actions(pagination);
     }
 }
 ```
@@ -94,7 +86,9 @@ contract WardenAction {
 After deploying your contract, you can interact with it by calling the `getAllActions()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "getAllActions(XXX)" XXX --rpc-url $RPC_URL
+# Get first 10 actions
+cast call $CONTRACT_ADDRESS "getAllActions((bytes,uint64,uint64,bool,bool))" \
+    "(0x,0,10,true,false)" --rpc-url $RPC_URL
 ```
 
 ## Query Actions by address
@@ -102,15 +96,15 @@ cast call $CONTRACT_ADDRESS "getAllActions(XXX)" XXX --rpc-url $RPC_URL
 To get a list of Actions by participant address, use the following code in your contract. It calls the [`actionsByAddress()`](../../precompiles/x-act#query-actions-by-address) function of the precompile.
 
 ```solidity
-function actionsByAddress(XXX) external view returns (ActionsByAddressResponse memory response);
-
 contract WardenAction {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
     function getActionsByAddress(
-        XXX
-    ) external returns (XXX) {
-        return XXX;
+        Types.PageRequest calldata pagination,
+        address addr,
+        ActionStatus status
+    ) external view returns (IAct.ActionsByAddressResponse memory) {
+        return ACT.actionsByAddress(pagination, addr, uint8(status));
     }
 }
 ```
@@ -118,7 +112,10 @@ contract WardenAction {
 After deploying your contract, you can interact with it by calling the `getActionsByAddress()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "getActionsByAddress(XXX)" XXX
+# Get first 10 pending actions for address
+cast call $CONTRACT_ADDRESS \
+    "getActionsByAddress((bytes,uint64,uint64,bool,bool),address,uint8)" \
+    "(0x,0,10,true,false)" $ADDRESS 1 --rpc-url $RPC_URL
 ```
 
 ## Query an Action by ID
@@ -126,9 +123,6 @@ cast call $CONTRACT_ADDRESS "getActionsByAddress(XXX)" XXX
 To get an Action by ID, use the following code in your contract. It calls the [`actionById()`](../../precompiles/x-act#query-an-action-by-id) function of the precompile.
 
 ```solidity
-function actionById(uint64 actionId) 
-    external view returns(ActionByIdResponse memory response);     
-
 contract WardenAction {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
@@ -151,16 +145,13 @@ cast call $CONTRACT_ADDRESS "getActionById(uint64)" 1 --rpc-url $RPC_URL
 To get the status of an Action with a given ID, use the following code in your contract. It calls the [`checkAction()`](../../precompiles/x-act#query-the-action-status-by-id) function of the precompile.
 
 ```solidity
-function checkAction(uint64 actionId) 
-    external view returns(XXX);     
-
 contract WardenAction {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
     function getActionStatusById(
-        XXX
-    ) external returns (XXX) {
-        return XXX;
+        uint64 actionId
+    ) external returns (string memory) {
+        return ACT.checkAction(actionId);
     }
 }
 ```

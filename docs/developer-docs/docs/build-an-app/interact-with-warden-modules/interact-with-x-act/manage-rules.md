@@ -21,19 +21,14 @@ For an overview of `x/act` functions, refer to [Precompiles: x/warden](../../pre
 To create a new Rule, use the following code in your contract. It calls the [`newTemplate()`](../../precompiles/x-act#create-a-new-rule) function of the precompile.
 
 ```solidity
-function newTemplate(
-    string calldata name,
-    string calldata definition
-) external returns (uint64);
-
-contract WardenSpace {
+contract WardenRule {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
     function createRule(
         string calldata name,
         string calldata definition
-    ) external returns (XXX) {
-        return XXX;
+    ) external returns (uint64) {
+        return ACT.newTemplate(name, definition);
     }
 }
 ```
@@ -41,7 +36,9 @@ contract WardenSpace {
 After deploying your contract, you can interact with it by calling the `createRule()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "createRule(XXX)" XXX --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "createRule(string,string)" \
+    "MyRule" "quorum(2, [\"0x123...\", \"0x456...\"])" \
+    --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Update a Rule
@@ -49,20 +46,15 @@ cast send $CONTRACT_ADDRESS "createRule(XXX)" XXX --rpc-url $RPC_URL --private-k
 To update a Rule, use the following code in your contract. It calls the [`updateTemplate()`](../../precompiles/x-act#update-a-rule) function of the precompile.
 
 ```solidity
-function updateTemplate(
-    uint64 templateId,
-    string calldata name,
-    string calldata definition
-) external returns (bool);
-
 contract WardenRule {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
     function updateRule(
+        uint64 templateId,
         string calldata name,
         string calldata definition
-    ) external returns (XXX) {
-        return XXX;
+    ) external returns (bool) {
+        return ACT.updateTemplate(templateId, name, definition);
     }
 }
 ```
@@ -70,7 +62,9 @@ contract WardenRule {
 After deploying your contract, you can interact with it by calling the `updateRule()` function:
 
 ```bash
-cast send send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateRule(XXX)" XXX
+cast send $CONTRACT_ADDRESS "updateRule(uint64,string,string)" \
+    1 "UpdatedRule" "quorum(3, [\"0x123...\", \"0x456...\", \"0x789...\"])" \
+    --private-key $PRIVATE_KEY --rpc-url $RPC_URL
 ```
 
 ## Query Rules
@@ -78,15 +72,14 @@ cast send send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateRule(XXX)" X
 To get a list of all Rules, use the following code in your contract. It calls the [`templates()`](../../precompiles/x-act#query-rules) function of the precompile.
 
 ```solidity
-function templates(XXX) external view returns (XXX);
-
 contract WardenRule {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 
     function getAllRules(
-        XXX
-    ) external returns (XXX) {
-        return XXX;
+        Types.PageRequest calldata pagination,
+        address creator
+    ) external view returns (IAct.TemplatesResponse memory) {
+        return ACT.templates(pagination, creator);
     }
 }
 ```
@@ -94,7 +87,9 @@ contract WardenRule {
 After deploying your contract, you can interact with it by calling the `getAllRules()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "getAllRules(XXX)" XXX --rpc-url $RPC_URL
+# Get first 10 rules for a creator
+cast call $CONTRACT_ADDRESS "getAllRules((bytes,uint64,uint64,bool,bool),address)" \
+    "(0x,0,10,true,false)" $CREATOR_ADDRESS --rpc-url $RPC_URL
 ```
 
 ## Query a Rule by ID
@@ -102,9 +97,6 @@ cast call $CONTRACT_ADDRESS "getAllRules(XXX)" XXX --rpc-url $RPC_URL
 To get a Rule by ID, use the following code in your contract. It calls the [`templateById()`](../../precompiles/x-act#query-a-rule-by-id) function of the precompile.
 
 ```solidity
-function templateById(uint64 templateId) 
-    external view returns(TemplateByIdResponse memory response);     
-
 contract WardenRule {
     IAct constant ACT = IAct(0x0000000000000000000000000000000000000901);
 

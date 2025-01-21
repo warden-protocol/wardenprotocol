@@ -24,13 +24,28 @@ To understand how to set up and deploy your project, see [Get started](get-start
 To create a Future, use the following code in your contract. It calls the [`addFuture()`](../precompiles/x-async#create-a-new-future) function of the precompile.
 
 ```solidity
-XXX
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+interface IAsync {
+    function addFuture(string calldata handler, bytes calldata input) external returns (uint64 futureId);
+    event CreateFuture(uint64 indexed futureId, address indexed creator, string handler);
+}
+
+contract AsyncExample {
+    IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
+    
+    function createFuture(string calldata handler, bytes calldata input) external returns (uint64) {
+        return ASYNC.addFuture(handler, input);
+    }
+}   
 ```
 
 After deploying your contract, you can interact with it by calling the `XXX()` function:
 
 ```bash
-XXX
+# Example using cast (foundry)
+cast send --private-key $PRIVATE_KEY $CONTRACT_ADDRESS "createFuture(string,bytes)" "myHandler" "0x1234"
 ```
 
 ### Query Futures
@@ -38,13 +53,56 @@ XXX
 To get a list of all Futures in all states (including pending ones), use the following code in your contract. It calls the [`futures()`](../precompiles/x-async#query-futures) function of the precompile.
 
 ```solidity
-XXX
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+interface IAsync {
+    struct TypesPageRequest {
+        bytes key;
+        uint64 offset;
+        uint64 limit;
+        bool countTotal;
+        bool reverse;
+    }
+    
+    struct Future {
+        uint64 id;
+        address creator;
+        string handler;
+        bytes input;
+    }
+    
+    struct FuturesResponse {
+        TypesPageResponse pagination;
+        FutureResponse[] futures;
+    }
+    
+    function futures(TypesPageRequest calldata pagination, address creator) 
+        external view returns (FuturesResponse memory response);
+}
+
+contract AsyncExample {
+    IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
+    
+    function queryFutures(uint64 limit, address creator) external view returns (FuturesResponse memory) {
+        TypesPageRequest memory pagination = TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return ASYNC.futures(pagination, creator);
+    }
+}
 ```
 
 After deploying your contract, you can interact with it by calling the `XXX()` function:
 
 ```bash
-XXX
+# Example using cast (foundry)
+cast call $CONTRACT_ADDRESS "queryFutures(uint64,address)" 10 $CREATOR_ADDRESS
 ```
 
 ### Query pending Futures
@@ -52,13 +110,49 @@ XXX
 To get a list of all pending Futures, use the following code in your contract. It calls the [`pendingFutures()`](../precompiles/x-async#query-pending-futures) function of the precompile.
 
 ```solidity
-XXX
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+interface IAsync {
+    struct TypesPageRequest {
+        bytes key;
+        uint64 offset;
+        uint64 limit;
+        bool countTotal;
+        bool reverse;
+    }
+    
+    struct PendingFuturesResponse {
+        TypesPageResponse pagination;
+        Future[] futures;
+    }
+    
+    function pendingFutures(TypesPageRequest calldata pagination) 
+        external view returns (PendingFuturesResponse memory response);
+}
+
+contract AsyncExample {
+    IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
+    
+    function queryPendingFutures(uint64 limit) external view returns (PendingFuturesResponse memory) {
+        TypesPageRequest memory pagination = TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return ASYNC.pendingFutures(pagination);
+    }
+}
 ```
 
 After deploying your contract, you can interact with it by calling the `XXX()` function:
 
 ```bash
-XXX
+# Example using cast (foundry)
+cast call $CONTRACT_ADDRESS "queryPendingFutures(uint64)" 10
 ```
 
 ### Query a Future by ID
@@ -66,11 +160,29 @@ XXX
 To query a Future by ID, use the following code in your contract. It calls the [`futureById()`](../precompiles/x-async#query-a-future-by-id) function of the precompile.
 
 ```solidity
-XXX
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+interface IAsync {
+    struct FutureByIdResponse {
+        FutureResponse futureResponse;
+    }
+    
+    function futureById(uint64 futureId) external view returns (FutureByIdResponse memory response);
+}
+
+contract AsyncExample {
+    IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
+    
+    function queryFutureById(uint64 futureId) external view returns (FutureByIdResponse memory) {
+        return ASYNC.futureById(futureId);
+    }
+}
 ```
 
 After deploying your contract, you can interact with it by calling the `XXX()` function:
 
 ```bash
-XXX
+# Example using cast (foundry)
+cast call $CONTRACT_ADDRESS "queryFutureById(uint64)" 1
 ```

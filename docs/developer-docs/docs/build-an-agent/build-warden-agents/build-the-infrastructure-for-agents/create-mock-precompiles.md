@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
 
 # Create mock precompiles
@@ -163,7 +163,7 @@ contract PrecompileTestHelper {
            // Set up a price scenario
            setupPriceScenario("ETH", "USD", 3000e9, 3500e9);
            
-           // Test the order execution
+           // Test the Order execution
            Types.OrderData memory orderData = createTestOrder(
                3200e9,  // The threshold
                Types.PriceCondition.GTE
@@ -236,7 +236,7 @@ contract CreateOrder is Script {
         vm.etch(IWARDEN_PRECOMPILE_ADDRESS, address(mWarden).code);
         mWarden.addKey(1, true);
         
-        // Create and verify an order
+        // Create and verify an Order
         vm.broadcast();
         BasicOrder order = createOrder(/* params */);
         require(order.canExecute(), "Order cannot execute");
@@ -246,5 +246,5 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-- After creating mock precompiles, you can [create the `BasicOrder` contract](main_contract).
-- Later, when you deploy the Basic Agent, you'll be able to [get data from precompiles](deployment#get-data-from-precompiles).
+- After creating mock precompiles, you can [implement the execution interface](implement-the-execution-interface).
+- Later, when you deploy your Agent, you'll be able to [get data from precompiles](../build-a-basic-agent/deploy-a-basic-agent#get-data-from-precompiles).

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Prerequisites
@@ -62,4 +62,4 @@ Before you start, take the following steps:
    └── mocks/            # Mock services
    ```
    
-After meeting these prerequisites, you can start [creating helper libraries and contracts](structure).
+After meeting these prerequisites, you can start [creating helpers and utils](create-helpers-and-utils).

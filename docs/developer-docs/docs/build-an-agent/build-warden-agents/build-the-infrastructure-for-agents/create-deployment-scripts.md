@@ -1,12 +1,12 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 ---
 
 # Create deployment scripts
 
 ## Overview
 
-This tutorial explains how to implement the main deployment script and the script for creating orders.
+This tutorial explains how to implement the main deployment script and the script for creating Orders.
 
 :::note Directory
 Store your scriptw in the [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
@@ -16,8 +16,8 @@ Store your scriptw in the [`/script`](https://github.com/warden-protocol/wardenp
 
 The main deployment script handles the following tasks:
 
-- Deploys [`Registry`](structure#3-implement-the-registry)
-- Deploys [`OrderFactory`](agent_factory)
+- Deploys [`Registry`](create-helpers-and-utils#3-implement-the-registry)
+- Deploys [`OrderFactory`](implement-order-factory)
 - Configures the environment
 
 To implement this script, use the following code:
@@ -47,13 +47,13 @@ contract Deploy is Script {
 }
 ```
 
-## 2. Implement the script for creating orders
+## 2. Implement the script for creating Orders
 
 
-This script for creating orders handles the following tasks:
+This script for creating Orders handles the following tasks:
 
-- Deploys [`BasicOrder`](main_contract) through [`OrderFactory`](agent_factory)
-- Sets up [mock precompiles](precompiles)
+- Deploys [`BasicOrder`](../build-a-basic-agent/implement-basic-orders) through [`OrderFactory`](implement-order-factory)
+- Sets up [mock precompiles](create-mock-precompiles)
 - Configures parameters
 
 To implement this script, use the following code:
@@ -73,7 +73,7 @@ contract CreateOrder is Script {
         MockSlinkyPrecompile mSlinkyPrecompile = new MockSlinkyPrecompile();
         MockWardenPrecompile wPrecompile = new MockWardenPrecompile();
         
-        // Create order through factory
+        // Create an Order through the OrderFactory contract
         FACTORY.createOrder(orderData, maxKeychainFees, OrderType.Basic);
     }
 }
@@ -81,4 +81,4 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-After implementing the deployment scripts, you can finally [deploy the Basic Agent](deployment).
+After implementing the deployment scripts, you can finally start building a [Basic Agent](/category/build-a-basic-agent).

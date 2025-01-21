@@ -1,12 +1,12 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
-# Create helper libraries and contracts
+# Create helpers and utils
 
 ## Overview
 
-This article will guide you through building a foundation for the Basic Agent. You'll create helper libraries and contracts defining the core data structures and interfaces for managing orders.
+This article will guide you through building a foundation for the Basic Agent. You'll create helper libraries and contracts defining the core data structures and interfaces for managing Orders.
 
 :::note Directory
 Store helper libraries and contracts in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory.
@@ -50,7 +50,7 @@ library Types {
 
 ## 2. Create the execution interface
 
-The execution interface allows executing an order, getting a list of authorized callers, and checking the execution status.
+The execution interface allows executing an Order, getting a list of authorized callers, and checking the execution status.
 
 Implement the execution interface in a file `IExecution.sol`:
 
@@ -60,10 +60,10 @@ You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com
 
 ```solidity title="/src/IExecution.sol"
 interface IExecution {
-    // Check if an order can be executed
+    // Check if an Order can be executed
     function canExecute() external view returns (bool);
     
-    // Execute an order
+    // Execute an Order
     function execute(
         uint256 nonce,
         uint256 gas,
@@ -90,13 +90,13 @@ You can find the full code on GitHub: [`/src/Registry.sol`](https://github.com/w
 
 ```solidity title="/src/Registry.sol"
 contract Registry is ReentrancyGuard {
-    // Track order creators
+    // Track Order creators
     mapping(address executionAddress => address orderCreator) public executions;
     
     // Store the transaction data
     mapping(bytes32 txHash => bytes tx) public transactions;
 
-    // Register an order with additional validation
+    // Register an Order with additional validation
     function register(address execution) public {
         if (execution == address(0)) {
             revert InvalidExecutionAddress();
@@ -136,5 +136,5 @@ library RLPEncode {
 
 ## Next steps
 
-- After building the foundation for the Basic Agent, you can [create mock precompiles](precompiles).
-- Later, when you deploy the Basic Agent, you'll be able to [get data from the registry](deployment#get-data-from-the-registry).
+- After building the foundation for Agents, you can [create mock precompiles](create-mock-precompiles).
+- Later, when you deploy your Agent, you'll be able to [get data from the registry](../build-a-basic-agent/deploy-a-basic-agent#get-data-from-the-registry).

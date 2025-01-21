@@ -1,14 +1,14 @@
 ---
-sidebar_position: 6
+sidebar_position: 5
 ---
 
-# Create the OrderFactory contract
+# Implement the creation of Orders
 
 ## Overview
 
-The `OrderFactory` contract securely manages the creation and tracking of orders – instances of the [`BasicOrder`](main_contract) contract that monitor price feeds and perform swaps when price thresholds are met.
+The `OrderFactory` contract securely manages the creation and tracking of Order – instances of the [`BasicOrder`](../build-a-basic-agent/implement-basic-orders) contract that monitor price feeds and perform swaps when price thresholds are met.
 
-When triggered by a user, `OrderFactory` deploys a new [`BasicOrder`](main_contract) contract and registers it in the [registry](structure#3-implement-the-registry).
+When triggered by a user, `OrderFactory` deploys a new [`BasicOrder`](../build-a-basic-agent/implement-basic-orders) contract and registers it in the [registry](create-helpers-and-utils#3-implement-the-registry).
 
 :::note Directory
 Store `OrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
@@ -16,7 +16,7 @@ Store `OrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenpr
 
 ## Create the contract
 
-Implement order creation and tracking in a file `OrderFactory.sol`:
+Implement the creation and tracking of Orders in a file `OrderFactory.sol`:
 
 :::note Full code
 You can find the full code on GitHub: [`/src/OrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/OrderFactory.sol)
@@ -29,14 +29,14 @@ contract OrderFactory is Ownable {
     Registry public immutable REGISTRY;
     address public scheduler;
 
-    // An event emitted when an order is created
+    // An event emitted when an Order is created
     event OrderCreated(
         address indexed orderCreator, 
         OrderType indexed orderType, 
         address indexed orderContact
     );
 
-    // Create an order
+    // Create an Order
     function createOrder(
         Types.OrderData calldata _orderData,
         CommonTypes.Coin[] calldata maxKeychainFees,
@@ -52,4 +52,4 @@ contract OrderFactory is Ownable {
 
 ## Next steps
 
-After creating the `OrderFactory` contract, you can [implement the deployment scripts](deploy_script).
+After creating the `OrderFactory` contract, you can [create deployment scripts](create-deployment-scripts).

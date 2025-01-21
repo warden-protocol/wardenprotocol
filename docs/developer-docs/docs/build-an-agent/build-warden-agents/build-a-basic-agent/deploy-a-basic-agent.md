@@ -1,12 +1,12 @@
 ---
-sidebar_position: 7
+sidebar_position: 5
 ---
 
-# Deploy the Basic Agent
+# Deploy a Basic Agent
 
 ## Overview
 
-This article will guide you through deploying the Basic Warden Agent and managing [orders](main_contract).
+This article will guide you through deploying the Basic Warden Agent and managing [Orders](implement-basic-orders).
 
 ## 1. Deploy the Agent
 
@@ -28,7 +28,7 @@ To deploy the Agent, take the following steps:
    forge build
    ```
 
-3. Load the environment and run the [main deployment script](deploy_script#1-implement-the-main-deployment-script):
+3. Load the environment and run the [main deployment script](../build-the-infrastructure-for-agents/create-deployment-scripts#1-implement-the-main-deployment-script):
    
    ```bash
    source .env
@@ -38,9 +38,9 @@ To deploy the Agent, take the following steps:
        --chain-id $CHAIN_ID
    ```
 
-   This will deploy the [`Registry`](structure#3-implement-the-registry) and [`OrderFactory`](agent_factory) contracts.
+   This will deploy the [`Registry`](../build-the-infrastructure-for-agents/create-helpers-and-utils#3-implement-the-registry) and [`OrderFactory`](../build-the-infrastructure-for-agents/implement-order-factory) contracts.
    
-4. Run the [script for creating an order](deploy_script#1-implement-the-main-deployment-script):
+4. Run the [script for creating an Order](../build-the-infrastructure-for-agents/create-deployment-scripts#1-implement-the-main-deployment-script):
    
    ```bash
    forge script script/CreateOrder.s.sol:CreateOrder \
@@ -56,7 +56,7 @@ To deploy the Agent, take the following steps:
    
    The key parameters to specify include the following:
    
-   - `thresholdPrice`: The price threshold to trigger the execution of an order
+   - `thresholdPrice`: The price threshold to trigger the execution of an Order
    - `priceCondition`: The price condition: 0 for LTE (`<=`), 1 for GTE (`>=`)
    - `pricePair`: The currency pair
    - `creatorDefinedTxFields`: The chain and transaction details
@@ -67,25 +67,25 @@ To deploy the Agent, take the following steps:
    - `expectedApproveExpression`: Conditions for approval
    - `expectedRejectExpression`: Conditions for rejection
 
-5. Verify the deployment by getting the order details:
+5. Verify the deployment by getting the Order details:
    
    ```bash
    cast call $ORDER_ADDRESS "orderData()"
    ```
 
-## 2. Monitor and manage orders
+## 2. Monitor and manage Orders
 
-After deploying the Basic Agent, you can monitor and manage orders using the commands listed below.
+After deploying the Basic Agent, you can monitor and manage Orders using the commands listed below.
 
-### Monitor the order status
+### Monitor the Order status
 
-- Check if the order can be executed:
+- Check if the Order can be executed:
 
    ```bash
    cast call $ORDER_ADDRESS "canExecute()" --rpc-url $RPC_URL
    ```
 
-- Check if the order is executed:
+- Check if the Order is executed:
 
    ```
    cast call $ORDER_ADDRESS "isExecuted()" --rpc-url $RPC_URL
@@ -99,13 +99,13 @@ After deploying the Basic Agent, you can monitor and manage orders using the com
 
 ### Get data from the registry
 
-- Retrieve the order creator from the [registry](structure#3-implement-the-registry):
+- Retrieve the Order creator from the [registry](../build-the-infrastructure-for-agents/create-helpers-and-utils#3-implement-the-registry):
 
    ```bash
    cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
    ```
 
-- Retrieve the transaction details from the [registry](structure#3-implement-the-registry):
+- Retrieve the transaction details from the [registry](../build-the-infrastructure-for-agents/create-helpers-and-utils#3-implement-the-registry):
 
    ```bash
    cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
@@ -113,13 +113,13 @@ After deploying the Basic Agent, you can monitor and manage orders using the com
 
 ### Monitor events
 
-- Monitor the `Executed()` event emitted by the [`execute()`](main_contract#4-implement-trade-execution) function of the `BasicOrder` contract:
+- Monitor the `Executed()` event emitted by the [`execute()`](implement-basic-orders#4-implement-trade-execution) function of the `BasicOrder` contract:
    
    ```bash
    cast logs $ORDER_ADDRESS "Executed()"
    ```
 
-- Monitor the `NewTx()` event emitted by the [registry](structure#3-implement-the-registry):
+- Monitor the `NewTx()` event emitted by the [registry](../build-the-infrastructure-for-agents/create-helpers-and-utils#3-implement-the-registry):
    
    ```bash
    cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
@@ -127,13 +127,13 @@ After deploying the Basic Agent, you can monitor and manage orders using the com
    
 ### Get data from precompiles
 
-- Get the current price from the [Slinky precompile](precompiles#11-create-a-slinky-precompile):
+- Get the current price from the [Slinky precompile](../build-the-infrastructure-for-agents/create-mock-precompiles#11-create-a-slinky-precompile):
 
     ```bash
     cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
     ```
 
-- Check the Warden key status from the [Warden precompile](precompiles#12-create-a-warden-precompile):
+- Check the Warden key status from the [Warden precompile](../build-the-infrastructure-for-agents/create-mock-precompiles#12-create-a-warden-precompile):
 
     ```
     cast call $WARDEN_PRECOMPILE "keyById(uint64,int32[])" $KEY_ID []

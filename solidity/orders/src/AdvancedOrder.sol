@@ -62,7 +62,7 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         if (block.timestamp > _validUntil) return false;
 
         FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
-        if (future.futureResponse.future.id == 0) return false;
+        if (future.futureResponse.result.id == 0) return false;
 
         uint256[] memory predictedPrices = abi.decode(future.futureResponse.result.output, (uint256[]));
         GetPriceResponse memory priceResponse =

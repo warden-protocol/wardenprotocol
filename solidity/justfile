@@ -74,7 +74,7 @@ create-advanced-order priceCondition oraclePricePair predictPricePair txFields k
     cd orders && \
     forge script \
     --via-ir \
-    --chain 12345 \
+    --chain $CHAIN_ID \
     --skip-simulation \
     --with-gas-price 100000 \
     script/CreateOrder.s.sol:CreateOrder \

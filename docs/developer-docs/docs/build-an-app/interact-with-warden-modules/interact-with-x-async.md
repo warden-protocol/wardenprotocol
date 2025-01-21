@@ -186,3 +186,103 @@ After deploying your contract, you can interact with it by calling the `XXX()` f
 # Example using cast (foundry)
 cast call $CONTRACT_ADDRESS "queryFutureById(uint64)" 1
 ```
+
+## Complete Example Contract
+
+Here's a complete example contract that implements all the functionality discussed above:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+interface IAsync {
+    struct TypesPageRequest {
+        bytes key;
+        uint64 offset;
+        uint64 limit;
+        bool countTotal;
+        bool reverse;
+    }
+    
+    struct TypesPageResponse {
+        bytes nextKey;
+        uint64 total;
+    }
+    
+    struct Future {
+        uint64 id;
+        address creator;
+        string handler;
+        bytes input;
+    }
+    
+    struct FutureResponse {
+        Future future;
+        FutureVote[] votes;
+        FutureResult result;
+    }
+    
+    struct FuturesResponse {
+        TypesPageResponse pagination;
+        FutureResponse[] futures;
+    }
+    
+    struct FutureByIdResponse {
+        FutureResponse futureResponse;
+    }
+    
+    struct PendingFuturesResponse {
+        TypesPageResponse pagination;
+        Future[] futures;
+    }
+    
+    function addFuture(string calldata handler, bytes calldata input) external returns (uint64 futureId);
+    function futures(TypesPageRequest calldata pagination, address creator) external view returns (FuturesResponse memory response);
+    function pendingFutures(TypesPageRequest calldata pagination) external view returns (PendingFuturesResponse memory response);
+    function futureById(uint64 futureId) external view returns (FutureByIdResponse memory response);
+    
+    event CreateFuture(uint64 indexed futureId, address indexed creator, string handler);
+}
+
+contract AsyncExample {
+    IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
+    
+    // Create a new Future
+    function createFuture(string calldata handler, bytes calldata input) external returns (uint64) {
+        return ASYNC.addFuture(handler, input);
+    }
+    
+    // Query all Futures
+    function queryFutures(uint64 limit, address creator) external view returns (FuturesResponse memory) {
+        TypesPageRequest memory pagination = TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return ASYNC.futures(pagination, creator);
+    }
+    
+    // Query pending Futures
+    function queryPendingFutures(uint64 limit) external view returns (PendingFuturesResponse memory) {
+        TypesPageRequest memory pagination = TypesPageRequest({
+            key: new bytes(0),
+            offset: 0,
+            limit: limit,
+            countTotal: true,
+            reverse: false
+        });
+        
+        return ASYNC.pendingFutures(pagination);
+    }
+    
+    // Query a Future by ID
+    function queryFutureById(uint64 futureId) external view returns (FutureByIdResponse memory) {
+        return ASYNC.futureById(futureId);
+    }
+}
+```
+
+This contract provides a complete interface to interact with the x/async module through the precompile. You can use it as a starting point for your own implementations or extend it with additional functionality as needed.

@@ -43,9 +43,6 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     // Scheduler address
     address public scheduler;
 
-    // Mapping to track used salts to prevent reuse
-    mapping(bytes32 salt => bool used) public usedSalts;
-
     constructor(
         address registry,
         address _scheduler,

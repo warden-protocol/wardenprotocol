@@ -77,7 +77,7 @@ contract AdvancedOrder is AbstractOrder, IExecution {
                 PRICE_PREDICTION_DECIMALS
             );
 
-        return _checkCondition(oracleNormalized, predictedNormalized);
+        return _checkPriceCondition(oracleNormalized, predictedNormalized);
     }
 
     function execute(
@@ -138,7 +138,7 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         return (priceA * 10**decimals) / priceB;
     }
 
-    function _checkCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {
+    function _checkPriceCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {
         if (
             (orderData.priceCondition == Types.PriceCondition.GTE && oraclePrice >= predictedPrice) ||
             (orderData.priceCondition == Types.PriceCondition.LTE && oraclePrice <= predictedPrice) ||

@@ -53,14 +53,14 @@ The user flow for executing a swap includes the following steps:
     - The token pair to monitor
     - Swap details such as amount, path, recipient, deadline
     - Transaction signing details
-2. The `OrderFactory` contract calls [`BasicOrderFactory`](../implement-automated-orders/implement-the-creation-of-orders), which deploys a new [`BasicOrder`](../implement-automated-orders/implement-orders) contract (Order) and registers it in the [registry](create-helpers-and-utils#3-implement-the-registry).
-3. The Order continuously monitors prices using [Slinky](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile).
+2. The `OrderFactory` contract calls [`BasicOrderFactory`](implement-automated-orders/implement-the-creation-of-orders), which deploys a new [`BasicOrder`](implement-automated-orders/implement-orders) contract (Order) and registers it in the [registry](build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
+3. The Order continuously monitors prices using [Slinky](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile).
 4. When the price threshold is met, the Order executes a swap:
     - Constructs a swap transaction
-    - Sends the transaction to [Warden](../build-the-infrastructure-for-orders/create-mock-precompiles#12-create-a-warden-precompile) for signing
-    - Records the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
+    - Sends the transaction to [Warden](build-the-infrastructure-for-orders/create-mock-precompiles#12-create-a-warden-precompile) for signing
+    - Records the transaction in the [registry](build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
     - Executes the swap on Uniswap
-5. Transaction details are stored in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) for verification and tracking.
+5. Transaction details are stored in the [registry](build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) for verification and tracking.
 
 ### Automated Orders with price prediction
 

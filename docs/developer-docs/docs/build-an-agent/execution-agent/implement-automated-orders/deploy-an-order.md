@@ -6,11 +6,13 @@ sidebar_position: 5
 
 ## Overview
 
-This article will guide you through deploying the Basic Warden Agent and managing [Orders](implement-orders).
+This article will guide you through deploying and managing automated Orders – instances of the [`BasicOrder`](implement-orders) contract.
 
-## 1. Deploy the Agent
+First, you'll deploy the Warden Agent infrastructure and trigger Order deployment. After this, you'll be able to monitor and manage your Orders.
 
-To deploy the Agent, take the following steps:
+## 1. Create an Order
+
+To create an Order, take the following steps: 
 
 1. Set up the environment file (`.env`):
 
@@ -38,7 +40,7 @@ To deploy the Agent, take the following steps:
        --chain-id $CHAIN_ID
    ```
 
-   This will deploy the [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) and [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) contracts.
+   This will deploy the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts.
    
 4. Run the [script for creating an Order](../build-the-infrastructure-for-orders/create-deployment-scripts#1-implement-the-main-deployment-script):
    
@@ -75,7 +77,7 @@ To deploy the Agent, take the following steps:
 
 ## 2. Monitor and manage Orders
 
-After deploying the Basic Agent, you can monitor and manage Orders using the commands listed below.
+You can monitor and manage Orders using the commands listed below.
 
 ### Monitor the Order status
 

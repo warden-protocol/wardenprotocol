@@ -6,9 +6,9 @@ sidebar_position: 3
 
 ## Overview
 
-The `BasicOrder` contract implements the core of the Basic Warden Agent – **Basic Orders**. Basic Orders act as trading Agents that monitor prices and automatically perform swaps.
+The `BasicOrder` contract implements the core of logic of this example – **automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met.
 
-To create an Order, a user triggers the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) contract, and it deploys an instance of the `BasicOrder` contract. Then the Basic Agent executes and manages Orders, as shown in [Create helper libraries and contracts](../build-the-infrastructure-for-orders/create-helpers-and-utils).
+To create an Order, a user triggers the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) contract. Then it calls [`BasicOrderFactory`](implement-the-creation-of-orders), which deploys `BasicOrder`. Finally, the Warden Agent [executes and manages Orders](../build-the-infrastructure-for-orders/implement-the-execution-interface).
 
 This article will guide you through creating the `BasicOrder` contract.
 
@@ -185,4 +185,4 @@ Key security features of the `BasicOrder` contract include the following:
 
 ## Next steps
 
-After creating the `BasicOrder` contract, you can [implement the creation of Basic Orders](implement-the-creation-of-orders).
+After creating the `BasicOrder` contract, you can [implement the creation of Orders](implement-the-creation-of-orders).

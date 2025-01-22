@@ -14,7 +14,6 @@ The user specifies the desired order type and triggers `OrderFactory`. Depending
 
 - `OrderFactory` calls the [`AdvancedOrderFactory`](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders) contract, which deploys a new [`AdvancedOrder`](../implement-automated-orders-with-price-prediction/implement-orders) contract and registers it in the [registry](create-helpers-and-utils#3-implement-the-registry).
 
-
 :::note Directory
 Store `OrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
 :::

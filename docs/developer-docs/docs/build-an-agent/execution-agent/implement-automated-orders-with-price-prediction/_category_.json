@@ -1,11 +1,11 @@
 {
   "position": 6,
-  "label": "Build a Basic Agent",
+  "label": "Implement automated Orders with price prediction",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Build a Basic Agent"
+    "title": "Implement automated Orders with price prediction"
   },
   "customProps": {}
 }

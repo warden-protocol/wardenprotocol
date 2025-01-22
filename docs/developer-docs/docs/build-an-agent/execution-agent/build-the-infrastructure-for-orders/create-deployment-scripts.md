@@ -17,7 +17,7 @@ Store your scriptw in the [`/script`](https://github.com/warden-protocol/wardenp
 The main deployment script handles the following tasks:
 
 - Deploys [`Registry`](create-helpers-and-utils#3-implement-the-registry)
-- Deploys [`OrderFactory`](implement-order-factory)
+- Deploys [`OrderFactory`](implement-the-creation-of-orders)
 - Configures the environment
 
 To implement this script, use the following code:
@@ -52,7 +52,7 @@ contract Deploy is Script {
 
 This script for creating Orders handles the following tasks:
 
-- Deploys [`BasicOrder`](../build-a-basic-agent/implement-basic-orders) through [`OrderFactory`](implement-order-factory)
+- Deploys [`BasicOrder`](../implement-automated-orders/implement-orders) through [`OrderFactory`](implement-the-creation-of-orders)
 - Sets up [mock precompiles](create-mock-precompiles)
 - Configures parameters
 
@@ -81,4 +81,4 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-After implementing the deployment scripts, you can finally start building a [Basic Agent](/category/build-a-basic-agent).
+After implementing the deployment scripts, you can finally start building a [Basic Agent](/category/implement-automated-orders).

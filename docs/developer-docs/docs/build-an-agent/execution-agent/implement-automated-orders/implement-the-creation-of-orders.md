@@ -1,14 +1,14 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# Implement Basic Orders
+# Implement the creation of Orders
 
 ## Overview
 
 The `BasicOrder` contract implements the core of the Basic Warden Agent – **Basic Orders**. Basic Orders act as trading Agents that monitor prices and automatically perform swaps.
 
-To create an Order, a user triggers the [`OrderFactory`](../build-the-infrastructure-for-agents/implement-order-factory) contract, and it deploys an instance of the `BasicOrder` contract. Then the Basic Agent executes and manages Orders, as shown in [Create helper libraries and contracts](../build-the-infrastructure-for-agents/create-helpers-and-utils).
+To create an Order, a user triggers the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) contract, and it deploys an instance of the `BasicOrder` contract. Then the Basic Agent executes and manages Orders, as shown in [Create helper libraries and contracts](../build-the-infrastructure-for-orders/create-helpers-and-utils).
 
 This article will guide you through creating the `BasicOrder` contract.
 
@@ -75,8 +75,9 @@ constructor(
 
 In the `canExecute()` function, implement the logic for monitoring prices. This function should handle these tasks:
 
+- Retrieve a price from the [Slinky mock precompile](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile)
 - Check if the price meets a given condition: `>=` or `<=` than the threshold  
-  (see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-agents/create-helpers-and-utils#1-define-data-structures))
+  (see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures))
 
 ```solidity title="/src/BasicOrder.sol"
 function canExecute() public view returns (bool value) {
@@ -102,7 +103,7 @@ In the `execute()` function, implement the logic for executing trades. This func
 - Create and encode a transaction
 - Request a signature through Warden
 - Emit the `Executed()` event
-- Register the transaction in the [registry](../build-the-infrastructure-for-agents/create-helpers-and-utils#3-implement-the-registry)
+- Register the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
 - Return the execution status
 
 ```solidity title="/src/BasicOrder.sol"
@@ -185,4 +186,4 @@ Key security features of the `BasicOrder` contract include the following:
 
 ## Next steps
 
-After creating the `BasicOrder` contract, you can [implement the creation of Basic Orders](implement-basic-order-factory).
+After creating the `BasicOrderFactory` contract, you can [deploy a Basic Agent](deploy-an-order).

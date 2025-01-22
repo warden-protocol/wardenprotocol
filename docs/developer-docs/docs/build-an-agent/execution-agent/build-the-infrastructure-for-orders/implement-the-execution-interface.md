@@ -136,4 +136,4 @@ library RLPEncode {
 
 ## Next steps
 
-- After creating the `OrderFactory` contract, you can [implement the creation of Orders](implement-order-factory).
+- After creating the `OrderFactory` contract, you can [implement the creation of Orders](implement-the-creation-of-orders).

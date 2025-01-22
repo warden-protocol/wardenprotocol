@@ -137,4 +137,4 @@ library RLPEncode {
 ## Next steps
 
 - After building the foundation for Agents, you can [create mock precompiles](create-mock-precompiles).
-- Later, when you deploy your Agent, you'll be able to [get data from the registry](../build-a-basic-agent/deploy-a-basic-agent#get-data-from-the-registry).
+- Later, when you deploy your Agent, you'll be able to [get data from the registry](../implement-automated-orders/deploy-an-order#get-data-from-the-registry).

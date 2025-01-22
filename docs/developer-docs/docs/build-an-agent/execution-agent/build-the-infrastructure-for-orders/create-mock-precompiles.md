@@ -247,4 +247,4 @@ contract CreateOrder is Script {
 ## Next steps
 
 - After creating mock precompiles, you can [implement the execution interface](implement-the-execution-interface).
-- Later, when you deploy your Agent, you'll be able to [get data from precompiles](../build-a-basic-agent/deploy-a-basic-agent#get-data-from-precompiles).
+- Later, when you deploy your Agent, you'll be able to [get data from precompiles](../implement-automated-orders/deploy-an-order#get-data-from-precompiles).

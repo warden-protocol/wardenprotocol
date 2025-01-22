@@ -9,15 +9,15 @@ sidebar_position: 6
 This tutorial explains how to implement the main deployment script and the script for creating Orders.
 
 :::note Directory
-Store your scriptw in the [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
+Store your scripts in the [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
 :::
 
 ## 1. Implement the main deployment script
 
 The main deployment script handles the following tasks:
 
-- Deploys [`Registry`](create-helpers-and-utils#3-implement-the-registry)
 - Deploys [`OrderFactory`](implement-the-creation-of-orders)
+- Deploys [`Registry`](create-helpers-and-utils#3-implement-the-registry)
 - Configures the environment
 
 To implement this script, use the following code:
@@ -48,7 +48,6 @@ contract Deploy is Script {
 ```
 
 ## 2. Implement the script for creating Orders
-
 
 This script for creating Orders handles the following tasks:
 
@@ -81,4 +80,7 @@ contract CreateOrder is Script {
 
 ## Next steps
 
-After implementing the deployment scripts, you can finally start building a [Basic Agent](/category/implement-automated-orders).
+After implementing the deployment scripts, you can finally start implementing Orders. You can choose one of the two Order types:
+
+- [Automated Orders](/category/implement-automated-orders)
+- [Automated Orders with price prediction](/category/implement-automated-orders-with-price-prediction)

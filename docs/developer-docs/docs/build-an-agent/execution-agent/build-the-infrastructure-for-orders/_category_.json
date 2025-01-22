@@ -1,11 +1,11 @@
 {
   "position": 3,
-  "label": "Build the infrastructure for Agents",
+  "label": "Build the infrastructure for Orders",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Build the infrastructure for Agents"
+    "title": "Build the infrastructure for Orders"
   },
   "customProps": {}
 }

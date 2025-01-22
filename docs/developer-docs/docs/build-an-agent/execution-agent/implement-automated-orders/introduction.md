@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-This section explains how to build a **Basic Warden Agent**.
+This section explains how to implement **Basic Warden Agent**.
 
 The Basic Agent allows users to automatically execute token swaps on **Uniswap** when user-defined price thresholds are met.
 

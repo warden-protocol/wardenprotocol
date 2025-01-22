@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-This article will guide you through building a foundation for the Basic Agent. You'll create helper libraries and contracts defining the core data structures and interfaces for managing Orders.
+This article will guide you through building a foundation for the Agent executing automated Orders. You'll create helper libraries and contracts defining the core data structures and interfaces for managing Orders.
 
 :::note Directory
 Store helper libraries and contracts in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory.
@@ -48,35 +48,79 @@ library Types {
 }
 ```
 
-## 2. Create the execution interface
-
-The execution interface allows executing an Order, getting a list of authorized callers, and checking the execution status.
-
-Implement the execution interface in a file `IExecution.sol`:
+## 2. Create an abstract Order
+Now, add an abstract contract with functions required to create Orders of both types.
 
 :::note Full code
-You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
+You can find the full code on GitHub: [`/src/AbstractOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AbstractOrder.sol)
 :::
 
-```solidity title="/src/IExecution.sol"
-interface IExecution {
-    // Check if an Order can be executed
-    function canExecute() external view returns (bool);
-    
-    // Execute an Order
-    function execute(
+```solidity title="/src/AbstractOrder.sol"
+abstract contract AbstractOrder {
+
+    function encodeUnsignedEIP1559(
         uint256 nonce,
         uint256 gas,
-        uint256 gasPrice,
-        uint256 maxPriorityFeePerGas,  // for EIP-1559 transactions
-        uint256 maxFeePerGas           // for EIP-1559 transactions
-    ) external returns (bool, bytes32);
-    
-    // Get a list of authorized callers
-    function callers() external returns (Caller[] memory callersList);
-    
-    // Check the execution status
-    function isExecuted() external returns (bool);
+        uint256 maxPriorityFeePerGas,
+        uint256 maxFeePerGas,
+        bytes[] calldata accessList,
+        Types.CreatorDefinedTxFields calldata creatorDefinedTxFields
+    )
+        public
+        pure
+        returns (bytes memory unsignedTx, bytes32 txHash)
+    {
+        uint256 txType = 2; // eip1559 tx type
+        bytes[] memory txArray = new bytes[](9);
+        txArray[0] = RLPEncode.encodeUint(creatorDefinedTxFields.chainId);
+        txArray[1] = RLPEncode.encodeUint(nonce);
+        txArray[2] = RLPEncode.encodeUint(maxPriorityFeePerGas);
+        txArray[3] = RLPEncode.encodeUint(maxFeePerGas);
+        txArray[4] = RLPEncode.encodeUint(gas);
+        txArray[5] = RLPEncode.encodeAddress(creatorDefinedTxFields.to);
+        txArray[6] = RLPEncode.encodeUint(creatorDefinedTxFields.value);
+        txArray[7] = RLPEncode.encodeBytes(creatorDefinedTxFields.data);
+        txArray[8] = RLPEncode.encodeList(accessList);
+        bytes memory unsignedTxEncoded = RLPEncode.encodeList(txArray);
+        unsignedTx = RLPEncode.concat(RLPEncode.encodeUint(txType), unsignedTxEncoded);
+        txHash = keccak256(unsignedTx);
+    }
+
+    function buildExecutionData(Types.CreatorDefinedTxFields calldata creatorDefinedTxFields)
+        public
+        view
+        returns (ExecutionData memory data)
+    {
+        data = ExecutionData({
+            caller: _keyAddress,
+            to: creatorDefinedTxFields.to,
+            chainId: creatorDefinedTxFields.chainId,
+            value: creatorDefinedTxFields.value,
+            data: creatorDefinedTxFields.data
+        });
+    }
+
+    function createSignRequest(
+        Types.SignRequestData calldata signRequestData,
+        bytes calldata signRequestInput,
+        CommonTypes.Coin[] calldata maxKeychainFees
+    )
+        public
+        returns (bool)
+    {
+        return WARDEN_PRECOMPILE.newSignRequest(
+            signRequestData.keyId,
+            signRequestInput,
+            signRequestData.analyzers,
+            signRequestData.encryptionKey,
+            maxKeychainFees,
+            signRequestData.spaceNonce,
+            signRequestData.actionTimeoutHeight,
+            signRequestData.expectedApproveExpression,
+            signRequestData.expectedRejectExpression,
+            BroadcastType.Automatic
+        );
+    }
 }
 ```
 
@@ -109,9 +153,36 @@ contract Registry is ReentrancyGuard {
 }
 ```
 
-## 4. Implement the RLP encoding
+## 4. Implement string operations
 
-To support EIP-1559 transactions, create an `RLPEncode.sol` file implementing the RLP encoding:
+To support EIP-1559 transactions, create a `Strings.sol` library implementing string operations:
+
+:::note Full code
+You can find the full code on GitHub: [`/src/Strings.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Strings.sol)
+:::
+
+```solidity title="/src/Strings.sol"
+library Strings {
+
+    // Parse a hexadecimal string and return the value as an `address`
+    function parseAddress(string memory input) internal pure returns (address) {
+        return parseAddress(input, 0, bytes(input).length);
+    }
+
+    // Parse a substring of `input` located between position `begin` (included) and `end` (excluded)
+    function parseAddress(string memory input, uint256 begin, uint256 end) internal pure returns (address) {
+        (bool success, address value) = tryParseAddress(input, begin, end);
+        if (!success) revert StringsInvalidAddressFormat();
+        return value;
+    }
+
+    // Add more functions for string operations...
+}
+```
+
+## 5. Implement RLP encoding
+
+To support EIP-1559 transactions, create an `RLPEncode.sol` library implementing RLP encoding:
 
 :::note Full code
 You can find the full code on GitHub: [`/src/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/RLPEncode.sol)
@@ -134,7 +205,51 @@ library RLPEncode {
 }
 ```
 
+## 6. Implement custom deployment
+
+Create a helper contract used in the [main deployment script](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Create2.sol). This contract allows deploying the infrastructure for Orders with the `CREATE2` opcode.
+
+:::note Full code
+You can find the full code on GitHub: [`/src/Create2.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Create2.sol)
+:::
+
+```solidity title="/src/Create2.sol"
+contract Create2 {
+
+    function deploy(bytes32 salt, bytes memory creationCode) external payable returns (address addr) {
+        if (creationCode.length == 0) {
+            revert Create2EmptyBytecode();
+        }
+
+        // solhint-disable-next-line
+        assembly {
+            addr := create2(callvalue(), add(creationCode, 0x20), mload(creationCode), salt)
+        }
+
+        if (addr == address(0)) {
+            revert Create2FailedDeployment();
+        }
+    }
+
+    function computeAddress(bytes32 salt, bytes32 creationCodeHash) external view returns (address addr) {
+        address contractAddress = address(this);
+
+        // solhint-disable-next-line
+        assembly {
+            let ptr := mload(0x40)
+
+            mstore(add(ptr, 0x40), creationCodeHash)
+            mstore(add(ptr, 0x20), salt)
+            mstore(ptr, contractAddress)
+            let start := add(ptr, 0x0b)
+            mstore8(start, 0xff)
+            addr := keccak256(start, 85)
+        }
+    }
+}
+```
+
 ## Next steps
 
-- After building the foundation for Agents, you can [create mock precompiles](create-mock-precompiles).
-- Later, when you deploy your Agent, you'll be able to [get data from the registry](../implement-automated-orders/deploy-an-order#get-data-from-the-registry).
+- After building the foundation for your Agent, you can [create mock precompiles](create-mock-precompiles).
+- Later, when you deploy the Agent, you'll be able to [get data from the registry](../implement-automated-orders/deploy-an-order#get-data-from-the-registry).

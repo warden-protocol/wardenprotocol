@@ -8,149 +8,201 @@ sidebar_position: 5
 
 This article will guide you through deploying and managing automated Orders – instances of the [`BasicOrder`](implement-orders) contract.
 
-First, you'll deploy the Warden Agent infrastructure and trigger Order deployment. After this, you'll be able to monitor and manage your Orders.
+### What You'll Deploy
 
-## 1. Create an Order
+1. **Core infrastructure (Registry and Factory)**
+2. **A Basic Order that:**
+   - Monitors ETH/USD price
+   - Executes when price crosses a threshold
+   - Swaps tokens on Uniswap
 
-To create an Order, take the following steps: 
+## Setup
 
-1. Set up the environment file (`.env`):
+### 1. Enviorment Configuration
 
-   ```bash
-   MNEMONIC="your mnemonic phrase here"
-   RPC_URL="http://127.0.0.1:8545"
-   CHAIN_ID="12345"
-   SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
-   FACTORY_OWNER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
-   ```
-   
-2. Compile the contracts:
+Create `.env` with your deployment parameters:
 
-   ```bash
-   forge build
-   ```
+```bash
+# Network Configuration
+RPC_URL="http://127.0.0.1:8545"
+CHAIN_ID="12345"
 
-3. Load the environment and run the [main deployment script](../build-the-infrastructure-for-orders/create-deployment-scripts#1-implement-the-main-deployment-script):
-   
-   ```bash
-   source .env
-   forge script script/Deploy.s.sol:Deploy \
-       --rpc-url $RPC_URL \
-       --broadcast \
-       --chain-id $CHAIN_ID
-   ```
+# Account Configuration
+MNEMONIC="your mnemonic phrase here"
+SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
+FACTORY_OWNER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
+```
 
-   This will deploy the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts.
-   
-4. Run the [script for creating an Order](../build-the-infrastructure-for-orders/create-deployment-scripts#1-implement-the-main-deployment-script):
-   
-   ```bash
-   forge script script/CreateOrder.s.sol:CreateOrder \
-       --rpc-url $RPC_URL \
-       --broadcast \
-       --sig "run(uint256,uint8,(string,string),(uint256,uint256,address),(uint256,address[],address,uint256),uint64,uint64,   uint64,bytes,bytes)" \
-       3324181371 \  # the threshold price
-       0 \ # the LTE condition
-       '("ETH","USD")' \  # the currency pair
-       '(100000000000000,11155111,0x467b...)' \  # tx fields
-       # ... other parameters
-   ```
-   
-   The key parameters to specify include the following:
-   
-   - `thresholdPrice`: The price threshold to trigger the execution of an Order
-   - `priceCondition`: The price condition: 0 for LTE (`<=`), 1 for GTE (`>=`)
-   - `pricePair`: The currency pair
-   - `creatorDefinedTxFields`: The chain and transaction details
-   - `swapData`: Swap parameters for Uniswap
-   - `keyId`: The ID of the Warden key for signing transactions
-   - `spaceNonce`: The nonce for the signing space
-   - `actionTimeoutHeight`: The timeout for execution
-   - `expectedApproveExpression`: Conditions for approval
-   - `expectedRejectExpression`: Conditions for rejection
+### 2. Build Contracts
 
-5. Verify the deployment by getting the Order details:
-   
-   ```bash
-   cast call $ORDER_ADDRESS "orderData()"
-   ```
+```bash
+# Install dependencies
+yarn install
 
-## 2. Monitor and manage Orders
+# Compile contracts
+forge build   
+```
 
-You can monitor and manage Orders using the commands listed below.
+## Deployment Steps
 
-### Monitor the Order status
+### 1. Deployment Infrastructure
 
-- Check if the Order can be executed:
+Deploy the Registry and Factory contracts:
 
-   ```bash
-   cast call $ORDER_ADDRESS "canExecute()" --rpc-url $RPC_URL
-   ```
+```bash
+# Load environment
+source .env
 
-- Check if the Order is executed:
+# Deploy infrastructure
+forge script script/Deploy.s.sol:Deploy \
+    --rpc-url $RPC_URL \
+    --broadcast \
+    --chain-id $CHAIN_ID
+```
 
-   ```
-   cast call $ORDER_ADDRESS "isExecuted()" --rpc-url $RPC_URL
-   ```
+### 2. Create Order
 
-- Retrieve the execution data:
+Deploy a Basic Order with price monitoring:
 
-   ```
-   cast call $ORDER_ADDRESS "executionData()" --rpc-url $RPC_URL
-   ```
+```bash
+# Create order parameters
+THRESHOLD_PRICE="3324181371"  # Target price in oracle decimals
+PRICE_CONDITION="0"           # 0 for LTE, 1 for GTE
+PRICE_PAIR='("ETH","USD")'    # Oracle price pair
 
-### Get data from the registry
+# Transaction parameters
+TX_FIELDS="\
+(100000000000000,\    # Value (in wei)
+11155111,\            # Chain ID
+0x467b...1f,\        # Target contract
+0x7ff3...)`          # Encoded swap data"
 
-- Retrieve the Order creator from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
+# Deploy order
+forge script script/CreateOrder.s.sol:CreateOrder \
+    --rpc-url $RPC_URL \
+    --broadcast \
+    --sig "basic(uint256,uint8,(string,string),(uint256,uint256,address,bytes))" \
+    $THRESHOLD_PRICE \
+    $PRICE_CONDITION \
+    $PRICE_PAIR \
+    $TX_FIELDS
+```
 
-   ```bash
-   cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
-   ```
+## Monitoring & Management
 
-- Retrieve the transaction details from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
+### 1. Check Order Status
 
-   ```bash
-   cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
-   ```
+Monitor your order's state:
 
-### Monitor events
+```bash
+# Check if executable
+cast call $ORDER_ADDRESS "canExecute()"
 
-- Monitor the `Executed()` event emitted by the [`execute()`](implement-orders#4-implement-trade-execution) function of the `BasicOrder` contract:
-   
-   ```bash
-   cast logs $ORDER_ADDRESS "Executed()"
-   ```
+# Check if executed
+cast call $ORDER_ADDRESS "isExecuted()"
 
-- Monitor the `NewTx()` event emitted by the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
-   
-   ```bash
-   cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
-   ```
-   
-### Get data from precompiles
+# Get execution data
+cast call $ORDER_ADDRESS "executionData()"
+```
 
-- Get the current price from the [Slinky precompile](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile):
+### 2. Monitor Events
 
-    ```bash
-    cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
-    ```
+Watch for important events:
 
-- Check the Warden key status from the [Warden precompile](../build-the-infrastructure-for-orders/create-mock-precompiles#12-create-a-warden-precompile):
+```bash
+# Watch for execution
+cast logs $ORDER_ADDRESS "Executed()"
 
-    ```
-    cast call $WARDEN_PRECOMPILE "keyById(uint64,int32[])" $KEY_ID []
-    ```
+# Watch for new transactions
+cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
+```
 
-### Debug tools
+### 3. Query Price Data
 
-- Get the raw transaction data:
+Check current prices:
 
-   ```bash
-   cast call $ORDER_ADDRESS "getTx()"
-   ```
+```bash
+# Get oracle price
+cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
+```
 
-- Check the list of callers:
+## Debugging
 
-   ```
-   cast call $ORDER_ADDRESS "callers()"
-   ```
+### 1. Transaction Details
+
+Get raw transaction data:
+
+```bash
+# Get unsigned transaction
+cast call $ORDER_ADDRESS "getTx()"
+```
+
+### 2. Registry Information
+
+Query the registry:
+
+```bash
+# Get order creator
+cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
+
+# Get transaction details
+cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
+```
+
+## Moving to Advanced Orders
+
+After successfully deploying a Basic Order, you can move to Advanced Orders which add:
+
+### 1. Prediction Integration
+
+```bash
+# Additional parameters for advanced orders
+ORACLE_PAIR='("ETH","USD")'
+PREDICT_PAIR='("ethereum","tether")'
+```
+
+### 2. Complex Conditions
+
+```bash
+# Extended condition types
+PRICE_CONDITION="2"  # 2 for LT, 3 for GT
+```
+
+### 3. Time Windows
+
+```bash
+# Check validity window
+cast call $ORDER_ADDRESS "validUntil()"
+```
+
+## Troubleshooting Guide
+
+Common issues and solutions:
+
+### 1. Order Creation Fails
+
+```bash
+# Check salt usage
+cast call $FACTORY_ADDRESS "usedSalts(bytes32)" $SALT
+
+# Verify registry status
+cast call $REGISTRY_ADDRESS "isRegistered(address)" $ORDER_ADDRESS
+```
+
+### 2. Execution Issues
+
+```bash
+# Check price feeds
+cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
+
+# Verify scheduler permissions
+cast call $ORDER_ADDRESS "scheduler()"
+```
+
+:::tip
+Basic Orders provide a foundation for understanding the deployment process. When you move to Advanced Orders, you'll use the same deployment pattern with additional parameters for predictions and complex conditions.
+:::
+
+## Next Steps
+
+Once you have successfully completed Basic order with `automation` you can proceed to more advanced order - ie `prediction`.

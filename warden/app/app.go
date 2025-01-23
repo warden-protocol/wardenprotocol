@@ -89,6 +89,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred"
 )
 
 const (
@@ -246,6 +247,8 @@ func New(
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
 	prophet.Register("echo", echo.Handler{})
+	prophet.Register("pricepred", pricepred.PricePredictorSolidity{})
+
 	prophetP, err := prophet.New()
 	if err != nil {
 		panic(fmt.Errorf("failed to create prophet: %w", err))

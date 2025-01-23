@@ -211,11 +211,11 @@ function test_execution() public {
 }
 ```
 
-## Extension Points
+## Extension points
 
-The `automated order` contract can be extended with advance features to adopt price prediction using `x/async` model from Warden.
+The `automated order` contract can be extended with advanced features to adopt price prediction using the `x/async` module from Warden.
 
-### 1. Price Conditions
+### 1. Price conditions
 
 ```solidity
 // Current basic conditions
@@ -233,7 +233,7 @@ enum PriceCondition {
 }
 ```
 
-### 2. Price Sources
+### 2. Price sources
 
 ```solidity
 // Current single source
@@ -245,28 +245,28 @@ function _getPrices() internal virtual returns (uint256[] memory) {
 }
 ```
 
-### 3. Execution Window
+### 3. Execution window
 
 ```solidity
 // Can add time-based execution
 uint256 public validUntil;  // For advanced orders
 ```
 
-## Security Considerations
+## Security considerations
 
-### 1. Reentrancy Protection
+### 1. Reentrancy protection
 
 ```solidity
 function execute(...) external nonReentrant { ... }
 ```
 
-### 2. Access Control
+### 2. Access control
 
 ```solidity
 if (msg.sender != scheduler) revert Unauthorized();
 ```
 
-### 3. State Management
+### 3. State management
 
 ```solidity
 if (_executed) revert ExecutedError();

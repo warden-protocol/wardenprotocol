@@ -2,11 +2,9 @@
 sidebar_position: 1
 ---
 
-# Overview
+# Introduction
 
-## Introduction
-
-In the previous sections you learnt all about creating a simple agent using **Warden Agent Kit.** Now this agent can be given on-chain capabilities. An example of that is to create an agent which invokes the `basic order` with `automation` smart contract to perform some on-chain activity. The `advanced order` with `prediction` is for more advance solidity devs to show an example of what can be done using `x/async` and `keychain`.
+In the previous sections you learned all about creating a simple agent using **Warden Agent Kit.** Now this agent can be given on-chain capabilities. An example of that is to create an agent which invokes the `basic order` with `automation` smart contract to perform some on-chain activity. The `advanced order` with `prediction` is for more advance solidity devs to show an example of what can be done using `x/async` and `keychain`.
 
 Please note:  Basic and Advanced orders are just examples of using `x/async` and `keychains` from solidity. Devs can literally write their **own custom business logic.**
 
@@ -19,7 +17,7 @@ Below is a break down of what will you be implementing in this section as an exa
 - Development environment setup
 - Required dependencies
 
-### 1. Common Components & Infrastructure
+## Common components & infrastructure
 
    A. Key Concepts
       - Role of precompiles
@@ -51,7 +49,7 @@ Below is a break down of what will you be implementing in this section as an exa
       - Component integration patterns
       - Testing infrastructure
 
-## Basic Order Implementation
+## Basic Order implementation
 
    A. Key Concepts
       - Price-based execution

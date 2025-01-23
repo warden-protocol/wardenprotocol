@@ -8,7 +8,7 @@ sidebar_position: 5
 
 This article will guide you through deploying and managing automated Orders – instances of the [`BasicOrder`](implement-orders) contract.
 
-### What You'll Deploy
+### What you'll deploy
 
 1. **Core infrastructure (Registry and Factory)**
 2. **A Basic Order that:**
@@ -18,7 +18,7 @@ This article will guide you through deploying and managing automated Orders – 
 
 ## Setup
 
-### 1. Enviorment Configuration
+### 1. Enviorment configuration
 
 Create `.env` with your deployment parameters:
 
@@ -33,7 +33,7 @@ SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 FACTORY_OWNER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 ```
 
-### 2. Build Contracts
+### 2. Build contracts
 
 ```bash
 # Install dependencies
@@ -43,9 +43,9 @@ yarn install
 forge build   
 ```
 
-## Deployment Steps
+## Deployment steps
 
-### 1. Deployment Infrastructure
+### 1. Deployment infrastructure
 
 Deploy the Registry and Factory contracts:
 
@@ -88,9 +88,9 @@ forge script script/CreateOrder.s.sol:CreateOrder \
     $TX_FIELDS
 ```
 
-## Monitoring & Management
+## Monitoring & management
 
-### 1. Check Order Status
+### 1. Check Order status
 
 Monitor your order's state:
 
@@ -105,7 +105,7 @@ cast call $ORDER_ADDRESS "isExecuted()"
 cast call $ORDER_ADDRESS "executionData()"
 ```
 
-### 2. Monitor Events
+### 2. Monitor events
 
 Watch for important events:
 
@@ -117,7 +117,7 @@ cast logs $ORDER_ADDRESS "Executed()"
 cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
 ```
 
-### 3. Query Price Data
+### 3. Query price data
 
 Check current prices:
 
@@ -128,7 +128,7 @@ cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
 
 ## Debugging
 
-### 1. Transaction Details
+### 1. Transaction details
 
 Get raw transaction data:
 
@@ -137,7 +137,7 @@ Get raw transaction data:
 cast call $ORDER_ADDRESS "getTx()"
 ```
 
-### 2. Registry Information
+### 2. Registry information
 
 Query the registry:
 
@@ -153,7 +153,7 @@ cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
 
 After successfully deploying a Basic Order, you can move to Advanced Orders which add:
 
-### 1. Prediction Integration
+### 1. Prediction integration
 
 ```bash
 # Additional parameters for advanced orders
@@ -161,25 +161,25 @@ ORACLE_PAIR='("ETH","USD")'
 PREDICT_PAIR='("ethereum","tether")'
 ```
 
-### 2. Complex Conditions
+### 2. Complex conditions
 
 ```bash
 # Extended condition types
 PRICE_CONDITION="2"  # 2 for LT, 3 for GT
 ```
 
-### 3. Time Windows
+### 3. Time windows
 
 ```bash
 # Check validity window
 cast call $ORDER_ADDRESS "validUntil()"
 ```
 
-## Troubleshooting Guide
+## Troubleshooting guide
 
 Common issues and solutions:
 
-### 1. Order Creation Fails
+### 1. Order creation fails
 
 ```bash
 # Check salt usage
@@ -189,7 +189,7 @@ cast call $FACTORY_ADDRESS "usedSalts(bytes32)" $SALT
 cast call $REGISTRY_ADDRESS "isRegistered(address)" $ORDER_ADDRESS
 ```
 
-### 2. Execution Issues
+### 2. Execution issues
 
 ```bash
 # Check price feeds

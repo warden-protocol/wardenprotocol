@@ -252,5 +252,4 @@ contract Create2 {
 
 ## Next steps
 
-- After building the foundation for your Agent, you can [create mock precompiles](create-mock-precompiles).
-- Later, when you deploy the Agent, you'll be able to [get data from the registry](../implement-automated-orders/deploy-an-order#get-data-from-the-registry).
+After building the foundation for your Agent, you can [create mock precompiles](create-mock-precompiles).

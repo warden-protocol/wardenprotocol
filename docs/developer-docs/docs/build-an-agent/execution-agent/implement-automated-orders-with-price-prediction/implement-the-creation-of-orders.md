@@ -211,4 +211,4 @@ contract AdvancedOrderFactoryTest is Test {
 
 ## Next Steps
 
-After creating the `AdvanceOrderFactory` contract, you can [deploy an Order](/deploy-an-order).
+After creating the `AdvanceOrderFactory` contract, you can [deploy an Order](deploy-an-order).

@@ -182,6 +182,6 @@ cast call $ORDER_ADDRESS "canExecute()"
 ## Next Steps
 
 Congratulations! You have succesfully implemented both Order with Automation and Order with Prediction!
-You can quickly glance through [summary page](/summary.md) to get a quick overview of the project.
+You can quickly glance through [summary page](summary) to get a quick overview of the project.
 
 For any questions, reach us on discord.

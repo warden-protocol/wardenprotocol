@@ -65,17 +65,17 @@ contract AdvancedOrder {
 
 This tutorial will guide you through:
 
-1. [Implementing Advanced Orders](/implement-orders.md)
+1. [Implementing Advanced Orders](implement-orders)
    - Setting up prediction integration
    - Handling multiple price sources
    - Implementing time windows
 
-2. [Creating Advanced Order Factory](/implement-the-creation-of-orders.md)
+2. [Creating Advanced Order Factory](implement-the-creation-of-orders)
    - Enhanced validation logic
    - Prediction setup during deployment
    - Complex initialization
 
-3. [Deploying Advanced Orders](/deploy-an-order.md)
+3. [Deploying Advanced Orders](deploy-an-order)
    - Prediction configuration
    - Multiple price pair setup
    - Monitoring prediction results

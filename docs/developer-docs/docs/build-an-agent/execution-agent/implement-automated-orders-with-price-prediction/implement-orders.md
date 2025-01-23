@@ -217,4 +217,4 @@ contract AdvancedOrderTest is Test {
 
 ## Next Steps
 
-After creating the `AdvanceOrder` contract, you can [implement the creation of Orders](/implement-the-creation-of-orders).
+After creating the `AdvanceOrder` contract, you can [implement the creation of Orders](implement-the-creation-of-orders).

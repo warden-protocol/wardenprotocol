@@ -109,4 +109,4 @@ cast call $ORDER "canExecute()"
 
 ## What next?
 
-Please note `orders` are just examples of what can be built with Agents. Sky is the limit! If you have an interesting idea, make a PR to our examples repo. Alternatively you can reach out to us on - [email](developers@wardenprotocol.org) for any questions / feedback.
+Please note `orders` are just examples of what can be built with Agents. Sky is the limit! If you have an interesting idea, make a PR to our examples repo. Alternatively you can reach out to us on - **developers@wardenprotocol.org** for any questions / feedback.

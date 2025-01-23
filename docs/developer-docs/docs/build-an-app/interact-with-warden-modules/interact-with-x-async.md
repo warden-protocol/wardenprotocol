@@ -41,7 +41,7 @@ contract AsyncExample {
 }   
 ```
 
-After deploying your contract, you can interact with it by calling the `XXX()` function:
+After deploying your contract, you can interact with it by calling the `createFuture()` function:
 
 ```bash
 # Example using cast (foundry)
@@ -98,7 +98,7 @@ contract AsyncExample {
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `XXX()` function:
+After deploying your contract, you can interact with it by calling the `queryFutures()` function:
 
 ```bash
 # Example using cast (foundry)
@@ -148,7 +148,7 @@ contract AsyncExample {
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `XXX()` function:
+After deploying your contract, you can interact with it by calling the `queryPendingFutures()` function:
 
 ```bash
 # Example using cast (foundry)
@@ -180,16 +180,16 @@ contract AsyncExample {
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `XXX()` function:
+After deploying your contract, you can interact with it by calling the `queryFutureById()` function:
 
 ```bash
 # Example using cast (foundry)
 cast call $CONTRACT_ADDRESS "queryFutureById(uint64)" 1
 ```
 
-## Complete Example Contract
+## Example contract
 
-Here's a complete example contract that implements all the functionality discussed above:
+Here is an example contract calling all the available `x/async` functions – it implements a complete interface for interacting with the module. You can use the contract code as a starting point for your own implementations or extend it with additional functionality.
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -284,5 +284,3 @@ contract AsyncExample {
     }
 }
 ```
-
-This contract provides a complete interface to interact with the x/async module through the precompile. You can use it as a starting point for your own implementations or extend it with additional functionality as needed.

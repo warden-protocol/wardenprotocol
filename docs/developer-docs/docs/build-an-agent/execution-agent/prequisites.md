@@ -1,5 +1,5 @@
-﻿---
-sidebar_position: 1
+---
+sidebar_position: 2
 ---
 
 # Prerequisites
@@ -137,4 +137,4 @@ After ensuring you have:
 - Familiarity with precompiles
 - Basic Solidity knowledge
 
-After meeting these prerequisites, you can start [creating helpers and utils](create-helpers-and-utils).
+You can proceed to implementing common components that form the foundation of both Basic and Advanced orders.

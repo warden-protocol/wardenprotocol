@@ -20,25 +20,40 @@ Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprot
 You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
 :::
 
+### Architecture
+
+```solidity
+contract BasicOrder is AbstractOrder, IExecution {
+    // Core components
+    ISlinky private immutable SLINKY_PRECOMPILE;
+    Registry private immutable REGISTRY;
+    
+    // Order configuration
+    Types.BasicOrderData public orderData;     // Price conditions
+    Types.CommonExecutionData public commonExecutionData;  // Transaction details
+    
+    // State tracking
+    bool private _executed;
+    bytes private _unsignedTx;
+}
+```
+
 ## 1. Create core components
 
 First, define the state variables and imports:
 
 ```solidity title="/src/BasicOrder.sol"
-contract BasicOrder is IExecution, ReentrancyGuard {
-    // A constant for the Uniswap interface
-    string public constant SWAP_EXACT_ETH_FOR_TOKENS = 
-        "swapExactETHForTokens(uint256,address[],address,uint256)";
-
-    // External service connections
-    IWarden private immutable WARDEN_PRECOMPILE;
+contract BasicOrder is AbstractOrder, IExecution {
+    // State variables - designed for future extension
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;
-
-    // State tracking
-    Caller[] private _callers;
+    
+    // Extensible data structures
+    Types.BasicOrderData public orderData;
+    Types.CommonExecutionData public commonExecutionData;
+    
+    // Basic state tracking - can be enhanced in advanced versions
     bool private _executed;
-    address private _keyAddress;
     bytes private _unsignedTx;
 }
 ```
@@ -53,21 +68,27 @@ Now create a `constructor` with validations. As shown in the code below, your co
 
 ```solidity title="/src/BasicOrder.sol"
 constructor(
-    Types.OrderData memory _orderData,
+    Types.BasicOrderData memory _orderData,
+    Types.CommonExecutionData memory _executionData,
     CommonTypes.Coin[] memory maxKeychainFees,
     address scheduler,
     address registry
+) AbstractOrder(
+    _executionData.signRequestData,
+    _executionData.creatorDefinedTxFields,
+    scheduler, 
+    registry
 ) {
-    // Input validation
-    if (scheduler == address(0)) revert InvalidScheduler();
-    if (registry == address(0)) revert InvalidRegistry();
-    if (_orderData.swapData.amountIn == 0) revert InvalidSwapDataAmountIn();
-    if (_orderData.swapData.to == address(0)) revert InvalidSwapDataTo();
+    // Validation
+    if (_orderData.thresholdPrice == 0) revert InvalidThresholdPrice();
     
-    // Initialize services and the state
-    WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
+    // Initialize price feed - single source in basic version
     SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
-    _callers.push(Caller.Scheduler);
+    REGISTRY = Registry(registry);
+    
+    // Store order data - structure allows for extension
+    orderData = _orderData;
+    commonExecutionData = _executionData;
 }
 ```
 
@@ -79,16 +100,29 @@ In the `canExecute()` function, implement the logic for monitoring prices. This 
   (see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures))
 
 ```solidity title="/src/BasicOrder.sol"
-function canExecute() public view returns (bool value) {
+function canExecute() public view virtual returns (bool) {
+    // Get current price - single source in basic version
     GetPriceResponse memory priceResponse = 
-        SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
-    Types.PriceCondition condition = orderData.priceCondition;
-    if (condition == Types.PriceCondition.GTE) {
-        value = priceResponse.price.price >= orderData.thresholdPrice;
-    } else if (condition == Types.PriceCondition.LTE) {
-        value = priceResponse.price.price <= orderData.thresholdPrice;
+        SLINKY_PRECOMPILE.getPrice(
+            orderData.pricePair.base, 
+            orderData.pricePair.quote
+        );
+    
+    // Check price condition - simplified in basic version
+    return _checkPriceCondition(priceResponse.price.price);
+}
+
+// Virtual function for price condition checking - can be overridden
+function _checkPriceCondition(uint256 currentPrice) 
+    internal 
+    view 
+    virtual 
+    returns (bool) 
+{
+    if (orderData.priceCondition == Types.PriceCondition.GTE) {
+        return currentPrice >= orderData.thresholdPrice;
     } else {
-        revert InvalidPriceCondition();
+        return currentPrice <= orderData.thresholdPrice;
     }
 }
 ```
@@ -114,30 +148,41 @@ function execute(
     uint256 maxFeePerGas
 ) external nonReentrant returns (bool, bytes32) {
     // Security checks
-    if (msg.sender != _scheduler) revert Unauthorized();
-    if (isExecuted()) revert ExecutedError();
+    if (msg.sender != scheduler) revert Unauthorized();
+    if (_executed) revert ExecutedError();
     if (!canExecute()) revert ConditionNotMet();
 
-    // Build and encode a transaction
-    bytes memory unsignedTx = _buildTransaction(
-        nonce, gas, maxPriorityFeePerGas, maxFeePerGas
+    // Build transaction
+    (bytes memory unsignedTx, bytes32 txHash) = encodeUnsignedEIP1559(
+        nonce,
+        gas,
+        maxPriorityFeePerGas,
+        maxFeePerGas,
+        new bytes[](0),  // Empty access list in basic version
+        commonExecutionData.creatorDefinedTxFields
     );
-    
-    // Request a signature and register the transaction
-    _executed = _requestSignature(unsignedTx);
+
+    // Request signature and track execution
+    _executed = createSignRequest(
+        commonExecutionData.signRequestData,
+        abi.encodePacked(txHash),
+        maxKeychainFees
+    );
+
     if (_executed) {
+        _unsignedTx = unsignedTx;
         emit Executed();
-        REGISTRY.addTransaction(keccak256(unsignedTx));
+        REGISTRY.addTransaction(txHash);
     }
 
-    return (_executed, keccak256(unsignedTx));
+    return (_executed, txHash);
 }
 ```
 
 ## 5. Test the contract
 
 To test price conditions, use the following code:
-   
+
 ```solidity
 function test_priceConditions() public {
     // Test the GTE condition
@@ -166,22 +211,66 @@ function test_execution() public {
 }
 ```
 
-## Key security features
+## Extension Points
 
-Key security features of the `BasicOrder` contract include the following:
-- **ReentrancyGuard protection**
-   - Preventing reentrancy attacks during execution
-   - Guarding critical state changes
-- **Input validation**
-   ```solidity
-   // An example of comprehensive validation
-   if (_orderData.thresholdPrice == 0) revert InvalidThresholdPrice();
-   if (_orderData.creatorDefinedTxFields.to == address(0)) revert InvalidTxTo();
-   ```
-- **Transaction safety**   
-   - The support of EIP-1559 transactions
-   - Secure RLP encoding
-   - Transaction hash verification
+The `automated order` contract can be extended with advance features to adopt price prediction using `x/async` model from Warden.
+
+### 1. Price Conditions
+
+```solidity
+// Current basic conditions
+enum PriceCondition {
+    LTE,
+    GTE
+}
+
+// Can be extended to:
+enum PriceCondition {
+    LTE,
+    GTE,
+    LT,    // For advanced orders
+    GT     // For advanced orders
+}
+```
+
+### 2. Price Sources
+
+```solidity
+// Current single source
+GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(...);
+
+// Can be extended to multiple sources
+function _getPrices() internal virtual returns (uint256[] memory) {
+    // Advanced implementation
+}
+```
+
+### 3. Execution Window
+
+```solidity
+// Can add time-based execution
+uint256 public validUntil;  // For advanced orders
+```
+
+## Security Considerations
+
+### 1. Reentrancy Protection
+
+```solidity
+function execute(...) external nonReentrant { ... }
+```
+
+### 2. Access Control
+
+```solidity
+if (msg.sender != scheduler) revert Unauthorized();
+```
+
+### 3. State Management
+
+```solidity
+if (_executed) revert ExecutedError();
+```
 
 ## Next steps
 

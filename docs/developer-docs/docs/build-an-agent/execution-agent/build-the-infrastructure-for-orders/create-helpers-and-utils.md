@@ -49,6 +49,7 @@ library Types {
 ```
 
 ## 2. Create an abstract Order
+
 Now, add an abstract contract with functions required to create Orders of both types.
 
 :::note Full code

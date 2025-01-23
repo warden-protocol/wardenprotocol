@@ -9,6 +9,7 @@ sidebar_position: 3
 **Mock precompiles** are essential for end-to-end testing of the Basic Agent. This article explains how to build and test two mock precompiles: **Slinky** and **Warden**.
 
 :::note Directories
+
 - Store mock precompiles in the [`/mocks`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
 - You can test the precompiles in the [`/test`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/test) directory.
 :::
@@ -114,6 +115,7 @@ contract MockWardenPrecompile {
     }
 }
 ```
+
 ## 2. Test precompiles
 
 ### 2.1. Create a helper contract
@@ -156,7 +158,7 @@ contract PrecompileTestHelper {
 ### 2.3. Create test scenarios
 
 1. To create a scenario for testing the price feed, use code below:
-   
+
    ```solidity
    contract SlinkyTest is PrecompileTestHelper {
        function testPriceMovement() public {
@@ -185,10 +187,9 @@ contract PrecompileTestHelper {
        }
    }
    ```
-   
+
 2. To test transaction signing, use the following:
-   
-   
+
    ```solidity
    contract WardenTest is PrecompileTestHelper {
        function testSigningFlow() public {

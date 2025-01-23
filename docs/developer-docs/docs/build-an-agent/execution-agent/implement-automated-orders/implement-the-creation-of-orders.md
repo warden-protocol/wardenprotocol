@@ -6,11 +6,11 @@ sidebar_position: 4
 
 ## Overview
 
-While `BasicOrder` handles trading logic, `BasicOrderFactory` handles the deployment and registration of orders. This factory pattern provides:
+While `BasicOrder` handles the trading logic, `BasicOrderFactory` handles the deployment and registration of orders. This factory pattern provides:
 
 - Deterministic address computation
 - Front-running protection
-- Order tracking in Registry
+- Order tracking in the registry
 - Salt-based deployment security
 
 :::note Directory
@@ -21,15 +21,13 @@ Store `BasicOrderFactory` in the [`/src`](https://github.com/warden-protocol/war
 You can find the full code on GitHub: [`/src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
 :::
 
-## Implementation
+## 1. Create the `BasicOrderFactory` contract
 
-### 1. Core Factory Contract
-
-Implement the creation of Orders in a file `BasicOrderFactory.sol`:
+To start implementing the deployment of orders, create a file `BasicOrderFactory.sol`:
 
 ```solidity title="/src/BasicOrderFactory.sol"
 contract BasicOrderFactory is ReentrancyGuard {
-    // Registry for order tracking
+    // The registry for order tracking
     Registry public immutable REGISTRY;
     
     // Track used deployment salts
@@ -43,11 +41,11 @@ contract BasicOrderFactory is ReentrancyGuard {
 }
 ```
 
-### 2. Order Creation Logic
+## 2. Implement the Order creation logic
 
-Core function for deploying new orders:
+In the same contract, implement the core function for deploying new Orders:
 
-```solidity
+```solidity title="/src/BasicOrderFactory.sol"
 function createBasicOrder(
     Types.BasicOrderData calldata orderData,
     Types.CommonExecutionData calldata executionData,
@@ -65,7 +63,7 @@ function createBasicOrder(
         revert SaltAlreadyUsed();
     }
 
-    // Create deployment bytecode
+    // Create the deployment bytecode
     bytes memory bytecode = abi.encodePacked(
         type(BasicOrder).creationCode,
         abi.encode(
@@ -80,7 +78,7 @@ function createBasicOrder(
     // Deploy with CREATE3
     orderAddress = Create3.create3(guardedSalt, bytecode);
     
-    // Verify deployment
+    // Verify the deployment
     address expectedAddress = Create3.addressOf(guardedSalt);
     if (orderAddress == address(0) || 
         orderAddress != expectedAddress) {
@@ -95,11 +93,11 @@ function createBasicOrder(
 }
 ```
 
-### 3. Address Computation
+## 3. Add address computation
 
-Allow users to preview order addresses:
+Finally, allow users to preview the Order addresses:
 
-```solidity
+```solidity title="/src/BasicOrderFactory.sol"
 function computeOrderAddress(
     address origin, 
     bytes32 salt
@@ -111,7 +109,7 @@ function computeOrderAddress(
 }
 ```
 
-### 4. Testing Structure
+## 5. Testing structure
 
 ```solidity
 contract BasicOrderFactoryTest is Test {
@@ -145,11 +143,11 @@ contract BasicOrderFactoryTest is Test {
 }
 ```
 
-## Extension Points
+## Extension points
 
 When moving to Advanced Orders, the factory pattern extends in these ways:
 
-### 1. Complex validation
+### Complex validation
 
 ```solidity
 function _validateAdvancedOrder(
@@ -157,7 +155,7 @@ function _validateAdvancedOrder(
 ) internal pure returns (bool);
 ```
 
-### 2. Prediction Setup
+### Prediction setup
 
 ```solidity
 function _setupPrediction(
@@ -167,7 +165,7 @@ function _setupPrediction(
 ```
 
 :::tip
-The factory's CREATE3 deployment ensures order addresses can be known in advance. This becomes crucial for advanced order types that may need to reference each other.
+The factory's CREATE3 deployment ensures Order addresses can be known in advance. This becomes crucial for advanced Orders that may need to reference each other.
 :::
 
 ## Next steps

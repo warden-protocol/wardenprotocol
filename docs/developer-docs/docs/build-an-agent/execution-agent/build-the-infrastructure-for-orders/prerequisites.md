@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Prerequisites
 
-## Development Environment
+## Development environment
 
 1. [Install Foundry](https://book.getfoundry.sh/getting-started/installation) by running the following command:
 
@@ -45,15 +45,17 @@ sidebar_position: 1
    wrap_comments = true
    ```
 
-## Warden Knowledge Base
+## Warden knowledge base
 
-1. **Warden Agent Kit Understanding**
-   - Basic agent creation and management
-   - Understanding of agent capabilities
-   - Familiarity with agent-precompile interaction
+1. **Warden Agent Kit understanding**
 
-2. **Precompile Familiarity**
-   - Warden Precompile (`x/warden`)
+   - Basic Agent creation and management
+   - Understanding of Agent capabilities
+   - Familiarity with Agent-precompile interaction
+
+2. **Precompile familiarity**
+
+   - Warden precompile (`x/warden`)
      - Key management system
      - Sign request handling
 
@@ -64,7 +66,7 @@ sidebar_position: 1
      }
      ```
 
-   - Slinky Precompile (`x/slinky`)
+   - Slinky precompile (`x/slinky`)
      - Price feed system
      - Data retrieval methods
 
@@ -75,7 +77,7 @@ sidebar_position: 1
      }
      ```
 
-   - Async Precompile (`x/async`)
+   - Async precompile (`x/async`)
      - Future-based operations
      - Price prediction system
 
@@ -86,15 +88,16 @@ sidebar_position: 1
      }
      ```
 
-## Required Solidity Knowledge
+## Required Solidity knowledge
 
-1. **Core Concepts**
+1. **Core concepts**
    - Contract inheritance
    - Interface implementation
    - Events and error handling
    - Factory pattern understanding
 
-2. **Smart Contract Patterns**
+2. **Smart contract patterns**
+
    - Understanding of:
 
      ```solidity
@@ -111,8 +114,9 @@ sidebar_position: 1
      }
      ```
 
-## Project Structure
+## Project structure
 
+```
 orders/
 ├── src/
 │   ├── AbstractOrder.sol    # Base contract
@@ -122,13 +126,14 @@ orders/
 │   └── Registry.sol        # Transaction registry
 ├── test/
 └── scripts/
+```
 
-## GitHub Repository
+## GitHub repository
 
 For complete implementation details, refer to:
 [Warden Protocol Orders Repository](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity)
 
-## Next Steps
+## Next steps
 
 After ensuring you have:
 

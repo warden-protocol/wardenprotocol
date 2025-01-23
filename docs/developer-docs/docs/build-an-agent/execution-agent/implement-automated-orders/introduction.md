@@ -15,7 +15,7 @@ This section explains how to implement **Automated Orders** – smart contracts 
 - Direct Uniswap interactions
 - Basic execution security
 
-## Learning Path
+## Learning path
 
 This implementation is part of a progressive learning path:
 

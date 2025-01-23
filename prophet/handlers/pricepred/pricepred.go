@@ -25,23 +25,30 @@ var client = http.Client{
 // wrapping input and output in Solidity ABI types.
 type PricePredictorSolidity struct{}
 
+type InputData struct {
+	Date              string
+	Tokens            []string
+	FalsePositiveRate [2]uint64
+}
+
 func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]byte, error) {
-	tokens, err := decodeInput(input)
+	inputData, err := decodeInput(input)
 	if err != nil {
 		return nil, err
 	}
 
 	req := Request{
 		SolverInput: RequestSolverInput{
-			Tokens:        tokens,
-			TargetDate:    "2022-01-01",
+			Tokens:        inputData.Tokens,
+			TargetDate:    inputData.Date,
 			AdversaryMode: false,
 		},
-		FalsePositiveRate: 0.01,
+		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
 	}
 
 	res, err := Predict(ctx, req)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -53,26 +60,34 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	return encodedRes, nil
 }
 
-func decodeInput(input []byte) ([]string, error) {
-	typ, err := abi.NewType("string[]", "string[]", nil)
+func decodeInput(input []byte) (InputData, error) {
+	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
+		{Name: "date", Type: "string"},
+		{Name: "tokens", Type: "string[]"},
+		{Name: "falsePositiveRate", Type: "uint64[2]"},
+	})
 	if err != nil {
-		return nil, err
+		return InputData{}, err
 	}
+
 	args := abi.Arguments{
 		{Type: typ},
 	}
 
 	unpackArgs, err := args.Unpack(input)
 	if err != nil {
-		return nil, err
+		return InputData{}, err
 	}
 
-	tokens, ok := unpackArgs[0].([]string)
-	if !ok {
-		return nil, fmt.Errorf("failed to unpack input")
+	var inputData struct {
+		Data InputData
+	}
+	err = args.Copy(&inputData, unpackArgs)
+	if err != nil {
+		return InputData{}, err
 	}
 
-	return tokens, nil
+	return inputData.Data, nil
 }
 
 func encodeOutput(req Request, res Response) ([]byte, error) {
@@ -128,7 +143,7 @@ type Response struct {
 }
 
 func Predict(ctx context.Context, req Request) (Response, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 100*time.Second)
 	defer cancel()
 
 	reqBody, err := json.Marshal(req)

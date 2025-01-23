@@ -15,15 +15,21 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
-var URL = "https://prediction.devnet.wardenprotocol.org/task/inference/solve"
-
 var client = http.Client{
 	Timeout: 3 * time.Second,
 }
 
 // PricePredictorSolidity is a handler for the price prediction AI model,
 // wrapping input and output in Solidity ABI types.
-type PricePredictorSolidity struct{}
+type PricePredictorSolidity struct {
+	URL string
+}
+
+func NewPricePredictorSolidity(url string) PricePredictorSolidity {
+	return PricePredictorSolidity{
+		URL: url,
+	}
+}
 
 type InputData struct {
 	Date              *big.Int
@@ -49,7 +55,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
 	}
 
-	res, err := Predict(ctx, req)
+	res, err := Predict(ctx, req, s.URL)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -145,7 +151,7 @@ type Response struct {
 	} `json:"solverReceipt"`
 }
 
-func Predict(ctx context.Context, req Request) (Response, error) {
+func Predict(ctx context.Context, req Request, URL string) (Response, error) {
 	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 

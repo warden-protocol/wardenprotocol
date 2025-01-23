@@ -212,6 +212,14 @@ func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
 	return evmosencodingcodec.RegisterInterfaces
 }
 
+func registerProphetHanlders(appOpts servertypes.AppOptions) {
+	prophet.Register("echo", echo.Handler{})
+
+	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
+		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(cast.ToString(appOpts.Get("pricepred.url"))))
+	}
+}
+
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
@@ -246,8 +254,7 @@ func New(
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
-	prophet.Register("echo", echo.Handler{})
-	prophet.Register("pricepred", pricepred.PricePredictorSolidity{})
+	registerProphetHanlders(appOpts)
 
 	prophetP, err := prophet.New()
 	if err != nil {

@@ -88,7 +88,7 @@ func TestPredict(t *testing.T) {
 			AdversaryMode: false,
 		},
 		FalsePositiveRate: 0.01,
-	})
+	}, "https://prediction.devnet.wardenprotocol.org/task/inference/solve")
 	require.NoError(t, err)
 	require.Len(t, res.SolverOutput, 3)
 

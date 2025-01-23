@@ -146,7 +146,7 @@ type Response struct {
 }
 
 func Predict(ctx context.Context, req Request) (Response, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 100*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
 	reqBody, err := json.Marshal(req)

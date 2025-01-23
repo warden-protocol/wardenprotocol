@@ -26,7 +26,7 @@ var client = http.Client{
 type PricePredictorSolidity struct{}
 
 type InputData struct {
-	Date              string
+	Date              *big.Int
 	Tokens            []string
 	FalsePositiveRate [2]uint64
 }
@@ -37,10 +37,13 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 		return nil, err
 	}
 
+	tm := time.Unix(inputData.Date.Int64(), 0)
+
+	dateStr := tm.Format("2006-01-02")
 	req := Request{
 		SolverInput: RequestSolverInput{
 			Tokens:        inputData.Tokens,
-			TargetDate:    inputData.Date,
+			TargetDate:    dateStr,
 			AdversaryMode: false,
 		},
 		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
@@ -62,7 +65,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 
 func decodeInput(input []byte) (InputData, error) {
 	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
-		{Name: "date", Type: "string"},
+		{Name: "date", Type: "uint256"},
 		{Name: "tokens", Type: "string[]"},
 		{Name: "falsePositiveRate", Type: "uint64[2]"},
 	})

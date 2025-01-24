@@ -183,7 +183,9 @@ Now you can interact with the contract.
 Now you can dive deeper and expand your contract with other functions from Warden precompiles:
 
 - To find code samples for each function, see the following guides:
+
   - [Interact with `x/warden`](/category/interact-with-xwarden)
+  - [Interact with x/act](/category/interact-with-xact)
   - [Interact with `x/async`](interact-with-x-async)
-  - *Interact with `x/act`: coming soon*
+
 - For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.

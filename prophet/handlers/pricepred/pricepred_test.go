@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/hex"
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -13,12 +14,16 @@ func TestDecodeInput(t *testing.T) {
 	cases := []struct {
 		name     string
 		input    string
-		expected []string
+		expected InputData
 	}{
 		{
-			name:     "single element list",
-			input:    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANFVEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-			expected: []string{"ETH"},
+			name:  "single element list",
+			input: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ5NS7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0VUSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+			expected: InputData{
+				Date:              big.NewInt(1737708268),
+				Tokens:            []string{"ETH"},
+				FalsePositiveRate: [2]uint64{1, 100},
+			},
 		},
 	}
 
@@ -26,9 +31,9 @@ func TestDecodeInput(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			bz, err := base64.StdEncoding.DecodeString(c.input)
 			require.NoError(t, err)
-			actual, err := decodeInput(bz)
+			decodedInput, err := decodeInput(bz)
 			require.NoError(t, err)
-			require.Equal(t, c.expected, actual)
+			require.Equal(t, c.expected, decodedInput)
 		})
 	}
 }
@@ -83,7 +88,7 @@ func TestPredict(t *testing.T) {
 			AdversaryMode: false,
 		},
 		FalsePositiveRate: 0.01,
-	})
+	}, "https://prediction.devnet.wardenprotocol.org/task/inference/solve")
 	require.NoError(t, err)
 	require.Len(t, res.SolverOutput, 3)
 

@@ -16,6 +16,8 @@ In this article, you'll find a full list of available methods and events. You ca
 - [Key requests](/learn/glossary#key-request)
 - [Signature requests](/learn/glossary#signature-request)
 
+To learn how to use this precompile, refer to [Interact with `x/warden`](/category/interact-with-xwarden).
+
 ## Precompile address
 
 To reference the `IWarden` precompile in your code, use the following precompile address:
@@ -497,7 +499,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 
 ### `Space`
 
-- **Description**: A struct representing a Space.
+- **Description**: A struct representing a Space, returned when you query [Spaces](#spaces).
 
 ```
 struct Space {
@@ -541,12 +543,23 @@ struct AddressesResponse {
 
 ### `KeyResponse`
 
-- **Description**: A struct representing a key response. Includes the [`Key`](#key) and [`AddressesResponse`](#addressesresponse) structs.
+- **Description**: A response returned when you query [keys](#keys). Includes the [`Key`](#key) and [`AddressesResponse`](#addressesresponse) structs.
 
 ```
 struct KeyResponse {
     Key key;
     AddressesResponse[] addresses;
+}
+```
+
+### `KeychainFees`
+
+- **Description**: A struct representing Keychain fees.
+
+```
+struct KeychainFees {
+    Types.Coin[] keyReq;
+    Types.Coin[] sigReq;
 }
 ```
 
@@ -568,20 +581,9 @@ struct Keychain {
 }
 ```
 
-### `KeychainFees`
-
-- **Description**: A struct representing Keychain fees.
-
-```
-struct KeychainFees {
-    Types.Coin[] keyReq;
-    Types.Coin[] sigReq;
-}
-```
-
 ### `KeyRequest`
 
-- **Description**: A struct representing a key request. Includes the [`KeyType`](#keytype) and [`KeyRequestStatus`](#keyrequeststatus) enums.
+- **Description**: A struct representing a key request, returned when you [query a key request by ID](#query-a-key-request-by-id). Includes the [`KeyType`](#keytype) and [`KeyRequestStatus`](#keyrequeststatus) enums.
 
 ```
 struct KeyRequest {
@@ -600,7 +602,7 @@ struct KeyRequest {
 
 ### `SignRequest`
 
-- **Description**: A struct representing a signature request. Includes the [`SignRequestStatus`](#signrequeststatus) and [`BroadcastType`](#broadcasttype) enums.
+- **Description**: A struct representing a signature request, returned when you [query a signature request by ID](#query-a-signature-request-by-id). Includes the [`SignRequestStatus`](#signrequeststatus) and [`BroadcastType`](#broadcasttype) enums.
 
 ```
 struct SignRequest {

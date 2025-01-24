@@ -82,6 +82,14 @@ A full node is a server running a software (binary) that maintains a complete up
 
 ---
 
+## Future
+
+A Future is an off-chain user-defined computational task that is executed asynchronously. The result is stored on-chain.
+
+A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It doesn't slow the blockchain down thanks to asynchronous execution.
+
+---
+
 ## Governance
 
 The Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
@@ -209,6 +217,17 @@ Learn more: [Oracle services](oracle-services)
 
 ---
 
+## Prophet
+
+A Prophet is a sidecar process running on [validator](#validator) nodes, which has two responsibilities:
+
+- Fetching [Future](#future) requests and executing handlers associated with Futures
+- Fetching requests satisfied by other validators to vote on the results
+
+Prophets run on validator nodes separately from the [wardend process](#warden-protocol-node), without blocking the consensus. Running a Prophet is optional for a validator.
+
+---
+
 ## Signature request
 
 A signature request is a request asking a [Keychain](#keychain) to sign a transaction with a private [key](#key). Keychain operators can charge [signature request fees](#signature-request-fee) for doing it. This is how such requests are processed:
@@ -253,7 +272,7 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol node](#warden-protocol-node) and validating blocks and transactions. 
 
-Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance).
+Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance) and hadling [Futures](#future).
 
 ---
 

@@ -38,7 +38,7 @@ func initAppConfig() (string, interface{}) {
 		Rosetta evmservercfg.RosettaConfig `mapstructure:"rosetta"`
 
 		// Prophet handlers
-		PricePredict pricepredconfig.Config `mapstructure:"pricepredict"`
+		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -93,13 +93,13 @@ func initAppConfig() (string, interface{}) {
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
 
 	customAppConfig := CustomAppConfig{
-		Config:       *srvCfg,
-		Oracle:       oracleConfig,
-		EVM:          *evmConfig,
-		JSONRPC:      jsonRpcConfig,
-		TLS:          *tlsConfig,
-		Rosetta:      *evmservercfg.DefaultRosettaConfig(),
-		PricePredict: *pricePredictionConfig,
+		Config:    *srvCfg,
+		Oracle:    oracleConfig,
+		EVM:       *evmConfig,
+		JSONRPC:   jsonRpcConfig,
+		TLS:       *tlsConfig,
+		Rosetta:   *evmservercfg.DefaultRosettaConfig(),
+		PricePred: *pricePredictionConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +

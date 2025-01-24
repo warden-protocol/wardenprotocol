@@ -18,13 +18,13 @@ func DefaultConfig() *Config {
 
 const DefaultEVMConfigTemplate = `
 ###############################################################################
-###                      Price preditcion configuration                     ###
+###                      Price prediction configuration                     ###
 ###############################################################################
-[pricepredict]
+[pricepred]
 
 # Is price prediction enabled
-enabled = "{{ .PricePredict.Enabled }}"
+enabled = "{{ .PricePred.Enabled }}"
 
 # URL used for price prediction handler
-url = "{{ .PricePredict.URL }}"
+url = "{{ .PricePred.URL }}"
 `

@@ -91,7 +91,7 @@ Future execution includes the following steps, as shown in the diagram below:
 2. Node 1 asynchronously executes the Future.
 3. When Node 1 is elected as the proposer for a block (H+N), it inserts the result (`6`) to be recorded.
 4. Node 2 notices the new result for the Future and invokes its handler (`MathHandler`) to verify the result.
-5. The verification is be broadcasted as vote extensions and eventually recorded at height H+N+M+1 since [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) are committed to the state only in the next block.
+5. The verification is broadcasted as vote extensions and eventually recorded at height H+N+M+1 since [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) are committed to the state only in the next block.
 
 
 ```mermaid

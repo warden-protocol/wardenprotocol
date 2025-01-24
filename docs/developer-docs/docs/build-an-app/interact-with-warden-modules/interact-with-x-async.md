@@ -13,7 +13,7 @@ This article explains how to use `x/async` to manage [Futures](/learn/glossary#f
 To understand how to set up and deploy your project, see [Get started](get-started.md).
 
 :::tip
-- For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../precompiles/x-async).
+- For an overview of `x/async` functions, refer to [Precompiles: x/async](../precompiles/x-async).
 - The precompile address is `0x0000000000000000000000000000000000000903`.
 :::
 

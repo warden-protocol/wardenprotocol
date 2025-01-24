@@ -15,18 +15,35 @@ library Types {
 
     enum PriceCondition {
         LTE,
-        GTE
+        GTE,
+        LT,
+        GT
     }
 
-    // Data for execution
-    struct OrderData {
+    // Data for basic order creation
+    struct BasicOrderData {
         uint256 thresholdPrice;
         PriceCondition priceCondition;
         PricePair pricePair;
+    }
+
+    // Data for advanced order creation
+    struct AdvancedOrderData {
+        // Which pair use to get price for oracle
+        PricePair oraclePricePair;
+        // Which pair use to get price for prediction handler
+        PricePair predictPricePair;
+        // Price condition for execution: should be executing if current price meets condition to prediced price
+        PriceCondition priceCondition;
+    }
+
+    // Data for execution
+    struct CommonExecutionData {
         CreatorDefinedTxFields creatorDefinedTxFields;
         SignRequestData signRequestData;
     }
 
+    // Price pair for oracle/prediction requests
     struct PricePair {
         string base;
         string quote;

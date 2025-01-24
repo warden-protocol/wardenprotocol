@@ -6,7 +6,17 @@ sidebar_position: 1
 
 ## XXX
 
-Warden allows you to build your own on-chain **Warden Agents** with custom capabilities. The most important feature of Warden Agents is the ability to deploy smart contracts utilizing outputs of AI models.
+After you create a **Warden Agent** with the [Warden Agent Kit](/category/warden-agent-kit), you can give it on-chain capabilities.
+
+This section explains how to enable on-chain capabilities for a **Warden Agent** created with the [Warden Agent Kit](/category/warden-agent-kit).
+
+The guides you'll find here cover an example we implemented for demonstration purposes. It's a Warden Agent that automatically executes **Orders** – smart contracts performing on-chain actions.
+
+
+In the previous sections you learned all about creating a simple agent using **Warden Agent Kit.** Now this agent can be given on-chain capabilities. An example of that is to create an agent which invokes the `basic order` with `automation` smart contract to perform some on-chain activity. The `advanced order` with `prediction` is for more advance solidity devs to show an example of what can be done using `x/async` and `keychain`.
+
+Warden allows you to build your own on-chain **Warden Agents** with custom capabilities.
+The most important feature of Warden Agents is the ability to deploy smart contracts utilizing outputs of AI models.
 
 This section covers an example we implemented for demonstration purposes. It's a Warden Agent that automatically executes **Orders** – smart contracts performing on-chain actions.
 
@@ -17,16 +27,20 @@ You'll learn how to implement two types of Orders:
 - **Automated Orders with price prediction**  
   These Orders use the `x/async` module to make AI-driven price predictions and perform token swaps based on them.
 
+:::note Full code
+Please note that the articles in this section typically contain only fragments of code.  
+You can find the full code of the example Warden Agent on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
+:::
+
+:::tip
+Please note:  Basic and Advanced orders are just examples of using `x/async` and `keychains` from solidity. Devs can literally write their **own custom business logic.**
+:::
+
 =========
 
 In the previous sections you learned all about creating a simple agent using **Warden Agent Kit.** Now this agent can be given on-chain capabilities. An example of that is to create an agent which invokes the `basic order` with `automation` smart contract to perform some on-chain activity. The `advanced order` with `prediction` is for more advance solidity devs to show an example of what can be done using `x/async` and `keychain`.
 
 Please note:  Basic and Advanced orders are just examples of using `x/async` and `keychains` from solidity. Devs can literally write their **own custom business logic.**
-
-:::note Full code
-Please note that the articles in this section typically contain only fragments of code.  
-You can find the full code of the example Warden Agent on [GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
-:::
 
 ## Prerequisites
 

@@ -35,10 +35,14 @@ contract Create2Test is Test {
 
         vm.startPrank(address(0x1));
         bytes32 salt = "12345";
-        bytes memory creationCode =
-            abi.encodePacked(type(OrderFactory).creationCode, abi.encode(address(0x2), address(0x3), address(0x4)));
-        bytes memory wrongCreationCode =
-            abi.encodePacked(type(OrderFactory).creationCode, abi.encode(address(0x5), address(0x3), address(0x4)));
+        bytes memory creationCode = abi.encodePacked(
+            type(OrderFactory).creationCode,
+            abi.encode(address(0x2), address(0x3), address(0x4), address(0x6), address(0x7))
+        );
+        bytes memory wrongCreationCode = abi.encodePacked(
+            type(OrderFactory).creationCode,
+            abi.encode(address(0x5), address(0x3), address(0x4), address(0x6), address(0x7))
+        );
 
         address computedAddress = create2.computeAddress(salt, keccak256(creationCode));
         address wrongComputedAddress = create2.computeAddress(salt, keccak256(wrongCreationCode));

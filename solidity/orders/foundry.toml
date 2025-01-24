@@ -15,7 +15,7 @@
   src = "src"
   test = "test"
   fs_permissions = [
-    { access = "read-write", path = "./broadcast/Deploy.s.sol/12345"}
+    { access = "read-write", path = "./broadcast/Deploy.s.sol/"}
   ]
 
 [profile.ci]

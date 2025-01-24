@@ -179,7 +179,7 @@ struct Template {
 
 ### `TemplatesResponse`
 
-- **Description**: The response returned when you [query Rules](#query-rules). Includes the [`Template`](#template) struct.
+- **Description**: A response returned when you [query Rules](#query-rules). Includes the [`Template`](#template) struct.
 
 ```
 struct TemplatesResponse {
@@ -190,7 +190,7 @@ struct TemplatesResponse {
 
 ### `TemplateByIdResponse`
 
-- **Description**: The response returned when you [query a Rule by ID](#query-a-rule-by-id). Includes the [`Template`](#template) struct.
+- **Description**: A response returned when you [query a Rule by ID](#query-a-rule-by-id). Includes the [`Template`](#template) struct.
 
 ```
 struct TemplateByIdResponse {
@@ -221,7 +221,7 @@ struct Action {
 
 ### `ActionsResponse`
 
-- **Description**: The response returned when you [query Actions](#query-actions). Includes the [`Action`](#action) struct.
+- **Description**: A response returned when you [query Actions](#query-actions). Includes the [`Action`](#action) struct.
 
 ```
 struct ActionsResponse {
@@ -232,7 +232,7 @@ struct ActionsResponse {
 
 ### `ActionsByAddressResponse`
 
-- **Description**: The response returned when you [query an Action by ID](#query-an-action-by-id). Includes the [`Action`](#action) struct.
+- **Description**: A response returned when you [query an Action by ID](#query-an-action-by-id). Includes the [`Action`](#action) struct.
 
 ```
 
@@ -244,7 +244,7 @@ struct ActionsByAddressResponse {
 
 ### `ActionByIdResponse`
 
-- **Description**: The response returned when you [query Actions by address](#query-actions-by-address). Includes the [`Action`](#action) struct.
+- **Description**: A response returned when you [query Actions by address](#query-actions-by-address). Includes the [`Action`](#action) struct.
 
 ```
 struct ActionByIdResponse {

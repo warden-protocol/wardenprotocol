@@ -9,10 +9,6 @@ struct ExecutionData {
     uint256 value;
 }
 
-enum Caller {
-    Scheduler
-}
-
 interface IExecution {
     /**
      * @dev Indicates if an order can be executed.
@@ -39,11 +35,6 @@ interface IExecution {
     )
         external
         returns (bool, bytes32);
-
-    /**
-     * @dev Returns the list of intended callers.
-     */
-    function callers() external returns (Caller[] memory callersList);
 
     /**
      * @dev Indicates if execution was executed already.

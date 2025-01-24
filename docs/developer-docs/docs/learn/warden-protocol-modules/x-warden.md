@@ -16,7 +16,7 @@ This module implements Warden's core concepts, which you can find in our Glossar
 
 ## Usage
 
-You can call the `x/warden` module from your EVM smart contract using the [`x/warden` precompile](/build-an-app/precompiles/x-warden), as show in the [Interact with x/warden](/category/interact-with-xwarden) section.
+You can call the `x/warden` module from your EVM smart contract using the [`x/warden` precompile](/build-an-app/precompiles/x-warden), as show in the [Interact with `x/warden`](/category/interact-with-xwarden) section.
 
 ## Concepts
 
@@ -252,7 +252,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Events
 
-See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/main/proto/warden/warden/v1beta2/events.proto).
+See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/wardenprotocol/blob/main/proto/warden/warden/v1beta3/events.proto).
 
 ## Analyzers
 
@@ -288,4 +288,3 @@ In this code, `T` is another struct specific to the Analyzer, containing numeric
 The `data_for_signing` field is the data that will be signed by the [Keychain](#keychain) when the `MsgNewSignRequest` message is executed.
 
 The fields of the `result` struct will be available for [Rules](/learn/warden-protocol-modules/x-act#rule) to reference.
-

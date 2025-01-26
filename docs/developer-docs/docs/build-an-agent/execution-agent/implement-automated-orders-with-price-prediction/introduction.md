@@ -2,35 +2,35 @@
 sidebar_position: 1
 ---
 
-# Introduction to Orders with Automation and Price Prediction
+# Introduction
 
 ## Overview
 
-**Orders with Automation and Price Prediction** are Advanced Orders build upon Basic Orders by introducing `price prediction` capabilities and more sophisticated execution conditions. While Basic Orders operate on simple price thresholds, Advanced Orders integrate with **Warden's** prediction system to enable trading based on forecasted price movements.
+**Orders with automation and price prediction** are advanced Orders build upon basic automated Orders by introducing `price prediction` capabilities and more sophisticated execution conditions. While basic automated Orders operate on simple price thresholds, advanced Orders integrate with **Warden's** prediction system to enable trading based on predicted price movements.
 
-### Key Enhancements
+## Key enhancements
 
-1. **Price Prediction Integration**
+1. **Price prediction integration**
    - Connection to Warden's `x/async` prediction system
    - Support for multiple price pairs (oracle and prediction)
    - Handling of predicted vs actual price comparisons
 
-2. **Enhanced Price Conditions**
+2. **Enhanced price conditions**
    - Strict inequality comparisons (`<`, `>`)
    - Complex condition evaluation between oracle and predicted prices
    - Price normalization across different decimals
 
-3. **Time-Windowed Execution**
+3. **Time-windowed execution**
    - 24-hour validity window for predictions
    - Automatic order expiration
    - Time-based execution constraints
 
-4. **Advanced Infrastructure Integration**
+4. **Advanced infrastructure integration**
    - Async precompile for prediction results
    - Multiple price source handling
    - Enhanced transaction management
 
-## Technical Prerequisites
+## Technical prerequisites
 
 In addition to Basic Order requirements, you'll need to understand:
 
@@ -39,7 +39,7 @@ In addition to Basic Order requirements, you'll need to understand:
 - Time-based contract constraints
 - Complex state management
 
-## Core Components
+## Core components
 
 The Advanced Order implementation consists of these key components:
 
@@ -61,7 +61,7 @@ contract AdvancedOrder {
 }
 ```
 
-## Implementation Path
+## Implementation path
 
 This tutorial will guide you through:
 
@@ -80,7 +80,7 @@ This tutorial will guide you through:
    - Multiple price pair setup
    - Monitoring prediction results
 
-## Key Differences from Basic Orders
+## Key differences from basic Orders
 
 | Feature | Basic Orders | Advanced Orders |
 |---------|-------------|-----------------|

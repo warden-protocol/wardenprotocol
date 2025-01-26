@@ -109,7 +109,7 @@ function computeOrderAddress(
 }
 ```
 
-## 5. Testing structure
+## 5. Implement tests
 
 ```solidity
 contract BasicOrderFactoryTest is Test {

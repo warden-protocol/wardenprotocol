@@ -8,7 +8,7 @@ sidebar_position: 5
 
 This article will guide you through deploying and managing automated Orders – instances of the [`BasicOrder`](implement-orders) contract.
 
-### What you'll deploy
+You'll deploy the following: 
 
 1. **Core infrastructure (Registry and Factory)**
 2. **A Basic Order that:**
@@ -60,7 +60,7 @@ forge script script/Deploy.s.sol:Deploy \
     --chain-id $CHAIN_ID
 ```
 
-### 2. Create Order
+### 2. Create an Order
 
 Deploy a Basic Order with price monitoring:
 
@@ -90,7 +90,7 @@ forge script script/CreateOrder.s.sol:CreateOrder \
 
 ## Monitoring & management
 
-### 1. Check Order status
+### 1. Check the Order status
 
 Monitor your order's state:
 
@@ -149,7 +149,7 @@ cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
 cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
 ```
 
-## Moving to Advanced Orders
+## Moving to advanced Orders
 
 After successfully deploying a Basic Order, you can move to Advanced Orders which add:
 
@@ -203,6 +203,6 @@ cast call $ORDER_ADDRESS "scheduler()"
 Basic Orders provide a foundation for understanding the deployment process. When you move to Advanced Orders, you'll use the same deployment pattern with additional parameters for predictions and complex conditions.
 :::
 
-## Next Steps
+## Next steps
 
-Once you have successfully completed Basic order with `automation` you can proceed to more advanced order - ie `prediction`.
+Once you have successfully completed Basic order with `automation`, you can proceed to a more advanced order - i.e. `prediction`.

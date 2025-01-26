@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Implement the creation of Orders
 
-## Core Components
+## Core components
 
 ```solidity
 contract AdvancedOrderFactory is ReentrancyGuard {
@@ -22,7 +22,7 @@ contract AdvancedOrderFactory is ReentrancyGuard {
 }
 ```
 
-## Enhanced Order Creation
+## Enhanced Order creation
 
 ```solidity
 function createAdvancedOrder(
@@ -73,7 +73,7 @@ function createAdvancedOrder(
 }
 ```
 
-## Order Data Validation
+## Order data validation
 
 ```solidity
 function _validateOraclePair(
@@ -105,7 +105,7 @@ function _validateAdvancedOrderData(
 }
 ```
 
-## Enhanced Address Computation
+## Enhanced address computation
 
 ```solidity
 function computeOrderAddress(
@@ -119,7 +119,7 @@ function computeOrderAddress(
 }
 ```
 
-## Factory Testing
+## Factory testing
 
 ```solidity
 contract AdvancedOrderFactoryTest is Test {
@@ -195,20 +195,20 @@ contract AdvancedOrderFactoryTest is Test {
 }
 ```
 
-## Security Considerations
+## Security considerations
 
-1. **Price Pair Validation**
+1. **Price pair validation**
    - Both oracle and prediction pairs must be properly formatted
    - Asset symbols must match expected formats
 
-2. **Salt Management**
+2. **Salt management**
    - Salts are guarded by tx.origin to prevent front-running
    - Each salt can only be used once per creator
 
-3. **Prediction Setup**
+3. **Prediction setup**
    - Future ID must be stored during order creation
    - Prediction pairs must match supported asset pairs
 
-## Next Steps
+## Next steps
 
 After creating the `AdvanceOrderFactory` contract, you can [deploy an Order](deploy-an-order).

@@ -4,9 +4,9 @@ sidebar_position: 3
 
 # Implement Orders
 
-**Advanced Orders** extend **Basic Orders** with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features.
+**Advanced Orders** extend **basic Orders** with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features.
 
-## Core Components
+## Core components
 
 ```solidity
 contract AdvancedOrder is AbstractOrder, IExecution {
@@ -27,7 +27,7 @@ contract AdvancedOrder is AbstractOrder, IExecution {
 }
 ```
 
-## 1. Initialize Prediction System
+## 1. Initialize the prediction system
 
 ```solidity
 constructor(
@@ -62,7 +62,7 @@ constructor(
 }
 ```
 
-## 2. Implement Enhanced Price Monitoring
+## 2. Implement enhanced price monitoring
 
 ```solidity
 function canExecute() public view override returns (bool) {
@@ -105,7 +105,7 @@ function canExecute() public view override returns (bool) {
 }
 ```
 
-## 3. Price Normalization Utilities
+## 3. Price normalization utilities
 
 ```solidity
 function _normalizePrices(
@@ -132,7 +132,7 @@ function _getPriceInQuote(
 }
 ```
 
-## 4. Enhanced Price Conditions
+## 4. Enhanced price conditions
 
 ```solidity
 function _checkPriceCondition(
@@ -152,7 +152,7 @@ function _checkPriceCondition(
 }
 ```
 
-## 5. Testing Advanced Features
+## 5. Testing advanced features
 
 ```solidity
 contract AdvancedOrderTest is Test {
@@ -201,20 +201,20 @@ contract AdvancedOrderTest is Test {
 }
 ```
 
-## Key Security Considerations
+## Security considerations
 
-1. **Time Window Management**
+- **Time window management**
    - Orders automatically expire after 24 hours
    - Prevents stale predictions from being used
 
-2. **Price Normalization**
+- **Price normalization**
    - Careful handling of different decimal places
    - Overflow protection in multiplication operations
 
-3. **Prediction Validation**
+- **Prediction validation**
    - Check for valid prediction results
    - Verify prediction data format
 
-## Next Steps
+## Next steps
 
 After creating the `AdvanceOrder` contract, you can [implement the creation of Orders](implement-the-creation-of-orders).

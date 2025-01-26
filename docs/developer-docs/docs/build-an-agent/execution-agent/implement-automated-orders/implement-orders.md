@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Implement Orders
+# Implement rders
 
 ## Overview
 
@@ -20,7 +20,7 @@ Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprot
 You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
 :::
 
-### Architecture
+## Architecture
 
 ```solidity
 contract BasicOrder is AbstractOrder, IExecution {

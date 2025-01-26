@@ -4,19 +4,19 @@ sidebar_position: 6
 
 # Summary
 
-## Core Features
+## Core features
 
 | Feature | Basic Orders | Advanced Orders |
 |---------|-------------|-----------------|
-| Price Conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
-| Price Sources | Single oracle | Oracle + Prediction |
-| Time Window | None | 24-hour validity |
+| Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
+| Price sources | Single oracle | Oracle + prediction |
+| Time 2indow | None | 24-hour validity |
 | Infrastructure | Slinky precompile | Slinky + Async precompiles |
-| State Management | Simple execution flag | Prediction tracking + expiry |
+| State management | Simple execution flag | Prediction tracking + expiry |
 
-## Implementation Complexity
+## Implementation complexity
 
-### Basic Orders Implementation
+### Basic orders implementation
 
 ```solidity
 contract BasicOrder {
@@ -33,7 +33,7 @@ contract BasicOrder {
 }
 ```
 
-### Advanced Orders Implementation
+### Advanced orders implementation
 
 ```solidity
 contract AdvancedOrder {
@@ -54,23 +54,23 @@ contract AdvancedOrder {
 }
 ```
 
-## Use Cases
+## Use cases
 
-### Basic Orders Use Cases
+### Basic orders use cases
 
 - Simple limit orders
 - Direct price thresholds
 - Immediate execution needs
 - Straightforward swaps
 
-### Advanced Orders Use Cases
+### Advanced orders use cases
 
 - Predictive trading
 - Complex price conditions
 - Time-sensitive operations
 - Multi-source validation
 
-## Development Path
+## Development path
 
 1. Start with Basic Orders to understand:
    - Order lifecycle
@@ -82,7 +82,7 @@ contract AdvancedOrder {
    - Time windows
    - Complex conditions
 
-## Key Differences in Practice
+## Key differences in practice
 
 ### Deployment
 
@@ -107,6 +107,6 @@ cast call $ORDER "validUntil()"
 cast call $ORDER "canExecute()"
 ```
 
-## What next?
+## What's next?
 
 Please note `orders` are just examples of what can be built with Agents. Sky is the limit! If you have an interesting idea, make a PR to our examples repo. Alternatively you can reach out to us on - **developers@wardenprotocol.org** for any questions / feedback.

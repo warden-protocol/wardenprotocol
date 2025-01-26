@@ -2,6 +2,6 @@
 sidebar_position: 2
 ---
 
-# Get started
+# Get started with Agent Kit
 
 XXX

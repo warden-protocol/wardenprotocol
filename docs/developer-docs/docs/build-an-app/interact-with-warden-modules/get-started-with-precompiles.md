@@ -5,7 +5,7 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Get started
+# Get started with precompiles
 
 ## Overview
 
@@ -185,7 +185,8 @@ Now you can dive deeper and expand your contract with other functions from Warde
 - To find code samples for each function, see the following guides:
 
   - [Interact with `x/warden`](/category/interact-with-xwarden)
-  - [Interact with x/act](/category/interact-with-xact)
+  - Interact with `x/oracle`: *Coming soon*  – see the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol)
+  - [Interact with `x/act`](/category/interact-with-xact)
   - [Interact with `x/async`](interact-with-x-async)
 
 - For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.

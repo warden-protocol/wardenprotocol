@@ -195,7 +195,7 @@ contract AdvancedOrderFactoryTest is Test {
 }
 ```
 
-## Security considerations
+## Security measures
 
 1. **Price pair validation**
    - Both oracle and prediction pairs must be properly formatted

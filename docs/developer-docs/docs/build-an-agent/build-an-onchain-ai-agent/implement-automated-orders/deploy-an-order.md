@@ -16,18 +16,18 @@ You'll deploy the following:
    - Executes when price crosses a threshold
    - Swaps tokens on Uniswap
 
-## Setup
+## 1. Set up
 
 ### 1. Environment configuration
 
-Create `.env` with your deployment parameters:
+Create an `.env` file with your deployment parameters:
 
 ```bash
-# Network Configuration
+# Network configuration
 RPC_URL="http://127.0.0.1:8545"
 CHAIN_ID="12345"
 
-# Account Configuration
+# Account configuration
 MNEMONIC="your mnemonic phrase here"
 SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 FACTORY_OWNER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"

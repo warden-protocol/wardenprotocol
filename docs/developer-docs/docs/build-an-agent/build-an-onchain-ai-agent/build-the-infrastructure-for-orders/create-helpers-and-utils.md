@@ -24,16 +24,18 @@ You can find the full code on GitHub: [`/src/Types.sol`](https://github.com/ward
 library Types {
     // Define swap parameters for Uniswap
     struct SwapData {
-        uint256 amountIn;          // The amount of input tokens
-        address[] path;            // The trading path through Uniswap
-        address to;                // The recipient address
-        uint256 deadline;          // The transaction deadline
+        uint256 amountIn;    // The amount of input tokens
+        address[] path;      // The trading path through Uniswap
+        address to;          // The recipient address
+        uint256 deadline;    // The transaction deadline
     }
 
     // A price condition for flexible trading
     enum PriceCondition {
         LTE,    // Less than or equal to the threshold
         GTE     // Greater than or equal to the threshold
+        LT,     // Less than the threshold
+        GT      // Greater thatn the threshold
     }
 
     // The main order configuration
@@ -50,7 +52,7 @@ library Types {
 
 ## 2. Create an abstract Order
 
-Now, add an abstract contract with functions required to create Orders of both types.
+Now, add an abstract contract with functions required to create Orders of both types. Your code should include a function for creating [signature requests](/learn/glossary#signature-request) by calling the [Warden precompile](create-mock-precompiles#12-create-a-warden-precompile).
 
 :::note Full code
 You can find the full code on GitHub: [`/src/AbstractOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AbstractOrder.sol)
@@ -100,7 +102,8 @@ abstract contract AbstractOrder {
             data: creatorDefinedTxFields.data
         });
     }
-
+ 
+    // Create a new signature request by calling the Warden precompile
     function createSignRequest(
         Types.SignRequestData calldata signRequestData,
         bytes calldata signRequestInput,

@@ -10,10 +10,9 @@ sidebar_position: 3
 
 This article explains how to build and test three mock precompiles:
 
-- **Slinky**, mocking the [`x/oracle`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol) precompile
-- **Warden**, mocking the [`x/warden`](/build-an-app/precompiles/x-warden) precompile
-- **Async**, mocking the [`x/async`](/build-an-app/precompiles/x-async) precompile
-
+- **Slinky**, mocking the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol)
+- **Warden**, mocking the [`x/warden` precompile](/build-an-app/precompiles/x-warden)
+- **Async**, mocking the [`x/async` precompile](/build-an-app/precompiles/x-async)
 
 :::note Directories
 
@@ -25,11 +24,7 @@ This article explains how to build and test three mock precompiles:
 
 ### 1.1. Create a Slinky precompile
 
-In a file `MockSlinkyPrecompile.sol`, implement a mock Slinky precompile with the following features:
-
-- Price feed functionality
-- Price setting for testing
-- Error handling for missing prices
+In a file `MockSlinkyPrecompile.sol`, implement a mock of the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol). Its goal is to provide [oracle](/learn/glossary#oracle-service) price feeds, set prices for testing, and ensure error handling for missing prices.
 
 :::note Full code
 You can find the full code on GitHub: [`/mocks/MockSlinkyPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockSlinkyPrecompile.sol)
@@ -70,11 +65,7 @@ contract MockSlinkyPrecompile is ISlinky {
 
 ### 1.2. Create a Warden precompile
 
-In a file `MockWardenPrecompile.sol`, implement a mock Warden precompile with the following features:
-
-- Key management
-- Managing transaction signing requests
-- Key validation
+In a file `MockWardenPrecompile.sol`, implement a mock of the [`x/warden` precompile](/build-an-app/precompiles/x-warden). Its goal is to manage [keys](/learn/glossary#key) and [signature requests](/learn/glossary#signature-request) .
 
 :::note Full code
 You can find the full code on GitHub: [`/mocks/MockWardenPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockWardenPrecompile.sol)
@@ -125,12 +116,7 @@ contract MockWardenPrecompile {
 
 ### 1.3. Create an Async precompile
 
-In a file `MockAsyncPrecompile.sol`, implement a mock Async precompile with the following features:
-
-- Future creation
-- Future tracking
-
-Note that this precompile is required only for [automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
+In a file `MockAsyncPrecompile.sol`, implement a mock of the [`x/async` precompile](/build-an-app/precompiles/x-async) for creating and tracking [Futures](/learn/glossary#future). Note that this precompile is required only for [automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
 
 :::note Full code
 You can find the full code on GitHub: [`/mocks/MockAsyncPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockAsyncPrecompile.sol)

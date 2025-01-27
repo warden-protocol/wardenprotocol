@@ -6,12 +6,9 @@ sidebar_position: 4
 
 ## Overview
 
-While `BasicOrder` handles the trading logic, `BasicOrderFactory` handles the deployment and registration of Orders. This factory pattern provides:
+The `BasicOrderFactory` contract,  when triggered by [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders), deploys Orders (instances of [`BasicOrder`](implement-orders)) and registers them in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry). This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security.
 
-- Deterministic address computation
-- Front-running protection
-- Order tracking in the registry
-- Salt-based deployment security
+This article will guide you through creating the `BasicOrderFactory` contract. Note that you can extend some parts to [implement the creation of Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders).
 
 :::note Directory
 Store `BasicOrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
@@ -21,7 +18,7 @@ Store `BasicOrderFactory` in the [`/src`](https://github.com/warden-protocol/war
 You can find the full code on GitHub: [`/src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
 :::
 
-## 1. Create the `BasicOrderFactory` contract
+## 1. Create `BasicOrderFactory`
 
 To start implementing the deployment of orders, create a file `BasicOrderFactory.sol`:
 
@@ -95,7 +92,7 @@ function createBasicOrder(
 
 ## 3. Add address computation
 
-Finally, allow users to preview the Order addresses:
+Allow users to preview the Order addresses:
 
 ```solidity title="/src/BasicOrderFactory.sol"
 function computeOrderAddress(
@@ -110,6 +107,8 @@ function computeOrderAddress(
 ```
 
 ## 5. Implement tests
+
+Finally, implement tests:
 
 ```solidity
 contract BasicOrderFactoryTest is Test {
@@ -145,27 +144,24 @@ contract BasicOrderFactoryTest is Test {
 
 ## Extension points
 
-When moving to advanced automated Orders with price prediction, the factory pattern extends in these ways:
+To [implement the creation Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders), you need to extend the factory pattern with the following advanced features:
 
-### Complex validation
-
-```solidity
-function _validateAdvancedOrder(
-    Types.AdvancedOrderData memory orderData
-) internal pure returns (bool);
-```
-
-### Prediction setup
-
-```solidity
-function _setupPrediction(
-    address order,
-    Types.PredictionData memory predData
-) internal returns (uint64 futureId);
-```
+- **Complex validation**  
+  ```solidity
+  function _validateAdvancedOrder(
+      Types.AdvancedOrderData memory orderData
+  ) internal pure returns (bool);
+  ```
+- **Prediction setup**  
+  ```solidity
+  function _setupPrediction(
+      address order,
+      Types.PredictionData memory predData
+  ) internal returns (uint64 futureId);
+  ```
 
 :::tip
-The factory's CREATE3 deployment ensures Order addresses can be known in advance. This becomes crucial for Orders with price prediction that may need to reference each other.
+When you were [implementing the Order creation logic](#2-implement-the-order-creation-logic), you enabled deployment with the `CREATE3` opcode. It ensures that Order addresses are known in advance, which becomes crucial for Orders with price prediction since they may need to reference each other.
 :::
 
 ## Next steps

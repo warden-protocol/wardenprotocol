@@ -11,7 +11,7 @@ This section explains how to implement advanced **automated Orders with price pr
 You'll take the following steps:
 
 1. Implement the core logic of Orders in the [`AdvancedOrder`](implement-orders) contract: set up prediction integration, handle multiple price sources, and implement time windows.
-2. Implement the creation of Orders in [`AdvancedOrderFactory`](implement-the-creation-of-orders): create the validation logic, enable prediction setup during deployment, and implement complex initialization.
+2. Implement the creation of Orders in [`AdvancedOrderFactory`](implement-the-creation-of-orders): create the validation logic and enable prediction setup during deployment.
 3. [Deploy an Order](deploy-an-order): configure a prediction, set up price pairs, monitor the prediction result.
 
 :::note Full code
@@ -37,8 +37,8 @@ contract AdvancedOrder {
     
     // Enhanced price data
     Types.AdvancedOrderData {
-        PricePair oraclePricePair; // The current price source
-        PricePair predictPricePair; // The prediction price source
+        PricePair oraclePricePair; // The oracle price pair
+        PricePair predictPricePair; // The prediction price pair
         PriceCondition priceCondition;
     }
     

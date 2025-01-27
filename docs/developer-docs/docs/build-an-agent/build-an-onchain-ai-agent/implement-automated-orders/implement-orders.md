@@ -6,23 +6,11 @@ sidebar_position: 3
 
 ## Overview
 
-The `BasicOrder` contract implements the core of logic of this example – **automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met.
+The `BasicOrder` contract implements the core of logic of this example – **automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met. Note that you can extend some parts to [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders).
 
-To create an Order, a user triggers the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) contract. Then it calls [`BasicOrderFactory`](implement-the-creation-of-orders), which deploys `BasicOrder`. Finally, the Warden Agent [executes and manages Orders](../build-the-infrastructure-for-orders/implement-the-execution-interface).
+This article will guide you through creating the `BasicOrder` contract. You'll implement the following architecture:
 
-This article will guide you through creating the `BasicOrder` contract.
-
-:::note Directory
-Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
-:::
-
-:::note Full code
-You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
-:::
-
-## Architecture
-
-```solidity title="/src/BasicOrder.sol"
+```solidity
 contract BasicOrder is AbstractOrder, IExecution {
     // Core components
     ISlinky private immutable SLINKY_PRECOMPILE;
@@ -38,32 +26,43 @@ contract BasicOrder is AbstractOrder, IExecution {
 }
 ```
 
+:::note Directory
+Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+:::
+
+:::note Full code
+You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
+:::
+
 ## 1. Create core components
 
 First, define the state variables and imports:
 
 ```solidity title="/src/BasicOrder.sol"
 contract BasicOrder is AbstractOrder, IExecution {
-    // State variables - designed for future extension
+    // State variables (extensible)
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;
     
-    // Extensible data structures
+    // Data structures (extensible)
     Types.BasicOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
     
-    // Basic state tracking - can be enhanced in advanced versions
+    // The state tracking (extensible)
     bool private _executed;
     bytes private _unsignedTx;
 }
 ```
 
+**Note:** You can extend and expand all these components to [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders).
+
+
 ## 2. Create a constructor
 
 Now create a `constructor` with validations. As shown in the code below, your constructor should handle the following tasks:
 
-- Validate all inputs (the scheduler, the registry, price conditions)
-- Set up connections with the price feed and the signing service
+- Validate all inputs: the scheduler, the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry), price conditions
+- Set up connections with the [price feed](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and the [signing service](../build-the-infrastructure-for-orders/create-helpers-and-utils#2-create-an-abstract-order)
 - Initialize the Order parameters
 
 ```solidity title="/src/BasicOrder.sol"
@@ -79,14 +78,14 @@ constructor(
     scheduler, 
     registry
 ) {
-    // Validation
+    // Validate the threshold price
     if (_orderData.thresholdPrice == 0) revert InvalidThresholdPrice();
     
-    // Initialize price feed - single source in basic version
+    // Initialize the price feed (extensible: you can add prediction prices)
     SLINKY_PRECOMPILE = ISlinky(ISLINKY_PRECOMPILE_ADDRESS);
     REGISTRY = Registry(registry);
     
-    // Store order data - structure allows for extension
+    // Store the order data (extensible)
     orderData = _orderData;
     commonExecutionData = _executionData;
 }
@@ -94,25 +93,23 @@ constructor(
 
 ## 3. Implement price monitoring
 
-In the `canExecute()` function, implement the logic for monitoring prices. This function should handle these tasks:
+In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold  – see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
 
-- Check if the price meets a given condition: `>=` or `<=` than the threshold  
-  (see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures))
 
 ```solidity title="/src/BasicOrder.sol"
 function canExecute() public view virtual returns (bool) {
-    // Get current price - single source in basic version
+    // Get the current price (extensible: you can add prediction prices)
     GetPriceResponse memory priceResponse = 
         SLINKY_PRECOMPILE.getPrice(
             orderData.pricePair.base, 
             orderData.pricePair.quote
         );
     
-    // Check price condition - simplified in basic version
+    // Check price condition (extensible: you can implement more complex price conditions)
     return _checkPriceCondition(priceResponse.price.price);
 }
 
-// Virtual function for price condition checking - can be overridden
+// A virtual function for price condition checking – can be overridden
 function _checkPriceCondition(uint256 currentPrice) 
     internal 
     view 
@@ -132,9 +129,9 @@ function _checkPriceCondition(uint256 currentPrice)
 In the `execute()` function, implement the logic for executing trades. This function should do the following:
 
 - Verify the caller and conditions
-- Pack swap data for Uniswap
+- Pack the swap data for Uniswap
 - Create and encode a transaction
-- Request a signature through Warden
+- Request a signature through the [Warden precompile](../build-the-infrastructure-for-orders/create-helpers-and-utils#2-create-an-abstract-order)
 - Emit the `Executed()` event
 - Register the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
 - Return the execution status
@@ -152,17 +149,17 @@ function execute(
     if (_executed) revert ExecutedError();
     if (!canExecute()) revert ConditionNotMet();
 
-    // Build transaction
+    // Build a transaction
     (bytes memory unsignedTx, bytes32 txHash) = encodeUnsignedEIP1559(
         nonce,
         gas,
         maxPriorityFeePerGas,
         maxFeePerGas,
-        new bytes[](0),  // Empty access list in basic version
+        new bytes[](0),  // An empty access list (you can change it in the advanced version)
         commonExecutionData.creatorDefinedTxFields
     );
 
-    // Request signature and track execution
+    // Request a signature and track its execution
     _executed = createSignRequest(
         commonExecutionData.signRequestData,
         abi.encodePacked(txHash),
@@ -211,66 +208,60 @@ function test_execution() public {
 }
 ```
 
+## Security measures
+
+Note that in the previous steps you've implemented the following security measures:
+
+- **Reentrancy protection**  
+  ```solidity
+  function execute(...) external nonReentrant { ... }
+  ```
+- **Access control**  
+  ```solidity
+  if (msg.sender != scheduler) revert Unauthorized();
+  ```
+- **State management**
+  ```solidity
+  if (_executed) revert ExecutedError();
+  ```
+
 ## Extension points
 
-The `automated order` contract can be extended with advanced features to adopt price prediction using the `x/async` module from Warden.
+To [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders), you need to extend your basic contract with the following advanced features:
 
-### 1. Price conditions
-
-```solidity
-// Current basic conditions
-enum PriceCondition {
-    LTE,
-    GTE
-}
-
-// Can be extended to:
-enum PriceCondition {
-    LTE,
-    GTE,
-    LT,    // For advanced orders
-    GT     // For advanced orders
-}
-```
-
-### 2. Price sources
-
-```solidity
-// Current single source
-GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(...);
-
-// Can be extended to multiple sources
-function _getPrices() internal virtual returns (uint256[] memory) {
-    // Advanced implementation
-}
-```
-
-### 3. Execution window
-
-```solidity
-// Can add time-based execution
-uint256 public validUntil;  // For advanced orders
-```
-
-## Security considerations
-
-### 1. Reentrancy protection
-
-```solidity
-function execute(...) external nonReentrant { ... }
-```
-
-### 2. Access control
-
-```solidity
-if (msg.sender != scheduler) revert Unauthorized();
-```
-
-### 3. State management
-
-```solidity
-if (_executed) revert ExecutedError();
-```
+- **Complex price conditions**  
+  The basic implementation shown in this guide supports the `<=` and `>=` price conditions:  
+  ```solidity
+  enum PriceCondition {  
+      LTE,
+      GTE
+  }
+  ```
+  In the advanced implementation, you can add strict inequality comparisons: `<` and `>`.  
+  ```solidity
+  enum PriceCondition {
+      LTE,
+      GTE,
+      LT,
+      GT
+  }
+  ```
+- **Multiple price sources**  
+  The basic implementation uses prices from a single source – the oracle service:  
+  ```solidity
+  GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(...);
+  ```
+  In the advanced implementation, you can use oracle and prediction prices:    
+  ```solidity
+  function _getPrices() internal virtual returns (uint256[] memory) {
+      // ...
+  }
+  ```
+- **A time-based execution window**  
+   In the advanced implementation, you can limit the execution of Orders by a validity window:  
+   ```solidity
+   uint256 public validUntil;
+   ```
 
 ## Next steps
 

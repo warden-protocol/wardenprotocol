@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-**Automated Orders with price prediction** extend the basic automated Orders with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features.
+**Automated Orders with price prediction** extend the basic automated Orders with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features. 
 
 ## Core components
 
@@ -203,7 +203,7 @@ contract AdvancedOrderTest is Test {
 }
 ```
 
-## Security considerations
+## Security measures
 
 - **Time window management**
    - Orders automatically expire after 24 hours

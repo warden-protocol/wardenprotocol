@@ -8,7 +8,7 @@ You can interact with [Warden Protocol modules](/category/warden-protocol-module
 
 To familiarize yourself with precompiles, take the following steps:
 
-1. Deploy a simple EVM contract by following the [Get started](get-started) guide.
+1. Deploy a simple EVM contract by following the [Get started](get-started-with-precompiles) guide.
 3. After that, you can expand your contract code as shown in other subsections.
 4. For an overview of available functions, refer to the [Precompiles](/category/precompiles) section.
 

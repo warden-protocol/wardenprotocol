@@ -47,7 +47,7 @@ The user flow for executing a swap includes the following steps:
 This implementation is part of a progressive learning path:
 
 1. **Automated Orders (Current)**: Learn core concepts with simple price-based execution
-2. **[Automated Orders with Price Prediction](../implement-automated-orders-with-price-prediction/introduction)**: Build upon basic orders to add:
+2. **[Automated Orders with Price Prediction](../implement-automated-orders-with-price-prediction/introduction)**: Build upon basic automated Orders to add:
    - Price prediction integration
    - Complex price conditions
    - Time-windowed execution

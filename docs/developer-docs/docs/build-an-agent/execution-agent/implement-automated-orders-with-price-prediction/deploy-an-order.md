@@ -172,7 +172,7 @@ cast call $ORDER_ADDRESS "canExecute()"
    cast call $ORDER_ADDRESS "futureId()"
    ```
 
-3. **Time 2indow**
+3. **Time window**
 
    ```bash
    # Verify not expired
@@ -181,7 +181,6 @@ cast call $ORDER_ADDRESS "canExecute()"
 
 ## Next steps
 
-Congratulations! You have succesfully implemented both Order with Automation and Order with Prediction!
-You can quickly glance through [summary page](summary) to get a quick overview of the project.
+Congratulations! You have successfully implemented both automated Orders and automated Orders with price prediction! You can quickly glance through the [summary](../summary) to get a quick overview of the project.
 
-For any questions, reach us on discord.
+For any questions, reach us on [Discord](https://discord.com/invite/wardenprotocol).

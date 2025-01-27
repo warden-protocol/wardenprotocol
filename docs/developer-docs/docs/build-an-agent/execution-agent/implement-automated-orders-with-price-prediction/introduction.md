@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-**Orders with automation and price prediction** are advanced Orders build upon basic automated Orders by introducing `price prediction` capabilities and more sophisticated execution conditions. While basic automated Orders operate on simple price thresholds, advanced Orders integrate with **Warden's** prediction system to enable trading based on predicted price movements.
+**Automated Orders with price prediction** are advanced Orders build upon basic automated Orders by introducing `price prediction` capabilities and more sophisticated execution conditions. While basic automated Orders operate on simple price thresholds, advanced Orders integrate with **Warden's** prediction system to enable trading based on predicted price movements.
 
 ## Key enhancements
 
@@ -41,7 +41,7 @@ In addition to Basic Order requirements, you'll need to understand:
 
 ## Core components
 
-The Advanced Order implementation consists of these key components:
+The implementation of this Order type consists of the following key components:
 
 ```solidity
 contract AdvancedOrder {
@@ -65,22 +65,22 @@ contract AdvancedOrder {
 
 This tutorial will guide you through:
 
-1. [Implementing Advanced Orders](implement-orders)
+1. [Implementing Orders](implement-orders)
    - Setting up prediction integration
    - Handling multiple price sources
    - Implementing time windows
 
-2. [Creating Advanced Order Factory](implement-the-creation-of-orders)
+2. [Implementing Order creation](implement-the-creation-of-orders)
    - Enhanced validation logic
    - Prediction setup during deployment
    - Complex initialization
 
-3. [Deploying Advanced Orders](deploy-an-order)
+3. [Deploying Orders](deploy-an-order)
    - Prediction configuration
    - Multiple price pair setup
    - Monitoring prediction results
 
-## Key differences from basic Orders
+## Key differences from basic automated Orders
 
 | Feature | Basic Orders | Advanced Orders |
 |---------|-------------|-----------------|
@@ -92,7 +92,7 @@ This tutorial will guide you through:
 
 ## Get started
 
-To get started with automated Orders, take the following steps:
+To get started with automated Orders with price prediction, take the following steps:
 
 1. [Build the infrastructure for Orders](/category/build-the-infrastructure-for-orders).
 2. [Implement Orders](implement-orders).

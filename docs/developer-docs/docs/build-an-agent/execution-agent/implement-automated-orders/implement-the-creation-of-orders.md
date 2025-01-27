@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Overview
 
-While `BasicOrder` handles the trading logic, `BasicOrderFactory` handles the deployment and registration of orders. This factory pattern provides:
+While `BasicOrder` handles the trading logic, `BasicOrderFactory` handles the deployment and registration of Orders. This factory pattern provides:
 
 - Deterministic address computation
 - Front-running protection
@@ -145,7 +145,7 @@ contract BasicOrderFactoryTest is Test {
 
 ## Extension points
 
-When moving to Advanced Orders, the factory pattern extends in these ways:
+When moving to advanced automated Orders with price prediction, the factory pattern extends in these ways:
 
 ### Complex validation
 
@@ -165,7 +165,7 @@ function _setupPrediction(
 ```
 
 :::tip
-The factory's CREATE3 deployment ensures Order addresses can be known in advance. This becomes crucial for advanced Orders that may need to reference each other.
+The factory's CREATE3 deployment ensures Order addresses can be known in advance. This becomes crucial for Orders with price prediction that may need to reference each other.
 :::
 
 ## Next steps

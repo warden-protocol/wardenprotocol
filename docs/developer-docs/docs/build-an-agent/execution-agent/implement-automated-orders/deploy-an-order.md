@@ -11,14 +11,14 @@ This article will guide you through deploying and managing automated Orders – 
 You'll deploy the following: 
 
 1. **Core infrastructure (Registry and Factory)**
-2. **A Basic Order that:**
+2. **An automated Order that does the following:**
    - Monitors ETH/USD price
    - Executes when price crosses a threshold
    - Swaps tokens on Uniswap
 
 ## Setup
 
-### 1. Enviorment configuration
+### 1. Environment configuration
 
 Create `.env` with your deployment parameters:
 
@@ -62,7 +62,7 @@ forge script script/Deploy.s.sol:Deploy \
 
 ### 2. Create an Order
 
-Deploy a Basic Order with price monitoring:
+Deploy an automated Order with price monitoring:
 
 ```bash
 # Create order parameters
@@ -149,9 +149,9 @@ cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
 cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
 ```
 
-## Moving to advanced Orders
+## Moving to Orders with price prediction
 
-After successfully deploying a Basic Order, you can move to Advanced Orders which add:
+After successfully deploying an automated Order, you can move to more advanced automated Orders with price prediction, which do the following:
 
 ### 1. Prediction integration
 
@@ -200,9 +200,9 @@ cast call $ORDER_ADDRESS "scheduler()"
 ```
 
 :::tip
-Basic Orders provide a foundation for understanding the deployment process. When you move to Advanced Orders, you'll use the same deployment pattern with additional parameters for predictions and complex conditions.
+Basic automated Orders provide a foundation for understanding the deployment process. When you move to automated Orders with price prediction, you'll use the same deployment pattern with additional parameters for predictions and complex conditions.
 :::
 
 ## Next steps
 
-Once you have successfully completed Basic order with `automation`, you can proceed to a more advanced order - i.e. `prediction`.
+After deploying an automated Order, you can start implementing [automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).

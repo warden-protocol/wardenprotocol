@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Core features
 
-| Feature | Basic Orders | Advanced Orders |
+| Feature | Automated Orders | Automated Orders with price predction |
 |---------|-------------|-----------------|
 | Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
 | Price sources | Single oracle | Oracle + prediction |
@@ -16,7 +16,7 @@ sidebar_position: 6
 
 ## Implementation complexity
 
-### Basic orders implementation
+Automated Orders: 
 
 ```solidity
 contract BasicOrder {
@@ -33,7 +33,7 @@ contract BasicOrder {
 }
 ```
 
-### Advanced orders implementation
+Automated Orders with price prediction:
 
 ```solidity
 contract AdvancedOrder {
@@ -56,14 +56,14 @@ contract AdvancedOrder {
 
 ## Use cases
 
-### Basic orders use cases
+Automated Orders:
 
 - Simple limit orders
 - Direct price thresholds
 - Immediate execution needs
 - Straightforward swaps
 
-### Advanced orders use cases
+Automated Orders with price prediction:
 
 - Predictive trading
 - Complex price conditions
@@ -72,12 +72,12 @@ contract AdvancedOrder {
 
 ## Development path
 
-1. Start with Basic Orders to understand:
+1. Start with automated Orders to understand the following:
    - Order lifecycle
    - Price monitoring
    - Execution flow
 
-2. Progress to Advanced Orders to add:
+2. To implement automated Orders with price prediction, add these features:
    - Prediction integration
    - Time windows
    - Complex conditions
@@ -87,20 +87,20 @@ contract AdvancedOrder {
 ### Deployment
 
 ```bash
-# Basic Order
+# An automated Order
 just create-basic-order $THRESHOLD $CONDITION $PRICE_PAIR
 
-# Advanced Order
+# An automated Order with price prediction
 just create-advanced-order $CONDITION $ORACLE_PAIR $PREDICT_PAIR
 ```
 
 ### Monitoring
 
 ```bash
-# Basic Order
+# An automated Order
 cast call $ORDER "canExecute()"
 
-# Advanced Order
+# An automated Order with price prediction
 cast call $ORDER "futureId()"
 cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
 cast call $ORDER "validUntil()"
@@ -109,4 +109,8 @@ cast call $ORDER "canExecute()"
 
 ## What's next?
 
-Please note `orders` are just examples of what can be built with Agents. Sky is the limit! If you have an interesting idea, make a PR to our examples repo. Alternatively you can reach out to us on - **developers@wardenprotocol.org** for any questions / feedback.
+Please note that these Orders are just examples of what you can build with Agents. Sky is the limit!
+
+If you have an interesting idea, make a PR to the [repository with our example](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
+
+Alternatively, you can reach out to us for any questions or feedback: developers@wardenprotocol.org

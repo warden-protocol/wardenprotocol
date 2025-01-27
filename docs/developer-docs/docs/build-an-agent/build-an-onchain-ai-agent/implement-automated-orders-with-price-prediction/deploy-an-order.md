@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Deploy an Order
 
-## Environment setup
+## 1. Set up the deployment
 
 ```bash
 # Network and Account (same as basic orders)
@@ -35,7 +35,7 @@ EXPECTED_REJECT_EXPRESSION="0x616e7928312c2077617264656e2e73706163652e6f776e6572
 SALT="0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a715"
 ```
 
-## Deploy an Order
+## 2. Deploy an Order
 
 ```bash
 #!/bin/bash
@@ -57,7 +57,9 @@ just create-advanced-order \
     "$CHAIN_ID"
 ```
 
-## Monitor the Order status
+## 3. Monitor the Order
+
+Monitor the Order status:
 
 ```bash
 # Check prediction status
@@ -71,7 +73,7 @@ cast call $ORDER_ADDRESS "canExecute()"
 cast call $ORDER_ADDRESS "validUntil()"
 ```
 
-## Monitor events
+Monitor events:
 
 ```bash
 # Watch for prediction updates
@@ -86,7 +88,7 @@ cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
 
 ## Common operations
 
-### 1. Check the prediction setup
+Check the prediction setup:
 
 ```bash
 # Get prediction configuration
@@ -98,7 +100,7 @@ cast call $ORDER_ADDRESS "orderData()" | \
     grep -A 2 "predictPricePair"
 ```
 
-### 2. Monitor oracle prices
+Monitor oracle prices:
 
 ```bash
 # Get current price
@@ -108,7 +110,7 @@ cast call $SLINKY_PRECOMPILE "getPrice(string,string)" \
     "$BASE" "$QUOTE"
 ```
 
-### 3. Track the prediction results
+Track the prediction results:
 
 ```bash
 # Get future ID
@@ -120,7 +122,7 @@ cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
 
 ## Troubleshooting
 
-### 1. Invalid price pairs
+Invalid price pairs:
 
 ```bash
 # Verify oracle pair format
@@ -132,7 +134,7 @@ cast call $SLINKY_PRECOMPILE "getPrice(string,string)" \
     "ETH" "USD"
 ```
 
-### 2. Failed predictions
+Failed predictions:
 
 ```bash
 # Check future status
@@ -144,7 +146,7 @@ cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID" | \
     grep "output"
 ```
 
-### 3. Execution issues
+Execution issues:
 
 ```bash
 # Check validity window
@@ -158,26 +160,26 @@ cast call $ORDER_ADDRESS "canExecute()"
 
 ## Security checklist
 
-1. **Price pair configuration**
+Price pair configuration:
 
-   ```bash
-   # Verify both pairs
-   cast call $ORDER_ADDRESS "orderData()"
-   ```
+```bash
+# Verify both pairs
+cast call $ORDER_ADDRESS "orderData()"
+```
 
-2. **Prediction setup**
+Prediction setup:
 
-   ```bash
-   # Check future ID and status
-   cast call $ORDER_ADDRESS "futureId()"
-   ```
+```bash
+# Check future ID and status
+cast call $ORDER_ADDRESS "futureId()"
+```
 
-3. **Time window**
+Time window:
 
-   ```bash
-   # Verify not expired
-   cast call $ORDER_ADDRESS "validUntil()"
-   ```
+```bash
+# Verify not expired
+cast call $ORDER_ADDRESS "validUntil()"
+```
 
 ## Next steps
 

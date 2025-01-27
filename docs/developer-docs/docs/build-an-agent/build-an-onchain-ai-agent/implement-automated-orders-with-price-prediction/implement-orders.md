@@ -4,7 +4,9 @@ sidebar_position: 3
 
 # Implement Orders
 
-**Automated Orders with price prediction** extend basic automated Orders with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features.
+## Overview
+
+**Automated Orders with price prediction** extend the basic automated Orders with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features.
 
 ## Core components
 

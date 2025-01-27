@@ -6,7 +6,14 @@ sidebar_position: 3
 
 ## Overview
 
-**Mock precompiles** are essential for end-to-end testing of the Basic Agent. This article explains how to build and test two mock precompiles: **Slinky** and **Warden**.
+**Mock precompiles** are essential for end-to-end testing of the Basic Agent.
+
+This article explains how to build and test three mock precompiles:
+
+- **Slinky**, mocking the [`x/oracle`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol) precompile
+- **Warden**, mocking the [`x/warden`](/build-an-app/precompiles/x-warden) precompile
+- **Async**, mocking the [`x/async`](/build-an-app/precompiles/x-async) precompile
+
 
 :::note Directories
 
@@ -112,6 +119,79 @@ contract MockWardenPrecompile {
         require(bytes(expectedApproveExpression).length > 0, "Empty approve expression");
         
         return goodKeys[keyId];
+    }
+}
+```
+
+### 1.3. Create an Async precompile
+
+In a file `MockAsyncPrecompile.sol`, implement a mock Async precompile with the following features:
+
+- Future creation
+- Future tracking
+
+Note that this precompile is required only for [automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
+
+:::note Full code
+You can find the full code on GitHub: [`/mocks/MockAsyncPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockAsyncPrecompile.sol)
+:::
+
+```solidity title="/mocks/MockAsyncPrecompile.sol"
+contract MockAsyncPrecompile is IAsync {
+    uint64 public futuresCount = 0;
+    mapping(uint64 id => FutureByIdResponse output) public _futures;
+    mapping(address orderAddress => address orderCreator) public orders;
+
+    function addFuture(
+        string calldata handler,
+        bytes calldata input
+    ) external returns (uint64 futureId)
+    {
+        futureId = uint64(++futuresCount);
+        Future memory future = Future({
+            id: futureId,
+            // solhint-disable-next-line
+            creator: tx.origin,
+            handler: handler,
+            input: input
+        });
+
+        FutureVote[] memory emptyVotes = new FutureVote[](0);
+        bytes memory emptySubmitter;
+        FutureResult memory futureResult = FutureResult({ 
+            id: futureId,
+            output: input,
+            submitter: emptySubmitter
+        });
+        FutureResponse memory futureResponse = FutureResponse({
+            future: future,
+            votes: emptyVotes,
+            result: futureResult
+        });
+        _futures[futureId] = FutureByIdResponse({
+            futureResponse: futureResponse
+        });
+    }
+
+    function futureById(
+        uint64 futureId
+    ) external view returns (FutureByIdResponse memory response) {
+        response = _futures[futureId];
+    }
+
+    function futures(
+        Types.PageRequest calldata,
+        address
+    ) external pure returns (FuturesResponse memory) {
+        // solhint-disable-next-line
+        revert("Unimplemented");
+    }
+
+    function pendingFutures(
+        Types.PageRequest calldata
+    ) external pure returns (PendingFuturesResponse memory) {
+        // solhint-disable-next-line
+        revert("Unimplemented");
     }
 }
 ```

@@ -4,15 +4,15 @@ sidebar_position: 6
 
 # Summary
 
-## Core features
+## Key features
 
-| Feature | Automated Orders | Automated Orders with price predction |
+| Feature | Automated Orders | Automated Orders with price prediction |
 |---------|-------------|-----------------|
 | Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
-| Price sources | Single oracle | Oracle + prediction |
-| Time 2indow | None | 24-hour validity |
-| Infrastructure | Slinky precompile | Slinky + Async precompiles |
-| State management | Simple execution flag | Prediction tracking + expiry |
+| Price sources | The oracle | The oracle and predictions |
+| Execution window | None | 24-hour validity |
+| State management | A simple execution flag | Prediction tracking |
+| Infrastructure | The [Slinky precompile](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) | The [Slinky](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and [Async](../build-the-infrastructure-for-orders/create-mock-precompiles#13-create-an-async-precompile) precompiles |
 
 ## Implementation complexity
 
@@ -109,8 +109,6 @@ cast call $ORDER "canExecute()"
 
 ## What's next?
 
-Please note that these Orders are just examples of what you can build with Agents. Sky is the limit!
-
-If you have an interesting idea, make a PR to the [repository with our example](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity).
+Please note that these Orders are just examples of what you can build with Agents. Sky is the limit! If you have an interesting idea, make a PR to the [repository with our example](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders).
 
 Alternatively, you can reach out to us for any questions or feedback: developers@wardenprotocol.org

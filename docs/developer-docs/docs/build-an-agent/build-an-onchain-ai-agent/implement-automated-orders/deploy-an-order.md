@@ -200,7 +200,7 @@ cast call $ORDER_ADDRESS "scheduler()"
 ```
 
 :::tip
-Basic automated Orders provide a foundation for understanding the deployment process. When you move to automated Orders with price prediction, you'll use the same deployment pattern with additional parameters for predictions and complex conditions.
+The basic automated Orders provide a foundation for understanding the deployment process. When you move to automated Orders with price prediction, you'll use the same deployment pattern with additional parameters for predictions and complex conditions.
 :::
 
 ## Next steps

@@ -60,7 +60,7 @@ orders/
 ```
 
 :::note Full code
-You can find the full code of the example on GitHub: [/orders](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity)
+You can find the full code of the example on GitHub: [/orders](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
 :::
 
 ## Required knowledge
@@ -75,7 +75,7 @@ You should learn about the following Warden features:
      Functions: [keyById()](/build-an-app/interact-with-warden-modules/interact-with-x-warden/manage-keys#query-a-key-by-id), [newSignRequest()](/build-an-app/interact-with-warden-modules/interact-with-x-warden/manage-signature-requests#create-a-new-signature-request)  
    - `x/oracle`: The price feed system and data retrieval methods  
      Functions: [getPrice()](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol)
-   - `x/async` precompile: Future-based operations and the price prediction system   
+   - `x/async`: Future-based operations and the price prediction system   
      Functions: [addFuture](/build-an-app/interact-with-warden-modules/interact-with-x-async#create-a-new-future), [futureById()](/build-an-app/interact-with-warden-modules/interact-with-x-async#query-a-future-by-id)  
 
 ### Solidity

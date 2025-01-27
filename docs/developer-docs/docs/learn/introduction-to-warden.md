@@ -34,7 +34,7 @@ Warden's key features allow creating a truly open AI experience:
 Warden allows you to easily integrate AI in your application and enjoy novel AI-driven Web3 experiences.
 
 - **Simplified cryptography**  
-With Warden, you can easily develop Web3 applications with [intent-driven](/learn/glossary#intent) key management.
+With Warden, you can easily develop Web3 applications with [Intent-driven](/learn/glossary#intent) key management.
 
 - **Abstracted interoperability**  
 Build applications that allow aggregating multiple accounts for different chains and signing transactions at any destination chain.

@@ -1,11 +1,11 @@
 {
   "position": 3,
-  "label": "Execution Agent",
+  "label": "Build an on-chain AI Agent",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Execution Agent"
+    "title": "Build an on-chain AI Agent"
   },
   "customProps": {}
 }

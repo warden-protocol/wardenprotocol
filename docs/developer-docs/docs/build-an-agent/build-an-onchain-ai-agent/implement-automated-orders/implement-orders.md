@@ -22,7 +22,7 @@ You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com
 
 ## Architecture
 
-```solidity
+```solidity title="/src/BasicOrder.sol"
 contract BasicOrder is AbstractOrder, IExecution {
     // Core components
     ISlinky private immutable SLINKY_PRECOMPILE;

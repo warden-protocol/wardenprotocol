@@ -147,7 +147,7 @@ To monitor your Order and get additional Order data, use the commands listed bel
   cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
   ```
 
-## Troubleshooting
+### Troubleshooting
 
 Here are some of the common deployment issues and solutions for them:
 

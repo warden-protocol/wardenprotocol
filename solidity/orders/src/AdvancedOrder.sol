@@ -21,6 +21,16 @@ struct PricePredictInput {
     uint64[2] falsePositiveRate;
 }
 
+struct SolverReceipt {
+    bytes bloomFilter;
+    uint256 countItems;
+}
+
+struct PricePredictOutput {
+    uint256[] tokenPreds;
+    SolverReceipt solverReceipt;
+}
+
 contract AdvancedOrder is AbstractOrder, IExecution {
     Types.AdvancedOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
@@ -76,11 +86,20 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
         if (future.futureResponse.result.id == 0) return false;
 
-        uint256[] memory predictedPrices = abi.decode(future.futureResponse.result.output, (uint256[]));
-        GetPriceResponse memory priceResponse =
-            SLINKY_PRECOMPILE.getPrice(orderData.oraclePricePair.base, orderData.oraclePricePair.quote);
+        PricePredictOutput memory pricePredictOutput = abi.decode(
+            future.futureResponse.result.output,
+            (PricePredictOutput)
+        );
+        GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(
+            orderData.oraclePricePair.base,
+            orderData.oraclePricePair.quote
+        );
 
-        uint256 predictedPrice = _getPriceInQuote(predictedPrices[0], predictedPrices[1], PRICE_PREDICTION_DECIMALS);
+        uint256 predictedPrice = _getPriceInQuote(
+            pricePredictOutput.tokenPreds[0],
+            pricePredictOutput.tokenPreds[1],
+            PRICE_PREDICTION_DECIMALS
+        );
         (uint256 oracleNormalized, uint256 predictedNormalized) =
             _normalizePrices(
                 priceResponse.price.price,

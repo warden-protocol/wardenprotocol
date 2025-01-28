@@ -19,7 +19,7 @@ To set up your deployment, create an `.env` file with your environment configura
 
 ```bash
 # Network and account settings
-RPC_URL="https://evm.devnet.wardenprotocol.org"
+RPC_URL="http://127.0.0.1:8545"
 CHAIN_ID="12345"
 SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 

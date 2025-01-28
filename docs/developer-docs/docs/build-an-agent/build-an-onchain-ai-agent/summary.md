@@ -4,6 +4,10 @@ sidebar_position: 6
 
 # Summary
 
+## Overview
+
+In this section, you'll find a brief summary highlighting the differences between the Order types.
+
 ## Key features
 
 | Feature | Automated Orders | Automated Orders with price prediction |
@@ -14,9 +18,37 @@ sidebar_position: 6
 | State management | A simple execution flag | Prediction tracking |
 | Infrastructure | The [Slinky precompile](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) | The [Slinky](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and [Async](build-the-infrastructure-for-orders/create-mock-precompiles#13-create-an-async-precompile) precompiles |
 
-## Implementation complexity
+## Use cases
 
-Automated Orders: 
+#### Automated Orders
+
+- Simple limit orders
+- Direct price thresholds
+- Immediate execution needs
+- Straightforward swaps
+
+#### Automated Orders with price prediction
+
+- Predictive trading
+- Complex price conditions
+- Time-sensitive operations
+- Multi-source validation
+
+## Development path
+
+1. Start with automated Orders to understand the following:
+   - Order lifecycle
+   - Price monitoring
+   - Execution flow
+
+2. To implement automated Orders with price prediction, add these features:
+   - Prediction integration
+   - Time windows
+   - Complex conditions
+
+## Development complexity
+
+#### Automated Orders
 
 ```solidity
 contract BasicOrder {
@@ -33,7 +65,7 @@ contract BasicOrder {
 }
 ```
 
-Automated Orders with price prediction:
+#### Automated Orders with price prediction
 
 ```solidity
 contract AdvancedOrder {
@@ -54,53 +86,23 @@ contract AdvancedOrder {
 }
 ```
 
-## Use cases
+## Deployment and monitoring
 
-Automated Orders:
-
-- Simple limit orders
-- Direct price thresholds
-- Immediate execution needs
-- Straightforward swaps
-
-Automated Orders with price prediction:
-
-- Predictive trading
-- Complex price conditions
-- Time-sensitive operations
-- Multi-source validation
-
-## Development path
-
-1. Start with automated Orders to understand the following:
-   - Order lifecycle
-   - Price monitoring
-   - Execution flow
-
-2. To implement automated Orders with price prediction, add these features:
-   - Prediction integration
-   - Time windows
-   - Complex conditions
-
-## Key differences in practice
-
-### Deployment
+#### Automated Orders
 
 ```bash
-# An automated Order
 just create-basic-order $THRESHOLD $CONDITION $PRICE_PAIR
-
-# An automated Order with price prediction
-just create-advanced-order $CONDITION $ORACLE_PAIR $PREDICT_PAIR
+```
+```
+cast call $ORDER "canExecute()"
 ```
 
-### Monitoring
+#### Automated Orders with price prediction
 
 ```bash
-# An automated Order
-cast call $ORDER "canExecute()"
-
-# An automated Order with price prediction
+just create-advanced-order $CONDITION $ORACLE_PAIR $PREDICT_PAIR
+```
+```
 cast call $ORDER "futureId()"
 cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
 cast call $ORDER "validUntil()"

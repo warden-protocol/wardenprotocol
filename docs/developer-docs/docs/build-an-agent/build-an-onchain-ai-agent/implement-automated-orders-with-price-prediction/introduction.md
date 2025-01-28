@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Introduction
 
-## Automated Orders with price prediction
+## Orders with price prediction
 
 This section explains how to implement advanced **automated Orders with price prediction** – smart contracts that execute token swaps on Uniswap based on **AI-driven price predictions**. Our example uses [Keychains](/learn/glossary#keychain) for signing transactions and the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module for price predictions, extending the [basic automated Orders](../implement-automated-orders/introduction) that operate on simple price thresholds.
 
@@ -19,7 +19,7 @@ Please note that the articles in this section typically contain only fragments o
 You can find the full code of the example on GitHub: [/orders](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
 :::
 
-## Key features and core components
+## Key features
 
 The key features of automated Orders with price prediction include the following:
 
@@ -46,19 +46,6 @@ contract AdvancedOrder {
     uint256 private _validUntil; // The 24-hour window
 }
 ```
-
-## Differences between Order types
-
-The table below highlights the key differences between automated Orders with price prediction and the [basic automated Orders](../implement-automated-orders/introduction):
-
-| Feature | Automated Orders | Automated Orders with price prediction |
-|---------|-------------|-----------------|
-| Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
-| Price sources | The oracle | The oracle and predictions |
-| Execution window | None | 24-hour validity |
-| State management | A simple execution flag | Prediction tracking |
-| Infrastructure | The [Slinky precompile](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) | The [Slinky](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and [Async](../build-the-infrastructure-for-orders/create-mock-precompiles#13-create-an-async-precompile) precompiles |
-
 
 ## Get started
 

@@ -40,7 +40,7 @@ A user can create and manage multiple automated Orders. The user flow includes t
     - Sends the transaction to [Warden](../build-the-infrastructure-for-orders/create-mock-precompiles#12-create-a-warden-precompile) for signing
     - Records the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
     - Executes the swap on Uniswap
-5. Transaction details are stored in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#
+5. Transaction details are stored in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
 
 ## Get started
 

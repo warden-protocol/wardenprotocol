@@ -97,29 +97,19 @@ In the `canExecute()` function, implement the logic for monitoring prices. This 
 
 
 ```solidity title="/src/BasicOrder.sol"
-function canExecute() public view virtual returns (bool) {
-    // Get the current price (extensible: you can add prediction prices)
-    GetPriceResponse memory priceResponse = 
-        SLINKY_PRECOMPILE.getPrice(
-            orderData.pricePair.base, 
-            orderData.pricePair.quote
-        );
-    
-    // Check price condition (extensible: you can implement more complex price conditions)
-    return _checkPriceCondition(priceResponse.price.price);
-}
+function canExecute() public view returns (bool value) {
 
-// A virtual function for price condition checking – can be overridden
-function _checkPriceCondition(uint256 currentPrice) 
-    internal 
-    view 
-    virtual 
-    returns (bool) 
-{
-    if (orderData.priceCondition == Types.PriceCondition.GTE) {
-        return currentPrice >= orderData.thresholdPrice;
+    GetPriceResponse memory priceResponse =
+        SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
+
+    // Check price condition (extensible: you can implement more complex price conditions)
+    Types.PriceCondition condition = orderData.priceCondition;
+    if (condition == Types.PriceCondition.GTE) {
+        value = priceResponse.price.price >= orderData.thresholdPrice;
+    } else if (condition == Types.PriceCondition.LTE) {
+        value = priceResponse.price.price <= orderData.thresholdPrice;
     } else {
-        return currentPrice <= orderData.thresholdPrice;
+        revert InvalidPriceCondition();
     }
 }
 ```
@@ -232,18 +222,27 @@ To [implement Orders with price prediction](../implement-automated-orders-with-p
 - **Complex price conditions**  
   The basic implementation shown in this guide supports the `<=` and `>=` price conditions:  
   ```solidity
-  enum PriceCondition {  
-      LTE,
-      GTE
+  Types.PriceCondition condition = orderData.priceCondition;
+  if (condition == Types.PriceCondition.GTE) {
+     value = priceResponse.price.price >= orderData.thresholdPrice;
+  } else if (condition == Types.PriceCondition.LTE) {
+     value = priceResponse.price.price <= orderData.thresholdPrice;
+  } else {
+     revert InvalidPriceCondition();
   }
   ```
   In the advanced implementation, you can add strict inequality comparisons: `<` and `>`.  
   ```solidity
-  enum PriceCondition {
-      LTE,
-      GTE,
-      LT,
-      GT
+  function _checkPriceCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {
+      if (
+          (orderData.priceCondition == Types.PriceCondition.GTE && oraclePrice >= predictedPrice) ||
+          (orderData.priceCondition == Types.PriceCondition.LTE && oraclePrice <= predictedPrice) ||
+          (orderData.priceCondition == Types.PriceCondition.GT && oraclePrice > predictedPrice) ||
+          (orderData.priceCondition == Types.PriceCondition.LT && oraclePrice < predictedPrice)
+      ) {
+          return true;
+      }
+      return false;
   }
   ```
 - **Multiple price sources**  

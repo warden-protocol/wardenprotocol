@@ -12,13 +12,13 @@ The `IExecution` contract allows executing an Order, getting a list of authorize
 Store `IExecution` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
 :::
 
-## Create the `IExecution` contract
-
-Implement the execution interface in a file `IExecution.sol`:
-
 :::note Full code
 You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
 :::
+
+## Create the `IExecution` contract
+
+Implement the execution interface in a file `IExecution.sol`:
 
 ```solidity title="/src/IExecution.sol"
 interface IExecution {

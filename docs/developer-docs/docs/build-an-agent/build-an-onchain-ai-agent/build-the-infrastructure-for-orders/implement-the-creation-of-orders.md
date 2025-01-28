@@ -16,13 +16,13 @@ The user specifies the desired order type and triggers `OrderFactory`. Depending
 Store `OrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
 :::
 
-## Create the `OrderFactory` contract
-
-Implement the creation and tracking of Orders in a file `OrderFactory.sol`:
-
 :::note Full code
 You can find the full code on GitHub: [`/src/OrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/OrderFactory.sol)
 :::
+
+## Create the `OrderFactory` contract
+
+Implement the creation and tracking of Orders in a file `OrderFactory.sol`:
 
 ```solidity title="/src/OrderFactory.sol"
 contract OrderFactory is Ownable {

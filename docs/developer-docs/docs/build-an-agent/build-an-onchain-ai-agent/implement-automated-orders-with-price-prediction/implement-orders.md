@@ -6,9 +6,9 @@ sidebar_position: 3
 
 ## Overview
 
-**Automated Orders with price prediction** extend the basic automated Orders with price prediction capabilities and enhanced execution conditions. This guide focuses on implementing these additional features. 
+The `AdvancedOrder` contract implements the core of logic of this example – **automated Orders with price prediction** – smart contracts that execute token swaps on Uniswap based on **AI-driven price predictions**.
 
-## Core components
+Orders with price prediction extend the [basic automated Orders](../implement-automated-orders/implement-orders). This article will guide you through creating the `AdvancedOrder` contract, focusing on the implementation of the advanced features. You'll implement the following core components:
 
 ```solidity
 contract AdvancedOrder is AbstractOrder, IExecution {
@@ -29,9 +29,19 @@ contract AdvancedOrder is AbstractOrder, IExecution {
 }
 ```
 
+:::note Directory
+Store `AdvancedOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+:::
+
+:::note Full code
+You can find the full code on GitHub: [`/src/AdvancedOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AdvancedOrder.sol)
+:::
+
 ## 1. Initialize the prediction system
 
-```solidity
+First, initialize the prediction system:
+
+```solidity title="/src/AdvancedOrder.sol"
 constructor(
     Types.AdvancedOrderData memory _orderData,
     Types.CommonExecutionData memory _executionData,
@@ -49,46 +59,48 @@ constructor(
     predictTokens[0] = _orderData.predictPricePair.base;
     predictTokens[1] = _orderData.predictPricePair.quote;
     
-    // Request price prediction
+    // Request a price prediction
     futureId = ASYNC_PRECOMPILE.addFuture(
         "pricepred", 
         abi.encode(predictTokens)
     );
     
-    // Set validity window
+    // Set the validity window
     _validUntil = block.timestamp + 24 hours;
     
-    // Store configuration
+    // Store the configuration
     orderData = _orderData;
     commonExecutionData = _executionData;
 }
 ```
 
-## 2. Implement enhanced price monitoring
+## 2. Implement price monitoring
 
-```solidity
+Now implement price monitoring:
+
+```solidity title="/src/AdvancedOrder.sol"
 function canExecute() public view override returns (bool) {
-    // Check time window
+    // Check the time window
     if (block.timestamp > _validUntil) return false;
 
-    // Get prediction result
+    // Get the prediction result
     FutureByIdResponse memory future = 
         ASYNC_PRECOMPILE.futureById(futureId);
     if (future.futureResponse.result.id == 0) return false;
 
-    // Decode predicted prices
+    // Decode the predicted prices
     uint256[] memory predictedPrices = abi.decode(
         future.futureResponse.result.output, 
         (uint256[])
     );
     
-    // Get oracle price
+    // Get the oracle price
     GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(
         orderData.oraclePricePair.base,
         orderData.oraclePricePair.quote
     );
 
-    // Normalize prices for comparison
+    // Normalize the prices for comparison
     uint256 predictedPrice = _getPriceInQuote(
         predictedPrices[0],
         predictedPrices[1],
@@ -107,9 +119,11 @@ function canExecute() public view override returns (bool) {
 }
 ```
 
-## 3. Price normalization utilities
+## 3. Implement price normalization
 
-```solidity
+Create utilities for price normalization:
+
+```solidity title="/src/AdvancedOrder.sol"
 function _normalizePrices(
     uint256 price1,
     uint256 price2,
@@ -134,9 +148,11 @@ function _getPriceInQuote(
 }
 ```
 
-## 4. Enhanced price conditions
+## 4. Check the price condition
 
-```solidity
+Create a function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold  – see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
+
+```solidity title="/src/AdvancedOrder.sol"
 function _checkPriceCondition(
     uint256 oraclePrice,
     uint256 predictedPrice
@@ -154,7 +170,9 @@ function _checkPriceCondition(
 }
 ```
 
-## 5. Testing advanced features
+## 5. Test the contract
+
+To test the contract, use the following code:
 
 ```solidity
 contract AdvancedOrderTest is Test {
@@ -205,17 +223,20 @@ contract AdvancedOrderTest is Test {
 
 ## Security measures
 
-- **Time window management**
-   - Orders automatically expire after 24 hours
-   - Prevents stale predictions from being used
+In the previous steps, you've implemented the following security measures:
 
-- **Price normalization**
-   - Careful handling of different decimal places
-   - Overflow protection in multiplication operations
-
-- **Prediction validation**
-   - Check for valid prediction results
-   - Verify prediction data format
+- **Time window management**  
+  Orders will automatically expire after 24 hours. This prevents stale predictions from being in use.
+  ```
+  _validUntil = block.timestamp + 24 hours;
+  ```
+- **Price normalization**  
+  The contract will handle different decimal places, providing protection from overflow in multiplication operations.
+  ```
+  function _normalizePrices(...)
+  ```
+- **Prediction validation**  
+  The contract will check for valid prediction results and verify the prediction data format.
 
 ## Next steps
 

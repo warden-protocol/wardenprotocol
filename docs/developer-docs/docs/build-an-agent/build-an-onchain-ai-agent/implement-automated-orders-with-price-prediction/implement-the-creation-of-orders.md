@@ -4,7 +4,13 @@ sidebar_position: 4
 
 # Implement the creation of Orders
 
-## Core components
+## Overview
+
+This article will guide you through creating the `AdvancedOrderFactory` contract. `AdvancedOrderFactory`,  when triggered by [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders), deploys Orders (instances of [`AdvancedOrder`](implement-orders)) and registers them in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
+
+This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security. Note that it extends the [basic automated Orders creation](../implement-automated-orders/implement-orders).
+
+You'll implement the following core components:
 
 ```solidity
 contract AdvancedOrderFactory is ReentrancyGuard {
@@ -22,9 +28,19 @@ contract AdvancedOrderFactory is ReentrancyGuard {
 }
 ```
 
-## Enhanced Order creation
+:::note Directory
+Store `AdvancedOrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+:::
 
-```solidity
+:::note Full code
+You can find the full code on GitHub: [`/src/AdvancedOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AdvancedOrderFactory.sol)
+:::
+
+## 1. Implement the Order creation logic
+
+Implement the core function for deploying new Orders:
+
+```solidity title="/src/AdvancedOrderFactory.sol"
 function createAdvancedOrder(
     Types.AdvancedOrderData calldata orderData,
     Types.CommonExecutionData calldata executionData,
@@ -56,7 +72,7 @@ function createAdvancedOrder(
         )
     );
 
-    // Deploy using Create3
+    // Deploy with the CREATE3 opcode
     orderAddress = Create3.create3(guardedSalt, bytecode);
 
     address expectedAddress = Create3.addressOf(guardedSalt);
@@ -65,7 +81,7 @@ function createAdvancedOrder(
         revert OrderDeploymentFailed(guardedSalt);
     }
 
-    // Register and track
+    // Register and track the Order
     REGISTRY.register(orderAddress);
     usedSalts[guardedSalt] = true;
 
@@ -73,9 +89,11 @@ function createAdvancedOrder(
 }
 ```
 
-## Order data validation
+## 2. Implement data validation
 
-```solidity
+Create functions for validating the Order data:
+
+```solidity title="/src/AdvancedOrderFactory.sol"
 function _validateOraclePair(
     Types.PricePair calldata pair
 ) internal pure returns (bool) {
@@ -105,9 +123,9 @@ function _validateAdvancedOrderData(
 }
 ```
 
-## Enhanced address computation
+## 3. Add address computation
 
-```solidity
+```solidity title="/src/AdvancedOrderFactory.sol"
 function computeOrderAddress(
     address origin,
     bytes32 salt
@@ -119,7 +137,9 @@ function computeOrderAddress(
 }
 ```
 
-## Factory testing
+## 4. Implement tests
+
+Finally, implement tests:
 
 ```solidity
 contract AdvancedOrderFactoryTest is Test {
@@ -197,17 +217,27 @@ contract AdvancedOrderFactoryTest is Test {
 
 ## Security measures
 
-1. **Price pair validation**
-   - Both oracle and prediction pairs must be properly formatted
-   - Asset symbols must match expected formats
+In the previous steps, you've implemented the following security measures:
 
-2. **Salt management**
-   - Salts are guarded by tx.origin to prevent front-running
-   - Each salt can only be used once per creator
-
-3. **Prediction setup**
-   - Future ID must be stored during order creation
-   - Prediction pairs must match supported asset pairs
+- **Price data validation**  
+  The contract will check if oracle and predictions price pairs are properly formatted and asset symbols match the expected formats.
+  ```
+  function _validateOraclePair(...)  
+  function _validatePredictionPair(...)
+  function _validateAdvancedOrderData(...)
+  ```
+- **Salt management**  
+  Salts are guarded by `tx.origin` to prevent front-running. Each salt can only be used once per creator.
+  ```
+  address origin = tx.origin;
+  bytes32 guardedSalt = keccak256(
+      abi.encodePacked(uint256(uint160(origin)), salt)
+  ```
+  ```
+  if (usedSalts[guardedSalt]) {
+        revert SaltAlreadyUsed();
+  }
+  ```
 
 ## Next steps
 

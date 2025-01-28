@@ -102,7 +102,7 @@ function canExecute() public view returns (bool value) {
     GetPriceResponse memory priceResponse =
         SLINKY_PRECOMPILE.getPrice(orderData.pricePair.base, orderData.pricePair.quote);
 
-    // Check price condition (extensible: you can implement more complex price conditions)
+    // Check the price condition (extensible: you can implement more complex price conditions)
     Types.PriceCondition condition = orderData.priceCondition;
     if (condition == Types.PriceCondition.GTE) {
         value = priceResponse.price.price >= orderData.thresholdPrice;
@@ -200,7 +200,7 @@ function test_execution() public {
 
 ## Security measures
 
-Note that in the previous steps you've implemented the following security measures:
+In the previous steps, you've implemented the following security measures:
 
 - **Reentrancy protection**  
   ```solidity

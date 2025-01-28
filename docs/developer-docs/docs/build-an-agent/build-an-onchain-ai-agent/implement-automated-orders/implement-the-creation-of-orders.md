@@ -6,9 +6,9 @@ sidebar_position: 4
 
 ## Overview
 
-The `BasicOrderFactory` contract,  when triggered by [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders), deploys Orders (instances of [`BasicOrder`](implement-orders)) and registers them in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry). This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security.
+This article will guide you through creating the `BasicOrderFactory` contract. `BasicOrderFactory`,  when triggered by [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders), deploys Orders (instances of [`BasicOrder`](implement-orders)) and registers them in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
 
-This article will guide you through creating the `BasicOrderFactory` contract. Note that you can extend some parts to [implement the creation of Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders).
+This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security. Note that you can extend some parts to [implement the creation of Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders).
 
 :::note Directory
 Store `BasicOrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
@@ -18,9 +18,9 @@ Store `BasicOrderFactory` in the [`/src`](https://github.com/warden-protocol/war
 You can find the full code on GitHub: [`/src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
 :::
 
-## 1. Create `BasicOrderFactory`
+## 1. Create the contract
 
-To start implementing the deployment of orders, create a file `BasicOrderFactory.sol`:
+To start implementing the deployment of Orders, create a file `BasicOrderFactory.sol`:
 
 ```solidity title="/src/BasicOrderFactory.sol"
 contract BasicOrderFactory is ReentrancyGuard {
@@ -50,7 +50,7 @@ function createBasicOrder(
     address scheduler,
     bytes32 salt
 ) external nonReentrant returns (address orderAddress) {
-    // Protect against front-running
+    // Front-running protection using tx.origin
     address origin = tx.origin;
     bytes32 guardedSalt = keccak256(
         abi.encodePacked(uint256(uint160(origin)), salt)
@@ -72,7 +72,7 @@ function createBasicOrder(
         )
     );
 
-    // Deploy with CREATE3
+    // Deploy with the CREATE3 opcode
     orderAddress = Create3.create3(guardedSalt, bytecode);
     
     // Verify the deployment
@@ -82,7 +82,7 @@ function createBasicOrder(
         revert OrderDeploymentFailed(guardedSalt);
     }
 
-    // Register and track
+    // Register and track the Order
     REGISTRY.register(orderAddress);
     usedSalts[guardedSalt] = true;
 

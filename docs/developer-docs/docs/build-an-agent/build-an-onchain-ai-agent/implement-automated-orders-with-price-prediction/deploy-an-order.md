@@ -4,20 +4,31 @@ sidebar_position: 5
 
 # Deploy an Order
 
+## Overview
+
+This article will guide you through deploying and monitoring automated Orders with price prediction.
+
+You'll deploy the following:
+
+- The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-an-onchain-ai-agent/build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
+- The [`AdvancedOrder`](implement-orders) contract
+
 ## 1. Set up the deployment
 
+To set up your deployment, create an `.env` file with your environment configuration:
+
 ```bash
-# Network and Account (same as basic orders)
+# Network and account settings
 RPC_URL="https://evm.devnet.wardenprotocol.org"
 CHAIN_ID="12345"
 SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 
-# Advanced Order Parameters
+# Order parameters
 ORACLE_PRICE_PAIR='("ETH","USD")'
 PREDICT_PRICE_PAIR='("ethereum","tether")'
 PRICE_CONDITION="0"  # 0:LTE, 1:GTE, 2:LT, 3:GT
 
-# Transaction Configuration
+# Transaction data
 TX_FIELDS="\
 (100000000000000,\
 11155111,\
@@ -36,6 +47,8 @@ SALT="0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a715"
 ```
 
 ## 2. Deploy an Order
+
+To deploy your Order, run the following:
 
 ```bash
 #!/bin/bash
@@ -57,129 +70,120 @@ just create-advanced-order \
     "$CHAIN_ID"
 ```
 
-## 3. Monitor the Order
+## Utility commands
 
-Monitor the Order status:
+To monitor your Order and get additional Order data, use the commands listed below.
 
-```bash
-# Check prediction status
-cast call $ORDER_ADDRESS "futureId()" 
-cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
+### Monitor the Order
 
-# Check price conditions
-cast call $ORDER_ADDRESS "canExecute()"
+#### Monitor the Order state
 
-# View validity window
-cast call $ORDER_ADDRESS "validUntil()"
-```
+- Check the prediction status: 
+  ```bash
+  cast call $ORDER_ADDRESS "futureId()" 
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
+  ```
+- Check price conditions: 
+   ```
+   cast call $ORDER_ADDRESS "canExecute()"
+   ```
+- View the validity window
+  ```
+  cast call $ORDER_ADDRESS "validUntil()"
+  ```
 
-Monitor events:
+#### Monitor events
+- Monitor the execution:  
+  ```
+  cast logs $ORDER_ADDRESS "Executed()"
+  ```
+- Monitor new transactions:
+  ```bash
+  cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
+  ```
+- Monitor the Future updates:  
+  ```bash
+  cast logs $ASYNC_PRECOMPILE "FutureUpdated(uint64)"
+  ```
 
-```bash
-# Watch for prediction updates
-cast logs $ASYNC_PRECOMPILE "FutureUpdated(uint64)"
+### Get the Order data
 
-# Watch for executions
-cast logs $ORDER_ADDRESS "Executed()"
+#### Get the prediction setup
 
-# Watch for new transactions
-cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
-```
+- Get the prediction configuration:
+  ```bash
+  ORDER_ADDRESS="0x..."
+  cast call $ORDER_ADDRESS "orderData()"
+  ```
+- Verify the price pairs: 
+  ```bash
+  cast call $ORDER_ADDRESS "orderData()" | \
+  grep -A 2 "predictPricePair"
+  ```
 
-## Common operations
+#### Get oracle prices
 
-Check the prediction setup:
+- Get the current oracle price:
+  ```bash
+  BASE="ETH"
+  QUOTE="USD"
+  cast call $SLINKY_PRECOMPILE "getPrice(string,string)" \
+  "$BASE" "$QUOTE"
+  ```
+#### Get the prediction results
 
-```bash
-# Get prediction configuration
-ORDER_ADDRESS="0x..."
-cast call $ORDER_ADDRESS "orderData()"
+- Get the Future ID: 
+  ```bash
+  FUTURE_ID=$(cast call $ORDER_ADDRESS "futureId()")
+  ```
+- Check the Future status: 
+  ```bash
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
+  ```
 
-# Verify price pairs
-cast call $ORDER_ADDRESS "orderData()" | \
-    grep -A 2 "predictPricePair"
-```
+### The security checklist
 
-Monitor oracle prices:
+- Verify the price pairs:  
+  ```bash
+  cast call $ORDER_ADDRESS "orderData()"
+  ```
+- Check the Future ID and status:  
+  ```bash
+  cast call $ORDER_ADDRESS "futureId()"
+  ```
+- Check the time window:
+  ```bash
+  cast call $ORDER_ADDRESS "validUntil()"
+  ```    
 
-```bash
-# Get current price
-BASE="ETH"
-QUOTE="USD"
-cast call $SLINKY_PRECOMPILE "getPrice(string,string)" \
-    "$BASE" "$QUOTE"
-```
+### Troubleshooting
 
-Track the prediction results:
+Here are some of the common deployment issues and solutions for them:
 
-```bash
-# Get future ID
-FUTURE_ID=$(cast call $ORDER_ADDRESS "futureId()")
-
-# Check prediction status
-cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
-```
-
-## Troubleshooting
-
-Invalid price pairs:
-
-```bash
-# Verify oracle pair format
-cast call $ORDER_ADDRESS "orderData()" | \
+- **The price pair is invalid**  
+  Solution: Verify the oracle pair format and check the supported pairs.
+  ```bash
+  cast call $ORDER_ADDRESS "orderData()" | \
     grep -A 2 "oraclePricePair"
-
-# Check supported pairs
-cast call $SLINKY_PRECOMPILE "getPrice(string,string)" \
+  cast call $SLINKY_PRECOMPILE "getPrice(string,string)" \
     "ETH" "USD"
-```
-
-Failed predictions:
-
-```bash
-# Check future status
-FUTURE_ID=$(cast call $ORDER_ADDRESS "futureId()")
-cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
-
-# Verify prediction format
-cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID" | \
-    grep "output"
-```
-
-Execution issues:
-
-```bash
-# Check validity window
-VALID_UNTIL=$(cast call $ORDER_ADDRESS "validUntil()")
-echo "Current: $(date +%s)"
-echo "Valid until: $VALID_UNTIL"
-
-# Verify execution conditions
-cast call $ORDER_ADDRESS "canExecute()"
-```
-
-## Security checklist
-
-Price pair configuration:
-
-```bash
-# Verify both pairs
-cast call $ORDER_ADDRESS "orderData()"
-```
-
-Prediction setup:
-
-```bash
-# Check future ID and status
-cast call $ORDER_ADDRESS "futureId()"
-```
-
-Time window:
-
-```bash
-# Verify not expired
-cast call $ORDER_ADDRESS "validUntil()"
-```
+  ```
+- **The prediction fails**  
+  Solution: Check the Future status and verify its format.
+  ```bash
+  FUTURE_ID=$(cast call $ORDER_ADDRESS "futureId()")
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID" | \
+      grep "output"
+  ```
+- **The Order execution fails**  
+  Solution: Check the validity window and verify the execution conditions.
+  ```bash
+  VALID_UNTIL=$(cast call $ORDER_ADDRESS "validUntil()")
+  echo "Current: $(date +%s)"
+  echo "Valid until: $VALID_UNTIL"
+  cast call $ORDER_ADDRESS "canExecute()"
+  ```
 
 ## Next steps
 

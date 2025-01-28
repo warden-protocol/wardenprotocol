@@ -22,11 +22,11 @@ To set up your deployment, take the following steps:
 1. Create an `.env` file with your environment configuration:
 
 ```bash
-# Network configuration
+# Network settings
 RPC_URL="http://127.0.0.1:8545"
 CHAIN_ID="12345"
 
-# Account configuration
+# Account settings
 MNEMONIC="your mnemonic phrase here"
 SCHEDULER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
 FACTORY_OWNER_ADDRESS="0x6EA8AC1673402989E7B653AE4E83B54173719C30"
@@ -89,69 +89,76 @@ forge build
        $TX_FIELDS
    ```
 
-## 3. Monitor the Order
+## Utility commands
 
-To monitor your Order, use the following commands:
+To monitor your Order and get additional Order data, use the commands listed below.
 
-- **The Order state**
-  - Check if the Order is executable:  
-    ```bash
-    cast call $ORDER_ADDRESS "canExecute()"
-    ```
-  - Check if the Order is executed:  
-     ```
-     cast call $ORDER_ADDRESS "isExecuted()"
-     ```
-  - Get the execution data:
-    ```
-    cast call $ORDER_ADDRESS "executionData()"
-    ```
-- **Events**
-  - Monitor the execution:  
-    ```bash
-    cast logs $ORDER_ADDRESS "Executed()"
-    ```
-  - Monitor new transactions:  
-    ```
-    cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
-    ```
-- **Prices**
-  - Get prices from the [oracle](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile):
-    ```bash
-    cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
-    ```
+### Monitor the Order
 
-## 4. Debug the Order
+#### Monitor the Order state
 
-To debug your Order, get additional information by using the following commands:
+- Check if the Order is executable:  
+  ```bash
+  cast call $ORDER_ADDRESS "canExecute()"
+  ```
+- Check if the Order is executed:  
+  ```bash
+  cast call $ORDER_ADDRESS "isExecuted()"
+  ```
+- Get the execution data:
+  ```bash
+  cast call $ORDER_ADDRESS "executionData()"
+  ```
 
-- **Raw transactions**  
-  - Get an unsigned transaction:  
-    ```bash
-    cast call $ORDER_ADDRESS "getTx()"
-    ```
-- **The registry**  
-  - Get the order creator from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
-    ```bash
-    cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
-    ```
-    Get the transaction details from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
-    ```bash
-    cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
-    ```
+#### Monitor events
+
+- Monitor the execution:  
+  ```bash
+  cast logs $ORDER_ADDRESS "Executed()"
+  ```
+- Monitor new transactions:  
+  ```bash
+  cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
+  ```
+
+#### Monitor prices
+
+- Get prices from the [oracle](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile):
+  ```bash
+  cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
+  ```
+
+### Debug the Order
+
+#### Check the transaction
+
+- Get the unsigned transaction:  
+  ```bash
+  cast call $ORDER_ADDRESS "getTx()"
+  ```
+#### Get data from the registry 
+
+- Get the order creator from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
+  ```bash
+  cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
+  ```
+- Get the transaction details from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
+  ```bash
+  cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
+  ```
 
 ## Troubleshooting
 
 Here are some of the common deployment issues and solutions for them:
 
 - **The Order creation fails**  
-  Solution: check the salt usage and verify the registry status.
+  Solution: Check the salt usage and verify the registry status.
   ```bash
   cast call $FACTORY_ADDRESS "usedSalts(bytes32)" $SALT
   cast call $REGISTRY_ADDRESS "isRegistered(address)" $ORDER_ADDRESS
   ```
 - **The Order execution fails**  
-  Solution: check the price feeds and verify the scheduler permissions.
+  Solution: Check the price feeds and verify the scheduler permissions.
   ```bash
   cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
   cast call $ORDER_ADDRESS "scheduler()"

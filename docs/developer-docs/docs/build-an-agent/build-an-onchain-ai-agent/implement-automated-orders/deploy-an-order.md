@@ -10,7 +10,7 @@ This article will guide you through deploying and monitoring automated Orders.
 
 You'll deploy the following:
 
-- The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-an-onchain-ai-agent/build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
+- The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
 - The [`BasicOrder`](implement-orders) contract
 
 When you implement more advanced Orders with price prediction, you'll [deploy them](../implement-automated-orders-with-price-prediction/deploy-an-order) in a similar way, adding extra parameters for the advanced features.
@@ -56,7 +56,7 @@ forge build
        --chain-id $CHAIN_ID
    ```
   
-   This will deploy the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-an-onchain-ai-agent/build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts.
+   This will deploy the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts.
 
 3. Set the Order parameters:
    

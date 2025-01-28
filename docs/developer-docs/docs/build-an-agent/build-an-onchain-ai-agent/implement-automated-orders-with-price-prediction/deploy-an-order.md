@@ -10,7 +10,7 @@ This article will guide you through deploying and monitoring automated Orders wi
 
 You'll deploy the following:
 
-- The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-an-onchain-ai-agent/build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
+- The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
 - The [`AdvancedOrder`](implement-orders) contract
 
 ## 1. Set up the deployment

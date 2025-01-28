@@ -216,7 +216,7 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 	prophet.Register("echo", echo.Handler{})
 
 	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
-		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(cast.ToString(appOpts.Get("pricepred.url"))))
+		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(cast.ToString(appOpts.Get("pricepred.solve_url")), cast.ToString(appOpts.Get("pricepred.verify_url"))))
 	}
 }
 

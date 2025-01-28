@@ -22,12 +22,14 @@ var client = http.Client{
 // PricePredictorSolidity is a handler for the price prediction AI model,
 // wrapping input and output in Solidity ABI types.
 type PricePredictorSolidity struct {
-	URL string
+	SolveURL  string
+	VerifyURL string
 }
 
-func NewPricePredictorSolidity(url string) PricePredictorSolidity {
+func NewPricePredictorSolidity(solveUrl string, verifyUrl string) PricePredictorSolidity {
 	return PricePredictorSolidity{
-		URL: url,
+		SolveURL:  solveUrl,
+		VerifyURL: verifyUrl,
 	}
 }
 
@@ -37,25 +39,37 @@ type InputData struct {
 	FalsePositiveRate [2]uint64
 }
 
+func (i InputData) ToPredictRequest() PredictRequest {
+	tm := time.Unix(i.Date.Int64(), 0)
+	dateStr := tm.Format("2006-01-02")
+
+	return PredictRequest{
+		SolverInput: RequestSolverInput{
+			Tokens:        i.Tokens,
+			TargetDate:    dateStr,
+			AdversaryMode: false,
+		},
+		FalsePositiveRate: float64(i.FalsePositiveRate[0]) / float64(i.FalsePositiveRate[1]),
+	}
+}
+
+type OutputData struct {
+	TokenPreds    []*big.Int
+	SolverReceipt struct {
+		BloomFilter []byte
+		CountItems  *big.Int
+	}
+}
+
 func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	inputData, err := decodeInput(input)
 	if err != nil {
 		return nil, err
 	}
 
-	tm := time.Unix(inputData.Date.Int64(), 0)
+	req := inputData.ToPredictRequest()
 
-	dateStr := tm.Format("2006-01-02")
-	req := Request{
-		SolverInput: RequestSolverInput{
-			Tokens:        inputData.Tokens,
-			TargetDate:    dateStr,
-			AdversaryMode: false,
-		},
-		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
-	}
-
-	res, err := Predict(ctx, req, s.URL)
+	res, err := send[PredictRequest, PredictResponse](ctx, req, s.SolveURL)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -99,8 +113,18 @@ func decodeInput(input []byte) (InputData, error) {
 	return inputData.Data, nil
 }
 
-func encodeOutput(req Request, res Response) ([]byte, error) {
-	typ, err := abi.NewType("uint256[]", "", nil)
+func getOutputABIType() (abi.Type, error) {
+	return abi.NewType("tuple", "", []abi.ArgumentMarshaling{
+		{Name: "tokenPreds", Type: "uint256[]"},
+		{Name: "solverReceipt", Type: "tuple", Components: []abi.ArgumentMarshaling{
+			{Name: "bloomFilter", Type: "bytes"},
+			{Name: "countItems", Type: "uint256"},
+		}},
+	})
+}
+
+func encodeOutput(req PredictRequest, res PredictResponse) ([]byte, error) {
+	typ, err := getOutputABIType()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,7 +143,18 @@ func encodeOutput(req Request, res Response) ([]byte, error) {
 		tokenPreds[i], _ = big.NewFloat(0).Mul(pred, decimals).Int(nil)
 	}
 
-	enc, err := args.Pack(tokenPreds)
+	output := OutputData{
+		TokenPreds: tokenPreds,
+		SolverReceipt: struct {
+			BloomFilter []byte
+			CountItems  *big.Int
+		}{
+			BloomFilter: res.SolverReceipt.BloomFilter,
+			CountItems:  big.NewInt(int64(res.SolverReceipt.CountItems)),
+		},
+	}
+
+	enc, err := args.Pack(output)
 	if err != nil {
 		return nil, err
 	}
@@ -127,8 +162,61 @@ func encodeOutput(req Request, res Response) ([]byte, error) {
 	return enc, nil
 }
 
+func decodeOutput(output []byte) (OutputData, error) {
+	typ, err := getOutputABIType()
+	if err != nil {
+		return OutputData{}, err
+	}
+
+	args := abi.Arguments{
+		{Type: typ},
+	}
+
+	unpackArgs, err := args.Unpack(output)
+	if err != nil {
+		return OutputData{}, err
+	}
+
+	var outputData struct {
+		Data OutputData
+	}
+	err = args.Copy(&outputData, unpackArgs)
+	if err != nil {
+		return OutputData{}, err
+	}
+
+	return outputData.Data, nil
+}
+
 func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output []byte) error {
-	// todo: verify output
+	decodedInput, err := decodeInput(input)
+	if err != nil {
+		return err
+	}
+
+	decodedOutput, err := decodeOutput(output)
+	if err != nil {
+		return err
+	}
+
+	verifyReq := VerifyRequest{
+		SolverRequest: decodedInput.ToPredictRequest(),
+		SolverReceipt: SolverReceipt{
+			BloomFilter: decodedOutput.SolverReceipt.BloomFilter,
+			CountItems:  int(decodedOutput.SolverReceipt.CountItems.Int64()),
+		},
+		VerificationRatio: 0.01,
+	}
+
+	res, err := send[VerifyRequest, VerifyResponse](ctx, verifyReq, s.VerifyURL)
+	if err != nil {
+		return err
+	}
+
+	if !res.IsVerified {
+		return fmt.Errorf("pricepred: verification failed")
+	}
+
 	return nil
 }
 
@@ -138,31 +226,46 @@ type RequestSolverInput struct {
 	AdversaryMode bool     `json:"adversaryMode"`
 }
 
-type Request struct {
+type PredictRequest struct {
 	SolverInput       RequestSolverInput `json:"solverInput"`
 	FalsePositiveRate float64            `json:"falsePositiveRate"`
 }
 
-type Response struct {
-	SolverOutput  map[string]float64 `json:"solverOutput"`
-	SolverReceipt struct {
-		BloomFilter []byte `json:"bloomFilter"`
-		CountItems  int    `json:"countItems"`
-	} `json:"solverReceipt"`
+type SolverReceipt struct {
+	BloomFilter []byte `json:"bloomFilter"`
+	CountItems  int    `json:"countItems"`
 }
 
-func Predict(ctx context.Context, req Request, URL string) (Response, error) {
+type VerifyRequest struct {
+	SolverRequest     PredictRequest `json:"solverRequest"`
+	SolverReceipt     SolverReceipt  `json:"solverReceipt"`
+	VerificationRatio float64        `json:"verificationRatio"`
+}
+
+type PredictResponse struct {
+	SolverOutput  map[string]float64 `json:"solverOutput"`
+	SolverReceipt SolverReceipt      `json:"solverReceipt"`
+}
+
+type VerifyResponse struct {
+	CountItems int  `json:"countItems"`
+	IsVerified bool `json:"isVerified"`
+}
+
+func send[Req, Resp any](ctx context.Context, req Req, URL string) (Resp, error) {
 	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
-		return Response{}, err
+		var empty Resp
+		return empty, err
 	}
 
 	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", URL, bytes.NewReader(reqBody))
 	if err != nil {
-		return Response{}, err
+		var empty Resp
+		return empty, err
 	}
 
 	httpReq.Header.Set("Accept", "application/json")
@@ -170,22 +273,26 @@ func Predict(ctx context.Context, req Request, URL string) (Response, error) {
 
 	res, err := client.Do(httpReq)
 	if err != nil {
-		return Response{}, err
+		var empty Resp
+		return empty, err
 	}
 	defer res.Body.Close()
 	response, err := io.ReadAll(res.Body)
 	if err != nil {
-		return Response{}, err
+		var empty Resp
+		return empty, err
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return Response{}, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
+		var empty Resp
+		return empty, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
 	}
 
-	var resResp Response
+	var resResp Resp
 	err = json.Unmarshal(response, &resResp)
 	if err != nil {
-		return Response{}, err
+		var empty Resp
+		return empty, err
 	}
 
 	return resResp, nil

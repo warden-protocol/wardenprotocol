@@ -4,15 +4,17 @@ package config
 // be set in the app.toml file.
 
 type Config struct {
-	Enabled bool   `mapstructure:"enabled" toml:"enabled"`
-	URL     string `mapstructure:"url" toml:"url"`
+	Enabled   bool   `mapstructure:"enabled" toml:"enabled"`
+	SolveURL  string `mapstructure:"solve_url" toml:"solve_url"`
+	VerifyURL string `mapstructure:"verify_url" toml:"verify_url"`
 }
 
 // DefaultConfig returns a default configuration for pricepred.
 func DefaultConfig() *Config {
 	return &Config{
-		Enabled: true,
-		URL:     "https://tpc.devnet.wardenprotocol.org/api/task/inference/solve",
+		Enabled:   true,
+		SolveURL:  "https://tpc.devnet.wardenprotocol.org/api/task/inference/solve",
+		VerifyURL: "https://tpc.devnet.wardenprotocol.org/api/task/inference/verify",
 	}
 }
 
@@ -26,5 +28,6 @@ const DefaultEVMConfigTemplate = `
 enabled = "{{ .PricePred.Enabled }}"
 
 # URL used for price prediction handler
-url = "{{ .PricePred.URL }}"
+solve_url = "{{ .PricePred.SolveURL }}"
+verify_url = "{{ .PricePred.VerifyURL }}"
 `

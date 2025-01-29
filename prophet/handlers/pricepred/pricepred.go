@@ -2,32 +2,30 @@
 package pricepred
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"math/big"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
-var client = http.Client{
-	Timeout: 3 * time.Second,
-}
-
 // PricePredictorSolidity is a handler for the price prediction AI model,
 // wrapping input and output in Solidity ABI types.
 type PricePredictorSolidity struct {
-	URL string
+	c *client
 }
 
-func NewPricePredictorSolidity(url string) PricePredictorSolidity {
+func NewPricePredictorSolidity(url *url.URL) PricePredictorSolidity {
+	httpClient := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+
 	return PricePredictorSolidity{
-		URL: url,
+		c: newClient(httpClient, url),
 	}
 }
 
@@ -46,7 +44,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	tm := time.Unix(inputData.Date.Int64(), 0)
 
 	dateStr := tm.Format("2006-01-02")
-	req := Request{
+	req := PredictRequest{
 		SolverInput: RequestSolverInput{
 			Tokens:        inputData.Tokens,
 			TargetDate:    dateStr,
@@ -55,7 +53,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
 	}
 
-	res, err := Predict(ctx, req, s.URL)
+	res, err := s.c.Predict(ctx, req)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -99,7 +97,7 @@ func decodeInput(input []byte) (InputData, error) {
 	return inputData.Data, nil
 }
 
-func encodeOutput(req Request, res Response) ([]byte, error) {
+func encodeOutput(req PredictRequest, res PredictResponse) ([]byte, error) {
 	typ, err := abi.NewType("uint256[]", "", nil)
 	if err != nil {
 		log.Fatal(err)
@@ -130,63 +128,4 @@ func encodeOutput(req Request, res Response) ([]byte, error) {
 func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output []byte) error {
 	// todo: verify output
 	return nil
-}
-
-type RequestSolverInput struct {
-	Tokens        []string `json:"tokens"`
-	TargetDate    string   `json:"target_date"`
-	AdversaryMode bool     `json:"adversaryMode"`
-}
-
-type Request struct {
-	SolverInput       RequestSolverInput `json:"solverInput"`
-	FalsePositiveRate float64            `json:"falsePositiveRate"`
-}
-
-type Response struct {
-	SolverOutput  map[string]float64 `json:"solverOutput"`
-	SolverReceipt struct {
-		BloomFilter []byte `json:"bloomFilter"`
-		CountItems  int    `json:"countItems"`
-	} `json:"solverReceipt"`
-}
-
-func Predict(ctx context.Context, req Request, URL string) (Response, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
-	defer cancel()
-
-	reqBody, err := json.Marshal(req)
-	if err != nil {
-		return Response{}, err
-	}
-
-	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", URL, bytes.NewReader(reqBody))
-	if err != nil {
-		return Response{}, err
-	}
-
-	httpReq.Header.Set("Accept", "application/json")
-	httpReq.Header.Set("Content-Type", "application/json")
-
-	res, err := client.Do(httpReq)
-	if err != nil {
-		return Response{}, err
-	}
-	defer res.Body.Close()
-	response, err := io.ReadAll(res.Body)
-	if err != nil {
-		return Response{}, err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		return Response{}, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
-	}
-
-	var resResp Response
-	err = json.Unmarshal(response, &resResp)
-	if err != nil {
-		return Response{}, err
-	}
-
-	return resResp, nil
 }

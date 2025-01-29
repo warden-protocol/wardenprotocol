@@ -111,6 +111,6 @@ cast call $ORDER "canExecute()"
 
 ## What's next?
 
-Please note that these Orders are just examples of what you can build with Agents. Sky is the limit! If you have an interesting idea, make a PR to the [repository with our example](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders).
+Please note that these Orders are just examples of what you can build with Agents. The sky is the limit! If you have an interesting idea, make a PR to the [example repo](https://github.com/warden-protocol/agent-kit-examples).
 
 Alternatively, you can reach out to us for any questions or feedback: developers@wardenprotocol.org

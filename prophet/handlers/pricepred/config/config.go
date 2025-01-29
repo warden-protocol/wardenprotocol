@@ -12,7 +12,7 @@ type Config struct {
 func DefaultConfig() *Config {
 	return &Config{
 		Enabled: true,
-		URL:     "https://tpc.devnet.wardenprotocol.org/api/task/inference/solve",
+		URL:     "https://tpc.devnet.wardenprotocol.org",
 	}
 }
 

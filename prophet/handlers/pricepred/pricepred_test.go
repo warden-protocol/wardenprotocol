@@ -1,7 +1,6 @@
 package pricepred
 
 import (
-	"context"
 	"encoding/base64"
 	"encoding/hex"
 	"math/big"
@@ -53,7 +52,7 @@ func TestEncodeOutput(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			req := Request{
+			req := PredictRequest{
 				SolverInput: RequestSolverInput{
 					Tokens:        c.request,
 					TargetDate:    "2022-01-01",
@@ -61,7 +60,7 @@ func TestEncodeOutput(t *testing.T) {
 				},
 				FalsePositiveRate: 0.01,
 			}
-			res := Response{
+			res := PredictResponse{
 				SolverOutput: map[string]float64{
 					"uniswap": 17.435131034851075,
 					"tether":  1.000115715622902,
@@ -74,25 +73,5 @@ func TestEncodeOutput(t *testing.T) {
 
 			require.Equal(t, c.expected, hex.EncodeToString(actual))
 		})
-	}
-}
-
-func TestPredict(t *testing.T) {
-	//t.Skip("this test relies on external HTTP call")
-
-	ctx := context.Background()
-	res, err := Predict(ctx, Request{
-		SolverInput: RequestSolverInput{
-			Tokens:        []string{"bitcoin", "tether", "uniswap"},
-			TargetDate:    "2022-01-01",
-			AdversaryMode: false,
-		},
-		FalsePositiveRate: 0.01,
-	}, "https://prediction.devnet.wardenprotocol.org/task/inference/solve")
-	require.NoError(t, err)
-	require.Len(t, res.SolverOutput, 3)
-
-	for token, pred := range res.SolverOutput {
-		require.NotZero(t, pred, "prediction for %t is zero", token)
 	}
 }

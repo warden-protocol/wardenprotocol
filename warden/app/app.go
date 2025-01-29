@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
 
@@ -216,7 +217,12 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 	prophet.Register("echo", echo.Handler{})
 
 	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
-		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(cast.ToString(appOpts.Get("pricepred.url"))))
+		u := cast.ToString(appOpts.Get("pricepred.url"))
+		url, err := url.Parse(u)
+		if err != nil {
+			panic(fmt.Errorf("invalid pricepred url: %s", u))
+		}
+		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(url))
 	}
 }
 

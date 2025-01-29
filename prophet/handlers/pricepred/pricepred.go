@@ -72,7 +72,10 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 		return nil, err
 	}
 
-	req := inputData.ToPredictRequest()
+	req, err := inputData.ToPredictRequest()
+	if err != nil {
+		return nil, err
+	}
 
 	res, err := send[PredictRequest, PredictResponse](ctx, req, s.SolveURL)
 	if err != nil {
@@ -204,8 +207,13 @@ func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output
 		return err
 	}
 
+	req, err := decodedInput.ToPredictRequest()
+	if err != nil {
+		return err
+	}
+
 	verifyReq := VerifyRequest{
-		SolverRequest: decodedInput.ToPredictRequest(),
+		SolverRequest: req,
 		SolverReceipt: SolverReceipt{
 			BloomFilter: decodedOutput.SolverReceipt.BloomFilter,
 			CountItems:  int(decodedOutput.SolverReceipt.CountItems.Int64()),

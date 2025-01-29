@@ -39,9 +39,14 @@ type InputData struct {
 	FalsePositiveRate [2]uint64
 }
 
-func (i InputData) ToPredictRequest() PredictRequest {
+func (i InputData) ToPredictRequest() (PredictRequest, error) {
 	tm := time.Unix(i.Date.Int64(), 0)
 	dateStr := tm.Format("2006-01-02")
+
+	if i.FalsePositiveRate[1] == 0 {
+		return PredictRequest{}, fmt.Errorf("invalid false positive rate")
+	}
+	fpr := float64(i.FalsePositiveRate[0]) / float64(i.FalsePositiveRate[1])
 
 	return PredictRequest{
 		SolverInput: RequestSolverInput{
@@ -49,8 +54,8 @@ func (i InputData) ToPredictRequest() PredictRequest {
 			TargetDate:    dateStr,
 			AdversaryMode: false,
 		},
-		FalsePositiveRate: float64(i.FalsePositiveRate[0]) / float64(i.FalsePositiveRate[1]),
-	}
+		FalsePositiveRate: fpr,
+	}, nil
 }
 
 type OutputData struct {

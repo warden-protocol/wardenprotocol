@@ -15,33 +15,49 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
-var URL = "https://prediction.devnet.wardenprotocol.org/task/inference/solve"
-
 var client = http.Client{
 	Timeout: 3 * time.Second,
 }
 
 // PricePredictorSolidity is a handler for the price prediction AI model,
 // wrapping input and output in Solidity ABI types.
-type PricePredictorSolidity struct{}
+type PricePredictorSolidity struct {
+	URL string
+}
+
+func NewPricePredictorSolidity(url string) PricePredictorSolidity {
+	return PricePredictorSolidity{
+		URL: url,
+	}
+}
+
+type InputData struct {
+	Date              *big.Int
+	Tokens            []string
+	FalsePositiveRate [2]uint64
+}
 
 func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]byte, error) {
-	tokens, err := decodeInput(input)
+	inputData, err := decodeInput(input)
 	if err != nil {
 		return nil, err
 	}
 
+	tm := time.Unix(inputData.Date.Int64(), 0)
+
+	dateStr := tm.Format("2006-01-02")
 	req := Request{
 		SolverInput: RequestSolverInput{
-			Tokens:        tokens,
-			TargetDate:    "2022-01-01",
+			Tokens:        inputData.Tokens,
+			TargetDate:    dateStr,
 			AdversaryMode: false,
 		},
-		FalsePositiveRate: 0.01,
+		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
 	}
 
-	res, err := Predict(ctx, req)
+	res, err := Predict(ctx, req, s.URL)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -53,26 +69,34 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	return encodedRes, nil
 }
 
-func decodeInput(input []byte) ([]string, error) {
-	typ, err := abi.NewType("string[]", "string[]", nil)
+func decodeInput(input []byte) (InputData, error) {
+	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
+		{Name: "date", Type: "uint256"},
+		{Name: "tokens", Type: "string[]"},
+		{Name: "falsePositiveRate", Type: "uint64[2]"},
+	})
 	if err != nil {
-		return nil, err
+		return InputData{}, err
 	}
+
 	args := abi.Arguments{
 		{Type: typ},
 	}
 
 	unpackArgs, err := args.Unpack(input)
 	if err != nil {
-		return nil, err
+		return InputData{}, err
 	}
 
-	tokens, ok := unpackArgs[0].([]string)
-	if !ok {
-		return nil, fmt.Errorf("failed to unpack input")
+	var inputData struct {
+		Data InputData
+	}
+	err = args.Copy(&inputData, unpackArgs)
+	if err != nil {
+		return InputData{}, err
 	}
 
-	return tokens, nil
+	return inputData.Data, nil
 }
 
 func encodeOutput(req Request, res Response) ([]byte, error) {
@@ -127,7 +151,7 @@ type Response struct {
 	} `json:"solverReceipt"`
 }
 
-func Predict(ctx context.Context, req Request) (Response, error) {
+func Predict(ctx context.Context, req Request, URL string) (Response, error) {
 	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 

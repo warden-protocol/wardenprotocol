@@ -108,7 +108,8 @@ contract CreateOrder is Script {
         Types.AdvancedOrderData memory orderData = Types.AdvancedOrderData({
             priceCondition: priceCondition,
             oraclePricePair: oraclePricePair,
-            predictPricePair: predictPricePair
+            predictPricePair: predictPricePair,
+            pricePredictDate: block.timestamp + 24 hours
         });
         Types.CommonExecutionData memory commonExecutionData = Types.CommonExecutionData({
             creatorDefinedTxFields: creatorDefinedTxFields,

@@ -35,6 +35,8 @@ library Types {
         PricePair predictPricePair;
         // Price condition for execution: should be executing if current price meets condition to prediced price
         PriceCondition priceCondition;
+        // seconds timestamp
+        uint256 pricePredictDate;
     }
 
     // Data for execution

@@ -8,6 +8,8 @@ import (
 
 	evmservercfg "github.com/evmos/evmos/v20/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
+
+	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred/config"
 )
 
 // initCometBFTConfig helps to override default CometBFT Config values.
@@ -34,6 +36,9 @@ func initAppConfig() (string, interface{}) {
 		JSONRPC evmservercfg.JSONRPCConfig `mapstructure:"json-rpc"`
 		TLS     evmservercfg.TLSConfig     `mapstructure:"tls"`
 		Rosetta evmservercfg.RosettaConfig `mapstructure:"rosetta"`
+
+		// Prophet handlers
+		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -85,19 +90,23 @@ func initAppConfig() (string, interface{}) {
 	}
 	tlsConfig := evmservercfg.DefaultTLSConfig()
 
+	pricePredictionConfig := pricepredconfig.DefaultConfig()
+
 	customAppConfig := CustomAppConfig{
-		Config:  *srvCfg,
-		Oracle:  oracleConfig,
-		EVM:     *evmConfig,
-		JSONRPC: jsonRpcConfig,
-		TLS:     *tlsConfig,
-		Rosetta: *evmservercfg.DefaultRosettaConfig(),
+		Config:    *srvCfg,
+		Oracle:    oracleConfig,
+		EVM:       *evmConfig,
+		JSONRPC:   jsonRpcConfig,
+		TLS:       *tlsConfig,
+		Rosetta:   *evmservercfg.DefaultRosettaConfig(),
+		PricePred: *pricePredictionConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +
 		oracleconfig.DefaultConfigTemplate +
 		evmservercfg.DefaultEVMConfigTemplate +
-		evmservercfg.DefaultRosettaConfigTemplate
+		evmservercfg.DefaultRosettaConfigTemplate +
+		pricepredconfig.DefaultEVMConfigTemplate
 
 	// Edit the default template file
 	//

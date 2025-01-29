@@ -15,6 +15,12 @@ error Unauthorized();
 
 event Executed();
 
+struct PricePredictInput {
+    uint256 date;
+    string[] tokens;
+    uint64[2] falsePositiveRate;
+}
+
 contract AdvancedOrder is AbstractOrder, IExecution {
     Types.AdvancedOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
@@ -45,7 +51,13 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         predictTokens[0] = _orderData.predictPricePair.base;
         predictTokens[1] = _orderData.predictPricePair.quote;
 
-        futureId = ASYNC_PRECOMPILE.addFuture("pricepred", abi.encode(predictTokens));
+        uint64[2] memory falsePositiveRate = [uint64(1), uint64(100)];
+        PricePredictInput memory pricePredictInput = PricePredictInput({
+            date: _orderData.pricePredictDate,
+            tokens: predictTokens,
+            falsePositiveRate: falsePositiveRate
+        });
+        futureId = ASYNC_PRECOMPILE.addFuture("pricepred", abi.encode(pricePredictInput));
         REGISTRY = Registry(registry);
 
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {

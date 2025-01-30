@@ -34,7 +34,7 @@ You'll learn how to build two types of Orders:
   This is a more advanced version of automated Orders. It uses the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module to make AI-driven price predictions. Then it performs token swaps based on these predictions, signing transactions with [Keychains](/learn/glossary#keychain).
 
   :::note
-  The price prediction system is a solution implemented by Warden. We're working on enabling smart contracts to consume arbitrary HTTP requests.
+  The price prediction model is just an example of what you can build with [`x/async`](/learn/warden-protocol-modules/x-async). With this module, you can implement any logic combining off-chain computation with on-chain verification – limited only by your imagination.
   ::: 
 
 ## Architecture

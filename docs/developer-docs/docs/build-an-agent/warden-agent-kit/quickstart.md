@@ -2,11 +2,18 @@
 sidebar_position: 2
 ---
 
-# Get started with Agent Kit
+# Quickstart
+
+This guide will help you quickly set up and start building AI agents capable of interacting with both on-chain and off-chain systems. Whether you're new to AI agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
 
 ## Using an example
 
-TODO: explainer and link to cli-agent example
+The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing on-chain interactions.
+
+-   Check out the [CLI Agent Example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
+-   Dive into the [Agent Kit Examples Repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development.
+
+By leveraging these resources, you can quickly familiarize yourself with the Warden Agent Kit's capabilities and start building your own custom AI agents.
 
 ## Starting from sratch
 
@@ -15,7 +22,7 @@ TODO: explainer and link to cli-agent example
 -   [OpenAI API Key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key)
 -   Node.js 18 or higher
 
-## Installation
+### Installation
 
 To install the Warden Agent Kit Extension - Langchain, use the following command:
 

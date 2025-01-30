@@ -1,7 +1,7 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Warden Agent Core Actions
+# Agent Core Actions
 
 TODO: list tools and capabilities of agent-kit-core tools

@@ -1,0 +1,11 @@
+{
+  "position": 1,
+  "label": "Warden Agent Kit",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Warden Agent Kit"
+  },
+  "customProps": {}
+}

@@ -1,11 +1,11 @@
 {
-  "position": 5,
-  "label": "Precompiles",
+  "position": 6,
+  "label": "Implement automated Orders",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Precompiles"
+    "title": "Implement automated Orders"
   },
   "customProps": {}
 }

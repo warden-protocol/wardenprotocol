@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Quickstart
+# Quick start
 
 This guide will help you quickly set up and start building AI agents capable of interacting with both on-chain and off-chain systems. Whether you're new to AI agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
 

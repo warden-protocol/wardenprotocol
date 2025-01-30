@@ -1,10 +1,9 @@
 package pricepred
 
 import (
-	"context"
 	"encoding/base64"
-	"encoding/hex"
 	"math/big"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -18,10 +17,11 @@ func TestDecodeInput(t *testing.T) {
 	}{
 		{
 			name:  "single element list",
-			input: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ5NS7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0VUSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+			input: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ5unngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2JpdGNvaW4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ0ZXRoZXIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHdW5pc3dhcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABY=",
 			expected: InputData{
-				Date:              big.NewInt(1737708268),
-				Tokens:            []string{"ETH"},
+				Date:              big.NewInt(1738254238),
+				Tokens:            []string{"bitcoin", "tether", "uniswap"},
+				Metrics:           []*big.Int{big.NewInt(0), big.NewInt(22)},
 				FalsePositiveRate: [2]uint64{1, 100},
 			},
 		},
@@ -33,66 +33,133 @@ func TestDecodeInput(t *testing.T) {
 			require.NoError(t, err)
 			decodedInput, err := decodeInput(bz)
 			require.NoError(t, err)
-			require.Equal(t, c.expected, decodedInput)
+			requireEqualInt(t, c.expected.Date, decodedInput.Date)
+			require.Equal(t, c.expected.Tokens, decodedInput.Tokens)
+			for i := range c.expected.Metrics {
+				requireEqualInt(t, c.expected.Metrics[i], decodedInput.Metrics[i])
+			}
+			require.Equal(t, c.expected.FalsePositiveRate, decodedInput.FalsePositiveRate)
 		})
 	}
 }
 
-func TestEncodeOutput(t *testing.T) {
+func TestBuildOutput(t *testing.T) {
 	cases := []struct {
-		name     string
-		request  []string
-		expected string
+		name           string
+		inputData      InputData
+		req            PredictRequest
+		res            PredictResponse
+		backtestingRes *BacktestingResponse
+		expected       OutputData
 	}{
 		{
-			name:     "single element list",
-			request:  []string{"bitcoin", "tether", "uniswap"},
-			expected: "00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000018d6e7f01865e90000000000000000000000000000000000000000000000000000002387ffdba3cf9c000000000000000000000000000000000000000000000000026b6b97cf726620",
-		},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			req := Request{
+			name: "with backtesting",
+			inputData: InputData{
+				Metrics: []*big.Int{
+					big.NewInt(int64(Count)),
+					big.NewInt(int64(P75)),
+				},
+			},
+			req: PredictRequest{
 				SolverInput: RequestSolverInput{
-					Tokens:        c.request,
+					Tokens:        []string{"uniswap", "tether", "bitcoin"},
 					TargetDate:    "2022-01-01",
 					AdversaryMode: false,
 				},
 				FalsePositiveRate: 0.01,
-			}
-			res := Response{
+			},
+			res: PredictResponse{
 				SolverOutput: map[string]float64{
 					"uniswap": 17.435131034851075,
 					"tether":  1.000115715622902,
 					"bitcoin": 45820.74676003456,
 				},
-			}
+			},
+			backtestingRes: &BacktestingResponse{
+				SolverOutput: BacktestingSolverOutput{
+					Tokens: map[string]BacktestingToken{
+						"uniswap": {
+							Metrics: BacktestingMetrics{
+								Count: 1,
+								P75:   2,
+							},
+						},
+						"tether": {
+							Metrics: BacktestingMetrics{
+								Count: 3,
+								P75:   4,
+							},
+						},
+						"bitcoin": {
+							Metrics: BacktestingMetrics{
+								Count: 5,
+								P75:   6,
+							},
+						},
+					},
+				},
+			},
+			expected: OutputData{
+				Predictions: []*big.Int{
+					float64ToBigInt(17.435131034851075, big.NewFloat(1e16)),
+					float64ToBigInt(1.000115715622902, big.NewFloat(1e16)),
+					float64ToBigInt(45820.74676003456, big.NewFloat(1e16)),
+				},
+				Metrics: [][]*big.Int{
+					{big.NewInt(1), big.NewInt(2e16)},
+					{big.NewInt(3), big.NewInt(4e16)},
+					{big.NewInt(5), big.NewInt(6e16)},
+				},
+			},
+		},
+	}
 
-			actual, err := encodeOutput(req, res)
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			actual, err := buildOutputData(c.inputData, c.req, c.res, c.backtestingRes)
 			require.NoError(t, err)
-
-			require.Equal(t, c.expected, hex.EncodeToString(actual))
+			require.Len(t, actual.Metrics, len(c.expected.Metrics))
+			for i := range actual.Metrics {
+				requireEqualInts(t, c.expected.Metrics[i], actual.Metrics[i])
+			}
+			requireEqualInts(t, c.expected.Predictions, actual.Predictions)
 		})
 	}
 }
 
-func TestPredict(t *testing.T) {
-	//t.Skip("this test relies on external HTTP call")
+func TestAllMetricNamesCovered(t *testing.T) {
+	// this test assumes that the MetricName enum is mapped to the field IDs of
+	// the [BacktestingMetrics] struct
+	bmType := reflect.TypeOf(BacktestingMetrics{})
+	n := bmType.NumField()
+	for i := range n {
+		inputData := InputData{Metrics: []*big.Int{big.NewInt(int64(i))}}
 
-	ctx := context.Background()
-	res, err := Predict(ctx, Request{
-		SolverInput: RequestSolverInput{
-			Tokens:        []string{"bitcoin", "tether", "uniswap"},
-			TargetDate:    "2022-01-01",
-			AdversaryMode: false,
-		},
-		FalsePositiveRate: 0.01,
-	}, "https://prediction.devnet.wardenprotocol.org/task/inference/solve")
-	require.NoError(t, err)
-	require.Len(t, res.SolverOutput, 3)
-
-	for token, pred := range res.SolverOutput {
-		require.NotZero(t, pred, "prediction for %t is zero", token)
+		req := PredictRequest{
+			SolverInput: RequestSolverInput{
+				Tokens:        []string{"uniswap", "tether", "bitcoin"},
+				TargetDate:    "2022-01-01",
+				AdversaryMode: false,
+			},
+			FalsePositiveRate: 0.01,
+		}
+		res := PredictResponse{}
+		backtestingRes := &BacktestingResponse{}
+		actual, err := buildOutputData(inputData, req, res, backtestingRes)
+		require.NoError(t, err)
+		require.NotEmpty(t, actual)
 	}
+}
+
+func requireEqualInts(t *testing.T, expected, actual []*big.Int) {
+	t.Helper()
+	require.Len(t, actual, len(expected))
+	for i := range expected {
+		requireEqualInt(t, expected[i], actual[i])
+	}
+}
+
+func requireEqualInt(t *testing.T, expected, actual *big.Int) {
+	t.Helper()
+	require.Zerof(t, expected.Cmp(actual), "expected %s, got %s", expected, actual)
 }

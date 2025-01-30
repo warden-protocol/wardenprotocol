@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# Run the CLI Agent example
+# Run the CLI Agent Example
 
 ## Overview
 
@@ -112,7 +112,11 @@ A new space has been successfully created! If you need any further assistance, j
 -------------------
 ```
 
-:::tip A comprehensive list of all the available tools can be found [here](/build-an-agent/warden-agent-kit/agent-actions) or just ask your agent `what capabilities do you have?`. You can also [add more capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities) to your agent using exisiting Langchain tools or by adding your own custom tool. :::
+:::tip
+
+A comprehensive list of all the available tools can be found [here](/build-an-agent/warden-agent-kit/agent-actions) or just ask your agent `what capabilities do you have?`. You can also [add more capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities) to your agent using exisiting Langchain tools or by adding your own custom tool.
+
+:::
 
 ## Next steps
 

@@ -15,7 +15,7 @@ The fastest way to get started is by exploring our **CLI Agent Example**, which 
 
 By leveraging these resources, you can quickly familiarize yourself with the Warden Agent Kit's capabilities and start building your own custom AI agents.
 
-## Starting from sratch
+## Starting from scratch
 
 ### Prerequisites
 

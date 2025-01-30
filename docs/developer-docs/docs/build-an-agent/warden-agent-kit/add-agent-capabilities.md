@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Add agent capabilities
+# Add Agent Capabilities
 
 ## Incorporate Existing LangChain Tools
 
@@ -19,19 +19,7 @@ LangChain's strength lies in its rich library of community-driven [tools](https:
 
 ## Adding Custom Tools
 
-# Developer Documentation: Adding a Custom Tool to a Warden Agent
-
-## Overview
-
 This guide explains how to add a custom tool to a Warden Agent using the **Warden Agent Kit**. A custom tool is a functionality or utility that can be accessed by the agent to perform specific tasks, such as interacting with APIs, processing data, or executing logic.
-
-### Prerequisites
-
-Before adding a custom tool, ensure you have:
-
-1. **Warden Agent Kit** installed and set up in your project.
-2. The necessary environment variables configured, particularly for private keys or other required settings.
-3. Familiarity with JavaScript or TypeScript, as this example uses JavaScript.
 
 ## Steps to Add a Custom Tool
 

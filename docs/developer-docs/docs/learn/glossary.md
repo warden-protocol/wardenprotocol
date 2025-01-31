@@ -10,25 +10,25 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 1. A user defines a new Approval Rule in the [Intent-Specific Language](#intent-specific-language).
 2. A tokenizer breaks the Approval Rule into tokens representing the smallest elements of the [Intent-Specific Language](#intent-specific-language).
-3. A parser validates the syntactic structure of the definition and represents it as an AST, which is stored on-chain.
+3. A parser validates the syntactic structure of the definition and represents it as an AST, which is stored onchain.
 
 ---
 
 ## Action
 
-An Action is an on-chain action (transaction) on the Warden Protocol:
+An Action is an onchain action (transaction) on the Warden Protocol:
 
 - A smart contract invocation, such as swapping ETH for MATIC on UniSwap
 - A [key request](#key-request) or a [signature request](#signature-request)
 - Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
 
-An Action happens after an [Approval](#approval) is granted according to a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent). In the future, we're going to implement off-chain Actions, such as sending a message to a Slack channel.
+An Action happens after an [Approval](#approval) is granted according to a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent). In the future, we're going to implement offchain Actions, such as sending a message to a Slack channel.
 
 ---
 
 ## AI Blockchain Interface (AIBI)
 
-Artificial Intelligence Blockchain Interface (AIBI) brings AI on-chain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
 ---
 
@@ -56,7 +56,7 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Bridging
 
-Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges – smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
+Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
 
 Learn more: [Bridging](bridging)
 
@@ -84,7 +84,7 @@ A full node is a server running a software (binary) that maintains a complete up
 
 ## Future
 
-A Future is an off-chain user-defined computational task that is executed asynchronously. The result is stored on-chain.
+A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain.
 
 A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It doesn't slow the blockchain down thanks to asynchronous execution.
 
@@ -92,7 +92,7 @@ A user requests a Future, specifying an input and a handler for interpreting the
 
 ## Governance
 
-The Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
+The Warden Protocol supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
@@ -102,8 +102,8 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intent is a user-defined script specifying the following:
 
-- An [Action](#action) – any on-chain action on the Warden Protocol
-- An [Approval Rule](#approval-rule) – a set of conditions under which the Action is performed
+- An [Action](#action)—any onchain action on the Warden Protocol
+- An [Approval Rule](#approval-rule)—a set of conditions under which the Action is performed
 
 After an Action is initiated, the [Intent Engine](#intent-engine) checks the Approval Rule. If the conditions are met, an [Approval](#approval) is granted, and the Action is carried out.
 
@@ -111,7 +111,7 @@ After an Action is initiated, the [Intent Engine](#intent-engine) checks the App
 
 ## Intent Engine
 
-The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction ([Action](#action)), the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false` – granting or not granting an [Approval](#approval).
+The Intent Engine is an immutable onchain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction ([Action](#action)), the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false`—granting or not granting an [Approval](#approval).
 
 ---
 
@@ -152,7 +152,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ## Keychain
 
-Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
+Every [Omnichain Application](#omnichain-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
 
 The Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
@@ -211,7 +211,7 @@ An Omnichain Contract is a smart contract that allows signing transactions and m
 
 ## Oracle service
 
-An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction) – an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written on-chain.
+An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
 
 Learn more: [Oracle services](oracle-services)
 
@@ -350,7 +350,7 @@ Learn more: [YieldWard documentation](https://docs.yieldward.com)
 ## Coming soon
 
 :::tip
-We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
+We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent)—autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
 :::
 
 ### Agent
@@ -365,9 +365,9 @@ An Agent is an autonomous trainable program driven by artificial intelligence. A
 
 A Trigger is an event listener that watches for a data update starting a [Workflow](#workflow). There are two types of Triggers:
 
-- **On-chain Trigger**: It can listen to such events as changes in a price feed from an [oracle](#oracle-service).
+- **Onchain Trigger**: It can listen to such events as changes in a price feed from an [oracle](#oracle-service).
 
-- **Off-chain Trigger**: It can track messages in Slack, updates in a Google spreadsheet, etc. You can implement off-chain Triggers through webhooks and API calls.
+- **Offchain Trigger**: It can track messages in Slack, updates in a Google spreadsheet, etc. You can implement offchain Triggers through webhooks and API calls.
 
 *This is a new feature that is coming soon.*
 

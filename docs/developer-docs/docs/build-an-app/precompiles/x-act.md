@@ -124,7 +124,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Query Actions by address
 
 - **Method**: `actionsByAddress()`
-- **Description**: Returns a list of Actions by participant address – [`ActionsByAddressResponse`](#actionsbyaddressresponse). You can filter the output by [`ActionStatus`](#actionstatus).
+- **Description**: Returns a list of Actions by participant address—[`ActionsByAddressResponse`](#actionsbyaddressresponse). You can filter the output by [`ActionStatus`](#actionstatus).
 - **Parameters** :
   ```sol
   @param pagination The pagination details

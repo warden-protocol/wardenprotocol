@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The `AdvancedOrder` contract implements the core of logic of this example – **automated Orders with price prediction** – smart contracts that execute token swaps on Uniswap based on **AI-driven price predictions**.
+The `AdvancedOrder` contract implements the core of logic of this example—**automated Orders with price prediction**—smart contracts that execute token swaps on Uniswap based on **AI-driven price predictions**.
 
 Orders with price prediction extend the [basic automated Orders](../implement-automated-orders/implement-orders). This article will guide you through creating the `AdvancedOrder` contract, focusing on the implementation of the advanced features. You'll implement the following core components:
 
@@ -150,7 +150,7 @@ function _getPriceInQuote(
 
 ## 4. Check the price condition
 
-Create a function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold  – see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
+Create a function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold—see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
 
 ```solidity title="/src/AdvancedOrder.sol"
 function _checkPriceCondition(

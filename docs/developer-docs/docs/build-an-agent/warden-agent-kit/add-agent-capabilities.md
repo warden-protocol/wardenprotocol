@@ -75,17 +75,14 @@ Here’s the code snippet for adding a custom tool:
 
 ```javascript
 // Add the custom tool
-const customTool = new WardenTool(
-    {
-        name: "custom_tool", // Name of the tool
-        description: "This is a custom tool", // Description of the tool
-        schema: z.object({}), // Define the schema for the tool (optional but recommended)
-        function: async () => {
-            return "This is a custom tool"; // Logic that the tool will execute
-        },
+const customTool = new WardenTool({
+    name: "custom_tool", // Name of the tool
+    description: "This is a custom tool", // Description of the tool
+    schema: z.object({}), // Define the schema for the tool (optional but recommended)
+    function: async () => {
+        return "This is a custom tool"; // Logic that the tool will execute
     },
-    agentkit // Pass the agent kit to associate it with the tool
-);
+});
 
 // Push the custom tool to the list of tools
 tools.push(customTool);
@@ -135,17 +132,14 @@ async function initializeAgent() {
         const tools = wardenToolkit.getTools();
 
         // Add the custom tool
-        const customTool = new WardenTool(
-            {
-                name: "custom_tool",
-                description: "This is a custom tool",
-                schema: z.object({}), // Define schema if needed
-                function: async () => {
-                    return "This is a custom tool"; // Implement the tool's logic
-                },
+        const customTool = new WardenTool({
+            name: "custom_tool",
+            description: "This is a custom tool",
+            schema: z.object({}), // Define schema if needed
+            function: async () => {
+                return "This is a custom tool"; // Implement the tool's logic
             },
-            agentkit // Associate with the agent kit
-        );
+        });
         tools.push(customTool);
 
         // Store buffered conversation history in memory (optional)

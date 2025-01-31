@@ -1,0 +1,18 @@
+git_root := `git rev-parse --show-toplevel`
+tmpdir := `mktemp -d`
+
+all: handlers
+
+_tools:
+    @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
+    go install github.com/ethereum/go-ethereum/cmd/abigen
+
+handlers: _tools
+  solc --abi --bin --overwrite handlers/pricepred/PricePredictor.sol -o build
+  abigen \
+  --bin=build/PricePredictor.bin \
+  --abi=build/PricePredictor.abi \
+  --pkg=pricepred \
+  --type=PricePredictor \
+  --out=handlers/pricepred/pricepredictor_bindings.go
+  

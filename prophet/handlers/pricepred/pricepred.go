@@ -62,13 +62,6 @@ const (
 	P100
 )
 
-type InputData struct {
-	Date              *big.Int
-	Tokens            []string
-	Metrics           []*big.Int
-	FalsePositiveRate [2]uint64
-}
-
 func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	inputData, err := decodeInput(input)
 	if err != nil {
@@ -118,7 +111,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	return encodedRes, nil
 }
 
-func decodeInput(input []byte) (InputData, error) {
+func decodeInput(input []byte) (PricePredictorInputData, error) {
 	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
 		{Name: "date", Type: "uint256"},
 		{Name: "tokens", Type: "string[]"},
@@ -126,7 +119,7 @@ func decodeInput(input []byte) (InputData, error) {
 		{Name: "falsePositiveRate", Type: "uint64[2]"},
 	})
 	if err != nil {
-		return InputData{}, err
+		return PricePredictorInputData{}, err
 	}
 
 	args := abi.Arguments{
@@ -135,26 +128,21 @@ func decodeInput(input []byte) (InputData, error) {
 
 	unpackArgs, err := args.Unpack(input)
 	if err != nil {
-		return InputData{}, err
+		return PricePredictorInputData{}, err
 	}
 
 	var inputData struct {
-		Data InputData
+		Data PricePredictorInputData
 	}
 	err = args.Copy(&inputData, unpackArgs)
 	if err != nil {
-		return InputData{}, err
+		return PricePredictorInputData{}, err
 	}
 
 	return inputData.Data, nil
 }
 
-type OutputData struct {
-	Predictions []*big.Int
-	Metrics     [][]*big.Int
-}
-
-func encodeOutput(outputData OutputData) ([]byte, error) {
+func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
 	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
 		{Name: "predictions", Type: "uint256[]"},
 		{Name: "metrics", Type: "uint256[][]"},
@@ -179,7 +167,7 @@ func encodeOutput(outputData OutputData) ([]byte, error) {
 	return enc, nil
 }
 
-func buildOutputData(inputData InputData, req PredictRequest, res PredictResponse, backtestingRes *BacktestingResponse) (OutputData, error) {
+func buildOutputData(inputData PricePredictorInputData, req PredictRequest, res PredictResponse, backtestingRes *BacktestingResponse) (PricePredictorOutputData, error) {
 	decimals := big.NewFloat(1e16)
 
 	tokenPreds := make([]*big.Int, len(req.SolverInput.Tokens))
@@ -247,13 +235,13 @@ func buildOutputData(inputData InputData, req PredictRequest, res PredictRespons
 				case P100:
 					metrics[i][j] = float64ToBigInt(tokenMetrics.Metrics.P100, decimals)
 				default:
-					return OutputData{}, fmt.Errorf("invalid requested metric: %d", m)
+					return PricePredictorOutputData{}, fmt.Errorf("invalid requested metric: %d", m)
 				}
 			}
 		}
 	}
 
-	return OutputData{
+	return PricePredictorOutputData{
 		Predictions: tokenPreds,
 		Metrics:     metrics,
 	}, nil

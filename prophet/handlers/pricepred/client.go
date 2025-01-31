@@ -15,16 +15,19 @@ type client struct {
 	c              *http.Client
 	predictURL     string
 	backtestingURL string
+	verifyURL      string
 }
 
 func newClient(c *http.Client, baseURL *url.URL) *client {
 	predictURL := baseURL.JoinPath("/api/task/inference/solve")
 	backtestingURL := baseURL.JoinPath("/api/task/backtesting/solve")
+	verifyURL := baseURL.JoinPath("/api/task/inference/verify")
 
 	return &client{
 		c:              c,
 		predictURL:     predictURL.String(),
 		backtestingURL: backtestingURL.String(),
+		verifyURL:      verifyURL.String(),
 	}
 }
 
@@ -50,43 +53,7 @@ type PredictResponse struct {
 }
 
 func (c *client) Predict(ctx context.Context, req PredictRequest) (PredictResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
-	defer cancel()
-
-	reqBody, err := json.Marshal(req)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", c.predictURL, bytes.NewReader(reqBody))
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	httpReq.Header.Set("Accept", "application/json")
-	httpReq.Header.Set("Content-Type", "application/json")
-
-	res, err := c.c.Do(httpReq)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-	defer res.Body.Close()
-	response, err := io.ReadAll(res.Body)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		return PredictResponse{}, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
-	}
-
-	var resResp PredictResponse
-	err = json.Unmarshal(response, &resResp)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	return resResp, nil
+	return post[PredictRequest, PredictResponse](ctx, c.c, 3*time.Second, req, c.predictURL)
 }
 
 type BacktestingRequest struct {
@@ -137,41 +104,60 @@ type BacktestingResponse struct {
 }
 
 func (c *client) Backtesting(ctx context.Context, req BacktestingRequest) (BacktestingResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	return post[BacktestingRequest, BacktestingResponse](ctx, c.c, 10*time.Second, req, c.backtestingURL)
+}
+
+type VerifyRequest struct {
+	SolverRequest     PredictRequest `json:"solverRequest"`
+	SolverReceipt     ResponseSolverReceipt  `json:"solverReceipt"`
+	VerificationRatio float64        `json:"verificationRatio"`
+}
+
+type VerifyResponse struct {
+	CountItems int  `json:"countItems"`
+	IsVerified bool `json:"isVerified"`
+}
+
+func (c *client) Verify(ctx context.Context, req VerifyRequest) (VerifyResponse, error) {
+	return post[VerifyRequest, VerifyResponse](ctx, c.c, 5*time.Second, req, c.verifyURL)
+}
+
+func post[Req, Resp any](ctx context.Context, client *http.Client, timeout time.Duration, req Req, URL string) (Resp, error) {
+	var empty Resp
+	reqCtx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return empty, err
 	}
 
-	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", c.backtestingURL, bytes.NewReader(reqBody))
+	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", URL, bytes.NewReader(reqBody))
 	if err != nil {
-		return BacktestingResponse{}, err
+		return empty, err
 	}
 
 	httpReq.Header.Set("Accept", "application/json")
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	res, err := c.c.Do(httpReq)
+	res, err := client.Do(httpReq)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return empty, err
 	}
 	defer res.Body.Close()
-
 	response, err := io.ReadAll(res.Body)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return empty, err
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return BacktestingResponse{}, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
+		return empty, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
 	}
 
-	var resResp BacktestingResponse
+	var resResp Resp
 	err = json.Unmarshal(response, &resResp)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return empty, err
 	}
 
 	return resResp, nil

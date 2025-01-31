@@ -6,14 +6,14 @@ sidebar_position: 5
 
 ## Overview
 
-This guide explains how to run our **Typescript example** built with the Warden Agent Kit.
+The following guide explains how to run our **Typescript example** built with the Warden Agent Kit.
 
-Our example implements a **CLI Agent** that is able to do the following:
+This example implements a **CLI Agent** that is able to do the following:
 
 -   Process user prompts in natural language using the [`langchain`](https://github.com/warden-protocol/agent-kit/blob/main/langchain/warden/README.md) extension.
 -   Interact with the Warden Protocol using the [`agent-kit-core`](https://github.com/warden-protocol/agent-kit/tree/main/agent-kit-core) component.
 
-You can prompt the Agent to create and retrieve Spaces and keys, fund your wallet, get its balance, and so on. A comprehensive list of all the available tools can be found in [Agent Actions](/build-an-agent/warden-agent-kit/agent-actions).
+You can prompt the Agent to perform any supported [Action](/build-an-agent/warden-agent-kit/agent-actions): create and retrieve Spaces and keys, fund your wallet, get its balance, and so on.
 
 :::note Code
 The example code is available on GitHub—see [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md).
@@ -23,9 +23,9 @@ The example code is available on GitHub—see [`cli-agent`](https://github.com/w
 
 Before you start, meet the following prerequisites:
 
--   [Install Node.js](https://nodejs.org/en/download) 18+ or later.
--   [Create an OpenAI API key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key) and make sure your account is funded.
--   Get the private key of your wallet.
+- [Install Node.js](https://nodejs.org/en/download) 18+ or later.
+- [Create an OpenAI API key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key) and make sure your account is funded.
+- Make sure you have a wallet and access to its private key.
 
 ## 1. Installation
 

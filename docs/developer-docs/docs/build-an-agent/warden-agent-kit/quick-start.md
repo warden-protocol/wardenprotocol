@@ -4,11 +4,11 @@ sidebar_position: 2
 
 # Quick start
 
-This guide will help you quickly set up and start building AI agents capable of interacting with both on-chain and off-chain systems. Whether you're new to AI agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
+This guide will help you quickly set up and start building AI agents capable of interacting with both onchain and offchain systems. Whether you're new to AI agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
 
 ## Using an example
 
-The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing on-chain interactions.
+The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing onchain interactions.
 
 -   Check out the [CLI Agent Example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
 -   Dive into the [Agent Kit Examples Repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development.

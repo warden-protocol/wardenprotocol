@@ -30,7 +30,7 @@ This integration uses the security framework of the chain, ensuring rapid price 
 With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
 
 :::tip
-The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written on-chain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-skip-connect).
+The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written onchain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-skip-connect).
 :::
 
 ## Available data feeds

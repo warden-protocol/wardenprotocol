@@ -24,9 +24,9 @@ You can call the `x/act` module from your EVM smart contract using the [`x/act` 
 
 The **Rule** struct represents a set of user-defined conditions that must be met before something can be executed.
 
-Users can register Rules on-chain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
+Users can register Rules onchain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
 
-Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available on-chain. To learn more, see [Hooks](#hooks).
+Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available onchain. To learn more, see [Hooks](#hooks).
 
 See also [Glossary: Approval Rule](/learn/glossary#approval-rule).
 
@@ -232,7 +232,7 @@ satellite.fuel_price < 100
 
 ### MsgNewRule
 
-Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored on-chain.
+Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored onchain.
 
 This message is expected to fail in the following cases:
 

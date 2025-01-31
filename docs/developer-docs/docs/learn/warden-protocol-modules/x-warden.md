@@ -32,7 +32,7 @@ See also [Glossary: Space](/learn/glossary#space).
 
 ### Key
 
-A **Key** is the public part of a key pair, which is stored on-chain. Every Key belongs to a certain [Space](#space).
+A **Key** is the public part of a key pair, which is stored onchain. Every Key belongs to a certain [Space](#space).
 
 Keys have unique identifiers used to refer to them when requesting a [Keychain](#keychain) to sign a payload.
 
@@ -42,7 +42,7 @@ See also [Glossary: Key](/learn/glossary#key).
 
 A Keychain fulfills [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request) from users. Optionally, it can set a fee for each request.
 
-Keychains can be registered on-chain. Each Keychain has the following:
+Keychains can be registered onchain. Each Keychain has the following:
 
 - A list of admins that can update the Keychain information
 - A list of [Writers](/learn/glossary#keychain-writer) – the only addresses authorized to send updates to requests

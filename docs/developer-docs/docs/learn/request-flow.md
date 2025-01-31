@@ -36,7 +36,7 @@ The flow for generating a private/public key pair includes the following steps:
 - The Keychain ID
 - The Approval Rule ID
 
-2. A `KeyRequest` object is created and stored in the on-chain database.
+2. A `KeyRequest` object is created and stored in the onchain database.
 
 ### 2. Checking the Rule
 
@@ -96,7 +96,7 @@ The flow for requesting a signature includes the following steps:
 - The key ID
 - The Approval Rule ID
 
-2. A `SignRequest` object is created and stored in the on-chain database.
+2. A `SignRequest` object is created and stored in the onchain database.
 
 **Note**: While key requests directly indicate the [Keychain ID](/learn/glossary#keychain-id) in the request, signature requests contain the Keychain ID inside the `keys` object.
 

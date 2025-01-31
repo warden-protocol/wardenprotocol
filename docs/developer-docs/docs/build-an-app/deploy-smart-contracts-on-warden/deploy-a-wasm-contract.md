@@ -248,11 +248,11 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
   target/wasm32-unknown-unknown/release/hello_world.wasm
 ```
 
-## 6. Store the contract on-chain
+## 6. Store the contract onchain
 
 If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
 
-To store your contract on-chain, run the command below. Specify your key name from [Step 1](#1-prepare-the-chain) in the `--from` flag, also set the chain ID.
+To store your contract onchain, run the command below. Specify your key name from [Step 1](#1-prepare-the-chain) in the `--from` flag, also set the chain ID.
 
 <Tabs>
 <TabItem value="default" label="Default node settings">

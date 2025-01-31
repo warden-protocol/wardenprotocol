@@ -16,12 +16,12 @@ Mass adoption of Web3 requires the creation of safe and seamless AI experiences,
 
 Warden supports **AIBI** – **Artificial Intelligence Blockchain Interface**
 
-AIBI brings AI on-chain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+AIBI brings AI onchain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
 Within Warden, AI is integrated on two layers:
 
 - **Verification layer**  
-Warden is designed to bring AIs on-chain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
+Warden is designed to bring AIs onchain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
 
 - **Execution layer**  
 Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain.

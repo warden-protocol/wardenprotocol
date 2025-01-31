@@ -77,4 +77,4 @@ Then you should get some USDC for the WARP-USDC trading pair:
 
 ## 3. Get WARP
 
-You're now all set! You can acquire and accumulate WARP on the Base chain's DEXes – see the [WARP-USDC pair](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823).
+You're now all set! You can acquire and accumulate WARP on the Base chain's DEXes—see the [WARP-USDC pair](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823).

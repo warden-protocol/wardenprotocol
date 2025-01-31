@@ -189,7 +189,7 @@ cast call $CONTRACT_ADDRESS "queryFutureById(uint64)" 1
 
 ## Example contract
 
-Here is an example contract calling all the available `x/async` functions – it implements a complete interface for interacting with the module. You can use the contract code as a starting point for your own implementations or extend it with additional functionality.
+Here is an example contract calling all the available `x/async` functions—it implements a complete interface for interacting with the module. You can use the contract code as a starting point for your own implementations or extend it with additional functionality.
 
 ```solidity
 // SPDX-License-Identifier: MIT

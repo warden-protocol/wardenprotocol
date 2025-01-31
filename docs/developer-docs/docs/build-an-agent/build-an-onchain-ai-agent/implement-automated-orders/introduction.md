@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Automated Orders
 
-This section explains how to implement basic **automated Orders** – smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds, signing transactions with [Keychains](/learn/glossary#keychain). This Order type serves as a foundation for building more advanced [Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
+This section explains how to implement basic **automated Orders**—smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds, signing transactions with [Keychains](/learn/glossary#keychain). This Order type serves as a foundation for building more advanced [Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
 
 You'll implement the core logic in the [`BasicOrder`](implement-orders) contract, implement the creation of Orders in [`BasicOrderFactory`](implement-the-creation-of-orders), and finally [deploy an Order](deploy-an-order). To learn about the full architecture of this project, refer to the [main introduction](../introduction#architecture).
 

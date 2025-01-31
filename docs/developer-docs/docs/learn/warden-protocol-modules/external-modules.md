@@ -23,7 +23,7 @@ Learn more:
 
 ## x/wasm
 
-The `x/wasm` module is a Cosmos SDK module that processes certain messages and uses them to upload, instantiate, and execute smart contracts. It's an integral part of **CosmWasm** – a smart contract platform that can be integrated into any blockchain built on top of the Cosmos SDK.
+The `x/wasm` module is a Cosmos SDK module that processes certain messages and uses them to upload, instantiate, and execute smart contracts. It's an integral part of **CosmWasm**—a smart contract platform that can be integrated into any blockchain built on top of the Cosmos SDK.
 
 To start using `x/wasm`, follow this guide:
 

@@ -45,7 +45,7 @@ A Keychain fulfills [key requests](/learn/glossary#key-request) and [signature r
 Keychains can be registered onchain. Each Keychain has the following:
 
 - A list of admins that can update the Keychain information
-- A list of [Writers](/learn/glossary#keychain-writer) – the only addresses authorized to send updates to requests
+- A list of [Writers](/learn/glossary#keychain-writer)—the only addresses authorized to send updates to requests
 
 See also [Glossary: Keychain](/learn/glossary#keychain), [Request flow](/learn/request-flow).
 
@@ -56,7 +56,7 @@ An **Analyzer** is a [CosmWasm](https://cosmwasm.com) contract that can intercep
 This is what Analyzers can do:
 
 - Extract payload metadata, which then can be referenced in [Rule](/learn/warden-protocol-modules/x-act#rule) expressions
-- Manipulate the payload before it's signed — for example, hash it following a specific algorithm
+- Manipulate the payload before it's signed—for example, hash it following a specific algorithm
 
 To illustrate this, it's possible to write an Ethereum Analyzer that will do the following:
 

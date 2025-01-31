@@ -56,7 +56,7 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Bridging
 
-Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges – smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
+Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
 
 Learn more: [Bridging](bridging)
 
@@ -102,8 +102,8 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intent is a user-defined script specifying the following:
 
-- An [Action](#action) – any onchain action on the Warden Protocol
-- An [Approval Rule](#approval-rule) – a set of conditions under which the Action is performed
+- An [Action](#action)—any onchain action on the Warden Protocol
+- An [Approval Rule](#approval-rule)—a set of conditions under which the Action is performed
 
 After an Action is initiated, the [Intent Engine](#intent-engine) checks the Approval Rule. If the conditions are met, an [Approval](#approval) is granted, and the Action is carried out.
 
@@ -111,7 +111,7 @@ After an Action is initiated, the [Intent Engine](#intent-engine) checks the App
 
 ## Intent Engine
 
-The Intent Engine is an immutable onchain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction ([Action](#action)), the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false` – granting or not granting an [Approval](#approval).
+The Intent Engine is an immutable onchain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction ([Action](#action)), the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false`—granting or not granting an [Approval](#approval).
 
 ---
 
@@ -152,7 +152,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ## Keychain
 
-Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
+Every [Omnichain Application](#omnichain-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
 
 The Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
@@ -211,7 +211,7 @@ An Omnichain Contract is a smart contract that allows signing transactions and m
 
 ## Oracle service
 
-An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction) – an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
+An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
 
 Learn more: [Oracle services](oracle-services)
 
@@ -350,7 +350,7 @@ Learn more: [YieldWard documentation](https://docs.yieldward.com)
 ## Coming soon
 
 :::tip
-We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
+We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent)—autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
 :::
 
 ### Agent

@@ -20,7 +20,7 @@ The first snapshot for a portion of the airdrop of $WARD has been completed. Thi
 **Check your airdrop**
 
 -   Go to [wardenprotocol.org](https://genesis.wardenprotocol.org/).
--   For the address, select your OPEN (former QRDO) voting wallet – the one you used to vote on [Snapshot](https://snapshot.org/#/governance.qredo.eth/) for the different QPIPs).
+-   For the address, select your OPEN (former QRDO) voting wallet—the one you used to vote on [Snapshot](https://snapshot.org/#/governance.qredo.eth/) for the different QPIPs).
 -   That’s it! You can now see your expected $WARD airdrop at genesis.
 
 **Notes**

@@ -15,7 +15,7 @@ Our example implements a **CLI Agent** that is able to do the following:
 
 You can prompt the Agent to create and retrieve Spaces and keys, fund your wallet, get its balance, and so on.
 
-The example code is available on GitHub – see [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md).
+The example code is available on GitHub—see [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md).
 
 ## Prerequisites
 

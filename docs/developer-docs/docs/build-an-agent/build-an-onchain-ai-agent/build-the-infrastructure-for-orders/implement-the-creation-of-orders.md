@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Overview
 
-The `OrderFactory` contract securely manages the creation and tracking of **Orders** – instances of the [`BasicOrder`](../implement-automated-orders/implement-orders) and [`AdvancedOrder`](../implement-automated-orders-with-price-prediction/implement-orders) contracts.
+The `OrderFactory` contract securely manages the creation and tracking of **Orders**—instances of the [`BasicOrder`](../implement-automated-orders/implement-orders) and [`AdvancedOrder`](../implement-automated-orders-with-price-prediction/implement-orders) contracts.
 
 The user specifies the desired order type and triggers `OrderFactory`. Depending on the order type, the following happens:
 - `OrderFactory` calls the [`BasicOrderFactory`](../implement-automated-orders/implement-the-creation-of-orders) contract, which deploys a new [`BasicOrder`](../implement-automated-orders/implement-orders) contract and registers it in the [registry](create-helpers-and-utils#3-implement-the-registry).

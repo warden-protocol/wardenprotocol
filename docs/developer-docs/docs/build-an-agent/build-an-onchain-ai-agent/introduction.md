@@ -8,7 +8,7 @@ sidebar_position: 1
 
 This section explains how to enable onchain capabilities for a **Warden Agent** created with the [Warden Agent Kit](/category/warden-agent-kit).
 
-The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders** – [Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions**.
+The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions**.
 
 :::tip
 You can implement custom logic by using [Warden modules](/category/warden-protocol-modules), [Keychains](/learn/glossary#keychain), and other features. In particular, the [`x/async` module](/learn/warden-protocol-modules/x-async) allows you to create smart contracts utilizing outputs of **AI models**.
@@ -34,7 +34,7 @@ You'll learn how to build two types of Orders:
   This is a more advanced version of automated Orders. It uses the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module to make AI-driven price predictions. Then it performs token swaps based on these predictions, signing transactions with [Keychains](/learn/glossary#keychain).
 
   :::note
-  The price prediction model is just an example of what you can build with [`x/async`](/learn/warden-protocol-modules/x-async). With this module, you can implement any logic combining offchain computation with onchain verification – limited only by your imagination.
+  The price prediction model is just an example of what you can build with [`x/async`](/learn/warden-protocol-modules/x-async). With this module, you can implement any logic combining offchain computation with onchain verification—limited only by your imagination.
   ::: 
 
 ## Architecture

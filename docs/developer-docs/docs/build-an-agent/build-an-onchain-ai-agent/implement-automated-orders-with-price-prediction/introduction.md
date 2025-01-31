@@ -6,10 +6,10 @@ sidebar_position: 1
 
 ## Orders with price prediction
 
-This section explains how to implement advanced **automated Orders with price prediction** – smart contracts that execute token swaps on Uniswap based on **AI-driven price predictions**. Our example uses [Keychains](/learn/glossary#keychain) for signing transactions and the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module for price predictions, extending the [basic automated Orders](../implement-automated-orders/introduction) that operate on simple price thresholds.
+This section explains how to implement advanced **automated Orders with price prediction**—smart contracts that execute token swaps on Uniswap based on **AI-driven price predictions**. Our example uses [Keychains](/learn/glossary#keychain) for signing transactions and the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module for price predictions, extending the [basic automated Orders](../implement-automated-orders/introduction) that operate on simple price thresholds.
 
 :::note
-The price prediction model is just an example of what you can build with [`x/async`](/learn/warden-protocol-modules/x-async). With this module, you can implement any logic combining offchain computation with onchain verification – limited only by your imagination.
+The price prediction model is just an example of what you can build with [`x/async`](/learn/warden-protocol-modules/x-async). With this module, you can implement any logic combining offchain computation with onchain verification—limited only by your imagination.
 ::: 
 
 You'll take the following steps:

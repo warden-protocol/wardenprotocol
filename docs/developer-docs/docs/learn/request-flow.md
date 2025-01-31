@@ -32,7 +32,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 1. The Client sends a `MsgNewKeyRequest` transaction to its Node, specifying these details:
 
-- The key type – for example, ECDSA secp256k1
+- The key type—for example, ECDSA secp256k1
 - The Keychain ID
 - The Approval Rule ID
 
@@ -56,7 +56,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
 
-**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
+**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network—Warden isn't in charge of it.
 
 ### Diagram
 
@@ -118,7 +118,7 @@ The flow for requesting a signature includes the following steps:
 
 3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilSignRequest` transaction with the signature to the Node.
 
-**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
+**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network—Warden isn't in charge of it.
 
 ### Diagram
 

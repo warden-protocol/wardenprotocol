@@ -203,7 +203,7 @@ In the following steps, we're going to deploy this contract without modification
    Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-4. Note down the value returned as `Deployed to` – that's your **contract address**. Export it as a variable: 
+4. Note down the value returned as `Deployed to`—that's your **contract address**. Export it as a variable: 
 
    ```bash
    export CONTRACT_ADDRESS=my-contract-address

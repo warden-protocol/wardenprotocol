@@ -159,7 +159,7 @@ func (e SatelliteExpander) Expand(ctx context.Context, ident *Identifier) (Expre
 }
 ```
 
-A user can then write a Rule – for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
+A user can then write a Rule—for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
 
 ```isl
 satellite.123.cost <= 100 || any(2, [warden1j6yh, warden1rxu3, warden1r4d7])
@@ -183,7 +183,7 @@ Every time an Action is approved, it gets re-evaluated. During evaluation, all i
 
 #### Example
 
-The [preprocessing example](#example-1) uses a value that needs to be fetched only once – when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
+The [preprocessing example](#example-1) uses a value that needs to be fetched only once—when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
 
 You can register a module environment in `app.go`. For example, registering an environment for the dummy [`x/satellites` ](#example) module would look like this:
 
@@ -222,7 +222,7 @@ func (e SatelliteEnv) Get(ctx context.Context, name string) (object.Object, bool
 }
 ```
 
-A user can then write a Rule – for example, to keep launches on hold until the fuel cost is lower than 100:
+A user can then write a Rule—for example, to keep launches on hold until the fuel cost is lower than 100:
 
 ```isl
 satellite.fuel_price < 100

@@ -2,9 +2,9 @@
 sidebar_position: 4
 ---
 
-# Add Agent Capabilities
+# Add Agent capabilities
 
-## Incorporate Existing LangChain Tools
+## Incorporate existing LangChain Tools
 
 Enhance your agent's functionality by seamlessly integrating additional tools from the LangChain ecosystem. LangChain has transformed how developers interact with language models, enabling the creation of powerful and versatile AI applications. At the heart of its appeal is the extensive ecosystem of tools and integrations, which allows developers to effortlessly enhance their agents' capabilities.
 
@@ -17,11 +17,11 @@ LangChain's strength lies in its rich library of community-driven [tools](https:
 -   Build multi-modal agents: Combine diverse interaction types—text, image, code—into a single, cohesive agent.
 -   Stay current: Take advantage of a continuously evolving ecosystem, supported and updated by an active community.
 
-## Adding Custom Tools
+## Adding custom tools
 
 This guide explains how to add a custom tool to a Warden Agent using the **Warden Agent Kit**. A custom tool is a functionality or utility that can be accessed by the agent to perform specific tasks, such as interacting with APIs, processing data, or executing logic.
 
-## Steps to Add a Custom Tool
+## Steps to add a custom tool
 
 Follow these steps to add a custom tool to your agent:
 
@@ -67,7 +67,7 @@ async function initializeAgent() {
 }
 ```
 
-### 2. Define the Custom Tool
+### 2. Define the custom tool
 
 A custom tool is an instance of `WardenTool` that contains a name, description, schema, and function. You can add custom logic within the `function` property, which defines what the tool will do when invoked.
 
@@ -88,11 +88,11 @@ const customTool = new WardenTool({
 tools.push(customTool);
 ```
 
-### 3. Integrate the Tool into the Agent
+### 3. Integrate the tool into the Agent
 
 Now integrate the tool. The custom tool will be available as part of the agent’s toolkit, and it will be invoked based on the agent's logic.
 
-### Example Full File with Custom Tool Integration
+### Example full file with custom tool integration
 
 Here is the complete code with the custom tool integrated into the Warden Agent setup:
 
@@ -171,8 +171,8 @@ async function initializeAgent() {
 
 You’ve now added a custom tool to your Warden Agent! The tool is available in the agent's toolkit and can be invoked based on user input or other logic within the agent.
 
-### Key Points to Remember:
+Here are the key points to remember:
 
--   **WardenTool** is used to define the custom tool, including its name, description, schema, and logic.
--   You can integrate the custom tool into the agent’s toolkit, alongside any other pre-configured tools.
--   The agent uses these tools to process input and execute tasks, using the defined function for each tool.
+- **WardenTool** is used to define the custom tool, including its name, description, schema, and logic.
+- You can integrate the custom tool into the agent’s toolkit, alongside any other pre-configured tools.
+- The agent uses these tools to process input and execute tasks, using the defined function for each tool.

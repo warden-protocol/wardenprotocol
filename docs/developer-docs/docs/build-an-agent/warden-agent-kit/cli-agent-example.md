@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# Run the CLI Agent Example
+# Run the CLI Agent example
 
 ## Overview
 

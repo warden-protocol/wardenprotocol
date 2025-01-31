@@ -405,7 +405,7 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
+In the following steps, you'll create files in the `/src` directory to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
 
 1. Create a file named `msg.rs` with the following code:
    

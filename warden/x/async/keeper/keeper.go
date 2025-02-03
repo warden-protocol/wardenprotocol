@@ -24,8 +24,9 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		futures *FutureKeeper
-		votes   collections.Map[collections.Pair[uint64, []byte], int32]
+		futures  *FutureKeeper
+		handlers *HandlersKeeper
+		votes    collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
 	}
@@ -38,6 +39,9 @@ var (
 	ResultsPrefix         = collections.NewPrefix(3)
 	VotesPrefix           = collections.NewPrefix(4)
 	PendingFuturesPrefix  = collections.NewPrefix(5)
+	HandlersPrefix        = collections.NewPrefix(6)
+	ValidatorsByHandler   = collections.NewPrefix(7)
+	HandlersByValidator   = collections.NewPrefix(8)
 )
 
 func NewKeeper(
@@ -55,6 +59,7 @@ func NewKeeper(
 	sb := collections.NewSchemaBuilder(storeService)
 
 	futures := NewFutureKeeper(sb, cdc)
+	handlers := NewHandlersKeeper(sb, cdc)
 	votes := collections.NewMap(
 		sb,
 		VotesPrefix,
@@ -74,8 +79,9 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		futures: futures,
-		votes:   votes,
+		futures:  futures,
+		handlers: handlers,
+		votes:    votes,
 
 		p: p,
 	}

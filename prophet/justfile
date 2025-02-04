@@ -14,5 +14,5 @@ handlers: _tools
   --abi=build/PricePredictor.abi \
   --pkg=pricepred \
   --type=PricePredictor \
-  --out=handlers/pricepred/pricepredictor_bindings.go
+  --out=handlers/pricepred/pricepred_bindings.go
   

@@ -7,6 +7,7 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
+import "warden/async/v1beta1/handler.proto";
 import "warden/async/v1beta1/params.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
@@ -17,16 +18,16 @@ service Msg {
 
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
-  rpc UpdateParams (MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
 
   // Create a new Future to be executed.
-  rpc AddFuture (MsgAddFuture) returns (MsgAddFutureResponse);
+  rpc AddFuture(MsgAddFuture) returns (MsgAddFutureResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
   option (cosmos.msg.v1.signer) = "authority";
-  option           (amino.name) = "warden/x/async/MsgUpdateParams";
+  option (amino.name) = "warden/x/async/MsgUpdateParams";
 
   // authority is the address that controls the module (defaults to x/gov unless overwritten).
   string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
@@ -34,7 +35,10 @@ message MsgUpdateParams {
   // params defines the module parameters to update.
 
   // NOTE: All parameters must be supplied.
-  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
 // MsgUpdateParamsResponse defines the response structure for executing a
@@ -50,4 +54,14 @@ message MsgAddFuture {
 
 message MsgAddFutureResponse {
   uint64 id = 1;
+}
+
+message MsgAddHandler {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  Handler handler = 2;
+}
+
+message MsgAddHandlerResponse {
+  Handler handler = 1;
 }

@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/async) Scaffold new module with create/read operations
 * (x/warden) Sign requests query return all request (not only with broadcastType=BroadcastType.Disabled)
 * (prophet) First version. Includes the task runner for Futures and Votes, and the interface for handlers.
+* (x/async) Add handlers storages and corresponding methods.
 
 ### Bug Fixes
 

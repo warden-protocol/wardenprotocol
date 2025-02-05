@@ -7,10 +7,7 @@ import (
 	"math/big"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
-
-	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
 // PricePredictorSolidity is a handler for the price prediction AI model,
@@ -113,42 +110,43 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 }
 
 func decodeInput(input []byte) (PricePredictorInputData, error) {
-	parsedAbi, err := abi.JSON(strings.NewReader(PricePredictorABI))
-	if err != nil {
-		return PricePredictorInputData{}, err
+	var in struct {
+		InputData PricePredictorInputData
 	}
 
-	method, ok := parsedAbi.Methods["solve"]
+	abi, err := PricePredictorMetaData.GetAbi()
+	if err != nil {
+		return in.InputData, err
+	}
+
+	method, ok := abi.Methods["solve"]
 	if !ok {
-		return PricePredictorInputData{}, fmt.Errorf("method 'solve' not found in generated ABI")
+		return in.InputData, fmt.Errorf("method 'solve' not found in generated ABI")
 	}
 
 	vals, err := method.Inputs.Unpack(input)
 	if err != nil {
-		return PricePredictorInputData{}, err
+		return in.InputData, err
 	}
 	if len(vals) != 1 {
-		return PricePredictorInputData{}, fmt.Errorf("expected 1 argument (InputData), got %d", len(vals))
+		return in.InputData, fmt.Errorf("expected 1 argument (InputData), got %d", len(vals))
 	}
 
-	var in struct {
-		InputData PricePredictorInputData
-	}
 	err = method.Inputs.Copy(&in, vals)
 	if err != nil {
-		return PricePredictorInputData{}, err
+		return in.InputData, err
 	}
 
 	return in.InputData, nil
 }
 
 func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
-	parsedAbi, err := abi.JSON(strings.NewReader(PricePredictorABI))
+	abi, err := PricePredictorMetaData.GetAbi()
 	if err != nil {
 		return nil, err
 	}
 
-	method, ok := parsedAbi.Methods["solve"]
+	method, ok := abi.Methods["solve"]
 	if !ok {
 		return nil, fmt.Errorf("method 'solve' not found in generated ABI")
 	}

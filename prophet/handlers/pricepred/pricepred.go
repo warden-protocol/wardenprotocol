@@ -109,14 +109,14 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	return encodedRes, nil
 }
 
-func decodeInput(input []byte) (PricePredictorInputData, error) {
+func decodeInput(inputData []byte) (PricePredictorInputData, error) {
 	var in struct {
 		InputData PricePredictorInputData
 	}
 
 	abi, err := PricePredictorMetaData.GetAbi()
 	if err != nil {
-		return in.InputData, err
+		return in.InputData, fmt.Errorf("failed to get ABI: %w", err)
 	}
 
 	method, ok := abi.Methods["solve"]
@@ -124,9 +124,9 @@ func decodeInput(input []byte) (PricePredictorInputData, error) {
 		return in.InputData, fmt.Errorf("method 'solve' not found in generated ABI")
 	}
 
-	vals, err := method.Inputs.Unpack(input)
+	vals, err := method.Inputs.Unpack(inputData)
 	if err != nil {
-		return in.InputData, err
+		return in.InputData, fmt.Errorf("failed to unpack input data: %w", err)
 	}
 	if len(vals) != 1 {
 		return in.InputData, fmt.Errorf("expected 1 argument (InputData), got %d", len(vals))
@@ -134,7 +134,7 @@ func decodeInput(input []byte) (PricePredictorInputData, error) {
 
 	err = method.Inputs.Copy(&in, vals)
 	if err != nil {
-		return in.InputData, err
+		return in.InputData, fmt.Errorf("failed to copy input data: %w", err)
 	}
 
 	return in.InputData, nil
@@ -143,7 +143,7 @@ func decodeInput(input []byte) (PricePredictorInputData, error) {
 func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
 	abi, err := PricePredictorMetaData.GetAbi()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get ABI: %w", err)
 	}
 
 	method, ok := abi.Methods["solve"]
@@ -153,7 +153,7 @@ func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
 
 	packed, err := method.Outputs.Pack(outputData)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to pack output data: %w", err)
 	}
 
 	return packed, nil

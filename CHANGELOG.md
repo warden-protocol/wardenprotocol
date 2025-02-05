@@ -41,6 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased changes
 
 ### Features (non-breaking)
+
+### Consensus Breaking Changes
+
+### Bug Fixes
+
+## [v0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1) - 2025-03-03
+
+### Features (non-breaking)
 * (precompiles) Add an ability for contracts to approve actions
 * (go-client) Return transaction hash from SendWaitTx
 * (keychain-sdk) Log transaction hashes of broadcasted transactions

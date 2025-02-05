@@ -190,3 +190,5 @@ Now you can dive deeper and expand your contract with other functions from Warde
   - [Interact with `x/async`](interact-with-x-async)
 
 - For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.
+
+- Learn how to build an Agent using `x/warden`, `x/oracle`, and `x/async`: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).

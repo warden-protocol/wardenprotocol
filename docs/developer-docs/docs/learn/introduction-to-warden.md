@@ -24,14 +24,14 @@ Within Warden, AI is integrated on two layers:
 Warden is designed to bring AIs onchain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
 
 - **Execution layer**  
-Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain.
+Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain. Learn more: [Build an Agent](/build-an-agent/introduction).
 
 ## Key protocol features
 
 Warden's key features allow creating a truly open AI experience:
 
 - **AI-ready**  
-Warden allows you to easily integrate AI in your application and enjoy novel AI-driven Web3 experiences.
+Warden allows you to easily [build AI Agents](/build-an-agent/introduction) and enjoy novel AI-driven Web3 experiences.
 
 - **Simplified cryptography**  
 With Warden, you can easily develop Web3 applications with [Intent-driven](/learn/glossary#intent) key management.
@@ -45,8 +45,8 @@ Warden provides operator sets and integrations with leading wallets, explorers, 
 
 Here is what you can do with Warden:
 
-- **Bring AI to your app**  
-Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract.
+- **Build an Agent**  
+Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module, you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
 
 - **Build an application**  
 [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward)—our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.
@@ -65,6 +65,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 
 - **Learn**: The basic information about the protocol
 - [Build an App](/build-an-app/introduction): Guides for application developers
+- [Build an Agent](/build-an-agent/introduction): Guides for AI Agent builders
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokens—WARD and WARP

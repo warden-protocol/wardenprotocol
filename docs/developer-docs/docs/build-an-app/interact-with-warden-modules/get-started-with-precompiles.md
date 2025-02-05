@@ -37,7 +37,7 @@ Before you start, complete the following prerequisites:
    cd warden-smart-contract
    ```
    
-   Alternatively, you can use an existing project – for example, the one you created when following the [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract) guide.
+   Alternatively, you can use an existing project—for example, the one you created when following the [Deploy an EVM contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract) guide.
 
 2. In the `/src` directory, create a new contract named `Warden.sol`.
 
@@ -154,7 +154,7 @@ Now you can interact with the contract.
 
    If nothing is returned, [create a Space](/operate-a-node/run-a-local-chain#create-a-space). 
 
-2. Get a Space by its ID – for example, `1`:
+2. Get a Space by its ID—for example, `1`:
    
    ```
    cast call $CONTRACT_ADDRESS "getSpace(uint64)" 1 --rpc-url $RPC_URL
@@ -166,7 +166,7 @@ Now you can interact with the contract.
    0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006ea8ac1673402989e7b653ae4e83b54173719c3000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006ea8ac1673402989e7b653ae4e83b54173719c30
    ```
 
-3. Get the Space creator by Space ID – for example, `1`:
+3. Get the Space creator by Space ID—for example, `1`:
    
    ```
    cast call $CONTRACT_ADDRESS "getSpaceCreator(uint64)" 1 --rpc-url $RPC_URL
@@ -185,7 +185,7 @@ Now you can dive deeper and expand your contract with other functions from Warde
 - To find code samples for each function, see the following guides:
 
   - [Interact with `x/warden`](/category/interact-with-xwarden)
-  - Interact with `x/oracle`: *Coming soon*  – see the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol)
+  - Interact with `x/oracle`: *Coming soon*—see the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol)
   - [Interact with `x/act`](/category/interact-with-xact)
   - [Interact with `x/async`](interact-with-x-async)
 

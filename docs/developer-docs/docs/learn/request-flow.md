@@ -32,11 +32,11 @@ The flow for generating a private/public key pair includes the following steps:
 
 1. The Client sends a `MsgNewKeyRequest` transaction to its Node, specifying these details:
 
-- The key type – for example, ECDSA secp256k1
+- The key type—for example, ECDSA secp256k1
 - The Keychain ID
 - The Approval Rule ID
 
-2. A `KeyRequest` object is created and stored in the on-chain database.
+2. A `KeyRequest` object is created and stored in the onchain database.
 
 ### 2. Checking the Rule
 
@@ -56,7 +56,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
 
-**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
+**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network—Warden isn't in charge of it.
 
 ### Diagram
 
@@ -96,7 +96,7 @@ The flow for requesting a signature includes the following steps:
 - The key ID
 - The Approval Rule ID
 
-2. A `SignRequest` object is created and stored in the on-chain database.
+2. A `SignRequest` object is created and stored in the onchain database.
 
 **Note**: While key requests directly indicate the [Keychain ID](/learn/glossary#keychain-id) in the request, signature requests contain the Keychain ID inside the `keys` object.
 
@@ -118,7 +118,7 @@ The flow for requesting a signature includes the following steps:
 
 3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilSignRequest` transaction with the signature to the Node.
 
-**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
+**Note**: Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network—Warden isn't in charge of it.
 
 ### Diagram
 

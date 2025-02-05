@@ -78,7 +78,7 @@ To deploy an EVM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
-2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
+2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
   
    ```bash
    git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
@@ -203,7 +203,7 @@ In the following steps, we're going to deploy this contract without modification
    Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-4. Note down the value returned as `Deployed to` – that's your **contract address**. Export it as a variable: 
+4. Note down the value returned as `Deployed to`—that's your **contract address**. Export it as a variable: 
 
    ```bash
    export CONTRACT_ADDRESS=my-contract-address

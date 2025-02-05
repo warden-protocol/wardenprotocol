@@ -16,7 +16,7 @@ The Warden Protocol aims to drive a sustainable equilibrium between supply and d
 
 Keychain operators serve a vital role within the Warden Protocol.
 
-A Keychain is an off-chain service that provides key management services to Warden users. The selected Keychain creates and stores a key material locally and publishes the public key on Warden. Users can then request signatures for various purposes. 
+A Keychain is an offchain service that provides key management services to Warden users. The selected Keychain creates and stores a key material locally and publishes the public key on Warden. Users can then request signatures for various purposes. 
 
 Keychains are required to pay a WARD bond to the Warden Protocol by the Total Value Secured concept. This WARD bond is locked and can only be unbonded after a 6 month notice period.
 

@@ -12,7 +12,7 @@ Articles in this section describe the following modules:
 
 - [`x/warden`](x-warden): It allows users to create and manage their [Spaces](/learn/glossary#space) and request [Keychains](/learn/glossary#keychain) to sign payloads.
 - [`x/act`](x-act): It executes arbitrary messages ([Actions](/learn/glossary#action)) under certain conditions ([Rules](/learn/glossary#approval-rule)).
-- [`x/async`](x-async): It executes off-chain computations ([Futures](/learn/glossary#future)) asynchronously and stores the results on-chain. 
+- [`x/async`](x-async): It executes offchain computations ([Futures](/learn/glossary#future)) asynchronously and stores the results onchain. 
 - [External modules](external-modules): `x/gmp`, `x/wasm`, etc.
 
 ## Usage

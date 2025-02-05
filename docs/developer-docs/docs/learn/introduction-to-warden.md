@@ -14,14 +14,14 @@ Mass adoption of Web3 requires the creation of safe and seamless AI experiences,
 
 ## AI Blockchain Interface
 
-Warden supports **AIBI** – **Artificial Intelligence Blockchain Interface**
+Warden supports **AIBI**—**Artificial Intelligence Blockchain Interface**
 
-AIBI brings AI on-chain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+AIBI brings AI onchain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
 Within Warden, AI is integrated on two layers:
 
 - **Verification layer**  
-Warden is designed to bring AIs on-chain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
+Warden is designed to bring AIs onchain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
 
 - **Execution layer**  
 Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain.
@@ -49,7 +49,7 @@ Here is what you can do with Warden:
 Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract.
 
 - **Build an application**  
-[Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.
+[Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward)—our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.
 
 - **Operate a Keychain**  
 [Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination. You can become a Keychain operator or build a custom Keychain.
@@ -67,7 +67,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build an App](/build-an-app/introduction): Guides for application developers
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
-- [Tokens](/tokens/introduction): A detailed overview of Warden tokens – WARD and WARP
+- [Tokens](/tokens/introduction): A detailed overview of Warden tokens—WARD and WARP
 - [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
 
 ## Contribute

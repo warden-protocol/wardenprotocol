@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-To become a **Keychain operator**, you need to create and configure a Keychain entity on-chain, as shown in this guide. To interact with the chain,  you'll use [node commands](/operate-a-node/node-commands).
+To become a **Keychain operator**, you need to create and configure a Keychain entity onchain, as shown in this guide. To interact with the chain,  you'll use [node commands](/operate-a-node/node-commands).
 
 You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
@@ -68,7 +68,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
-2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
+2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
   
    ```bash
    git clone --depth 1 --branch v0.5.2 https://github.com/warden-protocol/wardenprotocol
@@ -108,7 +108,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 ## 2. Register a Keychain
 
-The following steps show how to register a new Keychain entity on-chain.
+The following steps show how to register a new Keychain entity onchain.
 
 1. Run this command to create a new Keychain:
 
@@ -155,7 +155,7 @@ The following steps show how to register a new Keychain entity on-chain.
         - `sig_req`: A fee for signing a transaction
    - For more settings, see `wardend tx warden new-keychain --help`.
 
-2. Confirm the transaction. A new Keychain object will be created on-chain.
+2. Confirm the transaction. A new Keychain object will be created onchain.
 
 3. Every Keychain is created with a **Keychain ID** that identifies it in key and signature requests and collects fees from users. You'll need this ID to operate your Keychain. Run the following command and check the `id` field in the output:
 

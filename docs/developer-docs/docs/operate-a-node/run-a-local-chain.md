@@ -175,7 +175,7 @@ You'll see blocks being produced and height incrementing.
 
 ### 5. Add more settings
 
-In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features – for example, a Space and a Keychain.
+In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features—for example, a Space and a Keychain.
 
 #### Create a Space
 

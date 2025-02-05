@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 This is a step-by-step guide explaining how to fulfill key and signature requests with your Keychain from the command line.
 
-You'll interact with the node through [node commands](/operate-a-node/node-commands). For generating keys and signing messages, you'll use **CLIChain** – a command-line tool for managing cryptographic keys and operations.
+You'll interact with the node through [node commands](/operate-a-node/node-commands). For generating keys and signing messages, you'll use **CLIChain**—a command-line tool for managing cryptographic keys and operations.
 
 You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
@@ -271,7 +271,7 @@ When a user requests a signature, the Keychain signs a message with the private 
    </Tabs>
 
    :::tip
-   In the `--input` flag, you should provide a Base64-encoded hash. For testing purposes, you can use the hash from the example above. Alternatively, you can create one yourself – run the following command, replacing `00112233` with arbitrary raw data:
+   In the `--input` flag, you should provide a Base64-encoded hash. For testing purposes, you can use the hash from the example above. Alternatively, you can create one yourself—run the following command, replacing `00112233` with arbitrary raw data:
 
    ```bash
    RAW_DATA="00112233"

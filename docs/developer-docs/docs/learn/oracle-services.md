@@ -17,7 +17,7 @@ Access to oracle data feeds significantly enhances the capabilities of Warden's 
 
 ## Skip\:Connect
 
-Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle) – an external module by **Skip Protocol**. This module provides access to **Skip:Connect** – an oracle service offering mostly price data, formerly known as Slinky.
+Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle)—an external module by **Skip Protocol**. This module provides access to **Skip:Connect**—an oracle service offering mostly price data, formerly known as Slinky.
 
 See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 
@@ -30,9 +30,9 @@ This integration uses the security framework of the chain, ensuring rapid price 
 With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
 
 :::tip
-The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written on-chain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-skip-connect).
+The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written onchain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-skip-connect).
 :::
 
 ## Available data feeds
 
-**Skip:Connect** can support over 2,000 currencies – see the available [data feeds on GitHub](https://github.com/skip-mev/slinky/blob/30bf58f5ad6dcf417a3747b7cfffdc637ae3c70f/cmd/constants/markets.go#L1615). Please note that this list may change over the course of time.
+**Skip:Connect** can support over 2,000 currencies—see the available [data feeds on GitHub](https://github.com/skip-mev/slinky/blob/30bf58f5ad6dcf417a3747b7cfffdc637ae3c70f/cmd/constants/markets.go#L1615). Please note that this list may change over the course of time.

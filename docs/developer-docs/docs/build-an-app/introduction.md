@@ -8,7 +8,7 @@ sidebar_position: 1
 
 **Omnichain Applications** (**OApps**) are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain.
 
-An example of an OApp is [SpaceWard](https://help.wardenprotocol.org) – our application functioning as the front-end interface for Warden.
+An example of an OApp is [SpaceWard](https://help.wardenprotocol.org)—our application functioning as the front-end interface for Warden.
 
 ## Omnichain Contracts
 
@@ -41,7 +41,7 @@ Call Warden modules in your contract to access Warden-specific features such as 
 Warden precompiles allow you to call Warden modules in EVM contracts. Browse this section to discover full lists of methods available for each precompile.
 
 - [Build with WardenJS](wardenjs)  
-Here you'll find information on WardenJS – a tool used for building the frontend part of your application.
+Here you'll find information on WardenJS—a tool used for building the frontend part of your application.
 
 ## Get started
 

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The `BasicOrder` contract implements the core of logic of this example – **automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met. Note that you can extend some parts to [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders).
+The `BasicOrder` contract implements the core of logic of this example—**automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met. Note that you can extend some parts to [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders).
 
 This article will guide you through creating the `BasicOrder` contract. You'll implement the following architecture:
 
@@ -93,7 +93,7 @@ constructor(
 
 ## 3. Implement price monitoring
 
-In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold  – see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
+In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold—see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
 
 
 ```solidity title="/src/BasicOrder.sol"
@@ -246,7 +246,7 @@ To [implement Orders with price prediction](../implement-automated-orders-with-p
   }
   ```
 - **Multiple price sources**  
-  The basic implementation uses prices from a single source – the oracle service:  
+  The basic implementation uses prices from a single source—the oracle service:  
   ```solidity
   GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(...);
   ```

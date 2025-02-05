@@ -75,7 +75,7 @@ To deploy a WASM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 
 1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
-2. Clone the repository with Warden source code. Then build the binary and initialize the chain home folder:
+2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
   
    ```bash
    git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
@@ -248,11 +248,11 @@ wasm-opt -Os -o target/wasm32-unknown-unknown/release/hello_world.wasm \
   target/wasm32-unknown-unknown/release/hello_world.wasm
 ```
 
-## 6. Store the contract on-chain
+## 6. Store the contract onchain
 
 If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
 
-To store your contract on-chain, run the command below. Specify your key name from [Step 1](#1-prepare-the-chain) in the `--from` flag, also set the chain ID.
+To store your contract onchain, run the command below. Specify your key name from [Step 1](#1-prepare-the-chain) in the `--from` flag, also set the chain ID.
 
 <Tabs>
 <TabItem value="default" label="Default node settings">

@@ -18,7 +18,7 @@ After you execute the WASM contract on Warden, it'll be able to burn tokens from
 Note that this guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
 
 :::tip
-Axelar GMP will be soon available on our new testnet – [Chiado](/operate-a-node/chiado-testnet/chiado-overview). Stay tuned in for updates!
+Axelar GMP will be soon available on our new testnet—[Chiado](/operate-a-node/chiado-testnet/chiado-overview). Stay tuned in for updates!
 :::
 
 ## 1. Deploy an EVM contract on Sepolia
@@ -40,7 +40,7 @@ Before you start, complete the following prerequisites:
 
 - Install `node.js` and `npm`.
 - Install `truffle`  globally: `npm install -g truffle`.
-- Create a wallet and get Sepolia ETH – for example, from the [PoW Sepolia Faucet](https://sepolia-faucet.pk910.de).
+- Create a wallet and get Sepolia ETH—for example, from the [PoW Sepolia Faucet](https://sepolia-faucet.pk910.de).
 - Create an [Infura](https://www.infura.io) account for accessing the Sepolia network.
 
 ### 1.1. Set up the project
@@ -136,7 +136,7 @@ Before you start, complete the following prerequisites:
             emit TokensBurned(amount);
         }
 
-        // Allows the contract to receive native currency – for example, ETH
+        // Allows the contract to receive native currency—for example, ETH
         receive() external payable {}
     }
 ```
@@ -184,7 +184,7 @@ module.exports = async function (deployer, network, accounts) {
   
   const AXELAR_GATEWAY_ADDRESS = "0xe432150cce91c13a887f7D836923d5597adD8E31";
 
-  // Define the initial supply – for example, 100 tokens with 18 decimals
+  // Define the initial supply—for example, 100 tokens with 18 decimals
   const initialSupply = web3.utils.toWei("100000000", "ether"); // Mints 100M tokens
 /burnable-token
   // Deploy the BurnableToken contract with the required constructor parameters
@@ -405,7 +405,7 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll create files in the `/src` folder to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
+In the following steps, you'll create files in the `/src` directory to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
 
 1. Create a file named `msg.rs` with the following code:
    
@@ -718,7 +718,7 @@ Now you can [compile](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract
    
 5. Use the command below to execute your contract.
 
-   Before you proceed, replace `my-contract-address` with your contract address and `my-key-name` with your key name. The `--amount` flag specifies the gas fee in the Axelar network – make sure you have enough AXL.
+   Before you proceed, replace `my-contract-address` with your contract address and `my-key-name` with your key name. The `--amount` flag specifies the gas fee in the Axelar network—make sure you have enough AXL.
    
    ```bash
    wardend tx wasm execute my-contract-address '{"send_message_evm": {"amount_to_burn": "1000000"}}' \

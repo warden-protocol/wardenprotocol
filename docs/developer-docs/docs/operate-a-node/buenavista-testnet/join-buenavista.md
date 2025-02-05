@@ -108,7 +108,7 @@ This step is recommended but optional.
 
 To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and after that only download the blocks from the network.
 
-You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/chain.json) – for example, the following:
+You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/chain.json)—for example, the following:
 
 ```bash
 https://rpc.buenavista.wardenprotocol.org

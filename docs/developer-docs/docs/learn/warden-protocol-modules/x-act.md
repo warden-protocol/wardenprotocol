@@ -24,9 +24,9 @@ You can call the `x/act` module from your EVM smart contract using the [`x/act` 
 
 The **Rule** struct represents a set of user-defined conditions that must be met before something can be executed.
 
-Users can register Rules on-chain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
+Users can register Rules onchain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
 
-Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available on-chain. To learn more, see [Hooks](#hooks).
+Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available onchain. To learn more, see [Hooks](#hooks).
 
 See also [Glossary: Approval Rule](/learn/glossary#approval-rule).
 
@@ -159,7 +159,7 @@ func (e SatelliteExpander) Expand(ctx context.Context, ident *Identifier) (Expre
 }
 ```
 
-A user can then write a Rule – for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
+A user can then write a Rule—for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
 
 ```isl
 satellite.123.cost <= 100 || any(2, [warden1j6yh, warden1rxu3, warden1r4d7])
@@ -183,7 +183,7 @@ Every time an Action is approved, it gets re-evaluated. During evaluation, all i
 
 #### Example
 
-The [preprocessing example](#example-1) uses a value that needs to be fetched only once – when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
+The [preprocessing example](#example-1) uses a value that needs to be fetched only once—when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
 
 You can register a module environment in `app.go`. For example, registering an environment for the dummy [`x/satellites` ](#example) module would look like this:
 
@@ -222,7 +222,7 @@ func (e SatelliteEnv) Get(ctx context.Context, name string) (object.Object, bool
 }
 ```
 
-A user can then write a Rule – for example, to keep launches on hold until the fuel cost is lower than 100:
+A user can then write a Rule—for example, to keep launches on hold until the fuel cost is lower than 100:
 
 ```isl
 satellite.fuel_price < 100
@@ -232,7 +232,7 @@ satellite.fuel_price < 100
 
 ### MsgNewRule
 
-Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored on-chain.
+Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored onchain.
 
 This message is expected to fail in the following cases:
 

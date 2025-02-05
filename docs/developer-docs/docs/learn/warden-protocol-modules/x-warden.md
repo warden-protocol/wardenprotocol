@@ -32,7 +32,7 @@ See also [Glossary: Space](/learn/glossary#space).
 
 ### Key
 
-A **Key** is the public part of a key pair, which is stored on-chain. Every Key belongs to a certain [Space](#space).
+A **Key** is the public part of a key pair, which is stored onchain. Every Key belongs to a certain [Space](#space).
 
 Keys have unique identifiers used to refer to them when requesting a [Keychain](#keychain) to sign a payload.
 
@@ -42,10 +42,10 @@ See also [Glossary: Key](/learn/glossary#key).
 
 A Keychain fulfills [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request) from users. Optionally, it can set a fee for each request.
 
-Keychains can be registered on-chain. Each Keychain has the following:
+Keychains can be registered onchain. Each Keychain has the following:
 
 - A list of admins that can update the Keychain information
-- A list of [Writers](/learn/glossary#keychain-writer) – the only addresses authorized to send updates to requests
+- A list of [Writers](/learn/glossary#keychain-writer)—the only addresses authorized to send updates to requests
 
 See also [Glossary: Keychain](/learn/glossary#keychain), [Request flow](/learn/request-flow).
 
@@ -56,7 +56,7 @@ An **Analyzer** is a [CosmWasm](https://cosmwasm.com) contract that can intercep
 This is what Analyzers can do:
 
 - Extract payload metadata, which then can be referenced in [Rule](/learn/warden-protocol-modules/x-act#rule) expressions
-- Manipulate the payload before it's signed — for example, hash it following a specific algorithm
+- Manipulate the payload before it's signed—for example, hash it following a specific algorithm
 
 To illustrate this, it's possible to write an Ethereum Analyzer that will do the following:
 

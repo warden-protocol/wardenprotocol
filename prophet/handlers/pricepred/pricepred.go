@@ -7,6 +7,7 @@ import (
 	"math/big"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -112,59 +113,52 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 }
 
 func decodeInput(input []byte) (PricePredictorInputData, error) {
-	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
-		{Name: "date", Type: "uint256"},
-		{Name: "tokens", Type: "string[]"},
-		{Name: "metrics", Type: "uint256[]"},
-		{Name: "falsePositiveRate", Type: "uint64[2]"},
-	})
+	parsedAbi, err := abi.JSON(strings.NewReader(PricePredictorABI))
 	if err != nil {
 		return PricePredictorInputData{}, err
 	}
 
-	args := abi.Arguments{
-		{Type: typ},
+	method, ok := parsedAbi.Methods["solve"]
+	if !ok {
+		return PricePredictorInputData{}, fmt.Errorf("method 'solve' not found in generated ABI")
 	}
 
-	unpackArgs, err := args.Unpack(input)
+	vals, err := method.Inputs.Unpack(input)
+	if err != nil {
+		return PricePredictorInputData{}, err
+	}
+	if len(vals) != 1 {
+		return PricePredictorInputData{}, fmt.Errorf("expected 1 argument (InputData), got %d", len(vals))
+	}
+
+	var in struct {
+		InputData PricePredictorInputData
+	}
+	err = method.Inputs.Copy(&in, vals)
 	if err != nil {
 		return PricePredictorInputData{}, err
 	}
 
-	var inputData struct {
-		Data PricePredictorInputData
-	}
-	err = args.Copy(&inputData, unpackArgs)
-	if err != nil {
-		return PricePredictorInputData{}, err
-	}
-
-	return inputData.Data, nil
+	return in.InputData, nil
 }
 
 func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
-	typ, err := abi.NewType("tuple", "", []abi.ArgumentMarshaling{
-		{Name: "predictions", Type: "uint256[]"},
-		{Name: "metrics", Type: "uint256[][]"},
-	})
+	parsedAbi, err := abi.JSON(strings.NewReader(PricePredictorABI))
 	if err != nil {
 		return nil, err
 	}
 
-	args := abi.Arguments{
-		{
-			Type:    typ,
-			Name:    "SolverOutput",
-			Indexed: false,
-		},
+	method, ok := parsedAbi.Methods["solve"]
+	if !ok {
+		return nil, fmt.Errorf("method 'solve' not found in generated ABI")
 	}
 
-	enc, err := args.Pack(outputData)
+	packed, err := method.Outputs.Pack(outputData)
 	if err != nil {
 		return nil, err
 	}
 
-	return enc, nil
+	return packed, nil
 }
 
 func buildOutputData(inputData PricePredictorInputData, req PredictRequest, res PredictResponse, backtestingRes *BacktestingResponse) (PricePredictorOutputData, error) {

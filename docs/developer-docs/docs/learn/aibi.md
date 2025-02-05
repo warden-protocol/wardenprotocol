@@ -14,4 +14,4 @@ Within Warden, AI is integrated on two layers:
 Warden is designed to bring AIs onchain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
 
 - **Execution layer**  
-Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain.
+Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain. Learn more: [Build an Agent](/build-an-agent/introduction).

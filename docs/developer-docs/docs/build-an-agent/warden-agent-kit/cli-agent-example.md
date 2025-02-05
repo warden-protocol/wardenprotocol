@@ -118,12 +118,17 @@ A new space has been successfully created! If you need any further assistance, j
 -------------------
 ```
 
-## Next steps
+### 4.3. Use other tools
 
-After running the CLI Agent example and creating a Space, you can ask the Agent to return your Space ID, create a key, and so on. To stop the Agent, just type `exit`.
+After running the CLI Agent example and creating a Space, you can ask the Agent to return your Space ID, create a key, and so on.
 
 A comprehensive list of all the available tools can be found in [Agent Actions](/build-an-agent/warden-agent-kit/agent-actions). Alternatively, you can just ask the Agent about it: `what capabilities do you have?`
 
-:::tip
-You can also add more capabilities to your Agent using existing Langchain tools or by adding your own custom tool, as shown in [Add Agent capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities).
-:::
+To stop the Agent, just type `exit`.
+
+## Next steps
+
+You can take the following next steps:
+
+- [Add Agent capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities)
+- Explore or update the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples)

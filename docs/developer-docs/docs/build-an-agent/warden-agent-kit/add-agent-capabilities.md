@@ -178,3 +178,10 @@ Here are the key points to remember:
 - `WardenTool` is used to define the custom tool, including its name, description, schema, and logic.
 - You can integrate the custom tool into the Agent’s toolkit, alongside any other pre-configured tools.
 - The Agent uses these tools to process input and execute tasks, using the defined function for each tool.
+
+## Next steps
+
+You can take the following next steps: 
+
+- [Run the CLI Agent example](cli-agent-example)
+- Explore or update the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples)

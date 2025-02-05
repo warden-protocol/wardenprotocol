@@ -10,8 +10,8 @@ This guide will help you quickly set up and start building AI Agents capable of 
 
 The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic Agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing onchain interactions.
 
-- Check out the [CLI Agent Example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
-- Dive into the [Agent Kit Examples Repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development.
+- Check out the [CLI Agent example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
+- Dive into the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development. You can add your own examples to this repository as well.
 
 By leveraging these resources, you can quickly familiarize yourself with the Warden Agent Kit's capabilities and start building your own custom AI Agents.
 

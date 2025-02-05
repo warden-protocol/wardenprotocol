@@ -71,7 +71,7 @@ const wardenToolkit = new WardenToolkit(agentkit);
 const tools = wardenToolkit.getTools();
 ```
 
-## 5. Use Langchain Tools in your Agent
+## 5. Use Langchain Tools
 
 ```javascript
 // Initialize LLM

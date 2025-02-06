@@ -8,13 +8,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/stoicquote/generated"
 )
 
 func TestDecodeInput(t *testing.T) {
 	inputB64 := "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACnNvbWVhdXRob3IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlzb21lcXVvdGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 
-	expected := StoicQuoteTypesStoicQuote{
-		Data: StoicQuoteTypesData{
+	expected := generated.StoicQuoteTypesStoicQuote{
+		Data: generated.StoicQuoteTypesData{
 			Author: "someauthor",
 			Quote:  "somequote",
 		},

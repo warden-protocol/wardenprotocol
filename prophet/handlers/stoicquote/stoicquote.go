@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/stoicquote/generated"
 )
 
 type Handler struct{}
@@ -42,12 +43,12 @@ func (h Handler) Verify(ctx context.Context, input []byte, output []byte) error 
 	return nil
 }
 
-func decodeInput(inputData []byte) (StoicQuoteTypesStoicQuote, error) {
+func decodeInput(inputData []byte) (generated.StoicQuoteTypesStoicQuote, error) {
 	var in struct {
-		Stoicquote StoicQuoteTypesStoicQuote
+		Stoicquote generated.StoicQuoteTypesStoicQuote
 	}
 
-	parsedABI, err := StoicQuoteTypesMetaData.GetAbi()
+	parsedABI, err := generated.StoicQuoteTypesMetaData.GetAbi()
 	if err != nil {
 		return in.Stoicquote, fmt.Errorf("failed to get ABI: %w", err)
 	}
@@ -72,8 +73,8 @@ func decodeInput(inputData []byte) (StoicQuoteTypesStoicQuote, error) {
 	return in.Stoicquote, nil
 }
 
-func encodeOutput(outStoicQuote StoicQuoteTypesStoicQuote) ([]byte, error) {
-	parsedABI, err := StoicQuoteTypesMetaData.GetAbi()
+func encodeOutput(outStoicQuote generated.StoicQuoteTypesStoicQuote) ([]byte, error) {
+	parsedABI, err := generated.StoicQuoteTypesMetaData.GetAbi()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get ABI: %w", err)
 	}

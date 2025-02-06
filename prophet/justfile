@@ -17,11 +17,11 @@ pricepred: _tools
   --out=handlers/pricepred/pricepred_bindings.go
 
 stoicquote: _tools
-  go run ../soliditygen/cmd/main.go --url="https://stoic.tekloon.net/stoic-quote" --contractName="StoicQuote" --contractDir=handlers/stoicquote
-  solc --abi --bin --overwrite handlers/stoicquote/StoicQuoteTypes.sol -o build
+  go run ../soliditygen/cmd/main.go --url="https://stoic.tekloon.net/stoic-quote" --contractName="StoicQuote" --contractDir=handlers/stoicquote/generated
+  solc --abi --bin --overwrite handlers/stoicquote/generated/StoicQuoteTypes.sol -o build
   abigen \
   --bin=build/StoicQuoteTypes.bin \
   --abi=build/StoicQuoteTypes.abi \
-  --pkg=stoicquote \
+  --pkg=generated \
   --type=StoicQuoteTypes \
-  --out=handlers/stoicquote/stoicquote_bindings.go
+  --out=handlers/stoicquote/generated/stoicquote_bindings.go

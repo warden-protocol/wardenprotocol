@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
+// Code generated - DO NOT EDIT.
+// This file is a generated and any manual changes will be lost.
 pragma solidity >=0.8.25 <0.9.0;
 
 /**

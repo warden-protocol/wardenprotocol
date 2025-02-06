@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,9 +15,10 @@ type Definition struct {
 	Text string
 }
 
-// WriteSolidityFromURL fetches JSON from the given URL, infers Solidity structs, and writes a .sol file.
-// Returns the name of the created file or an error.
-func WriteSolidityFromURL(url string, contractName string) (string, error) {
+// WriteSolidityFromURL fetches JSON from the given URL, infers Solidity structs,
+// and writes a .sol file named <contractName>Types.sol into the specified
+// contractDirectory. Returns the path to the created file or an error.
+func WriteSolidityFromURL(url, contractName, contractDirectory string) (string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", fmt.Errorf("fetching JSON: %w", err)
@@ -45,6 +47,8 @@ func WriteSolidityFromURL(url string, contractName string) (string, error) {
 	var solBuilder strings.Builder
 
 	solBuilder.WriteString("// SPDX-License-Identifier: GPL-3.0\n")
+	solBuilder.WriteString("// Code generated - DO NOT EDIT.\n")
+	solBuilder.WriteString("// This file is a generated and any manual changes will be lost.\n")
 	solBuilder.WriteString("pragma solidity >=0.8.25 <0.9.0;\n\n")
 	solBuilder.WriteString("/**\n")
 	solBuilder.WriteString(" * @title " + contractName + "\n")
@@ -66,7 +70,11 @@ func WriteSolidityFromURL(url string, contractName string) (string, error) {
 
 	solBuilder.WriteString("}\n")
 
-	solFileName := contractName + ".sol"
+	solFileName := filepath.Join(contractDirectory, contractName+".sol")
+
+	if err := os.MkdirAll(contractDirectory, 0o755); err != nil {
+		return "", fmt.Errorf("creating directory: %w", err)
+	}
 	if err := os.WriteFile(solFileName, []byte(solBuilder.String()), 0o644); err != nil {
 		return "", fmt.Errorf("writing solidity file: %w", err)
 	}

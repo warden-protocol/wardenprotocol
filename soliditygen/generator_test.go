@@ -23,7 +23,7 @@ func TestWriteSolidityFromURL(t *testing.T) {
 	}))
 	defer server.Close()
 
-	solFile, err := WriteSolidityFromURL(server.URL, "StoicQuote")
+	solFile, err := WriteSolidityFromURL(server.URL, "StoicQuote", ".")
 	require.NoError(t, err, "should successfully generate the .sol file")
 	defer os.Remove(solFile)
 

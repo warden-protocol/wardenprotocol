@@ -10,7 +10,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-func (k Keeper) GetHandlers(ctx context.Context, req *types.QueryHandlersRequest) (*types.QueryHandlersResponse, error) {
+func (k Keeper) Handlers(ctx context.Context, req *types.QueryHandlersRequest) (*types.QueryHandlersResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

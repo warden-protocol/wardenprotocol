@@ -53,7 +53,14 @@ type PredictResponse struct {
 }
 
 func (c *client) Predict(ctx context.Context, req PredictRequest) (PredictResponse, error) {
-	return post[PredictRequest, PredictResponse](ctx, c.c, 3*time.Second, req, c.predictURL)
+	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+	var res PredictResponse
+	if err := c.post(reqCtx, req, &res, c.predictURL); err != nil {
+		return PredictResponse{}, err
+	}
+
+	return res, nil
 }
 
 type BacktestingRequest struct {
@@ -104,13 +111,20 @@ type BacktestingResponse struct {
 }
 
 func (c *client) Backtesting(ctx context.Context, req BacktestingRequest) (BacktestingResponse, error) {
-	return post[BacktestingRequest, BacktestingResponse](ctx, c.c, 10*time.Second, req, c.backtestingURL)
+	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	var res BacktestingResponse
+	if err := c.post(reqCtx, req, &res, c.backtestingURL); err != nil {
+		return BacktestingResponse{}, err
+	}
+
+	return res, nil
 }
 
 type VerifyRequest struct {
-	SolverRequest     PredictRequest `json:"solverRequest"`
-	SolverReceipt     ResponseSolverReceipt  `json:"solverReceipt"`
-	VerificationRatio float64        `json:"verificationRatio"`
+	SolverRequest     PredictRequest        `json:"solverRequest"`
+	SolverReceipt     ResponseSolverReceipt `json:"solverReceipt"`
+	VerificationRatio float64               `json:"verificationRatio"`
 }
 
 type VerifyResponse struct {
@@ -119,46 +133,49 @@ type VerifyResponse struct {
 }
 
 func (c *client) Verify(ctx context.Context, req VerifyRequest) (VerifyResponse, error) {
-	return post[VerifyRequest, VerifyResponse](ctx, c.c, 5*time.Second, req, c.verifyURL)
-}
-
-func post[Req, Resp any](ctx context.Context, client *http.Client, timeout time.Duration, req Req, URL string) (Resp, error) {
-	var empty Resp
-	reqCtx, cancel := context.WithTimeout(ctx, timeout)
+	reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
-
-	reqBody, err := json.Marshal(req)
-	if err != nil {
-		return empty, err
+	var res VerifyResponse
+	if err := c.post(reqCtx, req, &res, c.verifyURL); err != nil {
+		return VerifyResponse{}, err
 	}
 
-	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", URL, bytes.NewReader(reqBody))
+	return res, nil
+}
+
+func (c *client) post(ctx context.Context, req, res any, URL string) error {
+	reqBody, err := json.Marshal(req)
 	if err != nil {
-		return empty, err
+		return err
+	}
+
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", URL, bytes.NewReader(reqBody))
+	if err != nil {
+		return err
 	}
 
 	httpReq.Header.Set("Accept", "application/json")
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	res, err := client.Do(httpReq)
+	response, err := c.c.Do(httpReq)
 	if err != nil {
-		return empty, err
-	}
-	defer res.Body.Close()
-	response, err := io.ReadAll(res.Body)
-	if err != nil {
-		return empty, err
+		return err
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return empty, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
-	}
-
-	var resResp Resp
-	err = json.Unmarshal(response, &resResp)
+	defer response.Body.Close()
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return empty, err
+		return err
 	}
 
-	return resResp, nil
+	if response.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code: %d. Server returned error: %s", response.StatusCode, body)
+	}
+
+	err = json.Unmarshal(body, &res)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

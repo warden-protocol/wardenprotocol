@@ -3,9 +3,12 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"slices"
 
+	"cosmossdk.io/collections"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/skip-mev/slinky/abci/ve"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
@@ -51,8 +54,11 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			}
 		}
 
+		handlers := k.p.Handlers()
+
 		asyncve := types.AsyncVoteExtension{
-			Results: results,
+			Results:  results,
+			Handlers: handlers,
 		}
 
 		asyncveBytes, err := asyncve.Marshal()
@@ -202,6 +208,43 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteEx
 	for _, vote := range ve.Votes {
 		if err := k.SetFutureVote(ctx, vote.FutureId, fromAddr, vote.Vote); err != nil {
 			return fmt.Errorf("failed to set task vote: %w", err)
+		}
+	}
+
+	log := ctx.Logger().With("module", "x/async")
+	r := collections.Range[collections.Pair[sdk.AccAddress, string]]{}
+	iterator, err := k.handlers.ByValidator().Iterate(ctx, r.Prefix(collections.PairPrefix[sdk.AccAddress, string](sdk.AccAddress(fromAddr))))
+
+	if err != nil {
+		return fmt.Errorf("failed to iterate by validator: %w", err)
+	}
+
+	keys, err := iterator.Keys()
+	if err != nil {
+		return fmt.Errorf("failed to get keys: %w", err)
+	}
+
+	existingHandlers := make(map[string]bool)
+
+	for _, pair := range keys {
+		h := pair.K2()
+
+		if !slices.Contains(ve.Handlers, h) {
+			if err := k.handlers.UnregisterValidator(ctx, h, fromAddr); err != nil {
+				log.Error("failed to unregister validator's handler", "err", err)
+			}
+		} else {
+			existingHandlers[h] = true
+		}
+	}
+
+	for _, h := range ve.Handlers {
+		if existingHandlers[h] {
+			continue
+		}
+
+		if err := k.handlers.RegisterValidator(ctx, h, fromAddr); err != nil {
+			log.Error("failed to register validator's handler", "err", err)
 		}
 	}
 

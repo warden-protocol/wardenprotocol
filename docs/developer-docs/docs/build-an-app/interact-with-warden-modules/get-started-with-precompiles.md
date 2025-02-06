@@ -97,7 +97,7 @@ Before you start, complete the following prerequisites:
 
 ## 2. Compile and deploy the contract
 
-1. Export your private key and the RPC URL as environmental variables:
+1. Set your private key and the RPC URL as environmental variables:
 
    <Tabs>
    <TabItem value="local" label="Local node">
@@ -130,7 +130,7 @@ Before you start, complete the following prerequisites:
    forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/Warden.sol:querySpace
    ```
 
-4. Export your contract address returned in `Deployed to`:
+4. Set your contract address returned in `Deployed to` as an environment variable:
 
    ```
    export CONTRACT_ADDRESS=my-contract-address
@@ -190,3 +190,5 @@ Now you can dive deeper and expand your contract with other functions from Warde
   - [Interact with `x/async`](interact-with-x-async)
 
 - For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.
+
+- Learn how to build an Agent using `x/warden`, `x/oracle`, and `x/async`: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).

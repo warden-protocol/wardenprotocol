@@ -57,9 +57,9 @@ To install CLIChain, navigate to the `wardenprotocol` directory and run this:
 go install ./cmd/clichain
 ```
 
-## 2. Export variables
+## 2. Set environment variables
 
-The next steps require that you export your node and Keychain settings as environment variables. If you used our `just` script to run the node, you can export the predefined settings. Otherwise, use custom values.
+The next steps require that you set your node and Keychain settings as environment variables. If you ran the node with our `just` script, you can use the predefined settings. Otherwise, use custom values.
 
    <Tabs>
    <TabItem value="local-default" label="Local node: default settings">
@@ -170,7 +170,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
      total: "1"
    ```
 
-3. Export the request ID using the command below. Replace `1` with the actual ID you obtained.
+3. Set the request ID as an environment variable, as shown in the command below. Replace `1` with the actual ID you obtained.
    
    ```bash
    export KEY_REQUEST_ID=1
@@ -182,7 +182,7 @@ When a user requests a new key, the Keychain generates a new private key, stores
    clichain generate -o private_$KEY_REQUEST_ID.key
    ```
 
-5. Export the public key, derived with the CLIChain [`public-key`](../implementations/clichain#derive-a-public-key) command:
+5. Set the public key, derived with the CLIChain [`public-key`](../implementations/clichain#derive-a-public-key) command, as an environmental variable:
    
    ```
    export PUBLIC_KEY=$(go run ./cmd/clichain public-key -k private_$KEY_REQUEST_ID.key -o base64)
@@ -313,14 +313,14 @@ When a user requests a signature, the Keychain signs a message with the private 
      status: SIGN_REQUEST_STATUS_PENDING
    ```
 
-3. Export the request details using the command below. Specify the actual request ID and data you obtained.
+3. Set the request details as environment variables, as shown below. Specify the actual request ID and data you obtained.
 
    ```bash
    export DATA=MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=
    export SIGN_REQUEST_ID=1
    ``` 
 
-4. Use the CLIChain [`sign`](../implementations/clichain#sign-a-message) command to sign the message with the key generated in the previous step. Export the signature.
+4. Use the CLIChain [`sign`](../implementations/clichain#sign-a-message) command to sign the message with the key generated in the previous step. Set the signature as an environment variable.
    
    ```bash
    export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k private_$KEY_REQUEST_ID.key -o base64)

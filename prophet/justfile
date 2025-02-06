@@ -1,7 +1,7 @@
 git_root := `git rev-parse --show-toplevel`
 tmpdir := `mktemp -d`
 
-all: pricepred
+all: pricepred stoicquote
 
 _tools:
     @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
@@ -15,4 +15,15 @@ pricepred: _tools
   --pkg=pricepred \
   --type=PricePredictor \
   --out=handlers/pricepred/pricepred_bindings.go
-  
+
+stoicquote: _tools
+  go run ../soliditygen/cmd/main.go --url="https://stoic.tekloon.net/stoic-quote" --contractName="StoicQuote"
+  mkdir handlers/stoicquote/generated
+  mv ./StoicQuoteTypes.sol handlers/stoicquote/generated/StoicQuoteTypes.sol
+  solc --abi --bin --overwrite handlers/stoicquote/generated/StoicQuoteTypes.sol -o build
+  abigen \
+  --bin=build/StoicQuoteTypes.bin \
+  --abi=build/StoicQuoteTypes.abi \
+  --pkg=stoicquote \
+  --type=StoicQuoteTypes \
+  --out=handlers/stoicquote/generated/stoic_quote_bindings.go

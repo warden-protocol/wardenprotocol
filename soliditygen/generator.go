@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
-	"path"
 	"strings"
 )
 
@@ -18,21 +16,13 @@ type Definition struct {
 
 // WriteSolidityFromURL fetches JSON from the given URL, infers Solidity structs, and writes a .sol file.
 // Returns the name of the created file or an error.
-func WriteSolidityFromURL(urlStr string) (string, error) {
-	parsedURL, err := url.Parse(urlStr)
-	if err != nil {
-		return "", fmt.Errorf("parsing url: %w", err)
-	}
-	base := path.Base(parsedURL.Path)
-	if base == "." || base == "/" {
-		base = "Root"
-	}
-
-	contractBaseName := toPascalCase(base)
-
-	resp, err := http.Get(urlStr)
+func WriteSolidityFromURL(url string, contractName string) (string, error) {
+	resp, err := http.Get(url)
 	if err != nil {
 		return "", fmt.Errorf("fetching JSON: %w", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("non-OK status code: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 
@@ -46,9 +36,9 @@ func WriteSolidityFromURL(urlStr string) (string, error) {
 		return "", fmt.Errorf("unmarshaling JSON: %w", err)
 	}
 
-	definitions := convertToSolidityStruct(contractBaseName, data)
+	definitions := convertToSolidityStruct(contractName, data)
 
-	contractName := contractBaseName + "Types"
+	contractName += "Types"
 
 	topDef := definitions[len(definitions)-1]
 
@@ -151,4 +141,11 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 	default:
 		return "string", nil
 	}
+}
+
+func capitalize(str string) string {
+	if str == "" {
+		return "Empty"
+	}
+	return strings.ToUpper(str[:1]) + str[1:]
 }

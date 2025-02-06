@@ -1,6 +1,8 @@
 package soliditygen
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 
@@ -10,9 +12,18 @@ import (
 // TestWriteSolidityFromURL calls WriteSolidityFromURL with the Stoic Quote API.
 // Then checks that the generated Solidity file has the expected structs/fields.
 func TestWriteSolidityFromURL(t *testing.T) {
-	const urlStr = "https://stoic.tekloon.net/stoic-quote"
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`{
+			"data": {
+				"author": "Marcus Aurelius",
+				"quote": "You have power over your mind - not outside events."
+			}
+		}`))
+	}))
+	defer server.Close()
 
-	solFile, err := WriteSolidityFromURL(urlStr)
+	solFile, err := WriteSolidityFromURL(server.URL, "StoicQuote")
 	require.NoError(t, err, "should successfully generate the .sol file")
 	defer os.Remove(solFile)
 

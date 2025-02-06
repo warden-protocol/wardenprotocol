@@ -17,7 +17,7 @@ pricepred: _tools
   --out=handlers/pricepred/pricepred_bindings.go
 
 stoicquote: _tools
-  go run ../soliditygen/cmd/main.go --url="https://stoic.tekloon.net/stoic-quote" --contractName="StoicQuote" --contractDir=handlers/stoicquote/generated
+  go run ../soliditygen/cmd/cmd.go --url="https://stoic.tekloon.net/stoic-quote" --contractName="StoicQuote" --contractDir=handlers/stoicquote/generated
   solc --abi --bin --overwrite handlers/stoicquote/generated/StoicQuoteTypes.sol -o build
   abigen \
   --bin=build/StoicQuoteTypes.bin \

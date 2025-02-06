@@ -91,6 +91,10 @@ func (p *P) Results() ([]FutureResult, func()) {
 	}
 }
 
+func (p *P) Handlers() []string {
+	return getHandlers()
+}
+
 // q is a queue that doesn't block the producer (i.e. q.Add is non-blocking).
 type q[T any] struct {
 	ch chan T

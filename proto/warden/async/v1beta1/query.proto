@@ -34,6 +34,18 @@ service Query {
   rpc PendingFutures(QueryPendingFuturesRequest) returns (QueryPendingFuturesResponse) {
     option (google.api.http).get = "/warden/async/pending_futures";
   }
+
+  rpc Handlers(QueryHandlersRequest) returns (QueryHandlersResponse) {
+    option (google.api.http).get = "/warden/async/handlers";
+  }
+
+  rpc HandlersByValidator(QueryHandlersByValidatorRequest) returns (QueryHandlersByValidatorResponse) {
+    option (google.api.http).get = "/warden/async/handlers_by_validator/{validator}";
+  }
+
+  rpc ValidatorsByHandler(QueryValidatorsByHandlerRequest) returns (QueryValidatorsByHandlerResponse) {
+    option (google.api.http).get = "/warden/async/validators_by_handler/{handler}";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -48,18 +60,21 @@ message QueryParamsResponse {
 message QueryFuturesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   // optional filter to query futures by creator
-  string creator = 2 [ (gogoproto.nullable) = true, (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  string creator = 2 [
+    (gogoproto.nullable) = true,
+    (cosmos_proto.scalar) = "cosmos.AddressString"
+  ];
 }
 
 message FutureResponse {
-  Future future = 1 [ (gogoproto.nullable) = false ];
-  repeated FutureVote votes = 2 [ (gogoproto.nullable) = false ];
-  FutureResult result = 3 [ (gogoproto.nullable) = true ];
+  Future future = 1 [(gogoproto.nullable) = false];
+  repeated FutureVote votes = 2 [(gogoproto.nullable) = false];
+  FutureResult result = 3 [(gogoproto.nullable) = true];
 }
 
 message QueryFuturesResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated FutureResponse futures = 2 [ (gogoproto.nullable) = false ];
+  repeated FutureResponse futures = 2 [(gogoproto.nullable) = false];
 }
 
 message QueryFutureByIdRequest {
@@ -67,7 +82,7 @@ message QueryFutureByIdRequest {
 }
 
 message QueryFutureByIdResponse {
-  FutureResponse futureResponse = 1 [ (gogoproto.nullable) = false ];
+  FutureResponse futureResponse = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryPendingFuturesRequest {
@@ -76,7 +91,7 @@ message QueryPendingFuturesRequest {
 
 message QueryPendingFuturesResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Future futures = 2 [ (gogoproto.nullable) = false ];
+  repeated Future futures = 2 [(gogoproto.nullable) = false];
 }
 
 message QueryHandlersRequest {

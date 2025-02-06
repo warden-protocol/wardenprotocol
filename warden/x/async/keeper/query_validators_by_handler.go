@@ -12,7 +12,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-func (k Keeper) QueryValidatorsByHandler(ctx context.Context, req *types.QueryValidatorsByHandlerRequest) (*types.QueryValidatorsByHandlerResponse, error) {
+func (k Keeper) ValidatorsByHandler(ctx context.Context, req *types.QueryValidatorsByHandlerRequest) (*types.QueryValidatorsByHandlerResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

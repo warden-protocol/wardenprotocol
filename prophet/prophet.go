@@ -127,6 +127,10 @@ func (p *P) SelfAddress() []byte {
 	return p.selfAddress
 }
 
+func (p *P) Handlers() []string {
+	return getHandlers()
+}
+
 // q is a queue that doesn't block the producer (i.e. q.Add is non-blocking).
 type q[T any] struct {
 	ch chan T

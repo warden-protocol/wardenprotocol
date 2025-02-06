@@ -160,7 +160,7 @@ In the following steps, we're going to deploy this contract without modification
 
 ## 4. Compile and deploy the contract
 
-1. Export your private key from [Step 1](#1-prepare-the-chain):
+1. Set your private key from [Step 1](#1-prepare-the-chain) as an environment variable:
 
    ```bash
    export PRIVATE_KEY=my-private-key
@@ -170,7 +170,7 @@ In the following steps, we're going to deploy this contract without modification
    In production, never store private keys directly in environment variables. Consider using encrypted keystores or secure key management solutions like `env`.
    :::
 
-1. Export the RPC URL. Specify the standard localhost address or Chiado's EVM endpoint:
+1. Set the RPC URL as an environment variable. Specify the standard localhost address or Chiado's EVM endpoint:
 
    <Tabs>
    <TabItem value="local" label="Local node">
@@ -203,7 +203,7 @@ In the following steps, we're going to deploy this contract without modification
    Transaction hash: 0x38c67c5bd92589ec6e31c2204a577e4c8d365099daad1382ff2596893b405249
    ```
 
-4. Note down the value returned as `Deployed to`—that's your **contract address**. Export it as a variable: 
+4. Note down the value returned as `Deployed to`—that's your **contract address**. Set it as an environment variable: 
 
    ```bash
    export CONTRACT_ADDRESS=my-contract-address

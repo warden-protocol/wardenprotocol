@@ -6,14 +6,14 @@ sidebar_position: 2
 
 ## Overview
 
-This guide will help you quickly set up and start building AI agents capable of interacting with both onchain and offchain systems. Whether you're new to AI agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
+This guide will help you quickly set up and start building AI Agents capable of interacting with both onchain and offchain systems. Whether you're new to AI Agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
 
-The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing onchain interactions.
+The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic Agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing onchain interactions.
 
-- Check out the [CLI Agent Example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
-- Dive into the [Agent Kit Examples Repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development.
+- Check out the [CLI Agent example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
+- Dive into the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development. You can add your own examples to this repository as well.
 
-By leveraging these resources, you can quickly familiarize yourself with the Warden Agent Kit's capabilities and start building your own custom AI agents.
+By leveraging these resources, you can quickly familiarize yourself with the Warden Agent Kit's capabilities and start building your own custom AI Agents.
 
 ## Prerequisites
 
@@ -71,7 +71,7 @@ const wardenToolkit = new WardenToolkit(agentkit);
 const tools = wardenToolkit.getTools();
 ```
 
-## 5. Use Langchain Tools in your Agent
+## 5. Use Langchain Tools
 
 ```javascript
 // Initialize LLM

@@ -31,6 +31,7 @@ func Execute(ctx context.Context, f Future) (FutureResult, error) {
 
 	output, err := s.Execute(ctx, f.Input)
 	if err != nil {
+		log.Debug("end", "took", time.Since(start))
 		return FutureResult{}, fmt.Errorf("executing future: %w", err)
 	}
 

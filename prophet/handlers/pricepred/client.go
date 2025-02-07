@@ -53,7 +53,7 @@ type PredictResponse struct {
 }
 
 func (c *client) Predict(ctx context.Context, req PredictRequest) (PredictResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 	var res PredictResponse
 	if err := c.post(reqCtx, req, &res, c.predictURL); err != nil {
@@ -133,7 +133,7 @@ type VerifyResponse struct {
 }
 
 func (c *client) Verify(ctx context.Context, req VerifyRequest) (VerifyResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 	var res VerifyResponse
 	if err := c.post(reqCtx, req, &res, c.verifyURL); err != nil {

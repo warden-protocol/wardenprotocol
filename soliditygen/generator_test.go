@@ -46,8 +46,8 @@ func TestWriteSolidityFromURL(t *testing.T) {
 	require.Contains(t, solidityCode, "Data data;",
 		"StoicQuote should include a 'data' field of type Data")
 
-	require.Contains(t, solidityCode, "function useAllTypes(",
-		"should have the dummy function named useAllTypes")
+	require.Contains(t, solidityCode, "function main(",
+		"should have the dummy function named main")
 	require.Contains(t, solidityCode, "StoicQuote memory _stoicquote",
 		"useAllTypes should accept the top-level StoicQuote struct as a parameter")
 }

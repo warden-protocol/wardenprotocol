@@ -33,7 +33,7 @@ func WriteSolidityFromURL(url, contractName, contractDirectory string) (string, 
 		return "", fmt.Errorf("reading response body: %w", err)
 	}
 
-	var data interface{}
+	var data map[string]interface{}
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {
 		return "", fmt.Errorf("unmarshaling JSON: %w", err)
 	}
@@ -62,7 +62,7 @@ func WriteSolidityFromURL(url, contractName, contractDirectory string) (string, 
 		solBuilder.WriteString("\n\n")
 	}
 
-	solBuilder.WriteString("function useAllTypes(")
+	solBuilder.WriteString("function main(")
 	solBuilder.WriteString(fmt.Sprintf("%s memory _%s", topDef.Name, strings.ToLower(topDef.Name)))
 	solBuilder.WriteString(") external {\n")
 	solBuilder.WriteString("    // This function doesn't do anything but ensures the top-level struct is referenced.\n")
@@ -83,20 +83,11 @@ func WriteSolidityFromURL(url, contractName, contractDirectory string) (string, 
 }
 
 // convertToSolidityStruct recursively generates a child-first list of Solidity struct definitions.
-func convertToSolidityStruct(structName string, value interface{}) []Definition {
-	obj, ok := value.(map[string]interface{})
-	if !ok {
-		fallback := fmt.Sprintf("struct %s {\n    string fallback;\n}", structName)
-		return []Definition{{
-			Name: structName,
-			Text: fallback,
-		}}
-	}
-
+func convertToSolidityStruct(structName string, value map[string]interface{}) []Definition {
 	var childDefs []Definition
 	var lines []string
 
-	for key, val := range obj {
+	for key, val := range value {
 		solType, nestedDefs := inferSolidityType(key, val)
 
 		childDefs = append(childDefs, nestedDefs...)
@@ -120,12 +111,6 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 	case bool:
 		return "bool", nil
 	case float64:
-		if val == float64(int64(val)) {
-			if val < 0 {
-				return "int256", nil
-			}
-			return "uint256", nil
-		}
 		return "int256", nil
 	case map[string]interface{}:
 		nestedName := capitalize(fieldName)
@@ -152,8 +137,8 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 }
 
 func capitalize(str string) string {
-	if str == "" {
-		return "Empty"
+	if len(str) == 0 {
+		panic("invalid input: string cannot be empty")
 	}
 	return strings.ToUpper(str[:1]) + str[1:]
 }

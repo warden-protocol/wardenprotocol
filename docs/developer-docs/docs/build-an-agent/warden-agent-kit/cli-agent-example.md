@@ -27,7 +27,7 @@ Before you start, meet the following prerequisites:
 - [Create an OpenAI API key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key) and make sure your account is funded.
 - Make sure you have a wallet and access to its private key.
 
-## 1. Installation
+## 1. Install packagess
 
 Clone the [`agent-kit`](https://github.com/warden-protocol/agent-kit) repository:
 
@@ -35,7 +35,7 @@ Clone the [`agent-kit`](https://github.com/warden-protocol/agent-kit) repository
 git clone https://github.com/warden-protocol/agent-kit.git
 ```
 
-Navigate to the directory with the CLI Agent example and install:
+Navigate to the directory with the CLI Agent example and install npm packages:
 
 ```
 cd agent-kit/examples/typescript/cli-agent

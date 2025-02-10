@@ -8,14 +8,13 @@ _tools:
     go install github.com/ethereum/go-ethereum/cmd/abigen
 
 pricepred: _tools
-  solc --abi --bin --overwrite handlers/pricepred/PricePredictorTypes.sol -o build
-  mkdir handlers/pricepred/generated
+  solc --abi --bin --overwrite handlers/pricepred/PricePredictor.sol -o build
   abigen \
-  --bin=build/PricePredictorTypes.bin \
-  --abi=build/PricePredictorTypes.abi \
-  --pkg=generated \
-  --type=PricePredictorTypes \
-  --out=handlers/pricepred/generated/pricepred_bindings.go
+  --bin=build/PricePredictor.bin \
+  --abi=build/PricePredictor.abi \
+  --pkg=pricepred \
+  --type=PricePredictor \
+  --out=handlers/pricepred/pricepred_bindings.go
 
 stoicquote: _tools
   # Retrieve the Stoic quote JSON from the API, generate only an output struct

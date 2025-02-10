@@ -2,10 +2,10 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 /**
- * @title PricePredictorTypes
+ * @title PricePredictor
  * @notice Solidity contract that declares the structs for input/output.
  */
-contract PricePredictorTypes {
+contract PricePredictor {
     struct InputData {
         uint256 date;
         string[] tokens;

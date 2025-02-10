@@ -7,19 +7,18 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred/generated"
 )
 
 func TestDecodeInput(t *testing.T) {
 	cases := []struct {
 		name     string
 		input    string
-		expected generated.PricePredictorTypesInputData
+		expected PricePredictorInputData
 	}{
 		{
 			name:  "single element list",
 			input: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ5unngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2JpdGNvaW4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ0ZXRoZXIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHdW5pc3dhcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABY=",
-			expected: generated.PricePredictorTypesInputData{
+			expected: PricePredictorInputData{
 				Date:              big.NewInt(1738254238),
 				Tokens:            []string{"bitcoin", "tether", "uniswap"},
 				Metrics:           []*big.Int{big.NewInt(0), big.NewInt(22)},
@@ -47,15 +46,15 @@ func TestDecodeInput(t *testing.T) {
 func TestBuildOutput(t *testing.T) {
 	cases := []struct {
 		name           string
-		inputData      generated.PricePredictorTypesInputData
+		inputData      PricePredictorInputData
 		req            PredictRequest
 		res            PredictResponse
 		backtestingRes *BacktestingResponse
-		expected       generated.PricePredictorTypesOutputData
+		expected       PricePredictorOutputData
 	}{
 		{
 			name: "with backtesting",
-			inputData: generated.PricePredictorTypesInputData{
+			inputData: PricePredictorInputData{
 				Metrics: []*big.Int{
 					big.NewInt(int64(Count)),
 					big.NewInt(int64(P75)),
@@ -100,7 +99,7 @@ func TestBuildOutput(t *testing.T) {
 					},
 				},
 			},
-			expected: generated.PricePredictorTypesOutputData{
+			expected: PricePredictorOutputData{
 				Predictions: []*big.Int{
 					float64ToBigInt(17.435131034851075, big.NewFloat(1e16)),
 					float64ToBigInt(1.000115715622902, big.NewFloat(1e16)),
@@ -134,7 +133,7 @@ func TestAllMetricNamesCovered(t *testing.T) {
 	bmType := reflect.TypeOf(BacktestingMetrics{})
 	n := bmType.NumField()
 	for i := range n {
-		inputData := generated.PricePredictorTypesInputData{Metrics: []*big.Int{big.NewInt(int64(i))}}
+		inputData := PricePredictorInputData{Metrics: []*big.Int{big.NewInt(int64(i))}}
 
 		req := PredictRequest{
 			SolverInput: RequestSolverInput{

@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"time"
-
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred/generated"
 )
 
 // PricePredictorSolidity is a handler for the price prediction AI model,
@@ -111,12 +109,12 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	return encodedRes, nil
 }
 
-func decodeInput(inputData []byte) (generated.PricePredictorTypesInputData, error) {
+func decodeInput(inputData []byte) (PricePredictorInputData, error) {
 	var in struct {
-		InputData generated.PricePredictorTypesInputData
+		InputData PricePredictorInputData
 	}
 
-	abi, err := generated.PricePredictorTypesMetaData.GetAbi()
+	abi, err := PricePredictorMetaData.GetAbi()
 	if err != nil {
 		return in.InputData, fmt.Errorf("failed to get ABI: %w", err)
 	}
@@ -142,8 +140,8 @@ func decodeInput(inputData []byte) (generated.PricePredictorTypesInputData, erro
 	return in.InputData, nil
 }
 
-func encodeOutput(outputData generated.PricePredictorTypesOutputData) ([]byte, error) {
-	abi, err := generated.PricePredictorTypesMetaData.GetAbi()
+func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
+	abi, err := PricePredictorMetaData.GetAbi()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get ABI: %w", err)
 	}
@@ -161,7 +159,7 @@ func encodeOutput(outputData generated.PricePredictorTypesOutputData) ([]byte, e
 	return packed, nil
 }
 
-func buildOutputData(inputData generated.PricePredictorTypesInputData, req PredictRequest, res PredictResponse, backtestingRes *BacktestingResponse) (generated.PricePredictorTypesOutputData, error) {
+func buildOutputData(inputData PricePredictorInputData, req PredictRequest, res PredictResponse, backtestingRes *BacktestingResponse) (PricePredictorOutputData, error) {
 	decimals := big.NewFloat(1e16)
 
 	tokenPreds := make([]*big.Int, len(req.SolverInput.Tokens))
@@ -229,13 +227,13 @@ func buildOutputData(inputData generated.PricePredictorTypesInputData, req Predi
 				case P100:
 					metrics[i][j] = float64ToBigInt(tokenMetrics.Metrics.P100, decimals)
 				default:
-					return generated.PricePredictorTypesOutputData{}, fmt.Errorf("invalid requested metric: %d", m)
+					return PricePredictorOutputData{}, fmt.Errorf("invalid requested metric: %d", m)
 				}
 			}
 		}
 	}
 
-	return generated.PricePredictorTypesOutputData{
+	return PricePredictorOutputData{
 		Predictions: tokenPreds,
 		Metrics:     metrics,
 	}, nil

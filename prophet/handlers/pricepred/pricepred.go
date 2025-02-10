@@ -18,7 +18,7 @@ type PricePredictorSolidity struct {
 
 func NewPricePredictorSolidity(url *url.URL) PricePredictorSolidity {
 	httpClient := &http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: 600 * time.Second,
 	}
 
 	return PricePredictorSolidity{

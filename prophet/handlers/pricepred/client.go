@@ -111,7 +111,7 @@ type BacktestingResponse struct {
 }
 
 func (c *client) Backtesting(ctx context.Context, req BacktestingRequest) (BacktestingResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 320*time.Second)
 	defer cancel()
 	var res BacktestingResponse
 	if err := c.post(reqCtx, req, &res, c.backtestingURL); err != nil {

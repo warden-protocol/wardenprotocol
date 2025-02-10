@@ -54,7 +54,7 @@ async function initializeAgent() {
             model: "gpt-4o-mini", // Specify the model to use
         });
 
-        // Configure Warden Agent Kit
+        // Configure the Warden Agent Kit
         const config = {
             privateKeyOrAccount: process.env.PRIVATE_KEY || undefined, // Load private key from environment variable
         };
@@ -114,7 +114,7 @@ import { z } from "zod";
 dotenv.config();
 
 /**
- * Initialize the Agent with the Warden Agent Kit
+ * Initialize the Agent with Warden Agent Kit
  *
  * @returns Agent executor and config
  */
@@ -125,7 +125,7 @@ async function initializeAgent() {
             model: "gpt-4o-mini", // Specify the LLM model
         });
 
-        // Configure Warden Agent Kit
+        // Configure the Warden Agent Kit
         const config = {
             privateKeyOrAccount: process.env.PRIVATE_KEY || undefined,
         };
@@ -133,7 +133,7 @@ async function initializeAgent() {
         // Initialize Warden Agent Kit
         const agentkit = new WardenAgentKit(config);
 
-        // Initialize the Warden Agent Kit Toolkit and get tools
+        // Initialize Warden Agent Kit Toolkit and get tools
         const wardenToolkit = new WardenToolkit(agentkit);
         const tools = wardenToolkit.getTools();
 

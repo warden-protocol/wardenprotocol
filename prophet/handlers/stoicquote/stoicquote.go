@@ -53,9 +53,9 @@ func decodeInput(inputData []byte) (generated.StoicQuoteResponse, error) {
 		return in.Stoicquote, fmt.Errorf("failed to get ABI: %w", err)
 	}
 
-	method, ok := parsedABI.Methods["useAllTypes"]
+	method, ok := parsedABI.Methods["main"]
 	if !ok {
-		return in.Stoicquote, fmt.Errorf("method 'useAllTypes' not found in generated ABI")
+		return in.Stoicquote, fmt.Errorf("method 'main' not found in generated ABI")
 	}
 
 	vals, err := method.Inputs.Unpack(inputData)
@@ -79,9 +79,9 @@ func encodeOutput(outStoicQuote generated.StoicQuoteResponse) ([]byte, error) {
 		return nil, fmt.Errorf("failed to get ABI: %w", err)
 	}
 
-	method, ok := parsedABI.Methods["useAllTypes"]
+	method, ok := parsedABI.Methods["main"]
 	if !ok {
-		return nil, fmt.Errorf("method 'useAllTypes' not found in generated ABI")
+		return nil, fmt.Errorf("method 'main' not found in generated ABI")
 	}
 
 	if len(method.Outputs) == 0 {

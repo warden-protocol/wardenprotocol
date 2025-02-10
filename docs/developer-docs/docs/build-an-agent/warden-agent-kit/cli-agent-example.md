@@ -6,17 +6,15 @@ sidebar_position: 5
 
 ## Overview
 
-The following guide explains how to run our **Typescript example** built with the Warden Agent Kit.
+To start building your own Agent, follow [Quick start](quick-start). If you'd like to explore the capabilities of Warden Agent Kit first, check out this guide: it demonstrates how to run our **Typescript example** built with the kit.
 
 This example implements a **CLI Agent** that is able to do the following:
 
--   Process user prompts in natural language using the [`langchain`](https://github.com/warden-protocol/agent-kit/blob/main/langchain/warden/README.md) extension.
--   Interact with the Warden Protocol using the [`agent-kit-core`](https://github.com/warden-protocol/agent-kit/tree/main/agent-kit-core) component.
-
-You can prompt the Agent to perform any supported [Action](/build-an-agent/warden-agent-kit/agent-actions): create and retrieve Spaces and keys, fund your wallet, get its balance, and so on.
+- Process user prompts in natural language using the [LangChain](add-agent-capabilities#langchain-tools) extension.
+- Interact with the Warden Protocol using the supported [Agent Actions](agent-actions).
 
 :::note Code
-The example code is available on GitHub—see [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md).
+The example code is available on GitHub: [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md)
 :::
 
 ## Prerequisites
@@ -31,13 +29,13 @@ Before you start, meet the following prerequisites:
 
 Clone the [`agent-kit`](https://github.com/warden-protocol/agent-kit) repository:
 
-```
+```bash
 git clone https://github.com/warden-protocol/agent-kit.git
 ```
 
 Navigate to the directory with the CLI Agent example and install npm packages:
 
-```
+```bash
 cd agent-kit/examples/typescript/cli-agent
 npm install
 ```
@@ -46,30 +44,30 @@ npm install
 
 Set the following environment variables:
 
-```
+```bash
 export OPENAI_API_KEY=your-openai-api-key
 export PRIVATE_KEY=your-wallet-private-key
 ```
 
 To use the [`request_funds`](agent-actions) tool in [Step 4.1](#41-get-ward), you'll need to get a Warden faucet API token: just reach out to us in [Discord](https://discord.com/invite/wardenprotocol). After obtaining the token, set it as an environment variable:
 
-```
+```bash
 export FAUCET_TOKEN=your-faucet-token
 ```
 
-This is optional: you can alternatively request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
+This is optional: you can alternatively connect your wallet to [SpaceWard](https://spaceward.devnet.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
 
 ## 3. Run the Agent
 
 Finally, you can run the Agent in the command line:
 
-```
+```bash
 npm start
 ```
 
 You'll see the following output:
 
-```
+```bash
 Starting Agent...
 Starting chat mode... Type 'exit' to end.
 
@@ -80,11 +78,11 @@ Prompt:
 
 ### 4.1. Get WARD
 
-If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
+If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step. You can connect your wallet to [SpaceWard](https://spaceward.devnet.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
 
 Type your prompt in the command line:
 
-```
+```bash
 Prompt: get some ward
 ```
 
@@ -104,13 +102,13 @@ To access most of the Warden features, you need to create a [Space](/learn/gloss
 
 Type your prompt in the command line:
 
-```
+```bash
 Prompt: create a space
 ```
 
 The Agent will create a Space, using the [`create_space`](agent-actions) tool:
 
-```
+```bash
 -------------------
 Successfully created space
 -------------------
@@ -126,9 +124,13 @@ A comprehensive list of all the available tools can be found in [Agent Actions](
 
 To stop the Agent, just type `exit`.
 
+:::tip
+You can add more Agent capabilities and even incorporate a custom tool, as shown in [Add Agent capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities).
+:::
+
 ## Next steps
 
-You can take the following next steps:
+After running the CLI Agent example, you can take the following steps:
 
-- [Add Agent capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities)
-- Explore or update the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples)
+- Find more examples in the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples).
+- [Start building your own Agent](quick-start).

@@ -8,28 +8,32 @@ sidebar_position: 4
 
 This guide explains how to add capabilities to your Agent.
 
-You can either incorporate existing **LangChain tools** or add **custom tools**. Below, you'll find the steps and a full code example for integrating a custom tool.
+You can incorporate existing **LangChain tools** and add **custom tools**. Below, you'll find the steps and a full code example for adding these capabilities to your Agent.
 
-## Incorporate LangChain tools
+## LangChain tools
 
-Enhance your Agent's functionality by seamlessly integrating additional tools from the **LangChain** ecosystem. LangChain has transformed how developers interact with language models, enabling the creation of powerful and versatile AI applications. At the heart of its appeal is the extensive ecosystem of tools and integrations, which allows developers to effortlessly enhance their Agents' capabilities.
+Enhance your Agent's functionality by seamlessly integrating additional tools from the **LangChain** ecosystem.
 
-LangChain's strength lies in its rich library of community-driven [tools](https://js.langchain.com/docs/integrations/tools/) and [integrations](https://js.langchain.com/docs/integrations/platforms/). These tools empower developers to:
+LangChain has transformed how developers interact with language models, enabling the creation of powerful and versatile AI applications. LangChain's strength lies in its rich library of community-driven [tools](https://js.langchain.com/docs/integrations/tools/) and [integrations](https://js.langchain.com/docs/integrations/platforms/).
 
-- Expand Agent capabilities rapidly: Seamlessly connect with APIs, databases, and services without the need for extensive custom coding.
-- Access specialized functionalities: Utilize domain-specific tools for tasks such as image generation, social media interaction, internet search, data analysis, or blockchain operations.
-- Build multi-modal Agents: Combine diverse interaction types—text, image, code—into a single, cohesive Agent.
+These tools empower developers to do the following:
+
+- Expand Agent capabilities rapidly: seamlessly connect with APIs, databases, and services without the need for extensive custom coding.
+- Access specialized functionalities: utilize domain-specific tools for tasks such as image generation, social media interaction, internet search, data analysis, or blockchain operations.
+- Build multi-modal Agents: combine diverse interaction types—text, image, code—into a single, cohesive Agent.
 - Stay current: Take advantage of a continuously evolving ecosystem, supported and updated by an active community.
 
-## Add custom tools
+You'll get LangChain tools [when initializing the Agent](#1-initialize-the-agent).
+
+## Custom tools
 
 A **custom tool** is a functionality or utility that can be accessed by the Agent to perform specific tasks, such as interacting with APIs, processing data, or executing logic.
 
 The following steps show how you can add a custom tool to a Warden Agent using the Warden Agent Kit.
 
-### 1. Initialize the Agent
+## 1. Initialize the Agent
 
-First, set up and configure the Agent using `WardenAgentKit`. This allows you to customize the Agent's behavior and define tools it can use.
+First, set up and configure the Agent using `WardenAgentKit`. This allows you to customize the Agent's behavior and define tools it can use, including LangChain tools.
 
 Here’s a simplified version of the initialization process:
 
@@ -50,7 +54,7 @@ async function initializeAgent() {
             model: "gpt-4o-mini", // Specify the model to use
         });
 
-        // Configure the Warden Agent Kit
+        // Configure Warden Agent Kit
         const config = {
             privateKeyOrAccount: process.env.PRIVATE_KEY || undefined, // Load private key from environment variable
         };
@@ -58,7 +62,7 @@ async function initializeAgent() {
         // Initialize Warden Agent Kit
         const agentkit = new WardenAgentKit(config);
 
-        // Initialize the toolkit and get existing tools
+        // Initialize Warden Agent Kit Toolkit and get tools
         const wardenToolkit = new WardenToolkit(agentkit);
         const tools = wardenToolkit.getTools();
 
@@ -69,18 +73,18 @@ async function initializeAgent() {
 }
 ```
 
-### 2. Define the custom tool
+## 2. Define a custom tool
 
 A custom tool is an instance of `WardenTool` that contains a name, description, schema, and function. You can add custom logic within the `function` property, which defines what the tool will do when invoked.
 
 Here’s the code snippet for adding a custom tool:
 
 ```javascript
-// Add the custom tool
+// Add a custom tool
 const customTool = new WardenTool({
     name: "custom_tool", // Name of the tool
     description: "This is a custom tool", // Description of the tool
-    schema: z.object({}), // Define the schema for the tool (optional but recommended)
+    schema: z.object({}), // Define schema for the tool (optional but recommended)
     function: async () => {
         return "This is a custom tool"; // Logic that the tool will execute
     },
@@ -90,11 +94,11 @@ const customTool = new WardenTool({
 tools.push(customTool);
 ```
 
-### 3. Integrate the tool
+## 3. Integrate the tool
 
 Now integrate the tool. The custom tool will be available as part of the Agent’s toolkit, and it will be invoked based on the Agent's logic.
 
-### Example
+## Example
 
 Here is the complete code with the custom tool integrated into the Warden Agent setup:
 
@@ -110,7 +114,7 @@ import { z } from "zod";
 dotenv.config();
 
 /**
- * Initialize the agent with Warden Agent Kit
+ * Initialize the Agent with the Warden Agent Kit
  *
  * @returns Agent executor and config
  */
@@ -129,7 +133,7 @@ async function initializeAgent() {
         // Initialize Warden Agent Kit
         const agentkit = new WardenAgentKit(config);
 
-        // Initialize Warden Agent Kit Toolkit and get tools
+        // Initialize the Warden Agent Kit Toolkit and get tools
         const wardenToolkit = new WardenToolkit(agentkit);
         const tools = wardenToolkit.getTools();
 
@@ -137,7 +141,7 @@ async function initializeAgent() {
         const customTool = new WardenTool({
             name: "custom_tool",
             description: "This is a custom tool",
-            schema: z.object({}), // Define schema if needed
+            schema: z.object({}), // Define the schema if needed
             function: async () => {
                 return "This is a custom tool"; // Implement the tool's logic
             },
@@ -169,7 +173,7 @@ async function initializeAgent() {
 }
 ```
 
-### Conclusion
+## Conclusion
 
 You’ve now added a custom tool to your Warden Agent! The tool is available in the Agent's toolkit and can be invoked based on user input or other logic within the Agent.
 
@@ -183,5 +187,5 @@ Here are the key points to remember:
 
 You can take the following next steps: 
 
-- [Run the CLI Agent example](cli-agent-example)
-- Explore or update the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples)
+- Add your example to the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples).
+- [Build an onchain AI Agent](../build-an-onchain-ai-agent/introduction).

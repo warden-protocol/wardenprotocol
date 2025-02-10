@@ -13,12 +13,12 @@ func TestDecodeInput(t *testing.T) {
 	cases := []struct {
 		name     string
 		input    string
-		expected InputData
+		expected PricePredictorInputData
 	}{
 		{
 			name:  "single element list",
 			input: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ5unngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2JpdGNvaW4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZ0ZXRoZXIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHdW5pc3dhcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABY=",
-			expected: InputData{
+			expected: PricePredictorInputData{
 				Date:              big.NewInt(1738254238),
 				Tokens:            []string{"bitcoin", "tether", "uniswap"},
 				Metrics:           []*big.Int{big.NewInt(0), big.NewInt(22)},
@@ -46,15 +46,15 @@ func TestDecodeInput(t *testing.T) {
 func TestBuildOutput(t *testing.T) {
 	cases := []struct {
 		name           string
-		inputData      InputData
+		inputData      PricePredictorInputData
 		req            PredictRequest
 		res            PredictResponse
 		backtestingRes *BacktestingResponse
-		expected       OutputData
+		expected       PricePredictorOutputData
 	}{
 		{
 			name: "with backtesting",
-			inputData: InputData{
+			inputData: PricePredictorInputData{
 				Metrics: []*big.Int{
 					big.NewInt(int64(Count)),
 					big.NewInt(int64(P75)),
@@ -73,6 +73,10 @@ func TestBuildOutput(t *testing.T) {
 					"uniswap": 17.435131034851075,
 					"tether":  1.000115715622902,
 					"bitcoin": 45820.74676003456,
+				},
+				SolverReceipt: ResponseSolverReceipt{
+					BloomFilter: []byte("BgAAAAAAAAApt1DE"),
+					CountItems:  3,
 				},
 			},
 			backtestingRes: &BacktestingResponse{
@@ -99,11 +103,18 @@ func TestBuildOutput(t *testing.T) {
 					},
 				},
 			},
-			expected: OutputData{
+			expected: PricePredictorOutputData{
 				Predictions: []*big.Int{
 					float64ToBigInt(17.435131034851075, big.NewFloat(1e16)),
 					float64ToBigInt(1.000115715622902, big.NewFloat(1e16)),
 					float64ToBigInt(45820.74676003456, big.NewFloat(1e16)),
+				},
+				SolverReceipt: struct {
+					BloomFilter []byte
+					CountItems  *big.Int
+				}{
+					BloomFilter: []byte("BgAAAAAAAAApt1DE"),
+					CountItems:  big.NewInt(3),
 				},
 				Metrics: [][]*big.Int{
 					{big.NewInt(1), big.NewInt(2e16)},
@@ -133,7 +144,7 @@ func TestAllMetricNamesCovered(t *testing.T) {
 	bmType := reflect.TypeOf(BacktestingMetrics{})
 	n := bmType.NumField()
 	for i := range n {
-		inputData := InputData{Metrics: []*big.Int{big.NewInt(int64(i))}}
+		inputData := PricePredictorInputData{Metrics: []*big.Int{big.NewInt(int64(i))}}
 
 		req := PredictRequest{
 			SolverInput: RequestSolverInput{

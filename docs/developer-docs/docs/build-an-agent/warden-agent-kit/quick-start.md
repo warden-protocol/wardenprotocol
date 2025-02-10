@@ -6,45 +6,50 @@ sidebar_position: 2
 
 ## Overview
 
-This guide will help you quickly set up and start building AI agents capable of interacting with both onchain and offchain systems. Whether you're new to AI agents or an experienced developer, the Warden Agent Kit provides the tools and resources to get you up and running in no time.
+This guide will help you quickly set up and start building **AI Agents** capable of interacting with both onchain and offchain systems. Whether you're new to AI Agents or an experienced developer, the **Warden Agent Kit** provides the tools and resources to get you up and running in no time.
 
-The fastest way to get started is by exploring our **CLI Agent Example**, which demonstrates how to build and deploy a basic agent using the Warden Agent Kit. This example walks you through the essential steps, from setting up your environment to executing onchain interactions.
-
-- Check out the [CLI Agent Example](/build-an-agent/warden-agent-kit/cli-agent-example) for a step-by-step guide.
-- Dive into the [Agent Kit Examples Repository](https://github.com/warden-protocol/agent-kit-examples), a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development.
-
-By leveraging these resources, you can quickly familiarize yourself with the Warden Agent Kit's capabilities and start building your own custom AI agents.
+Before following this guide, you can quickly familiarize yourself with the Warden Agent Kit's capabilities by exploring the [CLI Agent example](/build-an-agent/warden-agent-kit/cli-agent-example) and the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples).
 
 ## Prerequisites
 
-- [OpenAI API Key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key)
-- Node.js 18 or higher
+Before you start, meet the following prerequisites:
 
-## 1. Install Langchain
+- [Install Node.js](https://nodejs.org/en/download) 18+ or later.
+- [Create an OpenAI API key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key) and make sure your account is funded.
+- Make sure you have a wallet and access to its private key.
 
-To install the Warden Agent Kit Extension - Langchain, use the following command:
+## 1. Install LangChain
+
+First, install the Warden Agent Kit Extension—Langchain:
 
 ```bash
 npm install @wardenprotocol/warden-langchain @langchain/openai @langchain/langgraph
 ```
 
-Or, if you're using Yarn:
+Or, if you're using Yarn, run this command:
 
 ```bash
 yarn add @wardenprotocol/warden-langchain @langchain/openai @langchain/langgraph
 ```
 
-## 2. Set env variables
+## 2. Set environment variables
 
 Set the following environment variables:
 
 ```bash
-export PRIVATE_KEY=<your-wallet-private-key>
-export OPENAI_API_KEY=<your-openai-api-key>
-export FAUCET_TOKEN=<faucet-token>  # Optional: Only required if you are using the faucet tool
+export PRIVATE_KEY=your-wallet-private-key
+export OPENAI_API_KEY=your-openai-api-key
+export FAUCET_TOKEN=faucet-token  # Optional: Only required if you're using the faucet tool
 ```
 
+:::tip
+To get a Warden Faucet API token, reach out to us in [Discord](https://discord.com/invite/wardenprotocol).
+:::
+
+
 ## 3. Import the packages
+
+Use the following code to import the required packages:
 
 ```javascript
 import { WardenAgentKit } from "@wardenprotocol/warden-agent-kit-core";
@@ -55,6 +60,8 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 ```
 
 ## 4. Initialize the Agent Kit
+
+Then configure and initialize the Warden Agent Kit:
 
 ```javascript
 // Configure Warden Agent Kit
@@ -71,7 +78,9 @@ const wardenToolkit = new WardenToolkit(agentkit);
 const tools = wardenToolkit.getTools();
 ```
 
-## 5. Use Langchain Tools in your Agent
+## 5. Use Langchain tools
+
+To use [Langchain tools](add-agent-capabilities#incorporate-langchain-tools), add the following:
 
 ```javascript
 // Initialize LLM
@@ -98,3 +107,10 @@ const agent = createReactAgent({
 
 return { agent, config: agentConfig };
 ```
+
+## Next steps
+
+You can take the following next steps:
+
+- Explore the available [Agent Actions](agent-actions).
+- [Add Agent capabilities](add-agent-capabilities): incorporate existing LangChain tools or add a custom tool.

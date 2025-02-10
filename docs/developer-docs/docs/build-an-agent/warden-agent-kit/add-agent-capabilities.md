@@ -80,7 +80,7 @@ A custom tool is an instance of `WardenTool` that contains a name, description, 
 Here’s the code snippet for adding a custom tool:
 
 ```javascript
-// Add a custom tool
+// Add the custom tool
 const customTool = new WardenTool({
     name: "custom_tool", // Name of the tool
     description: "This is a custom tool", // Description of the tool

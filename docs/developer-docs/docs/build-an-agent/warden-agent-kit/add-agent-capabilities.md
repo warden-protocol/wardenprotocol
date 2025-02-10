@@ -125,7 +125,7 @@ async function initializeAgent() {
             model: "gpt-4o-mini", // Specify the LLM model
         });
 
-        // Configure the Warden Agent Kit
+        // Configure Warden Agent Kit
         const config = {
             privateKeyOrAccount: process.env.PRIVATE_KEY || undefined,
         };
@@ -141,7 +141,7 @@ async function initializeAgent() {
         const customTool = new WardenTool({
             name: "custom_tool",
             description: "This is a custom tool",
-            schema: z.object({}), // Define the schema if needed
+            schema: z.object({}), // Define schema if needed
             function: async () => {
                 return "This is a custom tool"; // Implement the tool's logic
             },

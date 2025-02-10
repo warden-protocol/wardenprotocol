@@ -62,7 +62,7 @@ async function initializeAgent() {
         // Initialize Warden Agent Kit
         const agentkit = new WardenAgentKit(config);
 
-        // Initialize Warden Agent Kit Toolkit and get tools
+        // Initialize the toolkit and get existing tools
         const wardenToolkit = new WardenToolkit(agentkit);
         const tools = wardenToolkit.getTools();
 

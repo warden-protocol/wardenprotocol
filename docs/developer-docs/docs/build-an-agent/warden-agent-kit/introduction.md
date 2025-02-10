@@ -20,8 +20,8 @@ The Warden Agent Kit provides the following key features:
 
 - Framework-agnostic design that seamlessly integrates with any AI Agent framework, ensuring flexibility and adaptability.
 - Native integration with the Warden Protocol for autonomous [onchain operations](agent-actions), such as smart contract interactions, transaction execution, and Order management.
-- Compatibility with [LangChain](add-agent-capabilities#langchain-tools) and support for existing LangChain tools, enabling developers to leverage a rich ecosystem of AI and blockchain integrations.
-- Customizable templates for extending and [adding new functionalities](add-agent-capabilities#custom-tools) tailored to specific use cases.
+- Compatibility with [LangChain](add-agent-capabilities#incorporate-langchain-tools) and support for existing LangChain tools, enabling developers to leverage a rich ecosystem of AI and blockchain integrations.
+- Customizable templates for extending and [adding new functionalities](add-agent-capabilities#add-a-custom-tool) tailored to specific use cases.
 
 ## Examples
 

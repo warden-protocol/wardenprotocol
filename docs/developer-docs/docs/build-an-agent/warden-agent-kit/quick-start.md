@@ -80,7 +80,7 @@ const tools = wardenToolkit.getTools();
 
 ## 5. Use Langchain tools
 
-To use [Langchain tools](add-agent-capabilities#langchain-tools), add the following:
+To use [Langchain tools](add-agent-capabilities#incorporate-langchain-tools), add the following:
 
 ```javascript
 // Initialize LLM
@@ -113,4 +113,4 @@ return { agent, config: agentConfig };
 You can take the following next steps:
 
 - Explore the available [Agent Actions](agent-actions).
-- [Add a custom tool](add-agent-capabilities#custom-tools).
+- [Add Agent capabilities](add-agent-capabilities): incorporate existing LangChain tools or add a custom tool.

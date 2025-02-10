@@ -10,7 +10,7 @@ To start building your own Agent, follow [Quick start](quick-start). If you'd li
 
 This example implements a **CLI Agent** that is able to do the following:
 
-- Process user prompts in natural language using the [LangChain](add-agent-capabilities#langchain-tools) extension.
+- Process user prompts in natural language using the [LangChain](add-agent-capabilities#incorporate-langchain-tools) extension.
 - Interact with the Warden Protocol using the supported [Agent Actions](agent-actions).
 
 :::note Code

@@ -37,27 +37,6 @@ func (k *HandlersKeeper) AddHandler(ctx context.Context, handler types.Handler) 
 	return k.handlers.Set(ctx, handler.Name, handler)
 }
 
-func (k *HandlersKeeper) Import(ctx context.Context, handlers []*types.Handler) error {
-	for _, handler := range handlers {
-		if err := k.AddHandler(ctx, *handler); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (k *HandlersKeeper) Export(ctx context.Context) ([]*types.Handler, error) {
-	handlers := []*types.Handler{}
-	err := k.handlers.Walk(ctx, nil, func(key string, value types.Handler) (stop bool, err error) {
-		handlers = append(handlers, &value)
-		return false, nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	return handlers, nil
-}
-
 func (k *HandlersKeeper) Handlers() collections.Map[string, types.Handler] {
 	return k.handlers
 }

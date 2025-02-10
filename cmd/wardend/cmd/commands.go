@@ -70,7 +70,6 @@ func initRootCmd(
 			basicManager,
 			AddGenesisSpaceCmd(app.DefaultNodeHome),
 			AddGenesisKeychainCmd(app.DefaultNodeHome),
-			AddGenesisHandlerCmd(app.DefaultNodeHome),
 			AddGenesisSlinkyMarketsCmd(app.DefaultNodeHome),
 			AddGenesisAccountCmd(app.DefaultNodeHome),
 		),

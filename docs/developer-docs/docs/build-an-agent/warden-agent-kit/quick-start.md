@@ -18,7 +18,7 @@ Before you start, meet the following prerequisites:
 - [Create an OpenAI API key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key) and make sure your account is funded.
 - Make sure you have a wallet and access to its private key.
 
-## 1. Install Langchain
+## 1. Install LangChain
 
 First, install the Warden Agent Kit Extension—Langchain:
 
@@ -32,7 +32,7 @@ Or, if you're using Yarn, run this command:
 yarn add @wardenprotocol/warden-langchain @langchain/openai @langchain/langgraph
 ```
 
-## 2. Set envinronment variables
+## 2. Set environment variables
 
 Set the following environment variables:
 

@@ -25,7 +25,7 @@ Before you start, meet the following prerequisites:
 - [Create an OpenAI API key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key) and make sure your account is funded.
 - Make sure you have a wallet and access to its private key.
 
-## 1. Install packagess
+## 1. Install packages
 
 Clone the [`agent-kit`](https://github.com/warden-protocol/agent-kit) repository:
 

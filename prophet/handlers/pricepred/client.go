@@ -15,16 +15,19 @@ type client struct {
 	c              *http.Client
 	predictURL     string
 	backtestingURL string
+	verifyURL      string
 }
 
 func newClient(c *http.Client, baseURL *url.URL) *client {
 	predictURL := baseURL.JoinPath("/api/task/inference/solve")
 	backtestingURL := baseURL.JoinPath("/api/task/backtesting/solve")
+	verifyURL := baseURL.JoinPath("/api/task/inference/verify")
 
 	return &client{
 		c:              c,
 		predictURL:     predictURL.String(),
 		backtestingURL: backtestingURL.String(),
+		verifyURL:      verifyURL.String(),
 	}
 }
 
@@ -50,43 +53,14 @@ type PredictResponse struct {
 }
 
 func (c *client) Predict(ctx context.Context, req PredictRequest) (PredictResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
-
-	reqBody, err := json.Marshal(req)
-	if err != nil {
+	var res PredictResponse
+	if err := c.post(reqCtx, req, &res, c.predictURL); err != nil {
 		return PredictResponse{}, err
 	}
 
-	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", c.predictURL, bytes.NewReader(reqBody))
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	httpReq.Header.Set("Accept", "application/json")
-	httpReq.Header.Set("Content-Type", "application/json")
-
-	res, err := c.c.Do(httpReq)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-	defer res.Body.Close()
-	response, err := io.ReadAll(res.Body)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		return PredictResponse{}, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
-	}
-
-	var resResp PredictResponse
-	err = json.Unmarshal(response, &resResp)
-	if err != nil {
-		return PredictResponse{}, err
-	}
-
-	return resResp, nil
+	return res, nil
 }
 
 type BacktestingRequest struct {
@@ -137,42 +111,71 @@ type BacktestingResponse struct {
 }
 
 func (c *client) Backtesting(ctx context.Context, req BacktestingRequest) (BacktestingResponse, error) {
-	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, 320*time.Second)
 	defer cancel()
-
-	reqBody, err := json.Marshal(req)
-	if err != nil {
+	var res BacktestingResponse
+	if err := c.post(reqCtx, req, &res, c.backtestingURL); err != nil {
 		return BacktestingResponse{}, err
 	}
 
-	httpReq, err := http.NewRequestWithContext(reqCtx, "POST", c.backtestingURL, bytes.NewReader(reqBody))
+	return res, nil
+}
+
+type VerifyRequest struct {
+	SolverRequest     PredictRequest        `json:"solverRequest"`
+	SolverReceipt     ResponseSolverReceipt `json:"solverReceipt"`
+	VerificationRatio float64               `json:"verificationRatio"`
+}
+
+type VerifyResponse struct {
+	CountItems int  `json:"countItems"`
+	IsVerified bool `json:"isVerified"`
+}
+
+func (c *client) Verify(ctx context.Context, req VerifyRequest) (VerifyResponse, error) {
+	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	var res VerifyResponse
+	if err := c.post(reqCtx, req, &res, c.verifyURL); err != nil {
+		return VerifyResponse{}, err
+	}
+
+	return res, nil
+}
+
+func (c *client) post(ctx context.Context, req, res any, URL string) error {
+	reqBody, err := json.Marshal(req)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return err
+	}
+
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", URL, bytes.NewReader(reqBody))
+	if err != nil {
+		return err
 	}
 
 	httpReq.Header.Set("Accept", "application/json")
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	res, err := c.c.Do(httpReq)
+	response, err := c.c.Do(httpReq)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return err
 	}
-	defer res.Body.Close()
 
-	response, err := io.ReadAll(res.Body)
+	defer response.Body.Close()
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return err
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return BacktestingResponse{}, fmt.Errorf("unexpected status code: %d. Server returned error: %s", res.StatusCode, response)
+	if response.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code: %d. Server returned error: %s", response.StatusCode, body)
 	}
 
-	var resResp BacktestingResponse
-	err = json.Unmarshal(response, &resResp)
+	err = json.Unmarshal(body, &res)
 	if err != nil {
-		return BacktestingResponse{}, err
+		return err
 	}
 
-	return resResp, nil
+	return nil
 }

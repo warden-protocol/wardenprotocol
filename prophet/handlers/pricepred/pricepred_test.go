@@ -74,6 +74,10 @@ func TestBuildOutput(t *testing.T) {
 					"tether":  1.000115715622902,
 					"bitcoin": 45820.74676003456,
 				},
+				SolverReceipt: ResponseSolverReceipt{
+					BloomFilter: []byte("BgAAAAAAAAApt1DE"),
+					CountItems:  3,
+				},
 			},
 			backtestingRes: &BacktestingResponse{
 				SolverOutput: BacktestingSolverOutput{
@@ -104,6 +108,13 @@ func TestBuildOutput(t *testing.T) {
 					float64ToBigInt(17.435131034851075, big.NewFloat(1e16)),
 					float64ToBigInt(1.000115715622902, big.NewFloat(1e16)),
 					float64ToBigInt(45820.74676003456, big.NewFloat(1e16)),
+				},
+				SolverReceipt: struct {
+					BloomFilter []byte
+					CountItems  *big.Int
+				}{
+					BloomFilter: []byte("BgAAAAAAAAApt1DE"),
+					CountItems:  big.NewInt(3),
 				},
 				Metrics: [][]*big.Int{
 					{big.NewInt(1), big.NewInt(2e16)},

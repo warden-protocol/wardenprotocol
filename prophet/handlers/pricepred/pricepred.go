@@ -18,7 +18,7 @@ type PricePredictorSolidity struct {
 
 func NewPricePredictorSolidity(url *url.URL) PricePredictorSolidity {
 	httpClient := &http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: 600 * time.Second,
 	}
 
 	return PricePredictorSolidity{
@@ -60,22 +60,34 @@ const (
 	P100
 )
 
+func (i *PricePredictorInputData) ToPredictRequest() (PredictRequest, error) {
+	tm := time.Unix(i.Date.Int64(), 0)
+	dateStr := tm.Format("2006-01-02")
+
+	if i.FalsePositiveRate[1] == 0 {
+		return PredictRequest{}, fmt.Errorf("invalid false positive rate")
+	}
+	fpr := float64(i.FalsePositiveRate[0]) / float64(i.FalsePositiveRate[1])
+
+	return PredictRequest{
+		SolverInput: RequestSolverInput{
+			Tokens:        i.Tokens,
+			TargetDate:    dateStr,
+			AdversaryMode: false,
+		},
+		FalsePositiveRate: fpr,
+	}, nil
+}
+
 func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	inputData, err := decodeInput(input)
 	if err != nil {
 		return nil, err
 	}
 
-	tm := time.Unix(inputData.Date.Int64(), 0)
-
-	dateStr := tm.Format("2006-01-02")
-	req := PredictRequest{
-		SolverInput: RequestSolverInput{
-			Tokens:        inputData.Tokens,
-			TargetDate:    dateStr,
-			AdversaryMode: false,
-		},
-		FalsePositiveRate: float64(inputData.FalsePositiveRate[0]) / float64(inputData.FalsePositiveRate[1]),
+	req, err := inputData.ToPredictRequest()
+	if err != nil {
+		return nil, err
 	}
 
 	res, err := s.c.Predict(ctx, req)
@@ -235,7 +247,11 @@ func buildOutputData(inputData PricePredictorInputData, req PredictRequest, res 
 
 	return PricePredictorOutputData{
 		Predictions: tokenPreds,
-		Metrics:     metrics,
+		SolverReceipt: PricePredictorSolverReceipt{
+			BloomFilter: res.SolverReceipt.BloomFilter,
+			CountItems:  big.NewInt(int64(res.SolverReceipt.CountItems)),
+		},
+		Metrics: metrics,
 	}, nil
 }
 
@@ -245,6 +261,69 @@ func float64ToBigInt(f float64, decimals *big.Float) *big.Int {
 }
 
 func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output []byte) error {
-	// todo: verify output
+	decodedInput, err := decodeInput(input)
+	if err != nil {
+		return err
+	}
+
+	decodedOutput, err := decodeOutput(output)
+	if err != nil {
+		return err
+	}
+
+	req, err := decodedInput.ToPredictRequest()
+	if err != nil {
+		return err
+	}
+
+	verifyReq := VerifyRequest{
+		SolverRequest: req,
+		SolverReceipt: ResponseSolverReceipt{
+			BloomFilter: decodedOutput.SolverReceipt.BloomFilter,
+			CountItems:  int(decodedOutput.SolverReceipt.CountItems.Int64()),
+		},
+		VerificationRatio: 0.01,
+	}
+
+	res, err := s.c.Verify(ctx, verifyReq)
+	if err != nil {
+		return err
+	}
+
+	if !res.IsVerified {
+		return fmt.Errorf("pricepred: verification failed")
+	}
+
 	return nil
+}
+
+func decodeOutput(output []byte) (PricePredictorOutputData, error) {
+	var out struct {
+		OutputData PricePredictorOutputData
+	}
+
+	abi, err := PricePredictorMetaData.GetAbi()
+	if err != nil {
+		return out.OutputData, fmt.Errorf("failed to get ABI: %w", err)
+	}
+
+	method, ok := abi.Methods["solve"]
+	if !ok {
+		return out.OutputData, fmt.Errorf("method 'solve' not found in generated ABI")
+	}
+
+	vals, err := method.Inputs.Unpack(output)
+	if err != nil {
+		return out.OutputData, fmt.Errorf("failed to unpack output data: %w", err)
+	}
+	if len(vals) != 1 {
+		return out.OutputData, fmt.Errorf("expected 1 argument (OutputData), got %d", len(vals))
+	}
+
+	err = method.Inputs.Copy(&out, vals)
+	if err != nil {
+		return out.OutputData, fmt.Errorf("failed to copy output data: %w", err)
+	}
+
+	return out.OutputData, nil
 }

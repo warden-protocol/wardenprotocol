@@ -6,6 +6,11 @@ pragma solidity >=0.8.25 <0.9.0;
  * @notice Solidity contract that declares the structs for input/output.
  */
 contract PricePredictor {
+    struct SolverReceipt {
+        bytes bloomFilter;
+        uint256 countItems;
+    }
+
     struct InputData {
         uint256 date;
         string[] tokens;
@@ -15,6 +20,7 @@ contract PricePredictor {
 
     struct OutputData {
         uint256[] predictions;
+        SolverReceipt solverReceipt;
         uint256[][] metrics;
     }
 

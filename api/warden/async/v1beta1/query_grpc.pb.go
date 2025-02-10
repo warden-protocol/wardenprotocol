@@ -23,9 +23,7 @@ const (
 	Query_Futures_FullMethodName             = "/warden.async.v1beta1.Query/Futures"
 	Query_FutureById_FullMethodName          = "/warden.async.v1beta1.Query/FutureById"
 	Query_PendingFutures_FullMethodName      = "/warden.async.v1beta1.Query/PendingFutures"
-	Query_Handlers_FullMethodName            = "/warden.async.v1beta1.Query/Handlers"
 	Query_HandlersByValidator_FullMethodName = "/warden.async.v1beta1.Query/HandlersByValidator"
-	Query_ValidatorsByHandler_FullMethodName = "/warden.async.v1beta1.Query/ValidatorsByHandler"
 )
 
 // QueryClient is the client API for Query service.
@@ -40,9 +38,8 @@ type QueryClient interface {
 	FutureById(ctx context.Context, in *QueryFutureByIdRequest, opts ...grpc.CallOption) (*QueryFutureByIdResponse, error)
 	// Queries Futures that do not have a result yet.
 	PendingFutures(ctx context.Context, in *QueryPendingFuturesRequest, opts ...grpc.CallOption) (*QueryPendingFuturesResponse, error)
-	Handlers(ctx context.Context, in *QueryHandlersRequest, opts ...grpc.CallOption) (*QueryHandlersResponse, error)
+	// Queries Handlers by validator.
 	HandlersByValidator(ctx context.Context, in *QueryHandlersByValidatorRequest, opts ...grpc.CallOption) (*QueryHandlersByValidatorResponse, error)
-	ValidatorsByHandler(ctx context.Context, in *QueryValidatorsByHandlerRequest, opts ...grpc.CallOption) (*QueryValidatorsByHandlerResponse, error)
 }
 
 type queryClient struct {
@@ -89,27 +86,9 @@ func (c *queryClient) PendingFutures(ctx context.Context, in *QueryPendingFuture
 	return out, nil
 }
 
-func (c *queryClient) Handlers(ctx context.Context, in *QueryHandlersRequest, opts ...grpc.CallOption) (*QueryHandlersResponse, error) {
-	out := new(QueryHandlersResponse)
-	err := c.cc.Invoke(ctx, Query_Handlers_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *queryClient) HandlersByValidator(ctx context.Context, in *QueryHandlersByValidatorRequest, opts ...grpc.CallOption) (*QueryHandlersByValidatorResponse, error) {
 	out := new(QueryHandlersByValidatorResponse)
 	err := c.cc.Invoke(ctx, Query_HandlersByValidator_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) ValidatorsByHandler(ctx context.Context, in *QueryValidatorsByHandlerRequest, opts ...grpc.CallOption) (*QueryValidatorsByHandlerResponse, error) {
-	out := new(QueryValidatorsByHandlerResponse)
-	err := c.cc.Invoke(ctx, Query_ValidatorsByHandler_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -128,9 +107,8 @@ type QueryServer interface {
 	FutureById(context.Context, *QueryFutureByIdRequest) (*QueryFutureByIdResponse, error)
 	// Queries Futures that do not have a result yet.
 	PendingFutures(context.Context, *QueryPendingFuturesRequest) (*QueryPendingFuturesResponse, error)
-	Handlers(context.Context, *QueryHandlersRequest) (*QueryHandlersResponse, error)
+	// Queries Handlers by validator.
 	HandlersByValidator(context.Context, *QueryHandlersByValidatorRequest) (*QueryHandlersByValidatorResponse, error)
-	ValidatorsByHandler(context.Context, *QueryValidatorsByHandlerRequest) (*QueryValidatorsByHandlerResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -150,14 +128,8 @@ func (UnimplementedQueryServer) FutureById(context.Context, *QueryFutureByIdRequ
 func (UnimplementedQueryServer) PendingFutures(context.Context, *QueryPendingFuturesRequest) (*QueryPendingFuturesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PendingFutures not implemented")
 }
-func (UnimplementedQueryServer) Handlers(context.Context, *QueryHandlersRequest) (*QueryHandlersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Handlers not implemented")
-}
 func (UnimplementedQueryServer) HandlersByValidator(context.Context, *QueryHandlersByValidatorRequest) (*QueryHandlersByValidatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HandlersByValidator not implemented")
-}
-func (UnimplementedQueryServer) ValidatorsByHandler(context.Context, *QueryValidatorsByHandlerRequest) (*QueryValidatorsByHandlerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidatorsByHandler not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -244,24 +216,6 @@ func _Query_PendingFutures_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Handlers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryHandlersRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).Handlers(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_Handlers_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Handlers(ctx, req.(*QueryHandlersRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Query_HandlersByValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryHandlersByValidatorRequest)
 	if err := dec(in); err != nil {
@@ -276,24 +230,6 @@ func _Query_HandlersByValidator_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).HandlersByValidator(ctx, req.(*QueryHandlersByValidatorRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_ValidatorsByHandler_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryValidatorsByHandlerRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).ValidatorsByHandler(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_ValidatorsByHandler_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ValidatorsByHandler(ctx, req.(*QueryValidatorsByHandlerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -322,16 +258,8 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_PendingFutures_Handler,
 		},
 		{
-			MethodName: "Handlers",
-			Handler:    _Query_Handlers_Handler,
-		},
-		{
 			MethodName: "HandlersByValidator",
 			Handler:    _Query_HandlersByValidator_Handler,
-		},
-		{
-			MethodName: "ValidatorsByHandler",
-			Handler:    _Query_ValidatorsByHandler_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -22,6 +22,7 @@ message AsyncVoteExtension {
   repeated VEResultItem results = 1;
   repeated VEVoteItem votes = 2;
   repeated string handlers = 3;
+  bool update_handlers = 4;
 }
 
 message VEResultItem {

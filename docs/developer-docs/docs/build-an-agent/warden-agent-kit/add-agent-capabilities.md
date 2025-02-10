@@ -8,20 +8,24 @@ sidebar_position: 4
 
 This guide explains how to add capabilities to your Agent.
 
-You can either incorporate existing **LangChain tools** or add **custom tools**. Below, you'll find the steps and a full code example for integrating a custom tool.
+You can incorporate existing **LangChain tools** and add **custom tools**. Below, you'll find the steps and a full code example for adding a custom tool to your Agent.
 
 ## Incorporate LangChain tools
 
-Enhance your Agent's functionality by seamlessly integrating additional tools from the **LangChain** ecosystem. LangChain has transformed how developers interact with language models, enabling the creation of powerful and versatile AI applications. At the heart of its appeal is the extensive ecosystem of tools and integrations, which allows developers to effortlessly enhance their Agents' capabilities.
+Enhance your Agent's functionality by seamlessly integrating additional tools from the **LangChain** ecosystem.
 
-LangChain's strength lies in its rich library of community-driven [tools](https://js.langchain.com/docs/integrations/tools/) and [integrations](https://js.langchain.com/docs/integrations/platforms/). These tools empower developers to:
+LangChain has transformed how developers interact with language models, enabling the creation of powerful and versatile AI applications. LangChain's strength lies in its rich library of community-driven [tools](https://js.langchain.com/docs/integrations/tools/) and [integrations](https://js.langchain.com/docs/integrations/platforms/).
 
-- Expand Agent capabilities rapidly: Seamlessly connect with APIs, databases, and services without the need for extensive custom coding.
-- Access specialized functionalities: Utilize domain-specific tools for tasks such as image generation, social media interaction, internet search, data analysis, or blockchain operations.
-- Build multi-modal Agents: Combine diverse interaction types—text, image, code—into a single, cohesive Agent.
+These tools empower developers to do the following:
+
+- Expand Agent capabilities rapidly: seamlessly connect with APIs, databases, and services without the need for extensive custom coding.
+- Access specialized functionalities: utilize domain-specific tools for tasks such as image generation, social media interaction, internet search, data analysis, or blockchain operations.
+- Build multi-modal Agents: combine diverse interaction types—text, image, code—into a single, cohesive Agent.
 - Stay current: Take advantage of a continuously evolving ecosystem, supported and updated by an active community.
 
-## Add custom tools
+To learn how add LangChain tools, refer to [LangChain documentation](https://js.langchain.com/docs/integrations/tools/).
+
+## Add a custom tool
 
 A **custom tool** is a functionality or utility that can be accessed by the Agent to perform specific tasks, such as interacting with APIs, processing data, or executing logic.
 
@@ -69,7 +73,7 @@ async function initializeAgent() {
 }
 ```
 
-### 2. Define the custom tool
+### 2. Define a custom tool
 
 A custom tool is an instance of `WardenTool` that contains a name, description, schema, and function. You can add custom logic within the `function` property, which defines what the tool will do when invoked.
 
@@ -110,7 +114,7 @@ import { z } from "zod";
 dotenv.config();
 
 /**
- * Initialize the agent with Warden Agent Kit
+ * Initialize the Agent with Warden Agent Kit
  *
  * @returns Agent executor and config
  */
@@ -183,5 +187,5 @@ Here are the key points to remember:
 
 You can take the following next steps: 
 
-- [Run the CLI Agent example](cli-agent-example)
-- Explore or update the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples)
+- Add your example to the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples).
+- [Build an onchain AI Agent](../build-an-onchain-ai-agent/introduction).

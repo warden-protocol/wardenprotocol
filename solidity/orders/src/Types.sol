@@ -37,6 +37,8 @@ library Types {
         PriceCondition priceCondition;
         // seconds timestamp
         uint256 pricePredictDate;
+        // The confidence limit below which an order cannot be executed
+        uint256 confidenceLimit;
     }
 
     // Data for execution

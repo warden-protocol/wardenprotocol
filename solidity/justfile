@@ -70,7 +70,7 @@ create-basic-order thresholdPrice priceCondition pricePair txFields keyId spaceN
 # 0xfe20b64194DD392C37711027A7f38dB10F499B28 \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-create-advanced-order priceCondition oraclePricePair predictPricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
+create-advanced-order priceCondition confidenceLimit oraclePricePair predictPricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \
     --via-ir \
@@ -79,6 +79,7 @@ create-advanced-order priceCondition oraclePricePair predictPricePair txFields k
     --with-gas-price 100000 \
     script/CreateOrder.s.sol:CreateOrder \
     {{priceCondition}} \
+    {{confidenceLimit}}
     {{oraclePricePair}} \
     {{predictPricePair}} \
     {{txFields}} \

@@ -5,7 +5,7 @@ all: pricepred stoicquote
 
 _tools:
     @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
-    go install github.com/ethereum/go-ethereum/cmd/abigen
+    go install -v github.com/ethereum/go-ethereum/cmd/abigen@v1.15.0
 
 pricepred: _tools
   solc --abi --bin --overwrite handlers/pricepred/PricePredictor.sol -o build

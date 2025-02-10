@@ -143,7 +143,7 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 
 func capitalize(str string) string {
 	if len(str) == 0 {
-		panic("invalid input: string cannot be empty")
+		panic("invalid field name: cannot be empty")
 	}
 	return strings.ToUpper(str[:1]) + str[1:]
 }

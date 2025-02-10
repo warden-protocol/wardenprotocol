@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"slices"
 
 	"cosmossdk.io/collections"
 	cometabci "github.com/cometbft/cometbft/abci/types"
@@ -54,11 +53,31 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			}
 		}
 
-		handlers := k.p.Handlers()
+		localHandlers := k.p.Handlers()
+
+		r := collections.Range[collections.Pair[sdk.ConsAddress, string]]{}
+
+		iterator, err := k.handlersByValidator.Iterate(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(req.ProposerAddress))))
+
+		if err != nil {
+			return nil, fmt.Errorf("failed to iterate by validator: %w", err)
+		}
+
+		keys, err := iterator.Keys()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get keys: %w", err)
+		}
+
+		isEqual := isEqualLocalAndOnchainHandlers(localHandlers, keys)
+
+		if isEqual {
+			localHandlers = []string{}
+		}
 
 		asyncve := types.AsyncVoteExtension{
-			Results:  results,
-			Handlers: handlers,
+			Results:        results,
+			Handlers:       localHandlers,
+			UpdateHandlers: !isEqual,
 		}
 
 		asyncveBytes, err := asyncve.Marshal()
@@ -212,39 +231,16 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteEx
 	}
 
 	log := ctx.Logger().With("module", "x/async")
-	r := collections.Range[collections.Pair[sdk.AccAddress, string]]{}
-	iterator, err := k.handlers.ByValidator().Iterate(ctx, r.Prefix(collections.PairPrefix[sdk.AccAddress, string](sdk.AccAddress(fromAddr))))
 
-	if err != nil {
-		return fmt.Errorf("failed to iterate by validator: %w", err)
-	}
+	if ve.UpdateHandlers {
+		if err := k.ClearHandlers(ctx, fromAddr); err != nil {
+			log.Error("clear handlers: %w", err)
+		}
 
-	keys, err := iterator.Keys()
-	if err != nil {
-		return fmt.Errorf("failed to get keys: %w", err)
-	}
-
-	existingHandlers := make(map[string]bool)
-
-	for _, pair := range keys {
-		h := pair.K2()
-
-		if !slices.Contains(ve.Handlers, h) {
-			if err := k.handlers.UnregisterValidator(ctx, h, fromAddr); err != nil {
-				log.Error("failed to unregister validator's handler", "err", err)
+		for _, h := range ve.Handlers {
+			if err := k.RegisterHandler(ctx, fromAddr, h); err != nil {
+				log.Error("register validator: %w", err)
 			}
-		} else {
-			existingHandlers[h] = true
-		}
-	}
-
-	for _, h := range ve.Handlers {
-		if existingHandlers[h] {
-			continue
-		}
-
-		if err := k.handlers.RegisterValidator(ctx, h, fromAddr); err != nil {
-			log.Error("failed to register validator's handler", "err", err)
 		}
 	}
 
@@ -293,4 +289,24 @@ func trimExcessBytes(txs [][]byte, maxSizeBytes int64) [][]byte {
 		returnedTxs = append(returnedTxs, tx)
 	}
 	return returnedTxs
+}
+
+func isEqualLocalAndOnchainHandlers(localHandlers []string, onchainKeys []collections.Pair[sdk.ConsAddress, string]) bool {
+	if len(localHandlers) != len(onchainKeys) {
+		return false
+	}
+
+	set := make(map[string]struct{}, len(localHandlers))
+	for _, str := range localHandlers {
+		set[str] = struct{}{}
+	}
+
+	for _, k := range onchainKeys {
+		h := k.K2()
+		if _, exists := set[h]; !exists {
+			return false
+		}
+	}
+
+	return true
 }

@@ -3,84 +3,87 @@ package soliditygen
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
+	"text/template"
 )
 
+// Definition holds the name and text for a generated Solidity struct.
 type Definition struct {
 	Name string
 	Text string
 }
 
-// WriteSolidityFromURL fetches JSON from the given URL, infers Solidity structs,
-// and writes a .sol file named <contractName>Types.sol into the specified
-// contractDirectory. Returns the path to the created file or an error.
-func WriteSolidityFromURL(url, contractName, contractDirectory string) (string, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", fmt.Errorf("fetching JSON: %w", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("non-OK status code: %d", resp.StatusCode)
-	}
-	defer resp.Body.Close()
+// GenerateContract can handle required output + optional input JSON. If inputJSON is empty,
+// it will skip generating that struct. The final contract might have 1 or 2 top-level structs.
+func GenerateContract(
+	contractName string,
+	inputName string, inputJSON []byte,
+	outputName string, outputJSON []byte,
+) (string, error) {
 
-	bodyBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", fmt.Errorf("reading response body: %w", err)
-	}
+	var allDefs []Definition
+	var topLevelStructs []string
 
-	var data map[string]interface{}
-	if err := json.Unmarshal(bodyBytes, &data); err != nil {
-		return "", fmt.Errorf("unmarshaling JSON: %w", err)
+	if len(inputJSON) > 0 {
+		var inputMap map[string]interface{}
+		if err := json.Unmarshal(inputJSON, &inputMap); err != nil {
+			return "", fmt.Errorf("unmarshaling input JSON: %w", err)
+		}
+		inputDefs := convertToSolidityStruct(inputName, inputMap)
+		allDefs = append(allDefs, inputDefs...)
+		topLevelStructs = append(topLevelStructs, inputName)
 	}
 
-	definitions := convertToSolidityStruct(contractName, data)
+	var outputMap map[string]interface{}
+	if err := json.Unmarshal(outputJSON, &outputMap); err != nil {
+		return "", fmt.Errorf("unmarshaling output JSON: %w", err)
+	}
+	outputDefs := convertToSolidityStruct(outputName, outputMap)
+	allDefs = append(allDefs, outputDefs...)
+	topLevelStructs = append(topLevelStructs, outputName)
 
-	contractName += "Types"
-
-	topDef := definitions[len(definitions)-1]
-
-	var solBuilder strings.Builder
-
-	solBuilder.WriteString("// SPDX-License-Identifier: GPL-3.0\n")
-	solBuilder.WriteString("// Code generated - DO NOT EDIT.\n")
-	solBuilder.WriteString("// This file is a generated and any manual changes will be lost.\n")
-	solBuilder.WriteString("pragma solidity >=0.8.25 <0.9.0;\n\n")
-	solBuilder.WriteString("/**\n")
-	solBuilder.WriteString(" * @title " + contractName + "\n")
-	solBuilder.WriteString(" * @notice Solidity contract that declares structs derived from JSON.\n")
-	solBuilder.WriteString(" */\n")
-
-	solBuilder.WriteString("contract " + contractName + " {\n\n")
-
-	for _, def := range definitions {
-		solBuilder.WriteString(def.Text)
-		solBuilder.WriteString("\n\n")
+	tplData := contractTemplateData{
+		ContractName:    contractName,
+		Definitions:     allDefs,
+		TopLevelStructs: topLevelStructs,
 	}
 
-	solBuilder.WriteString("function main(")
-	solBuilder.WriteString(fmt.Sprintf("%s memory _%s", topDef.Name, strings.ToLower(topDef.Name)))
-	solBuilder.WriteString(") external {\n")
-	solBuilder.WriteString("    // This function doesn't do anything but ensures the top-level struct is referenced.\n")
-	solBuilder.WriteString("}\n")
-
-	solBuilder.WriteString("}\n")
-
-	solFileName := filepath.Join(contractDirectory, contractName+".sol")
-
-	if err := os.MkdirAll(contractDirectory, 0o755); err != nil {
-		return "", fmt.Errorf("creating directory: %w", err)
-	}
-	if err := os.WriteFile(solFileName, []byte(solBuilder.String()), 0o644); err != nil {
-		return "", fmt.Errorf("writing solidity file: %w", err)
+	var finalContract strings.Builder
+	if err := contractTpl.Execute(&finalContract, tplData); err != nil {
+		return "", fmt.Errorf("executing template: %w", err)
 	}
 
-	return solFileName, nil
+	return finalContract.String(), nil
 }
+
+type contractTemplateData struct {
+	ContractName    string
+	Definitions     []Definition
+	TopLevelStructs []string
+}
+
+var contractTpl = template.Must(template.New("solidity").Funcs(template.FuncMap{
+	"toLower": strings.ToLower,
+}).Parse(`// SPDX-License-Identifier: GPL-3.0
+// Code generated - DO NOT EDIT.
+// This file is generated and any manual changes will be lost.
+
+pragma solidity >=0.8.25 <0.9.0;
+
+/**
+ * @title {{.ContractName}}
+ * @notice Defines struct(s) derived from JSON.
+ */
+contract {{.ContractName}} {
+{{range .Definitions}}
+{{.Text}}
+{{end}}{{if .TopLevelStructs}}
+    function main({{range $i, $name := .TopLevelStructs}}{{if $i}}, {{end}}{{$name}} memory _{{ $name | toLower }}{{end}}) external {
+        // No-op function referencing the struct(s).
+    }
+{{end}}
+}
+`))
 
 // convertToSolidityStruct recursively generates a child-first list of Solidity struct definitions.
 func convertToSolidityStruct(structName string, value map[string]interface{}) []Definition {
@@ -89,21 +92,19 @@ func convertToSolidityStruct(structName string, value map[string]interface{}) []
 
 	for key, val := range value {
 		solType, nestedDefs := inferSolidityType(key, val)
-
 		childDefs = append(childDefs, nestedDefs...)
-		lines = append(lines, fmt.Sprintf("    %s %s;", solType, key))
+		lines = append(lines, fmt.Sprintf("        %s %s;", solType, key))
 	}
 
-	structText := fmt.Sprintf("struct %s {\n%s\n}", structName, strings.Join(lines, "\n"))
-
+	structText := fmt.Sprintf("    struct %s {\n%s\n    }", structName, strings.Join(lines, "\n"))
 	return append(childDefs, Definition{
 		Name: structName,
 		Text: structText,
 	})
 }
 
-// inferSolidityType decides which Solidity type to use for a given JSON value,
-// optionally returning new nested struct definitions if the value is a nested object/array of objects.
+// inferSolidityType picks a Solidity type for the given JSON value,
+// returning any new nested struct definitions if it's an object/array.
 func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 	switch val := v.(type) {
 	case string:
@@ -117,6 +118,7 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 		childDefs := convertToSolidityStruct(nestedName, val)
 		return nestedName, childDefs
 	case []interface{}:
+		// If array, infer from first element type
 		var firstNonNull interface{}
 		for _, elem := range val {
 			if elem != nil {
@@ -125,13 +127,16 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 			}
 		}
 		if firstNonNull == nil {
+			// If entire array is empty or nil elements, default to string[]
 			return "string[]", nil
 		}
 		elemType, nestedDefs := inferSolidityType(fieldName, firstNonNull)
 		return elemType + "[]", nestedDefs
 	case nil:
+		// fallback: treat as string
 		return "string", nil
 	default:
+		// fallback: treat as string
 		return "string", nil
 	}
 }

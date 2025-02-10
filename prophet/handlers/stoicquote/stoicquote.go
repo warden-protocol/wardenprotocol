@@ -43,12 +43,12 @@ func (h Handler) Verify(ctx context.Context, input []byte, output []byte) error 
 	return nil
 }
 
-func decodeInput(inputData []byte) (generated.StoicQuoteTypesStoicQuote, error) {
+func decodeInput(inputData []byte) (generated.StoicQuoteResponse, error) {
 	var in struct {
-		Stoicquote generated.StoicQuoteTypesStoicQuote
+		Stoicquote generated.StoicQuoteResponse
 	}
 
-	parsedABI, err := generated.StoicQuoteTypesMetaData.GetAbi()
+	parsedABI, err := generated.StoicQuoteMetaData.GetAbi()
 	if err != nil {
 		return in.Stoicquote, fmt.Errorf("failed to get ABI: %w", err)
 	}
@@ -73,8 +73,8 @@ func decodeInput(inputData []byte) (generated.StoicQuoteTypesStoicQuote, error) 
 	return in.Stoicquote, nil
 }
 
-func encodeOutput(outStoicQuote generated.StoicQuoteTypesStoicQuote) ([]byte, error) {
-	parsedABI, err := generated.StoicQuoteTypesMetaData.GetAbi()
+func encodeOutput(outStoicQuote generated.StoicQuoteResponse) ([]byte, error) {
+	parsedABI, err := generated.StoicQuoteMetaData.GetAbi()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get ABI: %w", err)
 	}

@@ -37,8 +37,6 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
-    {{bin}} genesis add-genesis-handler "echo" "Echoes back any input it receives"
-    {{bin}} genesis add-genesis-handler "pricepred" "Handler for the price prediction AI model"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
     replace 's/aevmos/award/' ~/.warden/config/app.toml
     jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
@@ -139,8 +137,6 @@ start-2 bin="wardend" install="true":
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
-    {{bin}} genesis add-genesis-handler "echo" "Echoes back any input it receives"
-    {{bin}} genesis add-genesis-handler "pricepred" "Handler for the price prediction AI model"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
     replace 's/aevmos/award/' ~/.warden/config/app.toml
     jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json

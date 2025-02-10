@@ -4,7 +4,7 @@ package warden.async.v1beta1;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "warden/async/v1beta1/params.proto";
-import "warden/async/v1beta1/handler.proto";
+
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
 // GenesisState defines the async module's genesis state.
@@ -14,7 +14,4 @@ message GenesisState {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
-
-  // handlers is a list of supported handlers.
-  repeated Handler handlers = 2;
 }

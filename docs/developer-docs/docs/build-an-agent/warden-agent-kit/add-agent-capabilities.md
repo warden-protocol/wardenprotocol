@@ -84,7 +84,7 @@ Here’s the code snippet for adding a custom tool:
 const customTool = new WardenTool({
     name: "custom_tool", // Name of the tool
     description: "This is a custom tool", // Description of the tool
-    schema: z.object({}), // Define schema for the tool (optional but recommended)
+    schema: z.object({}), // Define the schema for the tool (optional but recommended)
     function: async () => {
         return "This is a custom tool"; // Logic that the tool will execute
     },

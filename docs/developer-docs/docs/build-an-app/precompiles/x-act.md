@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-The [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol) allows calling the [`x/act`](/learn/warden-protocol-modules/x-act) module from EVM smart contracts.
+The [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol) allows calling the [`x/act` module](/learn/warden-protocol-modules/x-act) from EVM smart contracts.
 
 In this article, you'll find a full list of available methods and events. You can use them for querying and managing the following components:
 
@@ -26,7 +26,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Create a new Rule
 
 - **Method**: `newTemplate()`
-- **Description**: Creates a new Rule (template). Emits the [`CreateTemplate`](#createtemplate) event.
+- **Description**: Creates a new Rule (template). Emits the [`CreateTemplate` event](#createtemplate).
 - **Parameters** :
   ```sol
   @param name The template name
@@ -40,7 +40,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Update a Rule
 
 - **Method**: `updateTemplate()`
-- **Description**: Updates a Rule (template). Emits the [`UpdateTemplate`](#createtemplate) event.
+- **Description**: Updates a Rule (template). Emits the [`UpdateTemplate` event](#createtemplate).
 - **Parameters** :
   ```sol
   @param templateId The id of the template
@@ -55,7 +55,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Query Rules
 
 - **Method**: `templates()`
-- **Description**: Returns a list of all Rules (templates). See the [`TemplatesResponse`](#templatesresponse) struct.
+- **Description**: Returns a list of all Rules (templates). See the [`TemplatesResponse` struct](#templatesresponse).
 - **Parameters** :
   ```sol
   @param pagination The pagination details
@@ -69,7 +69,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Query a Rule by ID
 
 - **Method**: `templateById()`
-- **Description**: Returns a Rule (template) by ID. See the [`TemplateByIdResponse`](#templatebyidresponse) struct.
+- **Description**: Returns a Rule (template) by ID. See the [`TemplateByIdResponse` struct](#templatebyidresponse).
 - **Parameters** :
   ```sol
   @param templateId The id of the template
@@ -84,7 +84,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Vote for an Action
 
 - **Method**: `voteForAction()`
-- **Description**: Votes for an Action. Emits the [`ActionVoted`](#actionvoted) event, returns [`ActionStatus`](#actionstatus).
+- **Description**: Votes for an Action. Emits the [`ActionVoted` event](#actionvoted), returns [`ActionStatus`](#actionstatus).
 - **Parameters** :
   ```sol
   @param actionId The id of the action
@@ -111,7 +111,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Query Actions
 
 - **Method**: `actions()`
-- **Description**: Returns a list of all Actions. See the [`ActionsResponse`](#actionsresponse) struct.
+- **Description**: Returns a list of all Actions. See the [`ActionsResponse` struct](#actionsresponse).
 - **Parameters** :
   ```sol
   @param pagination The pagination details
@@ -139,7 +139,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Query an Action by ID
 
 - **Method**: `actionById()`
-- **Description**: Returns an Action by ID. See the [`ActionByIdResponse`](#actionbyidresponse) struct.
+- **Description**: Returns an Action by ID. See the [`ActionByIdResponse` struct](#actionbyidresponse).
 - **Parameters** :
   ```sol
   @param actionId The id of the action
@@ -152,7 +152,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Query the Action status by ID
 
 - **Method**: `checkAction()`
-- **Description**: Returns the status of an Action with a given ID. See the [`ActionStatus`](#actionstatus) enum.
+- **Description**: Returns the status of an Action with a given ID. See the [`ActionStatus` enum](#actionstatus).
 - **Parameters** :
   ```sol
   @param actionId The action id
@@ -179,7 +179,7 @@ struct Template {
 
 ### `TemplatesResponse`
 
-- **Description**: A response returned when you [query Rules](#query-rules). Includes the [`Template`](#template) struct.
+- **Description**: A response returned when you [query Rules](#query-rules). Includes the [`Template` struct](#template).
 
 ```
 struct TemplatesResponse {
@@ -190,7 +190,7 @@ struct TemplatesResponse {
 
 ### `TemplateByIdResponse`
 
-- **Description**: A response returned when you [query a Rule by ID](#query-a-rule-by-id). Includes the [`Template`](#template) struct.
+- **Description**: A response returned when you [query a Rule by ID](#query-a-rule-by-id). Includes the [`Template` struct](#template).
 
 ```
 struct TemplateByIdResponse {
@@ -200,7 +200,7 @@ struct TemplateByIdResponse {
 
 ### `Action`
 
-- **Description**: A struct representing an Action. Includes the [`ActionStatus`](#actionstatus) enum.
+- **Description**: A struct representing an Action. Includes the [`ActionStatus` enum](#actionstatus).
 
 ```
 struct Action {
@@ -221,7 +221,7 @@ struct Action {
 
 ### `ActionsResponse`
 
-- **Description**: A response returned when you [query Actions](#query-actions). Includes the [`Action`](#action) struct.
+- **Description**: A response returned when you [query Actions](#query-actions). Includes the [`Action` struct](#action).
 
 ```
 struct ActionsResponse {
@@ -232,7 +232,7 @@ struct ActionsResponse {
 
 ### `ActionsByAddressResponse`
 
-- **Description**: A response returned when you [query an Action by ID](#query-an-action-by-id). Includes the [`Action`](#action) struct.
+- **Description**: A response returned when you [query an Action by ID](#query-an-action-by-id). Includes the [`Action` struct](#action).
 
 ```
 
@@ -244,7 +244,7 @@ struct ActionsByAddressResponse {
 
 ### `ActionByIdResponse`
 
-- **Description**: A response returned when you [query Actions by address](#query-actions-by-address). Includes the [`Action`](#action) struct.
+- **Description**: A response returned when you [query Actions by address](#query-actions-by-address). Includes the [`Action` struct](#action).
 
 ```
 struct ActionByIdResponse {
@@ -311,7 +311,7 @@ enum VoteType { None, Approve, Reject }
   ```
 ### `ActionVoted`
 
-- **Description**: An event emitted when [an Action is voted on](#vote-for-an-action). Includes the [`VoteType`](#votetype) enum.
+- **Description**: An event emitted when [an Action is voted on](#vote-for-an-action). Includes the [`VoteType` enum](#votetype).
 - **Parameters**:  
   ```sol
   @param participant The address of the participant

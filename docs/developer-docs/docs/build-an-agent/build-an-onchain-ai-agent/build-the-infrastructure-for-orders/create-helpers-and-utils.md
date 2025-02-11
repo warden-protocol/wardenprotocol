@@ -9,7 +9,7 @@ sidebar_position: 1
 This article will guide you through building a foundation for the Agent executing automated Orders. You'll create helper libraries and contracts defining the core data structures and interfaces for managing Orders.
 
 :::note Directory
-Store helper libraries and contracts in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory.
+Store helper libraries and contracts in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src).
 :::
 
 ## 1. Define data structures
@@ -17,10 +17,10 @@ Store helper libraries and contracts in the [`/src`](https://github.com/warden-p
 First, create a library `Types.sol`  with the core data structures:
 
 :::note Full code
-You can find the full code on GitHub: [`/src/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Types.sol)
+You can find the full code on GitHub: [`src/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Types.sol)
 :::
 
-```solidity title="/src/Types.sol"
+```solidity title="src/Types.sol"
 library Types {
     // Define swap parameters for Uniswap
     struct SwapData {
@@ -55,10 +55,10 @@ library Types {
 Now, add an abstract contract with functions required to create Orders of both types. Your code should include a function for creating [signature requests](/learn/glossary#signature-request) by calling the [Warden precompile](create-mock-precompiles#12-create-a-warden-precompile).
 
 :::note Full code
-You can find the full code on GitHub: [`/src/AbstractOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AbstractOrder.sol)
+You can find the full code on GitHub: [`src/AbstractOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AbstractOrder.sol)
 :::
 
-```solidity title="/src/AbstractOrder.sol"
+```solidity title="src/AbstractOrder.sol"
 abstract contract AbstractOrder {
 
     function encodeUnsignedEIP1559(
@@ -133,10 +133,10 @@ abstract contract AbstractOrder {
 In a file `Registry.sol`, implement a registry for tracking transactions:
 
 :::note Full code
-You can find the full code on GitHub: [`/src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
+You can find the full code on GitHub: [`src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
 :::
 
-```solidity title="/src/Registry.sol"
+```solidity title="src/Registry.sol"
 contract Registry is ReentrancyGuard {
     // Track Order creators
     mapping(address executionAddress => address orderCreator) public executions;
@@ -162,10 +162,10 @@ contract Registry is ReentrancyGuard {
 To support EIP-1559 transactions, create a `Strings.sol` library implementing string operations:
 
 :::note Full code
-You can find the full code on GitHub: [`/src/Strings.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Strings.sol)
+You can find the full code on GitHub: [`src/Strings.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Strings.sol)
 :::
 
-```solidity title="/src/Strings.sol"
+```solidity title="src/Strings.sol"
 library Strings {
 
     // Parse a hexadecimal string and return the value as an `address`
@@ -189,10 +189,10 @@ library Strings {
 To support EIP-1559 transactions, create an `RLPEncode.sol` library implementing RLP encoding:
 
 :::note Full code
-You can find the full code on GitHub: [`/src/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/RLPEncode.sol)
+You can find the full code on GitHub: [`src/RLPEncode.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/RLPEncode.sol)
 :::
 
-```solidity title="/src/RLPEncode.sol"
+```solidity title="src/RLPEncode.sol"
 library RLPEncode {
     // Implement the RLP encoding for EIP-1559 transactions
     function encodeTransaction(
@@ -214,10 +214,10 @@ library RLPEncode {
 Create a helper contract used in the [main deployment script](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Create2.sol). This contract allows deploying the infrastructure for Orders with the `CREATE2` opcode.
 
 :::note Full code
-You can find the full code on GitHub: [`/src/Create2.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Create2.sol)
+You can find the full code on GitHub: [`src/Create2.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Create2.sol)
 :::
 
-```solidity title="/src/Create2.sol"
+```solidity title="src/Create2.sol"
 contract Create2 {
 
     function deploy(bytes32 salt, bytes memory creationCode) external payable returns (address addr) {

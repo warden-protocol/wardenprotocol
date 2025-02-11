@@ -116,7 +116,7 @@ After a [Rule handler](#rule-handlers) is invoked and the [Rule](#rule) is fetch
 
 #### Example
 
-You can register a preprocessor in `app.go`. For example, an expander for the dummy [`x/satellites` ](#example) module from the previous section would look like this:
+You can register a preprocessor in `app.go`. For example, an expander for the dummy [`x/satellites` module](#example) from the previous section would look like this:
 
 ```go
 appConfig = depinject.Configs(

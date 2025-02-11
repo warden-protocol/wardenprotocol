@@ -18,13 +18,13 @@ As shown below, the Warden Protocol integrates with two external modules allowin
 
 ### EVM contracts
 
-The [`x/evm`](/learn/warden-protocol-modules/external-modules#xevm) Warden module allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They're written in **Solidity**.
+The [`x/evm` Warden module](/learn/warden-protocol-modules/external-modules#xevm) allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They're written in **Solidity**.
 
 Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users.
 
 ### WASM contracts
 
-The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
+The [`x/wasm` Warden module](/learn/warden-protocol-modules/external-modules#xwasm) allows executing WebAssembly smart contracts developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
 ## Section overview
 

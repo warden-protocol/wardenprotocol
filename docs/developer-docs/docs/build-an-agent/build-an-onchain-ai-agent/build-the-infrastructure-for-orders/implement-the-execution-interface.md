@@ -9,18 +9,18 @@ sidebar_position: 3
 The `IExecution` contract allows executing an Order, getting a list of authorized callers, and checking the execution status. You can use this execution interface to create custom Orders.
 
 :::note Directory
-Store `IExecution` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+Store `IExecution` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
 :::
 
 :::note Full code
-You can find the full code on GitHub: [`/src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
+You can find the full code on GitHub: [`src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
 :::
 
 ## Create the `IExecution` contract
 
 Implement the execution interface in a file `IExecution.sol`:
 
-```solidity title="/src/IExecution.sol"
+```solidity title="src/IExecution.sol"
 interface IExecution {
     // Check if an Order can be executed
     function canExecute() external view returns (bool);

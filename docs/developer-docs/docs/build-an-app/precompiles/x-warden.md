@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 In this article, you'll find a full list of available methods and events. You can use them for querying and managing the following components:
 
@@ -31,7 +31,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Create a new Space
 
 - **Method**: `newSpace()`
-- **Description**: Creates a new Space. Emits the [`NewSpace`](#newspace) event.
+- **Description**: Creates a new Space. Emits the [`NewSpace` event](#newspace).
 - **Parameters**:  
   ```sol
   @param approveAdminTemplateId The template id of approve admin action
@@ -49,7 +49,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Update a Space
 
 - **Method**: `updateSpace()`
-- **Description**: Updates a Space. Emits the [`UpdateSpace`](#updatespace) event.
+- **Description**: Updates a Space. Emits the [`UpdateSpace` event](#updatespace).
 - **Parameters**:  
   ```sol
   @param spaceId The space id
@@ -71,7 +71,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Add a Space owner
 
 - **Method**: `addSpaceOwner()`
-- **Description**: Adds an owner to a Space. Emits the [`AddSpaceOwner`](#addspaceowner) event.
+- **Description**: Adds an owner to a Space. Emits the [`AddSpaceOwner` event](#addspaceowner).
 - **Parameters**:  
   ```sol
   @param spaceId The space id
@@ -85,7 +85,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Remove a Space owner
 
 - **Method**: `removeSpaceOwner()`
-- **Description**: Removes an owner from a Space. Emits the [`RemoveSpaceOwner`](#removespaceowner) event.
+- **Description**: Removes an owner from a Space. Emits the [`RemoveSpaceOwner` event](#removespaceowner).
 - **Parameters**:    
   ```sol
   @param spaceId The space id
@@ -101,7 +101,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query Spaces
 
 - **Method**: `spaces()`
-- **Description**: Returns a list of all Spaces. See the [`Space`](#space) struct.
+- **Description**: Returns a list of all Spaces. See the [`Space` struct](#space).
 - **Parameters** :
   ```sol
   @param pageRequest The pagination details
@@ -116,7 +116,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query Spaces by owner
 
 - **Method**: `spacesByOwner()`
-- **Description**: Returns a list of Spaces by owner. See the [`Space`](#space) struct.
+- **Description**: Returns a list of Spaces by owner. See the [`Space` struct](#space).
 - **Parameters**:  
   ```sol
   @param pageRequest The pagination details
@@ -132,7 +132,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query a Space by ID
 
 - **Method**: `spaceById()`
-- **Description**: Returns a Space by ID. See the [`Space`](#space) struct.
+- **Description**: Returns a Space by ID. See the [`Space` struct](#space).
 - **Parameters**:  
   ```sol
   @param id The id of the space
@@ -148,7 +148,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Update a key
 
 - **Method**: `updateKey()`
-- **Description**: Updates a key with a given ID. Emits the [`UpdateKey`](#updatekey) event.
+- **Description**: Updates a key with a given ID. Emits the [`UpdateKey` event](#updatekey).
 - **Parameters**:  
   ```sol
   @param keyId The key id
@@ -167,7 +167,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query keys
 
 - **Method**: `allKeys()`
-- **Description**: Returns a list of all keys. See the [`KeyResponse`](#keyresponse) struct.
+- **Description**: Returns a list of all keys. See the [`KeyResponse` struct](#keyresponse).
 - **Parameters**:  
   ```sol
   @param pageRequest The pagination details
@@ -182,7 +182,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query keys by Space ID
 
 - **Method**: `keysBySpaceId()`
-- **Description**: Returns a list of keys by Space ID. See the [`KeyResponse`](#keyresponse) struct.
+- **Description**: Returns a list of keys by Space ID. See the [`KeyResponse` struct](#keyresponse).
 - **Parameters**:  
   ```sol
   @param spaceId The id of the space
@@ -198,7 +198,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query a key by ID
 
 - **Method**: `keyById()`
-- **Description**: Returns a key by ID. See the [`KeyResponse`](#keyresponse) struct.
+- **Description**: Returns a key by ID. See the [`KeyResponse` struct](#keyresponse).
 - **Parameters**:  
   ```sol
   @param id The id of the key
@@ -215,7 +215,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Create a new Keychain
 
 - **Method**: `newKeychain()`
-- **Description**: Creates a new Keychain, emits the [`NewKeychain`](#newkeychain) event. You can specify [`KeychainFees`](#keychainfees).
+- **Description**: Creates a new Keychain, emits the [`NewKeychain` event](#newkeychain). You can specify [`KeychainFees`](#keychainfees).
 - **Parameters**:  
   ```sol
   @param name The keychain name
@@ -233,7 +233,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Update a Keychain
 
 - **Method**: `updateKeychain()`
-- **Description**: Updates a Keychain, emits the [`updateKeychain`](#updatekeychain) event. You can specify [`KeychainFees`](#keychainfees).
+- **Description**: Updates a Keychain, emits the [`updateKeychain` event](#updatekeychain). You can specify [`KeychainFees`](#keychainfees).
 - **Parameters**:  
   ```sol
   @param keychainId The keychain id
@@ -252,7 +252,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Add a Keychain admin
 
 - **Method**: `addKeychainAdmin()`
-- **Description**: Adds an admin to a Keychain. Emits the [`AddKeychainAdmin`](#addkeychainadmin) event.
+- **Description**: Adds an admin to a Keychain. Emits the [`AddKeychainAdmin` event](#addkeychainadmin).
 - **Parameters**: 
   ```sol
   @param keychainId The keychain id
@@ -267,7 +267,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Remove a Keychain admin
 
 - **Method**: `removeKeychainAdmin()`
-- **Description**: Removes an admin from a Keychain.  Emits the [`RemoveKeychainAdmin`](#removekeychainadmin) event.
+- **Description**: Removes an admin from a Keychain.  Emits the [`RemoveKeychainAdmin` event](#removekeychainadmin).
 - **Parameters**:  
   ```sol
   @param keychainId The id of the keychain
@@ -282,7 +282,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Add a Keychain Writer
 
 - **Method**: `addKeychainWriter()`
-- **Description**: Adds a Writer to a Keychain. Emits the [`AddKeychainWriter`](#addkeychainwriter) event.
+- **Description**: Adds a Writer to a Keychain. Emits the [`AddKeychainWriter` event](#addkeychainwriter).
 - **Parameters**:  
   ```sol
   @param keychainId The keychain id
@@ -297,7 +297,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query Keychains
 
 - **Method**: `keychains()`
-- **Description**: Returns a list of all Keychains. See the [`Keychain`](#keychain) struct.
+- **Description**: Returns a list of all Keychains. See the [`Keychain` struct](#keychain).
 - **Parameters**:  
   ```sol
   @param pageRequest The pagination details
@@ -312,7 +312,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query a Keychain by ID
 
 - **Method**: `keychainById()`
-- **Description**: Returns a Keychain by ID. See the [`Keychain`](#keychain) struct.
+- **Description**: Returns a Keychain by ID. See the [`Keychain` struct](#keychain).
 - **Parameters**:    
   ```sol
   @param id The id of the keychain
@@ -328,7 +328,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Create a new key request
 
 - **Method**: `newKeyRequest()`
-- **Description**: Creates a new key request, emits the [`NewKeyRequest`](#newkeyrequest) event. You should specify [`KeyType`](#keytype) and other parameters.
+- **Description**: Creates a new key request, emits the [`NewKeyRequest` event](#newkeyrequest). You should specify [`KeyType`](#keytype) and other parameters.
 - **Parameters**:
   ```sol
   @param spaceId The space id
@@ -351,7 +351,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Fulfill a key request
 
 - **Method**: `fulfilKeyRequest()`
-- **Description**: Fulfills a key request. Emits the [`NewKey`](#newkey) event.
+- **Description**: Fulfills a key request. Emits the [`NewKey` event](#newkey).
 - **Parameters**:  
   ```sol
   @param requestId The request id
@@ -366,7 +366,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Reject a key request
 
 - **Method**: `rejectKeyRequest()`
-- **Description**: Rejects a key request. Emits the [`RejectKeyRequest`](#rejectkeyrequest) event.
+- **Description**: Rejects a key request. Emits the [`RejectKeyRequest` event](#rejectkeyrequest).
 - **Parameters**:
   ```sol
   @param requestId The request id
@@ -381,7 +381,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query key requests
 
 - **Method**: `keyRequests()`
-- **Description**: Returns a list of all key requests. See the [`KeyRequest`](#keyrequest) struct.
+- **Description**: Returns a list of all key requests. See the [`KeyRequest` struct](#keyrequest).
 - **Parameters**:
   ```sol
   @param pageRequest The pagination details
@@ -399,7 +399,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query a key request by ID
 
 - **Method**: `keyRequestById()`
-- **Description**: Returns a key request by ID. See the [`KeyRequest`](#keyrequest) struct.
+- **Description**: Returns a key request by ID. See the [`KeyRequest` struct](#keyrequest).
 - **Parameters**:  
   ```sol
   @param id The id of the keyRequest
@@ -415,7 +415,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Create a new signature request
 
 - **Method**: `newSignRequest()`
-- **Description**: Creates a new signature request. Emits the [`NewSignRequest`](#newsignrequest) event.
+- **Description**: Creates a new signature request. Emits the [`NewSignRequest` event](#newsignrequest).
 - **Parameters**:  
   ```sol
   @param keyId The key id
@@ -437,7 +437,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Fulfill a signature request
 
 - **Method**: `fulfilSignRequest()`
-- **Description**: Fulfills a signature request. Emits the [`FulfilSignRequest`](#fulfill-a-signature-request) event.
+- **Description**: Fulfills a signature request. Emits the [`FulfilSignRequest` event](#fulfill-a-signature-request).
 - **Parameters**: 
   ```sol
   @param requestId The request id
@@ -452,7 +452,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Reject a signature request
 
 - **Method**: `rejectSignRequest()`
-- **Description**: Rejects a signature request. Emits the [`RejectSignRequest`](#rejectsignrequest) event.
+- **Description**: Rejects a signature request. Emits the [`RejectSignRequest` event](#rejectsignrequest).
 - **Parameters**:  
   ```sol
   @param requestId The request id
@@ -467,7 +467,7 @@ To reference the `IWarden` precompile in your code, use the following precompile
 ### Query signature requests
 
 - **Method**: `signRequests()`
-- **Description**: Returns a list of all signature requests. See the [`SignRequest`](#signrequest) struct.
+- **Description**: Returns a list of all signature requests. See the [`SignRequest` struct](#signrequest).
 - **Parameters**:
   ```sol
   @param pageRequest The pagination details
@@ -516,7 +516,7 @@ struct Space {
 
 ### `Key`
 
-- **Description**: A struct representing a key. Includes the [`KeyType`](#keytype) enum.
+- **Description**: A struct representing a key. Includes the [`KeyType` enum](#keytype).
 
 ```
 struct Key {
@@ -532,7 +532,7 @@ struct Key {
 
 ### `AddressesResponse`
 
-- **Description**: A struct representing an address. Includes the [`AddressType`](#addresstype) enum.
+- **Description**: A struct representing an address. Includes the [`AddressType` enum](#addresstype).
 
 ```
 struct AddressesResponse {
@@ -565,7 +565,7 @@ struct KeychainFees {
 
 ### `Keychain`
 
-- **Description**: A struct representing a Keychain. Includes the [`KeychainFees`](#keychainfees) struct.
+- **Description**: A struct representing a Keychain. Includes the [`KeychainFees` struct](#keychainfees).
 
 ```
 struct Keychain {
@@ -748,7 +748,7 @@ enum BroadcastType {
 
 ### `UpdateKeychain`
 
-- **Description**: An event emitted when [a Keychain is updated](#update-a-keychain). Includes the [`KeychainFees`](#keychainfees) struct.
+- **Description**: An event emitted when [a Keychain is updated](#update-a-keychain). Includes the [`KeychainFees` struct](#keychainfees).
   - **Parameters**:  
   ```sol
   @param id The keychain id
@@ -787,7 +787,7 @@ enum BroadcastType {
 
 ### `NewKeyRequest`
 
-- **Description**: An event emitted when [a new key request is created](#create-a-new-key-request). Includes the [`KeyType`](#keytype) enum.
+- **Description**: An event emitted when [a new key request is created](#create-a-new-key-request). Includes the [`KeyType` enum](#keytype).
 - **Parameters**:
   ```sol
   @param id The id of the created key request
@@ -801,7 +801,7 @@ enum BroadcastType {
 
 ### `NewKey`
 
-- **Description**: An event emitted when [a key request is fulfilled](#fulfill-a-key-request). Includes the [`KeyType`](#keytype) enum.
+- **Description**: An event emitted when [a key request is fulfilled](#fulfill-a-key-request). Includes the [`KeyType` enum](#keytype).
 - **Parameters**:
   ```sol
   @param id The key id

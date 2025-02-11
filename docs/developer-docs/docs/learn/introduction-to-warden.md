@@ -46,7 +46,7 @@ Warden provides operator sets and integrations with leading wallets, explorers, 
 Here is what you can do with Warden:
 
 - **Build an Agent**  
-Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async`](/learn/warden-protocol-modules/x-async) Warden module, you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
+Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async` Warden module](/learn/warden-protocol-modules/x-async), you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
 
 - **Build an application**  
 [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward)—our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.

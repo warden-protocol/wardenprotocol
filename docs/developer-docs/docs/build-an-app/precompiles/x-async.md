@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The [`IAsync` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol) allows calling the [`x/async`](/learn/warden-protocol-modules/x-async) module from EVM smart contracts.
+The [`IAsync` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol) allows calling the [`x/async` module](/learn/warden-protocol-modules/x-async) from EVM smart contracts.
 
 In this article, you'll find a full list of available methods and events. You can use them for querying and managing the following components:
 
@@ -27,7 +27,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Create a new Future
 
 - **Method**: `addFuture()`
-- **Description**: Creates a Future. Emits the [`CreateFuture`](#createfuture) event.
+- **Description**: Creates a Future. Emits the [`CreateFuture` event](#createfuture).
 - **Parameters** :
   ```sol
   @param handler The unique name of the handler
@@ -42,7 +42,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Query Futures
 
 - **Method**: `futures()`
-- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse`](#futureresponse) struct.
+- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse` struct](#futureresponse).
 - **Parameters** :
   ```sol
   @param pagination The pagination details
@@ -58,7 +58,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Query pending Futures
 
 - **Method**: `pendingFutures()`
-- **Description**: Returns a list of all pending Futures. See the [`PendingFuturesResponse`](#pendingfuturesresponse ) struct.
+- **Description**: Returns a list of all pending Futures. See the [`PendingFuturesResponse` struct](#pendingfuturesresponse).
 - **Parameters** :
   ```sol
   @param pagination The pagination details  
@@ -72,7 +72,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### Query a Future by ID
 
 - **Method**: `futureById()`
-- **Description**: Returns a Future by ID (pending Futures included). See the [`FutureByIdResponse`](#futurebyidresponse) struct.
+- **Description**: Returns a Future by ID (pending Futures included). See the [`FutureByIdResponse` struct](#futurebyidresponse).
 - **Parameters** :
   ```sol
   @param futureId The future id   
@@ -98,7 +98,7 @@ bytes input;
 
 ### `FutureVote`
 
-- **Description**: A struct representing a vote on the results of a Future. Includes the [`FutureVoteType`](#futurevotetype) enum.
+- **Description**: A struct representing a vote on the results of a Future. Includes the [`FutureVoteType` enum](#futurevotetype).
 
 ```
 uint64 futureId;
@@ -128,7 +128,7 @@ FutureResult result;
 
 ### `FuturesResponse`
 
-- **Description**: A response returned when you [query Futures](#query-futures). Includes the [`FutureResponse`](#futureresponse) struct.
+- **Description**: A response returned when you [query Futures](#query-futures). Includes the [`FutureResponse` struct](#futureresponse).
 
 ```
 Types.PageResponse pagination;
@@ -137,7 +137,7 @@ FutureResponse[] futures;
 
 ### `PendingFuturesResponse`
 
-- **Description**: A response returned when you [query pending Futures](#query-pending-futures). Includes the [`Future`](#future) struct.
+- **Description**: A response returned when you [query pending Futures](#query-pending-futures). Includes the [`Future` struct](#future).
 
 ```
 Types.PageResponse pagination;
@@ -146,7 +146,7 @@ Future[] futures;
 
 ### `FutureByIdResponse`
 
-- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`FutureResponse`](#futureresponse) struct.
+- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`FutureResponse` struct](#futureresponse).
 
 ```
 FutureResponse futureResponse;

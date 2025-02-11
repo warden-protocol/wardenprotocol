@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [signature requests](/learn/glossary#signature-request). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
@@ -19,7 +19,7 @@ To understand how to set up and deploy your project, see [Get started](../get-st
 
 ## Create a new signature request
 
-To create a new signature request, use the following code in your contract. It calls the [`newSignRequest()`](../../precompiles/x-warden#create-a-new-signature-request) function of the precompile.
+To create a new signature request, use the following code in your contract. It calls the [`newSignRequest()` function](../../precompiles/x-warden#create-a-new-signature-request) of the precompile.
 
 ```solidity
 function newSignRequest(
@@ -74,7 +74,7 @@ cast send $CONTRACT_ADDRESS "createSignRequest(uint64,bytes,bytes[],bytes,(strin
 
 ## Fulfill a signature request
 
-To fulfill a signature request, use the following code in your contract. It calls the [`fulfilSignRequest()`](../../precompiles/x-warden#fulfill-a-signature-request) function of the precompile.
+To fulfill a signature request, use the following code in your contract. It calls the [`fulfilSignRequest()` function](../../precompiles/x-warden#fulfill-a-signature-request) of the precompile.
 
 ```solidity
 function fulfilSignRequest(uint64 requestId, bytes calldata signedData) external returns (bool success);
@@ -96,7 +96,7 @@ cast send $CONTRACT_ADDRESS "fulfillSignRequest(uint64,bytes)" 1 0x789... --rpc-
 
 ## Reject a signature request
 
-To reject a signature request, use the following code in your contract. It calls the [`rejectSignRequest()`](../../precompiles/x-warden#reject-a-signature-request) function of the precompile.
+To reject a signature request, use the following code in your contract. It calls the [`rejectSignRequest()` function](../../precompiles/x-warden#reject-a-signature-request) of the precompile.
 
 ```
 function rejectSignatureRequest(uint64 requestId, string calldata rejectReason) external returns (bool success);
@@ -118,7 +118,7 @@ cast send $CONTRACT_ADDRESS "rejectSignatureRequest(uint64,string)" 1 "Invalid k
 
 ## Query signature requests
 
-To get a list of all signature requests, use the following code in your contract. It calls the [`signRequests()`](../../precompiles/x-warden#query-signature-requests) function of the precompile.
+To get a list of all signature requests, use the following code in your contract. It calls the [`signRequests()` function](../../precompiles/x-warden#query-signature-requests) of the precompile.
 
 ```solidity
 function signRequests(
@@ -161,7 +161,7 @@ cast call $CONTRACT_ADDRESS "getSignRequests(uint64,uint64,uint8,uint8)" 10 1 1 
 
 ## Query a signature request by ID
 
-To get a signature request by ID, use the following code in your contract. It calls the [`signRequestById()`](../../precompiles/x-warden#query-a-signature-request-by-id) function of the precompile.
+To get a signature request by ID, use the following code in your contract. It calls the [`signRequestById()` function](../../precompiles/x-warden#query-a-signature-request-by-id) of the precompile.
 
 ```solidity
 function signRequestById(uint64 id) external view returns (SignRequest memory signRequest);

@@ -77,6 +77,7 @@ contract CreateOrder is Script {
 
     function advanced(
         Types.PriceCondition priceCondition,
+        uint256 confidenceLimit,
         Types.PricePair calldata oraclePricePair,
         Types.PricePair calldata predictPricePair,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
@@ -109,7 +110,8 @@ contract CreateOrder is Script {
             priceCondition: priceCondition,
             oraclePricePair: oraclePricePair,
             predictPricePair: predictPricePair,
-            pricePredictDate: block.timestamp + 24 hours
+            pricePredictDate: block.timestamp + 24 hours,
+            confidenceLimit: confidenceLimit
         });
         Types.CommonExecutionData memory commonExecutionData = Types.CommonExecutionData({
             creatorDefinedTxFields: creatorDefinedTxFields,

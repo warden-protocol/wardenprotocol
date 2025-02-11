@@ -11,18 +11,18 @@ This article will guide you through creating the `BasicOrderFactory` contract. `
 This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security. Note that you can extend some parts to [implement the creation of Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders).
 
 :::note Directory
-Store `BasicOrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+Store `BasicOrderFactory` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
 :::
 
 :::note Full code
-You can find the full code on GitHub: [`/src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
+You can find the full code on GitHub: [`src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
 :::
 
 ## 1. Create the contract
 
 To start implementing the deployment of Orders, create a file `BasicOrderFactory.sol`:
 
-```solidity title="/src/BasicOrderFactory.sol"
+```solidity title="src/BasicOrderFactory.sol"
 contract BasicOrderFactory is ReentrancyGuard {
     // The registry for order tracking
     Registry public immutable REGISTRY;
@@ -42,7 +42,7 @@ contract BasicOrderFactory is ReentrancyGuard {
 
 In the same contract, implement the core function for deploying new Orders:
 
-```solidity title="/src/BasicOrderFactory.sol"
+```solidity title="src/BasicOrderFactory.sol"
 function createBasicOrder(
     Types.BasicOrderData calldata orderData,
     Types.CommonExecutionData calldata executionData,
@@ -94,7 +94,7 @@ function createBasicOrder(
 
 Allow users to preview the Order addresses:
 
-```solidity title="/src/BasicOrderFactory.sol"
+```solidity title="src/BasicOrderFactory.sol"
 function computeOrderAddress(
     address origin, 
     bytes32 salt

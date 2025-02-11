@@ -176,13 +176,13 @@ When a user requests a new key, the Keychain generates a new private key, stores
    export KEY_REQUEST_ID=1
    ```
 
-4. Use the CLIChain [`generate`](../implementations/clichain#generate-a-private-key) command to generate the key:
+4. Use the CLIChain [`generate` command](../implementations/clichain#generate-a-private-key) to generate the key:
    
    ```bash
    clichain generate -o private_$KEY_REQUEST_ID.key
    ```
 
-5. Set the public key, derived with the CLIChain [`public-key`](../implementations/clichain#derive-a-public-key) command, as an environmental variable:
+5. Set the public key, derived with the CLIChain [`public-key` command](../implementations/clichain#derive-a-public-key), as an environmental variable:
    
    ```
    export PUBLIC_KEY=$(go run ./cmd/clichain public-key -k private_$KEY_REQUEST_ID.key -o base64)
@@ -320,7 +320,7 @@ When a user requests a signature, the Keychain signs a message with the private 
    export SIGN_REQUEST_ID=1
    ``` 
 
-4. Use the CLIChain [`sign`](../implementations/clichain#sign-a-message) command to sign the message with the key generated in the previous step. Set the signature as an environment variable.
+4. Use the CLIChain [`sign` command](../implementations/clichain#sign-a-message) to sign the message with the key generated in the previous step. Set the signature as an environment variable.
    
    ```bash
    export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k private_$KEY_REQUEST_ID.key -o base64)

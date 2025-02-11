@@ -27,7 +27,7 @@ Before you start, meet the following prerequisites:
 
 ## 1. Install packages
 
-Clone the [`agent-kit`](https://github.com/warden-protocol/agent-kit) repository:
+Clone the [`agent-kit` repository](https://github.com/warden-protocol/agent-kit):
 
 ```bash
 git clone https://github.com/warden-protocol/agent-kit.git
@@ -49,7 +49,7 @@ export OPENAI_API_KEY=your-openai-api-key
 export PRIVATE_KEY=your-wallet-private-key
 ```
 
-To use the [`request_funds`](agent-actions) tool in [Step 4.1](#41-get-ward), you'll need to get a Warden faucet API token: just reach out to us in [Discord](https://discord.com/invite/wardenprotocol). After obtaining the token, set it as an environment variable:
+To use the [`request_funds` tool](agent-actions) in [Step 4.1](#41-get-ward), you'll need to get a Warden faucet API token: just reach out to us in [Discord](https://discord.com/invite/wardenprotocol). After obtaining the token, set it as an environment variable:
 
 ```bash
 export FAUCET_TOKEN=your-faucet-token
@@ -86,7 +86,7 @@ Type your prompt in the command line:
 Prompt: get some ward
 ```
 
-The Agent will automatically send you some WARD from the faucet, using the [`request_funds`](agent-actions) tool. You'll see an output like this:
+The Agent will automatically send you some WARD from the faucet, using the [`request_funds` tool](agent-actions). You'll see an output like this:
 
 ```
 -------------------
@@ -106,7 +106,7 @@ Type your prompt in the command line:
 Prompt: create a space
 ```
 
-The Agent will create a Space, using the [`create_space`](agent-actions) tool:
+The Agent will create a Space, using the [`create_space` tool](agent-actions):
 
 ```bash
 -------------------

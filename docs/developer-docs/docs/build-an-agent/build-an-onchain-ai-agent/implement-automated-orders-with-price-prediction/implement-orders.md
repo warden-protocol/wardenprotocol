@@ -30,18 +30,18 @@ contract AdvancedOrder is AbstractOrder, IExecution {
 ```
 
 :::note Directory
-Store `AdvancedOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+Store `AdvancedOrder` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
 :::
 
 :::note Full code
-You can find the full code on GitHub: [`/src/AdvancedOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AdvancedOrder.sol)
+You can find the full code on GitHub: [`src/AdvancedOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AdvancedOrder.sol)
 :::
 
 ## 1. Initialize the prediction system
 
 First, initialize the prediction system:
 
-```solidity title="/src/AdvancedOrder.sol"
+```solidity title="src/AdvancedOrder.sol"
 constructor(
     Types.AdvancedOrderData memory _orderData,
     Types.CommonExecutionData memory _executionData,
@@ -78,7 +78,7 @@ constructor(
 
 Now implement price monitoring:
 
-```solidity title="/src/AdvancedOrder.sol"
+```solidity title="src/AdvancedOrder.sol"
 function canExecute() public view override returns (bool) {
     // Check the time window
     if (block.timestamp > _validUntil) return false;
@@ -123,7 +123,7 @@ function canExecute() public view override returns (bool) {
 
 Create utilities for price normalization:
 
-```solidity title="/src/AdvancedOrder.sol"
+```solidity title="src/AdvancedOrder.sol"
 function _normalizePrices(
     uint256 price1,
     uint256 price2,
@@ -152,7 +152,7 @@ function _getPriceInQuote(
 
 Create a function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold—see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
 
-```solidity title="/src/AdvancedOrder.sol"
+```solidity title="src/AdvancedOrder.sol"
 function _checkPriceCondition(
     uint256 oraclePrice,
     uint256 predictedPrice

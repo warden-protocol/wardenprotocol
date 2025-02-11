@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The [`x/wasm`](/learn/warden-protocol-modules/external-modules#xwasm) Warden module allows executing **WebAssembly smart contracts** developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
+The [`x/wasm` Warden module](/learn/warden-protocol-modules/external-modules#xwasm) allows executing **WebAssembly smart contracts** developed with [CosmWasm](https://cosmwasm.com) and **Rust**.
 
 This guide explains how to create and deploy a simple "Hello World" WASM contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview).
 
@@ -124,11 +124,11 @@ cd hello-world
 
 ## 3. Modify the contract code
 
-Now you need to modify files in the `/src` directory as shown in the steps below.
+Now you need to modify files in the `src` directory as shown in the steps below.
 
 1. Open the `contract.rs` file and replace its contents with this code:
 
-   ```rust title="/hello-world/src/contract.rs"
+   ```rust title="hello-world/src/contract.rs"
    use cosmwasm_std::{
        entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
    };
@@ -176,7 +176,7 @@ Now you need to modify files in the `/src` directory as shown in the steps below
 
 2. Open the `msg.rs` file and replace its contents with this code:
    
-   ```rust title="/hello-world/src/msg.rs"
+   ```rust title="hello-world/src/msg.rs"
    use cosmwasm_schema::{cw_serde, QueryResponses};
    
    #[cw_serde]
@@ -197,7 +197,7 @@ Now you need to modify files in the `/src` directory as shown in the steps below
 
 2. Open the `helpers.rs` file and replace its contents with this code:
    
-   ```rust title="/hello-world/src/helpers.rs"
+   ```rust title="hello-world/src/helpers.rs"
    use schemars::JsonSchema;
    use serde::{Deserialize, Serialize};
    

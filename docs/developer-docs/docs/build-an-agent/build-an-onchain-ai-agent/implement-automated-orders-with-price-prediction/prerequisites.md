@@ -11,7 +11,7 @@ Before you start implementing automated Orders with price prediction, you need t
 
 You need to understand the following:
 
-- Warden's [`x/async`](/learn/warden-protocol-modules/x-async) prediction system
+- Warden's prediction system based on the [`x/async` module](/learn/warden-protocol-modules/x-async)
 - Price normalization between different sources
 - Time-based contract constraints
 - Complex state management

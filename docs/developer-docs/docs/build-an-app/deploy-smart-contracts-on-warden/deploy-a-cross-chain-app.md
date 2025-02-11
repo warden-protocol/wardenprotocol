@@ -45,7 +45,7 @@ Before you start, complete the following prerequisites:
 
 ### 1.1. Set up the project
 
-1. Create a new directory `/burnable-token` and initialize a Truffle project:
+1. Create a new directory `burnable-token` and initialize a Truffle project:
 
    ```bash
    mkdir burnable-token
@@ -65,16 +65,16 @@ Before you start, complete the following prerequisites:
 
 3. In the root directory, create a file named `.env` to store your private key and the Infura project ID:
 
-   ```ini title="/burnable-token/.env"
+   ```ini title="burnable-token/.env"
    PRIVATE_KEY=my-private-key
    INFURA_PROJECT_ID=my-infura-project-id
    ```
 
 ### 1.2. Add the contract
 
-1. In the `/contracts` directory, create a new file `BurnableToken.sol` with the following contents:
+1. In the `contracts` directory, create a new file `BurnableToken.sol` with the following contents:
 
-```solidity title="/burnable-token/contracts/BurnableToken.sol"
+```solidity title="burnable-token/contracts/BurnableToken.sol"
 
     // SPDX-License-Identifier: MIT
     
@@ -145,7 +145,7 @@ Before you start, complete the following prerequisites:
 
 In the root directory, update the `truffle-config.js` file to include the Sepolia network:
 
-```javascript title="/burnable-token/truffle-config.js"
+```javascript title="burnable-token/truffle-config.js"
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -175,9 +175,9 @@ module.exports = {
 
 Now you need to add a migration script that will deploy the contract and mint the initial supply to the contract address.
 
-In `/migrations`, create a new file `migrations/2_deploy_contracts.js` with the following contents:
+In `migrations`, create a new file `migrations/2_deploy_contracts.js` with the following contents:
 
-```javascript title="/burnable-token/migrations/2_deploy_contracts.js"
+```javascript title="burnable-token/migrations/2_deploy_contracts.js"
 const BurnableToken = artifacts.require("BurnableToken");
 
 module.exports = async function (deployer, network, accounts) {
@@ -294,11 +294,11 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 1. Create a CosmWasm project. You can [use a template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project).
 
-2. In the `/src` directory of your project, create a `contract.rs` file with the code below. If you've used a template, update the existing file.
+2. In the `src` directory of your project, create a `contract.rs` file with the code below. If you've used a template, update the existing file.
 
    Set `destination_address` to the EVM contract address from [Step 1.6](#16-deploy-the-contract). Optionally, modify the code to let users input the address during execution.
    
-   ```rust title="/my-wasm-project/src/contract.rs"
+   ```rust title="my-wasm-project/src/contract.rs"
    #[cfg(not(feature = "library"))]
    // Import standard CosmWasm libraries
    use cosmwasm_std::{Uint256, DepsMut, Env, MessageInfo, Response};
@@ -405,11 +405,11 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll create files in the `/src` directory to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
+In the following steps, you'll create files in the `src` directory to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
 
 1. Create a file named `msg.rs` with the following code:
    
-   ```rust title="/my-wasm-project/src/msg.rs"
+   ```rust title="my-wasm-project/src/msg.rs"
    use cosmwasm_schema::cw_serde;
    use cosmwasm_std::Uint256;
    
@@ -453,7 +453,7 @@ In the following steps, you'll create files in the `/src` directory to add suppo
 
 2. Create a file named `error.rs` with the following code:
    
-   ```rust title="/my-wasm-project/src/error.rs"
+   ```rust title="my-wasm-project/src/error.rs"
    use cosmwasm_std::StdError;
    use thiserror::Error;
    
@@ -472,7 +472,7 @@ In the following steps, you'll create files in the `/src` directory to add suppo
 
 3. Create a file named `helpers.rs` file with the following code:
 
-   ```rust title="/my-wasm-project/src/helpers.rs"
+   ```rust title="my-wasm-project/src/helpers.rs"
    use schemars::JsonSchema;
    use serde::{Deserialize, Serialize};
    
@@ -504,7 +504,7 @@ In the following steps, you'll create files in the `/src` directory to add suppo
 
 4. Create a file named `ibc.rs` with the following code:
    
-   ```rust title="/my-wasm-project/src/ibc.rs"
+   ```rust title="my-wasm-project/src/ibc.rs"
    use osmosis_std_derive::CosmwasmExt;
    #[derive(
        Clone,
@@ -564,7 +564,7 @@ In the following steps, you'll create files in the `/src` directory to add suppo
 
 5. Create a file named `lib.rs` with the following code:
    
-   ```rust title="/my-wasm-project/src/lib.rs"
+   ```rust title="my-wasm-project/src/lib.rs"
    pub mod contract;
    mod error;
    mod ibc;
@@ -604,7 +604,7 @@ In the following steps, you'll create files in the `/src` directory to add suppo
 
 6. Create a file named `state.rs` with the following code:
    
-   ```rust title="/my-wasm-project/src/state.rs"
+   ```rust title="my-wasm-project/src/state.rs"
    use cosmwasm_schema::cw_serde;
    use cw_storage_plus::Item;
    

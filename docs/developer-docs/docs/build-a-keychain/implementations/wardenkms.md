@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The following document provides a detailed breakdown of the [`wardenkms.go`](../../../../../cmd/wardenkms/wardenkms.go) file, which plays a central role in setting up a key management system using the Warden Protocol.
+The following document provides a detailed breakdown of the [`wardenkms.go` file](../../../../../cmd/wardenkms/wardenkms.go), which plays a central role in setting up a key management system using the Warden Protocol.
 
 This file configures and runs **WardenKMS**, a Keychain application in Go. WardenKMS uses various libraries to provide a secure and efficient key management system compatible with blockchain environments built on the Cosmos SDK. The application is designed for handling key derivation, signature generation, and HTTP-based health checks.
 

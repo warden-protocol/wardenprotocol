@@ -27,18 +27,18 @@ contract BasicOrder is AbstractOrder, IExecution {
 ```
 
 :::note Directory
-Store `BasicOrder` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+Store `BasicOrder` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
 :::
 
 :::note Full code
-You can find the full code on GitHub: [`/src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
+You can find the full code on GitHub: [`src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
 :::
 
 ## 1. Create core components
 
 First, define the state variables and imports:
 
-```solidity title="/src/BasicOrder.sol"
+```solidity title="src/BasicOrder.sol"
 contract BasicOrder is AbstractOrder, IExecution {
     // State variables (extensible)
     ISlinky private immutable SLINKY_PRECOMPILE;
@@ -65,7 +65,7 @@ Now create a `constructor` with validations. As shown in the code below, your co
 - Set up connections with the [price feed](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and the [signing service](../build-the-infrastructure-for-orders/create-helpers-and-utils#2-create-an-abstract-order)
 - Initialize the Order parameters
 
-```solidity title="/src/BasicOrder.sol"
+```solidity title="src/BasicOrder.sol"
 constructor(
     Types.BasicOrderData memory _orderData,
     Types.CommonExecutionData memory _executionData,
@@ -96,7 +96,7 @@ constructor(
 In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold—see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
 
 
-```solidity title="/src/BasicOrder.sol"
+```solidity title="src/BasicOrder.sol"
 function canExecute() public view returns (bool value) {
 
     GetPriceResponse memory priceResponse =
@@ -126,7 +126,7 @@ In the `execute()` function, implement the logic for executing trades. This func
 - Register the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
 - Return the execution status
 
-```solidity title="/src/BasicOrder.sol"
+```solidity title="src/BasicOrder.sol"
 function execute(
     uint256 nonce,
     uint256 gas,

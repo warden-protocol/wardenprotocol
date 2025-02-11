@@ -72,7 +72,7 @@ To get a full list of commands for querying a node, run this:
 wardend query --help
 ```
 
-For example, the `warden` command allows you to query the [`x-warden`](/learn/warden-protocol-modules/x-warden) module.
+For example, the `warden` command allows you to query the [`x-warden` module](/learn/warden-protocol-modules/x-warden).
 
 Here are some of the available `wardend query warden` subcommands with examples:
 

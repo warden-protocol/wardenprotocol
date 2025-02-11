@@ -38,7 +38,11 @@ Learn more: [Build an Agent](/build-an-agent/introduction)
 
 ## AI Blockchain Interface (AIBI)
 
-Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications and create [AI Agents](#ai-agent). Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications and create [AI Agents](#ai-agent).
+
+Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+
+To learn more, see the concepts implemented in Warden's [`x/async` module](warden-protocol-modules/x-async): [Future](#future), [Prophet](#prophet)
 
 ---
 
@@ -231,7 +235,7 @@ Learn more: [Oracle services](oracle-services)
 
 An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain.
 
-When creating an Order, you can implement custom logic by using [Warden modules](warden-protocol-modules/introduction), [Keychains](#keychain), and other features. In particular, Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi) and the [x/async module](warden-protocol-modules/x-async) allow you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
+When creating an Order, you can implement custom logic by using [Warden modules](warden-protocol-modules/introduction), [Keychains](#keychain), and other features. In particular, Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi) and the [`x/async` module](warden-protocol-modules/x-async) allow you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 
 Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction)
 

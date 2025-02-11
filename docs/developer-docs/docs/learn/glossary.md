@@ -26,9 +26,19 @@ An Action happens after an [Approval](#approval) is granted according to a user-
 
 ---
 
+## AI Agent
+
+A Warden AI Agent is an autonomous AI-driven program that supports both offchain and onchain operations.
+
+Thanks to their native integration with the Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and managing [Orders](#order). You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit). AI integration is ensured by Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
+
+Learn more: [Build an Agent](/build-an-agent/introduction)  
+
+---
+
 ## AI Blockchain Interface (AIBI)
 
-Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications and create [AI Agents](#ai-agent). Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
 ---
 
@@ -217,6 +227,16 @@ Learn more: [Oracle services](oracle-services)
 
 ---
 
+## Order
+
+An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain.
+
+When creating an Order, you can implement custom logic by using [Warden modules](warden-protocol-modules/introduction), [Keychains](#keychain), and other features. In particular, Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi) and the [x/async module](warden-protocol-modules/x-async) allow you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
+
+Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction)
+
+---
+
 ## Prophet
 
 A Prophet is a sidecar process running on [validator](#validator) nodes, which has two responsibilities:
@@ -319,6 +339,19 @@ Learn more: [WARD token](/tokens/ward-token/ward)
 
 ---
 
+## Warden Agent Kit
+
+The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. It provides the following key features:
+
+- Framework-agnostic design that integrates with any AI Agent framework
+- Native integration with the Warden Protocol for autonomous onchain operations
+- Compatibility with [LangChain](https://js.langchain.com/docs/introduction/) and support for existing LangChain tools
+- Customizable templates for extending and adding new functionalities
+
+Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction)
+
+---
+
 ## Warden Protocol node
 
 A Warden Protocol node is a server running the software (binary) of the Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference).
@@ -352,14 +385,6 @@ Learn more: [YieldWard documentation](https://docs.yieldward.com)
 :::tip
 We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent)—autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
 :::
-
-### Agent
-
-An Agent is an autonomous trainable program driven by artificial intelligence. Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention.
-
-*This is a new feature that is coming soon.*
-
----
 
 ### Trigger
 

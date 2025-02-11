@@ -13,7 +13,7 @@ The guides you'll find here cover an example we created for demonstration purpos
 :::tip
 You can implement custom logic by using [Warden modules](/category/warden-protocol-modules), [Keychains](/learn/glossary#keychain), and other features. In particular, the [`x/async` module](/learn/warden-protocol-modules/x-async) allows you to create smart contracts utilizing outputs of **AI models**.
 
-In our example, Orders perform swaps on Uniswap, but you can make them send any transactions to any Ethereum-based and EVM L2 app. For example, your application can transfer ETH or call an arbitrary contract.
+In our example, Orders perform swaps on Uniswap, but you can make them send any transactions to any Ethereum-based and EVM L2 application. For example, your application can transfer ETH or call an arbitrary contract.
 :::
 
 :::note Full code

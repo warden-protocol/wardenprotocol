@@ -19,8 +19,11 @@ contract StoicQuote {
         Data data;
     }
 
-    function main(Response memory _response) external {
-        // No-op function referencing the struct(s).
+    function main()
+        external
+        pure returns (Response memory)
+    {
+        Response memory out;
+        return out;
     }
-
 }

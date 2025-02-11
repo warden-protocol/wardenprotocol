@@ -42,8 +42,8 @@ type StoicQuoteResponse struct {
 
 // StoicQuoteMetaData contains all meta data concerning the StoicQuote contract.
 var StoicQuoteMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"author\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"quote\",\"type\":\"string\"}],\"internalType\":\"structStoicQuote.Data\",\"name\":\"data\",\"type\":\"tuple\"}],\"internalType\":\"structStoicQuote.Response\",\"name\":\"_response\",\"type\":\"tuple\"}],\"name\":\"main\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
-	Bin: "0x6080604052348015600e575f5ffd5b506102f88061001c5f395ff3fe608060405234801561000f575f5ffd5b5060043610610029575f3560e01c8063dd25551b1461002d575b5f5ffd5b6100476004803603810190610042919061027b565b610049565b005b50565b5f604051905090565b5f5ffd5b5f5ffd5b5f5ffd5b5f601f19601f8301169050919050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b6100a782610061565b810181811067ffffffffffffffff821117156100c6576100c5610071565b5b80604052505050565b5f6100d861004c565b90506100e4828261009e565b919050565b5f5ffd5b5f5ffd5b5f5ffd5b5f67ffffffffffffffff82111561010f5761010e610071565b5b61011882610061565b9050602081019050919050565b828183375f83830152505050565b5f610145610140846100f5565b6100cf565b905082815260208101848484011115610161576101606100f1565b5b61016c848285610125565b509392505050565b5f82601f830112610188576101876100ed565b5b8135610198848260208601610133565b91505092915050565b5f604082840312156101b6576101b561005d565b5b6101c060406100cf565b90505f82013567ffffffffffffffff8111156101df576101de6100e9565b5b6101eb84828501610174565b5f83015250602082013567ffffffffffffffff81111561020e5761020d6100e9565b5b61021a84828501610174565b60208301525092915050565b5f6020828403121561023b5761023a61005d565b5b61024560206100cf565b90505f82013567ffffffffffffffff811115610264576102636100e9565b5b610270848285016101a1565b5f8301525092915050565b5f602082840312156102905761028f610055565b5b5f82013567ffffffffffffffff8111156102ad576102ac610059565b5b6102b984828501610226565b9150509291505056fea2646970667358221220c5183a631c6cdfe51a28a261af823050cb56e9bfd8002e47e32bd0b1d789de1d64736f6c634300081c0033",
+	ABI: "[{\"inputs\":[],\"name\":\"main\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"author\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"quote\",\"type\":\"string\"}],\"internalType\":\"structStoicQuote.Data\",\"name\":\"data\",\"type\":\"tuple\"}],\"internalType\":\"structStoicQuote.Response\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}]",
+	Bin: "0x6080604052348015600e575f5ffd5b506101c38061001c5f395ff3fe608060405234801561000f575f5ffd5b5060043610610029575f3560e01c8063dffeadd01461002d575b5f5ffd5b61003561004b565b604051610042919061016d565b60405180910390f35b610053610062565b61005b610062565b8091505090565b604051806020016040528061007561007b565b81525090565b604051806040016040528060608152602001606081525090565b5f81519050919050565b5f82825260208201905092915050565b8281835e5f83830152505050565b5f601f19601f8301169050919050565b5f6100d782610095565b6100e1818561009f565b93506100f18185602086016100af565b6100fa816100bd565b840191505092915050565b5f604083015f8301518482035f86015261011f82826100cd565b9150506020830151848203602086015261013982826100cd565b9150508091505092915050565b5f602083015f8301518482035f8601526101608282610105565b9150508091505092915050565b5f6020820190508181035f8301526101858184610146565b90509291505056fea26469706673582212205dc6619ebfee0dd3e7219c41fcadc8ec8da52e1bb3710d232cf6677b02100ab464736f6c634300081c0033",
 }
 
 // StoicQuoteABI is the input ABI used to generate the binding from.
@@ -213,23 +213,33 @@ func (_StoicQuote *StoicQuoteTransactorRaw) Transact(opts *bind.TransactOpts, me
 	return _StoicQuote.Contract.contract.Transact(opts, method, params...)
 }
 
-// Main is a paid mutator transaction binding the contract method 0xdd25551b.
+// Main is a free data retrieval call binding the contract method 0xdffeadd0.
 //
-// Solidity: function main(((string,string)) _response) returns()
-func (_StoicQuote *StoicQuoteTransactor) Main(opts *bind.TransactOpts, _response StoicQuoteResponse) (*types.Transaction, error) {
-	return _StoicQuote.contract.Transact(opts, "main", _response)
+// Solidity: function main() pure returns(((string,string)))
+func (_StoicQuote *StoicQuoteCaller) Main(opts *bind.CallOpts) (StoicQuoteResponse, error) {
+	var out []interface{}
+	err := _StoicQuote.contract.Call(opts, &out, "main")
+
+	if err != nil {
+		return *new(StoicQuoteResponse), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(StoicQuoteResponse)).(*StoicQuoteResponse)
+
+	return out0, err
+
 }
 
-// Main is a paid mutator transaction binding the contract method 0xdd25551b.
+// Main is a free data retrieval call binding the contract method 0xdffeadd0.
 //
-// Solidity: function main(((string,string)) _response) returns()
-func (_StoicQuote *StoicQuoteSession) Main(_response StoicQuoteResponse) (*types.Transaction, error) {
-	return _StoicQuote.Contract.Main(&_StoicQuote.TransactOpts, _response)
+// Solidity: function main() pure returns(((string,string)))
+func (_StoicQuote *StoicQuoteSession) Main() (StoicQuoteResponse, error) {
+	return _StoicQuote.Contract.Main(&_StoicQuote.CallOpts)
 }
 
-// Main is a paid mutator transaction binding the contract method 0xdd25551b.
+// Main is a free data retrieval call binding the contract method 0xdffeadd0.
 //
-// Solidity: function main(((string,string)) _response) returns()
-func (_StoicQuote *StoicQuoteTransactorSession) Main(_response StoicQuoteResponse) (*types.Transaction, error) {
-	return _StoicQuote.Contract.Main(&_StoicQuote.TransactOpts, _response)
+// Solidity: function main() pure returns(((string,string)))
+func (_StoicQuote *StoicQuoteCallerSession) Main() (StoicQuoteResponse, error) {
+	return _StoicQuote.Contract.Main(&_StoicQuote.CallOpts)
 }

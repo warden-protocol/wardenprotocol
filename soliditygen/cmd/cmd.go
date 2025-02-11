@@ -71,6 +71,9 @@ func main() {
 
 	// 4) Write the contract to the user-specified path
 	if err := os.WriteFile(*solOutputPath, []byte(contract), 0o644); err != nil {
+		if os.IsPermission(err) {
+			log.Fatalf("Permission denied: Cannot write to %s", *solOutputPath)
+		}
 		log.Fatalf("Failed writing Solidity file: %v", err)
 	}
 

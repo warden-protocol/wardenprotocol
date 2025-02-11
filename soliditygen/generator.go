@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"strings"
 	"text/template"
+	"unicode"
 )
 
-// Definition holds the name and text for a generated Solidity struct.
+// Definition represents a Solidity struct definition with its name and text representation.
 type Definition struct {
+	// Name is the identifier of the Solidity struct
 	Name string
+	// Text is the complete Solidity struct definition
 	Text string
 }
 
@@ -20,6 +23,15 @@ func GenerateContract(
 	inputName string, inputJSON []byte,
 	outputName string, outputJSON []byte,
 ) (string, error) {
+	if !isValidSolidityIdentifier(contractName) {
+		return "", fmt.Errorf("invalid contract name: %s", contractName)
+	}
+	if len(inputJSON) > 0 && !isValidSolidityIdentifier(inputName) {
+		return "", fmt.Errorf("invalid input struct name: %s", inputName)
+	}
+	if !isValidSolidityIdentifier(outputName) {
+		return "", fmt.Errorf("invalid output struct name: %s", outputName)
+	}
 
 	var allDefs []Definition
 	var topLevelStructs []string
@@ -29,7 +41,7 @@ func GenerateContract(
 		if err := json.Unmarshal(inputJSON, &inputMap); err != nil {
 			return "", fmt.Errorf("unmarshaling input JSON: %w", err)
 		}
-		inputDefs := convertToSolidityStruct(inputName, inputMap)
+		inputDefs, _ := convertToSolidityStruct(inputName, inputMap)
 		allDefs = append(allDefs, inputDefs...)
 		topLevelStructs = append(topLevelStructs, inputName)
 	}
@@ -38,7 +50,7 @@ func GenerateContract(
 	if err := json.Unmarshal(outputJSON, &outputMap); err != nil {
 		return "", fmt.Errorf("unmarshaling output JSON: %w", err)
 	}
-	outputDefs := convertToSolidityStruct(outputName, outputMap)
+	outputDefs, _ := convertToSolidityStruct(outputName, outputMap)
 	allDefs = append(allDefs, outputDefs...)
 	topLevelStructs = append(topLevelStructs, outputName)
 
@@ -77,20 +89,36 @@ pragma solidity >=0.8.25 <0.9.0;
 contract {{.ContractName}} {
 {{range .Definitions}}
 {{.Text}}
-{{end}}{{if .TopLevelStructs}}
-    function main({{range $i, $name := .TopLevelStructs}}{{if $i}}, {{end}}{{$name}} memory _{{ $name | toLower }}{{end}}) external {
-        // No-op function referencing the struct(s).
-    }
 {{end}}
+    {{- if eq (len .TopLevelStructs) 2 }}
+    function main({{ index .TopLevelStructs 0 }} memory _{{ (index .TopLevelStructs 0) | toLower }})
+        external
+        pure returns ({{ index .TopLevelStructs 1 }} memory)
+    {
+        _{{ (index .TopLevelStructs 0) | toLower }};
+        {{ index .TopLevelStructs 1 }} memory out;
+        return out;
+    }
+    {{- else }}
+    function main()
+        external
+        pure returns ({{ index .TopLevelStructs 0 }} memory)
+    {
+        {{ index .TopLevelStructs 0 }} memory out;
+        return out;
+    }
+    {{- end}}
 }
 `))
 
-// convertToSolidityStruct recursively generates a child-first list of Solidity struct definitions.
-func convertToSolidityStruct(structName string, value map[string]interface{}) []Definition {
+func convertToSolidityStruct(structName string, value map[string]interface{}) ([]Definition, error) {
 	var childDefs []Definition
 	var lines []string
 
 	for key, val := range value {
+		if !isValidSolidityIdentifier(key) {
+			return nil, fmt.Errorf("invalid field name: %s", key)
+		}
 		solType, nestedDefs := inferSolidityType(key, val)
 		childDefs = append(childDefs, nestedDefs...)
 		lines = append(lines, fmt.Sprintf("        %s %s;", solType, key))
@@ -100,11 +128,9 @@ func convertToSolidityStruct(structName string, value map[string]interface{}) []
 	return append(childDefs, Definition{
 		Name: structName,
 		Text: structText,
-	})
+	}), nil
 }
 
-// inferSolidityType picks a Solidity type for the given JSON value,
-// returning any new nested struct definitions if it's an object/array.
 func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 	switch val := v.(type) {
 	case string:
@@ -115,7 +141,7 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 		return "int256", nil
 	case map[string]interface{}:
 		nestedName := capitalize(fieldName)
-		childDefs := convertToSolidityStruct(nestedName, val)
+		childDefs, _ := convertToSolidityStruct(nestedName, val)
 		return nestedName, childDefs
 	case []interface{}:
 		// If array, infer from first element type
@@ -139,6 +165,21 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 		// fallback: treat as string
 		return "string", nil
 	}
+}
+
+func isValidSolidityIdentifier(name string) bool {
+	if len(name) == 0 {
+		return false
+	}
+	for i, r := range name {
+		if i == 0 && !unicode.IsLetter(r) && r != '_' {
+			return false
+		}
+		if i > 0 && !unicode.IsLetter(r) && !unicode.IsDigit(r) && r != '_' {
+			return false
+		}
+	}
+	return true
 }
 
 func capitalize(str string) string {

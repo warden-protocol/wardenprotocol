@@ -17,30 +17,30 @@ event Executed();
 
 enum PricePredictMetric {
     Count,
-	Mape,
-	Rmse,
-	R2,
-	MaxError,
-	Dae,
-	Mae,
-	Confidence,
-	Pct1,
-	Pct5,
-	Pct10,
-	Pct15,
-	Pct20,
-	Pct25,
-	Pct50,
-	P0,
-	P5,
-	P10,
-	P15,
-	P20,
-	P25,
-	P50,
-	P75,
-	P95,
-	P100
+    Mape,
+    Rmse,
+    R2,
+    MaxError,
+    Dae,
+    Mae,
+    Confidence,
+    Pct1,
+    Pct5,
+    Pct10,
+    Pct15,
+    Pct20,
+    Pct25,
+    Pct50,
+    P0,
+    P5,
+    P10,
+    P15,
+    P20,
+    P25,
+    P50,
+    P75,
+    P95,
+    P100
 }
 
 struct PricePredictInput {
@@ -124,19 +124,15 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         GetPriceResponse memory priceResponse =
             SLINKY_PRECOMPILE.getPrice(orderData.oraclePricePair.base, orderData.oraclePricePair.quote);
 
-        if(output.metrics[0][0] < orderData.confidenceLimit || output.metrics[1][0] < orderData.confidenceLimit) {
+        if (output.metrics[0][0] < orderData.confidenceLimit || output.metrics[1][0] < orderData.confidenceLimit) {
             return false;
         }
 
-        uint256 predictedPrice = 
+        uint256 predictedPrice =
             _getPriceInQuote(output.predictions[0], output.predictions[1], PRICE_PREDICTION_DECIMALS);
-        (uint256 oracleNormalized, uint256 predictedNormalized) =
-            _normalizePrices(
-                priceResponse.price.price,
-                predictedPrice,
-                priceResponse.decimals,
-                PRICE_PREDICTION_DECIMALS
-            );
+        (uint256 oracleNormalized, uint256 predictedNormalized) = _normalizePrices(
+            priceResponse.price.price, predictedPrice, priceResponse.decimals, PRICE_PREDICTION_DECIMALS
+        );
 
         return _checkPriceCondition(oracleNormalized, predictedNormalized);
     }
@@ -186,25 +182,30 @@ contract AdvancedOrder is AbstractOrder, IExecution {
     }
 
     function _normalizePrices(
-        uint256 price1, uint256 price2, uint256 decimals1, uint256 decimals2
-    ) internal pure returns (uint256 normalizedPrice1, uint256 normalizedPrice2) {
+        uint256 price1,
+        uint256 price2,
+        uint256 decimals1,
+        uint256 decimals2
+    )
+        internal
+        pure
+        returns (uint256 normalizedPrice1, uint256 normalizedPrice2)
+    {
         uint256 maxDecimals = decimals1 > decimals2 ? decimals1 : decimals2;
-        normalizedPrice1 = price1 * (10**(maxDecimals - decimals1));
-        normalizedPrice2 = price2 * (10**(maxDecimals - decimals2));
+        normalizedPrice1 = price1 * (10 ** (maxDecimals - decimals1));
+        normalizedPrice2 = price2 * (10 ** (maxDecimals - decimals2));
     }
 
-    function _getPriceInQuote(
-        uint256 priceA, uint256 priceB, uint256 decimals
-    ) internal pure returns (uint256) {
-        return (priceA * 10**decimals) / priceB;
+    function _getPriceInQuote(uint256 priceA, uint256 priceB, uint256 decimals) internal pure returns (uint256) {
+        return (priceA * 10 ** decimals) / priceB;
     }
 
     function _checkPriceCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {
         if (
-            (orderData.priceCondition == Types.PriceCondition.GTE && oraclePrice >= predictedPrice) ||
-            (orderData.priceCondition == Types.PriceCondition.LTE && oraclePrice <= predictedPrice) ||
-            (orderData.priceCondition == Types.PriceCondition.GT && oraclePrice > predictedPrice) ||
-            (orderData.priceCondition == Types.PriceCondition.LT && oraclePrice < predictedPrice)
+            (orderData.priceCondition == Types.PriceCondition.GTE && oraclePrice >= predictedPrice)
+                || (orderData.priceCondition == Types.PriceCondition.LTE && oraclePrice <= predictedPrice)
+                || (orderData.priceCondition == Types.PriceCondition.GT && oraclePrice > predictedPrice)
+                || (orderData.priceCondition == Types.PriceCondition.LT && oraclePrice < predictedPrice)
         ) {
             return true;
         }

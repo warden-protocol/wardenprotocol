@@ -41,6 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased changes
 
 ### Features (non-breaking)
+
+### Consensus Breaking Changes
+
+### Bug Fixes
+
+## [v0.6.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.0) - 2025-02-05
+
+### Features (non-breaking)
 * (precompiles) Add an ability for contracts to approve actions
 * (go-client) Return transaction hash from SendWaitTx
 * (keychain-sdk) Log transaction hashes of broadcasted transactions
@@ -56,8 +64,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Sign requests query return all request (not only with broadcastType=BroadcastType.Disabled)
 * (prophet) First version. Includes the task runner for Futures and Votes, and the interface for handlers.
 * (x/async) Add handlers storages and corresponding methods.
-
-### Bug Fixes
 
 ## [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) - 2024-11-07
 

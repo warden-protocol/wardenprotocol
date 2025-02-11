@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [key requests](/learn/glossary#key-request). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
@@ -19,7 +19,7 @@ To understand how to set up and deploy your project, see [Get started](../get-st
 
 ## Create a new key request
 
-To create a new key request, use the following code in your contract. It calls the [`newKeyRequest()`](../../precompiles/x-warden#create-a-new-key-request) function of the precompile.
+To create a new key request, use the following code in your contract. It calls the [`newKeyRequest()` function](../../precompiles/x-warden#create-a-new-key-request) of the precompile.
 
 ```solidity
 function newKeyRequest(
@@ -70,7 +70,7 @@ After deploying your contract, you can interact with it by calling the
 
 ## Fulfill a key request
 
-To fulfilll a key request, use the following code in your contract. It calls the [`fulfilKeyRequest()`](../../precompiles/x-warden#fulfill-a-key-request) function of the precompile.
+To fulfilll a key request, use the following code in your contract. It calls the [`fulfilKeyRequest()` function](../../precompiles/x-warden#fulfill-a-key-request) of the precompile.
 
 ```solidity
 function fulfilKeyRequest(uint64 requestId, bytes calldata pubKey) external returns (bool success);
@@ -92,7 +92,7 @@ cast send $CONTRACT_ADDRESS "fulfillKeyRequest(uint64,uint64,uint8,uint64,uint64
 
 ## Reject a key request
 
-To reject a key request, use the following code in your contract. It calls the [`rejectKeyRequest()`](../../precompiles/x-warden#reject-a-key-request) function of the precompile.
+To reject a key request, use the following code in your contract. It calls the [`rejectKeyRequest()` function](../../precompiles/x-warden#reject-a-key-request) of the precompile.
 
 ```solidity
 function rejectKeyRequest(uint64 requestId, string calldata rejectReason) external returns (bool success);
@@ -114,7 +114,7 @@ cast send $CONTRACT_ADDRESS "rejectKeyRequest(uint64,string)" 1 "Invalid key for
 
 ## Query key requests
 
-To get a list of all key requests, use the following code in your contract. It calls the [`keyRequests()`](../../precompiles/x-warden#query-key-requests) function of the precompile.
+To get a list of all key requests, use the following code in your contract. It calls the [`keyRequests()` function](../../precompiles/x-warden#query-key-requests) of the precompile.
 
 ```solidity
 function keyRequests(
@@ -157,7 +157,7 @@ cast call $CONTRACT_ADDRESS "getKeyRequests(uint64,uint64,uint8,uint64)" 10 1 1 
 
 ## Query a key request by ID
 
-To get a key request by ID, use the following code in your contract. It calls the [`keyRequestById()`](../../precompiles/x-warden#query-a-key-request-by-id) function of the precompile.
+To get a key request by ID, use the following code in your contract. It calls the [`keyRequestById()` function](../../precompiles/x-warden#query-a-key-request-by-id) of the precompile.
 
 ```solidity
 function keyRequestById(uint64 id) external view returns (KeyRequest memory request);

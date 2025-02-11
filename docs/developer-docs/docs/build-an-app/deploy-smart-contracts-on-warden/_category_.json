@@ -2,7 +2,7 @@
   "position": 3,
   "label": "Deploy smart contracts on Warden",
   "collapsible": true,
-  "collapsed": true,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
     "title": "Deploy smart contracts on Warden"

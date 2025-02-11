@@ -8,7 +8,7 @@ sidebar_position: 1
 
 This section explains how to implement basic **automated Orders**—smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds, signing transactions with [Keychains](/learn/glossary#keychain). This Order type serves as a foundation for building more advanced [Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
 
-You'll implement the core logic in the [`BasicOrder`](implement-orders) contract, implement the creation of Orders in [`BasicOrderFactory`](implement-the-creation-of-orders), and finally [deploy an Order](deploy-an-order). To learn about the full architecture of this project, refer to the [main introduction](../introduction#architecture).
+You'll implement the core logic in the [`BasicOrder` contract](implement-orders), implement the creation of Orders in [`BasicOrderFactory`](implement-the-creation-of-orders), and finally [deploy an Order](deploy-an-order). To learn about the full architecture of this project, refer to the [main introduction](../introduction#architecture).
 
 :::note Full code
 Please note that the articles in this section typically contain only fragments of code.  
@@ -33,7 +33,7 @@ A user can create and manage multiple automated Orders. The user flow includes t
     - The token pair to monitor
     - Swap details such as amount, path, recipient, deadline
     - Transaction signing details
-2. The [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) contract calls [`BasicOrderFactory`](implement-the-creation-of-orders), which deploys a new [`BasicOrder`](implement-orders) contract (Order) and registers it in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
+2. The [`OrderFactory` contract](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) calls [`BasicOrderFactory`](implement-the-creation-of-orders), which deploys a new [`BasicOrder` contract](implement-orders) (Order) and registers it in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
 3. The Order continuously monitors prices using [Slinky](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile).
 4. When the price threshold is met, the Order executes a swap:
     - Constructs a swap transaction

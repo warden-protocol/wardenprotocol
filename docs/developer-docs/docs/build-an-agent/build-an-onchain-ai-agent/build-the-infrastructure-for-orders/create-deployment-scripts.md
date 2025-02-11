@@ -9,7 +9,7 @@ sidebar_position: 5
 This tutorial explains how to implement the main deployment script and the script for creating Orders.
 
 :::note Directory
-Store your scripts in the [`/script`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks) directory.
+Store your scripts in the [`script` directory](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/script).
 :::
 
 ## 1. Implement the main deployment script
@@ -23,10 +23,10 @@ The main deployment script handles the following tasks:
 To implement this script, use the following code:
 
 :::note Full code
-You can find the full code on GitHub: [`/script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
+You can find the full code on GitHub: [`script/Deploy.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/Deploy.s.sol)
 :::
 
-```solidity title="/script/Deploy.s.sol"
+```solidity title="script/Deploy.s.sol"
 contract Deploy is Script {
     function run() external {
         vm.startBroadcast(broadcaster);
@@ -58,10 +58,10 @@ This script for creating Orders handles the following tasks:
 To implement this script, use the following code:
 
 :::note Full code
-You can find the full code on GitHub: [`/script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
+You can find the full code on GitHub: [`script/CreateOrder.s.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/script/CreateOrder.s.sol)
 :::
 
-```solidity title="/script/CreateOrder.s.sol"
+```solidity title="script/CreateOrder.s.sol"
 contract CreateOrder is Script {
     function run(
         uint256 thresholdPrice,

@@ -11,7 +11,7 @@ This article will guide you through deploying and monitoring automated Orders.
 You'll deploy the following:
 
 - The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
-- The [`BasicOrder`](implement-orders) contract
+- The [`BasicOrder` contract](implement-orders)
 
 When you implement more advanced Orders with price prediction, you'll [deploy them](../implement-automated-orders-with-price-prediction/deploy-an-order) in a similar way, adding extra parameters for the advanced features.
 

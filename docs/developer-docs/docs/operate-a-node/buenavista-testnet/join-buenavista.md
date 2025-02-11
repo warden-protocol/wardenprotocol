@@ -53,7 +53,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    cd wardenprotocol
    ```
 
-   The binary is located in `/wardenprotocol/build`.
+   The binary is located in `wardenprotocol/build`.
 
 2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the node.
    

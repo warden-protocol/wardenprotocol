@@ -29,18 +29,18 @@ contract AdvancedOrderFactory is ReentrancyGuard {
 ```
 
 :::note Directory
-Store `AdvancedOrderFactory` in the [`/src`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src) directory, alongside with other contracts.
+Store `AdvancedOrderFactory` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
 :::
 
 :::note Full code
-You can find the full code on GitHub: [`/src/AdvancedOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AdvancedOrderFactory.sol)
+You can find the full code on GitHub: [`src/AdvancedOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/AdvancedOrderFactory.sol)
 :::
 
 ## 1. Implement the Order creation logic
 
 Implement the core function for deploying new Orders:
 
-```solidity title="/src/AdvancedOrderFactory.sol"
+```solidity title="src/AdvancedOrderFactory.sol"
 function createAdvancedOrder(
     Types.AdvancedOrderData calldata orderData,
     Types.CommonExecutionData calldata executionData,
@@ -93,7 +93,7 @@ function createAdvancedOrder(
 
 Create functions for validating the Order data:
 
-```solidity title="/src/AdvancedOrderFactory.sol"
+```solidity title="src/AdvancedOrderFactory.sol"
 function _validateOraclePair(
     Types.PricePair calldata pair
 ) internal pure returns (bool) {

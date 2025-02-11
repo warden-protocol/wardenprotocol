@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [keys](/learn/glossary#key). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
@@ -19,7 +19,7 @@ To understand how to set up and deploy your project, see [Get started](../get-st
 
 ## Update a key
 
-To update a key with a given ID, use the following code in your contract. It calls the [`updateKey()`](../../precompiles/x-warden#update-a-key) function of the precompile.
+To update a key with a given ID, use the following code in your contract. It calls the [`updateKey()` function](../../precompiles/x-warden#update-a-key) of the precompile.
 
 ```solidity
 function updateKey(
@@ -59,7 +59,7 @@ cast send $CONTRACT_ADDRESS "updateKeyConfig(uint64,uint64,uint64,uint64)" 1 100
 
 ## Query keys
 
-To get a list of all keys, use the following code in your contract. It calls the [`allKeys()`](../../precompiles/x-warden#query-keys) function of the precompile.
+To get a list of all keys, use the following code in your contract. It calls the [`allKeys()` function](../../precompiles/x-warden#query-keys) of the precompile.
 
 ```solidity
 function allKeys(TypesPageRequest calldata pageRequest, int32[] calldata deriveAddresses) 
@@ -94,7 +94,7 @@ cast call $CONTRACT_ADDRESS "getAllKeys(uint64,int32[])" 10 [] --rpc-url $RPC_UR
 
 ## Query keys by Space ID
 
-To get a list of keys by Space ID, use the following code in your contract. It calls the [`keysBySpaceId()`](../../precompiles/x-warden#query-keys-by-space-id) function of the precompile.
+To get a list of keys by Space ID, use the following code in your contract. It calls the [`keysBySpaceId()` function](../../precompiles/x-warden#query-keys-by-space-id) of the precompile.
 
 ```solidity
 function keysBySpaceId(TypesPageRequest calldata pageRequest, uint64 spaceId, int32[] calldata deriveAddresses)
@@ -130,7 +130,7 @@ cast call $CONTRACT_ADDRESS "getKeysBySpaceId(uint64,uint64,int32[])" 100 10 [] 
 
 ## Query a key by ID
 
-To get a key by ID, use the following code in your contract. It calls the [`keyById()`](../../precompiles/x-warden#query-a-key-by-id) function of the precompile.
+To get a key by ID, use the following code in your contract. It calls the [`keyById()` function](../../precompiles/x-warden#query-a-key-by-id) of the precompile.
 
 ```solidity
 function keyById(uint64 id, int32[] calldata deriveAddresses)

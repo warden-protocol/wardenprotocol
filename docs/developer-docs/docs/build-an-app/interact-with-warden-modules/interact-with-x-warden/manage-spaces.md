@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [Spaces](/learn/glossary#space). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
@@ -19,7 +19,7 @@ To understand how to set up and deploy your project, see [Get started](../get-st
 
 ## Create a new Space
 
-To create a new Space, use the following code in your contract. It calls the [`newSpace()`](../../precompiles/x-warden#create-a-new-space) function of the precompile.
+To create a new Space, use the following code in your contract. It calls the [`newSpace()` function](../../precompiles/x-warden#create-a-new-space) of the precompile.
 
 ```solidity
 function newSpace(
@@ -66,7 +66,7 @@ cast send $CONTRACT_ADDRESS "createSpace(uint64,uint64,uint64,uint64,address[])"
 
 ## Update a Space
 
-To update a Space, use the following code in your contract. It calls the [`updateSpace()`](../../precompiles/x-warden#update-a-space) function of the precompile.
+To update a Space, use the following code in your contract. It calls the [`updateSpace()` function](../../precompiles/x-warden#update-a-space) of the precompile.
 
 ```solidity
 function updateSpace(
@@ -119,7 +119,7 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateSpace(uint64,uint
 
 ## Add a Space owner
 
-To add an owner to a Space, use the following code in your contract. It calls the [`addSpaceOwner()`](../../precompiles/x-warden#add-a-space-owner) function of the precompile.
+To add an owner to a Space, use the following code in your contract. It calls the [`addSpaceOwner()` function](../../precompiles/x-warden#add-a-space-owner) of the precompile.
 
 ```solidity
 function addSpaceOwner(
@@ -149,7 +149,7 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "addSpaceOwner(uint64,ad
 
 ## Remove a Space owner
 
-To remove an owner from a Space, use the following code in your contract. It calls the [`removeSpaceOwner()`](../../precompiles/x-warden#remove-a-space-owner) function of the precompile.
+To remove an owner from a Space, use the following code in your contract. It calls the [`removeSpaceOwner()` function](../../precompiles/x-warden#remove-a-space-owner) of the precompile.
 
 ```solidity
 function removeSpaceOwner(
@@ -198,7 +198,7 @@ cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "removeSpaceOwner(uint64
 
 ## Query Spaces
 
-To get a list of all Spaces, use the following code in your contract. It calls the [`spaces()`](../../precompiles/x-warden#query-spaces) function of the precompile.
+To get a list of all Spaces, use the following code in your contract. It calls the [`spaces()` function](../../precompiles/x-warden#query-spaces) of the precompile.
 
 ```solidity
 function spaces(PageRequest calldata pageRequest) external view returns (Space[] memory spaces, PageResponse memory pageResponse);
@@ -248,7 +248,7 @@ cast call $CONTRACT_ADDRESS "getAllSpaces(uint64,uint64,bool)" 10 0 true --rpc-u
 
 ## Query Spaces by owner
 
-To get a list of Spaces by owner, use the following code in your contract. It calls the [`spacesByOwner()`](../../precompiles/x-warden#query-spaces-by-owner) function of the precompile.
+To get a list of Spaces by owner, use the following code in your contract. It calls the [`spacesByOwner()` function](../../precompiles/x-warden#query-spaces-by-owner) of the precompile.
 
 ```solidity
 function spacesByOwner(PageRequest calldata pageRequest, address owner) external view returns (Space[] memory spaces, PageResponse memory pageResponse);
@@ -299,7 +299,7 @@ cast call $CONTRACT_ADDRESS "getSpacesByOwner(address,uint64,uint64,bool)" 0x6ea
 
 ## Query a Space by ID
 
-To get a Space by ID, use the following code in your contract. It calls the [`spaceById()`](../../precompiles/x-warden#query-a-space-by-id) function of the precompile.
+To get a Space by ID, use the following code in your contract. It calls the [`spaceById()` function](../../precompiles/x-warden#query-a-space-by-id) of the precompile.
 
 ```solidity
 function spaceById(uint64 id) external view returns (Space memory space);

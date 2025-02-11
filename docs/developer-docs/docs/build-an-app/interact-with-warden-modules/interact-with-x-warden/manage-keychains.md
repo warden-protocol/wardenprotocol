@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden`](/learn/warden-protocol-modules/x-warden) module from EVM smart contracts.
+The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
 
 This article explains how to use `x/warden` to manage [Keychains](/learn/glossary#keychain). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
@@ -19,7 +19,7 @@ To understand how to set up and deploy your project, see [Get started](../get-st
 
 ## Create a new Keychain
 
-To create a new Keychain, use the following code in your contract. It calls the [`newKeychain()`](../../precompiles/x-warden#create-a-new-keychain) function of the precompile.
+To create a new Keychain, use the following code in your contract. It calls the [`newKeychain()` function](../../precompiles/x-warden#create-a-new-keychain) of the precompile.
 
 ```solidity
 function newKeychain(
@@ -59,7 +59,7 @@ cast send $CONTRACT_ADDRESS "createKeychain(string,string,string,string)" "My Ke
 
 ## Update a Keychain
 
-To update a Keychain, use the following code in your contract. It calls the [`updateKeychain()`](../../precompiles/x-warden#update-a-keychain) function of the precompile.
+To update a Keychain, use the following code in your contract. It calls the [`updateKeychain()` function](../../precompiles/x-warden#update-a-keychain) of the precompile.
 
 ```solidity
 function updateKeychain(
@@ -101,7 +101,7 @@ cast send $CONTRACT_ADDRESS "updateKeychain(uint64,string,string,string,string,(
 
 ## Add a Keychain admin
 
-To add an admin to a Keychain, use the following code in your contract. It calls the [`addKeychainAdmin()`](../../precompiles/x-warden#add-a-keychain-admin) function of the precompile.
+To add an admin to a Keychain, use the following code in your contract. It calls the [`addKeychainAdmin()` function](../../precompiles/x-warden#add-a-keychain-admin) of the precompile.
 
 ```solidity
 function addKeychainAdmin(uint64 keychainId, address newAdmin) external returns (bool success);
@@ -123,7 +123,7 @@ cast send $CONTRACT_ADDRESS "addAdmin(uint64,address)" 1 0xYourAdminAddress --rp
 
 ## Remove a Keychain admin
 
-To remove an admin from a Keychain, use the following code in your contract. It calls the [`removeKeychainAdmin()`](../../precompiles/x-warden#remove-a-keychain-admin) function of the precompile.
+To remove an admin from a Keychain, use the following code in your contract. It calls the [`removeKeychainAdmin()` function](../../precompiles/x-warden#remove-a-keychain-admin) of the precompile.
 
 ```solidity
 function removeKeychainAdmin(uint64 keychainId, address admin) external returns (bool success);
@@ -145,7 +145,7 @@ cast send $CONTRACT_ADDRESS "removeAdmin(uint64,address)" 1 0xAdminToRemove --rp
 
 ## Add a Keychain Writer
 
-To add a Writer to a Keychain, use the following code in your contract. It calls the [`addKeychainWriter()`](../../precompiles/x-warden#add-a-keychain-writer) function of the precompile.
+To add a Writer to a Keychain, use the following code in your contract. It calls the [`addKeychainWriter()`  function](../../precompiles/x-warden#add-a-keychain-writer) of the precompile.
 
 ```solidity
 function addKeychainWriter(uint64 keychainId, address newWriter) external returns (bool success);
@@ -167,7 +167,7 @@ cast send $CONTRACT_ADDRESS "addWriter(uint64,address)" 1 0xYourWriterAddress --
 
 ## Query Keychains
 
-To get a list of all Keychains, use the following code in your contract. It calls the [`keychains()`](../../precompiles/x-warden#query-keychains) function of the precompile.
+To get a list of all Keychains, use the following code in your contract. It calls the [`keychains()`  function](../../precompiles/x-warden#query-keychains) of the precompile.
 
 ```solidity
 function keychains(TypesPageRequest calldata pageRequest) 
@@ -201,7 +201,7 @@ cast call $CONTRACT_ADDRESS "getKeychains()" --rpc-url $RPC_URL
 
 ## Query a Keychain by ID
 
-To get a Keychain by ID, use the following code in your contract. It calls the [`keychainById()`](../../precompiles/x-warden#query-a-keychain-by-id) function of the precompile.
+To get a Keychain by ID, use the following code in your contract. It calls the [`keychainById()` function](../../precompiles/x-warden#query-a-keychain-by-id) of the precompile.
 
 ```solidity
 function keychainById(uint64 id) external view returns (Keychain memory keychain);

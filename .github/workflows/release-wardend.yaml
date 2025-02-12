@@ -1,0 +1,42 @@
+---
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: ${{ matrix.release }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release: ["release"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 1.39.0
+
+      - name: ${{ matrix.release }}
+        run: "just wardend ${{ matrix.release }}"
+        env:
+          RELEASE: "true"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

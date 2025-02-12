@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Introduction
 
-You can interact with [Warden Protocol modules](/category/warden-protocol-modules) in your EVM smart contract by calling [Warden precompiles](/category/precompiles).
+You can interact with [Warden Protocol modules](/learn/warden-protocol-modules/introduction) in your EVM smart contract by calling [Warden precompiles](../precompiles/introduction).
 
 To familiarize yourself with precompiles, take the following steps:
 

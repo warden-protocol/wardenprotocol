@@ -10,7 +10,7 @@ The [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/m
 
 This article explains how to use `x/act` to manage [Rules](/learn/glossary#approval-rule). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
-To understand how to set up and deploy your project, see [Get started](../get-started-with-precompiles).
+To understand how to set up and deploy your project, see [Get started with precompiles](../get-started-with-precompiles).
 
 :::tip
 For an overview of `x/act` functions, refer to [Precompiles: x/warden](../../precompiles/x-act#rules)

@@ -331,10 +331,9 @@ Happy coding! 🚀
 
 ## Next steps
 
-After deploying a basic EVM smart contract, start using Warden precompiles to call Warden modules in your contract. This will allow you to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on.
+After deploying a basic EVM smart contract, you can start using Warden precompiles to call Warden modules in your contract. This will allow you to access Warden-specific features such as managing Spaces and Keychains, creating Rules, getting data from oracles, and so on. See the following sections:
 
-See the following sections:
+- [Interact with Warden modules](../interact-with-warden-modules/introduction)
+- [Precompiles](../precompiles/introduction)
 
-- [Call Warden modules in your contract](/category/interact-with-warden-modules)
-- [Precompiles](/category/precompiles)
-
+For advanced usage of EVM contracts with AI Agents, refer to [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).

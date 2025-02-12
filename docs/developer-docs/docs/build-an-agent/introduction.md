@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Introduction
 
-The Warden Protocol allows you building **onchain AI Agents**.
+The Warden Protocol allows you to build **onchain AI Agents**.
 
 In this section, you can find guides and examples demonstrating how to do the following:
 

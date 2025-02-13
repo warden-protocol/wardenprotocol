@@ -144,7 +144,7 @@ const stargateClient = await getSigningwardenprotocolClient({
 To broadcast messages, you can create signers with a variety of options:
 
 * [cosmos-kit](https://github.com/cosmology-tech/cosmos-kit/tree/main/packages/react#signing-clients) (recommended)
-* [keplr](https://docs.keplr.app/api/cosmjs.html)
+* [keplr](https://docs.keplr.app/api/use-with/cosmjs)
 * [cosmjs](https://gist.github.com/webmaster128/8444d42a7eceeda2544c8a59fbd7e1d9)
 ### Amino Signer
 

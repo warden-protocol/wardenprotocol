@@ -30,9 +30,11 @@ func Main() {
 		Mnemonic:   "virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg bird mask more trick",
 
 		// setup throughput for batching responses
-		GasLimit:      400000,
-		BatchInterval: 8 * time.Second,
-		BatchSize:     10,
+		GasLimit:            400000,
+		AutoEstimateGas:     true,
+		GasAdjustmentFactor: 1.2,
+		BatchInterval:       8 * time.Second,
+		BatchSize:           10,
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

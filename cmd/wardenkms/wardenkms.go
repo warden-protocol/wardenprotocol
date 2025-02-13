@@ -29,11 +29,13 @@ type Config struct {
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
 
-	BatchInterval time.Duration `env:"BATCH_INTERVAL, default=8s"`
-	BatchSize     int           `env:"BATCH_SIZE, default=7"`
-	GasLimit      uint64        `env:"GAS_LIMIT, default=400000"`
-	TxTimeout     time.Duration `env:"TX_TIMEOUT, default=120s"`
-	TxFee         int64         `env:"TX_FEE, default=400000"`
+	BatchInterval       time.Duration `env:"BATCH_INTERVAL, default=8s"`
+	BatchSize           int           `env:"BATCH_SIZE, default=7"`
+	GasLimit            uint64        `env:"GAS_LIMIT, default=400000"`
+	AutoEstimateGas     bool          `env:"AUTO_ESTIMATE_GAS, default=true"`
+	GasAdjustmentFactor float64       `env:"GAS_ADJUSTMENT_FACTOR, default=1.1"`
+	TxTimeout           time.Duration `env:"TX_TIMEOUT, default=120s"`
+	TxFee               int64         `env:"TX_FEE, default=400000"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
@@ -57,17 +59,19 @@ func main() {
 	}
 
 	app := keychain.NewApp(keychain.Config{
-		Logger:        logger,
-		ChainID:       cfg.ChainID,
-		GRPCURL:       cfg.GRPCURL,
-		GRPCInsecure:  cfg.GRPCInsecure,
-		Mnemonic:      cfg.Mnemonic,
-		KeychainID:    cfg.KeychainId,
-		GasLimit:      cfg.GasLimit,
-		BatchInterval: cfg.BatchInterval,
-		BatchSize:     cfg.BatchSize,
-		TxTimeout:     cfg.TxTimeout,
-		TxFees:        sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
+		Logger:              logger,
+		ChainID:             cfg.ChainID,
+		GRPCURL:             cfg.GRPCURL,
+		GRPCInsecure:        cfg.GRPCInsecure,
+		Mnemonic:            cfg.Mnemonic,
+		KeychainID:          cfg.KeychainId,
+		GasLimit:            cfg.GasLimit,
+		AutoEstimateGas:     cfg.AutoEstimateGas,
+		GasAdjustmentFactor: cfg.GasAdjustmentFactor,
+		BatchInterval:       cfg.BatchInterval,
+		BatchSize:           cfg.BatchSize,
+		TxTimeout:           cfg.TxTimeout,
+		TxFees:              sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

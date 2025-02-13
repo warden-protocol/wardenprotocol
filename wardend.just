@@ -55,18 +55,3 @@ release:
     	ghcr.io/goreleaser/goreleaser-cross:{{ goreleaser_cross_version }} \
       --clean \
       --skip={{ skip }}
-
-release-amd64:
-    @docker run \
-    	--rm \
-    	-e CGO_ENABLED=1 \
-      -e LIBWASM_VERSION={{ libwasm_version }} \
-      -e RELEASE={{ release }} \
-      -e GITHUB_TOKEN={{ github_token }} \
-    	-v /var/run/docker.sock:/var/run/docker.sock \
-    	-v {{ current_dir }}:/go/src/wardend \
-    	-w /go/src/wardend \
-    	ghcr.io/goreleaser/goreleaser:{{ goreleaser_version }} \
-      -f ./.goreleaser-amd64.yaml \
-    	--clean \
-      --skip={{ skip }}

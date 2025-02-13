@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -24,9 +25,10 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		futures  *FutureKeeper
-		handlers *HandlersKeeper
-		votes    collections.Map[collections.Pair[uint64, []byte], int32]
+		futures      *FutureKeeper
+		handlers     *HandlersKeeper
+		getEvmKeeper func(_placeHolder int16) evmkeeper.Keeper
+		votes        collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
 	}
@@ -46,6 +48,7 @@ var (
 
 func NewKeeper(
 	cdc codec.Codec,
+	getEvmKeeper func(_placeHolder int16) evmkeeper.Keeper,
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
@@ -79,9 +82,10 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		futures:  futures,
-		handlers: handlers,
-		votes:    votes,
+		futures:      futures,
+		handlers:     handlers,
+		getEvmKeeper: getEvmKeeper,
+		votes:        votes,
 
 		p: p,
 	}

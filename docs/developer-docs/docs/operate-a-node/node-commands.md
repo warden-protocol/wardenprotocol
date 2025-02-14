@@ -12,7 +12,7 @@ These commands allow you to do the following:
 
 - Query the node
 - Initiate transactions
-- Manage your key
+- Manage your keys
 - Edit the genesis file
 - and much more
 
@@ -20,7 +20,7 @@ These commands allow you to do the following:
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
 
-You can follow installations instructions in one of these guides (depending on your goal):
+You can follow installation instructions in one of these guides (depending on your goal):
 
 - [Run a local chain](/operate-a-node/run-a-local-chain)
 - [Join Chiado](/operate-a-node/chiado-testnet/join-chiado#1-install)

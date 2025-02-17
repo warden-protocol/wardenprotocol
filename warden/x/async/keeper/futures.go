@@ -69,9 +69,14 @@ func (k *FutureKeeper) Set(ctx context.Context, f types.Future) error {
 }
 
 func (k *FutureKeeper) SetResult(ctx context.Context, result types.FutureResult) error {
+	if exists, _ := k.results.Has(ctx, result.Id); exists {
+		return fmt.Errorf("future result already exists: %d", result.Id)
+	}
+
 	if err := k.pendingFutures.Remove(ctx, result.Id); err != nil {
 		return err
 	}
+
 	return k.results.Set(ctx, result.Id, result)
 }
 

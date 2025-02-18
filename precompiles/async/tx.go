@@ -26,7 +26,6 @@ func (p *Precompile) AddFutureMethod(
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.asyncmodulekeeper)
-
 	message, err := newMsgAddFuture(args, origin, method)
 
 	if err != nil {
@@ -52,25 +51,40 @@ func (p *Precompile) AddFutureMethod(
 }
 
 func newMsgAddFuture(args []interface{}, origin common.Address, method *abi.Method) (*acttypes.MsgAddFuture, error) {
-	if len(args) != 2 {
-		return nil, precommon.WrongArgsNumber{Expected: 2, Got: len(args)}
+	if len(args) != 3 {
+		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
-	var input addFutureInput
-	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to addFutureInput struct: %w", err)
+	handler, ok := args[0].(string)
+	if !ok {
+		return nil, fmt.Errorf("expected string for handler, got %T", args[1])
+	}
+
+	input, ok := args[1].([]byte)
+	if !ok {
+		return nil, fmt.Errorf("expected []byte for input, got %T", args[0])
+	}
+
+	callbackAddressEth, ok := args[2].(common.Address)
+	if !ok {
+		return nil, fmt.Errorf("expected string for callback address, got %T", args[1])
+	}
+
+	var callbackAddress string
+	if callbackAddressEth.String() == "0x0000000000000000000000000000000000000000" {
+		callbackAddress = ""
+	} else {
+		callbackAddress = precommon.Bech32StrFromAddress(callbackAddressEth)
 	}
 
 	return &acttypes.MsgAddFuture{
 		Creator: authority,
-		Input:   input.Input,
-		Handler: input.Handler,
+		Input:   input,
+		Handler: handler,
+		Callback: &acttypes.Callback{
+			Address: callbackAddress,
+		},
 	}, nil
-}
-
-type addFutureInput struct {
-	Handler string
-	Input   []byte
 }

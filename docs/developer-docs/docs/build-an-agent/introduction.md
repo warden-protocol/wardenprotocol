@@ -8,7 +8,7 @@ sidebar_position: 1
 
 The Warden Protocol allows you to **AI Agents**—AI-driven programs that support both offchain and onchain operations.
 
-Thanks to their native integration with the Warden Protocol, Warden Agents can perform onchain [Actions](/learn/glossary#action), such as creating [Spaces](/learn/glossary#space), generating [keys](glossary#key), executing transactions, and managing [Orders](/build-an-onchain-ai-agent/introduction). AI integration is ensured by Warden's AI Blockchain Interface (see below).
+Thanks to their native integration with the Warden Protocol, Warden Agents can perform onchain [Actions](/learn/glossary#action), such as creating [Spaces](/learn/glossary#space), generating [keys](/learn/glossary#key), executing transactions, and managing [Orders](build-an-onchain-ai-agent/introduction). AI integration is ensured by Warden's AI Blockchain Interface (see below).
 
 You can easily build Agents with the [Warden Agent Kit](warden-agent-kit/introduction).
 

@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/async) Add handlers storages and corresponding methods.
 
 ### Bug Fixes
+* (x/async) [#1219](https://github.com/warden-protocol/wardenprotocol/issues/1219) Future results are made permanent. Attempting to set a result more than once causes an error.
 
 ## [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) - 2024-11-07
 

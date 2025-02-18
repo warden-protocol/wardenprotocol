@@ -59,17 +59,17 @@ func newMsgAddFuture(args []interface{}, origin common.Address, method *abi.Meth
 
 	handler, ok := args[0].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for handler, got %T", args[1])
+		return nil, fmt.Errorf("expected string for handler, got %T", args[0])
 	}
 
 	input, ok := args[1].([]byte)
 	if !ok {
-		return nil, fmt.Errorf("expected []byte for input, got %T", args[0])
+		return nil, fmt.Errorf("expected []byte for input, got %T", args[1])
 	}
 
 	callbackAddressEth, ok := args[2].(common.Address)
 	if !ok {
-		return nil, fmt.Errorf("expected string for callback address, got %T", args[1])
+		return nil, fmt.Errorf("expected string for callback address, got %T", args[2])
 	}
 
 	var callbackAddress string

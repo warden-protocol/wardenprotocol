@@ -26,7 +26,9 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 		return nil, err
 	}
 
+	callbackAddress := ""
 	if msg.Callback != nil && msg.Callback.Address != "" {
+		callbackAddress = msg.Callback.Address
 		k.futures.SetCallback(ctx, id, *msg.Callback)
 	}
 
@@ -35,7 +37,7 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 		Id:              id,
 		Creator:         msg.Creator,
 		Handler:         msg.Handler,
-		CallbackAddress: msg.Callback.Address,
+		CallbackAddress: callbackAddress,
 	}); err != nil {
 		return nil, err
 	}

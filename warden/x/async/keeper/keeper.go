@@ -195,13 +195,13 @@ func (k Keeper) futureReadyCallback(
 	}
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	cbAddress, err := precommon.AddressFromBech32Str(cb.Address)
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	data, err := abi.Pack(method, id, output)

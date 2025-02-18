@@ -20,6 +20,12 @@
           "internalType": "string",
           "name": "handler",
           "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "callbackAddress",
+          "type": "address"
         }
       ],
       "name": "CreateFuture",
@@ -36,6 +42,11 @@
           "internalType": "bytes",
           "name": "input",
           "type": "bytes"
+        },
+        {
+          "internalType": "address",
+          "name": "callback",
+          "type": "address"
         }
       ],
       "name": "addFuture",

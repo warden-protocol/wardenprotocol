@@ -24,9 +24,9 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		futures  *FutureKeeper
-		handlers *HandlersKeeper
-		votes    collections.Map[collections.Pair[uint64, []byte], int32]
+		futures             *FutureKeeper
+		handlersByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
+		votes               collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
 	}
@@ -39,9 +39,7 @@ var (
 	ResultsPrefix         = collections.NewPrefix(3)
 	VotesPrefix           = collections.NewPrefix(4)
 	PendingFuturesPrefix  = collections.NewPrefix(5)
-	HandlersPrefix        = collections.NewPrefix(6)
-	ValidatorsByHandler   = collections.NewPrefix(7)
-	HandlersByValidator   = collections.NewPrefix(8)
+	HandlersByValidator   = collections.NewPrefix(6)
 )
 
 func NewKeeper(
@@ -59,7 +57,6 @@ func NewKeeper(
 	sb := collections.NewSchemaBuilder(storeService)
 
 	futures := NewFutureKeeper(sb, cdc)
-	handlers := NewHandlersKeeper(sb, cdc)
 	votes := collections.NewMap(
 		sb,
 		VotesPrefix,
@@ -67,6 +64,8 @@ func NewKeeper(
 		collections.PairKeyCodec(collections.Uint64Key, collections.BytesKey),
 		collections.Int32Value,
 	)
+
+	handlersByValidator := collections.NewKeySet(sb, HandlersByValidator, "handlers_by_validator", collections.PairKeyCodec(sdk.ConsAddressKey, collections.StringKey))
 
 	_, err := sb.Build()
 	if err != nil {
@@ -79,9 +78,9 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		futures:  futures,
-		handlers: handlers,
-		votes:    votes,
+		futures:             futures,
+		handlersByValidator: handlersByValidator,
+		votes:               votes,
 
 		p: p,
 	}
@@ -145,4 +144,15 @@ func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.Fu
 	}
 
 	return votes, nil
+}
+
+// RegisterHandler register validator as a handler provider.
+func (k *Keeper) RegisterHandler(ctx context.Context, validator sdk.ConsAddress, handlerName string) error {
+	return k.handlersByValidator.Set(ctx, collections.Join(validator, handlerName))
+}
+
+// ClearHandlers removes all handlers registered for a validator.
+func (k *Keeper) ClearHandlers(ctx context.Context, validator sdk.ConsAddress) error {
+	r := collections.Range[collections.Pair[sdk.ConsAddress, string]]{}
+	return k.handlersByValidator.Clear(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(validator))))
 }

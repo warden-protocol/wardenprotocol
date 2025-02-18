@@ -16,11 +16,13 @@ message AsyncInjectedTx {
   repeated tendermint.abci.ExtendedVoteInfo extended_votes_info = 1 [(gogoproto.nullable) = false];
 }
 
-// A vote extension coming from a validator. It contains results and votes for
-// some futures.
+// A vote extension coming from a validator. It contains results, votes for
+// some futures and handlers that are supported by the validator.
 message AsyncVoteExtension {
   repeated VEResultItem results = 1;
   repeated VEVoteItem votes = 2;
+  repeated string handlers = 3;
+  bool update_handlers = 4;
 }
 
 message VEResultItem {
@@ -32,4 +34,3 @@ message VEVoteItem {
   uint64 future_id = 1;
   FutureVoteType vote = 2;
 }
-

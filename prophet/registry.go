@@ -27,3 +27,13 @@ func getHandler(name string) FutureHandler {
 	defer registry.rw.RUnlock()
 	return registry.futures[name]
 }
+
+func RegisteredHandlers() []string {
+	registry.rw.RLock()
+	defer registry.rw.RUnlock()
+	handlers := make([]string, 0, len(registry.futures))
+	for name := range registry.futures {
+		handlers = append(handlers, name)
+	}
+	return handlers
+}

@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"cosmossdk.io/collections"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/skip-mev/slinky/abci/ve"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
@@ -51,8 +53,31 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			}
 		}
 
+		localHandlers := prophet.RegisteredHandlers()
+
+		r := collections.Range[collections.Pair[sdk.ConsAddress, string]]{}
+
+		iterator, err := k.handlersByValidator.Iterate(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(req.ProposerAddress))))
+
+		if err != nil {
+			return nil, fmt.Errorf("failed to iterate by validator: %w", err)
+		}
+
+		keys, err := iterator.Keys()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get keys: %w", err)
+		}
+
+		isEqual := isEqualLocalAndOnchainHandlers(localHandlers, keys)
+
+		if isEqual {
+			localHandlers = nil
+		}
+
 		asyncve := types.AsyncVoteExtension{
-			Results: results,
+			Results:        results,
+			Handlers:       localHandlers,
+			UpdateHandlers: !isEqual,
 		}
 
 		asyncveBytes, err := asyncve.Marshal()
@@ -205,6 +230,18 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteEx
 		}
 	}
 
+	if ve.UpdateHandlers {
+		if err := k.ClearHandlers(ctx, fromAddr); err != nil {
+			return fmt.Errorf("clear handlers: %w", err)
+		}
+
+		for _, h := range ve.Handlers {
+			if err := k.RegisterHandler(ctx, fromAddr, h); err != nil {
+				return fmt.Errorf("register validator: %w", err)
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -250,4 +287,24 @@ func trimExcessBytes(txs [][]byte, maxSizeBytes int64) [][]byte {
 		returnedTxs = append(returnedTxs, tx)
 	}
 	return returnedTxs
+}
+
+func isEqualLocalAndOnchainHandlers(localHandlers []string, onchainKeys []collections.Pair[sdk.ConsAddress, string]) bool {
+	if len(localHandlers) != len(onchainKeys) {
+		return false
+	}
+
+	set := make(map[string]struct{}, len(localHandlers))
+	for _, str := range localHandlers {
+		set[str] = struct{}{}
+	}
+
+	for _, k := range onchainKeys {
+		h := k.K2()
+		if _, exists := set[h]; !exists {
+			return false
+		}
+	}
+
+	return true
 }

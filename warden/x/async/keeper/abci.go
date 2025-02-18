@@ -191,6 +191,10 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteExtension) error {
 	for _, r := range ve.Results {
 		if err := k.AddFutureResult(ctx, r.FutureId, fromAddr, r.Output); err != nil {
+			if err == types.ErrFutureAlreadyHasResult {
+				continue
+			}
+
 			return fmt.Errorf("failed to add future result: %w", err)
 		}
 	}

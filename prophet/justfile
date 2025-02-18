@@ -5,7 +5,7 @@ all: pricepred stoicquote arbitraryhttp
 
 _tools:
     @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
-    go install github.com/ethereum/go-ethereum/cmd/abigen
+    go install -v github.com/ethereum/go-ethereum/cmd/abigen@v1.15.0
 
 arbitraryhttp: _tools
   solc --abi --bin --overwrite handlers/arbitraryhttp/ArbitraryHttp.sol -o build
@@ -24,4 +24,25 @@ pricepred: _tools
   --pkg=pricepred \
   --type=PricePredictor \
   --out=handlers/pricepred/pricepred_bindings.go
-  
+
+stoicquote: _tools
+  # Retrieve the Stoic quote JSON from the API, generate only an output struct
+  curl --max-time 3 --retry 3 --retry-delay 2 --fail "https://stoic.tekloon.net/stoic-quote" \
+    | go run ../soliditygen/cmd/cmd.go \
+      --contractName="StoicQuote" \
+      --outputFile="-" \
+      --outputName="Response" \
+      --output="handlers/stoicquote/generated/StoicQuote.sol"
+
+  # Compile the generated Solidity
+  solc --abi --bin --overwrite \
+    handlers/stoicquote/generated/StoicQuote.sol \
+    -o build
+
+  # Generate Go bindings
+  abigen \
+    --bin=build/StoicQuote.bin \
+    --abi=build/StoicQuote.abi \
+    --pkg=generated \
+    --type=StoicQuote \
+    --out=handlers/stoicquote/generated/stoicquote_bindings.go

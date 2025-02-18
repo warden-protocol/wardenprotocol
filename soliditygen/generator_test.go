@@ -30,7 +30,8 @@ func TestGenerateContract(t *testing.T) {
 	require.Contains(t, contract, "timestamp;")
 
 	// Ensure the function references both top-level structs
-	require.Contains(t, contract, "function main(RequestData memory _requestdata, ResponseData memory _responsedata)")
+	require.Contains(t, contract, "function main(RequestData memory _requestdata)")
+	require.Contains(t, contract, "pure returns (ResponseData memory)")
 }
 
 func TestGenerateContractWithoutInput(t *testing.T) {
@@ -47,8 +48,8 @@ func TestGenerateContractWithoutInput(t *testing.T) {
 	require.Contains(t, contract, "priceUsd;")
 	require.Contains(t, contract, "timestamp;")
 
-	// Ensure the function references both top-level structs
-	require.Contains(t, contract, "function main(ResponseData memory _responsedata)")
+	// Ensure the function references the top-level struct
+	require.Contains(t, contract, "pure returns (ResponseData memory)")
 }
 
 func TestGenerateContractErrors(t *testing.T) {

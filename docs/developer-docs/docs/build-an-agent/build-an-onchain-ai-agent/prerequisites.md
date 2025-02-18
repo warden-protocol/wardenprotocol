@@ -60,7 +60,7 @@ orders/
 ```
 
 :::note Full code
-You can find the full code of the example on GitHub: [/orders](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
 :::
 
 ## Required knowledge

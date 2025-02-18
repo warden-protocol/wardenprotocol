@@ -10,7 +10,6 @@ The [`IAsync` precompile](https://github.com/warden-protocol/wardenprotocol/blob
 
 This article explains how to use `x/async` to manage [Futures](/learn/glossary#future). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
-To understand how to set up and deploy your project, see [Get started](get-started-with-precompiles).
 
 :::tip
 - For an overview of `x/async` functions, refer to [Precompiles: x/async](../precompiles/x-async).

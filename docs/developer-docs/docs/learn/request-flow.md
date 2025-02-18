@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#warden-protocol-node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys.
+The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys.
 
 This section explains how the Warden Protocol processes these two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). The main steps are the following:
 

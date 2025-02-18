@@ -12,19 +12,15 @@ The **Warden Protocol** is a L1 blockchain bringing AI to Web3 and enabling any 
 
 Mass adoption of Web3 requires the creation of safe and seamless AI experiences, and Warden empowers developers to achieve this goal.
 
-## AI Blockchain Interface
+## Warden AI Agents
 
-Warden supports **AIBI**—**Artificial Intelligence Blockchain Interface**
+A **Warden AI Agent** is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with the Warden Protocol, Warden Agents can perform various onchain [Actions](learn/glossary#action). You can easily build Agents with the **Warden Agent Kit**.
 
-AIBI brings AI onchain with an intuitive interface for developers to integrate AI into their applications. Inspired by proof-of-computation and computational pipelines, AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+To start building an Agent, see [Build an Agent](/build-an-agent/introduction).
 
-Within Warden, AI is integrated on two layers:
+AI integration is ensured by Warden's **AI Blockchain Interface** (**AIBI**). AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism. The core components of AIBI include [Orders](/learn/glossary#order) and the [`x/async` Warden module](/learn/warden-protocol-modules/x-async).
 
-- **Verification layer**  
-Warden is designed to bring AIs onchain safely. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct.
-
-- **Execution layer**  
-Easily integrate AI with your application, protocols, and smart contracts. Automate their execution across any chain. Learn more: [Build an Agent](/build-an-agent/introduction).
+To learn more about Agents and AIBI, see [Warden AI Agents](/learn/warden-ai-agents).
 
 ## Key protocol features
 
@@ -45,11 +41,11 @@ Warden provides operator sets and integrations with leading wallets, explorers, 
 
 Here is what you can do with Warden:
 
-- **Build an Agent**  
-Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async` Warden module](/learn/warden-protocol-modules/x-async), you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
-
 - **Build an application**  
 [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward)—our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.
+
+- **Build an Agent**  
+Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async` Warden module](/learn/warden-protocol-modules/x-async), you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
 
 - **Operate a Keychain**  
 [Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination. You can become a Keychain operator or build a custom Keychain.

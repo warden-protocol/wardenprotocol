@@ -10,7 +10,7 @@ The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blo
 
 This article explains how to use `x/warden` to manage [keys](/learn/glossary#key). You'll learn how to call the corresponding functions of the precompile and interact with them after deploying your contract.
 
-To understand how to set up and deploy your project, see [Get started](../get-started-with-precompiles).
+To understand how to set up and deploy your project, see [Get started with precompiles](../get-started-with-precompiles).
 
 :::tip
 - For an overview of `x/warden` functions, refer to [Precompiles: x/warden](../../precompiles/x-warden#keys).

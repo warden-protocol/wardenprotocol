@@ -12,7 +12,7 @@ You'll implement the core logic in the [`BasicOrder` contract](implement-orders)
 
 :::note Full code
 Please note that the articles in this section typically contain only fragments of code.  
-You can find the full code of the example on GitHub: [/orders](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
 :::
 
 ## Key features

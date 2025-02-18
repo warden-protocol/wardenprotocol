@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Overview
 
-To start building your own Agent, follow [Quick start](quick-start). If you'd like to explore the capabilities of Warden Agent Kit first, check out this guide: it demonstrates how to run our **Typescript example** built with the kit.
+To start building your own Agent, follow [Quick start](quick-start). If you'd like to explore the capabilities of Warden Agent Kit first, check out this guide: it demonstrates how to run our **Typescript example** built with the kit. You can also try to expand or modify this example.
 
 This example implements a **CLI Agent** that is able to do the following:
 
@@ -132,5 +132,6 @@ You can add more Agent capabilities and even incorporate a custom tool, as shown
 
 After running the CLI Agent example, you can take the following steps:
 
+- Try to modify or expand this example.
 - Find more examples in the [Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples).
 - [Start building your own Agent](quick-start).

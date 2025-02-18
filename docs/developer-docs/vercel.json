@@ -60,6 +60,6 @@
         {"source":"/build-an-oapp/test/run-a-local-chain","destination":"/operate-a-node/run-a-local-chain", "statusCode": 301},
         {"source":"/build-an-oapp","destination":"/build-an-app/test/fulfill-requests-from-cli", "statusCode": 301},
         {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
-        {"source":"/learn/aibi","destination":"learn/warden-ai-agents", "statusCode": 301}
+        {"source":"/learn/aibi","destination":"/learn/warden-ai-agents", "statusCode": 301}
     ]
 }

@@ -211,13 +211,16 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 
+	asyncModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
+
 	k := keeper.NewKeeper(
 		in.Cdc,
-		in.GetEvmKeeper,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
 		in.Prophet,
+		in.GetEvmKeeper,
+		asyncModuleAddress,
 	)
 	m := NewAppModule(
 		in.Cdc,

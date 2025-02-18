@@ -29,7 +29,9 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 	callbackAddress := ""
 	if msg.Callback != nil && msg.Callback.Address != "" {
 		callbackAddress = msg.Callback.Address
-		k.futures.SetCallback(ctx, id, *msg.Callback)
+		if err := k.futures.SetCallback(ctx, id, *msg.Callback); err != nil {
+			return nil, err
+		}
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)

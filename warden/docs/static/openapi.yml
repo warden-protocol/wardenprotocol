@@ -9424,7 +9424,7 @@ paths:
                 title: the source port unique identifier
               source_channel_id:
                 type: string
-                title: the source channel unique identifer
+                title: the source channel unique identifier
               signer:
                 type: string
                 title: account address to refund fee if necessary
@@ -24152,7 +24152,7 @@ definitions:
         title: the source port unique identifier
       source_channel_id:
         type: string
-        title: the source channel unique identifer
+        title: the source channel unique identifier
       signer:
         type: string
         title: account address to refund fee if necessary
@@ -24405,7 +24405,7 @@ definitions:
         format: uint64
         title: packet sequence
     title: |-
-      PacketId is an identifer for a unique Packet
+      PacketId is an identifier for a unique Packet
       Source chains refer to packets by source port/channel
       Destination chains refer to packets by destination port/channel
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccount:

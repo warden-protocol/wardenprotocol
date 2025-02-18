@@ -37,7 +37,7 @@ const (
 	ActionStatus_ACTION_STATUS_UNSPECIFIED ActionStatus = 0
 	// Action is pending approval. This is the initial status.
 	ActionStatus_ACTION_STATUS_PENDING ActionStatus = 1
-	// Intent has been satified, action has been executed.
+	// Intent has been satisfied, action has been executed.
 	ActionStatus_ACTION_STATUS_COMPLETED ActionStatus = 2
 	// Action has been revoked by its creator.
 	ActionStatus_ACTION_STATUS_REVOKED ActionStatus = 3

@@ -92,7 +92,7 @@ type TypesPageResponse struct {
 
 // IAsyncMetaData contains all meta data concerning the IAsync contract.
 var IAsyncMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"}],\"name\":\"CreateFuture\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"name\":\"addFuture\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"}],\"name\":\"futureById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structFuture\",\"name\":\"future\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumFutureVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structFutureVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structFutureResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structFutureResponse\",\"name\":\"futureResponse\",\"type\":\"tuple\"}],\"internalType\":\"structFutureByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"futures\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structFuture\",\"name\":\"future\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumFutureVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structFutureVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structFutureResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structFutureResponse[]\",\"name\":\"futures\",\"type\":\"tuple[]\"}],\"internalType\":\"structFuturesResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"pendingFutures\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structFuture[]\",\"name\":\"futures\",\"type\":\"tuple[]\"}],\"internalType\":\"structPendingFuturesResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"callbackAddress\",\"type\":\"address\"}],\"name\":\"CreateFuture\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"callback\",\"type\":\"address\"}],\"name\":\"addFuture\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"}],\"name\":\"futureById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structFuture\",\"name\":\"future\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumFutureVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structFutureVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structFutureResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structFutureResponse\",\"name\":\"futureResponse\",\"type\":\"tuple\"}],\"internalType\":\"structFutureByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"futures\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structFuture\",\"name\":\"future\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"futureId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumFutureVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structFutureVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structFutureResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structFutureResponse[]\",\"name\":\"futures\",\"type\":\"tuple[]\"}],\"internalType\":\"structFuturesResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"pendingFutures\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"handler\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structFuture[]\",\"name\":\"futures\",\"type\":\"tuple[]\"}],\"internalType\":\"structPendingFuturesResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // IAsyncABI is the input ABI used to generate the binding from.
@@ -334,25 +334,25 @@ func (_IAsync *IAsyncCallerSession) PendingFutures(pagination TypesPageRequest) 
 	return _IAsync.Contract.PendingFutures(&_IAsync.CallOpts, pagination)
 }
 
-// AddFuture is a paid mutator transaction binding the contract method 0x58f36d78.
+// AddFuture is a paid mutator transaction binding the contract method 0xa2835a9b.
 //
-// Solidity: function addFuture(string handler, bytes input) returns(uint64 futureId)
-func (_IAsync *IAsyncTransactor) AddFuture(opts *bind.TransactOpts, handler string, input []byte) (*types.Transaction, error) {
-	return _IAsync.contract.Transact(opts, "addFuture", handler, input)
+// Solidity: function addFuture(string handler, bytes input, address callback) returns(uint64 futureId)
+func (_IAsync *IAsyncTransactor) AddFuture(opts *bind.TransactOpts, handler string, input []byte, callback common.Address) (*types.Transaction, error) {
+	return _IAsync.contract.Transact(opts, "addFuture", handler, input, callback)
 }
 
-// AddFuture is a paid mutator transaction binding the contract method 0x58f36d78.
+// AddFuture is a paid mutator transaction binding the contract method 0xa2835a9b.
 //
-// Solidity: function addFuture(string handler, bytes input) returns(uint64 futureId)
-func (_IAsync *IAsyncSession) AddFuture(handler string, input []byte) (*types.Transaction, error) {
-	return _IAsync.Contract.AddFuture(&_IAsync.TransactOpts, handler, input)
+// Solidity: function addFuture(string handler, bytes input, address callback) returns(uint64 futureId)
+func (_IAsync *IAsyncSession) AddFuture(handler string, input []byte, callback common.Address) (*types.Transaction, error) {
+	return _IAsync.Contract.AddFuture(&_IAsync.TransactOpts, handler, input, callback)
 }
 
-// AddFuture is a paid mutator transaction binding the contract method 0x58f36d78.
+// AddFuture is a paid mutator transaction binding the contract method 0xa2835a9b.
 //
-// Solidity: function addFuture(string handler, bytes input) returns(uint64 futureId)
-func (_IAsync *IAsyncTransactorSession) AddFuture(handler string, input []byte) (*types.Transaction, error) {
-	return _IAsync.Contract.AddFuture(&_IAsync.TransactOpts, handler, input)
+// Solidity: function addFuture(string handler, bytes input, address callback) returns(uint64 futureId)
+func (_IAsync *IAsyncTransactorSession) AddFuture(handler string, input []byte, callback common.Address) (*types.Transaction, error) {
+	return _IAsync.Contract.AddFuture(&_IAsync.TransactOpts, handler, input, callback)
 }
 
 // IAsyncCreateFutureIterator is returned from FilterCreateFuture and is used to iterate over the raw logs and unpacked data for CreateFuture events raised by the IAsync contract.
@@ -424,15 +424,16 @@ func (it *IAsyncCreateFutureIterator) Close() error {
 
 // IAsyncCreateFuture represents a CreateFuture event raised by the IAsync contract.
 type IAsyncCreateFuture struct {
-	FutureId uint64
-	Creator  common.Address
-	Handler  string
-	Raw      types.Log // Blockchain specific contextual infos
+	FutureId        uint64
+	Creator         common.Address
+	Handler         string
+	CallbackAddress common.Address
+	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterCreateFuture is a free log retrieval operation binding the contract event 0x5ff36e17a53266688028dda85a1ae26868151e191647b9c731c7a43d5041ac96.
+// FilterCreateFuture is a free log retrieval operation binding the contract event 0x3fb77420900d4e68b2356c7b140d3d8fefa4aadbce83de2a52a2c3654f18732d.
 //
-// Solidity: event CreateFuture(uint64 indexed futureId, address indexed creator, string handler)
+// Solidity: event CreateFuture(uint64 indexed futureId, address indexed creator, string handler, address callbackAddress)
 func (_IAsync *IAsyncFilterer) FilterCreateFuture(opts *bind.FilterOpts, futureId []uint64, creator []common.Address) (*IAsyncCreateFutureIterator, error) {
 
 	var futureIdRule []interface{}
@@ -451,9 +452,9 @@ func (_IAsync *IAsyncFilterer) FilterCreateFuture(opts *bind.FilterOpts, futureI
 	return &IAsyncCreateFutureIterator{contract: _IAsync.contract, event: "CreateFuture", logs: logs, sub: sub}, nil
 }
 
-// WatchCreateFuture is a free log subscription operation binding the contract event 0x5ff36e17a53266688028dda85a1ae26868151e191647b9c731c7a43d5041ac96.
+// WatchCreateFuture is a free log subscription operation binding the contract event 0x3fb77420900d4e68b2356c7b140d3d8fefa4aadbce83de2a52a2c3654f18732d.
 //
-// Solidity: event CreateFuture(uint64 indexed futureId, address indexed creator, string handler)
+// Solidity: event CreateFuture(uint64 indexed futureId, address indexed creator, string handler, address callbackAddress)
 func (_IAsync *IAsyncFilterer) WatchCreateFuture(opts *bind.WatchOpts, sink chan<- *IAsyncCreateFuture, futureId []uint64, creator []common.Address) (event.Subscription, error) {
 
 	var futureIdRule []interface{}
@@ -497,9 +498,9 @@ func (_IAsync *IAsyncFilterer) WatchCreateFuture(opts *bind.WatchOpts, sink chan
 	}), nil
 }
 
-// ParseCreateFuture is a log parse operation binding the contract event 0x5ff36e17a53266688028dda85a1ae26868151e191647b9c731c7a43d5041ac96.
+// ParseCreateFuture is a log parse operation binding the contract event 0x3fb77420900d4e68b2356c7b140d3d8fefa4aadbce83de2a52a2c3654f18732d.
 //
-// Solidity: event CreateFuture(uint64 indexed futureId, address indexed creator, string handler)
+// Solidity: event CreateFuture(uint64 indexed futureId, address indexed creator, string handler, address callbackAddress)
 func (_IAsync *IAsyncFilterer) ParseCreateFuture(log types.Log) (*IAsyncCreateFuture, error) {
 	event := new(IAsyncCreateFuture)
 	if err := _IAsync.contract.UnpackLog(event, "CreateFuture", log); err != nil {

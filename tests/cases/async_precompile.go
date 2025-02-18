@@ -41,7 +41,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, ctx context.Context, _ framewor
 	require.NoError(t, err)
 	require.Len(t, futuresQuery.Futures, 0)
 
-	addFutureTx, err := iAsyncClient.AddFuture(alice.TransactOps(t, ctx, evmClient), "echo", []byte("USDT"))
+	addFutureTx, err := iAsyncClient.AddFuture(alice.TransactOps(t, ctx, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
 	require.NoError(t, err)
 
 	addFutureReceipt, err := bind.WaitMined(ctx, evmClient, addFutureTx)

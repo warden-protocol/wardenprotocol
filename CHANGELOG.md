@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Sign requests query return all request (not only with broadcastType=BroadcastType.Disabled)
 * (prophet) First version. Includes the task runner for Futures and Votes, and the interface for handlers.
 * (x/async) Add handlers storages and corresponding methods.
+* (x/async) Add contract-callback when future become ready.
 
 ### Bug Fixes
 * (x/async) [#1219](https://github.com/warden-protocol/wardenprotocol/issues/1219) Future results are made permanent. Attempting to set a result more than once causes an error.

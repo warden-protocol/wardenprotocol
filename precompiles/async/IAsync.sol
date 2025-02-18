@@ -64,10 +64,12 @@ interface IAsync {
     /// @dev Defines a method to add a future.
     /// @param handler The unique name of the handler
     /// @param input The handler's input
+    /// @param callback The address of callback contract
     /// @return futureId The id of the future
     function addFuture(
         string calldata handler,
-        bytes calldata input
+        bytes calldata input,
+        address callback
     ) external returns (uint64 futureId);
 
     /// @dev Defines a method to query future by id.
@@ -97,9 +99,11 @@ interface IAsync {
     /// @param creator The address of the creator
     /// @param futureId The future Id
     /// @param handler The name of the handler
+    /// @param callbackAddress The address of callback contract
     event CreateFuture(
         uint64 indexed futureId,
         address indexed creator,
-        string handler
+        string handler,
+        address callbackAddress
     );
 }

@@ -168,7 +168,7 @@ type App struct {
 	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// evmOS
-	EvmKeeper       *evmkeeper.Keeper
+	EvmKeeper       evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
 	Erc20Keeper     erc20keeper.Keeper
 
@@ -587,7 +587,7 @@ func (app *App) GetWasmKeeper() wasmkeeper.Keeper {
 }
 
 // GetEvmKeeper returns the Evm keeper.
-func (app *App) GetEvmKeeper(_placeHolder int16) *evmkeeper.Keeper {
+func (app *App) GetEvmKeeper(_placeHolder int16) evmkeeper.Keeper {
 	return app.EvmKeeper
 }
 
@@ -643,7 +643,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 		WasmKeeper:            &app.WasmKeeper,
 		TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
 		CircuitKeeper:         &app.CircuitBreakerKeeper,
-		EvmKeeper:             app.EvmKeeper,
+		EvmKeeper:             &app.EvmKeeper,
 		FeeMarketKeeper:       app.FeeMarketKeeper,
 		TxFeeChecker:          ethante.NewDynamicFeeChecker(app.EvmKeeper),
 		AccountKeeper:         app.AccountKeeper,

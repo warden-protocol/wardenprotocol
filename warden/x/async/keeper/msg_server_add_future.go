@@ -26,11 +26,20 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 		return nil, err
 	}
 
+	callbackAddress := ""
+	if msg.Callback != nil && msg.Callback.Address != "" {
+		callbackAddress = msg.Callback.Address
+		if err := k.futures.SetCallback(ctx, id, *msg.Callback); err != nil {
+			return nil, err
+		}
+	}
+
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateFuture{
-		Id:      id,
-		Creator: msg.Creator,
-		Handler: msg.Handler,
+		Id:              id,
+		Creator:         msg.Creator,
+		Handler:         msg.Handler,
+		CallbackAddress: callbackAddress,
 	}); err != nil {
 		return nil, err
 	}

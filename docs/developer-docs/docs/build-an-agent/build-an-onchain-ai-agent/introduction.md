@@ -8,12 +8,12 @@ sidebar_position: 1
 
 This section explains how to enable onchain capabilities for a **Warden Agent** created with the [Warden Agent Kit](../warden-agent-kit/introduction).
 
-The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions**.
+The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions** on any destination chain.
 
 :::tip
-You can implement custom logic by using [Warden modules](/learn/warden-protocol-modules/introduction), [Keychains](/learn/glossary#keychain), and other features. In particular, the [`x/async` Warden module](/learn/warden-protocol-modules/x-async) allows you to create smart contracts utilizing outputs of **AI models**.
-
 In our example, Orders perform swaps on Uniswap, but you can make them send any transactions to any Ethereum-based and EVM L2 application. For example, your application can transfer ETH or call an arbitrary contract.
+
+You can implement custom logic by using [Warden modules](/learn/warden-protocol-modules/introduction), [Keychains](/learn/glossary#keychain), and other features. In particular, the [`x/async` Warden module](/learn/warden-protocol-modules/x-async) allows you to create smart contracts utilizing outputs of **AI models**.
 :::
 
 :::note Full code

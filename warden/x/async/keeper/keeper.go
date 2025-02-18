@@ -2,15 +2,27 @@ package keeper
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"math/big"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
+	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	evmosconf "github.com/evmos/evmos/v20/server/config"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	evmostypes "github.com/evmos/evmos/v20/x/evm/types"
+
+	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
+	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -23,7 +35,8 @@ type (
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
-		authority string
+		authority          string
+		asyncModuleAddress sdk.Address
 
 		futures      *FutureKeeper
 		handlers     *HandlersKeeper
@@ -44,15 +57,17 @@ var (
 	HandlersPrefix        = collections.NewPrefix(6)
 	ValidatorsByHandler   = collections.NewPrefix(7)
 	HandlersByValidator   = collections.NewPrefix(8)
+	FutureCallbackPrefix  = collections.NewPrefix(9)
 )
 
 func NewKeeper(
 	cdc codec.Codec,
-	getEvmKeeper func(_placeHolder int16) evmkeeper.Keeper,
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
 	p *prophet.P,
+	getEvmKeeper func(_placeHolder int16) evmkeeper.Keeper,
+	asyncModuleAddress sdk.Address,
 	//selfValAddr sdk.ConsAddress,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
@@ -77,10 +92,11 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:          cdc,
-		storeService: storeService,
-		authority:    authority,
-		logger:       logger,
+		cdc:                cdc,
+		storeService:       storeService,
+		authority:          authority,
+		asyncModuleAddress: asyncModuleAddress,
+		logger:             logger,
 
 		futures:      futures,
 		handlers:     handlers,
@@ -111,6 +127,10 @@ func (k Keeper) AddFutureResult(ctx context.Context, id uint64, submitter, outpu
 	}
 
 	if err := k.SetFutureVote(ctx, id, submitter, types.FutureVoteType_VOTE_TYPE_VERIFIED); err != nil {
+		return err
+	}
+
+	if err := k.futureReadyCallback(ctx, id, output); err != nil {
 		return err
 	}
 
@@ -149,4 +169,110 @@ func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.Fu
 	}
 
 	return votes, nil
+}
+
+func (k Keeper) futureReadyCallback(
+	ctx context.Context,
+	id uint64,
+	output []byte,
+) error {
+	cb, err := k.futures.callbacks.Get(ctx, id)
+
+	if errors.Is(err, collections.ErrNotFound) {
+		return nil
+	}
+
+	if err != nil {
+		return err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	abi, err := callbacks.IAsyncCallbackMetaData.GetAbi()
+	method := "cb"
+	if _, ok := abi.Methods[method]; !ok {
+		return fmt.Errorf("invalid callback method: %v", method)
+	}
+
+	if err != nil {
+		return nil
+	}
+
+	cbAddress, err := precommon.AddressFromBech32Str(cb.Address)
+
+	if err != nil {
+		return nil
+	}
+
+	data, err := abi.Pack(method, id, output)
+	if err != nil {
+		return err
+	}
+
+	res, err := k.CallEVMWithData(
+		sdkCtx,
+		common.BytesToAddress(k.asyncModuleAddress.Bytes()),
+		&cbAddress,
+		data,
+	)
+
+	if res.Failed() {
+		// Do not throw error if contract fails
+		return nil
+	}
+
+	return err
+}
+
+func (k Keeper) CallEVMWithData(
+	ctx sdk.Context,
+	from common.Address,
+	contract *common.Address,
+	data []byte,
+) (*evmostypes.MsgEthereumTxResponse, error) {
+	var nonce uint64 = 0
+	evmKeeper := k.getEvmKeeper(0)
+
+	args, err := json.Marshal(evmostypes.TransactionArgs{
+		From: &from,
+		To:   contract,
+		Data: (*hexutil.Bytes)(&data),
+	})
+	if err != nil {
+		return nil, errorsmod.Wrapf(errortypes.ErrJSONMarshal, "failed to marshal tx args: %s", err.Error())
+	}
+
+	gasRes, err := evmKeeper.EstimateGasInternal(ctx, &evmostypes.EthCallRequest{
+		Args:   args,
+		GasCap: evmosconf.DefaultGasCap,
+	}, evmostypes.Internal)
+	if err != nil {
+		return nil, err
+	}
+
+	// 1. Gas estimation also consumes gas.
+	// 2. Precompile creates new gas meter limited to contract gas cap. This new gas meter should consume gas from prev gas meter.
+	// 3. TODO: configurable gas limit on module level.
+	gasCap := gasRes.Gas + ctx.GasMeter().GasConsumed()
+
+	msg := ethtypes.NewMessage(
+		from,
+		contract,
+		nonce,
+		big.NewInt(0), // amount
+		gasCap,        // gasLimit
+		big.NewInt(0), // gasFeeCap
+		big.NewInt(0), // gasTipCap
+		big.NewInt(0), // gasPrice
+		data,
+		ethtypes.AccessList{}, // AccessList
+		false,                 // isFake
+	)
+
+	res, err := evmKeeper.ApplyMessage(ctx, msg, evmostypes.NewNoOpTracer(), true)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

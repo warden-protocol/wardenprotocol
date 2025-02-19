@@ -58,6 +58,7 @@ create-basic-order thresholdPrice priceCondition pricePair txFields keyId spaceN
 # Example:
 # just solidity create-advanced-order \
 # 0 \
+# 5000000000000000
 # '\("ETH","USD"\)' \
 # '\("Ethereum","Tether"\)' \
 # '\(100000000000000,11155111,0x467b9D1B03683C8177155Be990238bEeB1d5461f,0x7ff36ab500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000080000000000000000000000000ee567fe1712faf6149d80da1e6934e354124cfe300000000000000000000000000000000000000000000000000000000676d2f8a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5\)' \
@@ -70,7 +71,7 @@ create-basic-order thresholdPrice priceCondition pricePair txFields keyId spaceN
 # 0xfe20b64194DD392C37711027A7f38dB10F499B28 \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-create-advanced-order priceCondition oraclePricePair predictPricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
+create-advanced-order priceCondition confidenceLimit oraclePricePair predictPricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \
     --via-ir \
@@ -79,6 +80,7 @@ create-advanced-order priceCondition oraclePricePair predictPricePair txFields k
     --with-gas-price 100000 \
     script/CreateOrder.s.sol:CreateOrder \
     {{priceCondition}} \
+    {{confidenceLimit}} \
     {{oraclePricePair}} \
     {{predictPricePair}} \
     {{txFields}} \
@@ -88,7 +90,7 @@ create-advanced-order priceCondition oraclePricePair predictPricePair txFields k
     {{expectedApproveExpression}} \
     {{expectedRejectExpression}} \
     {{salt}} \
-    --sig 'advanced(uint8,(string,string),(string,string),(uint256,uint256,address,bytes),uint64,uint64,uint64,bytes,bytes,bytes32)' \
+    --sig 'advanced(uint8,uint256,(string,string),(string,string),(uint256,uint256,address,bytes),uint64,uint64,uint64,bytes,bytes,bytes32)' \
     --rpc-url $RPC_URL \
     --broadcast \
     -vvvv

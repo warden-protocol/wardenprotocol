@@ -530,9 +530,7 @@ contract BasicOrderTest is Test {
         bytes memory orderData = abi.encode(_orderData);
         Types.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
-        _testData.orderFactory.createOrder(
-            orderData, executionData, maxKeychainFees, OrderType.Basic, salt
-        );
+        _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
         // Now, the contract should be deployed
         assertEq(computedAddress.code.length > 0, true, "Order contract was not deployed at computed address");

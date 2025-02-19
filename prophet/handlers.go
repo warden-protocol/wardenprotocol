@@ -2,6 +2,7 @@ package prophet
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -19,7 +20,22 @@ type FutureHandler interface {
 }
 
 // Execute executes a given future, by invoking the registered handler.
-func Execute(ctx context.Context, f Future) (FutureResult, error) {
+func Execute(ctx context.Context, f Future) (res FutureResult, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			switch x := r.(type) {
+			case string:
+				err = fmt.Errorf("future execution failed with panic: %s", x)
+			case error:
+				err = fmt.Errorf("future execution failed with panic: %w", x)
+			default:
+				err = errors.New("future execution failed with unknown panic")
+			}
+
+			res = FutureResult{}
+		}
+	}()
+
 	s := getHandler(f.Handler)
 	if s == nil {
 		return FutureResult{}, fmt.Errorf("no future handler registered for %s", f.Handler)

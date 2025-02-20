@@ -1097,7 +1097,7 @@ paths:
                       may apply to invalidate the grant)
                 description: |-
                   Grant gives permissions to execute
-                  the provide method with expiration time.
+                  the provided method with expiration time.
             description: >-
               MsgGrant is a request type for Grant method. It declares
               authorization to the grantee

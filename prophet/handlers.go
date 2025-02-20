@@ -50,10 +50,10 @@ func Execute(ctx context.Context, f Future) (res FutureResult, err error) {
 }
 
 // Verify verifies a given future result, by invoking the registered handler.
-func Verify(ctx context.Context, f FutureResult) (errRes error) {
+func Verify(ctx context.Context, f FutureResult) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			errRes = fmt.Errorf("panic verifying future: %v", r)
+			err = fmt.Errorf("panic verifying future: %v", r)
 		}
 	}()
 
@@ -66,8 +66,7 @@ func Verify(ctx context.Context, f FutureResult) (errRes error) {
 	log.Debug("start")
 	start := time.Now()
 
-	err := s.Verify(ctx, f.Input, f.Output)
-	if err != nil {
+	if err := s.Verify(ctx, f.Input, f.Output); err != nil {
 		return err
 	}
 

@@ -32,6 +32,7 @@ func AsyncKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+	asyncModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
 
 	k := keeper.NewKeeper(
 		cdc,
@@ -39,6 +40,8 @@ func AsyncKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		log.NewNopLogger(),
 		authority.String(),
 		nil,
+		nil,
+		asyncModuleAddress,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

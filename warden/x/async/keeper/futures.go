@@ -18,7 +18,6 @@ type FutureKeeper struct {
 	futureByCreator collections.KeySet[collections.Pair[sdk.AccAddress, uint64]]
 	results         collections.Map[uint64, types.FutureResult]
 	pendingFutures  collections.KeySet[uint64]
-	callbacks       collections.Map[uint64, types.Callback]
 }
 
 func NewFutureKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *FutureKeeper {
@@ -32,14 +31,11 @@ func NewFutureKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *FutureKeep
 
 	pendingFutures := collections.NewKeySet(sb, PendingFuturesPrefix, "pending_futures", collections.Uint64Key)
 
-	callbacks := collections.NewMap(sb, FutureCallbackPrefix, "future_callback", collections.Uint64Key, codec.CollValue[types.Callback](cdc))
-
 	return &FutureKeeper{
 		futures:         futures,
 		futureByCreator: futureByCreator,
 		results:         results,
 		pendingFutures:  pendingFutures,
-		callbacks:       callbacks,
 	}
 }
 
@@ -123,8 +119,4 @@ func (k *FutureKeeper) PendingFutures(ctx context.Context, limit int) ([]types.F
 	}
 
 	return futures, nil
-}
-
-func (k *FutureKeeper) SetCallback(ctx context.Context, id uint64, callback types.Callback) error {
-	return k.callbacks.Set(ctx, id, callback)
 }

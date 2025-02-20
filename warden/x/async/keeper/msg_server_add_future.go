@@ -18,16 +18,13 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 	}
 
 	id, err := k.futures.Append(ctx, &types.Future{
-		Creator: msg.Creator,
-		Handler: msg.Handler,
-		Input:   msg.Input,
+		Creator:  msg.Creator,
+		Handler:  msg.Handler,
+		Input:    msg.Input,
+		Callback: msg.Callback,
 	})
 	if err != nil {
 		return nil, err
-	}
-
-	if msg.Callback != nil && msg.Callback.Address != "" {
-		k.futures.SetCallback(ctx, id, *msg.Callback)
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
@@ -35,7 +32,7 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 		Id:              id,
 		Creator:         msg.Creator,
 		Handler:         msg.Handler,
-		CallbackAddress: msg.Callback.Address,
+		CallbackAddress: msg.Callback,
 	}); err != nil {
 		return nil, err
 	}

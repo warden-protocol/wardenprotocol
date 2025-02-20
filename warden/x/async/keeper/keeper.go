@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math/big"
 
@@ -40,7 +39,7 @@ type (
 
 		futures      *FutureKeeper
 		handlers     *HandlersKeeper
-		getEvmKeeper func(_placeHolder int16) evmkeeper.Keeper
+		getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper
 		votes        collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
@@ -57,7 +56,6 @@ var (
 	HandlersPrefix        = collections.NewPrefix(6)
 	ValidatorsByHandler   = collections.NewPrefix(7)
 	HandlersByValidator   = collections.NewPrefix(8)
-	FutureCallbackPrefix  = collections.NewPrefix(9)
 )
 
 func NewKeeper(
@@ -66,7 +64,7 @@ func NewKeeper(
 	logger log.Logger,
 	authority string,
 	p *prophet.P,
-	getEvmKeeper func(_placeHolder int16) evmkeeper.Keeper,
+	getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper,
 	asyncModuleAddress sdk.Address,
 	//selfValAddr sdk.ConsAddress,
 ) Keeper {
@@ -176,14 +174,14 @@ func (k Keeper) futureReadyCallback(
 	id uint64,
 	output []byte,
 ) error {
-	cb, err := k.futures.callbacks.Get(ctx, id)
-
-	if errors.Is(err, collections.ErrNotFound) {
-		return nil
-	}
+	future, err := k.futures.Get(ctx, id)
 
 	if err != nil {
 		return err
+	}
+
+	if future.Callback == "" {
+		return nil
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
@@ -195,13 +193,13 @@ func (k Keeper) futureReadyCallback(
 	}
 
 	if err != nil {
-		return nil
+		return err
 	}
 
-	cbAddress, err := precommon.AddressFromBech32Str(cb.Address)
+	cbAddress, err := precommon.AddressFromBech32Str(future.Callback)
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	data, err := abi.Pack(method, id, output)

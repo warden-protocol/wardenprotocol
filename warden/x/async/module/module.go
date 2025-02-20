@@ -192,7 +192,7 @@ type ModuleInputs struct {
 
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
-	GetEvmKeeper  func(_placeHolder int16) evmkeeper.Keeper `optional:"true"`
+	GetEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper `optional:"true"`
 
 	Prophet *prophet.P `optional:"true"`
 }

@@ -12,11 +12,11 @@ We're transitioning from [Buenavista](buenavista-testnet/join-buenavista) to our
 
 ## Prerequisites
 
-The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Chiado](chiado-testnet/join-chiado) instructions.
+The following instructions assume you have already set up a full node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Chiado](chiado-testnet/join-chiado) instructions.
 
 ## 1. Create/restore a key pair
 
-The first step is creating a new key pair for your validator. Replace `my-key-name` with a key name of your choice and run the following:
+The first step is to create a new key pair for your validator. Replace `my-key-name` with a key name of your choice and run the following:
 
 ```bash
 wardend keys add my-key-name
@@ -111,9 +111,9 @@ To create a validator and initialize it with a self-delegation, you need to crea
    This transaction is just an example. If you want to see an explanation of the parameters values or see all the available flags that can be set to customize your validators you can enter this command: `wardend tx staking create-validator --help`
    :::
 
-## 3. Backup critical files
+## 3. Back up critical files
 
-There are certain files you need to backup to be able to restore your validator if, for some reason, it’s damaged or lost. Please make a secure, encrypted backup of the following files:
+There are certain files you need to back up to be able to restore your validator if, for some reason, it’s damaged or lost. Please make a secure, encrypted backup of the following files:
 
 - `priv_validator_key.json`
 - `node_key.json`

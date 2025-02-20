@@ -53,7 +53,7 @@ func Execute(ctx context.Context, f Future) (res FutureResult, err error) {
 func Verify(ctx context.Context, f FutureResult) (errRes error) {
 	defer func() {
 		if r := recover(); r != nil {
-			errRes = fmt.Errorf("panic executing future: %v", r)
+			errRes = fmt.Errorf("panic verifying future: %v", r)
 		}
 	}()
 

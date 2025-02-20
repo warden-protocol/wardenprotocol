@@ -87,4 +87,4 @@ Delegators have several criteria to consider when choosing validators to delegat
 
 **Track records**: Delegators can look at the track record of a validator they plan to delegate to. This includes seniority in the network, past votes on proposals, uptime and the reliability of the validator, how often the node was compromised. Validators with a positive track record are more trusted by delegators.
 
-**Community contribution**: Another criteria is the work validators have contributed to the community, such as educational content, participation in community channels, contributions to open source initiatives etc. Community contribution demonstrates a commitment to the long-term success and growth of the network.
+**Community contribution**: Another criterion is the work validators have contributed to the community, such as educational content, participation in community channels, contributions to open source initiatives etc. Community contribution demonstrates a commitment to the long-term success and growth of the network.

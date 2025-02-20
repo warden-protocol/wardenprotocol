@@ -2,7 +2,6 @@ package prophet
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -51,7 +50,13 @@ func Execute(ctx context.Context, f Future) (res FutureResult, err error) {
 }
 
 // Verify verifies a given future result, by invoking the registered handler.
-func Verify(ctx context.Context, f FutureResult) error {
+func Verify(ctx context.Context, f FutureResult) (errRes error) {
+	defer func() {
+		if r := recover(); r != nil {
+			errRes = fmt.Errorf("panic executing future: %v", r)
+		}
+	}()
+
 	s := getHandler(f.Handler)
 	if s == nil {
 		return fmt.Errorf("no future handler registered for %s", f.Handler)

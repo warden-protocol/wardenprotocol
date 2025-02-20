@@ -12,7 +12,7 @@ This technology utilizes **cross-chain bridges**—smart contracts that receive 
 
 ## Axelar
 
-Thanks to Warden's [x/gmp](/learn/warden-protocol-modules/external-modules#xgmp) module, [Omnichain Applications](/learn/glossary#omnichain-application) support cross-chain token transfers and general message parsing through **Axelar**.
+Thanks to Warden's [x/gmp](/learn/warden-protocol-modules/external-modules#xgmp) module, [Omnichain Applications](/learn/glossary#omnichain-application) support cross-chain token transfers and general message passing through **Axelar**.
 
 More integrations are coming soon.
 

@@ -85,7 +85,7 @@ For a detailed breakdown of all variables, see the following sections.
 
 ### Required adjustments
 
-For running the script, the following adjustments are required:
+For running the script, make the following adjustments:
 
 1. In `tx_fields`, check fields for the swap transaction:
 

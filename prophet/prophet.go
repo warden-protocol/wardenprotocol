@@ -1,10 +1,14 @@
 package prophet
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	lru "github.com/hashicorp/golang-lru/v2"
+
+	"github.com/cosmos/cosmos-sdk/client"
 )
 
 // queueBufferSize sets the default size for incoming queues, i.e. the number
@@ -21,6 +25,8 @@ type P struct {
 
 	resultsWriter *s[FutureResult]
 	votesWriter   *s[Vote]
+
+	SelfAddress []byte
 }
 
 // New returns an initialized P. Call [P.Run] to start the main loop.
@@ -47,7 +53,7 @@ func New() (*P, error) {
 //
 // Goroutines are started to execute incoming futures and verifying incoming
 // future results.
-func (p *P) Run() error {
+func (p *P) Run(tendermintRpc string) error {
 	futures, err := newDedupFutureReader(p.futures)
 	if err != nil {
 		return fmt.Errorf("failed to create futures dedup reader: %w", err)
@@ -60,6 +66,23 @@ func (p *P) Run() error {
 	if err := ExecVotes(p.proposals, p.votesWriter); err != nil {
 		return fmt.Errorf("failed to run votes loop: %w", err)
 	}
+
+	go func() {
+		clientCtx, err := client.NewClientFromNode(tendermintRpc)
+		if err != nil {
+			panic(err)
+		}
+
+		for p.SelfAddress == nil {
+			status, err := clientCtx.Status(context.Background())
+			if err != nil {
+				time.Sleep(100 * time.Millisecond)
+				continue
+			}
+
+			p.SelfAddress = status.ValidatorInfo.Address
+		}
+	}()
 
 	return nil
 }

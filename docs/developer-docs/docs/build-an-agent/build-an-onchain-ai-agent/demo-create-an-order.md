@@ -75,7 +75,7 @@ Now you need to generate the transaction data that you'll pass with the Order in
 
 ## 3. Edit the Order script
 
-Now you need to configure Order parameters in the script `createAdvancedOrder.sh` in the `solidity` directory:
+Now you need to configure Order parameters in the [`createAdvancedOrder.sh` script](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/createAdvancedOrder.sh), which is located in the `solidity` directory:
 
 - Check and adjust these variables: `tx_fields`, `key_id`, `salt`, `factory_address`.
 - Add a `private_key` variable and a `"$private_key"` parameter.
@@ -174,7 +174,6 @@ just create-advanced-order \
 Finally, navigate to the `solidity` directory and run the script:
 
 ```
-cd ../
 ./createAdvancedOrder.sh
 ```
 

@@ -1,4 +1,4 @@
-package arbitraryhttp
+package http
 
 import (
 	"context"
@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 
 	"github.com/fxamacker/cbor/v2"
 	"github.com/stretchr/testify/require"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/arbitraryhttp/generated"
+	"github.com/warden-protocol/wardenprotocol/prophet"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http/generated"
 )
 
 func TestHandler_Execute(t *testing.T) {
@@ -22,19 +24,30 @@ func TestHandler_Execute(t *testing.T) {
 	}))
 	defer mockServer.Close()
 
-	input, err := cbor.Marshal(generated.ArbitraryHttpRequest{
-		Url:    mockServer.URL,
-		Method: "GET",
-	})
-	require.NoError(t, err, "Failed to marshal request")
+	input, err := prophet.EncodeInputToABI(
+		generated.HttpRequest{
+			Url:    mockServer.URL,
+			Method: "GET",
+			Body:   nil,
+		},
+		generated.HttpMetaData,
+		"main",
+	)
+	require.NoError(t, err, "Failed to encode input")
 
-	h := NewHandler([]string{mockServer.URL})
+	parsedURL, err := url.Parse(mockServer.URL)
+	require.NoError(t, err)
+	h := NewHandler([]*url.URL{parsedURL})
 
 	abiEncodedOutput, execErr := h.Execute(context.Background(), input)
 	require.NoError(t, execErr, "Execute should not fail")
 
 	// First decode the ABI encoding
-	decodedOutput, err := decodeOutput(abiEncodedOutput)
+	decodedOutput, err := prophet.DecodeOutputFromABI[generated.HttpResponse](
+		abiEncodedOutput,
+		generated.HttpMetaData,
+		"main",
+	)
 	require.NoError(t, err, "Failed to decode ABI output")
 
 	// Then decode the CBOR body with string keys
@@ -54,6 +67,31 @@ func TestHandler_Execute(t *testing.T) {
 	require.Equal(t, int64(200), decodedOutput.Status.Int64(), "Status code should be 200")
 }
 
+func TestHandler_Execute_URLNotAllowed(t *testing.T) {
+	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer mockServer.Close()
+
+	whitelistedURL, _ := url.Parse("http://allowed-domain.com")
+	h := NewHandler([]*url.URL{whitelistedURL})
+
+	input, err := prophet.EncodeInputToABI(
+		generated.HttpRequest{
+			Url:    mockServer.URL,
+			Method: "GET",
+			Body:   nil,
+		},
+		generated.HttpMetaData,
+		"main",
+	)
+	require.NoError(t, err, "Failed to encode input")
+
+	_, execErr := h.Execute(context.Background(), input)
+	require.Error(t, execErr)
+	require.Contains(t, execErr.Error(), "URL not allowed by whitelist")
+}
+
 // convertToStringKeys recursively converts map[interface{}]interface{} to map[string]interface{}
 func convertToStringKeys(v interface{}) interface{} {
 	switch x := v.(type) {
@@ -69,27 +107,4 @@ func convertToStringKeys(v interface{}) interface{} {
 		}
 	}
 	return v
-}
-
-func TestHandler_Verify(t *testing.T) {
-	jsonResponse := `{"bitcoin":{"usd":100000.00}}`
-
-	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte(jsonResponse))
-	}))
-	defer mockServer.Close()
-
-	input, err := cbor.Marshal(generated.ArbitraryHttpRequest{
-		Url:    mockServer.URL,
-		Method: "GET",
-	})
-	require.NoError(t, err, "Failed to marshal request")
-
-	h := NewHandler([]string{mockServer.URL})
-
-	encodedOutput, err := h.Execute(context.Background(), input)
-	require.NoError(t, err, "Execute should not fail")
-
-	err = h.Verify(context.Background(), input, encodedOutput)
-	require.NoError(t, err, "Verify should not fail with valid quote")
 }

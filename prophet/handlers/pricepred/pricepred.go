@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
 // PricePredictorSolidity is a handler for the price prediction AI model,
@@ -80,7 +82,11 @@ func (i *PricePredictorInputData) ToPredictRequest() (PredictRequest, error) {
 }
 
 func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]byte, error) {
-	inputData, err := decodeInput(input)
+	inputData, err := prophet.DecodeInputFromABI[PricePredictorInputData](
+		input,
+		PricePredictorMetaData,
+		"solve",
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +119,11 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 		return nil, err
 	}
 
-	encodedRes, err := encodeOutput(outputData)
+	encodedRes, err := prophet.EncodeOutputToABI(
+		outputData,
+		PricePredictorMetaData,
+		"solve",
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -121,57 +131,55 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	return encodedRes, nil
 }
 
-func decodeInput(inputData []byte) (PricePredictorInputData, error) {
-	var in struct {
-		InputData PricePredictorInputData
-	}
-
-	abi, err := PricePredictorMetaData.GetAbi()
+func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output []byte) error {
+	decodedInput, err := prophet.DecodeInputFromABI[PricePredictorInputData](
+		input,
+		PricePredictorMetaData,
+		"solve",
+	)
 	if err != nil {
-		return in.InputData, fmt.Errorf("failed to get ABI: %w", err)
+		return err
 	}
 
-	method, ok := abi.Methods["solve"]
-	if !ok {
-		return in.InputData, fmt.Errorf("method 'solve' not found in generated ABI")
-	}
-
-	vals, err := method.Inputs.Unpack(inputData)
+	decodedOutput, err := prophet.DecodeOutputFromABI[PricePredictorOutputData](
+		output,
+		PricePredictorMetaData,
+		"solve",
+	)
 	if err != nil {
-		return in.InputData, fmt.Errorf("failed to unpack input data: %w", err)
-	}
-	if len(vals) != 1 {
-		return in.InputData, fmt.Errorf("expected 1 argument (InputData), got %d", len(vals))
+		return err
 	}
 
-	err = method.Inputs.Copy(&in, vals)
+	req, err := decodedInput.ToPredictRequest()
 	if err != nil {
-		return in.InputData, fmt.Errorf("failed to copy input data: %w", err)
+		return err
 	}
 
-	return in.InputData, nil
+	verifyReq := VerifyRequest{
+		SolverRequest: req,
+		SolverReceipt: ResponseSolverReceipt{
+			BloomFilter: decodedOutput.SolverReceipt.BloomFilter,
+			CountItems:  int(decodedOutput.SolverReceipt.CountItems.Int64()),
+		},
+		VerificationRatio: 0.01,
+	}
+
+	res, err := s.c.Verify(ctx, verifyReq)
+	if err != nil {
+		return err
+	}
+	if !res.IsVerified {
+		return fmt.Errorf("pricepred: verification failed")
+	}
+	return nil
 }
 
-func encodeOutput(outputData PricePredictorOutputData) ([]byte, error) {
-	abi, err := PricePredictorMetaData.GetAbi()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ABI: %w", err)
-	}
-
-	method, ok := abi.Methods["solve"]
-	if !ok {
-		return nil, fmt.Errorf("method 'solve' not found in generated ABI")
-	}
-
-	packed, err := method.Outputs.Pack(outputData)
-	if err != nil {
-		return nil, fmt.Errorf("failed to pack output data: %w", err)
-	}
-
-	return packed, nil
-}
-
-func buildOutputData(inputData PricePredictorInputData, req PredictRequest, res PredictResponse, backtestingRes *BacktestingResponse) (PricePredictorOutputData, error) {
+func buildOutputData(
+	inputData PricePredictorInputData,
+	req PredictRequest,
+	res PredictResponse,
+	backtestingRes *BacktestingResponse,
+) (PricePredictorOutputData, error) {
 	decimals := big.NewFloat(1e16)
 
 	tokenPreds := make([]*big.Int, len(req.SolverInput.Tokens))
@@ -258,72 +266,4 @@ func buildOutputData(inputData PricePredictorInputData, req PredictRequest, res 
 func float64ToBigInt(f float64, decimals *big.Float) *big.Int {
 	n, _ := big.NewFloat(0).Mul(big.NewFloat(f), decimals).Int(nil)
 	return n
-}
-
-func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output []byte) error {
-	decodedInput, err := decodeInput(input)
-	if err != nil {
-		return err
-	}
-
-	decodedOutput, err := decodeOutput(output)
-	if err != nil {
-		return err
-	}
-
-	req, err := decodedInput.ToPredictRequest()
-	if err != nil {
-		return err
-	}
-
-	verifyReq := VerifyRequest{
-		SolverRequest: req,
-		SolverReceipt: ResponseSolverReceipt{
-			BloomFilter: decodedOutput.SolverReceipt.BloomFilter,
-			CountItems:  int(decodedOutput.SolverReceipt.CountItems.Int64()),
-		},
-		VerificationRatio: 0.01,
-	}
-
-	res, err := s.c.Verify(ctx, verifyReq)
-	if err != nil {
-		return err
-	}
-
-	if !res.IsVerified {
-		return fmt.Errorf("pricepred: verification failed")
-	}
-
-	return nil
-}
-
-func decodeOutput(output []byte) (PricePredictorOutputData, error) {
-	var out struct {
-		OutputData PricePredictorOutputData
-	}
-
-	abi, err := PricePredictorMetaData.GetAbi()
-	if err != nil {
-		return out.OutputData, fmt.Errorf("failed to get ABI: %w", err)
-	}
-
-	method, ok := abi.Methods["solve"]
-	if !ok {
-		return out.OutputData, fmt.Errorf("method 'solve' not found in generated ABI")
-	}
-
-	vals, err := method.Inputs.Unpack(output)
-	if err != nil {
-		return out.OutputData, fmt.Errorf("failed to unpack output data: %w", err)
-	}
-	if len(vals) != 1 {
-		return out.OutputData, fmt.Errorf("expected 1 argument (OutputData), got %d", len(vals))
-	}
-
-	err = method.Inputs.Copy(&out, vals)
-	if err != nil {
-		return out.OutputData, fmt.Errorf("failed to copy output data: %w", err)
-	}
-
-	return out.OutputData, nil
 }

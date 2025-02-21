@@ -1,5 +1,5 @@
 # deploy
-forge create --rpc-url http://localhost:8545 --evm-version paris --private-key 0xba4ce04e9390b2011960bf2ac71977861145ff9bb90137a3f3c56bc722e972f5 prophet/handlers/arbitraryhttp/example/ArbitraryHttpExample.sol:ArbitraryHttpExample --broadcast
+forge create --rpc-url http://localhost:8545 --evm-version paris --private-key 0xba4ce04e9390b2011960bf2ac71977861145ff9bb90137a3f3c56bc722e972f5 prophet/handlers/http/example/HttpExample.sol:HttpExample --broadcast
 
 # schedule the future
 cast send --rpc-url http://127.0.0.1:8545 --private-key 0xba4ce04e9390b2011960bf2ac71977861145ff9bb90137a3f3c56bc722e972f5 --verbosity $CONTRACT "run()"

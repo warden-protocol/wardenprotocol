@@ -89,8 +89,8 @@ import (
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/arbitraryhttp"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred"
 )
 
@@ -226,7 +226,18 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(url))
 	}
 
-	prophet.Register("arbitraryhttp", arbitraryhttp.NewHandler([]string{"https://api.coingecko.com"}))
+	if cast.ToBool(appOpts.Get("http.enabled")) {
+		urls := cast.ToStringSlice(appOpts.Get("http.urls"))
+		parsedURLs := make([]*url.URL, len(urls))
+		for i, u := range urls {
+			parsedURL, err := url.Parse(u)
+			if err != nil {
+				panic(fmt.Errorf("invalid http url: %s", u))
+			}
+			parsedURLs[i] = parsedURL
+		}
+		prophet.Register("http", http.NewHandler(parsedURLs))
+	}
 }
 
 // AppConfig returns the default app config.

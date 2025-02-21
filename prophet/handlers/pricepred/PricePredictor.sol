@@ -27,7 +27,7 @@ contract PricePredictor {
     /**
      * @notice stub function
      */
-    function solve(InputData memory inputData) public pure returns (OutputData memory outputData) {
+    function solve(InputData memory /* inputData */ ) public pure returns (OutputData memory outputData) {
         return outputData;
     }
 }

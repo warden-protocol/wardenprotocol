@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.25 <0.9.0;
 
-contract ArbitraryHttp {
+contract Http {
     struct Request {
         string url;
         string method;

@@ -1,20 +1,20 @@
 git_root := `git rev-parse --show-toplevel`
 tmpdir := `mktemp -d`
 
-all: pricepred stoicquote arbitraryhttp
+all: pricepred stoicquote http
 
 _tools:
     @command -v solc >/dev/null 2>&1 || (echo "solc not found. Please install solc. On MacOS, you can use 'brew install solidity'." && exit 1)
     go install -v github.com/ethereum/go-ethereum/cmd/abigen@v1.15.0
 
-arbitraryhttp: _tools
-  solc --abi --bin --overwrite handlers/arbitraryhttp/ArbitraryHttp.sol -o build
+http: _tools
+  solc --abi --bin --overwrite handlers/http/Http.sol -o build
   abigen \
-  --bin=build/ArbitraryHttp.bin \
-  --abi=build/ArbitraryHttp.abi \
+  --bin=build/Http.bin \
+  --abi=build/Http.abi \
   --pkg=generated \
-  --type=ArbitraryHttp \
-  --out=handlers/arbitraryhttp/generated/arbitraryhttp_bindings.go
+  --type=Http \
+  --out=handlers/http/generated/http_bindings.go
 
 pricepred: _tools
   solc --abi --bin --overwrite handlers/pricepred/PricePredictor.sol -o build

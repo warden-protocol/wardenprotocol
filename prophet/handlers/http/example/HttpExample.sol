@@ -2,9 +2,9 @@
 pragma solidity ^0.8.25;
 
 import "../../../../precompiles/async/IAsync.sol";
-import "../ArbitraryHttp.sol";
+import "../Http.sol";
 
-contract ArbitraryHttpExample {
+contract HttpExample {
     // ID of the last future created by run()
     uint64 public lastFutureId;
 
@@ -13,12 +13,12 @@ contract ArbitraryHttpExample {
     uint256 public tetherPrice;
     uint256 public uniswapPrice;
 
-    function run() public returns (ArbitraryHttp.Request memory request) {
+    function run() public returns (Http.Request memory request) {
         // Create the HTTP request
         request.url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether,uniswap&vs_currencies=usd";
         request.method = "GET";
 
-        lastFutureId = IASYNC_CONTRACT.addFuture("arbitraryhttp", abi.encode(request));
+        lastFutureId = IASYNC_CONTRACT.addFuture("http", abi.encode(request));
 
         // Reset prices while the future is running
         bitcoinPrice = 0;
@@ -30,8 +30,7 @@ contract ArbitraryHttpExample {
         FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
         if (future.futureResponse.result.id == 0) revert("Not ready yet");
 
-        ArbitraryHttp.Response memory response =
-            abi.decode(future.futureResponse.result.output, (ArbitraryHttp.Response));
+        Http.Response memory response = abi.decode(future.futureResponse.result.output, (Http.Response));
 
         // Verify successful response
         require(response.status == 200, "HTTP request failed");

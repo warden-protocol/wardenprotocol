@@ -8,15 +8,14 @@ sidebar_position: 1.5
 
 This article will guide you through creating an [automated Order with price prediction](implement-automated-orders-with-price-prediction/introduction).
 
-You'll prepare input for an Order and run a script that will deploy an instance of the [`AdvancedOrder` contract](implement-automated-orders-with-price-prediction/implement-orders). This contract will compare oracle and predicted prices and automatically perform a swap on Uniswap once the oracle price is less than the predicted price.
+You'll prepare an input for your Order and run a script that will deploy an instance of the [`AdvancedOrder` contract](implement-automated-orders-with-price-prediction/implement-orders). This contract will compare oracle and predicted prices and automatically perform a swap on Uniswap once the oracle price is less than the predicted price.
 
 ## Prerequisites
 
 Before you start, meet the following prerequisites:
 
-- Install `yarn`.
-- Install `Node.js`
-- Install `ether.js`.
+- [Install Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable).
+- [Install Node.js](https://nodejs.org/en/download).
 
 You should also create and fund a Warden key using [SpaceWard on devnet](https://spaceward.devnet.wardenprotocol.org). Take these steps:
 
@@ -43,14 +42,13 @@ You should also create and fund a Warden key using [SpaceWard on devnet](https:/
 
 ## 2. Prepare transaction data
 
-Generate the transaction data that you'll pass with the Order (in the next step):
+Now you need to generate the transaction data that you'll pass with the Order in the next step. You can use the [ethers.js library](https://docs.ethers.org/v5/), as shown below, or any other tool.
 
 1. Set up a JavaScript project. (?)
 
-1. Create a file with code for generating transaction data. (?)
+2. Create a file with code for generating transaction data. (?)
 
-
-   You can use the example below, specifying your Sepolia address from [Prerequisites](#prerequisites) in the `encodeFunctionData()` function:
+   You can use the example below. In the `encodeFunctionData()` function, specify your Sepolia address from [Prerequisites](#prerequisites):
 
    ```js   
    import { ethers } from "ethers";
@@ -61,11 +59,11 @@ Generate the transaction data that you'll pass with the Order (in the next step)
    console.log(data);
    ```
 
-   This example generates data for calling the [swapExactETHForTokens() method](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/router-02#swapexactethfortokens) of the [Uniswap V2Router02](https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol) contract to swap [WETH9](https://sepolia.etherscan.io/address/0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14) for the [ERC-20 TEST](https://sepolia.etherscan.io/address/0xE5a71132Ae99691ef35F68459aDde842118A86a5) token.
+   This example generates data for calling the [swapExactETHForTokens() method](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/router-02#swapexactethfortokens) of the [Uniswap V2Router02](https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol) contract. Uniswap will exchange [WETH9](https://sepolia.etherscan.io/address/0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14) for the [ERC-20 TEST](https://sepolia.etherscan.io/address/0xE5a71132Ae99691ef35F68459aDde842118A86a5) token.
 
-2. Run your code and note down the output—your transaction data. You'll use it in the next step. (?)
+3. Run your code and note down the output—your transaction data. You'll use it in the next step. (?)
 
-3. In case you need to decode your data, use the following code:
+4. In case you need to decode your data, use the following code:
    
    ```js
    const data = "my-transaction-data"
@@ -77,7 +75,56 @@ Generate the transaction data that you'll pass with the Order (in the next step)
 
 ## 3. Edit the Order script
 
-Now you need to configure Order parameters in the script `createAdvancedOrder.sh`, which is located in the `solidity` directory.
+Now you need to configure Order parameters in the script `createAdvancedOrder.sh` in the `solidity` directory:
+
+- Check and adjust these variables: `tx_fields`, `key_id`, `salt`, `factory_address`.
+- Add a `private_key` variable and a `"$private_key"` parameter.
+- In most cases, you can leave other variables untouched.
+
+For a detailed breakdown of all variables, see the following sections.
+
+### Required adjustments
+
+For running the script, the following adjustments are required:
+
+1. In `tx_fields`, check fields for the swap transaction:
+
+   - The amount to swap. You can keep the default value.
+   - The ID of the chain where the swap is going to be performed. In our example, it's Sepolia: `11155111`.
+   - The address of the contract to call. In our example, it's [Uniswap V2Router02 on Sepolia](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments): `0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3`.
+   - The transaction data. Paste the data you generated in the previous step.
+
+2. In `key_id`, paste the numerical ID of your  Warden key from [Prerequisites](#prerequisites).
+
+3. In `salt`, add a unique 32-byte string, which should look like this:
+
+   ```
+   0x57c8a4f3e1d2b0a17c63f4d8e2c1b5f091f67b4a3d1e2f08c5a7b3d9c1e0f4b8
+   ```
+
+   This salt will be used to calculate the address of the Order contract and must be unique for each new Order. You can randomly generate a new string or edit the default value.
+
+4. In `factory_address`, paste the up-to-date [`orderFactory` address]( https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/12345/latest.json).
+
+5. Add a variable `private_key` and paste your private key from [Prerequisites](#prerequisites).
+
+6. Add `"$private_key"` as the last argument in the `just` command section of the script.
+
+### Optional adjustments
+
+After making the required adjustments, you can leave the rest of values untouched or modify them if needed:
+
+- `price_condition`: The condition for executing the Order based on the comparison of the current (oracle) price and the predicted price.
+  - `0` - Execute if the oracle price is `<=` than the predicted price.
+  - `1` - Execute if the oracle price is `<` than the predicted price.
+  - `2` - Execute if the oracle price is `>=` than the predicted price.
+  - `3` - Execute if the oracle price is `>` than the predicted price.
+- `confidence_limit` - The minimum prediction confidence required for executing the Order. It's a percentage, divided by `10^16`.
+- `oracle_price_pair` - The oracle price pair.
+- `predict_price_pair` - The predicted price pair. It's different from the oracle pair, but both pairs are going to be normalized against a common scale.
+- `space_nonce` - The nonce of the [Space](/learn/glossary#space) that is expected at the moment when the Order is being executed. If you've never updated the [Rules](/learn/glossary#approval-rule) of your Space, you can use the default value: `0`.
+- `action_timeout_height` - The block after which the [Action](/learn/glossary#action) will be cancelled if it's not signed with the [Keychain](/learn/glossary#keychain).
+- `expected_approve_expression`, `expected_reject_expression` - The expected approve and reject expressions in your Space, provided in HEX format. If you've never updated the Rules of your Space, just keep the default values.
 
 ### Example
 
@@ -121,51 +168,6 @@ just create-advanced-order \
     "$chain_id" \
     "$private_key"
 ```
-
-It's mandatory to check and update the following local variables: `tx_fields`, `key_id`, `salt`, `factory_address`, `private_key`. You should also add `"$private_key"` as the last parameter in the Just command section. For a detailed breakdown of all variables, see the next sections.
-
-### Required adjustments
-
-For running the script, the following adjustments are required:
-
-1. In `tx_fields`, check fields for the swap transaction:
-
-   - The amount to swap. You can keep the default value.
-   - The ID of the chain where the swap is going to be performed. In our example, it's Sepolia: `11155111`.
-   - The address of the contract to call. In our example, it's [Uniswap V2Router02 on Sepolia](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments): `0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3`.
-   - The transaction data. Paste the data you generated in the previous step.
-
-2. In `key_id`, paste the numerical ID of your  Warden key from [Prerequisites](#prerequisites).
-
-3. In `salt`, add a unique 32-byte string, which should look like this:
-
-   ```
-   0x57c8a4f3e1d2b0a17c63f4d8e2c1b5f091f67b4a3d1e2f08c5a7b3d9c1e0f4b8
-   ```
-
-   This salt will be used to calculate the address of the Order contract and must be unique for each new Order. You can randomly generate a new string or edit the default value.
-
-4. In `factory_address`, paste the up-to-date [`orderFactory` address]( https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/12345/latest.json).
-
-5. Add a variable `private_key` and paste your private key from [Prerequisites](#prerequisites).
-
-6. Add `"$private_key"` as the last parameter in the Just command section of the script.
-
-### Optional adjustments
-
-After making the required adjustments, you can leave the rest of values untouched or modify them if needed:
-
-- `price_condition`: The condition for executing the Order based on the comparison of the current (oracle) price and the predicted price.
-  - `0` - Execute if the oracle price is `<=` than the predicted price.
-  - `1` - Execute if the oracle price is `<` than the predicted price.
-  - `2` - Execute if the oracle price is `>=` than the predicted price.
-  - `3` - Execute if the oracle price is `>` than the predicted price.
-- `confidence_limit` - The minimum prediction confidence required for executing the Order. It's a percentage, divided by `10^16`.
-- `oracle_price_pair` - The oracle price pair.
-- `predict_price_pair` - The predicted price pair. It's different from the oracle pair, but both pairs are going to be normalized against a common scale.
-- `space_nonce` - The nonce of the [Space](/learn/glossary#space) that is expected at the moment when the Order is being executed. If you've never updated the [Rules](/learn/glossary#approval-rule) of your Space, you can use the default value: `0`.
-- `action_timeout_height` - The block after which the [Action](/learn/glossary#action) will be cancelled if it's not signed with the [Keychain](/learn/glossary#keychain).
-- `expected_approve_expression`, `expected_reject_expression` - The expected approve and reject expressions in your Space, provided in HEX format. If you've never updated the Rules of your Space, just keep the default values.
 
 ## 4. Run the script
 

@@ -16,7 +16,7 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 ## Action
 
-An Action is an onchain transaction on the Warden Protocol or an offchain operation, such as sending a message to a Slack channel. An Action is executed after an [Approval](#approval) is granted based on a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent).
+An Action is an onchain transaction on the Warden Protocol or an offchain operation, such as creating a post on the X network. An Action is executed after an [Approval](#approval) is granted based on a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent).
 
 Here are some examples of onchain Actions:
 

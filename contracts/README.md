@@ -11,7 +11,7 @@ from CosmWasm contracts.
 
 ## Generate Schema
 
-To generate schema files perform following commands:
+To generate schema files perform the following commands:
 
 ```shell
 # generate bindings schema
@@ -85,7 +85,7 @@ You can query its state, for example, let's list all existing keys:
 wardend query wasm contract-state smart $contract '{ "warden_all_keys": {"pagination":{"limit":0,"reverse":false}, "derive_addresses":[]} }'--chain-id warden
 ```
 
-And perform transactions, let's create request for a new key:
+And perform transactions, let's create a request for a new key:
 
 ```shell
 wardend tx wasm execute $contract '{ "new_key_request": { "space_id": 1, "keychain_id": 2, "key_type": 1, "timeout_height": 888, "intent_id": 0 } }' --from alice -y

@@ -73,7 +73,7 @@ npm install ethers
        const iface = new ethers.Interface(contractInterface);
       
        // Parameters
-       const amountOutMin = 1;  // Minimum amount of tokens to receive
+       const amountOutMin = 1;  // The minimum amount of tokens to receive
        const path = [
            '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',  // WETH
            '0xE5a71132Ae99691ef35F68459aDde842118A86a5'   // TEST token

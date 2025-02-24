@@ -15,7 +15,7 @@ By default, the Warden Agent Kit supports the following [Actions](/learn/glossar
 - `request_funds`: Request [WARD tokens](/learn/glossary#ward-token) from the faucet.
 - `get_price`: Get the current price of a token using its symbol.
 - `send_tokens`: Send tokens to another address from your key.
-- `create_order`: Create a new Order.
+- `create_order`: Create a new [Order](/learn/glossary#order).
 
 As the Warden Agent Kit continues to evolve, more tools and features will be added to enhance its functionality.
 

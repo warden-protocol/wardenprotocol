@@ -37,7 +37,7 @@ A **Prophet** is a sidecar process running on [validator](/learn/glossary#valida
 - Fetching [Future](#future) requests and executing handlers associated with Futures
 - Fetching requests satisfied by other validators to vote on the results
 
-Prophets run on validator nodes separately from the [`wardend` process](/learn/glossary#warden-protocol-node), without blocking the consensus. Running a Prophet is optional for a validator.
+Prophets run on validator nodes separately from the [`wardend` process](/learn/glossary#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
 This architecture is similar to [how skip:connect works](https://docs.skip.build/connect/learn/architecture).
 

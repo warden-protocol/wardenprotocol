@@ -19,7 +19,14 @@ type FutureHandler interface {
 }
 
 // Execute executes a given future, by invoking the registered handler.
-func Execute(ctx context.Context, f Future) (FutureResult, error) {
+func Execute(ctx context.Context, f Future) (res FutureResult, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic executing future: %v", r)
+			res = FutureResult{}
+		}
+	}()
+
 	s := getHandler(f.Handler)
 	if s == nil {
 		return FutureResult{}, fmt.Errorf("no future handler registered for %s", f.Handler)
@@ -43,7 +50,13 @@ func Execute(ctx context.Context, f Future) (FutureResult, error) {
 }
 
 // Verify verifies a given future result, by invoking the registered handler.
-func Verify(ctx context.Context, f FutureResult) error {
+func Verify(ctx context.Context, f FutureResult) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic verifying future: %v", r)
+		}
+	}()
+
 	s := getHandler(f.Handler)
 	if s == nil {
 		return fmt.Errorf("no future handler registered for %s", f.Handler)
@@ -53,8 +66,7 @@ func Verify(ctx context.Context, f FutureResult) error {
 	log.Debug("start")
 	start := time.Now()
 
-	err := s.Verify(ctx, f.Input, f.Output)
-	if err != nil {
+	if err := s.Verify(ctx, f.Input, f.Output); err != nil {
 		return err
 	}
 

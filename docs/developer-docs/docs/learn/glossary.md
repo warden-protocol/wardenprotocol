@@ -382,7 +382,7 @@ Learn more: [WARD token](/tokens/ward-token/ward)
 
 ## Warden Agent Kit
 
-The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with the Warden Protocol for onchain [Actions](#action) and supports compatibility with any AI Agent framework and [LangChain](https://js.langchain.com/docs/introduction/) tools.
+The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with the Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
 
 Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction)
 

@@ -22,8 +22,8 @@ You should also create and fund a Warden key using [SpaceWard on devnet](https:/
 1. In your Web3 wallet, export your **private key**, you'll need it for signing transactions.
 2. [Connect your wallet](https://help.wardenprotocol.org/spaceward/connect-your-wallet) to SpaceWard.
 3. [Get some test WARD](https://help.wardenprotocol.org/spaceward/get-test-ward).
-4. [Create a key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key) and note down the numerical **key ID** displayed in SpaceWard.
-5. [Get Sepolia ETH](https://help.wardenprotocol.org/spaceward/manage-assets#receive-assets) and note down the **Sepolia address** associated with your key.
+4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key) and note down the numerical **key ID** displayed in SpaceWard.
+5. [Fund your Warden key](https://help.wardenprotocol.org/spaceward/manage-assets#receive-assets) with Sepolia ETH and note down the **Sepolia address** associated with your key.
 
 ## 1. Install dependencies
 
@@ -44,34 +44,78 @@ You should also create and fund a Warden key using [SpaceWard on devnet](https:/
 
 Now you need to generate the transaction data that you'll pass with the Order in the next step. You can use the [ethers.js library](https://docs.ethers.org/v5/), as shown below, or any other tool.
 
-1. Set up a JavaScript project. (?)
+1. Navigate out of the `wardenrotocol` repository and create a new directory for your JavaScript project:
 
-2. Create a file with code for generating transaction data. (?)
+```
+cd ..
+mkdir uniswap-example
+cd uniswap-example
+```
 
-   You can use the example below. In the `encodeFunctionData()` function, specify your Sepolia address from [Prerequisites](#prerequisites):
+2. Initialize a JavaScript project and install [ethers.js](https://docs.ethers.org/v5/):
 
-   ```js   
-   import { ethers } from "ethers";
+```
+npm init -y
+npm install ethers
+```
 
-   const contractInterface = ["function swapExactETHForTokens(uint,address[],address,uint)"];
-   const iface = new ethers.utils.Interface(contractInterface);
-   const data = iface.encodeFunctionData("swapExactETHForTokens", [1, ['0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14','0xE5a71132Ae99691ef35F68459aDde842118A86a5'], 'my-sepolia-address', 1735208842]);
-   console.log(data);
+3. Create a JavaScript file (for example, `swap.js`) and add code for generating transaction data.
+
+   You can use the example below. In the `recipient` const, specify your Sepolia address from [Prerequisites](#prerequisites).
+
+
+   ```js title="uniswap-example/swap.js"
+   const { ethers } = require("ethers");
+
+   // A function for generating Uniswap V2 swap data
+   function generateUniswapSwapData() {
+       const contractInterface = ["function swapExactETHForTokens(uint256 amountOutMin, address[] path, address to, uint256 deadline)"];
+       const iface = new ethers.Interface(contractInterface);
+      
+       // Parameters
+       const amountOutMin = 1;  // Minimum amount of tokens to receive
+       const path = [
+           '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',  // WETH
+           '0xE5a71132Ae99691ef35F68459aDde842118A86a5'   // TEST token
+       ];
+       const recipient = "my-sepolia-address";  // Replace with your Sepolia address
+       const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+       
+       const data = iface.encodeFunctionData("swapExactETHForTokens", [
+           amountOutMin,
+           path,
+           recipient,
+           deadline
+       ]);
+       
+       console.log("Transaction Data:", data);
+       
+       // Decode the data to verify it (optional)
+       const decoded = iface.decodeFunctionData("swapExactETHForTokens", data);
+       console.log("\nDecoded Data:");
+       console.log("Amount Out Min:", decoded.amountOutMin.toString());
+       console.log("Path:", decoded.path);
+       console.log("To:", decoded.to);
+       console.log("Deadline:", new Date(Number(decoded.deadline) * 1000).toISOString());
+   }
+   
+   generateUniswapSwapData();
+
    ```
 
    This example generates data for calling the [swapExactETHForTokens() method](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/router-02#swapexactethfortokens) of the [Uniswap V2Router02](https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol) contract. Uniswap will exchange [WETH9](https://sepolia.etherscan.io/address/0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14) for the [ERC-20 TEST](https://sepolia.etherscan.io/address/0xE5a71132Ae99691ef35F68459aDde842118A86a5) token.
 
-3. Run your code and note down the output—your transaction data. You'll use it in the next step. (?)
+4. Run your code:
 
-4. In case you need to decode your data, use the following code:
-   
-   ```js
-   const data = "my-transaction-data"
-   const contractInterface = ["function swapExactETHForTokens(uint,address[],address,uint)"];
-   const iface = new ethers.utils.Interface(contractInterface);
-   const res = iface.decodeFunctionData('swapExactETHForTokens', data);
-   console.log(res.map(r => r.toString()));
-   ```
+```
+node swap.js
+```
+
+5. The output should look like the following. You'll use it in the next step.
+
+```
+0x7ff36ab50000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000008000000000000000000000000025150e3970317489a29e0413c7603d8257d9ce9b0000000000000000000000000000000000000000000000000000000067bca6bb0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000fff9976782d46cc05630d1f6ebab18b2324d6b14000000000000000000000000e5a71132ae99691ef35f68459adde842118a86a5
+```
 
 ## 3. Edit the Order script
 
@@ -174,6 +218,7 @@ just create-advanced-order \
 Finally, navigate to the `solidity` directory and run the script:
 
 ```
+cd wardenprotocol/solidity
 ./createAdvancedOrder.sh
 ```
 
@@ -212,10 +257,16 @@ Paid: 0.000000000028419088 ETH (3552386 gas * 0.000000008 gwei)
    cast call my-order-address "canExecute()" --rpc-url https://evm.devnet.wardenprotocol.org
    ```
 
-   If everything is correct and your Order can be executed, you'll see the following output:
+   If everything is correct and there is a prediction meeting the confidence limit, you'll receive an output meaning that your Order can be executed:
 
    ```
-   (?)
+   0x0000000000000000000000000000000000000000000000000000000000000001
+   ```
+
+   If the prediction isn't available yet, you'll receive an output meaning that your Order can't be executed:
+
+   ```
+   0x0000000000000000000000000000000000000000000000000000000000000000
    ```
 
 3. Check whether the Order is executed. In the command below, specify your Order address:

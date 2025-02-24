@@ -31,7 +31,7 @@ type Handler struct {
 }
 
 // NewHandler creates a new HTTP handler with the given whitelist.
-func NewHandler(whitelist []*url.URL) *Handler {
+func NewHandler(whitelist []*url.URL, timeout time.Duration) *Handler {
 	// Validate whitelist URLs
 	for _, u := range whitelist {
 		if u == nil {
@@ -44,7 +44,7 @@ func NewHandler(whitelist []*url.URL) *Handler {
 
 	return &Handler{
 		httpClient: &http.Client{
-			Timeout: 5 * time.Second,
+			Timeout: timeout,
 		},
 		whitelist: whitelist,
 	}
@@ -76,13 +76,24 @@ func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 		method = http.MethodGet
 	}
 
-	req, err := http.NewRequestWithContext(ctx, method, reqInput.Url, bytes.NewReader(reqInput.Body))
+	bodyToSend := reqInput.Body
+	if len(bodyToSend) > 0 {
+		var tmp interface{}
+		if cborErr := cbor.Unmarshal(bodyToSend, &tmp); cborErr == nil {
+			jsonBytes, jerr := cborToJSONBytes(bodyToSend)
+			if jerr != nil {
+				return nil, fmt.Errorf("failed to re-encode CBOR body to JSON: %w", jerr)
+			}
+			bodyToSend = jsonBytes
+		}
+	}
+
+	req, err := http.NewRequestWithContext(ctx, method, reqInput.Url, bytes.NewReader(bodyToSend))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create HTTP request: %w", err)
 	}
-	if len(reqInput.Body) > 0 {
+	if len(bodyToSend) > 0 {
 		req.Header.Set("Content-Type", "application/json")
-		// or: req.Header.Set("Content-Type", "application/cbor")
 	}
 
 	resp, err := h.httpClient.Do(req)
@@ -143,4 +154,30 @@ func (h *Handler) isWhitelisted(u *url.URL) bool {
 		}
 	}
 	return false
+}
+
+func cborToJSONBytes(cborData []byte) ([]byte, error) {
+	var i interface{}
+	if err := cbor.Unmarshal(cborData, &i); err != nil {
+		return nil, err
+	}
+	i = convertToStringKeys(i)
+	return json.Marshal(i)
+}
+
+// convertToStringKeys recursively converts map[interface{}]interface{} to map[string]interface{}
+func convertToStringKeys(v interface{}) interface{} {
+	switch x := v.(type) {
+	case map[interface{}]interface{}:
+		m := map[string]interface{}{}
+		for k, v := range x {
+			m[fmt.Sprint(k)] = convertToStringKeys(v)
+		}
+		return m
+	case []interface{}:
+		for i, v := range x {
+			x[i] = convertToStringKeys(v)
+		}
+	}
+	return v
 }

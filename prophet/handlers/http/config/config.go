@@ -6,6 +6,7 @@ package config
 type Config struct {
 	Enabled bool     `mapstructure:"enabled" toml:"enabled"`
 	URLs    []string `mapstructure:"urls" toml:"urls"`
+	Timeout int      `mapstructure:"timeout" toml:"timeout"`
 }
 
 // DefaultConfig returns a default configuration for http.
@@ -13,6 +14,7 @@ func DefaultConfig() *Config {
 	return &Config{
 		Enabled: true,
 		URLs:    []string{"https://api.coingecko.com"},
+		Timeout: 5,
 	}
 }
 
@@ -27,4 +29,7 @@ enabled = "{{ .Http.Enabled }}"
 
 # URLs used for HTTP handler
 urls = ["{{ .Http.URLs | join "," }}"]
+
+# Timeout in seconds for the HTTP client
+timeout = {{ .Http.Timeout }}
 `

@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"time"
 
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
@@ -228,6 +229,8 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 
 	if cast.ToBool(appOpts.Get("http.enabled")) {
 		urls := cast.ToStringSlice(appOpts.Get("http.urls"))
+		timeout := cast.ToInt(appOpts.Get("http.timeout"))
+
 		parsedURLs := make([]*url.URL, len(urls))
 		for i, u := range urls {
 			parsedURL, err := url.Parse(u)
@@ -236,7 +239,9 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 			}
 			parsedURLs[i] = parsedURL
 		}
-		prophet.Register("http", http.NewHandler(parsedURLs))
+		parsedTimeout := time.Duration(timeout) * time.Second
+
+		prophet.Register("http", http.NewHandler(parsedURLs, parsedTimeout))
 	}
 }
 

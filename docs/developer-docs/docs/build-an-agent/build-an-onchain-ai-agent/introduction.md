@@ -6,19 +6,19 @@ sidebar_position: 1
 
 ## Example Orders
 
-This section explains how to enable onchain capabilities for a **Warden Agent** created with the [Warden Agent Kit](/category/warden-agent-kit).
+This section explains how to enable onchain capabilities for a **Warden Agent** created with the [Warden Agent Kit](../warden-agent-kit/introduction).
 
-The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions**.
+The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions** on any destination chain.
 
 :::tip
-You can implement custom logic by using [Warden modules](/category/warden-protocol-modules), [Keychains](/learn/glossary#keychain), and other features. In particular, the [`x/async` Warden module](/learn/warden-protocol-modules/x-async) allows you to create smart contracts utilizing outputs of **AI models**.
+In our example, Orders perform swaps on Uniswap, but you can make them send any transactions to any Ethereum-based and EVM L2 application. For example, your application can transfer ETH or call an arbitrary contract.
 
-In our example, Orders perform swaps on Uniswap, but you can make them send any transactions to any Ethereum-based and EVM L2 app. For example, your application can transfer ETH or call an arbitrary contract.
+You can implement custom logic by using [Warden modules](/learn/warden-protocol-modules/introduction), [Keychains](/learn/glossary#keychain), and other features. In particular, the [`x/async` Warden module](/learn/warden-protocol-modules/x-async) allows you to create smart contracts utilizing outputs of **AI models**.
 :::
 
 :::note Full code
 Please note that the articles in this section typically contain only fragments of code.  
-You can find the full code of the example on GitHub: [/orders](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
 :::
 
 ## Order types
@@ -55,5 +55,5 @@ Both Order types share [common infrastructure](/category/build-the-infrastructur
 
 To get started, take thise steps:
 
-1. [Meet the prerequistes](prerequisites).
+1. [Meet the prerequisites](prerequisites).
 2. [Build the infrastructure for Orders](/category/build-the-infrastructure-for-orders).

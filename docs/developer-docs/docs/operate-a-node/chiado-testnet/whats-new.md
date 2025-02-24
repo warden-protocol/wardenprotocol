@@ -14,7 +14,7 @@ Chiado represents a crucial milestone in our journey towards mainnet launch. Her
 
 ### Consensus AI readiness
 
-By laying the groundwork for AI integration at the consensus level, Chiado makes it possible for [AIBI](/learn/aibi)’s AI-based inferences and decisions to be directly incorporated into the blockchain's execution layer.
+By laying the groundwork for AI integration at the consensus level, Chiado makes it possible for [AIBI](/learn/warden-ai-agents#ai-blockchain-interface)’s AI-based inferences and decisions to be directly incorporated into the blockchain's execution layer.
 
 ### Dual VM architecture
 

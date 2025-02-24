@@ -146,3 +146,48 @@ func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.Fu
 
 	return votes, nil
 }
+
+type completedFuture struct {
+	future types.Future
+	result types.FutureResult
+}
+
+func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]completedFuture, error) {
+	it, err := k.futures.results.IterateRaw(ctx, nil, nil, collections.OrderAscending)
+	if err != nil {
+		return nil, err
+	}
+	defer it.Close()
+
+	futures := make([]completedFuture, 0, limit)
+	for ; it.Valid(); it.Next() {
+		id, err := it.Key()
+		if err != nil {
+			return nil, err
+		}
+
+		result, err := it.Value()
+		if err != nil {
+			return nil, err
+		}
+
+		if _, err := k.votes.Get(ctx, collections.Join(id, result.Submitter)); err == nil {
+			continue
+		}
+
+		fut, err := k.futures.Get(ctx, id)
+		if err != nil {
+			return nil, err
+		}
+
+		futures = append(futures, completedFuture{
+			future: fut,
+			result: result,
+		})
+		if len(futures) == limit {
+			break
+		}
+	}
+
+	return futures, nil
+}

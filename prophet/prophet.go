@@ -57,7 +57,12 @@ func (p *P) Run() error {
 		return fmt.Errorf("failed to run futures loop: %w", err)
 	}
 
-	if err := ExecVotes(p.proposals, p.votesWriter); err != nil {
+	proposals, err := newDedupFutureResultReader(p.proposals)
+	if err != nil {
+		return fmt.Errorf("failed to create futures dedup reader: %w", err)
+	}
+
+	if err := ExecVotes(proposals, p.votesWriter); err != nil {
 		return fmt.Errorf("failed to run votes loop: %w", err)
 	}
 
@@ -88,6 +93,20 @@ func (p *P) Results() ([]FutureResult, func()) {
 
 	return values, func() {
 		p.resultsWriter.Remove(values...)
+	}
+}
+
+// Votes returns a slice with all the votes of futures' results that have been
+// verified.
+// The returned function must be called to remove the votes from the set.
+func (p *P) Votes() ([]Vote, func()) {
+	values := p.votesWriter.Values()
+	if len(values) == 0 {
+		return nil, func() {}
+	}
+
+	return values, func() {
+		p.votesWriter.Remove(values...)
 	}
 }
 

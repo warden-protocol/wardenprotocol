@@ -35,6 +35,23 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 		})
 	}
 
+	// TODO AT: Replace []byte{} with actuall address of validator, probably smth like k.p.SelfAddress()
+	futureWithResults, err := k.getCompletedFuturesWithoutValidatorVote(ctx, []byte{}, 10)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range futureWithResults {
+		k.p.AddFutureResult(prophet.FutureResult{
+			Future: prophet.Future{
+				ID:      f.future.Id,
+				Handler: f.future.Handler,
+				Input:   f.future.Input,
+			},
+			Output: f.result.Output,
+		})
+	}
+
 	return nil
 }
 
@@ -51,8 +68,27 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			}
 		}
 
+		pVotes, done := k.p.Votes()
+		defer done()
+
+		mapVote := func(err error) types.FutureVoteType {
+			if err == nil {
+				return types.FutureVoteType_VOTE_TYPE_VERIFIED
+			}
+			return types.FutureVoteType_VOTE_TYPE_REJECTED
+		}
+
+		votes := make([]*types.VEVoteItem, len(pVotes))
+		for i, v := range pVotes {
+			votes[i] = &types.VEVoteItem{
+				FutureId: v.ID,
+				Vote:     mapVote(v.Err),
+			}
+		}
+
 		asyncve := types.AsyncVoteExtension{
 			Results: results,
+			Votes:   votes,
 		}
 
 		asyncveBytes, err := asyncve.Marshal()

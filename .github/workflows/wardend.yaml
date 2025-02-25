@@ -16,6 +16,9 @@ on:
       - "warden/**"
       - "precompiles/**"
 
+env:
+  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/..."
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -79,7 +82,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v2
         with:
-          just-version: 1.5.0
+          just-version: 1.39.0
 
       - name: ${{ matrix.release }}
         run: just wardend ${{ matrix.release }}

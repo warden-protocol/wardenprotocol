@@ -31,8 +31,8 @@ library Types {
     struct AdvancedOrderData {
         // Which pair use to get price for oracle
         PricePair oraclePricePair;
-        // Which pair use to get price for prediction handler
-        PricePair predictPricePair;
+        // Token for price prediction
+        string predictPriceToken;
         // Price condition for execution: should be executing if current price meets condition to prediced price
         PriceCondition priceCondition;
         // seconds timestamp

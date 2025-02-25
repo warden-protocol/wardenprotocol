@@ -79,7 +79,7 @@ contract CreateOrder is Script {
         Types.PriceCondition priceCondition,
         uint256 confidenceLimit,
         Types.PricePair calldata oraclePricePair,
-        Types.PricePair calldata predictPricePair,
+        string calldata predictPriceToken,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
         uint64 keyId,
         uint64 spaceNonce,
@@ -109,7 +109,7 @@ contract CreateOrder is Script {
         Types.AdvancedOrderData memory orderData = Types.AdvancedOrderData({
             priceCondition: priceCondition,
             oraclePricePair: oraclePricePair,
-            predictPricePair: predictPricePair,
+            predictPriceToken: predictPriceToken,
             pricePredictDate: block.timestamp + 24 hours,
             confidenceLimit: confidenceLimit
         });

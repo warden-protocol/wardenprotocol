@@ -17,7 +17,7 @@ on:
       - "precompiles/**"
 
 env:
-  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/..."
+  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./prophet/... ./precompiles/..."
 
 jobs:
   lint:

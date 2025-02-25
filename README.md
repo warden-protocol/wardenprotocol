@@ -17,4 +17,4 @@ If you're going to contribute to the protocol, see [protocol developer docs on G
 
 With the exception of the SpaceWard folder, this project is released under the terms of the Apache 2.0 License - see [LICENSE](./LICENSE) for details.
 
-Elements of this project are based on the work made by Qredo Ltd on [Fusion Chain](https://github.com/qredo/fusionchain) and were released under the Apache 2 license. See [NOTICE](./NOTICE) for more details.
+Elements of this project are based on the done made by Qredo Ltd on [Fusion Chain](https://github.com/qredo/fusionchain) and were released under the Apache 2.0 license. See [NOTICE](./NOTICE) for more details.

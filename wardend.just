@@ -54,4 +54,4 @@ release:
     	-w /go/src/wardend \
     	ghcr.io/goreleaser/goreleaser-cross:{{ goreleaser_cross_version }} \
       --clean \
-      --skip={{ skip }}
+      {{ skip }}

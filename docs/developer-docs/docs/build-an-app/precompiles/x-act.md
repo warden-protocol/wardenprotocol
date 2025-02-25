@@ -6,12 +6,18 @@ sidebar_position: 2
 
 ## Overview
 
-The [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol) allows calling the [`x/act` module](/learn/warden-protocol-modules/x-act) from EVM smart contracts.
+The `IAct.sol` precompile  enables EVM smart contracts to interact with the [`x/act` module](/learn/warden-protocol-modules/x-act).
 
-In this article, you'll find a full list of available methods and events. You can use them for querying and managing the following components:
+In this article, you'll find a full list of available methods, allowing you to query and manage the following components:
 
 - [Rules](/learn/glossary#approval-rule)
 - [Actions](/learn/glossary#action)
+
+To learn how to use this precompile, refer to [Interact with `x/act`](/category/interact-with-xact).
+
+:::note Code
+You can find the `x/act` precomile code on GitHub: [`IAct.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol)
+:::
 
 ## Precompile address
 
@@ -37,6 +43,8 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   @return template id
   ```
 
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-rules#create-a-new-rule)
+
 ### Update a Rule
 
 - **Method**: `updateTemplate()`
@@ -51,6 +59,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return true If execution was successful
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-rules#update-a-rule)
 
 ### Query Rules
 
@@ -65,6 +74,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return response The paged templates
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-rules#query-rules)
 
 ### Query a Rule by ID
 
@@ -78,6 +88,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return response The template
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-rules#query-a-rule-by-id)
 
 ## Actions
 
@@ -94,6 +105,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return action status
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-actions#vote-for-an-action)
 
 ### Revoke an Action
 
@@ -107,6 +119,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   return true If execution was successful
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-actions#vote-for-an-action)
 
 ### Query Actions
 
@@ -120,6 +133,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return response The paged actions
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-actions#query-actions)
 
 ### Query Actions by address
 
@@ -135,6 +149,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return response The paged actions
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-actions#query-actions-by-address)
 
 ### Query an Action by ID
 
@@ -148,6 +163,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return response The action
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-actions#query-an-action-by-id)
 
 ### Query the Action status by ID
 
@@ -161,6 +177,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
   ```sol
   @return action status
   ```
+- **Usage example**: [Create a new Space](../interact-with-warden-modules/interact-with-x-act/manage-actions#query-the-action-status-by-id)
 
 ## Structs
 

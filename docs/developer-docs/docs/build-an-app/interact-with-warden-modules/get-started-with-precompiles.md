@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-You can interact with [Warden Protocol modules](/category/warden-protocol-modules) in your EVM smart contract by calling [Warden precompiles](/category/precompiles).
+You can interact with [Warden Protocol modules](/learn/warden-protocol-modules/introduction) in your EVM smart contract by calling [Warden precompiles](../precompiles/introduction).
 
 This guide shows how to deploy a simple EVM contract calling the [`spaceById()` function](../precompiles/x-warden#query-a-space-by-id) of the [`x/warden` precompile](../precompiles/x-warden). After that, you'll be able to expand your contract code with other functions, which are documented in the subsections below.
 

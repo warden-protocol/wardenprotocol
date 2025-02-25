@@ -207,7 +207,7 @@ func (k Keeper) futureReadyCallback(
 		return err
 	}
 
-	res, err := k.CallEVMWithData(
+	res, err := k.callEVMWithData(
 		sdkCtx,
 		common.BytesToAddress(k.asyncModuleAddress.Bytes()),
 		&cbAddress,
@@ -222,7 +222,7 @@ func (k Keeper) futureReadyCallback(
 	return err
 }
 
-func (k Keeper) CallEVMWithData(
+func (k Keeper) callEVMWithData(
 	ctx sdk.Context,
 	from common.Address,
 	contract *common.Address,

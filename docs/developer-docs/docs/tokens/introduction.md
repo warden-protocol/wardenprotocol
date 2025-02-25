@@ -10,4 +10,4 @@ There are two tokens available on the Warden Protocol:
 
 - **WARP**: It's the dynamic counterpart to WARD, adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
 
-See the sections below to learn how to get WARD and WARD and other details.
+See the sections below to learn how to get WARD and WARP and other details.

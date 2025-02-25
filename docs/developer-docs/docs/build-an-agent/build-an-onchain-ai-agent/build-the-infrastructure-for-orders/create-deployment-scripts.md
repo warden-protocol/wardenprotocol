@@ -82,5 +82,5 @@ contract CreateOrder is Script {
 
 After implementing the deployment scripts, you can finally start implementing Orders. You can choose one of the two Order types:
 
-- [Automated Orders](/category/implement-automated-orders)
-- [Automated Orders with price prediction](/category/implement-automated-orders-with-price-prediction)
+- [Automated Orders](../implement-automated-orders/introduction)
+- [Automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction)

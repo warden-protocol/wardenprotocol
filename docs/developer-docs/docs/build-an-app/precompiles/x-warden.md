@@ -6,9 +6,9 @@ sidebar_position: 1
 
 ## Overview
 
-The [`IWarden` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol) allows calling the [`x/warden` module](/learn/warden-protocol-modules/x-warden) from EVM smart contracts.
+The `IWarden.sol` precompile enables EVM smart contracts to interact with the [`x/warden` module](/learn/warden-protocol-modules/x-warden).
 
-In this article, you'll find a full list of available methods and events. You can use them for querying and managing the following components:
+In this article, you'll find a full list of available methods, allowing you to query and manage the following components:
 
 - [Spaces](/learn/glossary#space)
 - [Keys](/learn/glossary#key)
@@ -17,6 +17,10 @@ In this article, you'll find a full list of available methods and events. You ca
 - [Signature requests](/learn/glossary#signature-request)
 
 To learn how to use this precompile, refer to [Interact with `x/warden`](/category/interact-with-xwarden).
+
+:::note Code
+You can find the `x/warden` precomile code on GitHub: [`IWarden.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/warden/IWarden.sol)
+:::
 
 ## Precompile address
 

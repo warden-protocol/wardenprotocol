@@ -17579,7 +17579,7 @@ paths:
                     title: list of features compatible with the specified identifier
                 description: >-
                   Version defines the versioning scheme used to negotiate the
-                  IBC verison in
+                  IBC version in
 
                   the connection handshake.
               client_state:
@@ -18395,7 +18395,7 @@ paths:
                     title: list of features compatible with the specified identifier
                 description: >-
                   Version defines the versioning scheme used to negotiate the
-                  IBC verison in
+                  IBC version in
 
                   the connection handshake.
               delay_period:
@@ -18861,7 +18861,7 @@ paths:
                         identifier
                   description: >-
                     Version defines the versioning scheme used to negotiate the
-                    IBC verison in
+                    IBC version in
 
                     the connection handshake.
               proof_height:
@@ -27272,7 +27272,7 @@ definitions:
             title: list of features compatible with the specified identifier
         description: >-
           Version defines the versioning scheme used to negotiate the IBC
-          verison in
+          version in
 
           the connection handshake.
       client_state:
@@ -27643,7 +27643,7 @@ definitions:
             title: list of features compatible with the specified identifier
         description: >-
           Version defines the versioning scheme used to negotiate the IBC
-          verison in
+          version in
 
           the connection handshake.
       delay_period:
@@ -27884,7 +27884,7 @@ definitions:
               title: list of features compatible with the specified identifier
           description: >-
             Version defines the versioning scheme used to negotiate the IBC
-            verison in
+            version in
 
             the connection handshake.
       proof_height:
@@ -28042,7 +28042,7 @@ definitions:
           type: string
         title: list of features compatible with the specified identifier
     description: |-
-      Version defines the versioning scheme used to negotiate the IBC verison in
+      Version defines the versioning scheme used to negotiate the IBC version in
       the connection handshake.
   warden.intent.MsgApproveAction:
     type: object

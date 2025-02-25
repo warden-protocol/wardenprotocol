@@ -87,9 +87,8 @@ contract AdvancedOrder is AbstractOrder, IExecution {
     )
         AbstractOrder(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
     {
-        string[] memory predictTokens = new string[](2);
-        predictTokens[0] = _orderData.predictPricePair.base;
-        predictTokens[1] = _orderData.predictPricePair.quote;
+        string[] memory predictTokens = new string[](1);
+        predictTokens[0] = _orderData.predictPriceToken;
 
         PricePredictMetric[] memory metrics = new PricePredictMetric[](1);
         metrics[0] = PricePredictMetric.Confidence;
@@ -124,14 +123,12 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         GetPriceResponse memory priceResponse =
             SLINKY_PRECOMPILE.getPrice(orderData.oraclePricePair.base, orderData.oraclePricePair.quote);
 
-        if (output.metrics[0][0] < orderData.confidenceLimit || output.metrics[1][0] < orderData.confidenceLimit) {
+        if (output.metrics[0][0] < orderData.confidenceLimit) {
             return false;
         }
 
-        uint256 predictedPrice =
-            _getPriceInQuote(output.predictions[0], output.predictions[1], PRICE_PREDICTION_DECIMALS);
         (uint256 oracleNormalized, uint256 predictedNormalized) = _normalizePrices(
-            priceResponse.price.price, predictedPrice, priceResponse.decimals, PRICE_PREDICTION_DECIMALS
+            priceResponse.price.price, output.predictions[0], priceResponse.decimals, PRICE_PREDICTION_DECIMALS
         );
 
         return _checkPriceCondition(oracleNormalized, predictedNormalized);
@@ -194,10 +191,6 @@ contract AdvancedOrder is AbstractOrder, IExecution {
         uint256 maxDecimals = decimals1 > decimals2 ? decimals1 : decimals2;
         normalizedPrice1 = price1 * (10 ** (maxDecimals - decimals1));
         normalizedPrice2 = price2 * (10 ** (maxDecimals - decimals2));
-    }
-
-    function _getPriceInQuote(uint256 priceA, uint256 priceB, uint256 decimals) internal pure returns (uint256) {
-        return (priceA * 10 ** decimals) / priceB;
     }
 
     function _checkPriceCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {

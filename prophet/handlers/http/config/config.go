@@ -28,7 +28,7 @@ const DefaultEVMConfigTemplate = `
 enabled = "{{ .Http.Enabled }}"
 
 # URLs used for HTTP handler
-urls = ["{{ .Http.URLs | join "," }}"]
+urls = ["{{ range $i, $url := .Http.URLs }}{{if $i}},{{end}}{{$url}}{{end}}"]
 
 # Timeout in seconds for the HTTP client
 timeout = {{ .Http.Timeout }}

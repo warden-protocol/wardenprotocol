@@ -41,8 +41,11 @@ func (p *Precompile) GetCreateFutureEvent(ctx sdk.Context, writerAddress *ethcmn
 	}
 
 	topics[1], err = evmoscmn.MakeTopic(typedEvent.GetId())
-	topics[2], err = evmoscmn.MakeTopic(creatorAddress)
+	if err != nil {
+		return nil, err
+	}
 
+	topics[2], err = evmoscmn.MakeTopic(creatorAddress)
 	if err != nil {
 		return nil, err
 	}

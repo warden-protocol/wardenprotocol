@@ -8,6 +8,7 @@ on:
       - "cmd/wardend/**"
       - "warden/**"
       - "precompiles/**"
+      - "prophet/**"
     tags:
       - "wardend/v*"
   pull_request:
@@ -15,6 +16,7 @@ on:
       - "cmd/wardend/**"
       - "warden/**"
       - "precompiles/**"
+      - "prophet/**"
 
 env:
   modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./prophet/... ./precompiles/..."

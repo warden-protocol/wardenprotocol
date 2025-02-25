@@ -22,7 +22,7 @@ contract CreateOrder is Script {
         if (bytes(vm.envOr("MNEMONIC", string(""))).length == 0) {
             (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
         } else {
-            broadcaster = vm.rememberKey(vm.envUint("PRIVATE_KEY"));
+            broadcaster = vm.rememberKey(vm.envUint("PRIVATE"));
         }
         address factory = vm.envAddress("FACTORY_ADDRESS");
         if (factory == address(0)) {

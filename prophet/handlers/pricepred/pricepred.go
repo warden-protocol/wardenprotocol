@@ -97,10 +97,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 
 	var backtestingRes *BacktestingResponse
 	if len(inputData.Metrics) > 0 {
-		res, err := s.c.Backtesting(ctx, BacktestingRequest{ //nolint:all
-			SolverInput:       req.SolverInput,
-			FalsePositiveRate: req.FalsePositiveRate,
-		})
+		res, err := s.c.Backtesting(ctx, BacktestingRequest(req))
 		if err != nil {
 			return nil, err
 		}

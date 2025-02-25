@@ -417,7 +417,7 @@ func (p Precompile) GetUpdateKeychainEvent(ctx sdk.Context, _ *common.Address, e
 	var marshaled []byte
 	if err := precommon.ParseSdkEvent(eventUpdateKeychain, func(m proto.Message) {
 		marshaled, err = proto.Marshal(m)
-		typedEvent.Unmarshal(marshaled)
+		typedEvent.Unmarshal(marshaled) //nolint:errcheck
 	}); err != nil {
 		return nil, err
 	}

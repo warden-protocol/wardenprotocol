@@ -35,4 +35,3 @@ buenavista-1
 ## Denomination
 
 Buenavista's denomination is `uward` / 0.000001 [WARD](/tokens/ward-token/ward).
-

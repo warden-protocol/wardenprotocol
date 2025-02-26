@@ -12,16 +12,15 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 
 Chiado represents a crucial milestone in our journey towards mainnet launch. Here are the key features of the update:
 
-### Consensus AI readiness
+### The `x/async` module
 
-By laying the groundwork for AI integration at the consensus level, Chiado makes it possible for [AIBI](/learn/warden-ai-agents#ai-blockchain-interface)’s AI-based inferences and decisions to be directly incorporated into the blockchain's execution layer.
+The [`x/async` Warden module](/learn/warden-protocol-modules/x-async) runs offchain heavyweight computations asynchronously and stores the results onchain. It allows developers to build any logic combining offchain computation with onchain verification and enables smart contracts to leverage AI model outputs directly on the blockchain.
 
 ### Dual VM architecture
 
 Chiado now supports EVM Solidity contracts alongside CosmWasm. This dual VM architecture makes it easier to integrate AI inferences with smart contracts, and users can connect directly to EVM apps.
 
 Learn how to deploy a Solidity contract: [Deploy an EVM contract](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract).
-
 
 ### Price feed oracles
 Chiado introduces consensus-validated price feed [oracles](/learn/oracle-services) to Warden, ensuring reliable data essential to a vast range of DeFi applications.

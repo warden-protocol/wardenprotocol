@@ -47,7 +47,6 @@ Now you need to generate the transaction data that you'll pass with the Order in
 1. Navigate out of the `wardenrotocol` repository and create a new directory for your JavaScript project:
 
 ```
-cd ..
 mkdir uniswap-example
 cd uniswap-example
 ```

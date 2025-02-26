@@ -54,7 +54,7 @@ Also, the more WARP is accumulated by an address, the bigger the airdrop of WARD
 
 ## Phases
 
-WARP evolves alongside the Warden Protocol, adapting to its milestones and community needs.
+WARP evolves alongside Warden Protocol, adapting to its milestones and community needs.
 
 The phases will be split into:
 

@@ -95,8 +95,8 @@ Future execution includes the following steps, as shown in the diagram below:
 4. Node 2 notices the new result for the Future and invokes its handler (`MathHandler`) to verify the result.
 5. The verification is broadcasted as vote extensions and eventually recorded at height H+N+M+1 since [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) are committed to the state only in the next block.
 
-
 ```mermaid
+%%{init: {'themeVariables': {'fontSize': '36px'}}}%%
 sequenceDiagram
     participant Alice
     box Purple Validator 1
@@ -114,7 +114,8 @@ sequenceDiagram
         critical Block H
         Alice->>+Node 1: AddFuture("MathHandler", "2+4")
       Node 1->>-Alice: Future ID: 143
-      Node 1<<->>Node 2: p2p
+      Node 1-->>Node 2: p2p
+      Node 2-->>Node 1: p2p
     end
     
     
@@ -127,7 +128,8 @@ sequenceDiagram
           Node 1->>+Prophet 1: Any result ready?
           Prophet 1->>-Node 1: Future 143: "6"
           Node 1->Node 1: record result in block H+N
-          Node 1<<->>Node 2: p2p
+          Node 1-->>Node 2: p2p
+          Node 2-->>Node 1: p2p
         end
 
     Prophet 2->>+Node 2: Any Futures to verify?
@@ -138,6 +140,7 @@ sequenceDiagram
         critical Block H+N+M
           Node 2->>+Prophet 2: Any vote ready?
           Prophet 2->>-Node 2: Future 143: "correct"
-          Node 1<<->>Node 2: Broadcast as vote extension to be included in block H+N+M+1
+          Node 1-->>Node 2: Broadcast as vote extension to be included in block H+N+M+1
+          Node 2-->>Node 1: Broadcast as vote extension to be included in block H+N+M+1
         end
 ```

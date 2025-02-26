@@ -14,7 +14,7 @@ The [`x/evm` Warden module](/learn/warden-protocol-modules/external-modules#xevm
 This guide explains how to create and deploy a Solidity smart contract on a Warden local chain or on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview). You'll deploy a simple counter contract using [Foundry](https://book.getfoundry.sh)'s toolset.
 
 :::tip
-Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users. You can call [Warden precompiles](../precompiles/introduction) to [interact with Warden modules](../interact-with-warden-modules/introduction), accessing all core features of the Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
+Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users. You can call [Warden precompiles](../precompiles/introduction) to [interact with Warden modules](../interact-with-warden-modules/introduction), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
 :::
 
 

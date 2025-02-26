@@ -16,7 +16,7 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 ## Action
 
-An Action is an onchain transaction on the Warden Protocol or an offchain operation, such as creating a post on the X network. An Action is executed after an [Approval](#approval) is granted based on a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent).
+An Action is an onchain transaction on Warden Protocol or an offchain operation, such as creating a post on the X network. An Action is executed after an [Approval](#approval) is granted based on a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent).
 
 Here are some examples of onchain Actions:
 
@@ -30,7 +30,7 @@ Here are some examples of onchain Actions:
 
 A Warden AI Agent is an AI-driven program that supports both offchain and onchain operations.
 
-Thanks to their native integration with the Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and managing [Orders](#order). You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit). AI integration is ensured by Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
+Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and managing [Orders](#order). You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit). AI integration is ensured by Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
 
 Learn more: [Warden AI Agents](warden-ai-agents), [Build an Agent](/build-an-agent/introduction)  
 
@@ -81,7 +81,7 @@ Learn more: [Bridging](bridging)
 
 ## Builder incentive
 
-The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichain Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
+Warden Protocol is open to third-party contributions: core protocol development or building [Omnichain Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
 
 ---
 
@@ -109,7 +109,7 @@ A user requests a Future, specifying an input and a handler for interpreting the
 
 ## Governance
 
-The Warden Protocol supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
+Warden Protocol supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
@@ -119,7 +119,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intent is a user-defined script specifying the following:
 
-- An [Action](#action)—any onchain action on the Warden Protocol
+- An [Action](#action)—any onchain action on Warden Protocol
 - An [Approval Rule](#approval-rule)—a set of conditions under which the Action is performed
 
 After an Action is initiated, the [Intent Engine](#intent-engine) checks the Approval Rule. If the conditions are met, an [Approval](#approval) is granted, and the Action is carried out.
@@ -155,7 +155,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
-3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to the Warden Protocol.
+3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to Warden Protocol.
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
@@ -171,7 +171,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 Every [Omnichain Application](#omnichain-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
 
-The Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
+Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
 Learn more: [Build a Keychain](/build-a-keychain/introduction)
 
@@ -216,7 +216,7 @@ By decoupling application-layer and protocol-layer security, Warden takes the be
 
 ## Module
 
-Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of the Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](/learn/glossary#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
+Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](/learn/glossary#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
 
 Learn more: [Warden Protocol modules](warden-protocol-modules/introduction)
 
@@ -224,7 +224,7 @@ Learn more: [Warden Protocol modules](warden-protocol-modules/introduction)
 
 ## Node
 
-A Warden Protocol node is a server running the software (binary) of the Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference).
+A Warden Protocol node is a server running the software (binary) of Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference).
 
 Reasons for running a node include the following:
 
@@ -246,7 +246,7 @@ Learn more: [Build an app](/build-an-app/introduction)
 
 An Omnichain Contract is the main part of any [Omnichain Application](#omnichain-application): a smart contract that allows signing transactions and messages at any destination chain.
 
-In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of the Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [AI Blockchain Interface](#ai-blockchain-interface-aibi) and [Order](#order).
+In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [AI Blockchain Interface](#ai-blockchain-interface-aibi) and [Order](#order).
 
 Learn more: [Build an app](/build-an-app/introduction)
 
@@ -295,7 +295,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
-3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to the Warden Protocol.
+3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to Warden Protocol.
 
 Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
@@ -382,7 +382,7 @@ Learn more: [WARD token](/tokens/ward-token/ward)
 
 ## Warden Agent Kit
 
-The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with the Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
+The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
 
 Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction)
 

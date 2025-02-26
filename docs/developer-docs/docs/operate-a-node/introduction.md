@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Warden Protocol nodes
 
-A Warden Protocol node is a server running the software (binary) of the Warden Protocol.
+A Warden Protocol node is a server running the software (binary) of Warden Protocol.
 
 Reasons for running a node include the following:
 

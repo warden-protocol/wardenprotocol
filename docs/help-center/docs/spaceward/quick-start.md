@@ -22,10 +22,7 @@ This is a **testnet environment**. It's aimed for testing and can break at any t
 
 The following is a brief overview explaining how to start using SpaceWard. For more details, follow the provided links to step-by-step guides.
 
-1. Create one of the following Cosmos wallets:    
-   - 👉 [Leap](https://leapwallet.io/download)
-   - 👉 [Keplr](https://www.keplr.app/download)
-   - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension)
+1. Create a Web3 wallet. You can use any EVM wallet or a wallet supported by [WalletConnect](https://walletconnect.network).
 
 2. Visit SpaceWard:
 

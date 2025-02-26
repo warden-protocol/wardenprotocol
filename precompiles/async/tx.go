@@ -69,7 +69,7 @@ func newMsgAddFuture(args []interface{}, origin common.Address, method *abi.Meth
 
 	callbackAddressEth, ok := args[2].(common.Address)
 	if !ok {
-		return nil, fmt.Errorf("expected string for callback address, got %T", args[2])
+		return nil, fmt.Errorf("expected common.Address for callback address, got %T", args[2])
 	}
 
 	var callbackAddress string

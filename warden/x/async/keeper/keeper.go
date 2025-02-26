@@ -187,13 +187,13 @@ func (k Keeper) futureReadyCallback(
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
 	abi, err := callbacks.IAsyncCallbackMetaData.GetAbi()
+	if err != nil {
+		return err
+	}
+
 	method := "cb"
 	if _, ok := abi.Methods[method]; !ok {
 		return fmt.Errorf("invalid callback method: %v", method)
-	}
-
-	if err != nil {
-		return err
 	}
 
 	cbAddress, err := precommon.AddressFromBech32Str(future.Callback)

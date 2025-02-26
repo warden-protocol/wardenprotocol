@@ -37,10 +37,11 @@ type (
 		authority          string
 		asyncModuleAddress sdk.Address
 
-		futures      *FutureKeeper
-		handlers     *HandlersKeeper
-		getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper
-		votes        collections.Map[collections.Pair[uint64, []byte], int32]
+		futures       *FutureKeeper
+		handlers      *HandlersKeeper
+		getEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper
+		accountKeeper types.AccountKeeper
+		votes         collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
 	}
@@ -66,6 +67,7 @@ func NewKeeper(
 	p *prophet.P,
 	getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper,
 	asyncModuleAddress sdk.Address,
+	accountKeeper types.AccountKeeper,
 	//selfValAddr sdk.ConsAddress,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
@@ -96,10 +98,11 @@ func NewKeeper(
 		asyncModuleAddress: asyncModuleAddress,
 		logger:             logger,
 
-		futures:      futures,
-		handlers:     handlers,
-		getEvmKeeper: getEvmKeeper,
-		votes:        votes,
+		futures:       futures,
+		handlers:      handlers,
+		getEvmKeeper:  getEvmKeeper,
+		accountKeeper: accountKeeper,
+		votes:         votes,
 
 		p: p,
 	}
@@ -228,7 +231,13 @@ func (k Keeper) callEVMWithData(
 	contract *common.Address,
 	data []byte,
 ) (*evmostypes.MsgEthereumTxResponse, error) {
-	var nonce uint64 = 0
+	fromAcc := k.accountKeeper.GetAccount(ctx, from.Bytes())
+	if fromAcc == nil {
+		fromAcc = k.accountKeeper.NewAccountWithAddress(ctx, from.Bytes())
+		k.accountKeeper.SetAccount(ctx, fromAcc)
+	}
+	nonce := fromAcc.GetSequence()
+
 	evmKeeper := k.getEvmKeeper(0)
 
 	args, err := json.Marshal(evmostypes.TransactionArgs{
@@ -271,6 +280,12 @@ func (k Keeper) callEVMWithData(
 	if err != nil {
 		return nil, err
 	}
+
+	if err := fromAcc.SetSequence(fromAcc.GetSequence() + 1); err != nil {
+		return nil, err
+	}
+
+	k.accountKeeper.SetAccount(ctx, fromAcc)
 
 	return res, nil
 }

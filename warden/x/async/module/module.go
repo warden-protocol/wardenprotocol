@@ -221,6 +221,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Prophet,
 		in.GetEvmKeeper,
 		asyncModuleAddress,
+		in.AccountKeeper,
 	)
 	m := NewAppModule(
 		in.Cdc,

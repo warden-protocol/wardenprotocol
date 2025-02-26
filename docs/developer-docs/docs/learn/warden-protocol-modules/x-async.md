@@ -96,7 +96,6 @@ Future execution includes the following steps, as shown in the diagram below:
 5. The verification is broadcasted as vote extensions and eventually recorded at height H+N+M+1 since [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) are committed to the state only in the next block.
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '36px'}}}%%
 sequenceDiagram
     participant Alice
     box Purple Validator 1

@@ -110,7 +110,7 @@ sequenceDiagram
     end
 
 
-        critical Block H
+    critical Block H
         Alice->>+Node 1: AddFuture("MathHandler", "2+4")
       Node 1->>-Alice: Future ID: 143
       Node 1-->>Node 2: p2p

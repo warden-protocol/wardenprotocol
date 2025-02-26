@@ -4,7 +4,7 @@ sidebar_position: 8
 
 # Node API reference
 
-Warden Protocol nodes are central points of contact for the Warden Protocol. They're responsible for routing requests to [Keychain](/learn/glossary#keychain) and for routing responses back to the client.
+Warden Protocol nodes are central points of contact for Warden Protocol. They're responsible for routing requests to [Keychain](/learn/glossary#keychain) and for routing responses back to the client.
 
 There are two ways to communicate with a node:
 

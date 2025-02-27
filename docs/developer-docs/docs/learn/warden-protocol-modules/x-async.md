@@ -40,7 +40,7 @@ There are two types of Futures, depending on the handler:
 - **Price predictions**  
   Futures can produce AI-driven price predictions. For a usage example, see the following guide: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
 - **HTTP requests**  
-  Warden Futures accept handlers for making HTTP requests to any external service. For a example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+  Warden Futures accept handlers for making HTTP requests to any external service. For example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
 
 ### Prophet
 

@@ -27,7 +27,8 @@ salt="0x245afc3995437DF931C577729d6789DD1C8C60386f776e65727329616e792888"
 factory_address="0xfe20b64194DD392C37711027A7f38dB10F499B28"
 rpc_url="https://evm.devnet.wardenprotocol.org"
 chain_id="12345"
-# Used only if mnemonic is not provided
+# Used only if private is not provided, set to shulgin by default
+# mnemonic=""
 private=""
 
 # Execute the Just command for creating a basic order
@@ -45,4 +46,5 @@ just create-basic-order \
     "$factory_address" \
     "$rpc_url" \
     "$chain_id" \
-    "$private"
+    "$private" \
+    # "$mnemonic"

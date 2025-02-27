@@ -11,11 +11,12 @@ space_nonce="0"
 action_timeout_height="1000000000"
 expected_approve_expression="0x616e7928312c2077617264656e2e73706163652e6f776e65727329"
 expected_reject_expression="0x616e7928312c2077617264656e2e73706163652e6f776e65727329"
-salt="0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91484f3a722"
+salt="0x05418460deb76d57af601be27e777b93592d8d4d4a4096c57876a91484f3a722"
 factory_address="0xe88a9E867E63B07fD9Eb192cA2332877744FCE04"
 rpc_url="https://evm.devnet.wardenprotocol.org"
 chain_id="12345"
-# Used only if mnemonic is not provided
+# Used only if private is not provided, set to shulgin by default
+# mnemonic=""
 private=""
 
 # Execute the Just command for creating an advanced order
@@ -34,4 +35,5 @@ just create-advanced-order \
     "$factory_address" \
     "$rpc_url" \
     "$chain_id" \
-    "$private"
+    "$private" \
+    # "$mnemonic"

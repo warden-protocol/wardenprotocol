@@ -19,10 +19,10 @@ contract CreateOrder is Script {
     error InvalidFactory();
 
     constructor() {
-        if (bytes(vm.envOr("MNEMONIC", string(""))).length == 0) {
-            (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
-        } else {
+        if (bytes(vm.envOr("PRIVATE", string(""))).length != 0) {
             broadcaster = vm.rememberKey(vm.envUint("PRIVATE"));
+        } else {
+            (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
         }
         address factory = vm.envAddress("FACTORY_ADDRESS");
         if (factory == address(0)) {

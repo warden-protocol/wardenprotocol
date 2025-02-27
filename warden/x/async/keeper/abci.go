@@ -35,8 +35,13 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 		})
 	}
 
-	// TODO AT: Replace []byte{} with actuall address of validator, probably smth like k.p.SelfAddress()
-	futureWithResults, err := k.getCompletedFuturesWithoutValidatorVote(ctx, []byte{}, 10)
+	selfAddress := k.p.SelfAddress()
+
+	if len(selfAddress) == 0 {
+		return nil
+	}
+
+	futureWithResults, err := k.getCompletedFuturesWithoutValidatorVote(ctx, selfAddress, 10)
 	if err != nil {
 		return err
 	}

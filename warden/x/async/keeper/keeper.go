@@ -314,7 +314,7 @@ func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, val
 			return nil, err
 		}
 
-		if _, err := k.votes.Get(ctx, collections.Join(id, result.Submitter)); err == nil {
+		if _, err := k.votes.Get(ctx, collections.Join(id, valAddress)); err == nil {
 			continue
 		}
 

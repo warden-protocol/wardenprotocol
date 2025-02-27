@@ -20,7 +20,7 @@ You can call the `x/async` module from your EVM smart contract using the [`x/asy
 
 The `x/async` module allows you to build any logic combining offchain computation with onchain verification. For example, you can [implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
 
-At this moment, `x/async` does two types of computations:
+At this moment, `x/async` supports two types of computations:
 
 - AI-driven price predictions
 - HTTP requests to external services, such as blockchain APIs

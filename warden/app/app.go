@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"time"
 
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
@@ -90,6 +91,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred"
 )
 
@@ -223,6 +225,23 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 			panic(fmt.Errorf("invalid pricepred url: %s", u))
 		}
 		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(url))
+	}
+
+	if cast.ToBool(appOpts.Get("http.enabled")) {
+		urls := cast.ToStringSlice(appOpts.Get("http.urls"))
+		timeout := cast.ToInt(appOpts.Get("http.timeout"))
+
+		parsedURLs := make([]*url.URL, len(urls))
+		for i, u := range urls {
+			parsedURL, err := url.Parse(u)
+			if err != nil {
+				panic(fmt.Errorf("invalid http url: %s", u))
+			}
+			parsedURLs[i] = parsedURL
+		}
+		parsedTimeout := time.Duration(timeout) * time.Second
+
+		prophet.Register("http", http.NewHandler(parsedURLs, parsedTimeout))
 	}
 }
 

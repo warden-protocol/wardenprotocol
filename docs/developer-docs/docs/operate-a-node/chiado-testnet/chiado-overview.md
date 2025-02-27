@@ -10,10 +10,10 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 
 ## Version history
 
-| Release                                                                         | Upgrade guide                        | Block height         | Date          |
-| ------------------------------------------------------------------------------- | ------------------------------------ | -------------------- | ------------- |
-| [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) |                                      | genesis              |               |
-| [v0.6.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.0) | [Upgrade to v0.6.0](upgrade/v0.6.0)  | XXX                  | March 3, 2025 |
+| Release                                                                         | Block height         | Date          | Upgrade guide                        |
+| ------------------------------------------------------------------------------- | -------------------- | ------------- | ------------------------------------ |
+| [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) | genesis              |               |                                      |
+| [v0.6.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.0) | XXX                  | March 3, 2025 | [Upgrade to v0.6.0](upgrade/v0.6.0)  |
 
 ## Binary
 

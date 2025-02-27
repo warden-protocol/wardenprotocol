@@ -101,9 +101,11 @@ A full node is a server running a software (binary) that maintains a complete up
 
 ## Future
 
-A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain.
+A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. Futures currently support two types of computations: HTTP requests to external services, such as blockchain APIs, and AI-driven price predictions.
 
 A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It doesn't slow the blockchain down thanks to asynchronous execution.
+
+Learn more: [`x/async`](warden-protocol-modules/x-async) 
 
 ---
 
@@ -286,6 +288,8 @@ A Prophet is a sidecar process running on [validator](#validator) nodes, which h
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.
+
+Learn more: [`x/async`](warden-protocol-modules/x-async) 
 
 ---
 

@@ -9,16 +9,21 @@ sidebar_position: 4
 The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework
 and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions).
 
-This module implements the following concepts, which you can find in our Glossary:
+This module implements the following concepts:
 
-- [Future](/learn/glossary#future)
-- [Prophet](/learn/glossary#prophet)
+- [Future](#future)
+- [Prophet](#prophet)
 
 ## Usage
 
 You can call the `x/async` module from your EVM smart contract using the [`x/async` precompile](/build-an-app/precompiles/x-async).
 
 The `x/async` module allows you to build any logic combining offchain computation with onchain verification. For example, you can [implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
+
+At this moment, `x/async` does two types of computations:
+
+- AI-driven price predictions
+- HTTP requests to external services, such as blockchain APIs
 
 ## Concepts
 
@@ -30,6 +35,13 @@ A user can request a Future, specifying an **input** and a **handler** (referenc
 
 After that, a [validator](/learn/glossary#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 
+There are two types of Futures, depending on the handler:
+
+- **Price predictions**  
+  Futures can produce AI-driven price predictions. For a usage example, see the following guide: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
+- **HTTP requests**  
+  Warden Futures accept handlers for making HTTP requests to any external service. For a example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+
 ### Prophet
 
 A **Prophet** is a sidecar process running on [validator](/learn/glossary#validator) nodes, which has two responsibilities:
@@ -39,9 +51,7 @@ A **Prophet** is a sidecar process running on [validator](/learn/glossary#valida
 
 Prophets run on validator nodes separately from the [`wardend` process](/learn/glossary#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
-This architecture is similar to [how skip:connect works](https://docs.skip.build/connect/learn/architecture).
-
-![image.png](../../../static/img/x-async-1.png)
+This architecture is similar to [how Skip:Connect works](https://docs.skip.build/connect/learn/architecture).
 
 ## State
 
@@ -79,11 +89,12 @@ The votes are stored in memory for the blockchain node to fetch it later.
 
 The [ABCI](https://docs.cometbft.com/v1.0/spec/abci/) (Application Blockchain Interface) lifecycle includes these steps:
 
-1. If the validator is the proposer for the next block, it fetches results from the [Prophet](#prophet) and includes them in a special transaction at the beginning of the block proposal.
-2. All validators, even non-proposers, broadcast their votes on existing [Futures](#future) as [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions).
-3. When the proposal is processed (for example, the block is finalized), all new results and new votes are persisted in the blockchain storage.
-
-![image.png](../../../static/img/x-async-2.png)
+1. **Preparing a proposal**  
+   Vote extensions from the previous block are processed and included in the proposal for the next block. The proposer validator also fetches new results from its [Prophet](#prophet) instance and includes them in a special transaction at the beginning of the block proposal.
+2. **Broadcasting votes**  
+   Then all validators, even non-proposers, fetch votes on existing [Futures](#future) from their Prophets and broadcast these votes as [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions).
+3. **Finalizing the block**  
+   When the proposal is processed (for example, the block is finalized), all new results and new votes are persisted in the blockchain storage, ready to be consumed.
 
 ## Future execution flow
 

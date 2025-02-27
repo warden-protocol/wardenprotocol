@@ -50,6 +50,7 @@ message MsgAddFuture {
   string creator = 1;
   string handler = 2;
   bytes input = 3;
+  string callback = 4;
 }
 
 message MsgAddFutureResponse {

@@ -6,13 +6,9 @@ sidebar_position: 3
 
 To start using SpaceWard, connect your **Cosmos wallet** to your Warden account.
 
-## Create a Cosmos wallet
+## Create a wallet
 
-If you don't have a wallet, create one. Currently, the following wallets are available:
-
-- 👉 [Leap](https://leapwallet.io/download) 
-- 👉 [Keplr](https://www.keplr.app/download)
-- 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension) 
+If you don't have a Web3 wallet, create one. You can use any EVM wallet or a wallet supported by [WalletConnect](https://walletconnect.network).
 
 ## Connect
 

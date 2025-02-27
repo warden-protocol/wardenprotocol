@@ -19,6 +19,8 @@ message Future {
   // Input data to be used by the handler to execute the Future.
   // The actual format is determined by the handler being used.
   bytes input = 4;
+  // Callback to be called when the Future is completed.
+  string callback = 5;
 }
 
 // FutureResult is the result of the execution of a Future.

@@ -12,4 +12,4 @@ Incentive programs include the following:
 
 2. **Developer incentives**: These incentives are for developers building and deploying applications on Warden. Additionally, an Activity Mining Program will be launched rewarding applications that reach certain milestones (e.g. total value locked, monthly active users), and their users.
 
-3. **R&D programs**: Where the Warden Protocol would benefit from additional core functionality, or integrations, Warden will commission work to developer teams to contribute to the core execution layers of the protocol.
+3. **R&D programs**: Where Warden Protocol would benefit from additional core functionality, or integrations, Warden will commission work to developer teams to contribute to the core execution layers of the protocol.

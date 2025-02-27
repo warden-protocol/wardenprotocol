@@ -11,7 +11,7 @@ To start building your own Agent, follow [Quick start](quick-start). If you'd li
 This example implements a **CLI Agent** that is able to do the following:
 
 - Process user prompts in natural language using the [LangChain](add-agent-capabilities#incorporate-langchain-tools) extension.
-- Interact with the Warden Protocol using the supported [Agent Actions](agent-actions).
+- Interact with Warden Protocol using the supported [Agent Actions](agent-actions).
 
 :::note Code
 The example code is available on GitHub: [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md)

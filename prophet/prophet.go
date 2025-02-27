@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"sync"
 	"time"
 
 	lru "github.com/hashicorp/golang-lru/v2"
@@ -26,7 +27,8 @@ type P struct {
 	resultsWriter *s[FutureResult]
 	votesWriter   *s[Vote]
 
-	SelfAddress []byte
+	selfAddressRwLock sync.RWMutex
+	selfAddress       []byte
 }
 
 // New returns an initialized P. Call [P.Run] to start the main loop.
@@ -68,19 +70,24 @@ func (p *P) Run(tendermintRpc string) error {
 	}
 
 	go func() {
-		clientCtx, err := client.NewClientFromNode(tendermintRpc)
+		client, err := client.NewClientFromNode(tendermintRpc)
 		if err != nil {
 			panic(err)
 		}
-
-		for p.SelfAddress == nil {
-			status, err := clientCtx.Status(context.Background())
+		timeout := time.Now().Add(30 * time.Second)
+		for {
+			if time.Now().After(timeout) {
+				return
+			}
+			status, err := client.Status(context.Background())
 			if err != nil {
 				time.Sleep(100 * time.Millisecond)
 				continue
 			}
-
-			p.SelfAddress = status.ValidatorInfo.Address
+			p.selfAddressRwLock.Lock()
+			defer p.selfAddressRwLock.Unlock()
+			p.selfAddress = status.ValidatorInfo.Address
+			return
 		}
 	}()
 
@@ -112,6 +119,12 @@ func (p *P) Results() ([]FutureResult, func()) {
 	return values, func() {
 		p.resultsWriter.Remove(values...)
 	}
+}
+
+func (p *P) SelfAddress() []byte {
+	p.selfAddressRwLock.RLock()
+	defer p.selfAddressRwLock.RUnlock()
+	return p.selfAddress
 }
 
 // q is a queue that doesn't block the producer (i.e. q.Add is non-blocking).

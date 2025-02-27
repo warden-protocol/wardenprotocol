@@ -53,31 +53,39 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			}
 		}
 
-		localHandlers := prophet.RegisteredHandlers()
+		var localHandlers []string
+		updateHandlers := false
+		selfConsAddress := k.p.SelfAddress()
 
-		r := collections.Range[collections.Pair[sdk.ConsAddress, string]]{}
+		if len(selfConsAddress) != 0 {
+			localHandlers = prophet.RegisteredHandlers()
 
-		iterator, err := k.handlersByValidator.Iterate(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(req.ProposerAddress))))
+			r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](sdk.ConsAddress(selfConsAddress))
 
-		if err != nil {
-			return nil, fmt.Errorf("failed to iterate by validator: %w", err)
-		}
+			iterator, err := k.handlersByValidator.Iterate(ctx, r)
 
-		keys, err := iterator.Keys()
-		if err != nil {
-			return nil, fmt.Errorf("failed to get keys: %w", err)
-		}
+			if err != nil {
+				return nil, fmt.Errorf("failed to iterate by validator: %w", err)
+			}
 
-		isEqual := isEqualLocalAndOnchainHandlers(localHandlers, keys)
+			onchainHandlers, err := iterator.Keys()
+			if err != nil {
+				return nil, fmt.Errorf("failed to get keys: %w", err)
+			}
 
-		if isEqual {
-			localHandlers = nil
+			isEqual := isEqualLocalAndOnchainHandlers(localHandlers, onchainHandlers)
+
+			if isEqual {
+				localHandlers = nil
+			}
+
+			updateHandlers = !isEqual
 		}
 
 		asyncve := types.AsyncVoteExtension{
 			Results:        results,
 			Handlers:       localHandlers,
-			UpdateHandlers: !isEqual,
+			UpdateHandlers: updateHandlers,
 		}
 
 		asyncveBytes, err := asyncve.Marshal()

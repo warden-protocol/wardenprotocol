@@ -16,6 +16,8 @@ Chiado represents a crucial milestone in our journey towards mainnet launch. Her
 
 The [`x/async` Warden module](/learn/warden-protocol-modules/x-async) runs offchain heavyweight computations asynchronously and stores the results onchain. It allows developers to build any logic combining offchain computation with onchain verification and enables smart contracts to leverage AI model outputs directly on the blockchain.
 
+The module supports two types of computations: AI-driven price predictions and HTTP requests to external services, such as blockchain APIs.
+
 ### Dual VM architecture
 
 Chiado now supports EVM Solidity contracts alongside CosmWasm. This dual VM architecture makes it easier to integrate AI inferences with smart contracts, and users can connect directly to EVM apps.

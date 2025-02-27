@@ -420,7 +420,7 @@ func New(
 	// oracle initialization
 	app.initializeOracles(appOpts)
 
-	if err := app.prophet.Run(); err != nil {
+	if err := app.prophet.Run(appOpts.Get("rpc.laddr").(string)); err != nil {
 		panic(fmt.Errorf("failed to run prophet: %w", err))
 	}
 

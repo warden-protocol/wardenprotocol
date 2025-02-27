@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (go-client) Return transaction hash from SendWaitTx
 * (keychain-sdk) Log transaction hashes of broadcasted transactions
 * (relayer) #992 Added a service to relay transactions into Ethereum
+* (prophet) Add self consensus address to prophet
 
 ### Consensus Breaking Changes
 * (precompiles) Add slinky precompiled contract

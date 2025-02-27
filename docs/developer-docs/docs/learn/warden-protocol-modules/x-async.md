@@ -44,7 +44,7 @@ There are two types of Futures, depending on the handler:
 
 ### Prophet
 
-A **Prophet** is a sidecar process running on [validator](/learn/glossary#validator) nodes, which has two responsibilities:
+A **Prophet** is a subprocess running on [validator](/learn/glossary#validator) nodes, which has two responsibilities:
 
 - Fetching [Future](#future) requests and executing handlers associated with Futures
 - Fetching requests satisfied by other validators to vote on the results
@@ -67,7 +67,7 @@ Creates a new [Future](#future), providing a `[]byte` input and a `string` ID fo
 
 **Note**: The [Future](#future) has the `pending` status until it has a result. Users can query Futures by their IDs to check the progress.
 
-## Prophet (sidecar)
+## Prophet (subprocess)
 
 ### Executing Futures
 

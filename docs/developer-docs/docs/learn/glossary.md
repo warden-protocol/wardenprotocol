@@ -282,7 +282,7 @@ Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-mo
 
 ## Prophet
 
-A Prophet is a sidecar process running on [validator](#validator) nodes, which has two responsibilities:
+A Prophet is a subprocess running on [validator](#validator) nodes, which has two responsibilities:
 
 - Fetching [Future](#future) requests and executing handlers associated with Futures
 - Fetching requests satisfied by other validators to vote on the results

@@ -290,19 +290,14 @@ func (k Keeper) callEVMWithData(
 	return res, nil
 }
 
-type completedFuture struct {
-	future types.Future
-	result types.FutureResult
-}
-
-func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]completedFuture, error) {
+func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]prophet.FutureResult, error) {
 	it, err := k.futures.results.IterateRaw(ctx, nil, nil, collections.OrderDescending)
 	if err != nil {
 		return nil, err
 	}
 	defer it.Close()
 
-	futures := make([]completedFuture, 0, limit)
+	futures := make([]prophet.FutureResult, 0, limit)
 	for ; it.Valid(); it.Next() {
 		id, err := it.Key()
 		if err != nil {
@@ -323,9 +318,13 @@ func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, val
 			return nil, err
 		}
 
-		futures = append(futures, completedFuture{
-			future: fut,
-			result: result,
+		futures = append(futures, prophet.FutureResult{
+			Future: prophet.Future{
+				ID:      fut.Id,
+				Handler: fut.Handler,
+				Input:   fut.Input,
+			},
+			Output: result.Output,
 		})
 		if len(futures) == limit {
 			break

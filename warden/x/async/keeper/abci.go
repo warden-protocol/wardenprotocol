@@ -47,14 +47,7 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 	}
 
 	for _, f := range futureWithResults {
-		k.p.AddFutureResult(prophet.FutureResult{
-			Future: prophet.Future{
-				ID:      f.future.Id,
-				Handler: f.future.Handler,
-				Input:   f.future.Input,
-			},
-			Output: f.result.Output,
-		})
+		k.p.AddFutureResult(f)
 	}
 
 	return nil

@@ -20,7 +20,8 @@ contract MockAsyncPrecompile is IAsync {
 
     function addFuture(
         string calldata handler,
-        bytes calldata input
+        bytes calldata input,
+        address
     ) external returns (uint64 futureId)
     {
         futureId = uint64(++futuresCount);

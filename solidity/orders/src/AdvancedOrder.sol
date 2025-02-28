@@ -100,7 +100,7 @@ contract AdvancedOrder is AbstractOrder, IExecution {
             falsePositiveRate: falsePositiveRate,
             metrics: metrics
         });
-        futureId = ASYNC_PRECOMPILE.addFuture("pricepred", abi.encode(pricePredictInput));
+        futureId = ASYNC_PRECOMPILE.addFuture("pricepred", abi.encode(pricePredictInput), address(0));
         REGISTRY = Registry(registry);
 
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {

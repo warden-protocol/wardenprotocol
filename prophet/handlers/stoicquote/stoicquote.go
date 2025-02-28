@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/stoicquote/generated"
 )
 
@@ -23,7 +24,11 @@ func (h StoicQuoteSolidity) Execute(ctx context.Context, input []byte) ([]byte, 
 		return nil, fmt.Errorf("failed to fetch remote quote: %w", err)
 	}
 
-	out, err := encodeOutput(output)
+	out, err := prophet.EncodeOutputToABI(
+		output,
+		generated.StoicQuoteMetaData,
+		"main",
+	)
 	if err != nil {
 		return nil, fmt.Errorf("encode output: %w", err)
 	}
@@ -32,7 +37,11 @@ func (h StoicQuoteSolidity) Execute(ctx context.Context, input []byte) ([]byte, 
 }
 
 func (h StoicQuoteSolidity) Verify(ctx context.Context, input []byte, output []byte) error {
-	decoded, err := decodeOutput(output)
+	decoded, err := prophet.DecodeOutputFromABI[generated.StoicQuoteResponse](
+		output,
+		generated.StoicQuoteMetaData,
+		"main",
+	)
 	if err != nil {
 		return fmt.Errorf("verify decode output: %w", err)
 	}
@@ -44,57 +53,7 @@ func (h StoicQuoteSolidity) Verify(ctx context.Context, input []byte, output []b
 	return nil
 }
 
-func encodeOutput(output generated.StoicQuoteResponse) ([]byte, error) {
-	parsedABI, err := generated.StoicQuoteMetaData.GetAbi()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ABI: %w", err)
-	}
-
-	method, ok := parsedABI.Methods["main"]
-	if !ok {
-		return nil, fmt.Errorf("method 'main' not found in generated ABI")
-	}
-
-	if len(method.Outputs) == 0 {
-		return []byte{}, nil
-	}
-
-	packed, err := method.Outputs.Pack(output)
-	if err != nil {
-		return nil, fmt.Errorf("failed to pack output: %w", err)
-	}
-	return packed, nil
-}
-
-func decodeOutput(outputData []byte) (generated.StoicQuoteResponse, error) {
-	var out struct {
-		OutputData generated.StoicQuoteResponse
-	}
-
-	abi, err := generated.StoicQuoteMetaData.GetAbi()
-	if err != nil {
-		return out.OutputData, fmt.Errorf("failed to get ABI: %w", err)
-	}
-
-	method, ok := abi.Methods["main"]
-	if !ok {
-		return out.OutputData, fmt.Errorf("method 'main' not found in generated ABI")
-	}
-
-	vals, err := method.Outputs.Unpack(outputData)
-	if err != nil {
-		return out.OutputData, fmt.Errorf("failed to unpack output data: %w", err)
-	}
-
-	err = method.Outputs.Copy(&out, vals)
-	if err != nil {
-		return out.OutputData, fmt.Errorf("failed to copy output data: %w", err)
-	}
-
-	return out.OutputData, nil
-}
-
-func fetchRemoteQuote(ctx context.Context, url string) (response generated.StoicQuoteResponse, err error) {
+func fetchRemoteQuote(ctx context.Context, url string) (generated.StoicQuoteResponse, error) {
 	var quote generated.StoicQuoteResponse
 
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
@@ -115,7 +74,7 @@ func fetchRemoteQuote(ctx context.Context, url string) (response generated.Stoic
 		return quote, fmt.Errorf("stoic quote API returned status %d", resp.StatusCode)
 	}
 
-	body, err := io.ReadAll(io.LimitReader(resp.Body, 10*1024*1024)) // 10MB limit
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 8*1024)) // 8KB limit
 	if err != nil {
 		return quote, fmt.Errorf("reading body: %w", err)
 	}

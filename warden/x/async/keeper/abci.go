@@ -76,18 +76,16 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		pVotes, done := k.p.Votes()
 		defer done()
 
-		mapVote := func(err error) types.FutureVoteType {
-			if err == nil {
-				return types.FutureVoteType_VOTE_TYPE_VERIFIED
-			}
-			return types.FutureVoteType_VOTE_TYPE_REJECTED
-		}
-
 		votes := make([]*types.VEVoteItem, len(pVotes))
 		for i, v := range pVotes {
+			vote := types.FutureVoteType_VOTE_TYPE_VERIFIED
+			if v.Err != nil {
+				vote = types.FutureVoteType_VOTE_TYPE_REJECTED
+			}
+
 			votes[i] = &types.VEVoteItem{
 				FutureId: v.ID,
-				Vote:     mapVote(v.Err),
+				Vote:     vote,
 			}
 		}
 

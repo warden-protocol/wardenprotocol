@@ -296,7 +296,7 @@ type completedFuture struct {
 }
 
 func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]completedFuture, error) {
-	it, err := k.futures.results.IterateRaw(ctx, nil, nil, collections.OrderAscending)
+	it, err := k.futures.results.IterateRaw(ctx, nil, nil, collections.OrderDescending)
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +314,7 @@ func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, val
 			return nil, err
 		}
 
-		if _, err := k.votes.Get(ctx, collections.Join(id, valAddress)); err == nil {
+		if found, _ := k.votes.Has(ctx, collections.Join(id, valAddress)); found {
 			continue
 		}
 

@@ -10,11 +10,11 @@ We're transitioning from Buenavista to our new and improved testnet, [Chiado](..
 
 ## Version history
 
-| Release                                                                         | Upgrade block height | Upgrade date |
-| ------------------------------------------------------------------------------- | -------------------- | ------------ |
-| [v0.3.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) | genesis              |              |
-| [v0.4.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.1) | 1675700              | Aug 13, 2024 |
-| [v0.4.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.2) | 1965400              | Sep 2, 2024  |
+| Release                                                                         | Block height         | Date          | Upgrade Guide                        |
+| ------------------------------------------------------------------------------- | -------------------- | ------------- | ------------------------------------ |
+| [v0.3.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) | genesis              |               |                                      |
+| [v0.4.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.1) | 1675700              | Aug 13, 2024  | [Upgrade to v0.4.1](upgrade/v0.4.1)  |
+| [v0.4.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.2) | 1965400              | Sep 2, 2024   | [Upgrade to v0.4.2](upgrade/v0.4.2)  | 
 
 ## Binary
 
@@ -35,4 +35,3 @@ buenavista-1
 ## Denomination
 
 Buenavista's denomination is `uward` / 0.000001 [WARD](/tokens/ward-token/ward).
-

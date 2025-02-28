@@ -8,11 +8,11 @@ sidebar_position: 3
 
 The `x/act` module is a [Cosmos SDK](https://docs.cosmos.network/) module executing messages (called Actions) under certain conditions, or Rules, defined by users.
 
-This module implements the following concepts, which you can find in our Glossary:
+This module implements the following concepts:
 
-- [Approval Rule](/learn/glossary#approval-rule)
-- [Action](/learn/glossary#action)
-- [Intent-Specific Language](/learn/glossary#intent-specific-language)
+- [Rule](#rule)
+- [Action](#action)
+- [Intent-Specific Language](#intent-specific-language)
 
 ## Usage
 

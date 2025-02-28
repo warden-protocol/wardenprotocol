@@ -55,7 +55,7 @@ To use the [`request_funds` tool](agent-actions) in [Step 4.1](#41-get-ward), yo
 export FAUCET_TOKEN=your-faucet-token
 ```
 
-This is optional: you can alternatively connect your wallet to [SpaceWard](https://spaceward.devnet.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
+This is optional: you can alternatively connect your wallet to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.chiado.wardenprotocol.org/).
 
 ## 3. Run the Agent
 
@@ -78,7 +78,7 @@ Prompt:
 
 ### 4.1. Get WARD
 
-If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step. You can connect your wallet to [SpaceWard](https://spaceward.devnet.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
+If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step. You can connect your wallet to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.chiado.wardenprotocol.org/).
 
 Type your prompt in the command line:
 

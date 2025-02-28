@@ -37,6 +37,21 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 		})
 	}
 
+	selfAddress := k.p.SelfAddress()
+
+	if len(selfAddress) == 0 {
+		return nil
+	}
+
+	futureWithResults, err := k.getCompletedFuturesWithoutValidatorVote(ctx, selfAddress, 10)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range futureWithResults {
+		k.p.AddFutureResult(f)
+	}
+
 	return nil
 }
 
@@ -50,6 +65,22 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			results[i] = &types.VEResultItem{
 				FutureId: r.ID,
 				Output:   r.Output,
+			}
+		}
+
+		pVotes, done := k.p.Votes()
+		defer done()
+
+		votes := make([]*types.VEVoteItem, len(pVotes))
+		for i, v := range pVotes {
+			vote := types.FutureVoteType_VOTE_TYPE_VERIFIED
+			if v.Err != nil {
+				vote = types.FutureVoteType_VOTE_TYPE_REJECTED
+			}
+
+			votes[i] = &types.VEVoteItem{
+				FutureId: v.ID,
+				Vote:     vote,
 			}
 		}
 
@@ -84,6 +115,7 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 
 		asyncve := types.AsyncVoteExtension{
 			Results:        results,
+			Votes:          votes,
 			Handlers:       localHandlers,
 			UpdateHandlers: updateHandlers,
 		}

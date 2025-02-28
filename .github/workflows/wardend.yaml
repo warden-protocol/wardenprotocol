@@ -58,6 +58,11 @@ jobs:
         release: ["release"]
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+
       - name: Checkout
         uses: actions/checkout@v4
         with:

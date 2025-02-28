@@ -88,7 +88,7 @@ message QueryPendingFuturesResponse {
 
 message QueryHandlersByValidatorRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  string validator = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string validator = 2 [(cosmos_proto.scalar) = "cosmos.ConsensusAddressString"];
 }
 
 message QueryHandlersByValidatorResponse {

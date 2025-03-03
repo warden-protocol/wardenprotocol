@@ -10,13 +10,14 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 
 ## Version history
 
-| Release                                                                          |
-| -------------------------------------------------------------------------------- |
-| [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4)  |
+| Release                                                                         | Block height         | Date          | Upgrade guide                        |
+| ------------------------------------------------------------------------------- | -------------------- | ------------- | ------------------------------------ |
+| [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) | genesis              |               |                                      |
+| [v0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1) | 10785200             | March 5, 2025 | [Upgrade to v0.6.1](upgrade/v0.6.1)  |
 
 ## Binary
 
-The latest binary version compatible with Chiado is [wardend v.0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4).
+The latest binary version compatible with Chiado is [wardend v.0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1).
 
 
 ## Endpoints

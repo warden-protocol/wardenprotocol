@@ -7,7 +7,7 @@ import PersistentPeers from "@site/src/components/PersistentPeers";
 # Join Buenavista
 
 :::warning
-We're transitioning from Buenavista to our new and improved testnet, [Chiado](../chiado-testnet/chiado-overview). For now, both networks are running simultaneously, but we're going to sunset Buenavista. Please make sure to transition all your testing and development processes to [Chiado](../chiado-testnet/join-chiado).
+We've sunsetted [Buenavista](join-buenavista). Please join our new and improved testnet, [Chiado](../chiado-testnet/join-chiado).
 :::
 
 ## Overview

@@ -22,7 +22,7 @@ You should also create and fund a Warden key using [SpaceWard on devnet](https:/
 1. In your Web3 wallet, export your **private key**, you'll need it for signing transactions.
 2. [Connect your wallet](https://help.wardenprotocol.org/spaceward/connect-your-wallet) to SpaceWard.
 3. [Get some test WARD](https://help.wardenprotocol.org/spaceward/get-test-ward).
-4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key). Note down the numerical **key ID** displayed in **Dashboard > Space**.
+4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key) using the Open Custody Protocol Keychain. Navigate to SpaceWard's Dashboard and note down the numerical **key ID** displayed in the Space section.
 5. [Fund your Warden key](https://help.wardenprotocol.org/spaceward/manage-assets#receive-assets) with Sepolia ETH and note down the **Sepolia address** associated with your key.
 
 ## 1. Install dependencies

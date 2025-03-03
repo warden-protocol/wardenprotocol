@@ -78,7 +78,7 @@ To deploy a WASM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chi
 2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
   
    ```bash
-   git clone --depth 1 --branch v0.6.0 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.6.1 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    just wardend build
    just wardend install

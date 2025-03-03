@@ -19,9 +19,7 @@ Here are the main rules of Space ownership:
 
 To add a new owner, take these steps:
 
-1. Visit SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. Navigate to the top-left corner of the screen and click **Owners**.
 3. Click **New Owner**.
 4. Specify the Warden address and name.

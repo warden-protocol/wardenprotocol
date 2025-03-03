@@ -40,30 +40,8 @@ On Chiado, we've changed the denomination from `uward` to `award`.
 
 ### A new signature scheme
 
-To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1.ethsecp256k1` module, while Buenavista uses `cosmos.crypto.secp256k1`.
+To be EVM-compatible, keys on Chiado are generated with the `ethermint.crypto.v1.ethsecp256k1` module, while Buenavista used `cosmos.crypto.secp256k1`.
 
-### New public addresses
-
-As a result of switching to a new signature scheme, the existing private keys now produce new public addresses.
-
-To continue using your private key created on Buenavista, take these steps:
-
-1. Restore the key using the [node command](/operate-a-node/node-commands) below. Replace `my-key-name` with a key name of your choice.
-   
-   ```bash
-   wardend keys add my-key-name --recover
-   ```
-   
-   You'll be prompted to enter your mnemonic seed phrase.
-   
-2. Get your new address by key name:
-   
-   ```bash
-   wardend keys show my-key-name --address
-   ```
-   
-Your funds will be automatically transferred to the new address.
-   
 ### EVM wallets support
 
 We encourage users and application builders to store and delegate their test WARD with EVM wallets.

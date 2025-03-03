@@ -23,7 +23,8 @@ Reasons for running a node include the following:
   Follow this guide if you wish to run a local chain for testing purposes.
 
 - [Chiado testnet](/category/chiado-testnet), [Buenavista testnet](/category/buenavista-testnet)  
-  These sections cover our testnets. To get started, follow [Join Chiado](chiado-testnet/join-chiado) or [Join Buenavista](buenavista-testnet/join-buenavista).
+  These sections cover our testnets. To get started, follow [Join Chiado](chiado-testnet/join-chiado).  
+  Please note that we've sunsetted Buenavista. 
 
 - [Create a validator](create-a-validator), [Operate Skip:Connect](operate-skip-connect)    
   After joining a network, you can become a validator and run the oracle service integrated with Warden.

@@ -16,9 +16,8 @@ In the Warden Protocol keys are associated with **Keychains** – custodians tha
 
 To obtain a new key, do this:
 
-1. Connect to SpaceWard. If it's your first time, see the [Quick start guide](quick-start).
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)  
+  If it's your first time, see the [Quick start guide](quick-start).
 2. In the left menu, navigate to **Keys**.
 3. Click **Create key**.
 4. Select the Keychain you wish to operate from and click **Create**.
@@ -45,9 +44,7 @@ To get your key (wallet) address in a certain network, do the following:
 
 You can access a list of all available Keychains – custodians that generate and store keys and sign transactions:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Keychains**.
 
 Here you can also request a key for any Keychain – just click **Create Key**.

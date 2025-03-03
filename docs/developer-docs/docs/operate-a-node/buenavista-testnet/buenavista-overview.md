@@ -5,7 +5,7 @@ sidebar_position: 1
 # Buenavista overview
 
 :::warning
-We've sunsetted [Buenavista](buenavista-testnet/join-buenavista). Please join our new and improved testnet, [Chiado](chiado-testnet/join-chiado).
+We've sunsetted [Buenavista](join-buenavista). Please join our new and improved testnet, [Chiado](../chiado-testnet/join-chiado).
 :::
 
 ## Version history

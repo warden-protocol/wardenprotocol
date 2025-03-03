@@ -7,7 +7,7 @@ import PersistentPeers from "@site/src/components/PersistentPeers";
 # Join Buenavista
 
 :::warning
-We've sunsetted [Buenavista](buenavista-testnet/join-buenavista). Please join our new and improved testnet, [Chiado](chiado-testnet/join-chiado).
+We've sunsetted [Buenavista](join-buenavista). Please join our new and improved testnet, [Chiado](../chiado-testnet/join-chiado).
 :::
 
 ## Overview

@@ -22,7 +22,7 @@ Reasons for running a node include the following:
 - [Run a local chain](run-a-local-chain)  
   Follow this guide if you wish to run a local chain for testing purposes.
 
-- [Chiado testnet](/category/chiado-testnet), [Buenavista testnet](/category/buenavista-testnet)  
+- [Chiado testnet](chiado-testnet/chiado-overview), [Buenavista testnet](buenavista-testnet/buenavista-overview)  
   These sections cover our testnets. To get started, follow [Join Chiado](chiado-testnet/join-chiado).  
   Please note that we've sunsetted Buenavista. 
 

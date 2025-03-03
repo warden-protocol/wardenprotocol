@@ -8,7 +8,7 @@ sidebar_position: 2
 
 Welcome to **SpaceWard**, your all-in-one platform for managing wallets and exploring decentralized applications (dApps).
 
-SpaceWard operates on our testnets **Chiado**. It allows you to test SpaceWard functionality and interact with the **Sepolia** network in a secure environment, without real-world risks.
+SpaceWard operates on our testnet **Chiado**. It allows you to test SpaceWard functionality and interact with the **Sepolia** network in a secure environment, without real-world risks.
 
 :::warning
 This is a **testnet environment**. It's aimed for testing and can break at any time due to unforeseen circumstances. You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.

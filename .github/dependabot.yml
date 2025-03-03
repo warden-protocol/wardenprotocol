@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    ignore:
+      - dependency-name: "github.com/cometbft/cometbft"
+      - dependency-name: "github.com/cosmos/cosmos-sdk"
+      - dependency-name: "github.com/CosmWasm/wasmvm/v2"
+    schedule:
+      interval: "weekly"
+

@@ -8,11 +8,7 @@ sidebar_position: 2
 
 Welcome to **SpaceWard**, your all-in-one platform for managing wallets and exploring decentralized applications (dApps).
 
-SpaceWard operates on our testnets: **Buenavista** and **Chiado**. It allows you to test SpaceWard functionality and interact with the **Sepolia** network in a secure environment, without real-world risks.
-
-:::important
-**Chiado** is our new and improved testnet: it allows you to get an EVM address and connect directly to EVM apps. Note that for now both testnets are running simultaneously, but we're going to sunset Buenavista. To learn more about Chiado advantages, see [Chiado: What's new?](https://docs.wardenprotocol.org/operate-a-node/chiado-testnet/whats-new)
-:::
+SpaceWard operates on our testnet **Chiado**. It allows you to test SpaceWard functionality and interact with the **Sepolia** network in a secure environment, without real-world risks.
 
 :::warning
 This is a **testnet environment**. It's aimed for testing and can break at any time due to unforeseen circumstances. You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, you might lose your assets.
@@ -24,10 +20,7 @@ The following is a brief overview explaining how to start using SpaceWard. For m
 
 1. Create a Web3 wallet. You can use any EVM wallet or a wallet supported by [WalletConnect](https://walletconnect.network).
 
-2. Visit SpaceWard:
-
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+2. Visit SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 
 3. 👉 [Connect your Wallet](connect-your-wallet): click **Connect** and follow the prompts.
 

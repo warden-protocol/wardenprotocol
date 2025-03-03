@@ -14,9 +14,7 @@ If you don't have a Web3 wallet, create one. You can use any EVM wallet or a wal
 
 Now you can connect to SpaceWard:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. Click **Connect**.    
 3. Select a wallet to connect.    
 4. Your wallet will prompt you to add the Warden Protocol chain.

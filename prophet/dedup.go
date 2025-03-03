@@ -65,3 +65,21 @@ func newDedupFutureReader(r FutureReader) (*dedupFutureReader, error) {
 func (d dedupFutureReader) Read() <-chan Future {
 	return d.d.out
 }
+
+// dedupFutureResultReader wraps a [FutureResultReader] and deduplicates the incoming
+// future results.
+type dedupFutureResultReader struct {
+	d *dedup[FutureResult]
+}
+
+func newDedupFutureResultReader(r FutureResultReader) (*dedupFutureResultReader, error) {
+	d, err := newDedup(r.Read())
+	if err != nil {
+		return nil, err
+	}
+	return &dedupFutureResultReader{d: d}, nil
+}
+
+func (d dedupFutureResultReader) Read() <-chan FutureResult {
+	return d.d.out
+}

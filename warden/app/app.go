@@ -1,11 +1,13 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/url"
 	"os"
 	"path/filepath"
+	"time"
 
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
@@ -14,6 +16,7 @@ import (
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -63,10 +66,13 @@ import (
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/spf13/cast"
+	asyncprecompile "github.com/warden-protocol/wardenprotocol/precompiles/async"
+	slinkyprecompile "github.com/warden-protocol/wardenprotocol/precompiles/slinky"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
+	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -90,6 +96,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
+	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred"
 )
 
@@ -223,6 +230,23 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 			panic(fmt.Errorf("invalid pricepred url: %s", u))
 		}
 		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(url))
+	}
+
+	if cast.ToBool(appOpts.Get("http.enabled")) {
+		urls := cast.ToStringSlice(appOpts.Get("http.urls"))
+		timeout := cast.ToInt(appOpts.Get("http.timeout"))
+
+		parsedURLs := make([]*url.URL, len(urls))
+		for i, u := range urls {
+			parsedURL, err := url.Parse(u)
+			if err != nil {
+				panic(fmt.Errorf("invalid http url: %s", u))
+			}
+			parsedURLs[i] = parsedURL
+		}
+		parsedTimeout := time.Duration(timeout) * time.Second
+
+		prophet.Register("http", http.NewHandler(parsedURLs, parsedTimeout))
 	}
 }
 
@@ -420,7 +444,7 @@ func New(
 	// oracle initialization
 	app.initializeOracles(appOpts)
 
-	if err := app.prophet.Run(); err != nil {
+	if err := app.prophet.Run(appOpts.Get("rpc.laddr").(string)); err != nil {
 		panic(fmt.Errorf("failed to run prophet: %w", err))
 	}
 
@@ -478,6 +502,41 @@ func New(
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
 
 	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
+
+	v060UpgradeName := "v054-to-v060"
+	app.UpgradeKeeper.SetUpgradeHandler(v060UpgradeName, func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		toVM, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+		if err != nil {
+			return toVM, err
+		}
+
+		// add new x/evm precompiles
+		sdkCtx := sdk.UnwrapSDKContext(ctx)
+		evmParams := app.EvmKeeper.GetParams(sdkCtx)
+		evmParams.ActiveStaticPrecompiles = append(evmParams.ActiveStaticPrecompiles,
+			slinkyprecompile.PrecompileAddress,
+			asyncprecompile.PrecompileAddress,
+		)
+		if err := evmParams.Validate(); err != nil {
+			return toVM, err
+		}
+		if err := app.EvmKeeper.SetParams(sdkCtx, evmParams); err != nil {
+			return toVM, err
+		}
+
+		return toVM, nil
+	})
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
+	}
+	if upgradeInfo.Name == v060UpgradeName {
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
+			Added: []string{
+				asynctypes.ModuleName,
+			},
+		}))
+	}
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

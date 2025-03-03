@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
 func TestDecodeInput(t *testing.T) {
@@ -31,7 +32,11 @@ func TestDecodeInput(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			bz, err := base64.StdEncoding.DecodeString(c.input)
 			require.NoError(t, err)
-			decodedInput, err := decodeInput(bz)
+			decodedInput, err := prophet.DecodeInputFromABI[PricePredictorInputData](
+				bz,
+				PricePredictorMetaData,
+				"solve",
+			)
 			require.NoError(t, err)
 			requireEqualInt(t, c.expected.Date, decodedInput.Date)
 			require.Equal(t, c.expected.Tokens, decodedInput.Tokens)

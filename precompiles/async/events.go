@@ -18,18 +18,31 @@ const (
 
 // GetCreateFutureEvent Map EventCreateFuture to eth CreateFuture event and write to eth log
 func (p *Precompile) GetCreateFutureEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+	var err error
 	event := p.ABI.Events[EventCreateFuture]
 
 	topics := make([]ethcmn.Hash, 3)
 	topics[0] = event.ID
 
 	typedEvent := v1beta1.EventCreateFuture{}
-	if err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge); err != nil {
+	if err = common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge); err != nil {
+		return nil, err
+	}
+
+	var callbackAddress ethcmn.Address
+	if typedEvent.GetCallbackAddress() == "" {
+		callbackAddress = ethcmn.HexToAddress("0x0000000000000000000000000000000000000000")
+	} else {
+		callbackAddress, err = common.AddressFromBech32Str(typedEvent.GetCallbackAddress())
+	}
+
+	if err != nil {
 		return nil, err
 	}
 
 	packed, err := event.Inputs.NonIndexed().Pack(
 		typedEvent.GetHandler(),
+		callbackAddress,
 	)
 	if err != nil {
 		return nil, err

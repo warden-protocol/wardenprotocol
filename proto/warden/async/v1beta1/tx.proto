@@ -7,7 +7,6 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
-import "warden/async/v1beta1/handler.proto";
 import "warden/async/v1beta1/params.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
@@ -50,18 +49,9 @@ message MsgAddFuture {
   string creator = 1;
   string handler = 2;
   bytes input = 3;
+  string callback = 4;
 }
 
 message MsgAddFutureResponse {
   uint64 id = 1;
-}
-
-message MsgAddHandler {
-  option (cosmos.msg.v1.signer) = "authority";
-  string authority = 1;
-  Handler handler = 2;
-}
-
-message MsgAddHandlerResponse {
-  Handler handler = 1;
 }

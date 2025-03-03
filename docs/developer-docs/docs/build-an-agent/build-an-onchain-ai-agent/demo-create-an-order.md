@@ -22,7 +22,7 @@ You should also create and fund a Warden key using [SpaceWard on devnet](https:/
 1. In your Web3 wallet, export your **private key**, you'll need it for signing transactions.
 2. [Connect your wallet](https://help.wardenprotocol.org/spaceward/connect-your-wallet) to SpaceWard.
 3. [Get some test WARD](https://help.wardenprotocol.org/spaceward/get-test-ward).
-4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key) and note down the numerical **key ID** displayed in SpaceWard.
+4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key). Note down the numerical **key ID** displayed in **Dashboard > Space**.
 5. [Fund your Warden key](https://help.wardenprotocol.org/spaceward/manage-assets#receive-assets) with Sepolia ETH and note down the **Sepolia address** associated with your key.
 
 ## 1. Install dependencies
@@ -87,15 +87,15 @@ npm install ethers
            deadline
        ]);
        
-       console.log("Transaction Data:", data);
+       console.log("transaction data:", data);
        
        // Decode the data to verify it (optional)
        const decoded = iface.decodeFunctionData("swapExactETHForTokens", data);
-       console.log("\nDecoded Data:");
-       console.log("Amount Out Min:", decoded.amountOutMin.toString());
-       console.log("Path:", decoded.path);
-       console.log("To:", decoded.to);
-       console.log("Deadline:", new Date(Number(decoded.deadline) * 1000).toISOString());
+       console.log("\ndecoded data:");
+       console.log("amount out min:", decoded.amountOutMin.toString());
+       console.log("path:", decoded.path);
+       console.log("to:", decoded.to);
+       console.log("deadline:", new Date(Number(decoded.deadline) * 1000).toISOString());
    }
    
    generateUniswapSwapData();
@@ -120,8 +120,7 @@ node swap.js
 
 Configure the Order parameters in the [`createAdvancedOrder.sh` script](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/createAdvancedOrder.sh), which is located in the `solidity` directory:
 
-- Check and adjust these variables: `tx_fields`, `key_id`, `salt`, `factory_address`.
-- Add a `private_key` variable and a `"$private_key"` parameter.
+- Check and adjust these variables: `tx_fields`, `key_id`, `salt`, `factory_address`, `private_key`.
 - In most cases, you can leave other variables untouched.
 
 For a detailed breakdown of all variables, see the following sections.
@@ -149,9 +148,7 @@ For running the script, make the following adjustments:
 
 4. In `factory_address`, paste the up-to-date [`orderFactory` address]( https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/12345/latest.json).
 
-5. Add a variable `private_key` and paste your private key from [Prerequisites](#prerequisites).
-
-6. Add `"$private_key"` as the last argument in the `just` command section of the script.
+5. In `private_key`, paste your private key from [Prerequisites](#prerequisites). If the key doesn't have `0x` at the beginning, add it.
 
 ### Optional adjustments
 
@@ -163,11 +160,13 @@ After making the required adjustments, you can leave the rest of values untouche
   - `2` - Execute if the oracle price is `>=` than the predicted price.
   - `3` - Execute if the oracle price is `>` than the predicted price.
 - `confidence_limit` - The minimum prediction confidence required for executing the Order. It's a percentage, divided by `10^16`.
-- `oracle_price_pair` - The oracle price pair.
-- `predict_price_pair` - The predicted price pair. It's different from the oracle pair, but both pairs are going to be normalized against a common scale.
+- `oracle_price_pair` - The oracle price pair—for example, `"ETH","USD"`.
+- `predict_price_token` - The token for which you need a price prediction. It must match the token in the oracle price pair—for example, `ethereum`.
 - `space_nonce` - The nonce of the [Space](/learn/glossary#space) that is expected at the moment when the Order is being executed. If you've never updated the [Rules](/learn/glossary#approval-rule) of your Space, you can use the default value: `0`.
 - `action_timeout_height` - The block after which the [Action](/learn/glossary#action) will be cancelled if it's not signed with the [Keychain](/learn/glossary#keychain).
 - `expected_approve_expression`, `expected_reject_expression` - The expected approve and reject expressions in your Space, provided in HEX format. If you've never updated the Rules of your Space, just keep the default values.
+- `rpc_url` - The RPC URL.
+- `chain_id` - The chain ID.
 
 ### Example
 
@@ -177,10 +176,10 @@ This is an example of how your script should look like:
 #!/bin/bash
 
 # Local variables for Order creation
-price_condition="1"
+price_condition="0"
 confidence_limit="100000000000000"
 oracle_price_pair='\("ETH","USD"\)'
-predict_price_pair='\("ethereum","bitcoin"\)'
+predict_price_token='ethereum'
 tx_fields="\(100000000000000,11155111,0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3,my-transaction-data)"
 key_id="my-key-id"
 space_nonce="0"
@@ -198,7 +197,7 @@ just create-advanced-order \
     "$price_condition" \
     "$confidence_limit" \
     "$oracle_price_pair" \
-    "$predict_price_pair" \
+    "$predict_price_token" \
     "$tx_fields" \
     "$key_id" \
     "$space_nonce" \
@@ -209,7 +208,7 @@ just create-advanced-order \
     "$factory_address" \
     "$rpc_url" \
     "$chain_id" \
-    "$private_key"
+    "$private" \
 ```
 
 ## 4. Run the script

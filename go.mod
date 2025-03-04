@@ -1,8 +1,6 @@
 module github.com/warden-protocol/wardenprotocol
 
-go 1.22.7
-
-toolchain go1.22.9
+go 1.24
 
 replace (
 	// evmos integration - need this replace when importing cosmos/rosetta pkg

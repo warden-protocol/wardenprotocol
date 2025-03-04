@@ -31,7 +31,7 @@ require (
 	cosmossdk.io/core v0.12.0
 	cosmossdk.io/depinject v1.0.0
 	cosmossdk.io/errors v1.0.1
-	cosmossdk.io/log v1.4.0
+	cosmossdk.io/log v1.5.0
 	cosmossdk.io/math v1.4.0
 	cosmossdk.io/store v1.1.0
 	cosmossdk.io/tools/confix v0.1.2
@@ -78,7 +78,16 @@ require (
 	google.golang.org/protobuf v1.35.1
 )
 
-require github.com/x448/float16 v0.8.4 // indirect
+require (
+	github.com/bytedance/sonic v1.12.3 // indirect
+	github.com/bytedance/sonic/loader v0.2.0 // indirect
+	github.com/cloudwego/base64x v0.1.4 // indirect
+	github.com/cloudwego/iasm v0.2.0 // indirect
+	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
+	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+	github.com/x448/float16 v0.8.4 // indirect
+	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
+)
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.33.0-20240221180331-f05a6f4403ce.1 // indirect

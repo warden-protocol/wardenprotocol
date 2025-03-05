@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 	"time"
 
@@ -290,7 +289,14 @@ func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error
 	var w vemanager.VoteExtensions
 
 	if err := w.Unmarshal(b); err != nil {
-		return vetypes.OracleVoteExtension{}, fmt.Errorf("failed to unmarshal vemanager.VoteExtensions: %w", err)
+		// Backwards compatibility: during the upgrade from just Slinky's VE to
+		// the new vemanager.VoteExtensions format, we saw that nodes still
+		// could receive a Slinky VE, from the blocks before the
+		// upgrade.
+		//
+		// After the upgrade to v0.6 the following line should be safe to be
+		// changed to simply return the error.
+		return a.slinkyCodec.Decode(b)
 	}
 
 	if len(w.Extensions) == 0 {

@@ -63,7 +63,11 @@ Completed Futures are pruned after some time, to avoid state bloat.
 
 ### MsgAddFuture
 
-Creates a new [Future](#future), providing a `[]byte` input and a `string` ID for the handler to use.
+Creates a new [Future](#future), providing the following:
+
+- A `[]byte` input
+- A `string` ID for the handler to use
+- The `address` of a callback contract
 
 **Note**: The [Future](#future) has the `pending` status until it has a result. Users can query Futures by their IDs to check the progress.
 

@@ -230,7 +230,8 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 		for _, v := range tx.ExtendedVotesInfo {
 			var w vemanager.VoteExtensions
 			if err := w.Unmarshal(v.VoteExtension); err != nil {
-				return resp, fmt.Errorf("failed to unmarshal vote extension wrapper: %w", err)
+				log.Error("ignoring vote extension, not a vemanager.VoteExtensions", "err", err)
+				return resp, nil
 			}
 
 			// todo: check VE signature, or maybe do it in the verify ve handler?

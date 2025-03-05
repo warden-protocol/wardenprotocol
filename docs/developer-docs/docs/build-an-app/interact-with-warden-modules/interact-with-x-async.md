@@ -27,15 +27,15 @@ To create a Future, use the following code in your contract. It calls the [`addF
 pragma solidity ^0.8.18;
 
 interface IAsync {
-    function addFuture(string calldata handler, bytes calldata input) external returns (uint64 futureId);
+    function addFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64 futureId);
     event CreateFuture(uint64 indexed futureId, address indexed creator, string handler);
 }
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
-    function createFuture(string calldata handler, bytes calldata input) external returns (uint64) {
-        return ASYNC.addFuture(handler, input);
+    function createFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64) {
+        return ASYNC.addFuture(handler, input, callback);
     }
 }   
 ```
@@ -235,20 +235,20 @@ interface IAsync {
         Future[] futures;
     }
     
-    function addFuture(string calldata handler, bytes calldata input) external returns (uint64 futureId);
+    function addFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64 futureId);
     function futures(TypesPageRequest calldata pagination, address creator) external view returns (FuturesResponse memory response);
     function pendingFutures(TypesPageRequest calldata pagination) external view returns (PendingFuturesResponse memory response);
     function futureById(uint64 futureId) external view returns (FutureByIdResponse memory response);
     
-    event CreateFuture(uint64 indexed futureId, address indexed creator, string handler);
+    event CreateFuture(uint64 indexed futureId, address indexed creator, string handler, address callbackAddress);
 }
 
 contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
     // Create a new Future
-    function createFuture(string calldata handler, bytes calldata input) external returns (uint64) {
-        return ASYNC.addFuture(handler, input);
+    function createFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64) {
+        return ASYNC.addFuture(handler, input, callback);
     }
     
     // Query all Futures

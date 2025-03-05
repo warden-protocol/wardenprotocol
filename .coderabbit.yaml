@@ -1,25 +1,17 @@
-# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
 language: "en"
 early_access: false
 reviews:
     request_changes_workflow: false
-    high_level_summary: true
+    high_level_summary: false
     poem: false
-    review_status: true
+    review_status: false
     collapse_walkthrough: true
     path_filters:
         - "!api/**"
         - "!wardenjs/src/codegen/**"
         - "!tests/testdata/**"
     path_instructions:
-        - path: "**/*.go"
-          instructions: "Review the Golang code for conformity with the Uber Golang style guide, highlighting any deviations."
-        - path: "tests/**/*"
-          instructions: |
-              "Assess the integration and e2e test code assessing sufficient code coverage for the changes associated in the pull request"
-        - path: "**/*_test.go"
-          instructions: |
-              "Assess the unit test code assessing sufficient code coverage for the changes associated in the pull request"
         - path: "**/*.md"
           instructions: |
               "Assess the documentation for misspellings, grammatical errors, missing documentation and correctness"
@@ -32,4 +24,4 @@ reviews:
         base_branches:
             - "main"
 chat:
-    auto_reply: true
+    auto_reply: false

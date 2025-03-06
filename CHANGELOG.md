@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 ### Bug Fixes
+* (x/act) Use constant formatting strings when wrapping errors
 
 ## [v0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1) - 2025-03-03
 

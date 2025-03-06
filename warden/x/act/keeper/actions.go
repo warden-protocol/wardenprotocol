@@ -82,7 +82,6 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	return nil
 }
 
-//nolint:govet //fixme :printf: non-constant format string in call to cosmossdk.io/errors.Wrapf (govet)
 func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	cacheCtx, writeCache := prepareHandlerContext(sdkCtx, act.Creator)
@@ -95,7 +94,7 @@ func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 
 	handler := k.router.Handler(msg)
 	if handler == nil {
-		return errors.Wrapf(types.ErrNoActionMsgHandler, sdk.MsgTypeURL(msg))
+		return errors.Wrapf(types.ErrNoActionMsgHandler, "%s", sdk.MsgTypeURL(msg))
 	}
 
 	var res *sdk.Result
@@ -251,8 +250,6 @@ func (k Keeper) AddAction(
 }
 
 // assert that the x/act module account is the only signer of the message
-//
-//nolint:govet //fixme :printf: non-constant format string in call to cosmossdk.io/errors.Wrapf (govet)
 func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	signers, _, err := k.cdc.GetMsgV1Signers(msg)
 	if err != nil {
@@ -263,7 +260,7 @@ func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	}
 
 	if sdk.AccAddress(signers[0]).String() != k.GetModuleAddress() {
-		return errors.Wrapf(types.ErrInvalidActionMsgSigner, sdk.AccAddress(signers[0]).String())
+		return errors.Wrapf(types.ErrInvalidActionMsgSigner, "%s", sdk.AccAddress(signers[0]).String())
 	}
 
 	return nil

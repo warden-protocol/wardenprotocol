@@ -217,7 +217,6 @@ contract AsyncExample {
         return ASYNC.futures(pagination, creator);
     }
 
-    
     // Query pending Futures
     function queryPendingFutures(uint64 limit) external view returns (IAsync.PendingFuturesResponse memory) {
         IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({

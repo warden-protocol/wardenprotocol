@@ -36,7 +36,7 @@ contract AsyncExample {
 After deploying your contract, you can interact with it by calling the `createFuture()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "createFuture(string,bytes,address)" "myHandler" "0x1234" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "createFuture(string,bytes,address)" "myHandler" "0x1234" "address" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ### Query Futures

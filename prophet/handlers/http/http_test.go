@@ -1,7 +1,6 @@
 package http
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/fxamacker/cbor/v2"
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http/generated"
 )
@@ -37,9 +37,10 @@ func TestHandler_Execute(t *testing.T) {
 
 	parsedURL, err := url.Parse(mockServer.URL)
 	require.NoError(t, err)
+
 	h := NewHandler([]*url.URL{parsedURL}, 5*time.Second)
 
-	abiEncodedOutput, execErr := h.Execute(context.Background(), input)
+	abiEncodedOutput, execErr := h.Execute(t.Context(), input)
 	require.NoError(t, execErr, "Execute should not fail")
 
 	// First decode the ABI encoding
@@ -92,6 +93,7 @@ func TestHandler_Execute_WithCborBody(t *testing.T) {
 		require.Equal(t, originalPayload.Bar, received.Bar, "Bar should match")
 
 		respJSON := `{"result":"ok"}`
+
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(respJSON))
 	}))
@@ -108,9 +110,10 @@ func TestHandler_Execute_WithCborBody(t *testing.T) {
 
 	parsedURL, err := url.Parse(mockServer.URL)
 	require.NoError(t, err)
+
 	h := NewHandler([]*url.URL{parsedURL}, 5*time.Second)
 
-	abiEncodedOutput, execErr := h.Execute(context.Background(), input)
+	abiEncodedOutput, execErr := h.Execute(t.Context(), input)
 	require.NoError(t, execErr, "Execute with CBOR body should not fail")
 
 	decodedOutput, err := prophet.DecodeOutputFromABI[generated.HttpResponse](
@@ -152,7 +155,7 @@ func TestHandler_Execute_URLNotAllowed(t *testing.T) {
 	)
 	require.NoError(t, err, "Failed to encode input")
 
-	_, execErr := h.Execute(context.Background(), input)
+	_, execErr := h.Execute(t.Context(), input)
 	require.Error(t, execErr)
 	require.Contains(t, execErr.Error(), "URL not allowed by whitelist")
 }

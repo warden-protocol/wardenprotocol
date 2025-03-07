@@ -13,6 +13,7 @@ import (
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	types "github.com/skip-mev/slinky/x/oracle/types"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 )
 
@@ -42,7 +43,8 @@ func LoadABI() (abi.ABI, error) {
 
 func NewPrecompile(
 	oraclekee oraclekeeper.Keeper,
-	eventRegistry *precommon.EthEventsRegistry) (*Precompile, error) {
+	eventRegistry *precommon.EthEventsRegistry,
+) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err

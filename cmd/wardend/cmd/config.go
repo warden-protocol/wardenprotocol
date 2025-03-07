@@ -5,7 +5,6 @@ import (
 
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
-
 	evmservercfg "github.com/evmos/evmos/v20/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 

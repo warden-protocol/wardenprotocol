@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	"fmt"
-
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
@@ -73,7 +71,7 @@ func NewKeeper(
 	getWasmKeeper func() wasmkeeper.Keeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
-		panic(fmt.Sprintf("invalid authority address: %s", authority))
+		panic("invalid authority address: " + authority)
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -137,10 +135,11 @@ func (k Keeper) assertActAuthority(addr string) error {
 	if k.GetActAuthority() != addr {
 		return errorsmod.Wrapf(v1beta3.ErrInvalidActionSigner, "invalid authority; expected %s, got %s", k.GetAuthority(), addr)
 	}
+
 	return nil
 }
 
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", v1beta3.ModuleName))
+	return k.logger.With("module", "x/"+v1beta3.ModuleName)
 }

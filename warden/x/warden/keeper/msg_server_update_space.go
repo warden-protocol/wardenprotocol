@@ -4,6 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -21,6 +22,7 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveAdminTemplateId); err != nil {
 			return nil, err
 		}
+
 		space.ApproveAdminTemplateId = msg.ApproveAdminTemplateId
 	}
 
@@ -28,6 +30,7 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectAdminTemplateId); err != nil {
 			return nil, err
 		}
+
 		space.RejectAdminTemplateId = msg.RejectAdminTemplateId
 	}
 
@@ -35,6 +38,7 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		if err := k.actKeeper.IsValidTemplate(ctx, msg.ApproveSignTemplateId); err != nil {
 			return nil, err
 		}
+
 		space.ApproveSignTemplateId = msg.ApproveSignTemplateId
 	}
 
@@ -42,6 +46,7 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		if err := k.actKeeper.IsValidTemplate(ctx, msg.RejectSignTemplateId); err != nil {
 			return nil, err
 		}
+
 		space.RejectSignTemplateId = msg.RejectSignTemplateId
 	}
 

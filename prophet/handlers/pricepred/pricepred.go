@@ -3,6 +3,7 @@ package pricepred
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/big"
 	"net/http"
@@ -67,8 +68,9 @@ func (i *PricePredictorInputData) ToPredictRequest() (PredictRequest, error) {
 	dateStr := tm.Format("2006-01-02")
 
 	if i.FalsePositiveRate[1] == 0 {
-		return PredictRequest{}, fmt.Errorf("invalid false positive rate")
+		return PredictRequest{}, errors.New("invalid false positive rate")
 	}
+
 	fpr := float64(i.FalsePositiveRate[0]) / float64(i.FalsePositiveRate[1])
 
 	return PredictRequest{
@@ -102,6 +104,7 @@ func (s PricePredictorSolidity) Execute(ctx context.Context, input []byte) ([]by
 	}
 
 	var backtestingRes *BacktestingResponse
+
 	if len(inputData.Metrics) > 0 {
 		res, err := s.c.Backtesting(ctx, BacktestingRequest(req))
 		if err != nil {
@@ -165,9 +168,11 @@ func (s PricePredictorSolidity) Verify(ctx context.Context, input []byte, output
 	if err != nil {
 		return err
 	}
+
 	if !res.IsVerified {
-		return fmt.Errorf("pricepred: verification failed")
+		return errors.New("pricepred: verification failed")
 	}
+
 	return nil
 }
 
@@ -190,6 +195,7 @@ func buildOutputData(
 		for i, v := range req.SolverInput.Tokens {
 			metrics[i] = make([]*big.Int, len(inputData.Metrics))
 			tokenMetrics := backtestingRes.SolverOutput.Tokens[v]
+
 			for j, m := range inputData.Metrics {
 				m := MetricNameFromBigInt(m)
 				switch m {

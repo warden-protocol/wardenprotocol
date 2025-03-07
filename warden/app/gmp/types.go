@@ -7,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
+
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
@@ -33,7 +34,7 @@ type GeneralMessageHandler interface {
 	) error
 }
 
-// Message is attached in ICS20 packet memo field
+// Message is attached in ICS20 packet memo field.
 type Message struct {
 	SourceChain   string `json:"source_chain"`
 	SourceAddress string `json:"source_address"`
@@ -45,13 +46,15 @@ func verifyParams(params gmptypes.Params, sender string, channel string) error {
 	if !strings.EqualFold(params.GmpAddress, sender) {
 		return fmt.Errorf("invalid sender address: %s", sender)
 	}
+
 	if !strings.EqualFold(params.GmpChannel, channel) {
 		return fmt.Errorf("invalid channel: %s", channel)
 	}
+
 	return nil
 }
 
-// parseDenom convert denom to receiver chain representation
+// parseDenom convert denom to receiver chain representation.
 func parseDenom(packet channeltypes.Packet, denom string) string {
 	if types.ReceiverChainIsSource(packet.GetSourcePort(), packet.GetSourceChannel(), denom) {
 		// remove prefix added by sender chain

@@ -24,6 +24,7 @@ func (a *Action) SetResult(ctx sdk.Context, result *codectypes.Any) error {
 	}
 
 	a.Result = result
+
 	return nil
 }
 
@@ -31,9 +32,11 @@ func (a *Action) SetStatus(ctx sdk.Context, status ActionStatus) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
 		return errors.Wrapf(ErrInvalidActionStatusChange, "from %s to %s", a.Status.String(), status.String())
 	}
+
 	prevStatus := a.Status
 	a.Status = status
 	a.UpdatedAt = ctx.BlockTime()
+
 	return ctx.EventManager().EmitTypedEvent(&EventActionStateChange{
 		Id:             a.Id,
 		PreviousStatus: prevStatus,
@@ -53,6 +56,7 @@ func (a *Action) AddOrUpdateVote(ctx sdk.Context, participant string, voteType A
 			a.Votes[i].VoteType = voteType
 			a.Votes[i].VotedAt = ctx.BlockTime()
 			updated = true
+
 			break
 		}
 	}

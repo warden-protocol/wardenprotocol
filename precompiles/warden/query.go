@@ -1,7 +1,7 @@
 package warden
 
 import (
-	"fmt"
+	"errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -41,8 +41,9 @@ func (p Precompile) AllKeysMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(keysOutput).FromResponse(response)
@@ -70,8 +71,9 @@ func (p Precompile) KeyByIdMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(KeyResponse).FromResponse(response)
@@ -99,8 +101,9 @@ func (p Precompile) KeysBySpaceIdMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(keysOutput).FromResponse(response)
@@ -128,8 +131,9 @@ func (p Precompile) KeyRequestMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(KeyRequest).FromResponse(response)
@@ -157,8 +161,9 @@ func (p Precompile) KeyRequestsMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(keyRequestsOutput).FromResponse(response)
@@ -186,8 +191,9 @@ func (p Precompile) KeychainMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(Keychain).FromResponse(response)
@@ -215,8 +221,9 @@ func (p Precompile) KeychainsMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(keychainsOutput).FromResponse(response)
@@ -244,8 +251,9 @@ func (p Precompile) SignRequestByIdMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(SignRequest).FromResponse(response)
@@ -273,8 +281,9 @@ func (p Precompile) SignRequestsMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(signRequestsOutput).FromResponse(response)
@@ -302,8 +311,9 @@ func (p Precompile) SpaceByIdMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(Space).FromResponse(response)
@@ -331,8 +341,9 @@ func (p Precompile) SpacesMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(spacesOutput).FromResponse(response)
@@ -360,8 +371,9 @@ func (p Precompile) SpacesByOwnerMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(spacesOutput).FromResponse(response)

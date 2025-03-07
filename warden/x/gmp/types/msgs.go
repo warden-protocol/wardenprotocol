@@ -1,17 +1,17 @@
 package types
 
 import (
-	fmt "fmt"
+	"errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var _ sdk.Msg = &MsgSetParams{}
 
-// Type implements LegacyMsg interface
+// Type implements LegacyMsg interface.
 func (msg MsgSetParams) Type() string { return sdk.MsgTypeURL(&msg) }
 
-// ValidateBasic Implements sdk.Msg
+// ValidateBasic Implements sdk.Msg.
 func (msg MsgSetParams) ValidateBasic() error {
 	return msg.Params.Validate()
 }
@@ -34,19 +34,21 @@ func NewMsgBridge(
 	}
 }
 
-// Type implements LegacyMsg interface
+// Type implements LegacyMsg interface.
 func (msg MsgBridge) Type() string { return sdk.MsgTypeURL(&msg) }
 
-// ValidateBasic Implements sdk.Msg
+// ValidateBasic Implements sdk.Msg.
 func (msg MsgBridge) ValidateBasic() error {
 	if msg.Relayer == "" {
-		return fmt.Errorf("relayer cannot be empty")
+		return errors.New("relayer cannot be empty")
 	}
+
 	if msg.DestinationChain == "" {
-		return fmt.Errorf("destinationChain cannot be empty")
+		return errors.New("destinationChain cannot be empty")
 	}
+
 	if msg.WardenContractAddress == "" {
-		return fmt.Errorf("wardenContractAddress cannot be empty")
+		return errors.New("wardenContractAddress cannot be empty")
 	}
 
 	return nil

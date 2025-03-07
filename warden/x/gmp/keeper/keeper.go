@@ -7,14 +7,13 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
-	"github.com/ethereum/go-ethereum/common"
-
 	storetypes "cosmossdk.io/store/types"
+	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types" //nolint:all
+	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
+	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 )
@@ -45,7 +44,7 @@ func NewKeeper(
 
 // Logger returns a module-specific logger.
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
-	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	return ctx.Logger().With("module", "x/"+types.ModuleName)
 }
 
 // Bridge submits an IBC transfer with a MsgBridge payload.
@@ -73,6 +72,7 @@ func (k Keeper) Bridge(
 		uint64(ctx.BlockTime().Add(time.Duration(params.GmpTimeout)*time.Hour).UnixNano()),
 		string(bz),
 	)
+
 	_, err = k.IBCKeeper.Transfer(ctx, transferMsg)
 	if err != nil {
 		return &types.MsgBridgeResponse{}, err
@@ -92,6 +92,7 @@ func (k Keeper) BuildGmpRequest(
 		common.HexToAddress(msg.DestinationContractAddress),
 		msg.DestinationContractCalldata,
 	)
+
 	payload, err := encoder.GMPEncode()
 	if err != nil {
 		return nil, err
@@ -108,6 +109,7 @@ func (k Keeper) BuildGmpRequest(
 			Recipient: params.FeeRecipient,
 		},
 	}
+
 	bz, err := json.Marshal(&message)
 	if err != nil {
 		k.Logger(ctx).With(err).Error("error marshaling GMP message")
@@ -125,5 +127,6 @@ func (k Keeper) BuildGmpRequest(
 		uint64(ctx.BlockTime().Add(time.Duration(params.GmpTimeout)*time.Hour).UnixNano()),
 		string(bz),
 	)
+
 	return transferMsg, nil
 }

@@ -20,18 +20,19 @@ func Fill(x interface{}) interface{} {
 	v := reflect.Indirect(reflect.ValueOf(x))
 	switch v.Kind() {
 	case reflect.Slice:
-		for i := 0; i < v.Len(); i++ {
+		for i := range v.Len() {
 			obj := v.Index(i)
 			objPt := reflect.NewAt(obj.Type(), unsafe.Pointer(obj.UnsafeAddr())).Interface()
 			objPt = Fill(objPt)
 			obj.Set(reflect.ValueOf(objPt))
 		}
 	case reflect.Struct:
-		for i := 0; i < v.NumField(); i++ {
+		for i := range v.NumField() {
 			f := reflect.Indirect(v.Field(i))
 			if !f.CanSet() {
 				continue
 			}
+
 			switch f.Kind() {
 			case reflect.Slice:
 				f.Set(reflect.MakeSlice(f.Type(), 0, 0))
@@ -53,5 +54,6 @@ func Fill(x interface{}) interface{} {
 			}
 		}
 	}
+
 	return reflect.Indirect(v).Interface()
 }

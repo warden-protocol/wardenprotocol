@@ -3,6 +3,7 @@ package v1beta2
 import (
 	"bytes"
 	"crypto/ecdsa"
+	"errors"
 	"fmt"
 	"math/big"
 
@@ -25,6 +26,7 @@ func NewEthereumSignMethodHandler(k *Key) (*EthereumSignMethodHandler, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &EthereumSignMethodHandler{key: pubkey}, nil
 }
 
@@ -102,16 +104,20 @@ func DecodeUnsignedPayload(msg []byte) (types.TxData, error) {
 	if len(msg) <= 1 {
 		return nil, fmt.Errorf("found less than 1 byte in %v", msg)
 	}
+
 	if msg[0] > 0x7f {
 		// Legacy transaction
 		var res types.LegacyTx
 		err := rlp.DecodeBytes(msg, &res)
+
 		return &res, err
 	}
+
 	switch msg[0] {
 	case types.AccessListTxType:
 		var res AccessListTxWithoutSignature
 		err := rlp.DecodeBytes(msg[1:], &res)
+
 		return &types.AccessListTx{
 			ChainID:    res.ChainID,
 			Nonce:      res.Nonce,
@@ -125,6 +131,7 @@ func DecodeUnsignedPayload(msg []byte) (types.TxData, error) {
 	case types.DynamicFeeTxType:
 		var res DynamicFeeTxWithoutSignature
 		err := rlp.DecodeBytes(msg[1:], &res)
+
 		return &types.DynamicFeeTx{
 			ChainID:    res.ChainID,
 			Nonce:      res.Nonce,
@@ -167,15 +174,18 @@ func ParseEthereumTransaction(b []byte, chainID *big.Int) (*EthereumTransfer, er
 	if len(tx.Data()) > 0 {
 		// a contract call is being made
 		transfer.Contract = tx.To()
+
 		callMsg, parsed, err := parseCallData(tx.Data()) // - TODO we should refactor this so that value can be extracted from all known contract calls
 		if err != nil {
 			return nil, err
 		}
+
 		if !parsed {
 			// Most contract calls will fall into this category. Over time parseCallData must be improved so that
 			// asset value movements can be tracked over an increasing set of contract types.
 			return transfer, nil
 		}
+
 		transfer.To = callMsg.To
 		transfer.Amount = callMsg.Value
 	}
@@ -185,7 +195,7 @@ func ParseEthereumTransaction(b []byte, chainID *big.Int) (*EthereumTransfer, er
 
 func parseCallData(txData []byte) (call *ethereum.CallMsg, parsed bool, err error) {
 	if len(txData) < 4 {
-		return nil, false, fmt.Errorf("invalid contract call")
+		return nil, false, errors.New("invalid contract call")
 	}
 
 	// 4 bytes - method signature (transfer: 0xa9059cbb)
@@ -199,25 +209,27 @@ func parseCallData(txData []byte) (call *ethereum.CallMsg, parsed bool, err erro
 		if err != nil {
 			return nil, false, err
 		}
+
 		return &ethereum.CallMsg{To: to, Value: amt}, true, nil
 	default:
 		return nil, false, nil
 	}
 }
 
-var (
-	transferMethodID = crypto.Keccak256Hash([]byte("transfer(address,uint256)")).Bytes()[0:4]
-)
+var transferMethodID = crypto.Keccak256Hash([]byte("transfer(address,uint256)")).Bytes()[0:4]
 
-// rawUnpackERC20Transfer Unpack without use of Go ABI package. Assumes correct ERC20 payload formatting
+// rawUnpackERC20Transfer Unpack without use of Go ABI package. Assumes correct ERC20 payload formatting.
 func rawUnpackERC20Transfer(txData []byte) (to *common.Address, amount *big.Int, err error) {
 	if !bytes.Equal(txData[0:4], transferMethodID) {
-		return nil, nil, fmt.Errorf("wrong method id")
+		return nil, nil, errors.New("wrong method id")
 	}
+
 	if !bytes.Equal(txData[4:4+12], hexutil.MustDecode("0x000000000000000000000000")) {
-		return nil, nil, fmt.Errorf("invalid ERC-20 transfer: recipient address is not 20 bytes")
+		return nil, nil, errors.New("invalid ERC-20 transfer: recipient address is not 20 bytes")
 	}
+
 	toAddr := common.BytesToAddress(txData[16:36])
 	amount = new(big.Int).SetBytes(txData[36:68])
+
 	return &toAddr, amount, nil
 }

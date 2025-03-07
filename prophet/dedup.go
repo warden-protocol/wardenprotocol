@@ -32,10 +32,12 @@ func newDedup[T getIDer](ch <-chan T) (*dedup[T], error) {
 
 	go func() {
 		defer close(out)
+
 		for req := range ch {
 			if c.Contains(req.getID()) {
 				continue
 			}
+
 			c.Add(req.getID(), struct{}{})
 			out <- req
 		}
@@ -59,6 +61,7 @@ func newDedupFutureReader(r FutureReader) (*dedupFutureReader, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &dedupFutureReader{d: d}, nil
 }
 
@@ -77,6 +80,7 @@ func newDedupFutureResultReader(r FutureResultReader) (*dedupFutureResultReader,
 	if err != nil {
 		return nil, err
 	}
+
 	return &dedupFutureResultReader{d: d}, nil
 }
 

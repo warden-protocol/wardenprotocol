@@ -5,6 +5,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -30,7 +31,6 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 
 	if msg.Callback != "" {
 		address, err := precommon.AddressFromBech32Str(msg.Callback)
-
 		if err != nil {
 			return nil, errorsmod.Wrapf(types.ErrInvalidCallback, "invalid callback address: %s", err)
 		}

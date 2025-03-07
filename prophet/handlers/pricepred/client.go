@@ -55,6 +55,7 @@ type PredictResponse struct {
 func (c *client) Predict(ctx context.Context, req PredictRequest) (PredictResponse, error) {
 	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
+
 	var res PredictResponse
 	if err := c.post(reqCtx, req, &res, c.predictURL); err != nil {
 		return PredictResponse{}, err
@@ -113,6 +114,7 @@ type BacktestingResponse struct {
 func (c *client) Backtesting(ctx context.Context, req BacktestingRequest) (BacktestingResponse, error) {
 	reqCtx, cancel := context.WithTimeout(ctx, 320*time.Second)
 	defer cancel()
+
 	var res BacktestingResponse
 	if err := c.post(reqCtx, req, &res, c.backtestingURL); err != nil {
 		return BacktestingResponse{}, err
@@ -135,6 +137,7 @@ type VerifyResponse struct {
 func (c *client) Verify(ctx context.Context, req VerifyRequest) (VerifyResponse, error) {
 	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
+
 	var res VerifyResponse
 	if err := c.post(reqCtx, req, &res, c.verifyURL); err != nil {
 		return VerifyResponse{}, err
@@ -149,7 +152,7 @@ func (c *client) post(ctx context.Context, req, res any, URL string) error {
 		return err
 	}
 
-	httpReq, err := http.NewRequestWithContext(ctx, "POST", URL, bytes.NewReader(reqBody))
+	httpReq, err := http.NewRequestWithContext(ctx, http.MethodPost, URL, bytes.NewReader(reqBody))
 	if err != nil {
 		return err
 	}
@@ -163,6 +166,7 @@ func (c *client) post(ctx context.Context, req, res any, URL string) error {
 	}
 
 	defer response.Body.Close()
+
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return err

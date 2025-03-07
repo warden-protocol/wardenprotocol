@@ -5,8 +5,8 @@ import (
 
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
@@ -30,6 +30,7 @@ func (ms msgServer) SetParams(goCtx context.Context, msg *types.MsgSetParams) (*
 			ms.keeper.authority,
 			msg.Authority,
 		)
+
 		return nil, err
 	}
 

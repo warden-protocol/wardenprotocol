@@ -2,6 +2,7 @@ package v1beta1
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,8 +22,10 @@ type TemplatesRegistry struct {
 	p map[string]ProviderFnWithCtx
 }
 
-type ProviderFnG[T sdk.Msg] func(context.Context, T) (Template, Template, error)
-type ProviderFnWithCtxG[T sdk.Msg] func(context.Context, T) (context.Context, Template, Template, error)
+type (
+	ProviderFnG[T sdk.Msg]        func(context.Context, T) (Template, Template, error)
+	ProviderFnWithCtxG[T sdk.Msg] func(context.Context, T) (context.Context, Template, Template, error)
+)
 
 type registry interface {
 	Register(typeUrl string, fn ProviderFn)
@@ -54,8 +57,10 @@ func RegisterCtx[T sdk.Msg](reg registryWithCtx, fn ProviderFnWithCtxG[T]) {
 	})
 }
 
-type ProviderFn func(context.Context, sdk.Msg) (Template, Template, error)
-type ProviderFnWithCtx func(context.Context, sdk.Msg) (context.Context, Template, Template, error)
+type (
+	ProviderFn        func(context.Context, sdk.Msg) (Template, Template, error)
+	ProviderFnWithCtx func(context.Context, sdk.Msg) (context.Context, Template, Template, error)
+)
 
 // NewTemplatesRegistry returns an empty initialized *TemplatesRegistry.
 func NewTemplatesRegistry() *TemplatesRegistry {
@@ -79,11 +84,11 @@ func (p *TemplatesRegistry) Register(typeUrl string, fn ProviderFn) {
 // a provider for the same typeUrl twice will panic.
 func (p *TemplatesRegistry) RegisterCtx(typeUrl string, fn ProviderFnWithCtx) {
 	if len(typeUrl) == 0 {
-		panic(fmt.Errorf("typeUrl cannot be empty"))
+		panic(errors.New("typeUrl cannot be empty"))
 	}
 
 	if fn == nil {
-		panic(fmt.Errorf("function cannot be nil"))
+		panic(errors.New("function cannot be nil"))
 	}
 
 	if _, found := p.p[typeUrl]; found {
@@ -102,5 +107,6 @@ func (p *TemplatesRegistry) Get(ctx context.Context, msg sdk.Msg) (context.Conte
 	if fn, found := p.p[typeUrl]; found {
 		return fn(ctx, msg)
 	}
+
 	return nil, Template{}, Template{}, fmt.Errorf("no Template provider registered for %s", typeUrl)
 }

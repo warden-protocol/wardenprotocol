@@ -1,6 +1,7 @@
 package v1beta0
 
 import (
+	"errors"
 	"fmt"
 	time "time"
 
@@ -36,21 +37,23 @@ func (a *Action) SetResult(result proto.Message) error {
 
 	a.Status = ActionStatus_ACTION_STATUS_COMPLETED
 	a.Result = anyV
+
 	return nil
 }
 
 func (a *Action) AddApprover(address string, timestamp time.Time) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
-		return fmt.Errorf("action already completed")
+		return errors.New("action already completed")
 	}
 
 	for _, a := range a.Approvers {
 		if a.Address == address {
-			return fmt.Errorf("approver already added")
+			return errors.New("approver already added")
 		}
 	}
 
 	a.Approvers = append(a.Approvers, NewApprover(address, timestamp))
+
 	return nil
 }
 
@@ -59,6 +62,7 @@ func GetActionMessage[Msg sdk.Msg](cdc codectypes.AnyUnpacker, a Action) (Msg, e
 		msg      sdk.Msg
 		emptyMsg Msg
 	)
+
 	if err := cdc.UnpackAny(a.Msg, &msg); err != nil {
 		return emptyMsg, err
 	}

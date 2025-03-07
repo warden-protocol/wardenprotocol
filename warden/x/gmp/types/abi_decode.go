@@ -24,7 +24,7 @@ var decoderSpec = abi.Arguments{
 	},
 }
 
-// NewGmpDecoder decodes a payload from GMP given a byte array
+// NewGmpDecoder decodes a payload from GMP given a byte array.
 func NewGmpDecoder(payload []byte) (GmpDecoder, error) {
 	args, err := decoderSpec.Unpack(payload)
 	if err != nil {

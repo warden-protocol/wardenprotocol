@@ -7,9 +7,8 @@ import (
 	"sync"
 	"time"
 
-	lru "github.com/hashicorp/golang-lru/v2"
-
 	"github.com/cosmos/cosmos-sdk/client"
+	lru "github.com/hashicorp/golang-lru/v2"
 )
 
 // queueBufferSize sets the default size for incoming queues, i.e. the number
@@ -79,19 +78,24 @@ func (p *P) Run(tendermintRpc string) error {
 		if err != nil {
 			panic(err)
 		}
+
 		timeout := time.Now().Add(30 * time.Second)
+
 		for {
 			if time.Now().After(timeout) {
 				return
 			}
+
 			status, err := client.Status(context.Background())
 			if err != nil {
 				time.Sleep(100 * time.Millisecond)
 				continue
 			}
+
 			p.selfAddressRwLock.Lock()
 			defer p.selfAddressRwLock.Unlock()
 			p.selfAddress = status.ValidatorInfo.Address
+
 			return
 		}
 	}()
@@ -129,6 +133,7 @@ func (p *P) Results() ([]FutureResult, func()) {
 func (p *P) SelfAddress() []byte {
 	p.selfAddressRwLock.RLock()
 	defer p.selfAddressRwLock.RUnlock()
+
 	return p.selfAddress
 }
 
@@ -182,12 +187,14 @@ func newS[T getIDer]() (*s[T], error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &s[T]{l: l}, nil
 }
 
 func (s *s[T]) Write(value T) error {
 	id := value.getID()
 	s.l.Add(id, value)
+
 	return nil
 }
 

@@ -66,10 +66,10 @@ func NewKeeper(
 	getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper,
 	asyncModuleAddress sdk.Address,
 	accountKeeper types.AccountKeeper,
-	//selfValAddr sdk.ConsAddress,
+	// selfValAddr sdk.ConsAddress,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
-		panic(fmt.Sprintf("invalid authority address: %s", authority))
+		panic("invalid authority address: " + authority)
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -114,7 +114,7 @@ func (k Keeper) GetAuthority() string {
 
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
 func (k Keeper) AddFutureResult(ctx context.Context, id uint64, submitter, output []byte) error {
@@ -141,6 +141,7 @@ func (k Keeper) SetFutureVote(ctx context.Context, id uint64, voter []byte, vote
 	if !vote.IsValid() {
 		return fmt.Errorf("invalid vote type: %v", vote)
 	}
+
 	return k.votes.Set(ctx, collections.Join(id, voter), int32(vote))
 }
 
@@ -152,15 +153,18 @@ func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.Fu
 	defer it.Close()
 
 	var votes []types.FutureVote
+
 	for ; it.Valid(); it.Next() {
 		key, err := it.Key()
 		if err != nil {
 			return nil, err
 		}
+
 		vote, err := it.Value()
 		if err != nil {
 			return nil, err
 		}
+
 		votes = append(votes, types.FutureVote{
 			FutureId: futureId,
 			Voter:    key.K2(),
@@ -177,7 +181,6 @@ func (k Keeper) futureReadyCallback(
 	output []byte,
 ) error {
 	future, err := k.futures.Get(ctx, id)
-
 	if err != nil {
 		return err
 	}
@@ -199,7 +202,6 @@ func (k Keeper) futureReadyCallback(
 	}
 
 	cbAddress, err := precommon.AddressFromBech32Str(future.Callback)
-
 	if err != nil {
 		return err
 	}
@@ -235,6 +237,7 @@ func (k Keeper) callEVMWithData(
 		fromAcc = k.accountKeeper.NewAccountWithAddress(ctx, from.Bytes())
 		k.accountKeeper.SetAccount(ctx, fromAcc)
 	}
+
 	nonce := fromAcc.GetSequence()
 
 	evmKeeper := k.getEvmKeeper(0)
@@ -297,6 +300,7 @@ func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, val
 	defer it.Close()
 
 	futures := make([]prophet.FutureResult, 0, limit)
+
 	for ; it.Valid(); it.Next() {
 		id, err := it.Key()
 		if err != nil {
@@ -312,6 +316,7 @@ func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, val
 		if found {
 			continue
 		}
+
 		if err != nil {
 			return nil, err
 		}

@@ -6,12 +6,14 @@ import (
 
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/shield"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*types.MsgNewActionResponse, error) {
 	var message sdk.Msg
+
 	err := k.cdc.UnpackAny(msg.Message, &message)
 	if err != nil {
 		return nil, fmt.Errorf("can't unpack any: %w", err)

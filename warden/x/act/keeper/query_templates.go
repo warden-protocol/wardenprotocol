@@ -5,9 +5,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesRequest) (*types.QueryTemplatesResponse, error) {
@@ -27,7 +28,6 @@ func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesReques
 		func(key uint64, value types.Template) (types.Template, error) {
 			return value, nil
 		})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

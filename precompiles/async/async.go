@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"cosmossdk.io/log"
-
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -139,6 +138,7 @@ func (p *Precompile) IsTransaction(method string) bool {
 		PendingFuturesMethod:
 		return false
 	}
+
 	panic(fmt.Errorf("async precompile: method not exists: %s", method))
 }
 

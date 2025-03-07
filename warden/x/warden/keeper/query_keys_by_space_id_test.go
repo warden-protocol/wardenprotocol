@@ -17,7 +17,7 @@ func Benchmark_QueryKeysBySpaceId(b *testing.B) {
 	pk, err := base64.StdEncoding.DecodeString("A8Ijpl1mphVgurSqcDfS4mVVSqgXVLubol7+Kgjay1I+")
 	require.NoError(b, err)
 
-	for i := 0; i < 100_000; i++ {
+	for i := range 100_000 {
 		err = k.KeysKeeper.New(
 			ctx,
 			&types.Key{
@@ -43,8 +43,10 @@ func Benchmark_QueryKeysBySpaceId(b *testing.B) {
 			Limit:      1,
 		},
 	}
+
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+
+	for range b.N {
 		res, err := k.KeysBySpaceId(ctx, req)
 		require.NoError(b, err)
 		require.NotNil(b, res)

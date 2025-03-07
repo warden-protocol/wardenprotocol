@@ -22,11 +22,13 @@ func ExecFutures(r FutureReader, w FutureResultWriter) error {
 			log := log.With("future", future.ID)
 
 			log.Debug("running future")
+
 			output, err := Execute(context.TODO(), future)
 			if err != nil {
 				log.Error("failed to run future", "err", err)
 				continue
 			}
+
 			err = w.Write(output)
 			if err != nil {
 				log.Error("failed to write future result", "err", err)
@@ -55,6 +57,7 @@ func ExecVotes(r FutureResultReader, w VoteWriter) error {
 			plog := log.With("future", proposal.ID)
 
 			plog.Debug("verifying future proposal")
+
 			err := Verify(context.TODO(), proposal)
 			if err := w.Write(Vote{
 				ID:  proposal.ID,

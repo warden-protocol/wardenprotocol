@@ -6,13 +6,13 @@ import (
 )
 
 const (
-	// TypeUnrecognized means coin type is unrecognized
+	// TypeUnrecognized means coin type is unrecognized.
 	TypeUnrecognized = iota
-	// TypeGeneralMessage is a pure message
+	// TypeGeneralMessage is a pure message.
 	TypeGeneralMessage
-	// TypeGeneralMessageWithToken is a general message with token
+	// TypeGeneralMessageWithToken is a general message with token.
 	TypeGeneralMessageWithToken
-	// TypeSendToken is a direct token transfer
+	// TypeSendToken is a direct token transfer.
 	TypeSendToken
 )
 

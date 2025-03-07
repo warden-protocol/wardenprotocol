@@ -27,7 +27,7 @@ func TestConvertHexToBech32(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		tc := tc // Capture range variable
+		// Capture range variable
 		t.Run(tc.name, func(t *testing.T) {
 			addr, err := convertHexToBech32(tc.addr)
 			if tc.expectErr {
@@ -36,11 +36,14 @@ func TestConvertHexToBech32(t *testing.T) {
 				} else {
 					t.Logf("got expected error: %v", err)
 				}
+
 				return
 			}
+
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
+
 			if addr != tc.expected {
 				t.Errorf("expected address %q, got %q", tc.expected, addr)
 			}

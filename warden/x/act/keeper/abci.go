@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"context"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"time"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k Keeper) EndBlocker(ctx context.Context) error {
@@ -29,7 +30,8 @@ func (k Keeper) pruneActions(
 	ctx context.Context,
 	blockHeight int64,
 	pruneCheckBlockFrequency int64,
-	maxPendingTime, maxCompletedTime time.Duration) error {
+	maxPendingTime, maxCompletedTime time.Duration,
+) error {
 	latestPruneHeight, err := k.ActionKeeper.GetLatestPruneHeight(ctx)
 	if err != nil {
 		return err
@@ -40,6 +42,7 @@ func (k Keeper) pruneActions(
 	}
 
 	blockTime := k.getBlockTime(ctx)
+
 	expiredActions, err := k.ActionKeeper.ExpiredActions(ctx, blockTime, maxPendingTime, maxCompletedTime)
 	if err != nil {
 		return err

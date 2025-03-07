@@ -22,6 +22,7 @@ func (k Keeper) FutureById(ctx context.Context, req *types.QueryFutureByIdReques
 	}
 
 	var result *types.FutureResult
+
 	r, err := k.futures.GetResult(ctx, req.Id)
 	if err == nil {
 		result = &r

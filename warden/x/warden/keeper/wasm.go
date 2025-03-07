@@ -12,13 +12,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 )
 
-// ExecuteAnalyzer executes the contract at the specified address, on behalf of
-// an account.
-//
-// The contract is expected to be an "Analyzer" contract: it will receive ExecuteAnalyzer
-// `input` binary field and will return:
-// - an optional binary (data for signing)
-// - a collection of key-value pairs (key are strings, values are shield's AST nodes)
+// - a collection of key-value pairs (key are strings, values are shield's AST nodes).
 func (k Keeper) ExecuteAnalyzer(ctx sdk.Context, contractAddr, callerAddr sdk.AccAddress, input []byte) ([]byte, map[string]*ast.Expression, error) {
 	msg, err := json.Marshal(newAnalyzerMsg(input))
 	if err != nil {
@@ -73,17 +67,20 @@ type analyzerRes struct {
 
 func parseAnalyzerValues(bz []byte) ([]byte, map[string]*ast.Expression, error) {
 	var response analyzerRes
+
 	err := json.Unmarshal(bz, &response)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	parsedValues := make(map[string]*ast.Expression)
+
 	for k, v := range response.Result {
 		node, err := parseShieldExpression(v)
 		if err != nil {
-			return nil, nil, fmt.Errorf("parsing shield expression for %s: %v", k, err)
+			return nil, nil, fmt.Errorf("parsing shield expression for %s: %w", k, err)
 		}
+
 		parsedValues[k] = node
 	}
 
@@ -92,6 +89,7 @@ func parseAnalyzerValues(bz []byte) ([]byte, map[string]*ast.Expression, error) 
 
 func parseShieldExpression(v json.RawMessage) (*ast.Expression, error) {
 	var out any
+
 	err := json.Unmarshal(v, &out)
 	if err != nil {
 		return nil, err
@@ -114,6 +112,7 @@ func parseShieldExpression(v json.RawMessage) (*ast.Expression, error) {
 		if out != math.Trunc(out) {
 			return nil, fmt.Errorf("floating point numbers are not supported in the shield language (value: %+v)", out)
 		}
+
 		return ast.NewIntegerLiteral(&ast.IntegerLiteral{
 			Value: big.NewInt(int64(out)).String(),
 		}), nil

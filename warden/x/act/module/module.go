@@ -2,12 +2,13 @@ package act
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
-	"encoding/json"
-	"fmt"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -17,8 +18,6 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-
-	// this line is used by starport scaffolding # 1
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
@@ -79,6 +78,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
 		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
 	}
+
 	return genState.Validate()
 }
 
@@ -93,7 +93,7 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 // AppModule
 // ----------------------------------------------------------------------------
 
-// AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
+// AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement.
 type AppModule struct {
 	AppModuleBasic
 
@@ -116,13 +116,13 @@ func NewAppModule(
 	}
 }
 
-// RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
+// RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 }
 
-// RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
+// RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted).
 func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // InitGenesis performs the module's genesis initialization. It returns no validator updates.

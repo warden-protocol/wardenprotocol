@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
@@ -40,9 +41,11 @@ func TestDecodeInput(t *testing.T) {
 			require.NoError(t, err)
 			requireEqualInt(t, c.expected.Date, decodedInput.Date)
 			require.Equal(t, c.expected.Tokens, decodedInput.Tokens)
+
 			for i := range c.expected.Metrics {
 				requireEqualInt(t, c.expected.Metrics[i], decodedInput.Metrics[i])
 			}
+
 			require.Equal(t, c.expected.FalsePositiveRate, decodedInput.FalsePositiveRate)
 		})
 	}
@@ -135,9 +138,11 @@ func TestBuildOutput(t *testing.T) {
 			actual, err := buildOutputData(c.inputData, c.req, c.res, c.backtestingRes)
 			require.NoError(t, err)
 			require.Len(t, actual.Metrics, len(c.expected.Metrics))
+
 			for i := range actual.Metrics {
 				requireEqualInts(t, c.expected.Metrics[i], actual.Metrics[i])
 			}
+
 			requireEqualInts(t, c.expected.Predictions, actual.Predictions)
 		})
 	}
@@ -147,6 +152,7 @@ func TestAllMetricNamesCovered(t *testing.T) {
 	// this test assumes that the MetricName enum is mapped to the field IDs of
 	// the [BacktestingMetrics] struct
 	bmType := reflect.TypeOf(BacktestingMetrics{})
+
 	n := bmType.NumField()
 	for i := range n {
 		inputData := PricePredictorInputData{Metrics: []*big.Int{big.NewInt(int64(i))}}
@@ -170,6 +176,7 @@ func TestAllMetricNamesCovered(t *testing.T) {
 func requireEqualInts(t *testing.T, expected, actual []*big.Int) {
 	t.Helper()
 	require.Len(t, actual, len(expected))
+
 	for i := range expected {
 		requireEqualInt(t, expected[i], actual[i])
 	}

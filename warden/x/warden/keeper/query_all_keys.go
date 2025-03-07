@@ -23,9 +23,9 @@ func (k Keeper) AllKeys(goCtx context.Context, req *types.QueryAllKeysRequest) (
 			Key:       value,
 			Addresses: value.DeriveAddresses(ctx, req.DeriveAddresses),
 		}
+
 		return response, nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

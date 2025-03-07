@@ -15,6 +15,7 @@ func NewBlackBoxSignMethodHandler(k *Key) (*BlackBoxSignMethodHandler, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &BlackBoxSignMethodHandler{key: pubkey}, nil
 }
 

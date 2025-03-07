@@ -10,8 +10,8 @@ import (
 	"cosmossdk.io/core/store"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/warden-protocol/wardenprotocol/warden/repo"
 
+	"github.com/warden-protocol/wardenprotocol/warden/repo"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -82,6 +82,7 @@ func (k *ActionKeeper) updateMentions(ctx context.Context, action *types.Action,
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -93,7 +94,6 @@ func (k ActionKeeper) Import(ctx sdk.Context, actions []types.Action) error {
 	err := k.Coll().Import(ctx, actions, func(action types.Action) uint64 {
 		return action.Id
 	})
-
 	if err != nil {
 		return err
 	}
@@ -141,6 +141,7 @@ func (k ActionKeeper) GetLatestPruneHeight(ctx context.Context) (int64, error) {
 	if errors.Is(err, collections.ErrNotFound) {
 		return 0, nil
 	}
+
 	return h, err
 }
 
@@ -152,11 +153,13 @@ func (k ActionKeeper) ExpiredActions(ctx context.Context, blockTime time.Time, p
 	defer it.Close()
 
 	var actions []types.Action
+
 	for ; it.Valid(); it.Next() {
 		act, err := it.Value()
 		if err != nil {
 			return nil, err
 		}
+
 		if isExpired(act, blockTime, pendingTimeout, completedTimeout) {
 			actions = append(actions, act)
 		}

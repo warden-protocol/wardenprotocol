@@ -27,7 +27,6 @@ func (p *Precompile) AddFutureMethod(
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.asyncmodulekeeper)
 	message, err := newMsgAddFuture(args, origin, method)
-
 	if err != nil {
 		return nil, err
 	}

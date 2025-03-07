@@ -7,8 +7,8 @@ import (
 	"cosmossdk.io/collections"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	"github.com/skip-mev/slinky/abci/ve"
+
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
@@ -72,6 +72,7 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		defer done()
 
 		votes := make([]*types.VEVoteItem, len(pVotes))
+
 		for i, v := range pVotes {
 			vote := types.FutureVoteType_VOTE_TYPE_VERIFIED
 			if v.Err != nil {
@@ -85,6 +86,7 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		}
 
 		var localHandlers []string
+
 		updateHandlers := false
 		selfConsAddress := k.p.SelfAddress()
 
@@ -94,7 +96,6 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](sdk.ConsAddress(selfConsAddress))
 
 			iterator, err := k.handlersByValidator.Iterate(ctx, r)
-
 			if err != nil {
 				return nil, fmt.Errorf("failed to iterate by validator: %w", err)
 			}
@@ -134,6 +135,7 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 func (k Keeper) VerifyVoteExtensionHandler() sdk.VerifyVoteExtensionHandler {
 	return func(ctx sdk.Context, req *cometabci.RequestVerifyVoteExtension) (*cometabci.ResponseVerifyVoteExtension, error) {
 		var ve types.AsyncVoteExtension
+
 		err := ve.Unmarshal(req.VoteExtension)
 		if err != nil {
 			return &cometabci.ResponseVerifyVoteExtension{
@@ -163,6 +165,7 @@ func (k Keeper) PrepareProposalHandler() sdk.PrepareProposalHandler {
 			log.Error("failed to build async tx", "err", err)
 			return resp, nil
 		}
+
 		resp.Txs = trimExcessBytes(resp.Txs, req.MaxTxBytes-int64(len(asyncTx)))
 		resp.Txs = injectTx(asyncTx, 1, resp.Txs)
 
@@ -181,6 +184,7 @@ func (k Keeper) ProcessProposalHandler() sdk.ProcessProposalHandler {
 		}
 
 		log := ctx.Logger().With("module", "prophet")
+
 		asyncTx := req.Txs[1]
 		if len(asyncTx) == 0 {
 			return resp, nil
@@ -213,6 +217,7 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 		}
 
 		log := ctx.Logger().With("module", "x/async")
+
 		asyncTx := req.Txs[1]
 		if len(asyncTx) == 0 {
 			return resp, nil
@@ -320,13 +325,16 @@ func trimExcessBytes(txs [][]byte, maxSizeBytes int64) [][]byte {
 		returnedTxs   [][]byte
 		consumedBytes int64
 	)
+
 	for _, tx := range txs {
 		consumedBytes += int64(len(tx))
 		if consumedBytes > maxSizeBytes {
 			break
 		}
+
 		returnedTxs = append(returnedTxs, tx)
 	}
+
 	return returnedTxs
 }
 

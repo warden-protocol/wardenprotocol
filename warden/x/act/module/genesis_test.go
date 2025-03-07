@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	keepertest "github.com/warden-protocol/wardenprotocol/warden/testutil/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/testutil/nullify"
 	act "github.com/warden-protocol/wardenprotocol/warden/x/act/module"
@@ -24,6 +25,5 @@ func TestGenesis(t *testing.T) {
 
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
-
 	// this line is used by starport scaffolding # genesis/test/assert
 }

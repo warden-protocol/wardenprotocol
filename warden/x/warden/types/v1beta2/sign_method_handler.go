@@ -1,11 +1,11 @@
 package v1beta2
 
 import (
-	"fmt"
+	"errors"
 	"math/big"
 )
 
-var ErrUnknownWalletType = fmt.Errorf("error in NewWallet: unknown wallet type")
+var ErrUnknownWalletType = errors.New("error in NewWallet: unknown wallet type")
 
 func NewSignMethodHandler(k *Key, sm SignMethod) (SignMethodHandler, error) {
 	switch sm {
@@ -16,6 +16,7 @@ func NewSignMethodHandler(k *Key, sm SignMethod) (SignMethodHandler, error) {
 	case SignMethod_SIGN_METHOD_OSMOSIS:
 		return NewOsmosisSignMethodHandler(k)
 	}
+
 	return nil, ErrUnknownWalletType
 }
 

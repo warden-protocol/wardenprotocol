@@ -36,7 +36,6 @@ func (k Keeper) KeysBySpaceId(goCtx context.Context, req *types.QueryKeysBySpace
 		},
 		query.WithCollectionPaginationPairPrefix[uint64, uint64](req.SpaceId),
 	)
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

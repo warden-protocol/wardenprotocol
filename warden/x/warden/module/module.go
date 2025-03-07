@@ -20,8 +20,6 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	// this line is used by starport scaffolding # 1
-
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/client/cli"
@@ -82,6 +80,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
 		return fmt.Errorf("failed to unmarshal %s genesis state: %w", v1beta3.ModuleName, err)
 	}
+
 	return genState.Validate()
 }
 
@@ -96,7 +95,7 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 // AppModule
 // ----------------------------------------------------------------------------
 
-// AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
+// AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement.
 type AppModule struct {
 	AppModuleBasic
 
@@ -119,7 +118,7 @@ func NewAppModule(
 	}
 }
 
-// RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
+// RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	v1beta3.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	v1beta3.RegisterQueryServer(cfg.QueryServer(), am.keeper)
@@ -210,6 +209,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	if in.Config.Authority != "" {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
+
 	actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
 	wardenAuthority := authtypes.NewModuleAddress(v1beta3.ModuleName)
 	k := keeper.NewKeeper(

@@ -1,13 +1,13 @@
 package v1beta1
 
 const (
-	// ModuleName defines the module name
+	// ModuleName defines the module name.
 	ModuleName = "act"
 
-	// StoreKey defines the primary module store key
+	// StoreKey defines the primary module store key.
 	StoreKey = ModuleName
 
-	// MemStoreKey defines the in-memory store key
+	// MemStoreKey defines the in-memory store key.
 	MemStoreKey = "mem_act"
 
 	ActionCountKey = "action/count"
@@ -17,9 +17,7 @@ const (
 	TemplateKey      = "template/value/"
 )
 
-var (
-	ParamsKey = []byte("p_act")
-)
+var ParamsKey = []byte("p_act")
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)

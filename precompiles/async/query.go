@@ -1,15 +1,16 @@
 package async
 
 import (
+	"errors"
 	"fmt"
-
-	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+
+	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
 const (
@@ -33,8 +34,9 @@ func (p Precompile) FutureByIdMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(FutureByIdResponse).FromResponse(response)
@@ -79,8 +81,9 @@ func (p Precompile) FuturesMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(FuturesResponse).FromResponse(response)
@@ -134,8 +137,9 @@ func (p Precompile) PendingFuturesMethod(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(PendingFuturesResponse).FromResponse(response)

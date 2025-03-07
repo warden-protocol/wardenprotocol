@@ -68,5 +68,6 @@ func path(name string) (string, string) {
 	if len(parts) == 1 {
 		return "", name
 	}
+
 	return parts[0], parts[1]
 }

@@ -17,7 +17,7 @@ func Benchmark_QueryAllKeys(b *testing.B) {
 	pk, err := base64.StdEncoding.DecodeString("A8Ijpl1mphVgurSqcDfS4mVVSqgXVLubol7+Kgjay1I+")
 	require.NoError(b, err)
 
-	for i := 0; i < 1_000_000; i++ {
+	for i := range 1_000_000 {
 		err = k.KeysKeeper.New(
 			ctx,
 			&types.Key{
@@ -41,8 +41,10 @@ func Benchmark_QueryAllKeys(b *testing.B) {
 			types.AddressType_ADDRESS_TYPE_OSMOSIS,
 		},
 	}
+
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+
+	for range b.N {
 		res, err := k.AllKeys(ctx, req)
 		require.NoError(b, err)
 		require.NotNil(b, res)

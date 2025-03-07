@@ -21,7 +21,7 @@ func Benchmark_QueryActionsByAddress(b *testing.B) {
 	k, ctx := keepertest.ActKeeper(b)
 
 	// create many actions, each with a unique address
-	for i := 0; i < 100_000; i++ {
+	for i := range 100_000 {
 		addr := sdk.MustBech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), []byte(fmt.Sprintf("address-%d", i)))
 
 		_, err := k.ActionKeeper.New(
@@ -45,8 +45,10 @@ func Benchmark_QueryActionsByAddress(b *testing.B) {
 			Limit:      1,
 		},
 	}
+
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+
+	for range b.N {
 		res, err := k.ActionsByAddress(ctx, req)
 		require.NoError(b, err)
 		require.NotNil(b, res)

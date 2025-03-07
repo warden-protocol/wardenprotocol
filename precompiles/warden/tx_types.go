@@ -167,6 +167,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
+
 	var input newKeyChainInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
 		return nil, fmt.Errorf("error while unpacking args to newKeyChainInput struct: %w", err)
@@ -267,6 +268,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
+
 	var input updateKeyChainInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
 		return nil, fmt.Errorf("error while unpacking args to updateKeyChainInput struct: %w", err)

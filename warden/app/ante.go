@@ -3,25 +3,20 @@ package app
 import (
 	"errors"
 
-	ibcante "github.com/cosmos/ibc-go/v8/modules/core/ante"
-	"github.com/cosmos/ibc-go/v8/modules/core/keeper"
-
 	corestoretypes "cosmossdk.io/core/store"
+	errorsmod "cosmossdk.io/errors"
 	circuitante "cosmossdk.io/x/circuit/ante"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
-
-	evmante "github.com/evmos/evmos/v20/app/ante/evm"
-
-	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
+	ibcante "github.com/cosmos/ibc-go/v8/modules/core/ante"
+	"github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	cosmosante "github.com/evmos/evmos/v20/app/ante/cosmos"
+	evmante "github.com/evmos/evmos/v20/app/ante/evm"
 	anteutils "github.com/evmos/evmos/v20/app/ante/utils"
 	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
 )
@@ -95,36 +90,47 @@ func ValidateAnteHandlerOptions(options HandlerOptions) error {
 	if options.AccountKeeper == nil {
 		return errors.New("account keeper is required for ante builder")
 	}
+
 	if options.BankKeeper == nil {
 		return errors.New("bank keeper is required for ante builder")
 	}
+
 	if options.SignModeHandler == nil {
 		return errors.New("sign mode handler is required for ante builder")
 	}
+
 	if options.WasmConfig == nil {
 		return errors.New("wasm config is required for ante builder")
 	}
+
 	if options.TXCounterStoreService == nil {
 		return errors.New("wasm store service is required for ante builder")
 	}
+
 	if options.CircuitKeeper == nil {
 		return errors.New("circuit keeper is required for ante builder")
 	}
+
 	if options.EvmKeeper == nil {
 		return errors.New("evm keeper is required for ante builder")
 	}
+
 	if options.FeeMarketKeeper == nil {
 		return errors.New("feemarket keeper is required for ante builder")
 	}
+
 	if options.TxFeeChecker == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
+
 	if options.StakingKeeper == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
+
 	if options.DistributionKeeper == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
+
 	if options.StakingKeeper == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
@@ -132,7 +138,7 @@ func ValidateAnteHandlerOptions(options HandlerOptions) error {
 	return nil
 }
 
-// NewAnteHandler constructor
+// NewAnteHandler constructor.
 func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 	return func(
 		ctx sdk.Context, tx sdk.Tx, sim bool,
@@ -168,5 +174,4 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 
 		return anteHandler(ctx, tx, sim)
 	}
-
 }

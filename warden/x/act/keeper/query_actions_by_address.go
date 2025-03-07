@@ -6,9 +6,10 @@ import (
 	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsByAddressRequest) (*types.QueryActionsByAddressResponse, error) {
@@ -35,10 +36,12 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 	}
 
 	var result []types.Action
+
 	for _, action := range actions {
 		if req.Status != types.ActionStatus_ACTION_STATUS_UNSPECIFIED && action.Status != req.Status {
 			continue
 		}
+
 		result = append(result, action)
 	}
 

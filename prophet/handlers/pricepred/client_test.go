@@ -1,7 +1,6 @@
 package pricepred
 
 import (
-	"context"
 	"encoding/base64"
 	"net/http"
 	"net/url"
@@ -18,7 +17,7 @@ func TestPredict(t *testing.T) {
 		Host:   "tpc.devnet.wardenprotocol.org",
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	res, err := c.Predict(ctx, PredictRequest{
 		SolverInput: RequestSolverInput{
 			Tokens:        []string{"bitcoin", "tether", "uniswap"},
@@ -43,7 +42,7 @@ func TestBacktesting(t *testing.T) {
 		Host:   "tpc.devnet.wardenprotocol.org",
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	res, err := c.Backtesting(ctx, BacktestingRequest{
 		SolverInput: RequestSolverInput{
 			Tokens:        []string{"bitcoin", "tether", "uniswap"},
@@ -65,7 +64,7 @@ func TestVerify(t *testing.T) {
 		Host:   "tpc.devnet.wardenprotocol.org",
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	res, err := c.Verify(ctx, VerifyRequest{
 		SolverRequest: PredictRequest{
 			SolverInput: RequestSolverInput{

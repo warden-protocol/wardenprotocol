@@ -22,7 +22,7 @@ const (
 	VoteForActionMethod  = "voteForAction"
 )
 
-// CheckActionMethod constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output
+// CheckActionMethod constructs MsgCheckAction from args, passes it to msg server and packs corresponding abi output.
 func (p *Precompile) CheckActionMethod(
 	ctx sdk.Context,
 	origin common.Address,
@@ -33,7 +33,6 @@ func (p *Precompile) CheckActionMethod(
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
 	message, err := newMsgCheckAction(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +84,6 @@ func (p *Precompile) NewTemplateMethod(
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
 	message, err := newMsgNewTemplate(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +141,6 @@ func (p *Precompile) RevokeActionMethod(
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
 	message, err := newMsgRevokeAction(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -195,7 +192,6 @@ func (p *Precompile) UpdateTemplateMethod(
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
 	message, err := newMsgUpdateTemplate(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -260,7 +256,6 @@ func (p *Precompile) VoteForActionMethod(
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.actmodulekeeper)
 
 	message, err := newMsgVoteForAction(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -321,8 +316,8 @@ func (p Precompile) tryVoteAsSender(
 	ctx sdk.Context,
 	msgServer v1beta1.MsgServer,
 	actionId uint64,
-	caller common.Address) error {
-
+	caller common.Address,
+) error {
 	actionResponse, err := p.queryServer.ActionById(ctx, &v1beta1.QueryActionByIdRequest{
 		Id: actionId,
 	})

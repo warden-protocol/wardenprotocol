@@ -28,6 +28,7 @@ func newAllKeysRequest(method *abi.Method, args []interface{}) (*types.QueryAllK
 	}
 
 	pagination := mapEthPageRequest(input.PageRequest)
+
 	return &types.QueryAllKeysRequest{
 		Pagination:      &pagination,
 		DeriveAddresses: deriveAddresses,
@@ -83,6 +84,7 @@ func (o *keysOutput) FromResponse(res *types.QueryKeysResponse) (*keysOutput, er
 	}
 
 	o.KeysResponse = make([]KeyResponse, len(res.Keys))
+
 	for i, k := range res.Keys {
 		keyResponse, err := new(KeyResponse).FromResponse(&k)
 		if err != nil {
@@ -177,6 +179,7 @@ func (kr *KeyRequest) FromResponse(res *types.QueryKeyRequestByIdResponse) (*Key
 	if res == nil || res.KeyRequest == nil {
 		return nil, errors.New("received nil response or key request")
 	}
+
 	return kr.mapKeyRequest(*res.KeyRequest)
 }
 
@@ -224,9 +227,9 @@ func (o *keyRequestsOutput) FromResponse(res *types.QueryKeyRequestsResponse) (*
 	}
 
 	o.KeyRequests = make([]KeyRequest, len(res.KeyRequests))
+
 	for i, k := range res.KeyRequests {
 		keyRequestResponse, err := new(KeyRequest).mapKeyRequest(*k)
-
 		if err != nil {
 			return nil, err
 		}
@@ -264,6 +267,7 @@ func (k *Keychain) FromResponse(res *types.QueryKeychainByIdResponse) (*Keychain
 	if res == nil || res.Keychain == nil {
 		return nil, errors.New("received nil response or keychain")
 	}
+
 	return k.mapKeychain(*res.Keychain)
 }
 
@@ -307,6 +311,7 @@ func (o *keychainsOutput) FromResponse(res *types.QueryKeychainsResponse) (*keyc
 		if err != nil {
 			return nil, err
 		}
+
 		o.Keychains[i] = *keychain
 	}
 
@@ -340,6 +345,7 @@ func (o *SignRequest) FromResponse(res *types.QuerySignRequestByIdResponse) (*Si
 	if res == nil || res.SignRequest == nil {
 		return nil, errors.New("received nil QuerySignRequestByIdResponse")
 	}
+
 	return o.mapSignRequest(res.SignRequest)
 }
 
@@ -405,6 +411,7 @@ func newSignRequestsRequest(method *abi.Method, args []interface{}) (*types.Quer
 		querySignRequestBroadcastType := types.QuerySignRequestsRequest_BroadcastType{
 			BroadcastType: *convertToBroadcastType(input.OptionalBroadcastType),
 		}
+
 		return &types.QuerySignRequestsRequest{
 			Pagination:            &input.PageRequest,
 			KeychainId:            input.KeychainId,
@@ -429,6 +436,7 @@ func convertToBroadcastType(obt optionalBroadcastType) *types.BroadcastType {
 	}
 
 	broadcastType := types.BroadcastType(int32(obt - 1))
+
 	return &broadcastType
 }
 
@@ -450,11 +458,13 @@ func (o *signRequestsOutput) FromResponse(res *types.QuerySignRequestsResponse) 
 	}
 
 	o.SignRequests = make([]SignRequest, len(res.SignRequests))
+
 	for i, k := range res.SignRequests {
 		signRequest, err := new(SignRequest).mapSignRequest(k)
 		if err != nil {
 			return nil, err
 		}
+
 		o.SignRequests[i] = *signRequest
 	}
 
@@ -488,6 +498,7 @@ func (o *Space) FromResponse(res *types.QuerySpaceByIdResponse) (*Space, error) 
 	if res == nil || res.Space == nil {
 		return nil, errors.New("received nil QuerySpaceByIdResponse")
 	}
+
 	return o.mapSpace(res.Space)
 }
 
@@ -546,7 +557,9 @@ func (o *spacesOutput) FromResponse(res *types.QuerySpacesResponse) (*spacesOutp
 	if res == nil {
 		return nil, errors.New("received nil QuerySpacesResponse")
 	}
+
 	o.Spaces = make([]Space, len(res.Spaces))
+
 	for i, k := range res.Spaces {
 		space, err := new(Space).mapSpace(&k)
 		if err != nil {
@@ -594,7 +607,6 @@ func (kr *KeyRequest) mapKeyRequest(keyRequest types.KeyRequest) (*KeyRequest, e
 	}
 
 	ethCreator, err := wardencommon.AddressFromBech32Str(keyRequest.Creator)
-
 	if err != nil {
 		return nil, err
 	}

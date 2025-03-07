@@ -5,6 +5,7 @@ package stoicquote
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -47,7 +48,7 @@ func (h StoicQuoteSolidity) Verify(ctx context.Context, input []byte, output []b
 	}
 
 	if decoded.Data.Author == "" || decoded.Data.Quote == "" {
-		return fmt.Errorf("missing author or quote in output")
+		return errors.New("missing author or quote in output")
 	}
 
 	return nil

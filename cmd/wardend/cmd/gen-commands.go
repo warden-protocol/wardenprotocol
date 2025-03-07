@@ -17,6 +17,7 @@ func setupGenCommand(cmd *cobra.Command) (codec.Codec, string) {
 	serverCtx := server.GetServerContextFromCmd(cmd)
 	config := serverCtx.Config
 	config.SetRoot(clientCtx.HomeDir)
+
 	return clientCtx.Codec, config.GenesisFile()
 }
 
@@ -36,5 +37,6 @@ func updateGenesisState(genesisFileURL string, fn func(appState map[string]json.
 	}
 
 	appGenesis.AppState = appStateJSON
+
 	return genutil.ExportGenesisFile(appGenesis, genesisFileURL)
 }

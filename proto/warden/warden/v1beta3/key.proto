@@ -52,7 +52,7 @@ message KeyRequest {
 
   // Status of the request.
   KeyRequestStatus status = 6;
-  
+
   // If the request is rejected, this field will contain the reason.
   string reject_reason = 7;
 
@@ -64,10 +64,10 @@ message KeyRequest {
 
   // Amount of fees deducted during new key request
   repeated cosmos.base.v1beta1.Coin deducted_keychain_fees = 10 [
-    (gogoproto.nullable)     = false,
+    (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
   ];
 }
 

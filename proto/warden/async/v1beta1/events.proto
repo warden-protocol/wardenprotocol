@@ -18,4 +18,3 @@ message EventCreateFuture {
   // Address of callback that will be triggered after execution.
   string callback_address = 4;
 }
-

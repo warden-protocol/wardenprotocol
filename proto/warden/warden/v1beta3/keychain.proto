@@ -58,17 +58,17 @@ message KeybaseId {
 message KeychainFees {
   // Fee for creating a new Key.
   repeated cosmos.base.v1beta1.Coin key_req = 1 [
-    (gogoproto.nullable)     = false,
+    (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
   ];
 
   // Fee for signing data.
   repeated cosmos.base.v1beta1.Coin sig_req = 2 [
-    (gogoproto.nullable)     = false,
+    (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (amino.dont_omitempty)   = true,
-    (amino.encoding)         = "legacy_coins"
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
   ];
 }

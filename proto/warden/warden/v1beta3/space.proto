@@ -65,4 +65,3 @@ message Space {
   // owner approves it.
   uint64 reject_sign_template_id = 8;
 }
-

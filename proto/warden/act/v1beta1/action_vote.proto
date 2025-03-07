@@ -12,8 +12,11 @@ message ActionVote {
   string participant = 1;
 
   // voted_at is a timestamp specifying when the voter voted on the action.
-  google.protobuf.Timestamp voted_at = 2
-  [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
+  google.protobuf.Timestamp voted_at = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdtime) = true
+  ];
 
   // vote is the type of the vote.
   ActionVoteType vote_type = 3;

@@ -8,5 +8,5 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/type
 
 // GenesisState represents the genesis state of the gmp module.
 message GenesisState {
-  Params params = 1 [ (gogoproto.nullable) = false ];
+  Params params = 1 [(gogoproto.nullable) = false];
 }

@@ -2,12 +2,12 @@ syntax = "proto3";
 package warden.act.v1beta1;
 
 import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
-import "warden/act/v1beta1/params.proto";
 import "warden/act/v1beta1/action.proto";
+import "warden/act/v1beta1/params.proto";
 import "warden/act/v1beta1/template.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
@@ -40,8 +40,7 @@ service Query {
   }
 
   // Queries a list of Actions items by one participant address.
-  rpc ActionsByAddress(QueryActionsByAddressRequest)
-      returns (QueryActionsByAddressResponse) {
+  rpc ActionsByAddress(QueryActionsByAddressRequest) returns (QueryActionsByAddressResponse) {
     option (google.api.http).get = "/wardenprotocol/warden/act/actions_by_address";
   }
 
@@ -58,7 +57,7 @@ message QueryParamsRequest {}
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   // params holds all the parameters of this module.
-  Params params = 1 [ (gogoproto.nullable) = false ];
+  Params params = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryActionsRequest {
@@ -67,17 +66,17 @@ message QueryActionsRequest {
 
 message QueryActionsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+  repeated Action actions = 2 [(gogoproto.nullable) = false];
 }
 
 message QueryTemplatesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  string creator = 2 [ (gogoproto.nullable) = true ];
+  string creator = 2 [(gogoproto.nullable) = true];
 }
 
 message QueryTemplatesResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Template templates = 2 [ (gogoproto.nullable) = false ];
+  repeated Template templates = 2 [(gogoproto.nullable) = false];
 }
 
 message QuerySimulateTemplateRequest {
@@ -89,21 +88,29 @@ message QuerySimulateTemplateResponse {
   string evaluation = 1;
 }
 
-message QueryTemplateByIdRequest { uint64 id = 1; }
+message QueryTemplateByIdRequest {
+  uint64 id = 1;
+}
 
-message QueryTemplateByIdResponse { Template template = 1; }
+message QueryTemplateByIdResponse {
+  Template template = 1;
+}
 
 message QueryActionsByAddressRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string address = 2;
-  ActionStatus status = 3 [ (gogoproto.nullable) = true ];
+  ActionStatus status = 3 [(gogoproto.nullable) = true];
 }
 
 message QueryActionsByAddressResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+  repeated Action actions = 2 [(gogoproto.nullable) = false];
 }
 
-message QueryActionByIdRequest { uint64 id = 1; }
+message QueryActionByIdRequest {
+  uint64 id = 1;
+}
 
-message QueryActionByIdResponse { Action action = 1; }
+message QueryActionByIdResponse {
+  Action action = 1;
+}

@@ -2,10 +2,10 @@ syntax = "proto3";
 package warden.warden.v1beta3;
 
 import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "warden/warden/v1beta3/key.proto";
 import "warden/warden/v1beta3/keychain.proto";
 import "warden/warden/v1beta3/params.proto";
@@ -37,14 +37,12 @@ service Query {
   }
 
   // Queries a Space by its id.
-  rpc SpaceById(QuerySpaceByIdRequest)
-      returns (QuerySpaceByIdResponse) {
+  rpc SpaceById(QuerySpaceByIdRequest) returns (QuerySpaceByIdResponse) {
     option (google.api.http).get = "/warden/warden/v1beta3/space_by_address";
   }
 
   // Queries a Keychain by its id.
-  rpc KeychainById(QueryKeychainByIdRequest)
-      returns (QueryKeychainByIdResponse) {
+  rpc KeychainById(QueryKeychainByIdRequest) returns (QueryKeychainByIdResponse) {
     option (google.api.http).get = "/warden/warden/v1beta3/keychain_by_id";
   }
 
@@ -54,8 +52,7 @@ service Query {
   }
 
   // Queries a KeyRequest by its id.
-  rpc KeyRequestById(QueryKeyRequestByIdRequest)
-      returns (QueryKeyRequestByIdResponse) {
+  rpc KeyRequestById(QueryKeyRequestByIdRequest) returns (QueryKeyRequestByIdResponse) {
     option (google.api.http).get = "/warden/warden/v1beta3/key_request_by_id";
   }
 
@@ -75,17 +72,13 @@ service Query {
   }
 
   // Queries a list of SignRequests.
-  rpc SignRequests(QuerySignRequestsRequest)
-      returns (QuerySignRequestsResponse) {
-    option (google.api.http).get =
-        "/warden/warden/v1beta3/get_sign_requests";
+  rpc SignRequests(QuerySignRequestsRequest) returns (QuerySignRequestsResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta3/get_sign_requests";
   }
 
   // Queries a SignRequest by its id.
-  rpc SignRequestById(QuerySignRequestByIdRequest)
-      returns (QuerySignRequestByIdResponse) {
-    option (google.api.http).get =
-        "/warden/warden/v1beta3/signature_pb_request_by_id";
+  rpc SignRequestById(QuerySignRequestByIdRequest) returns (QuerySignRequestByIdResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta3/signature_pb_request_by_id";
   }
 }
 
@@ -107,7 +100,7 @@ message QuerySpacesRequest {
 
 message QuerySpacesResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Space spaces = 2 [ (gogoproto.nullable) = false ];
+  repeated Space spaces = 2 [(gogoproto.nullable) = false];
 }
 
 message QuerySpacesByOwnerRequest {
@@ -121,22 +114,30 @@ message QueryKeychainsRequest {
 
 message QueryKeychainsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Keychain keychains = 2 [ (gogoproto.nullable) = false ];
+  repeated Keychain keychains = 2 [(gogoproto.nullable) = false];
 }
 
-message QuerySpaceByIdRequest { uint64 id = 1; }
+message QuerySpaceByIdRequest {
+  uint64 id = 1;
+}
 
-message QuerySpaceByIdResponse { Space space = 1; }
+message QuerySpaceByIdResponse {
+  Space space = 1;
+}
 
-message QueryKeychainByIdRequest { uint64 id = 1; }
+message QueryKeychainByIdRequest {
+  uint64 id = 1;
+}
 
-message QueryKeychainByIdResponse { Keychain keychain = 1; }
+message QueryKeychainByIdResponse {
+  Keychain keychain = 1;
+}
 
 message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  uint64 keychain_id = 2 [ (gogoproto.nullable) = true ];
-  KeyRequestStatus status = 3 [ (gogoproto.nullable) = true ];
-  uint64 space_id = 4 [ (gogoproto.nullable) = true ];
+  uint64 keychain_id = 2 [(gogoproto.nullable) = true];
+  KeyRequestStatus status = 3 [(gogoproto.nullable) = true];
+  uint64 space_id = 4 [(gogoproto.nullable) = true];
 }
 
 message QueryKeyRequestsResponse {
@@ -144,34 +145,38 @@ message QueryKeyRequestsResponse {
   repeated KeyRequest key_requests = 2;
 }
 
-message QueryKeyRequestByIdRequest { uint64 id = 1; }
+message QueryKeyRequestByIdRequest {
+  uint64 id = 1;
+}
 
-message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
+message QueryKeyRequestByIdResponse {
+  KeyRequest key_request = 1;
+}
 
 message QueryAllKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  repeated AddressType derive_addresses = 2 [ (gogoproto.nullable) = true ];
+  repeated AddressType derive_addresses = 2 [(gogoproto.nullable) = true];
 }
 
 message QueryKeysResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated QueryKeyResponse keys = 2 [ (gogoproto.nullable) = false ];
+  repeated QueryKeyResponse keys = 2 [(gogoproto.nullable) = false];
 }
 
 message QueryKeysBySpaceIdRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 space_id = 2;
-  repeated AddressType derive_addresses = 3 [ (gogoproto.nullable) = true ];
+  repeated AddressType derive_addresses = 3 [(gogoproto.nullable) = true];
 }
 
 message QueryKeyByIdRequest {
   uint64 id = 1;
-  repeated AddressType derive_addresses = 2 [ (gogoproto.nullable) = true ];
+  repeated AddressType derive_addresses = 2 [(gogoproto.nullable) = true];
 }
 
 message QueryKeyResponse {
-  Key key = 1 [ (gogoproto.nullable) = false ];
-  repeated AddressResponse addresses = 2 [ (gogoproto.nullable) = false ];
+  Key key = 1 [(gogoproto.nullable) = false];
+  repeated AddressResponse addresses = 2 [(gogoproto.nullable) = false];
 }
 
 message AddressResponse {
@@ -194,7 +199,10 @@ message QuerySignRequestsResponse {
   repeated SignRequest sign_requests = 2;
 }
 
-message QuerySignRequestByIdRequest { uint64 id = 1; }
+message QuerySignRequestByIdRequest {
+  uint64 id = 1;
+}
 
-message QuerySignRequestByIdResponse { SignRequest sign_request = 1; }
-
+message QuerySignRequestByIdResponse {
+  SignRequest sign_request = 1;
+}

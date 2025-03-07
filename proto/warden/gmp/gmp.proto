@@ -4,7 +4,6 @@ package warden.gmp;
 import "gogoproto/gogo.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types";
-
 option (gogoproto.goproto_getters_all) = false;
 
 // Params defines the parameters for the gmp module.

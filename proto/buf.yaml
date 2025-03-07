@@ -20,7 +20,7 @@ lint:
   ignore:
   - tendermint
   use:
-  - DEFAULT
+  - STANDARD
   - COMMENTS
   - FILE_LOWER_SNAKE_CASE
 version: v1

@@ -28,7 +28,7 @@ func (k msgServer) NewTemplate(goCtx context.Context, msg *types.MsgNewTemplate)
 		return nil, err
 	}
 
-	id, err := k.templates.Append(ctx, &template)
+	id, err := k.templates.Append(goCtx, &template)
 	if err != nil {
 		return nil, err
 	}

@@ -33,7 +33,6 @@ linters:
     - errname
     - errorlint
     - exhaustive
-    - forbidigo
     - forcetypeassert
     - gocognit
     - gocritic

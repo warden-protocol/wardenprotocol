@@ -32,7 +32,7 @@ At this moment, `x/async` supports two types of computations:
 
 A **Future** is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain.
 
-A user can request a Future, specifying an input and a [handler](#handler), which determines how to interpret the input. There are different types of Futures, depending on the handler type.
+A user can request a Future, specifying an **input** and a [handler](#handler), which determines how to interpret the input. There are different types of Futures, depending on the handler type.
 
 After that, a [validator](/learn/glossary#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 

@@ -39,6 +39,7 @@ To reference the `IAsync` precompile in your code, use the following precompile 
   @param input The handler's input
   @param callback The address of callback contract
   ```
+  **Note**: The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Future is ready.
 - **Output**:  
   ```sol
   @return futureId The id of the future

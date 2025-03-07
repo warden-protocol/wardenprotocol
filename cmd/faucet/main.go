@@ -86,7 +86,7 @@ func main() {
 
 	logLevel, err := log.ParseLevel(config.GetLogLevel())
 	if err != nil {
-		fmt.Printf("error parsing log level: %s", err)
+		fmt.Fprintf(os.Stderr, "error parsing log level: %s", err)
 
 		logLevel = log.InfoLevel
 	}

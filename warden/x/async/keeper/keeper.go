@@ -211,7 +211,7 @@ func (k Keeper) futureReadyCallback(
 		return err
 	}
 
-	res, err := k.callEVMWithData(
+	res, err := k.callEVMWithData( //nolint:contextcheck
 		sdkCtx,
 		common.BytesToAddress(k.asyncModuleAddress.Bytes()),
 		&cbAddress,

@@ -30,7 +30,7 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 		}
 	}
 
-	id, err := k.SpacesKeeper.New(ctx, space)
+	id, err := k.SpacesKeeper.New(goCtx, space)
 	if err != nil {
 		return nil, err
 	}

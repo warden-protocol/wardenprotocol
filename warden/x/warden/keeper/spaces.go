@@ -2,11 +2,12 @@ package keeper
 
 import (
 	"context"
-	"fmt"
+	"errors"
 
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/warden/repo"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -52,13 +53,14 @@ func (k SpacesKeeper) Set(ctx context.Context, space types.Space) error {
 	if err := k.updateSpaceOwners(ctx, space, oldOwners); err != nil {
 		return err
 	}
+
 	return k.spaces.Set(ctx, space.Id, space)
 }
 
 func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space, oldOwners []string) error {
 	id := space.Id
 	if id == 0 {
-		return fmt.Errorf("space id is not set")
+		return errors.New("space id is not set")
 	}
 
 	removedOwners := subtract(oldOwners, space.Owners)
@@ -114,17 +116,20 @@ func (k SpacesKeeper) Import(ctx context.Context, spaces []types.Space) error {
 	return nil
 }
 
-// a - b
+// a - b.
 func subtract(a, b []string) []string {
 	m := make(map[string]struct{}, len(b))
 	for _, x := range b {
 		m[x] = struct{}{}
 	}
+
 	var diff []string
+
 	for _, y := range a {
 		if _, ok := m[y]; !ok {
 			diff = append(diff, y)
 		}
 	}
+
 	return diff
 }

@@ -2,10 +2,9 @@ package async
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
-
-	ethcmn "github.com/ethereum/go-ethereum/common"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
@@ -16,9 +15,10 @@ const (
 	EventCreateFuture = "CreateFuture"
 )
 
-// GetCreateFutureEvent Map EventCreateFuture to eth CreateFuture event and write to eth log
+// GetCreateFutureEvent Map EventCreateFuture to eth CreateFuture event and write to eth log.
 func (p *Precompile) GetCreateFutureEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	var err error
+
 	event := p.ABI.Events[EventCreateFuture]
 
 	topics := make([]ethcmn.Hash, 3)

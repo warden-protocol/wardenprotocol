@@ -2,10 +2,12 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 )
@@ -23,7 +25,6 @@ func (w WardenShieldExpander) Expand(ctx context.Context, ident *ast.Identifier)
 
 	if ident.Value == "space.owners" {
 		return w.expandSpaceOwners(ctx)
-
 	}
 
 	return nil, fmt.Errorf("unknown identifier: %s", ident.Value)
@@ -82,10 +83,12 @@ func WithAnalyzerValues(ctx context.Context, vals map[string]map[string]*ast.Exp
 
 func analyzerValues(ctx context.Context) map[string]map[string]*ast.Expression {
 	v := ctx.Value(analyzerValuesKey{})
+
 	vs, ok := v.(map[string]map[string]*ast.Expression)
 	if !ok {
 		return nil
 	}
+
 	return vs
 }
 
@@ -103,13 +106,15 @@ func (w WardenShieldExpander) extractSpaceID(ctx context.Context, msg sdk.Msg) (
 		return msg.GetSpaceId(), nil
 	case getKeyIder:
 		keyID := msg.GetKeyId()
+
 		key, err := w.keeper.KeysKeeper.Get(ctx, keyID)
 		if err != nil {
 			return 0, err
 		}
+
 		return key.SpaceId, nil
 	default:
-		return 0, fmt.Errorf("message does not have a SpaceId or KeyId field")
+		return 0, errors.New("message does not have a SpaceId or KeyId field")
 	}
 }
 

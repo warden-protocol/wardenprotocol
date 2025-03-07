@@ -4,16 +4,11 @@ import (
 	"errors"
 	"io"
 
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/spf13/cast"
-
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
-
-	// "github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
@@ -24,17 +19,19 @@ import (
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	evmosclient "github.com/evmos/evmos/v20/client"
 	"github.com/evmos/evmos/v20/client/debug"
 	evmosserver "github.com/evmos/evmos/v20/server"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/spf13/cast"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -92,7 +89,7 @@ func addModuleInitFlags(startCmd *cobra.Command) {
 	crisis.AddModuleInitFlags(startCmd)
 }
 
-// Analog of sdk's CommandsWithCustomMigrationMap without AddGenesisAccountCmd, that should be embeded separately
+// Analog of sdk's CommandsWithCustomMigrationMap without AddGenesisAccountCmd, that should be embedded separately.
 func CommandsWithCustomMigrationMap(txConfig client.TxConfig, moduleBasics module.BasicManager, defaultNodeHome string, migrationMap genutiltypes.MigrationMap) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:                        "genesis",
@@ -113,13 +110,14 @@ func CommandsWithCustomMigrationMap(txConfig client.TxConfig, moduleBasics modul
 	return cmd
 }
 
-// genesisCommand builds genesis-related `wardend genesis` command. Users may provide application specific commands as a parameter
+// genesisCommand builds genesis-related `wardend genesis` command. Users may provide application specific commands as a parameter.
 func genesisCommand(txConfig client.TxConfig, basicManager module.BasicManager, cmds ...*cobra.Command) *cobra.Command {
 	cmd := CommandsWithCustomMigrationMap(txConfig, basicManager, app.DefaultNodeHome, genutilcli.MigrationMap)
 
 	for _, subCmd := range cmds {
 		cmd.AddCommand(subCmd)
 	}
+
 	return cmd
 }
 
@@ -174,7 +172,7 @@ func txCommand() *cobra.Command {
 	return cmd
 }
 
-// newApp creates the application
+// newApp creates the application.
 func newApp(
 	logger log.Logger,
 	db dbm.DB,
@@ -187,6 +185,7 @@ func newApp(
 	if cast.ToBool(appOpts.Get("telemetry.enabled")) {
 		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
 	}
+
 	app, err := app.New(
 		logger, db, traceStore, true,
 		appOpts,
@@ -196,6 +195,7 @@ func newApp(
 	if err != nil {
 		panic(err)
 	}
+
 	return app
 }
 

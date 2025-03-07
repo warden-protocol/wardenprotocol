@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -12,13 +13,13 @@ import (
 	rpchttp "github.com/cometbft/cometbft/rpc/client/http"
 	coretypes "github.com/cometbft/cometbft/rpc/core/types"
 	tmtypes "github.com/cometbft/cometbft/types"
-	"github.com/spf13/cobra"
-	"github.com/warden-protocol/wardenprotocol/warden/app"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/errors"
+	xerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/spf13/cobra"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
 const TimeoutFlag = "timeout"
@@ -179,8 +180,9 @@ $ %[1]sd tx [flags] | %[1]sd q wait-tx
 					return clientCtx.PrintProto(newResponseFormatBroadcastTxCommit(res))
 				}
 			case <-ctx.Done():
-				return errors.ErrLogic.Wrapf("timed out waiting for transaction %X to be included in a block", hash)
+				return xerrors.ErrLogic.Wrapf("timed out waiting for transaction %X to be included in a block", hash)
 			}
+
 			return nil
 		},
 	}
@@ -206,5 +208,6 @@ func parseHashFromInput(in []byte) ([]byte, error) {
 			return hex.DecodeString(hash)
 		}
 	}
-	return nil, fmt.Errorf("txhash not found")
+
+	return nil, errors.New("txhash not found")
 }

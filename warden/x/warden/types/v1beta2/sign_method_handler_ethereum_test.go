@@ -62,9 +62,11 @@ func Test_ParseEthereumTransaction(t *testing.T) {
 				require.Error(t, err)
 				return
 			}
+
 			require.NoError(t, err)
 			require.Equal(t, tt.wantTo, tx.To.Hex())
 			require.Equal(t, tt.wantAmount, tx.Amount)
+
 			if len(tt.wantContract) == 0 {
 				require.Nil(t, tx.Contract)
 			} else {

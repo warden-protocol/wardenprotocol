@@ -1,9 +1,11 @@
 package keeper
 
 import (
-	"cosmossdk.io/errors"
 	"crypto/ed25519"
+
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -40,6 +42,7 @@ func ensureSignatureFormatting(key types.Key, sigData []byte) error {
 	default:
 		return errors.Wrap(types.ErrUnsupportedKeyType, key.Type.String())
 	}
+
 	return nil
 }
 
@@ -48,6 +51,7 @@ func (k Keeper) rejectSignRequest(ctx sdk.Context, req types.SignRequest, msg *t
 	req.Result = &types.SignRequest_RejectReason{
 		RejectReason: msg.Result.(*types.MsgFulfilSignRequest_RejectReason).RejectReason,
 	}
+
 	if err := k.signRequests.Set(ctx, req.Id, req); err != nil {
 		return err
 	}

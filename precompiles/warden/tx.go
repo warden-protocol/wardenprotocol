@@ -43,7 +43,6 @@ func (p Precompile) AddKeychainAdminMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgAddKeychainAdmin, newAdmin, err := newMsgAddKeychainAdmin(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +75,6 @@ func (p Precompile) AddKeychainWriterMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgAddKeychainWriter, newWriterAddress, err := newMsgAddKeychainWriter(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +108,6 @@ func (p Precompile) FulfilKeyRequestMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgFulfilKeyRequest, err := newMsgFulfilKeyRequest(args, keyRequestStatus, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +141,6 @@ func (p Precompile) FulfilSignRequestMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgFulfilSignRequest, err := newMsgFulfilSignRequest(args, signRequestStatus, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +173,6 @@ func (p Precompile) NewKeychainMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgNewKeychain, err := newMsgNewKeychain(method, args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +184,6 @@ func (p Precompile) NewKeychainMethod(
 	)
 
 	msgNewKeychainResponse, err := msgServer.NewKeychain(ctx, msgNewKeychain)
-
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +206,6 @@ func (p Precompile) NewSpaceMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgNewSpace, err := newMsgNewSpace(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +217,6 @@ func (p Precompile) NewSpaceMethod(
 	)
 
 	msgNewSpaceResponse, err := msgServer.NewSpace(ctx, msgNewSpace)
-
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +239,6 @@ func (p Precompile) RemoveKeychainAdminMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgRemoveKeychainAdmin, admin, err := newMsgRemoveKeychainAdmin(args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -280,7 +271,6 @@ func (p Precompile) UpdateKeychainMethod(
 	msgServer := wardenkeeper.NewMsgServerImpl(p.wardenkeeper)
 
 	msgUpdateKeychain, err := newMsgUpdateKeychain(method, args, origin)
-
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +304,6 @@ func (p Precompile) AddSpaceOwnerMethod(
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
 	msgNewAction, err := newMsgAddSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
-
 	if err != nil {
 		return nil, err
 	}
@@ -351,8 +340,8 @@ func (p Precompile) tryVoteAsSender(
 	ctx sdk.Context,
 	msgServer v1beta1.MsgServer,
 	actionId uint64,
-	caller common.Address) error {
-
+	caller common.Address,
+) error {
 	actionResponse, err := p.actQueryServer.ActionById(ctx, &v1beta1.QueryActionByIdRequest{
 		Id: actionId,
 	})
@@ -392,7 +381,6 @@ func (p Precompile) RemoveSpaceOwnerMethod(
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
 	msgNewAction, err := newMsgRemoveSpaceOwner(args, origin, p.actkeeper.GetModuleAddress())
-
 	if err != nil {
 		return nil, err
 	}
@@ -431,7 +419,6 @@ func (p Precompile) NewKeyRequestMethod(
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
 	msgNewAction, err := newMsgNewKeyRequest(method, args, origin, p.actkeeper.GetModuleAddress())
-
 	if err != nil {
 		return nil, err
 	}
@@ -470,7 +457,6 @@ func (p Precompile) NewSignRequestMethod(
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
 	msgNewAction, err := newMsgNewSignRequest(method, args, origin, p.actkeeper.GetModuleAddress())
-
 	if err != nil {
 		return nil, err
 	}
@@ -509,7 +495,6 @@ func (p Precompile) UpdateKeyMethod(
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
 	msgNewAction, err := newMsgUpdateKey(args, origin, p.actkeeper.GetModuleAddress())
-
 	if err != nil {
 		return nil, err
 	}
@@ -548,7 +533,6 @@ func (p Precompile) UpdateSpaceMethod(
 	msgServer := actkeeper.NewMsgServerImpl(p.actkeeper)
 
 	msgNewAction, err := newMsgUpdateSpace(args, origin, p.actkeeper.GetModuleAddress())
-
 	if err != nil {
 		return nil, err
 	}

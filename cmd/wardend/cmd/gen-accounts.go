@@ -3,26 +3,24 @@ package cmd
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
-
-	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/server"
+	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	authvestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-
 	evmoskr "github.com/evmos/evmos/v20/crypto/keyring"
-
-	sdktypes "github.com/cosmos/cosmos-sdk/types"
-	authvestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	vestingcli "github.com/evmos/evmos/v20/x/vesting/client/cli"
 	vestingtypes "github.com/evmos/evmos/v20/x/vesting/types"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -111,7 +109,7 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 				// Get funder addr which can perform clawback
 				funderStr, err := cmd.Flags().GetString(vestingcli.FlagFunder)
 				if err != nil {
-					return fmt.Errorf("must specify the clawback vesting account funder with the --funder flag")
+					return errors.New("must specify the clawback vesting account funder with the --funder flag")
 				}
 				funder, err := sdktypes.AccAddressFromBech32(funderStr)
 				if err != nil {
@@ -256,6 +254,7 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 			}
 
 			genDoc.AppState = appStateJSON
+
 			return genutil.ExportGenesisFile(genDoc, genFile)
 		},
 	}

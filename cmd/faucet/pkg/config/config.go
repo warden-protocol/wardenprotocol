@@ -46,11 +46,13 @@ func GetLogLevel() string {
 	if err != nil {
 		return "Info"
 	}
+
 	return cfg.LogLevel
 }
 
 func LoadConfig() (Config, error) {
 	cfg := Config{}
+
 	var err error
 
 	if err = env.Parse(&cfg); err != nil {
@@ -62,6 +64,7 @@ func LoadConfig() (Config, error) {
 			return Config{}, configError(err.Error())
 		}
 	}
+
 	return cfg, nil
 }
 
@@ -84,6 +87,7 @@ func loadConfigFile(cfg *Config) error {
 	viper.SetConfigType(ext)
 
 	viper.AutomaticEnv()
+
 	err = viper.ReadInConfig()
 	if err != nil {
 		return err
@@ -92,5 +96,6 @@ func loadConfigFile(cfg *Config) error {
 	if err = viper.Unmarshal(&cfg); err != nil {
 		return err
 	}
+
 	return nil
 }

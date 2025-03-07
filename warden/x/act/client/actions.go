@@ -20,9 +20,11 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-const actionTimeoutHeightFlag = "action-timeout-height"
-const expectedApproveExpressionFlag = "expected-approve-expression"
-const expectedRejectExpressionFlag = "expected-reject-expression"
+const (
+	actionTimeoutHeightFlag       = "action-timeout-height"
+	expectedApproveExpressionFlag = "expected-approve-expression"
+	expectedRejectExpressionFlag  = "expected-reject-expression"
+)
 
 // RegisterActionCmd registers a CLI subcommand for the message of type T to be
 // wrapped inside a new Action.
@@ -92,8 +94,10 @@ func cmdName(msg sdk.Msg) string {
 			v = v.Elem()
 		}
 	}
+
 	name := v.Type().Name()
 	name = strings.TrimPrefix(name, "Msg")
+
 	return strcase.ToKebab(name)
 }
 
@@ -106,7 +110,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 		}
 	}
 
-	for i := 0; i < v.NumField(); i++ {
+	for i := range v.NumField() {
 		fieldName := strings.ToLower(v.Type().Field(i).Name)
 		flagName := strcase.ToKebab(v.Type().Field(i).Name)
 
@@ -115,6 +119,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 		if strings.EqualFold(fieldName, "authority") {
 			actAuthority := authtypes.NewModuleAddress(types.ModuleName).String()
 			cmd.Flags().String(flagName, actAuthority, "Authority address (defaults to x/act's address)")
+
 			continue
 		}
 
@@ -163,6 +168,7 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 
 func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 	reflect.TypeOf(msg)
+
 	v := reflect.ValueOf(msg).Elem()
 	if v.Kind() == reflect.Interface {
 		v = reflect.ValueOf(msg)
@@ -171,12 +177,13 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 		}
 	}
 
-	for i := 0; i < v.NumField(); i++ {
+	for i := range v.NumField() {
 		fieldName := strings.ToLower(v.Type().Field(i).Name)
 		flagName := strcase.ToKebab(v.Type().Field(i).Name)
 
 		// try to parse enum type from protobuf tags
 		var enumProtoType string
+
 		tags := strings.Split(v.Type().Field(i).Tag.Get("protobuf"), ",")
 		for _, tag := range tags {
 			if strings.HasPrefix(tag, "enum") {
@@ -199,24 +206,28 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 			if err != nil {
 				return err
 			}
+
 			v.Field(i).SetString(value)
 		case reflect.Int:
 			value, err := cmd.Flags().GetInt(flagName)
 			if err != nil {
 				return err
 			}
+
 			v.Field(i).SetInt(int64(value))
 		case reflect.Int32:
 			value, err := cmd.Flags().GetInt32(flagName)
 			if err != nil {
 				return err
 			}
+
 			v.Field(i).SetInt(int64(value))
 		case reflect.Uint64:
 			value, err := cmd.Flags().GetUint64(flagName)
 			if err != nil {
 				return err
 			}
+
 			v.Field(i).SetUint(value)
 		case reflect.Slice:
 			switch v.Field(i).Type().Elem().Kind() {
@@ -225,12 +236,14 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 				if err != nil {
 					return err
 				}
+
 				v.Field(i).Set(reflect.ValueOf(value))
 			case reflect.Uint8:
 				value, err := cmd.Flags().GetBytesBase64(flagName)
 				if err != nil {
 					return err
 				}
+
 				v.Field(i).Set(reflect.ValueOf(value))
 			case reflect.Struct:
 				if v.Field(i).Type().Elem().AssignableTo(reflect.TypeOf(sdk.Coin{})) {
@@ -238,10 +251,12 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 					if err != nil {
 						return err
 					}
+
 					coins, err := sdk.ParseCoinsNormalized(strings.Join(coinsStrings, ","))
 					if err != nil {
 						return err
 					}
+
 					v.Field(i).Set(reflect.ValueOf(coins))
 				} else {
 					panic(fmt.Sprintf("unsupported slice type %v (for field %s)", v.Field(i).Type().Elem().Kind(), fieldName))
@@ -256,10 +271,13 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 				if err != nil {
 					return err
 				}
+
 				if jvalue == "" {
 					return nil
 				}
+
 				v.Field(i).Set(reflect.ValueOf(&codectypes.Any{}))
+
 				if err := cdc.UnmarshalJSON([]byte(jvalue), v.Field(i).Interface().(proto.Message)); err != nil {
 					return err
 				}

@@ -5,9 +5,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) Keychains(goCtx context.Context, req *types.QueryKeychainsRequest) (*types.QueryKeychainsResponse, error) {
@@ -20,7 +21,6 @@ func (k Keeper) Keychains(goCtx context.Context, req *types.QueryKeychainsReques
 	keychains, pageRes, err := query.CollectionPaginate(ctx, k.keychains, req.Pagination, func(id uint64, value types.Keychain) (types.Keychain, error) {
 		return value, nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

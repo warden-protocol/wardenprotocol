@@ -49,10 +49,12 @@ func (app *App) setupMempool() {
 
 func (app *App) setupSlinkyClient(appOpts types.AppOptions) {
 	chainID := app.ChainID()
+
 	c, err := NewSlinkyClient(app.Logger(), chainID, appOpts, app.StakingKeeper, app.OracleKeeper)
 	if err != nil {
 		panic(err)
 	}
+
 	app.slinkyClient = c
 }
 
@@ -181,6 +183,7 @@ func (sc *SlinkyClient) PreblockHandler() *oraclepreblock.PreBlockHandler {
 
 func (sc *SlinkyClient) VoteExtensionHandler() *ve.VoteExtensionHandler {
 	cps := currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper)
+
 	return ve.NewVoteExtensionHandler(
 		sc.logger,
 		sc.client,

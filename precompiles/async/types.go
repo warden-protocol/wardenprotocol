@@ -10,16 +10,17 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-// FuturesInput needed to unmarshal Pagination field and pass it to types.QueryFuturesRequest
+// FuturesInput needed to unmarshal Pagination field and pass it to types.QueryFuturesRequest.
 type FuturesInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 	Creator    common.Address    `abi:"creator"`
 }
 
-// FromResponse needed to map QueryFuturesResponse to FuturesResponse
+// FromResponse needed to map QueryFuturesResponse to FuturesResponse.
 func (r *FuturesResponse) FromResponse(res *types.QueryFuturesResponse) (FuturesResponse, error) {
 	if res != nil {
 		futures := make([]FutureResponse, 0, len(res.Futures))
+
 		for _, future := range res.Futures {
 			mappedFuture, err := mapFutureResponse(future)
 			if err != nil {
@@ -36,10 +37,11 @@ func (r *FuturesResponse) FromResponse(res *types.QueryFuturesResponse) (Futures
 	return *r, nil
 }
 
-// FromResponse needed to map QueryPendingFuturesResponse to PendingFuturesResponse
+// FromResponse needed to map QueryPendingFuturesResponse to PendingFuturesResponse.
 func (r *PendingFuturesResponse) FromResponse(res *types.QueryPendingFuturesResponse) (PendingFuturesResponse, error) {
 	if res != nil {
 		futures := make([]Future, 0, len(res.Futures))
+
 		for _, future := range res.Futures {
 			mappedFuture, err := mapFuture(future)
 			if err != nil {
@@ -56,7 +58,7 @@ func (r *PendingFuturesResponse) FromResponse(res *types.QueryPendingFuturesResp
 	return *r, nil
 }
 
-// FromResponse needed to map QueryFutureByIdResponse to FutureByIdResponse
+// FromResponse needed to map QueryFutureByIdResponse to FutureByIdResponse.
 func (r *FutureByIdResponse) FromResponse(res *types.QueryFutureByIdResponse) (FutureByIdResponse, error) {
 	if res != nil {
 		mappedFutureResponse, err := mapFutureResponse(res.FutureResponse)
@@ -109,6 +111,7 @@ func mapFutureResponse(futureResponse types.FutureResponse) (FutureResponse, err
 
 func mapVotes(values []types.FutureVote) ([]FutureVote, error) {
 	result := make([]FutureVote, 0, len(values))
+
 	for _, v := range values {
 		mappedTemplate, err := mapVote(v)
 		if err != nil {
@@ -117,6 +120,7 @@ func mapVotes(values []types.FutureVote) ([]FutureVote, error) {
 
 		result = append(result, mappedTemplate)
 	}
+
 	return result, nil
 }
 

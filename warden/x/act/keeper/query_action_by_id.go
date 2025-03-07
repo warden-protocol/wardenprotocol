@@ -4,9 +4,10 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k Keeper) ActionById(goCtx context.Context, req *types.QueryActionByIdRequest) (*types.QueryActionByIdResponse, error) {

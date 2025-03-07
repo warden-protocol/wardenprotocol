@@ -2,11 +2,12 @@ package wasm_interop
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -39,17 +40,19 @@ type NewSignRequest struct {
 
 func EncodeCustomMsg(sender sdk.AccAddress, rawMsg json.RawMessage) ([]sdk.Msg, error) {
 	var msg WardenProtocolMsg
+
 	err := json.Unmarshal(rawMsg, &msg)
 	if err != nil {
 		return nil, err
 	}
+
 	switch {
 	case msg.Warden.NewKeyRequest != nil:
 		return handleNewKeyRequest(sender, msg)
 	case msg.Warden.NewSignRequest != nil:
 		return handleNewSignRequest(sender, msg)
 	default:
-		return nil, fmt.Errorf("unknown variant of WardenProtocolMsg")
+		return nil, errors.New("unknown variant of WardenProtocolMsg")
 	}
 }
 
@@ -64,6 +67,7 @@ func handleNewKeyRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.Ms
 		ApproveTemplateId: newKeyRequest.ApproveTemplateId,
 		RejectTemplateId:  newKeyRequest.RejectTemplateId,
 	}
+
 	msgAny, err := codectypes.NewAnyWithValue(newKeyMsg)
 	if err != nil {
 		return nil, err
@@ -74,6 +78,7 @@ func handleNewKeyRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.Ms
 		Message:             msgAny,
 		ActionTimeoutHeight: newKeyRequest.TimeoutHeight,
 	}
+
 	return []sdk.Msg{newActionMsg}, nil
 }
 
@@ -87,6 +92,7 @@ func handleNewSignRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.M
 		Analyzers:     newSignRequest.Analyzers,
 		EncryptionKey: newSignRequest.EncryptionKey,
 	}
+
 	msgAny, err := codectypes.NewAnyWithValue(newKeyMsg)
 	if err != nil {
 		return nil, err
@@ -97,5 +103,6 @@ func handleNewSignRequest(sender sdk.AccAddress, msg WardenProtocolMsg) ([]sdk.M
 		Message:             msgAny,
 		ActionTimeoutHeight: newSignRequest.TimeoutHeight,
 	}
+
 	return []sdk.Msg{newActionMsg}, nil
 }

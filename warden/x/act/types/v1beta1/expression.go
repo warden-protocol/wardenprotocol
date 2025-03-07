@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"cosmossdk.io/errors"
+
 	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/object"

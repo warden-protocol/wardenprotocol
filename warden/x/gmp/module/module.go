@@ -92,14 +92,14 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 // AppModule
 // ----------------------------------------------------------------------------
 
-// AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
+// AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement.
 type AppModule struct {
 	AppModuleBasic
 
 	keeper keeper.Keeper
 }
 
-// NewAppModule creates a new 29-fee module
+// NewAppModule creates a new 29-fee module.
 func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),

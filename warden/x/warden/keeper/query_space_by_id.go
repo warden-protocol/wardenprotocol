@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -15,9 +14,7 @@ func (k Keeper) SpaceById(goCtx context.Context, req *types.QuerySpaceByIdReques
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	space, err := k.SpacesKeeper.Get(ctx, req.Id)
+	space, err := k.SpacesKeeper.Get(goCtx, req.Id)
 	if err != nil {
 		return nil, err
 	}

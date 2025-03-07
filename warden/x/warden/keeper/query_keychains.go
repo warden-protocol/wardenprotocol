@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,9 +15,7 @@ func (k Keeper) Keychains(goCtx context.Context, req *types.QueryKeychainsReques
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	keychains, pageRes, err := query.CollectionPaginate(ctx, k.keychains, req.Pagination, func(id uint64, value types.Keychain) (types.Keychain, error) {
+	keychains, pageRes, err := query.CollectionPaginate(goCtx, k.keychains, req.Pagination, func(id uint64, value types.Keychain) (types.Keychain, error) {
 		return value, nil
 	})
 	if err != nil {

@@ -34,7 +34,7 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 
 	keychain.SetKeybaseId(keybaseId)
 
-	id, err := k.keychains.Append(ctx, keychain)
+	id, err := k.keychains.Append(goCtx, keychain)
 	if err != nil {
 		return nil, err
 	}

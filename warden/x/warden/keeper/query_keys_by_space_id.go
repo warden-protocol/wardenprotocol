@@ -20,18 +20,18 @@ func (k Keeper) KeysBySpaceId(goCtx context.Context, req *types.QueryKeysBySpace
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	keys, page, err := query.CollectionPaginate(
-		ctx,
+		goCtx,
 		k.KeysKeeper.KeysBySpace(),
 		req.Pagination,
 		func(keyPair collections.Pair[uint64, uint64], value collections.NoValue) (types.QueryKeyResponse, error) {
-			key, err := k.KeysKeeper.Get(ctx, keyPair.K2())
+			key, err := k.KeysKeeper.Get(goCtx, keyPair.K2())
 			if err != nil {
 				return types.QueryKeyResponse{}, err
 			}
 
 			return types.QueryKeyResponse{
 				Key:       key,
-				Addresses: key.DeriveAddresses(ctx, req.DeriveAddresses),
+				Addresses: key.DeriveAddresses(ctx.Logger(), req.DeriveAddresses),
 			}, nil
 		},
 		query.WithCollectionPaginationPairPrefix[uint64, uint64](req.SpaceId),

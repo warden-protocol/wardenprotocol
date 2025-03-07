@@ -52,6 +52,7 @@ func ensureKeyFormatting(req types.KeyRequest, pubKey []byte) error {
 	default:
 		return errors.Wrap(types.ErrUnsupportedKeyType, req.KeyType.String())
 	}
+
 	return nil
 }
 

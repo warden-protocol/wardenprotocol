@@ -5,6 +5,7 @@ import (
 
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
@@ -145,6 +146,7 @@ func (k Keeper) updateSpaceTemplate(ctx context.Context, msg *v1beta3.MsgUpdateS
 	if err != nil {
 		return acttypes.Template{}, acttypes.Template{}, err
 	}
+
 	rejectTemplate, err := k.getRejectUpdateSpaceTemplate(ctx, space)
 	if err != nil {
 		return acttypes.Template{}, acttypes.Template{}, err
@@ -247,7 +249,6 @@ func (k Keeper) getApproveUpdateSpaceTemplate(ctx context.Context, space v1beta3
 	} else {
 		return space.TemplateApproveUpdateSpace(), nil
 	}
-
 }
 
 func (k Keeper) getRejectUpdateSpaceTemplate(ctx context.Context, space v1beta3.Space) (acttypes.Template, error) {
@@ -262,23 +263,30 @@ func (k Keeper) executeAnalyzers(ctx context.Context, creator string, contracts 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	creatorAddr := sdk.MustAccAddressFromBech32(creator)
 	analyzerVals := make(map[string]map[string]*ast.Expression)
+
 	var dataForSigning []byte
+
 	for _, contract := range contracts {
 		contractAddr, err := sdk.AccAddressFromBech32(contract)
 		if err != nil {
 			return nil, nil, err
 		}
+
 		dfs, vals, err := k.ExecuteAnalyzer(sdkCtx, contractAddr, creatorAddr, input)
 		if err != nil {
 			return nil, nil, err
 		}
+
 		if dfs != nil && dataForSigning != nil {
 			return nil, nil, v1beta3.ErrDuplicateAnalyzersDataForSigning
 		}
+
 		if dfs != nil {
 			dataForSigning = dfs
 		}
+
 		analyzerVals[contract] = vals
 	}
+
 	return WithAnalyzerValues(ctx, analyzerVals), dataForSigning, nil
 }

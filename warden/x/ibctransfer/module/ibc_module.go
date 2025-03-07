@@ -2,6 +2,7 @@ package module
 
 import (
 	ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
+
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 )
 
@@ -11,7 +12,7 @@ type IBCModule struct {
 	keeper keeper.Keeper
 }
 
-// NewIBCModule creates a new IBCModule given the keeper
+// NewIBCModule creates a new IBCModule given the keeper.
 func NewIBCModule(k keeper.Keeper) IBCModule {
 	return IBCModule{
 		keeper:    k,

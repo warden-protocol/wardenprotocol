@@ -13,6 +13,7 @@ func (w *Space) IsOwner(address string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -24,7 +25,9 @@ func (w *Space) AddOwner(address string, nonce uint64) error {
 	if w.IsOwner(address) {
 		return ErrDuplicateSpaceOwner
 	}
+
 	w.Owners = append(w.Owners, address)
+
 	return nil
 }
 

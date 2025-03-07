@@ -2,7 +2,7 @@ package act
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"reflect"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -27,7 +27,7 @@ const (
 	EventActionStateChange = "ActionStateChange"
 )
 
-// Map EventCreateTemplate to eth CreateTemplate event and write to eth log
+// Map EventCreateTemplate to eth CreateTemplate event and write to eth log.
 func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseCreateTemplateEvent(sdkEvent)
 	if err != nil {
@@ -35,7 +35,7 @@ func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	}
 
 	if writerAddress == nil {
-		return nil, fmt.Errorf("writerAddress is nil")
+		return nil, errors.New("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -62,6 +62,7 @@ func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
 	typedEvent := v1beta1.EventCreateTemplate{}
+
 	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
@@ -72,7 +73,7 @@ func parseCreateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventUpdateTemplate to eth UpdateTemplate event and write to eth log
+// Map EventUpdateTemplate to eth UpdateTemplate event and write to eth log.
 func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseUpdateTemplateEvent(sdkEvent)
 	if err != nil {
@@ -80,7 +81,7 @@ func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	}
 
 	if writerAddress == nil {
-		return nil, fmt.Errorf("writerAddress is nil")
+		return nil, errors.New("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -107,6 +108,7 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
 	typedEvent := v1beta1.EventUpdateTemplate{}
+
 	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
@@ -117,7 +119,7 @@ func parseUpdateTemplateEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventCreateAction to eth CreateAction event and write to eth log
+// Map EventCreateAction to eth CreateAction event and write to eth log.
 func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseCreateActionEvent(sdkEvent)
 	if err != nil {
@@ -125,7 +127,7 @@ func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn
 	}
 
 	if writerAddress == nil {
-		return nil, fmt.Errorf("writerAddress is nil")
+		return nil, errors.New("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -152,6 +154,7 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
 	typedEvent := v1beta1.EventCreateAction{}
+
 	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
@@ -162,7 +165,7 @@ func parseCreateActionEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventActionVoted to eth ActionVoted event and write to eth log
+// Map EventActionVoted to eth ActionVoted event and write to eth log.
 func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseActionVotedEvent(sdkEvent)
 	if err != nil {
@@ -170,7 +173,7 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 	}
 
 	if writerAddress == nil {
-		return nil, fmt.Errorf("writerAddress is nil")
+		return nil, errors.New("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -197,6 +200,7 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
 	typedEvent := v1beta1.EventActionVoted{}
+
 	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err
@@ -208,7 +212,7 @@ func parseActionVotedEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	return &b, nil
 }
 
-// Map EventActionStateChange to eth ActionStateChange event and write to eth log
+// Map EventActionStateChange to eth ActionStateChange event and write to eth log.
 func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	b, err := parseActionStateChangeEvent(sdkEvent)
 	if err != nil {
@@ -216,7 +220,7 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 	}
 
 	if writerAddress == nil {
-		return nil, fmt.Errorf("writerAddress is nil")
+		return nil, errors.New("writerAddress is nil")
 	}
 
 	topics := make([]ethcmn.Hash, 2)
@@ -243,6 +247,7 @@ func parseActionStateChangeEvent(sdkEvent sdk.Event) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 
 	typedEvent := v1beta1.EventActionStateChange{}
+
 	err := common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge)
 	if err != nil {
 		return nil, err

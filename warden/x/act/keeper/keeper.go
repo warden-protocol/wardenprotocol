@@ -56,11 +56,11 @@ func NewKeeper(
 	templatesRegistry *types.TemplatesRegistry,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
-		panic(fmt.Sprintf("invalid authority address: %s", authority))
+		panic("invalid authority address: " + authority)
 	}
 
 	if _, err := sdk.AccAddressFromBech32(actModuleAddress); err != nil {
-		panic(fmt.Sprintf("invalid x/act module address: %s", actModuleAddress))
+		panic("invalid x/act module address: " + actModuleAddress)
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -101,7 +101,7 @@ func (k Keeper) GetModuleAddress() string {
 
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
 func (k Keeper) getBlockTime(ctx context.Context) time.Time {

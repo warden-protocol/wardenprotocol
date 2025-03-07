@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -49,35 +50,42 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	if err != nil {
 		return fmt.Errorf("failed to export keychains: %w", err)
 	}
+
 	genState.Keychains = keychains
 
 	spaces, err := k.SpacesKeeper.Coll().Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export spaces: %w", err)
 	}
+
 	genState.Spaces = spaces
 
 	keyRequests, err := k.keyRequests.Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export key requests: %w", err)
 	}
+
 	genState.KeyRequests = keyRequests
 
 	keysIter, err := k.KeysKeeper.Coll().Iterate(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to iterate keys: %w", err)
 	}
+
 	defer keysIter.Close()
+
 	keys, err := keysIter.Values()
 	if err != nil {
 		return fmt.Errorf("failed to export keys: %w", err)
 	}
+
 	genState.Keys = keys
 
 	SignRequests, err := k.signRequests.Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export signature requests: %w", err)
 	}
+
 	genState.SignRequests = SignRequests
 
 	return nil

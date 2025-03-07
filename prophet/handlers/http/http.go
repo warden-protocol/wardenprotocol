@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/fxamacker/cbor/v2"
+
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http/generated"
 )
@@ -37,6 +38,7 @@ func NewHandler(whitelist []*url.URL, timeout time.Duration) *Handler {
 		if u == nil {
 			panic("nil URL in whitelist")
 		}
+
 		if u.Host == "" {
 			panic(fmt.Sprintf("invalid whitelist URL (missing host): %s", u))
 		}
@@ -67,6 +69,7 @@ func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid URL: %w", err)
 	}
+
 	if !h.isWhitelisted(parsedURL) {
 		return nil, errors.New("URL not allowed by whitelist")
 	}
@@ -84,6 +87,7 @@ func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 			if jerr != nil {
 				return nil, fmt.Errorf("failed to re-encode CBOR body to JSON: %w", jerr)
 			}
+
 			bodyToSend = jsonBytes
 		}
 	}
@@ -92,6 +96,7 @@ func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create HTTP request: %w", err)
 	}
+
 	if len(bodyToSend) > 0 {
 		req.Header.Set("Content-Type", "application/json")
 	}
@@ -108,6 +113,7 @@ func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	}
 
 	var responseData interface{}
+
 	contentType := resp.Header.Get("Content-Type")
 	if strings.Contains(contentType, "application/json") {
 		if err := json.Unmarshal(bodyBytes, &responseData); err != nil {
@@ -147,12 +153,14 @@ func (h *Handler) isWhitelisted(u *url.URL) bool {
 	if len(h.whitelist) == 0 {
 		return true
 	}
+
 	host := u.Host
 	for _, allowed := range h.whitelist {
 		if host == allowed.Host {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -161,11 +169,13 @@ func cborToJSONBytes(cborData []byte) ([]byte, error) {
 	if err := cbor.Unmarshal(cborData, &i); err != nil {
 		return nil, err
 	}
+
 	i = convertToStringKeys(i)
+
 	return json.Marshal(i)
 }
 
-// convertToStringKeys recursively converts map[interface{}]interface{} to map[string]interface{}
+// convertToStringKeys recursively converts map[interface{}]interface{} to map[string]interface{}.
 func convertToStringKeys(v interface{}) interface{} {
 	switch x := v.(type) {
 	case map[interface{}]interface{}:
@@ -173,11 +183,13 @@ func convertToStringKeys(v interface{}) interface{} {
 		for k, v := range x {
 			m[fmt.Sprint(k)] = convertToStringKeys(v)
 		}
+
 		return m
 	case []interface{}:
 		for i, v := range x {
 			x[i] = convertToStringKeys(v)
 		}
 	}
+
 	return v
 }

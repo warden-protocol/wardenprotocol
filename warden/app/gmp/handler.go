@@ -4,6 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
@@ -50,10 +51,12 @@ func (h GmpHandler) HandleGeneralMessage(
 	if err != nil {
 		return err
 	}
+
 	msg, err := types.NewGmpDecoder(payload)
 	if err != nil {
 		return err
 	}
+
 	ctx.Logger().Info("HandleGeneralMessage GMP Decoder", "msg", msg)
 	tx := &types.MsgBridge{
 		Relayer:                     h.relayer,
@@ -62,14 +65,16 @@ func (h GmpHandler) HandleGeneralMessage(
 		DestinationContractAddress:  msg.DestinationContractAddress.Hex(),
 		DestinationContractCalldata: msg.DestinationContractCalldata,
 	}
+
 	err = tx.ValidateBasic()
 	if err != nil {
 		return err
 	}
+
 	ctx.Logger().Info("HandleGeneralMessage GMP Decoder", "tx", tx)
 
 	// TODO: add custom logic to handle GMP
-	//_, err = h.gmp.Bridge(ctx, tx)
+	// _, err = h.gmp.Bridge(ctx, tx)
 	return err
 }
 
@@ -97,10 +102,12 @@ func (h GmpHandler) HandleGeneralMessageWithToken(
 	if err != nil {
 		return err
 	}
+
 	msg, err := types.NewGmpDecoder(payload)
 	if err != nil {
 		return err
 	}
+
 	ctx.Logger().Info("HandleGeneralMessageWithToken GMP Decoder", "msg", msg)
 	tx := &types.MsgBridge{
 		Relayer:                     h.relayer,
@@ -110,13 +117,15 @@ func (h GmpHandler) HandleGeneralMessageWithToken(
 		DestinationContractCalldata: msg.DestinationContractCalldata,
 		Token:                       coin,
 	}
+
 	err = tx.ValidateBasic()
 	if err != nil {
 		return err
 	}
+
 	ctx.Logger().Info("HandleGeneralMessage GMP Decoder", "tx", tx)
 
 	// TODO: add custom logic to handle GMP
-	//_, err = h.gmp.Bridge(ctx, tx)
+	// _, err = h.gmp.Bridge(ctx, tx)
 	return err
 }

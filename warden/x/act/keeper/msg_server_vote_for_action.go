@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
@@ -10,8 +11,8 @@ import (
 
 func (k msgServer) VoteForAction(goCtx context.Context, msg *types.MsgVoteForAction) (*types.MsgVoteForActionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	act, err := k.ActionKeeper.Get(ctx, msg.ActionId)
 
+	act, err := k.ActionKeeper.Get(ctx, msg.ActionId)
 	if err != nil {
 		return nil, err
 	}
@@ -20,6 +21,7 @@ func (k msgServer) VoteForAction(goCtx context.Context, msg *types.MsgVoteForAct
 		if err := act.SetStatus(ctx, types.ActionStatus_ACTION_STATUS_TIMEOUT); err != nil {
 			return nil, err
 		}
+
 		if err := k.ActionKeeper.Set(ctx, act); err != nil {
 			return nil, err
 		}

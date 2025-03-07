@@ -2,14 +2,13 @@ package repo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"cosmossdk.io/collections"
 )
 
-var (
-	ErrInvalidID = fmt.Errorf("invalid ID")
-)
+var ErrInvalidID = errors.New("invalid ID")
 
 // SeqCollection is an opinionated collection built on top of Cosmos SDK's Collections that uses a Sequence as ID for the Map.
 //
@@ -37,6 +36,7 @@ func (c SeqCollection[V]) Set(ctx context.Context, id uint64, obj V) error {
 	if id == 0 {
 		return ErrInvalidID
 	}
+
 	return c.Map.Set(ctx, id, obj)
 }
 
@@ -45,7 +45,9 @@ func (c SeqCollection[V]) Append(ctx context.Context, obj *V) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	c.setId(obj, id)
+
 	return id, c.Map.Set(ctx, id, *obj)
 }
 
@@ -70,6 +72,7 @@ func (c SeqCollection[V]) Import(ctx context.Context, values []V, getIDFn func(V
 			return fmt.Errorf("ID mismatch: expected %d, got %d. Cannot import this list of values.", id, actualID)
 		}
 	}
+
 	return nil
 }
 
@@ -78,5 +81,6 @@ func (c SeqCollection[V]) Export(ctx context.Context) ([]V, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return iter.Values()
 }

@@ -101,6 +101,7 @@ func (k *FutureKeeper) PendingFutures(ctx context.Context, limit int) ([]types.F
 	defer it.Close()
 
 	futures := make([]types.Future, 0, limit)
+
 	for ; it.Valid(); it.Next() {
 		id, err := it.Key()
 		if err != nil {

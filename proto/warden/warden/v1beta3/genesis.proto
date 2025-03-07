@@ -19,9 +19,24 @@ message GenesisState {
     (amino.dont_omitempty) = true
   ];
 
-  repeated Keychain keychains = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated Space spaces = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated Key keys = 4 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated KeyRequest key_requests = 5 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated SignRequest sign_requests = 6 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Keychain keychains = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  repeated Space spaces = 3 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  repeated Key keys = 4 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  repeated KeyRequest key_requests = 5 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  repeated SignRequest sign_requests = 6 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }

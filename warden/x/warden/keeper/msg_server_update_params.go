@@ -4,7 +4,6 @@ import (
 	"context"
 
 	errorsmod "cosmossdk.io/errors"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -14,8 +13,7 @@ func (k msgServer) UpdateParams(goCtx context.Context, req *types.MsgUpdateParam
 		return nil, errorsmod.Wrapf(types.ErrInvalidSigner, "invalid authority; expected %s, got %s", k.GetAuthority(), req.Authority)
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	if err := k.SetParams(ctx, req.Params); err != nil {
+	if err := k.SetParams(goCtx, req.Params); err != nil {
 		return nil, err
 	}
 

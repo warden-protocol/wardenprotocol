@@ -22,14 +22,12 @@ func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwn
 		return nil, status.Error(codes.InvalidArgument, "invalid owner address")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	spaces, pageRes, err := query.CollectionPaginate(
-		ctx,
+		goCtx,
 		k.SpacesKeeper.ByOwner(),
 		req.Pagination,
 		func(key collections.Pair[sdk.AccAddress, uint64], value collections.NoValue) (types.Space, error) {
-			return k.SpacesKeeper.Get(ctx, key.K2())
+			return k.SpacesKeeper.Get(goCtx, key.K2())
 		},
 		query.WithCollectionPaginationPairPrefix[sdk.AccAddress, uint64](ownerAddr),
 	)

@@ -11,7 +11,7 @@ import (
 func (k msgServer) AddKeychainAdmin(goCtx context.Context, msg *types.MsgAddKeychainAdminRequest) (*types.MsgAddKeychainAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, err := k.keychains.Get(ctx, msg.KeychainId)
+	kr, err := k.keychains.Get(goCtx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (k msgServer) AddKeychainAdmin(goCtx context.Context, msg *types.MsgAddKeyc
 
 	kr.AddAdmin(msg.NewAdmin)
 
-	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
+	if err := k.keychains.Set(goCtx, kr.Id, kr); err != nil {
 		return nil, err
 	}
 

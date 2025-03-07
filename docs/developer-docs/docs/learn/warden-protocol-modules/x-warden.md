@@ -35,7 +35,7 @@ See also [Glossary: Space](/learn/glossary#space).
 
 ### Key
 
-A **Key** is the public part of a key pair, which is stored onchain. Every Key belongs to a certain [Space](#space).
+A **key** is the public part of a key pair, which is stored onchain. Every key belongs to a certain [Space](#space).
 
 Keys have unique identifiers used to refer to them when requesting a [Keychain](#keychain) to sign a payload.
 

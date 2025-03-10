@@ -259,7 +259,7 @@ See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/ward
 
 ## Analyzers
 
-[Analyzers](#analyzer) are CosmWasm smart contracts that implement the interface described below.
+**Analyzers** are CosmWasm smart contracts that implement the interface described below.
 
 See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/contracts/contracts/basic-analyzer/src).
 

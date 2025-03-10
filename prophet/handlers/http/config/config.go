@@ -4,8 +4,8 @@ package config
 // be set in the app.toml file.
 
 type Config struct {
-	Enabled    bool     `mapstructure:"enabled" toml:"enabled"`
-	URLs       []string `mapstructure:"urls" toml:"urls"`
+	Enabled    bool     `mapstructure:"enabled"     toml:"enabled"`
+	URLs       []string `mapstructure:"urls"        toml:"urls"`
 	TimeoutSec int      `mapstructure:"timeout_sec" toml:"timeout_sec"`
 }
 
@@ -18,4 +18,18 @@ func DefaultConfig() *Config {
 	}
 }
 
-const DefaultEVMConfigTemplate = "\n###############################################################################\n###                      HTTP configuration                     ###\n###############################################################################\n[http]\n\n# Is HTTP handler enabled\n= \"{{ .Http.Enabled }}\"\n\n# URLs used for HTTP handler\nurls = [\"{{ range $i, $url := .Http.URLs }}{{if $i}},{{end}}{{$url}}{{end}}\"]\n\n# Timeout in seconds for the HTTP client\ntimeout_sec = {{ .Http.TimeoutSec"
+const DefaultConfigTemplate = `
+###############################################################################
+###                      HTTP configuration                                 ###
+###############################################################################
+[http]
+
+# Is HTTP handler enabled
+enabled = "{{ .Http.Enabled }}"
+
+# URLs used for HTTP handler
+urls = ["{{ range $i, $url := .Http.URLs }}{{if $i}},{{end}}{{$url}}{{end}}"]
+
+# Timeout in seconds for the HTTP client
+timeout_sec = {{ .Http.TimeoutSec }}
+`

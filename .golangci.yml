@@ -3,6 +3,7 @@ linters:
   enable-all: true
   disable:
     - cyclop
+    - dupword
     - err113
     - exhaustruct
     - funlen

@@ -109,8 +109,8 @@ func initAppConfig() (string, interface{}) {
 		oracleconfig.DefaultConfigTemplate +
 		evmservercfg.DefaultEVMConfigTemplate +
 		evmservercfg.DefaultRosettaConfigTemplate +
-		pricepredconfig.DefaultEVMConfigTemplate +
-		httpconfig.DefaultEVMConfigTemplate
+		pricepredconfig.DefaultConfigTemplate +
+		httpconfig.DefaultConfigTemplate
 
 	// Edit the default template file
 	//

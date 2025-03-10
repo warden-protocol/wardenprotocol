@@ -38,7 +38,6 @@ func (k Keeper) SignRequests(goCtx context.Context, req *types.QuerySignRequests
 
 		return true, nil
 	}, func(key uint64, value types.SignRequest) (*types.SignRequest, error) { return &value, nil })
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

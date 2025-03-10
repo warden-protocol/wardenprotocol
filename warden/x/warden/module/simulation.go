@@ -13,7 +13,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-// avoid unused import issue
+// avoid unused import issue.
 var (
 	_ = wardensimulation.FindAccount
 	_ = rand.Rand{}
@@ -32,6 +32,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
+
 	wardenGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		// this line is used by starport scaffolding # simapp/module/genesisState

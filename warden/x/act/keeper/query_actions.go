@@ -5,9 +5,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k Keeper) Actions(goCtx context.Context, req *types.QueryActionsRequest) (*types.QueryActionsResponse, error) {
@@ -20,7 +21,6 @@ func (k Keeper) Actions(goCtx context.Context, req *types.QueryActionsRequest) (
 	actions, pageRes, err := query.CollectionPaginate(ctx, k.ActionKeeper.Coll(), req.Pagination, func(key uint64, action types.Action) (types.Action, error) {
 		return action, nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

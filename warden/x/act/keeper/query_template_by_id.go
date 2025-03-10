@@ -4,13 +4,15 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
+//
+//nolint:stylecheck,st1003
 func (k Keeper) TemplateById(goCtx context.Context, req *types.QueryTemplateByIdRequest) (*types.QueryTemplateByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

@@ -6,9 +6,10 @@ import (
 	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwnerRequest) (*types.QuerySpacesResponse, error) {
@@ -32,7 +33,6 @@ func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwn
 		},
 		query.WithCollectionPaginationPairPrefix[sdk.AccAddress, uint64](ownerAddr),
 	)
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

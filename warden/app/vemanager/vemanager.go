@@ -5,7 +5,7 @@
 package vemanager
 
 import (
-	fmt "fmt"
+	"errors"
 
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -52,6 +52,7 @@ func (m *VoteExtensionManager) ExtendVoteHandler() sdk.ExtendVoteHandler {
 			if err != nil {
 				return nil, err
 			}
+
 			w.Extensions[i] = resp.VoteExtension
 		}
 
@@ -59,6 +60,7 @@ func (m *VoteExtensionManager) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		if err != nil {
 			return nil, err
 		}
+
 		return &cometabci.ResponseExtendVote{
 			VoteExtension: bz,
 		}, nil
@@ -75,10 +77,11 @@ func (m *VoteExtensionManager) VerifyVoteExtensionHandler() sdk.VerifyVoteExtens
 		}
 
 		if len(w.Extensions) > len(m.verifyVoteExtensionHandler) {
-			return nil, fmt.Errorf("too many vote extensions, not enough VerifyVoteExtensionHandlers registered to the VoteExtensionManager")
+			return nil, errors.New("too many vote extensions, not enough VerifyVoteExtensionHandlers registered to the VoteExtensionManager")
 		}
 
 		var resps []*cometabci.ResponseVerifyVoteExtension
+
 		for i, ext := range w.Extensions {
 			handler := m.verifyVoteExtensionHandler[i]
 			reqWithExt := &cometabci.RequestVerifyVoteExtension{
@@ -87,6 +90,7 @@ func (m *VoteExtensionManager) VerifyVoteExtensionHandler() sdk.VerifyVoteExtens
 				Height:           req.Height,
 				VoteExtension:    ext,
 			}
+
 			resp, err := handler(ctx, reqWithExt)
 			if err != nil {
 				return nil, err
@@ -116,6 +120,7 @@ func (m *VoteExtensionManager) PrepareProposalHandler() sdk.PrepareProposalHandl
 			if err != nil {
 				return nil, err
 			}
+
 			resp = scopedResp
 		}
 
@@ -127,11 +132,13 @@ func combineResponseVerifyVoteExtension(resps []*cometabci.ResponseVerifyVoteExt
 	combined := &cometabci.ResponseVerifyVoteExtension{
 		Status: cometabci.ResponseVerifyVoteExtension_ACCEPT,
 	}
+
 	for _, resp := range resps {
 		if resp.Status == cometabci.ResponseVerifyVoteExtension_REJECT {
 			combined.Status = cometabci.ResponseVerifyVoteExtension_REJECT
 			break
 		}
 	}
+
 	return combined
 }

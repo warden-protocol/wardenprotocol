@@ -27,6 +27,7 @@ func (votes ActionApprovedVotesEnv) Get(name string) (object.Object, bool) {
 			return object.TRUE, true
 		}
 	}
+
 	return object.FALSE, true
 }
 
@@ -40,6 +41,7 @@ func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
 			return object.TRUE, true
 		}
 	}
+
 	return object.FALSE, true
 }
 
@@ -47,6 +49,7 @@ func (votes ActionRejectedVotesEnv) Get(name string) (object.Object, bool) {
 // result in the database.
 func (k Keeper) TryExecuteVotedAction(ctx context.Context, act *types.Action) error {
 	actExpression := types.ActExpression(act.ApproveExpression)
+
 	approved, err := actExpression.EvalExpression(ctx, ActionApprovedVotesEnv(act.Votes))
 	if err != nil {
 		return err
@@ -65,6 +68,7 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
 	actExpression := types.ActExpression(act.RejectExpression)
+
 	rejected, err := actExpression.EvalExpression(ctx, ActionRejectedVotesEnv(act.Votes))
 	if err != nil {
 		return err
@@ -74,6 +78,7 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 		if err := act.SetStatus(sdkCtx, types.ActionStatus_ACTION_STATUS_REVOKED); err != nil {
 			return err
 		}
+
 		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
 			return err
 		}
@@ -82,12 +87,12 @@ func (k Keeper) TryRejectVotedAction(ctx context.Context, act *types.Action) err
 	return nil
 }
 
-//nolint:govet //fixme :printf: non-constant format string in call to cosmossdk.io/errors.Wrapf (govet)
 func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	cacheCtx, writeCache := prepareHandlerContext(sdkCtx, act.Creator)
 
 	var msg sdk.Msg
+
 	err := k.cdc.UnpackAny(act.Msg, &msg)
 	if err != nil {
 		return errors.Wrapf(types.ErrInvalidActionMsg, "unpacking Msg: %v", err)
@@ -95,20 +100,24 @@ func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 
 	handler := k.router.Handler(msg)
 	if handler == nil {
-		return errors.Wrapf(types.ErrNoActionMsgHandler, sdk.MsgTypeURL(msg))
+		return errors.Wrapf(types.ErrNoActionMsgHandler, "%s", sdk.MsgTypeURL(msg))
 	}
 
 	var res *sdk.Result
+
 	res, err = safeExecuteHandler(cacheCtx, msg, handler)
 	if err != nil {
 		// set action failed
 		sdkCtx.Logger().Error("action execution failed", "action_id", act.Id, "err", err)
+
 		if err := act.SetStatus(sdkCtx, types.ActionStatus_ACTION_STATUS_REVOKED); err != nil {
 			return err
 		}
+
 		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
 			return err
 		}
+
 		return nil
 	}
 
@@ -142,7 +151,9 @@ func safeExecuteHandler(ctx sdk.Context, msg sdk.Msg, handler baseapp.MsgService
 			)
 		}
 	}()
+
 	res, err = handler(ctx, msg)
+
 	return
 }
 
@@ -162,6 +173,7 @@ func (k Keeper) GetActionCreator(ctx context.Context) string {
 	if !ok {
 		return ""
 	}
+
 	return s
 }
 
@@ -183,6 +195,7 @@ func (k Keeper) AddAction(
 	}
 
 	ctx = ctxWithActionCreator(sdk.UnwrapSDKContext(ctx), creator)
+
 	ctx, approveTemplate, rejectTemplate, err := k.templatesRegistry.Get(ctx, msg)
 	if err != nil {
 		return nil, errors.Wrapf(types.ErrNoTemplateRegistryHandler, "%v", err)
@@ -202,6 +215,7 @@ func (k Keeper) AddAction(
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
+
 	preprocessedApproveExpr, approveMentions, err := k.preprocessTemplate(
 		ctxWithMsg,
 		approveTemplate,
@@ -250,20 +264,19 @@ func (k Keeper) AddAction(
 	return act, nil
 }
 
-// assert that the x/act module account is the only signer of the message
-//
-//nolint:govet //fixme :printf: non-constant format string in call to cosmossdk.io/errors.Wrapf (govet)
+// assert that the x/act module account is the only signer of the message.
 func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 	signers, _, err := k.cdc.GetMsgV1Signers(msg)
 	if err != nil {
 		return err
 	}
+
 	if len(signers) != 1 {
 		return types.ErrInvalidSigner
 	}
 
 	if sdk.AccAddress(signers[0]).String() != k.GetModuleAddress() {
-		return errors.Wrapf(types.ErrInvalidActionMsgSigner, sdk.AccAddress(signers[0]).String())
+		return errors.Wrapf(types.ErrInvalidActionMsgSigner, "%s", sdk.AccAddress(signers[0]).String())
 	}
 
 	return nil

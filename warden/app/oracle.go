@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 	"time"
 
@@ -50,10 +49,12 @@ func (app *App) setupMempool() {
 
 func (app *App) setupSlinkyClient(appOpts types.AppOptions) {
 	chainID := app.ChainID()
+
 	c, err := NewSlinkyClient(app.Logger(), chainID, appOpts, app.StakingKeeper, app.OracleKeeper)
 	if err != nil {
 		panic(err)
 	}
+
 	app.slinkyClient = c
 }
 
@@ -182,6 +183,7 @@ func (sc *SlinkyClient) PreblockHandler() *oraclepreblock.PreBlockHandler {
 
 func (sc *SlinkyClient) VoteExtensionHandler() *ve.VoteExtensionHandler {
 	cps := currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper)
+
 	return ve.NewVoteExtensionHandler(
 		sc.logger,
 		sc.client,
@@ -290,7 +292,14 @@ func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error
 	var w vemanager.VoteExtensions
 
 	if err := w.Unmarshal(b); err != nil {
-		return vetypes.OracleVoteExtension{}, fmt.Errorf("failed to unmarshal vemanager.VoteExtensions: %w", err)
+		// Backwards compatibility: during the upgrade from just Slinky's VE to
+		// the new vemanager.VoteExtensions format, we saw that nodes still
+		// could receive a Slinky VE, from the blocks before the
+		// upgrade.
+		//
+		// After the upgrade to v0.6 the following line should be safe to be
+		// changed to simply return the error.
+		return a.slinkyCodec.Decode(b)
 	}
 
 	if len(w.Extensions) == 0 {

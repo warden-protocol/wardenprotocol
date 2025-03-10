@@ -28,5 +28,6 @@ func (q querier) Params(
 ) (*types.ParamsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := q.GetParams(ctx)
+
 	return &types.ParamsResponse{Params: params}, nil
 }

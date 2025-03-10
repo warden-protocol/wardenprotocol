@@ -5,9 +5,7 @@ import "cosmos/app/v1alpha1/module.proto";
 
 // Module is the config object for the module.
 message Module {
-  option (cosmos.app.v1alpha1.module) = {
-    go_import: "github.com/warden-protocol/wardenprotocol/warden/x/warden"
-  };
+  option (cosmos.app.v1alpha1.module) = {go_import: "github.com/warden-protocol/wardenprotocol/warden/x/warden"};
 
   // authority defines the custom module authority. If not set, defaults to the governance module.
   string authority = 1;

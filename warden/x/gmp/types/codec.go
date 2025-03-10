@@ -19,7 +19,7 @@ var (
 	ModuleCdc = codec.NewAminoCodec(amino) //nolint:all
 )
 
-// RegisterInterfaces registers the x/gmp interfaces types with the interface registry
+// RegisterInterfaces registers the x/gmp interfaces types with the interface registry.
 func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgBridge{},

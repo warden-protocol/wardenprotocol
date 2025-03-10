@@ -46,6 +46,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+## [v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) - 2025-03-05
+
+### Bug Fixes
+* (x/act) Use constant formatting strings when wrapping errors
+* (wardend) fallback to handle Slinky vote extensions during v0.6.x upgrade
+
 ## [v0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1) - 2025-03-03
 
 ### Features (non-breaking)

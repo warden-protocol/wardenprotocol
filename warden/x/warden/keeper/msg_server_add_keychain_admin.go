@@ -4,6 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -18,6 +19,7 @@ func (k msgServer) AddKeychainAdmin(goCtx context.Context, msg *types.MsgAddKeyc
 	if !kr.IsAdmin(msg.Authority) {
 		return nil, types.ErrNotKeychainAdmin
 	}
+
 	if kr.IsAdmin(msg.NewAdmin) {
 		return nil, types.ErrDuplicateKeychainAdmin
 	}

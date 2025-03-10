@@ -21,10 +21,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	txmodule "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	evmoskr "github.com/evmos/evmos/v20/crypto/keyring"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	evmoskr "github.com/evmos/evmos/v20/crypto/keyring"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -109,6 +109,7 @@ func NewRootCmd() *cobra.Command {
 		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
 		autoCliOpts.Modules[name] = mod
 	}
+
 	initRootCmd(rootCmd, clientCtx.TxConfig, clientCtx.InterfaceRegistry, clientCtx.Codec, moduleBasicManager)
 
 	overwriteFlagDefaults(rootCmd, map[string]string{
@@ -136,6 +137,7 @@ func overwriteFlagDefaults(c *cobra.Command, defaults map[string]string) {
 		set(c.Flags(), key, val)
 		set(c.PersistentFlags(), key, val)
 	}
+
 	for _, c := range c.Commands() {
 		overwriteFlagDefaults(c, defaults)
 	}

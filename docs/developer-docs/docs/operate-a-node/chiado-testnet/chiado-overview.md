@@ -13,11 +13,11 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 | Release                                                                         | Block height         | Date          | Upgrade guide                        |
 | ------------------------------------------------------------------------------- | -------------------- | ------------- | ------------------------------------ |
 | [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) | genesis              |               |                                      |
-| [v0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1) | 1968800              | March 5, 2025 | [Upgrade to v0.6.1](upgrade/v0.6.1)  |
+| [v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) | 1968800              | March 5, 2025 | [Upgrade to v0.6.2](upgrade/v0.6.2)  |
 
 ## Binary
 
-The latest binary version compatible with Chiado is [wardend v.0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1).
+The latest binary version compatible with Chiado is [wardend v.0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2).
 
 
 ## Endpoints

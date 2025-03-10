@@ -297,7 +297,7 @@ Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-mo
 
 A Prophet is a subprocess running on [validator](#validator) nodes, which has two responsibilities:
 
-- Fetching [Future](#future) requests and executing handlers associated with Futures
+- Fetching [Future](#future) requests and executing [handlers](#future-handler) associated with Futures
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.

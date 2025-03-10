@@ -39,6 +39,11 @@ After deploying your contract, you can interact with it by calling the `createFu
 cast send $CONTRACT_ADDRESS "createFuture(string,bytes,address)" "myHandler" "0x1234" "address" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
+:::tip
+- The following handlers are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Handlers](/learn/warden-protocol-modules/x-async#handlers). 
+- The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Future is ready.
+:::
+
 ### Query Futures
 
 To get a list of all Futures in all states (including pending ones), use the following code in your contract. It calls the [`futures()` function](../precompiles/x-async#query-futures) of the precompile.

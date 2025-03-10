@@ -36,16 +36,15 @@ A user can request a Future, specifying an **input** and a [handler](#handler), 
 
 After that, a [validator](/learn/glossary#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 
+You can learn more in the [Future execution flow](#future-execution-flow) section of this article.
+
 ### Handler
 
-A **handler** is code that determines how to interpret the Future input and what to do with it in order to retrieve the result. When requesting a Future, a user references a handler by ID. Then the handler is executed by a [Prophet](#prophet).
+A **handler** is code that determines how to interpret the [Future](#future) input and what to do with it in order to retrieve the result. When requesting a Future, a user references a handler by ID. Then the handler is executed by a [Prophet](#prophet).
 
-Currently, we support two handlers, which allow executing the following tasks:
+Currently, we support two handlers, which allow executing **price predictions** and **HTTP requests**.
 
-- **Price predictions**  
-  Futures can produce AI-driven price predictions. For a usage example, see the following guide: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
-- **HTTP requests**  
-  Warden Futures accept handlers for making HTTP requests to any external service. For example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+You can learn more in the [Handlers](#handlers) section of this article.
 
 ### Prophet
 
@@ -56,6 +55,8 @@ A **Prophet** is a subprocess running on [validator](/learn/glossary#validator) 
 
 Prophets run on validator nodes separately from the [`wardend` process](/learn/glossary#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
+You can learn more in the [Prohpets](#prophets) section of this article.
+
 ## State
 
 The `x/async` module keeps track of [Futures](#future).
@@ -64,7 +65,7 @@ Completed Futures are pruned after some time, to avoid state bloat.
 
 ## Messages
 
-### MsgAddFuture
+### `MsgAddFuture`
 
 Creates a new [Future](#future), providing the following:
 
@@ -77,7 +78,21 @@ Creates a new [Future](#future), providing the following:
 - The callback contract must have a `cb()` function, allowing it to be invoked once the Future is ready.
 :::
 
-## Prophet (subprocess)
+## Handlers
+
+### `pricepred`
+
+[Futures](#future) accept the `pricepred` handler for producing **AI-driven price predictions**.
+
+You can find a usage example in the following guide: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
+
+### `http`  
+
+[Futures](#future) accept the `http` handler for making **HTTP requests** to any external service.
+
+For example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+
+## Prophets
 
 ### Executing Futures
 
@@ -89,7 +104,7 @@ The results are stored in the memory for the blockchain node to fetch it later.
 
 ### Voting on Future results
 
-A Prophet continuously polls the chain to discover Futures that have a result submitted by another validator, maintaining a local queue for them.
+A Prophet continuously polls the chain to discover [Futures](#future) that have a result submitted by another validator, maintaining a local queue for them.
 
 Concurrently, Futures are taken from the queue and validated (this usually involves calling an external service).
 

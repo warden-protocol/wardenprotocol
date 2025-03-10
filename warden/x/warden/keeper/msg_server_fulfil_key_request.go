@@ -12,12 +12,12 @@ import (
 func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilKeyRequest) (*types.MsgFulfilKeyRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	req, err := k.keyRequests.Get(ctx, msg.RequestId)
+	req, err := k.keyRequests.Get(goCtx, msg.RequestId)
 	if err != nil {
 		return nil, err
 	}
 
-	kr, err := k.keychains.Get(ctx, req.KeychainId)
+	kr, err := k.keychains.Get(goCtx, req.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -32,12 +32,12 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 
 	switch msg.Status {
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED:
-		key, err := k.fulfillKeyRequest(ctx, msg, req)
+		key, err := k.fulfillKeyRequest(goCtx, msg, req)
 		if err != nil {
 			return nil, err
 		}
 
-		if err := k.releaseKeychainFees(ctx, kr, req.DeductedKeychainFees); err != nil {
+		if err := k.releaseKeychainFees(goCtx, kr, req.DeductedKeychainFees); err != nil {
 			return nil, err
 		}
 
@@ -53,11 +53,11 @@ func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilK
 		}
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
-		if err := k.rejectKeyRequest(ctx, msg, req); err != nil {
+		if err := k.rejectKeyRequest(goCtx, msg, req); err != nil {
 			return nil, err
 		}
 
-		err := k.refundKeychainFees(ctx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
+		err := k.refundKeychainFees(goCtx, sdk.MustAccAddressFromBech32(req.Creator), req.DeductedKeychainFees)
 		if err != nil {
 			return nil, err
 		}

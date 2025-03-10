@@ -27,14 +27,11 @@ linters:
     
     # the followings are linters that should be enabled but the codebase
     # doesn't adhere to and we don't have enough time to fix them all at once
-    - containedctx
-    - contextcheck
     - depguard
     - dupl
     - errname
     - errorlint
     - exhaustive
-    - forbidigo
     - forcetypeassert
     - gocognit
     - gocritic

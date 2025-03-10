@@ -73,7 +73,7 @@ func (k Keeper) Bridge(
 		string(bz),
 	)
 
-	_, err = k.IBCKeeper.Transfer(ctx, transferMsg)
+	_, err = k.IBCKeeper.Transfer(goCtx, transferMsg)
 	if err != nil {
 		return &types.MsgBridgeResponse{}, err
 	}

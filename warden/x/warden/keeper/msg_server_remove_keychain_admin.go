@@ -12,7 +12,7 @@ import (
 func (k msgServer) RemoveKeychainAdmin(goCtx context.Context, msg *types.MsgRemoveKeychainAdminRequest) (*types.MsgRemoveKeychainAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, err := k.keychains.Get(ctx, msg.KeychainId)
+	kr, err := k.keychains.Get(goCtx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (k msgServer) RemoveKeychainAdmin(goCtx context.Context, msg *types.MsgRemo
 
 	kr.RemoveAdmin(msg.Admin)
 
-	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
+	if err := k.keychains.Set(goCtx, kr.Id, kr); err != nil {
 		return nil, err
 	}
 

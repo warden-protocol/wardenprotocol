@@ -36,8 +36,12 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 - **Parameters** :
   ```sol
   @param handler The unique name of the handler
-  @param input The handler's input  
+  @param input The handler's input
+  @param callback The address of callback contract
   ```
+  **Notes**:
+  - The following handlers are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Handlers](/learn/warden-protocol-modules/x-async#handlers). 
+  - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Future is ready.
 - **Output**:  
   ```sol
   @return futureId The id of the future
@@ -176,7 +180,8 @@ Rejected
 - **Description**: An event emitted when [a Future is created](#create-a-new-future).
 - **Parameters**:  
   ```sol
-  @param creator The address of the creator
-  @param futureId The future Id
-  @param handler The name of the handler
+  uint64 indexed futureId,
+  address indexed creator,
+  string handler,
+  address callbackAddress
   ```

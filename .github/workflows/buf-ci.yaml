@@ -32,3 +32,4 @@ jobs:
           lint: false
           breaking: true
           push: false
+          archive: false

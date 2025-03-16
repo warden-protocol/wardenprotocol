@@ -67,7 +67,7 @@
     "@cosmjs/proto-signing": "0.32.3",
     "@cosmjs/stargate": "0.32.3",
     "@cosmjs/tendermint-rpc": "^0.32.3",
-    "@cosmology/lcd": "^0.13.3",
+    "@cosmology/lcd": "^0.14.4",
     "protobufjs": "^7.2.6"
   },
   "peerDependencies": {

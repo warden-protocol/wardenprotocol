@@ -12,6 +12,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
+
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
@@ -27,7 +28,7 @@ func NewIBCMiddleware(app porttypes.IBCModule, handler GeneralMessageHandler) IB
 	}
 }
 
-// OnChanOpenInit implements the IBCModule interface
+// OnChanOpenInit implements the IBCModule interface.
 func (im IBCMiddleware) OnChanOpenInit(
 	ctx sdk.Context,
 	order channeltypes.Order,
@@ -51,7 +52,7 @@ func (im IBCMiddleware) OnChanOpenInit(
 	)
 }
 
-// OnChanOpenTry implements the IBCMiddleware interface
+// OnChanOpenTry implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnChanOpenTry(
 	ctx sdk.Context,
 	order channeltypes.Order,
@@ -74,7 +75,7 @@ func (im IBCMiddleware) OnChanOpenTry(
 	)
 }
 
-// OnChanOpenAck implements the IBCMiddleware interface
+// OnChanOpenAck implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnChanOpenAck(
 	ctx sdk.Context,
 	portID,
@@ -91,7 +92,7 @@ func (im IBCMiddleware) OnChanOpenAck(
 	)
 }
 
-// OnChanOpenConfirm implements the IBCMiddleware interface
+// OnChanOpenConfirm implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnChanOpenConfirm(
 	ctx sdk.Context,
 	portID,
@@ -100,7 +101,7 @@ func (im IBCMiddleware) OnChanOpenConfirm(
 	return im.app.OnChanOpenConfirm(ctx, portID, channelID)
 }
 
-// OnChanCloseInit implements the IBCMiddleware interface
+// OnChanCloseInit implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnChanCloseInit(
 	ctx sdk.Context,
 	portID,
@@ -109,7 +110,7 @@ func (im IBCMiddleware) OnChanCloseInit(
 	return im.app.OnChanCloseInit(ctx, portID, channelID)
 }
 
-// OnChanCloseConfirm implements the IBCMiddleware interface
+// OnChanCloseConfirm implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnChanCloseConfirm(
 	ctx sdk.Context,
 	portID,
@@ -118,7 +119,7 @@ func (im IBCMiddleware) OnChanCloseConfirm(
 	return im.app.OnChanCloseConfirm(ctx, portID, channelID)
 }
 
-// OnRecvPacket implements the IBCMiddleware interface
+// OnRecvPacket implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnRecvPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
@@ -136,6 +137,7 @@ func (im IBCMiddleware) OnRecvPacket(
 	}
 
 	var msg Message
+
 	var err error
 
 	if err = json.Unmarshal([]byte(data.GetMemo()), &msg); err != nil {
@@ -166,6 +168,7 @@ func (im IBCMiddleware) OnRecvPacket(
 				),
 			)
 		}
+
 		denom := parseDenom(packet, data.Denom)
 
 		err = im.handler.HandleGeneralMessageWithToken(
@@ -182,6 +185,7 @@ func (im IBCMiddleware) OnRecvPacket(
 		ctx.Logger().With(
 			fmt.Errorf("unrecognized message type: %d", msg.Type)).
 			Error("unrecognized gmp message")
+
 		return ack
 	}
 
@@ -192,7 +196,7 @@ func (im IBCMiddleware) OnRecvPacket(
 	return ack
 }
 
-// OnAcknowledgementPacket implements the IBCMiddleware interface
+// OnAcknowledgementPacket implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnAcknowledgementPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
@@ -202,7 +206,7 @@ func (im IBCMiddleware) OnAcknowledgementPacket(
 	return im.app.OnAcknowledgementPacket(ctx, packet, acknowledgement, relayer)
 }
 
-// OnTimeoutPacket implements the IBCMiddleware interface
+// OnTimeoutPacket implements the IBCMiddleware interface.
 func (im IBCMiddleware) OnTimeoutPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,

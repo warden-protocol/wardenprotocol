@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -65,18 +66,22 @@ func execute(cmdString string) (Out, error) {
 
 	// Read the output
 	var output, errOutput []byte
+
 	var stdoutErr, stderrErr error
 
 	var wg sync.WaitGroup
+
 	wg.Add(workers)
 
 	go func() {
 		defer wg.Done()
+
 		output, stdoutErr = io.ReadAll(stdout)
 	}()
 
 	go func() {
 		defer wg.Done()
+
 		errOutput, stderrErr = io.ReadAll(stderr)
 	}()
 
@@ -85,6 +90,7 @@ func execute(cmdString string) (Out, error) {
 	if stdoutErr != nil {
 		return Out{}, fmt.Errorf("error reading stdout: %w", stdoutErr)
 	}
+
 	if stderrErr != nil {
 		return Out{}, fmt.Errorf("error reading stderr: %w", stderrErr)
 	}
@@ -96,6 +102,7 @@ func execute(cmdString string) (Out, error) {
 		if len(errOutput) > 0 {
 			return Out{}, fmt.Errorf("command failed: %w\nStderr: %s", err, string(errOutput))
 		}
+
 		return Out{}, fmt.Errorf("command failed: %w", err)
 	}
 
@@ -120,6 +127,7 @@ func (f *Faucet) setupNewAccount() error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -129,15 +137,18 @@ func validAddress(addr string) error {
 		reqInvalidAddrCount.Inc()
 		return fmt.Errorf("invalid address: %w", err)
 	}
+
 	if pref != "warden" {
 		reqInvalidAddrCount.Inc()
 		return fmt.Errorf("invalid address prefix: %s", pref)
 	}
+
 	return nil
 }
 
 func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	var err error
+
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		logger.Fatal().Msgf("error loading config: %s", err)
@@ -172,6 +183,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 
 func (f *Faucet) batchProcessInterval() {
 	f.log.Info().Msgf("starting batch process interval")
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -190,6 +202,7 @@ func (f *Faucet) batchProcessInterval() {
 				} else {
 					f.log.Debug().Msgf("tx hash %s", txHash)
 					f.LatestTXHash = txHash
+
 					batchSendCount.Inc()
 					batchSize.Set(0)
 				}
@@ -204,6 +217,7 @@ func addressInBatch(batch []string, addr string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -218,22 +232,23 @@ func convertHexToBech32(hexAddr string) (string, error) {
 				err,
 			)
 		}
+
 		return bech32Addr, nil
 	}
-	return "", fmt.Errorf(
-		"error converting hex address to bech32: address is not hex",
-	)
+
+	return "", errors.New("error converting hex address to bech32: address is not hex")
 }
 
 func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	var err error
+
 	f.Lock()
 	defer f.Unlock()
 
 	if f.TokensAvailable <= 0 {
 		return "",
 			http.StatusTooManyRequests,
-			fmt.Errorf("no tokens available, please come back tomorrow")
+			errors.New("no tokens available, please come back tomorrow")
 	}
 
 	// if the address is a hex string, convert it to bech32
@@ -252,12 +267,15 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		if err := validAddress(addr); err != nil {
 			return "", http.StatusUnprocessableEntity, err
 		}
+
 		if addressInBatch(f.Batch, addr) {
-			return "", http.StatusUnprocessableEntity, fmt.Errorf("address already in batch")
+			return "", http.StatusUnprocessableEntity, errors.New("address already in batch")
 		}
 
 		f.Batch = append(f.Batch, addr)
+
 		batchSize.Inc()
+
 		return "", 0, nil
 	}
 
@@ -328,6 +346,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}
+
 	return result.TxHash, http.StatusOK, nil
 }
 

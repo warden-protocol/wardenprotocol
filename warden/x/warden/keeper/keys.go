@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/codec"
 
@@ -20,6 +21,7 @@ func NewKeysKeeper(sb *collections.SchemaBuilder, cdc codec.BinaryCodec) KeysKee
 		sb, KeysSpaceIndexPrefix, "keys_by_space",
 		collections.PairKeyCodec(collections.Uint64Key, collections.Uint64Key),
 	)
+
 	return KeysKeeper{
 		keys:        keys,
 		keysBySpace: keysBySpace,
@@ -39,6 +41,7 @@ func (k KeysKeeper) Set(ctx context.Context, key *types.Key) error {
 	if err := k.keysBySpace.Set(ctx, collections.Join(key.SpaceId, key.Id)); err != nil {
 		return err
 	}
+
 	return k.keys.Set(ctx, key.Id, *key)
 }
 

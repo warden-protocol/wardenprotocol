@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (k Keeper) SimulateTemplate(goCtx context.Context, req *types.QuerySimulateTemplateRequest) (*types.QuerySimulateTemplateResponse, error) {

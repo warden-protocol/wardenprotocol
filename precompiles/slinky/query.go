@@ -9,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
-
 	slinkytypes "github.com/skip-mev/slinky/pkg/types"
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 
@@ -37,8 +36,9 @@ func (p Precompile) GetPriceQuery(
 	if err != nil {
 		return nil, err
 	}
+
 	if response == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(GetPriceResponse).FromResponse(response)
@@ -80,6 +80,7 @@ func newGetPriceRequest(method *abi.Method, args []interface{}) (*oracletypes.Ge
 		Base  string
 		Quote string
 	}
+
 	if err := method.Inputs.Copy(&input, args); err != nil {
 		return nil, fmt.Errorf("failed to unpack arguments into get price input: %w", err)
 	}

@@ -1,5 +1,9 @@
 import { env } from "@/env";
-import { SnapParams, useActionHandler, WalletConnectParams } from "@/features/actions/hooks";
+import {
+	SnapParams,
+	useActionHandler,
+	WalletConnectParams,
+} from "@/features/actions/hooks";
 import { fromBytes, serializeTransaction, TransactionSerializable } from "viem";
 import { EthRequest } from "@/features/modals/util";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
@@ -13,15 +17,16 @@ export function useEthereumTx() {
 
 	const space = useSpaceById({
 		request: {
-			id: BigInt(spaceId ?? 0)
+			id: BigInt(spaceId ?? 0),
 		},
 	}).data;
 
-	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
-		PRECOMPILE_WARDEN_ADDRESS,
-		wardenPrecompileAbi,
-		"newSignRequest"
-	);
+	const { add, expectedApproveExpression, expectedRejectExpression } =
+		useActionHandler(
+			PRECOMPILE_WARDEN_ADDRESS,
+			wardenPrecompileAbi,
+			"newSignRequest",
+		);
 
 	const signRaw = async (
 		keyId: bigint,
@@ -29,7 +34,7 @@ export function useEthereumTx() {
 		options?: {
 			wc?: WalletConnectParams;
 			snap?: SnapParams;
-		}
+		},
 	) => {
 		if (!space) {
 			throw new Error("no space");
@@ -47,7 +52,8 @@ export function useEthereumTx() {
 				space.nonce,
 				BigInt(0),
 				expectedApproveExpression,
-				expectedRejectExpression
+				expectedRejectExpression,
+				0, // BROADCAST_TYPE_DISABLED
 			],
 			options,
 		);
@@ -61,7 +67,7 @@ export function useEthereumTx() {
 			wc?: WalletConnectParams;
 			snap?: SnapParams;
 			title?: string;
-		}
+		},
 	) => {
 		if (!space) {
 			throw new Error("no space");
@@ -73,8 +79,10 @@ export function useEthereumTx() {
 			);
 		}
 
-
-		const analyzer = fromBytes(fromBech32(env.ethereumAnalyzerContract).data, "hex");
+		const analyzer = fromBytes(
+			fromBech32(env.ethereumAnalyzerContract).data,
+			"hex",
+		);
 
 		return await add(
 			[
@@ -88,9 +96,10 @@ export function useEthereumTx() {
 				space.nonce,
 				BigInt(0),
 				expectedApproveExpression,
-				expectedRejectExpression
+				expectedRejectExpression,
+				0, // BROADCAST_TYPE_DISABLED
 			],
-			{ ...options, chainName, ethRequest: _tx }
+			{ ...options, chainName, ethRequest: _tx },
 		);
 	};
 

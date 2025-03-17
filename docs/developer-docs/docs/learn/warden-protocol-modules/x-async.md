@@ -12,6 +12,7 @@ and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-exten
 This module implements the following concepts:
 
 - [Future](#future)
+- [Handler](#handler)
 - [Prophet](#prophet)
 
 ## Usage
@@ -31,27 +32,30 @@ At this moment, `x/async` supports two types of computations:
 
 A **Future** is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain.
 
-A user can request a Future, specifying an **input** and a **handler** (referenced by ID), which determines how to interpret the input and what to do with it in order to retrieve the result.
+A user can request a Future, specifying an **input** and a [handler](#handler), which determines how to interpret the input. There are different types of Futures, depending on the handler type.
 
 After that, a [validator](/learn/glossary#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 
-There are two types of Futures, depending on the handler:
+You can learn more in the [Future execution flow](#future-execution-flow) section of this article.
 
-- **Price predictions**  
-  Futures can produce AI-driven price predictions. For a usage example, see the following guide: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
-- **HTTP requests**  
-  Warden Futures accept handlers for making HTTP requests to any external service. For example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+### Handler
+
+A **handler** is code that determines how to interpret the [Future](#future) input and what to do with it in order to retrieve the result. When requesting a Future, a user references a handler by ID. Then the handler is executed by a [Prophet](#prophet).
+
+Currently, we support two handlers, which allow executing **price predictions** and **HTTP requests**.
+
+You can learn more in the [Handlers](#handlers) section of this article.
 
 ### Prophet
 
 A **Prophet** is a subprocess running on [validator](/learn/glossary#validator) nodes, which has two responsibilities:
 
-- Fetching [Future](#future) requests and executing handlers associated with Futures
+- Fetching [Future](#future) requests and executing [handlers](#handler) associated with Futures
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [`wardend` process](/learn/glossary#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
-This architecture is similar to [how Skip:Connect works](https://docs.skip.build/connect/learn/architecture).
+You can learn more in the [Prohpets](#prophets) section of this article.
 
 ## State
 
@@ -61,25 +65,46 @@ Completed Futures are pruned after some time, to avoid state bloat.
 
 ## Messages
 
-### MsgAddFuture
+### `MsgAddFuture`
 
-Creates a new [Future](#future), providing a `[]byte` input and a `string` ID for the handler to use.
+Creates a new [Future](#future), providing the following:
 
-**Note**: The [Future](#future) has the `pending` status until it has a result. Users can query Futures by their IDs to check the progress.
+- A `[]byte` input
+- A `string` ID of the [handler](#handler) to use
+- The `address` of a callback contract (optional)
 
-## Prophet (subprocess)
+:::note Notes
+- The [Future](#future) has the `pending` status until it has a result. Users can query Futures by their IDs to check the progress.
+- The callback contract must have a `cb()` function, allowing it to be invoked once the Future is ready.
+:::
+
+## Handlers
+
+### `pricepred`
+
+[Futures](#future) accept the `pricepred` handler for producing **AI-driven price predictions**.
+
+You can find a usage example in the following guide: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
+
+### `http`  
+
+[Futures](#future) accept the `http` handler for making **HTTP requests** to any external service.
+
+For example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+
+## Prophets
 
 ### Executing Futures
 
 A Prophet continuously polls the chain to discover new pending [Futures](#future), maintaining a local queue for them.
 
-At the same time, Futures are taken from the queue and the handler code associated with them is executed. This usually involves calling an external service.
+At the same time, Futures are taken from the queue and the [handler](#handler) code associated with them is executed. This usually involves calling an external service.
 
 The results are stored in the memory for the blockchain node to fetch it later.
 
 ### Voting on Future results
 
-Prophet continuously polls the chain to discover Futures that have a result submitted by another validator, maintaining a local queue for them.
+A Prophet continuously polls the chain to discover [Futures](#future) that have a result submitted by another validator, maintaining a local queue for them.
 
 Concurrently, Futures are taken from the queue and validated (this usually involves calling an external service).
 
@@ -100,7 +125,7 @@ The [ABCI](https://docs.cometbft.com/v1.0/spec/abci/) (Application Blockchain In
 
 Future execution includes the following steps, as shown in the diagram below:
 
-1. A user (Alice) inserts a new [Future](#future) with a handler (`MathHandler`) and an input (`2+4`).
+1. A user (Alice) inserts a new [Future](#future) with a [handler](#handler) (`MathHandler`) and an input (`2+4`).
 2. Node 1 asynchronously executes the Future.
 3. When Node 1 is elected as the proposer for a block (H+N), it inserts the result (`6`) to be recorded.
 4. Node 2 notices the new result for the Future and invokes its handler (`MathHandler`) to verify the result.

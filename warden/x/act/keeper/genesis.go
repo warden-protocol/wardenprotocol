@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -27,12 +29,14 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	if err != nil {
 		return fmt.Errorf("failed to export templates: %w", err)
 	}
+
 	genState.Templates = templates
 
 	actions, err := k.ActionKeeper.Coll().Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export actions: %w", err)
 	}
+
 	genState.Actions = actions
 
 	return nil

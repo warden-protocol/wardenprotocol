@@ -2,7 +2,6 @@ package cli
 
 import (
 	"encoding/base64"
-	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -61,7 +60,7 @@ func FulfillKeyRequestTxCmd() *cobra.Command {
 		Long: `Fulfill a key request providing the public key.
 The sender of this transaction must be a writer of the Keychain for the request.
 The public key must be a base64 encoded string.`,
-		Example: fmt.Sprintf("%s tx warden fulfill-key-request 1234 aGV5dGhlcmU=", version.AppName),
+		Example: version.AppName + " tx warden fulfill-key-request 1234 aGV5dGhlcmU=",
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -101,7 +100,7 @@ func RejectKeyRequestTxCmd() *cobra.Command {
 		Short: "Reject a key request providing the reason.",
 		Long: `Reject a key request providing a reason.
 The sender of this transaction must be a writer of the Keychain for the request.`,
-		Example: fmt.Sprintf("%s tx warden reject-key-request 1234 'something happened'", version.AppName),
+		Example: version.AppName + " tx warden reject-key-request 1234 'something happened'",
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -137,7 +136,7 @@ func FulfillSignRequestTxCmd() *cobra.Command {
 		Long: `Fulfill a signature request providing the signature.
 The sender of this transaction must be a writer of the Keychain for the request.
 The sign-data must be a base64 encoded string.`,
-		Example: fmt.Sprintf("%s tx warden fulfill-sign-request 1234 aGV5dGhlcmU=", version.AppName),
+		Example: version.AppName + " tx warden fulfill-sign-request 1234 aGV5dGhlcmU=",
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -181,7 +180,7 @@ func RejectSignRequestTxCmd() *cobra.Command {
 		Short: "Reject a signature request providing a reason.",
 		Long: `Reject a signature request providing a reason.
 The sender of this transaction must be a writer of the Keychain for the request.`,
-		Example: fmt.Sprintf("%s tx warden reject-sign-request 1234 oops", version.AppName),
+		Example: version.AppName + " tx warden reject-sign-request 1234 oops",
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)

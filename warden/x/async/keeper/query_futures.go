@@ -5,10 +5,10 @@ import (
 	"errors"
 
 	"cosmossdk.io/collections"
+	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/cosmos/cosmos-sdk/types/query"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
@@ -20,9 +20,7 @@ func (k Keeper) Futures(ctx context.Context, req *types.QueryFuturesRequest) (*t
 	futures, pageRes, err := query.CollectionFilteredPaginate(ctx, k.futures.Futures(), req.Pagination, func(key uint64, value types.Future) (bool, error) {
 		return req.Creator == "" || req.Creator == value.Creator, nil
 	}, func(key uint64, value types.Future) (types.FutureResponse, error) {
-		var (
-			result *types.FutureResult
-		)
+		var result *types.FutureResult
 
 		r, err := k.futures.GetResult(ctx, value.Id)
 		if err == nil {
@@ -42,7 +40,6 @@ func (k Keeper) Futures(ctx context.Context, req *types.QueryFuturesRequest) (*t
 			Votes:  votes,
 		}, nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

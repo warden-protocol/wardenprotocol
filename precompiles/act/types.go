@@ -13,15 +13,16 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
-// ActionsInput needed to unmarshal Pagination field and pass it to types.QueryActionsRequest
+// ActionsInput needed to unmarshal Pagination field and pass it to types.QueryActionsRequest.
 type ActionsInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 }
 
-// FromResponse needed to map QueryActionsResponse to ActionsResponse
+// FromResponse needed to map QueryActionsResponse to ActionsResponse.
 func (r *ActionsResponse) FromResponse(res *types.QueryActionsResponse) (ActionsResponse, error) {
 	if res != nil {
 		actions := make([]Action, 0, len(res.Actions))
+
 		for _, action := range res.Actions {
 			mappedAction, err := mapAction(action)
 			if err != nil {
@@ -38,7 +39,7 @@ func (r *ActionsResponse) FromResponse(res *types.QueryActionsResponse) (Actions
 	return *r, nil
 }
 
-// FromResponse needed to map QueryActionByIdResponse to ActionByIdResponse
+// FromResponse needed to map QueryActionByIdResponse to ActionByIdResponse.
 func (r *ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) (ActionByIdResponse, error) {
 	if res != nil && res.Action != nil {
 		mappedAction, err := mapAction(*res.Action)
@@ -52,17 +53,18 @@ func (r *ActionByIdResponse) FromResponse(res *types.QueryActionByIdResponse) (A
 	return *r, nil
 }
 
-// ActionsByAddressInput needed to unmarshal Pagination field and pass it to types.QueryActionsByAddressRequest
+// ActionsByAddressInput needed to unmarshal Pagination field and pass it to types.QueryActionsByAddressRequest.
 type ActionsByAddressInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 	Address    common.Address    `abi:"addr"`
 	Status     uint8             `abi:"status"`
 }
 
-// FromResponse needed to map QueryActionsByAddressResponse to ActionsByAddressResponse
+// FromResponse needed to map QueryActionsByAddressResponse to ActionsByAddressResponse.
 func (r *ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddressResponse) (ActionsByAddressResponse, error) {
 	if res != nil {
 		actions := make([]Action, 0, len(res.Actions))
+
 		for _, action := range res.Actions {
 			mappedAction, err := mapAction(action)
 			if err != nil {
@@ -79,16 +81,17 @@ func (r *ActionsByAddressResponse) FromResponse(res *types.QueryActionsByAddress
 	return *r, nil
 }
 
-// TemplatesInput needed to unmarshal Pagination field and pass it to types.QueryTemplatesRequest
+// TemplatesInput needed to unmarshal Pagination field and pass it to types.QueryTemplatesRequest.
 type TemplatesInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 	Creator    common.Address    `abi:"creator"`
 }
 
-// FromResponse needed to map QueryTemplatesResponse to TemplatesResponse
+// FromResponse needed to map QueryTemplatesResponse to TemplatesResponse.
 func (r *TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) (TemplatesResponse, error) {
 	if res != nil {
 		templates := make([]Template, 0, len(res.Templates))
+
 		for _, action := range res.Templates {
 			mappedTemplate, err := mapTemplate(action)
 			if err != nil {
@@ -105,7 +108,7 @@ func (r *TemplatesResponse) FromResponse(res *types.QueryTemplatesResponse) (Tem
 	return *r, nil
 }
 
-// FromResponse needed to map QueryTemplateByIdResponse to TemplateByIdResponse
+// FromResponse needed to map QueryTemplateByIdResponse to TemplateByIdResponse.
 func (r *TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse) (TemplateByIdResponse, error) {
 	if res != nil && res.Template != nil {
 		mappedTemplate, err := mapTemplate(*res.Template)
@@ -121,6 +124,7 @@ func (r *TemplateByIdResponse) FromResponse(res *types.QueryTemplateByIdResponse
 
 func mapAction(action types.Action) (Action, error) {
 	mentions := make([]common.Address, 0, len(action.Mentions))
+
 	for _, mention := range action.Mentions {
 		mentionAddress, err := precommon.AddressFromBech32Str(mention)
 		if err != nil {
@@ -168,6 +172,7 @@ func mapAction(action types.Action) (Action, error) {
 
 func mapVotes(values []*types.ActionVote) ([]ActionVote, error) {
 	result := make([]ActionVote, 0, len(values))
+
 	for _, v := range values {
 		if v != nil {
 			mappedTemplate, err := mapVote(*v)
@@ -178,12 +183,12 @@ func mapVotes(values []*types.ActionVote) ([]ActionVote, error) {
 			result = append(result, mappedTemplate)
 		}
 	}
+
 	return result, nil
 }
 
 func mapVote(value types.ActionVote) (ActionVote, error) {
 	participant, err := precommon.AddressFromBech32Str(value.Participant)
-
 	if err != nil {
 		return ActionVote{}, err
 	}
@@ -197,7 +202,6 @@ func mapVote(value types.ActionVote) (ActionVote, error) {
 
 func mapTemplate(value types.Template) (Template, error) {
 	creator, err := precommon.AddressFromBech32Str(value.Creator)
-
 	if err != nil {
 		return Template{}, err
 	}

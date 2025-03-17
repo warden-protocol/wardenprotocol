@@ -210,7 +210,6 @@ message EventAddKeychainAdmin {
   uint64 admins_count = 3;
 }
 
-
 // EventRemoveKeychainAdmin is emitted when a new admin address is removed from a Keychain
 message EventRemoveKeychainAdmin {
   // id of the keychain
@@ -222,4 +221,3 @@ message EventRemoveKeychainAdmin {
   // updated count of admins
   uint64 admins_count = 3;
 }
-

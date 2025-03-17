@@ -7,9 +7,9 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
-import "warden/act/v1beta1/params.proto";
-import "warden/act/v1beta1/action_vote.proto";
 import "shield/ast/ast.proto";
+import "warden/act/v1beta1/action_vote.proto";
+import "warden/act/v1beta1/params.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -19,31 +19,31 @@ service Msg {
 
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
-  rpc UpdateParams (MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
 
   // NewAction creates a new Action.
-  rpc NewAction (MsgNewAction) returns (MsgNewActionResponse);
+  rpc NewAction(MsgNewAction) returns (MsgNewActionResponse);
 
   // Checks a pending action and executes it if its in a valid state.
-  rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
+  rpc CheckAction(MsgCheckAction) returns (MsgCheckActionResponse);
 
   // Create a new Template.
-  rpc NewTemplate (MsgNewTemplate) returns (MsgNewTemplateResponse);
+  rpc NewTemplate(MsgNewTemplate) returns (MsgNewTemplateResponse);
 
   // Update an existing act name and definition.
-  rpc UpdateTemplate (MsgUpdateTemplate) returns (MsgUpdateTemplateResponse);
+  rpc UpdateTemplate(MsgUpdateTemplate) returns (MsgUpdateTemplateResponse);
 
   // Revoke an existing Action while in pending state.
-  rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
+  rpc RevokeAction(MsgRevokeAction) returns (MsgRevokeActionResponse);
 
   // Vote for or against a particular Action.
-  rpc VoteForAction (MsgVoteForAction) returns (MsgVoteForActionResponse);
+  rpc VoteForAction(MsgVoteForAction) returns (MsgVoteForActionResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
   option (cosmos.msg.v1.signer) = "authority";
-  option           (amino.name) = "warden/x/act/MsgUpdateParams";
+  option (amino.name) = "warden/x/act/MsgUpdateParams";
 
   // authority is the address that controls the module (defaults to x/gov unless overwritten).
   string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
@@ -51,7 +51,10 @@ message MsgUpdateParams {
   // params defines the module parameters to update.
 
   // NOTE: All parameters must be supplied.
-  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
 // MsgUpdateParamsResponse defines the response structure for executing a

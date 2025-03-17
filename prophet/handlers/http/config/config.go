@@ -4,8 +4,8 @@ package config
 // be set in the app.toml file.
 
 type Config struct {
-	Enabled    bool     `mapstructure:"enabled" toml:"enabled"`
-	URLs       []string `mapstructure:"urls" toml:"urls"`
+	Enabled    bool     `mapstructure:"enabled"     toml:"enabled"`
+	URLs       []string `mapstructure:"urls"        toml:"urls"`
 	TimeoutSec int      `mapstructure:"timeout_sec" toml:"timeout_sec"`
 }
 
@@ -18,9 +18,9 @@ func DefaultConfig() *Config {
 	}
 }
 
-const DefaultEVMConfigTemplate = `
+const DefaultConfigTemplate = `
 ###############################################################################
-###                      HTTP configuration                     ###
+###                      HTTP configuration                                 ###
 ###############################################################################
 [http]
 

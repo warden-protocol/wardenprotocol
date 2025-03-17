@@ -15,6 +15,7 @@ func DecodeInputFromABI[T any](inputData []byte, metaData *bind.MetaData, method
 	var wrapper struct {
 		Data T
 	}
+
 	var result T
 
 	contractABI, err := metaData.GetAbi()
@@ -31,6 +32,7 @@ func DecodeInputFromABI[T any](inputData []byte, metaData *bind.MetaData, method
 	if err != nil {
 		return result, fmt.Errorf("failed to unpack input data: %w", err)
 	}
+
 	if len(vals) != 1 {
 		return result, fmt.Errorf("expected 1 argument, got %d", len(vals))
 	}
@@ -38,6 +40,7 @@ func DecodeInputFromABI[T any](inputData []byte, metaData *bind.MetaData, method
 	if err := method.Inputs.Copy(&wrapper, vals); err != nil {
 		return result, fmt.Errorf("failed to copy input data: %w", err)
 	}
+
 	return wrapper.Data, nil
 }
 
@@ -59,6 +62,7 @@ func EncodeInputToABI[T any](val T, metaData *bind.MetaData, methodName string) 
 	if err != nil {
 		return nil, fmt.Errorf("failed to pack input data: %w", err)
 	}
+
 	return packed, nil
 }
 
@@ -68,6 +72,7 @@ func DecodeOutputFromABI[T any](outputData []byte, metaData *bind.MetaData, meth
 	var wrapper struct {
 		Data T
 	}
+
 	var result T
 
 	contractABI, err := metaData.GetAbi()
@@ -92,6 +97,7 @@ func DecodeOutputFromABI[T any](outputData []byte, metaData *bind.MetaData, meth
 	if err := method.Outputs.Copy(&wrapper, vals); err != nil {
 		return result, fmt.Errorf("failed to copy output data: %w", err)
 	}
+
 	return wrapper.Data, nil
 }
 
@@ -111,5 +117,6 @@ func EncodeOutputToABI[T any](val T, metaData *bind.MetaData, methodName string)
 	if err != nil {
 		return nil, fmt.Errorf("failed to pack output data: %w", err)
 	}
+
 	return packed, nil
 }

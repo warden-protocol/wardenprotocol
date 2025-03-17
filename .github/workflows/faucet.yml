@@ -6,6 +6,7 @@ on:
     branches:
       - main
     paths:
+      - "go.mod"
       - "cmd/faucet/**"
       - "cmd/wardend/**"
       - "warden/**"
@@ -15,6 +16,7 @@ on:
       - "wardend/v*"
   pull_request:
     paths:
+      - "go.mod"
       - "cmd/faucet/**"
       - "cmd/wardend/**"
       - "warden/**"

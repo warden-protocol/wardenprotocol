@@ -17,10 +17,9 @@ wardenjs/ @jjheywood
 api/ @warden-protocol/Protocol
 cmd/ @warden-protocol/Protocol
 contracts/ @warden-protocol/Protocol
-shield/ @warden-protocol/Protocol
 go-client/ @warden-protocol/Protocol
 keychain-sdk/ @warden-protocol/Protocol
-precompiles @warden-protocol/Protocol
+precompiles/ @warden-protocol/Protocol
 prophet/ @warden-protocol/Protocol
 proto/ @warden-protocol/Protocol
 protocol-developer-docs/ @warden-protocol/Protocol

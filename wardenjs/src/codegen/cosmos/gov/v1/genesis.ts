@@ -15,24 +15,24 @@ export interface GenesisState {
   proposals: Proposal[];
   /**
    * Deprecated: Prefer to use `params` instead.
-   * deposit_params defines all the paramaters of related to deposit.
+   * deposit_params defines all the parameters of related to deposit.
    */
   /** @deprecated */
   depositParams?: DepositParams;
   /**
    * Deprecated: Prefer to use `params` instead.
-   * voting_params defines all the paramaters of related to voting.
+   * voting_params defines all the parameters of related to voting.
    */
   /** @deprecated */
   votingParams?: VotingParams;
   /**
    * Deprecated: Prefer to use `params` instead.
-   * tally_params defines all the paramaters of related to tally.
+   * tally_params defines all the parameters of related to tally.
    */
   /** @deprecated */
   tallyParams?: TallyParams;
   /**
-   * params defines all the paramaters of x/gov module.
+   * params defines all the parameters of x/gov module.
    * 
    * Since: cosmos-sdk 0.47
    */
@@ -63,24 +63,24 @@ export interface GenesisStateAmino {
   proposals?: ProposalAmino[];
   /**
    * Deprecated: Prefer to use `params` instead.
-   * deposit_params defines all the paramaters of related to deposit.
+   * deposit_params defines all the parameters of related to deposit.
    */
   /** @deprecated */
   deposit_params?: DepositParamsAmino;
   /**
    * Deprecated: Prefer to use `params` instead.
-   * voting_params defines all the paramaters of related to voting.
+   * voting_params defines all the parameters of related to voting.
    */
   /** @deprecated */
   voting_params?: VotingParamsAmino;
   /**
    * Deprecated: Prefer to use `params` instead.
-   * tally_params defines all the paramaters of related to tally.
+   * tally_params defines all the parameters of related to tally.
    */
   /** @deprecated */
   tally_params?: TallyParamsAmino;
   /**
-   * params defines all the paramaters of x/gov module.
+   * params defines all the parameters of x/gov module.
    * 
    * Since: cosmos-sdk 0.47
    */

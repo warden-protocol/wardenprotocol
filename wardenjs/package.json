@@ -47,7 +47,7 @@
     "@protobufs/cosmos": "^0.1.0",
     "@protobufs/cosmos_proto": "^0.0.10",
     "@protobufs/gogoproto": "^0.0.10",
-    "@tanstack/react-query": "^5.68.0",
+    "@tanstack/react-query": "^4.36.1",
     "@types/jest": "^29.5.0",
     "eslint": "8.45.0",
     "eslint-config-prettier": "^8.8.0",

@@ -15,32 +15,32 @@ export function useKeychainSigner() {
 
 	const space = useSpaceById({
 		request: {
-			id: BigInt(spaceId ?? 0)
+			id: BigInt(spaceId ?? 0),
 		},
 	}).data;
 
-	const { add, expectedApproveExpression, expectedRejectExpression } = useActionHandler(
-		PRECOMPILE_WARDEN_ADDRESS,
-		wardenPrecompileAbi,
-		"newSignRequest"
-	);
+	const { add, expectedApproveExpression, expectedRejectExpression } =
+		useActionHandler(
+			PRECOMPILE_WARDEN_ADDRESS,
+			wardenPrecompileAbi,
+			"newSignRequest",
+		);
 
 	async function signAmino(
 		key: Pick<KeyModel, "key">,
 		signDoc: StdSignDoc,
 		chainName: string,
 		options?: {
-			title?: string,
+			title?: string;
 			wc?: {
 				requestId: number;
 				topic: string;
-			},
-		}
+			};
+		},
 	) {
 		if (!space) {
 			throw new Error("no space");
 		}
-
 
 		if (!env.aminoAnalyzerContract) {
 			throw new Error(
@@ -48,15 +48,22 @@ export function useKeychainSigner() {
 			);
 		}
 
-		const analyzer = fromBytes(fromBech32(env.aminoAnalyzerContract).data, "hex");
+		const analyzer = fromBytes(
+			fromBech32(env.aminoAnalyzerContract).data,
+			"hex",
+		);
 
 		return await add(
 			[
 				key.key.id,
-				fromBytes(Uint8Array.from(
-					JSON.stringify(signDoc)
-						.split("")
-						.map((c) => c.charCodeAt(0))), "hex"),
+				fromBytes(
+					Uint8Array.from(
+						JSON.stringify(signDoc)
+							.split("")
+							.map((c) => c.charCodeAt(0)),
+					),
+					"hex",
+				),
 				[analyzer],
 				// todo implement encryption key
 				"0x",
@@ -65,7 +72,8 @@ export function useKeychainSigner() {
 				space.nonce,
 				BigInt(0),
 				expectedApproveExpression,
-				expectedRejectExpression
+				expectedRejectExpression,
+				0, // BROADCAST_TYPE_DISABLED
 			],
 			{
 				pubkey: toBytes(key.key.publicKey),

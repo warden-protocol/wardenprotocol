@@ -101,9 +101,22 @@ A full node is a server running a software (binary) that maintains a complete up
 
 ## Future
 
-A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. Futures currently support two types of computations: AI-driven price predictions and HTTP requests to external services, such as blockchain APIs.
+A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. Futures don't slow the blockchain down thanks to asynchronous execution.
 
-A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result. Other validators vote on correctness of the result. It doesn't slow the blockchain down thanks to asynchronous execution.
+A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result, and other validators vote on correctness of the result. There are different types of Futures, depending on the [Future handler type](#future-handler).
+
+Learn more: [`x/async`](warden-protocol-modules/x-async) 
+
+---
+
+## Future handler
+
+A **Future handler** is code that determines how to interpret the [Future](#future) input and what to do with it in order to retrieve the result. When requesting a Future, a user references a handler by ID. Then the handler is executed by a [Prophet](#prophet).
+
+Currently, we support two handlers, which allow executing the following tasks:
+
+- AI-driven price predictions
+- HTTP requests to external services, such as blockchain APIs
 
 Learn more: [`x/async`](warden-protocol-modules/x-async) 
 
@@ -284,7 +297,7 @@ Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-mo
 
 A Prophet is a subprocess running on [validator](#validator) nodes, which has two responsibilities:
 
-- Fetching [Future](#future) requests and executing handlers associated with Futures
+- Fetching [Future](#future) requests and executing [handlers](#future-handler) associated with Futures
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.

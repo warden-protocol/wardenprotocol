@@ -245,7 +245,7 @@ export interface ValidatorSlashEventRecordSDKType {
 }
 /** GenesisState defines the distribution module's genesis state. */
 export interface GenesisState {
-  /** params defines all the paramaters of the module. */
+  /** params defines all the parameters of the module. */
   params: Params;
   /** fee_pool defines the fee pool at genesis. */
   feePool: FeePool;
@@ -272,7 +272,7 @@ export interface GenesisStateProtoMsg {
 }
 /** GenesisState defines the distribution module's genesis state. */
 export interface GenesisStateAmino {
-  /** params defines all the paramaters of the module. */
+  /** params defines all the parameters of the module. */
   params?: ParamsAmino;
   /** fee_pool defines the fee pool at genesis. */
   fee_pool?: FeePoolAmino;

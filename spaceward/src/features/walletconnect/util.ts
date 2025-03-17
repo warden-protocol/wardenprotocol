@@ -1,6 +1,6 @@
 import { fromBech32, fromHex, toBech32 } from "@cosmjs/encoding";
 import type { PendingRequestTypes, ProposalTypes } from "@walletconnect/types";
-import { IWeb3Wallet } from "@walletconnect/web3wallet";
+import { IWalletKit } from "@reown/walletkit";
 import { chains } from "chain-registry";
 
 import {
@@ -84,7 +84,7 @@ export function encodeRemoteMessage(
 	}
 }
 
-export async function rejectSession(w: IWeb3Wallet, id: number) {
+export async function rejectSession(w: IWalletKit, id: number) {
 	try {
 		const session = await w.rejectSession({
 			id,
@@ -97,7 +97,7 @@ export async function rejectSession(w: IWeb3Wallet, id: number) {
 }
 
 export async function approveSession(
-	w: IWeb3Wallet,
+	w: IWalletKit,
 	spaceId: string,
 	proposal: ProposalTypes.Struct,
 	addresses?: KeyModel["addresses"],
@@ -254,7 +254,7 @@ export async function approveRequest({
 	client,
 }: {
 	address: `0x${string}`;
-	w?: IWeb3Wallet | null;
+	w?: IWalletKit | null;
 	req: PendingRequestTypes.Struct;
 	eth: ReturnType<typeof useEthereumTx>;
 	cosm: ReturnType<typeof useKeychainSigner>;

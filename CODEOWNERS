@@ -7,6 +7,12 @@ docs/**/*.js @jjheywood
 docs/**/*.ts @jjheywood
 docs/**/*.json @jjheywood
 
+# SpaceWard
+spaceward/ @jjheywood
+
+# wardenjs
+wardenjs/ @jjheywood
+
 # Protocol
 api/ @warden-protocol/Protocol
 cmd/ @warden-protocol/Protocol

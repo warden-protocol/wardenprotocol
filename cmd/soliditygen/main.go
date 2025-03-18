@@ -6,8 +6,6 @@ import (
 	"io"
 	"log"
 	"os"
-
-	"github.com/warden-protocol/wardenprotocol/soliditygen"
 )
 
 func main() {
@@ -60,7 +58,7 @@ func main() {
 	}
 
 	// 3) Generate contract
-	contract, err := soliditygen.GenerateContract(
+	contract, err := GenerateContract(
 		*contractName,
 		*inputName, inJSON,
 		*outputName, outJSON,

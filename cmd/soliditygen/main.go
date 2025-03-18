@@ -75,7 +75,7 @@ func main() {
 		log.Fatalf("Failed writing Solidity file: %v", err)
 	}
 
-	fmt.Printf("Solidity contract generated at: %s\n", *solOutputPath)
+	fmt.Fprintf(os.Stderr, "Solidity contract generated at: %s\n", *solOutputPath)
 }
 
 func usageAndExit(msg string) {

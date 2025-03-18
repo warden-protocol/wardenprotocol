@@ -6,8 +6,6 @@ import (
 	"io"
 	"log"
 	"os"
-
-	"github.com/warden-protocol/wardenprotocol/soliditygen"
 )
 
 func main() {
@@ -60,7 +58,7 @@ func main() {
 	}
 
 	// 3) Generate contract
-	contract, err := soliditygen.GenerateContract(
+	contract, err := GenerateContract(
 		*contractName,
 		*inputName, inJSON,
 		*outputName, outJSON,
@@ -77,7 +75,7 @@ func main() {
 		log.Fatalf("Failed writing Solidity file: %v", err)
 	}
 
-	fmt.Printf("Solidity contract generated at: %s\n", *solOutputPath)
+	fmt.Fprintf(os.Stderr, "Solidity contract generated at: %s\n", *solOutputPath)
 }
 
 func usageAndExit(msg string) {

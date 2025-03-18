@@ -37,7 +37,7 @@ func GenerateContract(
 	var topLevelStructs []string
 
 	if len(inputJSON) > 0 {
-		var inputMap map[string]interface{}
+		var inputMap map[string]any
 		if err := json.Unmarshal(inputJSON, &inputMap); err != nil {
 			return "", fmt.Errorf("unmarshaling input JSON: %w", err)
 		}
@@ -46,7 +46,7 @@ func GenerateContract(
 		topLevelStructs = append(topLevelStructs, inputName)
 	}
 
-	var outputMap map[string]interface{}
+	var outputMap map[string]any
 	if err := json.Unmarshal(outputJSON, &outputMap); err != nil {
 		return "", fmt.Errorf("unmarshaling output JSON: %w", err)
 	}
@@ -111,7 +111,7 @@ contract {{.ContractName}} {
 }
 `))
 
-func convertToSolidityStruct(structName string, value map[string]interface{}) ([]Definition, error) {
+func convertToSolidityStruct(structName string, value map[string]any) ([]Definition, error) {
 	var childDefs []Definition
 	var lines []string
 
@@ -125,13 +125,14 @@ func convertToSolidityStruct(structName string, value map[string]interface{}) ([
 	}
 
 	structText := fmt.Sprintf("    struct %s {\n%s\n    }", structName, strings.Join(lines, "\n"))
+
 	return append(childDefs, Definition{
 		Name: structName,
 		Text: structText,
 	}), nil
 }
 
-func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
+func inferSolidityType(fieldName string, v any) (string, []Definition) {
 	switch val := v.(type) {
 	case string:
 		return "string", nil
@@ -139,13 +140,13 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 		return "bool", nil
 	case float64:
 		return "int256", nil
-	case map[string]interface{}:
+	case map[string]any:
 		nestedName := capitalize(fieldName)
 		childDefs, _ := convertToSolidityStruct(nestedName, val)
 		return nestedName, childDefs
-	case []interface{}:
+	case []any:
 		// If array, infer from first element type
-		var firstNonNull interface{}
+		var firstNonNull any
 		for _, elem := range val {
 			if elem != nil {
 				firstNonNull = elem
@@ -157,10 +158,8 @@ func inferSolidityType(fieldName string, v interface{}) (string, []Definition) {
 			return "string[]", nil
 		}
 		elemType, nestedDefs := inferSolidityType(fieldName, firstNonNull)
+
 		return elemType + "[]", nestedDefs
-	case nil:
-		// fallback: treat as string
-		return "string", nil
 	default:
 		// fallback: treat as string
 		return "string", nil
@@ -179,6 +178,7 @@ func isValidSolidityIdentifier(name string) bool {
 			return false
 		}
 	}
+
 	return true
 }
 

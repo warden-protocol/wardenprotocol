@@ -2,11 +2,13 @@
 sidebar_position: 5
 ---
 
-# Extracting Data from CBOR Responses
+# Extract data from the response
+
+## Overview
 
 Now let's create a contract that can extract specific data from CBOR-encoded responses. We'll focus on extracting the Bitcoin price from the CoinGecko API response.
 
-## Step 1: Create a New Contract
+## Step 1. Create a new contract
 
 Create a new file called `src/DataExtractionExample.sol`:
 
@@ -96,7 +98,7 @@ This contract adds:
 - Functions to inspect the raw response bytes
 - A simple function to extract the Bitcoin price from the CBOR data
 
-## Step 2: Deploy and Test
+## Step 2. Deploy and test
 
 ```bash
 # Deploy the contract   

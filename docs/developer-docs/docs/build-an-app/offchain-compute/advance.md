@@ -2,11 +2,13 @@
 sidebar_position: 7
 ---
 
-# Advanced Example - Multiple Cryptocurrency Prices
+# Fetch multiple prices
+
+## Overview
 
 Now let's create a more advanced example that fetches prices for **multiple cryptocurrencies** and extracts the values from the **CBOR-encoded response**.
 
-## Step 1: Create a New Contract
+## Step 1. Create a new contract
 
 Create a new file called `src/MultiCoinPrices.sol`:
 
@@ -168,7 +170,7 @@ contract MultiCoinPrices {
 }
 ```
 
-## Step 2: Deploy and Test
+## Step 2. Deploy and test
 
 ```bash
 # Deploy the contract

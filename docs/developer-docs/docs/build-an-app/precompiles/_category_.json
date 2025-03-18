@@ -2,7 +2,7 @@
   "position": 5,
   "label": "Precompiles",
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "link": {
     "type": "generated-index",
     "title": "Precompiles"

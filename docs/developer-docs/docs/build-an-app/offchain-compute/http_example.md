@@ -2,11 +2,13 @@
 sidebar_position: 3
 ---
 
-# HTTP Request Example
+# Implement an HTTP request
 
-Let's create a simple contract that makes an **HTTP** request to the CoinGecko API to fetch the current **Bitcoin** price.
+## Overview
 
-## Step 1: Create the Contract
+Let's create a simple contract that makes an **HTTP request** to the CoinGecko API to fetch the current **Bitcoin** price.
+
+## Step 1. Create a contract
 
 Create a new file called `src/MinimalHttpExample.sol`:
 
@@ -55,54 +57,54 @@ contract MinimalHttpExample {
 }
 ```
 
-## Step 2: Compile the Contract
+## Step 2. Deploy and test
 
-```bash
-forge build
-```
+1. Compile the contract:
 
-## Step 3: Deploy the Contract
+   ```bash
+   forge build
+   ```
 
-```bash
-forge create --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY src/MinimalHttpExample.sol:MinimalHttpExample --broadcast
-```
+2. Deploy the contract:
+   
+   ```bash
+   forge create --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY src/MinimalHttpExample.sol:MinimalHttpExample --broadcast
+   ```
 
-Replace `YOUR_PRIVATE_KEY` with your actual private key. Note the contract address from the output.
+   Replace `YOUR_PRIVATE_KEY` with your actual private key. Note the contract address from the output.
 
-## Step 4: Make a HTTP Request
+3. Make an HTTP request:
 
-```bash
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "getBitcoinPrice()"
-```
+   ```bash
+   cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "getBitcoinPrice()"
+   ```
+   
+   Replace `CONTRACT_ADDRESS` with your deployed contract address.
 
-Replace `CONTRACT_ADDRESS` with your deployed contract address.
+4. The Warden node will process your request asynchronously. Wait a few seconds for the response to be ready.
 
-## Step 5: Wait for the Response
+5. Check the response:
 
-The Warden node will process your request asynchronously. Wait a few seconds for the response to be ready.
+   ```bash
+   # Check the status code
+   cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "statusCode()(uint256)"
+   ```
 
-## Step 6: Check the Response
-
-```bash
-# Check the status code
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "statusCode()(uint256)"
-```
-
-Expected output:
-
-```bash
-200
-```
-
-```bash
-# Get the response as a string
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "getResponseAsString()(string)"
-```
-
-Expected output (will be CBOR-encoded):
-
-```bash
-"�gbitcoin�cusd�@��P\0\0\0\0"
-```
-
-Congratulations! You've successfully made your first HTTP request from a smart contract.
+   Expected output:
+   
+   ```bash
+   200
+   ```
+   
+   ```bash
+   # Get the response as a string
+   cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "getResponseAsString()(string)"
+   ```
+   
+   Expected output (will be CBOR-encoded):
+   
+   ```bash
+   "�gbitcoin�cusd�@��P\0\0\0\0"
+   ```
+   
+   Congratulations! You've successfully made your first HTTP request from a smart contract.

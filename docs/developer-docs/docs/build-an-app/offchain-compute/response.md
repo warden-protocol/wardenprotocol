@@ -2,11 +2,13 @@
 sidebar_position: 4
 ---
 
-# Understanding the Response
+# Process the response
+
+## Overview
 
 The response from the **CoinGecko API** is encoded in **CBOR** format, which is why it appears as a strange string when we try to print it. Let's create a more advanced contract that can properly handle and extract data from **CBOR** responses.
 
-## Step 1: Create a New Contract
+## Step 1. Create a new contract
 
 Create a new file called `src/CoinGeckoCheck.sol`:
 
@@ -83,7 +85,7 @@ This contract adds:
 - An `isReady()` function to check if the response is ready
 - A `tryProcess()` function that processes the response without reverting
 
-## Step 2: Deploy and Test
+## Step 2. Deploy and test
 
 ```bash
 # Deploy the contract

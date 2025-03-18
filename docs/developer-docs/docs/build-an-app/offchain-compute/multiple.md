@@ -2,11 +2,13 @@
 sidebar_position: 6
 ---
 
-# Handling Multiple Requests
+# Handle multiple requests
+
+## Overview
 
 Let's create a contract that tests multiple APIs to see which ones work.
 
-## Step 1: Create a New Contract
+## Step 1. Create a new contract
 
 Create a new file called src/MultiApiTest.sol:
 
@@ -108,7 +110,7 @@ contract MultiApiTest {
 }
 ```
 
-## Step 2: Deploy and Test
+## Step 2. Deploy and test
 
 ```bash
 # Deploy the contract

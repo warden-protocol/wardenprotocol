@@ -1,11 +1,11 @@
 {
   "position": 1,
-  "label": "Use the HTTTP handler",
+  "label": "Use the HTTP handler",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Use the HTTTP handler"
+    "title": "Use the HTTP handler"
   },
   "customProps": {}
 }

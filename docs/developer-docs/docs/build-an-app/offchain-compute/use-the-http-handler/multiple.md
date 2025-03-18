@@ -1,8 +1,8 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 ---
 
-# Handle multiple requests
+# Implement HTTP requests
 
 ## Overview
 
@@ -10,9 +10,9 @@ Let's create a contract that tests multiple APIs to see which ones work.
 
 ## Step 1. Create a new contract
 
-Create a new file called src/MultiApiTest.sol:
+Create a new file called `MultiApiTest.sol`:
 
-```solidity
+```solidity title="src/MultiApiTest.sol"
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.25;
 
@@ -112,44 +112,89 @@ contract MultiApiTest {
 
 ## Step 2. Deploy and test
 
-```bash
-# Deploy the contract
-forge create --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY src/MultiApiTest.sol:MultiApiTest --broadcast
+1. Deploy the contract:
+   
+   ```bash
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+     src/MultiApiTest.sol:MultiApiTest --broadcast
+   ```
 
-# Test CoinGecko API
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "tryCoinGecko()"
-# Wait a few seconds
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "tryProcess()"
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "statusCode()(uint256)"
-```
+2. Note down the value returned as `Deployed to` and set it as an environment variable:
 
-Expected output:
+   ```
+   export CONTRACT_ADDRESS=my-contract-address
+   ```
+   
+3. Test HTTP requests to the CoinGecko API.
 
-```bash
-200
-```
+   To make a request, call `tryCoinGecko()`:
 
-```bash
-# Test GitHub API
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "tryGitHub()"
-# Wait a few seconds
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "tryProcess()"
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "statusCode()(uint256)"
-```
+   ```
+   cast send $CONTRACT_ADDRESS "tryCoinGecko()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   
+   To process the response, wait a few seconds and call `tryProcess()`:
+   
+   ```
+   cast send $CONTRACT_ADDRESS "tryProcess()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
 
-Expected output:
+   Finally, get the status code by calling `statusCode()`:
+   
+   ```
+   cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
+   ```
 
-```bash
-200
-```
+   The expected output is the following:
 
-```bash
-# Test JSONPlaceholder API
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "tryJSONPlaceholder()"
-```
+   ```bash
+   200
+   ```
 
-This might fail with:
+4. Test requests to the GitHub API in a similar way:
 
-```bash
-Error: server returned a null response when a non-null response was expected
-```
+   ```bash
+   cast send $CONTRACT_ADDRESS "tryGitHub()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   ```bash
+   cast send $CONTRACT_ADDRESS "tryProcess()"
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   ```bash
+   cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
+   ```
+
+   The expected output is the following:
+
+   ```bash
+   200
+   ```
+
+4. Test requests to the JSONPlaceholder API:
+
+   ```bash
+   cast send $CONTRACT_ADDRESS "tryJSONPlaceholder()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   ```bash
+   cast send $CONTRACT_ADDRESS "tryProcess()"
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   ```bash
+   cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
+   ```
+
+   This might fail with the following error:
+   
+   ```bash
+   Error: server returned a null response when a non-null response was expected
+   ```

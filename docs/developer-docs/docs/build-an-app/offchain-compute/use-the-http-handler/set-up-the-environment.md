@@ -91,4 +91,13 @@ libs = ["lib"]
 evm_version = "paris"
 ```
 
+## Step 4. Set environment variables
+
+Set the following environment variables:
+
+```
+export PRIVATE_KEY=your-private-key
+export RPC_URL=http://localhost:8545
+```
+
 Now you're ready to start creating smart contracts that make **HTTP** requests!

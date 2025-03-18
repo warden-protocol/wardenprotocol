@@ -8,11 +8,11 @@ sidebar_position: 7
 
 Now let's create a more advanced example that fetches prices for **multiple cryptocurrencies** and extracts the values from the **CBOR-encoded response**.
 
-## Step 1. Create a new contract
+## Step 1. Create a contract
 
-Create a new file called `src/MultiCoinPrices.sol`:
+Create a new file `MultiCoinPrices.sol`:
 
-```solidity
+```solidity title="src/MultiCoinPrices.sol"
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.25;
 
@@ -172,20 +172,41 @@ contract MultiCoinPrices {
 
 ## Step 2. Deploy and test
 
-```bash
-# Deploy the contract
-forge create --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY src/MultiCoinPrices.sol:MultiCoinPrices --broadcast
+1. Deploy the contract:
+   
+   ```bash
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+     src/MultiCoinPrices.sol:MultiCoinPrices --broadcast
+   ```
 
-# Make a request
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "run()"
+2. Note down the value returned as `Deployed to` and set it as an environment variable:
 
-# Wait a few seconds, then call the callback function
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "cb()"
+   ```
+   export CONTRACT_ADDRESS=my-contract-address
+   ```
+   
+3. Make an HTTP request by calling the `run()` function:
 
-# Check the prices
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "bitcoinPrice()(uint256)"
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "tetherPrice()(uint256)"
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "uniswapPrice()(uint256)"
-```
+   ```
+   cast send $CONTRACT_ADDRESS "run()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   
+4. Wait a few seconds, then use the `cb()` function to process the result:
+   
+   ```
+   cast send $CONTRACT_ADDRESS "cb()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
 
-The outputs will be the prices of each cryptocurrency with 6 decimal places of precision.
+4. Check the prices:
+   
+   ```
+   cast call $CONTRACT_ADDRESS "bitcoinPrice()(uint256)" --rpc-url $RPC_URL
+   cast call $CONTRACT_ADDRESS "tetherPrice()(uint256)" --rpc-url $RPC_URL
+   cast call $CONTRACT_ADDRESS "uniswapPrice()(uint256)" --rpc-url $RPC_URL
+   ```
+
+   In the output, you'll see the price of each cryptocurrency displayed with 6 decimal places of precision.

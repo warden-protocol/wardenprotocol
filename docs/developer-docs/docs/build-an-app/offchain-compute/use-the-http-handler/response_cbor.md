@@ -1,18 +1,18 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 ---
 
-# Extract data from the response
+# Implement data extraction
 
 ## Overview
 
 Now let's create a contract that can extract specific data from CBOR-encoded responses. We'll focus on extracting the Bitcoin price from the CoinGecko API response.
 
-## Step 1. Create a new contract
+## Step 1. Create a contract
 
-Create a new file called `src/DataExtractionExample.sol`:
+Create a new file `DataExtractionExample.sol`:
 
-```solidity
+```solidity title="src/DataExtractionExample.sol"
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.25;
 
@@ -100,29 +100,51 @@ This contract adds:
 
 ## Step 2. Deploy and test
 
-```bash
-# Deploy the contract   
-forge create --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY src/DataExtractionExample.sol:DataExtractionExample --broadcast
+1. Deploy the contract:
+   
+   ```bash
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+     src/DataExtractionExample.sol:DataExtractionExample --broadcast
+   ```
 
-# Make a request
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "getBitcoinPrice()"
+2. Note down the value returned as `Deployed to` and set it as an environment variable:
 
-# Wait a few seconds, then process the response
-cast send --rpc-url http://localhost:8545 --private-key YOUR_PRIVATE_KEY CONTRACT_ADDRESS "processResponse()"
+   ```bash
+   export CONTRACT_ADDRESS=my-contract-address
+   ```
+   
+3. Make an HTTP request by calling the `getBitcoinPrice()` function:
 
-# Get the raw response bytes
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "dumpResponseHex()(bytes)"
-```
+   ```bash
+   cast send $CONTRACT_ADDRESS "getBitcoinPrice()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
+   
+4. Wait a few seconds, then use the `processResponse()` function to process the result:
+   
+   ```bash
+   cast send $CONTRACT_ADDRESS "processResponse()" \
+     --private-key $PRIVATE_KEY \
+     --rpc-url $RPC_URL
+   ```
 
-Expected output (will be a hex string):
+4. Get the raw response bytes by calling `dumpResponseHex()`:
+   
+   ```bash
+   cast call $CONTRACT_ADDRESS "dumpResponseHex()(bytes)" --rpc-url $RPC_URL
+   ```
 
-```bash
-0xa1...
-```
+   In the output, you'll see a HEX string:
 
-```bash
-# Try to extract the Bitcoin price
-cast call --rpc-url http://localhost:8545 CONTRACT_ADDRESS "getBitcoinPriceSimple()(uint256)"
-```
+   ```bash
+   0xa1...
+   ```
 
-The output will be the Bitcoin price as an integer.
+5. Extract the Bitcoin price by calling `getBitcoinPriceSimple()(uint256) `:
+
+   ```bash
+   cast call $CONTRACT_ADDRESS "getBitcoinPriceSimple()(uint256)" --rpc-url $RPC_URL
+   ```
+
+   In the output, you'll see Bitcoin price represented as an integer.

@@ -1,0 +1,11 @@
+{
+  "position": 1,
+  "label": "Use the HTTTP handler",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Use the HTTTP handler"
+  },
+  "customProps": {}
+}

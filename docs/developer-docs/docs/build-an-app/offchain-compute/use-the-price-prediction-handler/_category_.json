@@ -1,0 +1,11 @@
+{
+  "position": 2,
+  "label": "Use the price prediction handler",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Use the price prediction handler"
+  },
+  "customProps": {}
+}

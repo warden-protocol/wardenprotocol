@@ -1,11 +1,11 @@
 import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
+import { LRUCache } from 'lru-cache';
 
 import { EvmClient } from '../clients/evm.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { Processor } from './processor.js';
 import { ExponentialBackoff, handleAll, IPolicy, retry } from 'cockatiel';
 import { WardenRegistryClient } from '../clients/registry.js';
-import { LRUCache } from 'lru-cache';
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   private retryPolicy: IPolicy;
@@ -51,6 +51,9 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         return;
       }
 
+      // TODO: replace this
+      // new client
+      // executeSignedQuote
       const transactionExists = await this.evm.transactionExists(transaction, data.signature);
       if (transactionExists) {
         logInfo(`Transaction ${data.transactionHash} already exists`);
@@ -58,6 +61,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         return;
       }
 
+      // TODO: and this
       await this.evm.broadcastTx(transaction, data.signature);
       this.recentSignRequests.set(data.id, data.id);
     });

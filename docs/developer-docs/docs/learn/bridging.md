@@ -8,11 +8,11 @@ sidebar_position: 6
 
 **Bridging** is a method allowing users to transfer assets across different blockchain networks.
 
-This technology utilizes **cross-chain bridges**—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of **wrapped tokens** on the destination chain.
+This technology utilizes **crosschain bridges**—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of **wrapped tokens** on the destination chain.
 
 ## Axelar
 
-Thanks to Warden's [x/gmp](/learn/warden-protocol-modules/external-modules#xgmp) module, [Omnichain Applications](/learn/glossary#omnichain-application) support cross-chain token transfers and general message passing through **Axelar**.
+Thanks to Warden's [x/gmp](/learn/warden-protocol-modules/external-modules#xgmp) module, [Omnichain Applications](/learn/glossary#omnichain-application) support crosschain token transfers and general message passing through **Axelar**.
 
 More integrations are coming soon.
 

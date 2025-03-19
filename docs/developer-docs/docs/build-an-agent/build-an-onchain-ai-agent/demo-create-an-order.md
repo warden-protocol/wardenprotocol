@@ -47,7 +47,7 @@ Creating a new Space and key is recommended to simplify the configuration of the
 
 Now you need to generate the transaction data that you'll pass with the Order in the next step. You can use the [ethers.js library](https://docs.ethers.org/v5/), as shown below, or any other tool.
 
-1. Navigate out of the `wardenrotocol` repository and create a new directory for your JavaScript project:
+1. Navigate out of the `wardenprotocol` repository and create a new directory for your JavaScript project:
 
 ```
 mkdir uniswap-example

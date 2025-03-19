@@ -8,7 +8,7 @@ sidebar_position: 1.5
 
 This article will guide you through creating an [automated Order with price prediction](implement-automated-orders-with-price-prediction/introduction).
 
-You'll prepare an input for your Order and run a script that will deploy an instance of the [`AdvancedOrder` contract](implement-automated-orders-with-price-prediction/implement-orders). This contract will compare oracle and predicted prices and automatically perform a swap on Uniswap once the oracle price is less than the predicted price.
+You'll prepare an input for your Order and run a script that will deploy an instance of the [`AdvancedOrder` contract](implement-automated-orders-with-price-prediction/implement-orders) on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview). This contract will compare oracle and predicted prices and automatically perform a swap on Uniswap once the oracle price is less than the predicted price.
 
 ## Prerequisites
 
@@ -17,13 +17,16 @@ Before you start, meet the following prerequisites:
 - [Install Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable).
 - [Install Node.js](https://nodejs.org/en/download).
 
-You should also create and fund a Warden key using [SpaceWard on devnet](https://spaceward.devnet.wardenprotocol.org). Take these steps:
+You should also create and fund a Warden key using [SpaceWard](https://spaceward.chiado.wardenprotocol.org). Take these steps:
 
 1. In your Web3 wallet, export your **private key**, you'll need it for signing transactions.
 2. [Connect your wallet](https://help.wardenprotocol.org/spaceward/connect-your-wallet) to SpaceWard.
 3. [Get some test WARD](https://help.wardenprotocol.org/spaceward/get-test-ward).
-4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key) using the Open Custody Protocol Keychain. Navigate to SpaceWard's Dashboard and note down the numerical **key ID** displayed in the Space section.
+4. [Create a new Space](https://help.wardenprotocol.org/spaceward/manage-spaces#create-more-spaces).
+4. [Create a Warden key](https://help.wardenprotocol.org/spaceward/manage-keys#request-a-key). Navigate to SpaceWard's Dashboard and note down the numerical **key ID** displayed in the Space section.
 5. [Fund your Warden key](https://help.wardenprotocol.org/spaceward/manage-assets#receive-assets) with Sepolia ETH and note down the **Sepolia address** associated with your key.
+
+Creating a new Space and key is recommended to simplify the configuration of the Order script. With previously created Spaces, there is a risk that additional adjustments will be required.
 
 ## 1. Install dependencies
 
@@ -120,10 +123,8 @@ transaction data: 0x7ff36ab50000000000000000000000000000000000000000000000000000
 
 Configure the Order parameters in the [`createAdvancedOrder.sh` script](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/createAdvancedOrder.sh), which is located in the `solidity` directory:
 
-- Check and adjust these variables: `tx_fields`, `key_id`, `salt`, `factory_address`, `private_key`.
-- In most cases, you can leave other variables untouched.
-
-For a detailed breakdown of all variables, see the following sections.
+- Check and configure the variables listed in [Required adjustments](#required-adjustments).
+- In most cases, you can leave other variables untouched. See [Optional adjustments](#optional-adjustments).
 
 ### Required adjustments
 
@@ -146,9 +147,21 @@ For running the script, make the following adjustments:
 
    This salt will be used to calculate the address of the Order contract and must be unique for each new Order. You can randomly generate a new string or edit the default value.
 
-4. In `factory_address`, paste the up-to-date [`orderFactory` address]( https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/12345/latest.json).
+4. In `factory_address`, paste the up-to-date [`orderFactory` address](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/10010/latest.json).
 
 5. In `private_key`, paste your private key from [Prerequisites](#prerequisites). If the key doesn't have `0x` at the beginning, add it.
+
+6. In `rpc_url`, paste the Chiado EVM endpoint:
+
+   ```
+   https://evm.chiado.wardenprotocol.org
+   ```
+
+7. In `chain_id`, specify the Chiado chain id:
+   
+   ```
+   10010
+   ```
 
 ### Optional adjustments
 
@@ -165,8 +178,6 @@ After making the required adjustments, you can leave the rest of values untouche
 - `space_nonce` - The nonce of the [Space](/learn/glossary#space) that is expected at the moment when the Order is being executed. If you've never updated the [Rules](/learn/glossary#approval-rule) of your Space, you can use the default value: `0`.
 - `action_timeout_height` - The block after which the [Action](/learn/glossary#action) will be cancelled if it's not signed with the [Keychain](/learn/glossary#keychain).
 - `expected_approve_expression`, `expected_reject_expression` - The expected approve and reject expressions in your Space, provided in HEX format. If you've never updated the Rules of your Space, just keep the default values.
-- `rpc_url` - The RPC URL.
-- `chain_id` - The chain ID.
 
 ### Example
 
@@ -188,8 +199,8 @@ expected_approve_expression="0x616e7928312c2077617264656e2e73706163652e6f776e657
 expected_reject_expression="0x616e7928312c2077617264656e2e73706163652e6f776e65727329"
 salt="my-salt"
 factory_address="factory-address"
-rpc_url="https://evm.devnet.wardenprotocol.org"
-chain_id="12345"
+rpc_url="https://evm.chiado.wardenprotocol.org"
+chain_id="10010"
 private_key="my-private-key"
 
 # Execute the Just command for creating an advanced Order
@@ -252,7 +263,7 @@ Paid: 0.000000000028419088 ETH (3552386 gas * 0.000000008 gwei)
 2. Check whether the Order can be executed. Use the following command, specifying your Order address:
    
    ```
-   cast call my-order-address "canExecute()" --rpc-url https://evm.devnet.wardenprotocol.org
+   cast call my-order-address "canExecute()" --rpc-url https://evm.chiado.wardenprotocol.org
    ```
 
    If everything is correct and there is a prediction meeting the confidence limit, you'll receive an output meaning that your Order can be executed:
@@ -270,7 +281,7 @@ Paid: 0.000000000028419088 ETH (3552386 gas * 0.000000008 gwei)
 3. Check whether the Order is executed. In the command below, specify your Order address:
    
    ```
-   cast call my-order-address "isExecuted()" --rpc-url https://evm.devnet.wardenprotocol.org
+   cast call my-order-address "isExecuted()" --rpc-url https://evm.chiado.wardenprotocol.org
    ```
 
    Most likely, the Order isn't executed yet, and you'll see the following output:

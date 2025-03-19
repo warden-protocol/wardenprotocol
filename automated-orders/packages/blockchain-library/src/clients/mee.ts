@@ -18,9 +18,11 @@ export class BiconomyMEEClient {
   }
 
   async transactionExists(hash: Hex): Promise<boolean> {
-    // todo: getSupertransactionReceipt
     const response = await axios.get<GetSupertransactionReceiptPayload>(`${this.url}/v1/explorer/${hash}`);
-    
+
+    if (response.status === 200) {
+      return true;
+    }
     return false;
   }
 }

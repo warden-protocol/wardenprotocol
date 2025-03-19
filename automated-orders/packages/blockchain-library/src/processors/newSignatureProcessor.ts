@@ -1,23 +1,43 @@
 import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 import { LRUCache } from 'lru-cache';
+import { decodeFunctionResult, Hex } from 'viem';
+import { ExecuteSignedQuoteParams, GetQuotePayload } from '@biconomy/abstractjs';
 
+import { getQuotePayloadAbiItem } from '../types/biconomy/abi';
 import { EvmClient } from '../clients/evm.js';
+import { BiconomyMEEClient } from '../clients/mee.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { Processor } from './processor.js';
 import { ExponentialBackoff, handleAll, IPolicy, retry } from 'cockatiel';
 import { WardenRegistryClient } from '../clients/registry.js';
+
+/**
+ * Custom error for missing required clients
+ */
+export class MissingClientError extends Error {
+  constructor(message = 'At least one of EvmClient or BiconomyMEEClient must be provided') {
+    super(message);
+    this.name = 'MissingClientError';
+    Object.setPrototypeOf(this, MissingClientError.prototype);
+  }
+}
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   private retryPolicy: IPolicy;
   private recentSignRequests: LRUCache<bigint, bigint>;
 
   constructor(
-    private evm: EvmClient,
     private registryClient: WardenRegistryClient,
     generator: () => AsyncGenerator<INewSignatureRequest, unknown, unknown>,
-    seenRequestsCacheSize: number
+    seenRequestsCacheSize: number,
+    private evm?: EvmClient,
+    private mee?: BiconomyMEEClient,
   ) {
     super(generator);
+
+    if (!evm && !mee) {
+      throw new MissingClientError();
+    }
 
     const retryPolicy = retry(handleAll, { maxAttempts: 3, backoff: new ExponentialBackoff() });
     // TODO AT: Add circuit breaker
@@ -51,19 +71,45 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         return;
       }
 
-      // TODO: replace this
-      // new client
-      // executeSignedQuote
-      const transactionExists = await this.evm.transactionExists(transaction, data.signature);
+      const transactionExists = await this.transactionExists(transaction, data);
+
       if (transactionExists) {
         logInfo(`Transaction ${data.transactionHash} already exists`);
         this.recentSignRequests.set(data.id, data.id);
         return;
       }
 
-      // TODO: and this
-      await this.evm.broadcastTx(transaction, data.signature);
+      await this.sendTx(transaction, data);
       this.recentSignRequests.set(data.id, data.id);
     });
+  }
+
+  private async transactionExists(transaction: Hex, data: INewSignatureRequest): Promise<boolean> {
+    if (this.evm) {
+      return await this.evm.transactionExists(transaction, data.signature);
+    } else if (this.mee) {
+      return await this.mee.transactionExists(data.transactionHash);
+    } else {
+      throw new MissingClientError();
+    }
+  }
+
+  private async sendTx(transaction: Hex, data: INewSignatureRequest): Promise<void> {
+    if (this.evm) {
+      await this.evm.broadcastTx(transaction, data.signature);
+    } else if (this.mee) {
+      const getQuotePayload = decodeFunctionResult({
+        abi: [getQuotePayloadAbiItem],
+        data: transaction
+      });
+
+      const params: ExecuteSignedQuoteParams = {
+        signedQuote: { ...getQuotePayload as GetQuotePayload, signature: data.signature }
+      };
+      
+      await this.mee.executeSignedQuote(params);
+    } else {
+      throw new MissingClientError();
+    }
   }
 }

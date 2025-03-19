@@ -16,7 +16,7 @@ wardenjs:
     cd spaceward && pnpm add @wardenprotocol/wardenjs
 
 # regenerate precompiles abi and clients
-mod precompiles
+mod extensions './warden/extensions'
 
 # solidity contracts build, test and deploy
 mod solidity

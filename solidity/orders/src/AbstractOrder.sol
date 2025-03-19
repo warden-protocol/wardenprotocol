@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
-import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "ext-warden/IWarden.sol";
+import { Types as CommonTypes } from "ext-common/Types.sol";
 import { RLPEncode } from "./RLPEncode.sol";
 import { Types } from "./Types.sol";
 import { ExecutionData } from "./IExecution.sol";

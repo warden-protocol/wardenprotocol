@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	actv1beta1 "github.com/warden-protocol/wardenprotocol/api/warden/act/v1beta1"
-	"github.com/warden-protocol/wardenprotocol/precompiles/act"
-	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/act"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"

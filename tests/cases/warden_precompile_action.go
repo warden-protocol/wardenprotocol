@@ -8,8 +8,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/act"
-	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/act"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"

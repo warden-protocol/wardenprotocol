@@ -10,8 +10,8 @@ import {
     FutureVote, 
     IAsync,
     PendingFuturesResponse
-} from "precompile-async/IAsync.sol";
-import { Types } from "precompile-async/IAsync.sol";
+} from "ext-async/IAsync.sol";
+import { Types } from "ext-async/IAsync.sol";
 
 contract MockAsyncPrecompile is IAsync {
     uint64 public futuresCount = 0;

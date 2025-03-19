@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { AddressesResponse, AddressType, BroadcastType, Key, KeyResponse } from "precompile-warden/IWarden.sol";
-import { Types } from "precompile-common/Types.sol";
+import { AddressesResponse, AddressType, BroadcastType, Key, KeyResponse } from "ext-warden/IWarden.sol";
+import { Types } from "ext-common/Types.sol";
 
 contract MockWardenPrecompile {
     mapping(uint64 keyId => KeyResponse keyResponse) private keys;

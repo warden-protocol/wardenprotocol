@@ -34,7 +34,7 @@ You can find the full code on GitHub: [`mocks/MockSlinkyPrecompile.sol`](https:/
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { GetPriceResponse, QuotePrice, ISlinky } from "precompile-slinky/ISlinky.sol";
+import { GetPriceResponse, QuotePrice, ISlinky } from "ext-slinky/ISlinky.sol";
 
 contract MockSlinkyPrecompile is ISlinky {
     mapping(string base => mapping(string quote => uint256 price)) private prices;

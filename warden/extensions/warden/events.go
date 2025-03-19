@@ -11,7 +11,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	precommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 

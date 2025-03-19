@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
-import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
+import { IWARDEN_PRECOMPILE_ADDRESS } from "ext-warden/IWarden.sol";
+import { ISLINKY_PRECOMPILE_ADDRESS } from "ext-slinky/ISlinky.sol";
+import { IASYNC_PRECOMPILE_ADDRESS } from "ext-async/IAsync.sol";
 import { Script } from "forge-std/src/Script.sol";
-import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { Types as CommonTypes } from "ext-common/Types.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { MockAsyncPrecompile } from "../mocks/MockAsyncPrecompile.sol";

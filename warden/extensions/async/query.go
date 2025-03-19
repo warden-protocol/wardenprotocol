@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 
-	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	wardencommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 

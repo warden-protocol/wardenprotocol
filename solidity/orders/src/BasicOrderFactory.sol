@@ -4,7 +4,7 @@ pragma solidity >=0.8.25 <0.9.0;
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { BasicOrder } from "./BasicOrder.sol";
 import { Types } from "./Types.sol";
-import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { Types as CommonTypes } from "ext-common/Types.sol";
 import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 import { Registry } from "./Registry.sol";
 

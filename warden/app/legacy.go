@@ -58,7 +58,7 @@ import (
 	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 	"github.com/spf13/cast"
 
-	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
+	wardenprecompiles "github.com/warden-protocol/wardenprotocol/warden/extensions"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"

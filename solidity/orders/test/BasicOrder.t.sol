@@ -2,8 +2,8 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { Test } from "forge-std/src/Test.sol";
-import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
+import { ISLINKY_PRECOMPILE_ADDRESS } from "ext-slinky/ISlinky.sol";
+import { IWARDEN_PRECOMPILE_ADDRESS } from "ext-warden/IWarden.sol";
 import { Types } from "../src/Types.sol";
 import {
     OrderCreated,
@@ -19,7 +19,7 @@ import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
 import { IExecution } from "../src/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
-import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { Types as CommonTypes } from "ext-common/Types.sol";
 import { InvalidScheduler } from "../src/AbstractOrder.sol";
 import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/BasicOrder.sol";
 import {

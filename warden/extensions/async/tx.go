@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	precommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )

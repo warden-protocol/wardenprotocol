@@ -2,29 +2,31 @@
 sidebar_position: 4
 ---
 
-# Implement data extraction
+# Extract data
 
 ## Overview
 
-Now let's create a contract that can extract specific data from CBOR-encoded responses. We'll focus on extracting the Bitcoin price from the CoinGecko API response.
+Warden encodes responses from HTTP requests in **CBOR** (Concise Binary Object Representation): a binary data format similar to JSON but more compact. You could see an example of such output in the previous guide, when [testing the CoinGecko API](implement-http-requests#22-test-the-coingecko-api).
+
+This tutorial will guide you through extracting specific data from CBOR-encoded responses. You'll create a contract that can extract the Bitcoin price from the [CoinGecko API](https://docs.coingecko.com/reference/introduction) responses.
 
 ## Step 1. Create a contract
 
-Create a new file `DataExtractionExample.sol`:
+Create a new file `DataExtraction.sol`:
 
-```solidity title="src/DataExtractionExample.sol"
+```solidity title="warden-http-examples/src/DataExtraction.sol"
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.25;
 
 import "./interfaces/IAsync.sol";
 import "./interfaces/Http.sol";
 
-contract DataExtractionExample {
+contract DataExtraction {
     uint64 public lastFutureId;
     bytes public responseBody;
     uint256 public statusCode;
     
-    // Make a request to CoinGecko API
+    // Make a request to the CoinGecko API: fetch the current Bitcoin price
     function getBitcoinPrice() public returns (Http.Request memory request) {
         request.url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
         request.method = "GET";
@@ -50,9 +52,8 @@ contract DataExtractionExample {
         return true;
     }
     
-    // Callback function
+    // A callback function: the Warden node calls it automatically
     function cb() external {
-        // This function is called automatically by the Warden node
     }
     
     // Get the raw bytes at a specific position in the response
@@ -64,12 +65,12 @@ contract DataExtractionExample {
         return result;
     }
     
-    // Dump the response bytes as hex for debugging
+    // Dump the response bytes as a hex value for debugging
     function dumpResponseHex() public view returns (bytes memory) {
         return responseBody;
     }
     
-    // Extract Bitcoin price using a simple approach
+    // Extract the Bitcoin price using a simple approach
     function getBitcoinPriceSimple() public view returns (uint256) {
         bytes memory data = responseBody;
         
@@ -104,7 +105,7 @@ This contract adds:
    
    ```bash
    forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
-     src/DataExtractionExample.sol:DataExtractionExample --broadcast
+     src/DataExtraction.sol:DataExtraction --broadcast
    ```
 
 2. Note down the value returned as `Deployed to` and set it as an environment variable:
@@ -147,4 +148,8 @@ This contract adds:
    cast call $CONTRACT_ADDRESS "getBitcoinPriceSimple()(uint256)" --rpc-url $RPC_URL
    ```
 
-   In the output, you'll see Bitcoin price represented as an integer.
+   In the output, you'll see the Bitcoin price represented as an integer.
+
+## Next steps
+
+Now you can implement a more advanced example: [Fetch multiple prices](http://localhost:3000/build-an-app/execute-offchain-computations/use-the-http-handler/fetch-multiple-prices).

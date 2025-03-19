@@ -6,13 +6,15 @@ sidebar_position: 7
 
 ## Overview
 
-Now let's create a more advanced example that fetches prices for **multiple cryptocurrencies** and extracts the values from the **CBOR-encoded response**.
+Follow this tutorial to implement a more advanced example of handling HTTP requests with `x/async`.
+
+You'll create a contract that fetches prices of **multiple cryptocurrencies** from the [CoinGecko API](https://docs.coingecko.com/reference/introduction) and extracts price values from the **CBOR-encoded** response.
 
 ## Step 1. Create a contract
 
 Create a new file `MultiCoinPrices.sol`:
 
-```solidity title="src/MultiCoinPrices.sol"
+```solidity title="warden-http-examples/src/MultiCoinPrices.sol"
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.25;
 
@@ -28,6 +30,7 @@ contract MultiCoinPrices {
 
     bytes public responseBody;
 
+    // Fetch different prices from the CoinGecko API: 
     function run() public returns (Http.Request memory request) {
         request.url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether,uniswap&vs_currencies=usd";
         request.method = "GET";
@@ -40,6 +43,7 @@ contract MultiCoinPrices {
         uniswapPrice = 0;
     }
 
+    // A callback function: the Warden node calls it automatically
     function cb() external {
         FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
         if (future.futureResponse.result.id == 0) {
@@ -52,7 +56,7 @@ contract MultiCoinPrices {
 
         responseBody = response.body;
 
-        // CBOR map structure: {"bitcoin":{"usd":value},"tether":{"usd":value},"uniswap":{"usd":value}}
+        // The CBOR map structure: {"bitcoin":{"usd":value},"tether":{"usd":value},"uniswap":{"usd":value}}
 
         // Skip the initial byte (map marker) and get to the first key
         uint256 offset = 1;
@@ -62,9 +66,9 @@ contract MultiCoinPrices {
         parseCoinPrice(response.body, offset, "uniswap");
     }
 
-    // Helper function to parse a coin price from CBOR data
+    // A helper function for parsing a coin price from CBOR data
     function parseCoinPrice(bytes memory data, uint256 startOffset, string memory coinName) private returns (uint256) {
-        // Skip coin name string (we don't need to validate it as we're following a known structure)
+        // Skip the coin name string: we don't need to validate it as we're following a known structure
         uint256 offset = skipCborString(data, startOffset);
 
         // Skip the map marker for the inner map
@@ -73,9 +77,9 @@ contract MultiCoinPrices {
         // Skip the "usd" string
         offset = skipCborString(data, offset);
 
-        // Read the price value (encoded as float in CBOR)
+        // Read the price value, which is encoded as a float in CBOR
         if (data[offset] == 0xfb) {
-            // Double precision float marker
+            // A double precision float marker
             offset += 1; // Skip the marker
 
             // Extract the 8 bytes of the float
@@ -84,10 +88,10 @@ contract MultiCoinPrices {
                 bits = (bits << 8) | uint64(uint8(data[offset + i]));
             }
 
-            // Convert to fixed point representation (multiply by 1e6 to preserve decimals)
+            // Convert to a fixed point representation (multiply by 1e6 to preserve decimals)
             uint256 price = uint256(convertFloatBitsToUint(bits));
 
-            // Store the price in the appropriate variable
+            // Store the price in an appropriate variable
             if (keccak256(bytes(coinName)) == keccak256(bytes("bitcoin"))) {
                 bitcoinPrice = price;
             } else if (keccak256(bytes(coinName)) == keccak256(bytes("tether"))) {
@@ -102,13 +106,13 @@ contract MultiCoinPrices {
         return offset; // Fallback if not a float
     }
 
-    // Helper to skip a CBOR string and return the new offset
+    // A helper function for skipping the CBOR string and returning the new offset
     function skipCborString(bytes memory data, uint256 offset) private pure returns (uint256) {
         uint8 initialByte = uint8(data[offset]);
         uint8 majorType = initialByte >> 5;
         uint8 additionalInfo = initialByte & 0x1f;
 
-        require(majorType == 3, "Expected string type"); // String major type is 3
+        require(majorType == 3, "Expected string type"); // The string major type is 3
 
         offset += 1; // Skip the initial byte
 
@@ -146,7 +150,7 @@ contract MultiCoinPrices {
         // Adjust by exponent (bias is 1023)
         int256 adjustedExp = int256(uint256(exponent)) - 1023;
 
-        // Scale to fixed point with 6 decimal places (multiply by 1e6)
+        // Scale to a fixed point with 6 decimal places (multiply by 1e6)
         uint256 scaledValue;
 
         if (adjustedExp > 0) {
@@ -210,3 +214,9 @@ contract MultiCoinPrices {
    ```
 
    In the output, you'll see the price of each cryptocurrency displayed with 6 decimal places of precision.
+   
+## Next steps
+
+Learn how to use other Future hanlders:
+
+- [Use the price prediction handler](../use-the-price-prediction-handler/introduction)

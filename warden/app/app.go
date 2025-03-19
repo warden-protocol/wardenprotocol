@@ -77,8 +77,8 @@ import (
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	"github.com/spf13/cast"
 
-	asyncprecompile "github.com/warden-protocol/wardenprotocol/precompiles/async"
-	slinkyprecompile "github.com/warden-protocol/wardenprotocol/precompiles/slinky"
+	asyncprecompile "github.com/warden-protocol/wardenprotocol/warden/extensions/async"
+	slinkyprecompile "github.com/warden-protocol/wardenprotocol/warden/extensions/slinky"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http"

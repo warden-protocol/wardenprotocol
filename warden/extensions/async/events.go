@@ -6,7 +6,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 

@@ -12,7 +12,7 @@ import (
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -160,7 +160,7 @@ func (p *Precompile) IsTransaction(method string) bool {
 	panic(fmt.Errorf("act precompile: method not exists: %s", method))
 }
 
-// Logger returns a precompile-specific logger.
+// Logger returns a ext-specific logger.
 func (p *Precompile) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("evm extension", "act")
 }

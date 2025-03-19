@@ -10,7 +10,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	cmn "github.com/evmos/evmos/v20/precompiles/common"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 

@@ -17,6 +17,9 @@ type EthEventProvider func(sdk.Context, *ethcmn.Address, sdk.Event) (*ethtypes.L
 
 // RegisterEvent registers a provider for eventType.
 func (r *EthEventsRegistry) RegisterEvent(eventType string, ethEventProvider EthEventProvider) {
+	if _, found := r.p[eventType]; found {
+		panic("duplicate event type: " + eventType)
+	}
 	r.p[eventType] = ethEventProvider
 }
 

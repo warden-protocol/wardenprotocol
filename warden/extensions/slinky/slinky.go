@@ -14,7 +14,7 @@ import (
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	types "github.com/skip-mev/slinky/x/oracle/types"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	precommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
@@ -137,7 +137,7 @@ func (*Precompile) IsTransaction(method string) bool {
 	panic(fmt.Errorf("slinky precompile: method does not exist: %s", method))
 }
 
-// Logger returns a precompile-specific logger.
+// Logger returns a ext-specific logger.
 func (p *Precompile) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("evm extension", "x/slinky")
 }

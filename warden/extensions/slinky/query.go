@@ -12,7 +12,7 @@ import (
 	slinkytypes "github.com/skip-mev/slinky/pkg/types"
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 
-	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	wardencommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 )
 
 const (

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The **Keychain SDK** offers a robust framework for managing cryptographic operations on the Warden Protocol. It simplifies the development of applications that interact with the Warden Protocol, handling both key requests and signature requests with efficiency and security.
+The **Keychain SDK** offers a robust framework for managing cryptographic operations on Warden Protocol. It simplifies the development of applications that interact with Warden Protocol, handling both key requests and signature requests with efficiency and security.
 
 ## Module descriptions
 
@@ -43,7 +43,7 @@ In this section, we will walk you through different modules of the **Keychain SD
   - `SetSignRequestHandler`: Sets the handler for signature requests.
 - **Start method**: Begins the Keychain application's operations, managing request channels and transaction writing.
 - `ConnectionState`: Returns the state of the gRPC connection.
-- `initConnections`: Establishes connections to the Warden Protocol via gRPC.
+- `initConnections`: Establishes connections to Warden Protocol via gRPC.
 
 ### Key requests (`key_requests.go`)
 

@@ -14,5 +14,7 @@ message EventCreateFuture {
 
   // Handler is the name of the handler that will be executed.
   string handler = 3;
-}
 
+  // Address of callback that will be triggered after execution.
+  string callback_address = 4;
+}

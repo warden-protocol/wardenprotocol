@@ -6,6 +6,10 @@ project_name: wardend
 env:
   - CGO_ENABLED=1
 
+git:
+  tag_sort: -version:creatordate
+  prerelease_suffix: "-"
+
 builds:
   - id: wardend-linux-amd64
     main: ./cmd/wardend

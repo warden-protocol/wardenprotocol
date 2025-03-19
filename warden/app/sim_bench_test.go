@@ -17,8 +17,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
-// Profile with:
-// `go test -benchmem -run=^$ -bench ^BenchmarkFullAppSimulation ./app -Commit=true -cpuprofile cpu.out`
+// `go test -benchmem -run=^$ -bench ^BenchmarkFullAppSimulation ./app -Commit=true -cpuprofile cpu.out`.
 func BenchmarkFullAppSimulation(b *testing.B) {
 	b.ReportAllocs()
 
@@ -137,7 +136,6 @@ func BenchmarkInvariants(b *testing.B) {
 	// NOTE: We use the crisis keeper as it has all the invariants registered with
 	// their respective metadata which makes it useful for testing/benchmarking.
 	for _, cr := range bApp.CrisisKeeper.Routes() {
-		cr := cr
 		b.Run(fmt.Sprintf("%s/%s", cr.ModuleName, cr.Route), func(b *testing.B) {
 			if res, stop := cr.Invar(ctx); stop {
 				b.Fatalf(

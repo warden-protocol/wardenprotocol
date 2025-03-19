@@ -32,7 +32,7 @@ localnet-orders $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgi
 # 0xdee286687809c640a7d56c34cea7b8d3fcdaee2c \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-create-basic-order thresholdPrice priceCondition pricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
+create-basic-order thresholdPrice priceCondition pricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $PRIVATE='' $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \
     --via-ir \
@@ -71,7 +71,7 @@ create-basic-order thresholdPrice priceCondition pricePair txFields keyId spaceN
 # 0xfe20b64194DD392C37711027A7f38dB10F499B28 \
 # https://evm.devnet.wardenprotocol.org \
 # 12345
-create-advanced-order priceCondition confidenceLimit oraclePricePair predictPricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $MNEMONIC=shulgin_mnemonic:
+create-advanced-order priceCondition confidenceLimit oraclePricePair predictPricePair txFields keyId spaceNonce actionTimeoutHeight expectedApproveExpression expectedRejectExpression salt $FACTORY_ADDRESS $RPC_URL=local_rpc_url $CHAIN_ID=local_chain_id $PRIVATE='' $MNEMONIC=shulgin_mnemonic:
     cd orders && \
     forge script \
     --via-ir \
@@ -90,7 +90,7 @@ create-advanced-order priceCondition confidenceLimit oraclePricePair predictPric
     {{expectedApproveExpression}} \
     {{expectedRejectExpression}} \
     {{salt}} \
-    --sig 'advanced(uint8,uint256,(string,string),(string,string),(uint256,uint256,address,bytes),uint64,uint64,uint64,bytes,bytes,bytes32)' \
+    --sig 'advanced(uint8,uint256,(string,string),string,(uint256,uint256,address,bytes),uint64,uint64,uint64,bytes,bytes,bytes32)' \
     --rpc-url $RPC_URL \
     --broadcast \
     -vvvv

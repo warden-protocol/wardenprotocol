@@ -5,10 +5,10 @@ import (
 
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
-
 	evmservercfg "github.com/evmos/evmos/v20/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 
+	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/handlers/http/config"
 	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred/config"
 )
 
@@ -39,6 +39,7 @@ func initAppConfig() (string, interface{}) {
 
 		// Prophet handlers
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
+		Http      httpconfig.Config      `mapstructure:"http"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -91,6 +92,7 @@ func initAppConfig() (string, interface{}) {
 	tlsConfig := evmservercfg.DefaultTLSConfig()
 
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
+	httpConfig := httpconfig.DefaultConfig()
 
 	customAppConfig := CustomAppConfig{
 		Config:    *srvCfg,
@@ -100,13 +102,15 @@ func initAppConfig() (string, interface{}) {
 		TLS:       *tlsConfig,
 		Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
+		Http:      *httpConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +
 		oracleconfig.DefaultConfigTemplate +
 		evmservercfg.DefaultEVMConfigTemplate +
 		evmservercfg.DefaultRosettaConfigTemplate +
-		pricepredconfig.DefaultEVMConfigTemplate
+		pricepredconfig.DefaultConfigTemplate +
+		httpconfig.DefaultConfigTemplate
 
 	// Edit the default template file
 	//

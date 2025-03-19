@@ -17,13 +17,13 @@ func (k Keeper) KeyById(goCtx context.Context, req *types.QueryKeyByIdRequest) (
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, err := k.KeysKeeper.Get(ctx, req.Id)
+	key, err := k.KeysKeeper.Get(goCtx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
 	return &types.QueryKeyResponse{
 		Key:       key,
-		Addresses: key.DeriveAddresses(ctx, req.DeriveAddresses),
+		Addresses: key.DeriveAddresses(ctx.Logger(), req.DeriveAddresses),
 	}, nil
 }

@@ -38,6 +38,7 @@ func (k *Key) ToECDSASecp256k1() (*ecdsa.PublicKey, error) {
 	if len(k.PublicKey) == 33 {
 		// Compressed form
 		var err error
+
 		pk, err = crypto.DecompressPubkey(k.PublicKey)
 		if err != nil {
 			return nil, err
@@ -45,6 +46,7 @@ func (k *Key) ToECDSASecp256k1() (*ecdsa.PublicKey, error) {
 	} else {
 		// Uncompressed form
 		var err error
+
 		pk, err = crypto.UnmarshalPubkey(k.PublicKey)
 		if err != nil {
 			return nil, err
@@ -68,5 +70,6 @@ func (k *Key) ToEdDSAEd25519() (*ed25519.PublicKey, error) {
 
 	pubKey := ed25519.PublicKey(k.PublicKey)
 	pk = &pubKey
+
 	return pk, nil
 }

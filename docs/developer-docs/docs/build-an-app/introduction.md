@@ -14,13 +14,13 @@ An example of an OApp is [SpaceWard](https://help.wardenprotocol.org)—our appl
 
 The main part of any Omnichain Application is an **Omnichain Contract**: a smart contract that allows signing transactions and messages at any destination chain. For this reason, OApp development starts with building a custom Omnichain Contract.
 
-As shown below, the Warden Protocol integrates with two external modules allowing you to execute two types of smart contracts.
+As shown below, Warden Protocol integrates with two external modules allowing you to execute two types of smart contracts.
 
 ### EVM contracts
 
 The [`x/evm` Warden module](/learn/warden-protocol-modules/external-modules#xevm) allows executing Ethereum Virtual Machine (EVM) contracts charged by [Evmos](https://docs.evmos.org/protocol/modules/evm). They're written in **Solidity**.
 
-Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users. You can call [Warden precompiles](precompiles/introduction) to [interact with Warden modules](interact-with-warden-modules/introduction), accessing all core features of the Warden Protocol.
+Existing Solidity contracts are easy to deploy on Warden, so you can seamlessly port applications from any EVM-compatible chain to Warden and reach new users. You can call [Warden precompiles](precompiles/introduction) to [interact with Warden modules](interact-with-warden-modules/introduction), accessing all core features of Warden Protocol.
 
 For advanced usage of EVM contracts with AI Agents, refer to [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
 

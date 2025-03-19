@@ -20,9 +20,7 @@ To check an overview of your Space, click **Dashboard** in the left menu. To unl
 
 If you wish to create additional Spaces, take these steps:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. Navigate to the top-left corner of the screen and click **Active Space**.
 3. Click **Create New Space**.
 4. Approve the transaction for creating a new Space in your connected wallet.

@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"context"
+	"errors"
+
 	storetypes "cosmossdk.io/store/types"
-	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -11,6 +12,7 @@ import (
 	"github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/cosmos/ibc-go/v8/modules/core/exported"
+
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	types2 "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/types"
 )
@@ -41,7 +43,7 @@ func (k Keeper) Transfer(goCtx context.Context, msg *types.MsgTransfer) (*types.
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if k.GmpKeeper == nil {
-		return nil, fmt.Errorf("GmpKeeper is not initialized")
+		return nil, errors.New("GmpKeeper is not initialized")
 	}
 
 	gmpKeeper := *k.GmpKeeper
@@ -52,6 +54,7 @@ func (k Keeper) Transfer(goCtx context.Context, msg *types.MsgTransfer) (*types.
 		// safe byte conversion for invalid UTF-8
 		bz := make([]byte, len(msg.Memo))
 		copy(bz, msg.Memo)
+
 		err := bridgeMsg.Unmarshal(bz)
 		if err != nil {
 			// If the payload is not a bridgeMsg type, then a user is trying to perform GMP
@@ -64,12 +67,14 @@ func (k Keeper) Transfer(goCtx context.Context, msg *types.MsgTransfer) (*types.
 		if err != nil {
 			return nil, err
 		}
+
 		return k.Keeper.Transfer(goCtx, gmpTransferMsg)
 	}
+
 	return k.Keeper.Transfer(goCtx, msg)
 }
 
-// NewKeeper creates a new IBC transfer Keeper instance
+// NewKeeper creates a new IBC transfer Keeper instance.
 func NewKeeper(
 	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
 	ics4Wrapper porttypes.ICS4Wrapper, channelKeeper types.ChannelKeeper, portKeeper types.PortKeeper,

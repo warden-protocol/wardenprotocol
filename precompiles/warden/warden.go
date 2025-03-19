@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"cosmossdk.io/log"
-
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -50,7 +49,8 @@ func LoadABI() (abi.ABI, error) {
 func NewPrecompile(
 	wardenkeeper wardenmodulekeeper.Keeper,
 	actkeeper actmodulekeeper.Keeper,
-	e *precommon.EthEventsRegistry) (*Precompile, error) {
+	e *precommon.EthEventsRegistry,
+) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err

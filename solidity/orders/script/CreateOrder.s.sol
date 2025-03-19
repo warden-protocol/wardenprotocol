@@ -19,7 +19,11 @@ contract CreateOrder is Script {
     error InvalidFactory();
 
     constructor() {
-        (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
+        if (bytes(vm.envOr("PRIVATE", string(""))).length != 0) {
+            broadcaster = vm.rememberKey(vm.envUint("PRIVATE"));
+        } else {
+            (broadcaster,) = deriveRememberKey({ mnemonic: vm.envString("MNEMONIC"), index: 0 });
+        }
         address factory = vm.envAddress("FACTORY_ADDRESS");
         if (factory == address(0)) {
             revert InvalidFactory();
@@ -79,7 +83,7 @@ contract CreateOrder is Script {
         Types.PriceCondition priceCondition,
         uint256 confidenceLimit,
         Types.PricePair calldata oraclePricePair,
-        Types.PricePair calldata predictPricePair,
+        string calldata predictPriceToken,
         Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
         uint64 keyId,
         uint64 spaceNonce,
@@ -109,7 +113,7 @@ contract CreateOrder is Script {
         Types.AdvancedOrderData memory orderData = Types.AdvancedOrderData({
             priceCondition: priceCondition,
             oraclePricePair: oraclePricePair,
-            predictPricePair: predictPricePair,
+            predictPriceToken: predictPriceToken,
             pricePredictDate: block.timestamp + 24 hours,
             confidenceLimit: confidenceLimit
         });

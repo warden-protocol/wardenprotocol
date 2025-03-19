@@ -2,6 +2,7 @@ package cli
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -11,6 +12,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	"github.com/spf13/cobra"
+
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
@@ -43,10 +45,10 @@ func GetCmdBridge() *cobra.Command {
 			}
 
 			if args[0] == "" {
-				return fmt.Errorf("destination-chain cannot be empty")
+				return errors.New("destination-chain cannot be empty")
 			}
 			if args[1] == "" {
-				return fmt.Errorf("warden-contract-address cannot be empty")
+				return errors.New("warden-contract-address cannot be empty")
 			}
 
 			tokens := sdk.Coin{}
@@ -103,16 +105,16 @@ func GetCmdBridgeWithContractCall() *cobra.Command {
 			}
 
 			if args[0] == "" {
-				return fmt.Errorf("destination-chain cannot be empty")
+				return errors.New("destination-chain cannot be empty")
 			}
 			if args[1] == "" {
-				return fmt.Errorf("warden-contract-address cannot be empty")
+				return errors.New("warden-contract-address cannot be empty")
 			}
 			if args[2] == "" {
-				return fmt.Errorf("destination-contract-address cannot be empty")
+				return errors.New("destination-contract-address cannot be empty")
 			}
 			if args[3] == "" {
-				return fmt.Errorf("destination-contract-calldata cannot be empty")
+				return errors.New("destination-contract-calldata cannot be empty")
 			}
 
 			tokens := sdk.Coin{}
@@ -130,7 +132,7 @@ func GetCmdBridgeWithContractCall() *cobra.Command {
 			}
 
 			if len(args[3]) == 0 {
-				return fmt.Errorf("destination-contract-calldata cannot be empty")
+				return errors.New("destination-contract-calldata cannot be empty")
 			}
 
 			destinationContractCalldata, err := base64.StdEncoding.DecodeString(args[3])

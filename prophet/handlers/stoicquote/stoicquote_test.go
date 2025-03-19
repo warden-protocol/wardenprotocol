@@ -1,13 +1,14 @@
 package stoicquote
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
+	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/handlers/stoicquote/generated"
 )
 
@@ -26,10 +27,14 @@ func TestHandler_Execute(t *testing.T) {
 		QuoteApiUrl: mockServer.URL,
 	}
 
-	encodedOutput, execErr := h.Execute(context.Background(), emptyInput)
+	encodedOutput, execErr := h.Execute(t.Context(), emptyInput)
 	require.NoError(t, execErr, "Execute should not fail")
 
-	decodedOutput, err := decodeOutput(encodedOutput)
+	decodedOutput, err := prophet.DecodeOutputFromABI[generated.StoicQuoteResponse](
+		encodedOutput,
+		generated.StoicQuoteMetaData,
+		"main",
+	)
 	require.NoError(t, err, "decodeOutput should not fail")
 
 	var expected generated.StoicQuoteResponse
@@ -51,9 +56,9 @@ func TestHandler_Verify(t *testing.T) {
 
 	h := StoicQuoteSolidity{QuoteApiUrl: mockServer.URL}
 
-	encodedOutput, err := h.Execute(context.Background(), emptyInput)
+	encodedOutput, err := h.Execute(t.Context(), emptyInput)
 	require.NoError(t, err, "Execute should not fail")
 
-	err = h.Verify(context.Background(), emptyInput, encodedOutput)
+	err = h.Verify(t.Context(), emptyInput, encodedOutput)
 	require.NoError(t, err, "Verify should not fail with valid quote")
 }

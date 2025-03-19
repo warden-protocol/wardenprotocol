@@ -4,6 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -22,13 +23,14 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 	if err := space.AddOwner(msg.Creator, space.Nonce); err != nil {
 		return nil, err
 	}
+
 	for _, owner := range msg.AdditionalOwners {
 		if err := space.AddOwner(owner, space.Nonce); err != nil {
 			return nil, err
 		}
 	}
 
-	id, err := k.SpacesKeeper.New(ctx, space)
+	id, err := k.SpacesKeeper.New(goCtx, space)
 	if err != nil {
 		return nil, err
 	}

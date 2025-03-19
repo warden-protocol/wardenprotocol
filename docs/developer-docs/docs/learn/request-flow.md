@@ -6,19 +6,19 @@ sidebar_position: 5
 
 ## Overview
 
-The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys.
+Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys.
 
-This section explains how the Warden Protocol processes these two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). The main steps are the following:
+This section explains how Warden Protocol processes these two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). The main steps are the following:
 
 1. **Sending a request**: A user sends a request, specifying the preferred Keychain and the [Approval Rule](/learn/glossary#approval-rule) to apply.
 2. **Checking the Rule**: Nodes check the Approval Rule and reach [consensus](/learn/glossary#staking).
-3. **Fulfilling the request**: The Keychain publishes a public key or a signature to the Warden Protocol.
+3. **Fulfilling the request**: The Keychain publishes a public key or a signature to Warden Protocol.
 
 You'll find a detailed breakdown of these steps below.
 
 ## Actors
 
-The Warden Protocol includes three types of actors participating in sending and processing transactions:
+Warden Protocol includes three types of actors participating in sending and processing transactions:
 
 - **Node**: A server running the Warden Protocol software
 - **Keychain**: Software for generating keys and signing transactions, running on a Keychain operator's server

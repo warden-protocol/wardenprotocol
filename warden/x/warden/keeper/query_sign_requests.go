@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,10 +15,8 @@ func (k Keeper) SignRequests(goCtx context.Context, req *types.QuerySignRequests
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	signRequests, pageRes, err := query.CollectionFilteredPaginate(ctx, k.signRequests, req.Pagination, func(signRequestID uint64, value types.SignRequest) (bool, error) {
-		key, err := k.KeysKeeper.Get(ctx, value.KeyId)
+	signRequests, pageRes, err := query.CollectionFilteredPaginate(goCtx, k.signRequests, req.Pagination, func(signRequestID uint64, value types.SignRequest) (bool, error) {
+		key, err := k.KeysKeeper.Get(goCtx, value.KeyId)
 		if err != nil {
 			return false, err
 		}
@@ -38,7 +35,6 @@ func (k Keeper) SignRequests(goCtx context.Context, req *types.QuerySignRequests
 
 		return true, nil
 	}, func(key uint64, value types.SignRequest) (*types.SignRequest, error) { return &value, nil })
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

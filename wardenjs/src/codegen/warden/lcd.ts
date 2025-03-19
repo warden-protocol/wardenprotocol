@@ -87,6 +87,11 @@ export const createLCDClient = async ({
           requestClient
         })
       },
+      async: {
+        v1beta1: new (await import("./async/v1beta1/query.lcd.js")).LCDQueryClient({
+          requestClient
+        })
+      },
       gmp: new (await import("./gmp/query.lcd.js")).LCDQueryClient({
         requestClient
       }),

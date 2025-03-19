@@ -151,7 +151,7 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 		grpc.WithTransportCredentials(insecurecreds.NewCredentials()),
 	}
 
-	grpcConn, err := grpc.Dial(w.grpcAddr(), opts...)
+	grpcConn, err := grpc.NewClient(w.grpcAddr(), opts...)
 	require.NoError(t, err)
 
 	return &GRPCClient{

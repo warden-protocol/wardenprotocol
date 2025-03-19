@@ -8,11 +8,11 @@ sidebar_position: 2
 
 The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network/) module allowing users to create and manage their Spaces and request Keychains to sign payloads.
 
-This module implements Warden's core concepts, which you can find in our Glossary:
+This module implements Warden's core concepts:
 
-- [Space](/learn/glossary#space)
-- [Keychain](/learn/glossary#keychain)
-- [Key](/learn/glossary#key)
+- [Space](#space)
+- [Keychain](#keychain)
+- [Key](#key)
 
 ## Usage
 
@@ -35,7 +35,7 @@ See also [Glossary: Space](/learn/glossary#space).
 
 ### Key
 
-A **Key** is the public part of a key pair, which is stored onchain. Every Key belongs to a certain [Space](#space).
+A **key** is the public part of a key pair, which is stored onchain. Every key belongs to a certain [Space](#space).
 
 Keys have unique identifiers used to refer to them when requesting a [Keychain](#keychain) to sign a payload.
 
@@ -92,7 +92,7 @@ The `x/warden` module provides the following variables to be used in [Rules](/le
 
 ## Messages
 
-### MsgNewSpace
+### `MsgNewSpace`
 
 Creates a new [Space](#space), optionally specifying the following:
 
@@ -106,7 +106,7 @@ This message is expected to fail in the following cases:
 
 - An owner is specified twice.
 
-### MsgNewKeychain
+### `MsgNewKeychain`
 
 Creates a new [Keychain](#keychain), specifying the following:
 
@@ -120,7 +120,7 @@ This message is expected to fail in the following cases:
 
 - The description is empty.
 
-### MsgUpdateKeychain
+### `MsgUpdateKeychain`
 
 Updates a [Keychain](#keychain) by ID, specifying the following:
 
@@ -133,7 +133,7 @@ This message is expected to fail in the following cases:
 - The description is empty.
 - The creator isn't an admin of the Keychain.
 
-### MsgAddKeychainWriter
+### `MsgAddKeychainWriter`
 
 Adds a new [Writer](/learn/glossary#keychain-writer) to a [Keychain](#keychain).
 
@@ -142,7 +142,7 @@ This message is expected to fail in the following cases:
 - The Writer is already a Writer of the Keychain.
 - The creator isn't an admin of the Keychain.
 
-### MsgFulfilKeyRequest
+### `MsgFulfilKeyRequest`
 
 Updates a [key request](/learn/glossary#key-request) (`KeyRequest`) by ID:
 
@@ -157,7 +157,7 @@ This message is expected to fail in the following cases:
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
-### MsgFulfilSignRequest
+### `MsgFulfilSignRequest`
 
 Updates a [signature request](/learn/glossary#signature-request) (`SignRequest`) by ID:
 
@@ -176,7 +176,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 The following messages must be wrapped inside [Actions](/learn/warden-protocol-modules/x-act#action) from the `x/act` module (instead of being executed directly by users).
 
-### MsgAddSpaceOwner
+### `MsgAddSpaceOwner`
 
 Adds an owner to a [Space](#space).
 
@@ -186,7 +186,7 @@ This message is expected to fail in the following cases:
 
 - The owner is already a member of the Space.
 
-### MsgRemoveSpaceOwner
+### `MsgRemoveSpaceOwner`
 
 Removes an owner from a [Space](#space).
 
@@ -196,7 +196,7 @@ This message is expected to fail in the following cases:
 
 - The owner isn't a member of the Space.
 
-### MsgUpdateSpace
+### `MsgUpdateSpace`
 
 Updates the Admin Rule and Signing Rule of a [Space](#space).
 
@@ -207,7 +207,7 @@ This message is expected to fail in the following cases:
 - The specified Admin Rule ID doesn't exist.
 - The specified Signing Rule ID doesn't exist.
 
-### MsgNewKeyRequest
+### `MsgNewKeyRequest`
 
 Creates a new [key request](/learn/glossary#key-request) (`KeyRequest`) for a given [Keychain](#keychain). The resulting [Key](#key) will belong to a given [Space](#space). Optionally, the following can be specified:
 
@@ -223,7 +223,7 @@ This message is expected to fail in the following cases:
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
-### MsgUpdateKey
+### `MsgUpdateKey`
 
 Updates a [Key](#key) by ID, specifying the following:
 
@@ -236,7 +236,7 @@ This message is expected to fail in the following cases:
 - The Key doesn't exist.
 - The Rule doesn't exist.
 
-### MsgNewSignRequest
+### `MsgNewSignRequest`
 
 Creates a new [signature request](/learn/glossary#signature-request) (`SignRequest`) for a given [Key](#key) and the [Keychain](#keychain) that created it. The following can be specified:
 
@@ -259,7 +259,7 @@ See the [Protobuf definitions on GitHub](https://github.com/warden-protocol/ward
 
 ## Analyzers
 
-[Analyzers](#analyzer) are CosmWasm smart contracts that implement the interface described below.
+**Analyzers** are CosmWasm smart contracts that implement the interface described below.
 
 See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/contracts/contracts/basic-analyzer/src).
 

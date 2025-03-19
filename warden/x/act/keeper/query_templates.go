@@ -3,11 +3,11 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesRequest) (*types.QueryTemplatesResponse, error) {
@@ -15,10 +15,8 @@ func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesReques
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	templates, pageRes, err := query.CollectionFilteredPaginate(
-		ctx,
+		goCtx,
 		k.templates,
 		req.Pagination,
 		func(key uint64, value types.Template) (bool, error) {
@@ -27,7 +25,6 @@ func (k Keeper) Templates(goCtx context.Context, req *types.QueryTemplatesReques
 		func(key uint64, value types.Template) (types.Template, error) {
 			return value, nil
 		})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

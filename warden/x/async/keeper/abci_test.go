@@ -11,6 +11,7 @@ func TestTrimExcessBytes(t *testing.T) {
 		txs          [][]byte
 		maxSizeBytes int64
 	}
+
 	tests := []struct {
 		name string
 		args args
@@ -78,6 +79,7 @@ func TestInjectTx(t *testing.T) {
 		position int
 		appTxs   [][]byte
 	}
+
 	tests := []struct {
 		name string
 		args args

@@ -16,7 +16,7 @@ func DefaultConfig() *Config {
 	}
 }
 
-const DefaultEVMConfigTemplate = `
+const DefaultConfigTemplate = `
 ###############################################################################
 ###                      Price prediction configuration                     ###
 ###############################################################################

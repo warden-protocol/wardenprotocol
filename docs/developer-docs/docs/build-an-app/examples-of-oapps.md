@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Overview
 
-In this section you'll find a full list of **Omnichain Applications** that are currently available on the Warden Protocol.
+In this section you'll find a full list of **Omnichain Applications** that are currently available on Warden Protocol.
 
 ## SpaceWard
 

@@ -5,16 +5,23 @@ on:
   push:
     branches: [main]
     paths:
+      - "go.mod"
       - "cmd/wardend/**"
       - "warden/**"
       - "precompiles/**"
+      - "prophet/**"
     tags:
       - "wardend/v*"
   pull_request:
     paths:
+      - "go.mod"
       - "cmd/wardend/**"
       - "warden/**"
       - "precompiles/**"
+      - "prophet/**"
+
+env:
+  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./prophet/... ./precompiles/..."
 
 jobs:
   lint:
@@ -24,12 +31,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.24"
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.56
+          version: v1.64
           args: --timeout=10m ${{ env.modules }}
 
   unit-test:
@@ -39,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.24"
       - name: Build
         run: go build -v ${{ env.modules }}
       - name: Test (-race)
@@ -51,8 +58,16 @@ jobs:
     strategy:
       matrix:
         release: ["release"]
+    permissions:
+      contents: read
+      packages: write
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -79,7 +94,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v2
         with:
-          just-version: 1.5.0
+          just-version: 1.39.0
 
       - name: ${{ matrix.release }}
         run: just wardend ${{ matrix.release }}

@@ -15,12 +15,13 @@ import (
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
-// Single point of all wardenprotocol precompiles initialization, including precompiles and events registry
+// Single point of all wardenprotocol precompiles initialization, including precompiles and events registry.
 func NewWardenPrecompiles(
 	wardenkeeper wardenkeeper.Keeper,
 	actkeeper actkeeper.Keeper,
 	oraclekeeper oraclekeeper.Keeper,
-	asynckeeper asynckeeper.Keeper) (map[ethcmn.Address]vm.PrecompiledContract, error) {
+	asynckeeper asynckeeper.Keeper,
+) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
 
@@ -28,6 +29,7 @@ func NewWardenPrecompiles(
 	if err != nil {
 		return nil, err
 	}
+
 	precompiles[newActPrecompile.Address()] = newActPrecompile
 
 	eventsRegistry.RegisterEvent("warden.act.v1beta1.EventActionStateChange", newActPrecompile.GetActionStateChangeEvent)
@@ -40,6 +42,7 @@ func NewWardenPrecompiles(
 	if err != nil {
 		return nil, err
 	}
+
 	precompiles[newWardenPrecompile.Address()] = newWardenPrecompile
 
 	eventsRegistry.RegisterEvent("warden.warden.v1beta3.EventAddKeychainAdmin", newWardenPrecompile.GetAddKeychainAdminEvent)
@@ -63,12 +66,14 @@ func NewWardenPrecompiles(
 	if err != nil {
 		return nil, err
 	}
+
 	precompiles[newSlinkyPrecompile.Address()] = newSlinkyPrecompile
 
 	newAsyncPrecompile, err := asyncprecompile.NewPrecompile(asynckeeper, eventsRegistry)
 	if err != nil {
 		return nil, err
 	}
+
 	precompiles[newAsyncPrecompile.Address()] = newAsyncPrecompile
 
 	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateFuture", newAsyncPrecompile.GetCreateFutureEvent)

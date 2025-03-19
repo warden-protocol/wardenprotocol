@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"encoding/binary"
-	"fmt"
+	"errors"
 	"log"
 	"log/slog"
 	"net/http"
@@ -137,7 +137,7 @@ func main() {
 
 func bigEndianBytesFromUint32(n uint64) ([4]byte, error) {
 	if n > 0xffffffff {
-		return [4]byte{}, fmt.Errorf("number is too large to fit in 4 bytes")
+		return [4]byte{}, errors.New("number is too large to fit in 4 bytes")
 	}
 
 	b := make([]byte, 4)

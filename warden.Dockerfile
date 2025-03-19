@@ -1,4 +1,4 @@
-FROM golang:1.23.3
+FROM golang:1.24-bookworm
 
 # Install dependencies
 RUN apt-get update && \

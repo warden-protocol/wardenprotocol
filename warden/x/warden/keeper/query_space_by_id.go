@@ -3,10 +3,10 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k Keeper) SpaceById(goCtx context.Context, req *types.QuerySpaceByIdRequest) (*types.QuerySpaceByIdResponse, error) {
@@ -14,9 +14,7 @@ func (k Keeper) SpaceById(goCtx context.Context, req *types.QuerySpaceByIdReques
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	space, err := k.SpacesKeeper.Get(ctx, req.Id)
+	space, err := k.SpacesKeeper.Get(goCtx, req.Id)
 	if err != nil {
 		return nil, err
 	}

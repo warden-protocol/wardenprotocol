@@ -26,7 +26,7 @@ type GenesisAccount struct {
 	ModulePermissions []string `json:"module_permissions" yaml:"module_permissions"` // permissions of module account
 }
 
-// Validate checks for errors on the vesting and module account parameters
+// Validate checks for errors on the vesting and module account parameters.
 func (sga GenesisAccount) Validate() error {
 	if !sga.OriginalVesting.IsZero() {
 		if sga.StartTime >= sga.EndTime {

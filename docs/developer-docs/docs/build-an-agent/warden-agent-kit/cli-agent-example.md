@@ -11,7 +11,7 @@ To start building your own Agent, follow [Quick start](quick-start). If you'd li
 This example implements a **CLI Agent** that is able to do the following:
 
 - Process user prompts in natural language using the [LangChain](add-agent-capabilities#incorporate-langchain-tools) extension.
-- Interact with the Warden Protocol using the supported [Agent Actions](agent-actions).
+- Interact with Warden Protocol using the supported [Agent Actions](agent-actions).
 
 :::note Code
 The example code is available on GitHub: [`cli-agent`](https://github.com/warden-protocol/agent-kit/blob/main/examples/typescript/cli-agent/README.md)
@@ -55,7 +55,7 @@ To use the [`request_funds` tool](agent-actions) in [Step 4.1](#41-get-ward), yo
 export FAUCET_TOKEN=your-faucet-token
 ```
 
-This is optional: you can alternatively connect your wallet to [SpaceWard](https://spaceward.devnet.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
+This is optional: you can alternatively connect your wallet to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.chiado.wardenprotocol.org/).
 
 ## 3. Run the Agent
 
@@ -78,7 +78,7 @@ Prompt:
 
 ### 4.1. Get WARD
 
-If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step. You can connect your wallet to [SpaceWard](https://spaceward.devnet.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.devnet.wardenprotocol.org/).
+If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step. You can connect your wallet to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.chiado.wardenprotocol.org/).
 
 Type your prompt in the command line:
 

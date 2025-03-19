@@ -34,6 +34,7 @@ func Execute(ctx context.Context, f Future) (res FutureResult, err error) {
 
 	log := slog.With("task", "Execute", "future", f.ID, "handler", f.Handler)
 	log.Debug("start")
+
 	start := time.Now()
 
 	output, err := s.Execute(ctx, f.Input)
@@ -64,6 +65,7 @@ func Verify(ctx context.Context, f FutureResult) (err error) {
 
 	log := slog.With("task", "Verify", "future", f.ID, "handler", f.Handler)
 	log.Debug("start")
+
 	start := time.Now()
 
 	if err := s.Verify(ctx, f.Input, f.Output); err != nil {

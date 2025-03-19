@@ -1,4 +1,4 @@
-package soliditygen
+package main
 
 import (
 	"testing"

@@ -10,6 +10,7 @@ func (k *Keychain) AccAddress() sdk.AccAddress {
 	bz := make([]byte, 8)
 	binary.BigEndian.PutUint64(bz, k.Id)
 	addr := append([]byte("keychain-"), bz...)
+
 	return sdk.AccAddress(addr)
 }
 
@@ -19,6 +20,7 @@ func (k *Keychain) IsParty(address string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -28,6 +30,7 @@ func (k *Keychain) IsAdmin(address string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 

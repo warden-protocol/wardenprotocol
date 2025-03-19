@@ -1,9 +1,13 @@
 package prophet
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
+	"sync"
+	"time"
 
+	"github.com/cosmos/cosmos-sdk/client"
 	lru "github.com/hashicorp/golang-lru/v2"
 )
 
@@ -21,6 +25,9 @@ type P struct {
 
 	resultsWriter *s[FutureResult]
 	votesWriter   *s[Vote]
+
+	selfAddressRwLock sync.RWMutex
+	selfAddress       []byte
 }
 
 // New returns an initialized P. Call [P.Run] to start the main loop.
@@ -47,7 +54,7 @@ func New() (*P, error) {
 //
 // Goroutines are started to execute incoming futures and verifying incoming
 // future results.
-func (p *P) Run() error {
+func (p *P) Run(tendermintRpc string) error {
 	futures, err := newDedupFutureReader(p.futures)
 	if err != nil {
 		return fmt.Errorf("failed to create futures dedup reader: %w", err)
@@ -57,9 +64,41 @@ func (p *P) Run() error {
 		return fmt.Errorf("failed to run futures loop: %w", err)
 	}
 
-	if err := ExecVotes(p.proposals, p.votesWriter); err != nil {
+	proposals, err := newDedupFutureResultReader(p.proposals)
+	if err != nil {
+		return fmt.Errorf("failed to create futures dedup reader: %w", err)
+	}
+
+	if err := ExecVotes(proposals, p.votesWriter); err != nil {
 		return fmt.Errorf("failed to run votes loop: %w", err)
 	}
+
+	go func() {
+		client, err := client.NewClientFromNode(tendermintRpc)
+		if err != nil {
+			panic(err)
+		}
+
+		timeout := time.Now().Add(30 * time.Second)
+
+		for {
+			if time.Now().After(timeout) {
+				return
+			}
+
+			status, err := client.Status(context.Background())
+			if err != nil {
+				time.Sleep(100 * time.Millisecond)
+				continue
+			}
+
+			p.selfAddressRwLock.Lock()
+			defer p.selfAddressRwLock.Unlock()
+			p.selfAddress = status.ValidatorInfo.Address
+
+			return
+		}
+	}()
 
 	return nil
 }
@@ -88,6 +127,27 @@ func (p *P) Results() ([]FutureResult, func()) {
 
 	return values, func() {
 		p.resultsWriter.Remove(values...)
+	}
+}
+
+func (p *P) SelfAddress() []byte {
+	p.selfAddressRwLock.RLock()
+	defer p.selfAddressRwLock.RUnlock()
+
+	return p.selfAddress
+}
+
+// Votes returns a slice with all the votes of futures' results that have been
+// verified.
+// The returned function must be called to remove the votes from the set.
+func (p *P) Votes() ([]Vote, func()) {
+	values := p.votesWriter.Values()
+	if len(values) == 0 {
+		return nil, func() {}
+	}
+
+	return values, func() {
+		p.votesWriter.Remove(values...)
 	}
 }
 
@@ -127,12 +187,14 @@ func newS[T getIDer]() (*s[T], error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &s[T]{l: l}, nil
 }
 
 func (s *s[T]) Write(value T) error {
 	id := value.getID()
 	s.l.Add(id, value)
+
 	return nil
 }
 

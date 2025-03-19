@@ -1,11 +1,12 @@
 package act
 
 import (
+	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
@@ -36,8 +37,9 @@ func (p *Precompile) ActionsQuery(
 	if err != nil {
 		return nil, err
 	}
+
 	if res == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(ActionsResponse).FromResponse(res)
@@ -81,8 +83,9 @@ func (p *Precompile) ActionByIdQuery(
 	if err != nil {
 		return nil, err
 	}
+
 	if res == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(ActionByIdResponse).FromResponse(res)
@@ -124,8 +127,9 @@ func (p *Precompile) ActionsByAddressQuery(
 	if err != nil {
 		return nil, err
 	}
+
 	if res == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(ActionsByAddressResponse).FromResponse(res)
@@ -175,8 +179,9 @@ func (p *Precompile) TemplatesQuery(
 	if err != nil {
 		return nil, err
 	}
+
 	if res == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(TemplatesResponse).FromResponse(res)
@@ -228,8 +233,9 @@ func (p *Precompile) TemplateByIdQuery(
 	if err != nil {
 		return nil, err
 	}
+
 	if res == nil {
-		return nil, fmt.Errorf("received nil response from query server")
+		return nil, errors.New("received nil response from query server")
 	}
 
 	out, err := new(TemplateByIdResponse).FromResponse(res)

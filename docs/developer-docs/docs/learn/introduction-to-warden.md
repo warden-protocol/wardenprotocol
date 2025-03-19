@@ -6,7 +6,7 @@ slug: /
 
 # Introduction to Warden
 
-## The Warden Protocol
+## Warden Protocol
 
 The **Warden Protocol** is a L1 blockchain bringing AI to Web3 and enabling any application, protocol, or smart contract to integrate **safe AI**.
 
@@ -14,7 +14,7 @@ Mass adoption of Web3 requires the creation of safe and seamless AI experiences,
 
 ## Warden AI Agents
 
-A **Warden AI Agent** is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with the Warden Protocol, Warden Agents can perform various onchain [Actions](learn/glossary#action). You can easily build Agents with the **Warden Agent Kit**.
+A **Warden AI Agent** is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform various onchain [Actions](learn/glossary#action). You can easily build Agents with the **Warden Agent Kit**.
 
 To start building an Agent, see [Build an Agent](/build-an-agent/introduction).
 

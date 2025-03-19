@@ -39,6 +39,9 @@ export const createRPCMsgClient = async ({
     act: {
       v1beta1: new (await import("./act/v1beta1/tx.rpc.msg.js")).MsgClientImpl(rpc)
     },
+    async: {
+      v1beta1: new (await import("./async/v1beta1/tx.rpc.msg.js")).MsgClientImpl(rpc)
+    },
     gmp: new (await import("./gmp/tx.rpc.msg.js")).MsgClientImpl(rpc),
     warden: {
       v1beta3: new (await import("./warden/v1beta3/tx.rpc.msg.js")).MsgClientImpl(rpc)

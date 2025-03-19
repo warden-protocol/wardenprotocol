@@ -5,7 +5,7 @@ package echo
 import (
 	"bytes"
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
 )
@@ -19,8 +19,9 @@ func (s Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 }
 
 func (s Handler) Verify(ctx context.Context, input []byte, output []byte) error {
-	if bytes.Compare(input, output) != 0 {
-		return fmt.Errorf("input and output do not match")
+	if !bytes.Equal(input, output) {
+		return errors.New("input and output do not match")
 	}
+
 	return nil
 }

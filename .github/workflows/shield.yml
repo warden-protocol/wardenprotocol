@@ -17,14 +17,14 @@ jobs:
     name: lint
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.24"
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.56
+          version: v1.64
           args: --timeout=10m ./shield/...
 
   unit-test:
@@ -32,9 +32,9 @@ jobs:
     name: test
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.24"
       - name: Test (-race)
         run: go test -race -v ./shield/...
 

@@ -32,10 +32,12 @@ func newDedup[T getIDer](ch <-chan T) (*dedup[T], error) {
 
 	go func() {
 		defer close(out)
+
 		for req := range ch {
 			if c.Contains(req.getID()) {
 				continue
 			}
+
 			c.Add(req.getID(), struct{}{})
 			out <- req
 		}
@@ -59,9 +61,29 @@ func newDedupFutureReader(r FutureReader) (*dedupFutureReader, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &dedupFutureReader{d: d}, nil
 }
 
 func (d dedupFutureReader) Read() <-chan Future {
+	return d.d.out
+}
+
+// dedupFutureResultReader wraps a [FutureResultReader] and deduplicates the incoming
+// future results.
+type dedupFutureResultReader struct {
+	d *dedup[FutureResult]
+}
+
+func newDedupFutureResultReader(r FutureResultReader) (*dedupFutureResultReader, error) {
+	d, err := newDedup(r.Read())
+	if err != nil {
+		return nil, err
+	}
+
+	return &dedupFutureResultReader{d: d}, nil
+}
+
+func (d dedupFutureResultReader) Read() <-chan FutureResult {
 	return d.d.out
 }

@@ -149,7 +149,7 @@ For running the script, make the following adjustments:
 
 4. In `factory_address`, paste the up-to-date [`orderFactory` address](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/broadcast/Deploy.s.sol/10010/latest.json).
 
-5. In `private_key`, paste your private key from [Prerequisites](#prerequisites). If the key doesn't have `0x` at the beginning, add it.
+5. In `private`, paste your private key from [Prerequisites](#prerequisites). If the key doesn't have `0x` at the beginning, add it.
 
 6. In `rpc_url`, paste the Chiado EVM endpoint:
 
@@ -201,7 +201,7 @@ salt="my-salt"
 factory_address="factory-address"
 rpc_url="https://evm.chiado.wardenprotocol.org"
 chain_id="10010"
-private_key="my-private-key"
+private="my-private-key"
 
 # Execute the Just command for creating an advanced Order
 just create-advanced-order \

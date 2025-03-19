@@ -10,9 +10,9 @@ The `IWarden.sol` precompile enables EVM smart contracts to interact with the [`
 
 In this article, you'll find a full list of available methods, allowing you to query and manage the following components:
 
-- [Spaces](/learn/glossary#space)
-- [Keys](/learn/glossary#key)
-- [Keychains](/learn/glossary#keychain)
+- [Spaces](/learn/warden-protocol-modules/x-warden#space)
+- [Keys](/learn/warden-protocol-modules/x-warden#key)
+- [Keychains](/learn/warden-protocol-modules/x-warden#keychain)
 - [Key requests](/learn/glossary#key-request)
 - [Signature requests](/learn/glossary#signature-request)
 

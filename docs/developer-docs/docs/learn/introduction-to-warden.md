@@ -48,7 +48,7 @@ Here is what you can do with Warden:
 Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async` Warden module](/learn/warden-protocol-modules/x-async), you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
 
 - **Operate a Keychain**  
-[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual cross-chain coordination. You can become a Keychain operator or build a custom Keychain.
+[Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions. Since Keychains can sign transactions on virtually any chain, they help avoid manual crosschain coordination. You can become a Keychain operator or build a custom Keychain.
 
 - **Run a validator node**  
 You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden’s network.

@@ -21,7 +21,7 @@ We recommend this option if you wish to run a node with custom settings and lear
 Before you start, complete the following prerequisites:
 
 - [Install Go](https://golang.org/doc/install) 1.22.3 or later.
-- [Install just](https://github.com/casey/just) 1.34.0 or later.
+- [Install Just](https://github.com/casey/just) 1.34.0 or later.
 
 :::tip
 You can install `just` by using `brew`:

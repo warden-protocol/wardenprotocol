@@ -16,7 +16,7 @@ Note that WARD distribution will be characterized by the following:
 
 ## Main WARD distribution
 
-**250M WARD**
+**1B WARD**
 
 ![Distribution chart](https://i.ibb.co/3CFddV3/distribution.png)
 

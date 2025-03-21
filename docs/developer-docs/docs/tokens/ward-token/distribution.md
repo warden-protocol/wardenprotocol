@@ -16,7 +16,7 @@ Note that WARD distribution will be characterized by the following:
 
 ## Main WARD distribution
 
-**250M WARD**
+**1B WARD**
 
 ![Distribution chart](https://i.ibb.co/3CFddV3/distribution.png)
 
@@ -33,4 +33,4 @@ Note that WARD distribution will be characterized by the following:
 
 ## Release schedule
 
-![release schedule](https://i.ibb.co/RpSRCQ2/release.png)
+![release schedule](https://i.ibb.co/YBm8wT8y/schedule.png)

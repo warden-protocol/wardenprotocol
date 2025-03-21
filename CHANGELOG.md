@@ -140,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Return error if analyzer's address is not bech32
 * (x/act) [724](https://github.com/warden-protocol/wardenprotocol/issues/724) Add `creator` filter param to `Rules` query
 * (wardend) Validate bech32 format in add-genesis-keychain and add-genesis-space
+* (keychain-sdk) Add AutoEstimateGas and GasAdjustmentFactor parameters to automatically estimate gas before broadcasting tx
 
 ### Bug Fixes
 * (x/gmp) Remove the GMP default params from genesis

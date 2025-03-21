@@ -23,8 +23,9 @@ import (
 )
 
 var (
-	DefaultGasLimit = uint64(300000000000000000)
-	DefaultFees     = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
+	DefaultGasLimit            = uint64(300000000000000000)
+	DefaultGasAdjustmentFactor = 1.2
+	DefaultFees                = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
 
 	queryTimeout = 250 * time.Millisecond
 )
@@ -73,7 +74,14 @@ type Msger interface {
 
 // Build a transaction with the given messages and sign it.
 // Sequence and account numbers will be fetched automatically from the chain.
-func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgers ...Msger) ([]byte, error) {
+func (c *RawTxClient) BuildTx(
+	ctx context.Context,
+	autoEstimateGas bool,
+	gasAdjustmentFactor float64,
+	gasLimit uint64,
+	fees types.Coins,
+	msgers ...Msger,
+) ([]byte, error) {
 	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
 		return nil, fmt.Errorf("fetch account: %w", err)
@@ -86,8 +94,10 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	if err != nil {
 		return nil, fmt.Errorf("create temp dir: %w", err)
 	}
+
 	defer os.RemoveAll(dname)
 	appConfig.Set(flags.FlagHome, dname)
+
 	app, err := app.New(
 		log.NewNopLogger(),
 		db.NewMemDB(),
@@ -104,7 +114,6 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	signMode := app.TxConfig().SignModeHandler().DefaultMode()
 
 	// build unsigned tx
-	txBuilder.SetGasLimit(gasLimit)
 	txBuilder.SetFeeAmount(fees)
 
 	msgs := make([]sdk.Msg, len(msgers))
@@ -130,6 +139,20 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	if err != nil {
 		return nil, fmt.Errorf("set empty signature: %w", err)
 	}
+
+	if autoEstimateGas {
+		txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+		if err != nil {
+			return nil, fmt.Errorf("encode tx: %w", err)
+		}
+
+		gasLimit, err = c.EstimateGas(ctx, txBytes, gasAdjustmentFactor, gasLimit)
+		if err != nil {
+			return nil, fmt.Errorf("estimate gas: %w", err)
+		}
+	}
+
+	txBuilder.SetGasLimit(gasLimit)
 
 	// Second round: all signer infos are set, so each signer can sign.
 	signerData := xauthsigning.SignerData{
@@ -157,12 +180,12 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		return nil, fmt.Errorf("set signature: %w", err)
 	}
 
-	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+	txBytesRes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
 	if err != nil {
 		return nil, fmt.Errorf("encode tx: %w", err)
 	}
 
-	return txBytes, nil
+	return txBytesRes, nil
 }
 
 // SendTx broadcasts a signed transaction and returns its hash.
@@ -208,4 +231,24 @@ func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
 			}
 		}
 	}
+}
+
+// EstimateGas estimates gas by simulating the transaction.
+// If the simulation exceeds gasLimit, gasLimit is returned.
+func (c *RawTxClient) EstimateGas(
+	ctx context.Context,
+	txBytes []byte,
+	gasAdjustmentFactor float64,
+	gasLimit uint64,
+) (uint64, error) {
+	gasInfo, err := c.client.Simulate(ctx, &txtypes.SimulateRequest{
+		TxBytes: txBytes,
+	})
+	if err != nil {
+		return 0, fmt.Errorf("estimate gas, simulate tx: %w", err)
+	}
+
+	estimatedGas := uint64(float64(gasInfo.GasInfo.GasUsed) * gasAdjustmentFactor)
+
+	return min(estimatedGas, gasLimit), nil
 }

@@ -123,7 +123,10 @@ func (a *App) initConnections() error {
 
 	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
 	a.txWriter = writer.New(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
+
 	a.txWriter.Fees = a.config.TxFees
+	a.txWriter.AutoEstimateGas = a.config.AutoEstimateGas
+	a.txWriter.GasAdjustmentFactor = a.config.GasAdjustmentFactor
 	a.txWriter.GasLimit = a.config.GasLimit
 
 	return nil

@@ -25,6 +25,10 @@ type W struct {
 
 	GasLimit uint64
 
+	AutoEstimateGas bool
+
+	GasAdjustmentFactor float64
+
 	Fees sdk.Coins
 
 	// Lock to prevent trying to send multiple transactions at once.
@@ -90,6 +94,13 @@ func (w *W) gasLimit() uint64 {
 	return w.GasLimit
 }
 
+func (w *W) gasAdjustmentFactor() float64 {
+	if w.GasAdjustmentFactor == 0 {
+		return client.DefaultGasAdjustmentFactor
+	}
+	return w.GasAdjustmentFactor
+}
+
 func (w *W) fees() sdk.Coins {
 	if w.Fees == nil {
 		return client.DefaultFees
@@ -131,7 +142,7 @@ func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 
 	w.Logger.Info("flushing batch", "count", len(msgs))
 
-	tx, err := w.Client.BuildTx(ctx, w.gasLimit(), w.fees(), msgs...)
+	tx, err := w.Client.BuildTx(ctx, w.AutoEstimateGas, w.gasAdjustmentFactor(), w.gasLimit(), w.fees(), msgs...)
 	if err != nil {
 		return err
 	}

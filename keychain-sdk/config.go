@@ -47,6 +47,19 @@ type Config struct {
 	// more gas is needed.
 	GasLimit uint64
 
+	// AutoEstimateGas is a flag to estimate gas before broadcasting the transaction
+	// and use it as GasLimit.
+	//
+	// When AutoEstimateGas == true then GasLimit = min(EstimatedGas, GasLimit)
+	// Otherwise, GasLimit is used
+	AutoEstimateGas bool
+
+	// GasAdjustmentFactor is a float factor applied to the estimated gas values
+	// as a safety margin.
+	//
+	// Example: 1.2 means a 20% safety margin will be added to the estimated gas.
+	GasAdjustmentFactor float64
+
 	// TxFees are the coins used as fees for the outgoing transactions of this
 	// Keychain.
 	TxFees sdk.Coins

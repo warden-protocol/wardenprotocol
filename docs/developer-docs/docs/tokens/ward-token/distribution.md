@@ -33,4 +33,4 @@ Note that WARD distribution will be characterized by the following:
 
 ## Release schedule
 
-![release schedule](https://i.ibb.co/RpSRCQ2/release.png)
+![release schedule](https://i.ibb.co/YBm8wT8y/schedule.png)

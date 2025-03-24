@@ -61,7 +61,7 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/prometheus/client_golang v1.21.1
-	github.com/rs/zerolog v1.33.0
+	github.com/rs/zerolog v1.34.0
 	github.com/sethvargo/go-envconfig v1.1.1
 	github.com/skip-mev/slinky v1.0.10
 	github.com/spf13/cast v1.7.1

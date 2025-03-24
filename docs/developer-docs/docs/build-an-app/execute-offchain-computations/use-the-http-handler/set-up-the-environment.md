@@ -32,7 +32,7 @@ forge init
 
 Create interfaces for interacting with the [`x/async` precompile](../../precompiles/x-async):
 
-1. Create an `scr/interfaces` directory:
+1. Create an `src/interfaces` directory:
    
    ```bash
    mkdir -p src/interfaces

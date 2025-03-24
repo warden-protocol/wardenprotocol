@@ -6,7 +6,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	precommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 

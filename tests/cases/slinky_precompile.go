@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/slinky"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/slinky"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 )

@@ -6,7 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common"
 
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	precommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 

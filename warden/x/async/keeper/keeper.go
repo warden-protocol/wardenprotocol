@@ -20,8 +20,8 @@ import (
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	evmostypes "github.com/evmos/evmos/v20/x/evm/types"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
-	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/callbacks"
+	precommon "github.com/warden-protocol/wardenprotocol/warden/extensions/common"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )

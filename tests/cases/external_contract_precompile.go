@@ -12,8 +12,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 
-	"github.com/warden-protocol/wardenprotocol/precompiles/act"
-	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/act"
+	"github.com/warden-protocol/wardenprotocol/warden/extensions/warden"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 	"github.com/warden-protocol/wardenprotocol/tests/testdata/contracts/caller"

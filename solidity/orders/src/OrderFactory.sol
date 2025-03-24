@@ -3,7 +3,7 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "./Types.sol";
-import { Types as CommonTypes } from "precompile-common/Types.sol";
+import { Types as CommonTypes } from "ext-common/Types.sol";
 import { AdvancedOrderFactory } from "./AdvancedOrderFactory.sol";
 import { Registry } from "./Registry.sol";
 import { BasicOrderFactory } from "./BasicOrderFactory.sol";

@@ -19,6 +19,7 @@ import * as _EthermintFeemarketV1Queryrpc from "./ethermint/feemarket/v1/query.r
 import * as _SlinkyMarketmapV1Queryrpc from "./slinky/marketmap/v1/query.rpc.Query.js";
 import * as _SlinkyOracleV1Queryrpc from "./slinky/oracle/v1/query.rpc.Query.js";
 import * as _WardenActV1beta1Queryrpc from "./warden/act/v1beta1/query.rpc.Query.js";
+import * as _WardenAsyncV1beta1Queryrpc from "./warden/async/v1beta1/query.rpc.Query.js";
 import * as _WardenGmpQueryrpc from "./warden/gmp/query.rpc.Query.js";
 import * as _WardenWardenV1beta3Queryrpc from "./warden/warden/v1beta3/query.rpc.Query.js";
 export const createRpcQueryHooks = ({
@@ -90,6 +91,9 @@ export const createRpcQueryHooks = ({
     warden: {
       act: {
         v1beta1: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc)
+      },
+      async: {
+        v1beta1: _WardenAsyncV1beta1Queryrpc.createRpcQueryHooks(rpc)
       },
       gmp: _WardenGmpQueryrpc.createRpcQueryHooks(rpc),
       warden: {

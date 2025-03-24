@@ -41,7 +41,6 @@ func (k *Bip44Keychain) PublicKey(keyID [4]byte) (pubKey []byte, err error) {
 	}
 
 	pubKey, err = generateECDSAPubKey(privKeySeed)
-
 	if err != nil {
 		return nil, err
 	}

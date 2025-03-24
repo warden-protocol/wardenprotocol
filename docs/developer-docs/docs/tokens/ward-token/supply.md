@@ -9,7 +9,7 @@ sidebar_position: 6
 |Property|Details|
 |-|--|
 | Token | WARD |
-| Initial Total Supply | 250,000,000 WARD |
+| Initial Total Supply | 1,000,000,000 WARD |
 | Decimals | 6 |
 
 

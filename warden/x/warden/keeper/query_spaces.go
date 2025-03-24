@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,9 +15,7 @@ func (k Keeper) Spaces(goCtx context.Context, req *types.QuerySpacesRequest) (*t
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	spaces, pageRes, err := query.CollectionPaginate(ctx, k.SpacesKeeper.Coll(), req.Pagination, func(id uint64, space types.Space) (types.Space, error) {
+	spaces, pageRes, err := query.CollectionPaginate(goCtx, k.SpacesKeeper.Coll(), req.Pagination, func(id uint64, space types.Space) (types.Space, error) {
 		return space, nil
 	})
 	if err != nil {

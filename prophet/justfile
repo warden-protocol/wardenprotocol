@@ -28,7 +28,7 @@ pricepred: _tools
 stoicquote: _tools
   # Retrieve the Stoic quote JSON from the API, generate only an output struct
   curl --max-time 3 --retry 3 --retry-delay 2 --fail "https://stoic.tekloon.net/stoic-quote" \
-    | go run ../soliditygen/cmd/cmd.go \
+    | go run ../cmd/soliditygen \
       --contractName="StoicQuote" \
       --outputFile="-" \
       --outputName="Response" \

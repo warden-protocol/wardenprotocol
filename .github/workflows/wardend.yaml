@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths:
+      - "go.mod"
       - "cmd/wardend/**"
       - "warden/**"
       - "precompiles/**"
@@ -13,6 +14,7 @@ on:
       - "wardend/v*"
   pull_request:
     paths:
+      - "go.mod"
       - "cmd/wardend/**"
       - "warden/**"
       - "precompiles/**"
@@ -56,6 +58,10 @@ jobs:
     strategy:
       matrix:
         release: ["release"]
+    permissions:
+      actions: read
+      contents: read
+      packages: write
 
     steps:
       - name: Free Disk Space (Ubuntu)
@@ -94,5 +100,5 @@ jobs:
       - name: ${{ matrix.release }}
         run: just wardend ${{ matrix.release }}
         env:
-          SKIP: "--skip=validate"
+          SKIP: ${{ startsWith(github.head_ref, 'dependabot/') && '--skip=validate,publish' || '--skip=validate' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

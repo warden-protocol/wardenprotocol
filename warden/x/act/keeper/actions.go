@@ -182,6 +182,8 @@ type actionCreatorKey struct{}
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
+//
+// nolint:contextcheck // cosmoshield triggers the linter
 func (k Keeper) AddAction(
 	ctx context.Context,
 	creator string,

@@ -7,6 +7,7 @@ import (
 )
 
 type Context struct {
+	//nolint:containedctx
 	context.Context
 
 	actionMsg sdk.Msg

@@ -57,6 +57,9 @@ export const createRPCQueryClient = async ({
       act: {
         v1beta1: (await import("./act/v1beta1/query.rpc.Query.js")).createRpcQueryExtension(client)
       },
+      async: {
+        v1beta1: (await import("./async/v1beta1/query.rpc.Query.js")).createRpcQueryExtension(client)
+      },
       gmp: (await import("./gmp/query.rpc.Query.js")).createRpcQueryExtension(client),
       warden: {
         v1beta3: (await import("./warden/v1beta3/query.rpc.Query.js")).createRpcQueryExtension(client)

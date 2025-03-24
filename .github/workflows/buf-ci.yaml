@@ -32,3 +32,4 @@ jobs:
           lint: false
           breaking: ${{ contains(fromJSON('["pull_request"]'), github.event_name) }}
           push: false
+          archive: false

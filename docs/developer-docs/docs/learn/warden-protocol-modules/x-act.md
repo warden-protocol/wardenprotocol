@@ -22,25 +22,21 @@ You can call the `x/act` module from your EVM smart contract using the [`x/act` 
 
 ### Rule
 
-The **Rule** struct represents a set of user-defined conditions that must be met before something can be executed.
+A **Rule** is a set of user-defined conditions under which an [Action](#action) is performed. The `Rule` struct represents a set of conditions that must be met before something can be executed.
 
 Users can register Rules onchain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
 
 Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available onchain. To learn more, see [Hooks](#hooks).
 
-See also [Glossary: Approval Rule](/learn/glossary#approval-rule).
-
 ### Action
 
-An **Action** wraps another message. Each Action contains a [Rule](#rule): when the conditions specified in the Rule are met, the wrapped message is executed.
+An **Action** wraps another message: an onchain transaction on Warden Protocol or an offchain operation. Each Action contains a [Rule](#rule): when the conditions specified in the Rule are met, the wrapped message is executed.
 
 When created, an Action has a *pending* state. When the wrapped message is executed, the Action state changes to *completed*. The creator of the Action can **revoke** it at any time, changing the Action status to *revoked*.
 
 Optionally, it's possible to specify a **timeout height** for an Action. After this height is reached by the blockchain, the Action state will change to *timeout*.
 
 An Action can be **approved** by one or more users. The addresses of the users that approved the Action are stored in its `approvers` field. These addresses can be used as boolean conditions in the Rule expression.
-
-See also [Glossary: Action](/learn/glossary#action).
 
 ### Intent-Specific Language
 
@@ -51,8 +47,6 @@ Here is an example of a basic Rule that is satisfied when one of two addresses a
 ```
 any(2, [warden1jdeysw88gtzz8da6qr6cqepl7ghleane5u46yh, warden1r4d7gh3ysfy3dz3nufpsmj4ad6t5qz2cs33xu3])
 ```
-
-See also [Glossary: ISL](/learn/glossary#intent-specific-language).
 
 ## State
 

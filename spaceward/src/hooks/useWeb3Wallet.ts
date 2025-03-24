@@ -10,16 +10,12 @@ import {
 
 import { getSdkError } from "@walletconnect/utils";
 
-import {
-	IWeb3Wallet,
-	Web3Wallet,
-	Web3WalletTypes,
-} from "@walletconnect/web3wallet";
+import { IWalletKit, WalletKit, WalletKitTypes } from "@reown/walletkit";
 import { createGlobalState } from "./state";
 import { IndexedDb as Storage } from "@/utils/custom-kv-storage";
 
 interface Web3WalletState {
-	w: IWeb3Wallet | null;
+	w: IWalletKit | null;
 	activeSessions: SessionTypes.Struct[];
 	sessionProposals: ProposalTypes.Struct[];
 	authRequests: AuthEngineTypes.PendingRequest[];
@@ -64,7 +60,7 @@ export function useWeb3Wallet(relayUrl: string) {
 			),
 		});
 
-		Web3Wallet.init({
+		WalletKit.init({
 			core,
 			metadata: {
 				name: "Warden Protocol Wallets",

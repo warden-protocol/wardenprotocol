@@ -12,11 +12,11 @@ This section explains how to acquire WARP on Base using Squid Router powered by 
 
 ## Squid Router
 
-Squid, with Axelar's backing, enables the seamless exchange of tokens between different blockchains, facilitating instant access to applications spanning multiple chains with just one click. Utilize Squid to create user-friendly interfaces that leverage cross-chain liquidity, expanding your reach to users with crypto wallets on various chains.
+Squid, with Axelar's backing, enables the seamless exchange of tokens between different blockchains, facilitating instant access to applications spanning multiple chains with just one click. Utilize Squid to create user-friendly interfaces that leverage crosschain liquidity, expanding your reach to users with crypto wallets on various chains.
 
 In short? Transfer your assets from any EVM or Cosmos chain towards any EVM chain (including Base) or Cosmos chain! It's as simple as a Swap.
 
-- Squid, powered by Axelar, facilitates secure bridging to Base through its decentralized cross-chain communication network.
+- Squid, powered by Axelar, facilitates secure bridging to Base through its decentralized crosschain communication network.
 - Axelar enables Squid to connect Base with over 45 other blockchains using a proof-of-stake network with 75 active validators.
 - Users who bridge to Base via Squid maintain their original asset position on the connected chain, secured by Axelar network.
 

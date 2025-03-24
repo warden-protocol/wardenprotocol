@@ -15,7 +15,7 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 		return nil, err
 	}
 
-	kr, err := k.keychains.Get(ctx, msg.KeychainId)
+	kr, err := k.keychains.Get(goCtx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 
 	kr.SetKeybaseId(keybaseId)
 
-	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
+	if err := k.keychains.Set(goCtx, kr.Id, kr); err != nil {
 		return nil, err
 	}
 

@@ -12,7 +12,7 @@ import (
 func (k msgServer) CheckAction(goCtx context.Context, msg *types.MsgCheckAction) (*types.MsgCheckActionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	act, err := k.ActionKeeper.Get(ctx, msg.ActionId)
+	act, err := k.ActionKeeper.Get(goCtx, msg.ActionId)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (k msgServer) CheckAction(goCtx context.Context, msg *types.MsgCheckAction)
 			return nil, err
 		}
 
-		err := k.ActionKeeper.Set(ctx, act)
+		err := k.ActionKeeper.Set(goCtx, act)
 		if err != nil {
 			return nil, err
 		}
@@ -34,7 +34,7 @@ func (k msgServer) CheckAction(goCtx context.Context, msg *types.MsgCheckAction)
 		return &types.MsgCheckActionResponse{Status: act.Status.String()}, nil
 	}
 
-	if err := k.TryExecuteVotedAction(ctx, &act); err != nil {
+	if err := k.TryExecuteVotedAction(goCtx, &act); err != nil {
 		return nil, err
 	}
 

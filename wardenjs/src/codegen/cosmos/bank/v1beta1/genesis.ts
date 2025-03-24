@@ -6,7 +6,7 @@ import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
 /** GenesisState defines the bank module's genesis state. */
 export interface GenesisState {
-  /** params defines all the paramaters of the module. */
+  /** params defines all the parameters of the module. */
   params: Params;
   /** balances is an array containing the balances of all the accounts. */
   balances: Balance[];
@@ -24,7 +24,7 @@ export interface GenesisStateProtoMsg {
 }
 /** GenesisState defines the bank module's genesis state. */
 export interface GenesisStateAmino {
-  /** params defines all the paramaters of the module. */
+  /** params defines all the parameters of the module. */
   params?: ParamsAmino;
   /** balances is an array containing the balances of all the accounts. */
   balances?: BalanceAmino[];

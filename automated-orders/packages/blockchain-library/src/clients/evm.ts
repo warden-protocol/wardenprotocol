@@ -245,6 +245,7 @@ export class EvmClient {
       args: args,
     });
 
+    logInfo(`${this.signer} prepares tx to sign and send`);
     const gas = await this.getGasFees(this.signer, contractAddress, data, 0n);
     const nonce = await this.getNextNonce(this.signer);
 

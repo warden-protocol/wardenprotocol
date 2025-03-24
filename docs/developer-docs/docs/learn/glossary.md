@@ -24,6 +24,8 @@ Here are some examples of onchain Actions:
 - A [key request](#key-request) or a [signature request](#signature-request)
 - Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
 
+This concept is implemented in the `x/act` [module](#module). Learn more: [`x/act`](warden-protocol-modules/x-act).
+
 ---
 
 ## AI Agent
@@ -32,7 +34,7 @@ A Warden AI Agent is an AI-driven program that supports both offchain and onchai
 
 Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and managing [Orders](#order). You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit). AI integration is ensured by Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
 
-Learn more: [Warden AI Agents](warden-ai-agents), [Build an Agent](/build-an-agent/introduction)  
+Learn more: [Warden AI Agents](warden-ai-agents), [Build an Agent](/build-an-agent/introduction).
 
 ---
 
@@ -45,7 +47,17 @@ The core components of AIBI include the following:
 - [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain actions at any destination chain
 - `x/async`: a [Warden module](#module) implementing [Futures](#future) and [Prophets](#prophet)
 
-Learn more: [Warden AI Agents](warden-ai-agents), [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async)
+Learn more: [Warden AI Agents](warden-ai-agents), [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async).
+
+---
+
+## Analyzer
+
+An Analyzer is a [CosmWasm](https://cosmwasm.com) contract that intercepts a payload before it's signed by a [Keychain](#keychain). 
+
+Using Analyzers allows Keychains to receive the final payload without the need to have any knowledge of its content. Analyzers can extract payload metadata and manipulate the payload before it's signed.
+
+This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
 
 ---
 
@@ -61,6 +73,8 @@ An Approval Rule is a set of user-defined conditions under which an [Action](#ac
 
 You can define Approval Rules as part of [Intents](#intent), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
+This concept is implemented in the `x/act` [module](#module). Learn more: [`x/act`](warden-protocol-modules/x-act).
+
 ---
 
 ## Bonded validator
@@ -73,9 +87,9 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Bridging
 
-Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
+Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes crosschain bridges—smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of wrapped tokens on the destination chain. Warden currently supports bridging through Axelar.
 
-Learn more: [Bridging](bridging)
+Learn more: [Bridging](bridging).
 
 ---
 
@@ -105,7 +119,7 @@ A Future is an offchain user-defined computational task that is executed asynchr
 
 A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result, and other validators vote on correctness of the result. There are different types of Futures, depending on the [Future handler type](#future-handler).
 
-Learn more: [`x/async`](warden-protocol-modules/x-async) 
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -118,7 +132,7 @@ Currently, we support two handlers, which allow executing the following tasks:
 - AI-driven price predictions
 - HTTP requests to external services, such as blockchain APIs
 
-Learn more: [`x/async`](warden-protocol-modules/x-async) 
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -162,6 +176,8 @@ Keys in blockchain are paired to identify users and secure the ownership of wall
 
 Warden offers [Modular Key Management](#modular-key-management): you can use [Keychains](#keychain) to generate key pairs and sign transactions. This is how it works: [Key request](#key-request), [Signature request](#signature-request).
 
+This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
+
 ---
 
 ## Key request
@@ -172,7 +188,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to Warden Protocol.
 
-Learn more: [Key request flow](/learn/request-flow#key-request-flow)
+Learn more: [Key request flow](/learn/request-flow#key-request-flow).
 
 ---
 
@@ -188,7 +204,7 @@ Every [Omnichain Application](#omnichain-application) has at least one Keychain�
 
 Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
-Learn more: [Build a Keychain](/build-a-keychain/introduction)
+This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden), [Build a Keychain](/build-a-keychain/introduction).
 
 ---
 
@@ -208,7 +224,7 @@ A Keychain Writer is an account that publishes signatures and public keys on beh
 
 The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#node), facilitating the development of [Keychains](#keychain).
 
-Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk)
+Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk).
 
 ---
 
@@ -233,7 +249,7 @@ By decoupling application-layer and protocol-layer security, Warden takes the be
 
 Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](/learn/glossary#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
 
-Learn more: [Warden Protocol modules](warden-protocol-modules/introduction)
+Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
 ---
 
@@ -253,7 +269,7 @@ Reasons for running a node include the following:
 
 An Omnichain Application (OApp) in an application that builds upon an [Omnichain Contract](#omnichain-contract). OApps allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. An example of an OApp is [SpaceWard](#spaceward)—our application functioning as the front-end interface for Warden.
 
-Learn more: [Build an app](/build-an-app/introduction)
+Learn more: [Build an app](/build-an-app/introduction).
 
 ---
 
@@ -263,7 +279,7 @@ An Omnichain Contract is the main part of any [Omnichain Application](#omnichain
 
 In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [AI Blockchain Interface](#ai-blockchain-interface-aibi) and [Order](#order).
 
-Learn more: [Build an app](/build-an-app/introduction)
+Learn more: [Build an app](/build-an-app/introduction).
 
 ---
 
@@ -271,7 +287,7 @@ Learn more: [Build an app](/build-an-app/introduction)
 
 An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
 
-Learn more: [Oracle services](oracle-services)
+Learn more: [Oracle services](oracle-services).
 
 ---
 
@@ -281,7 +297,7 @@ An Order is a Solidity [smart contract](#omnichain-contract) performing onchain 
 
 When creating an Order, you can implement custom logic by using [Warden modules](#module), [Keychains](#keychain), and other features. In particular, the `x/async` module allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 
-Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async)
+Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -289,7 +305,7 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Futures](/learn/glossary#future), and other components.
 
-Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction)
+Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
 ---
 
@@ -302,7 +318,7 @@ A Prophet is a subprocess running on [validator](#validator) nodes, which has tw
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
-Learn more: [`x/async`](warden-protocol-modules/x-async) 
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -314,7 +330,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to Warden Protocol.
 
-Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
+Learn more: [Signature request flow](/learn/request-flow#signature-request-flow).
 
 ---
 
@@ -328,13 +344,15 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
 
+This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
+
 ---
 
 ## SpaceWard
 
 SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [SpaceWard documentation](https://help.wardenprotocol.org)
+Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).
 
 ---
 
@@ -393,7 +411,7 @@ Validators enter this state either when they decide to stop participating in [st
 
 WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations such as [governance](#governance), [staking](#staking), protocol fees and acts as a medium of payment for operators, such as [Keychain](#keychain) operators.
 
-Learn more: [WARD token](/tokens/ward-token/ward)
+Learn more: [WARD token](/tokens/ward-token/ward).
 
 ---
 
@@ -401,7 +419,7 @@ Learn more: [WARD token](/tokens/ward-token/ward)
 
 The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
 
-Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction)
+Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
 
 ---
 
@@ -409,7 +427,7 @@ Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction)
 
 WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
 
-Learn more: [WARP token](/tokens/warp-token/warp)
+Learn more: [WARP token](/tokens/warp-token/warp).
 
 ---
 
@@ -417,4 +435,4 @@ Learn more: [WARP token](/tokens/warp-token/warp)
 
 YieldWard is an [Omnichain Application](#omnichain-application) functioning as a smart yield generator that automates and optimizes your earnings across multiple protocols. YieldWard simplifies your yield and staking experience, letting you enjoy effortless management, decentralized security, and optimal yields.
 
-Learn more: [YieldWard documentation](https://docs.yieldward.com)
+Learn more: [YieldWard documentation](https://docs.yieldward.com).

@@ -285,7 +285,7 @@ wardend tx wasm store target/wasm32-unknown-unknown/release/hello_world.wasm \
   --gas-adjustment 1.3 \
   --gas-prices 100000000000award \
   -y \
-  --chain-id chain_123-1 \
+  --chain-id chiado_10010-1 \
   --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>
@@ -356,7 +356,7 @@ wardend tx wasm instantiate 1 '{}' \
   --gas-prices 100000000000award \
   --no-admin \
   -y \
-  --chain-id chain_123-1 \
+  --chain-id chiado_10010-1 \
   --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>
@@ -408,7 +408,7 @@ wardend tx wasm execute my-contract-address '{"say_hello":{}}' \
   --gas-adjustment 1.3 \
   --gas-prices 100000000000award \
   -y \
-  --chain-id chain_123-1 \
+  --chain-id chiado_10010-1 \
   --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>
@@ -431,5 +431,5 @@ Happy coding! 🚀
 
 ## Next steps
 
-After deploying a basic WASM smart contract, you can [deploy a cross-chain app using GMP](deploy-a-cross-chain-app).
+After deploying a basic WASM smart contract, you can [deploy a crosschain app using GMP](deploy-a-cross-chain-app).
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ExecuteSignedQuotePayload, ExecuteSignedQuoteParams, GetSupertransactionReceiptPayload, FeeTokenInfo, GetQuoteParams, GetQuotePayload, Instruction, LARGE_DEFAULT_GAS_LIMIT, PaymentInfo, resolveInstructions, toMultichainNexusAccount } from "@biconomy/abstractjs";
+import { ExecuteSignedQuotePayload, ExecuteSignedQuoteParams, GetSupertransactionReceiptPayload, FeeTokenInfo, GetQuoteParams, GetQuotePayload, Instruction, LARGE_DEFAULT_GAS_LIMIT, PaymentInfo, resolveInstructions, toMultichainNexusAccount, MultichainSmartAccount } from "@biconomy/abstractjs";
 import { DEFAULT_MEE_NODE_URL } from "../types/biconomy/constants.js";
 import { GetTransactionType, Hex, IsNarrowable, LocalAccount, SerializeTransactionFn, SignableMessage, TransactionSerializable, TransactionSerialized, TypedData, TypedDataDefinition, extractChain, http } from 'viem';
 import * as chains from 'viem/chains';
@@ -27,27 +27,27 @@ type QuoteRequest = {
 }
 
 export class BiconomyMEEClient {
-  private url: string;
+    private url: string;
 
-  constructor(url: string = DEFAULT_MEE_NODE_URL) {
-    this.url = url;
-  }
-
-  async executeSignedQuote(params: ExecuteSignedQuoteParams): Promise<ExecuteSignedQuotePayload> {
-    const response = await axios.post<ExecuteSignedQuotePayload>(`${this.url}/v1/exec`, params, {
-    headers: { "Content-Type": "application/json" }
-    });
-    return response.data;
-  }
-
-  async transactionExists(hash: Hex): Promise<boolean> {
-    const response = await axios.get<GetSupertransactionReceiptPayload>(`${this.url}/v1/explorer/${hash}`);
-
-    if (response.status === 200) {
-      return true;
+    constructor(url: string = DEFAULT_MEE_NODE_URL) {
+        this.url = url;
     }
-    return false;
-  }
+
+    async executeSignedQuote(params: ExecuteSignedQuoteParams): Promise<ExecuteSignedQuotePayload> {
+        const response = await axios.post<ExecuteSignedQuotePayload>(`${this.url}/v1/exec`, params, {
+            headers: { "Content-Type": "application/json" }
+        });
+        return response.data;
+    }
+
+    async transactionExists(hash: Hex): Promise<boolean> {
+        const response = await axios.get<GetSupertransactionReceiptPayload>(`${this.url}/v1/explorer/${hash}`);
+
+        if (response.status === 200) {
+            return true;
+        }
+        return false;
+    }
 
     public async getQuote(
         address: Hex,
@@ -62,8 +62,11 @@ export class BiconomyMEEClient {
         const uniqueChainIds = instructions.map((instruction) => instruction.chainId);
         const resolvedChains = uniqueChainIds.map(chainId => extractChain({
             chains: Object.values(chains),
+            /* eslint-disable @typescript-eslint/no-explicit-any */
             id: chainId as any,
+            /* eslint-enable @typescript-eslint/no-explicit-any */
         }));
+        
         const transports = resolvedChains.map(() => http());
 
         const account = new NoopLocalAccount(address);
@@ -77,7 +80,7 @@ export class BiconomyMEEClient {
     }
 
     private async getQuoteInternal(
-        account: any,
+        account: MultichainSmartAccount,
         parameters: GetQuoteParams
     ): Promise<GetQuotePayload> {
         const {
@@ -119,14 +122,14 @@ export class BiconomyMEEClient {
 
         const userOps = userOpResults.map(
             ([
-                 callData,
-                 nonce_,
-                 isAccountDeployed,
-                 initCode,
-                 sender,
-                 callGasLimit,
-                 chainId
-             ]) => ({
+                callData,
+                nonce_,
+                isAccountDeployed,
+                initCode,
+                sender,
+                callGasLimit,
+                chainId
+            ]) => ({
                 sender,
                 callData,
                 callGasLimit,
@@ -154,7 +157,7 @@ export class BiconomyMEEClient {
         const quoteRequest: QuoteRequest = { userOps, paymentInfo }
 
         const response = await axios.post<GetQuotePayload>(
-            `${this.DEFAULT_MEE_NODE_URL}/${path}`,
+            `${this.url}/${path}`,
             quoteRequest,
             { headers: { "Content-Type": "application/json" } }
         );

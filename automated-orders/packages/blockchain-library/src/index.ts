@@ -14,7 +14,7 @@ export {
 } from './types/warden/functions.js';
 
 export { WardenClient } from './clients/warden.js';
-
+export { BiconomyMEEClient } from './clients/mee.js';
 export { WardenRegistryClient } from './clients/registry.js';
 export { IWardenRegistryConfiguration } from './types/registry/configuration.js';
 

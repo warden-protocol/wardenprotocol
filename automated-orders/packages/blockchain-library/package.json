@@ -13,13 +13,16 @@
     "build": "tsc --build"
   },
   "dependencies": {
+    "@biconomy/abstractjs": "^0.3.0",
+    "@rhinestone/module-sdk": "^0.2.7",
     "@wagmi/core": "^2.14.6",
     "@wardenprotocol/wardenjs": "0.0.11",
     "asn1.js": "^5.4.1",
+    "axios": "^1.8.4",
     "cockatiel": "^3.2.1",
     "lru-cache": "^11.0.2",
     "secp256k1": "5.0.1",
-    "viem": "2.x"
+    "viem": "^2.22.0"
   },
   "devDependencies": {
     "typescript": "^5.6.3"

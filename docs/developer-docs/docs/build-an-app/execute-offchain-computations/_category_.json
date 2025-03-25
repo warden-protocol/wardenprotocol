@@ -1,0 +1,11 @@
+{
+  "position": 4,
+  "label": "Execute offchain computations with x/async",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Execute offchain computations with x/async"
+  },
+  "customProps": {}
+}

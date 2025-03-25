@@ -1,11 +1,11 @@
 {
-  "position": 3,
-  "label": "Upgrade",
+  "position": 2,
+  "label": "Use the price prediction handler",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Networks"
+    "title": "Use the price prediction handler"
   },
   "customProps": {}
 }

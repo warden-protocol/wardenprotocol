@@ -10,8 +10,8 @@ The `IAct.sol` precompile  enables EVM smart contracts to interact with the [`x/
 
 In this article, you'll find a full list of available methods, allowing you to query and manage the following components:
 
-- [Rules](/learn/glossary#approval-rule)
-- [Actions](/learn/glossary#action)
+- [Rules](/learn/warden-protocol-modules/x-act#rule)
+- [Actions](/learn/warden-protocol-modules/x-act#action)
 
 To learn how to use this precompile, refer to [Interact with `x/act`](/category/interact-with-xact).
 

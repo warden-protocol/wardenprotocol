@@ -2,18 +2,18 @@
 sidebar_position: 3
 ---
 
-# Deploy a cross-chain application using GMP
+# Deploy a crosschain application using GMP
 
 ## Overview
 
-This guide explains how to build the logic for a **cross-chain app** using **Axelar GMP** (General Message Passing).
+This guide explains how to build the logic for a **crosschain app** using **Axelar GMP** (General Message Passing).
 
 You'll deploy two contracts:
 
 - An EVM contract on **Ethereum Sepolia**
 - A WASM contract on **Warden** (**Buenavista testnet**)
 
-After you execute the WASM contract on Warden, it'll be able to burn tokens from the EVM contract on Sepolia. For cross-chain interaction, the contracts will use the [x/gmp module](/learn/warden-protocol-modules/external-modules#xgmp), which enables Axelar GMP.
+After you execute the WASM contract on Warden, it'll be able to burn tokens from the EVM contract on Sepolia. For crosschain interaction, the contracts will use the [x/gmp module](/learn/warden-protocol-modules/external-modules#xgmp), which enables Axelar GMP.
 
 Note that this guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
 
@@ -29,7 +29,7 @@ In this section, you'll deploy an EVM contract on Ethereum Sepolia.
 
 Here are the key features of this contract:
 
-- It'll function both as an ERC20 token and a cross-chain executable contract.
+- It'll function both as an ERC20 token and a crosschain executable contract.
 - It'll be able to receive burn instructions from other chains through the Axelar network.
 - The initial token supply will be minted to the contract itself, not to any external address.
 - Burning can only be done from the balance of the contract, not from user balances.
@@ -87,7 +87,7 @@ Before you start, complete the following prerequisites:
 
     /**
     * @title BurnableToken
-    * @dev An ERC20 token that can be burned through cross-chain messages using Axelar
+    * @dev An ERC20 token that can be burned through crosschain messages using Axelar
     */
 
     contract BurnableToken is AxelarExecutable, ERC20Burnable {
@@ -109,7 +109,7 @@ Before you start, complete the following prerequisites:
         }
 
         /**
-        * @dev Handles cross-chain messages received through Axelar
+        * @dev Handles crosschain messages received through Axelar
         * @param sourceChain The name of the source chain
         * @param sourceAddress The address of the source contract on the source chain
         * @param payload The payload sent from the source chain (the amount to burn)
@@ -275,9 +275,9 @@ In the following steps, you'll deploy a WASM contract on a Warden testnet, Buena
 Here are the key points of this contract:
 
 - It'll function as a bridge between a contract deployed on Warden and a contract deployed on an EVM chain (Sepolia in this case).
-- It'll use Axelar's infrastructure for cross-chain communication.
+- It'll use Axelar's infrastructure for crosschain communication.
 - The burning amount will be passed from the WASM contract to the EVM contract.
-- Gas fees for cross-chain execution will be included in the transaction.
+- Gas fees for crosschain execution will be included in the transaction.
 
 ### Prerequisites
 

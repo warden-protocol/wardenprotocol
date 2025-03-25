@@ -11,8 +11,9 @@ The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network/) module all
 This module implements Warden's core concepts:
 
 - [Space](#space)
-- [Keychain](#keychain)
 - [Key](#key)
+- [Keychain](#keychain)
+- [Analyzer](#analyzer)
 
 ## Usage
 
@@ -25,13 +26,11 @@ The `x/warden` module is used for signing transactions in our [automated Orders 
 
 ### Space
 
-A **Space** is a collection of users (owners) that share a common set of [Rules](/learn/warden-protocol-modules/x-act#rule):
+A **Space** is a collection of users (owners) that manage [keys](#key) and share a common set of [Rules](/learn/warden-protocol-modules/x-act#rule):
 
 - **Admin Rule**: It's a applied to all admin operations such as adding or removing Space owners.
 - **Signing Rule**: It's applied to all signature operations such as [requesting a new key](/learn/glossary#key-request) or [signature](/learn/glossary#signature-request).
 - **Default Rule**: It's applied if no Rule is specified, allowing any operation if at least 1 of the Space owners approves it.
-
-See also [Glossary: Space](/learn/glossary#space).
 
 ### Key
 
@@ -39,18 +38,16 @@ A **key** is the public part of a key pair, which is stored onchain. Every key b
 
 Keys have unique identifiers used to refer to them when requesting a [Keychain](#keychain) to sign a payload.
 
-See also [Glossary: Key](/learn/glossary#key).
-
 ### Keychain
 
-A Keychain fulfills [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request) from users. Optionally, it can set a fee for each request.
+A Keychain is a custodian that generates and stores [keys](#key) and signs transactions. Keychains fulfill [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request) from users. Optionally, they can set a fee for each request.
 
 Keychains can be registered onchain. Each Keychain has the following:
 
 - A list of admins that can update the Keychain information
 - A list of [Writers](/learn/glossary#keychain-writer)—the only addresses authorized to send updates to requests
 
-See also [Glossary: Keychain](/learn/glossary#keychain), [Request flow](/learn/request-flow).
+See also: [Request flow](/learn/request-flow).
 
 ### Analyzer
 
@@ -75,8 +72,8 @@ The `x/warden` module keeps the state of the following primary objects:
 - Spaces
 - Keys
 - Keychains
-- KeyRequests
-- SignRequests
+- Key requests
+- Signature requests
 
 To manage this state, the module also keeps the following indexes:
 

@@ -1,8 +1,8 @@
-
+import axios from "axios";
+import { ExecuteSignedQuotePayload, ExecuteSignedQuoteParams, GetSupertransactionReceiptPayload, FeeTokenInfo, GetQuoteParams, GetQuotePayload, Instruction, LARGE_DEFAULT_GAS_LIMIT, PaymentInfo, resolveInstructions, toMultichainNexusAccount } from "@biconomy/abstractjs";
+import { DEFAULT_MEE_NODE_URL } from "../types/biconomy/constants.js";
 import { GetTransactionType, Hex, IsNarrowable, LocalAccount, SerializeTransactionFn, SignableMessage, TransactionSerializable, TransactionSerialized, TypedData, TypedDataDefinition, extractChain, http } from 'viem';
-import { FeeTokenInfo, GetQuoteParams, GetQuotePayload, Instruction, LARGE_DEFAULT_GAS_LIMIT, PaymentInfo, resolveInstructions, toMultichainNexusAccount } from '@biconomy/abstractjs';
 import * as chains from 'viem/chains';
-import axios from 'axios';
 
 /**
  * Internal structure for submitting a quote request to the MEE service
@@ -27,13 +27,27 @@ type QuoteRequest = {
 }
 
 export class BiconomyMEEClient {
-    private readonly DEFAULT_MEE_NODE_URL = "https://mee-node.biconomy.io";
+  private url: string;
 
-    private url: string;
+  constructor(url: string = DEFAULT_MEE_NODE_URL) {
+    this.url = url;
+  }
 
-    constructor(url: string = this.DEFAULT_MEE_NODE_URL) {
-        this.url = url;
+  async executeSignedQuote(params: ExecuteSignedQuoteParams): Promise<ExecuteSignedQuotePayload> {
+    const response = await axios.post<ExecuteSignedQuotePayload>(`${this.url}/v1/exec`, params, {
+    headers: { "Content-Type": "application/json" }
+    });
+    return response.data;
+  }
+
+  async transactionExists(hash: Hex): Promise<boolean> {
+    const response = await axios.get<GetSupertransactionReceiptPayload>(`${this.url}/v1/explorer/${hash}`);
+
+    if (response.status === 200) {
+      return true;
     }
+    return false;
+  }
 
     public async getQuote(
         address: Hex,
@@ -105,14 +119,14 @@ export class BiconomyMEEClient {
 
         const userOps = userOpResults.map(
             ([
-                callData,
-                nonce_,
-                isAccountDeployed,
-                initCode,
-                sender,
-                callGasLimit,
-                chainId
-            ]) => ({
+                 callData,
+                 nonce_,
+                 isAccountDeployed,
+                 initCode,
+                 sender,
+                 callGasLimit,
+                 chainId
+             ]) => ({
                 sender,
                 callData,
                 callGasLimit,

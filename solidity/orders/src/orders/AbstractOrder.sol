@@ -3,10 +3,10 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { RLPEncode } from "./RLPEncode.sol";
-import { Types } from "./Types.sol";
-import { ExecutionData } from "./IExecution.sol";
-import { Strings } from "./Strings.sol";
+import { RLPEncode } from "../lib/RLPEncode.sol";
+import { Strings } from "../lib/Strings.sol";
+import { Types } from "../types/Types.sol";
+import { ExecutionData } from "../types/IExecution.sol";
 
 error InvalidScheduler();
 error InvalidRegistry();

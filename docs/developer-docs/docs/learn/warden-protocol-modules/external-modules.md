@@ -42,7 +42,7 @@ GMP allows smart contracts on one chain to send messages and data to smart contr
 
 To start using `x/gmp`, follow this guide:
 
-- [Deploy a cross-chain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
+- [Deploy a crosschain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
 
 Learn more:
 

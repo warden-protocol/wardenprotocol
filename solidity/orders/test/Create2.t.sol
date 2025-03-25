@@ -2,9 +2,9 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { Test } from "forge-std/src/Test.sol";
-import { Create2 } from "../src/Create2.sol";
+import { Create2 } from "../src/lib/Create2.sol";
 import { Registry } from "../src/Registry.sol";
-import { OrderFactory } from "../src/OrderFactory.sol";
+import { OrderFactory } from "../src/factories/OrderFactory.sol";
 
 contract Create2Test is Test {
     Create2 internal create2;

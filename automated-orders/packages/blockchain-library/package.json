@@ -22,7 +22,7 @@
     "cockatiel": "^3.2.1",
     "lru-cache": "^11.0.2",
     "secp256k1": "5.0.1",
-    "viem": "^2.22.0"
+    "viem": "^2.23.10"
   },
   "devDependencies": {
     "typescript": "^5.6.3"

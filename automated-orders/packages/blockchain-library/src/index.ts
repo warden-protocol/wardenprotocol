@@ -24,3 +24,5 @@ export {
     RegisterAbi,
     TransactionsAbi,
 } from './types/registry/functions.js';
+
+export { getQuotePayloadAbiItem } from './types/biconomy/abi.js';

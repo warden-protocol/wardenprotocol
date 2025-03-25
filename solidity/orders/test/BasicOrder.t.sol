@@ -4,7 +4,7 @@ pragma solidity >=0.8.25 <0.9.0;
 import { Test } from "forge-std/src/Test.sol";
 import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
-import { Types } from "../src/Types.sol";
+import { Types } from "../src/types/Types.sol";
 import {
     OrderCreated,
     OrderFactory,
@@ -13,15 +13,15 @@ import {
     InvalidSchedulerAddress,
     SchedulerChanged,
     SaltAlreadyUsed
-} from "../src/OrderFactory.sol";
-import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
-import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
-import { IExecution } from "../src/IExecution.sol";
+} from "../src/factories/OrderFactory.sol";
+import { BasicOrderFactory } from "../src/factories/BasicOrderFactory.sol";
+import { AdvancedOrderFactory } from "../src/factories/AdvancedOrderFactory.sol";
+import { IExecution } from "../src/types/IExecution.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { InvalidScheduler } from "../src/AbstractOrder.sol";
-import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/BasicOrder.sol";
+import { InvalidScheduler } from "../src/orders/AbstractOrder.sol";
+import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/orders/BasicOrder.sol";
 import {
     BadCreatorAddress,
     ExecutionAlreadyRegistered,

@@ -2,7 +2,7 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import { IExecution } from "./IExecution.sol";
+import { IExecution } from "./types/IExecution.sol";
 
 error InvalidExecutionAddress();
 error UnauthorizedToAddTx();

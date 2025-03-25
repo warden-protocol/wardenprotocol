@@ -4,10 +4,10 @@ pragma solidity >=0.8.25 <0.9.0;
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { FutureByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { AbstractOrder } from "./AbstractOrder.sol";
-import { ExecutionData, IExecution } from "./IExecution.sol";
-import { Registry } from "./Registry.sol";
-import { Types } from "./Types.sol";
+import { AbstractOrder } from "../orders/AbstractOrder.sol";
+import { ExecutionData, IExecution } from "../types/IExecution.sol";
+import { Types } from "../types/Types.sol";
+import { Registry } from "../Registry.sol";
 
 error ConditionNotMet();
 error ExecutedError();

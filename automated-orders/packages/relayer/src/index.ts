@@ -40,10 +40,10 @@ async function main() {
   }, sepolia);
 
   const processor = new NewSignatureProcessor(
-    ethereum,
     registry,
     warden.pollSignatureRequests.bind(warden),
     config.SIGN_REQUESTS_PROCESSOR_SEEN_CACHE_ELEMENTS_SIZE,
+    ethereum,
   ).start();
 
   await Promise.all([processor]);

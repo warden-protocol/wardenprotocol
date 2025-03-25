@@ -1,0 +1,1 @@
+export const DEFAULT_MEE_NODE_URL = "https://mee-node.biconomy.io";

@@ -1,9 +1,9 @@
 import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 import { LRUCache } from 'lru-cache';
-import { decodeFunctionResult, Hex } from 'viem';
+import { concatHex, decodeFunctionResult, Hex } from 'viem';
 import { ExecuteSignedQuoteParams, GetQuotePayload } from '@biconomy/abstractjs';
 
-import { getQuotePayloadAbiItem } from '../types/biconomy/abi';
+import { getQuotePayloadAbiItem } from '../types/biconomy/abi.js';
 import { EvmClient } from '../clients/evm.js';
 import { BiconomyMEEClient } from '../clients/mee.js';
 import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
@@ -104,7 +104,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
       });
 
       const params: ExecuteSignedQuoteParams = {
-        signedQuote: { ...getQuotePayload as GetQuotePayload, signature: data.signature }
+        signedQuote: { ...getQuotePayload as GetQuotePayload, signature: concatHex(["0x00", data.signature]) }
       };
       
       await this.mee.executeSignedQuote(params);

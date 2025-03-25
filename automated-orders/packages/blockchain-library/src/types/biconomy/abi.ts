@@ -18,7 +18,7 @@ export const getQuotePayloadAbiItem = {
         },
         {
           "name": "commitment",
-          "type": "bytes32"
+          "type": "bytes"
         },
         {
           "name": "paymentInfo",

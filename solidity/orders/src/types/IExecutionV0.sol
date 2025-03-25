@@ -9,7 +9,7 @@ struct ExecutionData {
     uint256 value;
 }
 
-interface IExecution {
+interface IExecutionV0 {
     /**
      * @dev Indicates if an order can be executed.
      * @return A boolean value indicating that the order can be executed.

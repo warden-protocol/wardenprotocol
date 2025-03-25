@@ -16,7 +16,7 @@ event SaltUsed(bytes32 indexed salt, address indexed creator);
 event AdvancedOrderCreated(address indexed creator, address orderAddress);
 
 contract AdvancedOrderFactory is ReentrancyGuard {
-    // Registry of IExecution contracts
+    // Registry of IExecutionV0 contracts
     Registry public immutable REGISTRY;
 
     // Mapping to track used salts to prevent reuse

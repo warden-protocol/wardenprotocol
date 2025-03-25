@@ -6,7 +6,7 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { RLPEncode } from "../lib/RLPEncode.sol";
 import { Strings } from "../lib/Strings.sol";
 import { Types } from "../types/Types.sol";
-import { ExecutionData } from "../types/IExecution.sol";
+import { ExecutionData } from "../types/IExecutionV0.sol";
 
 error InvalidScheduler();
 error InvalidRegistry();

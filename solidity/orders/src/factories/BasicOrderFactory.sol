@@ -17,7 +17,7 @@ contract BasicOrderFactory is ReentrancyGuard {
     // Event emitted when a new BasicOrder is created
     event BasicOrderCreated(address indexed creator, address orderAddress);
 
-    // Registry of IExecution contracts
+    // Registry of IExecutionV0 contracts
     Registry public immutable REGISTRY;
 
     // Mapping to track used salts to prevent reuse

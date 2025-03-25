@@ -5,7 +5,7 @@ import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompil
 import { FutureByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AbstractOrder } from "../orders/AbstractOrder.sol";
-import { ExecutionData, IExecution } from "../types/IExecution.sol";
+import { ExecutionData, IExecutionV0 } from "../types/IExecutionV0.sol";
 import { Types } from "../types/Types.sol";
 import { Registry } from "../Registry.sol";
 
@@ -61,7 +61,7 @@ struct PricePredictOutput {
     uint256[][] metrics;
 }
 
-contract AdvancedOrder is AbstractOrder, IExecution {
+contract AdvancedOrder is AbstractOrder, IExecutionV0 {
     Types.AdvancedOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
     uint64 public futureId;

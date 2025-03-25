@@ -31,7 +31,7 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     // Mapping from order contract to order creator
     mapping(address orderAddress => address orderCreator) public orders;
 
-    // Registry of IExecution contracts
+    // Registry of IExecutionV0 contracts
     Registry public immutable REGISTRY;
 
     // BasicOrderFactory contract

@@ -76,7 +76,7 @@ interface IExecutionV1 {
     /**
      * @dev Creates action for new sign request from stored order data.
      * If action created successfully then emit Executed event.
-     *
+     * @param quote Committed quote received from MEE node.
      * @return A boolean value indicating parameter action was created and transaction hash.
      */
     function execute(GetQuotePayload calldata quote) external returns (bool, bytes32);

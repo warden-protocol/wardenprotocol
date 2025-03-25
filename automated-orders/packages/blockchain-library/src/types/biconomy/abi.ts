@@ -1,6 +1,6 @@
 export const getQuotePayloadAbiItem = {
   inputs: [],
-  name: 'temp',
+  name: 'getQuotePayload',
   stateMutability: 'view',
   type: 'function',
   outputs: [

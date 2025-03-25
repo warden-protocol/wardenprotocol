@@ -9,8 +9,8 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { MockAsyncPrecompile } from "../mocks/MockAsyncPrecompile.sol";
-import { OrderFactory, OrderType } from "../src/OrderFactory.sol";
-import { Types } from "../src/Types.sol";
+import { OrderFactory, OrderType } from "../src/factories/OrderFactory.sol";
+import { Types } from "../src/types/Types.sol";
 
 contract CreateOrder is Script {
     address internal broadcaster;

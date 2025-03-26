@@ -204,17 +204,17 @@ export class NoopLocalAccount implements LocalAccount {
   public readonly source: string = '';
   public readonly type = 'local';
 
-  public signMessage({ message }: { message: SignableMessage; }): Promise<Hex> {
+  public signMessage({ message: _message }: { message: SignableMessage; }): Promise<Hex> {
     throw new Error('NoopLocalAccount does not support signing messages. This is a read-only account for quote generation.');
   }
 
   public signTransaction<serializer extends SerializeTransactionFn<TransactionSerializable> = SerializeTransactionFn<TransactionSerializable>, transaction extends Parameters<serializer>[0] = Parameters<serializer>[0]>(
-    transac: transaction, options?: { serializer?: serializer | undefined; } | undefined): Promise<IsNarrowable<TransactionSerialized<GetTransactionType<transaction>>, Hex> extends true ? TransactionSerialized<GetTransactionType<transaction>> : Hex> {
+    _transac: transaction, _options?: { serializer?: serializer | undefined; } | undefined): Promise<IsNarrowable<TransactionSerialized<GetTransactionType<transaction>>, Hex> extends true ? TransactionSerialized<GetTransactionType<transaction>> : Hex> {
     throw new Error('NoopLocalAccount does not support signing transactions. This is a read-only account for quote generation.');
   }
 
   public signTypedData<const typedData extends TypedData | Record<string, unknown>, primaryType extends keyof typedData | 'EIP712Domain' = keyof typedData>(
-    parameters: TypedDataDefinition<typedData, primaryType>): Promise<Hex> {
+    _parameters: TypedDataDefinition<typedData, primaryType>): Promise<Hex> {
     throw new Error('NoopLocalAccount does not support signing typed data. This is a read-only account for quote generation.');
   }
 }

@@ -14,13 +14,15 @@ Mass adoption of Web3 requires the creation of safe and seamless AI experiences,
 
 ## Warden AI Agents
 
-A **Warden AI Agent** is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform various onchain [Actions](learn/glossary#action). You can easily build Agents with the **Warden Agent Kit**.
+A **Warden AI Agent** is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform various onchain [Actions](learn/glossary#action). You can easily build Agents with the [Warden Agent Kit](/category/warden-agent-kit).
 
-To start building an Agent, see [Build an Agent](/build-an-agent/introduction).
+AI integration is ensured by three key components:
 
-AI integration is ensured by Warden's **AI Blockchain Interface** (**AIBI**). AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism. The core components of AIBI include [Orders](/learn/glossary#order) and the [`x/async` Warden module](/learn/warden-protocol-modules/x-async).
+- [Orders](/learn/glossary#order)
+- [The `x/async` Warden module](/learn/warden-protocol-modules/x-async)
+- [SPEX (statistical proof of execution)](/learn/spex)
 
-To learn more about Agents and AIBI, see [Warden AI Agents](/learn/warden-ai-agents).
+To learn more, see [Warden AI Agents](/learn/warden-ai-agents) and [SPEX](/learn/spex).
 
 ## Key protocol features
 

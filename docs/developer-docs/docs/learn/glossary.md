@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Glossary
@@ -30,24 +30,15 @@ This concept is implemented in the `x/act` [module](#module). Learn more: [`x/ac
 
 ## AI Agent
 
-A Warden AI Agent is an AI-driven program that supports both offchain and onchain operations.
+A Warden AI Agent is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and so on. You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit).
 
-Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and managing [Orders](#order). You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit). AI integration is ensured by Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
-
-Learn more: [Warden AI Agents](warden-ai-agents), [Build an Agent](/build-an-agent/introduction).
-
----
-
-## AI Blockchain Interface (AIBI)
-
-Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications and create [AI Agents](#ai-agent). AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism.
-
-The core components of AIBI include the following:
+Warden Agents' integration with AI is ensured by three components:
 
 - [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain actions at any destination chain
 - `x/async`: a [Warden module](#module) implementing [Futures](#future) and [Prophets](#prophet)
+- [SPEX](#spex): Statistical Proof of Execution
 
-Learn more: [Warden AI Agents](warden-ai-agents), [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async).
+Learn more: [Warden AI Agents](warden-ai-agents).
 
 ---
 
@@ -277,7 +268,7 @@ Learn more: [Build an app](/build-an-app/introduction).
 
 An Omnichain Contract is the main part of any [Omnichain Application](#omnichain-application): a smart contract that allows signing transactions and messages at any destination chain.
 
-In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [AI Blockchain Interface](#ai-blockchain-interface-aibi) and [Order](#order).
+In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [Order](#order).
 
 Learn more: [Build an app](/build-an-app/introduction).
 
@@ -293,11 +284,11 @@ Learn more: [Oracle services](oracle-services).
 
 ## Order
 
-An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain. It's part of Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
+An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain.
 
 When creating an Order, you can implement custom logic by using [Warden modules](#module), [Keychains](#keychain), and other features. In particular, the `x/async` module allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 
-Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async).
+Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
 
 ---
 
@@ -353,6 +344,16 @@ This concept is implemented in the `x/warden` [module](#module). Learn more: [`x
 SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
 Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).
+
+---
+
+## SPEX
+
+SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines.
+
+SPEX is used as a verifiability layer for AI on Warden Protocol. At the moment, SPEX verifies AI-driven price predictions generated by the `x/async` [Warden module](#module). However, you can extend the module with other computational tasks and use SPEX to protect them.
+
+Learn more: [SPEX](spex).
 
 ---
 

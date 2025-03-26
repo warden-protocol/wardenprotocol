@@ -34,7 +34,7 @@ A Warden AI Agent is an AI-driven program that supports both offchain and onchai
 
 Warden Agents' integration with AI is ensured by three components:
 
-- [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain actions at any destination chain
+- [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain [Action](#action) at any destination chain
 - `x/async`: a [Warden module](#module) implementing [Futures](#future) and [Prophets](#prophet)
 - [SPEX](#spex): Statistical Proof of Execution
 

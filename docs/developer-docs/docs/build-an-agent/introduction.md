@@ -23,4 +23,4 @@ In this section, you can find guides and examples demonstrating how to do the fo
 
 ## Get started
 
-To get started, follow the [Warden Agent Kit Quick start guide](warden-agent-kit/quick-start).
+To get started, follow the [Warden Agent Kit quick start guide](warden-agent-kit/quick-start).

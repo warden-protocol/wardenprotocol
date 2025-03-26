@@ -54,9 +54,11 @@ type QuoteRequest = {
 
 export class BiconomyMEEClient {
   private url: string;
-
+  private readonly knownChains: chains.Chain[];
+  
   constructor(url: string = DEFAULT_MEE_NODE_URL) {
     this.url = url;
+    this.knownChains = Object.values(chains) as ReturnType<typeof extractChain>[];
   }
 
   async executeSignedQuote(params: ExecuteSignedQuoteParams): Promise<ExecuteSignedQuotePayload> {
@@ -85,14 +87,9 @@ export class BiconomyMEEClient {
       feeToken: feeToken,
     }
 
-    const uniqueChainIds = instructions.map((instruction) => instruction.chainId);
-    const resolvedChains = uniqueChainIds.map(chainId => extractChain({
-      chains: Object.values(chains),
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      id: chainId as any,
-      /* eslint-enable @typescript-eslint/no-explicit-any */
-    }));
-
+    const uniqueChainIds = new Set(instructions.map((instruction) => instruction.chainId));
+    const resolvedChains = this.knownChains.filter(chain => uniqueChainIds.has(chain.id));
+    
     const transports = resolvedChains.map(() => http());
 
     const account = new NoopLocalAccount(address);

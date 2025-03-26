@@ -6,7 +6,8 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { ExecutionData, IExecutionV0 } from "../types/IExecutionV0.sol";
 import { Types } from "../types/Types.sol";
-import { AbstractOrder } from "../orders/AbstractOrder.sol";
+import { TypesV0 } from "../types/TypesV0.sol";
+import { AbstractOrderV0 } from "../orders/AbstractOrderV0.sol";
 import { Registry } from "../Registry.sol";
 
 error ConditionNotMet();
@@ -17,9 +18,9 @@ error InvalidThresholdPrice();
 
 event Executed();
 
-contract BasicOrder is AbstractOrder, IExecutionV0, ReentrancyGuard {
+contract BasicOrder is AbstractOrderV0, IExecutionV0, ReentrancyGuard {
     Types.BasicOrderData public orderData;
-    Types.CommonExecutionData public commonExecutionData;
+    TypesV0.CommonExecutionData public commonExecutionData;
 
     ISlinky private immutable SLINKY_PRECOMPILE;
     Registry private immutable REGISTRY;
@@ -31,12 +32,12 @@ contract BasicOrder is AbstractOrder, IExecutionV0, ReentrancyGuard {
     // solhint-disable-next-line
     constructor(
         Types.BasicOrderData memory _orderData,
-        Types.CommonExecutionData memory _executionData,
+        TypesV0.CommonExecutionData memory _executionData,
         CommonTypes.Coin[] memory maxKeychainFees,
         address scheduler,
         address registry
     )
-        AbstractOrder(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
+        AbstractOrderV0(_executionData.signRequestData, _executionData.creatorDefinedTxFields, scheduler, registry)
     {
         if (_orderData.thresholdPrice == 0) {
             revert InvalidThresholdPrice();

@@ -16,7 +16,7 @@ import {
 } from "../src/factories/OrderFactory.sol";
 import { BasicOrderFactory } from "../src/factories/BasicOrderFactory.sol";
 import { AdvancedOrderFactory } from "../src/factories/AdvancedOrderFactory.sol";
-import { IExecution } from "../src/types/IExecution.sol";
+import { IExecutionV0 } from "../src/types/IExecutionV0.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
@@ -54,7 +54,7 @@ contract BasicOrderTest is Test {
     TestData private _testData;
     Types.BasicOrderData private _orderData;
     Types.CommonExecutionData private _executionData;
-    IExecution private _order;
+    IExecutionV0 private _order;
     bytes32 private _txHash;
 
     // @openzeppelin Ownable.sol
@@ -246,7 +246,7 @@ contract BasicOrderTest is Test {
         assertEq(address(_testData.basicOrderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
 
-        _order = IExecution(orderAddress);
+        _order = IExecutionV0(orderAddress);
     }
 
     function test_BasicOrder_StateBeforeExecution() public {

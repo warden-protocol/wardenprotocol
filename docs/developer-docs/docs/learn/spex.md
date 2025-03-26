@@ -32,6 +32,8 @@ This protocol requires only a single pair of nodes to operate:
 - **Solver**: This node executes the task and generates a cryptographic proof of execution.
 - **Verifier**: It randomly samples parts of the task and checks whether the reported results are consistent with both the cryptographic proof and the final output.
 
+![How SPEX operates](../../static/img/spex.png)
+
 ## Integration with `x/async`
 
 The [`x/async` Warden module](warden-protocol-modules/x-async) allows running offchain heavyweight computations asynchronously and storing the results onchain. Paired with SPEX, this module extends the integrity guarantees of blockchain smart contracts beyond the chain itself—into offchain, SPEX-protected tasks.

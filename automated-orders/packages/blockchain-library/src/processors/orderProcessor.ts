@@ -33,7 +33,6 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
       logInfo(`New order: ${serialize(event)}`);
 
       const exist = await this.evmos.isContract(data.args.execution);
-
       if (!exist) {
         logWarning(`Order is not a contract: ${key}`);
 
@@ -43,7 +42,6 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
       }
 
       const isExecuted = await this.evmos.callView<boolean>(data.args.execution, IsExecutedOrderAbi, []);
-
       if (isExecuted) {
         logWarning(`Order was already executed: ${key}`);
 
@@ -53,7 +51,6 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
       }
 
       const canExecute = await this.evmos.callView<boolean>(data.args.execution, CanExecuteOrderAbi, []);
-
       if (!canExecute) {
         logWarning(`Order is not ready yet: ${key}`);
 
@@ -90,6 +87,7 @@ export class OrderProcessor extends Processor<[string, IOrderRegistered]> {
       if (receipt.status != "success") {
         throw new Error(`Tx with hash ${txHash} not executed: ${receipt}`);
       }
+
       this.evmos.events.delete(key);
 
     } catch (error) {

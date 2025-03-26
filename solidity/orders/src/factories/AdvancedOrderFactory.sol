@@ -2,22 +2,21 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import { BasicOrder } from "./BasicOrder.sol";
-import { Types } from "./Types.sol";
+import { AdvancedOrder } from "../orders/AdvancedOrder.sol";
+import { Types } from "../types/Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
-import { Registry } from "./Registry.sol";
+import { Registry } from "../Registry.sol";
 
 error OrderDeploymentFailed(bytes32 salt);
 error SaltAlreadyUsed();
 
 event SaltUsed(bytes32 indexed salt, address indexed creator);
 
-contract BasicOrderFactory is ReentrancyGuard {
-    // Event emitted when a new BasicOrder is created
-    event BasicOrderCreated(address indexed creator, address orderAddress);
+event AdvancedOrderCreated(address indexed creator, address orderAddress);
 
-    // Registry of IExecution contracts
+contract AdvancedOrderFactory is ReentrancyGuard {
+    // Registry of IExecutionV0 contracts
     Registry public immutable REGISTRY;
 
     // Mapping to track used salts to prevent reuse
@@ -28,15 +27,16 @@ contract BasicOrderFactory is ReentrancyGuard {
     }
 
     /**
-     * @dev Creates a new instance of the BasicOrder contract.
+     * @dev Creates a new instance of the AdvancedOrder contract.
      * @param orderData Data specific to the order.
      * @param executionData Common execution data.
      * @param maxKeychainFees Maximum fees for keychain operations.
      * @param scheduler Address of the scheduler.
-     * @return orderAddress Address of the newly created BasicOrder contract.
+     * @param salt Salt to ensure uniqueness of the deployed contract address.
+     * @return orderAddress Address of the newly created AdvancedOrder contract.
      */
-    function createBasicOrder(
-        Types.BasicOrderData calldata orderData,
+    function createAdvancedOrder(
+        Types.AdvancedOrderData calldata orderData,
         Types.CommonExecutionData calldata executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address scheduler,
@@ -46,8 +46,7 @@ contract BasicOrderFactory is ReentrancyGuard {
         nonReentrant
         returns (address orderAddress)
     {
-        // front-running protection
-        // we use tx.origin here as msg.sender the same for all orders created through factory
+        // Front-running protection using tx.origin
         // solhint-disable-next-line
         address origin = tx.origin;
         bytes32 guardedSalt = keccak256(abi.encodePacked(uint256(uint160(origin)), salt));
@@ -58,21 +57,25 @@ contract BasicOrderFactory is ReentrancyGuard {
 
         emit SaltUsed(guardedSalt, origin);
 
+        // Encode contract creation bytecode with constructor arguments
         bytes memory bytecode = abi.encodePacked(
-            type(BasicOrder).creationCode,
+            type(AdvancedOrder).creationCode,
             abi.encode(orderData, executionData, maxKeychainFees, scheduler, address(REGISTRY))
         );
 
+        // Deploy the contract using Create3
         orderAddress = Create3.create3(guardedSalt, bytecode);
+
         address expectedAddress = Create3.addressOf(guardedSalt);
         if (orderAddress == address(0) || orderAddress != expectedAddress) {
             revert OrderDeploymentFailed(guardedSalt);
         }
 
+        // Register the deployed contract in the registry
         REGISTRY.register(orderAddress);
         usedSalts[guardedSalt] = true;
 
-        emit BasicOrderCreated(msg.sender, orderAddress);
+        emit AdvancedOrderCreated(msg.sender, orderAddress);
     }
 
     /**

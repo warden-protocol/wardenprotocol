@@ -4,7 +4,7 @@ pragma solidity >=0.8.25 <0.9.0;
 import { Test } from "forge-std/src/Test.sol";
 import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
-import { Types } from "../src/Types.sol";
+import { Types } from "../src/types/Types.sol";
 import {
     OrderCreated,
     OrderFactory,
@@ -13,15 +13,15 @@ import {
     InvalidSchedulerAddress,
     SchedulerChanged,
     SaltAlreadyUsed
-} from "../src/OrderFactory.sol";
-import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
-import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
-import { IExecution } from "../src/IExecution.sol";
+} from "../src/factories/OrderFactory.sol";
+import { BasicOrderFactory } from "../src/factories/BasicOrderFactory.sol";
+import { AdvancedOrderFactory } from "../src/factories/AdvancedOrderFactory.sol";
+import { IExecutionV0 } from "../src/types/IExecutionV0.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { InvalidScheduler } from "../src/AbstractOrder.sol";
-import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/BasicOrder.sol";
+import { InvalidScheduler } from "../src/orders/AbstractOrder.sol";
+import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/orders/BasicOrder.sol";
 import {
     BadCreatorAddress,
     ExecutionAlreadyRegistered,
@@ -54,7 +54,7 @@ contract BasicOrderTest is Test {
     TestData private _testData;
     Types.BasicOrderData private _orderData;
     Types.CommonExecutionData private _executionData;
-    IExecution private _order;
+    IExecutionV0 private _order;
     bytes32 private _txHash;
 
     // @openzeppelin Ownable.sol
@@ -246,7 +246,7 @@ contract BasicOrderTest is Test {
         assertEq(address(_testData.basicOrderFactory), _testData.registry.executions(orderAddress));
         assertEq(address(this), _testData.orderFactory.orders(orderAddress));
 
-        _order = IExecution(orderAddress);
+        _order = IExecutionV0(orderAddress);
     }
 
     function test_BasicOrder_StateBeforeExecution() public {

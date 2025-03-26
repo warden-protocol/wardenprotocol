@@ -6,7 +6,6 @@ sidebar_position: 3
 
 ## Overview
 
-
 The `IAsync.sol` precompile enables EVM smart contracts to interact with the [`x/async` module](/learn/warden-protocol-modules/x-async).
 
 In this article, you'll find a full list of available methods, allowing you to query and manage the following components:

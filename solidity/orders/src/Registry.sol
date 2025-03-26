@@ -2,7 +2,7 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import { IExecution } from "./IExecution.sol";
+import { IExecutionV0 } from "./types/IExecutionV0.sol";
 
 error InvalidExecutionAddress();
 error UnauthorizedToAddTx();
@@ -30,7 +30,7 @@ contract Registry is ReentrancyGuard {
             revert ExecutionAlreadyRegistered();
         }
 
-        try IExecution(execution).isExecuted() returns (bool executed) {
+        try IExecutionV0(execution).isExecuted() returns (bool executed) {
             if (executed) {
                 revert Executed();
             }
@@ -59,7 +59,7 @@ contract Registry is ReentrancyGuard {
             revert TxAlreadyAdded();
         }
 
-        IExecution execution = IExecution(msg.sender);
+        IExecutionV0 execution = IExecutionV0(msg.sender);
 
         try execution.isExecuted() returns (bool executed) {
             if (!executed) {

@@ -17,14 +17,18 @@ This module implements the following concepts:
 
 ## Usage
 
-You can call the `x/async` module from your EVM smart contract using the [`x/async` precompile](/build-an-app/precompiles/x-async).
-
-The `x/async` module allows you to build any logic combining offchain computation with onchain verification. For example, you can [implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
+You can call the `x/async` module from your EVM smart contract using the [`x/async` precompile](/build-an-app/precompiles/x-async). This module allows you to build any logic combining offchain computation with onchain verification.
 
 At this moment, `x/async` supports two types of computations:
 
 - AI-driven price predictions
 - HTTP requests to external services, such as blockchain APIs
+
+You can learn the basics and then dive deeper by following these guides:
+
+- [Interact with `x/async`](/build-an-app/interact-with-warden-modules/interact-with-x-async)
+- [Execute offchain computations with `x/async`](/build-an-app/execute-offchain-computations/introduction)
+- [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction)
 
 ## Concepts
 
@@ -91,6 +95,8 @@ You can find a usage example in the following guide: [Implement automated Orders
 [Futures](#future) accept the `http` handler for making **HTTP requests** to any external service.
 
 For example, a Future can call an external API to fetch a token price, so developers can use `x/async` as an advanced [oracle service](../oracle-services). Note that Warden automatically converts HTTP responses to the CBOR format.
+
+You can find a usage example in the following guide: [Use the HTTP handler](/build-an-app/execute-offchain-computations/use-the-http-handler/introduction).
 
 ## Prophets
 

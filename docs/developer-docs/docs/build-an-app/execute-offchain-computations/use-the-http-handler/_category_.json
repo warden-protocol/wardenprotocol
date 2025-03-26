@@ -1,11 +1,11 @@
 {
-  "position": 3,
-  "label": "Upgrade",
+  "position": 1,
+  "label": "Use the HTTP handler",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Networks"
+    "title": "Use the HTTP handler"
   },
   "customProps": {}
 }

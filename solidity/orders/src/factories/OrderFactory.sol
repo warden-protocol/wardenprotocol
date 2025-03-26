@@ -2,10 +2,10 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { Types } from "./Types.sol";
+import { Types } from "../types/Types.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AdvancedOrderFactory } from "./AdvancedOrderFactory.sol";
-import { Registry } from "./Registry.sol";
+import { Registry } from "../Registry.sol";
 import { BasicOrderFactory } from "./BasicOrderFactory.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
@@ -31,7 +31,7 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     // Mapping from order contract to order creator
     mapping(address orderAddress => address orderCreator) public orders;
 
-    // Registry of IExecution contracts
+    // Registry of IExecutionV0 contracts
     Registry public immutable REGISTRY;
 
     // BasicOrderFactory contract

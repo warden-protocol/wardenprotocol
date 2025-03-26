@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { Create2 } from "../src/Create2.sol";
+import { Create2 } from "../src/lib/Create2.sol";
 import { Script } from "forge-std/src/Script.sol";
 import { Registry } from "../src/Registry.sol";
-import { OrderFactory } from "../src/OrderFactory.sol";
-import { BasicOrderFactory } from "../src/BasicOrderFactory.sol";
-import { AdvancedOrderFactory } from "../src/AdvancedOrderFactory.sol";
+import { OrderFactory } from "../src/factories/OrderFactory.sol";
+import { BasicOrderFactory } from "../src/factories/BasicOrderFactory.sol";
+import { AdvancedOrderFactory } from "../src/factories/AdvancedOrderFactory.sol";
 
 contract Deploy is Script {
     address internal broadcaster;

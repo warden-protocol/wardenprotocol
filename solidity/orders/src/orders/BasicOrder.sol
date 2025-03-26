@@ -4,10 +4,10 @@ pragma solidity >=0.8.25 <0.9.0;
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { ExecutionData, IExecution } from "./IExecution.sol";
-import { AbstractOrder } from "./AbstractOrder.sol";
-import { Types } from "./Types.sol";
-import { Registry } from "./Registry.sol";
+import { ExecutionData, IExecutionV0 } from "../types/IExecutionV0.sol";
+import { Types } from "../types/Types.sol";
+import { AbstractOrder } from "../orders/AbstractOrder.sol";
+import { Registry } from "../Registry.sol";
 
 error ConditionNotMet();
 error ExecutedError();
@@ -17,7 +17,7 @@ error InvalidThresholdPrice();
 
 event Executed();
 
-contract BasicOrder is AbstractOrder, IExecution, ReentrancyGuard {
+contract BasicOrder is AbstractOrder, IExecutionV0, ReentrancyGuard {
     Types.BasicOrderData public orderData;
     Types.CommonExecutionData public commonExecutionData;
 

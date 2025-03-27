@@ -4,6 +4,8 @@ pragma solidity >=0.8.25 <0.9.0;
 import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Strings } from "../lib/Strings.sol";
+import { Pack } from "../lib/Pack.sol";
+import { GetQuotePayload } from "../types/IExecutionV1.sol";
 import { Types } from "../types/Types.sol";
 import { TypesV1 } from "../types/TypesV1.sol";
 
@@ -48,8 +50,10 @@ abstract contract AbstractOrderV1 {
         WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
         int32[] memory addressTypes = new int32[](1);
         addressTypes[0] = ETHEREUM_ADDRESS_TYPE;
-        KeyResponse memory keyResponse =
-            WARDEN_PRECOMPILE.keyById(commonExecutionData.signRequestData.keyId, addressTypes);
+        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(
+            commonExecutionData.signRequestData.keyId,
+            addressTypes
+        );
         _keyAddress = keyResponse.addresses[0].addressValue.parseAddress();
     }
 
@@ -57,21 +61,38 @@ abstract contract AbstractOrderV1 {
         Types.SignRequestData calldata signRequestData,
         bytes calldata signRequestInput,
         CommonTypes.Coin[] calldata maxKeychainFees
-    )
-        public
-        returns (bool)
-    {
-        return WARDEN_PRECOMPILE.newSignRequest(
-            signRequestData.keyId,
-            signRequestInput,
-            signRequestData.analyzers,
-            signRequestData.encryptionKey,
-            maxKeychainFees,
-            signRequestData.spaceNonce,
-            signRequestData.actionTimeoutHeight,
-            signRequestData.expectedApproveExpression,
-            signRequestData.expectedRejectExpression,
-            BroadcastType.Automatic
-        );
+    ) public returns (bool) {
+        return
+            WARDEN_PRECOMPILE.newSignRequest(
+                signRequestData.keyId,
+                signRequestInput,
+                signRequestData.analyzers,
+                signRequestData.encryptionKey,
+                maxKeychainFees,
+                signRequestData.spaceNonce,
+                signRequestData.actionTimeoutHeight,
+                signRequestData.expectedApproveExpression,
+                signRequestData.expectedRejectExpression,
+                BroadcastType.Automatic
+            );
+    }
+
+    function isValidQuote(
+        TypesV1.CommonExecutionData calldata commonExecutionData, 
+        GetQuotePayload calldata _quote
+    ) external pure returns (bool) {
+        if (_quote.userOps.length + 1 != commonExecutionData.instructions.length) {
+            return false;
+        }
+
+        for (uint256 i = 1; i < commonExecutionData.instructions.length; i++) {
+            bytes memory expectedUserOpCallData = Pack.packInstructions(commonExecutionData.instructions[i]);
+            bytes memory userOpCallData = _quote.userOps[i].userOp.callData;
+            if (keccak256(expectedUserOpCallData) != keccak256(userOpCallData)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

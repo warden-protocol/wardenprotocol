@@ -4,6 +4,7 @@ pragma solidity >=0.8.25 <0.9.0;
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { BasicOrder } from "../orders/BasicOrder.sol";
 import { Types } from "../types/Types.sol";
+import { TypesV0 } from "../types/TypesV0.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Create3 } from "@0xsequence/create3/contracts/Create3.sol";
 import { Registry } from "../Registry.sol";
@@ -37,7 +38,7 @@ contract BasicOrderFactory is ReentrancyGuard {
      */
     function createBasicOrder(
         Types.BasicOrderData calldata orderData,
-        Types.CommonExecutionData calldata executionData,
+        TypesV0.CommonExecutionData calldata executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address scheduler,
         bytes32 salt

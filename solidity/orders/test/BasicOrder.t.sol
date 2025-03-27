@@ -5,6 +5,7 @@ import { Test } from "forge-std/src/Test.sol";
 import { ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { IWARDEN_PRECOMPILE_ADDRESS } from "precompile-warden/IWarden.sol";
 import { Types } from "../src/types/Types.sol";
+import { TypesV0 } from "../src/types/TypesV0.sol";
 import {
     OrderCreated,
     OrderFactory,
@@ -20,7 +21,7 @@ import { IExecutionV0 } from "../src/types/IExecutionV0.sol";
 import { MockWardenPrecompile } from "../mocks/MockWardenPrecompile.sol";
 import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
-import { InvalidScheduler } from "../src/orders/AbstractOrder.sol";
+import { InvalidScheduler } from "../src/orders/AbstractOrderV0.sol";
 import { BasicOrder, Executed, ConditionNotMet, ExecutedError, Unauthorized } from "../src/orders/BasicOrder.sol";
 import {
     BadCreatorAddress,
@@ -53,7 +54,7 @@ struct TestData {
 contract BasicOrderTest is Test {
     TestData private _testData;
     Types.BasicOrderData private _orderData;
-    Types.CommonExecutionData private _executionData;
+    TypesV0.CommonExecutionData private _executionData;
     IExecutionV0 private _order;
     bytes32 private _txHash;
 
@@ -162,7 +163,7 @@ contract BasicOrderTest is Test {
             pricePair: _testData.pricePair
         });
 
-        _executionData = Types.CommonExecutionData({
+        _executionData = TypesV0.CommonExecutionData({
             signRequestData: Types.SignRequestData({
                 keyId: _testData.goodKeyId,
                 analyzers: analyzers,
@@ -172,7 +173,7 @@ contract BasicOrderTest is Test {
                 expectedApproveExpression: "expectedApproveExpression",
                 expectedRejectExpression: "expectedRejectExpression"
             }),
-            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
+            creatorDefinedTxFields: TypesV0.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
                 to: SEPOLIA_UNISWAP_V2_ROUTER,
@@ -212,7 +213,7 @@ contract BasicOrderTest is Test {
             priceCondition: cond,
             pricePair: _testData.pricePair
         });
-        Types.CommonExecutionData memory executionData = Types.CommonExecutionData({
+        TypesV0.CommonExecutionData memory executionData = TypesV0.CommonExecutionData({
             signRequestData: Types.SignRequestData({
                 keyId: keyId,
                 analyzers: analyzers,
@@ -222,7 +223,7 @@ contract BasicOrderTest is Test {
                 expectedApproveExpression: "expectedApproveExpression",
                 expectedRejectExpression: "expectedRejectExpression"
             }),
-            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
+            creatorDefinedTxFields: TypesV0.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
                 to: SEPOLIA_UNISWAP_V2_ROUTER,
@@ -332,7 +333,7 @@ contract BasicOrderTest is Test {
             pricePair: _testData.pricePair
         });
 
-        Types.CommonExecutionData memory executionData = Types.CommonExecutionData({
+        TypesV0.CommonExecutionData memory executionData = TypesV0.CommonExecutionData({
             signRequestData: Types.SignRequestData({
                 keyId: _testData.goodKeyId,
                 analyzers: analyzers,
@@ -342,7 +343,7 @@ contract BasicOrderTest is Test {
                 expectedApproveExpression: "expectedApproveExpression",
                 expectedRejectExpression: "expectedRejectExpression"
             }),
-            creatorDefinedTxFields: Types.CreatorDefinedTxFields({
+            creatorDefinedTxFields: TypesV0.CreatorDefinedTxFields({
                 value: 0,
                 chainId: 11_155_111,
                 to: SEPOLIA_UNISWAP_V2_ROUTER,
@@ -502,7 +503,7 @@ contract BasicOrderTest is Test {
 
         // Create the order
         bytes memory orderData = abi.encode(_orderData);
-        Types.CommonExecutionData memory executionData = _executionData;
+        TypesV0.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
         address orderAddress =
             _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
@@ -528,7 +529,7 @@ contract BasicOrderTest is Test {
 
         // Create the order
         bytes memory orderData = abi.encode(_orderData);
-        Types.CommonExecutionData memory executionData = _executionData;
+        TypesV0.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
         _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
@@ -541,7 +542,7 @@ contract BasicOrderTest is Test {
 
         // First creation should succeed
         bytes memory orderData = abi.encode(_orderData);
-        Types.CommonExecutionData memory executionData = _executionData;
+        TypesV0.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
         _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
@@ -555,7 +556,7 @@ contract BasicOrderTest is Test {
 
         // Create order with original sender
         bytes memory orderData = abi.encode(_orderData);
-        Types.CommonExecutionData memory executionData = _executionData;
+        TypesV0.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
         _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);
 
@@ -576,7 +577,7 @@ contract BasicOrderTest is Test {
 
         // Create order with original sender
         bytes memory orderData = abi.encode(_orderData);
-        Types.CommonExecutionData memory executionData = _executionData;
+        TypesV0.CommonExecutionData memory executionData = _executionData;
         CommonTypes.Coin[] memory maxKeychainFees;
         address orderAddressOriginal =
             _testData.orderFactory.createOrder(orderData, executionData, maxKeychainFees, OrderType.Basic, salt);

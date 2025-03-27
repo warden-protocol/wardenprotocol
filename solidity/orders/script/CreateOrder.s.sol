@@ -11,6 +11,7 @@ import { MockSlinkyPrecompile } from "../mocks/MockSlinkyPrecompile.sol";
 import { MockAsyncPrecompile } from "../mocks/MockAsyncPrecompile.sol";
 import { OrderFactory, OrderType } from "../src/factories/OrderFactory.sol";
 import { Types } from "../src/types/Types.sol";
+import { TypesV0 } from "../src/types/TypesV0.sol";
 
 contract CreateOrder is Script {
     address internal broadcaster;
@@ -35,7 +36,7 @@ contract CreateOrder is Script {
         uint256 thresholdPrice,
         Types.PriceCondition priceCondition,
         Types.PricePair calldata pricePair,
-        Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
+        TypesV0.CreatorDefinedTxFields calldata creatorDefinedTxFields,
         uint64 keyId,
         uint64 spaceNonce,
         uint64 actionTimeoutHeight,
@@ -65,7 +66,7 @@ contract CreateOrder is Script {
             priceCondition: priceCondition,
             pricePair: pricePair
         });
-        Types.CommonExecutionData memory commonExecutionData = Types.CommonExecutionData({
+        TypesV0.CommonExecutionData memory commonExecutionData = TypesV0.CommonExecutionData({
             creatorDefinedTxFields: creatorDefinedTxFields,
             signRequestData: signRequestData
         });
@@ -84,7 +85,7 @@ contract CreateOrder is Script {
         uint256 confidenceLimit,
         Types.PricePair calldata oraclePricePair,
         string calldata predictPriceToken,
-        Types.CreatorDefinedTxFields calldata creatorDefinedTxFields,
+        TypesV0.CreatorDefinedTxFields calldata creatorDefinedTxFields,
         uint64 keyId,
         uint64 spaceNonce,
         uint64 actionTimeoutHeight,
@@ -117,7 +118,7 @@ contract CreateOrder is Script {
             pricePredictDate: block.timestamp + 24 hours,
             confidenceLimit: confidenceLimit
         });
-        Types.CommonExecutionData memory commonExecutionData = Types.CommonExecutionData({
+        TypesV0.CommonExecutionData memory commonExecutionData = TypesV0.CommonExecutionData({
             creatorDefinedTxFields: creatorDefinedTxFields,
             signRequestData: signRequestData
         });

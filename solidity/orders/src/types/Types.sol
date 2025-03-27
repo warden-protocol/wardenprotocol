@@ -41,22 +41,9 @@ library Types {
         uint256 confidenceLimit;
     }
 
-    // Data for execution
-    struct CommonExecutionData {
-        CreatorDefinedTxFields creatorDefinedTxFields;
-        SignRequestData signRequestData;
-    }
-
     // Price pair for oracle/prediction requests
     struct PricePair {
         string base;
         string quote;
-    }
-
-    struct CreatorDefinedTxFields {
-        uint256 value;
-        uint256 chainId;
-        address to;
-        bytes data;
     }
 }

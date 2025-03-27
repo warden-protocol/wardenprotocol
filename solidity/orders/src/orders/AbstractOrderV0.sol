@@ -6,6 +6,7 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { RLPEncode } from "../lib/RLPEncode.sol";
 import { Strings } from "../lib/Strings.sol";
 import { Types } from "../types/Types.sol";
+import { TypesV0 } from "../types/TypesV0.sol";
 import { ExecutionData } from "../types/IExecutionV0.sol";
 
 error InvalidScheduler();
@@ -14,7 +15,7 @@ error InvalidExpectedApproveExpression();
 error InvalidExpectedRejectExpression();
 error InvalidTxTo();
 
-abstract contract AbstractOrder {
+abstract contract AbstractOrderV0 {
     using Strings for *;
 
     IWarden private immutable WARDEN_PRECOMPILE;
@@ -23,7 +24,7 @@ abstract contract AbstractOrder {
 
     constructor(
         Types.SignRequestData memory signRequestData,
-        Types.CreatorDefinedTxFields memory creatorDefinedTxFields,
+        TypesV0.CreatorDefinedTxFields memory creatorDefinedTxFields,
         address scheduler,
         address registry
     ) {
@@ -60,7 +61,7 @@ abstract contract AbstractOrder {
         uint256 maxPriorityFeePerGas,
         uint256 maxFeePerGas,
         bytes[] calldata accessList,
-        Types.CreatorDefinedTxFields calldata creatorDefinedTxFields
+        TypesV0.CreatorDefinedTxFields calldata creatorDefinedTxFields
     )
         public
         pure
@@ -82,7 +83,7 @@ abstract contract AbstractOrder {
         txHash = keccak256(unsignedTx);
     }
 
-    function buildExecutionData(Types.CreatorDefinedTxFields calldata creatorDefinedTxFields)
+    function buildExecutionData(TypesV0.CreatorDefinedTxFields calldata creatorDefinedTxFields)
         public
         view
         returns (ExecutionData memory data)

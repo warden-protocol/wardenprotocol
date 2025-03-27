@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/stoicquote/generated"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/stoicquote/generated"
 )
 
-func TestHandler_Execute(t *testing.T) {
+func TestPlugin_Execute(t *testing.T) {
 	jsonResponse := `{"data":{"author":"Marcus Aurelius","quote":"You have power over your mind - not outside events."}}`
 
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +44,7 @@ func TestHandler_Execute(t *testing.T) {
 	require.Equal(t, expected, decodedOutput, "Output should match the mock server's JSON")
 }
 
-func TestHandler_Verify(t *testing.T) {
+func TestPlugin_Verify(t *testing.T) {
 	jsonResponse := `{"data":{"author":"Seneca","quote":"Luck is what happens when preparation meets opportunity."}}`
 
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

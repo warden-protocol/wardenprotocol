@@ -4,7 +4,7 @@ package warden.async.v1beta1;
 
 import "gogoproto/gogo.proto";
 import "tendermint/abci/types.proto";
-import "warden/async/v1beta1/future.proto";
+import "warden/async/v1beta1/task.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -17,20 +17,20 @@ message AsyncInjectedTx {
 }
 
 // A vote extension coming from a validator. It contains results, votes for
-// some futures and handlers that are supported by the validator.
+// some tasks and plugins that are supported by the validator.
 message AsyncVoteExtension {
   repeated VEResultItem results = 1;
   repeated VEVoteItem votes = 2;
-  repeated string handlers = 3;
-  bool update_handlers = 4;
+  repeated string plugins = 3;
+  bool update_plugins = 4;
 }
 
 message VEResultItem {
-  uint64 future_id = 1;
+  uint64 task_id = 1;
   bytes output = 2;
 }
 
 message VEVoteItem {
-  uint64 future_id = 1;
-  FutureVoteType vote = 2;
+  uint64 task_id = 1;
+  TaskVoteType vote = 2;
 }

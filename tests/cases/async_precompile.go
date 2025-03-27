@@ -36,46 +36,46 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	iAsyncClient, err := async.NewIAsync(common.HexToAddress(async.PrecompileAddress), evmClient)
 	require.NoError(t, err)
 
-	futuresQuery, err := iAsyncClient.Futures(alice.CallOps(t), async.TypesPageRequest{}, common.Address{})
+	tasksQuery, err := iAsyncClient.Tasks(alice.CallOps(t), async.TypesPageRequest{}, common.Address{})
 	require.NoError(t, err)
-	require.Len(t, futuresQuery.Futures, 0)
+	require.Len(t, tasksQuery.Tasks, 0)
 
-	addFutureTx, err := iAsyncClient.AddFuture(alice.TransactOps(t, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
-	require.NoError(t, err)
-
-	addFutureReceipt, err := bind.WaitMined(t.Context(), evmClient, addFutureTx)
+	addTaskTx, err := iAsyncClient.AddTask(alice.TransactOps(t, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
 	require.NoError(t, err)
 
-	createFutureEvents, err := checks.GetParsedEventsOnly(addFutureReceipt, iAsyncClient.ParseCreateFuture)
+	addTaskReceipt, err := bind.WaitMined(t.Context(), evmClient, addTaskTx)
 	require.NoError(t, err)
-	require.Len(t, createFutureEvents, 1)
 
-	createFutureEvent := createFutureEvents[0]
-	require.Equal(t, "echo", createFutureEvent.Handler)
-	require.Equal(t, uint64(1), createFutureEvent.FutureId)
-	require.Equal(t, alice.EthAddress(t), createFutureEvent.Creator)
-
-	oneFuturesQuery, err := iAsyncClient.Futures(alice.CallOps(t), async.TypesPageRequest{}, common.Address{})
+	createTaskEvents, err := checks.GetParsedEventsOnly(addTaskReceipt, iAsyncClient.ParseCreateTask)
 	require.NoError(t, err)
-	require.Len(t, oneFuturesQuery.Futures, 1)
+	require.Len(t, createTaskEvents, 1)
 
-	oneFuture := oneFuturesQuery.Futures[0]
-	require.Equal(t, uint64(1), oneFuture.Future.Id)
-	require.Equal(t, alice.EthAddress(t), oneFuture.Future.Creator)
-	require.Equal(t, "echo", oneFuture.Future.Handler)
-	require.Equal(t, []byte("USDT"), oneFuture.Future.Input)
-	require.Equal(t, async.FutureResult{
+	createTaskEvent := createTaskEvents[0]
+	require.Equal(t, "echo", createTaskEvent.Plugin)
+	require.Equal(t, uint64(1), createTaskEvent.TaskId)
+	require.Equal(t, alice.EthAddress(t), createTaskEvent.Creator)
+
+	oneTasksQuery, err := iAsyncClient.Tasks(alice.CallOps(t), async.TypesPageRequest{}, common.Address{})
+	require.NoError(t, err)
+	require.Len(t, oneTasksQuery.Tasks, 1)
+
+	oneTask := oneTasksQuery.Tasks[0]
+	require.Equal(t, uint64(1), oneTask.Task.Id)
+	require.Equal(t, alice.EthAddress(t), oneTask.Task.Creator)
+	require.Equal(t, "echo", oneTask.Task.Plugin)
+	require.Equal(t, []byte("USDT"), oneTask.Task.Input)
+	require.Equal(t, async.TaskResult{
 		Output:    []byte{},
 		Submitter: []byte{},
-	}, oneFuture.Result)
+	}, oneTask.Result)
 
-	onePendingFuturesQuery, err := iAsyncClient.PendingFutures(alice.CallOps(t), async.TypesPageRequest{})
+	onePendingTasksQuery, err := iAsyncClient.PendingTasks(alice.CallOps(t), async.TypesPageRequest{})
 	require.NoError(t, err)
-	require.Len(t, oneFuturesQuery.Futures, 1)
+	require.Len(t, onePendingTasksQuery.Tasks, 1)
 
-	onePendingFuture := onePendingFuturesQuery.Futures[0]
-	require.Equal(t, uint64(1), onePendingFuture.Id)
-	require.Equal(t, alice.EthAddress(t), onePendingFuture.Creator)
-	require.Equal(t, "echo", onePendingFuture.Handler)
-	require.Equal(t, []byte("USDT"), onePendingFuture.Input)
+	onePendingTask := onePendingTasksQuery.Tasks[0]
+	require.Equal(t, uint64(1), onePendingTask.Id)
+	require.Equal(t, alice.EthAddress(t), onePendingTask.Creator)
+	require.Equal(t, "echo", onePendingTask.Plugin)
+	require.Equal(t, []byte("USDT"), onePendingTask.Input)
 }

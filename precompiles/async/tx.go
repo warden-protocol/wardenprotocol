@@ -14,11 +14,11 @@ import (
 )
 
 const (
-	AddFutureMethod = "addFuture"
+	AddTaskMethod = "addTask"
 )
 
-// AddFutureMethod constructs MsgAddFuture from args, passes it to msg server and packs corresponding abi output.
-func (p *Precompile) AddFutureMethod(
+// AddTaskMethod constructs MsgAddTask from args, passes it to msg server and packs corresponding abi output.
+func (p *Precompile) AddTaskMethod(
 	ctx sdk.Context,
 	origin common.Address,
 	stateDB vm.StateDB,
@@ -26,7 +26,7 @@ func (p *Precompile) AddFutureMethod(
 	args []interface{},
 ) ([]byte, error) {
 	msgServer := actmodulekeeper.NewMsgServerImpl(p.asyncmodulekeeper)
-	message, err := newMsgAddFuture(args, origin, method)
+	message, err := newMsgAddTask(args, origin, method)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (p *Precompile) AddFutureMethod(
 		"args", args,
 	)
 
-	response, err := msgServer.AddFuture(ctx, message)
+	response, err := msgServer.AddTask(ctx, message)
 	if err != nil {
 		return nil, err
 	}
@@ -49,16 +49,16 @@ func (p *Precompile) AddFutureMethod(
 	return method.Outputs.Pack(response.Id)
 }
 
-func newMsgAddFuture(args []interface{}, origin common.Address, method *abi.Method) (*asynctypes.MsgAddFuture, error) {
+func newMsgAddTask(args []interface{}, origin common.Address, method *abi.Method) (*asynctypes.MsgAddTask, error) {
 	if len(args) != 3 {
 		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
-	handler, ok := args[0].(string)
+	plugin, ok := args[0].(string)
 	if !ok {
-		return nil, fmt.Errorf("expected string for handler, got %T", args[0])
+		return nil, fmt.Errorf("expected string for plugin, got %T", args[0])
 	}
 
 	input, ok := args[1].([]byte)
@@ -78,10 +78,10 @@ func newMsgAddFuture(args []interface{}, origin common.Address, method *abi.Meth
 		callbackAddress = precommon.Bech32StrFromAddress(callbackAddressEth)
 	}
 
-	return &asynctypes.MsgAddFuture{
+	return &asynctypes.MsgAddTask{
 		Creator:  authority,
 		Input:    input,
-		Handler:  handler,
+		Plugin:   plugin,
 		Callback: callbackAddress,
 	}, nil
 }

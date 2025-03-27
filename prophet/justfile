@@ -8,22 +8,22 @@ _tools:
     go install -v github.com/ethereum/go-ethereum/cmd/abigen@v1.15.0
 
 http: _tools
-  solc --abi --bin --overwrite handlers/http/Http.sol -o build
+  solc --abi --bin --overwrite plugins/http/Http.sol -o build
   abigen \
   --bin=build/Http.bin \
   --abi=build/Http.abi \
   --pkg=generated \
   --type=Http \
-  --out=handlers/http/generated/http_bindings.go
+  --out=plugins/http/generated/http_bindings.go
 
 pricepred: _tools
-  solc --abi --bin --overwrite handlers/pricepred/PricePredictor.sol -o build
+  solc --abi --bin --overwrite plugins/pricepred/PricePredictor.sol -o build
   abigen \
   --bin=build/PricePredictor.bin \
   --abi=build/PricePredictor.abi \
   --pkg=pricepred \
   --type=PricePredictor \
-  --out=handlers/pricepred/pricepred_bindings.go
+  --out=plugins/pricepred/pricepred_bindings.go
 
 stoicquote: _tools
   # Retrieve the Stoic quote JSON from the API, generate only an output struct
@@ -32,11 +32,11 @@ stoicquote: _tools
       --contractName="StoicQuote" \
       --outputFile="-" \
       --outputName="Response" \
-      --output="handlers/stoicquote/generated/StoicQuote.sol"
+      --output="plugins/stoicquote/generated/StoicQuote.sol"
 
   # Compile the generated Solidity
   solc --abi --bin --overwrite \
-    handlers/stoicquote/generated/StoicQuote.sol \
+    plugins/stoicquote/generated/StoicQuote.sol \
     -o build
 
   # Generate Go bindings
@@ -45,4 +45,4 @@ stoicquote: _tools
     --abi=build/StoicQuote.abi \
     --pkg=generated \
     --type=StoicQuote \
-    --out=handlers/stoicquote/generated/stoicquote_bindings.go
+    --out=plugins/stoicquote/generated/stoicquote_bindings.go

@@ -810,27 +810,27 @@ func (x *fastReflection_QueryParamsResponse) ProtoMethods() *protoiface.Methods 
 }
 
 var (
-	md_QueryFuturesRequest            protoreflect.MessageDescriptor
-	fd_QueryFuturesRequest_pagination protoreflect.FieldDescriptor
-	fd_QueryFuturesRequest_creator    protoreflect.FieldDescriptor
+	md_QueryTasksRequest            protoreflect.MessageDescriptor
+	fd_QueryTasksRequest_pagination protoreflect.FieldDescriptor
+	fd_QueryTasksRequest_creator    protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryFuturesRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryFuturesRequest")
-	fd_QueryFuturesRequest_pagination = md_QueryFuturesRequest.Fields().ByName("pagination")
-	fd_QueryFuturesRequest_creator = md_QueryFuturesRequest.Fields().ByName("creator")
+	md_QueryTasksRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryTasksRequest")
+	fd_QueryTasksRequest_pagination = md_QueryTasksRequest.Fields().ByName("pagination")
+	fd_QueryTasksRequest_creator = md_QueryTasksRequest.Fields().ByName("creator")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryFuturesRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryTasksRequest)(nil)
 
-type fastReflection_QueryFuturesRequest QueryFuturesRequest
+type fastReflection_QueryTasksRequest QueryTasksRequest
 
-func (x *QueryFuturesRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryFuturesRequest)(x)
+func (x *QueryTasksRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryTasksRequest)(x)
 }
 
-func (x *QueryFuturesRequest) slowProtoReflect() protoreflect.Message {
+func (x *QueryTasksRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -842,43 +842,43 @@ func (x *QueryFuturesRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryFuturesRequest_messageType fastReflection_QueryFuturesRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryFuturesRequest_messageType{}
+var _fastReflection_QueryTasksRequest_messageType fastReflection_QueryTasksRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryTasksRequest_messageType{}
 
-type fastReflection_QueryFuturesRequest_messageType struct{}
+type fastReflection_QueryTasksRequest_messageType struct{}
 
-func (x fastReflection_QueryFuturesRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryFuturesRequest)(nil)
+func (x fastReflection_QueryTasksRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryTasksRequest)(nil)
 }
-func (x fastReflection_QueryFuturesRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryFuturesRequest)
+func (x fastReflection_QueryTasksRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryTasksRequest)
 }
-func (x fastReflection_QueryFuturesRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFuturesRequest
+func (x fastReflection_QueryTasksRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTasksRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryFuturesRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFuturesRequest
+func (x *fastReflection_QueryTasksRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTasksRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryFuturesRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryFuturesRequest_messageType
+func (x *fastReflection_QueryTasksRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryTasksRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryFuturesRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryFuturesRequest)
+func (x *fastReflection_QueryTasksRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryTasksRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryFuturesRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryFuturesRequest)(x)
+func (x *fastReflection_QueryTasksRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryTasksRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -886,16 +886,16 @@ func (x *fastReflection_QueryFuturesRequest) Interface() protoreflect.ProtoMessa
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryFuturesRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryTasksRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pagination != nil {
 		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryFuturesRequest_pagination, value) {
+		if !f(fd_QueryTasksRequest_pagination, value) {
 			return
 		}
 	}
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_QueryFuturesRequest_creator, value) {
+		if !f(fd_QueryTasksRequest_creator, value) {
 			return
 		}
 	}
@@ -912,17 +912,17 @@ func (x *fastReflection_QueryFuturesRequest) Range(f func(protoreflect.FieldDesc
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryFuturesRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryTasksRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryTasksRequest.pagination":
 		return x.Pagination != nil
-	case "warden.async.v1beta1.QueryFuturesRequest.creator":
+	case "warden.async.v1beta1.QueryTasksRequest.creator":
 		return x.Creator != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -932,17 +932,17 @@ func (x *fastReflection_QueryFuturesRequest) Has(fd protoreflect.FieldDescriptor
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryTasksRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryTasksRequest.pagination":
 		x.Pagination = nil
-	case "warden.async.v1beta1.QueryFuturesRequest.creator":
+	case "warden.async.v1beta1.QueryTasksRequest.creator":
 		x.Creator = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -952,19 +952,19 @@ func (x *fastReflection_QueryFuturesRequest) Clear(fd protoreflect.FieldDescript
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryFuturesRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTasksRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryTasksRequest.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.async.v1beta1.QueryFuturesRequest.creator":
+	case "warden.async.v1beta1.QueryTasksRequest.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -978,17 +978,17 @@ func (x *fastReflection_QueryFuturesRequest) Get(descriptor protoreflect.FieldDe
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryTasksRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryTasksRequest.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageRequest)
-	case "warden.async.v1beta1.QueryFuturesRequest.creator":
+	case "warden.async.v1beta1.QueryTasksRequest.creator":
 		x.Creator = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1002,48 +1002,48 @@ func (x *fastReflection_QueryFuturesRequest) Set(fd protoreflect.FieldDescriptor
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTasksRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryTasksRequest.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageRequest)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	case "warden.async.v1beta1.QueryFuturesRequest.creator":
-		panic(fmt.Errorf("field creator of message warden.async.v1beta1.QueryFuturesRequest is not mutable"))
+	case "warden.async.v1beta1.QueryTasksRequest.creator":
+		panic(fmt.Errorf("field creator of message warden.async.v1beta1.QueryTasksRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryFuturesRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTasksRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryTasksRequest.pagination":
 		m := new(v1beta1.PageRequest)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.async.v1beta1.QueryFuturesRequest.creator":
+	case "warden.async.v1beta1.QueryTasksRequest.creator":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryFuturesRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryTasksRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryFuturesRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryTasksRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1051,7 +1051,7 @@ func (x *fastReflection_QueryFuturesRequest) WhichOneof(d protoreflect.OneofDesc
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryFuturesRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryTasksRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -1062,7 +1062,7 @@ func (x *fastReflection_QueryFuturesRequest) GetUnknown() protoreflect.RawFields
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryTasksRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -1074,7 +1074,7 @@ func (x *fastReflection_QueryFuturesRequest) SetUnknown(fields protoreflect.RawF
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryFuturesRequest) IsValid() bool {
+func (x *fastReflection_QueryTasksRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -1084,9 +1084,9 @@ func (x *fastReflection_QueryFuturesRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryFuturesRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryTasksRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryFuturesRequest)
+		x := input.Message.Interface().(*QueryTasksRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1116,7 +1116,7 @@ func (x *fastReflection_QueryFuturesRequest) ProtoMethods() *protoiface.Methods 
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFuturesRequest)
+		x := input.Message.Interface().(*QueryTasksRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1167,7 +1167,7 @@ func (x *fastReflection_QueryFuturesRequest) ProtoMethods() *protoiface.Methods 
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFuturesRequest)
+		x := input.Message.Interface().(*QueryTasksRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1199,10 +1199,10 @@ func (x *fastReflection_QueryFuturesRequest) ProtoMethods() *protoiface.Methods 
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFuturesRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTasksRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFuturesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTasksRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -1308,81 +1308,81 @@ func (x *fastReflection_QueryFuturesRequest) ProtoMethods() *protoiface.Methods 
 	}
 }
 
-var _ protoreflect.List = (*_FutureResponse_2_list)(nil)
+var _ protoreflect.List = (*_TaskResponse_2_list)(nil)
 
-type _FutureResponse_2_list struct {
-	list *[]*FutureVote
+type _TaskResponse_2_list struct {
+	list *[]*TaskVote
 }
 
-func (x *_FutureResponse_2_list) Len() int {
+func (x *_TaskResponse_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_FutureResponse_2_list) Get(i int) protoreflect.Value {
+func (x *_TaskResponse_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_FutureResponse_2_list) Set(i int, value protoreflect.Value) {
+func (x *_TaskResponse_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*FutureVote)
+	concreteValue := valueUnwrapped.Interface().(*TaskVote)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_FutureResponse_2_list) Append(value protoreflect.Value) {
+func (x *_TaskResponse_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*FutureVote)
+	concreteValue := valueUnwrapped.Interface().(*TaskVote)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_FutureResponse_2_list) AppendMutable() protoreflect.Value {
-	v := new(FutureVote)
+func (x *_TaskResponse_2_list) AppendMutable() protoreflect.Value {
+	v := new(TaskVote)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_FutureResponse_2_list) Truncate(n int) {
+func (x *_TaskResponse_2_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_FutureResponse_2_list) NewElement() protoreflect.Value {
-	v := new(FutureVote)
+func (x *_TaskResponse_2_list) NewElement() protoreflect.Value {
+	v := new(TaskVote)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_FutureResponse_2_list) IsValid() bool {
+func (x *_TaskResponse_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_FutureResponse        protoreflect.MessageDescriptor
-	fd_FutureResponse_future protoreflect.FieldDescriptor
-	fd_FutureResponse_votes  protoreflect.FieldDescriptor
-	fd_FutureResponse_result protoreflect.FieldDescriptor
+	md_TaskResponse        protoreflect.MessageDescriptor
+	fd_TaskResponse_task   protoreflect.FieldDescriptor
+	fd_TaskResponse_votes  protoreflect.FieldDescriptor
+	fd_TaskResponse_result protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_FutureResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("FutureResponse")
-	fd_FutureResponse_future = md_FutureResponse.Fields().ByName("future")
-	fd_FutureResponse_votes = md_FutureResponse.Fields().ByName("votes")
-	fd_FutureResponse_result = md_FutureResponse.Fields().ByName("result")
+	md_TaskResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("TaskResponse")
+	fd_TaskResponse_task = md_TaskResponse.Fields().ByName("task")
+	fd_TaskResponse_votes = md_TaskResponse.Fields().ByName("votes")
+	fd_TaskResponse_result = md_TaskResponse.Fields().ByName("result")
 }
 
-var _ protoreflect.Message = (*fastReflection_FutureResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_TaskResponse)(nil)
 
-type fastReflection_FutureResponse FutureResponse
+type fastReflection_TaskResponse TaskResponse
 
-func (x *FutureResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_FutureResponse)(x)
+func (x *TaskResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_TaskResponse)(x)
 }
 
-func (x *FutureResponse) slowProtoReflect() protoreflect.Message {
+func (x *TaskResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1394,43 +1394,43 @@ func (x *FutureResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_FutureResponse_messageType fastReflection_FutureResponse_messageType
-var _ protoreflect.MessageType = fastReflection_FutureResponse_messageType{}
+var _fastReflection_TaskResponse_messageType fastReflection_TaskResponse_messageType
+var _ protoreflect.MessageType = fastReflection_TaskResponse_messageType{}
 
-type fastReflection_FutureResponse_messageType struct{}
+type fastReflection_TaskResponse_messageType struct{}
 
-func (x fastReflection_FutureResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_FutureResponse)(nil)
+func (x fastReflection_TaskResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_TaskResponse)(nil)
 }
-func (x fastReflection_FutureResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_FutureResponse)
+func (x fastReflection_TaskResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_TaskResponse)
 }
-func (x fastReflection_FutureResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_FutureResponse
+func (x fastReflection_TaskResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_TaskResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_FutureResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_FutureResponse
+func (x *fastReflection_TaskResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_TaskResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_FutureResponse) Type() protoreflect.MessageType {
-	return _fastReflection_FutureResponse_messageType
+func (x *fastReflection_TaskResponse) Type() protoreflect.MessageType {
+	return _fastReflection_TaskResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_FutureResponse) New() protoreflect.Message {
-	return new(fastReflection_FutureResponse)
+func (x *fastReflection_TaskResponse) New() protoreflect.Message {
+	return new(fastReflection_TaskResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_FutureResponse) Interface() protoreflect.ProtoMessage {
-	return (*FutureResponse)(x)
+func (x *fastReflection_TaskResponse) Interface() protoreflect.ProtoMessage {
+	return (*TaskResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -1438,22 +1438,22 @@ func (x *fastReflection_FutureResponse) Interface() protoreflect.ProtoMessage {
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_FutureResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Future != nil {
-		value := protoreflect.ValueOfMessage(x.Future.ProtoReflect())
-		if !f(fd_FutureResponse_future, value) {
+func (x *fastReflection_TaskResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Task != nil {
+		value := protoreflect.ValueOfMessage(x.Task.ProtoReflect())
+		if !f(fd_TaskResponse_task, value) {
 			return
 		}
 	}
 	if len(x.Votes) != 0 {
-		value := protoreflect.ValueOfList(&_FutureResponse_2_list{list: &x.Votes})
-		if !f(fd_FutureResponse_votes, value) {
+		value := protoreflect.ValueOfList(&_TaskResponse_2_list{list: &x.Votes})
+		if !f(fd_TaskResponse_votes, value) {
 			return
 		}
 	}
 	if x.Result != nil {
 		value := protoreflect.ValueOfMessage(x.Result.ProtoReflect())
-		if !f(fd_FutureResponse_result, value) {
+		if !f(fd_TaskResponse_result, value) {
 			return
 		}
 	}
@@ -1470,19 +1470,19 @@ func (x *fastReflection_FutureResponse) Range(f func(protoreflect.FieldDescripto
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_FutureResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_TaskResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.FutureResponse.future":
-		return x.Future != nil
-	case "warden.async.v1beta1.FutureResponse.votes":
+	case "warden.async.v1beta1.TaskResponse.task":
+		return x.Task != nil
+	case "warden.async.v1beta1.TaskResponse.votes":
 		return len(x.Votes) != 0
-	case "warden.async.v1beta1.FutureResponse.result":
+	case "warden.async.v1beta1.TaskResponse.result":
 		return x.Result != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.FutureResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.TaskResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.FutureResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.TaskResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1492,19 +1492,19 @@ func (x *fastReflection_FutureResponse) Has(fd protoreflect.FieldDescriptor) boo
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_FutureResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_TaskResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.FutureResponse.future":
-		x.Future = nil
-	case "warden.async.v1beta1.FutureResponse.votes":
+	case "warden.async.v1beta1.TaskResponse.task":
+		x.Task = nil
+	case "warden.async.v1beta1.TaskResponse.votes":
 		x.Votes = nil
-	case "warden.async.v1beta1.FutureResponse.result":
+	case "warden.async.v1beta1.TaskResponse.result":
 		x.Result = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.FutureResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.TaskResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.FutureResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.TaskResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1514,25 +1514,25 @@ func (x *fastReflection_FutureResponse) Clear(fd protoreflect.FieldDescriptor) {
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_FutureResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_TaskResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.FutureResponse.future":
-		value := x.Future
+	case "warden.async.v1beta1.TaskResponse.task":
+		value := x.Task
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.async.v1beta1.FutureResponse.votes":
+	case "warden.async.v1beta1.TaskResponse.votes":
 		if len(x.Votes) == 0 {
-			return protoreflect.ValueOfList(&_FutureResponse_2_list{})
+			return protoreflect.ValueOfList(&_TaskResponse_2_list{})
 		}
-		listValue := &_FutureResponse_2_list{list: &x.Votes}
+		listValue := &_TaskResponse_2_list{list: &x.Votes}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.async.v1beta1.FutureResponse.result":
+	case "warden.async.v1beta1.TaskResponse.result":
 		value := x.Result
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.FutureResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.TaskResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.FutureResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.TaskResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1546,21 +1546,21 @@ func (x *fastReflection_FutureResponse) Get(descriptor protoreflect.FieldDescrip
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_FutureResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_TaskResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.FutureResponse.future":
-		x.Future = value.Message().Interface().(*Future)
-	case "warden.async.v1beta1.FutureResponse.votes":
+	case "warden.async.v1beta1.TaskResponse.task":
+		x.Task = value.Message().Interface().(*Task)
+	case "warden.async.v1beta1.TaskResponse.votes":
 		lv := value.List()
-		clv := lv.(*_FutureResponse_2_list)
+		clv := lv.(*_TaskResponse_2_list)
 		x.Votes = *clv.list
-	case "warden.async.v1beta1.FutureResponse.result":
-		x.Result = value.Message().Interface().(*FutureResult)
+	case "warden.async.v1beta1.TaskResponse.result":
+		x.Result = value.Message().Interface().(*TaskResult)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.FutureResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.TaskResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.FutureResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.TaskResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1574,61 +1574,61 @@ func (x *fastReflection_FutureResponse) Set(fd protoreflect.FieldDescriptor, val
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_FutureResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_TaskResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.FutureResponse.future":
-		if x.Future == nil {
-			x.Future = new(Future)
+	case "warden.async.v1beta1.TaskResponse.task":
+		if x.Task == nil {
+			x.Task = new(Task)
 		}
-		return protoreflect.ValueOfMessage(x.Future.ProtoReflect())
-	case "warden.async.v1beta1.FutureResponse.votes":
+		return protoreflect.ValueOfMessage(x.Task.ProtoReflect())
+	case "warden.async.v1beta1.TaskResponse.votes":
 		if x.Votes == nil {
-			x.Votes = []*FutureVote{}
+			x.Votes = []*TaskVote{}
 		}
-		value := &_FutureResponse_2_list{list: &x.Votes}
+		value := &_TaskResponse_2_list{list: &x.Votes}
 		return protoreflect.ValueOfList(value)
-	case "warden.async.v1beta1.FutureResponse.result":
+	case "warden.async.v1beta1.TaskResponse.result":
 		if x.Result == nil {
-			x.Result = new(FutureResult)
+			x.Result = new(TaskResult)
 		}
 		return protoreflect.ValueOfMessage(x.Result.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.FutureResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.TaskResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.FutureResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.TaskResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_FutureResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_TaskResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.FutureResponse.future":
-		m := new(Future)
+	case "warden.async.v1beta1.TaskResponse.task":
+		m := new(Task)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.async.v1beta1.FutureResponse.votes":
-		list := []*FutureVote{}
-		return protoreflect.ValueOfList(&_FutureResponse_2_list{list: &list})
-	case "warden.async.v1beta1.FutureResponse.result":
-		m := new(FutureResult)
+	case "warden.async.v1beta1.TaskResponse.votes":
+		list := []*TaskVote{}
+		return protoreflect.ValueOfList(&_TaskResponse_2_list{list: &list})
+	case "warden.async.v1beta1.TaskResponse.result":
+		m := new(TaskResult)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.FutureResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.TaskResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.FutureResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.TaskResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_FutureResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_TaskResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.FutureResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.TaskResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1636,7 +1636,7 @@ func (x *fastReflection_FutureResponse) WhichOneof(d protoreflect.OneofDescripto
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_FutureResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_TaskResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -1647,7 +1647,7 @@ func (x *fastReflection_FutureResponse) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_FutureResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_TaskResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -1659,7 +1659,7 @@ func (x *fastReflection_FutureResponse) SetUnknown(fields protoreflect.RawFields
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_FutureResponse) IsValid() bool {
+func (x *fastReflection_TaskResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -1669,9 +1669,9 @@ func (x *fastReflection_FutureResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_TaskResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*FutureResponse)
+		x := input.Message.Interface().(*TaskResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1683,8 +1683,8 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		if x.Future != nil {
-			l = options.Size(x.Future)
+		if x.Task != nil {
+			l = options.Size(x.Task)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if len(x.Votes) > 0 {
@@ -1707,7 +1707,7 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*FutureResponse)
+		x := input.Message.Interface().(*TaskResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1756,8 +1756,8 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 				dAtA[i] = 0x12
 			}
 		}
-		if x.Future != nil {
-			encoded, err := options.Marshal(x.Future)
+		if x.Task != nil {
+			encoded, err := options.Marshal(x.Task)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1781,7 +1781,7 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*FutureResponse)
+		x := input.Message.Interface().(*TaskResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1813,15 +1813,15 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: FutureResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: TaskResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: FutureResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: TaskResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Future", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Task", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -1848,10 +1848,10 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.Future == nil {
-					x.Future = &Future{}
+				if x.Task == nil {
+					x.Task = &Task{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Future); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Task); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -1884,7 +1884,7 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Votes = append(x.Votes, &FutureVote{})
+				x.Votes = append(x.Votes, &TaskVote{})
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Votes[len(x.Votes)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
@@ -1919,7 +1919,7 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
 				if x.Result == nil {
-					x.Result = &FutureResult{}
+					x.Result = &TaskResult{}
 				}
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Result); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
@@ -1960,79 +1960,79 @@ func (x *fastReflection_FutureResponse) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var _ protoreflect.List = (*_QueryFuturesResponse_2_list)(nil)
+var _ protoreflect.List = (*_QueryTasksResponse_2_list)(nil)
 
-type _QueryFuturesResponse_2_list struct {
-	list *[]*FutureResponse
+type _QueryTasksResponse_2_list struct {
+	list *[]*TaskResponse
 }
 
-func (x *_QueryFuturesResponse_2_list) Len() int {
+func (x *_QueryTasksResponse_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_QueryFuturesResponse_2_list) Get(i int) protoreflect.Value {
+func (x *_QueryTasksResponse_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_QueryFuturesResponse_2_list) Set(i int, value protoreflect.Value) {
+func (x *_QueryTasksResponse_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*FutureResponse)
+	concreteValue := valueUnwrapped.Interface().(*TaskResponse)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_QueryFuturesResponse_2_list) Append(value protoreflect.Value) {
+func (x *_QueryTasksResponse_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*FutureResponse)
+	concreteValue := valueUnwrapped.Interface().(*TaskResponse)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_QueryFuturesResponse_2_list) AppendMutable() protoreflect.Value {
-	v := new(FutureResponse)
+func (x *_QueryTasksResponse_2_list) AppendMutable() protoreflect.Value {
+	v := new(TaskResponse)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_QueryFuturesResponse_2_list) Truncate(n int) {
+func (x *_QueryTasksResponse_2_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_QueryFuturesResponse_2_list) NewElement() protoreflect.Value {
-	v := new(FutureResponse)
+func (x *_QueryTasksResponse_2_list) NewElement() protoreflect.Value {
+	v := new(TaskResponse)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_QueryFuturesResponse_2_list) IsValid() bool {
+func (x *_QueryTasksResponse_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_QueryFuturesResponse            protoreflect.MessageDescriptor
-	fd_QueryFuturesResponse_pagination protoreflect.FieldDescriptor
-	fd_QueryFuturesResponse_futures    protoreflect.FieldDescriptor
+	md_QueryTasksResponse            protoreflect.MessageDescriptor
+	fd_QueryTasksResponse_pagination protoreflect.FieldDescriptor
+	fd_QueryTasksResponse_tasks      protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryFuturesResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryFuturesResponse")
-	fd_QueryFuturesResponse_pagination = md_QueryFuturesResponse.Fields().ByName("pagination")
-	fd_QueryFuturesResponse_futures = md_QueryFuturesResponse.Fields().ByName("futures")
+	md_QueryTasksResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryTasksResponse")
+	fd_QueryTasksResponse_pagination = md_QueryTasksResponse.Fields().ByName("pagination")
+	fd_QueryTasksResponse_tasks = md_QueryTasksResponse.Fields().ByName("tasks")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryFuturesResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryTasksResponse)(nil)
 
-type fastReflection_QueryFuturesResponse QueryFuturesResponse
+type fastReflection_QueryTasksResponse QueryTasksResponse
 
-func (x *QueryFuturesResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryFuturesResponse)(x)
+func (x *QueryTasksResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryTasksResponse)(x)
 }
 
-func (x *QueryFuturesResponse) slowProtoReflect() protoreflect.Message {
+func (x *QueryTasksResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2044,43 +2044,43 @@ func (x *QueryFuturesResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryFuturesResponse_messageType fastReflection_QueryFuturesResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryFuturesResponse_messageType{}
+var _fastReflection_QueryTasksResponse_messageType fastReflection_QueryTasksResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryTasksResponse_messageType{}
 
-type fastReflection_QueryFuturesResponse_messageType struct{}
+type fastReflection_QueryTasksResponse_messageType struct{}
 
-func (x fastReflection_QueryFuturesResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryFuturesResponse)(nil)
+func (x fastReflection_QueryTasksResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryTasksResponse)(nil)
 }
-func (x fastReflection_QueryFuturesResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryFuturesResponse)
+func (x fastReflection_QueryTasksResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryTasksResponse)
 }
-func (x fastReflection_QueryFuturesResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFuturesResponse
+func (x fastReflection_QueryTasksResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTasksResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryFuturesResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFuturesResponse
+func (x *fastReflection_QueryTasksResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTasksResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryFuturesResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryFuturesResponse_messageType
+func (x *fastReflection_QueryTasksResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryTasksResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryFuturesResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryFuturesResponse)
+func (x *fastReflection_QueryTasksResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryTasksResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryFuturesResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryFuturesResponse)(x)
+func (x *fastReflection_QueryTasksResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryTasksResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -2088,16 +2088,16 @@ func (x *fastReflection_QueryFuturesResponse) Interface() protoreflect.ProtoMess
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryFuturesResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryTasksResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pagination != nil {
 		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryFuturesResponse_pagination, value) {
+		if !f(fd_QueryTasksResponse_pagination, value) {
 			return
 		}
 	}
-	if len(x.Futures) != 0 {
-		value := protoreflect.ValueOfList(&_QueryFuturesResponse_2_list{list: &x.Futures})
-		if !f(fd_QueryFuturesResponse_futures, value) {
+	if len(x.Tasks) != 0 {
+		value := protoreflect.ValueOfList(&_QueryTasksResponse_2_list{list: &x.Tasks})
+		if !f(fd_QueryTasksResponse_tasks, value) {
 			return
 		}
 	}
@@ -2114,17 +2114,17 @@ func (x *fastReflection_QueryFuturesResponse) Range(f func(protoreflect.FieldDes
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryFuturesResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryTasksResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryTasksResponse.pagination":
 		return x.Pagination != nil
-	case "warden.async.v1beta1.QueryFuturesResponse.futures":
-		return len(x.Futures) != 0
+	case "warden.async.v1beta1.QueryTasksResponse.tasks":
+		return len(x.Tasks) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2134,17 +2134,17 @@ func (x *fastReflection_QueryFuturesResponse) Has(fd protoreflect.FieldDescripto
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryTasksResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryTasksResponse.pagination":
 		x.Pagination = nil
-	case "warden.async.v1beta1.QueryFuturesResponse.futures":
-		x.Futures = nil
+	case "warden.async.v1beta1.QueryTasksResponse.tasks":
+		x.Tasks = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2154,22 +2154,22 @@ func (x *fastReflection_QueryFuturesResponse) Clear(fd protoreflect.FieldDescrip
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryFuturesResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTasksResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryTasksResponse.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.async.v1beta1.QueryFuturesResponse.futures":
-		if len(x.Futures) == 0 {
-			return protoreflect.ValueOfList(&_QueryFuturesResponse_2_list{})
+	case "warden.async.v1beta1.QueryTasksResponse.tasks":
+		if len(x.Tasks) == 0 {
+			return protoreflect.ValueOfList(&_QueryTasksResponse_2_list{})
 		}
-		listValue := &_QueryFuturesResponse_2_list{list: &x.Futures}
+		listValue := &_QueryTasksResponse_2_list{list: &x.Tasks}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2183,19 +2183,19 @@ func (x *fastReflection_QueryFuturesResponse) Get(descriptor protoreflect.FieldD
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryTasksResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryTasksResponse.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageResponse)
-	case "warden.async.v1beta1.QueryFuturesResponse.futures":
+	case "warden.async.v1beta1.QueryTasksResponse.tasks":
 		lv := value.List()
-		clv := lv.(*_QueryFuturesResponse_2_list)
-		x.Futures = *clv.list
+		clv := lv.(*_QueryTasksResponse_2_list)
+		x.Tasks = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2209,53 +2209,53 @@ func (x *fastReflection_QueryFuturesResponse) Set(fd protoreflect.FieldDescripto
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTasksResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryTasksResponse.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageResponse)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	case "warden.async.v1beta1.QueryFuturesResponse.futures":
-		if x.Futures == nil {
-			x.Futures = []*FutureResponse{}
+	case "warden.async.v1beta1.QueryTasksResponse.tasks":
+		if x.Tasks == nil {
+			x.Tasks = []*TaskResponse{}
 		}
-		value := &_QueryFuturesResponse_2_list{list: &x.Futures}
+		value := &_QueryTasksResponse_2_list{list: &x.Tasks}
 		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryFuturesResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTasksResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryTasksResponse.pagination":
 		m := new(v1beta1.PageResponse)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.async.v1beta1.QueryFuturesResponse.futures":
-		list := []*FutureResponse{}
-		return protoreflect.ValueOfList(&_QueryFuturesResponse_2_list{list: &list})
+	case "warden.async.v1beta1.QueryTasksResponse.tasks":
+		list := []*TaskResponse{}
+		return protoreflect.ValueOfList(&_QueryTasksResponse_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryFuturesResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryTasksResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryFuturesResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryTasksResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2263,7 +2263,7 @@ func (x *fastReflection_QueryFuturesResponse) WhichOneof(d protoreflect.OneofDes
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryFuturesResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryTasksResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -2274,7 +2274,7 @@ func (x *fastReflection_QueryFuturesResponse) GetUnknown() protoreflect.RawField
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFuturesResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryTasksResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -2286,7 +2286,7 @@ func (x *fastReflection_QueryFuturesResponse) SetUnknown(fields protoreflect.Raw
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryFuturesResponse) IsValid() bool {
+func (x *fastReflection_QueryTasksResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -2296,9 +2296,9 @@ func (x *fastReflection_QueryFuturesResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryTasksResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryFuturesResponse)
+		x := input.Message.Interface().(*QueryTasksResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2314,8 +2314,8 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 			l = options.Size(x.Pagination)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.Futures) > 0 {
-			for _, e := range x.Futures {
+		if len(x.Tasks) > 0 {
+			for _, e := range x.Tasks {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -2330,7 +2330,7 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFuturesResponse)
+		x := input.Message.Interface().(*QueryTasksResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2349,9 +2349,9 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Futures) > 0 {
-			for iNdEx := len(x.Futures) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.Futures[iNdEx])
+		if len(x.Tasks) > 0 {
+			for iNdEx := len(x.Tasks) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Tasks[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2390,7 +2390,7 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFuturesResponse)
+		x := input.Message.Interface().(*QueryTasksResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2422,10 +2422,10 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFuturesResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTasksResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFuturesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTasksResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -2466,7 +2466,7 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Futures", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Tasks", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -2493,8 +2493,8 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Futures = append(x.Futures, &FutureResponse{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Futures[len(x.Futures)-1]); err != nil {
+				x.Tasks = append(x.Tasks, &TaskResponse{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Tasks[len(x.Tasks)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -2534,25 +2534,25 @@ func (x *fastReflection_QueryFuturesResponse) ProtoMethods() *protoiface.Methods
 }
 
 var (
-	md_QueryFutureByIdRequest    protoreflect.MessageDescriptor
-	fd_QueryFutureByIdRequest_id protoreflect.FieldDescriptor
+	md_QueryTaskByIdRequest    protoreflect.MessageDescriptor
+	fd_QueryTaskByIdRequest_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryFutureByIdRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryFutureByIdRequest")
-	fd_QueryFutureByIdRequest_id = md_QueryFutureByIdRequest.Fields().ByName("id")
+	md_QueryTaskByIdRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryTaskByIdRequest")
+	fd_QueryTaskByIdRequest_id = md_QueryTaskByIdRequest.Fields().ByName("id")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryFutureByIdRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryTaskByIdRequest)(nil)
 
-type fastReflection_QueryFutureByIdRequest QueryFutureByIdRequest
+type fastReflection_QueryTaskByIdRequest QueryTaskByIdRequest
 
-func (x *QueryFutureByIdRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryFutureByIdRequest)(x)
+func (x *QueryTaskByIdRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryTaskByIdRequest)(x)
 }
 
-func (x *QueryFutureByIdRequest) slowProtoReflect() protoreflect.Message {
+func (x *QueryTaskByIdRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2564,43 +2564,43 @@ func (x *QueryFutureByIdRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryFutureByIdRequest_messageType fastReflection_QueryFutureByIdRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryFutureByIdRequest_messageType{}
+var _fastReflection_QueryTaskByIdRequest_messageType fastReflection_QueryTaskByIdRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryTaskByIdRequest_messageType{}
 
-type fastReflection_QueryFutureByIdRequest_messageType struct{}
+type fastReflection_QueryTaskByIdRequest_messageType struct{}
 
-func (x fastReflection_QueryFutureByIdRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryFutureByIdRequest)(nil)
+func (x fastReflection_QueryTaskByIdRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryTaskByIdRequest)(nil)
 }
-func (x fastReflection_QueryFutureByIdRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryFutureByIdRequest)
+func (x fastReflection_QueryTaskByIdRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryTaskByIdRequest)
 }
-func (x fastReflection_QueryFutureByIdRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFutureByIdRequest
+func (x fastReflection_QueryTaskByIdRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTaskByIdRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryFutureByIdRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFutureByIdRequest
+func (x *fastReflection_QueryTaskByIdRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTaskByIdRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryFutureByIdRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryFutureByIdRequest_messageType
+func (x *fastReflection_QueryTaskByIdRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryTaskByIdRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryFutureByIdRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryFutureByIdRequest)
+func (x *fastReflection_QueryTaskByIdRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryTaskByIdRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryFutureByIdRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryFutureByIdRequest)(x)
+func (x *fastReflection_QueryTaskByIdRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryTaskByIdRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -2608,10 +2608,10 @@ func (x *fastReflection_QueryFutureByIdRequest) Interface() protoreflect.ProtoMe
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryFutureByIdRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryTaskByIdRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_QueryFutureByIdRequest_id, value) {
+		if !f(fd_QueryTaskByIdRequest_id, value) {
 			return
 		}
 	}
@@ -2628,15 +2628,15 @@ func (x *fastReflection_QueryFutureByIdRequest) Range(f func(protoreflect.FieldD
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryFutureByIdRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryTaskByIdRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdRequest.id":
+	case "warden.async.v1beta1.QueryTaskByIdRequest.id":
 		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2646,15 +2646,15 @@ func (x *fastReflection_QueryFutureByIdRequest) Has(fd protoreflect.FieldDescrip
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryTaskByIdRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdRequest.id":
+	case "warden.async.v1beta1.QueryTaskByIdRequest.id":
 		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2664,16 +2664,16 @@ func (x *fastReflection_QueryFutureByIdRequest) Clear(fd protoreflect.FieldDescr
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryFutureByIdRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTaskByIdRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdRequest.id":
+	case "warden.async.v1beta1.QueryTaskByIdRequest.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2687,15 +2687,15 @@ func (x *fastReflection_QueryFutureByIdRequest) Get(descriptor protoreflect.Fiel
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryTaskByIdRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdRequest.id":
+	case "warden.async.v1beta1.QueryTaskByIdRequest.id":
 		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2709,40 +2709,40 @@ func (x *fastReflection_QueryFutureByIdRequest) Set(fd protoreflect.FieldDescrip
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTaskByIdRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdRequest.id":
-		panic(fmt.Errorf("field id of message warden.async.v1beta1.QueryFutureByIdRequest is not mutable"))
+	case "warden.async.v1beta1.QueryTaskByIdRequest.id":
+		panic(fmt.Errorf("field id of message warden.async.v1beta1.QueryTaskByIdRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryFutureByIdRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTaskByIdRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdRequest.id":
+	case "warden.async.v1beta1.QueryTaskByIdRequest.id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryFutureByIdRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryTaskByIdRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryFutureByIdRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryTaskByIdRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2750,7 +2750,7 @@ func (x *fastReflection_QueryFutureByIdRequest) WhichOneof(d protoreflect.OneofD
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryFutureByIdRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryTaskByIdRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -2761,7 +2761,7 @@ func (x *fastReflection_QueryFutureByIdRequest) GetUnknown() protoreflect.RawFie
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryTaskByIdRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -2773,7 +2773,7 @@ func (x *fastReflection_QueryFutureByIdRequest) SetUnknown(fields protoreflect.R
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryFutureByIdRequest) IsValid() bool {
+func (x *fastReflection_QueryTaskByIdRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -2783,9 +2783,9 @@ func (x *fastReflection_QueryFutureByIdRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryFutureByIdRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryTaskByIdRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryFutureByIdRequest)
+		x := input.Message.Interface().(*QueryTaskByIdRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2810,7 +2810,7 @@ func (x *fastReflection_QueryFutureByIdRequest) ProtoMethods() *protoiface.Metho
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFutureByIdRequest)
+		x := input.Message.Interface().(*QueryTaskByIdRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2845,7 +2845,7 @@ func (x *fastReflection_QueryFutureByIdRequest) ProtoMethods() *protoiface.Metho
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFutureByIdRequest)
+		x := input.Message.Interface().(*QueryTaskByIdRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2877,10 +2877,10 @@ func (x *fastReflection_QueryFutureByIdRequest) ProtoMethods() *protoiface.Metho
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFutureByIdRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTaskByIdRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFutureByIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTaskByIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -2938,25 +2938,25 @@ func (x *fastReflection_QueryFutureByIdRequest) ProtoMethods() *protoiface.Metho
 }
 
 var (
-	md_QueryFutureByIdResponse                protoreflect.MessageDescriptor
-	fd_QueryFutureByIdResponse_futureResponse protoreflect.FieldDescriptor
+	md_QueryTaskByIdResponse              protoreflect.MessageDescriptor
+	fd_QueryTaskByIdResponse_taskResponse protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryFutureByIdResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryFutureByIdResponse")
-	fd_QueryFutureByIdResponse_futureResponse = md_QueryFutureByIdResponse.Fields().ByName("futureResponse")
+	md_QueryTaskByIdResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryTaskByIdResponse")
+	fd_QueryTaskByIdResponse_taskResponse = md_QueryTaskByIdResponse.Fields().ByName("taskResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryFutureByIdResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryTaskByIdResponse)(nil)
 
-type fastReflection_QueryFutureByIdResponse QueryFutureByIdResponse
+type fastReflection_QueryTaskByIdResponse QueryTaskByIdResponse
 
-func (x *QueryFutureByIdResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryFutureByIdResponse)(x)
+func (x *QueryTaskByIdResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryTaskByIdResponse)(x)
 }
 
-func (x *QueryFutureByIdResponse) slowProtoReflect() protoreflect.Message {
+func (x *QueryTaskByIdResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2968,43 +2968,43 @@ func (x *QueryFutureByIdResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryFutureByIdResponse_messageType fastReflection_QueryFutureByIdResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryFutureByIdResponse_messageType{}
+var _fastReflection_QueryTaskByIdResponse_messageType fastReflection_QueryTaskByIdResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryTaskByIdResponse_messageType{}
 
-type fastReflection_QueryFutureByIdResponse_messageType struct{}
+type fastReflection_QueryTaskByIdResponse_messageType struct{}
 
-func (x fastReflection_QueryFutureByIdResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryFutureByIdResponse)(nil)
+func (x fastReflection_QueryTaskByIdResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryTaskByIdResponse)(nil)
 }
-func (x fastReflection_QueryFutureByIdResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryFutureByIdResponse)
+func (x fastReflection_QueryTaskByIdResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryTaskByIdResponse)
 }
-func (x fastReflection_QueryFutureByIdResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFutureByIdResponse
+func (x fastReflection_QueryTaskByIdResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTaskByIdResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryFutureByIdResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryFutureByIdResponse
+func (x *fastReflection_QueryTaskByIdResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryTaskByIdResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryFutureByIdResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryFutureByIdResponse_messageType
+func (x *fastReflection_QueryTaskByIdResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryTaskByIdResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryFutureByIdResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryFutureByIdResponse)
+func (x *fastReflection_QueryTaskByIdResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryTaskByIdResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryFutureByIdResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryFutureByIdResponse)(x)
+func (x *fastReflection_QueryTaskByIdResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryTaskByIdResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -3012,10 +3012,10 @@ func (x *fastReflection_QueryFutureByIdResponse) Interface() protoreflect.ProtoM
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryFutureByIdResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.FutureResponse != nil {
-		value := protoreflect.ValueOfMessage(x.FutureResponse.ProtoReflect())
-		if !f(fd_QueryFutureByIdResponse_futureResponse, value) {
+func (x *fastReflection_QueryTaskByIdResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.TaskResponse != nil {
+		value := protoreflect.ValueOfMessage(x.TaskResponse.ProtoReflect())
+		if !f(fd_QueryTaskByIdResponse_taskResponse, value) {
 			return
 		}
 	}
@@ -3032,15 +3032,15 @@ func (x *fastReflection_QueryFutureByIdResponse) Range(f func(protoreflect.Field
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryFutureByIdResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryTaskByIdResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdResponse.futureResponse":
-		return x.FutureResponse != nil
+	case "warden.async.v1beta1.QueryTaskByIdResponse.taskResponse":
+		return x.TaskResponse != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3050,15 +3050,15 @@ func (x *fastReflection_QueryFutureByIdResponse) Has(fd protoreflect.FieldDescri
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryTaskByIdResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdResponse.futureResponse":
-		x.FutureResponse = nil
+	case "warden.async.v1beta1.QueryTaskByIdResponse.taskResponse":
+		x.TaskResponse = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3068,16 +3068,16 @@ func (x *fastReflection_QueryFutureByIdResponse) Clear(fd protoreflect.FieldDesc
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryFutureByIdResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTaskByIdResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdResponse.futureResponse":
-		value := x.FutureResponse
+	case "warden.async.v1beta1.QueryTaskByIdResponse.taskResponse":
+		value := x.TaskResponse
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -3091,15 +3091,15 @@ func (x *fastReflection_QueryFutureByIdResponse) Get(descriptor protoreflect.Fie
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryTaskByIdResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdResponse.futureResponse":
-		x.FutureResponse = value.Message().Interface().(*FutureResponse)
+	case "warden.async.v1beta1.QueryTaskByIdResponse.taskResponse":
+		x.TaskResponse = value.Message().Interface().(*TaskResponse)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3113,44 +3113,44 @@ func (x *fastReflection_QueryFutureByIdResponse) Set(fd protoreflect.FieldDescri
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTaskByIdResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdResponse.futureResponse":
-		if x.FutureResponse == nil {
-			x.FutureResponse = new(FutureResponse)
+	case "warden.async.v1beta1.QueryTaskByIdResponse.taskResponse":
+		if x.TaskResponse == nil {
+			x.TaskResponse = new(TaskResponse)
 		}
-		return protoreflect.ValueOfMessage(x.FutureResponse.ProtoReflect())
+		return protoreflect.ValueOfMessage(x.TaskResponse.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryFutureByIdResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryTaskByIdResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryFutureByIdResponse.futureResponse":
-		m := new(FutureResponse)
+	case "warden.async.v1beta1.QueryTaskByIdResponse.taskResponse":
+		m := new(TaskResponse)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryFutureByIdResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryTaskByIdResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryFutureByIdResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryTaskByIdResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryFutureByIdResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryTaskByIdResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryFutureByIdResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryTaskByIdResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -3158,7 +3158,7 @@ func (x *fastReflection_QueryFutureByIdResponse) WhichOneof(d protoreflect.Oneof
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryFutureByIdResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryTaskByIdResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -3169,7 +3169,7 @@ func (x *fastReflection_QueryFutureByIdResponse) GetUnknown() protoreflect.RawFi
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryFutureByIdResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryTaskByIdResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -3181,7 +3181,7 @@ func (x *fastReflection_QueryFutureByIdResponse) SetUnknown(fields protoreflect.
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryFutureByIdResponse) IsValid() bool {
+func (x *fastReflection_QueryTaskByIdResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -3191,9 +3191,9 @@ func (x *fastReflection_QueryFutureByIdResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryTaskByIdResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryFutureByIdResponse)
+		x := input.Message.Interface().(*QueryTaskByIdResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3205,8 +3205,8 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 		var n int
 		var l int
 		_ = l
-		if x.FutureResponse != nil {
-			l = options.Size(x.FutureResponse)
+		if x.TaskResponse != nil {
+			l = options.Size(x.TaskResponse)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -3219,7 +3219,7 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFutureByIdResponse)
+		x := input.Message.Interface().(*QueryTaskByIdResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3238,8 +3238,8 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.FutureResponse != nil {
-			encoded, err := options.Marshal(x.FutureResponse)
+		if x.TaskResponse != nil {
+			encoded, err := options.Marshal(x.TaskResponse)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3263,7 +3263,7 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryFutureByIdResponse)
+		x := input.Message.Interface().(*QueryTaskByIdResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3295,15 +3295,15 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFutureByIdResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTaskByIdResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryFutureByIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTaskByIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FutureResponse", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TaskResponse", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -3330,10 +3330,10 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.FutureResponse == nil {
-					x.FutureResponse = &FutureResponse{}
+				if x.TaskResponse == nil {
+					x.TaskResponse = &TaskResponse{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.FutureResponse); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.TaskResponse); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -3373,25 +3373,25 @@ func (x *fastReflection_QueryFutureByIdResponse) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_QueryPendingFuturesRequest            protoreflect.MessageDescriptor
-	fd_QueryPendingFuturesRequest_pagination protoreflect.FieldDescriptor
+	md_QueryPendingTasksRequest            protoreflect.MessageDescriptor
+	fd_QueryPendingTasksRequest_pagination protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryPendingFuturesRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPendingFuturesRequest")
-	fd_QueryPendingFuturesRequest_pagination = md_QueryPendingFuturesRequest.Fields().ByName("pagination")
+	md_QueryPendingTasksRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPendingTasksRequest")
+	fd_QueryPendingTasksRequest_pagination = md_QueryPendingTasksRequest.Fields().ByName("pagination")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryPendingFuturesRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryPendingTasksRequest)(nil)
 
-type fastReflection_QueryPendingFuturesRequest QueryPendingFuturesRequest
+type fastReflection_QueryPendingTasksRequest QueryPendingTasksRequest
 
-func (x *QueryPendingFuturesRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryPendingFuturesRequest)(x)
+func (x *QueryPendingTasksRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPendingTasksRequest)(x)
 }
 
-func (x *QueryPendingFuturesRequest) slowProtoReflect() protoreflect.Message {
+func (x *QueryPendingTasksRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3403,43 +3403,43 @@ func (x *QueryPendingFuturesRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryPendingFuturesRequest_messageType fastReflection_QueryPendingFuturesRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryPendingFuturesRequest_messageType{}
+var _fastReflection_QueryPendingTasksRequest_messageType fastReflection_QueryPendingTasksRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPendingTasksRequest_messageType{}
 
-type fastReflection_QueryPendingFuturesRequest_messageType struct{}
+type fastReflection_QueryPendingTasksRequest_messageType struct{}
 
-func (x fastReflection_QueryPendingFuturesRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryPendingFuturesRequest)(nil)
+func (x fastReflection_QueryPendingTasksRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPendingTasksRequest)(nil)
 }
-func (x fastReflection_QueryPendingFuturesRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryPendingFuturesRequest)
+func (x fastReflection_QueryPendingTasksRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPendingTasksRequest)
 }
-func (x fastReflection_QueryPendingFuturesRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPendingFuturesRequest
+func (x fastReflection_QueryPendingTasksRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPendingTasksRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryPendingFuturesRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPendingFuturesRequest
+func (x *fastReflection_QueryPendingTasksRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPendingTasksRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryPendingFuturesRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryPendingFuturesRequest_messageType
+func (x *fastReflection_QueryPendingTasksRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPendingTasksRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryPendingFuturesRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryPendingFuturesRequest)
+func (x *fastReflection_QueryPendingTasksRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryPendingTasksRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryPendingFuturesRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryPendingFuturesRequest)(x)
+func (x *fastReflection_QueryPendingTasksRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryPendingTasksRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -3447,10 +3447,10 @@ func (x *fastReflection_QueryPendingFuturesRequest) Interface() protoreflect.Pro
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryPendingFuturesRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryPendingTasksRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pagination != nil {
 		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryPendingFuturesRequest_pagination, value) {
+		if !f(fd_QueryPendingTasksRequest_pagination, value) {
 			return
 		}
 	}
@@ -3467,15 +3467,15 @@ func (x *fastReflection_QueryPendingFuturesRequest) Range(f func(protoreflect.Fi
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryPendingFuturesRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryPendingTasksRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksRequest.pagination":
 		return x.Pagination != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3485,15 +3485,15 @@ func (x *fastReflection_QueryPendingFuturesRequest) Has(fd protoreflect.FieldDes
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryPendingTasksRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksRequest.pagination":
 		x.Pagination = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3503,16 +3503,16 @@ func (x *fastReflection_QueryPendingFuturesRequest) Clear(fd protoreflect.FieldD
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryPendingFuturesRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPendingTasksRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksRequest.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -3526,15 +3526,15 @@ func (x *fastReflection_QueryPendingFuturesRequest) Get(descriptor protoreflect.
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryPendingTasksRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksRequest.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageRequest)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3548,44 +3548,44 @@ func (x *fastReflection_QueryPendingFuturesRequest) Set(fd protoreflect.FieldDes
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPendingTasksRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksRequest.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageRequest)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryPendingFuturesRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPendingTasksRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesRequest.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksRequest.pagination":
 		m := new(v1beta1.PageRequest)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryPendingFuturesRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryPendingTasksRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPendingFuturesRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPendingTasksRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -3593,7 +3593,7 @@ func (x *fastReflection_QueryPendingFuturesRequest) WhichOneof(d protoreflect.On
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryPendingFuturesRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryPendingTasksRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -3604,7 +3604,7 @@ func (x *fastReflection_QueryPendingFuturesRequest) GetUnknown() protoreflect.Ra
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryPendingTasksRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -3616,7 +3616,7 @@ func (x *fastReflection_QueryPendingFuturesRequest) SetUnknown(fields protorefle
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryPendingFuturesRequest) IsValid() bool {
+func (x *fastReflection_QueryPendingTasksRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -3626,9 +3626,9 @@ func (x *fastReflection_QueryPendingFuturesRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryPendingFuturesRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryPendingTasksRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryPendingFuturesRequest)
+		x := input.Message.Interface().(*QueryPendingTasksRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3654,7 +3654,7 @@ func (x *fastReflection_QueryPendingFuturesRequest) ProtoMethods() *protoiface.M
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPendingFuturesRequest)
+		x := input.Message.Interface().(*QueryPendingTasksRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3698,7 +3698,7 @@ func (x *fastReflection_QueryPendingFuturesRequest) ProtoMethods() *protoiface.M
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPendingFuturesRequest)
+		x := input.Message.Interface().(*QueryPendingTasksRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3730,10 +3730,10 @@ func (x *fastReflection_QueryPendingFuturesRequest) ProtoMethods() *protoiface.M
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingFuturesRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingTasksRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingFuturesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingTasksRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -3807,79 +3807,79 @@ func (x *fastReflection_QueryPendingFuturesRequest) ProtoMethods() *protoiface.M
 	}
 }
 
-var _ protoreflect.List = (*_QueryPendingFuturesResponse_2_list)(nil)
+var _ protoreflect.List = (*_QueryPendingTasksResponse_2_list)(nil)
 
-type _QueryPendingFuturesResponse_2_list struct {
-	list *[]*Future
+type _QueryPendingTasksResponse_2_list struct {
+	list *[]*Task
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) Len() int {
+func (x *_QueryPendingTasksResponse_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) Get(i int) protoreflect.Value {
+func (x *_QueryPendingTasksResponse_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) Set(i int, value protoreflect.Value) {
+func (x *_QueryPendingTasksResponse_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*Future)
+	concreteValue := valueUnwrapped.Interface().(*Task)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) Append(value protoreflect.Value) {
+func (x *_QueryPendingTasksResponse_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*Future)
+	concreteValue := valueUnwrapped.Interface().(*Task)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) AppendMutable() protoreflect.Value {
-	v := new(Future)
+func (x *_QueryPendingTasksResponse_2_list) AppendMutable() protoreflect.Value {
+	v := new(Task)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) Truncate(n int) {
+func (x *_QueryPendingTasksResponse_2_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) NewElement() protoreflect.Value {
-	v := new(Future)
+func (x *_QueryPendingTasksResponse_2_list) NewElement() protoreflect.Value {
+	v := new(Task)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_QueryPendingFuturesResponse_2_list) IsValid() bool {
+func (x *_QueryPendingTasksResponse_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_QueryPendingFuturesResponse            protoreflect.MessageDescriptor
-	fd_QueryPendingFuturesResponse_pagination protoreflect.FieldDescriptor
-	fd_QueryPendingFuturesResponse_futures    protoreflect.FieldDescriptor
+	md_QueryPendingTasksResponse            protoreflect.MessageDescriptor
+	fd_QueryPendingTasksResponse_pagination protoreflect.FieldDescriptor
+	fd_QueryPendingTasksResponse_tasks      protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryPendingFuturesResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPendingFuturesResponse")
-	fd_QueryPendingFuturesResponse_pagination = md_QueryPendingFuturesResponse.Fields().ByName("pagination")
-	fd_QueryPendingFuturesResponse_futures = md_QueryPendingFuturesResponse.Fields().ByName("futures")
+	md_QueryPendingTasksResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPendingTasksResponse")
+	fd_QueryPendingTasksResponse_pagination = md_QueryPendingTasksResponse.Fields().ByName("pagination")
+	fd_QueryPendingTasksResponse_tasks = md_QueryPendingTasksResponse.Fields().ByName("tasks")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryPendingFuturesResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryPendingTasksResponse)(nil)
 
-type fastReflection_QueryPendingFuturesResponse QueryPendingFuturesResponse
+type fastReflection_QueryPendingTasksResponse QueryPendingTasksResponse
 
-func (x *QueryPendingFuturesResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryPendingFuturesResponse)(x)
+func (x *QueryPendingTasksResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPendingTasksResponse)(x)
 }
 
-func (x *QueryPendingFuturesResponse) slowProtoReflect() protoreflect.Message {
+func (x *QueryPendingTasksResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3891,43 +3891,43 @@ func (x *QueryPendingFuturesResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryPendingFuturesResponse_messageType fastReflection_QueryPendingFuturesResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryPendingFuturesResponse_messageType{}
+var _fastReflection_QueryPendingTasksResponse_messageType fastReflection_QueryPendingTasksResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPendingTasksResponse_messageType{}
 
-type fastReflection_QueryPendingFuturesResponse_messageType struct{}
+type fastReflection_QueryPendingTasksResponse_messageType struct{}
 
-func (x fastReflection_QueryPendingFuturesResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryPendingFuturesResponse)(nil)
+func (x fastReflection_QueryPendingTasksResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPendingTasksResponse)(nil)
 }
-func (x fastReflection_QueryPendingFuturesResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryPendingFuturesResponse)
+func (x fastReflection_QueryPendingTasksResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPendingTasksResponse)
 }
-func (x fastReflection_QueryPendingFuturesResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPendingFuturesResponse
+func (x fastReflection_QueryPendingTasksResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPendingTasksResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryPendingFuturesResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPendingFuturesResponse
+func (x *fastReflection_QueryPendingTasksResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPendingTasksResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryPendingFuturesResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryPendingFuturesResponse_messageType
+func (x *fastReflection_QueryPendingTasksResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPendingTasksResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryPendingFuturesResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryPendingFuturesResponse)
+func (x *fastReflection_QueryPendingTasksResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryPendingTasksResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryPendingFuturesResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryPendingFuturesResponse)(x)
+func (x *fastReflection_QueryPendingTasksResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryPendingTasksResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -3935,16 +3935,16 @@ func (x *fastReflection_QueryPendingFuturesResponse) Interface() protoreflect.Pr
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryPendingFuturesResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryPendingTasksResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pagination != nil {
 		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryPendingFuturesResponse_pagination, value) {
+		if !f(fd_QueryPendingTasksResponse_pagination, value) {
 			return
 		}
 	}
-	if len(x.Futures) != 0 {
-		value := protoreflect.ValueOfList(&_QueryPendingFuturesResponse_2_list{list: &x.Futures})
-		if !f(fd_QueryPendingFuturesResponse_futures, value) {
+	if len(x.Tasks) != 0 {
+		value := protoreflect.ValueOfList(&_QueryPendingTasksResponse_2_list{list: &x.Tasks})
+		if !f(fd_QueryPendingTasksResponse_tasks, value) {
 			return
 		}
 	}
@@ -3961,17 +3961,17 @@ func (x *fastReflection_QueryPendingFuturesResponse) Range(f func(protoreflect.F
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryPendingFuturesResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryPendingTasksResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.pagination":
 		return x.Pagination != nil
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.futures":
-		return len(x.Futures) != 0
+	case "warden.async.v1beta1.QueryPendingTasksResponse.tasks":
+		return len(x.Tasks) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3981,17 +3981,17 @@ func (x *fastReflection_QueryPendingFuturesResponse) Has(fd protoreflect.FieldDe
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryPendingTasksResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.pagination":
 		x.Pagination = nil
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.futures":
-		x.Futures = nil
+	case "warden.async.v1beta1.QueryPendingTasksResponse.tasks":
+		x.Tasks = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4001,22 +4001,22 @@ func (x *fastReflection_QueryPendingFuturesResponse) Clear(fd protoreflect.Field
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryPendingFuturesResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPendingTasksResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.futures":
-		if len(x.Futures) == 0 {
-			return protoreflect.ValueOfList(&_QueryPendingFuturesResponse_2_list{})
+	case "warden.async.v1beta1.QueryPendingTasksResponse.tasks":
+		if len(x.Tasks) == 0 {
+			return protoreflect.ValueOfList(&_QueryPendingTasksResponse_2_list{})
 		}
-		listValue := &_QueryPendingFuturesResponse_2_list{list: &x.Futures}
+		listValue := &_QueryPendingTasksResponse_2_list{list: &x.Tasks}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4030,19 +4030,19 @@ func (x *fastReflection_QueryPendingFuturesResponse) Get(descriptor protoreflect
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryPendingTasksResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageResponse)
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.futures":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.tasks":
 		lv := value.List()
-		clv := lv.(*_QueryPendingFuturesResponse_2_list)
-		x.Futures = *clv.list
+		clv := lv.(*_QueryPendingTasksResponse_2_list)
+		x.Tasks = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4056,53 +4056,53 @@ func (x *fastReflection_QueryPendingFuturesResponse) Set(fd protoreflect.FieldDe
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPendingTasksResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageResponse)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.futures":
-		if x.Futures == nil {
-			x.Futures = []*Future{}
+	case "warden.async.v1beta1.QueryPendingTasksResponse.tasks":
+		if x.Tasks == nil {
+			x.Tasks = []*Task{}
 		}
-		value := &_QueryPendingFuturesResponse_2_list{list: &x.Futures}
+		value := &_QueryPendingTasksResponse_2_list{list: &x.Tasks}
 		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryPendingFuturesResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPendingTasksResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.pagination":
+	case "warden.async.v1beta1.QueryPendingTasksResponse.pagination":
 		m := new(v1beta1.PageResponse)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.async.v1beta1.QueryPendingFuturesResponse.futures":
-		list := []*Future{}
-		return protoreflect.ValueOfList(&_QueryPendingFuturesResponse_2_list{list: &list})
+	case "warden.async.v1beta1.QueryPendingTasksResponse.tasks":
+		list := []*Task{}
+		return protoreflect.ValueOfList(&_QueryPendingTasksResponse_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingFuturesResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPendingTasksResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingFuturesResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPendingTasksResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryPendingFuturesResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryPendingTasksResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPendingFuturesResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPendingTasksResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4110,7 +4110,7 @@ func (x *fastReflection_QueryPendingFuturesResponse) WhichOneof(d protoreflect.O
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryPendingFuturesResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryPendingTasksResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4121,7 +4121,7 @@ func (x *fastReflection_QueryPendingFuturesResponse) GetUnknown() protoreflect.R
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPendingFuturesResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryPendingTasksResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4133,7 +4133,7 @@ func (x *fastReflection_QueryPendingFuturesResponse) SetUnknown(fields protorefl
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryPendingFuturesResponse) IsValid() bool {
+func (x *fastReflection_QueryPendingTasksResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -4143,9 +4143,9 @@ func (x *fastReflection_QueryPendingFuturesResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryPendingTasksResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryPendingFuturesResponse)
+		x := input.Message.Interface().(*QueryPendingTasksResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4161,8 +4161,8 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 			l = options.Size(x.Pagination)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.Futures) > 0 {
-			for _, e := range x.Futures {
+		if len(x.Tasks) > 0 {
+			for _, e := range x.Tasks {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -4177,7 +4177,7 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPendingFuturesResponse)
+		x := input.Message.Interface().(*QueryPendingTasksResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4196,9 +4196,9 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Futures) > 0 {
-			for iNdEx := len(x.Futures) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.Futures[iNdEx])
+		if len(x.Tasks) > 0 {
+			for iNdEx := len(x.Tasks) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Tasks[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4237,7 +4237,7 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPendingFuturesResponse)
+		x := input.Message.Interface().(*QueryPendingTasksResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4269,10 +4269,10 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingFuturesResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingTasksResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingFuturesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPendingTasksResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4313,7 +4313,7 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Futures", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Tasks", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -4340,8 +4340,8 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Futures = append(x.Futures, &Future{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Futures[len(x.Futures)-1]); err != nil {
+				x.Tasks = append(x.Tasks, &Task{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Tasks[len(x.Tasks)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -4381,27 +4381,27 @@ func (x *fastReflection_QueryPendingFuturesResponse) ProtoMethods() *protoiface.
 }
 
 var (
-	md_QueryHandlersByValidatorRequest            protoreflect.MessageDescriptor
-	fd_QueryHandlersByValidatorRequest_pagination protoreflect.FieldDescriptor
-	fd_QueryHandlersByValidatorRequest_validator  protoreflect.FieldDescriptor
+	md_QueryPluginsByValidatorRequest            protoreflect.MessageDescriptor
+	fd_QueryPluginsByValidatorRequest_pagination protoreflect.FieldDescriptor
+	fd_QueryPluginsByValidatorRequest_validator  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryHandlersByValidatorRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryHandlersByValidatorRequest")
-	fd_QueryHandlersByValidatorRequest_pagination = md_QueryHandlersByValidatorRequest.Fields().ByName("pagination")
-	fd_QueryHandlersByValidatorRequest_validator = md_QueryHandlersByValidatorRequest.Fields().ByName("validator")
+	md_QueryPluginsByValidatorRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPluginsByValidatorRequest")
+	fd_QueryPluginsByValidatorRequest_pagination = md_QueryPluginsByValidatorRequest.Fields().ByName("pagination")
+	fd_QueryPluginsByValidatorRequest_validator = md_QueryPluginsByValidatorRequest.Fields().ByName("validator")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryHandlersByValidatorRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryPluginsByValidatorRequest)(nil)
 
-type fastReflection_QueryHandlersByValidatorRequest QueryHandlersByValidatorRequest
+type fastReflection_QueryPluginsByValidatorRequest QueryPluginsByValidatorRequest
 
-func (x *QueryHandlersByValidatorRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryHandlersByValidatorRequest)(x)
+func (x *QueryPluginsByValidatorRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPluginsByValidatorRequest)(x)
 }
 
-func (x *QueryHandlersByValidatorRequest) slowProtoReflect() protoreflect.Message {
+func (x *QueryPluginsByValidatorRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4413,43 +4413,43 @@ func (x *QueryHandlersByValidatorRequest) slowProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryHandlersByValidatorRequest_messageType fastReflection_QueryHandlersByValidatorRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryHandlersByValidatorRequest_messageType{}
+var _fastReflection_QueryPluginsByValidatorRequest_messageType fastReflection_QueryPluginsByValidatorRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPluginsByValidatorRequest_messageType{}
 
-type fastReflection_QueryHandlersByValidatorRequest_messageType struct{}
+type fastReflection_QueryPluginsByValidatorRequest_messageType struct{}
 
-func (x fastReflection_QueryHandlersByValidatorRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryHandlersByValidatorRequest)(nil)
+func (x fastReflection_QueryPluginsByValidatorRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPluginsByValidatorRequest)(nil)
 }
-func (x fastReflection_QueryHandlersByValidatorRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryHandlersByValidatorRequest)
+func (x fastReflection_QueryPluginsByValidatorRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginsByValidatorRequest)
 }
-func (x fastReflection_QueryHandlersByValidatorRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryHandlersByValidatorRequest
+func (x fastReflection_QueryPluginsByValidatorRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginsByValidatorRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryHandlersByValidatorRequest
+func (x *fastReflection_QueryPluginsByValidatorRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginsByValidatorRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryHandlersByValidatorRequest_messageType
+func (x *fastReflection_QueryPluginsByValidatorRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPluginsByValidatorRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryHandlersByValidatorRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryHandlersByValidatorRequest)
+func (x *fastReflection_QueryPluginsByValidatorRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginsByValidatorRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryHandlersByValidatorRequest)(x)
+func (x *fastReflection_QueryPluginsByValidatorRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryPluginsByValidatorRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4457,16 +4457,16 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) Interface() protoreflec
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryPluginsByValidatorRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pagination != nil {
 		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryHandlersByValidatorRequest_pagination, value) {
+		if !f(fd_QueryPluginsByValidatorRequest_pagination, value) {
 			return
 		}
 	}
 	if x.Validator != "" {
 		value := protoreflect.ValueOfString(x.Validator)
-		if !f(fd_QueryHandlersByValidatorRequest_validator, value) {
+		if !f(fd_QueryPluginsByValidatorRequest_validator, value) {
 			return
 		}
 	}
@@ -4483,17 +4483,17 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) Range(f func(protorefle
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryPluginsByValidatorRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination":
 		return x.Pagination != nil
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.validator":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.validator":
 		return x.Validator != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4503,17 +4503,17 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) Has(fd protoreflect.Fie
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryPluginsByValidatorRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination":
 		x.Pagination = nil
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.validator":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.validator":
 		x.Validator = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4523,19 +4523,19 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) Clear(fd protoreflect.F
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPluginsByValidatorRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.validator":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.validator":
 		value := x.Validator
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4549,17 +4549,17 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) Get(descriptor protoref
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryPluginsByValidatorRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageRequest)
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.validator":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.validator":
 		x.Validator = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4573,48 +4573,48 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) Set(fd protoreflect.Fie
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPluginsByValidatorRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageRequest)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.validator":
-		panic(fmt.Errorf("field validator of message warden.async.v1beta1.QueryHandlersByValidatorRequest is not mutable"))
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.validator":
+		panic(fmt.Errorf("field validator of message warden.async.v1beta1.QueryPluginsByValidatorRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryHandlersByValidatorRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPluginsByValidatorRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination":
 		m := new(v1beta1.PageRequest)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.async.v1beta1.QueryHandlersByValidatorRequest.validator":
+	case "warden.async.v1beta1.QueryPluginsByValidatorRequest.validator":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorRequest"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryHandlersByValidatorRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryPluginsByValidatorRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryHandlersByValidatorRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPluginsByValidatorRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4622,7 +4622,7 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) WhichOneof(d protorefle
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryHandlersByValidatorRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryPluginsByValidatorRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4633,7 +4633,7 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) GetUnknown() protorefle
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryPluginsByValidatorRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4645,7 +4645,7 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) SetUnknown(fields proto
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryHandlersByValidatorRequest) IsValid() bool {
+func (x *fastReflection_QueryPluginsByValidatorRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -4655,9 +4655,9 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryHandlersByValidatorRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryPluginsByValidatorRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryHandlersByValidatorRequest)
+		x := input.Message.Interface().(*QueryPluginsByValidatorRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4687,7 +4687,7 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) ProtoMethods() *protoif
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryHandlersByValidatorRequest)
+		x := input.Message.Interface().(*QueryPluginsByValidatorRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4738,7 +4738,7 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) ProtoMethods() *protoif
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryHandlersByValidatorRequest)
+		x := input.Message.Interface().(*QueryPluginsByValidatorRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4770,10 +4770,10 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) ProtoMethods() *protoif
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryHandlersByValidatorRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginsByValidatorRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryHandlersByValidatorRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginsByValidatorRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4879,74 +4879,74 @@ func (x *fastReflection_QueryHandlersByValidatorRequest) ProtoMethods() *protoif
 	}
 }
 
-var _ protoreflect.List = (*_QueryHandlersByValidatorResponse_2_list)(nil)
+var _ protoreflect.List = (*_QueryPluginsByValidatorResponse_2_list)(nil)
 
-type _QueryHandlersByValidatorResponse_2_list struct {
+type _QueryPluginsByValidatorResponse_2_list struct {
 	list *[]string
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) Len() int {
+func (x *_QueryPluginsByValidatorResponse_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) Get(i int) protoreflect.Value {
+func (x *_QueryPluginsByValidatorResponse_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) Set(i int, value protoreflect.Value) {
+func (x *_QueryPluginsByValidatorResponse_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) Append(value protoreflect.Value) {
+func (x *_QueryPluginsByValidatorResponse_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message QueryHandlersByValidatorResponse at list field Handlers as it is not of Message kind"))
+func (x *_QueryPluginsByValidatorResponse_2_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message QueryPluginsByValidatorResponse at list field Plugins as it is not of Message kind"))
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) Truncate(n int) {
+func (x *_QueryPluginsByValidatorResponse_2_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) NewElement() protoreflect.Value {
+func (x *_QueryPluginsByValidatorResponse_2_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_QueryHandlersByValidatorResponse_2_list) IsValid() bool {
+func (x *_QueryPluginsByValidatorResponse_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_QueryHandlersByValidatorResponse            protoreflect.MessageDescriptor
-	fd_QueryHandlersByValidatorResponse_pagination protoreflect.FieldDescriptor
-	fd_QueryHandlersByValidatorResponse_handlers   protoreflect.FieldDescriptor
+	md_QueryPluginsByValidatorResponse            protoreflect.MessageDescriptor
+	fd_QueryPluginsByValidatorResponse_pagination protoreflect.FieldDescriptor
+	fd_QueryPluginsByValidatorResponse_plugins    protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_query_proto_init()
-	md_QueryHandlersByValidatorResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryHandlersByValidatorResponse")
-	fd_QueryHandlersByValidatorResponse_pagination = md_QueryHandlersByValidatorResponse.Fields().ByName("pagination")
-	fd_QueryHandlersByValidatorResponse_handlers = md_QueryHandlersByValidatorResponse.Fields().ByName("handlers")
+	md_QueryPluginsByValidatorResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPluginsByValidatorResponse")
+	fd_QueryPluginsByValidatorResponse_pagination = md_QueryPluginsByValidatorResponse.Fields().ByName("pagination")
+	fd_QueryPluginsByValidatorResponse_plugins = md_QueryPluginsByValidatorResponse.Fields().ByName("plugins")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryHandlersByValidatorResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryPluginsByValidatorResponse)(nil)
 
-type fastReflection_QueryHandlersByValidatorResponse QueryHandlersByValidatorResponse
+type fastReflection_QueryPluginsByValidatorResponse QueryPluginsByValidatorResponse
 
-func (x *QueryHandlersByValidatorResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryHandlersByValidatorResponse)(x)
+func (x *QueryPluginsByValidatorResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPluginsByValidatorResponse)(x)
 }
 
-func (x *QueryHandlersByValidatorResponse) slowProtoReflect() protoreflect.Message {
+func (x *QueryPluginsByValidatorResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_query_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4958,43 +4958,43 @@ func (x *QueryHandlersByValidatorResponse) slowProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryHandlersByValidatorResponse_messageType fastReflection_QueryHandlersByValidatorResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryHandlersByValidatorResponse_messageType{}
+var _fastReflection_QueryPluginsByValidatorResponse_messageType fastReflection_QueryPluginsByValidatorResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPluginsByValidatorResponse_messageType{}
 
-type fastReflection_QueryHandlersByValidatorResponse_messageType struct{}
+type fastReflection_QueryPluginsByValidatorResponse_messageType struct{}
 
-func (x fastReflection_QueryHandlersByValidatorResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryHandlersByValidatorResponse)(nil)
+func (x fastReflection_QueryPluginsByValidatorResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPluginsByValidatorResponse)(nil)
 }
-func (x fastReflection_QueryHandlersByValidatorResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryHandlersByValidatorResponse)
+func (x fastReflection_QueryPluginsByValidatorResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginsByValidatorResponse)
 }
-func (x fastReflection_QueryHandlersByValidatorResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryHandlersByValidatorResponse
+func (x fastReflection_QueryPluginsByValidatorResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginsByValidatorResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryHandlersByValidatorResponse
+func (x *fastReflection_QueryPluginsByValidatorResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginsByValidatorResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryHandlersByValidatorResponse_messageType
+func (x *fastReflection_QueryPluginsByValidatorResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPluginsByValidatorResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryHandlersByValidatorResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryHandlersByValidatorResponse)
+func (x *fastReflection_QueryPluginsByValidatorResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginsByValidatorResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryHandlersByValidatorResponse)(x)
+func (x *fastReflection_QueryPluginsByValidatorResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryPluginsByValidatorResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5002,16 +5002,16 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) Interface() protorefle
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryPluginsByValidatorResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pagination != nil {
 		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryHandlersByValidatorResponse_pagination, value) {
+		if !f(fd_QueryPluginsByValidatorResponse_pagination, value) {
 			return
 		}
 	}
-	if len(x.Handlers) != 0 {
-		value := protoreflect.ValueOfList(&_QueryHandlersByValidatorResponse_2_list{list: &x.Handlers})
-		if !f(fd_QueryHandlersByValidatorResponse_handlers, value) {
+	if len(x.Plugins) != 0 {
+		value := protoreflect.ValueOfList(&_QueryPluginsByValidatorResponse_2_list{list: &x.Plugins})
+		if !f(fd_QueryPluginsByValidatorResponse_plugins, value) {
 			return
 		}
 	}
@@ -5028,17 +5028,17 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) Range(f func(protorefl
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryPluginsByValidatorResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination":
 		return x.Pagination != nil
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.handlers":
-		return len(x.Handlers) != 0
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.plugins":
+		return len(x.Plugins) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5048,17 +5048,17 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) Has(fd protoreflect.Fi
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryPluginsByValidatorResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination":
 		x.Pagination = nil
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.handlers":
-		x.Handlers = nil
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.plugins":
+		x.Plugins = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5068,22 +5068,22 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) Clear(fd protoreflect.
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPluginsByValidatorResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.handlers":
-		if len(x.Handlers) == 0 {
-			return protoreflect.ValueOfList(&_QueryHandlersByValidatorResponse_2_list{})
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.plugins":
+		if len(x.Plugins) == 0 {
+			return protoreflect.ValueOfList(&_QueryPluginsByValidatorResponse_2_list{})
 		}
-		listValue := &_QueryHandlersByValidatorResponse_2_list{list: &x.Handlers}
+		listValue := &_QueryPluginsByValidatorResponse_2_list{list: &x.Plugins}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -5097,19 +5097,19 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) Get(descriptor protore
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryPluginsByValidatorResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageResponse)
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.handlers":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.plugins":
 		lv := value.List()
-		clv := lv.(*_QueryHandlersByValidatorResponse_2_list)
-		x.Handlers = *clv.list
+		clv := lv.(*_QueryPluginsByValidatorResponse_2_list)
+		x.Plugins = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5123,53 +5123,53 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) Set(fd protoreflect.Fi
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPluginsByValidatorResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageResponse)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.handlers":
-		if x.Handlers == nil {
-			x.Handlers = []string{}
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.plugins":
+		if x.Plugins == nil {
+			x.Plugins = []string{}
 		}
-		value := &_QueryHandlersByValidatorResponse_2_list{list: &x.Handlers}
+		value := &_QueryPluginsByValidatorResponse_2_list{list: &x.Plugins}
 		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryHandlersByValidatorResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPluginsByValidatorResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination":
 		m := new(v1beta1.PageResponse)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.async.v1beta1.QueryHandlersByValidatorResponse.handlers":
+	case "warden.async.v1beta1.QueryPluginsByValidatorResponse.plugins":
 		list := []string{}
-		return protoreflect.ValueOfList(&_QueryHandlersByValidatorResponse_2_list{list: &list})
+		return protoreflect.ValueOfList(&_QueryPluginsByValidatorResponse_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryHandlersByValidatorResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginsByValidatorResponse"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.QueryHandlersByValidatorResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginsByValidatorResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryHandlersByValidatorResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryPluginsByValidatorResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryHandlersByValidatorResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPluginsByValidatorResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -5177,7 +5177,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) WhichOneof(d protorefl
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryHandlersByValidatorResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryPluginsByValidatorResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5188,7 +5188,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) GetUnknown() protorefl
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryHandlersByValidatorResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryPluginsByValidatorResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5200,7 +5200,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) SetUnknown(fields prot
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryHandlersByValidatorResponse) IsValid() bool {
+func (x *fastReflection_QueryPluginsByValidatorResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -5210,9 +5210,9 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryPluginsByValidatorResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryHandlersByValidatorResponse)
+		x := input.Message.Interface().(*QueryPluginsByValidatorResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5228,8 +5228,8 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 			l = options.Size(x.Pagination)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.Handlers) > 0 {
-			for _, s := range x.Handlers {
+		if len(x.Plugins) > 0 {
+			for _, s := range x.Plugins {
 				l = len(s)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -5244,7 +5244,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryHandlersByValidatorResponse)
+		x := input.Message.Interface().(*QueryPluginsByValidatorResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5263,11 +5263,11 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Handlers) > 0 {
-			for iNdEx := len(x.Handlers) - 1; iNdEx >= 0; iNdEx-- {
-				i -= len(x.Handlers[iNdEx])
-				copy(dAtA[i:], x.Handlers[iNdEx])
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Handlers[iNdEx])))
+		if len(x.Plugins) > 0 {
+			for iNdEx := len(x.Plugins) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.Plugins[iNdEx])
+				copy(dAtA[i:], x.Plugins[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Plugins[iNdEx])))
 				i--
 				dAtA[i] = 0x12
 			}
@@ -5297,7 +5297,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryHandlersByValidatorResponse)
+		x := input.Message.Interface().(*QueryPluginsByValidatorResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5329,10 +5329,10 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryHandlersByValidatorResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginsByValidatorResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryHandlersByValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginsByValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -5373,7 +5373,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Handlers", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Plugins", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -5401,7 +5401,7 @@ func (x *fastReflection_QueryHandlersByValidatorResponse) ProtoMethods() *protoi
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Handlers = append(x.Handlers, string(dAtA[iNdEx:postIndex]))
+				x.Plugins = append(x.Plugins, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -5515,18 +5515,18 @@ func (x *QueryParamsResponse) GetParams() *Params {
 	return nil
 }
 
-type QueryFuturesRequest struct {
+type QueryTasksRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Pagination *v1beta1.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	// optional filter to query futures by creator
+	// optional filter to query tasks by creator
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
-func (x *QueryFuturesRequest) Reset() {
-	*x = QueryFuturesRequest{}
+func (x *QueryTasksRequest) Reset() {
+	*x = QueryTasksRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5534,43 +5534,43 @@ func (x *QueryFuturesRequest) Reset() {
 	}
 }
 
-func (x *QueryFuturesRequest) String() string {
+func (x *QueryTasksRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryFuturesRequest) ProtoMessage() {}
+func (*QueryTasksRequest) ProtoMessage() {}
 
-// Deprecated: Use QueryFuturesRequest.ProtoReflect.Descriptor instead.
-func (*QueryFuturesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryTasksRequest.ProtoReflect.Descriptor instead.
+func (*QueryTasksRequest) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *QueryFuturesRequest) GetPagination() *v1beta1.PageRequest {
+func (x *QueryTasksRequest) GetPagination() *v1beta1.PageRequest {
 	if x != nil {
 		return x.Pagination
 	}
 	return nil
 }
 
-func (x *QueryFuturesRequest) GetCreator() string {
+func (x *QueryTasksRequest) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-type FutureResponse struct {
+type TaskResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Future *Future       `protobuf:"bytes,1,opt,name=future,proto3" json:"future,omitempty"`
-	Votes  []*FutureVote `protobuf:"bytes,2,rep,name=votes,proto3" json:"votes,omitempty"`
-	Result *FutureResult `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
+	Task   *Task       `protobuf:"bytes,1,opt,name=task,proto3" json:"task,omitempty"`
+	Votes  []*TaskVote `protobuf:"bytes,2,rep,name=votes,proto3" json:"votes,omitempty"`
+	Result *TaskResult `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
 }
 
-func (x *FutureResponse) Reset() {
-	*x = FutureResponse{}
+func (x *TaskResponse) Reset() {
+	*x = TaskResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5578,49 +5578,49 @@ func (x *FutureResponse) Reset() {
 	}
 }
 
-func (x *FutureResponse) String() string {
+func (x *TaskResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FutureResponse) ProtoMessage() {}
+func (*TaskResponse) ProtoMessage() {}
 
-// Deprecated: Use FutureResponse.ProtoReflect.Descriptor instead.
-func (*FutureResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use TaskResponse.ProtoReflect.Descriptor instead.
+func (*TaskResponse) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *FutureResponse) GetFuture() *Future {
+func (x *TaskResponse) GetTask() *Task {
 	if x != nil {
-		return x.Future
+		return x.Task
 	}
 	return nil
 }
 
-func (x *FutureResponse) GetVotes() []*FutureVote {
+func (x *TaskResponse) GetVotes() []*TaskVote {
 	if x != nil {
 		return x.Votes
 	}
 	return nil
 }
 
-func (x *FutureResponse) GetResult() *FutureResult {
+func (x *TaskResponse) GetResult() *TaskResult {
 	if x != nil {
 		return x.Result
 	}
 	return nil
 }
 
-type QueryFuturesResponse struct {
+type QueryTasksResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Pagination *v1beta1.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Futures    []*FutureResponse     `protobuf:"bytes,2,rep,name=futures,proto3" json:"futures,omitempty"`
+	Tasks      []*TaskResponse       `protobuf:"bytes,2,rep,name=tasks,proto3" json:"tasks,omitempty"`
 }
 
-func (x *QueryFuturesResponse) Reset() {
-	*x = QueryFuturesResponse{}
+func (x *QueryTasksResponse) Reset() {
+	*x = QueryTasksResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5628,32 +5628,32 @@ func (x *QueryFuturesResponse) Reset() {
 	}
 }
 
-func (x *QueryFuturesResponse) String() string {
+func (x *QueryTasksResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryFuturesResponse) ProtoMessage() {}
+func (*QueryTasksResponse) ProtoMessage() {}
 
-// Deprecated: Use QueryFuturesResponse.ProtoReflect.Descriptor instead.
-func (*QueryFuturesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryTasksResponse.ProtoReflect.Descriptor instead.
+func (*QueryTasksResponse) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *QueryFuturesResponse) GetPagination() *v1beta1.PageResponse {
+func (x *QueryTasksResponse) GetPagination() *v1beta1.PageResponse {
 	if x != nil {
 		return x.Pagination
 	}
 	return nil
 }
 
-func (x *QueryFuturesResponse) GetFutures() []*FutureResponse {
+func (x *QueryTasksResponse) GetTasks() []*TaskResponse {
 	if x != nil {
-		return x.Futures
+		return x.Tasks
 	}
 	return nil
 }
 
-type QueryFutureByIdRequest struct {
+type QueryTaskByIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -5661,8 +5661,8 @@ type QueryFutureByIdRequest struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (x *QueryFutureByIdRequest) Reset() {
-	*x = QueryFutureByIdRequest{}
+func (x *QueryTaskByIdRequest) Reset() {
+	*x = QueryTaskByIdRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5670,34 +5670,34 @@ func (x *QueryFutureByIdRequest) Reset() {
 	}
 }
 
-func (x *QueryFutureByIdRequest) String() string {
+func (x *QueryTaskByIdRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryFutureByIdRequest) ProtoMessage() {}
+func (*QueryTaskByIdRequest) ProtoMessage() {}
 
-// Deprecated: Use QueryFutureByIdRequest.ProtoReflect.Descriptor instead.
-func (*QueryFutureByIdRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryTaskByIdRequest.ProtoReflect.Descriptor instead.
+func (*QueryTaskByIdRequest) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *QueryFutureByIdRequest) GetId() uint64 {
+func (x *QueryTaskByIdRequest) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type QueryFutureByIdResponse struct {
+type QueryTaskByIdResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	FutureResponse *FutureResponse `protobuf:"bytes,1,opt,name=futureResponse,proto3" json:"futureResponse,omitempty"`
+	TaskResponse *TaskResponse `protobuf:"bytes,1,opt,name=taskResponse,proto3" json:"taskResponse,omitempty"`
 }
 
-func (x *QueryFutureByIdResponse) Reset() {
-	*x = QueryFutureByIdResponse{}
+func (x *QueryTaskByIdResponse) Reset() {
+	*x = QueryTaskByIdResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5705,25 +5705,25 @@ func (x *QueryFutureByIdResponse) Reset() {
 	}
 }
 
-func (x *QueryFutureByIdResponse) String() string {
+func (x *QueryTaskByIdResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryFutureByIdResponse) ProtoMessage() {}
+func (*QueryTaskByIdResponse) ProtoMessage() {}
 
-// Deprecated: Use QueryFutureByIdResponse.ProtoReflect.Descriptor instead.
-func (*QueryFutureByIdResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryTaskByIdResponse.ProtoReflect.Descriptor instead.
+func (*QueryTaskByIdResponse) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *QueryFutureByIdResponse) GetFutureResponse() *FutureResponse {
+func (x *QueryTaskByIdResponse) GetTaskResponse() *TaskResponse {
 	if x != nil {
-		return x.FutureResponse
+		return x.TaskResponse
 	}
 	return nil
 }
 
-type QueryPendingFuturesRequest struct {
+type QueryPendingTasksRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -5731,8 +5731,8 @@ type QueryPendingFuturesRequest struct {
 	Pagination *v1beta1.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (x *QueryPendingFuturesRequest) Reset() {
-	*x = QueryPendingFuturesRequest{}
+func (x *QueryPendingTasksRequest) Reset() {
+	*x = QueryPendingTasksRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5740,35 +5740,35 @@ func (x *QueryPendingFuturesRequest) Reset() {
 	}
 }
 
-func (x *QueryPendingFuturesRequest) String() string {
+func (x *QueryPendingTasksRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryPendingFuturesRequest) ProtoMessage() {}
+func (*QueryPendingTasksRequest) ProtoMessage() {}
 
-// Deprecated: Use QueryPendingFuturesRequest.ProtoReflect.Descriptor instead.
-func (*QueryPendingFuturesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPendingTasksRequest.ProtoReflect.Descriptor instead.
+func (*QueryPendingTasksRequest) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *QueryPendingFuturesRequest) GetPagination() *v1beta1.PageRequest {
+func (x *QueryPendingTasksRequest) GetPagination() *v1beta1.PageRequest {
 	if x != nil {
 		return x.Pagination
 	}
 	return nil
 }
 
-type QueryPendingFuturesResponse struct {
+type QueryPendingTasksResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Pagination *v1beta1.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Futures    []*Future             `protobuf:"bytes,2,rep,name=futures,proto3" json:"futures,omitempty"`
+	Tasks      []*Task               `protobuf:"bytes,2,rep,name=tasks,proto3" json:"tasks,omitempty"`
 }
 
-func (x *QueryPendingFuturesResponse) Reset() {
-	*x = QueryPendingFuturesResponse{}
+func (x *QueryPendingTasksResponse) Reset() {
+	*x = QueryPendingTasksResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5776,32 +5776,32 @@ func (x *QueryPendingFuturesResponse) Reset() {
 	}
 }
 
-func (x *QueryPendingFuturesResponse) String() string {
+func (x *QueryPendingTasksResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryPendingFuturesResponse) ProtoMessage() {}
+func (*QueryPendingTasksResponse) ProtoMessage() {}
 
-// Deprecated: Use QueryPendingFuturesResponse.ProtoReflect.Descriptor instead.
-func (*QueryPendingFuturesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPendingTasksResponse.ProtoReflect.Descriptor instead.
+func (*QueryPendingTasksResponse) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *QueryPendingFuturesResponse) GetPagination() *v1beta1.PageResponse {
+func (x *QueryPendingTasksResponse) GetPagination() *v1beta1.PageResponse {
 	if x != nil {
 		return x.Pagination
 	}
 	return nil
 }
 
-func (x *QueryPendingFuturesResponse) GetFutures() []*Future {
+func (x *QueryPendingTasksResponse) GetTasks() []*Task {
 	if x != nil {
-		return x.Futures
+		return x.Tasks
 	}
 	return nil
 }
 
-type QueryHandlersByValidatorRequest struct {
+type QueryPluginsByValidatorRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -5810,8 +5810,8 @@ type QueryHandlersByValidatorRequest struct {
 	Validator  string               `protobuf:"bytes,2,opt,name=validator,proto3" json:"validator,omitempty"`
 }
 
-func (x *QueryHandlersByValidatorRequest) Reset() {
-	*x = QueryHandlersByValidatorRequest{}
+func (x *QueryPluginsByValidatorRequest) Reset() {
+	*x = QueryPluginsByValidatorRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5819,42 +5819,42 @@ func (x *QueryHandlersByValidatorRequest) Reset() {
 	}
 }
 
-func (x *QueryHandlersByValidatorRequest) String() string {
+func (x *QueryPluginsByValidatorRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryHandlersByValidatorRequest) ProtoMessage() {}
+func (*QueryPluginsByValidatorRequest) ProtoMessage() {}
 
-// Deprecated: Use QueryHandlersByValidatorRequest.ProtoReflect.Descriptor instead.
-func (*QueryHandlersByValidatorRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPluginsByValidatorRequest.ProtoReflect.Descriptor instead.
+func (*QueryPluginsByValidatorRequest) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *QueryHandlersByValidatorRequest) GetPagination() *v1beta1.PageRequest {
+func (x *QueryPluginsByValidatorRequest) GetPagination() *v1beta1.PageRequest {
 	if x != nil {
 		return x.Pagination
 	}
 	return nil
 }
 
-func (x *QueryHandlersByValidatorRequest) GetValidator() string {
+func (x *QueryPluginsByValidatorRequest) GetValidator() string {
 	if x != nil {
 		return x.Validator
 	}
 	return ""
 }
 
-type QueryHandlersByValidatorResponse struct {
+type QueryPluginsByValidatorResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Pagination *v1beta1.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Handlers   []string              `protobuf:"bytes,2,rep,name=handlers,proto3" json:"handlers,omitempty"`
+	Plugins    []string              `protobuf:"bytes,2,rep,name=plugins,proto3" json:"plugins,omitempty"`
 }
 
-func (x *QueryHandlersByValidatorResponse) Reset() {
-	*x = QueryHandlersByValidatorResponse{}
+func (x *QueryPluginsByValidatorResponse) Reset() {
+	*x = QueryPluginsByValidatorResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_query_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5862,27 +5862,27 @@ func (x *QueryHandlersByValidatorResponse) Reset() {
 	}
 }
 
-func (x *QueryHandlersByValidatorResponse) String() string {
+func (x *QueryPluginsByValidatorResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryHandlersByValidatorResponse) ProtoMessage() {}
+func (*QueryPluginsByValidatorResponse) ProtoMessage() {}
 
-// Deprecated: Use QueryHandlersByValidatorResponse.ProtoReflect.Descriptor instead.
-func (*QueryHandlersByValidatorResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPluginsByValidatorResponse.ProtoReflect.Descriptor instead.
+func (*QueryPluginsByValidatorResponse) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *QueryHandlersByValidatorResponse) GetPagination() *v1beta1.PageResponse {
+func (x *QueryPluginsByValidatorResponse) GetPagination() *v1beta1.PageResponse {
 	if x != nil {
 		return x.Pagination
 	}
 	return nil
 }
 
-func (x *QueryHandlersByValidatorResponse) GetHandlers() []string {
+func (x *QueryPluginsByValidatorResponse) GetPlugins() []string {
 	if x != nil {
-		return x.Handlers
+		return x.Plugins
 	}
 	return nil
 }
@@ -5905,96 +5905,93 @@ var file_warden_async_v1beta1_query_proto_rawDesc = []byte{
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x61, 0x6e, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x1a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79,
-	0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d,
-	0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x14, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x51, 0x0a,
-	0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3a, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73,
-	0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61,
-	0x6d, 0x73, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x22, 0x95, 0x01, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65,
-	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69,
-	0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63,
-	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79,
-	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x36, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x42, 0x1c, 0xc8, 0xde, 0x1f, 0x01, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52,
-	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xcc, 0x01, 0x0a, 0x0e, 0x46, 0x75, 0x74,
-	0x75, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3a, 0x0a, 0x06, 0x66,
-	0x75, 0x74, 0x75, 0x72, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x2e, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
-	0x06, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x12, 0x3c, 0x0a, 0x05, 0x76, 0x6f, 0x74, 0x65, 0x73,
-	0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x46, 0x75,
-	0x74, 0x75, 0x72, 0x65, 0x56, 0x6f, 0x74, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05,
-	0x76, 0x6f, 0x74, 0x65, 0x73, 0x12, 0x40, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
-	0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x46, 0x75, 0x74,
-	0x75, 0x72, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x01, 0x52,
-	0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0xa5, 0x01, 0x0a, 0x14, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61,
-	0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70,
-	0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x44, 0x0a, 0x07, 0x66, 0x75, 0x74,
-	0x75, 0x72, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x77, 0x61, 0x72,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79,
+	0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x74, 0x61, 0x73, 0x6b, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x14, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x51, 0x0a, 0x13, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x3a, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e,
+	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x93,
+	0x01, 0x0a, 0x11, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x61, 0x73, 0x6b, 0x73, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x36, 0x0a, 0x07,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x1c, 0xc8,
+	0xde, 0x1f, 0x01, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x07, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x6f, 0x72, 0x22, 0xc0, 0x01, 0x0a, 0x0c, 0x54, 0x61, 0x73, 0x6b, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x34, 0x0a, 0x04, 0x74, 0x61, 0x73, 0x6b, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79,
+	0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x42,
+	0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x04, 0x74, 0x61, 0x73, 0x6b, 0x12, 0x3a, 0x0a, 0x05, 0x76,
+	0x6f, 0x74, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x77, 0x61, 0x72,
 	0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x07, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x22,
-	0x28, 0x0a, 0x16, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x79,
-	0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x6d, 0x0a, 0x17, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x0e, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0e, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x64, 0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73,
-	0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xa4,
-	0x01, 0x0a, 0x1b, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x46,
-	0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47,
+	0x31, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x56, 0x6f, 0x74, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00,
+	0x52, 0x05, 0x76, 0x6f, 0x74, 0x65, 0x73, 0x12, 0x3e, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54,
+	0x61, 0x73, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x01, 0x52,
+	0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x9d, 0x01, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x54, 0x61, 0x73, 0x6b, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47,
 	0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65,
 	0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50,
 	0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67,
-	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3c, 0x0a, 0x07, 0x66, 0x75, 0x74, 0x75, 0x72,
-	0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
-	0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x07, 0x66, 0x75,
-	0x74, 0x75, 0x72, 0x65, 0x73, 0x22, 0xaa, 0x01, 0x0a, 0x1f, 0x51, 0x75, 0x65, 0x72, 0x79, 0x48,
-	0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
-	0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67,
-	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e,
+	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3e, 0x0a, 0x05, 0x74, 0x61, 0x73, 0x6b, 0x73,
+	0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54, 0x61,
+	0x73, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00,
+	0x52, 0x05, 0x74, 0x61, 0x73, 0x6b, 0x73, 0x22, 0x26, 0x0a, 0x14, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x54, 0x61, 0x73, 0x6b, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22,
+	0x65, 0x0a, 0x15, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x61, 0x73, 0x6b, 0x42, 0x79, 0x49, 0x64,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4c, 0x0a, 0x0c, 0x74, 0x61, 0x73, 0x6b,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22,
+	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x74, 0x61, 0x73, 0x6b, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x62, 0x0a, 0x18, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50,
+	0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x54, 0x61, 0x73, 0x6b, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
+	0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a,
+	0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x9c, 0x01, 0x0a, 0x19, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x54, 0x61, 0x73, 0x6b, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69,
+	0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x36, 0x0a, 0x05, 0x74, 0x61, 0x73, 0x6b, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x1a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x42, 0x04, 0xc8, 0xde,
+	0x1f, 0x00, 0x52, 0x05, 0x74, 0x61, 0x73, 0x6b, 0x73, 0x22, 0xa9, 0x01, 0x0a, 0x1e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69,
+	0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a,
+	0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71,
+	0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3f, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f,
+	0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x21, 0xd2, 0xb4, 0x2d, 0x1d, 0x63, 0x6f, 0x73,
+	0x6d, 0x6f, 0x73, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73, 0x41, 0x64, 0x64,
+	0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69,
+	0x64, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x8a, 0x01, 0x0a, 0x1f, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50,
+	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f,
+	0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67,
+	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e,
 	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72,
 	0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x3f, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x42, 0x21, 0xd2, 0xb4, 0x2d, 0x1d, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
-	0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
-	0x6f, 0x72, 0x22, 0x8d, 0x01, 0x0a, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x48, 0x61, 0x6e, 0x64,
-	0x6c, 0x65, 0x72, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f,
-	0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x20, 0x0a, 0x08, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x03,
-	0x28, 0x09, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x08, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65,
-	0x72, 0x73, 0x32, 0xf3, 0x05, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x7b, 0x0a, 0x06,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x07, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x09, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x07, 0x70, 0x6c, 0x75, 0x67, 0x69,
+	0x6e, 0x73, 0x32, 0xd7, 0x05, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x7b, 0x0a, 0x06,
 	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x28, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
 	0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75,
 	0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
@@ -6002,61 +5999,59 @@ var file_warden_async_v1beta1_query_proto_rawDesc = []byte{
 	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72,
 	0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1c, 0x82, 0xd3, 0xe4,
 	0x93, 0x02, 0x16, 0x12, 0x14, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79,
-	0x6e, 0x63, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x7f, 0x0a, 0x07, 0x46, 0x75, 0x74,
-	0x75, 0x72, 0x65, 0x73, 0x12, 0x29, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73,
-	0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x6e, 0x63, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x77, 0x0a, 0x05, 0x54, 0x61, 0x73,
+	0x6b, 0x73, 0x12, 0x27, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e,
+	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54,
+	0x61, 0x73, 0x6b, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x28, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x61, 0x73, 0x6b, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1b, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x15, 0x12, 0x13, 0x2f,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x74, 0x61, 0x73,
+	0x6b, 0x73, 0x12, 0x84, 0x01, 0x0a, 0x08, 0x54, 0x61, 0x73, 0x6b, 0x42, 0x79, 0x49, 0x64, 0x12,
 	0x2a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x75, 0x74, 0x75,
-	0x72, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1d, 0x82, 0xd3, 0xe4,
-	0x93, 0x02, 0x17, 0x12, 0x15, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79,
-	0x6e, 0x63, 0x2f, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x12, 0x8c, 0x01, 0x0a, 0x0a, 0x46,
-	0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x79, 0x49, 0x64, 0x12, 0x2c, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x79, 0x49, 0x64,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x61, 0x73, 0x6b,
+	0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2b, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x61, 0x73, 0x6b, 0x42, 0x79, 0x49, 0x64,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19,
+	0x12, 0x17, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f,
+	0x74, 0x61, 0x73, 0x6b, 0x2f, 0x7b, 0x69, 0x64, 0x7d, 0x12, 0x94, 0x01, 0x0a, 0x0c, 0x50, 0x65,
+	0x6e, 0x64, 0x69, 0x6e, 0x67, 0x54, 0x61, 0x73, 0x6b, 0x73, 0x12, 0x2e, 0x2e, 0x77, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x54, 0x61,
+	0x73, 0x6b, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x77, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x54, 0x61,
+	0x73, 0x6b, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x23, 0x82, 0xd3, 0xe4,
+	0x93, 0x02, 0x1d, 0x12, 0x1b, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79,
+	0x6e, 0x63, 0x2f, 0x70, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x5f, 0x74, 0x61, 0x73, 0x6b, 0x73,
+	0x12, 0xb9, 0x01, 0x0a, 0x12, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56, 0x61,
+	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x34, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
 	0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1b, 0x12, 0x19,
-	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x66, 0x75,
-	0x74, 0x75, 0x72, 0x65, 0x2f, 0x7b, 0x69, 0x64, 0x7d, 0x12, 0x9c, 0x01, 0x0a, 0x0e, 0x50, 0x65,
-	0x6e, 0x64, 0x69, 0x6e, 0x67, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x12, 0x30, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67,
-	0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x31,
-	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x65, 0x6e, 0x64, 0x69,
-	0x6e, 0x67, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x25, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1f, 0x12, 0x1d, 0x2f, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x70, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67,
-	0x5f, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x73, 0x12, 0xbd, 0x01, 0x0a, 0x13, 0x48, 0x61, 0x6e,
-	0x64, 0x6c, 0x65, 0x72, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
-	0x12, 0x35, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x48, 0x61, 0x6e,
-	0x64, 0x6c, 0x65, 0x72, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x36, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73, 0x42, 0x79, 0x56, 0x61,
-	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x37, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x31, 0x12, 0x2f, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73, 0x5f,
-	0x62, 0x79, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x7b, 0x76, 0x61,
-	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x7d, 0x42, 0xe9, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d,
-	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63,
-	0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c,
-	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x35, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e,
+	0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x36, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x30, 0x12, 0x2e, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x70, 0x6c, 0x75, 0x67,
+	0x69, 0x6e, 0x73, 0x5f, 0x62, 0x79, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
+	0x2f, 0x7b, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x7d, 0x42, 0xe9, 0x01, 0x0a,
+	0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e,
+	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63,
+	0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73,
+	0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x73, 0x79, 0x6e,
+	0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa, 0x02,
+	0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x56, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41,
+	0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x20, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
+	0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x3a,
+	0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -6073,48 +6068,48 @@ func file_warden_async_v1beta1_query_proto_rawDescGZIP() []byte {
 
 var file_warden_async_v1beta1_query_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_warden_async_v1beta1_query_proto_goTypes = []interface{}{
-	(*QueryParamsRequest)(nil),               // 0: warden.async.v1beta1.QueryParamsRequest
-	(*QueryParamsResponse)(nil),              // 1: warden.async.v1beta1.QueryParamsResponse
-	(*QueryFuturesRequest)(nil),              // 2: warden.async.v1beta1.QueryFuturesRequest
-	(*FutureResponse)(nil),                   // 3: warden.async.v1beta1.FutureResponse
-	(*QueryFuturesResponse)(nil),             // 4: warden.async.v1beta1.QueryFuturesResponse
-	(*QueryFutureByIdRequest)(nil),           // 5: warden.async.v1beta1.QueryFutureByIdRequest
-	(*QueryFutureByIdResponse)(nil),          // 6: warden.async.v1beta1.QueryFutureByIdResponse
-	(*QueryPendingFuturesRequest)(nil),       // 7: warden.async.v1beta1.QueryPendingFuturesRequest
-	(*QueryPendingFuturesResponse)(nil),      // 8: warden.async.v1beta1.QueryPendingFuturesResponse
-	(*QueryHandlersByValidatorRequest)(nil),  // 9: warden.async.v1beta1.QueryHandlersByValidatorRequest
-	(*QueryHandlersByValidatorResponse)(nil), // 10: warden.async.v1beta1.QueryHandlersByValidatorResponse
-	(*Params)(nil),                           // 11: warden.async.v1beta1.Params
-	(*v1beta1.PageRequest)(nil),              // 12: cosmos.base.query.v1beta1.PageRequest
-	(*Future)(nil),                           // 13: warden.async.v1beta1.Future
-	(*FutureVote)(nil),                       // 14: warden.async.v1beta1.FutureVote
-	(*FutureResult)(nil),                     // 15: warden.async.v1beta1.FutureResult
-	(*v1beta1.PageResponse)(nil),             // 16: cosmos.base.query.v1beta1.PageResponse
+	(*QueryParamsRequest)(nil),              // 0: warden.async.v1beta1.QueryParamsRequest
+	(*QueryParamsResponse)(nil),             // 1: warden.async.v1beta1.QueryParamsResponse
+	(*QueryTasksRequest)(nil),               // 2: warden.async.v1beta1.QueryTasksRequest
+	(*TaskResponse)(nil),                    // 3: warden.async.v1beta1.TaskResponse
+	(*QueryTasksResponse)(nil),              // 4: warden.async.v1beta1.QueryTasksResponse
+	(*QueryTaskByIdRequest)(nil),            // 5: warden.async.v1beta1.QueryTaskByIdRequest
+	(*QueryTaskByIdResponse)(nil),           // 6: warden.async.v1beta1.QueryTaskByIdResponse
+	(*QueryPendingTasksRequest)(nil),        // 7: warden.async.v1beta1.QueryPendingTasksRequest
+	(*QueryPendingTasksResponse)(nil),       // 8: warden.async.v1beta1.QueryPendingTasksResponse
+	(*QueryPluginsByValidatorRequest)(nil),  // 9: warden.async.v1beta1.QueryPluginsByValidatorRequest
+	(*QueryPluginsByValidatorResponse)(nil), // 10: warden.async.v1beta1.QueryPluginsByValidatorResponse
+	(*Params)(nil),                          // 11: warden.async.v1beta1.Params
+	(*v1beta1.PageRequest)(nil),             // 12: cosmos.base.query.v1beta1.PageRequest
+	(*Task)(nil),                            // 13: warden.async.v1beta1.Task
+	(*TaskVote)(nil),                        // 14: warden.async.v1beta1.TaskVote
+	(*TaskResult)(nil),                      // 15: warden.async.v1beta1.TaskResult
+	(*v1beta1.PageResponse)(nil),            // 16: cosmos.base.query.v1beta1.PageResponse
 }
 var file_warden_async_v1beta1_query_proto_depIdxs = []int32{
 	11, // 0: warden.async.v1beta1.QueryParamsResponse.params:type_name -> warden.async.v1beta1.Params
-	12, // 1: warden.async.v1beta1.QueryFuturesRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	13, // 2: warden.async.v1beta1.FutureResponse.future:type_name -> warden.async.v1beta1.Future
-	14, // 3: warden.async.v1beta1.FutureResponse.votes:type_name -> warden.async.v1beta1.FutureVote
-	15, // 4: warden.async.v1beta1.FutureResponse.result:type_name -> warden.async.v1beta1.FutureResult
-	16, // 5: warden.async.v1beta1.QueryFuturesResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	3,  // 6: warden.async.v1beta1.QueryFuturesResponse.futures:type_name -> warden.async.v1beta1.FutureResponse
-	3,  // 7: warden.async.v1beta1.QueryFutureByIdResponse.futureResponse:type_name -> warden.async.v1beta1.FutureResponse
-	12, // 8: warden.async.v1beta1.QueryPendingFuturesRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	16, // 9: warden.async.v1beta1.QueryPendingFuturesResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	13, // 10: warden.async.v1beta1.QueryPendingFuturesResponse.futures:type_name -> warden.async.v1beta1.Future
-	12, // 11: warden.async.v1beta1.QueryHandlersByValidatorRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	16, // 12: warden.async.v1beta1.QueryHandlersByValidatorResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	12, // 1: warden.async.v1beta1.QueryTasksRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	13, // 2: warden.async.v1beta1.TaskResponse.task:type_name -> warden.async.v1beta1.Task
+	14, // 3: warden.async.v1beta1.TaskResponse.votes:type_name -> warden.async.v1beta1.TaskVote
+	15, // 4: warden.async.v1beta1.TaskResponse.result:type_name -> warden.async.v1beta1.TaskResult
+	16, // 5: warden.async.v1beta1.QueryTasksResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	3,  // 6: warden.async.v1beta1.QueryTasksResponse.tasks:type_name -> warden.async.v1beta1.TaskResponse
+	3,  // 7: warden.async.v1beta1.QueryTaskByIdResponse.taskResponse:type_name -> warden.async.v1beta1.TaskResponse
+	12, // 8: warden.async.v1beta1.QueryPendingTasksRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	16, // 9: warden.async.v1beta1.QueryPendingTasksResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	13, // 10: warden.async.v1beta1.QueryPendingTasksResponse.tasks:type_name -> warden.async.v1beta1.Task
+	12, // 11: warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	16, // 12: warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
 	0,  // 13: warden.async.v1beta1.Query.Params:input_type -> warden.async.v1beta1.QueryParamsRequest
-	2,  // 14: warden.async.v1beta1.Query.Futures:input_type -> warden.async.v1beta1.QueryFuturesRequest
-	5,  // 15: warden.async.v1beta1.Query.FutureById:input_type -> warden.async.v1beta1.QueryFutureByIdRequest
-	7,  // 16: warden.async.v1beta1.Query.PendingFutures:input_type -> warden.async.v1beta1.QueryPendingFuturesRequest
-	9,  // 17: warden.async.v1beta1.Query.HandlersByValidator:input_type -> warden.async.v1beta1.QueryHandlersByValidatorRequest
+	2,  // 14: warden.async.v1beta1.Query.Tasks:input_type -> warden.async.v1beta1.QueryTasksRequest
+	5,  // 15: warden.async.v1beta1.Query.TaskById:input_type -> warden.async.v1beta1.QueryTaskByIdRequest
+	7,  // 16: warden.async.v1beta1.Query.PendingTasks:input_type -> warden.async.v1beta1.QueryPendingTasksRequest
+	9,  // 17: warden.async.v1beta1.Query.PluginsByValidator:input_type -> warden.async.v1beta1.QueryPluginsByValidatorRequest
 	1,  // 18: warden.async.v1beta1.Query.Params:output_type -> warden.async.v1beta1.QueryParamsResponse
-	4,  // 19: warden.async.v1beta1.Query.Futures:output_type -> warden.async.v1beta1.QueryFuturesResponse
-	6,  // 20: warden.async.v1beta1.Query.FutureById:output_type -> warden.async.v1beta1.QueryFutureByIdResponse
-	8,  // 21: warden.async.v1beta1.Query.PendingFutures:output_type -> warden.async.v1beta1.QueryPendingFuturesResponse
-	10, // 22: warden.async.v1beta1.Query.HandlersByValidator:output_type -> warden.async.v1beta1.QueryHandlersByValidatorResponse
+	4,  // 19: warden.async.v1beta1.Query.Tasks:output_type -> warden.async.v1beta1.QueryTasksResponse
+	6,  // 20: warden.async.v1beta1.Query.TaskById:output_type -> warden.async.v1beta1.QueryTaskByIdResponse
+	8,  // 21: warden.async.v1beta1.Query.PendingTasks:output_type -> warden.async.v1beta1.QueryPendingTasksResponse
+	10, // 22: warden.async.v1beta1.Query.PluginsByValidator:output_type -> warden.async.v1beta1.QueryPluginsByValidatorResponse
 	18, // [18:23] is the sub-list for method output_type
 	13, // [13:18] is the sub-list for method input_type
 	13, // [13:13] is the sub-list for extension type_name
@@ -6127,8 +6122,8 @@ func file_warden_async_v1beta1_query_proto_init() {
 	if File_warden_async_v1beta1_query_proto != nil {
 		return
 	}
-	file_warden_async_v1beta1_future_proto_init()
 	file_warden_async_v1beta1_params_proto_init()
+	file_warden_async_v1beta1_task_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_warden_async_v1beta1_query_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryParamsRequest); i {
@@ -6155,7 +6150,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryFuturesRequest); i {
+			switch v := v.(*QueryTasksRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6167,7 +6162,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FutureResponse); i {
+			switch v := v.(*TaskResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6179,7 +6174,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryFuturesResponse); i {
+			switch v := v.(*QueryTasksResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6191,7 +6186,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryFutureByIdRequest); i {
+			switch v := v.(*QueryTaskByIdRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6203,7 +6198,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryFutureByIdResponse); i {
+			switch v := v.(*QueryTaskByIdResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6215,7 +6210,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryPendingFuturesRequest); i {
+			switch v := v.(*QueryPendingTasksRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6227,7 +6222,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryPendingFuturesResponse); i {
+			switch v := v.(*QueryPendingTasksResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6239,7 +6234,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryHandlersByValidatorRequest); i {
+			switch v := v.(*QueryPluginsByValidatorRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6251,7 +6246,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_query_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryHandlersByValidatorResponse); i {
+			switch v := v.(*QueryPluginsByValidatorResponse); i {
 			case 0:
 				return &v.state
 			case 1:

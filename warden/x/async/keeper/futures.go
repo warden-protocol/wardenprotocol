@@ -12,34 +12,34 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-type FutureKeeper struct {
-	futures         repo.SeqCollection[types.Future]
-	futureByCreator collections.KeySet[collections.Pair[sdk.AccAddress, uint64]]
-	results         collections.Map[uint64, types.FutureResult]
-	pendingFutures  collections.KeySet[uint64]
+type TaskKeeper struct {
+	tasks         repo.SeqCollection[types.Task]
+	taskByCreator collections.KeySet[collections.Pair[sdk.AccAddress, uint64]]
+	results       collections.Map[uint64, types.TaskResult]
+	pendingTasks  collections.KeySet[uint64]
 }
 
-func NewFutureKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *FutureKeeper {
-	futuresSeq := collections.NewSequence(sb, FutureSeqPrefix, "futures_sequence")
-	futuresColl := collections.NewMap(sb, FuturesPrefix, "futures", collections.Uint64Key, codec.CollValue[types.Future](cdc))
+func NewTaskKeeper(sb *collections.SchemaBuilder, cdc codec.Codec) *TaskKeeper {
+	tasksSeq := collections.NewSequence(sb, TaskSeqPrefix, "tasks_sequence")
+	tasksColl := collections.NewMap(sb, TasksPrefix, "tasks", collections.Uint64Key, codec.CollValue[types.Task](cdc))
 
-	futures := repo.NewSeqCollection(futuresSeq, futuresColl, func(t *types.Future, u uint64) { t.Id = u })
-	futureByCreator := collections.NewKeySet(sb, FutureByAddressPrefix, "futures_by_address", collections.PairKeyCodec(sdk.AccAddressKey, collections.Uint64Key))
+	tasks := repo.NewSeqCollection(tasksSeq, tasksColl, func(t *types.Task, u uint64) { t.Id = u })
+	taskByCreator := collections.NewKeySet(sb, TaskByAddressPrefix, "tasks_by_address", collections.PairKeyCodec(sdk.AccAddressKey, collections.Uint64Key))
 
-	results := collections.NewMap(sb, ResultsPrefix, "future_results", collections.Uint64Key, codec.CollValue[types.FutureResult](cdc))
+	results := collections.NewMap(sb, ResultsPrefix, "task_results", collections.Uint64Key, codec.CollValue[types.TaskResult](cdc))
 
-	pendingFutures := collections.NewKeySet(sb, PendingFuturesPrefix, "pending_futures", collections.Uint64Key)
+	pendingTasks := collections.NewKeySet(sb, PendingTasksPrefix, "pending_tasks", collections.Uint64Key)
 
-	return &FutureKeeper{
-		futures:         futures,
-		futureByCreator: futureByCreator,
-		results:         results,
-		pendingFutures:  pendingFutures,
+	return &TaskKeeper{
+		tasks:         tasks,
+		taskByCreator: taskByCreator,
+		results:       results,
+		pendingTasks:  pendingTasks,
 	}
 }
 
-func (k *FutureKeeper) Append(ctx context.Context, t *types.Future) (uint64, error) {
-	id, err := k.futures.Append(ctx, t)
+func (k *TaskKeeper) Append(ctx context.Context, t *types.Task) (uint64, error) {
+	id, err := k.tasks.Append(ctx, t)
 	if err != nil {
 		return 0, err
 	}
@@ -49,57 +49,57 @@ func (k *FutureKeeper) Append(ctx context.Context, t *types.Future) (uint64, err
 		return 0, fmt.Errorf("invalid creator address: %w", err)
 	}
 
-	if err := k.futureByCreator.Set(ctx, collections.Join(creator, id)); err != nil {
+	if err := k.taskByCreator.Set(ctx, collections.Join(creator, id)); err != nil {
 		return 0, err
 	}
 
-	if err := k.pendingFutures.Set(ctx, id); err != nil {
+	if err := k.pendingTasks.Set(ctx, id); err != nil {
 		return 0, err
 	}
 
 	return id, nil
 }
 
-func (k *FutureKeeper) Get(ctx context.Context, id uint64) (types.Future, error) {
-	return k.futures.Get(ctx, id)
+func (k *TaskKeeper) Get(ctx context.Context, id uint64) (types.Task, error) {
+	return k.tasks.Get(ctx, id)
 }
 
-func (k *FutureKeeper) Set(ctx context.Context, f types.Future) error {
-	return k.futures.Set(ctx, f.Id, f)
+func (k *TaskKeeper) Set(ctx context.Context, f types.Task) error {
+	return k.tasks.Set(ctx, f.Id, f)
 }
 
-func (k *FutureKeeper) SetResult(ctx context.Context, result types.FutureResult) error {
+func (k *TaskKeeper) SetResult(ctx context.Context, result types.TaskResult) error {
 	if exists, _ := k.results.Has(ctx, result.Id); exists {
-		return types.ErrFutureAlreadyHasResult
+		return types.ErrTaskAlreadyHasResult
 	}
 
-	if err := k.pendingFutures.Remove(ctx, result.Id); err != nil {
+	if err := k.pendingTasks.Remove(ctx, result.Id); err != nil {
 		return err
 	}
 
 	return k.results.Set(ctx, result.Id, result)
 }
 
-func (k *FutureKeeper) GetResult(ctx context.Context, id uint64) (types.FutureResult, error) {
+func (k *TaskKeeper) GetResult(ctx context.Context, id uint64) (types.TaskResult, error) {
 	return k.results.Get(ctx, id)
 }
 
-func (k *FutureKeeper) HasResult(ctx context.Context, id uint64) (bool, error) {
+func (k *TaskKeeper) HasResult(ctx context.Context, id uint64) (bool, error) {
 	return k.results.Has(ctx, id)
 }
 
-func (k *FutureKeeper) Futures() repo.SeqCollection[types.Future] {
-	return k.futures
+func (k *TaskKeeper) Tasks() repo.SeqCollection[types.Task] {
+	return k.tasks
 }
 
-func (k *FutureKeeper) PendingFutures(ctx context.Context, limit int) ([]types.Future, error) {
-	it, err := k.pendingFutures.IterateRaw(ctx, nil, nil, collections.OrderAscending)
+func (k *TaskKeeper) PendingTasks(ctx context.Context, limit int) ([]types.Task, error) {
+	it, err := k.pendingTasks.IterateRaw(ctx, nil, nil, collections.OrderAscending)
 	if err != nil {
 		return nil, err
 	}
 	defer it.Close()
 
-	futures := make([]types.Future, 0, limit)
+	tasks := make([]types.Task, 0, limit)
 
 	for ; it.Valid(); it.Next() {
 		id, err := it.Key()
@@ -107,16 +107,16 @@ func (k *FutureKeeper) PendingFutures(ctx context.Context, limit int) ([]types.F
 			return nil, err
 		}
 
-		fut, err := k.futures.Get(ctx, id)
+		fut, err := k.tasks.Get(ctx, id)
 		if err != nil {
 			return nil, err
 		}
 
-		futures = append(futures, fut)
-		if len(futures) == limit {
+		tasks = append(tasks, fut)
+		if len(tasks) == limit {
 			break
 		}
 	}
 
-	return futures, nil
+	return tasks, nil
 }

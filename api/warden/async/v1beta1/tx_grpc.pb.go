@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Msg_UpdateParams_FullMethodName = "/warden.async.v1beta1.Msg/UpdateParams"
-	Msg_AddFuture_FullMethodName    = "/warden.async.v1beta1.Msg/AddFuture"
+	Msg_AddTask_FullMethodName      = "/warden.async.v1beta1.Msg/AddTask"
 )
 
 // MsgClient is the client API for Msg service.
@@ -32,8 +32,8 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
-	// Create a new Future to be executed.
-	AddFuture(ctx context.Context, in *MsgAddFuture, opts ...grpc.CallOption) (*MsgAddFutureResponse, error)
+	// Create a new Task to be executed.
+	AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error)
 }
 
 type msgClient struct {
@@ -54,10 +54,10 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
-func (c *msgClient) AddFuture(ctx context.Context, in *MsgAddFuture, opts ...grpc.CallOption) (*MsgAddFutureResponse, error) {
+func (c *msgClient) AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MsgAddFutureResponse)
-	err := c.cc.Invoke(ctx, Msg_AddFuture_FullMethodName, in, out, cOpts...)
+	out := new(MsgAddTaskResponse)
+	err := c.cc.Invoke(ctx, Msg_AddTask_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +73,8 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
-	// Create a new Future to be executed.
-	AddFuture(context.Context, *MsgAddFuture) (*MsgAddFutureResponse, error)
+	// Create a new Task to be executed.
+	AddTask(context.Context, *MsgAddTask) (*MsgAddTaskResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -88,8 +88,8 @@ type UnimplementedMsgServer struct{}
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
-func (UnimplementedMsgServer) AddFuture(context.Context, *MsgAddFuture) (*MsgAddFutureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddFuture not implemented")
+func (UnimplementedMsgServer) AddTask(context.Context, *MsgAddTask) (*MsgAddTaskResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddTask not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 func (UnimplementedMsgServer) testEmbeddedByValue()             {}
@@ -130,20 +130,20 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AddFuture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddFuture)
+func _Msg_AddTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddTask)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).AddFuture(ctx, in)
+		return srv.(MsgServer).AddTask(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_AddFuture_FullMethodName,
+		FullMethod: Msg_AddTask_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddFuture(ctx, req.(*MsgAddFuture))
+		return srv.(MsgServer).AddTask(ctx, req.(*MsgAddTask))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -160,8 +160,8 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_UpdateParams_Handler,
 		},
 		{
-			MethodName: "AddFuture",
-			Handler:    _Msg_AddFuture_Handler,
+			MethodName: "AddTask",
+			Handler:    _Msg_AddTask_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -9,49 +9,49 @@ address constant IASYNC_PRECOMPILE_ADDRESS = 0x000000000000000000000000000000000
 /// @dev The IAsync contract's instance.
 IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS);
 
-struct Future {
+struct Task {
     uint64 id;
     address creator;
-    string handler;
+    string plugin;
     bytes input;
 }
 
-enum FutureVoteType {
+enum TaskVoteType {
     Unspecified,
     Verified,
     Rejected
 }
 
-struct FutureVote {
-    uint64 futureId;
+struct TaskVote {
+    uint64 taskId;
     bytes Voter;
-    FutureVoteType vote;
+    TaskVoteType vote;
 }
 
-struct FutureResult { 
+struct TaskResult { 
     uint64 id;
     bytes output;
     bytes submitter;
 }
 
-struct FutureResponse {
-    Future future;
-    FutureVote[] votes;
-    FutureResult result;
+struct TaskResponse {
+    Task task;
+    TaskVote[] votes;
+    TaskResult result;
 }
 
-struct PendingFuturesResponse {
+struct PendingTasksResponse {
     Types.PageResponse pagination;
-    Future[] futures;
+    Task[] tasks;
 }
 
-struct FuturesResponse {
+struct TasksResponse {
     Types.PageResponse pagination;
-    FutureResponse[] futures;
+    TaskResponse[] tasks;
 }
 
-struct FutureByIdResponse {
-    FutureResponse futureResponse;
+struct TaskByIdResponse {
+    TaskResponse taskResponse;
 }
 
 /**
@@ -61,49 +61,49 @@ struct FutureByIdResponse {
  * @custom:address 0x0000000000000000000000000000000000000903
  */
 interface IAsync {
-    /// @dev Defines a method to add a future.
-    /// @param handler The unique name of the handler
-    /// @param input The handler's input
+    /// @dev Defines a method to add a task.
+    /// @param plugin The unique name of the plugin
+    /// @param input The plugin's input
     /// @param callback The address of callback contract
-    /// @return futureId The id of the future
-    function addFuture(
-        string calldata handler,
+    /// @return taskId The id of the task
+    function addTask(
+        string calldata plugin,
         bytes calldata input,
         address callback
-    ) external returns (uint64 futureId);
+    ) external returns (uint64 taskId);
 
-    /// @dev Defines a method to query future by id.
-    /// @param futureId The future id
-    /// @return response The future reponse
-    function futureById(
-        uint64 futureId
-    ) external view returns (FutureByIdResponse memory response);
+    /// @dev Defines a method to query task by id.
+    /// @param taskId The task id
+    /// @return response The task reponse
+    function taskById(
+        uint64 taskId
+    ) external view returns (TaskByIdResponse memory response);
 
-    /// @dev Defines a method to query futures.
+    /// @dev Defines a method to query tasks.
     /// @param pagination The pagination details
     /// @param creator Optional creator address filter
-    /// @return response The paged futures
-    function futures(
+    /// @return response The paged tasks
+    function tasks(
         Types.PageRequest calldata pagination,
         address creator
-    ) external view returns (FuturesResponse memory response);
+    ) external view returns (TasksResponse memory response);
 
-    /// @dev Defines a method to query pending futures.
+    /// @dev Defines a method to query pending tasks.
     /// @param pagination The pagination details
-    /// @return response The paged futures
-    function pendingFutures(
+    /// @return response The paged tasks
+    function pendingTasks(
         Types.PageRequest calldata pagination
-    ) external view returns (PendingFuturesResponse memory response);
+    ) external view returns (PendingTasksResponse memory response);
 
-    /// @dev CreateFuture defines an Event emitted when a future is created.
+    /// @dev CreateTask defines an Event emitted when a task is created.
     /// @param creator The address of the creator
-    /// @param futureId The future Id
-    /// @param handler The name of the handler
+    /// @param taskId The task Id
+    /// @param plugin The name of the plugin
     /// @param callbackAddress The address of callback contract
-    event CreateFuture(
-        uint64 indexed futureId,
+    event CreateTask(
+        uint64 indexed taskId,
         address indexed creator,
-        string handler,
+        string plugin,
         address callbackAddress
     );
 }

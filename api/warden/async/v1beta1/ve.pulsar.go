@@ -640,7 +640,7 @@ func (x *_AsyncVoteExtension_3_list) Append(value protoreflect.Value) {
 }
 
 func (x *_AsyncVoteExtension_3_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message AsyncVoteExtension at list field Handlers as it is not of Message kind"))
+	panic(fmt.Errorf("AppendMutable can not be called on message AsyncVoteExtension at list field Plugins as it is not of Message kind"))
 }
 
 func (x *_AsyncVoteExtension_3_list) Truncate(n int) {
@@ -657,11 +657,11 @@ func (x *_AsyncVoteExtension_3_list) IsValid() bool {
 }
 
 var (
-	md_AsyncVoteExtension                 protoreflect.MessageDescriptor
-	fd_AsyncVoteExtension_results         protoreflect.FieldDescriptor
-	fd_AsyncVoteExtension_votes           protoreflect.FieldDescriptor
-	fd_AsyncVoteExtension_handlers        protoreflect.FieldDescriptor
-	fd_AsyncVoteExtension_update_handlers protoreflect.FieldDescriptor
+	md_AsyncVoteExtension                protoreflect.MessageDescriptor
+	fd_AsyncVoteExtension_results        protoreflect.FieldDescriptor
+	fd_AsyncVoteExtension_votes          protoreflect.FieldDescriptor
+	fd_AsyncVoteExtension_plugins        protoreflect.FieldDescriptor
+	fd_AsyncVoteExtension_update_plugins protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -669,8 +669,8 @@ func init() {
 	md_AsyncVoteExtension = File_warden_async_v1beta1_ve_proto.Messages().ByName("AsyncVoteExtension")
 	fd_AsyncVoteExtension_results = md_AsyncVoteExtension.Fields().ByName("results")
 	fd_AsyncVoteExtension_votes = md_AsyncVoteExtension.Fields().ByName("votes")
-	fd_AsyncVoteExtension_handlers = md_AsyncVoteExtension.Fields().ByName("handlers")
-	fd_AsyncVoteExtension_update_handlers = md_AsyncVoteExtension.Fields().ByName("update_handlers")
+	fd_AsyncVoteExtension_plugins = md_AsyncVoteExtension.Fields().ByName("plugins")
+	fd_AsyncVoteExtension_update_plugins = md_AsyncVoteExtension.Fields().ByName("update_plugins")
 }
 
 var _ protoreflect.Message = (*fastReflection_AsyncVoteExtension)(nil)
@@ -750,15 +750,15 @@ func (x *fastReflection_AsyncVoteExtension) Range(f func(protoreflect.FieldDescr
 			return
 		}
 	}
-	if len(x.Handlers) != 0 {
-		value := protoreflect.ValueOfList(&_AsyncVoteExtension_3_list{list: &x.Handlers})
-		if !f(fd_AsyncVoteExtension_handlers, value) {
+	if len(x.Plugins) != 0 {
+		value := protoreflect.ValueOfList(&_AsyncVoteExtension_3_list{list: &x.Plugins})
+		if !f(fd_AsyncVoteExtension_plugins, value) {
 			return
 		}
 	}
-	if x.UpdateHandlers != false {
-		value := protoreflect.ValueOfBool(x.UpdateHandlers)
-		if !f(fd_AsyncVoteExtension_update_handlers, value) {
+	if x.UpdatePlugins != false {
+		value := protoreflect.ValueOfBool(x.UpdatePlugins)
+		if !f(fd_AsyncVoteExtension_update_plugins, value) {
 			return
 		}
 	}
@@ -781,10 +781,10 @@ func (x *fastReflection_AsyncVoteExtension) Has(fd protoreflect.FieldDescriptor)
 		return len(x.Results) != 0
 	case "warden.async.v1beta1.AsyncVoteExtension.votes":
 		return len(x.Votes) != 0
-	case "warden.async.v1beta1.AsyncVoteExtension.handlers":
-		return len(x.Handlers) != 0
-	case "warden.async.v1beta1.AsyncVoteExtension.update_handlers":
-		return x.UpdateHandlers != false
+	case "warden.async.v1beta1.AsyncVoteExtension.plugins":
+		return len(x.Plugins) != 0
+	case "warden.async.v1beta1.AsyncVoteExtension.update_plugins":
+		return x.UpdatePlugins != false
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.AsyncVoteExtension"))
@@ -805,10 +805,10 @@ func (x *fastReflection_AsyncVoteExtension) Clear(fd protoreflect.FieldDescripto
 		x.Results = nil
 	case "warden.async.v1beta1.AsyncVoteExtension.votes":
 		x.Votes = nil
-	case "warden.async.v1beta1.AsyncVoteExtension.handlers":
-		x.Handlers = nil
-	case "warden.async.v1beta1.AsyncVoteExtension.update_handlers":
-		x.UpdateHandlers = false
+	case "warden.async.v1beta1.AsyncVoteExtension.plugins":
+		x.Plugins = nil
+	case "warden.async.v1beta1.AsyncVoteExtension.update_plugins":
+		x.UpdatePlugins = false
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.AsyncVoteExtension"))
@@ -837,14 +837,14 @@ func (x *fastReflection_AsyncVoteExtension) Get(descriptor protoreflect.FieldDes
 		}
 		listValue := &_AsyncVoteExtension_2_list{list: &x.Votes}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.async.v1beta1.AsyncVoteExtension.handlers":
-		if len(x.Handlers) == 0 {
+	case "warden.async.v1beta1.AsyncVoteExtension.plugins":
+		if len(x.Plugins) == 0 {
 			return protoreflect.ValueOfList(&_AsyncVoteExtension_3_list{})
 		}
-		listValue := &_AsyncVoteExtension_3_list{list: &x.Handlers}
+		listValue := &_AsyncVoteExtension_3_list{list: &x.Plugins}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.async.v1beta1.AsyncVoteExtension.update_handlers":
-		value := x.UpdateHandlers
+	case "warden.async.v1beta1.AsyncVoteExtension.update_plugins":
+		value := x.UpdatePlugins
 		return protoreflect.ValueOfBool(value)
 	default:
 		if descriptor.IsExtension() {
@@ -874,12 +874,12 @@ func (x *fastReflection_AsyncVoteExtension) Set(fd protoreflect.FieldDescriptor,
 		lv := value.List()
 		clv := lv.(*_AsyncVoteExtension_2_list)
 		x.Votes = *clv.list
-	case "warden.async.v1beta1.AsyncVoteExtension.handlers":
+	case "warden.async.v1beta1.AsyncVoteExtension.plugins":
 		lv := value.List()
 		clv := lv.(*_AsyncVoteExtension_3_list)
-		x.Handlers = *clv.list
-	case "warden.async.v1beta1.AsyncVoteExtension.update_handlers":
-		x.UpdateHandlers = value.Bool()
+		x.Plugins = *clv.list
+	case "warden.async.v1beta1.AsyncVoteExtension.update_plugins":
+		x.UpdatePlugins = value.Bool()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.AsyncVoteExtension"))
@@ -912,14 +912,14 @@ func (x *fastReflection_AsyncVoteExtension) Mutable(fd protoreflect.FieldDescrip
 		}
 		value := &_AsyncVoteExtension_2_list{list: &x.Votes}
 		return protoreflect.ValueOfList(value)
-	case "warden.async.v1beta1.AsyncVoteExtension.handlers":
-		if x.Handlers == nil {
-			x.Handlers = []string{}
+	case "warden.async.v1beta1.AsyncVoteExtension.plugins":
+		if x.Plugins == nil {
+			x.Plugins = []string{}
 		}
-		value := &_AsyncVoteExtension_3_list{list: &x.Handlers}
+		value := &_AsyncVoteExtension_3_list{list: &x.Plugins}
 		return protoreflect.ValueOfList(value)
-	case "warden.async.v1beta1.AsyncVoteExtension.update_handlers":
-		panic(fmt.Errorf("field update_handlers of message warden.async.v1beta1.AsyncVoteExtension is not mutable"))
+	case "warden.async.v1beta1.AsyncVoteExtension.update_plugins":
+		panic(fmt.Errorf("field update_plugins of message warden.async.v1beta1.AsyncVoteExtension is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.AsyncVoteExtension"))
@@ -939,10 +939,10 @@ func (x *fastReflection_AsyncVoteExtension) NewField(fd protoreflect.FieldDescri
 	case "warden.async.v1beta1.AsyncVoteExtension.votes":
 		list := []*VEVoteItem{}
 		return protoreflect.ValueOfList(&_AsyncVoteExtension_2_list{list: &list})
-	case "warden.async.v1beta1.AsyncVoteExtension.handlers":
+	case "warden.async.v1beta1.AsyncVoteExtension.plugins":
 		list := []string{}
 		return protoreflect.ValueOfList(&_AsyncVoteExtension_3_list{list: &list})
-	case "warden.async.v1beta1.AsyncVoteExtension.update_handlers":
+	case "warden.async.v1beta1.AsyncVoteExtension.update_plugins":
 		return protoreflect.ValueOfBool(false)
 	default:
 		if fd.IsExtension() {
@@ -1025,13 +1025,13 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if len(x.Handlers) > 0 {
-			for _, s := range x.Handlers {
+		if len(x.Plugins) > 0 {
+			for _, s := range x.Plugins {
 				l = len(s)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if x.UpdateHandlers {
+		if x.UpdatePlugins {
 			n += 2
 		}
 		if x.unknownFields != nil {
@@ -1063,9 +1063,9 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.UpdateHandlers {
+		if x.UpdatePlugins {
 			i--
-			if x.UpdateHandlers {
+			if x.UpdatePlugins {
 				dAtA[i] = 1
 			} else {
 				dAtA[i] = 0
@@ -1073,11 +1073,11 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x20
 		}
-		if len(x.Handlers) > 0 {
-			for iNdEx := len(x.Handlers) - 1; iNdEx >= 0; iNdEx-- {
-				i -= len(x.Handlers[iNdEx])
-				copy(dAtA[i:], x.Handlers[iNdEx])
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Handlers[iNdEx])))
+		if len(x.Plugins) > 0 {
+			for iNdEx := len(x.Plugins) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.Plugins[iNdEx])
+				copy(dAtA[i:], x.Plugins[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Plugins[iNdEx])))
 				i--
 				dAtA[i] = 0x1a
 			}
@@ -1233,7 +1233,7 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Handlers", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Plugins", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1261,11 +1261,11 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Handlers = append(x.Handlers, string(dAtA[iNdEx:postIndex]))
+				x.Plugins = append(x.Plugins, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
 			case 4:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field UpdateHandlers", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field UpdatePlugins", wireType)
 				}
 				var v int
 				for shift := uint(0); ; shift += 7 {
@@ -1282,7 +1282,7 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
-				x.UpdateHandlers = bool(v != 0)
+				x.UpdatePlugins = bool(v != 0)
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -1319,15 +1319,15 @@ func (x *fastReflection_AsyncVoteExtension) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_VEResultItem           protoreflect.MessageDescriptor
-	fd_VEResultItem_future_id protoreflect.FieldDescriptor
-	fd_VEResultItem_output    protoreflect.FieldDescriptor
+	md_VEResultItem         protoreflect.MessageDescriptor
+	fd_VEResultItem_task_id protoreflect.FieldDescriptor
+	fd_VEResultItem_output  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_ve_proto_init()
 	md_VEResultItem = File_warden_async_v1beta1_ve_proto.Messages().ByName("VEResultItem")
-	fd_VEResultItem_future_id = md_VEResultItem.Fields().ByName("future_id")
+	fd_VEResultItem_task_id = md_VEResultItem.Fields().ByName("task_id")
 	fd_VEResultItem_output = md_VEResultItem.Fields().ByName("output")
 }
 
@@ -1396,9 +1396,9 @@ func (x *fastReflection_VEResultItem) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_VEResultItem) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.FutureId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.FutureId)
-		if !f(fd_VEResultItem_future_id, value) {
+	if x.TaskId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.TaskId)
+		if !f(fd_VEResultItem_task_id, value) {
 			return
 		}
 	}
@@ -1423,8 +1423,8 @@ func (x *fastReflection_VEResultItem) Range(f func(protoreflect.FieldDescriptor,
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_VEResultItem) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEResultItem.future_id":
-		return x.FutureId != uint64(0)
+	case "warden.async.v1beta1.VEResultItem.task_id":
+		return x.TaskId != uint64(0)
 	case "warden.async.v1beta1.VEResultItem.output":
 		return len(x.Output) != 0
 	default:
@@ -1443,8 +1443,8 @@ func (x *fastReflection_VEResultItem) Has(fd protoreflect.FieldDescriptor) bool 
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_VEResultItem) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEResultItem.future_id":
-		x.FutureId = uint64(0)
+	case "warden.async.v1beta1.VEResultItem.task_id":
+		x.TaskId = uint64(0)
 	case "warden.async.v1beta1.VEResultItem.output":
 		x.Output = nil
 	default:
@@ -1463,8 +1463,8 @@ func (x *fastReflection_VEResultItem) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_VEResultItem) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.VEResultItem.future_id":
-		value := x.FutureId
+	case "warden.async.v1beta1.VEResultItem.task_id":
+		value := x.TaskId
 		return protoreflect.ValueOfUint64(value)
 	case "warden.async.v1beta1.VEResultItem.output":
 		value := x.Output
@@ -1489,8 +1489,8 @@ func (x *fastReflection_VEResultItem) Get(descriptor protoreflect.FieldDescripto
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_VEResultItem) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEResultItem.future_id":
-		x.FutureId = value.Uint()
+	case "warden.async.v1beta1.VEResultItem.task_id":
+		x.TaskId = value.Uint()
 	case "warden.async.v1beta1.VEResultItem.output":
 		x.Output = value.Bytes()
 	default:
@@ -1513,8 +1513,8 @@ func (x *fastReflection_VEResultItem) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_VEResultItem) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEResultItem.future_id":
-		panic(fmt.Errorf("field future_id of message warden.async.v1beta1.VEResultItem is not mutable"))
+	case "warden.async.v1beta1.VEResultItem.task_id":
+		panic(fmt.Errorf("field task_id of message warden.async.v1beta1.VEResultItem is not mutable"))
 	case "warden.async.v1beta1.VEResultItem.output":
 		panic(fmt.Errorf("field output of message warden.async.v1beta1.VEResultItem is not mutable"))
 	default:
@@ -1530,7 +1530,7 @@ func (x *fastReflection_VEResultItem) Mutable(fd protoreflect.FieldDescriptor) p
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_VEResultItem) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEResultItem.future_id":
+	case "warden.async.v1beta1.VEResultItem.task_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.async.v1beta1.VEResultItem.output":
 		return protoreflect.ValueOfBytes(nil)
@@ -1603,8 +1603,8 @@ func (x *fastReflection_VEResultItem) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		if x.FutureId != 0 {
-			n += 1 + runtime.Sov(uint64(x.FutureId))
+		if x.TaskId != 0 {
+			n += 1 + runtime.Sov(uint64(x.TaskId))
 		}
 		l = len(x.Output)
 		if l > 0 {
@@ -1646,8 +1646,8 @@ func (x *fastReflection_VEResultItem) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x12
 		}
-		if x.FutureId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.FutureId))
+		if x.TaskId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.TaskId))
 			i--
 			dAtA[i] = 0x8
 		}
@@ -1702,9 +1702,9 @@ func (x *fastReflection_VEResultItem) ProtoMethods() *protoiface.Methods {
 			switch fieldNum {
 			case 1:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FutureId", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TaskId", wireType)
 				}
-				x.FutureId = 0
+				x.TaskId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1714,7 +1714,7 @@ func (x *fastReflection_VEResultItem) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.FutureId |= uint64(b&0x7F) << shift
+					x.TaskId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -1789,15 +1789,15 @@ func (x *fastReflection_VEResultItem) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_VEVoteItem           protoreflect.MessageDescriptor
-	fd_VEVoteItem_future_id protoreflect.FieldDescriptor
-	fd_VEVoteItem_vote      protoreflect.FieldDescriptor
+	md_VEVoteItem         protoreflect.MessageDescriptor
+	fd_VEVoteItem_task_id protoreflect.FieldDescriptor
+	fd_VEVoteItem_vote    protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_ve_proto_init()
 	md_VEVoteItem = File_warden_async_v1beta1_ve_proto.Messages().ByName("VEVoteItem")
-	fd_VEVoteItem_future_id = md_VEVoteItem.Fields().ByName("future_id")
+	fd_VEVoteItem_task_id = md_VEVoteItem.Fields().ByName("task_id")
 	fd_VEVoteItem_vote = md_VEVoteItem.Fields().ByName("vote")
 }
 
@@ -1866,9 +1866,9 @@ func (x *fastReflection_VEVoteItem) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_VEVoteItem) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.FutureId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.FutureId)
-		if !f(fd_VEVoteItem_future_id, value) {
+	if x.TaskId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.TaskId)
+		if !f(fd_VEVoteItem_task_id, value) {
 			return
 		}
 	}
@@ -1893,8 +1893,8 @@ func (x *fastReflection_VEVoteItem) Range(f func(protoreflect.FieldDescriptor, p
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_VEVoteItem) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEVoteItem.future_id":
-		return x.FutureId != uint64(0)
+	case "warden.async.v1beta1.VEVoteItem.task_id":
+		return x.TaskId != uint64(0)
 	case "warden.async.v1beta1.VEVoteItem.vote":
 		return x.Vote != 0
 	default:
@@ -1913,8 +1913,8 @@ func (x *fastReflection_VEVoteItem) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_VEVoteItem) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEVoteItem.future_id":
-		x.FutureId = uint64(0)
+	case "warden.async.v1beta1.VEVoteItem.task_id":
+		x.TaskId = uint64(0)
 	case "warden.async.v1beta1.VEVoteItem.vote":
 		x.Vote = 0
 	default:
@@ -1933,8 +1933,8 @@ func (x *fastReflection_VEVoteItem) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_VEVoteItem) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.VEVoteItem.future_id":
-		value := x.FutureId
+	case "warden.async.v1beta1.VEVoteItem.task_id":
+		value := x.TaskId
 		return protoreflect.ValueOfUint64(value)
 	case "warden.async.v1beta1.VEVoteItem.vote":
 		value := x.Vote
@@ -1959,10 +1959,10 @@ func (x *fastReflection_VEVoteItem) Get(descriptor protoreflect.FieldDescriptor)
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_VEVoteItem) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEVoteItem.future_id":
-		x.FutureId = value.Uint()
+	case "warden.async.v1beta1.VEVoteItem.task_id":
+		x.TaskId = value.Uint()
 	case "warden.async.v1beta1.VEVoteItem.vote":
-		x.Vote = (FutureVoteType)(value.Enum())
+		x.Vote = (TaskVoteType)(value.Enum())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.VEVoteItem"))
@@ -1983,8 +1983,8 @@ func (x *fastReflection_VEVoteItem) Set(fd protoreflect.FieldDescriptor, value p
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_VEVoteItem) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEVoteItem.future_id":
-		panic(fmt.Errorf("field future_id of message warden.async.v1beta1.VEVoteItem is not mutable"))
+	case "warden.async.v1beta1.VEVoteItem.task_id":
+		panic(fmt.Errorf("field task_id of message warden.async.v1beta1.VEVoteItem is not mutable"))
 	case "warden.async.v1beta1.VEVoteItem.vote":
 		panic(fmt.Errorf("field vote of message warden.async.v1beta1.VEVoteItem is not mutable"))
 	default:
@@ -2000,7 +2000,7 @@ func (x *fastReflection_VEVoteItem) Mutable(fd protoreflect.FieldDescriptor) pro
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_VEVoteItem) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.VEVoteItem.future_id":
+	case "warden.async.v1beta1.VEVoteItem.task_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.async.v1beta1.VEVoteItem.vote":
 		return protoreflect.ValueOfEnum(0)
@@ -2073,8 +2073,8 @@ func (x *fastReflection_VEVoteItem) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		if x.FutureId != 0 {
-			n += 1 + runtime.Sov(uint64(x.FutureId))
+		if x.TaskId != 0 {
+			n += 1 + runtime.Sov(uint64(x.TaskId))
 		}
 		if x.Vote != 0 {
 			n += 1 + runtime.Sov(uint64(x.Vote))
@@ -2113,8 +2113,8 @@ func (x *fastReflection_VEVoteItem) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x10
 		}
-		if x.FutureId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.FutureId))
+		if x.TaskId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.TaskId))
 			i--
 			dAtA[i] = 0x8
 		}
@@ -2169,9 +2169,9 @@ func (x *fastReflection_VEVoteItem) ProtoMethods() *protoiface.Methods {
 			switch fieldNum {
 			case 1:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FutureId", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TaskId", wireType)
 				}
-				x.FutureId = 0
+				x.TaskId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -2181,7 +2181,7 @@ func (x *fastReflection_VEVoteItem) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.FutureId |= uint64(b&0x7F) << shift
+					x.TaskId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -2200,7 +2200,7 @@ func (x *fastReflection_VEVoteItem) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.Vote |= FutureVoteType(b&0x7F) << shift
+					x.Vote |= TaskVoteType(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -2293,16 +2293,16 @@ func (x *AsyncInjectedTx) GetExtendedVotesInfo() []*abci.ExtendedVoteInfo {
 }
 
 // A vote extension coming from a validator. It contains results, votes for
-// some futures and handlers that are supported by the validator.
+// some tasks and plugins that are supported by the validator.
 type AsyncVoteExtension struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Results        []*VEResultItem `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
-	Votes          []*VEVoteItem   `protobuf:"bytes,2,rep,name=votes,proto3" json:"votes,omitempty"`
-	Handlers       []string        `protobuf:"bytes,3,rep,name=handlers,proto3" json:"handlers,omitempty"`
-	UpdateHandlers bool            `protobuf:"varint,4,opt,name=update_handlers,json=updateHandlers,proto3" json:"update_handlers,omitempty"`
+	Results       []*VEResultItem `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	Votes         []*VEVoteItem   `protobuf:"bytes,2,rep,name=votes,proto3" json:"votes,omitempty"`
+	Plugins       []string        `protobuf:"bytes,3,rep,name=plugins,proto3" json:"plugins,omitempty"`
+	UpdatePlugins bool            `protobuf:"varint,4,opt,name=update_plugins,json=updatePlugins,proto3" json:"update_plugins,omitempty"`
 }
 
 func (x *AsyncVoteExtension) Reset() {
@@ -2339,16 +2339,16 @@ func (x *AsyncVoteExtension) GetVotes() []*VEVoteItem {
 	return nil
 }
 
-func (x *AsyncVoteExtension) GetHandlers() []string {
+func (x *AsyncVoteExtension) GetPlugins() []string {
 	if x != nil {
-		return x.Handlers
+		return x.Plugins
 	}
 	return nil
 }
 
-func (x *AsyncVoteExtension) GetUpdateHandlers() bool {
+func (x *AsyncVoteExtension) GetUpdatePlugins() bool {
 	if x != nil {
-		return x.UpdateHandlers
+		return x.UpdatePlugins
 	}
 	return false
 }
@@ -2358,8 +2358,8 @@ type VEResultItem struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	FutureId uint64 `protobuf:"varint,1,opt,name=future_id,json=futureId,proto3" json:"future_id,omitempty"`
-	Output   []byte `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
+	TaskId uint64 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
+	Output []byte `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
 }
 
 func (x *VEResultItem) Reset() {
@@ -2382,9 +2382,9 @@ func (*VEResultItem) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_ve_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *VEResultItem) GetFutureId() uint64 {
+func (x *VEResultItem) GetTaskId() uint64 {
 	if x != nil {
-		return x.FutureId
+		return x.TaskId
 	}
 	return 0
 }
@@ -2401,8 +2401,8 @@ type VEVoteItem struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	FutureId uint64         `protobuf:"varint,1,opt,name=future_id,json=futureId,proto3" json:"future_id,omitempty"`
-	Vote     FutureVoteType `protobuf:"varint,2,opt,name=vote,proto3,enum=warden.async.v1beta1.FutureVoteType" json:"vote,omitempty"`
+	TaskId uint64       `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
+	Vote   TaskVoteType `protobuf:"varint,2,opt,name=vote,proto3,enum=warden.async.v1beta1.TaskVoteType" json:"vote,omitempty"`
 }
 
 func (x *VEVoteItem) Reset() {
@@ -2425,18 +2425,18 @@ func (*VEVoteItem) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_ve_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *VEVoteItem) GetFutureId() uint64 {
+func (x *VEVoteItem) GetTaskId() uint64 {
 	if x != nil {
-		return x.FutureId
+		return x.TaskId
 	}
 	return 0
 }
 
-func (x *VEVoteItem) GetVote() FutureVoteType {
+func (x *VEVoteItem) GetVote() TaskVoteType {
 	if x != nil {
 		return x.Vote
 	}
-	return FutureVoteType_VOTE_TYPE_UNSPECIFIED
+	return TaskVoteType_VOTE_TYPE_UNSPECIFIED
 }
 
 var File_warden_async_v1beta1_ve_proto protoreflect.FileDescriptor
@@ -2448,39 +2448,38 @@ var file_warden_async_v1beta1_ve_proto_rawDesc = []byte{
 	0x62, 0x65, 0x74, 0x61, 0x31, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x74, 0x65, 0x6e,
 	0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2f, 0x61, 0x62, 0x63, 0x69, 0x2f, 0x74, 0x79, 0x70,
-	0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x66,
-	0x75, 0x74, 0x75, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x6a, 0x0a, 0x0f, 0x41,
-	0x73, 0x79, 0x6e, 0x63, 0x49, 0x6e, 0x6a, 0x65, 0x63, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x57,
-	0x0a, 0x13, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x5f, 0x76, 0x6f, 0x74, 0x65, 0x73,
-	0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x74, 0x65,
-	0x6e, 0x64, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x61, 0x62, 0x63, 0x69, 0x2e, 0x45, 0x78,
-	0x74, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x56, 0x6f, 0x74, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x42, 0x04,
-	0xc8, 0xde, 0x1f, 0x00, 0x52, 0x11, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x56, 0x6f,
-	0x74, 0x65, 0x73, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0xcf, 0x01, 0x0a, 0x12, 0x41, 0x73, 0x79, 0x6e,
-	0x63, 0x56, 0x6f, 0x74, 0x65, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x3c,
-	0x0a, 0x07, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x22, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x56, 0x45, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x49,
-	0x74, 0x65, 0x6d, 0x52, 0x07, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x73, 0x12, 0x36, 0x0a, 0x05,
-	0x76, 0x6f, 0x74, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x2e, 0x56, 0x45, 0x56, 0x6f, 0x74, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x05, 0x76,
-	0x6f, 0x74, 0x65, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73,
-	0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x08, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73,
-	0x12, 0x27, 0x0a, 0x0f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x68, 0x61, 0x6e, 0x64, 0x6c,
-	0x65, 0x72, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e, 0x75, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x73, 0x22, 0x43, 0x0a, 0x0c, 0x56, 0x45, 0x52,
-	0x65, 0x73, 0x75, 0x6c, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x1b, 0x0a, 0x09, 0x66, 0x75, 0x74,
-	0x75, 0x72, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x08, 0x66, 0x75,
-	0x74, 0x75, 0x72, 0x65, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x22, 0x63,
-	0x0a, 0x0a, 0x56, 0x45, 0x56, 0x6f, 0x74, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x1b, 0x0a, 0x09,
-	0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x08, 0x66, 0x75, 0x74, 0x75, 0x72, 0x65, 0x49, 0x64, 0x12, 0x38, 0x0a, 0x04, 0x76, 0x6f, 0x74,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x24, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x46,
-	0x75, 0x74, 0x75, 0x72, 0x65, 0x56, 0x6f, 0x74, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x76,
+	0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x74,
+	0x61, 0x73, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x6a, 0x0a, 0x0f, 0x41, 0x73, 0x79,
+	0x6e, 0x63, 0x49, 0x6e, 0x6a, 0x65, 0x63, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x57, 0x0a, 0x13,
+	0x65, 0x78, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x5f, 0x76, 0x6f, 0x74, 0x65, 0x73, 0x5f, 0x69,
+	0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x74, 0x65, 0x6e, 0x64,
+	0x65, 0x72, 0x6d, 0x69, 0x6e, 0x74, 0x2e, 0x61, 0x62, 0x63, 0x69, 0x2e, 0x45, 0x78, 0x74, 0x65,
+	0x6e, 0x64, 0x65, 0x64, 0x56, 0x6f, 0x74, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x42, 0x04, 0xc8, 0xde,
+	0x1f, 0x00, 0x52, 0x11, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x56, 0x6f, 0x74, 0x65,
+	0x73, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0xcb, 0x01, 0x0a, 0x12, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x56,
+	0x6f, 0x74, 0x65, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x3c, 0x0a, 0x07,
+	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x56, 0x45, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x49, 0x74, 0x65,
+	0x6d, 0x52, 0x07, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x73, 0x12, 0x36, 0x0a, 0x05, 0x76, 0x6f,
+	0x74, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x2e, 0x56, 0x45, 0x56, 0x6f, 0x74, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x05, 0x76, 0x6f, 0x74,
+	0x65, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x18, 0x03, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x07, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x12, 0x25, 0x0a, 0x0e,
+	0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x0d, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x6c, 0x75, 0x67,
+	0x69, 0x6e, 0x73, 0x22, 0x3f, 0x0a, 0x0c, 0x56, 0x45, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x49,
+	0x74, 0x65, 0x6d, 0x12, 0x17, 0x0a, 0x07, 0x74, 0x61, 0x73, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x74, 0x61, 0x73, 0x6b, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06,
+	0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x6f, 0x75,
+	0x74, 0x70, 0x75, 0x74, 0x22, 0x5d, 0x0a, 0x0a, 0x56, 0x45, 0x56, 0x6f, 0x74, 0x65, 0x49, 0x74,
+	0x65, 0x6d, 0x12, 0x17, 0x0a, 0x07, 0x74, 0x61, 0x73, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x04, 0x52, 0x06, 0x74, 0x61, 0x73, 0x6b, 0x49, 0x64, 0x12, 0x36, 0x0a, 0x04, 0x76,
+	0x6f, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x2e, 0x54, 0x61, 0x73, 0x6b, 0x56, 0x6f, 0x74, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x76,
 	0x6f, 0x74, 0x65, 0x42, 0xe6, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64,
 	0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
 	0x42, 0x07, 0x56, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74,
@@ -2518,13 +2517,13 @@ var file_warden_async_v1beta1_ve_proto_goTypes = []interface{}{
 	(*VEResultItem)(nil),          // 2: warden.async.v1beta1.VEResultItem
 	(*VEVoteItem)(nil),            // 3: warden.async.v1beta1.VEVoteItem
 	(*abci.ExtendedVoteInfo)(nil), // 4: tendermint.abci.ExtendedVoteInfo
-	(FutureVoteType)(0),           // 5: warden.async.v1beta1.FutureVoteType
+	(TaskVoteType)(0),             // 5: warden.async.v1beta1.TaskVoteType
 }
 var file_warden_async_v1beta1_ve_proto_depIdxs = []int32{
 	4, // 0: warden.async.v1beta1.AsyncInjectedTx.extended_votes_info:type_name -> tendermint.abci.ExtendedVoteInfo
 	2, // 1: warden.async.v1beta1.AsyncVoteExtension.results:type_name -> warden.async.v1beta1.VEResultItem
 	3, // 2: warden.async.v1beta1.AsyncVoteExtension.votes:type_name -> warden.async.v1beta1.VEVoteItem
-	5, // 3: warden.async.v1beta1.VEVoteItem.vote:type_name -> warden.async.v1beta1.FutureVoteType
+	5, // 3: warden.async.v1beta1.VEVoteItem.vote:type_name -> warden.async.v1beta1.TaskVoteType
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -2537,7 +2536,7 @@ func file_warden_async_v1beta1_ve_proto_init() {
 	if File_warden_async_v1beta1_ve_proto != nil {
 		return
 	}
-	file_warden_async_v1beta1_future_proto_init()
+	file_warden_async_v1beta1_task_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_warden_async_v1beta1_ve_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AsyncInjectedTx); i {

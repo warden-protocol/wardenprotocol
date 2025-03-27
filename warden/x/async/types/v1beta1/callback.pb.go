@@ -22,7 +22,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// Callback represents an optional hook that will be triggered after a future receives result.
+// Callback represents an optional hook that will be triggered after a task receives result.
 type Callback struct {
 	// Callback address.
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`

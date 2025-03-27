@@ -9,14 +9,12 @@ import (
 	"time"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
 
-	"github.com/ethereum/go-ethereum/ethclient"
-
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/ports"

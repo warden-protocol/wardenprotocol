@@ -1,4 +1,4 @@
-// Package stoicquote provides a handler for the Stoic quote demonstration,
+// Package stoicquote provides a plugin for the Stoic quote demonstration,
 // using the stoicquote_bindings for decoding/encoding ABI data.
 package stoicquote
 
@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/stoicquote/generated"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/stoicquote/generated"
 )
 
 type StoicQuoteSolidity struct {

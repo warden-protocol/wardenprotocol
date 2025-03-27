@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
@@ -35,7 +36,7 @@ func (c *Test_CreateSpace) Run(t *testing.T, ctx context.Context, build framewor
 	client := c.w.GRPCClient(t)
 
 	require.Eventually(t, func() bool {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+		ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 		defer cancel()
 
 		res, err := client.Warden.Spaces(ctx, &types.QuerySpacesRequest{})

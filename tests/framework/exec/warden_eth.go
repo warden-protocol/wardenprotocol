@@ -36,7 +36,8 @@ func (cli *Wardend) EthAddress(t *testing.T) common.Address {
 func (cli *Wardend) TransactOps(
 	t *testing.T,
 	ctx context.Context,
-	client *ethclient.Client) *bind.TransactOpts {
+	client *ethclient.Client,
+) *bind.TransactOpts {
 	privateKey, err := crypto.HexToECDSA(cli.PrivateKey(t))
 	require.NoError(t, err)
 

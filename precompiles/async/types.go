@@ -10,107 +10,107 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-// FuturesInput needed to unmarshal Pagination field and pass it to types.QueryFuturesRequest.
-type FuturesInput struct {
+// TasksInput needed to unmarshal Pagination field and pass it to types.QueryTasksRequest.
+type TasksInput struct {
 	Pagination query.PageRequest `abi:"pagination"`
 	Creator    common.Address    `abi:"creator"`
 }
 
-// FromResponse needed to map QueryFuturesResponse to FuturesResponse.
-func (r *FuturesResponse) FromResponse(res *types.QueryFuturesResponse) (FuturesResponse, error) {
+// FromResponse needed to map QueryTasksResponse to TasksResponse.
+func (r *TasksResponse) FromResponse(res *types.QueryTasksResponse) (TasksResponse, error) {
 	if res != nil {
-		futures := make([]FutureResponse, 0, len(res.Futures))
+		tasks := make([]TaskResponse, 0, len(res.Tasks))
 
-		for _, future := range res.Futures {
-			mappedFuture, err := mapFutureResponse(future)
+		for _, task := range res.Tasks {
+			mappedTask, err := mapTaskResponse(task)
 			if err != nil {
-				return FuturesResponse{}, err
+				return TasksResponse{}, err
 			}
 
-			futures = append(futures, mappedFuture)
+			tasks = append(tasks, mappedTask)
 		}
 
-		r.Futures = futures
+		r.Tasks = tasks
 		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
 	return *r, nil
 }
 
-// FromResponse needed to map QueryPendingFuturesResponse to PendingFuturesResponse.
-func (r *PendingFuturesResponse) FromResponse(res *types.QueryPendingFuturesResponse) (PendingFuturesResponse, error) {
+// FromResponse needed to map QueryPendingTasksResponse to PendingTasksResponse.
+func (r *PendingTasksResponse) FromResponse(res *types.QueryPendingTasksResponse) (PendingTasksResponse, error) {
 	if res != nil {
-		futures := make([]Future, 0, len(res.Futures))
+		tasks := make([]Task, 0, len(res.Tasks))
 
-		for _, future := range res.Futures {
-			mappedFuture, err := mapFuture(future)
+		for _, task := range res.Tasks {
+			mappedTask, err := mapTask(task)
 			if err != nil {
-				return PendingFuturesResponse{}, err
+				return PendingTasksResponse{}, err
 			}
 
-			futures = append(futures, mappedFuture)
+			tasks = append(tasks, mappedTask)
 		}
 
-		r.Futures = futures
+		r.Tasks = tasks
 		r.Pagination = mapPageResponse(res.Pagination)
 	}
 
 	return *r, nil
 }
 
-// FromResponse needed to map QueryFutureByIdResponse to FutureByIdResponse.
-func (r *FutureByIdResponse) FromResponse(res *types.QueryFutureByIdResponse) (FutureByIdResponse, error) {
+// FromResponse needed to map QueryTaskByIdResponse to TaskByIdResponse.
+func (r *TaskByIdResponse) FromResponse(res *types.QueryTaskByIdResponse) (TaskByIdResponse, error) {
 	if res != nil {
-		mappedFutureResponse, err := mapFutureResponse(res.FutureResponse)
+		mappedTaskResponse, err := mapTaskResponse(res.TaskResponse)
 		if err != nil {
-			return FutureByIdResponse{}, err
+			return TaskByIdResponse{}, err
 		}
 
-		r.FutureResponse = mappedFutureResponse
+		r.TaskResponse = mappedTaskResponse
 	}
 
 	return *r, nil
 }
 
-func mapFuture(future types.Future) (Future, error) {
-	creator, err := precommon.AddressFromBech32Str(future.Creator)
+func mapTask(task types.Task) (Task, error) {
+	creator, err := precommon.AddressFromBech32Str(task.Creator)
 	if err != nil {
-		return Future{}, fmt.Errorf("invalid creator: %w", err)
+		return Task{}, fmt.Errorf("invalid creator: %w", err)
 	}
 
-	return Future{
-		Id:      future.Id,
+	return Task{
+		Id:      task.Id,
 		Creator: creator,
-		Handler: future.Handler,
-		Input:   future.Input,
+		Plugin:  task.Plugin,
+		Input:   task.Input,
 	}, nil
 }
 
-func mapFutureResponse(futureResponse types.FutureResponse) (FutureResponse, error) {
-	future, err := mapFuture(futureResponse.Future)
+func mapTaskResponse(taskResponse types.TaskResponse) (TaskResponse, error) {
+	task, err := mapTask(taskResponse.Task)
 	if err != nil {
-		return FutureResponse{}, err
+		return TaskResponse{}, err
 	}
 
-	votes, err := mapVotes(futureResponse.Votes)
+	votes, err := mapVotes(taskResponse.Votes)
 	if err != nil {
-		return FutureResponse{}, err
+		return TaskResponse{}, err
 	}
 
-	futureResult, err := mapFutureResult(futureResponse.Result)
+	taskResult, err := mapTaskResult(taskResponse.Result)
 	if err != nil {
-		return FutureResponse{}, err
+		return TaskResponse{}, err
 	}
 
-	return FutureResponse{
-		Future: future,
+	return TaskResponse{
+		Task:   task,
 		Votes:  votes,
-		Result: futureResult,
+		Result: taskResult,
 	}, nil
 }
 
-func mapVotes(values []types.FutureVote) ([]FutureVote, error) {
-	result := make([]FutureVote, 0, len(values))
+func mapVotes(values []types.TaskVote) ([]TaskVote, error) {
+	result := make([]TaskVote, 0, len(values))
 
 	for _, v := range values {
 		mappedTemplate, err := mapVote(v)
@@ -124,20 +124,20 @@ func mapVotes(values []types.FutureVote) ([]FutureVote, error) {
 	return result, nil
 }
 
-func mapVote(value types.FutureVote) (FutureVote, error) {
-	return FutureVote{
-		Voter:    value.Voter,
-		FutureId: value.FutureId,
-		Vote:     uint8(value.Vote),
+func mapVote(value types.TaskVote) (TaskVote, error) {
+	return TaskVote{
+		Voter:  value.Voter,
+		TaskId: value.TaskId,
+		Vote:   uint8(value.Vote),
 	}, nil
 }
 
-func mapFutureResult(value *types.FutureResult) (FutureResult, error) {
+func mapTaskResult(value *types.TaskResult) (TaskResult, error) {
 	if value == nil {
-		return FutureResult{}, nil
+		return TaskResult{}, nil
 	}
 
-	return FutureResult{
+	return TaskResult{
 		Id:        value.Id,
 		Output:    value.Output,
 		Submitter: value.Submitter,

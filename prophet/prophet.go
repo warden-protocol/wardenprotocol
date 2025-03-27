@@ -12,7 +12,7 @@ import (
 )
 
 // queueBufferSize sets the default size for incoming queues, i.e. the number
-// of futures waiting to be executed and the number of future results waiting
+// of tasks waiting to be executed and the number of task results waiting
 // to be verified.
 // Trying to add more items to the queue than this size will drop the new
 // items.
@@ -20,10 +20,10 @@ var queueBufferSize = 100
 
 // P is the main prophet process. Use [New] to create a new P.
 type P struct {
-	futures   *q[Future]
-	proposals *q[FutureResult]
+	tasks     *q[Task]
+	proposals *q[TaskResult]
 
-	resultsWriter *s[FutureResult]
+	resultsWriter *s[TaskResult]
 	votesWriter   *s[Vote]
 
 	selfAddressRwLock sync.RWMutex
@@ -32,7 +32,7 @@ type P struct {
 
 // New returns an initialized P. Call [P.Run] to start the main loop.
 func New() (*P, error) {
-	resultsWriter, err := newS[FutureResult]()
+	resultsWriter, err := newS[TaskResult]()
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +43,8 @@ func New() (*P, error) {
 	}
 
 	return &P{
-		futures:       newQ[Future](queueBufferSize),
-		proposals:     newQ[FutureResult](queueBufferSize),
+		tasks:         newQ[Task](queueBufferSize),
+		proposals:     newQ[TaskResult](queueBufferSize),
 		resultsWriter: resultsWriter,
 		votesWriter:   votesWriter,
 	}, nil
@@ -52,21 +52,21 @@ func New() (*P, error) {
 
 // Run starts the main loop of the prophet process.
 //
-// Goroutines are started to execute incoming futures and verifying incoming
-// future results.
+// Goroutines are started to execute incoming tasks and verifying incoming
+// task results.
 func (p *P) Run(tendermintRpc string) error {
-	futures, err := newDedupFutureReader(p.futures)
+	tasks, err := newDedupTaskReader(p.tasks)
 	if err != nil {
-		return fmt.Errorf("failed to create futures dedup reader: %w", err)
+		return fmt.Errorf("failed to create tasks dedup reader: %w", err)
 	}
 
-	if err := ExecFutures(futures, p.resultsWriter); err != nil {
-		return fmt.Errorf("failed to run futures loop: %w", err)
+	if err := ExecTasks(tasks, p.resultsWriter); err != nil {
+		return fmt.Errorf("failed to run tasks loop: %w", err)
 	}
 
-	proposals, err := newDedupFutureResultReader(p.proposals)
+	proposals, err := newDedupTaskResultReader(p.proposals)
 	if err != nil {
-		return fmt.Errorf("failed to create futures dedup reader: %w", err)
+		return fmt.Errorf("failed to create tasks dedup reader: %w", err)
 	}
 
 	if err := ExecVotes(proposals, p.votesWriter); err != nil {
@@ -103,23 +103,23 @@ func (p *P) Run(tendermintRpc string) error {
 	return nil
 }
 
-// AddFuture adds a future to be executed. This call is non-blocking. The
-// future will be executed in the background, the results can be retrieved by
+// AddTask adds a task to be executed. This call is non-blocking. The
+// task will be executed in the background, the results can be retrieved by
 // calling [P.Results].
-func (p *P) AddFuture(future Future) {
-	p.futures.Add(future)
+func (p *P) AddTask(task Task) {
+	p.tasks.Add(task)
 }
 
-// AddFutureResult adds a future result to be voted on. This call is
+// AddTaskResult adds a task result to be voted on. This call is
 // non-blocking.
-func (p *P) AddFutureResult(proposal FutureResult) {
+func (p *P) AddTaskResult(proposal TaskResult) {
 	p.proposals.Add(proposal)
 }
 
-// Results returns a slice with all the results of futures that have been
+// Results returns a slice with all the results of tasks that have been
 // executed.
 // The returned function must be called to remove the results from the set.
-func (p *P) Results() ([]FutureResult, func()) {
+func (p *P) Results() ([]TaskResult, func()) {
 	values := p.resultsWriter.Values()
 	if len(values) == 0 {
 		return nil, func() {}
@@ -137,7 +137,7 @@ func (p *P) SelfAddress() []byte {
 	return p.selfAddress
 }
 
-// Votes returns a slice with all the votes of futures' results that have been
+// Votes returns a slice with all the votes of tasks' results that have been
 // verified.
 // The returned function must be called to remove the votes from the set.
 func (p *P) Votes() ([]Vote, func()) {

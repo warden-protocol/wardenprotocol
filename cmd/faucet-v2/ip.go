@@ -19,5 +19,6 @@ func getIP(r *http.Request) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("userip: %q is not IP:port", r.RemoteAddr)
 	}
+
 	return ip, nil
 }

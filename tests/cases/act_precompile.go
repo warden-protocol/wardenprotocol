@@ -48,7 +48,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 
 	t.Run("work with templates", func(t *testing.T) {
 		createTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			"evm rule #1",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
@@ -65,7 +65,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.Equal(t, "evm rule #1", templateById.Template.Name)
 
 		updateTemplateTx, err := iActClient.UpdateTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			"evm rule #1 modified",
 			"any(2, warden.space.owners)")

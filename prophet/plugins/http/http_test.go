@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http/generated"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http/generated"
 )
 
-func TestHandler_Execute(t *testing.T) {
+func TestPlugin_Execute(t *testing.T) {
 	jsonResponse := `{"bitcoin":{"usd":100000.00}}`
 
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func TestHandler_Execute(t *testing.T) {
 	parsedURL, err := url.Parse(mockServer.URL)
 	require.NoError(t, err)
 
-	h := NewHandler([]*url.URL{parsedURL}, 5*time.Second)
+	h := NewPlugin([]*url.URL{parsedURL}, 5*time.Second)
 
 	abiEncodedOutput, execErr := h.Execute(t.Context(), input)
 	require.NoError(t, execErr, "Execute should not fail")
@@ -68,7 +68,7 @@ func TestHandler_Execute(t *testing.T) {
 	require.Equal(t, int64(200), decodedOutput.Status.Int64(), "Status code should be 200")
 }
 
-func TestHandler_Execute_WithCborBody(t *testing.T) {
+func TestPlugin_Execute_WithCborBody(t *testing.T) {
 	type testPayload struct {
 		Foo string `json:"foo"`
 		Bar int    `json:"bar"`
@@ -84,7 +84,7 @@ func TestHandler_Execute_WithCborBody(t *testing.T) {
 
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		require.Equal(t, http.MethodPost, r.Method, "Expected POST method")
-		require.Equal(t, "application/json", r.Header.Get("Content-Type"), "Handler should send JSON")
+		require.Equal(t, "application/json", r.Header.Get("Content-Type"), "Plugin should send JSON")
 
 		var received testPayload
 		err := json.NewDecoder(r.Body).Decode(&received)
@@ -111,7 +111,7 @@ func TestHandler_Execute_WithCborBody(t *testing.T) {
 	parsedURL, err := url.Parse(mockServer.URL)
 	require.NoError(t, err)
 
-	h := NewHandler([]*url.URL{parsedURL}, 5*time.Second)
+	h := NewPlugin([]*url.URL{parsedURL}, 5*time.Second)
 
 	abiEncodedOutput, execErr := h.Execute(t.Context(), input)
 	require.NoError(t, execErr, "Execute with CBOR body should not fail")
@@ -135,14 +135,14 @@ func TestHandler_Execute_WithCborBody(t *testing.T) {
 	require.Equal(t, int64(200), decodedOutput.Status.Int64(), "Status code should be 200")
 }
 
-func TestHandler_Execute_URLNotAllowed(t *testing.T) {
+func TestPlugin_Execute_URLNotAllowed(t *testing.T) {
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	}))
 	defer mockServer.Close()
 
 	whitelistedURL, _ := url.Parse("http://allowed-domain.com")
-	h := NewHandler([]*url.URL{whitelistedURL}, 5*time.Second)
+	h := NewPlugin([]*url.URL{whitelistedURL}, 5*time.Second)
 
 	input, err := prophet.EncodeInputToABI(
 		generated.HttpRequest{

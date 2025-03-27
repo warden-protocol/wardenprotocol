@@ -5,33 +5,33 @@ import (
 	"log/slog"
 )
 
-// FutureResultWriter writes results of future executions.
-type FutureResultWriter interface {
-	Write(result FutureResult) error
+// TaskResultWriter writes results of task executions.
+type TaskResultWriter interface {
+	Write(result TaskResult) error
 }
 
-// ExecFutures executes futures coming from the specified reader and writes
+// ExecTasks executes tasks coming from the specified reader and writes
 // them to the specified writer.
 //
 // This call is non-blocking, the main loop is executed in a goroutine.
-func ExecFutures(r FutureReader, w FutureResultWriter) error {
-	log := slog.With("process", "exec_futures")
+func ExecTasks(r TaskReader, w TaskResultWriter) error {
+	log := slog.With("process", "exec_tasks")
 
 	go func() {
-		for future := range r.Read() {
-			log := log.With("future", future.ID)
+		for task := range r.Read() {
+			log := log.With("task", task.ID)
 
-			log.Debug("running future")
+			log.Debug("running task")
 
-			output, err := Execute(context.TODO(), future)
+			output, err := Execute(context.TODO(), task)
 			if err != nil {
-				log.Error("failed to run future", "err", err)
+				log.Error("failed to run task", "err", err)
 				continue
 			}
 
 			err = w.Write(output)
 			if err != nil {
-				log.Error("failed to write future result", "err", err)
+				log.Error("failed to write task result", "err", err)
 				continue
 			}
 		}
@@ -40,23 +40,23 @@ func ExecFutures(r FutureReader, w FutureResultWriter) error {
 	return nil
 }
 
-// VoteWriter writes votes of future verifications.
+// VoteWriter writes votes of task verifications.
 type VoteWriter interface {
 	Write(result Vote) error
 }
 
-// ExecVotes executes future verifications coming from the specified reader and
+// ExecVotes executes task verifications coming from the specified reader and
 // writes them to the specified writer.
 //
 // This call is non-blocking, the main loop is executed in a goroutine.
-func ExecVotes(r FutureResultReader, w VoteWriter) error {
+func ExecVotes(r TaskResultReader, w VoteWriter) error {
 	log := slog.With("process", "exec_votes")
 
 	go func() {
 		for proposal := range r.Read() {
-			plog := log.With("future", proposal.ID)
+			plog := log.With("task", proposal.ID)
 
-			plog.Debug("verifying future proposal")
+			plog.Debug("verifying task proposal")
 
 			err := Verify(context.TODO(), proposal)
 			if err := w.Write(Vote{

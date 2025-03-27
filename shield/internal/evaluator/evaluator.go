@@ -53,6 +53,7 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 		args := evalExpressions(exp.CallExpression.Arguments, env)
 		return applyFunction(fn, args)
 	}
+
 	return newError("unknown expression: %s (type %T)", exp, exp)
 }
 
@@ -240,5 +241,6 @@ func cmpBigInt(left, right object.Object) (int, *object.Error) {
 	}
 
 	z := new(big.Int)
+
 	return z.Sub(l, r).Sign(), nil
 }

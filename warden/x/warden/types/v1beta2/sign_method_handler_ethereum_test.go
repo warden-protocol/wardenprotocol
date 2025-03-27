@@ -18,7 +18,7 @@ func Test_ParseEthereumTransaction(t *testing.T) {
 		wantContract string
 		wantErr      bool
 	}{
-		// The following two txs are LegacyTxs that are no longer supported. Leaving the test cases here in case we want to support them again in the future.
+		// The following two txs are LegacyTxs that are no longer supported. Leaving the test cases here in case we want to support them again in the task.
 		{
 			name:         "ETH transfer",
 			b:            hexutil.MustDecode("0xeb80843b9aca0082520894ea223ca8968ca59e0bc79ba331c2f6f636a3fb82880de0b6b3a764000080808080"),

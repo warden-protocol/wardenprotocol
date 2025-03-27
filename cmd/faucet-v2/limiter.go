@@ -39,6 +39,7 @@ func (l *Limiter) Allow(key string) error {
 	}
 
 	l.last[key] = time.Now()
+
 	return nil
 }
 

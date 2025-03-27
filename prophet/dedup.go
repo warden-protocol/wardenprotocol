@@ -50,40 +50,40 @@ func newDedup[T getIDer](ch <-chan T) (*dedup[T], error) {
 	}, nil
 }
 
-// dedupFutureReader wraps a [FutureReader] and deduplicates the incoming
-// futures.
-type dedupFutureReader struct {
-	d *dedup[Future]
+// dedupTaskReader wraps a [TaskReader] and deduplicates the incoming
+// tasks.
+type dedupTaskReader struct {
+	d *dedup[Task]
 }
 
-func newDedupFutureReader(r FutureReader) (*dedupFutureReader, error) {
+func newDedupTaskReader(r TaskReader) (*dedupTaskReader, error) {
 	d, err := newDedup(r.Read())
 	if err != nil {
 		return nil, err
 	}
 
-	return &dedupFutureReader{d: d}, nil
+	return &dedupTaskReader{d: d}, nil
 }
 
-func (d dedupFutureReader) Read() <-chan Future {
+func (d dedupTaskReader) Read() <-chan Task {
 	return d.d.out
 }
 
-// dedupFutureResultReader wraps a [FutureResultReader] and deduplicates the incoming
-// future results.
-type dedupFutureResultReader struct {
-	d *dedup[FutureResult]
+// dedupTaskResultReader wraps a [TaskResultReader] and deduplicates the incoming
+// task results.
+type dedupTaskResultReader struct {
+	d *dedup[TaskResult]
 }
 
-func newDedupFutureResultReader(r FutureResultReader) (*dedupFutureResultReader, error) {
+func newDedupTaskResultReader(r TaskResultReader) (*dedupTaskResultReader, error) {
 	d, err := newDedup(r.Read())
 	if err != nil {
 		return nil, err
 	}
 
-	return &dedupFutureResultReader{d: d}, nil
+	return &dedupTaskResultReader{d: d}, nil
 }
 
-func (d dedupFutureResultReader) Read() <-chan FutureResult {
+func (d dedupTaskResultReader) Read() <-chan TaskResult {
 	return d.d.out
 }

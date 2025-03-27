@@ -7,8 +7,8 @@ import (
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
@@ -66,10 +66,10 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 		require.NoError(t, err)
 		require.Equal(t, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, res.KeyRequest.Status)
 
-		//SKIP: a bug in the go-protobuf pkg causes this query to panic - not sure why.
-		//keyRes, err := client.Warden.KeyById(ctx, &v1beta3.QueryKeyByIdRequest{Id: res.KeyRequest.Id})
-		//require.NoError(t, err)
-		//require.Equal(t, "A93VNAt/SYLw61VYTAhYO0pMJUqjnKKT2owP7HjGNRoK", base64.StdEncoding.EncodeToString(keyRes.Key.PublicKey))
+		// SKIP: a bug in the go-protobuf pkg causes this query to panic - not sure why.
+		// keyRes, err := client.Warden.KeyById(ctx, &v1beta3.QueryKeyByIdRequest{Id: res.KeyRequest.Id})
+		// require.NoError(t, err)
+		// require.Equal(t, "A93VNAt/SYLw61VYTAhYO0pMJUqjnKKT2owP7HjGNRoK", base64.StdEncoding.EncodeToString(keyRes.Key.PublicKey))
 	})
 
 	t.Run("create signature request", func(t *testing.T) {

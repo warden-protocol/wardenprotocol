@@ -23,7 +23,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestIntegration(t *testing.T) {
-	var casesToRun = cases.List()
+	casesToRun := cases.List()
 	if list {
 		fmt.Println("Available test cases:")
 		for _, c := range casesToRun {
@@ -37,7 +37,7 @@ func TestIntegration(t *testing.T) {
 
 	for _, c := range casesToRun {
 		t.Run(getName(c), func(t *testing.T) {
-			ctx, cancel := context.WithCancel(context.Background())
+			ctx, cancel := context.WithCancel(t.Context())
 			defer cancel()
 
 			fmt.Println("setup test:", getName(c))

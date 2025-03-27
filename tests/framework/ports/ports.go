@@ -17,7 +17,7 @@ func ReservePorts(t *testing.T, count int) *FreePort {
 	var ports []int
 	var lsns []net.Listener
 
-	for i := 0; i < count; i++ {
+	for range count {
 		ln, err := net.Listen("tcp", "127.0.0.1:0")
 		require.NoError(t, err)
 		ports = append(ports, ln.Addr().(*net.TCPAddr).Port)

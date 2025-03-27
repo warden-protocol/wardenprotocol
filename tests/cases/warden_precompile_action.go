@@ -47,7 +47,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 	t.Run("work with new action", func(t *testing.T) {
 		// addSpaceOwner
 		addSpaceOwnerTx, err := iWardenClient.AddSpaceOwner(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			bob.EthAddress(t),
 			0,
@@ -86,7 +86,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		// removeSpaceOwner
 		removeSpaceOwnerTx, err := iWardenClient.RemoveSpaceOwner(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			bob.EthAddress(t),
 			1,
@@ -123,7 +123,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 			Owners:                 []common.Address{alice.EthAddress(t)},
 		}, spaceById2)
 
-		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, context.Background(), evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
+		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, t.Context(), evmClient), "test keychain", warden.KeychainFees{}, "", "", "")
 		require.NoError(t, err)
 
 		_, err = bind.WaitMined(ctx, evmClient, newKeychainTx)
@@ -135,7 +135,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.Len(t, keychains1.Keychains, 1)
 
 		addKeychainWriterTx, err := iWardenClient.AddKeychainWriter(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			alice.EthAddress(t))
 		require.NoError(t, err)
@@ -150,7 +150,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		// newKeyRequest
 		newKeyRequestTx, err := iWardenClient.NewKeyRequest(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			1,
 			uint8(types.KeyType_KEY_TYPE_ECDSA_SECP256K1),
@@ -201,7 +201,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		}, keyRequests1.KeyRequests[0])
 
 		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			[]byte{3, 127, 233, 231, 7, 1, 37, 58, 229, 52, 192, 74, 160, 180, 120, 109, 158, 81, 170, 197, 189, 110, 90, 124, 50, 198, 188, 78, 49, 207, 247, 159, 237},
 		)
@@ -217,7 +217,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		// newSignRequest automatic
 		signRequestAutomatic, err := iWardenClient.NewSignRequest(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			[][]byte{},
@@ -274,7 +274,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		// newSignRequest disabled
 		newSignRequestDisabledTx, err := iWardenClient.NewSignRequest(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			[]byte{30, 134, 120, 103, 230, 84, 237, 151, 116, 242, 69, 17, 228, 215, 27, 180, 86, 107, 152, 98, 133, 215, 201, 146, 4, 157, 189, 118, 13, 42, 35, 142},
 			[][]byte{},
@@ -340,7 +340,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		// updateKey
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			"test template",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
@@ -349,7 +349,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 		require.NoError(t, err)
 
 		updateKeyTx, err := iWardenClient.UpdateKey(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			1,
 			1,
@@ -393,7 +393,7 @@ func (c *Test_WardenPrecompileAction) Run(t *testing.T, ctx context.Context, bui
 
 		// updateSpace
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1,
 			2,
 			1,

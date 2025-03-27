@@ -13,8 +13,9 @@ import (
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/warden-protocol/wardenprotocol/warden/app"
 	"google.golang.org/grpc"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
 var (

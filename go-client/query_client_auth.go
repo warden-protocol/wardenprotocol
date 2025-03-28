@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// AuthQueryClient stores a query client for the warden auth module
+// AuthQueryClient stores a query client for the warden auth module.
 type AuthQueryClient struct {
 	client authtypes.QueryClient
 }

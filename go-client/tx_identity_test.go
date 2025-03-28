@@ -2,9 +2,9 @@ package client
 
 import (
 	"encoding/base64"
-	"fmt"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewIdentityFromSeed(t *testing.T) {
@@ -13,8 +13,8 @@ func TestNewIdentityFromSeed(t *testing.T) {
 	id, err := NewIdentityFromSeed(seed)
 	require.NoError(t, err)
 
-	fmt.Printf("address: %s\n", id.Address.String())
-	fmt.Printf("private key: %s\n", base64.StdEncoding.EncodeToString(id.PrivKey.Bytes()))
+	t.Logf("address: %s\n", id.Address.String())
+	t.Logf("private key: %s\n", base64.StdEncoding.EncodeToString(id.PrivKey.Bytes()))
 
 	if id.Address.String() != "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5" {
 		t.Fatalf("unexpected address: %s", id.Address.String())

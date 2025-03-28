@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+* (go-client) Fix additional goroutine being created for every signed transaction
+
 ## [v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) - 2025-03-05
 
 ### Bug Fixes

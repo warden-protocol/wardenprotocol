@@ -59,9 +59,9 @@ func (w *signResponseWriter) Reject(ctx context.Context, reason string) error {
 	return err
 }
 
-func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
+func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *wardentypes.SignRequest) {
 	for {
-		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		signRequests, err := a.signRequests(reqCtx)
 		cancel()
 		if err != nil {
@@ -83,7 +83,7 @@ func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
 	}
 }
 
-func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
+func (a *App) handleSignRequest(ctx context.Context, signRequest *wardentypes.SignRequest) {
 	if a.signRequestHandler == nil {
 		a.logger().Error("sign request handler not set")
 		return
@@ -91,7 +91,6 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 
 	go func() {
 		a.logger().Debug("handling sign request", "id", signRequest.Id, "data_for_signing", hex.EncodeToString(signRequest.DataForSigning))
-		ctx := context.Background()
 		w := &signResponseWriter{
 			txWriter:      a.txWriter,
 			signRequestID: signRequest.Id,

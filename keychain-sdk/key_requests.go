@@ -46,9 +46,9 @@ func (w *keyResponseWriter) Reject(ctx context.Context, reason string) error {
 	return err
 }
 
-func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {
+func (a *App) ingestKeyRequests(ctx context.Context, keyRequestsCh chan *wardentypes.KeyRequest) {
 	for {
-		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		keyRequests, err := a.keyRequests(reqCtx)
 		cancel()
 		if err != nil {
@@ -70,14 +70,13 @@ func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {
 	}
 }
 
-func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
+func (a *App) handleKeyRequest(ctx context.Context, keyRequest *wardentypes.KeyRequest) {
 	if a.keyRequestHandler == nil {
 		a.logger().Error("key request handler not set")
 		return
 	}
 
 	go func() {
-		ctx := context.Background()
 		w := &keyResponseWriter{
 			txWriter:     a.txWriter,
 			keyRequestID: keyRequest.Id,

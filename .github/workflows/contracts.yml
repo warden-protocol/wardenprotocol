@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: foundry-rs/foundry-toolchain@v1
+      - name: Clear Yarn Cache
+        run: yarn cache clean
       - name: Install dependencies
         run: yarn install
       - name: Run lint

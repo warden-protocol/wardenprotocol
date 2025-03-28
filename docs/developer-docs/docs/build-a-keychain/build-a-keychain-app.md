@@ -179,7 +179,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
     func main() {
         app := ...
     
-        app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
+        app.SetKeyRequestHandler(func(ctx context.Context, w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
             // your custom logic goes here
         })
     }
@@ -234,17 +234,17 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
             keys: make(map[uint64]*ecdsa.PrivateKey),
         }
     
-        app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
+        app.SetKeyRequestHandler(func(ctx context.Context, w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
             if req.KeyType != v1beta2.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
                 logger.Error("unsupported key type", "type", req.KeyType)
-                w.Reject("unsupported key type")
+                w.Reject(ctx, "unsupported key type")
                 return
             }
     
             key, err := crypto.GenerateKey()
             if err != nil {
                 logger.Error("failed to generate key", "error", err)
-                w.Reject("failed to generate key")
+                w.Reject(ctx, "failed to generate key")
                 return
             }
     
@@ -252,7 +252,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
     
             pubKey := crypto.CompressPubkey(&key.PublicKey)
     
-            if err := w.Fulfil(pubKey); err != nil {
+            if err := w.Fulfil(ctx, pubKey); err != nil {
                 logger.Error("failed to fulfil key request", "error", err)
                 return
             }
@@ -273,22 +273,22 @@ Add the following code to your `main.go` file:
 func main() {
     // ...
 
-    app.SetSignRequestHandler(func(w keychain.SignResponseWriter, req *keychain.SignRequest) {
+    app.SetSignRequestHandler(func(ctx context.Context, w keychain.SignResponseWriter, req *keychain.SignRequest) {
         key := store.Get(req.KeyId)
         if key == nil {
             logger.Error("key not found", "id", req.KeyId)
-            w.Reject("key not found")
+            w.Reject(ctx, "key not found")
             return
         }
 
         sig, err := crypto.Sign(req.DataForSigning, key)
         if err != nil {
             logger.Error("failed to sign", "error", err)
-            w.Reject("failed to sign")
+            w.Reject(ctx, "failed to sign")
             return
         }
 
-        if err := w.Fulfil(sig); err != nil {
+        if err := w.Fulfil(ctx, sig); err != nil {
             logger.Error("failed to fulfil sign request", "error", err)
             return
         }

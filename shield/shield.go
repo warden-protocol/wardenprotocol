@@ -2,6 +2,7 @@ package shield
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
@@ -45,7 +46,7 @@ type Metadata = metadata.Metadata
 // ExtractMetadata extracts metadata from the given expression.
 func ExtractMetadata(root *ast.Expression) (Metadata, error) {
 	if root == nil {
-		return Metadata{}, fmt.Errorf("empty input")
+		return Metadata{}, errors.New("empty input")
 	}
 
 	return metadata.ExtractMetadata(root), nil

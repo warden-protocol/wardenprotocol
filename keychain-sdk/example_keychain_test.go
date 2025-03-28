@@ -35,16 +35,16 @@ func Main() {
 		BatchSize:     10,
 	})
 
-	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
+	app.SetKeyRequestHandler(func(ctx context.Context, w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
 		// handle key request
-		if err := w.Fulfil([]byte("public key data")); err != nil {
+		if err := w.Fulfil(ctx, []byte("public key data")); err != nil {
 			logger.Error("could not fulfill key request", "error", err)
 		}
 	})
 
-	app.SetSignRequestHandler(func(w keychain.SignResponseWriter, req *keychain.SignRequest) {
+	app.SetSignRequestHandler(func(ctx context.Context, w keychain.SignResponseWriter, req *keychain.SignRequest) {
 		// handle sign request
-		if err := w.Fulfil([]byte("signature data")); err != nil {
+		if err := w.Fulfil(ctx, []byte("signature data")); err != nil {
 			logger.Error("could not fulfill sign request", "error", err)
 		}
 	})

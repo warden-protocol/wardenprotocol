@@ -14,7 +14,7 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 	case *ast.Expression_IntegerLiteral:
 		value, success := new(big.Int).SetString(exp.IntegerLiteral.Value, 10)
 		if !success {
-			return newError("invalid IntegerLiteral value: " + exp.IntegerLiteral.Value)
+			return newError("invalid IntegerLiteral value: %s", exp.IntegerLiteral.Value)
 		}
 		return &object.Integer{Value: value}
 	case *ast.Expression_BooleanLiteral:
@@ -43,7 +43,7 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 			return v
 		}
 
-		return newError("identifier not found: " + exp.Identifier.Value)
+		return newError("identifier not found: %s", exp.Identifier.Value)
 	case *ast.Expression_InfixExpression:
 		return evalInfixExpression(exp.InfixExpression, env)
 	case *ast.Expression_PrefixExpression:
@@ -53,6 +53,7 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 		args := evalExpressions(exp.CallExpression.Arguments, env)
 		return applyFunction(fn, args)
 	}
+
 	return newError("unknown expression: %s (type %T)", exp, exp)
 }
 
@@ -240,5 +241,6 @@ func cmpBigInt(left, right object.Object) (int, *object.Error) {
 	}
 
 	z := new(big.Int)
+
 	return z.Sub(l, r).Sign(), nil
 }

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
@@ -28,11 +29,12 @@ func parseExpression(t *testing.T, input string) *ast.Expression {
 	}
 
 	require.NotNil(t, expression)
+
 	return expression
 }
 
 func TestPreprocess(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	expression := parseExpression(t, "foo1(foo2(), false || true, [false, [10, 11, 12]])")
 	expander := NoopExpander{}
 	proc, err := Preprocess(ctx, expression, expander)
@@ -67,7 +69,7 @@ func TestPreprocess(t *testing.T) {
 }
 
 func TestPreprocessElements(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	expression := parseExpression(t, "[10, 11, 12]")
 	expander := NoopExpander{}
 
@@ -86,7 +88,7 @@ func TestPreprocessElements(t *testing.T) {
 }
 
 func TestPreprocessInfixExpression(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	expression := parseExpression(t, "false || true && false")
 	expander := NoopExpander{}
 
@@ -111,7 +113,7 @@ func TestPreprocessInfixExpression(t *testing.T) {
 }
 
 func TestPreprocessCallExpression(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	expression := parseExpression(t, "foo1(123, foo2(235))")
 	expander := NoopExpander{}
 

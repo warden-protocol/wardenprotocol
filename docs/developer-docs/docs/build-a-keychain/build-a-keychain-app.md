@@ -179,7 +179,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
     func main() {
         app := ...
     
-        app.SetKeyRequestHandler(func(ctx context.Context, w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
+        app.SetKeyRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.KeyRequest) {
             // your custom logic goes here
         })
     }
@@ -187,7 +187,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
 
     The `SetKeyRequestHandler()` function receives the following:
 
-    - `KeyResponseWriter` that can be used to write the response back to the chain
+    - `Writer` that can be used to write the response back to the chain
     - `KeyRequest` with the details of the request, such as the key type (for example, ECDSA secp256k1)
 
 2. Write a simple in-memory storage:
@@ -234,7 +234,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
             keys: make(map[uint64]*ecdsa.PrivateKey),
         }
     
-        app.SetKeyRequestHandler(func(ctx context.Context, w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
+        app.SetKeyRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.KeyRequest) {
             if req.KeyType != v1beta2.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
                 logger.Error("unsupported key type", "type", req.KeyType)
                 w.Reject(ctx, "unsupported key type")
@@ -273,7 +273,7 @@ Add the following code to your `main.go` file:
 func main() {
     // ...
 
-    app.SetSignRequestHandler(func(ctx context.Context, w keychain.SignResponseWriter, req *keychain.SignRequest) {
+    app.SetSignRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.SignRequest) {
         key := store.Get(req.KeyId)
         if key == nil {
             logger.Error("key not found", "id", req.KeyId)

@@ -70,7 +70,7 @@ func main() {
 		TxFees:        sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
 	})
 
-	app.SetKeyRequestHandler(func(ctx context.Context, w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
+	app.SetKeyRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.KeyRequest) {
 		if req.KeyType != types.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
 			_ = w.Reject(ctx, "unsupported key type")
 			return
@@ -96,7 +96,7 @@ func main() {
 		}
 	})
 
-	app.SetSignRequestHandler(func(ctx context.Context, w keychain.SignResponseWriter, req *keychain.SignRequest) {
+	app.SetSignRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.SignRequest) {
 		keyID, err := bigEndianBytesFromUint32(req.KeyId)
 		if err != nil {
 			logger.Error("failed to convert Key ID to big endian bytes", "error", err)

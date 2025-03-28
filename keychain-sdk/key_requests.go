@@ -11,20 +11,11 @@ import (
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-// KeyResponseWriter is the interface for writing responses to key requests.
-type KeyResponseWriter interface {
-	// Fulfil writes a public key to the key request.
-	Fulfil(ctx context.Context, publicKey []byte) error
-
-	// Reject writes a human-readable reason for rejecting the key request.
-	Reject(ctx context.Context, reason string) error
-}
-
 // KeyRequest is a key request.
 type KeyRequest wardentypes.KeyRequest
 
 // KeyRequestHandler is a function that handles key requests.
-type KeyRequestHandler func(ctx context.Context, w KeyResponseWriter, req *KeyRequest)
+type KeyRequestHandler func(ctx context.Context, w Writer, req *KeyRequest)
 
 type keyResponseWriter struct {
 	txWriter     *writer.W

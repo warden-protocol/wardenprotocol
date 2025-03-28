@@ -44,6 +44,7 @@ func (w *signResponseWriter) Fulfil(ctx context.Context, signature []byte) error
 	})
 	w.onComplete()
 	w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
+
 	return err
 }
 

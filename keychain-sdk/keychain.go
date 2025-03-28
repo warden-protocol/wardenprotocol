@@ -72,11 +72,11 @@ func (a *App) Start(ctx context.Context) error {
 
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
 	defer close(keyRequestsCh)
-	go a.ingestKeyRequests(keyRequestsCh)
+	go a.ingestKeyRequests(ctx, keyRequestsCh)
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
 	defer close(signRequestsCh)
-	go a.ingestSignRequests(signRequestsCh)
+	go a.ingestSignRequests(ctx, signRequestsCh)
 
 	flushErrors := make(chan error)
 	defer close(flushErrors)
@@ -93,9 +93,9 @@ func (a *App) Start(ctx context.Context) error {
 		case err := <-flushErrors:
 			a.logger().Error("tx writer flush error", "error", err)
 		case keyRequest := <-keyRequestsCh:
-			go a.handleKeyRequest(keyRequest)
+			go a.handleKeyRequest(ctx, keyRequest)
 		case signRequest := <-signRequestsCh:
-			go a.handleSignRequest(signRequest)
+			go a.handleSignRequest(ctx, signRequest)
 		}
 	}
 }

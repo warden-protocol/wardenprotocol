@@ -8,6 +8,7 @@ import { TypesV1 } from "../types/TypesV1.sol";
 import { Registry } from "../Registry.sol";
 
 event Executed();
+error InvalidQuote();
 
 contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
     GetQuotePayload public quote;
@@ -37,6 +38,10 @@ contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
     }
 
     function execute(GetQuotePayload calldata _quote) external returns (bool, bytes32) {
+        if (this.isValidQuote(commonExecutionData, _quote) == false) {
+            revert InvalidQuote();
+        }
+
         quote = _quote;
 
         bytes memory signRequestInput = abi.encodePacked(quote.hash);

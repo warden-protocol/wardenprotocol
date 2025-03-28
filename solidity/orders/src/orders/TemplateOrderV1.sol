@@ -8,6 +8,7 @@ import { TypesV1 } from "../types/TypesV1.sol";
 import { Registry } from "../Registry.sol";
 
 event Executed();
+
 error InvalidQuote();
 
 contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {

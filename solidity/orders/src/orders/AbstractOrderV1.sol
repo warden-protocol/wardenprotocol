@@ -50,10 +50,8 @@ abstract contract AbstractOrderV1 {
         WARDEN_PRECOMPILE = IWarden(IWARDEN_PRECOMPILE_ADDRESS);
         int32[] memory addressTypes = new int32[](1);
         addressTypes[0] = ETHEREUM_ADDRESS_TYPE;
-        KeyResponse memory keyResponse = WARDEN_PRECOMPILE.keyById(
-            commonExecutionData.signRequestData.keyId,
-            addressTypes
-        );
+        KeyResponse memory keyResponse =
+            WARDEN_PRECOMPILE.keyById(commonExecutionData.signRequestData.keyId, addressTypes);
         _keyAddress = keyResponse.addresses[0].addressValue.parseAddress();
     }
 
@@ -61,26 +59,32 @@ abstract contract AbstractOrderV1 {
         Types.SignRequestData calldata signRequestData,
         bytes calldata signRequestInput,
         CommonTypes.Coin[] calldata maxKeychainFees
-    ) public returns (bool) {
-        return
-            WARDEN_PRECOMPILE.newSignRequest(
-                signRequestData.keyId,
-                signRequestInput,
-                signRequestData.analyzers,
-                signRequestData.encryptionKey,
-                maxKeychainFees,
-                signRequestData.spaceNonce,
-                signRequestData.actionTimeoutHeight,
-                signRequestData.expectedApproveExpression,
-                signRequestData.expectedRejectExpression,
-                BroadcastType.Automatic
-            );
+    )
+        public
+        returns (bool)
+    {
+        return WARDEN_PRECOMPILE.newSignRequest(
+            signRequestData.keyId,
+            signRequestInput,
+            signRequestData.analyzers,
+            signRequestData.encryptionKey,
+            maxKeychainFees,
+            signRequestData.spaceNonce,
+            signRequestData.actionTimeoutHeight,
+            signRequestData.expectedApproveExpression,
+            signRequestData.expectedRejectExpression,
+            BroadcastType.Automatic
+        );
     }
 
     function isValidQuote(
-        TypesV1.CommonExecutionData calldata commonExecutionData, 
+        TypesV1.CommonExecutionData calldata commonExecutionData,
         GetQuotePayload calldata _quote
-    ) external pure returns (bool) {
+    )
+        external
+        pure
+        returns (bool)
+    {
         if (_quote.userOps.length + 1 != commonExecutionData.instructions.length) {
             return false;
         }

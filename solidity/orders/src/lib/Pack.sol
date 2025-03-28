@@ -14,25 +14,11 @@ library Pack {
     bytes4 public constant UNUSED = 0x00000000; // 4 bytes
     bytes22 public constant MODE_PAYLOAD = 0x00000000000000000000000000000000000000000000; // 22 bytes
 
-    bytes32 public constant EXECUTE_SINGLE = bytes32(
-        abi.encodePacked(
-            CALLTYPE_SINGLE,
-            EXECTYPE_DEFAULT,
-            MODE_DEFAULT,
-            UNUSED,
-            MODE_PAYLOAD
-        )
-    );
+    bytes32 public constant EXECUTE_SINGLE =
+        bytes32(abi.encodePacked(CALLTYPE_SINGLE, EXECTYPE_DEFAULT, MODE_DEFAULT, UNUSED, MODE_PAYLOAD));
 
-    bytes32 public constant EXECUTE_BATCH = bytes32(
-        abi.encodePacked(
-            CALLTYPE_BATCH,
-            EXECTYPE_DEFAULT,
-            MODE_DEFAULT,
-            UNUSED,
-            MODE_PAYLOAD
-        )
-    );
+    bytes32 public constant EXECUTE_BATCH =
+        bytes32(abi.encodePacked(CALLTYPE_BATCH, EXECTYPE_DEFAULT, MODE_DEFAULT, UNUSED, MODE_PAYLOAD));
 
     function packInstructions(Instruction memory instructions) internal pure returns (bytes memory) {
         if (instructions.calls.length > 1) {
@@ -44,7 +30,7 @@ library Pack {
                     abi.encode(
                         instructions.calls[i].to,
                         instructions.calls[i].value,
-                        instructions.calls[i].data.length > 0 ? instructions.calls[i].data :  bytes(hex"")
+                        instructions.calls[i].data.length > 0 ? instructions.calls[i].data : bytes(hex"")
                     )
                 );
             }

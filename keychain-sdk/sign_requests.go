@@ -12,23 +12,13 @@ import (
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-// SignaResponseWriter is the interface for writing responses to sign requests.
-type SignResponseWriter interface {
-	// Fulfil writes the signature to the sign request.
-	Fulfil(signature []byte) error
-
-	// Reject writes a rejection to the sign request.
-	Reject(reason string) error
-}
-
 // SignRequest is a sign request.
 type SignRequest wardentypes.SignRequest
 
 // SignRequestHandler is a function that handles sign requests.
-type SignRequestHandler func(w SignResponseWriter, req *SignRequest)
+type SignRequestHandler func(ctx context.Context, w Writer, req *SignRequest)
 
 type signResponseWriter struct {
-	ctx           context.Context
 	txWriter      *writer.W
 	signRequestID uint64
 	encryptionKey []byte
@@ -36,7 +26,7 @@ type signResponseWriter struct {
 	onComplete    func()
 }
 
-func (w *signResponseWriter) Fulfil(signature []byte) error {
+func (w *signResponseWriter) Fulfil(ctx context.Context, signature []byte) error {
 	w.logger.Debug("fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
 
 	result := signature
@@ -48,18 +38,19 @@ func (w *signResponseWriter) Fulfil(signature []byte) error {
 		}
 	}
 
-	err := w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
+	err := w.txWriter.Write(ctx, client.SignRequestFulfilment{
 		RequestID: w.signRequestID,
 		Signature: result,
 	})
 	w.onComplete()
 	w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
+
 	return err
 }
 
-func (w *signResponseWriter) Reject(reason string) error {
+func (w *signResponseWriter) Reject(ctx context.Context, reason string) error {
 	w.logger.Debug("rejecting sign request", "id", w.signRequestID, "reason", reason)
-	err := w.txWriter.Write(w.ctx, client.SignRequestRejection{
+	err := w.txWriter.Write(ctx, client.SignRequestRejection{
 		RequestID: w.signRequestID,
 		Reason:    reason,
 	})
@@ -68,9 +59,9 @@ func (w *signResponseWriter) Reject(reason string) error {
 	return err
 }
 
-func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
+func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *wardentypes.SignRequest) {
 	for {
-		reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		reqCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		signRequests, err := a.signRequests(reqCtx)
 		cancel()
 		if err != nil {
@@ -92,7 +83,7 @@ func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
 	}
 }
 
-func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
+func (a *App) handleSignRequest(ctx context.Context, signRequest *wardentypes.SignRequest) {
 	if a.signRequestHandler == nil {
 		a.logger().Error("sign request handler not set")
 		return
@@ -100,9 +91,7 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 
 	go func() {
 		a.logger().Debug("handling sign request", "id", signRequest.Id, "data_for_signing", hex.EncodeToString(signRequest.DataForSigning))
-		ctx := context.Background()
 		w := &signResponseWriter{
-			ctx:           ctx,
 			txWriter:      a.txWriter,
 			signRequestID: signRequest.Id,
 			encryptionKey: signRequest.EncryptionKey,
@@ -114,18 +103,18 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 		defer func() {
 			if r := recover(); r != nil {
 				a.logger().Error("panic in sign request handler", "error", r)
-				_ = w.Reject("internal error")
+				_ = w.Reject(ctx, "internal error")
 				return
 			}
 		}()
 
 		if err := enc.ValidateEncryptionKey(signRequest.EncryptionKey); err != nil {
 			a.logger().Error("invalid sign request encryption key", "id", signRequest.Id, "error", err)
-			_ = w.Reject("invalid encryption key")
+			_ = w.Reject(ctx, "invalid encryption key")
 			return
 		}
 
-		a.signRequestHandler(w, (*SignRequest)(signRequest))
+		a.signRequestHandler(ctx, w, (*SignRequest)(signRequest))
 	}()
 }
 

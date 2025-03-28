@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"log"
 	"os"
 
 	"github.com/ethereum/go-ethereum/crypto"
@@ -35,7 +36,7 @@ var generateCmd = &cobra.Command{
 
 		w := os.Stdout
 		if output != "" {
-			f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0600)
+			f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0o600)
 			if err != nil {
 				return fmt.Errorf("opening output file: %w", err)
 			}
@@ -43,7 +44,7 @@ var generateCmd = &cobra.Command{
 			w = f
 		}
 
-		if _, err := w.Write([]byte(hex.EncodeToString(keybin))); err != nil {
+		if _, err := w.WriteString(hex.EncodeToString(keybin)); err != nil {
 			return fmt.Errorf("writing key to file: %w", err)
 		}
 
@@ -191,7 +192,6 @@ func init() {
 
 func main() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 }

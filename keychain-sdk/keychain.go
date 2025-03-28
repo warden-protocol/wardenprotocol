@@ -12,11 +12,12 @@ import (
 	"io"
 	"log/slog"
 
+	"google.golang.org/grpc/connectivity"
+
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-	"google.golang.org/grpc/connectivity"
 )
 
 // App is the Keychain application. It is responsible for handling key requests

@@ -18,22 +18,22 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 	return nil
 }
 
-// EndBlocker schedules some pending futures to the Prophet's process.
+// EndBlocker schedules some pending tasks to the Prophet's process.
 //
-// Note: if a future remains pending for more blocks, it could be re-added to
+// Note: if a task remains pending for more blocks, it could be re-added to
 // Prophet even if it's already in the Prophet's queue or it's being processed.
-// This is not a problem as Prophet filters out incoming duplicate futures.
+// This is not a problem as Prophet filters out incoming duplicate tasks.
 func (k Keeper) EndBlocker(ctx context.Context) error {
-	futures, err := k.futures.PendingFutures(ctx, 10)
+	tasks, err := k.tasks.PendingTasks(ctx, 10)
 	if err != nil {
 		return err
 	}
 
-	for _, f := range futures {
-		k.p.AddFuture(prophet.Future{
-			ID:      f.Id,
-			Handler: f.Handler,
-			Input:   f.Input,
+	for _, f := range tasks {
+		k.p.AddTask(prophet.Task{
+			ID:     f.Id,
+			Plugin: f.Plugin,
+			Input:  f.Input,
 		})
 	}
 
@@ -43,13 +43,13 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 		return nil
 	}
 
-	futureWithResults, err := k.getCompletedFuturesWithoutValidatorVote(ctx, selfAddress, 10)
+	taskWithResults, err := k.getCompletedTasksWithoutValidatorVote(ctx, selfAddress, 10)
 	if err != nil {
 		return err
 	}
 
-	for _, f := range futureWithResults {
-		k.p.AddFutureResult(f)
+	for _, f := range taskWithResults {
+		k.p.AddTaskResult(f)
 	}
 
 	return nil
@@ -63,8 +63,8 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		results := make([]*types.VEResultItem, len(pResults))
 		for i, r := range pResults {
 			results[i] = &types.VEResultItem{
-				FutureId: r.ID,
-				Output:   r.Output,
+				TaskId: r.ID,
+				Output: r.Output,
 			}
 		}
 
@@ -74,51 +74,51 @@ func (k Keeper) ExtendVoteHandler() sdk.ExtendVoteHandler {
 		votes := make([]*types.VEVoteItem, len(pVotes))
 
 		for i, v := range pVotes {
-			vote := types.FutureVoteType_VOTE_TYPE_VERIFIED
+			vote := types.TaskVoteType_VOTE_TYPE_VERIFIED
 			if v.Err != nil {
-				vote = types.FutureVoteType_VOTE_TYPE_REJECTED
+				vote = types.TaskVoteType_VOTE_TYPE_REJECTED
 			}
 
 			votes[i] = &types.VEVoteItem{
-				FutureId: v.ID,
-				Vote:     vote,
+				TaskId: v.ID,
+				Vote:   vote,
 			}
 		}
 
-		var localHandlers []string
+		var localPlugins []string
 
-		updateHandlers := false
+		updatePlugins := false
 		selfConsAddress := k.p.SelfAddress()
 
 		if len(selfConsAddress) != 0 {
-			localHandlers = prophet.RegisteredHandlers()
+			localPlugins = prophet.RegisteredPlugins()
 
 			r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](sdk.ConsAddress(selfConsAddress))
 
-			iterator, err := k.handlersByValidator.Iterate(ctx, r)
+			iterator, err := k.pluginsByValidator.Iterate(ctx, r)
 			if err != nil {
 				return nil, fmt.Errorf("failed to iterate by validator: %w", err)
 			}
 
-			onchainHandlers, err := iterator.Keys()
+			onchainPlugins, err := iterator.Keys()
 			if err != nil {
 				return nil, fmt.Errorf("failed to get keys: %w", err)
 			}
 
-			isEqual := isEqualLocalAndOnchainHandlers(localHandlers, onchainHandlers)
+			isEqual := isEqualLocalAndOnchainPlugins(localPlugins, onchainPlugins)
 
 			if isEqual {
-				localHandlers = nil
+				localPlugins = nil
 			}
 
-			updateHandlers = !isEqual
+			updatePlugins = !isEqual
 		}
 
 		asyncve := types.AsyncVoteExtension{
-			Results:        results,
-			Votes:          votes,
-			Handlers:       localHandlers,
-			UpdateHandlers: updateHandlers,
+			Results:       results,
+			Votes:         votes,
+			Plugins:       localPlugins,
+			UpdatePlugins: updatePlugins,
 		}
 
 		asyncveBytes, err := asyncve.Marshal()
@@ -239,7 +239,7 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 				return resp, nil
 			}
 
-			// todo: check VE signature, or maybe do it in the verify ve handler?
+			// todo: check VE signature, or maybe do it in the verify ve plugin?
 
 			if len(w.Extensions) < 2 {
 				continue
@@ -261,28 +261,28 @@ func (k Keeper) PreBlocker() sdk.PreBlocker {
 
 func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteExtension) error {
 	for _, r := range ve.Results {
-		if err := k.AddFutureResult(ctx, r.FutureId, fromAddr, r.Output); err != nil {
-			if err == types.ErrFutureAlreadyHasResult {
+		if err := k.AddTaskResult(ctx, r.TaskId, fromAddr, r.Output); err != nil {
+			if err == types.ErrTaskAlreadyHasResult {
 				continue
 			}
 
-			return fmt.Errorf("failed to add future result: %w", err)
+			return fmt.Errorf("failed to add task result: %w", err)
 		}
 	}
 
 	for _, vote := range ve.Votes {
-		if err := k.SetFutureVote(ctx, vote.FutureId, fromAddr, vote.Vote); err != nil {
+		if err := k.SetTaskVote(ctx, vote.TaskId, fromAddr, vote.Vote); err != nil {
 			return fmt.Errorf("failed to set task vote: %w", err)
 		}
 	}
 
-	if ve.UpdateHandlers {
-		if err := k.ClearHandlers(ctx, fromAddr); err != nil {
-			return fmt.Errorf("clear handlers: %w", err)
+	if ve.UpdatePlugins {
+		if err := k.ClearPlugins(ctx, fromAddr); err != nil {
+			return fmt.Errorf("clear plugins: %w", err)
 		}
 
-		for _, h := range ve.Handlers {
-			if err := k.RegisterHandler(ctx, fromAddr, h); err != nil {
+		for _, h := range ve.Plugins {
+			if err := k.RegisterPlugin(ctx, fromAddr, h); err != nil {
 				return fmt.Errorf("register validator: %w", err)
 			}
 		}
@@ -338,13 +338,13 @@ func trimExcessBytes(txs [][]byte, maxSizeBytes int64) [][]byte {
 	return returnedTxs
 }
 
-func isEqualLocalAndOnchainHandlers(localHandlers []string, onchainKeys []collections.Pair[sdk.ConsAddress, string]) bool {
-	if len(localHandlers) != len(onchainKeys) {
+func isEqualLocalAndOnchainPlugins(localPlugins []string, onchainKeys []collections.Pair[sdk.ConsAddress, string]) bool {
+	if len(localPlugins) != len(onchainKeys) {
 		return false
 	}
 
-	set := make(map[string]struct{}, len(localHandlers))
-	for _, str := range localHandlers {
+	set := make(map[string]struct{}, len(localPlugins))
+	for _, str := range localPlugins {
 		set[str] = struct{}{}
 	}
 

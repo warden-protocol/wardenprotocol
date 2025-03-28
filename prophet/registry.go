@@ -2,43 +2,43 @@ package prophet
 
 import "sync"
 
-// registry is a global registry of futures handlers.
+// registry is a global registry of tasks plugins.
 var registry = r{
-	futures: make(map[string]FutureHandler),
+	tasks: make(map[string]Plugin),
 }
 
 type r struct {
-	rw      sync.RWMutex
-	futures map[string]FutureHandler
+	rw    sync.RWMutex
+	tasks map[string]Plugin
 }
 
-// Register registers a new future handler with the given unique name.
-func Register(name string, future FutureHandler) {
+// Register registers a new task plugin with the given unique name.
+func Register(name string, task Plugin) {
 	registry.rw.Lock()
 	defer registry.rw.Unlock()
 
-	if _, found := registry.futures[name]; found {
-		panic("future already registered")
+	if _, found := registry.tasks[name]; found {
+		panic("task already registered")
 	}
 
-	registry.futures[name] = future
+	registry.tasks[name] = task
 }
 
-func getHandler(name string) FutureHandler {
+func getPlugin(name string) Plugin {
 	registry.rw.RLock()
 	defer registry.rw.RUnlock()
 
-	return registry.futures[name]
+	return registry.tasks[name]
 }
 
-func RegisteredHandlers() []string {
+func RegisteredPlugins() []string {
 	registry.rw.RLock()
 	defer registry.rw.RUnlock()
 
-	handlers := make([]string, 0, len(registry.futures))
-	for name := range registry.futures {
-		handlers = append(handlers, name)
+	plugins := make([]string, 0, len(registry.tasks))
+	for name := range registry.tasks {
+		plugins = append(plugins, name)
 	}
 
-	return handlers
+	return plugins
 }

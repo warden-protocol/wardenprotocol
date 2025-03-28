@@ -32,7 +32,7 @@ const (
 	testPairUSDTETH = "USDT/ETH"
 )
 
-// TODO(backsapc): Implement positive test cases with slinky sidecar integration
+// TODO(backsapc): Implement positive test cases with slinky sidecar integration.
 func (c *Test_SlinkyPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 

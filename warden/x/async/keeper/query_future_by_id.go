@@ -11,33 +11,33 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-func (k Keeper) FutureById(ctx context.Context, req *types.QueryFutureByIdRequest) (*types.QueryFutureByIdResponse, error) {
+func (k Keeper) TaskById(ctx context.Context, req *types.QueryTaskByIdRequest) (*types.QueryTaskByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	future, err := k.futures.Get(ctx, req.Id)
+	task, err := k.tasks.Get(ctx, req.Id)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	var result *types.FutureResult
+	var result *types.TaskResult
 
-	r, err := k.futures.GetResult(ctx, req.Id)
+	r, err := k.tasks.GetResult(ctx, req.Id)
 	if err == nil {
 		result = &r
 	} else if !errors.Is(err, collections.ErrNotFound) {
 		return nil, err
 	}
 
-	votes, err := k.GetFutureVotes(ctx, req.Id)
+	votes, err := k.GetTaskVotes(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.QueryFutureByIdResponse{
-		FutureResponse: types.FutureResponse{
-			Future: future,
+	return &types.QueryTaskByIdResponse{
+		TaskResponse: types.TaskResponse{
+			Task:   task,
 			Result: result,
 			Votes:  votes,
 		},

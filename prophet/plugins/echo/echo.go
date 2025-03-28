@@ -1,4 +1,4 @@
-// Package echo provides a mock implementation of the FutureHandler interface
+// Package echo provides a mock implementation of the Plugin interface
 // for testing purposes. It simply echoes back any input it receives.
 package echo
 
@@ -10,15 +10,15 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
-type Handler struct{}
+type Plugin struct{}
 
-var _ prophet.FutureHandler = (*Handler)(nil)
+var _ prophet.Plugin = (*Plugin)(nil)
 
-func (s Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
+func (s Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	return input, nil
 }
 
-func (s Handler) Verify(ctx context.Context, input []byte, output []byte) error {
+func (s Plugin) Verify(ctx context.Context, input []byte, output []byte) error {
 	if !bytes.Equal(input, output) {
 		return errors.New("input and output do not match")
 	}

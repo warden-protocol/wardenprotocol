@@ -52,6 +52,7 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 		c.cfg.AccountName,
 		"--recover",
 	}, " ")
+
 	return c.e(ctx, cmd, false)
 }
 
@@ -67,6 +68,7 @@ func (c *Client) Send(addr string) chan error {
 	c.batch[addr] = ch
 	batchSize.Inc()
 	c.logger.Info("add address to batch", "address", addr)
+
 	return ch
 }
 
@@ -170,6 +172,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 	}
 
 	batchSendCount.Inc()
+
 	return nil
 }
 
@@ -231,5 +234,6 @@ func (c *Client) e(ctx context.Context, cmd string, silent bool) (Out, error) {
 			c.logger.Error("failed exec", "cmd", cmd, "stdout", string(stdout), "stderr", string(stderr))
 		}
 	}
+
 	return Out{Stdout: stdout, Stderr: stderr}, err
 }

@@ -10,18 +10,18 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*types.MsgAddFutureResponse, error) {
-	if msg.Handler == "" {
-		return nil, errorsmod.Wrapf(types.ErrInvalidHandler, "cannot be empty")
+func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.MsgAddTaskResponse, error) {
+	if msg.Plugin == "" {
+		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "cannot be empty")
 	}
 
 	if len(msg.Input) == 0 {
-		return nil, errorsmod.Wrapf(types.ErrInvalidFutureInput, "cannot be empty")
+		return nil, errorsmod.Wrapf(types.ErrInvalidTaskInput, "cannot be empty")
 	}
 
-	id, err := k.futures.Append(ctx, &types.Future{
+	id, err := k.tasks.Append(ctx, &types.Task{
 		Creator:  msg.Creator,
-		Handler:  msg.Handler,
+		Plugin:   msg.Plugin,
 		Input:    msg.Input,
 		Callback: msg.Callback,
 	})
@@ -45,16 +45,16 @@ func (k msgServer) AddFuture(ctx context.Context, msg *types.MsgAddFuture) (*typ
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateFuture{
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateTask{
 		Id:              id,
 		Creator:         msg.Creator,
-		Handler:         msg.Handler,
+		Plugin:          msg.Plugin,
 		CallbackAddress: msg.Callback,
 	}); err != nil {
 		return nil, err
 	}
 
-	return &types.MsgAddFutureResponse{
+	return &types.MsgAddTaskResponse{
 		Id: id,
 	}, nil
 }

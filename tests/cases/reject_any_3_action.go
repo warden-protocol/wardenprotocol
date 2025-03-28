@@ -6,12 +6,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func init() {
@@ -39,7 +39,7 @@ func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framewo
 
 	addNewOwnerCommandTemplate := "warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d"
 
-	resAddOwner := bob.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, bob.Address(t), 0)) //1
+	resAddOwner := bob.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, bob.Address(t), 0)) // 1
 	checks.SuccessTx(t, resAddOwner)
 	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 0)
 
@@ -47,7 +47,7 @@ func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framewo
 	checks.SuccessTx(t, resApproveBob)
 	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 1)
 
-	resAddOwner2 := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, charlie.Address(t), 1)) //2
+	resAddOwner2 := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, charlie.Address(t), 1)) // 2
 	checks.SuccessTx(t, resAddOwner2)
 	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 1)
 
@@ -58,7 +58,7 @@ func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framewo
 	resNewTemplate2 := alice.Tx(t, "act new-template --name approve_requires_two --definition "+newApproveTemplateDefinition)
 	checks.SuccessTx(t, resNewTemplate2)
 
-	resUpdateSpaceAdminTemplateByAlice := alice.Tx(t, "warden new-action update-space --space-id 1 --reject-admin-template-id 1 --approve-admin-template-id 2 --nonce 2") //3
+	resUpdateSpaceAdminTemplateByAlice := alice.Tx(t, "warden new-action update-space --space-id 1 --reject-admin-template-id 1 --approve-admin-template-id 2 --nonce 2") // 3
 	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByAlice)
 
 	spaceAfterValidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
@@ -70,7 +70,7 @@ func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framewo
 
 	addNewOwnerCommandTemplate = "warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-reject-expression %s --expected-approve-expression %s"
 
-	resAliceAddOwnerDave := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3, newRejectTemplateDefinition, newApproveTemplateDefinition)) //4
+	resAliceAddOwnerDave := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, dave.Address(t), 3, newRejectTemplateDefinition, newApproveTemplateDefinition)) // 4
 	checks.SuccessTx(t, resAliceAddOwnerDave)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 
@@ -88,5 +88,4 @@ func (c *Test_RejectAny3Action) Run(t *testing.T, ctx context.Context, _ framewo
 	checks.SuccessTx(t, resRejectDaveByCharlie)
 	client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
 	client.EnsureActionStatus(t, ctx, 4, acttypes.ActionStatus_ACTION_STATUS_REVOKED)
-
 }

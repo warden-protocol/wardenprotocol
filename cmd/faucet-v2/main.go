@@ -211,7 +211,7 @@ func validateRecaptcha(c Config, recaptchaResponse, remoteIP string) error {
 	}
 
 	if !result.Success || result.Score < c.RecaptchaMinimumScore {
-		return fmt.Errorf("verification failed")
+		return errors.New("verification failed")
 	}
 
 	return nil

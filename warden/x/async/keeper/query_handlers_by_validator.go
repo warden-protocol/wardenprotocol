@@ -12,7 +12,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-func (k Keeper) HandlersByValidator(ctx context.Context, req *types.QueryHandlersByValidatorRequest) (*types.QueryHandlersByValidatorResponse, error) {
+func (k Keeper) PluginsByValidator(ctx context.Context, req *types.QueryPluginsByValidatorRequest) (*types.QueryPluginsByValidatorResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -22,9 +22,9 @@ func (k Keeper) HandlersByValidator(ctx context.Context, req *types.QueryHandler
 		return nil, status.Error(codes.InvalidArgument, "invalid validator address")
 	}
 
-	handlers, pageRes, err := query.CollectionPaginate(
+	plugins, pageRes, err := query.CollectionPaginate(
 		ctx,
-		k.handlersByValidator,
+		k.pluginsByValidator,
 		req.Pagination,
 		func(key collections.Pair[sdk.ConsAddress, string], value collections.NoValue) (string, error) {
 			return key.K2(), nil
@@ -35,8 +35,8 @@ func (k Keeper) HandlersByValidator(ctx context.Context, req *types.QueryHandler
 		return nil, err
 	}
 
-	return &types.QueryHandlersByValidatorResponse{
+	return &types.QueryPluginsByValidatorResponse{
 		Pagination: pageRes,
-		Handlers:   handlers,
+		Plugins:    plugins,
 	}, nil
 }

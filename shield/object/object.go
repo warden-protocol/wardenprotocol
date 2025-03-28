@@ -3,6 +3,7 @@ package object
 import (
 	"fmt"
 	"math/big"
+	"strconv"
 )
 
 type ObjectType string
@@ -37,7 +38,7 @@ type Boolean struct {
 	Value bool
 }
 
-func (b *Boolean) Inspect() string  { return fmt.Sprintf("%t", b.Value) }
+func (b *Boolean) Inspect() string  { return strconv.FormatBool(b.Value) }
 func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
 
 type String struct {

@@ -1,6 +1,6 @@
-// Package arbitraryhttp provides a generalized HTTP FutureHandler that makes an arbitrary HTTP call.
+// Package arbitraryhttp provides a generalized HTTP Plugin that makes an arbitrary HTTP call.
 // The input is ABI‑encoded with a target URL, HTTP method, and a request body in CBOR bytes.
-// The handler fetches the HTTP response, attempts to decode the response as JSON, then re‑encodes it as CBOR,
+// The plugin fetches the HTTP response, attempts to decode the response as JSON, then re‑encodes it as CBOR,
 // and finally packs the result into an ABI‑encoded tuple for onchain interactions.
 package http
 
@@ -20,19 +20,19 @@ import (
 	"github.com/fxamacker/cbor/v2"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http/generated"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http/generated"
 )
 
-// Handler implements the prophet.FutureHandler interface.
-type Handler struct {
+// Plugin implements the prophet.Plugin interface.
+type Plugin struct {
 	httpClient *http.Client
 	// whitelist is a list of allowed hostnames.
 	// If empty, all URLs are allowed.
 	whitelist []*url.URL
 }
 
-// NewHandler creates a new HTTP handler with the given whitelist.
-func NewHandler(whitelist []*url.URL, timeout time.Duration) *Handler {
+// NewPlugin creates a new HTTP plugin with the given whitelist.
+func NewPlugin(whitelist []*url.URL, timeout time.Duration) *Plugin {
 	// Validate whitelist URLs
 	for _, u := range whitelist {
 		if u == nil {
@@ -44,7 +44,7 @@ func NewHandler(whitelist []*url.URL, timeout time.Duration) *Handler {
 		}
 	}
 
-	return &Handler{
+	return &Plugin{
 		httpClient: &http.Client{
 			Timeout: timeout,
 		},
@@ -52,10 +52,10 @@ func NewHandler(whitelist []*url.URL, timeout time.Duration) *Handler {
 	}
 }
 
-// Execute implements the FutureHandler interface.
+// Execute implements the Plugin interface.
 // It ABI‑decodes the input, validates the URL, performs the HTTP request,
 // converts the HTTP response body (JSON) to CBOR, and ABI‑encodes the output.
-func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
+func (h *Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	reqInput, err := prophet.DecodeInputFromABI[generated.HttpRequest](
 		input,
 		generated.HttpMetaData,
@@ -145,11 +145,11 @@ func (h *Handler) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	return encodedOutput, nil
 }
 
-func (h *Handler) Verify(ctx context.Context, input []byte, output []byte) error {
+func (h *Plugin) Verify(ctx context.Context, input []byte, output []byte) error {
 	return nil
 }
 
-func (h *Handler) isWhitelisted(u *url.URL) bool {
+func (h *Plugin) isWhitelisted(u *url.URL) bool {
 	if len(h.whitelist) == 0 {
 		return true
 	}

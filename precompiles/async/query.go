@@ -14,23 +14,23 @@ import (
 )
 
 const (
-	FutureByIdMethod     = "futureById"
-	FuturesMethod        = "futures"
-	PendingFuturesMethod = "pendingFutures"
+	TaskByIdMethod     = "taskById"
+	TasksMethod        = "tasks"
+	PendingTasksMethod = "pendingTasks"
 )
 
-// FutureByIdMethod constructs QueryFutureByIdRequest from args, passes it to query server and packs response into corresponding abi output.
-func (p Precompile) FutureByIdMethod(
+// TaskByIdMethod constructs QueryTaskByIdRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p Precompile) TaskByIdMethod(
 	ctx sdk.Context,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	req, err := newFutureByIdRequest(method, args)
+	req, err := newTaskByIdRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := p.queryServer.FutureById(ctx, req)
+	response, err := p.queryServer.TaskById(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (p Precompile) FutureByIdMethod(
 		return nil, errors.New("received nil response from query server")
 	}
 
-	out, err := new(FutureByIdResponse).FromResponse(response)
+	out, err := new(TaskByIdResponse).FromResponse(response)
 	if err != nil {
 		return nil, err
 	}
@@ -47,37 +47,37 @@ func (p Precompile) FutureByIdMethod(
 	return method.Outputs.Pack(out)
 }
 
-func newFutureByIdRequest(method *abi.Method, args []interface{}) (*types.QueryFutureByIdRequest, error) {
+func newTaskByIdRequest(method *abi.Method, args []interface{}) (*types.QueryTaskByIdRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	var input futureByIdInput
+	var input taskByIdInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to futureByIdInput struct: %w", err)
+		return nil, fmt.Errorf("error while unpacking args to taskByIdInput struct: %w", err)
 	}
 
-	return &types.QueryFutureByIdRequest{
+	return &types.QueryTaskByIdRequest{
 		Id: input.Id,
 	}, nil
 }
 
-type futureByIdInput struct {
+type taskByIdInput struct {
 	Id uint64
 }
 
-// FuturesMethod constructs QueryFuturesRequest from args, passes it to query server and packs response into corresponding abi output.
-func (p Precompile) FuturesMethod(
+// TasksMethod constructs QueryTasksRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p Precompile) TasksMethod(
 	ctx sdk.Context,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	req, err := newFuturesRequest(method, args)
+	req, err := newTasksRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := p.queryServer.Futures(ctx, req)
+	response, err := p.queryServer.Tasks(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (p Precompile) FuturesMethod(
 		return nil, errors.New("received nil response from query server")
 	}
 
-	out, err := new(FuturesResponse).FromResponse(response)
+	out, err := new(TasksResponse).FromResponse(response)
 	if err != nil {
 		return nil, err
 	}
@@ -94,14 +94,14 @@ func (p Precompile) FuturesMethod(
 	return method.Outputs.Pack(out)
 }
 
-func newFuturesRequest(method *abi.Method, args []interface{}) (*types.QueryFuturesRequest, error) {
+func newTasksRequest(method *abi.Method, args []interface{}) (*types.QueryTasksRequest, error) {
 	if len(args) != 2 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 2, Got: len(args)}
 	}
 
-	var input futuresInput
+	var input tasksInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to futuresInput struct: %w", err)
+		return nil, fmt.Errorf("error while unpacking args to tasksInput struct: %w", err)
 	}
 
 	var creator string
@@ -111,29 +111,29 @@ func newFuturesRequest(method *abi.Method, args []interface{}) (*types.QueryFutu
 		creator = wardencommon.Bech32StrFromAddress(input.Creator)
 	}
 
-	return &types.QueryFuturesRequest{
+	return &types.QueryTasksRequest{
 		Pagination: &input.PageRequest,
 		Creator:    creator,
 	}, nil
 }
 
-type futuresInput struct {
+type tasksInput struct {
 	PageRequest query.PageRequest `abi:"pagination"`
 	Creator     common.Address    `abi:"creator"`
 }
 
-// PendingFuturesMethod constructs QueryPendingFuturesRequest from args, passes it to query server and packs response into corresponding abi output.
-func (p Precompile) PendingFuturesMethod(
+// PendingTasksMethod constructs QueryPendingTasksRequest from args, passes it to query server and packs response into corresponding abi output.
+func (p Precompile) PendingTasksMethod(
 	ctx sdk.Context,
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	req, err := newPendingFuturesRequest(method, args)
+	req, err := newPendingTasksRequest(method, args)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := p.queryServer.PendingFutures(ctx, req)
+	response, err := p.queryServer.PendingTasks(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (p Precompile) PendingFuturesMethod(
 		return nil, errors.New("received nil response from query server")
 	}
 
-	out, err := new(PendingFuturesResponse).FromResponse(response)
+	out, err := new(PendingTasksResponse).FromResponse(response)
 	if err != nil {
 		return nil, err
 	}
@@ -150,21 +150,21 @@ func (p Precompile) PendingFuturesMethod(
 	return method.Outputs.Pack(out)
 }
 
-func newPendingFuturesRequest(method *abi.Method, args []interface{}) (*types.QueryPendingFuturesRequest, error) {
+func newPendingTasksRequest(method *abi.Method, args []interface{}) (*types.QueryPendingTasksRequest, error) {
 	if len(args) != 1 {
 		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
 	}
 
-	var input pendingFuturesInput
+	var input pendingTasksInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to pendingFuturesInput struct: %w", err)
+		return nil, fmt.Errorf("error while unpacking args to pendingTasksInput struct: %w", err)
 	}
 
-	return &types.QueryPendingFuturesRequest{
+	return &types.QueryPendingTasksRequest{
 		Pagination: &input.PageRequest,
 	}, nil
 }
 
-type pendingFuturesInput struct {
+type pendingTasksInput struct {
 	PageRequest query.PageRequest `abi:"pagination"`
 }

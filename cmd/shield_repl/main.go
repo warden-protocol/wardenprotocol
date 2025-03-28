@@ -27,7 +27,6 @@ func main() {
 		}
 
 		exp, err := shield.Parse(line)
-
 		if err != nil {
 			io.WriteString(os.Stderr, err.Error()) //nolint:all
 			continue

@@ -19,8 +19,8 @@ service Msg {
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
 
-  // Create a new Future to be executed.
-  rpc AddFuture(MsgAddFuture) returns (MsgAddFutureResponse);
+  // Create a new Task to be executed.
+  rpc AddTask(MsgAddTask) returns (MsgAddTaskResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -44,14 +44,14 @@ message MsgUpdateParams {
 // MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
 
-message MsgAddFuture {
+message MsgAddTask {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string handler = 2;
+  string plugin = 2;
   bytes input = 3;
   string callback = 4;
 }
 
-message MsgAddFutureResponse {
+message MsgAddTaskResponse {
   uint64 id = 1;
 }

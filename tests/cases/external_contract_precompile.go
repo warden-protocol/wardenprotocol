@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/bech32"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
 	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
@@ -60,7 +59,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		contractApprovedTemplated := fmt.Sprintf("any(1, [%s])", bech32Address)
 
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			"contract approved template",
 			contractApprovedTemplated)
 		require.NoError(t, err)
@@ -69,7 +68,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			1, 0,
 			1, 0,
 			0, 0,
@@ -101,7 +100,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 
 		addSpaceOwnerTx, err := instance.CallOtherContract(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)
@@ -146,7 +145,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		contractApprovedTemplated := fmt.Sprintf("any(1, [%s])", bech32Address)
 
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			"contract approved template",
 			contractApprovedTemplated)
 		require.NoError(t, err)
@@ -155,7 +154,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			2, 0,
 			2, 0,
 			0, 0,
@@ -187,7 +186,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 
 		addSpaceOwnerTx, err := instance.CallOtherContract(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, t.Context(), evmClient),
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)

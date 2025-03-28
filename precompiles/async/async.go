@@ -99,15 +99,15 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	switch method.Name {
 	// transactions
-	case AddFutureMethod:
-		bz, err = p.AddFutureMethod(ctx, evm.Origin, stateDB, method, args)
+	case AddTaskMethod:
+		bz, err = p.AddTaskMethod(ctx, evm.Origin, stateDB, method, args)
 	// queries
-	case FutureByIdMethod:
-		bz, err = p.FutureByIdMethod(ctx, method, args)
-	case FuturesMethod:
-		bz, err = p.FuturesMethod(ctx, method, args)
-	case PendingFuturesMethod:
-		bz, err = p.PendingFuturesMethod(ctx, method, args)
+	case TaskByIdMethod:
+		bz, err = p.TaskByIdMethod(ctx, method, args)
+	case TasksMethod:
+		bz, err = p.TasksMethod(ctx, method, args)
+	case PendingTasksMethod:
+		bz, err = p.PendingTasksMethod(ctx, method, args)
 	}
 
 	if err != nil {
@@ -130,12 +130,12 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 func (p *Precompile) IsTransaction(method string) bool {
 	switch method {
 	// transactions
-	case AddFutureMethod:
+	case AddTaskMethod:
 		return true
 	// queries
-	case FutureByIdMethod,
-		FuturesMethod,
-		PendingFuturesMethod:
+	case TaskByIdMethod,
+		TasksMethod,
+		PendingTasksMethod:
 		return false
 	}
 

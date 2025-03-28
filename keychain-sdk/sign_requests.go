@@ -12,20 +12,11 @@ import (
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-// SignaResponseWriter is the interface for writing responses to sign requests.
-type SignResponseWriter interface {
-	// Fulfil writes the signature to the sign request.
-	Fulfil(ctx context.Context, signature []byte) error
-
-	// Reject writes a rejection to the sign request.
-	Reject(ctx context.Context, reason string) error
-}
-
 // SignRequest is a sign request.
 type SignRequest wardentypes.SignRequest
 
 // SignRequestHandler is a function that handles sign requests.
-type SignRequestHandler func(ctx context.Context, w SignResponseWriter, req *SignRequest)
+type SignRequestHandler func(ctx context.Context, w Writer, req *SignRequest)
 
 type signResponseWriter struct {
 	txWriter      *writer.W

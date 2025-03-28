@@ -62,6 +62,7 @@
         {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
         {"source":"/learn/aibi","destination":"/learn/warden-ai-agents", "statusCode": 301},
         {"source":"/operate-a-node/buenavista-testnet/upgrade/v0.4.0","destination":"/operate-a-node/buenavista-testnet/upgrade/v0.4.1", "statusCode": 301},
-        {"source":"/build-an-app/interact-with-warden-modules/get-started","destination":"/build-an-app/interact-with-warden-modules/get-started-with-precompiles", "statusCode": 301}
+        {"source":"/build-an-app/interact-with-warden-modules/get-started","destination":"/build-an-app/interact-with-warden-modules/get-started-with-precompiles", "statusCode": 301},
+        {"source":"/build-an-agent/introduction#ai-blockchain-interface","destination":"/learn/warden-ai-agents#ai-integration", "statusCode": 301}
     ]
 }

@@ -20,7 +20,6 @@ linters:
     - protogetter # to be enabled once we start moving towards Opaque API (https://go.dev/blog/protobuf-opaque)
     - recvcheck
     - tagalign
-    - tenv
     - testpackage
     - varnamelen
     - wrapcheck

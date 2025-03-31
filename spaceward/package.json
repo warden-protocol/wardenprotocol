@@ -159,7 +159,7 @@
 		"tailwindcss": "^3.4.0",
 		"ts-proto": "^1.165.2",
 		"typescript": "^5.3.3",
-		"vite": "^5.4.12",
+		"vite": "^5.4.15",
 		"vitest": "^1.6.1"
 	},
 	"dependenciesMeta": {

@@ -31,7 +31,7 @@ var (
 
 // IJsonMetaData contains all meta data concerning the IJson contract.
 var IJsonMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"get\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"remove\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"value\",\"type\":\"address[]\"}],\"name\":\"setAddressArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bool[]\",\"name\":\"value\",\"type\":\"bool[]\"}],\"name\":\"setBoolArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"int256\",\"name\":\"value\",\"type\":\"int256\"}],\"name\":\"setInt256\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"int256[]\",\"name\":\"value\",\"type\":\"int256[]\"}],\"name\":\"setIntArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"name\":\"setObject\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bytes[]\",\"name\":\"value\",\"type\":\"bytes[]\"}],\"name\":\"setObjectsArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"value\",\"type\":\"string[]\"}],\"name\":\"setStringArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"setUint256\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"uint256[]\",\"name\":\"value\",\"type\":\"uint256[]\"}],\"name\":\"setUintArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"get\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getAddressArray\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getBool\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getBoolArray\",\"outputs\":[{\"internalType\":\"bool[]\",\"name\":\"\",\"type\":\"bool[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"int64\",\"name\":\"decimals\",\"type\":\"int64\"}],\"name\":\"getFloat\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getInt256\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getIntArray\",\"outputs\":[{\"internalType\":\"int256[]\",\"name\":\"\",\"type\":\"int256[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getObject\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getObjectsArray\",\"outputs\":[{\"internalType\":\"bytes[]\",\"name\":\"\",\"type\":\"bytes[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getString\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getStringArray\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"getUintArray\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"}],\"name\":\"remove\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"value\",\"type\":\"address[]\"}],\"name\":\"setAddressArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bool[]\",\"name\":\"value\",\"type\":\"bool[]\"}],\"name\":\"setBoolArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"int256\",\"name\":\"value\",\"type\":\"int256\"}],\"name\":\"setInt256\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"int256[]\",\"name\":\"value\",\"type\":\"int256[]\"}],\"name\":\"setIntArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"value\",\"type\":\"bytes\"}],\"name\":\"setObject\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"bytes[]\",\"name\":\"value\",\"type\":\"bytes[]\"}],\"name\":\"setObjectsArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string[]\",\"name\":\"value\",\"type\":\"string[]\"}],\"name\":\"setStringArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"setUint256\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"uint256[]\",\"name\":\"value\",\"type\":\"uint256[]\"}],\"name\":\"setUintArray\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}]",
 }
 
 // IJsonABI is the input ABI used to generate the binding from.
@@ -209,6 +209,409 @@ func (_IJson *IJsonSession) Get(input []byte, key string) ([]byte, error) {
 // Solidity: function get(bytes input, string key) pure returns(bytes)
 func (_IJson *IJsonCallerSession) Get(input []byte, key string) ([]byte, error) {
 	return _IJson.Contract.Get(&_IJson.CallOpts, input, key)
+}
+
+// GetAddress is a free data retrieval call binding the contract method 0xa8d4e651.
+//
+// Solidity: function getAddress(bytes input, string key) pure returns(address)
+func (_IJson *IJsonCaller) GetAddress(opts *bind.CallOpts, input []byte, key string) (common.Address, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getAddress", input, key)
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// GetAddress is a free data retrieval call binding the contract method 0xa8d4e651.
+//
+// Solidity: function getAddress(bytes input, string key) pure returns(address)
+func (_IJson *IJsonSession) GetAddress(input []byte, key string) (common.Address, error) {
+	return _IJson.Contract.GetAddress(&_IJson.CallOpts, input, key)
+}
+
+// GetAddress is a free data retrieval call binding the contract method 0xa8d4e651.
+//
+// Solidity: function getAddress(bytes input, string key) pure returns(address)
+func (_IJson *IJsonCallerSession) GetAddress(input []byte, key string) (common.Address, error) {
+	return _IJson.Contract.GetAddress(&_IJson.CallOpts, input, key)
+}
+
+// GetAddressArray is a free data retrieval call binding the contract method 0x89b53785.
+//
+// Solidity: function getAddressArray(bytes input, string key) pure returns(address[])
+func (_IJson *IJsonCaller) GetAddressArray(opts *bind.CallOpts, input []byte, key string) ([]common.Address, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getAddressArray", input, key)
+
+	if err != nil {
+		return *new([]common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]common.Address)).(*[]common.Address)
+
+	return out0, err
+
+}
+
+// GetAddressArray is a free data retrieval call binding the contract method 0x89b53785.
+//
+// Solidity: function getAddressArray(bytes input, string key) pure returns(address[])
+func (_IJson *IJsonSession) GetAddressArray(input []byte, key string) ([]common.Address, error) {
+	return _IJson.Contract.GetAddressArray(&_IJson.CallOpts, input, key)
+}
+
+// GetAddressArray is a free data retrieval call binding the contract method 0x89b53785.
+//
+// Solidity: function getAddressArray(bytes input, string key) pure returns(address[])
+func (_IJson *IJsonCallerSession) GetAddressArray(input []byte, key string) ([]common.Address, error) {
+	return _IJson.Contract.GetAddressArray(&_IJson.CallOpts, input, key)
+}
+
+// GetBool is a free data retrieval call binding the contract method 0x5d19cf1e.
+//
+// Solidity: function getBool(bytes input, string key) pure returns(bool)
+func (_IJson *IJsonCaller) GetBool(opts *bind.CallOpts, input []byte, key string) (bool, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getBool", input, key)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// GetBool is a free data retrieval call binding the contract method 0x5d19cf1e.
+//
+// Solidity: function getBool(bytes input, string key) pure returns(bool)
+func (_IJson *IJsonSession) GetBool(input []byte, key string) (bool, error) {
+	return _IJson.Contract.GetBool(&_IJson.CallOpts, input, key)
+}
+
+// GetBool is a free data retrieval call binding the contract method 0x5d19cf1e.
+//
+// Solidity: function getBool(bytes input, string key) pure returns(bool)
+func (_IJson *IJsonCallerSession) GetBool(input []byte, key string) (bool, error) {
+	return _IJson.Contract.GetBool(&_IJson.CallOpts, input, key)
+}
+
+// GetBoolArray is a free data retrieval call binding the contract method 0x4ee8b61b.
+//
+// Solidity: function getBoolArray(bytes input, string key) pure returns(bool[])
+func (_IJson *IJsonCaller) GetBoolArray(opts *bind.CallOpts, input []byte, key string) ([]bool, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getBoolArray", input, key)
+
+	if err != nil {
+		return *new([]bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]bool)).(*[]bool)
+
+	return out0, err
+
+}
+
+// GetBoolArray is a free data retrieval call binding the contract method 0x4ee8b61b.
+//
+// Solidity: function getBoolArray(bytes input, string key) pure returns(bool[])
+func (_IJson *IJsonSession) GetBoolArray(input []byte, key string) ([]bool, error) {
+	return _IJson.Contract.GetBoolArray(&_IJson.CallOpts, input, key)
+}
+
+// GetBoolArray is a free data retrieval call binding the contract method 0x4ee8b61b.
+//
+// Solidity: function getBoolArray(bytes input, string key) pure returns(bool[])
+func (_IJson *IJsonCallerSession) GetBoolArray(input []byte, key string) ([]bool, error) {
+	return _IJson.Contract.GetBoolArray(&_IJson.CallOpts, input, key)
+}
+
+// GetFloat is a free data retrieval call binding the contract method 0x97417eb6.
+//
+// Solidity: function getFloat(bytes input, string key, int64 decimals) pure returns(int256)
+func (_IJson *IJsonCaller) GetFloat(opts *bind.CallOpts, input []byte, key string, decimals int64) (*big.Int, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getFloat", input, key, decimals)
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// GetFloat is a free data retrieval call binding the contract method 0x97417eb6.
+//
+// Solidity: function getFloat(bytes input, string key, int64 decimals) pure returns(int256)
+func (_IJson *IJsonSession) GetFloat(input []byte, key string, decimals int64) (*big.Int, error) {
+	return _IJson.Contract.GetFloat(&_IJson.CallOpts, input, key, decimals)
+}
+
+// GetFloat is a free data retrieval call binding the contract method 0x97417eb6.
+//
+// Solidity: function getFloat(bytes input, string key, int64 decimals) pure returns(int256)
+func (_IJson *IJsonCallerSession) GetFloat(input []byte, key string, decimals int64) (*big.Int, error) {
+	return _IJson.Contract.GetFloat(&_IJson.CallOpts, input, key, decimals)
+}
+
+// GetInt256 is a free data retrieval call binding the contract method 0x6f49ff7d.
+//
+// Solidity: function getInt256(bytes input, string key) pure returns(int256)
+func (_IJson *IJsonCaller) GetInt256(opts *bind.CallOpts, input []byte, key string) (*big.Int, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getInt256", input, key)
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// GetInt256 is a free data retrieval call binding the contract method 0x6f49ff7d.
+//
+// Solidity: function getInt256(bytes input, string key) pure returns(int256)
+func (_IJson *IJsonSession) GetInt256(input []byte, key string) (*big.Int, error) {
+	return _IJson.Contract.GetInt256(&_IJson.CallOpts, input, key)
+}
+
+// GetInt256 is a free data retrieval call binding the contract method 0x6f49ff7d.
+//
+// Solidity: function getInt256(bytes input, string key) pure returns(int256)
+func (_IJson *IJsonCallerSession) GetInt256(input []byte, key string) (*big.Int, error) {
+	return _IJson.Contract.GetInt256(&_IJson.CallOpts, input, key)
+}
+
+// GetIntArray is a free data retrieval call binding the contract method 0x00e94664.
+//
+// Solidity: function getIntArray(bytes input, string key) pure returns(int256[])
+func (_IJson *IJsonCaller) GetIntArray(opts *bind.CallOpts, input []byte, key string) ([]*big.Int, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getIntArray", input, key)
+
+	if err != nil {
+		return *new([]*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+
+	return out0, err
+
+}
+
+// GetIntArray is a free data retrieval call binding the contract method 0x00e94664.
+//
+// Solidity: function getIntArray(bytes input, string key) pure returns(int256[])
+func (_IJson *IJsonSession) GetIntArray(input []byte, key string) ([]*big.Int, error) {
+	return _IJson.Contract.GetIntArray(&_IJson.CallOpts, input, key)
+}
+
+// GetIntArray is a free data retrieval call binding the contract method 0x00e94664.
+//
+// Solidity: function getIntArray(bytes input, string key) pure returns(int256[])
+func (_IJson *IJsonCallerSession) GetIntArray(input []byte, key string) ([]*big.Int, error) {
+	return _IJson.Contract.GetIntArray(&_IJson.CallOpts, input, key)
+}
+
+// GetObject is a free data retrieval call binding the contract method 0xd8f86056.
+//
+// Solidity: function getObject(bytes input, string key) pure returns(bytes)
+func (_IJson *IJsonCaller) GetObject(opts *bind.CallOpts, input []byte, key string) ([]byte, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getObject", input, key)
+
+	if err != nil {
+		return *new([]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]byte)).(*[]byte)
+
+	return out0, err
+
+}
+
+// GetObject is a free data retrieval call binding the contract method 0xd8f86056.
+//
+// Solidity: function getObject(bytes input, string key) pure returns(bytes)
+func (_IJson *IJsonSession) GetObject(input []byte, key string) ([]byte, error) {
+	return _IJson.Contract.GetObject(&_IJson.CallOpts, input, key)
+}
+
+// GetObject is a free data retrieval call binding the contract method 0xd8f86056.
+//
+// Solidity: function getObject(bytes input, string key) pure returns(bytes)
+func (_IJson *IJsonCallerSession) GetObject(input []byte, key string) ([]byte, error) {
+	return _IJson.Contract.GetObject(&_IJson.CallOpts, input, key)
+}
+
+// GetObjectsArray is a free data retrieval call binding the contract method 0x79d6c15d.
+//
+// Solidity: function getObjectsArray(bytes input, string key) pure returns(bytes[])
+func (_IJson *IJsonCaller) GetObjectsArray(opts *bind.CallOpts, input []byte, key string) ([][]byte, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getObjectsArray", input, key)
+
+	if err != nil {
+		return *new([][]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([][]byte)).(*[][]byte)
+
+	return out0, err
+
+}
+
+// GetObjectsArray is a free data retrieval call binding the contract method 0x79d6c15d.
+//
+// Solidity: function getObjectsArray(bytes input, string key) pure returns(bytes[])
+func (_IJson *IJsonSession) GetObjectsArray(input []byte, key string) ([][]byte, error) {
+	return _IJson.Contract.GetObjectsArray(&_IJson.CallOpts, input, key)
+}
+
+// GetObjectsArray is a free data retrieval call binding the contract method 0x79d6c15d.
+//
+// Solidity: function getObjectsArray(bytes input, string key) pure returns(bytes[])
+func (_IJson *IJsonCallerSession) GetObjectsArray(input []byte, key string) ([][]byte, error) {
+	return _IJson.Contract.GetObjectsArray(&_IJson.CallOpts, input, key)
+}
+
+// GetString is a free data retrieval call binding the contract method 0x3fe9170e.
+//
+// Solidity: function getString(bytes input, string key) pure returns(string)
+func (_IJson *IJsonCaller) GetString(opts *bind.CallOpts, input []byte, key string) (string, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getString", input, key)
+
+	if err != nil {
+		return *new(string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(string)).(*string)
+
+	return out0, err
+
+}
+
+// GetString is a free data retrieval call binding the contract method 0x3fe9170e.
+//
+// Solidity: function getString(bytes input, string key) pure returns(string)
+func (_IJson *IJsonSession) GetString(input []byte, key string) (string, error) {
+	return _IJson.Contract.GetString(&_IJson.CallOpts, input, key)
+}
+
+// GetString is a free data retrieval call binding the contract method 0x3fe9170e.
+//
+// Solidity: function getString(bytes input, string key) pure returns(string)
+func (_IJson *IJsonCallerSession) GetString(input []byte, key string) (string, error) {
+	return _IJson.Contract.GetString(&_IJson.CallOpts, input, key)
+}
+
+// GetStringArray is a free data retrieval call binding the contract method 0x44dad21f.
+//
+// Solidity: function getStringArray(bytes input, string key) pure returns(string[])
+func (_IJson *IJsonCaller) GetStringArray(opts *bind.CallOpts, input []byte, key string) ([]string, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getStringArray", input, key)
+
+	if err != nil {
+		return *new([]string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]string)).(*[]string)
+
+	return out0, err
+
+}
+
+// GetStringArray is a free data retrieval call binding the contract method 0x44dad21f.
+//
+// Solidity: function getStringArray(bytes input, string key) pure returns(string[])
+func (_IJson *IJsonSession) GetStringArray(input []byte, key string) ([]string, error) {
+	return _IJson.Contract.GetStringArray(&_IJson.CallOpts, input, key)
+}
+
+// GetStringArray is a free data retrieval call binding the contract method 0x44dad21f.
+//
+// Solidity: function getStringArray(bytes input, string key) pure returns(string[])
+func (_IJson *IJsonCallerSession) GetStringArray(input []byte, key string) ([]string, error) {
+	return _IJson.Contract.GetStringArray(&_IJson.CallOpts, input, key)
+}
+
+// GetUint256 is a free data retrieval call binding the contract method 0x05286e27.
+//
+// Solidity: function getUint256(bytes input, string key) pure returns(uint256)
+func (_IJson *IJsonCaller) GetUint256(opts *bind.CallOpts, input []byte, key string) (*big.Int, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getUint256", input, key)
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// GetUint256 is a free data retrieval call binding the contract method 0x05286e27.
+//
+// Solidity: function getUint256(bytes input, string key) pure returns(uint256)
+func (_IJson *IJsonSession) GetUint256(input []byte, key string) (*big.Int, error) {
+	return _IJson.Contract.GetUint256(&_IJson.CallOpts, input, key)
+}
+
+// GetUint256 is a free data retrieval call binding the contract method 0x05286e27.
+//
+// Solidity: function getUint256(bytes input, string key) pure returns(uint256)
+func (_IJson *IJsonCallerSession) GetUint256(input []byte, key string) (*big.Int, error) {
+	return _IJson.Contract.GetUint256(&_IJson.CallOpts, input, key)
+}
+
+// GetUintArray is a free data retrieval call binding the contract method 0x42f785e9.
+//
+// Solidity: function getUintArray(bytes input, string key) pure returns(uint256[])
+func (_IJson *IJsonCaller) GetUintArray(opts *bind.CallOpts, input []byte, key string) ([]*big.Int, error) {
+	var out []interface{}
+	err := _IJson.contract.Call(opts, &out, "getUintArray", input, key)
+
+	if err != nil {
+		return *new([]*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+
+	return out0, err
+
+}
+
+// GetUintArray is a free data retrieval call binding the contract method 0x42f785e9.
+//
+// Solidity: function getUintArray(bytes input, string key) pure returns(uint256[])
+func (_IJson *IJsonSession) GetUintArray(input []byte, key string) ([]*big.Int, error) {
+	return _IJson.Contract.GetUintArray(&_IJson.CallOpts, input, key)
+}
+
+// GetUintArray is a free data retrieval call binding the contract method 0x42f785e9.
+//
+// Solidity: function getUintArray(bytes input, string key) pure returns(uint256[])
+func (_IJson *IJsonCallerSession) GetUintArray(input []byte, key string) ([]*big.Int, error) {
+	return _IJson.Contract.GetUintArray(&_IJson.CallOpts, input, key)
 }
 
 // Remove is a free data retrieval call binding the contract method 0x9b1347ed.

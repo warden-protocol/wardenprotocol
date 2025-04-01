@@ -99,10 +99,34 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.SetInt256(ctx, method, args)
 	case SetUint256Method:
 		bz, err = p.SetUint256(ctx, method, args)
-	// case SetBytesMethod:
-	// 	bz, err = p.SetBytes(ctx, method, args)
 	case SetObjectMethod:
 		bz, err = p.SetObject(ctx, method, args)
+	case GetMethod:
+		bz, err = p.Get(ctx, method, args)
+	case GetStringMethod:
+		bz, err = p.GetString(ctx, method, args)
+	case GetBoolMethod:
+		bz, err = p.GetBool(ctx, method, args)
+	case GetAddressMethod:
+		bz, err = p.GetAddressValue(ctx, method, args)
+	case GetInt256Method:
+		bz, err = p.GetInt256(ctx, method, args)
+	case GetUint256Method:
+		bz, err = p.GetUint256(ctx, method, args)
+	case GetFloatMethod:
+		bz, err = p.GetFloat(ctx, method, args)
+		// case GetStringArrayMethod:
+		// 	bz, err = p.GetStringArray(ctx, method, args)
+		// case GetUintArrayMethod:
+		// 	bz, err = p.GetUintArray(ctx, method, args)
+		// case GetIntArrayMethod:
+		// 	bz, err = p.GetIntArray(ctx, method, args)
+		// case GetBoolArrayMethod:
+		// 	bz, err = p.GetBoolArray(ctx, method, args)
+		// case GetAddressArrayMethod:
+		// 	bz, err = p.GetAddressArray(ctx, method, args)
+		// case GetObjectsArrayMethod:
+		// 	bz, err = p.GetObjectsArray(ctx, method, args)
 	}
 
 	if err != nil {
@@ -130,14 +154,26 @@ func (p *Precompile) IsTransaction(method string) bool {
 		SetAddressMethod,
 		SetInt256Method,
 		SetUint256Method,
-		// SetBytesMethod,
 		SetStringArrayMethod,
 		SetUintArrayMethod,
 		SetIntArrayMethod,
 		SetBoolArrayMethod,
 		SetAddressArrayMethod,
 		SetObjectsArrayMethod,
-		SetObjectMethod:
+		SetObjectMethod,
+		GetMethod,
+		GetStringMethod,
+		GetBoolMethod,
+		GetAddressMethod,
+		GetInt256Method,
+		GetUint256Method,
+		GetFloatMethod,
+		GetStringArrayMethod,
+		GetUintArrayMethod,
+		GetIntArrayMethod,
+		GetBoolArrayMethod,
+		GetAddressArrayMethod,
+		GetObjectsArrayMethod:
 		return false
 	}
 

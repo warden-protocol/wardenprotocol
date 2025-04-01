@@ -30,6 +30,8 @@ interface IJson {
         string memory key
     ) external pure returns (bytes memory);
 
+    // Get methods
+
     /**
      * @dev Defines a method to get a value from JSON by key.
      * @param input The JSON input as bytes.
@@ -37,6 +39,150 @@ interface IJson {
      * @return The value as bytes.
      */
     function get(
+        bytes memory input,
+        string memory key
+    ) external pure returns (bytes memory);
+
+    /**
+     * @dev Defines a method to get a string value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The string value.
+     */
+    function getString(
+        bytes memory input,
+        string memory key
+    ) external pure returns (string memory);
+
+    /**
+     * @dev Defines a method to get a boolean value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The boolean value.
+     */
+    function getBool(
+        bytes memory input,
+        string memory key
+    ) external pure returns (bool);
+
+    /**
+     * @dev Defines a method to get an address value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The address value.
+     */
+    function getAddress(
+        bytes memory input,
+        string memory key
+    ) external pure returns (address);
+
+    /**
+     * @dev Defines a method to get an int256 value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The int256 value.
+     */
+    function getInt256(
+        bytes memory input,
+        string memory key
+    ) external pure returns (int256);
+
+    /**
+     * @dev Defines a method to get a uint256 value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The uint256 value.
+     */
+    function getUint256(
+        bytes memory input,
+        string memory key
+    ) external pure returns (uint256);
+
+    /**
+     * @dev Defines a method to get a bytes value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The bytes value.
+     */
+    function getFloat(
+        bytes memory input,
+        string memory key,
+        int64 decimals
+    ) external pure returns (int256);
+
+    /**
+     * @dev Defines a method to get a string array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The string array value.
+     */
+    function getStringArray(
+        bytes memory input,
+        string memory key
+    ) external pure returns (string[] memory);
+
+    /**
+     * @dev Defines a method to get a uint256 array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The uint256 array value.
+     */
+    function getUintArray(
+        bytes memory input,
+        string memory key
+    ) external pure returns (uint256[] memory);
+
+    /**
+     * @dev Defines a method to get an int256 array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The int256 array value.
+     */
+    function getIntArray(
+        bytes memory input,
+        string memory key
+    ) external pure returns (int256[] memory);
+
+    /**
+     * @dev Defines a method to get a boolean array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The boolean array value.
+     */
+    function getBoolArray(
+        bytes memory input,
+        string memory key
+    ) external pure returns (bool[] memory);
+
+    /**
+     * @dev Defines a method to get an address array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The address array value.
+     */
+    function getAddressArray(
+        bytes memory input,
+        string memory key
+    ) external pure returns (address[] memory);
+
+    /**
+     * @dev Defines a method to get a nested objects array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The nested objects array value as bytes.
+     */
+    function getObjectsArray(
+        bytes memory input,
+        string memory key
+    ) external pure returns (bytes[] memory);
+
+    /**
+     * @dev Defines a method to get a nested object value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The nested object value as bytes.
+     */
+    function getObject(
         bytes memory input,
         string memory key
     ) external pure returns (bytes memory);

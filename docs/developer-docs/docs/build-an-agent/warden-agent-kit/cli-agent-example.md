@@ -76,6 +76,8 @@ Prompt:
 
 ## 4. Prompt the Agent
 
+If you're a new user, you need to get test [WARD tokens](/learn/glossary#ward-token), create a [Space](/learn/glossary#space), and request a [key](/learn/glossary#space) from a [Keychain](/learn/glossary#space). After doing it, you'll be able to send tokens and create [Orders](/learn/glossary#order). The following example prompts show how to take the initial steps: get WARD and create a Space.
+
 ### 4.1. Get WARD
 
 If you have a faucet token, you can prompt the Agent to fund your wallet with [WARD](/tokens/ward-token/ward). Otherwise, skip this step. You can connect your wallet to [SpaceWard](https://spaceward.chiado.wardenprotocol.org) and request tokens from our [online faucet](https://faucet.chiado.wardenprotocol.org/).
@@ -98,7 +100,7 @@ Your request for funds has been successfully completed. You have received the to
 
 ### 4.2. Create a Space
 
-To access most of the Warden features, you need to create a [Space](/learn/glossary#space) first.
+To access most of the Warden features, you need to create a [Space](/learn/glossary#space)—a hub allowing its owner to manage multiple cryptographic keys.
 
 Type your prompt in the command line:
 

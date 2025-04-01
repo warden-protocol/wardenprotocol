@@ -18,11 +18,11 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 An Action is an onchain transaction on Warden Protocol or an offchain operation, such as creating a post on the X network. An Action is executed after an [Approval](#approval) is granted based on a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent).
 
-Here are some examples of onchain Actions:
+To perform an onchain Action, one can use [SpaceWard](#spacward), run [node commands](#node), or prompt a [Warden AI Agent](#ai-agent). Here are some examples of onchain Actions:
 
 - A smart contract invocation, such as swapping ETH for MATIC on UniSwap
 - A [key request](#key-request) or a [signature request](#signature-request)
-- Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
+- Adding a member to a [Space](#space)
 
 This concept is implemented in the `x/act` [module](#module). Learn more: [`x/act`](warden-protocol-modules/x-act).
 
@@ -246,7 +246,7 @@ Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
 ## Node
 
-A Warden Protocol node is a server running the software (binary) of Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference).
+A Warden Protocol node is a server running the software (binary) of Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference) and [node commands](/operate-a-node/node-commands).
 
 Reasons for running a node include the following:
 

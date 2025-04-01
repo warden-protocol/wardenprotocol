@@ -21,7 +21,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 ### Option 1. Run a local chain
 
-1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://golang.org/doc/install) 1.22.3 and [just](https://github.com/casey/just) 1.34.0 or later.
+1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://go.dev/doc/install) 1.24 and [just](https://github.com/casey/just) 1.34.0 or later.
    
    For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account (key) that has a few [WARD tokens](/tokens/ward-token/ward). You'll use these tokens to fund the Keychain and its Writers.
    
@@ -66,7 +66,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 ### Option 2. Connect to Chiado
 
-1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
+1. If you haven't yet, [install Go](https://go.dev/doc/install) 1.24 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
 2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
   

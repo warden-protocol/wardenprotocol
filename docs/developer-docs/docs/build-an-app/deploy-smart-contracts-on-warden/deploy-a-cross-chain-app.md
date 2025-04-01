@@ -285,7 +285,7 @@ Before you start, do the following:
 
 - If you wish to learn the basics, follow this guide: [Deploy a WASM contract](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract).
 - Install Rust and set up the CosmWasm environment, as shown in [the guide](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#prerequisites).
-- For interacting with the node, [install Go](https://go.dev/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
+- For interacting with the node, [install Go](https://go.dev/doc/install) 1.24 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 - Obtain some AXL tokens in the Axelar network.
 
 ### 2.1. Create a WASM contract

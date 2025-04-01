@@ -35,7 +35,7 @@ A Warden AI Agent is an AI-driven program that supports both offchain and onchai
 Warden Agents' integration with AI is ensured by three components:
 
 - [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain [Action](#action) at any destination chain
-- `x/async`: a [Warden module](#module) implementing [Futures](#future) and [Prophets](#prophet)
+- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [Plugins](#plugin) and [Prophets](#prophet)
 - [SPEX](#spex): Statistical Proof of Execution
 
 Learn more: [Warden AI Agents](warden-ai-agents).
@@ -101,29 +101,6 @@ All delegators inherit the state from their validator: [bonded](#bonded-validato
 ## Full node
 
 A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden Protocol node](#node) yourself.
-
----
-
-## Future
-
-A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. Futures don't slow the blockchain down thanks to asynchronous execution.
-
-A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result, and other validators vote on correctness of the result. There are different types of Futures, depending on the [Future handler type](#future-handler).
-
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
-
----
-
-## Future handler
-
-A **Future handler** is code that determines how to interpret the [Future](#future) input and what to do with it in order to retrieve the result. When requesting a Future, a user references a handler by ID. Then the handler is executed by a [Prophet](#prophet).
-
-Currently, we support two handlers, which allow executing the following tasks:
-
-- AI-driven price predictions
-- HTTP requests to external services, such as blockchain APIs
-
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -292,9 +269,22 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 ---
 
+## Plugin
+
+A Plugin is code that determines what kind of [Task](#task) input to accept and how to handle it in order to retrieve the result (output). When requesting a Task, a user references a Plugin by ID. Then the Plugin is executed by a [Prophet](#prophet).
+
+Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing the following Task types:
+
+- AI-driven price predictions
+- HTTP requests to external services, such as blockchain APIs
+
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+
+---
+
 ## Precompile
 
-Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Futures](/learn/glossary#future), and other components.
+Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Tasks](/learn/glossary#task), and other components.
 
 Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
@@ -304,7 +294,7 @@ Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-mo
 
 A Prophet is a subprocess running on [validator](#validator) nodes, which has two responsibilities:
 
-- Fetching [Future](#future) requests and executing [handlers](#future-handler) associated with Futures
+- Fetching [Task](#task) requests and executing [Plugins](#plugin) to provide Task results
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.
@@ -365,11 +355,21 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 ---
 
+## Task
+
+A Task is an offchain user-defined  unit of computation that is executed asynchronously. The result is stored onchain. Tasks don't slow the blockchain down thanks to asynchronous execution.
+
+A user requests a Task, specifying an input and a [Plugin](#plugin), which determines what kind of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
+
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+
+---
+
 ## Validator
 
 A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol node](#node) and validating blocks and transactions. 
 
-Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance) and hadling [Futures](#future).
+Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance) and hadling [Tasks](#task).
 
 ---
 

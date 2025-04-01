@@ -61,7 +61,8 @@ contract wardenSpace {
 After deploying your contract, you can interact with it by calling the `createSpace()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "createSpace(uint64,uint64,uint64,uint64,address[])" 1 2 3 4 \[\] --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "createSpace(uint64,uint64,uint64,uint64,address[])" 1 2 3 4 \[\] \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Update a Space
@@ -114,7 +115,9 @@ contract wardenSpace {
 After deploying your contract, you can interact with it by calling the `updateSpace()` function:
 
 ```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "updateSpace(uint64,uint64,uint64,uint64,uint64,uint64,uint64,string,string)" 1 0 100 101 102 103 100000 "" ""
+cast send "updateSpace(uint64,uint64,uint64,uint64,uint64,uint64,uint64,string,string)" \
+  1 0 100 101 102 103 100000 "" "" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Add a Space owner
@@ -144,7 +147,9 @@ contract wardenSpace {
 After deploying your contract, you can interact with it by calling the `addOwner()` function:
 
 ```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "addSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xYourNewOwnerAddress 0 100000 "" ""
+cast send "addSpaceOwner(uint64,address,uint64,uint64,string,string)" \
+  1 0xYourNewOwnerAddress 0 100000 "" "" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Remove a Space owner
@@ -193,7 +198,9 @@ contract wardenSpace {
 After deploying your contract, you can interact with it by calling the `removeOwner()` function:
 
 ```bash
-cast send --private-key $PRIVATE_KEY --rpc-url $RPC_URL "removeSpaceOwner(uint64,address,uint64,uint64,string,string)" 1 0xOwnerToRemove 0 100000 "" ""
+cast send "removeSpaceOwner(uint64,address,uint64,uint64,string,string)" \
+  1 0xOwnerToRemove 0 100000 "" "" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Query Spaces
@@ -294,7 +301,9 @@ contract SpaceQuery {
 After deploying your contract, you can interact with it by calling the `spacesByOwner()` function:
 
 ```bash
-cast call $CONTRACT_ADDRESS "getSpacesByOwner(address,uint64,uint64,bool)" 0x6ea8ac1673402989e7b653ae4e83b54173719c30 10 0 true --rpc-url $RPC_URL
+cast call $CONTRACT_ADDRESS \
+  "getSpacesByOwner(address,uint64,uint64,bool)" 0x6ea8ac1673402989e7b653ae4e83b54173719c30 10 0 true \
+  --rpc-url $RPC_URL
 ```
 
 ## Query a Space by ID

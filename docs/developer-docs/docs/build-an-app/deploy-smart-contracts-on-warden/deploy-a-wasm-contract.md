@@ -43,7 +43,7 @@ Before you start, complete the following prerequisites:
 
 To deploy a WASM contract locally, you need to run a local chain and make sure it's configured properly, as shown in the following steps:
 
-1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
+1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://go.dev/doc/install) 1.24 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
 2. The next steps require your local account name, or key name. You can check the list of available keys by executing this command:
 
@@ -73,7 +73,7 @@ To deploy a WASM contract locally, you need to run a local chain and make sure i
 
 To deploy a WASM contract on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview), you need to install its binary and fund your key, as shown in the following steps:
 
-1. If you haven't yet, [install Go](https://golang.org/doc/install) 1.22.3 or later and [just](https://github.com/casey/just) 1.34.0 or later.
+1. If you haven't yet, [install Go](https://go.dev/doc/install) 1.24 or later and [just](https://github.com/casey/just) 1.34.0 or later.
 
 2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
   

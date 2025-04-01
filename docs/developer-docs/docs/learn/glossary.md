@@ -18,7 +18,7 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 An Action is an onchain transaction on Warden Protocol or an offchain operation, such as creating a post on the X network. An Action is executed after an [Approval](#approval) is granted based on a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent).
 
-To perform an onchain Action, one can use [SpaceWard](#spacward), run [node commands](#node), or prompt a [Warden AI Agent](#ai-agent). Here are some examples of onchain Actions:
+To perform an onchain Action, one can use [SpaceWard](#spaceward), run [node commands](#node), or prompt a [Warden AI Agent](#ai-agent). Here are some examples of onchain Actions:
 
 - A smart contract invocation, such as swapping ETH for MATIC on UniSwap
 - A [key request](#key-request) or a [signature request](#signature-request)

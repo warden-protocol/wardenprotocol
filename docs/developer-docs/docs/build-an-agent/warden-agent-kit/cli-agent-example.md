@@ -76,7 +76,7 @@ Prompt:
 
 ## 4. Prompt the Agent
 
-If you're a new user, you need to get test [WARD tokens](/learn/glossary#ward-token), create a [Space](/learn/glossary#space), and request a [key](/learn/glossary#space) from a [Keychain](/learn/glossary#space). After doing it, you'll be able to send tokens and create [Orders](/learn/glossary#order). The following example prompts show how to take the initial steps: get WARD and create a Space.
+If you're a new user, you need to get test [WARD tokens](/learn/glossary#ward-token), create a [Space](/learn/glossary#space), and request a [key](/learn/glossary#key) from a [Keychain](/learn/glossary#keychain). After doing it, you'll be able to send tokens and create [Orders](/learn/glossary#order). The following example prompts show how to take the initial steps: get WARD and create a Space.
 
 ### 4.1. Get WARD
 

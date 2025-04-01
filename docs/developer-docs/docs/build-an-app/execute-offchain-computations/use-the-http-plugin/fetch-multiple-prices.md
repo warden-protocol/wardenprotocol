@@ -217,6 +217,6 @@ contract MultiCoinPrices {
    
 ## Next steps
 
-Learn how to use other Future hanlders:
+Learn how to use other Plugins:
 
-- [Use the price prediction handler](../use-the-price-prediction-handler/introduction)
+- [Use the price prediction Plugin](../use-the-price-prediction-plugin/introduction)

@@ -78,10 +78,10 @@ To monitor your Order and get additional Order data, use the commands listed bel
 
 #### Monitor the Order state
 
-- Check the prediction status: 
+- Check the Task (prediction) status: 
   ```bash
-  cast call $ORDER_ADDRESS "futureId()" 
-  cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
+  TASK_ID=$(cast call $ORDER_ADDRESS "futureId()")
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" $TASK_ID
   ```
 - Check price conditions: 
    ```
@@ -101,7 +101,7 @@ To monitor your Order and get additional Order data, use the commands listed bel
   ```bash
   cast logs $REGISTRY_ADDRESS "NewTx(address,bytes32)"
   ```
-- Monitor the Future updates:  
+- Monitor the Task updates:  
   ```bash
   cast logs $ASYNC_PRECOMPILE "FutureUpdated(uint64)"
   ```
@@ -132,13 +132,13 @@ To monitor your Order and get additional Order data, use the commands listed bel
   ```
 #### Get the prediction results
 
-- Get the Future ID: 
+- Get the Task ID: 
   ```bash
-  FUTURE_ID=$(cast call $ORDER_ADDRESS "futureId()")
+  TASK_ID=$(cast call $ORDER_ADDRESS "futureId()")
   ```
-- Check the Future status: 
+- Check the Task status: 
   ```bash
-  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$TASK_ID"
   ```
 
 ### The security checklist
@@ -147,7 +147,7 @@ To monitor your Order and get additional Order data, use the commands listed bel
   ```bash
   cast call $ORDER_ADDRESS "orderData()"
   ```
-- Check the Future ID and status:  
+- Check the Task ID and status:  
   ```bash
   cast call $ORDER_ADDRESS "futureId()"
   ```
@@ -169,11 +169,11 @@ Here are some of the common deployment issues and solutions for them:
     "ETH" "USD"
   ```
 - **The prediction fails**  
-  Solution: Check the Future status and verify its format.
+  Solution: Check the Task status and verify its format.
   ```bash
-  FUTURE_ID=$(cast call $ORDER_ADDRESS "futureId()")
-  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID"
-  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$FUTURE_ID" | \
+  TASK_ID=$(cast call $ORDER_ADDRESS "futureId()")
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$TASK_ID"
+  cast call $ASYNC_PRECOMPILE "futureById(uint64)" "$TASK_ID" | \
       grep "output"
   ```
 - **The Order execution fails**  

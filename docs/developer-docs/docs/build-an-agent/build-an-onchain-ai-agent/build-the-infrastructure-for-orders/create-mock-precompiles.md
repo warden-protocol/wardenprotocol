@@ -116,7 +116,7 @@ contract MockWardenPrecompile {
 
 ### 1.3. Create an Async precompile
 
-In a file `MockAsyncPrecompile.sol`, implement a mock of the [`x/async` precompile](/build-an-app/precompiles/x-async) for creating and tracking [Futures](/learn/glossary#future). Note that this precompile is required only for [automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
+In a file `MockAsyncPrecompile.sol`, implement a mock of the [`x/async` precompile](/build-an-app/precompiles/x-async) for creating and tracking [Tasks](/learn/glossary#task). Note that this precompile is required only for [automated Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
 
 :::note Full code
 You can find the full code on GitHub: [`mocks/MockAsyncPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockAsyncPrecompile.sol)

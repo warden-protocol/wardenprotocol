@@ -54,7 +54,11 @@ contract WardenKeychain {
 After deploying your contract, you can interact with it by calling the `createKeychain()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "createKeychain(string,string,string,string)" "My Keychain" "Keychain Description" "https://example.com" "keybase-id-123" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS \
+  "createKeychain(string,string,string,string)" \
+  "my-keychain" "my-keychain-description" \
+  "https://example.com" "keybase-id-123" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Update a Keychain
@@ -96,7 +100,11 @@ contract WardenKeychain {
 After deploying your contract, you can interact with it by calling the `updateKeychain()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "updateKeychain(uint64,string,string,string,string,(string,uint256)[],(string,uint256)[])" 1 "Updated Keychain" "Updated Description" "https://updated.com" "new-keybase-id" "(\"award\",100000000000000000)" "(\"award\",50000000000000000)" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS \
+  "updateKeychain(uint64,string,string,string,string,(string,uint256)[],(string,uint256)[])" 1 \
+  "my-keychain" "my-keychain-description" "https://updated.com" "new-keybase-id" \
+  "(\"award\",100000000000000000)" "(\"award\",50000000000000000)" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Add a Keychain admin
@@ -118,7 +126,8 @@ contract WardenKeychain {
 After deploying your contract, you can interact with it by calling the `addAdmin()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "addAdmin(uint64,address)" 1 0xYourAdminAddress --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "addAdmin(uint64,address)" 1 0xYourAdminAddress \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Remove a Keychain admin
@@ -140,7 +149,8 @@ contract WardenKeychain {
 After deploying your contract, you can interact with it by calling the `removeAdmin()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "removeAdmin(uint64,address)" 1 0xAdminToRemove --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "removeAdmin(uint64,address)" 1 0xAdminToRemove \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Add a Keychain Writer
@@ -162,7 +172,8 @@ contract WardenKeychain {
 After deploying your contract, you can interact with it by calling the `addWriter()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "addWriter(uint64,address)" 1 0xYourWriterAddress --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "addWriter(uint64,address)" 1 0xYourWriterAddress \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Query Keychains

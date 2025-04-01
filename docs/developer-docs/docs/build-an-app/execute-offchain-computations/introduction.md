@@ -19,7 +19,7 @@ This section will guide you through using `x/async` to execute different types o
 
 The `x/async` module implements such concepts as [Futures](/learn/warden-protocol-modules/x-async#future) and [handlers](/learn/warden-protocol-modules/x-async#handler).
 
-A **Future** is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. A user can request a Future, specifying an input and a **handler**, which determines how to handle the input. In other words, the type of the computation you're going to execute depends on the handler you pass.
+A **Future** is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. A user can request a Future, specifying an input and a **handler**, which determines how to interpret the input. In other words, the type of the computation you're going to execute depends on the handler you pass.
 
 Currently, we support two handlers, which allow executing **price predictions** and **HTTP requests**. You can learn how to use these handlers by following our tutorials:
 

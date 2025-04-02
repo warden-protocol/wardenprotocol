@@ -6,6 +6,7 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Strings } from "../lib/Strings.sol";
 import { Types } from "../types/Types.sol";
 import { TypesV1 } from "../types/TypesV1.sol";
+import { ExecutionData } from "../types/IExecutionV1.sol";
 
 error InvalidScheduler();
 error InvalidRegistry();
@@ -16,8 +17,8 @@ error InvalidTxTo();
 abstract contract AbstractOrderV1 {
     using Strings for *;
 
+    address public keyAddress;
     IWarden private immutable WARDEN_PRECOMPILE;
-    address private _keyAddress;
     int32 private constant ETHEREUM_ADDRESS_TYPE = 1;
 
     constructor(TypesV1.CommonExecutionData memory commonExecutionData, address scheduler, address registry) {
@@ -50,7 +51,7 @@ abstract contract AbstractOrderV1 {
         addressTypes[0] = ETHEREUM_ADDRESS_TYPE;
         KeyResponse memory keyResponse =
             WARDEN_PRECOMPILE.keyById(commonExecutionData.signRequestData.keyId, addressTypes);
-        _keyAddress = keyResponse.addresses[0].addressValue.parseAddress();
+        keyAddress = keyResponse.addresses[0].addressValue.parseAddress();
     }
 
     function createSignRequest(
@@ -73,5 +74,10 @@ abstract contract AbstractOrderV1 {
             signRequestData.expectedRejectExpression,
             BroadcastType.Automatic
         );
+    }
+
+    function toEIP191Hash(bytes memory message) external pure returns (bytes32 eip191Message) {
+        string memory len = Strings.toString(message.length);
+        eip191Message = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", len, message));
     }
 }

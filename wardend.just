@@ -8,7 +8,7 @@ version := tag + dirty
 ldflags := '-ldflags "-s -w -X github.com/cosmos/cosmos-sdk/version.Name=' + app_name + ' -X github.com/cosmos/cosmos-sdk/version.AppName=' + app_name + 'd -X github.com/cosmos/cosmos-sdk/version.Version=' + version + ' -X github.com/cosmos/cosmos-sdk/version.Commit=' + commit + ' -X github.com/warden-protocol/wardenprotocol/cmd/wardend/cmd.ChainID=' + chain_id + '"'
 output_dir := env("OUTPUT_DIR", "./build")
 libwasm_version := `go list -m -f '{{ .Version }}' github.com/CosmWasm/wasmvm/v2`
-goreleaser_cross_version := 'v1.24-v2.7.0'
+goreleaser_cross_version := 'v1.24.1'
 goreleaser_version := 'v2.7.0'
 release := env("RELEASE", "false")
 github_token := env("GITHUB_TOKEN", "")

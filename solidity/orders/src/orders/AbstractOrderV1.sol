@@ -6,7 +6,6 @@ import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Strings } from "../lib/Strings.sol";
 import { Types } from "../types/Types.sol";
 import { TypesV1 } from "../types/TypesV1.sol";
-import { ExecutionData } from "../types/IExecutionV1.sol";
 
 error InvalidScheduler();
 error InvalidRegistry();

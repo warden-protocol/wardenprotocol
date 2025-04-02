@@ -160,6 +160,35 @@
           "internalType": "string",
           "name": "key",
           "type": "string"
+        },
+        {
+          "internalType": "int64",
+          "name": "decimals",
+          "type": "int64"
+        }
+      ],
+      "name": "getFloatArray",
+      "outputs": [
+        {
+          "internalType": "int256[]",
+          "name": "",
+          "type": "int256[]"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
+          "internalType": "string",
+          "name": "key",
+          "type": "string"
         }
       ],
       "name": "getInt256",

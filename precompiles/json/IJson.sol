@@ -144,6 +144,18 @@ interface IJson {
     ) external pure returns (int256[] memory);
 
     /**
+     * @dev Defines a method to get an float array value from JSON by key.
+     * @param input The JSON input as bytes.
+     * @param key The key to look up.
+     * @return The float array value.
+     */
+    function getFloatArray(
+        bytes memory input,
+        string memory key,
+        int64 decimals
+    ) external pure returns (int256[] memory);
+
+    /**
      * @dev Defines a method to get a boolean array value from JSON by key.
      * @param input The JSON input as bytes.
      * @param key The key to look up.

@@ -26,6 +26,7 @@ const (
 	GetStringArrayMethod  = "getStringArray"
 	GetUintArrayMethod    = "getUintArray"
 	GetIntArrayMethod     = "getIntArray"
+	GetFloatArrayMethod   = "getFloatArray"
 	GetBoolArrayMethod    = "getBoolArray"
 	GetAddressArrayMethod = "getAddressArray"
 	GetObjectsArrayMethod = "getObjectsArray"
@@ -34,9 +35,11 @@ const (
 	SetAddressMethod      = "setAddress"
 	SetInt256Method       = "setInt256"
 	SetUint256Method      = "setUint256"
+	SetFloatMethod        = "setFloat"
 	SetStringArrayMethod  = "setStringArray"
 	SetUintArrayMethod    = "setUintArray"
 	SetIntArrayMethod     = "setIntArray"
+	SetFloatArrayMethod   = "setFloatArray"
 	SetBoolArrayMethod    = "setBoolArray"
 	SetAddressArrayMethod = "setAddressArray"
 	SetObjectsArrayMethod = "setObjectsArray"
@@ -814,6 +817,50 @@ func (p Precompile) SetObjectsArray(
 	encodedJson := out.EncodeJSON()
 
 	return method.Outputs.Pack(encodedJson)
+}
+
+// GetFloatArray decodes GetInput from args, returns float array by key.
+func (p Precompile) GetFloatArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetFloatInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	objectsArray := make([]*big.Int, arrayCount)
+	for i, v := range container.Children() {
+		jsonNumber, ok := v.Data().(json.Number)
+		if !ok {
+			return nil, fmt.Errorf("element at index %d is not a valid number", i)
+		}
+
+		res, err := GetIntegerFraction(jsonNumber.String(), input.Decimals)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing float value at index %d: %w", i, err)
+		}
+
+		objectsArray[i] = res
+	}
+
+	return method.Outputs.Pack(objectsArray)
 }
 
 func readJson(input []byte) (*gabs.Container, error) {

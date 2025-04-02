@@ -133,6 +133,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.GetUintArray(ctx, method, args)
 	case GetIntArrayMethod:
 		bz, err = p.GetIntArray(ctx, method, args)
+	case GetFloatArrayMethod:
+		bz, err = p.GetFloatArray(ctx, method, args)
 	case GetBoolArrayMethod:
 		bz, err = p.GetBoolArray(ctx, method, args)
 	case GetAddressArrayMethod:
@@ -166,9 +168,11 @@ func (p *Precompile) IsTransaction(method string) bool {
 		SetAddressMethod,
 		SetInt256Method,
 		SetUint256Method,
+		SetFloatMethod,
 		SetStringArrayMethod,
 		SetUintArrayMethod,
 		SetIntArrayMethod,
+		SetFloatArrayMethod,
 		SetBoolArrayMethod,
 		SetAddressArrayMethod,
 		SetObjectsArrayMethod,
@@ -183,6 +187,7 @@ func (p *Precompile) IsTransaction(method string) bool {
 		GetStringArrayMethod,
 		GetUintArrayMethod,
 		GetIntArrayMethod,
+		GetFloatArrayMethod,
 		GetBoolArrayMethod,
 		GetAddressArrayMethod,
 		GetObjectsArrayMethod:

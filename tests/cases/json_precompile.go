@@ -544,4 +544,29 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 			require.Equal(t, int64(i+1), innerItemValue)
 		}
 	})
+
+	t.Run("get float array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[0.1, 0.2, 0.3]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		expectedValues := []*big.Int{
+			big.NewInt(1), // 0.1 * 10
+			big.NewInt(2), // 0.2 * 10
+			big.NewInt(3), // 0.3 * 10
+		}
+
+		// Act
+		getResponse, err := iJsonClient.GetFloatArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1", 1)
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, len(expectedValues), len(getResponse))
+		for i, expectedValue := range expectedValues {
+			require.Equal(t, expectedValue, getResponse[i])
+		}
+	})
 }

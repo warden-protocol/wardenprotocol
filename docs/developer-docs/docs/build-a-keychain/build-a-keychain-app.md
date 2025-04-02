@@ -10,7 +10,7 @@ This guide explains how to build a basic Keychain application using the [Keychai
 
 ## Prerequisites
 
-- [Go](https://golang.org/dl/) 1.23 or later
+- [Go](https://golang.org/dl/) 1.24 or later
 - `make`
 
 Before starting, you should also take the steps from this guide: [Create a Keychain](operate-a-keychain/create-a-keychain).

@@ -54,7 +54,8 @@ contract WardenKey {
 After deploying your contract, you can interact with it by calling the `updateKey()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "updateKeyConfig(uint64,uint64,uint64,uint64)" 1 100 200 300 --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "updateKeyConfig(uint64,uint64,uint64,uint64)" 1 100 200 300 \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Query keys

@@ -403,7 +403,7 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 
 	t.Run("get address test", func(t *testing.T) {
 		// Arrange
-		newJsonObject, err := gabs.ParseJSON([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey": "0x0000000000000000000000000000000000000905"}}}`))
+		newJsonObject, err := gabs.ParseJSON([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey": "0x0000000000000000000000000000000000000904"}}}`))
 		require.NoError(t, err)
 
 		newJsonObjectBytes := newJsonObject.EncodeJSON()

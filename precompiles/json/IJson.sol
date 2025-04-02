@@ -2,7 +2,7 @@
 pragma solidity >=0.8.25;
 
 /// @dev The IJson contract's address.
-address constant IJSON_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000905;
+address constant IJSON_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000904;
 
 /// @dev The IJson contract's instance.
 IJson constant IJSON_CONTRACT = IJson(IJSON_PRECOMPILE_ADDRESS);
@@ -15,7 +15,7 @@ IJson constant IJSON_CONTRACT = IJson(IJSON_PRECOMPILE_ADDRESS);
  * This interface provides methods to manipulate JSON data in Solidity, including adding, 
  * removing, and retrieving key-value pairs. It supports basic types, arrays, and nested objects.
  * 
- * @custom:address 0x0000000000000000000000000000000000000905
+ * @custom:address 0x0000000000000000000000000000000000000904
  */
 interface IJson {
 

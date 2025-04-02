@@ -150,6 +150,160 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 		require.Equal(t, "nestedValue", setObjectResponseParsed.Path("objectKey.nestedKey").Data().(string))
 	})
 
+	t.Run("set string array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		stringArray := []string{"value1", "value2", "value3"}
+
+		setResponse, err := iJsonClient.SetStringArray(alice.CallOps(t), newJsonObjectBytes, "stringArrayKey", stringArray)
+		require.NoError(t, err)
+
+		setResponseParsed, err := gabs.ParseJSON(setResponse)
+		require.NoError(t, err)
+
+		for i, value := range stringArray {
+			require.Equal(t, value, setResponseParsed.Path("stringArrayKey").Index(i).Data().(string))
+		}
+	})
+
+	t.Run("set uint array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		uintArray := []*big.Int{
+			big.NewInt(1),
+			big.NewInt(2),
+			big.NewInt(3),
+		}
+
+		setResponse, err := iJsonClient.SetUintArray(alice.CallOps(t), newJsonObjectBytes, "uintArrayKey", uintArray)
+		require.NoError(t, err)
+
+		dec := json.NewDecoder(bytes.NewReader(setResponse))
+		dec.UseNumber()
+		setResponseParsed, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+
+		for i, value := range uintArray {
+			require.Equal(t, value.String(), setResponseParsed.Path("uintArrayKey").Index(i).Data().(json.Number).String())
+		}
+	})
+
+	t.Run("set int array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		intArray := []*big.Int{
+			big.NewInt(-1),
+			big.NewInt(-2),
+			big.NewInt(-3),
+		}
+
+		setResponse, err := iJsonClient.SetIntArray(alice.CallOps(t), newJsonObjectBytes, "intArrayKey", intArray)
+		require.NoError(t, err)
+
+		dec := json.NewDecoder(bytes.NewReader(setResponse))
+		dec.UseNumber()
+		setResponseParsed, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+
+		for i, value := range intArray {
+			require.Equal(t, value.String(), setResponseParsed.Path("intArrayKey").Index(i).Data().(json.Number).String())
+		}
+	})
+
+	t.Run("set bool array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		boolArray := []bool{true, false, true}
+
+		setResponse, err := iJsonClient.SetBoolArray(alice.CallOps(t), newJsonObjectBytes, "boolArrayKey", boolArray)
+		require.NoError(t, err)
+
+		setResponseParsed, err := gabs.ParseJSON(setResponse)
+		require.NoError(t, err)
+
+		for i, value := range boolArray {
+			require.Equal(t, value, setResponseParsed.Path("boolArrayKey").Index(i).Data().(bool))
+		}
+	})
+
+	t.Run("set address array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		addressArray := []common.Address{
+			common.HexToAddress("0x0000000000000000000000000000000000000001"),
+			common.HexToAddress("0x0000000000000000000000000000000000000002"),
+			common.HexToAddress("0x0000000000000000000000000000000000000003"),
+		}
+
+		setResponse, err := iJsonClient.SetAddressArray(alice.CallOps(t), newJsonObjectBytes, "addressArrayKey", addressArray)
+		require.NoError(t, err)
+
+		setResponseParsed, err := gabs.ParseJSON(setResponse)
+		require.NoError(t, err)
+
+		for i, value := range addressArray {
+			require.Equal(t, value.Hex(), setResponseParsed.Path("addressArrayKey").Index(i).Data().(string))
+		}
+	})
+
+	t.Run("set objects array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		objectsArray := [][]byte{
+			[]byte(`{"key1":"value1"}`),
+			[]byte(`{"key2":"value2"}`),
+			[]byte(`{"key3":"value3"}`),
+		}
+
+		setResponse, err := iJsonClient.SetObjectsArray(alice.CallOps(t), newJsonObjectBytes, "objectsArrayKey", objectsArray)
+		require.NoError(t, err)
+
+		setResponseParsed, err := gabs.ParseJSON(setResponse)
+		require.NoError(t, err)
+
+		for i, obj := range objectsArray {
+			parsedObj, err := gabs.ParseJSON(obj)
+			require.NoError(t, err)
+			require.Equal(t, parsedObj.Bytes(), setResponseParsed.Path("objectsArrayKey").Index(i).Bytes())
+		}
+	})
+
+	t.Run("set objects array with collision replaces the field", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{"objectsArrayKey":{}}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+		objectsArray := [][]byte{
+			[]byte(`{"key1":"value1"}`),
+			[]byte(`{"key2":"value2"}`),
+			[]byte(`{"key3":"value3"}`),
+		}
+
+		setResponse, err := iJsonClient.SetObjectsArray(alice.CallOps(t), newJsonObjectBytes, "objectsArrayKey", objectsArray)
+		require.NoError(t, err)
+
+		setResponseParsed, err := gabs.ParseJSON(setResponse)
+		require.NoError(t, err)
+
+		for i, obj := range objectsArray {
+			parsedObj, err := gabs.ParseJSON(obj)
+			require.NoError(t, err)
+			require.Equal(t, parsedObj.Bytes(), setResponseParsed.Path("objectsArrayKey").Index(i).Bytes())
+		}
+	})
+
 	t.Run("plain get test", func(t *testing.T) {
 		newJsonObject, err := gabs.ParseJSON([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey":"nestedValue"}}}`))
 		require.NoError(t, err)
@@ -259,5 +413,135 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 		require.Equal(t, expectedValue1.Int64(), getResponse1.Int64())
 		require.Equal(t, expectedValue2, getResponse2)
 		require.Equal(t, expectedValue3, getResponse3)
+	})
+
+	t.Run("get string array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":["string1", "string2", "string3"]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		// Act
+		getResponse, err := iJsonClient.GetStringArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1")
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, 3, len(getResponse))
+		require.Equal(t, "string1", getResponse[0])
+		require.Equal(t, "string2", getResponse[1])
+		require.Equal(t, "string3", getResponse[2])
+	})
+
+	t.Run("get int256 array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[ 340282366920938463463374607431768211451, 340282366920938463463374607431768211452, 340282366920938463463374607431768211453]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		expectedValue1, _ := new(big.Int).SetString("340282366920938463463374607431768211451", 10)
+		expectedValue2, _ := new(big.Int).SetString("340282366920938463463374607431768211452", 10)
+		expectedValue3, _ := new(big.Int).SetString("340282366920938463463374607431768211453", 10)
+
+		// Act
+		getResponse, err := iJsonClient.GetIntArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1")
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, 3, len(getResponse))
+		require.Equal(t, expectedValue1, getResponse[0])
+		require.Equal(t, expectedValue2, getResponse[1])
+		require.Equal(t, expectedValue3, getResponse[2])
+	})
+
+	t.Run("get uint256 array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[ 340282366920938463463374607431768211451, 340282366920938463463374607431768211452, 340282366920938463463374607431768211453]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		expectedValue1, _ := new(big.Int).SetString("340282366920938463463374607431768211451", 10)
+		expectedValue2, _ := new(big.Int).SetString("340282366920938463463374607431768211452", 10)
+		expectedValue3, _ := new(big.Int).SetString("340282366920938463463374607431768211453", 10)
+
+		// Act
+		getResponse, err := iJsonClient.GetUintArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1")
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, 3, len(getResponse))
+		require.Equal(t, expectedValue1, getResponse[0])
+		require.Equal(t, expectedValue2, getResponse[1])
+		require.Equal(t, expectedValue3, getResponse[2])
+	})
+
+	t.Run("get bool array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[ true, false, true ]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		// Act
+		getResponse, err := iJsonClient.GetBoolArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1")
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, 3, len(getResponse))
+		require.Equal(t, true, getResponse[0])
+		require.Equal(t, false, getResponse[1])
+		require.Equal(t, true, getResponse[2])
+	})
+
+	t.Run("get address array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[ "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903" ]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		// Act
+		getResponse, err := iJsonClient.GetAddressArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1")
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, 3, len(getResponse))
+		require.Equal(t, common.HexToAddress("0x0000000000000000000000000000000000000901"), getResponse[0])
+		require.Equal(t, common.HexToAddress("0x0000000000000000000000000000000000000902"), getResponse[1])
+		require.Equal(t, common.HexToAddress("0x0000000000000000000000000000000000000903"), getResponse[2])
+	})
+
+	t.Run("get object array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[ {"value":1}, {"value":2}, {"value":3}]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		// Act
+		getResponse, err := iJsonClient.GetObjectsArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1")
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, 3, len(getResponse))
+
+		for i := 0; i < len(getResponse); i++ {
+			dec := json.NewDecoder(bytes.NewReader(getResponse[i]))
+			dec.UseNumber()
+			innerItem, err := gabs.ParseJSONDecoder(dec)
+			require.NoError(t, err)
+
+			innerItemValue, err := innerItem.Path("value").Data().(json.Number).Int64()
+			require.NoError(t, err)
+			require.Equal(t, int64(i+1), innerItemValue)
+		}
 	})
 }

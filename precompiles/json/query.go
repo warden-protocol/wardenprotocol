@@ -15,32 +15,32 @@ import (
 )
 
 const (
-	RemoveMethod          = "remove"     // +
-	GetMethod             = "get"        // +
-	GetStringMethod       = "getString"  // +
-	GetBoolMethod         = "getBool"    // +
-	GetAddressMethod      = "getAddress" // +
-	GetInt256Method       = "getInt256"  // +
-	GetUint256Method      = "getUint256" // +
-	GetFloatMethod        = "getFloat"   // +
+	RemoveMethod          = "remove"
+	GetMethod             = "get"
+	GetStringMethod       = "getString"
+	GetBoolMethod         = "getBool"
+	GetAddressMethod      = "getAddress"
+	GetInt256Method       = "getInt256"
+	GetUint256Method      = "getUint256"
+	GetFloatMethod        = "getFloat"
 	GetStringArrayMethod  = "getStringArray"
 	GetUintArrayMethod    = "getUintArray"
 	GetIntArrayMethod     = "getIntArray"
 	GetBoolArrayMethod    = "getBoolArray"
 	GetAddressArrayMethod = "getAddressArray"
 	GetObjectsArrayMethod = "getObjectsArray"
-	SetStringMethod       = "setString"  // +
-	SetBoolMethod         = "setBool"    // +
-	SetAddressMethod      = "setAddress" // +
-	SetInt256Method       = "setInt256"  // +
-	SetUint256Method      = "setUint256" // +
+	SetStringMethod       = "setString"
+	SetBoolMethod         = "setBool"
+	SetAddressMethod      = "setAddress"
+	SetInt256Method       = "setInt256"
+	SetUint256Method      = "setUint256"
 	SetStringArrayMethod  = "setStringArray"
 	SetUintArrayMethod    = "setUintArray"
 	SetIntArrayMethod     = "setIntArray"
 	SetBoolArrayMethod    = "setBoolArray"
 	SetAddressArrayMethod = "setAddressArray"
 	SetObjectsArrayMethod = "setObjectsArray"
-	SetObjectMethod       = "setObject" // +
+	SetObjectMethod       = "setObject"
 )
 
 // Remove decodes RemoveInput from args, removes value by key.
@@ -167,11 +167,16 @@ func (p Precompile) GetAddressValue(
 	}
 
 	container := out.Path(input.Key)
-	if container == nil || !common.IsHexAddress(container.Data().(string)) {
-		return nil, fmt.Errorf("value doesn't exist or is not a valid address at path: %s", input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
 	}
 
-	return method.Outputs.Pack(common.HexToAddress(container.Data().(string)))
+	addressStr, ok := container.Data().(string)
+	if !ok || !common.IsHexAddress(addressStr) {
+		return nil, fmt.Errorf("value is not a valid address at path: %s", input.Key)
+	}
+
+	return method.Outputs.Pack(common.HexToAddress(addressStr))
 }
 
 // GetInt256 decodes GetInput from args, returns int256 value by key.
@@ -259,6 +264,236 @@ func (p Precompile) GetFloat(
 	}
 
 	return method.Outputs.Pack(res)
+}
+
+// GetStringArray decodes GetInput from args, returns string array by key.
+func (p Precompile) GetStringArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	objectsArray := make([]string, arrayCount)
+	for i, v := range container.Children() {
+		value, success := v.Data().(string)
+		if !success {
+			return nil, fmt.Errorf("value is not a string array at path: %s", input.Key)
+		}
+
+		objectsArray[i] = value
+	}
+
+	return method.Outputs.Pack(objectsArray)
+}
+
+// GetUintArray decodes GetInput from args, returns uint array by key.
+func (p Precompile) GetUintArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	objectsArray := make([]*big.Int, arrayCount)
+	for i, v := range container.Children() {
+		value, success := new(big.Int).SetString(v.String(), 10)
+		if !success {
+			return nil, fmt.Errorf("error while parsing uint value at index %d", i)
+		}
+
+		objectsArray[i] = value
+	}
+
+	return method.Outputs.Pack(objectsArray)
+}
+
+// GetIntArray decodes GetInput from args, returns int array by key.
+func (p Precompile) GetIntArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	objectsArray := make([]*big.Int, arrayCount)
+	for i, v := range container.Children() {
+		value, success := new(big.Int).SetString(v.String(), 10)
+		if !success {
+			return nil, fmt.Errorf("error while parsing int value at index %d", i)
+		}
+
+		objectsArray[i] = value
+	}
+
+	return method.Outputs.Pack(objectsArray)
+}
+
+// GetBoolArray decodes GetInput from args, returns bool array by key.
+func (p Precompile) GetBoolArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	objectsArray := make([]bool, arrayCount)
+	for i, v := range container.Children() {
+		value, ok := v.Data().(bool)
+		if !ok {
+			return nil, fmt.Errorf("element at index %d is not a bool value", i)
+		}
+
+		objectsArray[i] = value
+	}
+
+	return method.Outputs.Pack(objectsArray)
+}
+
+// GetAddressArray decodes GetInput from args, returns address array by key.
+func (p Precompile) GetAddressArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	objectsArray := make([]common.Address, arrayCount)
+	for i, v := range container.Children() {
+		stringValue, ok := v.Data().(string)
+		if !ok || !common.IsHexAddress(stringValue) {
+			return nil, fmt.Errorf("element at index %d is not a valid address", i)
+		}
+
+		objectsArray[i] = common.HexToAddress(stringValue)
+	}
+
+	return method.Outputs.Pack(objectsArray)
+}
+
+// GetObjectsArray decodes GetInput from args, returns objects array by key.
+func (p Precompile) GetObjectsArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	arrayCount, err := container.ArrayCount()
+	if err != nil {
+		return nil, fmt.Errorf("error while getting array count: %w", err)
+	}
+
+	array := container.Children()
+	objectsArray := make([][]byte, arrayCount)
+	for i, v := range array {
+		objectsArray[i] = v.Bytes()
+	}
+
+	return method.Outputs.Pack(objectsArray)
 }
 
 // SetString decodes SetInput from args, adds string value by key to input.
@@ -409,6 +644,171 @@ func (p Precompile) SetObject(
 
 	if _, err := out.Set(valueObject, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+// SetStringArray decodes SetInput from args, adds string array by key to input.
+func (p Precompile) SetStringArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[[]string]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if _, err := out.Set(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+// SetBoolArray decodes SetInput from args, adds boolean array by key to input.
+func (p Precompile) SetBoolArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[[]bool]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if _, err := out.Set(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+// SetUintArray decodes SetInput from args, adds uint array by key to input.
+func (p Precompile) SetUintArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[[]*big.Int]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if _, err := out.Set(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+// SetIntArray decodes SetInput from args, adds int array by key to input.
+func (p Precompile) SetIntArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[[]*big.Int]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if _, err := out.Set(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+// SetAddressArray decodes SetInput from args, adds address array by key to input.
+func (p Precompile) SetAddressArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[[]common.Address]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if _, err := out.Set(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+// SetObjectsArray decodes SetInput from args, adds objects array by key to input.
+func (p Precompile) SetObjectsArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[[][]byte]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if out.ExistsP(input.Key) {
+		out.DeleteP(input.Key)
+	}
+
+	if _, err := out.ArrayP(input.Key); err != nil {
+		return nil, fmt.Errorf("error while creating array in JSON: %w", err)
+	}
+
+	for _, v := range input.Value {
+		valueObject, err := readJson(v)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+		}
+
+		if err := out.ArrayAppendP(valueObject, input.Key); err != nil {
+			return nil, fmt.Errorf("error while appending value in JSON: %w", err)
+		}
 	}
 
 	encodedJson := out.EncodeJSON()

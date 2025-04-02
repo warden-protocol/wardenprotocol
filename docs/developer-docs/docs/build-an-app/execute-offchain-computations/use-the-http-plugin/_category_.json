@@ -1,11 +1,11 @@
 {
   "position": 1,
-  "label": "Use the HTTP handler",
+  "label": "Use the HTTP Plugin",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Use the HTTP handler"
+    "title": "Use the HTTP Plugin"
   },
   "customProps": {}
 }

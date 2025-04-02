@@ -152,4 +152,4 @@ This contract adds:
 
 ## Next steps
 
-Now you can implement a more advanced example: [Fetch multiple prices](http://localhost:3000/build-an-app/execute-offchain-computations/use-the-http-handler/fetch-multiple-prices).
+Now you can implement a more advanced example: [Fetch multiple prices](fetch-multiple-prices).

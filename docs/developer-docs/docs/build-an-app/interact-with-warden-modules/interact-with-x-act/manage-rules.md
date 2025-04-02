@@ -37,7 +37,7 @@ After deploying your contract, you can interact with it by calling the `createRu
 
 ```bash
 cast send $CONTRACT_ADDRESS "createRule(string,string)" \
-    "MyRule" "quorum(2, [\"0x123...\", \"0x456...\"])" \
+    "My Rule" "quorum(2, [\"0x123...\", \"0x456...\"])" \
     --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
@@ -84,10 +84,9 @@ contract WardenRule {
 }
 ```
 
-After deploying your contract, you can interact with it by calling the `getAllRules()` function:
+After deploying your contract, you can interact with it by calling the `getAllRules()` function. For example, you can get the first 10 Rules associated with a creator:
 
 ```bash
-# Get first 10 rules for a creator
 cast call $CONTRACT_ADDRESS "getAllRules((bytes,uint64,uint64,bool,bool),address)" \
     "(0x,0,10,true,false)" $CREATOR_ADDRESS --rpc-url $RPC_URL
 ```

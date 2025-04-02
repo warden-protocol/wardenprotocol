@@ -118,6 +118,36 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 		require.Equal(t, uint256Value, uintKeyValueBigInt)
 	})
 
+	t.Run("set float", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		testCases := []struct {
+			value    *big.Int
+			decimals int64
+			expected string
+		}{
+			{big.NewInt(-2), 3, "-0.002"},
+			{big.NewInt(-1), 2, "-0.01"},
+			{big.NewInt(-3), 1, "-0.3"},
+			{big.NewInt(-3), 0, "-3"},
+		}
+
+		for _, testCase := range testCases {
+			setResponse, err := iJsonClient.SetFloat(alice.CallOps(t), newJsonObjectBytes, "floatKey", testCase.value, testCase.decimals)
+			require.NoError(t, err)
+
+			dec := json.NewDecoder(bytes.NewReader(setResponse))
+			dec.UseNumber()
+			setResponseParsed, err := gabs.ParseJSONDecoder(dec)
+			require.NoError(t, err)
+
+			require.Equal(t, testCase.expected, setResponseParsed.Path("floatKey").Data().(json.Number).String())
+		}
+	})
+
 	t.Run("set boolean value", func(t *testing.T) {
 		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
 		require.NoError(t, err)
@@ -213,6 +243,37 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 
 		for i, value := range intArray {
 			require.Equal(t, value.String(), setResponseParsed.Path("intArrayKey").Index(i).Data().(json.Number).String())
+		}
+	})
+
+	t.Run("set float array", func(t *testing.T) {
+		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
+		require.NoError(t, err)
+
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		intArray := []*big.Int{
+			big.NewInt(-1),
+			big.NewInt(-2),
+			big.NewInt(-3),
+		}
+
+		expectedArray := []string{
+			"-0.01",
+			"-0.02",
+			"-0.03",
+		}
+
+		setResponse, err := iJsonClient.SetFloatArray(alice.CallOps(t), newJsonObjectBytes, "floatArrayKey", intArray, int64(2))
+		require.NoError(t, err)
+
+		dec := json.NewDecoder(bytes.NewReader(setResponse))
+		dec.UseNumber()
+		setResponseParsed, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+
+		for i, value := range expectedArray {
+			require.Equal(t, value, setResponseParsed.Path("floatArrayKey").Index(i).Data().(json.Number).String())
 		}
 	})
 

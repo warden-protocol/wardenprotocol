@@ -555,6 +555,74 @@
           "internalType": "int256",
           "name": "value",
           "type": "int256"
+        },
+        {
+          "internalType": "int64",
+          "name": "decimals",
+          "type": "int64"
+        }
+      ],
+      "name": "setFloat",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
+          "internalType": "string",
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "internalType": "int256[]",
+          "name": "value",
+          "type": "int256[]"
+        },
+        {
+          "internalType": "int64",
+          "name": "decimals",
+          "type": "int64"
+        }
+      ],
+      "name": "setFloatArray",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
+          "internalType": "string",
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "internalType": "int256",
+          "name": "value",
+          "type": "int256"
         }
       ],
       "name": "setInt256",

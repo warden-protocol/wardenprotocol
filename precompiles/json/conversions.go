@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func GetIntegerFraction(value string, decimalPoints int64) (*big.Int, error) {
+func ToInteger(value string, decimalPoints int64) (*big.Int, error) {
 	// Check if the value is negative
 	isNegative := strings.HasPrefix(value, "-")
 	if isNegative {
@@ -55,6 +55,56 @@ func GetIntegerFraction(value string, decimalPoints int64) (*big.Int, error) {
 	// Restore the negative sign if the value was negative
 	if isNegative {
 		result.Neg(result)
+	}
+
+	return result, nil
+}
+
+func ToFloat(number *big.Int, decimalPoints int64) (string, error) {
+	if decimalPoints < 0 {
+		return "", fmt.Errorf("decimal points cannot be negative")
+	}
+
+	if decimalPoints == 0 {
+		return number.String(), nil
+	}
+
+	// Convert the number to a string
+	numberStr := number.String()
+
+	// Handle the case where the number is negative
+	isNegative := strings.HasPrefix(numberStr, "-")
+	if isNegative {
+		numberStr = numberStr[1:] // Remove the negative sign for processing
+	}
+
+	// Add leading zeros if the number of digits is less than decimalPoints
+	if int64(len(numberStr)) <= decimalPoints {
+		numberStr = strings.Repeat("0", int(decimalPoints)-len(numberStr)+1) + numberStr
+	}
+
+	// Split the number into integer and fractional parts
+	integerPart := numberStr[:len(numberStr)-int(decimalPoints)]
+	fractionalPart := numberStr[len(numberStr)-int(decimalPoints):]
+
+	// Remove leading zeros from the integer part
+	integerPart = strings.TrimLeft(integerPart, "0")
+	if integerPart == "" {
+		integerPart = "0"
+	}
+
+	// Remove trailing zeros from the fractional part
+	fractionalPart = strings.TrimRight(fractionalPart, "0")
+	if fractionalPart == "" {
+		fractionalPart = "0"
+	}
+
+	// Combine the integer and fractional parts
+	result := integerPart + "." + fractionalPart
+
+	// Restore the negative sign if the number was negative
+	if isNegative {
+		result = "-" + result
 	}
 
 	return result, nil

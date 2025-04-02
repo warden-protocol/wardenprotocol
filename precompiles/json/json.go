@@ -99,6 +99,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.SetInt256(ctx, method, args)
 	case SetUint256Method:
 		bz, err = p.SetUint256(ctx, method, args)
+	case SetFloatMethod:
+		bz, err = p.SetFloat(ctx, method, args)
 	case SetObjectMethod:
 		bz, err = p.SetObject(ctx, method, args)
 	case SetStringArrayMethod:
@@ -107,6 +109,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.SetUintArray(ctx, method, args)
 	case SetIntArrayMethod:
 		bz, err = p.SetIntArray(ctx, method, args)
+	case SetFloatArrayMethod:
+		bz, err = p.SetFloatArray(ctx, method, args)
 	case SetBoolArrayMethod:
 		bz, err = p.SetBoolArray(ctx, method, args)
 	case SetAddressArrayMethod:

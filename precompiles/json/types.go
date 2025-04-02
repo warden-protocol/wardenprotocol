@@ -15,6 +15,13 @@ type SetFloatInput struct {
 	Decimals int64
 }
 
+type SetFloatArrayInput struct {
+	Input    []byte
+	Key      string
+	Value    []*big.Int
+	Decimals int64
+}
+
 type RemoveInput struct {
 	Input []byte
 	Key   string

@@ -281,6 +281,21 @@ interface IJson {
         uint256 value
     ) external pure returns (bytes memory);
 
+    /**
+     * @dev Defines a method to set a float key-value in JSON.
+     * @param input The JSON input as bytes.
+     * @param key The key to set.
+     * @param value The uint256 value to set.
+     * @param decimals The number of decimal places.
+     * @return The modified JSON as bytes.
+     */
+    function setFloat(
+        bytes memory input,
+        string memory key,
+        int256 value,
+        int64 decimals
+    ) external pure returns (bytes memory);
+
     // Array types
 
     /**
@@ -320,6 +335,21 @@ interface IJson {
         bytes memory input,
         string memory key,
         int256[] memory value
+    ) external pure returns (bytes memory);
+
+    /**
+     * @dev Defines a method to set a int256 array key-value pair in JSON.
+     * @param input The JSON input as bytes.
+     * @param key The key to set.
+     * @param value The int256 array value to set.
+     * @param decimals The number of decimal places.
+     * @return The modified JSON as bytes.
+     */
+    function setFloatArray(
+        bytes memory input,
+        string memory key,
+        int256[] memory value,
+        int64 decimals
     ) external pure returns (bytes memory);
 
     /**

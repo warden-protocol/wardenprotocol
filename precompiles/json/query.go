@@ -261,7 +261,7 @@ func (p Precompile) GetFloat(
 		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
 	}
 
-	res, err := GetIntegerFraction(jsonNumber.String(), input.Decimals)
+	res, err := ToInteger(jsonNumber.String(), input.Decimals)
 	if err != nil {
 		return nil, fmt.Errorf("error while parsing float value: %w", err)
 	}
@@ -624,6 +624,37 @@ func (p Precompile) SetUint256(
 	return method.Outputs.Pack(encodedJson)
 }
 
+// SetFloat decodes SetFloatInput from args, adds float value by key to input.
+func (p Precompile) SetFloat(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetFloatInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	// Convert the value to a string with the specified decimal points
+	valueStr, err := ToFloat(input.Value, input.Decimals)
+	if err != nil {
+		return nil, fmt.Errorf("error while converting value to float: %s, %d", input.Value.String(), input.Decimals)
+	}
+
+	if _, err := out.Set(json.Number(valueStr), input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
 // SetObject decodes SetInput from args, adds uint256 value by key to input.
 func (p Precompile) SetObject(
 	ctx sdk.Context,
@@ -754,6 +785,47 @@ func (p Precompile) SetIntArray(
 	return method.Outputs.Pack(encodedJson)
 }
 
+// SetFloatArray decodes SetFloatInput from args, adds float value by key to input.
+func (p Precompile) SetFloatArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetFloatArrayInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if out.ExistsP(input.Key) {
+		out.DeleteP(input.Key)
+	}
+
+	if _, err := out.ArrayP(input.Key); err != nil {
+		return nil, fmt.Errorf("error while creating array in JSON: %w", err)
+	}
+
+	for _, v := range input.Value {
+		// Convert the value to a string with the specified decimal points
+		valueStr, err := ToFloat(v, input.Decimals)
+		if err != nil {
+			return nil, fmt.Errorf("error while converting value to float: %w", err)
+		}
+
+		if err := out.ArrayAppendP(json.Number(valueStr), input.Key); err != nil {
+			return nil, fmt.Errorf("error while appending value in JSON: %w", err)
+		}
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
 // SetAddressArray decodes SetInput from args, adds address array by key to input.
 func (p Precompile) SetAddressArray(
 	ctx sdk.Context,
@@ -852,7 +924,7 @@ func (p Precompile) GetFloatArray(
 			return nil, fmt.Errorf("element at index %d is not a valid number", i)
 		}
 
-		res, err := GetIntegerFraction(jsonNumber.String(), input.Decimals)
+		res, err := ToInteger(jsonNumber.String(), input.Decimals)
 		if err != nil {
 			return nil, fmt.Errorf("error while parsing float value at index %d: %w", i, err)
 		}

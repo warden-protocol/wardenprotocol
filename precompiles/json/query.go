@@ -515,7 +515,7 @@ func (p Precompile) SetString(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -540,7 +540,7 @@ func (p Precompile) SetBool(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -565,7 +565,7 @@ func (p Precompile) SetAddressValue(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -590,7 +590,7 @@ func (p Precompile) SetInt256(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -615,7 +615,7 @@ func (p Precompile) SetUint256(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -646,7 +646,7 @@ func (p Precompile) SetFloat(
 		return nil, fmt.Errorf("error while converting value to float: %s, %d", input.Value.String(), input.Decimals)
 	}
 
-	if _, err := out.Set(json.Number(valueStr), input.Key); err != nil {
+	if _, err := out.SetP(json.Number(valueStr), input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -676,7 +676,7 @@ func (p Precompile) SetObject(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(valueObject, input.Key); err != nil {
+	if _, err := out.SetP(valueObject, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -701,7 +701,7 @@ func (p Precompile) SetStringArray(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -726,7 +726,7 @@ func (p Precompile) SetBoolArray(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -751,7 +751,7 @@ func (p Precompile) SetUintArray(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -776,7 +776,7 @@ func (p Precompile) SetIntArray(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
@@ -842,7 +842,7 @@ func (p Precompile) SetAddressArray(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	if _, err := out.Set(input.Value, input.Key); err != nil {
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
 		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 

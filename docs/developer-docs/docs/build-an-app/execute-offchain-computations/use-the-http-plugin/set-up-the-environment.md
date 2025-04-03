@@ -15,7 +15,7 @@ Before you start, complete the following prerequisites:
    foundryup
    ```
 
-- Run a local chain and get your private key, as shown in [Deploy an EVM smart contract](../../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain). Make sure the chain is running.
+- Run a local chain and get your private key, as shown in [Deploy an EVM smart contract](../../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain). Make sure the chain is running. You can additianally refer to [Useful node commands](../useful-node-commands)—for example, if you need to restore a key or get more funds.
 
 
 ## Step 1. Create a Foundry project

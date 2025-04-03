@@ -26,7 +26,7 @@ Before you start, complete the following prerequisites:
    foundryup
    ```
 
-- Prepare the chain, setting up your private key. You can either run a local chain or join the Chiado testnet, as shown in [Deploy an EVM smart contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain).
+- Run a local chain or join the Chiado testnet, setting up your private key, as shown in [Deploy an EVM smart contract](../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain). You can additianally refer to [Useful node commands](../useful-node-commands)—for example, if you need to restore a key or get more funds.
 
 ## 1. Create your project and contract
 

@@ -33,6 +33,9 @@ The [`x/wasm` Warden module](/learn/warden-protocol-modules/external-modules#xwa
 - [Examples of OApps](examples-of-oapps)  
 Here you can find a full list of available OApps.
 
+- [Useful node commands](useful-node-commands)  
+This article lists useful node commands you'll typically need to run before and sometimes while building your application, mostly for managing keys.
+
 - [Deploy smart contracts on Warden](/category/deploy-smart-contracts-on-warden)  
 Get started with OApps: deploy a basic [WASM](deploy-smart-contracts-on-warden/deploy-a-wasm-contract) or [EVM](deploy-smart-contracts-on-warden/deploy-an-evm-contract) smart contract on Warden.
 

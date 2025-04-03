@@ -102,7 +102,7 @@ You can skip this guide and test a preconfigured Keychain. Just run a local node
 
 6. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
    
-   ```
+   ```bash
    wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443
    ```
 

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Oracle services
@@ -15,7 +15,7 @@ Access to oracle data feeds significantly enhances the capabilities of Warden's 
 :::
 
 :::tip
-You can also use the [`x/async` module](warden-protocol-modules/x-async) as an oracle service: it supports [Futures](warden-protocol-modules/x-async#future) that are able to make HTTP requests to external APIs—for example, for fetching prices.
+You can also use the [`x/async` module](warden-protocol-modules/x-async) as an oracle service: it supports [Plugins](warden-protocol-modules/x-async#plugin) that are able to make HTTP requests to external APIs—for example, for fetching prices.
 :::
 
 ## Skip\:Connect

@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Glossary
@@ -30,24 +30,15 @@ This concept is implemented in the `x/act` [module](#module). Learn more: [`x/ac
 
 ## AI Agent
 
-A Warden AI Agent is an AI-driven program that supports both offchain and onchain operations.
+A Warden AI Agent is an AI-driven program that supports both offchain and onchain operations. Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and so on. You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit).
 
-Thanks to their native integration with Warden Protocol, Warden Agents can perform onchain [Actions](#action), such as creating [Spaces](#space), generating [keys](#key), executing transactions, and managing [Orders](#order). You can easily build Warden Agents with the [Warden Agent Kit](#warden-agent-kit). AI integration is ensured by Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
+Warden Agents' integration with AI is ensured by three components:
 
-Learn more: [Warden AI Agents](warden-ai-agents), [Build an Agent](/build-an-agent/introduction).
+- [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain [Action](#action) at any destination chain
+- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [Plugins](#plugin) and [Prophets](#prophet)
+- [SPEX](#spex): Statistical Proof of Execution
 
----
-
-## AI Blockchain Interface (AIBI)
-
-Artificial Intelligence Blockchain Interface (AIBI) brings AI onchain with an intuitive interface for developers to integrate AI into their applications and create [AI Agents](#ai-agent). AIBI allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific prediction. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism.
-
-The core components of AIBI include the following:
-
-- [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain actions at any destination chain
-- `x/async`: a [Warden module](#module) implementing [Futures](#future) and [Prophets](#prophet)
-
-Learn more: [Warden AI Agents](warden-ai-agents), [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async).
+Learn more: [Warden AI Agents](warden-ai-agents).
 
 ---
 
@@ -110,29 +101,6 @@ All delegators inherit the state from their validator: [bonded](#bonded-validato
 ## Full node
 
 A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden Protocol node](#node) yourself.
-
----
-
-## Future
-
-A Future is an offchain user-defined computational task that is executed asynchronously. The result is stored onchain. Futures don't slow the blockchain down thanks to asynchronous execution.
-
-A user requests a Future, specifying an input and a handler for interpreting the input. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Future and provides the result, and other validators vote on correctness of the result. There are different types of Futures, depending on the [Future handler type](#future-handler).
-
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
-
----
-
-## Future handler
-
-A **Future handler** is code that determines how to interpret the [Future](#future) input and what to do with it in order to retrieve the result. When requesting a Future, a user references a handler by ID. Then the handler is executed by a [Prophet](#prophet).
-
-Currently, we support two handlers, which allow executing the following tasks:
-
-- AI-driven price predictions
-- HTTP requests to external services, such as blockchain APIs
-
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -277,7 +245,7 @@ Learn more: [Build an app](/build-an-app/introduction).
 
 An Omnichain Contract is the main part of any [Omnichain Application](#omnichain-application): a smart contract that allows signing transactions and messages at any destination chain.
 
-In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [AI Blockchain Interface](#ai-blockchain-interface-aibi) and [Order](#order).
+In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [Order](#order).
 
 Learn more: [Build an app](/build-an-app/introduction).
 
@@ -293,17 +261,30 @@ Learn more: [Oracle services](oracle-services).
 
 ## Order
 
-An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain. It's part of Warden's [AI Blockchain Interface](#ai-blockchain-interface-aibi).
+An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain.
 
 When creating an Order, you can implement custom logic by using [Warden modules](#module), [Keychains](#keychain), and other features. In particular, the `x/async` module allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 
-Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction), [`x/async`](warden-protocol-modules/x-async).
+Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
+
+---
+
+## Plugin
+
+A Plugin is code that determines what kind of [Task](#task) input to accept and how to handle it in order to retrieve the result (output). When requesting a Task, a user references a Plugin by ID. Then the Plugin is executed by a [Prophet](#prophet).
+
+Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing the following Task types:
+
+- AI-driven price predictions
+- HTTP requests to external services, such as blockchain APIs
+
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
 ## Precompile
 
-Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Futures](/learn/glossary#future), and other components.
+Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Tasks](/learn/glossary#task), and other components.
 
 Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
@@ -313,7 +294,7 @@ Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-mo
 
 A Prophet is a subprocess running on [validator](#validator) nodes, which has two responsibilities:
 
-- Fetching [Future](#future) requests and executing [handlers](#future-handler) associated with Futures
+- Fetching [Task](#task) requests and executing [Plugins](#plugin) to provide Task results
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.
@@ -356,6 +337,16 @@ Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).
 
 ---
 
+## SPEX
+
+SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines.
+
+SPEX is used as a verifiability layer for AI on Warden Protocol. At the moment, SPEX verifies AI-driven price predictions generated by the `x/async` [Warden module](#module). However, you can extend the module with other computational tasks and use SPEX to protect them.
+
+Learn more: [SPEX](spex).
+
+---
+
 ## Staking
 
 Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. [Validators](#validator) and [delegators](#delegator) stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
@@ -364,11 +355,21 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 ---
 
+## Task
+
+A Task is an offchain user-defined  unit of computation that is executed asynchronously. The result is stored onchain. Tasks don't slow the blockchain down thanks to asynchronous execution.
+
+A user requests a Task, specifying an input and a [Plugin](#plugin), which determines what kind of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
+
+This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+
+---
+
 ## Validator
 
 A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol node](#node) and validating blocks and transactions. 
 
-Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance) and hadling [Futures](#future).
+Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance) and hadling [Tasks](#task).
 
 ---
 

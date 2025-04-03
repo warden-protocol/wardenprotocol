@@ -32,6 +32,8 @@ contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {
             _coins.push(maxKeychainFees[i]);
         }
+
+        commonExecutionData = _commonExecutionData;
     }
 
     function canExecute() external pure returns (bool) {
@@ -45,7 +47,8 @@ contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
 
         quote = _quote;
 
-        bytes memory signRequestInput = abi.encodePacked(quote.hash);
+        bytes32 txHash = this.toEIP191Hash(abi.encodePacked(quote.hash));
+        bytes memory signRequestInput = abi.encodePacked(txHash);
 
         _executed = this.createSignRequest(commonExecutionData.signRequestData, signRequestInput, _coins);
 
@@ -55,16 +58,28 @@ contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
 
         // origin always creator of sign request
         // solhint-disable-next-line
-        REGISTRY.addTransaction(tx.origin, _quote.hash);
+        REGISTRY.addTransaction(tx.origin, txHash);
 
-        return (_executed, _quote.hash);
+        return (_executed, txHash);
     }
 
-    function isExecuted() external pure returns (bool) {
-        return true;
+    function isExecuted() external view returns (bool) {
+        return _executed;
     }
 
-    function executionData() external returns (ExecutionData memory) { }
+    function executionData() external view returns (ExecutionData memory) {
+        return ExecutionData({
+            caller: keyAddress,
+            instructions: commonExecutionData.instructions,
+            feeToken: commonExecutionData.feeToken
+        });
+    }
 
-    function getTx() external returns (bytes memory) { }
+    function getTx() external view returns (bytes memory) {
+        return abi.encode(quote);
+    }
+
+    function version() external pure returns (uint256) {
+        return 1;
+    }
 }

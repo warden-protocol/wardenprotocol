@@ -87,7 +87,10 @@ contract WardenKeyRequests {
 After deploying your contract, you can interact with it by calling the `fulfillKeyRequest()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "fulfillKeyRequest(uint64,uint64,uint8,uint64,uint64,(string,uint256)[],uint64,uint64,string,string)" 1 1 1 100 101 "(\"award\",100000000000000000)" 1 1000 "approve_expression" "reject_expression" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS \
+  "fulfillKeyRequest(uint64,uint64,uint8,uint64,uint64,(string,uint256)[],uint64,uint64,string,string)" \
+  1 1 1 100 101 "(\"award\",100000000000000000)" 1 1000 "approve-expression" "reject-expression" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Reject a key request
@@ -109,7 +112,8 @@ contract WardenKeyRequests {
 After deploying your contract, you can interact with it by calling the `rejectKeyRequest()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "rejectKeyRequest(uint64,string)" 1 "Invalid key format" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "rejectKeyRequest(uint64,string)" 1 "Invalid key format" \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Query key requests

@@ -10,7 +10,7 @@ The `IAsync.sol` precompile enables EVM smart contracts to interact with the [`x
 
 In this article, you'll find a full list of available methods, allowing you to query and manage the following components:
 
-- [Futures](/learn/warden-protocol-modules/x-async#future)
+- [Tasks](/learn/warden-protocol-modules/x-async#task)
 
 To learn how to use this precompile, refer to [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async).
 
@@ -26,76 +26,76 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 0x0000000000000000000000000000000000000903
 ```
 
-## Futures
+## Tasks
 
-### Create a new Future
+### Create a new Task
 
 - **Method**: `addFuture()`
-- **Description**: Creates a Future. Emits the [`CreateFuture` event](#createfuture).
+- **Description**: Creates a Task. Emits the [`CreateFuture` event](#createfuture).
 - **Parameters** :
   ```sol
-  @param handler The unique name of the handler
-  @param input The handler's input
+  @param handler The unique name of the plugin
+  @param input The plugin's input
   @param callback The address of callback contract
   ```
   **Notes**:
-  - The following handlers are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Handlers](/learn/warden-protocol-modules/x-async#handlers). 
-  - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Future is ready.
+  - The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Plugins](/learn/warden-protocol-modules/x-async#plugins). 
+  - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Task is ready.
 - **Output**:  
   ```sol
-  @return futureId The id of the future
+  @return futureId The id of the task
   ```
-- **Usage example**: [Create a new Future](../interact-with-warden-modules/interact-with-x-async#create-a-new-future)
+- **Usage example**: [Create a new Task](../interact-with-warden-modules/interact-with-x-async#create-a-new-task)
 
-### Query Futures
+### Query Tasks
 
 - **Method**: `futures()`
-- **Description**: Returns a list of all Futures in all states (including pending ones). See the [`FuturesResponse` struct](#futureresponse).
+- **Description**: Returns a list of all Tasks in all states (including pending ones). See the [`FuturesResponse` struct](#futureresponse).
 - **Parameters** :
   ```sol
   @param pagination The pagination details
   @param creator Optional creator address filter
-  @return response The paged futures
+  @return response The paged tasks
   ```
 - **Output**:  
   ```sol
-  @return response The paged futures
+  @return response The paged tasks
   ```
-- **Usage example**: [Query Futures](../interact-with-warden-modules/interact-with-x-async#query-futures)
+- **Usage example**: [Query Tasks](../interact-with-warden-modules/interact-with-x-async#query-tasks)
 
-### Query pending Futures
+### Query pending Tasks
 
 - **Method**: `pendingFutures()`
-- **Description**: Returns a list of all pending Futures. See the [`PendingFuturesResponse` struct](#pendingfuturesresponse).
+- **Description**: Returns a list of all pending Tasks. See the [`PendingFuturesResponse` struct](#pendingfuturesresponse).
 - **Parameters** :
   ```sol
   @param pagination The pagination details  
   ```
 - **Output**:  
   ```sol
-  @return response The paged futures
+  @return response The paged tasks
   ```
-- **Usage example**: [Query pending Futures](../interact-with-warden-modules/interact-with-x-async#query-pending-futures)
+- **Usage example**: [Query pending Tasks](../interact-with-warden-modules/interact-with-x-async#query-pending-tasks)
 
-### Query a Future by ID
+### Query a Task by ID
 
 - **Method**: `futureById()`
-- **Description**: Returns a Future by ID (pending Futures included). See the [`FutureByIdResponse` struct](#futurebyidresponse).
+- **Description**: Returns a Task by ID (pending Tasks included). See the [`FutureByIdResponse` struct](#futurebyidresponse).
 - **Parameters** :
   ```sol
-  @param futureId The future id   
+  @param futureId The task id   
   ```
 - **Output**:  
   ```sol
-  @return response The future response
+  @return response The task response
   ```
-- **Usage example**: [Query a Future by ID](../interact-with-warden-modules/interact-with-x-async#query-a-future-by-id)
+- **Usage example**: [Query a Task by ID](../interact-with-warden-modules/interact-with-x-async#query-a-task-by-id)
 
 ## Structs
 
 ### `Future`
 
-- **Description**: A struct representing a Future.
+- **Description**: A struct representing a Task.
 
 ```
 uint64 id;
@@ -106,7 +106,7 @@ bytes input;
 
 ### `FutureVote`
 
-- **Description**: A struct representing a vote on the results of a Future. Includes the [`FutureVoteType` enum](#futurevotetype).
+- **Description**: A struct representing a vote on the results of a Task. Includes the [`FutureVoteType` enum](#futurevotetype).
 
 ```
 uint64 futureId;
@@ -116,7 +116,7 @@ FutureVoteType vote;
 
 ### `FutureResult`
 
-- **Description**: A struct representing the result of a Future.
+- **Description**: A struct representing the result of a Task.
 
 ```
 uint64 id;
@@ -126,7 +126,7 @@ bytes submitter;
 
 ### `FutureResponse`
 
-- **Description**: A struct representing a Future and its data. Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
+- **Description**: A struct representing a Task and its data. Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
 
 ```
 Future future;
@@ -136,7 +136,7 @@ FutureResult result;
 
 ### `FuturesResponse`
 
-- **Description**: A response returned when you [query Futures](#query-futures). Includes the [`FutureResponse` struct](#futureresponse).
+- **Description**: A response returned when you [query Task](#query-tasks). Includes the [`FutureResponse` struct](#futureresponse).
 
 ```
 Types.PageResponse pagination;
@@ -145,7 +145,7 @@ FutureResponse[] futures;
 
 ### `PendingFuturesResponse`
 
-- **Description**: A response returned when you [query pending Futures](#query-pending-futures). Includes the [`Future` struct](#future).
+- **Description**: A response returned when you [query pending Task](#query-pending-tasks). Includes the [`Future` struct](#future).
 
 ```
 Types.PageResponse pagination;
@@ -154,7 +154,7 @@ Future[] futures;
 
 ### `FutureByIdResponse`
 
-- **Description**: A response returned when you [query a Future by ID](#query-a-future-by-id). Includes the [`FutureResponse` struct](#futureresponse).
+- **Description**: A response returned when you [query a Task by ID](#query-a-task-by-id). Includes the [`FutureResponse` struct](#futureresponse).
 
 ```
 FutureResponse futureResponse;
@@ -164,7 +164,7 @@ FutureResponse futureResponse;
 
 ### `FutureVoteType`
 
-- **Description**: The Future vote type.
+- **Description**: The Task vote type.
 
 ```
 Unspecified,
@@ -176,7 +176,7 @@ Rejected
 
 ### `CreateFuture`
 
-- **Description**: An event emitted when [a Future is created](#create-a-new-future).
+- **Description**: An event emitted when [a Task is created](#create-a-new-task).
 - **Parameters**:  
   ```sol
   uint64 indexed futureId,

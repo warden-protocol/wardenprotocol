@@ -3,23 +3,19 @@ package client
 import (
 	"context"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
-	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-	db "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/spf13/viper"
-	"github.com/warden-protocol/wardenprotocol/warden/app"
 	"google.golang.org/grpc"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
 var (
@@ -27,6 +23,7 @@ var (
 	DefaultFees     = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
 
 	queryTimeout = 250 * time.Millisecond
+	txConfig     = app.NewTxConfig()
 )
 
 type AccountFetcher interface {
@@ -81,27 +78,8 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	accSeq := account.GetSequence()
 	accNum := account.GetAccountNumber()
 
-	appConfig := viper.New()
-	dname, err := os.MkdirTemp("", "warden-go-client")
-	if err != nil {
-		return nil, fmt.Errorf("create temp dir: %w", err)
-	}
-	defer os.RemoveAll(dname)
-	appConfig.Set(flags.FlagHome, dname)
-	app, err := app.New(
-		log.NewNopLogger(),
-		db.NewMemDB(),
-		nil,
-		false,
-		appConfig,
-		nil,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("create app: %w", err)
-	}
-
-	txBuilder := app.TxConfig().NewTxBuilder()
-	signMode := app.TxConfig().SignModeHandler().DefaultMode()
+	txBuilder := txConfig.NewTxBuilder()
+	signMode := txConfig.SignModeHandler().DefaultMode()
 
 	// build unsigned tx
 	txBuilder.SetGasLimit(gasLimit)
@@ -145,7 +123,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		signerData,
 		txBuilder,
 		c.Identity.PrivKey,
-		app.TxConfig(),
+		txConfig,
 		accSeq,
 	)
 	if err != nil {
@@ -157,7 +135,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		return nil, fmt.Errorf("set signature: %w", err)
 	}
 
-	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
+	txBytes, err := txConfig.TxEncoder()(txBuilder.GetTx())
 	if err != nil {
 		return nil, fmt.Errorf("encode tx: %w", err)
 	}

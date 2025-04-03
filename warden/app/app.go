@@ -271,6 +271,26 @@ func AppConfig() depinject.Config {
 	)
 }
 
+// NewTxConfig initializes a new TxConfig, equivalent to the one used by [App].
+func NewTxConfig() client.TxConfig {
+	var txConfig client.TxConfig
+
+	appConfig := depinject.Configs(
+		AppConfig(),
+		depinject.Supply(
+			log.NewNopLogger(),
+		),
+	)
+
+	if err := depinject.Inject(appConfig,
+		&txConfig,
+	); err != nil {
+		panic(err)
+	}
+
+	return txConfig
+}
+
 // New returns a reference to an initialized App.
 func New(
 	logger log.Logger,

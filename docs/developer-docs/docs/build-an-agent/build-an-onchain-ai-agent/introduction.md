@@ -8,7 +8,7 @@ sidebar_position: 1
 
 This section explains how to enable onchain capabilities for a **Warden Agent** created with the [Warden Agent Kit](../warden-agent-kit/introduction).
 
-The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain actions and utilizing **AI-driven price predictions** on any destination chain.
+The guides you'll find here cover an example we created for demonstration purposes. It implements **Orders**—[Solidity smart contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract) performing onchain Actions and utilizing **AI-driven price predictions** on any destination chain.
 
 :::tip
 In our example, Orders perform swaps on Uniswap, but you can make them send any transactions to any Ethereum-based and EVM L2 application. For example, your application can transfer ETH or call an arbitrary contract.
@@ -53,7 +53,9 @@ Both Order types share [common infrastructure](/category/build-the-infrastructur
 
 ## Get started
 
-To get started, take thise steps:
+To see how to create an automated Order with price prediction, run the [Create an Order](demo-create-an-order) demo.
+
+To get started with implementing Orders, take these steps:
 
 1. [Meet the prerequisites](prerequisites).
 2. [Build the infrastructure for Orders](/category/build-the-infrastructure-for-orders).

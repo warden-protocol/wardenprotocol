@@ -69,7 +69,10 @@ contract WardenSignatureRequests {
 After deploying your contract, you can interact with it by calling the `createSignRequest()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "createSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64 uint64,string,string,uint8)" 1 0x123... [] 0x456... "(\"award\",100000000000000000)" 1 1000 "approve_expression" "reject_expression" 0 --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS \
+  "createSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64 uint64,string,string,uint8)" \
+  1 0x123... [] 0x456... "(\"award\",100000000000000000)" 1 1000 "approve-expression" "reject-expression" 0 \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Fulfill a signature request
@@ -91,7 +94,8 @@ contract WardenSignatureRequests {
 After deploying your contract, you can interact with it by calling the `fulfillSignRequest()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "fulfillSignRequest(uint64,bytes)" 1 0x789... --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "fulfillSignRequest(uint64,bytes)" 1 0x789... \
+  --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Reject a signature request
@@ -113,7 +117,8 @@ contract WardenKeyRequests {
 After deploying your contract, you can interact with it by calling the `rejectSignatureRequest()` function:
 
 ```bash
-cast send $CONTRACT_ADDRESS "rejectSignatureRequest(uint64,string)" 1 "Invalid key format" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+cast send $CONTRACT_ADDRESS "rejectSignatureRequest(uint64,string)" 1 "Invalid key format" \
+   --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 ## Query signature requests

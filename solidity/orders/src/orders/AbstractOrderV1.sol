@@ -86,9 +86,9 @@ abstract contract AbstractOrderV1 {
         TypesV1.CommonExecutionData calldata commonExecutionData,
         GetQuotePayload calldata _quote
     )
-    external
-    pure
-    returns (bool)
+        external
+        pure
+        returns (bool)
     {
         if (_quote.userOps.length + 1 != commonExecutionData.instructions.length) {
             return false;

@@ -11,7 +11,6 @@ import (
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	ibcante "github.com/cosmos/ibc-go/v8/modules/core/ante"
 	"github.com/cosmos/ibc-go/v8/modules/core/keeper"
@@ -24,7 +23,7 @@ import (
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
 // channel keeper, wasm keeper and EvmOS keepers.
 type HandlerOptions struct {
-	ante.HandlerOptions
+	authante.HandlerOptions
 
 	IBCKeeper             *keeper.Keeper
 	WasmConfig            *wasmTypes.WasmConfig
@@ -35,7 +34,7 @@ type HandlerOptions struct {
 	// evmos
 	FeeMarketKeeper    evmante.FeeMarketKeeper
 	EvmKeeper          evmante.EVMKeeper
-	TxFeeChecker       ante.TxFeeChecker
+	TxFeeChecker       authante.TxFeeChecker
 	AccountKeeper      evmtypes.AccountKeeper
 	BankKeeper         evmtypes.BankKeeper
 	DistributionKeeper anteutils.DistributionKeeper
@@ -49,23 +48,23 @@ func newCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
 		cosmosante.NewAuthzLimiterDecorator( // disable the Msg types that cannot be included on an authz.MsgExec msgs field
 			sdk.MsgTypeURL(&evmtypes.MsgEthereumTx{}),
 		),
-		ante.NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
+		authante.NewSetUpContextDecorator(),                                              // outermost AnteDecorator. SetUpContext must be called first
 		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit), // after setup context to enforce limits early
 		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreService),
 		wasmkeeper.NewGasRegisterDecorator(options.WasmKeeper.GetGasRegister()),
 		circuitante.NewCircuitBreakerDecorator(options.CircuitKeeper),
-		ante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
-		ante.NewValidateBasicDecorator(),
-		ante.NewTxTimeoutHeightDecorator(),
-		ante.NewValidateMemoDecorator(options.AccountKeeper),
+		authante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
+		authante.NewValidateBasicDecorator(),
+		authante.NewTxTimeoutHeightDecorator(),
+		authante.NewValidateMemoDecorator(options.AccountKeeper),
 		cosmosante.NewMinGasPriceDecorator(options.FeeMarketKeeper, options.EvmKeeper),
-		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.HandlerOptions.TxFeeChecker),
-		ante.NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
-		ante.NewValidateSigCountDecorator(options.AccountKeeper),
-		ante.NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
-		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
-		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
+		authante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
+		authante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.HandlerOptions.TxFeeChecker),
+		authante.NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
+		authante.NewValidateSigCountDecorator(options.AccountKeeper),
+		authante.NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
+		authante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
+		authante.NewIncrementSequenceDecorator(options.AccountKeeper),
 		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
 	}
 

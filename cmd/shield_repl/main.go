@@ -15,7 +15,7 @@ func main() {
 	env := object.NewEnvironment()
 
 	for {
-		fmt.Print("> ")
+		fmt.Print("> ") //nolint:forbidigo
 		sn := scanner.Scan()
 		if !sn {
 			return
@@ -27,7 +27,6 @@ func main() {
 		}
 
 		exp, err := shield.Parse(line)
-
 		if err != nil {
 			io.WriteString(os.Stderr, err.Error()) //nolint:all
 			continue

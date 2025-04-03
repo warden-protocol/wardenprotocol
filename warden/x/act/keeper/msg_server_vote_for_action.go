@@ -39,15 +39,16 @@ func (k msgServer) VoteForAction(goCtx context.Context, msg *types.MsgVoteForAct
 		return nil, err
 	}
 
-	if msg.VoteType == types.ActionVoteType_VOTE_TYPE_APPROVED {
+	switch msg.VoteType {
+	case types.ActionVoteType_VOTE_TYPE_APPROVED:
 		if err := k.TryExecuteVotedAction(goCtx, &act); err != nil {
 			return nil, err
 		}
-	} else if msg.VoteType == types.ActionVoteType_VOTE_TYPE_REJECTED {
+	case types.ActionVoteType_VOTE_TYPE_REJECTED:
 		if err := k.TryRejectVotedAction(goCtx, &act); err != nil {
 			return nil, err
 		}
-	} else {
+	default:
 		return nil, fmt.Errorf("unhandled VoteType value: %v", msg.VoteType)
 	}
 

@@ -1,13 +1,14 @@
 package checks
 
 import (
-	"fmt"
+	"errors"
+
 	"github.com/ethereum/go-ethereum/core/types"
 )
 
 func GetParsedEventsOnly[T any](txReceipt *types.Receipt, eventParser func(types.Log) (T, error)) ([]T, error) {
 	if txReceipt == nil {
-		return nil, fmt.Errorf("no transaction receipt")
+		return nil, errors.New("no transaction receipt")
 	}
 
 	result := make([]T, 0)
@@ -25,7 +26,7 @@ func GetParsedEventsOnly[T any](txReceipt *types.Receipt, eventParser func(types
 	}
 
 	if len(result) == 0 {
-		return nil, fmt.Errorf("no parsed events")
+		return nil, errors.New("no parsed events")
 	}
 
 	return result, nil

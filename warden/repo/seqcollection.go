@@ -69,7 +69,7 @@ func (c SeqCollection[V]) Import(ctx context.Context, values []V, getIDFn func(V
 		id := getIDFn(v)
 		actualID, err := c.Append(ctx, &v)
 		if err != nil {
-			return fmt.Errorf("ID mismatch: expected %d, got %d. Cannot import this list of values.", id, actualID)
+			return fmt.Errorf("ID mismatch: expected %d, got %d: cannot import this list of values", id, actualID)
 		}
 	}
 

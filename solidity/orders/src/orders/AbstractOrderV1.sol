@@ -4,6 +4,8 @@ pragma solidity >=0.8.25 <0.9.0;
 import { BroadcastType, IWarden, IWARDEN_PRECOMPILE_ADDRESS, KeyResponse } from "precompile-warden/IWarden.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Strings } from "../lib/Strings.sol";
+import { Pack } from "../lib/Pack.sol";
+import { GetQuotePayload } from "../types/IExecutionV1.sol";
 import { Types } from "../types/Types.sol";
 import { TypesV1 } from "../types/TypesV1.sol";
 
@@ -78,5 +80,28 @@ abstract contract AbstractOrderV1 {
     function toEIP191Hash(bytes memory message) external pure returns (bytes32 eip191Message) {
         string memory len = Strings.toString(message.length);
         eip191Message = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", len, message));
+    }
+
+    function isValidQuote(
+        TypesV1.CommonExecutionData calldata commonExecutionData,
+        GetQuotePayload calldata _quote
+    )
+        external
+        pure
+        returns (bool)
+    {
+        if (_quote.userOps.length + 1 != commonExecutionData.instructions.length) {
+            return false;
+        }
+
+        for (uint256 i = 1; i < commonExecutionData.instructions.length; i++) {
+            bytes memory expectedUserOpCallData = Pack.packInstructions(commonExecutionData.instructions[i]);
+            bytes memory userOpCallData = _quote.userOps[i].userOp.callData;
+            if (keccak256(expectedUserOpCallData) != keccak256(userOpCallData)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

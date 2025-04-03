@@ -9,6 +9,8 @@ import { Registry } from "../Registry.sol";
 
 event Executed();
 
+error InvalidQuote();
+
 contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
     GetQuotePayload public quote;
     TypesV1.CommonExecutionData public commonExecutionData;
@@ -39,6 +41,10 @@ contract TemplateOrderV1 is AbstractOrderV1, IExecutionV1 {
     }
 
     function execute(GetQuotePayload calldata _quote) external returns (bool, bytes32) {
+        if (this.isValidQuote(commonExecutionData, _quote) == false) {
+            revert InvalidQuote();
+        }
+
         quote = _quote;
 
         bytes32 txHash = this.toEIP191Hash(abi.encodePacked(quote.hash));

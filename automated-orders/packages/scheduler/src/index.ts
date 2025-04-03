@@ -1,5 +1,5 @@
 import { sepolia } from '@wagmi/core/chains';
-import { ChainIds, EvmClient, OrderProcessor, OrderRegisteredAbi } from '@warden-automated-orders/blockchain';
+import { BiconomyMEEClient, ChainIds, EvmClient, OrderProcessor, OrderRegisteredAbi } from '@warden-automated-orders/blockchain';
 import { logError } from '@warden-automated-orders/utils';
 import { defineChain } from 'viem';
 
@@ -30,21 +30,25 @@ async function main() {
     },
     evmosChain,
   );
-
+  
   await evmos.init();
-
-  const ethereum = new EvmClient(
-    {
-      rpcURL: config.ETHEREUM_NODE_RPC,
-    },
-    sepolia,
-  );
-
+  
+  let ethereum, biconomyMEEClient;
+  if (config.ETHEREUM_NODE_RPC) {
+    ethereum = new EvmClient(
+      {
+        rpcURL: config.ETHEREUM_NODE_RPC,
+      },
+      sepolia,
+    );
+  } else {
+    biconomyMEEClient = new BiconomyMEEClient(config.MEE_NODE_URL);
+  }
+  
   const chainIds = new Set([BigInt(ChainIds.Sepolia)]);
 
   const processor = new OrderProcessor(
     evmos,
-    ethereum,
     chainIds,
     config.EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS,
     evmos.pollEvents.bind(
@@ -57,6 +61,8 @@ async function main() {
         pollingIntervalMsec: config.EVMOS_EVENTS_POLLING_INTERVAL_MSEC,
       },
     ),
+    ethereum,
+    biconomyMEEClient,
   ).start();
 
   await Promise.all([processor]);

@@ -1,10 +1,10 @@
 package framework
 
 import (
-	"context"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 )
 
@@ -23,7 +23,7 @@ func Build(t *testing.T) BuildResult {
 		Args: []string{"build", "-o", wardend, "./cmd/wardend"},
 		Pwd:  "../",
 	}
-	err := cmd.Run(context.Background())
+	err := cmd.Run(t.Context())
 	require.NoError(t, err)
 
 	return BuildResult{

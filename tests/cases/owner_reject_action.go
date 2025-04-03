@@ -1,11 +1,11 @@
 package cases
 
 import (
-	"context"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
@@ -21,14 +21,14 @@ type Test_OwnerRejectAction struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_OwnerRejectAction) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_OwnerRejectAction) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_OwnerRejectAction) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
+func (c *Test_OwnerRejectAction) Run(t *testing.T, _ framework.BuildResult) {
 	client := TestGRPCClient(*c.w.GRPCClient(t))
 
 	alice := exec.NewWardend(c.w, "alice")
@@ -40,11 +40,11 @@ func (c *Test_OwnerRejectAction) Run(t *testing.T, ctx context.Context, _ framew
 
 	resAddOwner := bob.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, bob.Address(t), 0))
 	checks.SuccessTx(t, resAddOwner)
-	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 0)
+	client.EnsureSpaceAmount(t, bob.Address(t), 0)
 
 	resRejectBob := alice.Tx(t, "act vote-for-action --vote-type vote-type-rejected --action-id 1")
 	checks.SuccessTx(t, resRejectBob)
-	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 0)
+	client.EnsureSpaceAmount(t, bob.Address(t), 0)
 
 	newRejectTemplateDefinition := "\"any(2, warden.space.owners)\""
 	resNewTemplate := alice.Tx(t, "act new-template --name requires_two --definition "+newRejectTemplateDefinition)
@@ -55,7 +55,7 @@ func (c *Test_OwnerRejectAction) Run(t *testing.T, ctx context.Context, _ framew
 	resUpdateSpaceAdminTemplateByCharlie := charlie.Tx(t, updateSpaceRejectAdminTemplateIdCommand)
 	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByCharlie)
 
-	spaceAfterInvalidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
+	spaceAfterInvalidApprove, err := client.Warden.SpaceById(t.Context(), &types.QuerySpaceByIdRequest{
 		Id: 1,
 	})
 	require.NoError(t, err)
@@ -64,7 +64,7 @@ func (c *Test_OwnerRejectAction) Run(t *testing.T, ctx context.Context, _ framew
 	resUpdateSpaceAdminTemplateByAlice := alice.Tx(t, updateSpaceRejectAdminTemplateIdCommand)
 	checks.SuccessTx(t, resUpdateSpaceAdminTemplateByAlice)
 
-	spaceAfterValidApprove, err := client.Warden.SpaceById(ctx, &types.QuerySpaceByIdRequest{
+	spaceAfterValidApprove, err := client.Warden.SpaceById(t.Context(), &types.QuerySpaceByIdRequest{
 		Id: 1,
 	})
 	require.NoError(t, err)
@@ -74,19 +74,19 @@ func (c *Test_OwnerRejectAction) Run(t *testing.T, ctx context.Context, _ framew
 
 	resAliceAddOwnerBob := alice.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, bob.Address(t), 1, newRejectTemplateDefinition))
 	checks.SuccessTx(t, resAliceAddOwnerBob)
-	client.EnsureSpaceAmount(t, ctx, bob.Address(t), 1)
+	client.EnsureSpaceAmount(t, bob.Address(t), 1)
 
 	resAddOwner = charlie.Tx(t, fmt.Sprintf(addNewOwnerCommandTemplate, 1, charlie.Address(t), 2, newRejectTemplateDefinition))
 	checks.SuccessTx(t, resAddOwner)
-	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 0)
+	client.EnsureSpaceAmount(t, charlie.Address(t), 0)
 
 	resRejectCharlieByAlice := alice.Tx(t, "act vote-for-action --vote-type vote-type-rejected --action-id 5")
 	checks.SuccessTx(t, resRejectCharlieByAlice)
-	client.EnsureActionStatus(t, ctx, 5, acttypes.ActionStatus_ACTION_STATUS_PENDING)
-	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 0)
+	client.EnsureActionStatus(t, 5, acttypes.ActionStatus_ACTION_STATUS_PENDING)
+	client.EnsureSpaceAmount(t, charlie.Address(t), 0)
 
 	resRejectCharlieByBob := bob.Tx(t, "act vote-for-action --vote-type vote-type-rejected --action-id 5")
 	checks.SuccessTx(t, resRejectCharlieByBob)
-	client.EnsureActionStatus(t, ctx, 5, acttypes.ActionStatus_ACTION_STATUS_REVOKED)
-	client.EnsureSpaceAmount(t, ctx, charlie.Address(t), 0)
+	client.EnsureActionStatus(t, 5, acttypes.ActionStatus_ACTION_STATUS_REVOKED)
+	client.EnsureSpaceAmount(t, charlie.Address(t), 0)
 }

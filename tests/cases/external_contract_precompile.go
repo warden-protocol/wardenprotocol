@@ -1,16 +1,14 @@
 package cases
 
 import (
-	"context"
 	"fmt"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/bech32"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/act"
 	"github.com/warden-protocol/wardenprotocol/precompiles/warden"
@@ -28,14 +26,14 @@ type Test_ExternalContractPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_ExternalContractPrecompile) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_ExternalContractPrecompile) Run(t *testing.T, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 
@@ -46,7 +44,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 	iWardenClient, err := warden.NewIWarden(common.HexToAddress(warden.PrecompileAddress), evmClient)
 	require.NoError(t, err)
 
-	address, _, instance, err := caller.DeployCaller(alice.TransactOps(t, ctx, evmClient), evmClient)
+	address, _, instance, err := caller.DeployCaller(alice.TransactOps(t, evmClient), evmClient)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,16 +58,16 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		contractApprovedTemplated := fmt.Sprintf("any(1, [%s])", bech32Address)
 
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			"contract approved template",
 			contractApprovedTemplated)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, newTemplateTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, newTemplateTx)
 		require.NoError(t, err)
 
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			1, 0,
 			1, 0,
 			0, 0,
@@ -77,7 +75,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 			"any(1, warden.space.owners)", "any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, updateSpaceTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, updateSpaceTx)
 		require.NoError(t, err)
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 1)
@@ -101,12 +99,12 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 
 		addSpaceOwnerTx, err := instance.CallOtherContract(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, addSpaceOwnerTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, addSpaceOwnerTx)
 		require.NoError(t, err)
 
 		action, err := iActClient.ActionById(alice.CallOps(t), 2)
@@ -129,10 +127,10 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 
 	t.Run("work with new action", func(t *testing.T) {
 		newSpaceTx, err := iWardenClient.NewSpace(
-			alice.TransactOps(t, ctx, evmClient), 0, 0, 0, 0, []common.Address{})
+			alice.TransactOps(t, evmClient), 0, 0, 0, 0, []common.Address{})
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, newSpaceTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, newSpaceTx)
 		require.NoError(t, err)
 
 		// Just valid address, which is not equal to address of Caller contract
@@ -146,16 +144,16 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		contractApprovedTemplated := fmt.Sprintf("any(1, [%s])", bech32Address)
 
 		newTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			"contract approved template",
 			contractApprovedTemplated)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, newTemplateTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, newTemplateTx)
 		require.NoError(t, err)
 
 		updateSpaceTx, err := iWardenClient.UpdateSpace(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			2, 0,
 			2, 0,
 			0, 0,
@@ -163,7 +161,7 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 			"any(1, warden.space.owners)", "any(1, warden.space.owners)")
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, updateSpaceTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, updateSpaceTx)
 		require.NoError(t, err)
 
 		space, err := iWardenClient.SpaceById(alice.CallOps(t), 2)
@@ -187,12 +185,12 @@ func (c *Test_ExternalContractPrecompile) Run(t *testing.T, ctx context.Context,
 		require.NoError(t, err)
 
 		addSpaceOwnerTx, err := instance.CallOtherContract(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			common.HexToAddress("0x0000000000000000000000000000000000000900"),
 			packedAction)
 		require.NoError(t, err)
 
-		_, err = bind.WaitMined(ctx, evmClient, addSpaceOwnerTx)
+		_, err = bind.WaitMined(t.Context(), evmClient, addSpaceOwnerTx)
 		require.NoError(t, err)
 
 		action, err := iActClient.ActionById(alice.CallOps(t), 2)

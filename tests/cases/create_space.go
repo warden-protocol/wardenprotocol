@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
@@ -20,14 +21,14 @@ type Test_CreateSpace struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_CreateSpace) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_CreateSpace) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-base")
+	go c.w.Start(t, "./testdata/snapshot-base")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_CreateSpace) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_CreateSpace) Run(t *testing.T, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	res := alice.Tx(t, "warden new-space")
 	checks.SuccessTx(t, res)
@@ -35,7 +36,7 @@ func (c *Test_CreateSpace) Run(t *testing.T, ctx context.Context, build framewor
 	client := c.w.GRPCClient(t)
 
 	require.Eventually(t, func() bool {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+		ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 		defer cancel()
 
 		res, err := client.Warden.Spaces(ctx, &types.QuerySpacesRequest{})

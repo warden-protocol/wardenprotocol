@@ -35,7 +35,7 @@ library Types {
         LTE,    // Less than or equal to the threshold
         GTE     // Greater than or equal to the threshold
         LT,     // Less than the threshold
-        GT      // Greater thatn the threshold
+        GT      // Greater than the threshold
     }
 
     // The main order configuration

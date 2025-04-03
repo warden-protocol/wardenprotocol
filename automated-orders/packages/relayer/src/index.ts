@@ -1,5 +1,5 @@
 import { sepolia } from '@wagmi/core/chains';
-import { EvmClient, NewSignatureProcessor, WardenClient, WardenRegistryClient } from '@warden-automated-orders/blockchain';
+import { BiconomyMEEClient, EvmClient, NewSignatureProcessor, WardenClient, WardenRegistryClient } from '@warden-automated-orders/blockchain';
 import { logError } from '@warden-automated-orders/utils';
 import { config } from './config/config.js';
 import { defineChain } from 'viem';
@@ -35,15 +35,21 @@ async function main() {
     contractAddress: config.EVMOS_REGISTRY_ADDRESS,
   }, evmos);
 
-  const ethereum = new EvmClient({
-    rpcURL: config.ETHEREUM_NODE_RPC,
-  }, sepolia);
+  let ethereum, biconomyMEEClient;
+  if (config.ETHEREUM_NODE_RPC) {
+    ethereum = new EvmClient({
+      rpcURL: config.ETHEREUM_NODE_RPC,
+    }, sepolia);
+  } else {
+    biconomyMEEClient = new BiconomyMEEClient(config.MEE_NODE_URL);
+  }
 
   const processor = new NewSignatureProcessor(
     registry,
     warden.pollSignatureRequests.bind(warden),
     config.SIGN_REQUESTS_PROCESSOR_SEEN_CACHE_ELEMENTS_SIZE,
     ethereum,
+    biconomyMEEClient
   ).start();
 
   await Promise.all([processor]);

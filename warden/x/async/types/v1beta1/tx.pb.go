@@ -125,25 +125,25 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
-type MsgAddFuture struct {
+type MsgAddTask struct {
 	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Handler  string `protobuf:"bytes,2,opt,name=handler,proto3" json:"handler,omitempty"`
+	Plugin   string `protobuf:"bytes,2,opt,name=plugin,proto3" json:"plugin,omitempty"`
 	Input    []byte `protobuf:"bytes,3,opt,name=input,proto3" json:"input,omitempty"`
 	Callback string `protobuf:"bytes,4,opt,name=callback,proto3" json:"callback,omitempty"`
 }
 
-func (m *MsgAddFuture) Reset()         { *m = MsgAddFuture{} }
-func (m *MsgAddFuture) String() string { return proto.CompactTextString(m) }
-func (*MsgAddFuture) ProtoMessage()    {}
-func (*MsgAddFuture) Descriptor() ([]byte, []int) {
+func (m *MsgAddTask) Reset()         { *m = MsgAddTask{} }
+func (m *MsgAddTask) String() string { return proto.CompactTextString(m) }
+func (*MsgAddTask) ProtoMessage()    {}
+func (*MsgAddTask) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b79defe11b4babb, []int{2}
 }
-func (m *MsgAddFuture) XXX_Unmarshal(b []byte) error {
+func (m *MsgAddTask) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgAddFuture) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddTask) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgAddFuture.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgAddTask.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -153,62 +153,62 @@ func (m *MsgAddFuture) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *MsgAddFuture) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddFuture.Merge(m, src)
+func (m *MsgAddTask) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddTask.Merge(m, src)
 }
-func (m *MsgAddFuture) XXX_Size() int {
+func (m *MsgAddTask) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgAddFuture) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddFuture.DiscardUnknown(m)
+func (m *MsgAddTask) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddTask.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgAddFuture proto.InternalMessageInfo
+var xxx_messageInfo_MsgAddTask proto.InternalMessageInfo
 
-func (m *MsgAddFuture) GetCreator() string {
+func (m *MsgAddTask) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgAddFuture) GetHandler() string {
+func (m *MsgAddTask) GetPlugin() string {
 	if m != nil {
-		return m.Handler
+		return m.Plugin
 	}
 	return ""
 }
 
-func (m *MsgAddFuture) GetInput() []byte {
+func (m *MsgAddTask) GetInput() []byte {
 	if m != nil {
 		return m.Input
 	}
 	return nil
 }
 
-func (m *MsgAddFuture) GetCallback() string {
+func (m *MsgAddTask) GetCallback() string {
 	if m != nil {
 		return m.Callback
 	}
 	return ""
 }
 
-type MsgAddFutureResponse struct {
+type MsgAddTaskResponse struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *MsgAddFutureResponse) Reset()         { *m = MsgAddFutureResponse{} }
-func (m *MsgAddFutureResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgAddFutureResponse) ProtoMessage()    {}
-func (*MsgAddFutureResponse) Descriptor() ([]byte, []int) {
+func (m *MsgAddTaskResponse) Reset()         { *m = MsgAddTaskResponse{} }
+func (m *MsgAddTaskResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgAddTaskResponse) ProtoMessage()    {}
+func (*MsgAddTaskResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b79defe11b4babb, []int{3}
 }
-func (m *MsgAddFutureResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgAddTaskResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgAddFutureResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddTaskResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgAddFutureResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgAddTaskResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -218,19 +218,19 @@ func (m *MsgAddFutureResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgAddFutureResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddFutureResponse.Merge(m, src)
+func (m *MsgAddTaskResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddTaskResponse.Merge(m, src)
 }
-func (m *MsgAddFutureResponse) XXX_Size() int {
+func (m *MsgAddTaskResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgAddFutureResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddFutureResponse.DiscardUnknown(m)
+func (m *MsgAddTaskResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddTaskResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgAddFutureResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgAddTaskResponse proto.InternalMessageInfo
 
-func (m *MsgAddFutureResponse) GetId() uint64 {
+func (m *MsgAddTaskResponse) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
@@ -240,45 +240,45 @@ func (m *MsgAddFutureResponse) GetId() uint64 {
 func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "warden.async.v1beta1.MsgUpdateParams")
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "warden.async.v1beta1.MsgUpdateParamsResponse")
-	proto.RegisterType((*MsgAddFuture)(nil), "warden.async.v1beta1.MsgAddFuture")
-	proto.RegisterType((*MsgAddFutureResponse)(nil), "warden.async.v1beta1.MsgAddFutureResponse")
+	proto.RegisterType((*MsgAddTask)(nil), "warden.async.v1beta1.MsgAddTask")
+	proto.RegisterType((*MsgAddTaskResponse)(nil), "warden.async.v1beta1.MsgAddTaskResponse")
 }
 
 func init() { proto.RegisterFile("warden/async/v1beta1/tx.proto", fileDescriptor_9b79defe11b4babb) }
 
 var fileDescriptor_9b79defe11b4babb = []byte{
-	// 491 bytes of a gzipped FileDescriptorProto
+	// 490 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xbf, 0x8f, 0xd3, 0x30,
-	0x18, 0xad, 0x7b, 0x3f, 0xa0, 0xa6, 0x02, 0x11, 0x55, 0xba, 0x5c, 0x04, 0xa1, 0x54, 0x02, 0x55,
-	0x95, 0x1a, 0xab, 0x87, 0xc4, 0x70, 0x0b, 0xba, 0x0e, 0xb7, 0x55, 0x42, 0x41, 0x2c, 0x30, 0x80,
-	0x1b, 0x1b, 0x37, 0x22, 0x89, 0x23, 0xdb, 0x39, 0xae, 0x1b, 0xba, 0x91, 0x89, 0x3f, 0x83, 0xb1,
-	0x03, 0x2b, 0xfb, 0x6d, 0x9c, 0x98, 0x98, 0x10, 0x6a, 0x87, 0xfe, 0x1b, 0x28, 0xb6, 0xd3, 0x42,
-	0x55, 0x04, 0x4b, 0x9b, 0xe7, 0xf7, 0xbe, 0xe7, 0xf7, 0x7d, 0x9f, 0xe1, 0xdd, 0x77, 0x58, 0x10,
-	0x9a, 0x21, 0x2c, 0xa7, 0x59, 0x84, 0xce, 0x06, 0x63, 0xaa, 0xf0, 0x00, 0xa9, 0xf3, 0x20, 0x17,
-	0x5c, 0x71, 0xa7, 0x65, 0xe8, 0x40, 0xd3, 0x81, 0xa5, 0xbd, 0xdb, 0x38, 0x8d, 0x33, 0x8e, 0xf4,
-	0xaf, 0x11, 0x7a, 0x07, 0x11, 0x97, 0x29, 0x97, 0x28, 0x95, 0x0c, 0x9d, 0x0d, 0xca, 0x3f, 0x4b,
-	0x1c, 0x1a, 0xe2, 0x95, 0x46, 0xc8, 0x00, 0x4b, 0xb5, 0x18, 0x67, 0xdc, 0x9c, 0x97, 0x5f, 0x55,
-	0x01, 0xe3, 0x9c, 0x25, 0x14, 0x69, 0x34, 0x2e, 0xde, 0x20, 0x9c, 0x4d, 0x2d, 0x75, 0x7f, 0x6b,
-	0xd8, 0x1c, 0x0b, 0x9c, 0x5a, 0xcf, 0xce, 0x17, 0x00, 0x6f, 0x8d, 0x24, 0x7b, 0x9e, 0x13, 0xac,
-	0xe8, 0x53, 0xcd, 0x38, 0x8f, 0x61, 0x03, 0x17, 0x6a, 0xc2, 0x45, 0xac, 0xa6, 0x2e, 0x68, 0x83,
-	0x6e, 0x63, 0xe8, 0x7e, 0xfb, 0xdc, 0x6f, 0xd9, 0x30, 0x27, 0x84, 0x08, 0x2a, 0xe5, 0x33, 0x25,
-	0xe2, 0x8c, 0x85, 0x6b, 0xa9, 0xf3, 0x04, 0xee, 0x1b, 0x6f, 0xb7, 0xde, 0x06, 0xdd, 0x1b, 0x47,
-	0x77, 0x82, 0x6d, 0xd3, 0x08, 0xcc, 0x2d, 0xc3, 0xc6, 0xe5, 0x8f, 0x7b, 0xb5, 0x4f, 0xcb, 0x59,
-	0x0f, 0x84, 0xb6, 0xec, 0x78, 0x70, 0xb1, 0x9c, 0xf5, 0xd6, 0x86, 0x1f, 0x96, 0xb3, 0x9e, 0x6f,
-	0x5b, 0x38, 0xb7, 0x4d, 0x6c, 0x64, 0xed, 0x1c, 0xc2, 0x83, 0x8d, 0xa3, 0x90, 0xca, 0x9c, 0x67,
-	0x92, 0x76, 0x2e, 0x00, 0x6c, 0x8e, 0x24, 0x3b, 0x21, 0xe4, 0xb4, 0x50, 0x85, 0xa0, 0x8e, 0x0b,
-	0xaf, 0x45, 0x82, 0x62, 0xc5, 0x85, 0xe9, 0x2a, 0xac, 0x60, 0xc9, 0x4c, 0x70, 0x46, 0x12, 0x2a,
-	0x74, 0xf4, 0x46, 0x58, 0x41, 0xa7, 0x05, 0xf7, 0xe2, 0x2c, 0x2f, 0x94, 0xbb, 0xd3, 0x06, 0xdd,
-	0x66, 0x68, 0x80, 0xe3, 0xc1, 0xeb, 0x11, 0x4e, 0x92, 0x31, 0x8e, 0xde, 0xba, 0xbb, 0xba, 0x60,
-	0x85, 0x8f, 0x9b, 0x65, 0x13, 0x95, 0x73, 0xe7, 0x21, 0x6c, 0xfd, 0x9e, 0xa1, 0x0a, 0xe7, 0xdc,
-	0x84, 0xf5, 0x98, 0xe8, 0x18, 0xbb, 0x61, 0x3d, 0x26, 0x47, 0x5f, 0x01, 0xdc, 0x19, 0x49, 0xe6,
-	0x10, 0xd8, 0xfc, 0x63, 0x17, 0x0f, 0xb6, 0xcf, 0x70, 0xa3, 0x67, 0xaf, 0xff, 0x5f, 0xb2, 0xd5,
-	0xed, 0x2f, 0x61, 0x63, 0x3d, 0x96, 0xce, 0x5f, 0x6b, 0x57, 0x1a, 0xaf, 0xf7, 0x6f, 0x4d, 0x65,
-	0xee, 0xed, 0xbd, 0x2f, 0x97, 0x3a, 0x7c, 0x7d, 0x39, 0xf7, 0xc1, 0xd5, 0xdc, 0x07, 0x3f, 0xe7,
-	0x3e, 0xf8, 0xb8, 0xf0, 0x6b, 0x57, 0x0b, 0xbf, 0xf6, 0x7d, 0xe1, 0xd7, 0x5e, 0x9c, 0xb2, 0x58,
-	0x4d, 0x8a, 0x71, 0x10, 0xf1, 0x14, 0x19, 0xdb, 0xbe, 0x7e, 0x8c, 0x11, 0x4f, 0x2c, 0xde, 0x80,
-	0xab, 0xed, 0xab, 0x69, 0x4e, 0x65, 0xf5, 0x90, 0xc7, 0xfb, 0x5a, 0xf6, 0xe8, 0x57, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0xd4, 0x6b, 0x48, 0xd4, 0x94, 0x03, 0x00, 0x00,
+	0x18, 0xad, 0xef, 0x47, 0x8f, 0x9a, 0x0a, 0x84, 0x55, 0x71, 0xb9, 0x08, 0x42, 0xa9, 0x40, 0xaa,
+	0x2a, 0x35, 0x56, 0x0f, 0x89, 0xe1, 0x16, 0x74, 0x1d, 0xd8, 0x2a, 0xa1, 0xc0, 0x2d, 0x2c, 0xe0,
+	0xc4, 0xc6, 0x17, 0x5d, 0x12, 0x47, 0xb1, 0x73, 0x5c, 0x17, 0x84, 0x18, 0x99, 0xf8, 0x33, 0x18,
+	0x3b, 0xb0, 0xb2, 0x1f, 0xdb, 0x89, 0x89, 0x09, 0xa1, 0x76, 0xe8, 0xbf, 0x81, 0x6a, 0x3b, 0xad,
+	0xa8, 0x8a, 0x60, 0x69, 0xf3, 0xfc, 0x9e, 0xdf, 0xf7, 0xbe, 0xef, 0x33, 0xbc, 0xfb, 0x96, 0x14,
+	0x94, 0x65, 0x98, 0xc8, 0x71, 0x16, 0xe1, 0xf3, 0x41, 0xc8, 0x14, 0x19, 0x60, 0x75, 0xe1, 0xe7,
+	0x85, 0x50, 0x02, 0xb5, 0x0c, 0xed, 0x6b, 0xda, 0xb7, 0xb4, 0x7b, 0x8b, 0xa4, 0x71, 0x26, 0xb0,
+	0xfe, 0x35, 0x42, 0x77, 0x3f, 0x12, 0x32, 0x15, 0x12, 0xa7, 0x92, 0xe3, 0xf3, 0xc1, 0xe2, 0xcf,
+	0x12, 0x07, 0x86, 0x78, 0xa5, 0x11, 0x36, 0xc0, 0x52, 0x2d, 0x2e, 0xb8, 0x30, 0xe7, 0x8b, 0xaf,
+	0xea, 0x02, 0x17, 0x82, 0x27, 0x0c, 0x6b, 0x14, 0x96, 0x6f, 0x30, 0xc9, 0xc6, 0x96, 0xba, 0xbf,
+	0x31, 0x6c, 0x4e, 0x0a, 0x92, 0x5a, 0xcf, 0xce, 0x57, 0x00, 0x6f, 0x8e, 0x24, 0x3f, 0xc9, 0x29,
+	0x51, 0xec, 0x99, 0x66, 0xd0, 0x63, 0xd8, 0x20, 0xa5, 0x3a, 0x15, 0x45, 0xac, 0xc6, 0x0e, 0x68,
+	0x83, 0x6e, 0x63, 0xe8, 0x7c, 0xff, 0xd2, 0x6f, 0xd9, 0x30, 0xc7, 0x94, 0x16, 0x4c, 0xca, 0xe7,
+	0xaa, 0x88, 0x33, 0x1e, 0xac, 0xa4, 0xe8, 0x09, 0xac, 0x1b, 0x6f, 0x67, 0xab, 0x0d, 0xba, 0xd7,
+	0x0f, 0xef, 0xf8, 0x9b, 0xa6, 0xe1, 0x9b, 0x2a, 0xc3, 0xc6, 0xe5, 0xcf, 0x7b, 0xb5, 0xcf, 0xf3,
+	0x49, 0x0f, 0x04, 0xf6, 0xda, 0xd1, 0xe0, 0xc3, 0x7c, 0xd2, 0x5b, 0x19, 0x7e, 0x9c, 0x4f, 0x7a,
+	0x9e, 0x6d, 0xe1, 0xc2, 0x36, 0xb1, 0x96, 0xb5, 0x73, 0x00, 0xf7, 0xd7, 0x8e, 0x02, 0x26, 0x73,
+	0x91, 0x49, 0xd6, 0x79, 0x07, 0xe1, 0x48, 0xf2, 0x63, 0x4a, 0x5f, 0x10, 0x79, 0x86, 0x1c, 0xb8,
+	0x17, 0x15, 0x8c, 0x28, 0x51, 0x98, 0x96, 0x82, 0x0a, 0xa2, 0xdb, 0xb0, 0x9e, 0x27, 0x25, 0x8f,
+	0x33, 0x1d, 0xbb, 0x11, 0x58, 0x84, 0x5a, 0x70, 0x37, 0xce, 0xf2, 0x52, 0x39, 0xdb, 0x6d, 0xd0,
+	0x6d, 0x06, 0x06, 0x20, 0x17, 0x5e, 0x8b, 0x48, 0x92, 0x84, 0x24, 0x3a, 0x73, 0x76, 0xb4, 0x7e,
+	0x89, 0x8f, 0x9a, 0x8b, 0xfc, 0x95, 0x6f, 0xe7, 0x01, 0x44, 0xab, 0xfa, 0x55, 0x2a, 0x74, 0x03,
+	0x6e, 0xc5, 0x54, 0x47, 0xd8, 0x09, 0xb6, 0x62, 0x7a, 0xf8, 0x0d, 0xc0, 0xed, 0x91, 0xe4, 0x88,
+	0xc2, 0xe6, 0x1f, 0x4b, 0x78, 0xb8, 0x79, 0x78, 0x6b, 0xcd, 0xba, 0xfd, 0xff, 0x92, 0x2d, 0xab,
+	0x9f, 0xc0, 0xbd, 0x6a, 0x20, 0xed, 0xbf, 0xde, 0xb4, 0x0a, 0xb7, 0xfb, 0x2f, 0x45, 0x65, 0xeb,
+	0xee, 0xbe, 0x5f, 0xec, 0x71, 0xf8, 0xfa, 0x72, 0xea, 0x81, 0xab, 0xa9, 0x07, 0x7e, 0x4d, 0x3d,
+	0xf0, 0x69, 0xe6, 0xd5, 0xae, 0x66, 0x5e, 0xed, 0xc7, 0xcc, 0xab, 0xbd, 0x7c, 0xca, 0x63, 0x75,
+	0x5a, 0x86, 0x7e, 0x24, 0x52, 0x6c, 0x4c, 0xfb, 0xfa, 0xfd, 0x45, 0x22, 0xb1, 0x78, 0x0d, 0x2e,
+	0x17, 0xae, 0xc6, 0x39, 0x93, 0xd5, 0xdb, 0x0d, 0xeb, 0x5a, 0xf6, 0xe8, 0x77, 0x00, 0x00, 0x00,
+	0xff, 0xff, 0xcb, 0xa9, 0xc9, 0x34, 0x87, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -296,8 +296,8 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
-	// Create a new Future to be executed.
-	AddFuture(ctx context.Context, in *MsgAddFuture, opts ...grpc.CallOption) (*MsgAddFutureResponse, error)
+	// Create a new Task to be executed.
+	AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error)
 }
 
 type msgClient struct {
@@ -317,9 +317,9 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
-func (c *msgClient) AddFuture(ctx context.Context, in *MsgAddFuture, opts ...grpc.CallOption) (*MsgAddFutureResponse, error) {
-	out := new(MsgAddFutureResponse)
-	err := c.cc.Invoke(ctx, "/warden.async.v1beta1.Msg/AddFuture", in, out, opts...)
+func (c *msgClient) AddTask(ctx context.Context, in *MsgAddTask, opts ...grpc.CallOption) (*MsgAddTaskResponse, error) {
+	out := new(MsgAddTaskResponse)
+	err := c.cc.Invoke(ctx, "/warden.async.v1beta1.Msg/AddTask", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -331,8 +331,8 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
-	// Create a new Future to be executed.
-	AddFuture(context.Context, *MsgAddFuture) (*MsgAddFutureResponse, error)
+	// Create a new Task to be executed.
+	AddTask(context.Context, *MsgAddTask) (*MsgAddTaskResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -342,8 +342,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
-func (*UnimplementedMsgServer) AddFuture(ctx context.Context, req *MsgAddFuture) (*MsgAddFutureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddFuture not implemented")
+func (*UnimplementedMsgServer) AddTask(ctx context.Context, req *MsgAddTask) (*MsgAddTaskResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddTask not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -368,20 +368,20 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AddFuture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddFuture)
+func _Msg_AddTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddTask)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).AddFuture(ctx, in)
+		return srv.(MsgServer).AddTask(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/warden.async.v1beta1.Msg/AddFuture",
+		FullMethod: "/warden.async.v1beta1.Msg/AddTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddFuture(ctx, req.(*MsgAddFuture))
+		return srv.(MsgServer).AddTask(ctx, req.(*MsgAddTask))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -396,8 +396,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_UpdateParams_Handler,
 		},
 		{
-			MethodName: "AddFuture",
-			Handler:    _Msg_AddFuture_Handler,
+			MethodName: "AddTask",
+			Handler:    _Msg_AddTask_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -467,7 +467,7 @@ func (m *MsgUpdateParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgAddFuture) Marshal() (dAtA []byte, err error) {
+func (m *MsgAddTask) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -477,12 +477,12 @@ func (m *MsgAddFuture) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgAddFuture) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgAddTask) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgAddFuture) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddTask) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -501,10 +501,10 @@ func (m *MsgAddFuture) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.Handler) > 0 {
-		i -= len(m.Handler)
-		copy(dAtA[i:], m.Handler)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Handler)))
+	if len(m.Plugin) > 0 {
+		i -= len(m.Plugin)
+		copy(dAtA[i:], m.Plugin)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Plugin)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -518,7 +518,7 @@ func (m *MsgAddFuture) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgAddFutureResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgAddTaskResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -528,12 +528,12 @@ func (m *MsgAddFutureResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgAddFutureResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgAddTaskResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgAddFutureResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddTaskResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -581,7 +581,7 @@ func (m *MsgUpdateParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgAddFuture) Size() (n int) {
+func (m *MsgAddTask) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -591,7 +591,7 @@ func (m *MsgAddFuture) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Handler)
+	l = len(m.Plugin)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -606,7 +606,7 @@ func (m *MsgAddFuture) Size() (n int) {
 	return n
 }
 
-func (m *MsgAddFutureResponse) Size() (n int) {
+func (m *MsgAddTaskResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -789,7 +789,7 @@ func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgAddFuture) Unmarshal(dAtA []byte) error {
+func (m *MsgAddTask) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -812,10 +812,10 @@ func (m *MsgAddFuture) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddFuture: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgAddTask: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddFuture: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgAddTask: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -852,7 +852,7 @@ func (m *MsgAddFuture) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Handler", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Plugin", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -880,7 +880,7 @@ func (m *MsgAddFuture) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Handler = string(dAtA[iNdEx:postIndex])
+			m.Plugin = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -969,7 +969,7 @@ func (m *MsgAddFuture) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgAddFutureResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgAddTaskResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -992,10 +992,10 @@ func (m *MsgAddFutureResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddFutureResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgAddTaskResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddFutureResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgAddTaskResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

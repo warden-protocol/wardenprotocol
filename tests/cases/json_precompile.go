@@ -454,7 +454,7 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 
 	t.Run("get big float test", func(t *testing.T) {
 		// Arrange
-		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey":0.340282366920938463463374607431768211455}}}`)))
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey":340282366920938463463.374607431768211455}}}`)))
 		dec.UseNumber()
 		newJsonObject, err := gabs.ParseJSONDecoder(dec)
 		require.NoError(t, err)
@@ -463,7 +463,7 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 		expectedValue1, _ := new(big.Int).SetString("340282366920938463463374607431768211455", 10)
 
 		// Act
-		getResponse1, err := iJsonClient.GetFloat(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1.nestedKey", 39)
+		getResponse1, err := iJsonClient.GetFloat(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1.nestedKey", 18)
 
 		// Assert
 		require.NoError(t, err)
@@ -651,7 +651,7 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 
 	t.Run("get really big float array test", func(t *testing.T) {
 		// Arrange
-		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[0.340282366920938463463374607431768211455]}}`)))
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[340282366920938463463.374607431768211455]}}`)))
 		dec.UseNumber()
 		newJsonObject, err := gabs.ParseJSONDecoder(dec)
 		require.NoError(t, err)
@@ -664,7 +664,7 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 		}
 
 		// Act
-		getResponse, err := iJsonClient.GetFloatArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1", 39)
+		getResponse, err := iJsonClient.GetFloatArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1", 18)
 
 		// Assert
 		require.NoError(t, err)

@@ -77,22 +77,9 @@ func (p Precompile) Get(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	return method.Outputs.Pack(container.Bytes())
+	return simpleGet[[]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]byte, error) {
+		return container.Bytes(), nil
+	})
 }
 
 // GetString decodes GetInput from args, returns string value by key.
@@ -101,27 +88,13 @@ func (p Precompile) GetString(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	strValue, ok := container.Data().(string)
-	if !ok {
-		return nil, fmt.Errorf("value is not a string at path: %s", input.Key)
-	}
-
-	return method.Outputs.Pack(strValue)
+	return simpleGet[string](ctx, method, args, func(container *gabs.Container, input *GetInput) (string, error) {
+		strValue, ok := container.Data().(string)
+		if !ok {
+			return "", fmt.Errorf("value is not a string at path: %s", input.Key)
+		}
+		return strValue, nil
+	})
 }
 
 // GetBool decodes GetInput from args, returns boolean value by key.
@@ -130,27 +103,13 @@ func (p Precompile) GetBool(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	boolValue, ok := container.Data().(bool)
-	if !ok {
-		return nil, fmt.Errorf("value is not a bool at path: %s", input.Key)
-	}
-
-	return method.Outputs.Pack(boolValue)
+	return simpleGet[bool](ctx, method, args, func(container *gabs.Container, input *GetInput) (bool, error) {
+		boolValue, ok := container.Data().(bool)
+		if !ok {
+			return false, fmt.Errorf("value is not a bool at path: %s", input.Key)
+		}
+		return boolValue, nil
+	})
 }
 
 // GetAddress decodes GetInput from args, returns address value by key.
@@ -159,27 +118,13 @@ func (p Precompile) GetAddressValue(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	addressStr, ok := container.Data().(string)
-	if !ok || !common.IsHexAddress(addressStr) {
-		return nil, fmt.Errorf("value is not a valid address at path: %s", input.Key)
-	}
-
-	return method.Outputs.Pack(common.HexToAddress(addressStr))
+	return simpleGet[common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) (common.Address, error) {
+		addressStr, ok := container.Data().(string)
+		if !ok || !common.IsHexAddress(addressStr) {
+			return common.Address{}, fmt.Errorf("value is not a valid address at path: %s", input.Key)
+		}
+		return common.HexToAddress(addressStr), nil
+	})
 }
 
 // GetInt256 decodes GetInput from args, returns int256 value by key.
@@ -188,27 +133,13 @@ func (p Precompile) GetInt256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	value, success := new(big.Int).SetString(container.String(), 10)
-	if !success {
-		return nil, fmt.Errorf("error while parsing int256 value: %w", err)
-	}
-
-	return method.Outputs.Pack(value)
+	return simpleGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
+		value, success := new(big.Int).SetString(container.String(), 10)
+		if !success {
+			return nil, fmt.Errorf("error while parsing int256 value at path: %s", input.Key)
+		}
+		return value, nil
+	})
 }
 
 // GetUint256 decodes GetInput from args, returns uint256 value by key.
@@ -217,27 +148,13 @@ func (p Precompile) GetUint256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	value, success := new(big.Int).SetString(container.String(), 10)
-	if !success {
-		return nil, fmt.Errorf("error while parsing uint256 value: %w", err)
-	}
-
-	return method.Outputs.Pack(value)
+	return simpleGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
+		value, success := new(big.Int).SetString(container.String(), 10)
+		if !success {
+			return nil, fmt.Errorf("error while parsing uint256 value at path: %s", input.Key)
+		}
+		return value, nil
+	})
 }
 
 // GetFloat decodes GetInput from args, returns an integer value by key with specified decimal points.
@@ -249,6 +166,10 @@ func (p Precompile) GetFloat(
 	input, err := parseInput[GetFloatInput](method, args)
 	if err != nil {
 		return nil, err
+	}
+
+	if err := ensureValidDecimalPoints(input.Decimals); err != nil {
+		return nil, fmt.Errorf("error while validating decimal points: %w", err)
 	}
 
 	val, err := readJson(input.Input)
@@ -275,37 +196,21 @@ func (p Precompile) GetStringArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	arrayCount, err := container.ArrayCount()
-	if err != nil {
-		return nil, fmt.Errorf("error while getting array count: %w", err)
-	}
-
-	objectsArray := make([]string, arrayCount)
-	for i, v := range container.Children() {
-		value, success := v.Data().(string)
-		if !success {
-			return nil, fmt.Errorf("value is not a string array at path: %s", input.Key)
+	return simpleGet[[]string](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]string, error) {
+		arrayCount, err := container.ArrayCount()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
-
-		objectsArray[i] = value
-	}
-
-	return method.Outputs.Pack(objectsArray)
+		objectsArray := make([]string, arrayCount)
+		for i, v := range container.Children() {
+			value, success := v.Data().(string)
+			if !success {
+				return nil, fmt.Errorf("value is not a string array at path: %s", input.Key)
+			}
+			objectsArray[i] = value
+		}
+		return objectsArray, nil
+	})
 }
 
 // GetUintArray decodes GetInput from args, returns uint array by key.
@@ -314,37 +219,21 @@ func (p Precompile) GetUintArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	arrayCount, err := container.ArrayCount()
-	if err != nil {
-		return nil, fmt.Errorf("error while getting array count: %w", err)
-	}
-
-	objectsArray := make([]*big.Int, arrayCount)
-	for i, v := range container.Children() {
-		value, success := new(big.Int).SetString(v.String(), 10)
-		if !success {
-			return nil, fmt.Errorf("error while parsing uint value at index %d", i)
+	return simpleGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
+		arrayCount, err := container.ArrayCount()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
-
-		objectsArray[i] = value
-	}
-
-	return method.Outputs.Pack(objectsArray)
+		objectsArray := make([]*big.Int, arrayCount)
+		for i, v := range container.Children() {
+			value, success := new(big.Int).SetString(v.String(), 10)
+			if !success {
+				return nil, fmt.Errorf("error while parsing uint value at index %d", i)
+			}
+			objectsArray[i] = value
+		}
+		return objectsArray, nil
+	})
 }
 
 // GetIntArray decodes GetInput from args, returns int array by key.
@@ -353,9 +242,36 @@ func (p Precompile) GetIntArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
+	return simpleGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
+		arrayCount, err := container.ArrayCount()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting array count: %w", err)
+		}
+		objectsArray := make([]*big.Int, arrayCount)
+		for i, v := range container.Children() {
+			value, success := new(big.Int).SetString(v.String(), 10)
+			if !success {
+				return nil, fmt.Errorf("error while parsing int value at index %d", i)
+			}
+			objectsArray[i] = value
+		}
+		return objectsArray, nil
+	})
+}
+
+// GetFloatArray decodes GetInput from args, returns float array by key.
+func (p Precompile) GetFloatArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[GetFloatInput](method, args)
 	if err != nil {
 		return nil, err
+	}
+
+	if err := ensureValidDecimalPoints(input.Decimals); err != nil {
+		return nil, fmt.Errorf("error while validating decimal points: %w", err)
 	}
 
 	out, err := readJson(input.Input)
@@ -375,12 +291,17 @@ func (p Precompile) GetIntArray(
 
 	objectsArray := make([]*big.Int, arrayCount)
 	for i, v := range container.Children() {
-		value, success := new(big.Int).SetString(v.String(), 10)
-		if !success {
-			return nil, fmt.Errorf("error while parsing int value at index %d", i)
+		jsonNumber, ok := v.Data().(json.Number)
+		if !ok {
+			return nil, fmt.Errorf("element at index %d is not a valid number", i)
 		}
 
-		objectsArray[i] = value
+		res, err := ToInteger(jsonNumber.String(), input.Decimals)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing float value at index %d: %w", i, err)
+		}
+
+		objectsArray[i] = res
 	}
 
 	return method.Outputs.Pack(objectsArray)
@@ -392,37 +313,21 @@ func (p Precompile) GetBoolArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	arrayCount, err := container.ArrayCount()
-	if err != nil {
-		return nil, fmt.Errorf("error while getting array count: %w", err)
-	}
-
-	objectsArray := make([]bool, arrayCount)
-	for i, v := range container.Children() {
-		value, ok := v.Data().(bool)
-		if !ok {
-			return nil, fmt.Errorf("element at index %d is not a bool value", i)
+	return simpleGet[[]bool](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]bool, error) {
+		arrayCount, err := container.ArrayCount()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
-
-		objectsArray[i] = value
-	}
-
-	return method.Outputs.Pack(objectsArray)
+		objectsArray := make([]bool, arrayCount)
+		for i, v := range container.Children() {
+			value, ok := v.Data().(bool)
+			if !ok {
+				return nil, fmt.Errorf("element at index %d is not a bool value", i)
+			}
+			objectsArray[i] = value
+		}
+		return objectsArray, nil
+	})
 }
 
 // GetAddressArray decodes GetInput from args, returns address array by key.
@@ -431,37 +336,21 @@ func (p Precompile) GetAddressArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	arrayCount, err := container.ArrayCount()
-	if err != nil {
-		return nil, fmt.Errorf("error while getting array count: %w", err)
-	}
-
-	objectsArray := make([]common.Address, arrayCount)
-	for i, v := range container.Children() {
-		stringValue, ok := v.Data().(string)
-		if !ok || !common.IsHexAddress(stringValue) {
-			return nil, fmt.Errorf("element at index %d is not a valid address", i)
+	return simpleGet[[]common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]common.Address, error) {
+		arrayCount, err := container.ArrayCount()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
-
-		objectsArray[i] = common.HexToAddress(stringValue)
-	}
-
-	return method.Outputs.Pack(objectsArray)
+		objectsArray := make([]common.Address, arrayCount)
+		for i, v := range container.Children() {
+			stringValue, ok := v.Data().(string)
+			if !ok || !common.IsHexAddress(stringValue) {
+				return nil, fmt.Errorf("element at index %d is not a valid address", i)
+			}
+			objectsArray[i] = common.HexToAddress(stringValue)
+		}
+		return objectsArray, nil
+	})
 }
 
 // GetObjectsArray decodes GetInput from args, returns objects array by key.
@@ -470,33 +359,17 @@ func (p Precompile) GetObjectsArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	arrayCount, err := container.ArrayCount()
-	if err != nil {
-		return nil, fmt.Errorf("error while getting array count: %w", err)
-	}
-
-	array := container.Children()
-	objectsArray := make([][]byte, arrayCount)
-	for i, v := range array {
-		objectsArray[i] = v.Bytes()
-	}
-
-	return method.Outputs.Pack(objectsArray)
+	return simpleGet[[][]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([][]byte, error) {
+		arrayCount, err := container.ArrayCount()
+		if err != nil {
+			return nil, fmt.Errorf("error while getting array count: %w", err)
+		}
+		objectsArray := make([][]byte, arrayCount)
+		for i, v := range container.Children() {
+			objectsArray[i] = v.Bytes()
+		}
+		return objectsArray, nil
+	})
 }
 
 // SetString decodes SetInput from args, adds string value by key to input.
@@ -505,48 +378,7 @@ func (p Precompile) SetString(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[string]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
-}
-
-// SetBool decodes SetInput from args, adds boolean value by key to input.
-func (p Precompile) SetBool(
-	ctx sdk.Context,
-	method *abi.Method,
-	args []interface{},
-) ([]byte, error) {
-	input, err := parseInput[SetInput[bool]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+	return setSimple[string](ctx, method, args)
 }
 
 // SetAddressValue decodes SetInput from args, adds address value by key to input.
@@ -555,23 +387,16 @@ func (p Precompile) SetAddressValue(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[common.Address]](method, args) // Assuming address is passed as a string
-	if err != nil {
-		return nil, err
-	}
+	return setSimple[common.Address](ctx, method, args)
+}
 
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+// SetBool decodes SetInput from args, adds boolean value by key to input.
+func (p Precompile) SetBool(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	return setSimple[bool](ctx, method, args)
 }
 
 // SetInt256 decodes SetInput from args, adds int256 value by key to input.
@@ -580,23 +405,7 @@ func (p Precompile) SetInt256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[*big.Int]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+	return setSimple[*big.Int](ctx, method, args)
 }
 
 // SetUint256 decodes SetInput from args, adds uint256 value by key to input.
@@ -605,23 +414,7 @@ func (p Precompile) SetUint256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[*big.Int]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+	return setSimple[*big.Int](ctx, method, args)
 }
 
 // SetFloat decodes SetFloatInput from args, adds float value by key to input.
@@ -633,6 +426,10 @@ func (p Precompile) SetFloat(
 	input, err := parseInput[SetFloatInput](method, args)
 	if err != nil {
 		return nil, err
+	}
+
+	if err := ensureValidDecimalPoints(input.Decimals); err != nil {
+		return nil, fmt.Errorf("error while validating decimal points: %w", err)
 	}
 
 	out, err := readJson(input.Input)
@@ -691,23 +488,16 @@ func (p Precompile) SetStringArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[[]string]](method, args)
-	if err != nil {
-		return nil, err
-	}
+	return setSimple[[]string](ctx, method, args)
+}
 
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+// SetAddressArray decodes SetInput from args, adds address array by key to input.
+func (p Precompile) SetAddressArray(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	return setSimple[[]common.Address](ctx, method, args)
 }
 
 // SetBoolArray decodes SetInput from args, adds boolean array by key to input.
@@ -716,23 +506,7 @@ func (p Precompile) SetBoolArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[[]bool]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+	return setSimple[[]bool](ctx, method, args)
 }
 
 // SetUintArray decodes SetInput from args, adds uint array by key to input.
@@ -741,23 +515,7 @@ func (p Precompile) SetUintArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[[]*big.Int]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+	return setSimple[[]*big.Int](ctx, method, args)
 }
 
 // SetIntArray decodes SetInput from args, adds int array by key to input.
@@ -766,23 +524,7 @@ func (p Precompile) SetIntArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	input, err := parseInput[SetInput[[]*big.Int]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
+	return setSimple[[]*big.Int](ctx, method, args)
 }
 
 // SetFloatArray decodes SetFloatInput from args, adds float value by key to input.
@@ -794,6 +536,10 @@ func (p Precompile) SetFloatArray(
 	input, err := parseInput[SetFloatArrayInput](method, args)
 	if err != nil {
 		return nil, err
+	}
+
+	if err := ensureValidDecimalPoints(input.Decimals); err != nil {
+		return nil, fmt.Errorf("error while validating decimal points: %w", err)
 	}
 
 	out, err := readJson(input.Input)
@@ -819,31 +565,6 @@ func (p Precompile) SetFloatArray(
 		if err := out.ArrayAppendP(json.Number(valueStr), input.Key); err != nil {
 			return nil, fmt.Errorf("error while appending value in JSON: %w", err)
 		}
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
-}
-
-// SetAddressArray decodes SetInput from args, adds address array by key to input.
-func (p Precompile) SetAddressArray(
-	ctx sdk.Context,
-	method *abi.Method,
-	args []interface{},
-) ([]byte, error) {
-	input, err := parseInput[SetInput[[]common.Address]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
 	}
 
 	encodedJson := out.EncodeJSON()
@@ -891,50 +612,6 @@ func (p Precompile) SetObjectsArray(
 	return method.Outputs.Pack(encodedJson)
 }
 
-// GetFloatArray decodes GetInput from args, returns float array by key.
-func (p Precompile) GetFloatArray(
-	ctx sdk.Context,
-	method *abi.Method,
-	args []interface{},
-) ([]byte, error) {
-	input, err := parseInput[GetFloatInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	arrayCount, err := container.ArrayCount()
-	if err != nil {
-		return nil, fmt.Errorf("error while getting array count: %w", err)
-	}
-
-	objectsArray := make([]*big.Int, arrayCount)
-	for i, v := range container.Children() {
-		jsonNumber, ok := v.Data().(json.Number)
-		if !ok {
-			return nil, fmt.Errorf("element at index %d is not a valid number", i)
-		}
-
-		res, err := ToInteger(jsonNumber.String(), input.Decimals)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing float value at index %d: %w", i, err)
-		}
-
-		objectsArray[i] = res
-	}
-
-	return method.Outputs.Pack(objectsArray)
-}
-
 func readJson(input []byte) (*gabs.Container, error) {
 	dec := json.NewDecoder(bytes.NewReader(input))
 	dec.UseNumber()
@@ -952,4 +629,60 @@ func parseInput[T any](method *abi.Method, args []interface{}) (*T, error) {
 	}
 
 	return &input, nil
+}
+
+func simpleGet[T any](ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+	get func(*gabs.Container, *GetInput) (T, error)) ([]byte, error) {
+	input, err := parseInput[GetInput](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
+
+	result, err := get(container, input)
+	if err != nil {
+		return nil, fmt.Errorf("error while getting value from JSON: %w", err)
+	}
+
+	return method.Outputs.Pack(result)
+}
+
+// setSimple decodes SetInput from args, adds value by key to input.
+func setSimple[T any](
+	_ sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	input, err := parseInput[SetInput[T]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if out.ExistsP(input.Key) {
+		out.DeleteP(input.Key)
+	}
+
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
 }

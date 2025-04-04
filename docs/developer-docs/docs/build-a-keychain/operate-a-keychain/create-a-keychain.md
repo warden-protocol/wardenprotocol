@@ -17,96 +17,16 @@ You can either run a [local chain](/operate-a-node/run-a-local-chain) to test yo
 You can skip this guide and test a preconfigured Keychain. Just run a local node using our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) and [start fulfilling requests](fulfill-requests-from-cli).
 :::
 
-## 1. Prepare the chain
+## Prerequisites
 
-### Option 1. Run a local chain
+Before you start, complete the following prerequisites:
 
-1. Run a local chain as explained here: [Run a local chain](/operate-a-node/run-a-local-chain). Note that you'll need to [install Go](https://go.dev/doc/install) 1.24 and [just](https://github.com/casey/just) 1.34.0 or later.
-   
-   For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account (key) that has a few [WARD tokens](/tokens/ward-token/ward). You'll use these tokens to fund the Keychain and its Writers.
-   
-2. The next steps require your local account name, or key name. You can check the list of available keys by executing this command:
+- [Set up a Warden account](/build-an-app/set-up-a-warden-account) on a local chain or a testnet. Note down your **key name**.
 
-   ```bash
-   wardend keys list
-   ```
+- If you're deploying on a local chain, make sure it's running. You can start your chain by running `wardend start` in a separate terminal window.
 
-   :::tip
-   If you used our `just` script to run the node with default settings, the local account name is `shulgin`. 
-   :::
-   
-3. Check the local account balance to make sure it has funds:
-   
-   <Tabs>
-   <TabItem value="local-default" label="Local node: default settings">
-   ```bash
-   wardend query bank balances shulgin
-   ```
-   </TabItem>
-   <TabItem value="local-custom" label="Local node: custom settings">
-   ```bash
-   wardend query bank balances my-key-name
-   ```
-   </TabItem>
-   </Tabs>
-   
-4. In some of the commands, you'll also need to specify your chain ID. The actual value depends on the configuration you used when running your node.
 
-   To check your chain ID, run this:
-
-   ```bash
-   wardend status
-   ```
-
-   See the `network` field in the output.
-
-   :::tip
-   If you used our `just` script to run the node with default settings, the chain ID is `warden_1337-1`.
-   :::
-
-### Option 2. Connect to Chiado
-
-1. If you haven't yet, [install Go](https://go.dev/doc/install) 1.24 or later and [just](https://github.com/casey/just) 1.34.0 or later.
-
-2. Clone the repository with Warden source code. Then build the binary and initialize the chain's home directory:
-  
-   ```bash
-   git clone --depth 1 --branch v0.6.2 https://github.com/warden-protocol/wardenprotocol
-   cd wardenprotocol
-   just wardend build
-   just wardend install
-   wardend init my-chain-moniker
-   ```
-
-3. Create a new key:
-
-   ```
-   wardend keys add my-key-name
-   ```
-
-4. Write down the **mnemonic phrase** and the **address** of the new account. You'll need this information to interact with the chain and restore the account.
-
-   :::warning
-   The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
-   :::
-
-   :::tip
-   You can always check your public address by running this command:
-
-   ```
-   wardend keys show my-key-name --address
-   ```
-   :::
-
-5. Fund your key using [Chiado faucet](https://faucet.chiado.wardenprotocol.org) and the public address returned in the previous step.
-
-6. Check your balance. Here and in other commands, you need to add the `--node` flag with an RPC URL for connecting to Chiado. 
-   
-   ```bash
-   wardend query bank balances my-key-name --node https://rpc.chiado.wardenprotocol.org:443
-   ```
-
-## 2. Register a Keychain
+## 1. Register a Keychain
 
 The following steps show how to register a new Keychain entity onchain.
 
@@ -192,7 +112,7 @@ The following steps show how to register a new Keychain entity onchain.
      total: "1"
    ```
 
-## 3. Add a Keychain Writer
+## 2. Add a Keychain Writer
 
 A Keychain Writer is an account that can write Keychain results (public keys and signatures) to the chain. The Keychain Writers list is essentially an allowlist of accounts that can interact on behalf of the Keychain.
 
@@ -262,7 +182,7 @@ To add a Keychain Writer, take these steps:
    In this example, we used `$(wardend keys show --address my-keychain-writer-name)` to get the Keychain Writer address by its name. Alternatively, you can just specify the address obtained earlier.
    :::
 
-5. Finally, add the Writer account to your Keychain. In the `--from` flag, specify your key name. Also set the Keychain ID from [Step 2.3](#2-register-a-keychain), your Keychain writer name, and the chain ID:
+5. Finally, add the Writer account to your Keychain. In the `--from` flag, specify your key name. Also set the Keychain ID from [Step 1.3](#1-register-a-keychain), your Keychain writer name, and the chain ID:
    
    <Tabs>
    <TabItem value="local-default" label="Local node: default settings">

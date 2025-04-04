@@ -17,7 +17,7 @@ After you execute the WASM contract on Warden, it'll be able to burn tokens from
 
 Note that this guide assumes you have a basic familiarity with Solidity and Rust and smart contract deployment.
 
-:::tip
+:::important
 Axelar GMP will be soon available on our new testnet—[Chiado](/operate-a-node/chiado-testnet/chiado-overview). Stay tuned in for updates!
 :::
 
@@ -292,7 +292,7 @@ Before you start, do the following:
 
 Start by creating a WASM contract that will burn tokens on the EVM contract:
 
-1. Create a CosmWasm project. You can [use a template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project).
+1. Create a CosmWasm project. You can [use a template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#1-create-a-cosmwasm-project).
 
 2. In the `src` directory of your project, create a `contract.rs` file with the code below. If you've used a template, update the existing file.
 
@@ -405,7 +405,7 @@ Start by creating a WASM contract that will burn tokens on the EVM contract:
 
 ### 2.2. Add supporting code
 
-In the following steps, you'll create files in the `src` directory to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#2-create-a-cosmwasm-project), just update the existing files.
+In the following steps, you'll create files in the `src` directory to add supporting code for your contract. If you're using a [CosmWasm project template](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#1-create-a-cosmwasm-project), just update the existing files.
 
 1. Create a file named `msg.rs` with the following code:
    
@@ -619,7 +619,7 @@ In the following steps, you'll create files in the `src` directory to add suppor
 
 ### 2.3. Compile & optimize
 
-Now you can [compile](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#4-compile-the-contract) and [optimize](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#5-optimize-the-code) your contract.
+Now you can [compile](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#3-compile-the-contract) and [optimize](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract#4-optimize-the-code) your contract.
 
 ### 2.4. Create a Warden account
 
@@ -660,7 +660,7 @@ Now you can [compile](../deploy-smart-contracts-on-warden/deploy-a-wasm-contract
    After you enter the passphrase, the node will return the account address and a mnemonic phrase. Note them down: you'll need this data for recovering your account if necessary.
    :::
 
-5. Get some [WARD](/tokens/ward-token/ward) in [Buenavista faucet](https://faucet.buenavista.wardenprotocol.org): paste the address returned in the previous step.
+5. Get some [WARD](/tokens/ward-token/ward) in the Buenavista faucet: paste the address returned in the previous step.
 
    You can verify that your account is funded by running the command below. Specify the custom key name you chose before.
 

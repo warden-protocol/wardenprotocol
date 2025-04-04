@@ -55,7 +55,7 @@ just localnet
 You'll see blocks being produced and height incrementing.
 
 :::note
-You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
+You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other settings. See `accounts`, `keychains`, `spaces`, etc.
 :::
 
 ## Option 2. Configure manually
@@ -175,7 +175,7 @@ You'll see blocks being produced and height incrementing.
 
 ### 5. Add more settings
 
-In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features—for example, a Space and a Keychain.
+In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features—for example, a [Space](/learn/glossary#space) and a [Keychain](/learn/glossary#keychain).
 
 #### Create a Space
 
@@ -209,7 +209,7 @@ In the previous steps, you configured your node with the minimum settings requir
 
 #### Create a Keychain
 
-To create a Keychain and add a Keychain Writer, take steps from this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain#2-register-a-keychain).
+To create a Keychain and add a Keychain Writer, take steps from this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
 
 
 ## Result

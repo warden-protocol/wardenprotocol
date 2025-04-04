@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination.js";
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
-import { Future, FutureAmino, FutureSDKType, FutureVote, FutureVoteAmino, FutureVoteSDKType, FutureResult, FutureResultAmino, FutureResultSDKType } from "./future.js";
+import { Task, TaskAmino, TaskSDKType, TaskVote, TaskVoteAmino, TaskVoteSDKType, TaskResult, TaskResultAmino, TaskResultSDKType } from "./task.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { JsonSafe } from "../../../json-safe.js";
 import { isSet } from "../../../helpers.js";
@@ -41,181 +41,181 @@ export interface QueryParamsResponseAminoMsg {
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
-export interface QueryFuturesRequest {
+export interface QueryTasksRequest {
   pagination?: PageRequest;
-  /** optional filter to query futures by creator */
+  /** optional filter to query tasks by creator */
   creator?: string;
 }
-export interface QueryFuturesRequestProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryFuturesRequest";
+export interface QueryTasksRequestProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryTasksRequest";
   value: Uint8Array;
 }
-export interface QueryFuturesRequestAmino {
+export interface QueryTasksRequestAmino {
   pagination?: PageRequestAmino;
-  /** optional filter to query futures by creator */
+  /** optional filter to query tasks by creator */
   creator?: string;
 }
-export interface QueryFuturesRequestAminoMsg {
-  type: "/warden.async.v1beta1.QueryFuturesRequest";
-  value: QueryFuturesRequestAmino;
+export interface QueryTasksRequestAminoMsg {
+  type: "/warden.async.v1beta1.QueryTasksRequest";
+  value: QueryTasksRequestAmino;
 }
-export interface QueryFuturesRequestSDKType {
+export interface QueryTasksRequestSDKType {
   pagination?: PageRequestSDKType;
   creator?: string;
 }
-export interface FutureResponse {
-  future: Future;
-  votes: FutureVote[];
-  result?: FutureResult;
+export interface TaskResponse {
+  task: Task;
+  votes: TaskVote[];
+  result?: TaskResult;
 }
-export interface FutureResponseProtoMsg {
-  typeUrl: "/warden.async.v1beta1.FutureResponse";
+export interface TaskResponseProtoMsg {
+  typeUrl: "/warden.async.v1beta1.TaskResponse";
   value: Uint8Array;
 }
-export interface FutureResponseAmino {
-  future?: FutureAmino;
-  votes?: FutureVoteAmino[];
-  result?: FutureResultAmino;
+export interface TaskResponseAmino {
+  task?: TaskAmino;
+  votes?: TaskVoteAmino[];
+  result?: TaskResultAmino;
 }
-export interface FutureResponseAminoMsg {
-  type: "/warden.async.v1beta1.FutureResponse";
-  value: FutureResponseAmino;
+export interface TaskResponseAminoMsg {
+  type: "/warden.async.v1beta1.TaskResponse";
+  value: TaskResponseAmino;
 }
-export interface FutureResponseSDKType {
-  future: FutureSDKType;
-  votes: FutureVoteSDKType[];
-  result?: FutureResultSDKType;
+export interface TaskResponseSDKType {
+  task: TaskSDKType;
+  votes: TaskVoteSDKType[];
+  result?: TaskResultSDKType;
 }
-export interface QueryFuturesResponse {
+export interface QueryTasksResponse {
   pagination?: PageResponse;
-  futures: FutureResponse[];
+  tasks: TaskResponse[];
 }
-export interface QueryFuturesResponseProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryFuturesResponse";
+export interface QueryTasksResponseProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryTasksResponse";
   value: Uint8Array;
 }
-export interface QueryFuturesResponseAmino {
+export interface QueryTasksResponseAmino {
   pagination?: PageResponseAmino;
-  futures?: FutureResponseAmino[];
+  tasks?: TaskResponseAmino[];
 }
-export interface QueryFuturesResponseAminoMsg {
-  type: "/warden.async.v1beta1.QueryFuturesResponse";
-  value: QueryFuturesResponseAmino;
+export interface QueryTasksResponseAminoMsg {
+  type: "/warden.async.v1beta1.QueryTasksResponse";
+  value: QueryTasksResponseAmino;
 }
-export interface QueryFuturesResponseSDKType {
+export interface QueryTasksResponseSDKType {
   pagination?: PageResponseSDKType;
-  futures: FutureResponseSDKType[];
+  tasks: TaskResponseSDKType[];
 }
-export interface QueryFutureByIdRequest {
+export interface QueryTaskByIdRequest {
   id: bigint;
 }
-export interface QueryFutureByIdRequestProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryFutureByIdRequest";
+export interface QueryTaskByIdRequestProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryTaskByIdRequest";
   value: Uint8Array;
 }
-export interface QueryFutureByIdRequestAmino {
+export interface QueryTaskByIdRequestAmino {
   id?: string;
 }
-export interface QueryFutureByIdRequestAminoMsg {
-  type: "/warden.async.v1beta1.QueryFutureByIdRequest";
-  value: QueryFutureByIdRequestAmino;
+export interface QueryTaskByIdRequestAminoMsg {
+  type: "/warden.async.v1beta1.QueryTaskByIdRequest";
+  value: QueryTaskByIdRequestAmino;
 }
-export interface QueryFutureByIdRequestSDKType {
+export interface QueryTaskByIdRequestSDKType {
   id: bigint;
 }
-export interface QueryFutureByIdResponse {
-  futureResponse: FutureResponse;
+export interface QueryTaskByIdResponse {
+  taskResponse: TaskResponse;
 }
-export interface QueryFutureByIdResponseProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryFutureByIdResponse";
+export interface QueryTaskByIdResponseProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryTaskByIdResponse";
   value: Uint8Array;
 }
-export interface QueryFutureByIdResponseAmino {
-  futureResponse?: FutureResponseAmino;
+export interface QueryTaskByIdResponseAmino {
+  taskResponse?: TaskResponseAmino;
 }
-export interface QueryFutureByIdResponseAminoMsg {
-  type: "/warden.async.v1beta1.QueryFutureByIdResponse";
-  value: QueryFutureByIdResponseAmino;
+export interface QueryTaskByIdResponseAminoMsg {
+  type: "/warden.async.v1beta1.QueryTaskByIdResponse";
+  value: QueryTaskByIdResponseAmino;
 }
-export interface QueryFutureByIdResponseSDKType {
-  futureResponse: FutureResponseSDKType;
+export interface QueryTaskByIdResponseSDKType {
+  taskResponse: TaskResponseSDKType;
 }
-export interface QueryPendingFuturesRequest {
+export interface QueryPendingTasksRequest {
   pagination?: PageRequest;
 }
-export interface QueryPendingFuturesRequestProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryPendingFuturesRequest";
+export interface QueryPendingTasksRequestProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryPendingTasksRequest";
   value: Uint8Array;
 }
-export interface QueryPendingFuturesRequestAmino {
+export interface QueryPendingTasksRequestAmino {
   pagination?: PageRequestAmino;
 }
-export interface QueryPendingFuturesRequestAminoMsg {
-  type: "/warden.async.v1beta1.QueryPendingFuturesRequest";
-  value: QueryPendingFuturesRequestAmino;
+export interface QueryPendingTasksRequestAminoMsg {
+  type: "/warden.async.v1beta1.QueryPendingTasksRequest";
+  value: QueryPendingTasksRequestAmino;
 }
-export interface QueryPendingFuturesRequestSDKType {
+export interface QueryPendingTasksRequestSDKType {
   pagination?: PageRequestSDKType;
 }
-export interface QueryPendingFuturesResponse {
+export interface QueryPendingTasksResponse {
   pagination?: PageResponse;
-  futures: Future[];
+  tasks: Task[];
 }
-export interface QueryPendingFuturesResponseProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryPendingFuturesResponse";
+export interface QueryPendingTasksResponseProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryPendingTasksResponse";
   value: Uint8Array;
 }
-export interface QueryPendingFuturesResponseAmino {
+export interface QueryPendingTasksResponseAmino {
   pagination?: PageResponseAmino;
-  futures?: FutureAmino[];
+  tasks?: TaskAmino[];
 }
-export interface QueryPendingFuturesResponseAminoMsg {
-  type: "/warden.async.v1beta1.QueryPendingFuturesResponse";
-  value: QueryPendingFuturesResponseAmino;
+export interface QueryPendingTasksResponseAminoMsg {
+  type: "/warden.async.v1beta1.QueryPendingTasksResponse";
+  value: QueryPendingTasksResponseAmino;
 }
-export interface QueryPendingFuturesResponseSDKType {
+export interface QueryPendingTasksResponseSDKType {
   pagination?: PageResponseSDKType;
-  futures: FutureSDKType[];
+  tasks: TaskSDKType[];
 }
-export interface QueryHandlersByValidatorRequest {
+export interface QueryPluginsByValidatorRequest {
   pagination?: PageRequest;
   validator: string;
 }
-export interface QueryHandlersByValidatorRequestProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryHandlersByValidatorRequest";
+export interface QueryPluginsByValidatorRequestProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryPluginsByValidatorRequest";
   value: Uint8Array;
 }
-export interface QueryHandlersByValidatorRequestAmino {
+export interface QueryPluginsByValidatorRequestAmino {
   pagination?: PageRequestAmino;
   validator?: string;
 }
-export interface QueryHandlersByValidatorRequestAminoMsg {
-  type: "/warden.async.v1beta1.QueryHandlersByValidatorRequest";
-  value: QueryHandlersByValidatorRequestAmino;
+export interface QueryPluginsByValidatorRequestAminoMsg {
+  type: "/warden.async.v1beta1.QueryPluginsByValidatorRequest";
+  value: QueryPluginsByValidatorRequestAmino;
 }
-export interface QueryHandlersByValidatorRequestSDKType {
+export interface QueryPluginsByValidatorRequestSDKType {
   pagination?: PageRequestSDKType;
   validator: string;
 }
-export interface QueryHandlersByValidatorResponse {
+export interface QueryPluginsByValidatorResponse {
   pagination?: PageResponse;
-  handlers: string[];
+  plugins: string[];
 }
-export interface QueryHandlersByValidatorResponseProtoMsg {
-  typeUrl: "/warden.async.v1beta1.QueryHandlersByValidatorResponse";
+export interface QueryPluginsByValidatorResponseProtoMsg {
+  typeUrl: "/warden.async.v1beta1.QueryPluginsByValidatorResponse";
   value: Uint8Array;
 }
-export interface QueryHandlersByValidatorResponseAmino {
+export interface QueryPluginsByValidatorResponseAmino {
   pagination?: PageResponseAmino;
-  handlers?: string[];
+  plugins?: string[];
 }
-export interface QueryHandlersByValidatorResponseAminoMsg {
-  type: "/warden.async.v1beta1.QueryHandlersByValidatorResponse";
-  value: QueryHandlersByValidatorResponseAmino;
+export interface QueryPluginsByValidatorResponseAminoMsg {
+  type: "/warden.async.v1beta1.QueryPluginsByValidatorResponse";
+  value: QueryPluginsByValidatorResponseAmino;
 }
-export interface QueryHandlersByValidatorResponseSDKType {
+export interface QueryPluginsByValidatorResponseSDKType {
   pagination?: PageResponseSDKType;
-  handlers: string[];
+  plugins: string[];
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -347,15 +347,15 @@ export const QueryParamsResponse = {
     };
   }
 };
-function createBaseQueryFuturesRequest(): QueryFuturesRequest {
+function createBaseQueryTasksRequest(): QueryTasksRequest {
   return {
     pagination: undefined,
     creator: undefined
   };
 }
-export const QueryFuturesRequest = {
-  typeUrl: "/warden.async.v1beta1.QueryFuturesRequest",
-  encode(message: QueryFuturesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryTasksRequest = {
+  typeUrl: "/warden.async.v1beta1.QueryTasksRequest",
+  encode(message: QueryTasksRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -364,10 +364,10 @@ export const QueryFuturesRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryFuturesRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTasksRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryFuturesRequest();
+    const message = createBaseQueryTasksRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -384,26 +384,26 @@ export const QueryFuturesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryFuturesRequest {
+  fromJSON(object: any): QueryTasksRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       creator: isSet(object.creator) ? String(object.creator) : undefined
     };
   },
-  toJSON(message: QueryFuturesRequest): JsonSafe<QueryFuturesRequest> {
+  toJSON(message: QueryTasksRequest): JsonSafe<QueryTasksRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
-  fromPartial(object: Partial<QueryFuturesRequest>): QueryFuturesRequest {
-    const message = createBaseQueryFuturesRequest();
+  fromPartial(object: Partial<QueryTasksRequest>): QueryTasksRequest {
+    const message = createBaseQueryTasksRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.creator = object.creator ?? undefined;
     return message;
   },
-  fromAmino(object: QueryFuturesRequestAmino): QueryFuturesRequest {
-    const message = createBaseQueryFuturesRequest();
+  fromAmino(object: QueryTasksRequestAmino): QueryTasksRequest {
+    const message = createBaseQueryTasksRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
@@ -412,64 +412,64 @@ export const QueryFuturesRequest = {
     }
     return message;
   },
-  toAmino(message: QueryFuturesRequest): QueryFuturesRequestAmino {
+  toAmino(message: QueryTasksRequest): QueryTasksRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     obj.creator = message.creator === null ? undefined : message.creator;
     return obj;
   },
-  fromAminoMsg(object: QueryFuturesRequestAminoMsg): QueryFuturesRequest {
-    return QueryFuturesRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryTasksRequestAminoMsg): QueryTasksRequest {
+    return QueryTasksRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryFuturesRequestProtoMsg): QueryFuturesRequest {
-    return QueryFuturesRequest.decode(message.value);
+  fromProtoMsg(message: QueryTasksRequestProtoMsg): QueryTasksRequest {
+    return QueryTasksRequest.decode(message.value);
   },
-  toProto(message: QueryFuturesRequest): Uint8Array {
-    return QueryFuturesRequest.encode(message).finish();
+  toProto(message: QueryTasksRequest): Uint8Array {
+    return QueryTasksRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryFuturesRequest): QueryFuturesRequestProtoMsg {
+  toProtoMsg(message: QueryTasksRequest): QueryTasksRequestProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryFuturesRequest",
-      value: QueryFuturesRequest.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryTasksRequest",
+      value: QueryTasksRequest.encode(message).finish()
     };
   }
 };
-function createBaseFutureResponse(): FutureResponse {
+function createBaseTaskResponse(): TaskResponse {
   return {
-    future: Future.fromPartial({}),
+    task: Task.fromPartial({}),
     votes: [],
     result: undefined
   };
 }
-export const FutureResponse = {
-  typeUrl: "/warden.async.v1beta1.FutureResponse",
-  encode(message: FutureResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.future !== undefined) {
-      Future.encode(message.future, writer.uint32(10).fork()).ldelim();
+export const TaskResponse = {
+  typeUrl: "/warden.async.v1beta1.TaskResponse",
+  encode(message: TaskResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.task !== undefined) {
+      Task.encode(message.task, writer.uint32(10).fork()).ldelim();
     }
     for (const v of message.votes) {
-      FutureVote.encode(v!, writer.uint32(18).fork()).ldelim();
+      TaskVote.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     if (message.result !== undefined) {
-      FutureResult.encode(message.result, writer.uint32(26).fork()).ldelim();
+      TaskResult.encode(message.result, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): FutureResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): TaskResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFutureResponse();
+    const message = createBaseTaskResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.future = Future.decode(reader, reader.uint32());
+          message.task = Task.decode(reader, reader.uint32());
           break;
         case 2:
-          message.votes.push(FutureVote.decode(reader, reader.uint32()));
+          message.votes.push(TaskVote.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.result = FutureResult.decode(reader, reader.uint32());
+          message.result = TaskResult.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -478,90 +478,90 @@ export const FutureResponse = {
     }
     return message;
   },
-  fromJSON(object: any): FutureResponse {
+  fromJSON(object: any): TaskResponse {
     return {
-      future: isSet(object.future) ? Future.fromJSON(object.future) : undefined,
-      votes: Array.isArray(object?.votes) ? object.votes.map((e: any) => FutureVote.fromJSON(e)) : [],
-      result: isSet(object.result) ? FutureResult.fromJSON(object.result) : undefined
+      task: isSet(object.task) ? Task.fromJSON(object.task) : undefined,
+      votes: Array.isArray(object?.votes) ? object.votes.map((e: any) => TaskVote.fromJSON(e)) : [],
+      result: isSet(object.result) ? TaskResult.fromJSON(object.result) : undefined
     };
   },
-  toJSON(message: FutureResponse): JsonSafe<FutureResponse> {
+  toJSON(message: TaskResponse): JsonSafe<TaskResponse> {
     const obj: any = {};
-    message.future !== undefined && (obj.future = message.future ? Future.toJSON(message.future) : undefined);
+    message.task !== undefined && (obj.task = message.task ? Task.toJSON(message.task) : undefined);
     if (message.votes) {
-      obj.votes = message.votes.map(e => e ? FutureVote.toJSON(e) : undefined);
+      obj.votes = message.votes.map(e => e ? TaskVote.toJSON(e) : undefined);
     } else {
       obj.votes = [];
     }
-    message.result !== undefined && (obj.result = message.result ? FutureResult.toJSON(message.result) : undefined);
+    message.result !== undefined && (obj.result = message.result ? TaskResult.toJSON(message.result) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<FutureResponse>): FutureResponse {
-    const message = createBaseFutureResponse();
-    message.future = object.future !== undefined && object.future !== null ? Future.fromPartial(object.future) : undefined;
-    message.votes = object.votes?.map(e => FutureVote.fromPartial(e)) || [];
-    message.result = object.result !== undefined && object.result !== null ? FutureResult.fromPartial(object.result) : undefined;
+  fromPartial(object: Partial<TaskResponse>): TaskResponse {
+    const message = createBaseTaskResponse();
+    message.task = object.task !== undefined && object.task !== null ? Task.fromPartial(object.task) : undefined;
+    message.votes = object.votes?.map(e => TaskVote.fromPartial(e)) || [];
+    message.result = object.result !== undefined && object.result !== null ? TaskResult.fromPartial(object.result) : undefined;
     return message;
   },
-  fromAmino(object: FutureResponseAmino): FutureResponse {
-    const message = createBaseFutureResponse();
-    if (object.future !== undefined && object.future !== null) {
-      message.future = Future.fromAmino(object.future);
+  fromAmino(object: TaskResponseAmino): TaskResponse {
+    const message = createBaseTaskResponse();
+    if (object.task !== undefined && object.task !== null) {
+      message.task = Task.fromAmino(object.task);
     }
-    message.votes = object.votes?.map(e => FutureVote.fromAmino(e)) || [];
+    message.votes = object.votes?.map(e => TaskVote.fromAmino(e)) || [];
     if (object.result !== undefined && object.result !== null) {
-      message.result = FutureResult.fromAmino(object.result);
+      message.result = TaskResult.fromAmino(object.result);
     }
     return message;
   },
-  toAmino(message: FutureResponse): FutureResponseAmino {
+  toAmino(message: TaskResponse): TaskResponseAmino {
     const obj: any = {};
-    obj.future = message.future ? Future.toAmino(message.future) : undefined;
+    obj.task = message.task ? Task.toAmino(message.task) : undefined;
     if (message.votes) {
-      obj.votes = message.votes.map(e => e ? FutureVote.toAmino(e) : undefined);
+      obj.votes = message.votes.map(e => e ? TaskVote.toAmino(e) : undefined);
     } else {
       obj.votes = message.votes;
     }
-    obj.result = message.result ? FutureResult.toAmino(message.result) : undefined;
+    obj.result = message.result ? TaskResult.toAmino(message.result) : undefined;
     return obj;
   },
-  fromAminoMsg(object: FutureResponseAminoMsg): FutureResponse {
-    return FutureResponse.fromAmino(object.value);
+  fromAminoMsg(object: TaskResponseAminoMsg): TaskResponse {
+    return TaskResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: FutureResponseProtoMsg): FutureResponse {
-    return FutureResponse.decode(message.value);
+  fromProtoMsg(message: TaskResponseProtoMsg): TaskResponse {
+    return TaskResponse.decode(message.value);
   },
-  toProto(message: FutureResponse): Uint8Array {
-    return FutureResponse.encode(message).finish();
+  toProto(message: TaskResponse): Uint8Array {
+    return TaskResponse.encode(message).finish();
   },
-  toProtoMsg(message: FutureResponse): FutureResponseProtoMsg {
+  toProtoMsg(message: TaskResponse): TaskResponseProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.FutureResponse",
-      value: FutureResponse.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.TaskResponse",
+      value: TaskResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryFuturesResponse(): QueryFuturesResponse {
+function createBaseQueryTasksResponse(): QueryTasksResponse {
   return {
     pagination: undefined,
-    futures: []
+    tasks: []
   };
 }
-export const QueryFuturesResponse = {
-  typeUrl: "/warden.async.v1beta1.QueryFuturesResponse",
-  encode(message: QueryFuturesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryTasksResponse = {
+  typeUrl: "/warden.async.v1beta1.QueryTasksResponse",
+  encode(message: QueryTasksResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.futures) {
-      FutureResponse.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.tasks) {
+      TaskResponse.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryFuturesResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTasksResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryFuturesResponse();
+    const message = createBaseQueryTasksResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -569,7 +569,7 @@ export const QueryFuturesResponse = {
           message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         case 2:
-          message.futures.push(FutureResponse.decode(reader, reader.uint32()));
+          message.tasks.push(TaskResponse.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -578,79 +578,79 @@ export const QueryFuturesResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryFuturesResponse {
+  fromJSON(object: any): QueryTasksResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-      futures: Array.isArray(object?.futures) ? object.futures.map((e: any) => FutureResponse.fromJSON(e)) : []
+      tasks: Array.isArray(object?.tasks) ? object.tasks.map((e: any) => TaskResponse.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryFuturesResponse): JsonSafe<QueryFuturesResponse> {
+  toJSON(message: QueryTasksResponse): JsonSafe<QueryTasksResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    if (message.futures) {
-      obj.futures = message.futures.map(e => e ? FutureResponse.toJSON(e) : undefined);
+    if (message.tasks) {
+      obj.tasks = message.tasks.map(e => e ? TaskResponse.toJSON(e) : undefined);
     } else {
-      obj.futures = [];
+      obj.tasks = [];
     }
     return obj;
   },
-  fromPartial(object: Partial<QueryFuturesResponse>): QueryFuturesResponse {
-    const message = createBaseQueryFuturesResponse();
+  fromPartial(object: Partial<QueryTasksResponse>): QueryTasksResponse {
+    const message = createBaseQueryTasksResponse();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    message.futures = object.futures?.map(e => FutureResponse.fromPartial(e)) || [];
+    message.tasks = object.tasks?.map(e => TaskResponse.fromPartial(e)) || [];
     return message;
   },
-  fromAmino(object: QueryFuturesResponseAmino): QueryFuturesResponse {
-    const message = createBaseQueryFuturesResponse();
+  fromAmino(object: QueryTasksResponseAmino): QueryTasksResponse {
+    const message = createBaseQueryTasksResponse();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
-    message.futures = object.futures?.map(e => FutureResponse.fromAmino(e)) || [];
+    message.tasks = object.tasks?.map(e => TaskResponse.fromAmino(e)) || [];
     return message;
   },
-  toAmino(message: QueryFuturesResponse): QueryFuturesResponseAmino {
+  toAmino(message: QueryTasksResponse): QueryTasksResponseAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
-    if (message.futures) {
-      obj.futures = message.futures.map(e => e ? FutureResponse.toAmino(e) : undefined);
+    if (message.tasks) {
+      obj.tasks = message.tasks.map(e => e ? TaskResponse.toAmino(e) : undefined);
     } else {
-      obj.futures = message.futures;
+      obj.tasks = message.tasks;
     }
     return obj;
   },
-  fromAminoMsg(object: QueryFuturesResponseAminoMsg): QueryFuturesResponse {
-    return QueryFuturesResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryTasksResponseAminoMsg): QueryTasksResponse {
+    return QueryTasksResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryFuturesResponseProtoMsg): QueryFuturesResponse {
-    return QueryFuturesResponse.decode(message.value);
+  fromProtoMsg(message: QueryTasksResponseProtoMsg): QueryTasksResponse {
+    return QueryTasksResponse.decode(message.value);
   },
-  toProto(message: QueryFuturesResponse): Uint8Array {
-    return QueryFuturesResponse.encode(message).finish();
+  toProto(message: QueryTasksResponse): Uint8Array {
+    return QueryTasksResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryFuturesResponse): QueryFuturesResponseProtoMsg {
+  toProtoMsg(message: QueryTasksResponse): QueryTasksResponseProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryFuturesResponse",
-      value: QueryFuturesResponse.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryTasksResponse",
+      value: QueryTasksResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryFutureByIdRequest(): QueryFutureByIdRequest {
+function createBaseQueryTaskByIdRequest(): QueryTaskByIdRequest {
   return {
     id: BigInt(0)
   };
 }
-export const QueryFutureByIdRequest = {
-  typeUrl: "/warden.async.v1beta1.QueryFutureByIdRequest",
-  encode(message: QueryFutureByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryTaskByIdRequest = {
+  typeUrl: "/warden.async.v1beta1.QueryTaskByIdRequest",
+  encode(message: QueryTaskByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryFutureByIdRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTaskByIdRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryFutureByIdRequest();
+    const message = createBaseQueryTaskByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -664,71 +664,71 @@ export const QueryFutureByIdRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryFutureByIdRequest {
+  fromJSON(object: any): QueryTaskByIdRequest {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryFutureByIdRequest): JsonSafe<QueryFutureByIdRequest> {
+  toJSON(message: QueryTaskByIdRequest): JsonSafe<QueryTaskByIdRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<QueryFutureByIdRequest>): QueryFutureByIdRequest {
-    const message = createBaseQueryFutureByIdRequest();
+  fromPartial(object: Partial<QueryTaskByIdRequest>): QueryTaskByIdRequest {
+    const message = createBaseQueryTaskByIdRequest();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: QueryFutureByIdRequestAmino): QueryFutureByIdRequest {
-    const message = createBaseQueryFutureByIdRequest();
+  fromAmino(object: QueryTaskByIdRequestAmino): QueryTaskByIdRequest {
+    const message = createBaseQueryTaskByIdRequest();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: QueryFutureByIdRequest): QueryFutureByIdRequestAmino {
+  toAmino(message: QueryTaskByIdRequest): QueryTaskByIdRequestAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryFutureByIdRequestAminoMsg): QueryFutureByIdRequest {
-    return QueryFutureByIdRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryTaskByIdRequestAminoMsg): QueryTaskByIdRequest {
+    return QueryTaskByIdRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryFutureByIdRequestProtoMsg): QueryFutureByIdRequest {
-    return QueryFutureByIdRequest.decode(message.value);
+  fromProtoMsg(message: QueryTaskByIdRequestProtoMsg): QueryTaskByIdRequest {
+    return QueryTaskByIdRequest.decode(message.value);
   },
-  toProto(message: QueryFutureByIdRequest): Uint8Array {
-    return QueryFutureByIdRequest.encode(message).finish();
+  toProto(message: QueryTaskByIdRequest): Uint8Array {
+    return QueryTaskByIdRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryFutureByIdRequest): QueryFutureByIdRequestProtoMsg {
+  toProtoMsg(message: QueryTaskByIdRequest): QueryTaskByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryFutureByIdRequest",
-      value: QueryFutureByIdRequest.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryTaskByIdRequest",
+      value: QueryTaskByIdRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryFutureByIdResponse(): QueryFutureByIdResponse {
+function createBaseQueryTaskByIdResponse(): QueryTaskByIdResponse {
   return {
-    futureResponse: FutureResponse.fromPartial({})
+    taskResponse: TaskResponse.fromPartial({})
   };
 }
-export const QueryFutureByIdResponse = {
-  typeUrl: "/warden.async.v1beta1.QueryFutureByIdResponse",
-  encode(message: QueryFutureByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.futureResponse !== undefined) {
-      FutureResponse.encode(message.futureResponse, writer.uint32(10).fork()).ldelim();
+export const QueryTaskByIdResponse = {
+  typeUrl: "/warden.async.v1beta1.QueryTaskByIdResponse",
+  encode(message: QueryTaskByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.taskResponse !== undefined) {
+      TaskResponse.encode(message.taskResponse, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryFutureByIdResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryTaskByIdResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryFutureByIdResponse();
+    const message = createBaseQueryTaskByIdResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.futureResponse = FutureResponse.decode(reader, reader.uint32());
+          message.taskResponse = TaskResponse.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -737,66 +737,66 @@ export const QueryFutureByIdResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryFutureByIdResponse {
+  fromJSON(object: any): QueryTaskByIdResponse {
     return {
-      futureResponse: isSet(object.futureResponse) ? FutureResponse.fromJSON(object.futureResponse) : undefined
+      taskResponse: isSet(object.taskResponse) ? TaskResponse.fromJSON(object.taskResponse) : undefined
     };
   },
-  toJSON(message: QueryFutureByIdResponse): JsonSafe<QueryFutureByIdResponse> {
+  toJSON(message: QueryTaskByIdResponse): JsonSafe<QueryTaskByIdResponse> {
     const obj: any = {};
-    message.futureResponse !== undefined && (obj.futureResponse = message.futureResponse ? FutureResponse.toJSON(message.futureResponse) : undefined);
+    message.taskResponse !== undefined && (obj.taskResponse = message.taskResponse ? TaskResponse.toJSON(message.taskResponse) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryFutureByIdResponse>): QueryFutureByIdResponse {
-    const message = createBaseQueryFutureByIdResponse();
-    message.futureResponse = object.futureResponse !== undefined && object.futureResponse !== null ? FutureResponse.fromPartial(object.futureResponse) : undefined;
+  fromPartial(object: Partial<QueryTaskByIdResponse>): QueryTaskByIdResponse {
+    const message = createBaseQueryTaskByIdResponse();
+    message.taskResponse = object.taskResponse !== undefined && object.taskResponse !== null ? TaskResponse.fromPartial(object.taskResponse) : undefined;
     return message;
   },
-  fromAmino(object: QueryFutureByIdResponseAmino): QueryFutureByIdResponse {
-    const message = createBaseQueryFutureByIdResponse();
-    if (object.futureResponse !== undefined && object.futureResponse !== null) {
-      message.futureResponse = FutureResponse.fromAmino(object.futureResponse);
+  fromAmino(object: QueryTaskByIdResponseAmino): QueryTaskByIdResponse {
+    const message = createBaseQueryTaskByIdResponse();
+    if (object.taskResponse !== undefined && object.taskResponse !== null) {
+      message.taskResponse = TaskResponse.fromAmino(object.taskResponse);
     }
     return message;
   },
-  toAmino(message: QueryFutureByIdResponse): QueryFutureByIdResponseAmino {
+  toAmino(message: QueryTaskByIdResponse): QueryTaskByIdResponseAmino {
     const obj: any = {};
-    obj.futureResponse = message.futureResponse ? FutureResponse.toAmino(message.futureResponse) : undefined;
+    obj.taskResponse = message.taskResponse ? TaskResponse.toAmino(message.taskResponse) : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryFutureByIdResponseAminoMsg): QueryFutureByIdResponse {
-    return QueryFutureByIdResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryTaskByIdResponseAminoMsg): QueryTaskByIdResponse {
+    return QueryTaskByIdResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryFutureByIdResponseProtoMsg): QueryFutureByIdResponse {
-    return QueryFutureByIdResponse.decode(message.value);
+  fromProtoMsg(message: QueryTaskByIdResponseProtoMsg): QueryTaskByIdResponse {
+    return QueryTaskByIdResponse.decode(message.value);
   },
-  toProto(message: QueryFutureByIdResponse): Uint8Array {
-    return QueryFutureByIdResponse.encode(message).finish();
+  toProto(message: QueryTaskByIdResponse): Uint8Array {
+    return QueryTaskByIdResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryFutureByIdResponse): QueryFutureByIdResponseProtoMsg {
+  toProtoMsg(message: QueryTaskByIdResponse): QueryTaskByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryFutureByIdResponse",
-      value: QueryFutureByIdResponse.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryTaskByIdResponse",
+      value: QueryTaskByIdResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryPendingFuturesRequest(): QueryPendingFuturesRequest {
+function createBaseQueryPendingTasksRequest(): QueryPendingTasksRequest {
   return {
     pagination: undefined
   };
 }
-export const QueryPendingFuturesRequest = {
-  typeUrl: "/warden.async.v1beta1.QueryPendingFuturesRequest",
-  encode(message: QueryPendingFuturesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryPendingTasksRequest = {
+  typeUrl: "/warden.async.v1beta1.QueryPendingTasksRequest",
+  encode(message: QueryPendingTasksRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPendingFuturesRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPendingTasksRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryPendingFuturesRequest();
+    const message = createBaseQueryPendingTasksRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -810,70 +810,70 @@ export const QueryPendingFuturesRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryPendingFuturesRequest {
+  fromJSON(object: any): QueryPendingTasksRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
-  toJSON(message: QueryPendingFuturesRequest): JsonSafe<QueryPendingFuturesRequest> {
+  toJSON(message: QueryPendingTasksRequest): JsonSafe<QueryPendingTasksRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryPendingFuturesRequest>): QueryPendingFuturesRequest {
-    const message = createBaseQueryPendingFuturesRequest();
+  fromPartial(object: Partial<QueryPendingTasksRequest>): QueryPendingTasksRequest {
+    const message = createBaseQueryPendingTasksRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
-  fromAmino(object: QueryPendingFuturesRequestAmino): QueryPendingFuturesRequest {
-    const message = createBaseQueryPendingFuturesRequest();
+  fromAmino(object: QueryPendingTasksRequestAmino): QueryPendingTasksRequest {
+    const message = createBaseQueryPendingTasksRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
     return message;
   },
-  toAmino(message: QueryPendingFuturesRequest): QueryPendingFuturesRequestAmino {
+  toAmino(message: QueryPendingTasksRequest): QueryPendingTasksRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryPendingFuturesRequestAminoMsg): QueryPendingFuturesRequest {
-    return QueryPendingFuturesRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryPendingTasksRequestAminoMsg): QueryPendingTasksRequest {
+    return QueryPendingTasksRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryPendingFuturesRequestProtoMsg): QueryPendingFuturesRequest {
-    return QueryPendingFuturesRequest.decode(message.value);
+  fromProtoMsg(message: QueryPendingTasksRequestProtoMsg): QueryPendingTasksRequest {
+    return QueryPendingTasksRequest.decode(message.value);
   },
-  toProto(message: QueryPendingFuturesRequest): Uint8Array {
-    return QueryPendingFuturesRequest.encode(message).finish();
+  toProto(message: QueryPendingTasksRequest): Uint8Array {
+    return QueryPendingTasksRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryPendingFuturesRequest): QueryPendingFuturesRequestProtoMsg {
+  toProtoMsg(message: QueryPendingTasksRequest): QueryPendingTasksRequestProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryPendingFuturesRequest",
-      value: QueryPendingFuturesRequest.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryPendingTasksRequest",
+      value: QueryPendingTasksRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryPendingFuturesResponse(): QueryPendingFuturesResponse {
+function createBaseQueryPendingTasksResponse(): QueryPendingTasksResponse {
   return {
     pagination: undefined,
-    futures: []
+    tasks: []
   };
 }
-export const QueryPendingFuturesResponse = {
-  typeUrl: "/warden.async.v1beta1.QueryPendingFuturesResponse",
-  encode(message: QueryPendingFuturesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryPendingTasksResponse = {
+  typeUrl: "/warden.async.v1beta1.QueryPendingTasksResponse",
+  encode(message: QueryPendingTasksResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.futures) {
-      Future.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.tasks) {
+      Task.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPendingFuturesResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPendingTasksResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryPendingFuturesResponse();
+    const message = createBaseQueryPendingTasksResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -881,7 +881,7 @@ export const QueryPendingFuturesResponse = {
           message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         case 2:
-          message.futures.push(Future.decode(reader, reader.uint32()));
+          message.tasks.push(Task.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -890,71 +890,71 @@ export const QueryPendingFuturesResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryPendingFuturesResponse {
+  fromJSON(object: any): QueryPendingTasksResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-      futures: Array.isArray(object?.futures) ? object.futures.map((e: any) => Future.fromJSON(e)) : []
+      tasks: Array.isArray(object?.tasks) ? object.tasks.map((e: any) => Task.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryPendingFuturesResponse): JsonSafe<QueryPendingFuturesResponse> {
+  toJSON(message: QueryPendingTasksResponse): JsonSafe<QueryPendingTasksResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    if (message.futures) {
-      obj.futures = message.futures.map(e => e ? Future.toJSON(e) : undefined);
+    if (message.tasks) {
+      obj.tasks = message.tasks.map(e => e ? Task.toJSON(e) : undefined);
     } else {
-      obj.futures = [];
+      obj.tasks = [];
     }
     return obj;
   },
-  fromPartial(object: Partial<QueryPendingFuturesResponse>): QueryPendingFuturesResponse {
-    const message = createBaseQueryPendingFuturesResponse();
+  fromPartial(object: Partial<QueryPendingTasksResponse>): QueryPendingTasksResponse {
+    const message = createBaseQueryPendingTasksResponse();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    message.futures = object.futures?.map(e => Future.fromPartial(e)) || [];
+    message.tasks = object.tasks?.map(e => Task.fromPartial(e)) || [];
     return message;
   },
-  fromAmino(object: QueryPendingFuturesResponseAmino): QueryPendingFuturesResponse {
-    const message = createBaseQueryPendingFuturesResponse();
+  fromAmino(object: QueryPendingTasksResponseAmino): QueryPendingTasksResponse {
+    const message = createBaseQueryPendingTasksResponse();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
-    message.futures = object.futures?.map(e => Future.fromAmino(e)) || [];
+    message.tasks = object.tasks?.map(e => Task.fromAmino(e)) || [];
     return message;
   },
-  toAmino(message: QueryPendingFuturesResponse): QueryPendingFuturesResponseAmino {
+  toAmino(message: QueryPendingTasksResponse): QueryPendingTasksResponseAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
-    if (message.futures) {
-      obj.futures = message.futures.map(e => e ? Future.toAmino(e) : undefined);
+    if (message.tasks) {
+      obj.tasks = message.tasks.map(e => e ? Task.toAmino(e) : undefined);
     } else {
-      obj.futures = message.futures;
+      obj.tasks = message.tasks;
     }
     return obj;
   },
-  fromAminoMsg(object: QueryPendingFuturesResponseAminoMsg): QueryPendingFuturesResponse {
-    return QueryPendingFuturesResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryPendingTasksResponseAminoMsg): QueryPendingTasksResponse {
+    return QueryPendingTasksResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryPendingFuturesResponseProtoMsg): QueryPendingFuturesResponse {
-    return QueryPendingFuturesResponse.decode(message.value);
+  fromProtoMsg(message: QueryPendingTasksResponseProtoMsg): QueryPendingTasksResponse {
+    return QueryPendingTasksResponse.decode(message.value);
   },
-  toProto(message: QueryPendingFuturesResponse): Uint8Array {
-    return QueryPendingFuturesResponse.encode(message).finish();
+  toProto(message: QueryPendingTasksResponse): Uint8Array {
+    return QueryPendingTasksResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryPendingFuturesResponse): QueryPendingFuturesResponseProtoMsg {
+  toProtoMsg(message: QueryPendingTasksResponse): QueryPendingTasksResponseProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryPendingFuturesResponse",
-      value: QueryPendingFuturesResponse.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryPendingTasksResponse",
+      value: QueryPendingTasksResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryHandlersByValidatorRequest(): QueryHandlersByValidatorRequest {
+function createBaseQueryPluginsByValidatorRequest(): QueryPluginsByValidatorRequest {
   return {
     pagination: undefined,
     validator: ""
   };
 }
-export const QueryHandlersByValidatorRequest = {
-  typeUrl: "/warden.async.v1beta1.QueryHandlersByValidatorRequest",
-  encode(message: QueryHandlersByValidatorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryPluginsByValidatorRequest = {
+  typeUrl: "/warden.async.v1beta1.QueryPluginsByValidatorRequest",
+  encode(message: QueryPluginsByValidatorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -963,10 +963,10 @@ export const QueryHandlersByValidatorRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryHandlersByValidatorRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPluginsByValidatorRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryHandlersByValidatorRequest();
+    const message = createBaseQueryPluginsByValidatorRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -983,26 +983,26 @@ export const QueryHandlersByValidatorRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryHandlersByValidatorRequest {
+  fromJSON(object: any): QueryPluginsByValidatorRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       validator: isSet(object.validator) ? String(object.validator) : ""
     };
   },
-  toJSON(message: QueryHandlersByValidatorRequest): JsonSafe<QueryHandlersByValidatorRequest> {
+  toJSON(message: QueryPluginsByValidatorRequest): JsonSafe<QueryPluginsByValidatorRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.validator !== undefined && (obj.validator = message.validator);
     return obj;
   },
-  fromPartial(object: Partial<QueryHandlersByValidatorRequest>): QueryHandlersByValidatorRequest {
-    const message = createBaseQueryHandlersByValidatorRequest();
+  fromPartial(object: Partial<QueryPluginsByValidatorRequest>): QueryPluginsByValidatorRequest {
+    const message = createBaseQueryPluginsByValidatorRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.validator = object.validator ?? "";
     return message;
   },
-  fromAmino(object: QueryHandlersByValidatorRequestAmino): QueryHandlersByValidatorRequest {
-    const message = createBaseQueryHandlersByValidatorRequest();
+  fromAmino(object: QueryPluginsByValidatorRequestAmino): QueryPluginsByValidatorRequest {
+    const message = createBaseQueryPluginsByValidatorRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
@@ -1011,49 +1011,49 @@ export const QueryHandlersByValidatorRequest = {
     }
     return message;
   },
-  toAmino(message: QueryHandlersByValidatorRequest): QueryHandlersByValidatorRequestAmino {
+  toAmino(message: QueryPluginsByValidatorRequest): QueryPluginsByValidatorRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     obj.validator = message.validator === "" ? undefined : message.validator;
     return obj;
   },
-  fromAminoMsg(object: QueryHandlersByValidatorRequestAminoMsg): QueryHandlersByValidatorRequest {
-    return QueryHandlersByValidatorRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryPluginsByValidatorRequestAminoMsg): QueryPluginsByValidatorRequest {
+    return QueryPluginsByValidatorRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryHandlersByValidatorRequestProtoMsg): QueryHandlersByValidatorRequest {
-    return QueryHandlersByValidatorRequest.decode(message.value);
+  fromProtoMsg(message: QueryPluginsByValidatorRequestProtoMsg): QueryPluginsByValidatorRequest {
+    return QueryPluginsByValidatorRequest.decode(message.value);
   },
-  toProto(message: QueryHandlersByValidatorRequest): Uint8Array {
-    return QueryHandlersByValidatorRequest.encode(message).finish();
+  toProto(message: QueryPluginsByValidatorRequest): Uint8Array {
+    return QueryPluginsByValidatorRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryHandlersByValidatorRequest): QueryHandlersByValidatorRequestProtoMsg {
+  toProtoMsg(message: QueryPluginsByValidatorRequest): QueryPluginsByValidatorRequestProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryHandlersByValidatorRequest",
-      value: QueryHandlersByValidatorRequest.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryPluginsByValidatorRequest",
+      value: QueryPluginsByValidatorRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryHandlersByValidatorResponse(): QueryHandlersByValidatorResponse {
+function createBaseQueryPluginsByValidatorResponse(): QueryPluginsByValidatorResponse {
   return {
     pagination: undefined,
-    handlers: []
+    plugins: []
   };
 }
-export const QueryHandlersByValidatorResponse = {
-  typeUrl: "/warden.async.v1beta1.QueryHandlersByValidatorResponse",
-  encode(message: QueryHandlersByValidatorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryPluginsByValidatorResponse = {
+  typeUrl: "/warden.async.v1beta1.QueryPluginsByValidatorResponse",
+  encode(message: QueryPluginsByValidatorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.handlers) {
+    for (const v of message.plugins) {
       writer.uint32(18).string(v!);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryHandlersByValidatorResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPluginsByValidatorResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryHandlersByValidatorResponse();
+    const message = createBaseQueryPluginsByValidatorResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1061,7 +1061,7 @@ export const QueryHandlersByValidatorResponse = {
           message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         case 2:
-          message.handlers.push(reader.string());
+          message.plugins.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1070,59 +1070,59 @@ export const QueryHandlersByValidatorResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryHandlersByValidatorResponse {
+  fromJSON(object: any): QueryPluginsByValidatorResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-      handlers: Array.isArray(object?.handlers) ? object.handlers.map((e: any) => String(e)) : []
+      plugins: Array.isArray(object?.plugins) ? object.plugins.map((e: any) => String(e)) : []
     };
   },
-  toJSON(message: QueryHandlersByValidatorResponse): JsonSafe<QueryHandlersByValidatorResponse> {
+  toJSON(message: QueryPluginsByValidatorResponse): JsonSafe<QueryPluginsByValidatorResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    if (message.handlers) {
-      obj.handlers = message.handlers.map(e => e);
+    if (message.plugins) {
+      obj.plugins = message.plugins.map(e => e);
     } else {
-      obj.handlers = [];
+      obj.plugins = [];
     }
     return obj;
   },
-  fromPartial(object: Partial<QueryHandlersByValidatorResponse>): QueryHandlersByValidatorResponse {
-    const message = createBaseQueryHandlersByValidatorResponse();
+  fromPartial(object: Partial<QueryPluginsByValidatorResponse>): QueryPluginsByValidatorResponse {
+    const message = createBaseQueryPluginsByValidatorResponse();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    message.handlers = object.handlers?.map(e => e) || [];
+    message.plugins = object.plugins?.map(e => e) || [];
     return message;
   },
-  fromAmino(object: QueryHandlersByValidatorResponseAmino): QueryHandlersByValidatorResponse {
-    const message = createBaseQueryHandlersByValidatorResponse();
+  fromAmino(object: QueryPluginsByValidatorResponseAmino): QueryPluginsByValidatorResponse {
+    const message = createBaseQueryPluginsByValidatorResponse();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
-    message.handlers = object.handlers?.map(e => e) || [];
+    message.plugins = object.plugins?.map(e => e) || [];
     return message;
   },
-  toAmino(message: QueryHandlersByValidatorResponse): QueryHandlersByValidatorResponseAmino {
+  toAmino(message: QueryPluginsByValidatorResponse): QueryPluginsByValidatorResponseAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
-    if (message.handlers) {
-      obj.handlers = message.handlers.map(e => e);
+    if (message.plugins) {
+      obj.plugins = message.plugins.map(e => e);
     } else {
-      obj.handlers = message.handlers;
+      obj.plugins = message.plugins;
     }
     return obj;
   },
-  fromAminoMsg(object: QueryHandlersByValidatorResponseAminoMsg): QueryHandlersByValidatorResponse {
-    return QueryHandlersByValidatorResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryPluginsByValidatorResponseAminoMsg): QueryPluginsByValidatorResponse {
+    return QueryPluginsByValidatorResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryHandlersByValidatorResponseProtoMsg): QueryHandlersByValidatorResponse {
-    return QueryHandlersByValidatorResponse.decode(message.value);
+  fromProtoMsg(message: QueryPluginsByValidatorResponseProtoMsg): QueryPluginsByValidatorResponse {
+    return QueryPluginsByValidatorResponse.decode(message.value);
   },
-  toProto(message: QueryHandlersByValidatorResponse): Uint8Array {
-    return QueryHandlersByValidatorResponse.encode(message).finish();
+  toProto(message: QueryPluginsByValidatorResponse): Uint8Array {
+    return QueryPluginsByValidatorResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryHandlersByValidatorResponse): QueryHandlersByValidatorResponseProtoMsg {
+  toProtoMsg(message: QueryPluginsByValidatorResponse): QueryPluginsByValidatorResponseProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.QueryHandlersByValidatorResponse",
-      value: QueryHandlersByValidatorResponse.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.QueryPluginsByValidatorResponse",
+      value: QueryPluginsByValidatorResponse.encode(message).finish()
     };
   }
 };

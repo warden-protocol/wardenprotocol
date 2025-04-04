@@ -368,6 +368,9 @@ importers:
       zustand:
         specifier: ^4.5.1
         version: 4.5.6(@types/react@18.3.18)(immer@10.1.1)(react@18.3.1)
+    dependenciesMeta:
+      '@wardenprotocol/wardenjs':
+        injected: true
     devDependencies:
       '@bufbuild/buf':
         specifier: ^1.28.1
@@ -450,9 +453,6 @@ importers:
       vitest:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.13.14)(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(terser@5.39.0)
-    dependenciesMeta:
-      '@wardenprotocol/wardenjs':
-        injected: true
 
 packages:
 

@@ -9,7 +9,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/warden-protocol/wardenprotocol/warden/repo"
-	"github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
@@ -71,7 +70,7 @@ func (k *FutureKeeper) Set(ctx context.Context, f types.Future) error {
 
 func (k *FutureKeeper) SetResult(ctx context.Context, result types.FutureResult) error {
 	if exists, _ := k.results.Has(ctx, result.Id); exists {
-		return v1beta1.ErrFutureAlreadyHasResult
+		return types.ErrFutureAlreadyHasResult
 	}
 
 	if err := k.pendingFutures.Remove(ctx, result.Id); err != nil {

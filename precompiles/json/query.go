@@ -77,7 +77,7 @@ func (p Precompile) Get(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]byte, error) {
+	return innerGet[[]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]byte, error) {
 		return container.Bytes(), nil
 	})
 }
@@ -88,11 +88,12 @@ func (p Precompile) GetString(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[string](ctx, method, args, func(container *gabs.Container, input *GetInput) (string, error) {
+	return innerGet[string](ctx, method, args, func(container *gabs.Container, input *GetInput) (string, error) {
 		strValue, ok := container.Data().(string)
 		if !ok {
 			return "", fmt.Errorf("value is not a string at path: %s", input.Key)
 		}
+
 		return strValue, nil
 	})
 }
@@ -103,11 +104,12 @@ func (p Precompile) GetBool(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[bool](ctx, method, args, func(container *gabs.Container, input *GetInput) (bool, error) {
+	return innerGet[bool](ctx, method, args, func(container *gabs.Container, input *GetInput) (bool, error) {
 		boolValue, ok := container.Data().(bool)
 		if !ok {
 			return false, fmt.Errorf("value is not a bool at path: %s", input.Key)
 		}
+
 		return boolValue, nil
 	})
 }
@@ -118,11 +120,12 @@ func (p Precompile) GetAddressValue(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) (common.Address, error) {
+	return innerGet[common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) (common.Address, error) {
 		addressStr, ok := container.Data().(string)
 		if !ok || !common.IsHexAddress(addressStr) {
 			return common.Address{}, fmt.Errorf("value is not a valid address at path: %s", input.Key)
 		}
+
 		return common.HexToAddress(addressStr), nil
 	})
 }
@@ -133,11 +136,12 @@ func (p Precompile) GetInt256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
+	return innerGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
 		value, success := new(big.Int).SetString(container.String(), 10)
 		if !success {
 			return nil, fmt.Errorf("error while parsing int256 value at path: %s", input.Key)
 		}
+
 		return value, nil
 	})
 }
@@ -148,11 +152,12 @@ func (p Precompile) GetUint256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
+	return innerGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
 		value, success := new(big.Int).SetString(container.String(), 10)
 		if !success {
 			return nil, fmt.Errorf("error while parsing uint256 value at path: %s", input.Key)
 		}
+
 		return value, nil
 	})
 }
@@ -196,7 +201,7 @@ func (p Precompile) GetStringArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[]string](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]string, error) {
+	return innerGet[[]string](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]string, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
@@ -209,6 +214,7 @@ func (p Precompile) GetStringArray(
 			}
 			objectsArray[i] = value
 		}
+
 		return objectsArray, nil
 	})
 }
@@ -219,7 +225,7 @@ func (p Precompile) GetUintArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
+	return innerGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
@@ -232,6 +238,7 @@ func (p Precompile) GetUintArray(
 			}
 			objectsArray[i] = value
 		}
+
 		return objectsArray, nil
 	})
 }
@@ -242,7 +249,7 @@ func (p Precompile) GetIntArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
+	return innerGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
@@ -255,6 +262,7 @@ func (p Precompile) GetIntArray(
 			}
 			objectsArray[i] = value
 		}
+
 		return objectsArray, nil
 	})
 }
@@ -313,11 +321,12 @@ func (p Precompile) GetBoolArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[]bool](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]bool, error) {
+	return innerGet[[]bool](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]bool, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
+
 		objectsArray := make([]bool, arrayCount)
 		for i, v := range container.Children() {
 			value, ok := v.Data().(bool)
@@ -326,6 +335,7 @@ func (p Precompile) GetBoolArray(
 			}
 			objectsArray[i] = value
 		}
+
 		return objectsArray, nil
 	})
 }
@@ -336,11 +346,12 @@ func (p Precompile) GetAddressArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[]common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]common.Address, error) {
+	return innerGet[[]common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]common.Address, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
+
 		objectsArray := make([]common.Address, arrayCount)
 		for i, v := range container.Children() {
 			stringValue, ok := v.Data().(string)
@@ -349,6 +360,7 @@ func (p Precompile) GetAddressArray(
 			}
 			objectsArray[i] = common.HexToAddress(stringValue)
 		}
+
 		return objectsArray, nil
 	})
 }
@@ -359,15 +371,17 @@ func (p Precompile) GetObjectsArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return simpleGet[[][]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([][]byte, error) {
+	return innerGet[[][]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([][]byte, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
+
 		objectsArray := make([][]byte, arrayCount)
 		for i, v := range container.Children() {
 			objectsArray[i] = v.Bytes()
 		}
+
 		return objectsArray, nil
 	})
 }
@@ -378,7 +392,7 @@ func (p Precompile) SetString(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[string](ctx, method, args)
+	return innerSet[string](ctx, method, args)
 }
 
 // SetAddressValue decodes SetInput from args, adds address value by key to input.
@@ -387,7 +401,7 @@ func (p Precompile) SetAddressValue(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[common.Address](ctx, method, args)
+	return innerSet[common.Address](ctx, method, args)
 }
 
 // SetBool decodes SetInput from args, adds boolean value by key to input.
@@ -396,7 +410,7 @@ func (p Precompile) SetBool(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[bool](ctx, method, args)
+	return innerSet[bool](ctx, method, args)
 }
 
 // SetInt256 decodes SetInput from args, adds int256 value by key to input.
@@ -405,7 +419,7 @@ func (p Precompile) SetInt256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[*big.Int](ctx, method, args)
+	return innerSet[*big.Int](ctx, method, args)
 }
 
 // SetUint256 decodes SetInput from args, adds uint256 value by key to input.
@@ -414,7 +428,7 @@ func (p Precompile) SetUint256(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[*big.Int](ctx, method, args)
+	return innerSet[*big.Int](ctx, method, args)
 }
 
 // SetFloat decodes SetFloatInput from args, adds float value by key to input.
@@ -488,7 +502,7 @@ func (p Precompile) SetStringArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[[]string](ctx, method, args)
+	return innerSet[[]string](ctx, method, args)
 }
 
 // SetAddressArray decodes SetInput from args, adds address array by key to input.
@@ -497,7 +511,7 @@ func (p Precompile) SetAddressArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[[]common.Address](ctx, method, args)
+	return innerSet[[]common.Address](ctx, method, args)
 }
 
 // SetBoolArray decodes SetInput from args, adds boolean array by key to input.
@@ -506,7 +520,7 @@ func (p Precompile) SetBoolArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[[]bool](ctx, method, args)
+	return innerSet[[]bool](ctx, method, args)
 }
 
 // SetUintArray decodes SetInput from args, adds uint array by key to input.
@@ -515,7 +529,7 @@ func (p Precompile) SetUintArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[[]*big.Int](ctx, method, args)
+	return innerSet[[]*big.Int](ctx, method, args)
 }
 
 // SetIntArray decodes SetInput from args, adds int array by key to input.
@@ -524,7 +538,7 @@ func (p Precompile) SetIntArray(
 	method *abi.Method,
 	args []interface{},
 ) ([]byte, error) {
-	return setSimple[[]*big.Int](ctx, method, args)
+	return innerSet[[]*big.Int](ctx, method, args)
 }
 
 // SetFloatArray decodes SetFloatInput from args, adds float value by key to input.
@@ -548,7 +562,10 @@ func (p Precompile) SetFloatArray(
 	}
 
 	if out.ExistsP(input.Key) {
-		out.DeleteP(input.Key)
+		err := out.DeleteP(input.Key)
+		if err != nil {
+			return nil, fmt.Errorf("error while overwriting value in JSON: %w", err)
+		}
 	}
 
 	if _, err := out.ArrayP(input.Key); err != nil {
@@ -589,7 +606,10 @@ func (p Precompile) SetObjectsArray(
 	}
 
 	if out.ExistsP(input.Key) {
-		out.DeleteP(input.Key)
+		err := out.DeleteP(input.Key)
+		if err != nil {
+			return nil, fmt.Errorf("error while overwriting value in JSON: %w", err)
+		}
 	}
 
 	if _, err := out.ArrayP(input.Key); err != nil {
@@ -631,10 +651,11 @@ func parseInput[T any](method *abi.Method, args []interface{}) (*T, error) {
 	return &input, nil
 }
 
-func simpleGet[T any](ctx sdk.Context,
+func innerGet[T any](ctx sdk.Context,
 	method *abi.Method,
 	args []interface{},
-	get func(*gabs.Container, *GetInput) (T, error)) ([]byte, error) {
+	get func(*gabs.Container, *GetInput) (T, error),
+) ([]byte, error) {
 	input, err := parseInput[GetInput](method, args)
 	if err != nil {
 		return nil, err
@@ -658,8 +679,8 @@ func simpleGet[T any](ctx sdk.Context,
 	return method.Outputs.Pack(result)
 }
 
-// setSimple decodes SetInput from args, adds value by key to input.
-func setSimple[T any](
+// innerSet decodes SetInput from args, adds value by key to input.
+func innerSet[T any](
 	_ sdk.Context,
 	method *abi.Method,
 	args []interface{},
@@ -675,7 +696,10 @@ func setSimple[T any](
 	}
 
 	if out.ExistsP(input.Key) {
-		out.DeleteP(input.Key)
+		err := out.DeleteP(input.Key)
+		if err != nil {
+			return nil, fmt.Errorf("error while overwriting value in JSON: %w", err)
+		}
 	}
 
 	if _, err := out.SetP(input.Value, input.Key); err != nil {

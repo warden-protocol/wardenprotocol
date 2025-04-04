@@ -1,12 +1,17 @@
 package json
 
 import (
+	"errors"
 	"fmt"
 	"math/big"
 	"strings"
 )
 
 func ToInteger(value string, decimalPoints int64) (*big.Int, error) {
+	if decimalPoints < 0 {
+		return nil, errors.New("decimal points cannot be negative")
+	}
+
 	// Split the input value into integer and fractional parts
 	parts := strings.Split(value, ".")
 	if len(parts) > 2 {
@@ -43,7 +48,7 @@ func ToInteger(value string, decimalPoints int64) (*big.Int, error) {
 
 func ToFloat(number *big.Int, decimalPoints int64) (string, error) {
 	if decimalPoints < 0 {
-		return "", fmt.Errorf("decimal points cannot be negative")
+		return "", errors.New("decimal points cannot be negative")
 	}
 
 	if decimalPoints == 0 {

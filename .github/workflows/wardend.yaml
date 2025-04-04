@@ -34,9 +34,9 @@ jobs:
           go-version: "1.24"
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
-          version: v1.64
+          version: v2.0
           args: --timeout=10m ${{ env.modules }}
 
   unit-test:

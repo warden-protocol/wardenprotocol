@@ -1,7 +1,6 @@
 package json_test
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
 
@@ -46,14 +45,14 @@ func TestToIntegerIncorrectParams(t *testing.T) {
 		decimalPoints        int64
 		expectedErrorMessage string
 	}{
-		{"1E", 2, "failed to convert string to big.Int: 1E"},
+		{"1E", 2, "failed to convert string to big.Int: 1E00"},
 	}
 
 	for _, test := range tests {
 		t.Run(test.value, func(t *testing.T) {
 			_, err := jsonprecompile.ToInteger(test.value, test.decimalPoints)
 			require.Error(t, err)
-			require.EqualError(t, err, fmt.Sprintf("failed to convert string to big.Int: %s", test.value))
+			require.EqualError(t, err, test.expectedErrorMessage)
 		})
 	}
 }

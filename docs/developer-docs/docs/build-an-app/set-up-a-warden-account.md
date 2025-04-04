@@ -352,20 +352,41 @@ A Space is a hub allowing its owner to manage multiple cryptographic keys that i
 
 ### List Spaces
 
-To get a list of all Spaces on the chain (with their owners), run this:
+To get the 5 most recently created Spaces, run the following:
 
 <Tabs>
 <TabItem value="local-default" label="Local node">
 ```bash
-wardend query warden spaces
+wardend query warden spaces \
+  --page-limit 5 \
+  --page-reverse
 ```
 </TabItem>
 <TabItem value="chiado" label="Chiado">
 ```bash
-wardend query warden spaces --node https://rpc.chiado.wardenprotocol.org:443
+wardend query warden spaces \
+  --page-limit 5 \
+  --page-reverse \
+  --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>
 </Tabs>
+
+For each Space, this command will return its creator, ID, and owners:
+
+```
+spaces:
+- creator: warden1y8jvrg3rmzq4evguakjqqny99au5ys92rnf2l8
+  id: "2"
+  owners:
+  - warden1y8jvrg3rmzq4evguakjqqny99au5ys92rnf2l8
+- creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+  id: "1"
+  owners:
+  - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+```
+
+If you've just [created a Space](#create-a-space) and wish to find it, look for one associated with your [public address](#get-the-public-address).
 
 ## Next steps
 

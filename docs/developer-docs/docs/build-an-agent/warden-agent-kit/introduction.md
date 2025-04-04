@@ -8,7 +8,7 @@ sidebar_position: 1
 
 The **Warden Agent Kit** empowers **AI Agents** with the capability to seamlessly access both offchain and onchain functionalities. With our [Quick start](quick-start) guide, you can have an AI Agent up and running in under 5 minutes!
 
-Built on Warden Protocol, this toolkit enables Agents to autonomously execute onchain interactions, such as creating [Spaces](/learn/glossary#space), generating [keys](/learn/glossary#key), facilitating transfers, and managing [Orders](/learn/glossary#order) with support for arbitrary contract invocations.
+Built on Warden Protocol, this toolkit enables Agents to autonomously execute onchain [Actions](/learn/glossary#action), such as creating [Spaces](/learn/glossary#space), generating [keys](/learn/glossary#key), facilitating transfers, and managing [Orders](/learn/glossary#order) with support for arbitrary contract invocations.
 
 :::note Code
 The Warden Agent Kit is available on GitHub: [`agent-kit`](https://github.com/warden-protocol/agent-kit)

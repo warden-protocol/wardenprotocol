@@ -45,6 +45,9 @@ importers:
       '@protobufs/gogoproto':
         specifier: ^0.0.10
         version: 0.0.10
+      '@protobufs/tendermint':
+        specifier: ^0.0.10
+        version: 0.0.10
       '@tanstack/react-query':
         specifier: ^4.36.1
         version: 4.36.1(react@18.3.1)

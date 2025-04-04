@@ -452,6 +452,24 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 		require.Equal(t, expectedValue, getResponse)
 	})
 
+	t.Run("get big float test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey":0.340282366920938463463374607431768211455}}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		expectedValue1, _ := new(big.Int).SetString("340282366920938463463374607431768211455", 10)
+
+		// Act
+		getResponse1, err := iJsonClient.GetFloat(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1.nestedKey", 39)
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, expectedValue1.String(), getResponse1.String())
+	})
+
 	t.Run("get float test", func(t *testing.T) {
 		// Arrange
 		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":{"nestedKey":0.1}}}`)))
@@ -622,6 +640,31 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework
 
 		// Act
 		getResponse, err := iJsonClient.GetFloatArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1", 1)
+
+		// Assert
+		require.NoError(t, err)
+		require.Equal(t, len(expectedValues), len(getResponse))
+		for i, expectedValue := range expectedValues {
+			require.Equal(t, expectedValue, getResponse[i])
+		}
+	})
+
+	t.Run("get really big float array test", func(t *testing.T) {
+		// Arrange
+		dec := json.NewDecoder(bytes.NewReader([]byte(`{"nestedKey2":{"nestedKey1":[0.340282366920938463463374607431768211455]}}`)))
+		dec.UseNumber()
+		newJsonObject, err := gabs.ParseJSONDecoder(dec)
+		require.NoError(t, err)
+		newJsonObjectBytes := newJsonObject.EncodeJSON()
+
+		bigIntValue, _ := new(big.Int).SetString("340282366920938463463374607431768211455", 10)
+
+		expectedValues := []*big.Int{
+			bigIntValue,
+		}
+
+		// Act
+		getResponse, err := iJsonClient.GetFloatArray(alice.CallOps(t), newJsonObjectBytes, "nestedKey2.nestedKey1", 39)
 
 		// Assert
 		require.NoError(t, err)

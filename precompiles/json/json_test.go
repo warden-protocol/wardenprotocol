@@ -59,6 +59,8 @@ func TestToIntegerIncorrectParams(t *testing.T) {
 }
 
 func TestToFloatCorrectParams(t *testing.T) {
+	bigIntValue, _ := new(big.Int).SetString("34028236692093846346337460743176821145793402823669209384634633746074317682114579", 10)
+
 	tests := []struct {
 		expectedValue string
 		decimalPoints int64
@@ -73,6 +75,7 @@ func TestToFloatCorrectParams(t *testing.T) {
 		{"0.0001", 4, big.NewInt(1)},
 		{"0.00001", 5, big.NewInt(1)},
 		{"0.000001", 6, big.NewInt(1)},
+		{"0.34028236692093846346337460743176821145793402823669209384634633746074317682114579", 80, bigIntValue},
 	}
 
 	for _, test := range tests {

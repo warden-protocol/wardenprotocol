@@ -60,7 +60,7 @@ jobs:
         release: ["release"]
     permissions:
       actions: read
-      contents: read
+      contents: write
       packages: write
 
     steps:

@@ -164,7 +164,7 @@ This subsection lists some useful [node commands](/operate-a-node/node-commands)
 Some example node commands vary depending on the chain and initial setup:
 
 Transactions on the [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview) require specifying the following:
-- The chain ID: `--chain-id warden_1337-1`
+- The chain ID: `--chain-id chiado_10010-1`
 - The RPC address: `--node https://rpc.chiado.wardenprotocol.org:443`
 
 If you [run a local chain using our script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script), the chain will have the default settings:
@@ -340,7 +340,7 @@ wardend tx warden new-space \
 wardend tx warden new-space \
   --from my-key-name \
   --fees 400000000award \
-  --chain-id chiado_1001-1 \
+  --chain-id chiado_10010-1 \
   --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>

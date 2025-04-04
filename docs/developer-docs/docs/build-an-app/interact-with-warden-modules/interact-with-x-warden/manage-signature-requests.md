@@ -70,7 +70,7 @@ After deploying your contract, you can interact with it by calling the `createSi
 
 ```bash
 cast send $CONTRACT_ADDRESS \
-  "createSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64 uint64,string,string,uint8)" \
+  "createSignRequest(uint64,bytes,bytes[],bytes,(string,uint256)[],uint64,uint64,string,string,uint8)" \
   1 0x123... [] 0x456... "(\"award\",100000000000000000)" 1 1000 "approve-expression" "reject-expression" 0 \
   --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```

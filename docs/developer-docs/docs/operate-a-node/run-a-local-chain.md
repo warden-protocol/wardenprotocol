@@ -196,16 +196,16 @@ In the previous steps, you configured your node with the minimum settings requir
    ```
    
    The output should look like this:
-   
+
    ```bash
    pagination:
      total: "1"
    spaces:
    - creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
      id: "1"
-   owners:
-   - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-   ```
+     owners:
+     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+   ```   
 
 #### Create a Keychain
 

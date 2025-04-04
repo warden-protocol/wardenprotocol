@@ -164,7 +164,7 @@ This subsection lists some useful [node commands](/operate-a-node/node-commands)
 Some example node commands vary depending on the chain and initial setup:
 
 Transactions on the [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview) require specifying the following:
-- The chain ID: `--chain-id warden_1337-1`
+- The chain ID: `--chain-id chiado_10010-1`
 - The RPC address: `--node https://rpc.chiado.wardenprotocol.org:443`
 
 If you [run a local chain using our script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script), the chain will have the default settings:
@@ -340,7 +340,7 @@ wardend tx warden new-space \
 wardend tx warden new-space \
   --from my-key-name \
   --fees 400000000award \
-  --chain-id chiado_1001-1 \
+  --chain-id chiado_10010-1 \
   --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>
@@ -352,20 +352,41 @@ A Space is a hub allowing its owner to manage multiple cryptographic keys that i
 
 ### List Spaces
 
-To get a list of all Spaces on the chain (with their owners), run this:
+To get the 5 most recently created Spaces, run the following:
 
 <Tabs>
 <TabItem value="local-default" label="Local node">
 ```bash
-wardend query warden spaces
+wardend query warden spaces \
+  --page-limit 5 \
+  --page-reverse
 ```
 </TabItem>
 <TabItem value="chiado" label="Chiado">
 ```bash
-wardend query warden spaces --node https://rpc.chiado.wardenprotocol.org:443
+wardend query warden spaces \
+  --page-limit 5 \
+  --page-reverse \
+  --node https://rpc.chiado.wardenprotocol.org:443
 ```
 </TabItem>
 </Tabs>
+
+For each Space, this command will return its creator, ID, and owners:
+
+```
+spaces:
+- creator: warden1y8jvrg3rmzq4evguakjqqny99au5ys92rnf2l8
+  id: "2"
+  owners:
+  - warden1y8jvrg3rmzq4evguakjqqny99au5ys92rnf2l8
+- creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+  id: "1"
+  owners:
+  - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+```
+
+If you've just [created a Space](#create-a-space) and wish to find it, look for one associated with your [public address](#get-the-public-address).
 
 ## Next steps
 

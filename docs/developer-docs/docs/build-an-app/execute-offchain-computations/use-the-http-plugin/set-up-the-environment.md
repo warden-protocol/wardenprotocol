@@ -15,8 +15,9 @@ Before you start, complete the following prerequisites:
    foundryup
    ```
 
-- Run a local chain and get your private key, as shown in [Deploy an EVM smart contract](../../deploy-smart-contracts-on-warden/deploy-an-evm-contract#1-prepare-the-chain). Make sure the chain is running.
+- [Set up a Warden account](../../set-up-a-warden-account) on a local chain. Note down your **private key**.
 
+- Make sure the chain is running. You can start it by running `wardend start` in a separate terminal window.
 
 ## Step 1. Create a Foundry project
 
@@ -104,7 +105,7 @@ evm_version = "paris"
 
 ## Step 4. Set environment variables
 
-Set your private key and the RPC URL as environmental variables:
+Set your [private key](../../set-up-a-warden-account#get-the-private-key) and the RPC URL as environmental variables:
 
 ```
 export PRIVATE_KEY=your-private-key

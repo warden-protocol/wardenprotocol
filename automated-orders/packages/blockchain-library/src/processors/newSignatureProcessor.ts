@@ -1,6 +1,6 @@
 import { logError, logInfo, serialize } from '@warden-automated-orders/utils';
 import { LRUCache } from 'lru-cache';
-import { concatHex, decodeFunctionResult, Hex } from 'viem';
+import { concatHex, decodeFunctionResult, Hex, parseSignature, serializeSignature } from 'viem';
 import { ExecuteSignedQuoteParams, GetQuotePayload } from '@biconomy/abstractjs';
 
 import { getQuotePayloadAbiItem } from '../types/biconomy/abi.js';
@@ -10,17 +10,7 @@ import { INewSignatureRequest } from '../types/warden/newSignatureRequest.js';
 import { Processor } from './processor.js';
 import { ExponentialBackoff, handleAll, IPolicy, retry } from 'cockatiel';
 import { WardenRegistryClient } from '../clients/registry.js';
-
-/**
- * Custom error for missing required clients
- */
-export class MissingClientError extends Error {
-  constructor(message = 'At least one of EvmClient or BiconomyMEEClient must be provided') {
-    super(message);
-    this.name = 'MissingClientError';
-    Object.setPrototypeOf(this, MissingClientError.prototype);
-  }
-}
+import { MissingClientError } from '../types/errors/missedClientError.js';
 
 export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   private retryPolicy: IPolicy;
@@ -53,7 +43,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
       logInfo(`Skip already seen transaction ${data.transactionHash}`);
       return;
     }
-    
+
     logInfo(`New Signature request ${serialize(data)}`);
 
     try {
@@ -66,7 +56,7 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
   private async handleInternal(data: INewSignatureRequest) : Promise<void> {
     await this.retryPolicy.execute(async () => {
       const transaction = await this.registryClient.getTransaction(data.transactionHash, data.creator);
-      if (!transaction) {
+      if (!transaction || transaction === '0x') {
         logError(`Transaction with hash "${data.transactionHash}" not found in registry`);
         return;
       }
@@ -103,9 +93,13 @@ export class NewSignatureProcessor extends Processor<INewSignatureRequest> {
         data: transaction
       });
 
+      const parsedSignature = parseSignature(data.signature);
+      const signature = serializeSignature({ ...parsedSignature, v: parsedSignature.v ? parsedSignature.v : 27n + BigInt(parsedSignature.yParity) });
+
       const params: ExecuteSignedQuoteParams = {
-        signedQuote: { ...getQuotePayload as GetQuotePayload, signature: concatHex(["0x00", data.signature]) }
+        signedQuote: { ...getQuotePayload as GetQuotePayload, signature: concatHex(["0x00", signature]) }
       };
+
       
       await this.mee.executeSignedQuote(params);
     } else {

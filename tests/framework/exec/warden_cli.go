@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 )
 
@@ -35,7 +36,7 @@ func NewWardend(node *WardenNode, name string) *Wardend {
 }
 
 func (cli *Wardend) Tx(t *testing.T, command string) sdk.TxResponse {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
 	defer cancel()
 
 	cmd := &Exec{
@@ -60,7 +61,7 @@ func (cli *Wardend) Address(t *testing.T) string {
 		return cli.address
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	ctx, cancel := context.WithTimeout(t.Context(), 1*time.Second)
 	defer cancel()
 
 	cmd := &Exec{
@@ -83,7 +84,7 @@ func (cli *Wardend) PrivateKey(t *testing.T) string {
 		return cli.privateKey
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	ctx, cancel := context.WithTimeout(t.Context(), 1*time.Second)
 	defer cancel()
 
 	cmd := &Exec{

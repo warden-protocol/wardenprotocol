@@ -1,7 +1,6 @@
 package cases
 
 import (
-	"context"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -22,15 +21,15 @@ type Test_AsyncPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_AsyncPrecompile) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_AsyncPrecompile) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-// TODO(backsapc): Implement positive test cases with async sidecar integration
-func (c *Test_AsyncPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
+// TODO(backsapc): Implement positive test cases with async sidecar integration.
+func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 
 	evmClient := c.w.EthClient(t)
@@ -41,10 +40,10 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, ctx context.Context, _ framewor
 	require.NoError(t, err)
 	require.Len(t, futuresQuery.Futures, 0)
 
-	addFutureTx, err := iAsyncClient.AddFuture(alice.TransactOps(t, ctx, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
+	addFutureTx, err := iAsyncClient.AddFuture(alice.TransactOps(t, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
 	require.NoError(t, err)
 
-	addFutureReceipt, err := bind.WaitMined(ctx, evmClient, addFutureTx)
+	addFutureReceipt, err := bind.WaitMined(t.Context(), evmClient, addFutureTx)
 	require.NoError(t, err)
 
 	createFutureEvents, err := checks.GetParsedEventsOnly(addFutureReceipt, iAsyncClient.ParseCreateFuture)

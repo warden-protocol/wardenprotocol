@@ -1,5 +1,5 @@
 {
-  "position": 4,
+  "position": 6,
   "label": "Execute offchain computations with x/async",
   "collapsible": true,
   "collapsed": false,

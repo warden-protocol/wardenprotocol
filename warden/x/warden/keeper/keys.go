@@ -6,7 +6,6 @@ import (
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -16,7 +15,7 @@ type KeysKeeper struct {
 }
 
 func NewKeysKeeper(sb *collections.SchemaBuilder, cdc codec.BinaryCodec) KeysKeeper {
-	keys := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[v1beta3.Key](cdc))
+	keys := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[types.Key](cdc))
 	keysBySpace := collections.NewKeySet(
 		sb, KeysSpaceIndexPrefix, "keys_by_space",
 		collections.PairKeyCodec(collections.Uint64Key, collections.Uint64Key),
@@ -45,7 +44,7 @@ func (k KeysKeeper) Set(ctx context.Context, key *types.Key) error {
 	return k.keys.Set(ctx, key.Id, *key)
 }
 
-func (k KeysKeeper) Coll() collections.Map[uint64, v1beta3.Key] {
+func (k KeysKeeper) Coll() collections.Map[uint64, types.Key] {
 	return k.keys
 }
 

@@ -7,8 +7,9 @@ export interface Env {
   EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS: number;
   EVMOS_EVENTS_CACHE_SIZE: number;
   EVMOS_PUBLIC_CLIENT_TIMEOUT_MSEC: number;
-  ETHEREUM_NODE_RPC: string;
   WARDEN_EVM_CHAIN_ID: number;
   AWS_KMS_KEY_ID: string;
   AWS_KMS_REGION: string;
+  ETHEREUM_NODE_RPC?: string;
+  MEE_NODE_URL?: string;
 }

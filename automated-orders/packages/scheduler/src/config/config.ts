@@ -13,10 +13,14 @@ const schema: JSONSchemaType<Env> = {
     'EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS',
     'EVMOS_EVENTS_CACHE_SIZE',
     'EVMOS_PUBLIC_CLIENT_TIMEOUT_MSEC',
-    'ETHEREUM_NODE_RPC',
     'WARDEN_EVM_CHAIN_ID',
     'AWS_KMS_KEY_ID',
     'AWS_KMS_REGION'
+  ],
+  anyOf: [
+    { required: ['ETHEREUM_NODE_RPC'] }, // If EVMOS_NODE_RPC exists, MEE_NODE_URL should not
+    { required: ['MEE_NODE_URL'] },   // If EVMOS_NODE_RPC is missing, MEE_NODE_URL can exist or not
+    {},
   ],
   properties: {
     EVMOS_NODE_RPC: { type: 'string' },
@@ -27,10 +31,11 @@ const schema: JSONSchemaType<Env> = {
     EVMOS_EVENTS_ORDER_RETRY_ATTEMPTS: { type: 'number', minimum: 1 },
     EVMOS_EVENTS_CACHE_SIZE: { type: 'number', minimum: 1 },
     EVMOS_PUBLIC_CLIENT_TIMEOUT_MSEC: { type: 'number', minimum: 10_000 },
-    ETHEREUM_NODE_RPC: { type: 'string' },
     WARDEN_EVM_CHAIN_ID: { type: 'number' },
     AWS_KMS_KEY_ID: { type: 'string' },
-    AWS_KMS_REGION: { type: 'string' }
+    AWS_KMS_REGION: { type: 'string' },
+    ETHEREUM_NODE_RPC: { type: 'string', nullable: true },
+    MEE_NODE_URL: { type: 'string', nullable: true }
   },
 };
 

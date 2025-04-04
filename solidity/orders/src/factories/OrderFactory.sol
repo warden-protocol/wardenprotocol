@@ -3,6 +3,7 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Types } from "../types/Types.sol";
+import { TypesV0 } from "../types/TypesV0.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AdvancedOrderFactory } from "./AdvancedOrderFactory.sol";
 import { Registry } from "../Registry.sol";
@@ -98,7 +99,7 @@ contract OrderFactory is Ownable, ReentrancyGuard {
      */
     function createOrder(
         bytes calldata _orderData,
-        Types.CommonExecutionData calldata _executionData,
+        TypesV0.CommonExecutionData calldata _executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         OrderType orderType,
         bytes32 salt
@@ -143,7 +144,7 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     function _createBasicOrder(
         bytes32 salt,
         Types.BasicOrderData memory _orderData,
-        Types.CommonExecutionData calldata _executionData,
+        TypesV0.CommonExecutionData calldata _executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address _scheduler
     )
@@ -172,7 +173,7 @@ contract OrderFactory is Ownable, ReentrancyGuard {
     function _createAdvancedOrder(
         bytes32 salt,
         Types.AdvancedOrderData memory _orderData,
-        Types.CommonExecutionData calldata _executionData,
+        TypesV0.CommonExecutionData calldata _executionData,
         CommonTypes.Coin[] calldata maxKeychainFees,
         address _scheduler
     )

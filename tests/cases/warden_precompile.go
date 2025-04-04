@@ -1,7 +1,6 @@
 package cases
 
 import (
-	"context"
 	"encoding/base64"
 	"encoding/hex"
 	"math/big"
@@ -25,16 +24,16 @@ type Test_WardenPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_WardenPrecompile) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_WardenPrecompile) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 
-	c.w.PrintLogsAtTheEnd(t, ctx, []string{"TEST_DEBUG"})
+	c.w.PrintLogsAtTheEnd(t, []string{"TEST_DEBUG"})
 }
 
-func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_WardenPrecompile) Run(t *testing.T, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 	dave := exec.NewWardend(c.w, "dave")
@@ -57,10 +56,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		keychainUrl := "test.url"
 		keychainKeybaseId := "1234567890ABCDEF"
 
-		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, ctx, evmClient), keychainName, keychainFees, keychainDescription, keychainUrl, keychainKeybaseId)
+		newKeychainTx, err := iWardenClient.NewKeychain(alice.TransactOps(t, evmClient), keychainName, keychainFees, keychainDescription, keychainUrl, keychainKeybaseId)
 		require.NoError(t, err)
 
-		newKeychainReceipt, err := bind.WaitMined(ctx, evmClient, newKeychainTx)
+		newKeychainReceipt, err := bind.WaitMined(t.Context(), evmClient, newKeychainTx)
 		require.NoError(t, err)
 
 		createTemplateEvents, err := checks.GetParsedEventsOnly(newKeychainReceipt, iWardenClient.ParseNewKeychain)
@@ -88,10 +87,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			KeybaseId:   keychainKeybaseId,
 		}, keychain)
 		// add keychain writer
-		addKeychainWriterTx, err := iWardenClient.AddKeychainWriter(alice.TransactOps(t, ctx, evmClient), 1, alice.EthAddress(t))
+		addKeychainWriterTx, err := iWardenClient.AddKeychainWriter(alice.TransactOps(t, evmClient), 1, alice.EthAddress(t))
 		require.NoError(t, err)
 
-		addKeychainWriterReceipt, err := bind.WaitMined(ctx, evmClient, addKeychainWriterTx)
+		addKeychainWriterReceipt, err := bind.WaitMined(t.Context(), evmClient, addKeychainWriterTx)
 		require.NoError(t, err)
 
 		addKeychainWriterEvents, err := checks.GetParsedEventsOnly(addKeychainWriterReceipt, iWardenClient.ParseAddKeychainWriter)
@@ -118,10 +117,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			KeybaseId:   keychainKeybaseId,
 		}, keychain)
 		// add keychain admin
-		addKeychainAdminTx, err := iWardenClient.AddKeychainAdmin(alice.TransactOps(t, ctx, evmClient), 1, bob.EthAddress(t))
+		addKeychainAdminTx, err := iWardenClient.AddKeychainAdmin(alice.TransactOps(t, evmClient), 1, bob.EthAddress(t))
 		require.NoError(t, err)
 
-		addKeychainAdminReceipt, err := bind.WaitMined(ctx, evmClient, addKeychainAdminTx)
+		addKeychainAdminReceipt, err := bind.WaitMined(t.Context(), evmClient, addKeychainAdminTx)
 		require.NoError(t, err)
 
 		addKeychainAdminEvents, err := checks.GetParsedEventsOnly(addKeychainAdminReceipt, iWardenClient.ParseAddKeychainAdmin)
@@ -148,10 +147,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			KeybaseId:   keychainKeybaseId,
 		}, keychain)
 		// remove keychain admin
-		removeKeychainAdminTx, err := iWardenClient.RemoveKeychainAdmin(alice.TransactOps(t, ctx, evmClient), 1, alice.EthAddress(t))
+		removeKeychainAdminTx, err := iWardenClient.RemoveKeychainAdmin(alice.TransactOps(t, evmClient), 1, alice.EthAddress(t))
 		require.NoError(t, err)
 
-		removeKeychainAdminReceipt, err := bind.WaitMined(ctx, evmClient, removeKeychainAdminTx)
+		removeKeychainAdminReceipt, err := bind.WaitMined(t.Context(), evmClient, removeKeychainAdminTx)
 		require.NoError(t, err)
 
 		removeKeychainAdminEvents, err := checks.GetParsedEventsOnly(removeKeychainAdminReceipt, iWardenClient.ParseRemoveKeychainAdmin)
@@ -194,10 +193,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 			KeyReq: keyReq,
 			SigReq: sigReq,
 		}
-		updateKeychainTx, err := iWardenClient.UpdateKeychain(bob.TransactOps(t, ctx, evmClient), 1, keychainName, keychainFees, keychainDescription, keychainUrl, keychainKeybaseId)
+		updateKeychainTx, err := iWardenClient.UpdateKeychain(bob.TransactOps(t, evmClient), 1, keychainName, keychainFees, keychainDescription, keychainUrl, keychainKeybaseId)
 		require.NoError(t, err)
 
-		updateKeychainReceipt, err := bind.WaitMined(ctx, evmClient, updateKeychainTx)
+		updateKeychainReceipt, err := bind.WaitMined(t.Context(), evmClient, updateKeychainTx)
 		require.NoError(t, err)
 
 		updateKeychainEvents, err := checks.GetParsedEventsOnly(updateKeychainReceipt, iWardenClient.ParseUpdateKeychain)
@@ -230,10 +229,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		require.Equal(t, []warden.Space{}, spaces.Spaces)
 
 		additionalOwners := []common.Address{}
-		newSpaceTx, err := iWardenClient.NewSpace(alice.TransactOps(t, ctx, evmClient), 0, 0, 0, 0, additionalOwners)
+		newSpaceTx, err := iWardenClient.NewSpace(alice.TransactOps(t, evmClient), 0, 0, 0, 0, additionalOwners)
 		require.NoError(t, err)
 
-		newSpaceReceipt, err := bind.WaitMined(ctx, evmClient, newSpaceTx)
+		newSpaceReceipt, err := bind.WaitMined(t.Context(), evmClient, newSpaceTx)
 		require.NoError(t, err)
 
 		newSpaceEvents, err := checks.GetParsedEventsOnly(newSpaceReceipt, iWardenClient.ParseNewSpace)
@@ -283,10 +282,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		pubKey, err := hex.DecodeString("04698b4299b6d5a097dadfa74f7b36413422102308160840d5c07b6124aa95d6972dd03c5db4fd57c01fc2152bc01362c298351a9e6c8876f5e533037fe11b82bf")
 		require.NoError(t, err)
 
-		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(alice.TransactOps(t, ctx, evmClient), 1, pubKey)
+		fulfilKeyRequestTx, err := iWardenClient.FulfilKeyRequest(alice.TransactOps(t, evmClient), 1, pubKey)
 		require.NoError(t, err)
 
-		fulfilKeyRequestReceipt, err := bind.WaitMined(ctx, evmClient, fulfilKeyRequestTx)
+		fulfilKeyRequestReceipt, err := bind.WaitMined(t.Context(), evmClient, fulfilKeyRequestTx)
 		require.NoError(t, err)
 
 		newKeyEvents, err := checks.GetParsedEventsOnly(fulfilKeyRequestReceipt, iWardenClient.ParseNewKey)
@@ -353,10 +352,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		newKeyReqTx = alice.Tx(t, "warden new-action new-key-request --space-id 1 --keychain-id 1 --key-type 1 --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newKeyReqTx)
 
-		rejectKeyRequestTx, err := iWardenClient.RejectKeyRequest(alice.TransactOps(t, ctx, evmClient), 2, "test reject reason")
+		rejectKeyRequestTx, err := iWardenClient.RejectKeyRequest(alice.TransactOps(t, evmClient), 2, "test reject reason")
 		require.NoError(t, err)
 
-		rejectKeyRequestReceipt, err := bind.WaitMined(ctx, evmClient, rejectKeyRequestTx)
+		rejectKeyRequestReceipt, err := bind.WaitMined(t.Context(), evmClient, rejectKeyRequestTx)
 		require.NoError(t, err)
 
 		rejectKeyRequestEvents, err := checks.GetParsedEventsOnly(rejectKeyRequestReceipt, iWardenClient.ParseRejectKeyRequest)
@@ -386,10 +385,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		signedData, err := base64.StdEncoding.DecodeString("LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA=")
 		require.NoError(t, err)
 
-		fulfilSignRequestTx, err := iWardenClient.FulfilSignRequest(alice.TransactOps(t, ctx, evmClient), 1, signedData)
+		fulfilSignRequestTx, err := iWardenClient.FulfilSignRequest(alice.TransactOps(t, evmClient), 1, signedData)
 		require.NoError(t, err)
 
-		fulfilSignRequestReceipt, err := bind.WaitMined(ctx, evmClient, fulfilSignRequestTx)
+		fulfilSignRequestReceipt, err := bind.WaitMined(t.Context(), evmClient, fulfilSignRequestTx)
 		require.NoError(t, err)
 
 		fulfilSignRequestEvents, err := checks.GetParsedEventsOnly(fulfilSignRequestReceipt, iWardenClient.ParseFulfilSignRequest)
@@ -419,10 +418,10 @@ func (c *Test_WardenPrecompile) Run(t *testing.T, ctx context.Context, build fra
 		newSignReqTx = alice.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --max-keychain-fees \"1award\" --nonce 0")
 		checks.SuccessTx(t, newSignReqTx)
 		signRequestRejectReason := "test reject reason"
-		rejectSignRequestTx, err := iWardenClient.RejectSignRequest(alice.TransactOps(t, ctx, evmClient), 2, signRequestRejectReason)
+		rejectSignRequestTx, err := iWardenClient.RejectSignRequest(alice.TransactOps(t, evmClient), 2, signRequestRejectReason)
 		require.NoError(t, err)
 
-		rejectSignRequestReceipt, err := bind.WaitMined(ctx, evmClient, rejectSignRequestTx)
+		rejectSignRequestReceipt, err := bind.WaitMined(t.Context(), evmClient, rejectSignRequestTx)
 		require.NoError(t, err)
 
 		rejectSignRequestEvents, err := checks.GetParsedEventsOnly(rejectSignRequestReceipt, iWardenClient.ParseRejectSignRequest)

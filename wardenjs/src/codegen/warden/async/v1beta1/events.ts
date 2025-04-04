@@ -2,72 +2,72 @@
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
-/** EventCreateFuture is emitted when a new Future is created. */
-export interface EventCreateFuture {
-  /** ID of the new Future. */
+/** EventCreateTask is emitted when a new Task is created. */
+export interface EventCreateTask {
+  /** ID of the new Task. */
   id: bigint;
-  /** Creator is the address that created the Future. */
+  /** Creator is the address that created the Task. */
   creator: string;
-  /** Handler is the name of the handler that will be executed. */
-  handler: string;
+  /** Plugin is the name of the plugin that will be executed. */
+  plugin: string;
   /** Address of callback that will be triggered after execution. */
   callbackAddress: string;
 }
-export interface EventCreateFutureProtoMsg {
-  typeUrl: "/warden.async.v1beta1.EventCreateFuture";
+export interface EventCreateTaskProtoMsg {
+  typeUrl: "/warden.async.v1beta1.EventCreateTask";
   value: Uint8Array;
 }
-/** EventCreateFuture is emitted when a new Future is created. */
-export interface EventCreateFutureAmino {
-  /** ID of the new Future. */
+/** EventCreateTask is emitted when a new Task is created. */
+export interface EventCreateTaskAmino {
+  /** ID of the new Task. */
   id?: string;
-  /** Creator is the address that created the Future. */
+  /** Creator is the address that created the Task. */
   creator?: string;
-  /** Handler is the name of the handler that will be executed. */
-  handler?: string;
+  /** Plugin is the name of the plugin that will be executed. */
+  plugin?: string;
   /** Address of callback that will be triggered after execution. */
   callback_address?: string;
 }
-export interface EventCreateFutureAminoMsg {
-  type: "/warden.async.v1beta1.EventCreateFuture";
-  value: EventCreateFutureAmino;
+export interface EventCreateTaskAminoMsg {
+  type: "/warden.async.v1beta1.EventCreateTask";
+  value: EventCreateTaskAmino;
 }
-/** EventCreateFuture is emitted when a new Future is created. */
-export interface EventCreateFutureSDKType {
+/** EventCreateTask is emitted when a new Task is created. */
+export interface EventCreateTaskSDKType {
   id: bigint;
   creator: string;
-  handler: string;
+  plugin: string;
   callback_address: string;
 }
-function createBaseEventCreateFuture(): EventCreateFuture {
+function createBaseEventCreateTask(): EventCreateTask {
   return {
     id: BigInt(0),
     creator: "",
-    handler: "",
+    plugin: "",
     callbackAddress: ""
   };
 }
-export const EventCreateFuture = {
-  typeUrl: "/warden.async.v1beta1.EventCreateFuture",
-  encode(message: EventCreateFuture, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventCreateTask = {
+  typeUrl: "/warden.async.v1beta1.EventCreateTask",
+  encode(message: EventCreateTask, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.creator !== "") {
       writer.uint32(18).string(message.creator);
     }
-    if (message.handler !== "") {
-      writer.uint32(26).string(message.handler);
+    if (message.plugin !== "") {
+      writer.uint32(26).string(message.plugin);
     }
     if (message.callbackAddress !== "") {
       writer.uint32(34).string(message.callbackAddress);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateFuture {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateTask {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventCreateFuture();
+    const message = createBaseEventCreateTask();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -78,7 +78,7 @@ export const EventCreateFuture = {
           message.creator = reader.string();
           break;
         case 3:
-          message.handler = reader.string();
+          message.plugin = reader.string();
           break;
         case 4:
           message.callbackAddress = reader.string();
@@ -90,67 +90,67 @@ export const EventCreateFuture = {
     }
     return message;
   },
-  fromJSON(object: any): EventCreateFuture {
+  fromJSON(object: any): EventCreateTask {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
-      handler: isSet(object.handler) ? String(object.handler) : "",
+      plugin: isSet(object.plugin) ? String(object.plugin) : "",
       callbackAddress: isSet(object.callbackAddress) ? String(object.callbackAddress) : ""
     };
   },
-  toJSON(message: EventCreateFuture): JsonSafe<EventCreateFuture> {
+  toJSON(message: EventCreateTask): JsonSafe<EventCreateTask> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
-    message.handler !== undefined && (obj.handler = message.handler);
+    message.plugin !== undefined && (obj.plugin = message.plugin);
     message.callbackAddress !== undefined && (obj.callbackAddress = message.callbackAddress);
     return obj;
   },
-  fromPartial(object: Partial<EventCreateFuture>): EventCreateFuture {
-    const message = createBaseEventCreateFuture();
+  fromPartial(object: Partial<EventCreateTask>): EventCreateTask {
+    const message = createBaseEventCreateTask();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
-    message.handler = object.handler ?? "";
+    message.plugin = object.plugin ?? "";
     message.callbackAddress = object.callbackAddress ?? "";
     return message;
   },
-  fromAmino(object: EventCreateFutureAmino): EventCreateFuture {
-    const message = createBaseEventCreateFuture();
+  fromAmino(object: EventCreateTaskAmino): EventCreateTask {
+    const message = createBaseEventCreateTask();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
-    if (object.handler !== undefined && object.handler !== null) {
-      message.handler = object.handler;
+    if (object.plugin !== undefined && object.plugin !== null) {
+      message.plugin = object.plugin;
     }
     if (object.callback_address !== undefined && object.callback_address !== null) {
       message.callbackAddress = object.callback_address;
     }
     return message;
   },
-  toAmino(message: EventCreateFuture): EventCreateFutureAmino {
+  toAmino(message: EventCreateTask): EventCreateTaskAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.handler = message.handler === "" ? undefined : message.handler;
+    obj.plugin = message.plugin === "" ? undefined : message.plugin;
     obj.callback_address = message.callbackAddress === "" ? undefined : message.callbackAddress;
     return obj;
   },
-  fromAminoMsg(object: EventCreateFutureAminoMsg): EventCreateFuture {
-    return EventCreateFuture.fromAmino(object.value);
+  fromAminoMsg(object: EventCreateTaskAminoMsg): EventCreateTask {
+    return EventCreateTask.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventCreateFutureProtoMsg): EventCreateFuture {
-    return EventCreateFuture.decode(message.value);
+  fromProtoMsg(message: EventCreateTaskProtoMsg): EventCreateTask {
+    return EventCreateTask.decode(message.value);
   },
-  toProto(message: EventCreateFuture): Uint8Array {
-    return EventCreateFuture.encode(message).finish();
+  toProto(message: EventCreateTask): Uint8Array {
+    return EventCreateTask.encode(message).finish();
   },
-  toProtoMsg(message: EventCreateFuture): EventCreateFutureProtoMsg {
+  toProtoMsg(message: EventCreateTask): EventCreateTaskProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.EventCreateFuture",
-      value: EventCreateFuture.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.EventCreateTask",
+      value: EventCreateTask.encode(message).finish()
     };
   }
 };

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QueryFuturesRequest, QueryFuturesResponseSDKType, QueryFutureByIdRequest, QueryFutureByIdResponseSDKType, QueryPendingFuturesRequest, QueryPendingFuturesResponseSDKType, QueryHandlersByValidatorRequest, QueryHandlersByValidatorResponseSDKType } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QueryTasksRequest, QueryTasksResponseSDKType, QueryTaskByIdRequest, QueryTaskByIdResponseSDKType, QueryPendingTasksRequest, QueryPendingTasksResponseSDKType, QueryPluginsByValidatorRequest, QueryPluginsByValidatorResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -11,18 +11,18 @@ export class LCDQueryClient {
   }) {
     this.req = requestClient;
     this.params = this.params.bind(this);
-    this.futures = this.futures.bind(this);
-    this.futureById = this.futureById.bind(this);
-    this.pendingFutures = this.pendingFutures.bind(this);
-    this.handlersByValidator = this.handlersByValidator.bind(this);
+    this.tasks = this.tasks.bind(this);
+    this.taskById = this.taskById.bind(this);
+    this.pendingTasks = this.pendingTasks.bind(this);
+    this.pluginsByValidator = this.pluginsByValidator.bind(this);
   }
   /* Parameters queries the parameters of the module. */
   async params(_params: QueryParamsRequest = {}): Promise<QueryParamsResponseSDKType> {
     const endpoint = `warden/async/params`;
     return await this.req.get<QueryParamsResponseSDKType>(endpoint);
   }
-  /* Queries a list of Futures. */
-  async futures(params: QueryFuturesRequest): Promise<QueryFuturesResponseSDKType> {
+  /* Queries a list of Tasks. */
+  async tasks(params: QueryTasksRequest): Promise<QueryTasksResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -32,36 +32,36 @@ export class LCDQueryClient {
     if (typeof params?.creator !== "undefined") {
       options.params.creator = params.creator;
     }
-    const endpoint = `warden/async/futures`;
-    return await this.req.get<QueryFuturesResponseSDKType>(endpoint, options);
+    const endpoint = `warden/async/tasks`;
+    return await this.req.get<QueryTasksResponseSDKType>(endpoint, options);
   }
-  /* Queries a Future by its id. */
-  async futureById(params: QueryFutureByIdRequest): Promise<QueryFutureByIdResponseSDKType> {
-    const endpoint = `warden/async/future/${params.id}`;
-    return await this.req.get<QueryFutureByIdResponseSDKType>(endpoint);
+  /* Queries a Task by its id. */
+  async taskById(params: QueryTaskByIdRequest): Promise<QueryTaskByIdResponseSDKType> {
+    const endpoint = `warden/async/task/${params.id}`;
+    return await this.req.get<QueryTaskByIdResponseSDKType>(endpoint);
   }
-  /* Queries Futures that do not have a result yet. */
-  async pendingFutures(params: QueryPendingFuturesRequest = {
+  /* Queries Tasks that do not have a result yet. */
+  async pendingTasks(params: QueryPendingTasksRequest = {
     pagination: undefined
-  }): Promise<QueryPendingFuturesResponseSDKType> {
+  }): Promise<QueryPendingTasksResponseSDKType> {
     const options: any = {
       params: {}
     };
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `warden/async/pending_futures`;
-    return await this.req.get<QueryPendingFuturesResponseSDKType>(endpoint, options);
+    const endpoint = `warden/async/pending_tasks`;
+    return await this.req.get<QueryPendingTasksResponseSDKType>(endpoint, options);
   }
-  /* Queries Handlers by validator. */
-  async handlersByValidator(params: QueryHandlersByValidatorRequest): Promise<QueryHandlersByValidatorResponseSDKType> {
+  /* Queries Plugins by validator. */
+  async pluginsByValidator(params: QueryPluginsByValidatorRequest): Promise<QueryPluginsByValidatorResponseSDKType> {
     const options: any = {
       params: {}
     };
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `warden/async/handlers_by_validator/${params.validator}`;
-    return await this.req.get<QueryHandlersByValidatorResponseSDKType>(endpoint, options);
+    const endpoint = `warden/async/plugins_by_validator/${params.validator}`;
+    return await this.req.get<QueryPluginsByValidatorResponseSDKType>(endpoint, options);
   }
 }

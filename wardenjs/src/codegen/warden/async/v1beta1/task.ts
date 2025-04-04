@@ -2,218 +2,218 @@
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
-export enum FutureVoteType {
+export enum TaskVoteType {
   /** VOTE_TYPE_UNSPECIFIED - Unspecified vote type. */
   VOTE_TYPE_UNSPECIFIED = 0,
-  /** VOTE_TYPE_VERIFIED - Vote to approve the result of the Future. */
+  /** VOTE_TYPE_VERIFIED - Vote to approve the result of the Task. */
   VOTE_TYPE_VERIFIED = 1,
-  /** VOTE_TYPE_REJECTED - Vote to reject the result of the Future. */
+  /** VOTE_TYPE_REJECTED - Vote to reject the result of the Task. */
   VOTE_TYPE_REJECTED = 2,
   UNRECOGNIZED = -1,
 }
-export const FutureVoteTypeSDKType = FutureVoteType;
-export const FutureVoteTypeAmino = FutureVoteType;
-export function futureVoteTypeFromJSON(object: any): FutureVoteType {
+export const TaskVoteTypeSDKType = TaskVoteType;
+export const TaskVoteTypeAmino = TaskVoteType;
+export function taskVoteTypeFromJSON(object: any): TaskVoteType {
   switch (object) {
     case 0:
     case "VOTE_TYPE_UNSPECIFIED":
-      return FutureVoteType.VOTE_TYPE_UNSPECIFIED;
+      return TaskVoteType.VOTE_TYPE_UNSPECIFIED;
     case 1:
     case "VOTE_TYPE_VERIFIED":
-      return FutureVoteType.VOTE_TYPE_VERIFIED;
+      return TaskVoteType.VOTE_TYPE_VERIFIED;
     case 2:
     case "VOTE_TYPE_REJECTED":
-      return FutureVoteType.VOTE_TYPE_REJECTED;
+      return TaskVoteType.VOTE_TYPE_REJECTED;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return FutureVoteType.UNRECOGNIZED;
+      return TaskVoteType.UNRECOGNIZED;
   }
 }
-export function futureVoteTypeToJSON(object: FutureVoteType): string {
+export function taskVoteTypeToJSON(object: TaskVoteType): string {
   switch (object) {
-    case FutureVoteType.VOTE_TYPE_UNSPECIFIED:
+    case TaskVoteType.VOTE_TYPE_UNSPECIFIED:
       return "VOTE_TYPE_UNSPECIFIED";
-    case FutureVoteType.VOTE_TYPE_VERIFIED:
+    case TaskVoteType.VOTE_TYPE_VERIFIED:
       return "VOTE_TYPE_VERIFIED";
-    case FutureVoteType.VOTE_TYPE_REJECTED:
+    case TaskVoteType.VOTE_TYPE_REJECTED:
       return "VOTE_TYPE_REJECTED";
-    case FutureVoteType.UNRECOGNIZED:
+    case TaskVoteType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 /**
- * Future defines a task that will be executed asynchronously.
- * Validators will be able to submit the proposed result of the Future
+ * Task defines a task that will be executed asynchronously.
+ * Validators will be able to submit the proposed result of the Task
  * execution.
  * Other validators will then be able to vote on the validity of the proposed
  * result.
  */
-export interface Future {
-  /** Unique ID of the Future. */
+export interface Task {
+  /** Unique ID of the Task. */
   id: bigint;
-  /** Creator of the Future. */
+  /** Creator of the Task. */
   creator: string;
-  /** Unique name of the handler to be used to execute the Future. */
-  handler: string;
+  /** Unique name of the plugin to be used to execute the Task. */
+  plugin: string;
   /**
-   * Input data to be used by the handler to execute the Future.
-   * The actual format is determined by the handler being used.
+   * Input data to be used by the plugin to execute the Task.
+   * The actual format is determined by the plugin being used.
    */
   input: Uint8Array;
-  /** Callback to be called when the Future is completed. */
+  /** Callback to be called when the Task is completed. */
   callback: string;
 }
-export interface FutureProtoMsg {
-  typeUrl: "/warden.async.v1beta1.Future";
+export interface TaskProtoMsg {
+  typeUrl: "/warden.async.v1beta1.Task";
   value: Uint8Array;
 }
 /**
- * Future defines a task that will be executed asynchronously.
- * Validators will be able to submit the proposed result of the Future
+ * Task defines a task that will be executed asynchronously.
+ * Validators will be able to submit the proposed result of the Task
  * execution.
  * Other validators will then be able to vote on the validity of the proposed
  * result.
  */
-export interface FutureAmino {
-  /** Unique ID of the Future. */
+export interface TaskAmino {
+  /** Unique ID of the Task. */
   id?: string;
-  /** Creator of the Future. */
+  /** Creator of the Task. */
   creator?: string;
-  /** Unique name of the handler to be used to execute the Future. */
-  handler?: string;
+  /** Unique name of the plugin to be used to execute the Task. */
+  plugin?: string;
   /**
-   * Input data to be used by the handler to execute the Future.
-   * The actual format is determined by the handler being used.
+   * Input data to be used by the plugin to execute the Task.
+   * The actual format is determined by the plugin being used.
    */
   input?: string;
-  /** Callback to be called when the Future is completed. */
+  /** Callback to be called when the Task is completed. */
   callback?: string;
 }
-export interface FutureAminoMsg {
-  type: "/warden.async.v1beta1.Future";
-  value: FutureAmino;
+export interface TaskAminoMsg {
+  type: "/warden.async.v1beta1.Task";
+  value: TaskAmino;
 }
 /**
- * Future defines a task that will be executed asynchronously.
- * Validators will be able to submit the proposed result of the Future
+ * Task defines a task that will be executed asynchronously.
+ * Validators will be able to submit the proposed result of the Task
  * execution.
  * Other validators will then be able to vote on the validity of the proposed
  * result.
  */
-export interface FutureSDKType {
+export interface TaskSDKType {
   id: bigint;
   creator: string;
-  handler: string;
+  plugin: string;
   input: Uint8Array;
   callback: string;
 }
 /**
- * FutureResult is the result of the execution of a Future.
+ * TaskResult is the result of the execution of a Task.
  * It is submitted by validators as vote extensions.
- * Only one FutureResult per Future is allowed to be submitted, subsequent
- * attempts to submit a FutureResult will be rejected.
+ * Only one TaskResult per Task is allowed to be submitted, subsequent
+ * attempts to submit a TaskResult will be rejected.
  */
-export interface FutureResult {
-  /** ID of the Future this result is for. */
+export interface TaskResult {
+  /** ID of the Task this result is for. */
   id: bigint;
   /**
-   * Output of the Future.
-   * The actual format is determined by the handler being used.
+   * Output of the Task.
+   * The actual format is determined by the plugin being used.
    */
   output: Uint8Array;
   /** Address of the validator that submitted the result. */
   submitter: Uint8Array;
 }
-export interface FutureResultProtoMsg {
-  typeUrl: "/warden.async.v1beta1.FutureResult";
+export interface TaskResultProtoMsg {
+  typeUrl: "/warden.async.v1beta1.TaskResult";
   value: Uint8Array;
 }
 /**
- * FutureResult is the result of the execution of a Future.
+ * TaskResult is the result of the execution of a Task.
  * It is submitted by validators as vote extensions.
- * Only one FutureResult per Future is allowed to be submitted, subsequent
- * attempts to submit a FutureResult will be rejected.
+ * Only one TaskResult per Task is allowed to be submitted, subsequent
+ * attempts to submit a TaskResult will be rejected.
  */
-export interface FutureResultAmino {
-  /** ID of the Future this result is for. */
+export interface TaskResultAmino {
+  /** ID of the Task this result is for. */
   id?: string;
   /**
-   * Output of the Future.
-   * The actual format is determined by the handler being used.
+   * Output of the Task.
+   * The actual format is determined by the plugin being used.
    */
   output?: string;
   /** Address of the validator that submitted the result. */
   submitter?: string;
 }
-export interface FutureResultAminoMsg {
-  type: "/warden.async.v1beta1.FutureResult";
-  value: FutureResultAmino;
+export interface TaskResultAminoMsg {
+  type: "/warden.async.v1beta1.TaskResult";
+  value: TaskResultAmino;
 }
 /**
- * FutureResult is the result of the execution of a Future.
+ * TaskResult is the result of the execution of a Task.
  * It is submitted by validators as vote extensions.
- * Only one FutureResult per Future is allowed to be submitted, subsequent
- * attempts to submit a FutureResult will be rejected.
+ * Only one TaskResult per Task is allowed to be submitted, subsequent
+ * attempts to submit a TaskResult will be rejected.
  */
-export interface FutureResultSDKType {
+export interface TaskResultSDKType {
   id: bigint;
   output: Uint8Array;
   submitter: Uint8Array;
 }
-/** FutureVote is the vote of a validator on the validity of a Future result. */
-export interface FutureVote {
-  /** ID of the Future this vote is for. */
-  futureId: bigint;
+/** TaskVote is the vote of a validator on the validity of a Task result. */
+export interface TaskVote {
+  /** ID of the Task this vote is for. */
+  taskId: bigint;
   /** Address of the validator who voted. */
   voter: Uint8Array;
   /** Vote type. */
-  vote: FutureVoteType;
+  vote: TaskVoteType;
 }
-export interface FutureVoteProtoMsg {
-  typeUrl: "/warden.async.v1beta1.FutureVote";
+export interface TaskVoteProtoMsg {
+  typeUrl: "/warden.async.v1beta1.TaskVote";
   value: Uint8Array;
 }
-/** FutureVote is the vote of a validator on the validity of a Future result. */
-export interface FutureVoteAmino {
-  /** ID of the Future this vote is for. */
-  future_id?: string;
+/** TaskVote is the vote of a validator on the validity of a Task result. */
+export interface TaskVoteAmino {
+  /** ID of the Task this vote is for. */
+  task_id?: string;
   /** Address of the validator who voted. */
   voter?: string;
   /** Vote type. */
-  vote?: FutureVoteType;
+  vote?: TaskVoteType;
 }
-export interface FutureVoteAminoMsg {
-  type: "/warden.async.v1beta1.FutureVote";
-  value: FutureVoteAmino;
+export interface TaskVoteAminoMsg {
+  type: "/warden.async.v1beta1.TaskVote";
+  value: TaskVoteAmino;
 }
-/** FutureVote is the vote of a validator on the validity of a Future result. */
-export interface FutureVoteSDKType {
-  future_id: bigint;
+/** TaskVote is the vote of a validator on the validity of a Task result. */
+export interface TaskVoteSDKType {
+  task_id: bigint;
   voter: Uint8Array;
-  vote: FutureVoteType;
+  vote: TaskVoteType;
 }
-function createBaseFuture(): Future {
+function createBaseTask(): Task {
   return {
     id: BigInt(0),
     creator: "",
-    handler: "",
+    plugin: "",
     input: new Uint8Array(),
     callback: ""
   };
 }
-export const Future = {
-  typeUrl: "/warden.async.v1beta1.Future",
-  encode(message: Future, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const Task = {
+  typeUrl: "/warden.async.v1beta1.Task",
+  encode(message: Task, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.creator !== "") {
       writer.uint32(18).string(message.creator);
     }
-    if (message.handler !== "") {
-      writer.uint32(26).string(message.handler);
+    if (message.plugin !== "") {
+      writer.uint32(26).string(message.plugin);
     }
     if (message.input.length !== 0) {
       writer.uint32(34).bytes(message.input);
@@ -223,10 +223,10 @@ export const Future = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Future {
+  decode(input: BinaryReader | Uint8Array, length?: number): Task {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFuture();
+    const message = createBaseTask();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -237,7 +237,7 @@ export const Future = {
           message.creator = reader.string();
           break;
         case 3:
-          message.handler = reader.string();
+          message.plugin = reader.string();
           break;
         case 4:
           message.input = reader.bytes();
@@ -252,43 +252,43 @@ export const Future = {
     }
     return message;
   },
-  fromJSON(object: any): Future {
+  fromJSON(object: any): Task {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
-      handler: isSet(object.handler) ? String(object.handler) : "",
+      plugin: isSet(object.plugin) ? String(object.plugin) : "",
       input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array(),
       callback: isSet(object.callback) ? String(object.callback) : ""
     };
   },
-  toJSON(message: Future): JsonSafe<Future> {
+  toJSON(message: Task): JsonSafe<Task> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
-    message.handler !== undefined && (obj.handler = message.handler);
+    message.plugin !== undefined && (obj.plugin = message.plugin);
     message.input !== undefined && (obj.input = base64FromBytes(message.input !== undefined ? message.input : new Uint8Array()));
     message.callback !== undefined && (obj.callback = message.callback);
     return obj;
   },
-  fromPartial(object: Partial<Future>): Future {
-    const message = createBaseFuture();
+  fromPartial(object: Partial<Task>): Task {
+    const message = createBaseTask();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
-    message.handler = object.handler ?? "";
+    message.plugin = object.plugin ?? "";
     message.input = object.input ?? new Uint8Array();
     message.callback = object.callback ?? "";
     return message;
   },
-  fromAmino(object: FutureAmino): Future {
-    const message = createBaseFuture();
+  fromAmino(object: TaskAmino): Task {
+    const message = createBaseTask();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
-    if (object.handler !== undefined && object.handler !== null) {
-      message.handler = object.handler;
+    if (object.plugin !== undefined && object.plugin !== null) {
+      message.plugin = object.plugin;
     }
     if (object.input !== undefined && object.input !== null) {
       message.input = bytesFromBase64(object.input);
@@ -298,41 +298,41 @@ export const Future = {
     }
     return message;
   },
-  toAmino(message: Future): FutureAmino {
+  toAmino(message: Task): TaskAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.handler = message.handler === "" ? undefined : message.handler;
+    obj.plugin = message.plugin === "" ? undefined : message.plugin;
     obj.input = message.input ? base64FromBytes(message.input) : undefined;
     obj.callback = message.callback === "" ? undefined : message.callback;
     return obj;
   },
-  fromAminoMsg(object: FutureAminoMsg): Future {
-    return Future.fromAmino(object.value);
+  fromAminoMsg(object: TaskAminoMsg): Task {
+    return Task.fromAmino(object.value);
   },
-  fromProtoMsg(message: FutureProtoMsg): Future {
-    return Future.decode(message.value);
+  fromProtoMsg(message: TaskProtoMsg): Task {
+    return Task.decode(message.value);
   },
-  toProto(message: Future): Uint8Array {
-    return Future.encode(message).finish();
+  toProto(message: Task): Uint8Array {
+    return Task.encode(message).finish();
   },
-  toProtoMsg(message: Future): FutureProtoMsg {
+  toProtoMsg(message: Task): TaskProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.Future",
-      value: Future.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.Task",
+      value: Task.encode(message).finish()
     };
   }
 };
-function createBaseFutureResult(): FutureResult {
+function createBaseTaskResult(): TaskResult {
   return {
     id: BigInt(0),
     output: new Uint8Array(),
     submitter: new Uint8Array()
   };
 }
-export const FutureResult = {
-  typeUrl: "/warden.async.v1beta1.FutureResult",
-  encode(message: FutureResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const TaskResult = {
+  typeUrl: "/warden.async.v1beta1.TaskResult",
+  encode(message: TaskResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
@@ -344,10 +344,10 @@ export const FutureResult = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): FutureResult {
+  decode(input: BinaryReader | Uint8Array, length?: number): TaskResult {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFutureResult();
+    const message = createBaseTaskResult();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -367,29 +367,29 @@ export const FutureResult = {
     }
     return message;
   },
-  fromJSON(object: any): FutureResult {
+  fromJSON(object: any): TaskResult {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       output: isSet(object.output) ? bytesFromBase64(object.output) : new Uint8Array(),
       submitter: isSet(object.submitter) ? bytesFromBase64(object.submitter) : new Uint8Array()
     };
   },
-  toJSON(message: FutureResult): JsonSafe<FutureResult> {
+  toJSON(message: TaskResult): JsonSafe<TaskResult> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.output !== undefined && (obj.output = base64FromBytes(message.output !== undefined ? message.output : new Uint8Array()));
     message.submitter !== undefined && (obj.submitter = base64FromBytes(message.submitter !== undefined ? message.submitter : new Uint8Array()));
     return obj;
   },
-  fromPartial(object: Partial<FutureResult>): FutureResult {
-    const message = createBaseFutureResult();
+  fromPartial(object: Partial<TaskResult>): TaskResult {
+    const message = createBaseTaskResult();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.output = object.output ?? new Uint8Array();
     message.submitter = object.submitter ?? new Uint8Array();
     return message;
   },
-  fromAmino(object: FutureResultAmino): FutureResult {
-    const message = createBaseFutureResult();
+  fromAmino(object: TaskResultAmino): TaskResult {
+    const message = createBaseTaskResult();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
@@ -401,41 +401,41 @@ export const FutureResult = {
     }
     return message;
   },
-  toAmino(message: FutureResult): FutureResultAmino {
+  toAmino(message: TaskResult): TaskResultAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     obj.output = message.output ? base64FromBytes(message.output) : undefined;
     obj.submitter = message.submitter ? base64FromBytes(message.submitter) : undefined;
     return obj;
   },
-  fromAminoMsg(object: FutureResultAminoMsg): FutureResult {
-    return FutureResult.fromAmino(object.value);
+  fromAminoMsg(object: TaskResultAminoMsg): TaskResult {
+    return TaskResult.fromAmino(object.value);
   },
-  fromProtoMsg(message: FutureResultProtoMsg): FutureResult {
-    return FutureResult.decode(message.value);
+  fromProtoMsg(message: TaskResultProtoMsg): TaskResult {
+    return TaskResult.decode(message.value);
   },
-  toProto(message: FutureResult): Uint8Array {
-    return FutureResult.encode(message).finish();
+  toProto(message: TaskResult): Uint8Array {
+    return TaskResult.encode(message).finish();
   },
-  toProtoMsg(message: FutureResult): FutureResultProtoMsg {
+  toProtoMsg(message: TaskResult): TaskResultProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.FutureResult",
-      value: FutureResult.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.TaskResult",
+      value: TaskResult.encode(message).finish()
     };
   }
 };
-function createBaseFutureVote(): FutureVote {
+function createBaseTaskVote(): TaskVote {
   return {
-    futureId: BigInt(0),
+    taskId: BigInt(0),
     voter: new Uint8Array(),
     vote: 0
   };
 }
-export const FutureVote = {
-  typeUrl: "/warden.async.v1beta1.FutureVote",
-  encode(message: FutureVote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.futureId !== BigInt(0)) {
-      writer.uint32(8).uint64(message.futureId);
+export const TaskVote = {
+  typeUrl: "/warden.async.v1beta1.TaskVote",
+  encode(message: TaskVote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.taskId !== BigInt(0)) {
+      writer.uint32(8).uint64(message.taskId);
     }
     if (message.voter.length !== 0) {
       writer.uint32(18).bytes(message.voter);
@@ -445,15 +445,15 @@ export const FutureVote = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): FutureVote {
+  decode(input: BinaryReader | Uint8Array, length?: number): TaskVote {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFutureVote();
+    const message = createBaseTaskVote();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.futureId = reader.uint64();
+          message.taskId = reader.uint64();
           break;
         case 2:
           message.voter = reader.bytes();
@@ -468,31 +468,31 @@ export const FutureVote = {
     }
     return message;
   },
-  fromJSON(object: any): FutureVote {
+  fromJSON(object: any): TaskVote {
     return {
-      futureId: isSet(object.futureId) ? BigInt(object.futureId.toString()) : BigInt(0),
+      taskId: isSet(object.taskId) ? BigInt(object.taskId.toString()) : BigInt(0),
       voter: isSet(object.voter) ? bytesFromBase64(object.voter) : new Uint8Array(),
-      vote: isSet(object.vote) ? futureVoteTypeFromJSON(object.vote) : -1
+      vote: isSet(object.vote) ? taskVoteTypeFromJSON(object.vote) : -1
     };
   },
-  toJSON(message: FutureVote): JsonSafe<FutureVote> {
+  toJSON(message: TaskVote): JsonSafe<TaskVote> {
     const obj: any = {};
-    message.futureId !== undefined && (obj.futureId = (message.futureId || BigInt(0)).toString());
+    message.taskId !== undefined && (obj.taskId = (message.taskId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = base64FromBytes(message.voter !== undefined ? message.voter : new Uint8Array()));
-    message.vote !== undefined && (obj.vote = futureVoteTypeToJSON(message.vote));
+    message.vote !== undefined && (obj.vote = taskVoteTypeToJSON(message.vote));
     return obj;
   },
-  fromPartial(object: Partial<FutureVote>): FutureVote {
-    const message = createBaseFutureVote();
-    message.futureId = object.futureId !== undefined && object.futureId !== null ? BigInt(object.futureId.toString()) : BigInt(0);
+  fromPartial(object: Partial<TaskVote>): TaskVote {
+    const message = createBaseTaskVote();
+    message.taskId = object.taskId !== undefined && object.taskId !== null ? BigInt(object.taskId.toString()) : BigInt(0);
     message.voter = object.voter ?? new Uint8Array();
     message.vote = object.vote ?? 0;
     return message;
   },
-  fromAmino(object: FutureVoteAmino): FutureVote {
-    const message = createBaseFutureVote();
-    if (object.future_id !== undefined && object.future_id !== null) {
-      message.futureId = BigInt(object.future_id);
+  fromAmino(object: TaskVoteAmino): TaskVote {
+    const message = createBaseTaskVote();
+    if (object.task_id !== undefined && object.task_id !== null) {
+      message.taskId = BigInt(object.task_id);
     }
     if (object.voter !== undefined && object.voter !== null) {
       message.voter = bytesFromBase64(object.voter);
@@ -502,26 +502,26 @@ export const FutureVote = {
     }
     return message;
   },
-  toAmino(message: FutureVote): FutureVoteAmino {
+  toAmino(message: TaskVote): TaskVoteAmino {
     const obj: any = {};
-    obj.future_id = message.futureId !== BigInt(0) ? (message.futureId?.toString)() : undefined;
+    obj.task_id = message.taskId !== BigInt(0) ? (message.taskId?.toString)() : undefined;
     obj.voter = message.voter ? base64FromBytes(message.voter) : undefined;
     obj.vote = message.vote === 0 ? undefined : message.vote;
     return obj;
   },
-  fromAminoMsg(object: FutureVoteAminoMsg): FutureVote {
-    return FutureVote.fromAmino(object.value);
+  fromAminoMsg(object: TaskVoteAminoMsg): TaskVote {
+    return TaskVote.fromAmino(object.value);
   },
-  fromProtoMsg(message: FutureVoteProtoMsg): FutureVote {
-    return FutureVote.decode(message.value);
+  fromProtoMsg(message: TaskVoteProtoMsg): TaskVote {
+    return TaskVote.decode(message.value);
   },
-  toProto(message: FutureVote): Uint8Array {
-    return FutureVote.encode(message).finish();
+  toProto(message: TaskVote): Uint8Array {
+    return TaskVote.encode(message).finish();
   },
-  toProtoMsg(message: FutureVote): FutureVoteProtoMsg {
+  toProtoMsg(message: TaskVote): TaskVoteProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.FutureVote",
-      value: FutureVote.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.TaskVote",
+      value: TaskVote.encode(message).finish()
     };
   }
 };

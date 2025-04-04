@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { FutureVoteType, futureVoteTypeFromJSON, futureVoteTypeToJSON } from "./future.js";
+import { TaskVoteType, taskVoteTypeFromJSON, taskVoteTypeToJSON } from "./task.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { JsonSafe } from "../../../json-safe.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
@@ -16,13 +16,13 @@ export interface AsyncInjectedTxAminoMsg {
 export interface AsyncInjectedTxSDKType {}
 /**
  * A vote extension coming from a validator. It contains results, votes for
- * some futures and handlers that are supported by the validator.
+ * some tasks and plugins that are supported by the validator.
  */
 export interface AsyncVoteExtension {
   results: VEResultItem[];
   votes: VEVoteItem[];
-  handlers: string[];
-  updateHandlers: boolean;
+  plugins: string[];
+  updatePlugins: boolean;
 }
 export interface AsyncVoteExtensionProtoMsg {
   typeUrl: "/warden.async.v1beta1.AsyncVoteExtension";
@@ -30,13 +30,13 @@ export interface AsyncVoteExtensionProtoMsg {
 }
 /**
  * A vote extension coming from a validator. It contains results, votes for
- * some futures and handlers that are supported by the validator.
+ * some tasks and plugins that are supported by the validator.
  */
 export interface AsyncVoteExtensionAmino {
   results?: VEResultItemAmino[];
   votes?: VEVoteItemAmino[];
-  handlers?: string[];
-  update_handlers?: boolean;
+  plugins?: string[];
+  update_plugins?: boolean;
 }
 export interface AsyncVoteExtensionAminoMsg {
   type: "/warden.async.v1beta1.AsyncVoteExtension";
@@ -44,16 +44,16 @@ export interface AsyncVoteExtensionAminoMsg {
 }
 /**
  * A vote extension coming from a validator. It contains results, votes for
- * some futures and handlers that are supported by the validator.
+ * some tasks and plugins that are supported by the validator.
  */
 export interface AsyncVoteExtensionSDKType {
   results: VEResultItemSDKType[];
   votes: VEVoteItemSDKType[];
-  handlers: string[];
-  update_handlers: boolean;
+  plugins: string[];
+  update_plugins: boolean;
 }
 export interface VEResultItem {
-  futureId: bigint;
+  taskId: bigint;
   output: Uint8Array;
 }
 export interface VEResultItemProtoMsg {
@@ -61,7 +61,7 @@ export interface VEResultItemProtoMsg {
   value: Uint8Array;
 }
 export interface VEResultItemAmino {
-  future_id?: string;
+  task_id?: string;
   output?: string;
 }
 export interface VEResultItemAminoMsg {
@@ -69,28 +69,28 @@ export interface VEResultItemAminoMsg {
   value: VEResultItemAmino;
 }
 export interface VEResultItemSDKType {
-  future_id: bigint;
+  task_id: bigint;
   output: Uint8Array;
 }
 export interface VEVoteItem {
-  futureId: bigint;
-  vote: FutureVoteType;
+  taskId: bigint;
+  vote: TaskVoteType;
 }
 export interface VEVoteItemProtoMsg {
   typeUrl: "/warden.async.v1beta1.VEVoteItem";
   value: Uint8Array;
 }
 export interface VEVoteItemAmino {
-  future_id?: string;
-  vote?: FutureVoteType;
+  task_id?: string;
+  vote?: TaskVoteType;
 }
 export interface VEVoteItemAminoMsg {
   type: "/warden.async.v1beta1.VEVoteItem";
   value: VEVoteItemAmino;
 }
 export interface VEVoteItemSDKType {
-  future_id: bigint;
-  vote: FutureVoteType;
+  task_id: bigint;
+  vote: TaskVoteType;
 }
 function createBaseAsyncInjectedTx(): AsyncInjectedTx {
   return {};
@@ -153,8 +153,8 @@ function createBaseAsyncVoteExtension(): AsyncVoteExtension {
   return {
     results: [],
     votes: [],
-    handlers: [],
-    updateHandlers: false
+    plugins: [],
+    updatePlugins: false
   };
 }
 export const AsyncVoteExtension = {
@@ -166,11 +166,11 @@ export const AsyncVoteExtension = {
     for (const v of message.votes) {
       VEVoteItem.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    for (const v of message.handlers) {
+    for (const v of message.plugins) {
       writer.uint32(26).string(v!);
     }
-    if (message.updateHandlers === true) {
-      writer.uint32(32).bool(message.updateHandlers);
+    if (message.updatePlugins === true) {
+      writer.uint32(32).bool(message.updatePlugins);
     }
     return writer;
   },
@@ -188,10 +188,10 @@ export const AsyncVoteExtension = {
           message.votes.push(VEVoteItem.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.handlers.push(reader.string());
+          message.plugins.push(reader.string());
           break;
         case 4:
-          message.updateHandlers = reader.bool();
+          message.updatePlugins = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -204,8 +204,8 @@ export const AsyncVoteExtension = {
     return {
       results: Array.isArray(object?.results) ? object.results.map((e: any) => VEResultItem.fromJSON(e)) : [],
       votes: Array.isArray(object?.votes) ? object.votes.map((e: any) => VEVoteItem.fromJSON(e)) : [],
-      handlers: Array.isArray(object?.handlers) ? object.handlers.map((e: any) => String(e)) : [],
-      updateHandlers: isSet(object.updateHandlers) ? Boolean(object.updateHandlers) : false
+      plugins: Array.isArray(object?.plugins) ? object.plugins.map((e: any) => String(e)) : [],
+      updatePlugins: isSet(object.updatePlugins) ? Boolean(object.updatePlugins) : false
     };
   },
   toJSON(message: AsyncVoteExtension): JsonSafe<AsyncVoteExtension> {
@@ -220,29 +220,29 @@ export const AsyncVoteExtension = {
     } else {
       obj.votes = [];
     }
-    if (message.handlers) {
-      obj.handlers = message.handlers.map(e => e);
+    if (message.plugins) {
+      obj.plugins = message.plugins.map(e => e);
     } else {
-      obj.handlers = [];
+      obj.plugins = [];
     }
-    message.updateHandlers !== undefined && (obj.updateHandlers = message.updateHandlers);
+    message.updatePlugins !== undefined && (obj.updatePlugins = message.updatePlugins);
     return obj;
   },
   fromPartial(object: Partial<AsyncVoteExtension>): AsyncVoteExtension {
     const message = createBaseAsyncVoteExtension();
     message.results = object.results?.map(e => VEResultItem.fromPartial(e)) || [];
     message.votes = object.votes?.map(e => VEVoteItem.fromPartial(e)) || [];
-    message.handlers = object.handlers?.map(e => e) || [];
-    message.updateHandlers = object.updateHandlers ?? false;
+    message.plugins = object.plugins?.map(e => e) || [];
+    message.updatePlugins = object.updatePlugins ?? false;
     return message;
   },
   fromAmino(object: AsyncVoteExtensionAmino): AsyncVoteExtension {
     const message = createBaseAsyncVoteExtension();
     message.results = object.results?.map(e => VEResultItem.fromAmino(e)) || [];
     message.votes = object.votes?.map(e => VEVoteItem.fromAmino(e)) || [];
-    message.handlers = object.handlers?.map(e => e) || [];
-    if (object.update_handlers !== undefined && object.update_handlers !== null) {
-      message.updateHandlers = object.update_handlers;
+    message.plugins = object.plugins?.map(e => e) || [];
+    if (object.update_plugins !== undefined && object.update_plugins !== null) {
+      message.updatePlugins = object.update_plugins;
     }
     return message;
   },
@@ -258,12 +258,12 @@ export const AsyncVoteExtension = {
     } else {
       obj.votes = message.votes;
     }
-    if (message.handlers) {
-      obj.handlers = message.handlers.map(e => e);
+    if (message.plugins) {
+      obj.plugins = message.plugins.map(e => e);
     } else {
-      obj.handlers = message.handlers;
+      obj.plugins = message.plugins;
     }
-    obj.update_handlers = message.updateHandlers === false ? undefined : message.updateHandlers;
+    obj.update_plugins = message.updatePlugins === false ? undefined : message.updatePlugins;
     return obj;
   },
   fromAminoMsg(object: AsyncVoteExtensionAminoMsg): AsyncVoteExtension {
@@ -284,15 +284,15 @@ export const AsyncVoteExtension = {
 };
 function createBaseVEResultItem(): VEResultItem {
   return {
-    futureId: BigInt(0),
+    taskId: BigInt(0),
     output: new Uint8Array()
   };
 }
 export const VEResultItem = {
   typeUrl: "/warden.async.v1beta1.VEResultItem",
   encode(message: VEResultItem, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.futureId !== BigInt(0)) {
-      writer.uint32(8).uint64(message.futureId);
+    if (message.taskId !== BigInt(0)) {
+      writer.uint32(8).uint64(message.taskId);
     }
     if (message.output.length !== 0) {
       writer.uint32(18).bytes(message.output);
@@ -307,7 +307,7 @@ export const VEResultItem = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.futureId = reader.uint64();
+          message.taskId = reader.uint64();
           break;
         case 2:
           message.output = reader.bytes();
@@ -321,26 +321,26 @@ export const VEResultItem = {
   },
   fromJSON(object: any): VEResultItem {
     return {
-      futureId: isSet(object.futureId) ? BigInt(object.futureId.toString()) : BigInt(0),
+      taskId: isSet(object.taskId) ? BigInt(object.taskId.toString()) : BigInt(0),
       output: isSet(object.output) ? bytesFromBase64(object.output) : new Uint8Array()
     };
   },
   toJSON(message: VEResultItem): JsonSafe<VEResultItem> {
     const obj: any = {};
-    message.futureId !== undefined && (obj.futureId = (message.futureId || BigInt(0)).toString());
+    message.taskId !== undefined && (obj.taskId = (message.taskId || BigInt(0)).toString());
     message.output !== undefined && (obj.output = base64FromBytes(message.output !== undefined ? message.output : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<VEResultItem>): VEResultItem {
     const message = createBaseVEResultItem();
-    message.futureId = object.futureId !== undefined && object.futureId !== null ? BigInt(object.futureId.toString()) : BigInt(0);
+    message.taskId = object.taskId !== undefined && object.taskId !== null ? BigInt(object.taskId.toString()) : BigInt(0);
     message.output = object.output ?? new Uint8Array();
     return message;
   },
   fromAmino(object: VEResultItemAmino): VEResultItem {
     const message = createBaseVEResultItem();
-    if (object.future_id !== undefined && object.future_id !== null) {
-      message.futureId = BigInt(object.future_id);
+    if (object.task_id !== undefined && object.task_id !== null) {
+      message.taskId = BigInt(object.task_id);
     }
     if (object.output !== undefined && object.output !== null) {
       message.output = bytesFromBase64(object.output);
@@ -349,7 +349,7 @@ export const VEResultItem = {
   },
   toAmino(message: VEResultItem): VEResultItemAmino {
     const obj: any = {};
-    obj.future_id = message.futureId !== BigInt(0) ? (message.futureId?.toString)() : undefined;
+    obj.task_id = message.taskId !== BigInt(0) ? (message.taskId?.toString)() : undefined;
     obj.output = message.output ? base64FromBytes(message.output) : undefined;
     return obj;
   },
@@ -371,15 +371,15 @@ export const VEResultItem = {
 };
 function createBaseVEVoteItem(): VEVoteItem {
   return {
-    futureId: BigInt(0),
+    taskId: BigInt(0),
     vote: 0
   };
 }
 export const VEVoteItem = {
   typeUrl: "/warden.async.v1beta1.VEVoteItem",
   encode(message: VEVoteItem, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.futureId !== BigInt(0)) {
-      writer.uint32(8).uint64(message.futureId);
+    if (message.taskId !== BigInt(0)) {
+      writer.uint32(8).uint64(message.taskId);
     }
     if (message.vote !== 0) {
       writer.uint32(16).int32(message.vote);
@@ -394,7 +394,7 @@ export const VEVoteItem = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.futureId = reader.uint64();
+          message.taskId = reader.uint64();
           break;
         case 2:
           message.vote = reader.int32() as any;
@@ -408,26 +408,26 @@ export const VEVoteItem = {
   },
   fromJSON(object: any): VEVoteItem {
     return {
-      futureId: isSet(object.futureId) ? BigInt(object.futureId.toString()) : BigInt(0),
-      vote: isSet(object.vote) ? futureVoteTypeFromJSON(object.vote) : -1
+      taskId: isSet(object.taskId) ? BigInt(object.taskId.toString()) : BigInt(0),
+      vote: isSet(object.vote) ? taskVoteTypeFromJSON(object.vote) : -1
     };
   },
   toJSON(message: VEVoteItem): JsonSafe<VEVoteItem> {
     const obj: any = {};
-    message.futureId !== undefined && (obj.futureId = (message.futureId || BigInt(0)).toString());
-    message.vote !== undefined && (obj.vote = futureVoteTypeToJSON(message.vote));
+    message.taskId !== undefined && (obj.taskId = (message.taskId || BigInt(0)).toString());
+    message.vote !== undefined && (obj.vote = taskVoteTypeToJSON(message.vote));
     return obj;
   },
   fromPartial(object: Partial<VEVoteItem>): VEVoteItem {
     const message = createBaseVEVoteItem();
-    message.futureId = object.futureId !== undefined && object.futureId !== null ? BigInt(object.futureId.toString()) : BigInt(0);
+    message.taskId = object.taskId !== undefined && object.taskId !== null ? BigInt(object.taskId.toString()) : BigInt(0);
     message.vote = object.vote ?? 0;
     return message;
   },
   fromAmino(object: VEVoteItemAmino): VEVoteItem {
     const message = createBaseVEVoteItem();
-    if (object.future_id !== undefined && object.future_id !== null) {
-      message.futureId = BigInt(object.future_id);
+    if (object.task_id !== undefined && object.task_id !== null) {
+      message.taskId = BigInt(object.task_id);
     }
     if (object.vote !== undefined && object.vote !== null) {
       message.vote = object.vote;
@@ -436,7 +436,7 @@ export const VEVoteItem = {
   },
   toAmino(message: VEVoteItem): VEVoteItemAmino {
     const obj: any = {};
-    obj.future_id = message.futureId !== BigInt(0) ? (message.futureId?.toString)() : undefined;
+    obj.task_id = message.taskId !== BigInt(0) ? (message.taskId?.toString)() : undefined;
     obj.vote = message.vote === 0 ? undefined : message.vote;
     return obj;
   },

@@ -84,7 +84,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
-	"github.com/warden-protocol/wardenprotocol/warden/docs"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
@@ -654,9 +653,6 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 	if err := server.RegisterSwaggerAPI(apiSvr.ClientCtx, apiSvr.Router, apiConfig.Swagger); err != nil {
 		panic(err)
 	}
-
-	// register app's OpenAPI routes.
-	docs.RegisterOpenAPIService(Name, apiSvr.Router)
 }
 
 // GetIBCKeeper returns the IBC keeper.

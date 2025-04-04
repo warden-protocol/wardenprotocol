@@ -2,7 +2,6 @@ package cases
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"math/big"
 	"testing"
@@ -24,14 +23,14 @@ type Test_JsonPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_JsonPrecompile) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_JsonPrecompile) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_JsonPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
+func (c *Test_JsonPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 
 	evmClient := c.w.EthClient(t)

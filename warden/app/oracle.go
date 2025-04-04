@@ -15,7 +15,6 @@ import (
 	oraclepreblock "github.com/skip-mev/slinky/abci/preblock/oracle"
 	"github.com/skip-mev/slinky/abci/proposals"
 	"github.com/skip-mev/slinky/abci/strategies/aggregator"
-	"github.com/skip-mev/slinky/abci/strategies/codec"
 	compression "github.com/skip-mev/slinky/abci/strategies/codec"
 	"github.com/skip-mev/slinky/abci/strategies/currencypair"
 	"github.com/skip-mev/slinky/abci/ve"
@@ -281,7 +280,7 @@ func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker {
 // WardenSlinkyCodec wraps slinky's codec.VoteExtensionCodec to support our
 // custom vote extension format (vemanager.VE).
 type WardenSlinkyCodec struct {
-	slinkyCodec codec.VoteExtensionCodec
+	slinkyCodec compression.VoteExtensionCodec
 }
 
 var _ compression.VoteExtensionCodec = (*WardenSlinkyCodec)(nil)

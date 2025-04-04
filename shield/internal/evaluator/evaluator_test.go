@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
 	"github.com/warden-protocol/wardenprotocol/shield/object"

@@ -62,19 +62,24 @@ export class BiconomyMEEClient {
   }
 
   async executeSignedQuote(params: ExecuteSignedQuoteParams): Promise<ExecuteSignedQuotePayload> {
-    const response = await axios.post<ExecuteSignedQuotePayload>(`${this.url}/v1/exec`, params, {
+    const response = await axios.post<ExecuteSignedQuotePayload>(`${this.url}/v1/exec`, params.signedQuote, {
       headers: { "Content-Type": "application/json" }
     });
     return response.data;
   }
 
   async transactionExists(hash: Hex): Promise<boolean> {
-    const response = await axios.get<GetSupertransactionReceiptPayload>(`${this.url}/v1/explorer/${hash}`);
+    try {
+      const response = await axios.get<GetSupertransactionReceiptPayload>(`${this.url}/v1/explorer/${hash}`);
 
-    if (response.status === 200) {
-      return true;
+      return response.status === 200;
+    } catch (e) {
+      if (e.response) {
+        return e.response.status === 200;
+      } else {
+        throw e;
+      }
     }
-    return false;
   }
 
   public async getQuote(

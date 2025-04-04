@@ -363,13 +363,14 @@ func (o *SignRequest) mapSignRequest(signRequest *types.SignRequest) (*SignReque
 	o.Status = uint8(signRequest.Status)
 
 	result := signRequest.Result
-	if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED {
+	switch signRequest.Status {
+	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
 		if signedData, ok := result.(*types.SignRequest_SignedData); ok {
 			o.Result = signedData.SignedData
 		} else {
 			return nil, errors.New("unexpected result type for fulfilled sign request")
 		}
-	} else if signRequest.Status == types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED {
+	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
 		if rejectReason, ok := result.(*types.SignRequest_RejectReason); ok {
 			o.Result = []byte(rejectReason.RejectReason)
 		} else {

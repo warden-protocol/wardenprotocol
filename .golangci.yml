@@ -1,98 +1,117 @@
-# yaml-language-server: $schema=https://golangci-lint.run/jsonschema/golangci.jsonschema.json
+version: "2"
 linters:
-  enable-all: true
+  default: all
   disable:
     - cyclop
-    - dupword
-    - err113
-    - exhaustruct
-    - funlen
-    - gochecknoglobals
-    - gochecknoinits
-    - gocyclo
-    - godox
-    - gomoddirectives
-    - ireturn
-    - mnd
-    - musttag
-    - nonamedreturns
-    - paralleltest
-    - protogetter # to be enabled once we start moving towards Opaque API (https://go.dev/blog/protobuf-opaque)
-    - recvcheck
-    - tagalign
-    - tenv
-    - testpackage
-    - varnamelen
-    - wrapcheck
-    
-    # the followings are linters that should be enabled but the codebase
-    # doesn't adhere to and we don't have enough time to fix them all at once
     - depguard
     - dupl
+    - dupword
+    - err113
     - errname
     - errorlint
     - exhaustive
+    - exhaustruct
     - forcetypeassert
+    - funlen
+    - gochecknoglobals
+    - gochecknoinits
     - gocognit
     - gocritic
+    - gocyclo
+    - godox
+    - gomoddirectives
     - gosec
     - govet
     - inamedparam
+    - ireturn
     - lll
     - maintidx
+    - mnd
+    - musttag
     - nestif
     - nilerr
     - nilnil
     - nolintlint
+    - nonamedreturns
+    - paralleltest
     - prealloc
     - predeclared
     - promlinter
+    - protogetter
+    - recvcheck
     - revive
-    - stylecheck
+    - tagalign
     - tagliatelle
     - testifylint
+    - testpackage
     - thelper
     - unconvert
     - unparam
+    - varnamelen
+    - wrapcheck
     - wsl
     - zerologlint
-
-linters-settings:
-  depguard:
-    rules:
-      main:
-        deny:
-          - pkg: "math/rand$"
-            desc: use math/rand/v2
-          - pkg: "github.com/sirupsen/logrus"
-            desc: not allowed
-          - pkg: "github.com/pkg/errors"
-            desc: Should be replaced by standard lib errors package
-  exhaustive:
-    check-generated: false
-    default-signifies-exhaustive: true
-  gci:
-    sections:
-      - standard # Standard section: captures all standard packages.
-      - default # Default section: contains all imports that could not be matched to another section type.
-      - prefix(github.com/warden-protocol) # Custom section: groups all imports with the specified Prefix.
-      - localmodule # Local module section: contains all local packages. This section is not present unless explicitly enabled.
-    custom-order: true
-  nlreturn:
-    block-size: 10
-  revive:
-    rules:
-      - name: unused-parameter
-        disabled: true
-      - name: var-naming
-        severity: warning
-        disabled: false
-        exclude: [""]
-        arguments:
-          - ["ID", "setId"] # AllowList
-          - ["VM"] # DenyList
-  tagliatelle:
-    case:
+  settings:
+    depguard:
       rules:
-        json: snake
-        yaml: snake
+        main:
+          deny:
+            - pkg: math/rand$
+              desc: use math/rand/v2
+            - pkg: github.com/sirupsen/logrus
+              desc: not allowed
+            - pkg: github.com/pkg/errors
+              desc: Should be replaced by standard lib errors package
+    exhaustive:
+      default-signifies-exhaustive: true
+    nlreturn:
+      block-size: 10
+    revive:
+      rules:
+        - name: unused-parameter
+          disabled: true
+        - name: var-naming
+          arguments:
+            - - ID
+              - setId
+            - - VM
+          severity: warning
+          disabled: false
+          exclude:
+            - ""
+    tagliatelle:
+      case:
+        rules:
+          json: snake
+          yaml: snake
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/warden-protocol)
+        - localmodule
+      custom-order: true
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

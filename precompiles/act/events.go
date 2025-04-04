@@ -39,7 +39,7 @@ func (p *Precompile) GetCreateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.ABI.Events[EventCreateTemplate]
+	event := p.Events[EventCreateTemplate]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -85,7 +85,7 @@ func (p *Precompile) GetUpdateTemplateEvent(ctx sdk.Context, writerAddress *ethc
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.ABI.Events[EventUpdateTemplate]
+	event := p.Events[EventUpdateTemplate]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -131,7 +131,7 @@ func (p *Precompile) GetCreateActionEvent(ctx sdk.Context, writerAddress *ethcmn
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.ABI.Events[EventCreateAction]
+	event := p.Events[EventCreateAction]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -177,7 +177,7 @@ func (p *Precompile) GetActionVotedEvent(ctx sdk.Context, writerAddress *ethcmn.
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.ABI.Events[EventActionVoted]
+	event := p.Events[EventActionVoted]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 
@@ -224,7 +224,7 @@ func (p *Precompile) GetActionStateChangeEvent(ctx sdk.Context, writerAddress *e
 	}
 
 	topics := make([]ethcmn.Hash, 2)
-	event := p.ABI.Events[EventActionStateChange]
+	event := p.Events[EventActionStateChange]
 	// The first topic is always the signature of the event.
 	topics[0] = event.ID
 

@@ -11,20 +11,20 @@ import (
 )
 
 const (
-	// EventCreateFuture defines the event type for the x/async CreateFuture transaction.
-	EventCreateFuture = "CreateFuture"
+	// EventCreateTask defines the event type for the x/async CreateTask transaction.
+	EventCreateTask = "CreateTask"
 )
 
-// GetCreateFutureEvent Map EventCreateFuture to eth CreateFuture event and write to eth log.
-func (p *Precompile) GetCreateFutureEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
+// GetCreateTaskEvent Map EventCreateTask to eth CreateTask event and write to eth log.
+func (p *Precompile) GetCreateTaskEvent(ctx sdk.Context, writerAddress *ethcmn.Address, sdkEvent sdk.Event) (*ethtypes.Log, error) {
 	var err error
 
-	event := p.Events[EventCreateFuture]
+	event := p.Events[EventCreateTask]
 
 	topics := make([]ethcmn.Hash, 3)
 	topics[0] = event.ID
 
-	typedEvent := v1beta1.EventCreateFuture{}
+	typedEvent := v1beta1.EventCreateTask{}
 	if err = common.ParseSdkEvent(sdkEvent, typedEvent.XXX_Merge); err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (p *Precompile) GetCreateFutureEvent(ctx sdk.Context, writerAddress *ethcmn
 	}
 
 	packed, err := event.Inputs.NonIndexed().Pack(
-		typedEvent.GetHandler(),
+		typedEvent.GetPlugin(),
 		callbackAddress,
 	)
 	if err != nil {

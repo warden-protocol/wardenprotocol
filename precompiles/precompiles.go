@@ -76,7 +76,7 @@ func NewWardenPrecompiles(
 
 	precompiles[newAsyncPrecompile.Address()] = newAsyncPrecompile
 
-	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateFuture", newAsyncPrecompile.GetCreateFutureEvent)
+	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateTask", newAsyncPrecompile.GetCreateTaskEvent)
 
 	return precompiles, nil
 }

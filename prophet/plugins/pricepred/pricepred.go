@@ -1,4 +1,4 @@
-// Package pricepred provides a handler for the price prediction AI model.
+// Package pricepred provides a plugin for the price prediction AI model.
 package pricepred
 
 import (
@@ -13,7 +13,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/prophet"
 )
 
-// PricePredictorSolidity is a handler for the price prediction AI model,
+// PricePredictorSolidity is a plugin for the price prediction AI model,
 // wrapping input and output in Solidity ABI types.
 type PricePredictorSolidity struct {
 	c *client

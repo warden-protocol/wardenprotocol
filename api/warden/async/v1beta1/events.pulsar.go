@@ -13,31 +13,31 @@ import (
 )
 
 var (
-	md_EventCreateFuture                  protoreflect.MessageDescriptor
-	fd_EventCreateFuture_id               protoreflect.FieldDescriptor
-	fd_EventCreateFuture_creator          protoreflect.FieldDescriptor
-	fd_EventCreateFuture_handler          protoreflect.FieldDescriptor
-	fd_EventCreateFuture_callback_address protoreflect.FieldDescriptor
+	md_EventCreateTask                  protoreflect.MessageDescriptor
+	fd_EventCreateTask_id               protoreflect.FieldDescriptor
+	fd_EventCreateTask_creator          protoreflect.FieldDescriptor
+	fd_EventCreateTask_plugin           protoreflect.FieldDescriptor
+	fd_EventCreateTask_callback_address protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_events_proto_init()
-	md_EventCreateFuture = File_warden_async_v1beta1_events_proto.Messages().ByName("EventCreateFuture")
-	fd_EventCreateFuture_id = md_EventCreateFuture.Fields().ByName("id")
-	fd_EventCreateFuture_creator = md_EventCreateFuture.Fields().ByName("creator")
-	fd_EventCreateFuture_handler = md_EventCreateFuture.Fields().ByName("handler")
-	fd_EventCreateFuture_callback_address = md_EventCreateFuture.Fields().ByName("callback_address")
+	md_EventCreateTask = File_warden_async_v1beta1_events_proto.Messages().ByName("EventCreateTask")
+	fd_EventCreateTask_id = md_EventCreateTask.Fields().ByName("id")
+	fd_EventCreateTask_creator = md_EventCreateTask.Fields().ByName("creator")
+	fd_EventCreateTask_plugin = md_EventCreateTask.Fields().ByName("plugin")
+	fd_EventCreateTask_callback_address = md_EventCreateTask.Fields().ByName("callback_address")
 }
 
-var _ protoreflect.Message = (*fastReflection_EventCreateFuture)(nil)
+var _ protoreflect.Message = (*fastReflection_EventCreateTask)(nil)
 
-type fastReflection_EventCreateFuture EventCreateFuture
+type fastReflection_EventCreateTask EventCreateTask
 
-func (x *EventCreateFuture) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EventCreateFuture)(x)
+func (x *EventCreateTask) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_EventCreateTask)(x)
 }
 
-func (x *EventCreateFuture) slowProtoReflect() protoreflect.Message {
+func (x *EventCreateTask) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_async_v1beta1_events_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -49,43 +49,43 @@ func (x *EventCreateFuture) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EventCreateFuture_messageType fastReflection_EventCreateFuture_messageType
-var _ protoreflect.MessageType = fastReflection_EventCreateFuture_messageType{}
+var _fastReflection_EventCreateTask_messageType fastReflection_EventCreateTask_messageType
+var _ protoreflect.MessageType = fastReflection_EventCreateTask_messageType{}
 
-type fastReflection_EventCreateFuture_messageType struct{}
+type fastReflection_EventCreateTask_messageType struct{}
 
-func (x fastReflection_EventCreateFuture_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EventCreateFuture)(nil)
+func (x fastReflection_EventCreateTask_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_EventCreateTask)(nil)
 }
-func (x fastReflection_EventCreateFuture_messageType) New() protoreflect.Message {
-	return new(fastReflection_EventCreateFuture)
+func (x fastReflection_EventCreateTask_messageType) New() protoreflect.Message {
+	return new(fastReflection_EventCreateTask)
 }
-func (x fastReflection_EventCreateFuture_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventCreateFuture
+func (x fastReflection_EventCreateTask_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventCreateTask
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EventCreateFuture) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventCreateFuture
+func (x *fastReflection_EventCreateTask) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventCreateTask
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EventCreateFuture) Type() protoreflect.MessageType {
-	return _fastReflection_EventCreateFuture_messageType
+func (x *fastReflection_EventCreateTask) Type() protoreflect.MessageType {
+	return _fastReflection_EventCreateTask_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EventCreateFuture) New() protoreflect.Message {
-	return new(fastReflection_EventCreateFuture)
+func (x *fastReflection_EventCreateTask) New() protoreflect.Message {
+	return new(fastReflection_EventCreateTask)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EventCreateFuture) Interface() protoreflect.ProtoMessage {
-	return (*EventCreateFuture)(x)
+func (x *fastReflection_EventCreateTask) Interface() protoreflect.ProtoMessage {
+	return (*EventCreateTask)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -93,28 +93,28 @@ func (x *fastReflection_EventCreateFuture) Interface() protoreflect.ProtoMessage
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EventCreateFuture) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_EventCreateTask) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_EventCreateFuture_id, value) {
+		if !f(fd_EventCreateTask_id, value) {
 			return
 		}
 	}
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_EventCreateFuture_creator, value) {
+		if !f(fd_EventCreateTask_creator, value) {
 			return
 		}
 	}
-	if x.Handler != "" {
-		value := protoreflect.ValueOfString(x.Handler)
-		if !f(fd_EventCreateFuture_handler, value) {
+	if x.Plugin != "" {
+		value := protoreflect.ValueOfString(x.Plugin)
+		if !f(fd_EventCreateTask_plugin, value) {
 			return
 		}
 	}
 	if x.CallbackAddress != "" {
 		value := protoreflect.ValueOfString(x.CallbackAddress)
-		if !f(fd_EventCreateFuture_callback_address, value) {
+		if !f(fd_EventCreateTask_callback_address, value) {
 			return
 		}
 	}
@@ -131,21 +131,21 @@ func (x *fastReflection_EventCreateFuture) Range(f func(protoreflect.FieldDescri
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EventCreateFuture) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_EventCreateTask) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.EventCreateFuture.id":
+	case "warden.async.v1beta1.EventCreateTask.id":
 		return x.Id != uint64(0)
-	case "warden.async.v1beta1.EventCreateFuture.creator":
+	case "warden.async.v1beta1.EventCreateTask.creator":
 		return x.Creator != ""
-	case "warden.async.v1beta1.EventCreateFuture.handler":
-		return x.Handler != ""
-	case "warden.async.v1beta1.EventCreateFuture.callback_address":
+	case "warden.async.v1beta1.EventCreateTask.plugin":
+		return x.Plugin != ""
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
 		return x.CallbackAddress != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateFuture"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateTask"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateFuture does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateTask does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -155,21 +155,21 @@ func (x *fastReflection_EventCreateFuture) Has(fd protoreflect.FieldDescriptor) 
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateFuture) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_EventCreateTask) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.EventCreateFuture.id":
+	case "warden.async.v1beta1.EventCreateTask.id":
 		x.Id = uint64(0)
-	case "warden.async.v1beta1.EventCreateFuture.creator":
+	case "warden.async.v1beta1.EventCreateTask.creator":
 		x.Creator = ""
-	case "warden.async.v1beta1.EventCreateFuture.handler":
-		x.Handler = ""
-	case "warden.async.v1beta1.EventCreateFuture.callback_address":
+	case "warden.async.v1beta1.EventCreateTask.plugin":
+		x.Plugin = ""
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
 		x.CallbackAddress = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateFuture"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateTask"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateFuture does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateTask does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -179,25 +179,25 @@ func (x *fastReflection_EventCreateFuture) Clear(fd protoreflect.FieldDescriptor
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EventCreateFuture) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventCreateTask) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.EventCreateFuture.id":
+	case "warden.async.v1beta1.EventCreateTask.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
-	case "warden.async.v1beta1.EventCreateFuture.creator":
+	case "warden.async.v1beta1.EventCreateTask.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.EventCreateFuture.handler":
-		value := x.Handler
+	case "warden.async.v1beta1.EventCreateTask.plugin":
+		value := x.Plugin
 		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.EventCreateFuture.callback_address":
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
 		value := x.CallbackAddress
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateFuture"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateTask"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateFuture does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateTask does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -211,21 +211,21 @@ func (x *fastReflection_EventCreateFuture) Get(descriptor protoreflect.FieldDesc
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateFuture) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_EventCreateTask) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.EventCreateFuture.id":
+	case "warden.async.v1beta1.EventCreateTask.id":
 		x.Id = value.Uint()
-	case "warden.async.v1beta1.EventCreateFuture.creator":
+	case "warden.async.v1beta1.EventCreateTask.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.async.v1beta1.EventCreateFuture.handler":
-		x.Handler = value.Interface().(string)
-	case "warden.async.v1beta1.EventCreateFuture.callback_address":
+	case "warden.async.v1beta1.EventCreateTask.plugin":
+		x.Plugin = value.Interface().(string)
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
 		x.CallbackAddress = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateFuture"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateTask"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateFuture does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateTask does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -239,52 +239,52 @@ func (x *fastReflection_EventCreateFuture) Set(fd protoreflect.FieldDescriptor, 
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateFuture) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventCreateTask) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.EventCreateFuture.id":
-		panic(fmt.Errorf("field id of message warden.async.v1beta1.EventCreateFuture is not mutable"))
-	case "warden.async.v1beta1.EventCreateFuture.creator":
-		panic(fmt.Errorf("field creator of message warden.async.v1beta1.EventCreateFuture is not mutable"))
-	case "warden.async.v1beta1.EventCreateFuture.handler":
-		panic(fmt.Errorf("field handler of message warden.async.v1beta1.EventCreateFuture is not mutable"))
-	case "warden.async.v1beta1.EventCreateFuture.callback_address":
-		panic(fmt.Errorf("field callback_address of message warden.async.v1beta1.EventCreateFuture is not mutable"))
+	case "warden.async.v1beta1.EventCreateTask.id":
+		panic(fmt.Errorf("field id of message warden.async.v1beta1.EventCreateTask is not mutable"))
+	case "warden.async.v1beta1.EventCreateTask.creator":
+		panic(fmt.Errorf("field creator of message warden.async.v1beta1.EventCreateTask is not mutable"))
+	case "warden.async.v1beta1.EventCreateTask.plugin":
+		panic(fmt.Errorf("field plugin of message warden.async.v1beta1.EventCreateTask is not mutable"))
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
+		panic(fmt.Errorf("field callback_address of message warden.async.v1beta1.EventCreateTask is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateFuture"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateTask"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateFuture does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateTask does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EventCreateFuture) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventCreateTask) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.EventCreateFuture.id":
+	case "warden.async.v1beta1.EventCreateTask.id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.async.v1beta1.EventCreateFuture.creator":
+	case "warden.async.v1beta1.EventCreateTask.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.EventCreateFuture.handler":
+	case "warden.async.v1beta1.EventCreateTask.plugin":
 		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.EventCreateFuture.callback_address":
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateFuture"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.EventCreateTask"))
 		}
-		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateFuture does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.async.v1beta1.EventCreateTask does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EventCreateFuture) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_EventCreateTask) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.EventCreateFuture", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.EventCreateTask", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -292,7 +292,7 @@ func (x *fastReflection_EventCreateFuture) WhichOneof(d protoreflect.OneofDescri
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EventCreateFuture) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_EventCreateTask) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -303,7 +303,7 @@ func (x *fastReflection_EventCreateFuture) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventCreateFuture) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_EventCreateTask) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -315,7 +315,7 @@ func (x *fastReflection_EventCreateFuture) SetUnknown(fields protoreflect.RawFie
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EventCreateFuture) IsValid() bool {
+func (x *fastReflection_EventCreateTask) IsValid() bool {
 	return x != nil
 }
 
@@ -325,9 +325,9 @@ func (x *fastReflection_EventCreateFuture) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_EventCreateTask) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EventCreateFuture)
+		x := input.Message.Interface().(*EventCreateTask)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -346,7 +346,7 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.Handler)
+		l = len(x.Plugin)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
@@ -364,7 +364,7 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EventCreateFuture)
+		x := input.Message.Interface().(*EventCreateTask)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -390,10 +390,10 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x22
 		}
-		if len(x.Handler) > 0 {
-			i -= len(x.Handler)
-			copy(dAtA[i:], x.Handler)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Handler)))
+		if len(x.Plugin) > 0 {
+			i -= len(x.Plugin)
+			copy(dAtA[i:], x.Plugin)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Plugin)))
 			i--
 			dAtA[i] = 0x1a
 		}
@@ -420,7 +420,7 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EventCreateFuture)
+		x := input.Message.Interface().(*EventCreateTask)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -452,10 +452,10 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateFuture: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateTask: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateFuture: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventCreateTask: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -511,7 +511,7 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Handler", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Plugin", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -539,7 +539,7 @@ func (x *fastReflection_EventCreateFuture) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Handler = string(dAtA[iNdEx:postIndex])
+				x.Plugin = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
@@ -621,24 +621,24 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// EventCreateFuture is emitted when a new Future is created.
-type EventCreateFuture struct {
+// EventCreateTask is emitted when a new Task is created.
+type EventCreateTask struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// ID of the new Future.
+	// ID of the new Task.
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Creator is the address that created the Future.
+	// Creator is the address that created the Task.
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	// Handler is the name of the handler that will be executed.
-	Handler string `protobuf:"bytes,3,opt,name=handler,proto3" json:"handler,omitempty"`
+	// Plugin is the name of the plugin that will be executed.
+	Plugin string `protobuf:"bytes,3,opt,name=plugin,proto3" json:"plugin,omitempty"`
 	// Address of callback that will be triggered after execution.
 	CallbackAddress string `protobuf:"bytes,4,opt,name=callback_address,json=callbackAddress,proto3" json:"callback_address,omitempty"`
 }
 
-func (x *EventCreateFuture) Reset() {
-	*x = EventCreateFuture{}
+func (x *EventCreateTask) Reset() {
+	*x = EventCreateTask{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_async_v1beta1_events_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -646,39 +646,39 @@ func (x *EventCreateFuture) Reset() {
 	}
 }
 
-func (x *EventCreateFuture) String() string {
+func (x *EventCreateTask) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventCreateFuture) ProtoMessage() {}
+func (*EventCreateTask) ProtoMessage() {}
 
-// Deprecated: Use EventCreateFuture.ProtoReflect.Descriptor instead.
-func (*EventCreateFuture) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventCreateTask.ProtoReflect.Descriptor instead.
+func (*EventCreateTask) Descriptor() ([]byte, []int) {
 	return file_warden_async_v1beta1_events_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *EventCreateFuture) GetId() uint64 {
+func (x *EventCreateTask) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *EventCreateFuture) GetCreator() string {
+func (x *EventCreateTask) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *EventCreateFuture) GetHandler() string {
+func (x *EventCreateTask) GetPlugin() string {
 	if x != nil {
-		return x.Handler
+		return x.Plugin
 	}
 	return ""
 }
 
-func (x *EventCreateFuture) GetCallbackAddress() string {
+func (x *EventCreateTask) GetCallbackAddress() string {
 	if x != nil {
 		return x.CallbackAddress
 	}
@@ -691,31 +691,30 @@ var file_warden_async_v1beta1_events_proto_rawDesc = []byte{
 	0x0a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76,
 	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x12, 0x14, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e,
-	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x22, 0x82, 0x01, 0x0a, 0x11, 0x45, 0x76,
-	0x65, 0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x46, 0x75, 0x74, 0x75, 0x72, 0x65, 0x12,
-	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12,
-	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x18, 0x0a, 0x07, 0x68, 0x61, 0x6e,
-	0x64, 0x6c, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x68, 0x61, 0x6e, 0x64,
-	0x6c, 0x65, 0x72, 0x12, 0x29, 0x0a, 0x10, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x5f,
-	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x63,
-	0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x42, 0xea,
-	0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73,
-	0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0b, 0x45, 0x76, 0x65,
-	0x6e, 0x74, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61,
-	0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41,
-	0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63,
-	0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2,
-	0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79,
-	0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x22, 0x7e, 0x0a, 0x0f, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x12, 0x29,
+	0x0a, 0x10, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61,
+	0x63, 0x6b, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x42, 0xea, 0x01, 0x0a, 0x18, 0x63, 0x6f,
+	0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0b, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x50, 0x72,
+	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f,
+	0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e,
+	0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa, 0x02, 0x14, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79,
+	0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x20, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x16,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x3a, 0x3a, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -732,7 +731,7 @@ func file_warden_async_v1beta1_events_proto_rawDescGZIP() []byte {
 
 var file_warden_async_v1beta1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_warden_async_v1beta1_events_proto_goTypes = []interface{}{
-	(*EventCreateFuture)(nil), // 0: warden.async.v1beta1.EventCreateFuture
+	(*EventCreateTask)(nil), // 0: warden.async.v1beta1.EventCreateTask
 }
 var file_warden_async_v1beta1_events_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -749,7 +748,7 @@ func file_warden_async_v1beta1_events_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_warden_async_v1beta1_events_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EventCreateFuture); i {
+			switch v := v.(*EventCreateTask); i {
 			case 0:
 				return &v.state
 			case 1:

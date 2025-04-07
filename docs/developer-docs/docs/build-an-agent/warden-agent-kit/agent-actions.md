@@ -33,4 +33,3 @@ By default, the Warden Agent Kit supports the following Actions and queries:
 As the Warden Agent Kit continues to evolve, more tools and features will be added to enhance its functionality.
 
 In the meantime, you can expand your Agent's capabilities by integrating existing tools from the LangChain community or developing your own custom tools. For detailed instructions, follow our guide: [Add Agent capabilities](add-agent-capabilities).
-

@@ -19,7 +19,7 @@ This section will guide you through using `x/async` to execute different types o
 
 The `x/async` module implements such concepts as [Tasks](/learn/warden-protocol-modules/x-async#plugin) and [Plugins](/learn/warden-protocol-modules/x-async#plugin).
 
-A **Task** is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. A user can request a Task, specifying an input and a **Plugin**, which determines what kind of input to accept and how to handle it. In other words, the type of the computation you're going to execute depends on the Plugin you reference in a Task.
+A **Task** is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. A user can request a Task, specifying an input and a **Plugin**, which determines what format of input to accept and how to handle it. In other words, the type of the computation you're going to execute depends on the Plugin you reference in a Task.
 
 Currently, we support two Plugins, which allow executing **price predictions** and **HTTP requests**. You can learn how to use these Plugins by following our tutorials:
 

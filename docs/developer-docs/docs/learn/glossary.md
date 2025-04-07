@@ -359,7 +359,7 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 A Task is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. Tasks don't slow the blockchain down thanks to asynchronous execution.
 
-A user requests a Task, specifying an input and a [Plugin](#plugin), which determines what kind of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
+A user requests a Task, specifying an input and a [Plugin](#plugin), which determines what format of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
 
 This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 

@@ -10,7 +10,6 @@ import (
 
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
@@ -314,11 +313,11 @@ func newMsgVoteForAction(args []interface{}, origin common.Address) (*acttypes.M
 // nil. If the vote fails, this function returns the error.
 func (p Precompile) tryVoteAsSender(
 	ctx sdk.Context,
-	msgServer v1beta1.MsgServer,
+	msgServer acttypes.MsgServer,
 	actionId uint64,
 	caller common.Address,
 ) error {
-	actionResponse, err := p.queryServer.ActionById(ctx, &v1beta1.QueryActionByIdRequest{
+	actionResponse, err := p.queryServer.ActionById(ctx, &acttypes.QueryActionByIdRequest{
 		Id: actionId,
 	})
 	if err != nil {
@@ -327,16 +326,16 @@ func (p Precompile) tryVoteAsSender(
 
 	action := actionResponse.Action
 
-	if action.GetStatus() != v1beta1.ActionStatus_ACTION_STATUS_PENDING {
+	if action.GetStatus() != acttypes.ActionStatus_ACTION_STATUS_PENDING {
 		return nil
 	}
 
 	participant := precommon.Bech32StrFromAddress(caller)
 
-	_, err = msgServer.VoteForAction(ctx, &v1beta1.MsgVoteForAction{
+	_, err = msgServer.VoteForAction(ctx, &acttypes.MsgVoteForAction{
 		Participant: participant,
 		ActionId:    action.GetId(),
-		VoteType:    v1beta1.ActionVoteType_VOTE_TYPE_APPROVED,
+		VoteType:    acttypes.ActionVoteType_VOTE_TYPE_APPROVED,
 	})
 	if err != nil {
 		return err

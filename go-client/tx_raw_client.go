@@ -8,7 +8,6 @@ import (
 
 	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
@@ -20,14 +19,14 @@ import (
 
 var (
 	DefaultGasLimit = uint64(300000000000000000)
-	DefaultFees     = types.NewCoins(types.NewCoin("award", math.NewInt(1000000000000000)))
+	DefaultFees     = sdk.NewCoins(sdk.NewCoin("award", math.NewInt(1000000000000000)))
 
 	queryTimeout = 250 * time.Millisecond
 	txConfig     = app.NewTxConfig()
 )
 
 type AccountFetcher interface {
-	Account(ctx context.Context, addr string) (types.AccountI, error)
+	Account(ctx context.Context, addr string) (sdk.AccountI, error)
 }
 
 var _ AccountFetcher = (*QueryClient)(nil)
@@ -70,7 +69,7 @@ type Msger interface {
 
 // Build a transaction with the given messages and sign it.
 // Sequence and account numbers will be fetched automatically from the chain.
-func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgers ...Msger) ([]byte, error) {
+func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coins, msgers ...Msger) ([]byte, error) {
 	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
 		return nil, fmt.Errorf("fetch account: %w", err)

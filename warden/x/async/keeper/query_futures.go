@@ -12,30 +12,30 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
-func (k Keeper) Futures(ctx context.Context, req *types.QueryFuturesRequest) (*types.QueryFuturesResponse, error) {
+func (k Keeper) Tasks(ctx context.Context, req *types.QueryTasksRequest) (*types.QueryTasksResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	futures, pageRes, err := query.CollectionFilteredPaginate(ctx, k.futures.Futures(), req.Pagination, func(key uint64, value types.Future) (bool, error) {
+	tasks, pageRes, err := query.CollectionFilteredPaginate(ctx, k.tasks.Tasks(), req.Pagination, func(key uint64, value types.Task) (bool, error) {
 		return req.Creator == "" || req.Creator == value.Creator, nil
-	}, func(key uint64, value types.Future) (types.FutureResponse, error) {
-		var result *types.FutureResult
+	}, func(key uint64, value types.Task) (types.TaskResponse, error) {
+		var result *types.TaskResult
 
-		r, err := k.futures.GetResult(ctx, value.Id)
+		r, err := k.tasks.GetResult(ctx, value.Id)
 		if err == nil {
 			result = &r
 		} else if !errors.Is(err, collections.ErrNotFound) {
-			return types.FutureResponse{}, err
+			return types.TaskResponse{}, err
 		}
 
-		votes, err := k.GetFutureVotes(ctx, value.Id)
+		votes, err := k.GetTaskVotes(ctx, value.Id)
 		if err != nil {
-			return types.FutureResponse{}, err
+			return types.TaskResponse{}, err
 		}
 
-		return types.FutureResponse{
-			Future: value,
+		return types.TaskResponse{
+			Task:   value,
 			Result: result,
 			Votes:  votes,
 		}, nil
@@ -44,8 +44,8 @@ func (k Keeper) Futures(ctx context.Context, req *types.QueryFuturesRequest) (*t
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryFuturesResponse{
+	return &types.QueryTasksResponse{
 		Pagination: pageRes,
-		Futures:    futures,
+		Tasks:      tasks,
 	}, nil
 }

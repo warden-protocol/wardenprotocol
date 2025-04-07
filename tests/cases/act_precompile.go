@@ -1,7 +1,6 @@
 package cases
 
 import (
-	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -27,14 +26,14 @@ type Test_ActPrecompile struct {
 	w *exec.WardenNode
 }
 
-func (c *Test_ActPrecompile) Setup(t *testing.T, ctx context.Context, build framework.BuildResult) {
+func (c *Test_ActPrecompile) Setup(t *testing.T, build framework.BuildResult) {
 	c.w = exec.NewWardenNode(t, build.Wardend)
 
-	go c.w.Start(t, ctx, "./testdata/snapshot-many-users")
+	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
 }
 
-func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.BuildResult) {
+func (c *Test_ActPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
 	bob := exec.NewWardend(c.w, "bob")
 	dave := exec.NewWardend(c.w, "dave")
@@ -48,12 +47,12 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 
 	t.Run("work with templates", func(t *testing.T) {
 		createTemplateTx, err := iActClient.NewTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			"evm rule #1",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
 
-		createTemplateReceipt, err := bind.WaitMined(ctx, evmClient, createTemplateTx)
+		createTemplateReceipt, err := bind.WaitMined(t.Context(), evmClient, createTemplateTx)
 		require.NoError(t, err)
 
 		createTemplateEvents, err := checks.GetParsedEventsOnly(createTemplateReceipt, iActClient.ParseCreateTemplate)
@@ -65,13 +64,13 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		require.Equal(t, "evm rule #1", templateById.Template.Name)
 
 		updateTemplateTx, err := iActClient.UpdateTemplate(
-			alice.TransactOps(t, context.Background(), evmClient),
+			alice.TransactOps(t, evmClient),
 			1,
 			"evm rule #1 modified",
 			"any(2, warden.space.owners)")
 		require.NoError(t, err)
 
-		updateTemplateReceipt, err := bind.WaitMined(ctx, evmClient, updateTemplateTx)
+		updateTemplateReceipt, err := bind.WaitMined(t.Context(), evmClient, updateTemplateTx)
 		require.NoError(t, err)
 
 		updateTemplateEvents, err := checks.GetParsedEventsOnly(updateTemplateReceipt, iActClient.ParseUpdateTemplate)
@@ -133,12 +132,12 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		checks.SuccessTx(t, tx)
 		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 
-		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+		client.EnsureSpaceAmount(t, dave.Address(t), 0)
 
-		revokeTx, err := iActClient.RevokeAction(alice.TransactOps(t, ctx, evmClient), 3)
+		revokeTx, err := iActClient.RevokeAction(alice.TransactOps(t, evmClient), 3)
 		require.NoError(t, err)
 
-		actionRevokeReceipt, err := bind.WaitMined(ctx, evmClient, revokeTx)
+		actionRevokeReceipt, err := bind.WaitMined(t.Context(), evmClient, revokeTx)
 		require.NoError(t, err)
 
 		actionStateChangeEvents, err := checks.GetParsedEventsOnly(actionRevokeReceipt, iActClient.ParseActionStateChange)
@@ -156,15 +155,15 @@ func (c *Test_ActPrecompile) Run(t *testing.T, ctx context.Context, _ framework.
 		checks.SuccessTx(t, tx)
 		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 
-		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 0)
+		client.EnsureSpaceAmount(t, dave.Address(t), 0)
 
-		voteTx, err := iActClient.VoteForAction(bob.TransactOps(t, ctx, evmClient), 4, 1)
+		voteTx, err := iActClient.VoteForAction(bob.TransactOps(t, evmClient), 4, 1)
 		require.NoError(t, err)
 
-		actionVotedReceipt, err := bind.WaitMined(ctx, evmClient, voteTx)
+		actionVotedReceipt, err := bind.WaitMined(t.Context(), evmClient, voteTx)
 		require.NoError(t, err)
 
-		client.EnsureSpaceAmount(t, ctx, dave.Address(t), 1)
+		client.EnsureSpaceAmount(t, dave.Address(t), 1)
 
 		actionVotedEvents, err := checks.GetParsedEventsOnly(actionVotedReceipt, iActClient.ParseActionVoted)
 		require.NoError(t, err)

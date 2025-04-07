@@ -37,24 +37,24 @@ type (
 		authority          string
 		asyncModuleAddress sdk.Address
 
-		futures             *FutureKeeper
-		handlersByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
-		getEvmKeeper        func(_placeHolder int16) *evmkeeper.Keeper
-		accountKeeper       types.AccountKeeper
-		votes               collections.Map[collections.Pair[uint64, []byte], int32]
+		tasks              *TaskKeeper
+		pluginsByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
+		getEvmKeeper       func(_placeHolder int16) *evmkeeper.Keeper
+		accountKeeper      types.AccountKeeper
+		votes              collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
 	}
 )
 
 var (
-	FutureSeqPrefix       = collections.NewPrefix(0)
-	FuturesPrefix         = collections.NewPrefix(1)
-	FutureByAddressPrefix = collections.NewPrefix(2)
-	ResultsPrefix         = collections.NewPrefix(3)
-	VotesPrefix           = collections.NewPrefix(4)
-	PendingFuturesPrefix  = collections.NewPrefix(5)
-	HandlersByValidator   = collections.NewPrefix(6)
+	TaskSeqPrefix       = collections.NewPrefix(0)
+	TasksPrefix         = collections.NewPrefix(1)
+	TaskByAddressPrefix = collections.NewPrefix(2)
+	ResultsPrefix       = collections.NewPrefix(3)
+	VotesPrefix         = collections.NewPrefix(4)
+	PendingTasksPrefix  = collections.NewPrefix(5)
+	PluginsByValidator  = collections.NewPrefix(6)
 )
 
 func NewKeeper(
@@ -74,7 +74,7 @@ func NewKeeper(
 
 	sb := collections.NewSchemaBuilder(storeService)
 
-	futures := NewFutureKeeper(sb, cdc)
+	tasks := NewTaskKeeper(sb, cdc)
 	votes := collections.NewMap(
 		sb,
 		VotesPrefix,
@@ -83,7 +83,7 @@ func NewKeeper(
 		collections.Int32Value,
 	)
 
-	handlersByValidator := collections.NewKeySet(sb, HandlersByValidator, "handlers_by_validator", collections.PairKeyCodec(sdk.ConsAddressKey, collections.StringKey))
+	pluginsByValidator := collections.NewKeySet(sb, PluginsByValidator, "handlers_by_validator", collections.PairKeyCodec(sdk.ConsAddressKey, collections.StringKey))
 
 	_, err := sb.Build()
 	if err != nil {
@@ -97,11 +97,11 @@ func NewKeeper(
 		asyncModuleAddress: asyncModuleAddress,
 		logger:             logger,
 
-		futures:             futures,
-		handlersByValidator: handlersByValidator,
-		getEvmKeeper:        getEvmKeeper,
-		accountKeeper:       accountKeeper,
-		votes:               votes,
+		tasks:              tasks,
+		pluginsByValidator: pluginsByValidator,
+		getEvmKeeper:       getEvmKeeper,
+		accountKeeper:      accountKeeper,
+		votes:              votes,
 
 		p: p,
 	}
@@ -117,8 +117,8 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
-func (k Keeper) AddFutureResult(ctx context.Context, id uint64, submitter, output []byte) error {
-	if err := k.futures.SetResult(ctx, types.FutureResult{
+func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output []byte) error {
+	if err := k.tasks.SetResult(ctx, types.TaskResult{
 		Id:        id,
 		Output:    output,
 		Submitter: submitter,
@@ -126,18 +126,18 @@ func (k Keeper) AddFutureResult(ctx context.Context, id uint64, submitter, outpu
 		return err
 	}
 
-	if err := k.SetFutureVote(ctx, id, submitter, types.FutureVoteType_VOTE_TYPE_VERIFIED); err != nil {
+	if err := k.SetTaskVote(ctx, id, submitter, types.TaskVoteType_VOTE_TYPE_VERIFIED); err != nil {
 		return err
 	}
 
-	if err := k.futureReadyCallback(ctx, id, output); err != nil {
+	if err := k.taskReadyCallback(ctx, id, output); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (k Keeper) SetFutureVote(ctx context.Context, id uint64, voter []byte, vote types.FutureVoteType) error {
+func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote types.TaskVoteType) error {
 	if !vote.IsValid() {
 		return fmt.Errorf("invalid vote type: %v", vote)
 	}
@@ -145,14 +145,14 @@ func (k Keeper) SetFutureVote(ctx context.Context, id uint64, voter []byte, vote
 	return k.votes.Set(ctx, collections.Join(id, voter), int32(vote))
 }
 
-func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.FutureVote, error) {
-	it, err := k.votes.Iterate(ctx, collections.NewPrefixedPairRange[uint64, []byte](futureId))
+func (k Keeper) GetTaskVotes(ctx context.Context, taskId uint64) ([]types.TaskVote, error) {
+	it, err := k.votes.Iterate(ctx, collections.NewPrefixedPairRange[uint64, []byte](taskId))
 	if err != nil {
 		return nil, err
 	}
 	defer it.Close()
 
-	var votes []types.FutureVote
+	var votes []types.TaskVote
 
 	for ; it.Valid(); it.Next() {
 		key, err := it.Key()
@@ -165,27 +165,27 @@ func (k Keeper) GetFutureVotes(ctx context.Context, futureId uint64) ([]types.Fu
 			return nil, err
 		}
 
-		votes = append(votes, types.FutureVote{
-			FutureId: futureId,
-			Voter:    key.K2(),
-			Vote:     types.FutureVoteType(vote),
+		votes = append(votes, types.TaskVote{
+			TaskId: taskId,
+			Voter:  key.K2(),
+			Vote:   types.TaskVoteType(vote),
 		})
 	}
 
 	return votes, nil
 }
 
-func (k Keeper) futureReadyCallback(
+func (k Keeper) taskReadyCallback(
 	ctx context.Context,
 	id uint64,
 	output []byte,
 ) error {
-	future, err := k.futures.Get(ctx, id)
+	task, err := k.tasks.Get(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if future.Callback == "" {
+	if task.Callback == "" {
 		return nil
 	}
 
@@ -201,7 +201,7 @@ func (k Keeper) futureReadyCallback(
 		return fmt.Errorf("invalid callback method: %v", method)
 	}
 
-	cbAddress, err := precommon.AddressFromBech32Str(future.Callback)
+	cbAddress, err := precommon.AddressFromBech32Str(task.Callback)
 	if err != nil {
 		return err
 	}
@@ -292,14 +292,14 @@ func (k Keeper) callEVMWithData(
 	return res, nil
 }
 
-func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]prophet.FutureResult, error) {
-	it, err := k.futures.results.IterateRaw(ctx, nil, nil, collections.OrderDescending)
+func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]prophet.TaskResult, error) {
+	it, err := k.tasks.results.IterateRaw(ctx, nil, nil, collections.OrderDescending)
 	if err != nil {
 		return nil, err
 	}
 	defer it.Close()
 
-	futures := make([]prophet.FutureResult, 0, limit)
+	tasks := make([]prophet.TaskResult, 0, limit)
 
 	for ; it.Valid(); it.Next() {
 		id, err := it.Key()
@@ -321,34 +321,34 @@ func (k Keeper) getCompletedFuturesWithoutValidatorVote(ctx context.Context, val
 			return nil, err
 		}
 
-		fut, err := k.futures.Get(ctx, id)
+		fut, err := k.tasks.Get(ctx, id)
 		if err != nil {
 			return nil, err
 		}
 
-		futures = append(futures, prophet.FutureResult{
-			Future: prophet.Future{
-				ID:      fut.Id,
-				Handler: fut.Handler,
-				Input:   fut.Input,
+		tasks = append(tasks, prophet.TaskResult{
+			Task: prophet.Task{
+				ID:     fut.Id,
+				Plugin: fut.Plugin,
+				Input:  fut.Input,
 			},
 			Output: result.Output,
 		})
-		if len(futures) == limit {
+		if len(tasks) == limit {
 			break
 		}
 	}
 
-	return futures, nil
+	return tasks, nil
 }
 
-// RegisterHandler register validator as a handler provider.
-func (k *Keeper) RegisterHandler(ctx context.Context, validator sdk.ConsAddress, handlerName string) error {
-	return k.handlersByValidator.Set(ctx, collections.Join(validator, handlerName))
+// RegisterPlugin register validator as a handler provider.
+func (k *Keeper) RegisterPlugin(ctx context.Context, validator sdk.ConsAddress, handlerName string) error {
+	return k.pluginsByValidator.Set(ctx, collections.Join(validator, handlerName))
 }
 
-// ClearHandlers removes all handlers registered for a validator.
-func (k *Keeper) ClearHandlers(ctx context.Context, validator sdk.ConsAddress) error {
+// ClearPlugins removes all handlers registered for a validator.
+func (k *Keeper) ClearPlugins(ctx context.Context, validator sdk.ConsAddress) error {
 	r := collections.Range[collections.Pair[sdk.ConsAddress, string]]{}
-	return k.handlersByValidator.Clear(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(validator))))
+	return k.pluginsByValidator.Clear(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(validator))))
 }

@@ -9,14 +9,12 @@ import (
 	"time"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
 
-	"github.com/ethereum/go-ethereum/ethclient"
-
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/ports"
@@ -58,7 +56,7 @@ func (w *WardenNode) run(ctx context.Context, args ...string) error {
 	return cmd.Run(ctx)
 }
 
-func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
+func (w *WardenNode) Start(t *testing.T, snapshot string) {
 	p := ports.ReservePorts(t, 6)
 
 	w.apiPort = p.Port(t, 0)
@@ -87,8 +85,8 @@ func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 
 	p.Free(t)
 
-	err = w.run(ctx, "--log_no_color", "start", "--home", w.Home, "--x-crisis-skip-assert-invariants")
-	if errors.Is(ctx.Err(), context.Canceled) {
+	err = w.run(t.Context(), "--log_no_color", "start", "--home", w.Home, "--x-crisis-skip-assert-invariants")
+	if errors.Is(t.Context().Err(), context.Canceled) {
 		return
 	}
 
@@ -105,10 +103,8 @@ func (w *WardenNode) WaitRunning(t *testing.T) {
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")
 }
 
-func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context, filters []string) {
-	go func() {
-		<-ctx.Done()
-
+func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, filters []string) {
+	t.Cleanup(func() {
 		if len(filters) == 0 {
 			t.Logf("Node logs: \n %s", w.Stdout.String())
 			return
@@ -128,7 +124,7 @@ func (w *WardenNode) PrintLogsAtTheEnd(t *testing.T, ctx context.Context, filter
 		}
 		// Join the filtered lines back and print them
 		t.Logf("Node logs: \n %s", strings.Join(filteredLogs, "\n"))
-	}()
+	})
 }
 
 func (w *WardenNode) grpcAddr() string {

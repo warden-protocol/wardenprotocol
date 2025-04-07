@@ -80,9 +80,9 @@ import (
 	asyncprecompile "github.com/warden-protocol/wardenprotocol/precompiles/async"
 	slinkyprecompile "github.com/warden-protocol/wardenprotocol/precompiles/slinky"
 	"github.com/warden-protocol/wardenprotocol/prophet"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/echo"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/http"
-	"github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
@@ -214,7 +214,7 @@ func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
 }
 
 func registerProphetHanlders(appOpts servertypes.AppOptions) {
-	prophet.Register("echo", echo.Handler{})
+	prophet.Register("echo", echo.Plugin{})
 
 	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
 		u := cast.ToString(appOpts.Get("pricepred.url"))
@@ -243,7 +243,7 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 
 		parsedTimeout := time.Duration(timeout) * time.Second
 
-		prophet.Register("http", http.NewHandler(parsedURLs, parsedTimeout))
+		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
 	}
 }
 
@@ -514,7 +514,7 @@ func New(
 			return nil, err
 		}
 
-		return app.App.InitChainer(ctx, req)
+		return app.InitChainer(ctx, req)
 	})
 
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
@@ -565,7 +565,7 @@ func New(
 	}
 
 	if loadLatest {
-		ctx := app.BaseApp.NewUncachedContext(true, tmproto.Header{})
+		ctx := app.NewUncachedContext(true, tmproto.Header{})
 
 		// Initialize pinned codes in wasmvm as they are not persisted there
 		if err := app.WasmKeeper.InitializePinnedCodes(ctx); err != nil {

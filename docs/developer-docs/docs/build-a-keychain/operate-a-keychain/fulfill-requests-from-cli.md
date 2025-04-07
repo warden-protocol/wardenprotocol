@@ -24,30 +24,16 @@ Learn more:
 
 If you wish to operate a Keychain locally, complete the following prerequisites:
 
-- [Run a local chain](/operate-a-node/run-a-local-chain). If you used [manual configuration](/operate-a-node/run-a-local-chain#option-2-configure-manually), make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings).
-
-- [Create a Keychain](create-a-keychain). You can skip it if you used our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) to run the node with default settings.
+- [Set up an account on a local chain](/build-an-app/set-up-a-warden-account#set-up-an-account-on-a-local-chain). Note down your **key name**.
+- Make sure there is a Space associated with your key, a Keychain and a Keychain Writer:
+  - If you used manual chain configuration, make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings) and note down the **Space ID**. Then [create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
+  - If you ran the node with default settings, you can use the default Keychain, Writer, and Space, as shown in this guide. See the genesis file: `$HOME/.warden/config/genesis.json`.
 
 To operate a Keychain on Chiado, complete these prerequisites:
 
-- [Create a Keychain](create-a-keychain). These steps involve creating an account (key) on Chiado.
-
-- Use your key to create a Space:
-
-  ```
-  wardend tx warden new-space \
-    --from my-key-name \
-    --fees 400000000award \
-    --chain-id chiado_1001-1 \
-    --node https://rpc.chiado.wardenprotocol.org:443
-  ```
-
-- Query Spaces. The list will contain Space IDs and account addresses. You should note down the Space ID associated with your address.
-
-  ```
-  wardend query warden spaces \
-  --node https://rpc.chiado.wardenprotocol.org:443
-  ```
+- [Set up an account on Chiado](/build-an-app/set-up-a-warden-account#set-up-an-account-on-chiado). Note down your **key name**.
+- [Create a Space](/build-an-app/set-up-a-warden-account#create-a-space) with your key. [List Spaces](/build-an-app/set-up-a-warden-account#list-spaces) and note down the **Space ID** associated with your address.
+- [Create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
 
 ## 1. Install CLIChain
 
@@ -98,9 +84,9 @@ The next steps require that you set your node and Keychain settings as environme
   Returned by `wardend keys list`.
 - `SPACE_ID`: Your Space ID.  
   Returned by `wardend query warden spaces`.
-- `KEYCHAIN_ID`: Your Keychain ID obtained when [registering a Keychain](create-a-keychain#2-register-a-keychain).  
+- `KEYCHAIN_ID`: Your Keychain ID obtained when [registering a Keychain](create-a-keychain#1-register-a-keychain).  
   Returned by `wardend query warden keychains` in the `id` field.
-- `KEYCHAIN_WRITER_NAME`: Your Keychain Writer name specified when [adding a Keychain Writer](create-a-keychain#3-add-a-keychain-writer).  
+- `KEYCHAIN_WRITER_NAME`: Your Keychain Writer name specified when [adding a Keychain Writer](create-a-keychain#2-add-a-keychain-writer).  
   Returned by `wardend keys list`.
 - `RPC_URL`: The RPC URL for interacting with Chiado.
 

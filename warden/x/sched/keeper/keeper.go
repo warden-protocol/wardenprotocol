@@ -23,6 +23,12 @@ type (
 	}
 )
 
+var (
+	CallbackSeqPrefix = collections.NewPrefix(0)
+	CallbacksPrefix   = collections.NewPrefix(1)
+	ResultsPrefix     = collections.NewPrefix(2)
+)
+
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeService store.KVStoreService,

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package warden.sched.v1beta1;
+
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1";
+
+// Task defines a task that will be executed asynchronously.
+// Validators will be able to submit the proposed result of the Task
+// execution.
+// Other validators will then be able to vote on the validity of the proposed
+// result.
+message Callback {
+  // Unique ID of the Callback.
+  uint64 id = 1;
+  // Callback address.
+  string address = 2;
+  // The limit of gas for callback execution.
+  string gasLimit = 3;
+  // The token that will be used to pay for callback execution.
+  cosmos.base.v1beta1.Coin feeToken = 4 [
+   (gogoproto.nullable) = false,
+   (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+}
+
+enum CallbackResultFlag {
+  // Unspecified callback result.
+  CALLBACK_RESULT_UNSPECIFIED = 0;
+  // Indicates that the callback execution was successful.
+  CALLBACK_RESULT_SUCCEED = 1;
+  // Indicates that the callback execution failed.
+  CALLBACK_RESULT_FAILED = 2;
+}
+
+message CallbackResult {
+    // The result flag.
+    CallbackResultFlag flag = 1;
+}

@@ -24,7 +24,8 @@ By default, the Warden Agent Kit supports the following Actions and queries:
 - `create_key`: Create a new key for a specified Space and Keychain.
 - `get_keychains`: Retrieve all available Keychains.
 - `get_balance`: Check the balance of Sepolia ETH for a specific key.
-- `request_funds`: Request WARD tokens from the faucet.
+- `request_funds`: Request WARD tokens from the faucet.  
+  (At the moment, access to this Action is granted  only upon request in [Discord](https://discord.com/invite/wardenprotocol).)
 - `get_price`: Get the current price of a token using its symbol.
 - `send_tokens`: Send tokens to another address from your key.
 - `create_order`: Create a new Order.

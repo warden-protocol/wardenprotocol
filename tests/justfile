@@ -215,3 +215,10 @@ contract-caller:
   solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go
+
+# regenerate json user contract
+contract-json-user:
+  # cp -f ./../precompiles/json/IJson.sol ./testdata/contracts/json-user/IJson.sol
+  solc --evm-version paris --bin precompile-json/=../precompiles/json/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite 
+  solc --evm-version paris --abi precompile-json/=../precompiles/json/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite
+  abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go

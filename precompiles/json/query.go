@@ -15,6 +15,7 @@ import (
 )
 
 const (
+	NewJsonMethod         = "newJson"
 	RemoveMethod          = "remove"
 	GetMethod             = "get"
 	GetStringMethod       = "getString"
@@ -45,6 +46,22 @@ const (
 	SetObjectsArrayMethod = "setObjectsArray"
 	SetObjectMethod       = "setObject"
 )
+
+// NewJson decodes new json object representation from args, encodes to bytes.
+func (p Precompile) NewJson(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	readJson, err := gabs.ParseJSON([]byte("{}"))
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	encodedJson := readJson.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
 
 // Remove decodes RemoveInput from args, removes value by key.
 func (p Precompile) Remove(

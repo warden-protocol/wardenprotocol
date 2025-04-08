@@ -37,6 +37,12 @@ func (c *Test_JsonPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	iJsonClient, err := jsonPrecompile.NewIJson(common.HexToAddress(jsonPrecompile.PrecompileAddress), evmClient)
 	require.NoError(t, err)
 
+	t.Run("create empty json", func(t *testing.T) {
+		newJsonObjectBytes, err := iJsonClient.NewJson(alice.CallOps(t))
+		require.NoError(t, err)
+		require.Equal(t, "{}", string(newJsonObjectBytes))
+	})
+
 	t.Run("set string value", func(t *testing.T) {
 		newJsonObject, err := gabs.ParseJSON([]byte(`{}`))
 		require.NoError(t, err)

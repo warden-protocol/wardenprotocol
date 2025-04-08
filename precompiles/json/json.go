@@ -78,6 +78,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 
 // Run implements vm.PrecompiledContract.
 func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz []byte, err error) {
+
 	ctx, stateDB, snapshot, method, initialGas, args, err := p.RunSetup(evm, contract, readonly, p.IsTransaction)
 	if err != nil {
 		return nil, err
@@ -89,6 +90,10 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 
 	switch method.Name {
 	// queries
+	case NewJsonMethod:
+		bz, err = p.NewJson(ctx, method, args)
+	case RemoveMethod:
+		bz, err = p.Remove(ctx, method, args)
 	case SetStringMethod:
 		bz, err = p.SetString(ctx, method, args)
 	case SetBoolMethod:
@@ -194,7 +199,9 @@ func (p *Precompile) IsTransaction(method string) bool {
 		GetFloatArrayMethod,
 		GetBoolArrayMethod,
 		GetAddressArrayMethod,
-		GetObjectsArrayMethod:
+		GetObjectsArrayMethod,
+		RemoveMethod,
+		NewJsonMethod:
 		return false
 	}
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity >=0.8.25;
+pragma solidity >=0.8.25 <0.9.0;
 
 /// @dev The IJson contract's address.
 address constant IJSON_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000904;
@@ -20,6 +20,12 @@ IJson constant IJSON_CONTRACT = IJson(IJSON_PRECOMPILE_ADDRESS);
 interface IJson {
 
     /**
+     * @dev Defines a method to create empty JSON object.
+     * @return The created JSON as bytes.
+     */
+    function newJson() external view returns (bytes memory);
+
+    /**
      * @dev Defines a method to remove a key-value pair from JSON.
      * @param input The JSON input as bytes.
      * @param key The key to remove.
@@ -28,7 +34,7 @@ interface IJson {
     function remove(
         bytes memory input,
         string memory key
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     // Get methods
 
@@ -41,7 +47,7 @@ interface IJson {
     function get(
         bytes memory input,
         string memory key
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to get a string value from JSON by key.
@@ -52,7 +58,7 @@ interface IJson {
     function getString(
         bytes memory input,
         string memory key
-    ) external pure returns (string memory);
+    ) external view returns (string memory);
 
     /**
      * @dev Defines a method to get a boolean value from JSON by key.
@@ -63,7 +69,7 @@ interface IJson {
     function getBool(
         bytes memory input,
         string memory key
-    ) external pure returns (bool);
+    ) external view returns (bool);
 
     /**
      * @dev Defines a method to get an address value from JSON by key.
@@ -74,7 +80,7 @@ interface IJson {
     function getAddress(
         bytes memory input,
         string memory key
-    ) external pure returns (address);
+    ) external view returns (address);
 
     /**
      * @dev Defines a method to get an int256 value from JSON by key.
@@ -85,7 +91,7 @@ interface IJson {
     function getInt256(
         bytes memory input,
         string memory key
-    ) external pure returns (int256);
+    ) external view returns (int256);
 
     /**
      * @dev Defines a method to get a uint256 value from JSON by key.
@@ -96,7 +102,7 @@ interface IJson {
     function getUint256(
         bytes memory input,
         string memory key
-    ) external pure returns (uint256);
+    ) external view returns (uint256);
 
     /**
      * @dev Defines a method to get a bytes value from JSON by key.
@@ -108,7 +114,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         int64 decimals
-    ) external pure returns (int256);
+    ) external view returns (int256);
 
     /**
      * @dev Defines a method to get a string array value from JSON by key.
@@ -119,7 +125,7 @@ interface IJson {
     function getStringArray(
         bytes memory input,
         string memory key
-    ) external pure returns (string[] memory);
+    ) external view returns (string[] memory);
 
     /**
      * @dev Defines a method to get a uint256 array value from JSON by key.
@@ -130,7 +136,7 @@ interface IJson {
     function getUintArray(
         bytes memory input,
         string memory key
-    ) external pure returns (uint256[] memory);
+    ) external view returns (uint256[] memory);
 
     /**
      * @dev Defines a method to get an int256 array value from JSON by key.
@@ -141,7 +147,7 @@ interface IJson {
     function getIntArray(
         bytes memory input,
         string memory key
-    ) external pure returns (int256[] memory);
+    ) external view returns (int256[] memory);
 
     /**
      * @dev Defines a method to get an float array value from JSON by key.
@@ -153,7 +159,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         int64 decimals
-    ) external pure returns (int256[] memory);
+    ) external view returns (int256[] memory);
 
     /**
      * @dev Defines a method to get a boolean array value from JSON by key.
@@ -164,7 +170,7 @@ interface IJson {
     function getBoolArray(
         bytes memory input,
         string memory key
-    ) external pure returns (bool[] memory);
+    ) external view returns (bool[] memory);
 
     /**
      * @dev Defines a method to get an address array value from JSON by key.
@@ -175,7 +181,7 @@ interface IJson {
     function getAddressArray(
         bytes memory input,
         string memory key
-    ) external pure returns (address[] memory);
+    ) external view returns (address[] memory);
 
     /**
      * @dev Defines a method to get a nested objects array value from JSON by key.
@@ -186,7 +192,7 @@ interface IJson {
     function getObjectsArray(
         bytes memory input,
         string memory key
-    ) external pure returns (bytes[] memory);
+    ) external view returns (bytes[] memory);
 
     /**
      * @dev Defines a method to get a nested object value from JSON by key.
@@ -197,7 +203,7 @@ interface IJson {
     function getObject(
         bytes memory input,
         string memory key
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     // Basic types
 
@@ -212,7 +218,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         string memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a boolean key-value pair in JSON.
@@ -225,7 +231,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         bool value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set an address key-value pair in JSON.
@@ -238,7 +244,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         address value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a bytes key-value pair in JSON.
@@ -251,7 +257,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         bytes memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     // Number types
 
@@ -266,7 +272,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         int256 value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a uint256 key-value pair in JSON.
@@ -279,7 +285,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         uint256 value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a float key-value in JSON.
@@ -294,7 +300,7 @@ interface IJson {
         string memory key,
         int256 value,
         int64 decimals
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     // Array types
 
@@ -309,7 +315,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         string[] memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a uint256 array key-value pair in JSON.
@@ -322,7 +328,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         uint256[] memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a int256 array key-value pair in JSON.
@@ -335,7 +341,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         int256[] memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a int256 array key-value pair in JSON.
@@ -350,7 +356,7 @@ interface IJson {
         string memory key,
         int256[] memory value,
         int64 decimals
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a boolean array key-value pair in JSON.
@@ -363,7 +369,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         bool[] memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set an address array key-value pair in JSON.
@@ -376,7 +382,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         address[] memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     /**
      * @dev Defines a method to set a nested objects array key-value pair in JSON.
@@ -389,7 +395,7 @@ interface IJson {
         bytes memory input,
         string memory key,
         bytes[] memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 
     // Struct handling
 
@@ -404,5 +410,5 @@ interface IJson {
         bytes memory input,
         string memory key,
         bytes memory value
-    ) external pure returns (bytes memory);
+    ) external view returns (bytes memory);
 }

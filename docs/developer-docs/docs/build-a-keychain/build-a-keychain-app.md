@@ -71,9 +71,9 @@ Before starting the app, you need to configure it. You'll find a basic configura
 
 Make the following adjustments in the code:
 
-- Replace `chain_123-1` with the chain ID you used when [running a node](operate-a-keychain/create-a-keychain#option-1-run-a-local-chain).
-- Replace `my-keychain-id` with your Keychain ID obtained when [registering a Keychain](operate-a-keychain/create-a-keychain#2-register-a-keychain).
-- Replace `my-mnemonic-phrase` with the mnemonic phrase obtained when [adding a Keychain Writer](operate-a-keychain/create-a-keychain#3-add-a-keychain-writer).
+- Replace `chain_123-1` with your [chain ID](/build-an-app/set-up-a-warden-account#get-your-chain-id).
+- Replace `my-keychain-id` with your Keychain ID obtained when [registering a Keychain](operate-a-keychain/create-a-keychain#1-register-a-keychain).
+- Replace `my-mnemonic-phrase` with the mnemonic phrase obtained when [adding a Keychain Writer](operate-a-keychain/create-a-keychain#2-add-a-keychain-writer).
 
 ```go
 package main

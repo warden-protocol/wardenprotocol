@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_Params_FullMethodName              = "/warden.async.v1beta1.Query/Params"
-	Query_Futures_FullMethodName             = "/warden.async.v1beta1.Query/Futures"
-	Query_FutureById_FullMethodName          = "/warden.async.v1beta1.Query/FutureById"
-	Query_PendingFutures_FullMethodName      = "/warden.async.v1beta1.Query/PendingFutures"
-	Query_HandlersByValidator_FullMethodName = "/warden.async.v1beta1.Query/HandlersByValidator"
+	Query_Params_FullMethodName             = "/warden.async.v1beta1.Query/Params"
+	Query_Tasks_FullMethodName              = "/warden.async.v1beta1.Query/Tasks"
+	Query_TaskById_FullMethodName           = "/warden.async.v1beta1.Query/TaskById"
+	Query_PendingTasks_FullMethodName       = "/warden.async.v1beta1.Query/PendingTasks"
+	Query_PluginsByValidator_FullMethodName = "/warden.async.v1beta1.Query/PluginsByValidator"
 )
 
 // QueryClient is the client API for Query service.
@@ -34,14 +34,14 @@ const (
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
-	// Queries a list of Futures.
-	Futures(ctx context.Context, in *QueryFuturesRequest, opts ...grpc.CallOption) (*QueryFuturesResponse, error)
-	// Queries a Future by its id.
-	FutureById(ctx context.Context, in *QueryFutureByIdRequest, opts ...grpc.CallOption) (*QueryFutureByIdResponse, error)
-	// Queries Futures that do not have a result yet.
-	PendingFutures(ctx context.Context, in *QueryPendingFuturesRequest, opts ...grpc.CallOption) (*QueryPendingFuturesResponse, error)
-	// Queries Handlers by validator.
-	HandlersByValidator(ctx context.Context, in *QueryHandlersByValidatorRequest, opts ...grpc.CallOption) (*QueryHandlersByValidatorResponse, error)
+	// Queries a list of Tasks.
+	Tasks(ctx context.Context, in *QueryTasksRequest, opts ...grpc.CallOption) (*QueryTasksResponse, error)
+	// Queries a Task by its id.
+	TaskById(ctx context.Context, in *QueryTaskByIdRequest, opts ...grpc.CallOption) (*QueryTaskByIdResponse, error)
+	// Queries Tasks that do not have a result yet.
+	PendingTasks(ctx context.Context, in *QueryPendingTasksRequest, opts ...grpc.CallOption) (*QueryPendingTasksResponse, error)
+	// Queries Plugins by validator.
+	PluginsByValidator(ctx context.Context, in *QueryPluginsByValidatorRequest, opts ...grpc.CallOption) (*QueryPluginsByValidatorResponse, error)
 }
 
 type queryClient struct {
@@ -62,40 +62,40 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) Futures(ctx context.Context, in *QueryFuturesRequest, opts ...grpc.CallOption) (*QueryFuturesResponse, error) {
+func (c *queryClient) Tasks(ctx context.Context, in *QueryTasksRequest, opts ...grpc.CallOption) (*QueryTasksResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QueryFuturesResponse)
-	err := c.cc.Invoke(ctx, Query_Futures_FullMethodName, in, out, cOpts...)
+	out := new(QueryTasksResponse)
+	err := c.cc.Invoke(ctx, Query_Tasks_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) FutureById(ctx context.Context, in *QueryFutureByIdRequest, opts ...grpc.CallOption) (*QueryFutureByIdResponse, error) {
+func (c *queryClient) TaskById(ctx context.Context, in *QueryTaskByIdRequest, opts ...grpc.CallOption) (*QueryTaskByIdResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QueryFutureByIdResponse)
-	err := c.cc.Invoke(ctx, Query_FutureById_FullMethodName, in, out, cOpts...)
+	out := new(QueryTaskByIdResponse)
+	err := c.cc.Invoke(ctx, Query_TaskById_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) PendingFutures(ctx context.Context, in *QueryPendingFuturesRequest, opts ...grpc.CallOption) (*QueryPendingFuturesResponse, error) {
+func (c *queryClient) PendingTasks(ctx context.Context, in *QueryPendingTasksRequest, opts ...grpc.CallOption) (*QueryPendingTasksResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QueryPendingFuturesResponse)
-	err := c.cc.Invoke(ctx, Query_PendingFutures_FullMethodName, in, out, cOpts...)
+	out := new(QueryPendingTasksResponse)
+	err := c.cc.Invoke(ctx, Query_PendingTasks_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) HandlersByValidator(ctx context.Context, in *QueryHandlersByValidatorRequest, opts ...grpc.CallOption) (*QueryHandlersByValidatorResponse, error) {
+func (c *queryClient) PluginsByValidator(ctx context.Context, in *QueryPluginsByValidatorRequest, opts ...grpc.CallOption) (*QueryPluginsByValidatorResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(QueryHandlersByValidatorResponse)
-	err := c.cc.Invoke(ctx, Query_HandlersByValidator_FullMethodName, in, out, cOpts...)
+	out := new(QueryPluginsByValidatorResponse)
+	err := c.cc.Invoke(ctx, Query_PluginsByValidator_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -110,14 +110,14 @@ func (c *queryClient) HandlersByValidator(ctx context.Context, in *QueryHandlers
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
-	// Queries a list of Futures.
-	Futures(context.Context, *QueryFuturesRequest) (*QueryFuturesResponse, error)
-	// Queries a Future by its id.
-	FutureById(context.Context, *QueryFutureByIdRequest) (*QueryFutureByIdResponse, error)
-	// Queries Futures that do not have a result yet.
-	PendingFutures(context.Context, *QueryPendingFuturesRequest) (*QueryPendingFuturesResponse, error)
-	// Queries Handlers by validator.
-	HandlersByValidator(context.Context, *QueryHandlersByValidatorRequest) (*QueryHandlersByValidatorResponse, error)
+	// Queries a list of Tasks.
+	Tasks(context.Context, *QueryTasksRequest) (*QueryTasksResponse, error)
+	// Queries a Task by its id.
+	TaskById(context.Context, *QueryTaskByIdRequest) (*QueryTaskByIdResponse, error)
+	// Queries Tasks that do not have a result yet.
+	PendingTasks(context.Context, *QueryPendingTasksRequest) (*QueryPendingTasksResponse, error)
+	// Queries Plugins by validator.
+	PluginsByValidator(context.Context, *QueryPluginsByValidatorRequest) (*QueryPluginsByValidatorResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -131,17 +131,17 @@ type UnimplementedQueryServer struct{}
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
-func (UnimplementedQueryServer) Futures(context.Context, *QueryFuturesRequest) (*QueryFuturesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Futures not implemented")
+func (UnimplementedQueryServer) Tasks(context.Context, *QueryTasksRequest) (*QueryTasksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Tasks not implemented")
 }
-func (UnimplementedQueryServer) FutureById(context.Context, *QueryFutureByIdRequest) (*QueryFutureByIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FutureById not implemented")
+func (UnimplementedQueryServer) TaskById(context.Context, *QueryTaskByIdRequest) (*QueryTaskByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TaskById not implemented")
 }
-func (UnimplementedQueryServer) PendingFutures(context.Context, *QueryPendingFuturesRequest) (*QueryPendingFuturesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PendingFutures not implemented")
+func (UnimplementedQueryServer) PendingTasks(context.Context, *QueryPendingTasksRequest) (*QueryPendingTasksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PendingTasks not implemented")
 }
-func (UnimplementedQueryServer) HandlersByValidator(context.Context, *QueryHandlersByValidatorRequest) (*QueryHandlersByValidatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HandlersByValidator not implemented")
+func (UnimplementedQueryServer) PluginsByValidator(context.Context, *QueryPluginsByValidatorRequest) (*QueryPluginsByValidatorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PluginsByValidator not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 func (UnimplementedQueryServer) testEmbeddedByValue()               {}
@@ -182,74 +182,74 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Futures_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryFuturesRequest)
+func _Query_Tasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTasksRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Futures(ctx, in)
+		return srv.(QueryServer).Tasks(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_Futures_FullMethodName,
+		FullMethod: Query_Tasks_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Futures(ctx, req.(*QueryFuturesRequest))
+		return srv.(QueryServer).Tasks(ctx, req.(*QueryTasksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_FutureById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryFutureByIdRequest)
+func _Query_TaskById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryTaskByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).FutureById(ctx, in)
+		return srv.(QueryServer).TaskById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_FutureById_FullMethodName,
+		FullMethod: Query_TaskById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).FutureById(ctx, req.(*QueryFutureByIdRequest))
+		return srv.(QueryServer).TaskById(ctx, req.(*QueryTaskByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_PendingFutures_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPendingFuturesRequest)
+func _Query_PendingTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPendingTasksRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).PendingFutures(ctx, in)
+		return srv.(QueryServer).PendingTasks(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_PendingFutures_FullMethodName,
+		FullMethod: Query_PendingTasks_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PendingFutures(ctx, req.(*QueryPendingFuturesRequest))
+		return srv.(QueryServer).PendingTasks(ctx, req.(*QueryPendingTasksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_HandlersByValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryHandlersByValidatorRequest)
+func _Query_PluginsByValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPluginsByValidatorRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).HandlersByValidator(ctx, in)
+		return srv.(QueryServer).PluginsByValidator(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_HandlersByValidator_FullMethodName,
+		FullMethod: Query_PluginsByValidator_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).HandlersByValidator(ctx, req.(*QueryHandlersByValidatorRequest))
+		return srv.(QueryServer).PluginsByValidator(ctx, req.(*QueryPluginsByValidatorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -266,20 +266,20 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Params_Handler,
 		},
 		{
-			MethodName: "Futures",
-			Handler:    _Query_Futures_Handler,
+			MethodName: "Tasks",
+			Handler:    _Query_Tasks_Handler,
 		},
 		{
-			MethodName: "FutureById",
-			Handler:    _Query_FutureById_Handler,
+			MethodName: "TaskById",
+			Handler:    _Query_TaskById_Handler,
 		},
 		{
-			MethodName: "PendingFutures",
-			Handler:    _Query_PendingFutures_Handler,
+			MethodName: "PendingTasks",
+			Handler:    _Query_PendingTasks_Handler,
 		},
 		{
-			MethodName: "HandlersByValidator",
-			Handler:    _Query_HandlersByValidator_Handler,
+			MethodName: "PluginsByValidator",
+			Handler:    _Query_PluginsByValidator_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

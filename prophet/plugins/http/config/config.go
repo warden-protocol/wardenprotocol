@@ -24,10 +24,10 @@ const DefaultConfigTemplate = `
 ###############################################################################
 [http]
 
-# Is HTTP handler enabled
+# Is HTTP plugin enabled
 enabled = "{{ .Http.Enabled }}"
 
-# URLs used for HTTP handler
+# URLs used for HTTP plugin
 urls = ["{{ range $i, $url := .Http.URLs }}{{if $i}},{{end}}{{$url}}{{end}}"]
 
 # Timeout in seconds for the HTTP client

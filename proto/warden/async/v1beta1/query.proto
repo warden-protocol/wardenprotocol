@@ -7,8 +7,8 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
-import "warden/async/v1beta1/future.proto";
 import "warden/async/v1beta1/params.proto";
+import "warden/async/v1beta1/task.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -19,24 +19,24 @@ service Query {
     option (google.api.http).get = "/warden/async/params";
   }
 
-  // Queries a list of Futures.
-  rpc Futures(QueryFuturesRequest) returns (QueryFuturesResponse) {
-    option (google.api.http).get = "/warden/async/futures";
+  // Queries a list of Tasks.
+  rpc Tasks(QueryTasksRequest) returns (QueryTasksResponse) {
+    option (google.api.http).get = "/warden/async/tasks";
   }
 
-  // Queries a Future by its id.
-  rpc FutureById(QueryFutureByIdRequest) returns (QueryFutureByIdResponse) {
-    option (google.api.http).get = "/warden/async/future/{id}";
+  // Queries a Task by its id.
+  rpc TaskById(QueryTaskByIdRequest) returns (QueryTaskByIdResponse) {
+    option (google.api.http).get = "/warden/async/task/{id}";
   }
 
-  // Queries Futures that do not have a result yet.
-  rpc PendingFutures(QueryPendingFuturesRequest) returns (QueryPendingFuturesResponse) {
-    option (google.api.http).get = "/warden/async/pending_futures";
+  // Queries Tasks that do not have a result yet.
+  rpc PendingTasks(QueryPendingTasksRequest) returns (QueryPendingTasksResponse) {
+    option (google.api.http).get = "/warden/async/pending_tasks";
   }
 
-  // Queries Handlers by validator.
-  rpc HandlersByValidator(QueryHandlersByValidatorRequest) returns (QueryHandlersByValidatorResponse) {
-    option (google.api.http).get = "/warden/async/handlers_by_validator/{validator}";
+  // Queries Plugins by validator.
+  rpc PluginsByValidator(QueryPluginsByValidatorRequest) returns (QueryPluginsByValidatorResponse) {
+    option (google.api.http).get = "/warden/async/plugins_by_validator/{validator}";
   }
 }
 
@@ -49,49 +49,49 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryFuturesRequest {
+message QueryTasksRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  // optional filter to query futures by creator
+  // optional filter to query tasks by creator
   string creator = 2 [
     (gogoproto.nullable) = true,
     (cosmos_proto.scalar) = "cosmos.AddressString"
   ];
 }
 
-message FutureResponse {
-  Future future = 1 [(gogoproto.nullable) = false];
-  repeated FutureVote votes = 2 [(gogoproto.nullable) = false];
-  FutureResult result = 3 [(gogoproto.nullable) = true];
+message TaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false];
+  repeated TaskVote votes = 2 [(gogoproto.nullable) = false];
+  TaskResult result = 3 [(gogoproto.nullable) = true];
 }
 
-message QueryFuturesResponse {
+message QueryTasksResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated FutureResponse futures = 2 [(gogoproto.nullable) = false];
+  repeated TaskResponse tasks = 2 [(gogoproto.nullable) = false];
 }
 
-message QueryFutureByIdRequest {
+message QueryTaskByIdRequest {
   uint64 id = 1;
 }
 
-message QueryFutureByIdResponse {
-  FutureResponse futureResponse = 1 [(gogoproto.nullable) = false];
+message QueryTaskByIdResponse {
+  TaskResponse taskResponse = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryPendingFuturesRequest {
+message QueryPendingTasksRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryPendingFuturesResponse {
+message QueryPendingTasksResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Future futures = 2 [(gogoproto.nullable) = false];
+  repeated Task tasks = 2 [(gogoproto.nullable) = false];
 }
 
-message QueryHandlersByValidatorRequest {
+message QueryPluginsByValidatorRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string validator = 2 [(cosmos_proto.scalar) = "cosmos.ConsensusAddressString"];
 }
 
-message QueryHandlersByValidatorResponse {
+message QueryPluginsByValidatorResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated string handlers = 2 [(gogoproto.nullable) = false];
+  repeated string plugins = 2 [(gogoproto.nullable) = false];
 }

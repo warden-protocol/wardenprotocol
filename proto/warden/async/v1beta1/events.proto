@@ -4,16 +4,16 @@ package warden.async.v1beta1;
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
-// EventCreateFuture is emitted when a new Future is created.
-message EventCreateFuture {
-  // ID of the new Future.
+// EventCreateTask is emitted when a new Task is created.
+message EventCreateTask {
+  // ID of the new Task.
   uint64 id = 1;
 
-  // Creator is the address that created the Future.
+  // Creator is the address that created the Task.
   string creator = 2;
 
-  // Handler is the name of the handler that will be executed.
-  string handler = 3;
+  // Plugin is the name of the plugin that will be executed.
+  string plugin = 3;
 
   // Address of callback that will be triggered after execution.
   string callback_address = 4;

@@ -2,7 +2,7 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
-import { FutureByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
+import { TaskByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AbstractOrderV0 } from "../orders/AbstractOrderV0.sol";
 import { ExecutionData, IExecutionV0 } from "../types/IExecutionV0.sol";
@@ -65,7 +65,7 @@ struct PricePredictOutput {
 contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
     Types.AdvancedOrderData public orderData;
     TypesV0.CommonExecutionData public commonExecutionData;
-    uint64 public futureId;
+    uint64 public taskId;
 
     uint256 public constant PRICE_PREDICTION_DECIMALS = 16;
 
@@ -101,7 +101,7 @@ contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
             falsePositiveRate: falsePositiveRate,
             metrics: metrics
         });
-        futureId = ASYNC_PRECOMPILE.addFuture("pricepred", abi.encode(pricePredictInput), address(0));
+        taskId = ASYNC_PRECOMPILE.addTask("pricepred", abi.encode(pricePredictInput), address(0));
         REGISTRY = Registry(registry);
 
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {
@@ -117,10 +117,10 @@ contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
     function canExecute() public view override returns (bool) {
         if (block.timestamp > _validUntil) return false;
 
-        FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
-        if (future.futureResponse.result.id == 0) return false;
+        TaskByIdResponse memory task = ASYNC_PRECOMPILE.taskById(taskId);
+        if (task.taskResponse.result.id == 0) return false;
 
-        PricePredictOutput memory output = abi.decode(future.futureResponse.result.output, (PricePredictOutput));
+        PricePredictOutput memory output = abi.decode(task.taskResponse.result.output, (PricePredictOutput));
         GetPriceResponse memory priceResponse =
             SLINKY_PRECOMPILE.getPrice(orderData.oraclePricePair.base, orderData.oraclePricePair.quote);
 

@@ -8,8 +8,8 @@ import (
 	evmservercfg "github.com/evmos/evmos/v20/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 
-	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/handlers/http/config"
-	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/handlers/pricepred/config"
+	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
+	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
 )
 
 // initCometBFTConfig helps to override default CometBFT Config values.
@@ -37,7 +37,7 @@ func initAppConfig() (string, interface{}) {
 		TLS     evmservercfg.TLSConfig     `mapstructure:"tls"`
 		Rosetta evmservercfg.RosettaConfig `mapstructure:"rosetta"`
 
-		// Prophet handlers
+		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
 	}

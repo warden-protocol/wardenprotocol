@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
+* (x/async) Rename futures into tasks, and future handlers into plugins
+
 ### Consensus Breaking Changes
 
 * (precompiles) The JSON precompile allowing to operate on JSON

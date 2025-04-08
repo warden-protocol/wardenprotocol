@@ -53,47 +53,47 @@ export interface MsgUpdateParamsResponseAminoMsg {
  * MsgUpdateParams message.
  */
 export interface MsgUpdateParamsResponseSDKType {}
-export interface MsgAddFuture {
+export interface MsgAddTask {
   creator: string;
-  handler: string;
+  plugin: string;
   input: Uint8Array;
   callback: string;
 }
-export interface MsgAddFutureProtoMsg {
-  typeUrl: "/warden.async.v1beta1.MsgAddFuture";
+export interface MsgAddTaskProtoMsg {
+  typeUrl: "/warden.async.v1beta1.MsgAddTask";
   value: Uint8Array;
 }
-export interface MsgAddFutureAmino {
+export interface MsgAddTaskAmino {
   creator?: string;
-  handler?: string;
+  plugin?: string;
   input?: string;
   callback?: string;
 }
-export interface MsgAddFutureAminoMsg {
-  type: "/warden.async.v1beta1.MsgAddFuture";
-  value: MsgAddFutureAmino;
+export interface MsgAddTaskAminoMsg {
+  type: "/warden.async.v1beta1.MsgAddTask";
+  value: MsgAddTaskAmino;
 }
-export interface MsgAddFutureSDKType {
+export interface MsgAddTaskSDKType {
   creator: string;
-  handler: string;
+  plugin: string;
   input: Uint8Array;
   callback: string;
 }
-export interface MsgAddFutureResponse {
+export interface MsgAddTaskResponse {
   id: bigint;
 }
-export interface MsgAddFutureResponseProtoMsg {
-  typeUrl: "/warden.async.v1beta1.MsgAddFutureResponse";
+export interface MsgAddTaskResponseProtoMsg {
+  typeUrl: "/warden.async.v1beta1.MsgAddTaskResponse";
   value: Uint8Array;
 }
-export interface MsgAddFutureResponseAmino {
+export interface MsgAddTaskResponseAmino {
   id?: string;
 }
-export interface MsgAddFutureResponseAminoMsg {
-  type: "/warden.async.v1beta1.MsgAddFutureResponse";
-  value: MsgAddFutureResponseAmino;
+export interface MsgAddTaskResponseAminoMsg {
+  type: "/warden.async.v1beta1.MsgAddTaskResponse";
+  value: MsgAddTaskResponseAmino;
 }
-export interface MsgAddFutureResponseSDKType {
+export interface MsgAddTaskResponseSDKType {
   id: bigint;
 }
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -246,22 +246,22 @@ export const MsgUpdateParamsResponse = {
     };
   }
 };
-function createBaseMsgAddFuture(): MsgAddFuture {
+function createBaseMsgAddTask(): MsgAddTask {
   return {
     creator: "",
-    handler: "",
+    plugin: "",
     input: new Uint8Array(),
     callback: ""
   };
 }
-export const MsgAddFuture = {
-  typeUrl: "/warden.async.v1beta1.MsgAddFuture",
-  encode(message: MsgAddFuture, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgAddTask = {
+  typeUrl: "/warden.async.v1beta1.MsgAddTask",
+  encode(message: MsgAddTask, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.handler !== "") {
-      writer.uint32(18).string(message.handler);
+    if (message.plugin !== "") {
+      writer.uint32(18).string(message.plugin);
     }
     if (message.input.length !== 0) {
       writer.uint32(26).bytes(message.input);
@@ -271,10 +271,10 @@ export const MsgAddFuture = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddFuture {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddTask {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgAddFuture();
+    const message = createBaseMsgAddTask();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -282,7 +282,7 @@ export const MsgAddFuture = {
           message.creator = reader.string();
           break;
         case 2:
-          message.handler = reader.string();
+          message.plugin = reader.string();
           break;
         case 3:
           message.input = reader.bytes();
@@ -297,37 +297,37 @@ export const MsgAddFuture = {
     }
     return message;
   },
-  fromJSON(object: any): MsgAddFuture {
+  fromJSON(object: any): MsgAddTask {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      handler: isSet(object.handler) ? String(object.handler) : "",
+      plugin: isSet(object.plugin) ? String(object.plugin) : "",
       input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array(),
       callback: isSet(object.callback) ? String(object.callback) : ""
     };
   },
-  toJSON(message: MsgAddFuture): JsonSafe<MsgAddFuture> {
+  toJSON(message: MsgAddTask): JsonSafe<MsgAddTask> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.handler !== undefined && (obj.handler = message.handler);
+    message.plugin !== undefined && (obj.plugin = message.plugin);
     message.input !== undefined && (obj.input = base64FromBytes(message.input !== undefined ? message.input : new Uint8Array()));
     message.callback !== undefined && (obj.callback = message.callback);
     return obj;
   },
-  fromPartial(object: Partial<MsgAddFuture>): MsgAddFuture {
-    const message = createBaseMsgAddFuture();
+  fromPartial(object: Partial<MsgAddTask>): MsgAddTask {
+    const message = createBaseMsgAddTask();
     message.creator = object.creator ?? "";
-    message.handler = object.handler ?? "";
+    message.plugin = object.plugin ?? "";
     message.input = object.input ?? new Uint8Array();
     message.callback = object.callback ?? "";
     return message;
   },
-  fromAmino(object: MsgAddFutureAmino): MsgAddFuture {
-    const message = createBaseMsgAddFuture();
+  fromAmino(object: MsgAddTaskAmino): MsgAddTask {
+    const message = createBaseMsgAddTask();
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
-    if (object.handler !== undefined && object.handler !== null) {
-      message.handler = object.handler;
+    if (object.plugin !== undefined && object.plugin !== null) {
+      message.plugin = object.plugin;
     }
     if (object.input !== undefined && object.input !== null) {
       message.input = bytesFromBase64(object.input);
@@ -337,47 +337,47 @@ export const MsgAddFuture = {
     }
     return message;
   },
-  toAmino(message: MsgAddFuture): MsgAddFutureAmino {
+  toAmino(message: MsgAddTask): MsgAddTaskAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.handler = message.handler === "" ? undefined : message.handler;
+    obj.plugin = message.plugin === "" ? undefined : message.plugin;
     obj.input = message.input ? base64FromBytes(message.input) : undefined;
     obj.callback = message.callback === "" ? undefined : message.callback;
     return obj;
   },
-  fromAminoMsg(object: MsgAddFutureAminoMsg): MsgAddFuture {
-    return MsgAddFuture.fromAmino(object.value);
+  fromAminoMsg(object: MsgAddTaskAminoMsg): MsgAddTask {
+    return MsgAddTask.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgAddFutureProtoMsg): MsgAddFuture {
-    return MsgAddFuture.decode(message.value);
+  fromProtoMsg(message: MsgAddTaskProtoMsg): MsgAddTask {
+    return MsgAddTask.decode(message.value);
   },
-  toProto(message: MsgAddFuture): Uint8Array {
-    return MsgAddFuture.encode(message).finish();
+  toProto(message: MsgAddTask): Uint8Array {
+    return MsgAddTask.encode(message).finish();
   },
-  toProtoMsg(message: MsgAddFuture): MsgAddFutureProtoMsg {
+  toProtoMsg(message: MsgAddTask): MsgAddTaskProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.MsgAddFuture",
-      value: MsgAddFuture.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.MsgAddTask",
+      value: MsgAddTask.encode(message).finish()
     };
   }
 };
-function createBaseMsgAddFutureResponse(): MsgAddFutureResponse {
+function createBaseMsgAddTaskResponse(): MsgAddTaskResponse {
   return {
     id: BigInt(0)
   };
 }
-export const MsgAddFutureResponse = {
-  typeUrl: "/warden.async.v1beta1.MsgAddFutureResponse",
-  encode(message: MsgAddFutureResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgAddTaskResponse = {
+  typeUrl: "/warden.async.v1beta1.MsgAddTaskResponse",
+  encode(message: MsgAddTaskResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddFutureResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddTaskResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgAddFutureResponse();
+    const message = createBaseMsgAddTaskResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -391,46 +391,46 @@ export const MsgAddFutureResponse = {
     }
     return message;
   },
-  fromJSON(object: any): MsgAddFutureResponse {
+  fromJSON(object: any): MsgAddTaskResponse {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: MsgAddFutureResponse): JsonSafe<MsgAddFutureResponse> {
+  toJSON(message: MsgAddTaskResponse): JsonSafe<MsgAddTaskResponse> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<MsgAddFutureResponse>): MsgAddFutureResponse {
-    const message = createBaseMsgAddFutureResponse();
+  fromPartial(object: Partial<MsgAddTaskResponse>): MsgAddTaskResponse {
+    const message = createBaseMsgAddTaskResponse();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: MsgAddFutureResponseAmino): MsgAddFutureResponse {
-    const message = createBaseMsgAddFutureResponse();
+  fromAmino(object: MsgAddTaskResponseAmino): MsgAddTaskResponse {
+    const message = createBaseMsgAddTaskResponse();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: MsgAddFutureResponse): MsgAddFutureResponseAmino {
+  toAmino(message: MsgAddTaskResponse): MsgAddTaskResponseAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? (message.id?.toString)() : undefined;
     return obj;
   },
-  fromAminoMsg(object: MsgAddFutureResponseAminoMsg): MsgAddFutureResponse {
-    return MsgAddFutureResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgAddTaskResponseAminoMsg): MsgAddTaskResponse {
+    return MsgAddTaskResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgAddFutureResponseProtoMsg): MsgAddFutureResponse {
-    return MsgAddFutureResponse.decode(message.value);
+  fromProtoMsg(message: MsgAddTaskResponseProtoMsg): MsgAddTaskResponse {
+    return MsgAddTaskResponse.decode(message.value);
   },
-  toProto(message: MsgAddFutureResponse): Uint8Array {
-    return MsgAddFutureResponse.encode(message).finish();
+  toProto(message: MsgAddTaskResponse): Uint8Array {
+    return MsgAddTaskResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgAddFutureResponse): MsgAddFutureResponseProtoMsg {
+  toProtoMsg(message: MsgAddTaskResponse): MsgAddTaskResponseProtoMsg {
     return {
-      typeUrl: "/warden.async.v1beta1.MsgAddFutureResponse",
-      value: MsgAddFutureResponse.encode(message).finish()
+      typeUrl: "/warden.async.v1beta1.MsgAddTaskResponse",
+      value: MsgAddTaskResponse.encode(message).finish()
     };
   }
 };

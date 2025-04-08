@@ -77,7 +77,7 @@ func NewWardenPrecompiles(
 
 	precompiles[newAsyncPrecompile.Address()] = newAsyncPrecompile
 
-	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateFuture", newAsyncPrecompile.GetCreateFutureEvent)
+	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateTask", newAsyncPrecompile.GetCreateTaskEvent)
 
 	newJsonPrecompile, err := jsonprecompile.NewPrecompile()
 	if err != nil {

@@ -1,72 +1,72 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.25 <0.9.0;
 
-import { 
-    Future, 
-    FutureByIdResponse, 
-    FutureResponse, 
-    FuturesResponse,
-    FutureResult, 
-    FutureVote, 
+import {
+    Task,
+    TaskByIdResponse,
+    TaskResponse,
+    TasksResponse,
+    TaskResult,
+    TaskVote,
     IAsync,
-    PendingFuturesResponse
+    PendingTasksResponse
 } from "precompile-async/IAsync.sol";
 import { Types } from "precompile-async/IAsync.sol";
 
 contract MockAsyncPrecompile is IAsync {
-    uint64 public futuresCount = 0;
-    mapping(uint64 id => FutureByIdResponse output) public _futures;
+    uint64 public tasksCount = 0;
+    mapping(uint64 id => TaskByIdResponse output) public _tasks;
     mapping(address orderAddress => address orderCreator) public orders;
 
-    function addFuture(
-        string calldata handler,
+    function addTask(
+        string calldata plugin,
         bytes calldata input,
         address
-    ) external returns (uint64 futureId)
+    ) external returns (uint64 taskId)
     {
-        futureId = uint64(++futuresCount);
-        Future memory future = Future({
-            id: futureId,
+        taskId = uint64(++tasksCount);
+        Task memory task = Task({
+            id: taskId,
             // solhint-disable-next-line
             creator: tx.origin,
-            handler: handler,
+            plugin: plugin,
             input: input
         });
 
-        FutureVote[] memory emptyVotes = new FutureVote[](0);
+        TaskVote[] memory emptyVotes = new TaskVote[](0);
         bytes memory emptySubmitter;
-        FutureResult memory futureResult = FutureResult({ 
-            id: futureId,
+        TaskResult memory taskResult = TaskResult({
+            id: taskId,
             output: input,
             submitter: emptySubmitter
         });
-        FutureResponse memory futureResponse = FutureResponse({
-            future: future,
+        TaskResponse memory taskResponse = TaskResponse({
+            task: task,
             votes: emptyVotes,
-            result: futureResult
+            result: taskResult
         });
-        _futures[futureId] = FutureByIdResponse({
-            futureResponse: futureResponse
+        _tasks[taskId] = TaskByIdResponse({
+            taskResponse: taskResponse
         });
     }
 
-    function futureById(
-        uint64 futureId
-    ) external view returns (FutureByIdResponse memory response) {
-        response = _futures[futureId];
+    function taskById(
+        uint64 taskId
+    ) external view returns (TaskByIdResponse memory response) {
+        response = _tasks[taskId];
     }
 
-    function futures(
+    function tasks(
         Types.PageRequest calldata,
         address
-    ) external pure returns (FuturesResponse memory) {
+    ) external pure returns (TasksResponse memory) {
         // solhint-disable-next-line
         revert("Unimplemented");
     }
 
-    function pendingFutures(
+    function pendingTasks(
         Types.PageRequest calldata
-    ) external pure returns (PendingFuturesResponse memory) {
+    ) external pure returns (PendingTasksResponse memory) {
         // solhint-disable-next-line
         revert("Unimplemented");
     }

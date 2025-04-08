@@ -25,6 +25,6 @@ const DefaultConfigTemplate = `
 # Is price prediction enabled
 enabled = "{{ .PricePred.Enabled }}"
 
-# URL used for price prediction handler
+# URL used for price prediction plugin
 url = "{{ .PricePred.URL }}"
 `

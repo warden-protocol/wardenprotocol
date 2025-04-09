@@ -46,7 +46,7 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    pragma solidity ^0.8.25;
 
    address constant IASYNC_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000903;   
-   IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS)
+   IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS);
    
    struct FutureResponse {
        uint64 id;

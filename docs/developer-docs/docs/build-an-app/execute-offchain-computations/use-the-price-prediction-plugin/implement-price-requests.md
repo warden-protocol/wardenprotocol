@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Implement price predictions
+# Implement price prediction requests
 
 ## Overview
 

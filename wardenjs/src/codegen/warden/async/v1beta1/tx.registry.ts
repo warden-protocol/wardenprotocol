@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgAddFuture } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.async.v1beta1.MsgUpdateParams", MsgUpdateParams], ["/warden.async.v1beta1.MsgAddFuture", MsgAddFuture]];
+import { MsgUpdateParams, MsgAddTask } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.async.v1beta1.MsgUpdateParams", MsgUpdateParams], ["/warden.async.v1beta1.MsgAddTask", MsgAddTask]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -15,10 +15,10 @@ export const MessageComposer = {
         value: MsgUpdateParams.encode(value).finish()
       };
     },
-    addFuture(value: MsgAddFuture) {
+    addTask(value: MsgAddTask) {
       return {
-        typeUrl: "/warden.async.v1beta1.MsgAddFuture",
-        value: MsgAddFuture.encode(value).finish()
+        typeUrl: "/warden.async.v1beta1.MsgAddTask",
+        value: MsgAddTask.encode(value).finish()
       };
     }
   },
@@ -29,9 +29,9 @@ export const MessageComposer = {
         value
       };
     },
-    addFuture(value: MsgAddFuture) {
+    addTask(value: MsgAddTask) {
       return {
-        typeUrl: "/warden.async.v1beta1.MsgAddFuture",
+        typeUrl: "/warden.async.v1beta1.MsgAddTask",
         value
       };
     }
@@ -43,10 +43,10 @@ export const MessageComposer = {
         value: MsgUpdateParams.toJSON(value)
       };
     },
-    addFuture(value: MsgAddFuture) {
+    addTask(value: MsgAddTask) {
       return {
-        typeUrl: "/warden.async.v1beta1.MsgAddFuture",
-        value: MsgAddFuture.toJSON(value)
+        typeUrl: "/warden.async.v1beta1.MsgAddTask",
+        value: MsgAddTask.toJSON(value)
       };
     }
   },
@@ -57,10 +57,10 @@ export const MessageComposer = {
         value: MsgUpdateParams.fromJSON(value)
       };
     },
-    addFuture(value: any) {
+    addTask(value: any) {
       return {
-        typeUrl: "/warden.async.v1beta1.MsgAddFuture",
-        value: MsgAddFuture.fromJSON(value)
+        typeUrl: "/warden.async.v1beta1.MsgAddTask",
+        value: MsgAddTask.fromJSON(value)
       };
     }
   },
@@ -71,10 +71,10 @@ export const MessageComposer = {
         value: MsgUpdateParams.fromPartial(value)
       };
     },
-    addFuture(value: MsgAddFuture) {
+    addTask(value: MsgAddTask) {
       return {
-        typeUrl: "/warden.async.v1beta1.MsgAddFuture",
-        value: MsgAddFuture.fromPartial(value)
+        typeUrl: "/warden.async.v1beta1.MsgAddTask",
+        value: MsgAddTask.fromPartial(value)
       };
     }
   }

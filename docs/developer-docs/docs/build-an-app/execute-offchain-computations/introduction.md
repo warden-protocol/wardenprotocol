@@ -26,6 +26,15 @@ Currently, we support two Plugins, which allow executing **price predictions** a
 - [Use the HTTP Plugin](use-the-http-plugin/introduction)
 - [Use the price prediction Plugin](use-the-price-prediction-plugin/introduction)
 
+## The request-callback pattern
+
+Requests to `x/async` follow a request-callback pattern:
+
+1. A smart contract makes a request and receives the pending Task ID.
+2. The Warden node processes the request offchain.
+3. When the response is ready, the contract's callback function is called.
+4. The contract processes the response data.
+
 ## Get started
 
 You can start with the HTTP Plugin: [Use the HTTP Plugin](use-the-http-plugin/introduction).

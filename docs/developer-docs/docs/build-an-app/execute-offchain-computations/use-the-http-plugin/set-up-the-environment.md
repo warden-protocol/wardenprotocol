@@ -19,7 +19,7 @@ Before you start, complete the following prerequisites:
 
 - Make sure the chain is running. You can start it by running `wardend start` in a separate terminal window.
 
-## Step 1. Create a Foundry project
+## 1. Create a Foundry project
 
 Create a new directory and initialize a new Foundry project:
 
@@ -29,7 +29,7 @@ cd warden-http-examples
 forge init
 ```
 
-## Step 2. Create interface files
+## 2. Create interfaces
 
 Create interfaces for interacting with the [`x/async` precompile](../../precompiles/x-async):
 
@@ -39,11 +39,14 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    mkdir -p src/interfaces
    ```
 
-2. In the new directory, create a file `sIAsync.sol`:
+2. In the new directory, create a file `IAsync.sol`:
 
    ```solidity title="warden-http-examples/src/interfaces/IAsync.sol"
    // SPDX-License-Identifier: UNLICENSED
    pragma solidity ^0.8.25;
+
+   address constant IASYNC_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000903;   
+   IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS)
    
    struct FutureResponse {
        uint64 id;
@@ -63,8 +66,6 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
        function addFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64);
        function futureById(uint64 id) external view returns (FutureByIdResponse memory);
    }
-   
-   IAsync constant IASYNC_CONTRACT = IAsync(0x0000000000000000000000000000000000000903);
    ```
 
    :::tip
@@ -91,7 +92,7 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    }
    ```
 
-## Step 3. Configure Foundry
+## 3. Configure Foundry
 
 Update your `foundry.toml` file to use the Paris EVM version, which is required for Warden:
 
@@ -103,11 +104,11 @@ libs = ["lib"]
 evm_version = "paris"
 ```
 
-## Step 4. Set environment variables
+## 4. Set environment variables
 
 Set your [private key](../../set-up-a-warden-account#get-the-private-key) and the RPC URL as environmental variables:
 
-```
+```bash
 export PRIVATE_KEY=your-private-key
 export RPC_URL=http://localhost:8545
 ```
@@ -116,4 +117,4 @@ Now you're ready to start creating smart contracts that make HTTP requests!
 
 ## Next steps
 
-Implement and test simple HTTP requests to different APIs: [Implement HTTP requests](implement-http-requests). 
+To implement simple HTTP requests to different APIs, follow this guide: [Implement HTTP requests](implement-http-requests). 

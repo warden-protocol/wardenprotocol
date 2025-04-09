@@ -4,21 +4,23 @@ sidebar_position: 1
 
 # Introduction
 
-xxx
+## The `pricepred` Plugin
 
-## What You'll Learn
+You can request decentralized **price predictions** for different cryptocurrencies from your smart contract, receive responses asynchronously, and process the data within the contract.
 
-1. Deploying a price prediction smart contract
-2. Creating prediction futures on Warden Chain
-3. Processing async prediction results
+To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and use the `pricepred` [Plugin](/learn/warden-protocol-modules/x-async#plugin).
 
-## Potential Use Cases
+Tutorials in this section explain how to implement different price prediction requests and process their results.
 
-- DeFi protocols needing future price estimates
+## Use cases
+
+Potential use cases for the `pricepred` Plugin include the following:
+
+- DeFi protocols requiring future price estimates
 - Risk management systems
 - Trading strategy backtesting
 - DAO governance forecasting
 
 ## Get started
 
-To get started, [Set up your environment](set-up-the-environment).
+To get started, [set up your environment](set-up-the-environment).

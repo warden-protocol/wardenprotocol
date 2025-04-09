@@ -2,16 +2,16 @@
 sidebar_position: 3
 ---
 
-# Implement Price Prediction requests
+# Implement price predictions
 
 ## Overview
 
-The **Price Prediction Smart Contract** enables decentralized price forecasts for cryptocurrencies using Warden's `x/async` module. Key features:
+This tutorial explains how to implement different **price predictions**. You'll also learn how to request **metrics** providing metadata about predictions and their accuracy.
 
-- Prediction Types: Bitcoin, Ethereum, Uniswap
-- Metrics: Confidence scores, prediction counts
+- Price predictions: **Bitcoin**, **Ethereum**, **Uniswap**
+- Metrics: **confidence scores**, **prediction counts**
 
-## Step 1. Create a contract
+## 1. Create a contract
 
 Create a new file called `PricePrediction.sol`:
 
@@ -68,10 +68,10 @@ struct PricePredictOutput {
 }
 
 contract PricePredExample {
-    // ID of the last future created by run().
+    // The ID of the last Task created by run()
     uint64 public lastFutureId;
 
-    // Prices of the last future received.
+    // Prices returned for the last Task
     uint256 public bitcoinPrice;
     uint256 public bitcoinMetricCount;
     uint256 public bitcoinMetricConfidence;
@@ -104,7 +104,7 @@ contract PricePredExample {
         
         lastFutureId = IASYNC_CONTRACT.addFuture("pricepred", abi.encode(input), address(0));
 
-        // reset predictions while the future is running
+        // Reset predictions while the Task is running
         bitcoinPrice = 0;
         tetherPrice = 0;
         uniswapPrice = 0;
@@ -133,7 +133,7 @@ contract PricePredExample {
         uniswapMetricConfidence = pricePredictOutput.metrics[2][1];
     }
     
-    // Helper function to check if the future is ready
+    // A helper function to check if the price prediction is ready
     function isFutureReady() external view returns (bool) {
         FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
         return future.futureResponse.result.id != 0;
@@ -141,74 +141,80 @@ contract PricePredExample {
 }
 ```
 
-## Step 2. Deploy and test
+## 2. Deploy
 
-### 2.1. Deploy
+1. Deploy the contract:
+   
+   ```bash
+   forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/PricePrediction.sol:PricePredExample --broadcast
+   ```
 
-1.Deploy the contract:
+2. Note down the value returned as `Deployed to` and set it as an environment variable:
+   
+   ```bash
+   export CONTRACT_ADDRESS=my-contract-address
+   ```
 
-```bash
-forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY src/PricePrediction.sol:PricePredExample --broadcast
-```
+## 3. Request a price prediction
 
-2.Note down the value returned as `Deployed to` and set it as an environment variable:
+1. Request a price prediction by calling the `run()` function:
+   
+   ```bash
+   cast send $CONTRACT_ADDR "run()" --rpc-url $RPC_URL  --private-key $PRIVATE_KEY
+   ```
+  
+2. Wait for a few minutes and use the `cb()` function to process the result:
+   
+   ```bash
+   cast send $CONTRACT_ADDR "cb()" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+   ```
+   
+   If you call `cb()` too early, you may encounter an error indicating the price prediction isn't ready:
+   
+   ```bash
+   Error: server returned an error response: error code 3: execution reverted: Not ready yet, data: "0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000d4e6f742072656164792079657400000000000000000000000000000000000000"
+   ```
 
-```bash
-export CONTRACT_ADDRESS=my-contract-address
-```
+3. To request the Bitcoin price, call `bitcoinPrice()`:
+   
+   ```bash
+   cast call $PRICE_PRED "bitcoinPrice()" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+   ```
+   
+   You'll see an output similar to the following:
+   
+   ```bash
+   0x00000000000000000000000000000000000000000000002c64ddb6835ca60000
+   ```
+   
+4. If needed, convert the fetched price to decimal:
+   
+   ```bash
+   cast --to-dec 0x00000000000000000000000000000000000000000000002c64ddb6835ca60000
+   ```
 
-### 2.2. Create Price Prediction
+   You'll receive an output similar to this:
 
-1.Request Prediction:
-
-```bash
-cast send $CONTRACT_ADDR "run()" --rpc-url $RPC_URL  --private-key $PRIVATE_KEY
-```
-
-2.Process Result:
-
-```bash
-cast send $CONTRACT_ADDR "cb()" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
-```
-
-You might see an error indicating the future is not ready.
-
-```bash
-Error: server returned an error response: error code 3: execution reverted: Not ready yet, data: "0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000d4e6f742072656164792079657400000000000000000000000000000000000000"
-```
-
-:::tip
-After creating the future, wait for couple of minutes for `future` to be ready.
-:::
-
-After a few minutes, you will see the tx executed successfully.
-
-3.Request Price of Bitcoin:
-
-```bash
-cast call $PRICE_PRED "bitcoinPrice()" --rpc-url $RPC_URL --private-key $PRIVATE_KEY
-```
-
-You will see an output similar to:
-
-```bash
-0x00000000000000000000000000000000000000000000002c64ddb6835ca60000
-```
-
-:::tip
-You can covert the value to decimal using `cast --to-dec`.
-
-```bash
-cast --to-dec 0x00000000000000000000000000000000000000000000002c64ddb6835ca60000
-818924905292177473536
-```
-
-:::
+   ```bash
+   818924905292177473536
+   ```
 
 ## Next steps
 
-You can similarly request price prediction for other cryptocurrencies.
+You can similarly request price prediction for other cryptocurrencies, using the following functions from the contract:
 
-If you encounter any issues, please reach out to us in Discord or Twitter.
+- `tetherPrice()`
+- `uniswapPrice()`
+
+To request metrics, call these functions:
+
+- `bitcoinMetricCount()`
+- `bitcoinMetricConfidence()`
+- `tetherMetricCount()`
+- `tetherMetricConfidence()`
+- `uniswapMetricCount()`
+- `uniswapMetricConfidence()`
+
+If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 
 Happy coding! 🚀

@@ -4,25 +4,17 @@ sidebar_position: 1
 
 # Introduction
 
-## The HTTP Plugin
+## The `http` Plugin
 
-The [`x/async` precompile](../../precompiles/x-async) allows you to make **HTTP requests** from your smart contract by using the **HTTP** [Plugin](/learn/warden-protocol-modules/x-async#plugin). You can make requests to any external API, receive responses asynchronously, and process the data within the smart contract.
+You can make **HTTP requests** to any external API from your smart contract, receive responses asynchronously, and process the data within the contract.
+
+To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and use the `http` [Plugin](/learn/warden-protocol-modules/x-async#plugin).
 
 Follow tutorials in this section to learn how to do the following:
 
 - Implement HTTP requests and process asynchronous responses
 - Extract data from CBOR-encoded responses
 - Make multiple requests to an API
-
-## The request-callback pattern
-
-HTTP requests in Warden follow a request-callback pattern:
-
-1. A smart contract makes a request and receives a Task ID.  
-   (The [Task](/learn/warden-protocol-modules/x-async#task) represents a pending asynchronous operation.)
-2. The Warden node processes the request offchain.
-3. When the response is ready, the contract's callback function is called.
-4. The contract processes the response data.
 
 ## CBOR encoding
 
@@ -32,4 +24,4 @@ Extracting data from such response requires special handling in your contract, a
 
 ## Get started
 
-To get started, [Set up your environment](set-up-the-environment).
+To get started, [set up your environment](set-up-the-environment).

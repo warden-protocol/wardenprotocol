@@ -20,6 +20,8 @@ type (
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
 		authority string
+
+		callbacks *CallbackKeeper
 	}
 )
 
@@ -30,21 +32,25 @@ var (
 )
 
 func NewKeeper(
-	cdc codec.BinaryCodec,
+	cdc codec.Codec,
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
-
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
 	}
+
+	sb := collections.NewSchemaBuilder(storeService)
+
+	callbacks := NewCallbackKeeper(sb, cdc)
 
 	return Keeper{
 		cdc:          cdc,
 		storeService: storeService,
 		authority:    authority,
 		logger:       logger,
+		callbacks:    callbacks,
 	}
 }
 

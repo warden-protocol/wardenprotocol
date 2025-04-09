@@ -6,6 +6,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "warden/sched/v1beta1/params.proto";
+import "warden/sched/v1beta1/callback.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1";
 
@@ -14,6 +15,16 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/warden-protocol/wardenprotocol/sched/params";
+  }
+
+  // Queries a list of Callbacks.
+  rpc Callbacks(QueryCallbacksRequest) returns (QueryCallbacksResponse) {
+    option (google.api.http).get = "/warden/sched/callbacks";
+  }
+
+  // Queries a Callback by its id.
+  rpc CallbackById(QueryCallbackByIdRequest) returns (QueryCallbackByIdResponse) {
+    option (google.api.http).get = "/warden/sched/callback/{id}";
   }
 }
 
@@ -27,4 +38,26 @@ message QueryParamsResponse {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
+}
+
+message QueryCallbacksRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message CallbackResponse {
+  Callback callback = 1 [(gogoproto.nullable) = false];
+  CallbackResult result = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryCallbacksResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated CallbackResponse callbacks = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryCallbackByIdRequest {
+  uint64 id = 1;
+}
+
+message QueryCallbackByIdResponse {
+  CallbackResponse callbackResponse = 1 [(gogoproto.nullable) = false];
 }

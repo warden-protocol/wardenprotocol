@@ -19,7 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_Params_FullMethodName = "/warden.sched.v1beta1.Query/Params"
+	Query_Params_FullMethodName       = "/warden.sched.v1beta1.Query/Params"
+	Query_Callbacks_FullMethodName    = "/warden.sched.v1beta1.Query/Callbacks"
+	Query_CallbackById_FullMethodName = "/warden.sched.v1beta1.Query/CallbackById"
 )
 
 // QueryClient is the client API for Query service.
@@ -30,6 +32,10 @@ const (
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// Queries a list of Callbacks.
+	Callbacks(ctx context.Context, in *QueryCallbacksRequest, opts ...grpc.CallOption) (*QueryCallbacksResponse, error)
+	// Queries a Callback by its id.
+	CallbackById(ctx context.Context, in *QueryCallbackByIdRequest, opts ...grpc.CallOption) (*QueryCallbackByIdResponse, error)
 }
 
 type queryClient struct {
@@ -50,6 +56,26 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) Callbacks(ctx context.Context, in *QueryCallbacksRequest, opts ...grpc.CallOption) (*QueryCallbacksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryCallbacksResponse)
+	err := c.cc.Invoke(ctx, Query_Callbacks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CallbackById(ctx context.Context, in *QueryCallbackByIdRequest, opts ...grpc.CallOption) (*QueryCallbackByIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryCallbackByIdResponse)
+	err := c.cc.Invoke(ctx, Query_CallbackById_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility.
@@ -58,6 +84,10 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// Queries a list of Callbacks.
+	Callbacks(context.Context, *QueryCallbacksRequest) (*QueryCallbacksResponse, error)
+	// Queries a Callback by its id.
+	CallbackById(context.Context, *QueryCallbackByIdRequest) (*QueryCallbackByIdResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -70,6 +100,12 @@ type UnimplementedQueryServer struct{}
 
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (UnimplementedQueryServer) Callbacks(context.Context, *QueryCallbacksRequest) (*QueryCallbacksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Callbacks not implemented")
+}
+func (UnimplementedQueryServer) CallbackById(context.Context, *QueryCallbackByIdRequest) (*QueryCallbackByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CallbackById not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 func (UnimplementedQueryServer) testEmbeddedByValue()               {}
@@ -110,6 +146,42 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Callbacks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryCallbacksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Callbacks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_Callbacks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Callbacks(ctx, req.(*QueryCallbacksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CallbackById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryCallbackByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CallbackById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_CallbackById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CallbackById(ctx, req.(*QueryCallbackByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -120,6 +192,14 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "Callbacks",
+			Handler:    _Query_Callbacks_Handler,
+		},
+		{
+			MethodName: "CallbackById",
+			Handler:    _Query_CallbackById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

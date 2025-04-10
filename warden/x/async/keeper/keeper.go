@@ -378,6 +378,10 @@ func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
 	return k.plugins.Set(ctx, id, p)
 }
 
+func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {
+	return k.plugins.Get(ctx, id)
+}
+
 // RegisterPluginValidator registers a validator as a plugin provider.
 func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.ConsAddress, id string) error {
 	found, err := k.plugins.Has(ctx, id)
@@ -388,6 +392,12 @@ func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.Cons
 		return fmt.Errorf("plugin doesn't exist: %s", id)
 	}
 	return k.pluginsByValidator.Set(ctx, collections.Join(validator, id))
+}
+
+// HasPluginValidators returns whether there are some validators registered to the request plugin.
+func (k *Keeper) HasPluginValidators(ctx context.Context, id string) bool {
+	// TODO: will be implemented when we'll keep track of validators priorities.
+	return true
 }
 
 // ClearPlugins removes all handlers registered for a validator.

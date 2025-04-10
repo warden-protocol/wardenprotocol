@@ -15,6 +15,14 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "cannot be empty")
 	}
 
+	if _, err := k.GetPlugin(ctx, msg.Plugin); err != nil {
+		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "doesn't exist")
+	}
+
+	if !k.HasPluginValidators(ctx, msg.Plugin) {
+		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "plugin doesn't have any registered validators providers")
+	}
+
 	if len(msg.Input) == 0 {
 		return nil, errorsmod.Wrapf(types.ErrInvalidTaskInput, "cannot be empty")
 	}

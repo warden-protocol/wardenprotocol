@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features (non-breaking)
 
 * (x/async) Rename futures into tasks, and future handlers into plugins
+* (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
 
 ### Consensus Breaking Changes
 

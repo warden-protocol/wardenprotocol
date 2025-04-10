@@ -15,6 +15,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		panic(err)
 	}
 
+	err = k.AddProphetPlugins(ctx)
+	if err != nil {
+		panic(err)
+	}
+
 	err = k.ImportState(ctx, genState)
 	if err != nil {
 		panic(err)

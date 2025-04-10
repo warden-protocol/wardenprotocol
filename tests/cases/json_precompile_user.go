@@ -1,6 +1,8 @@
 package cases
 
 import (
+	"fmt"
+	"math/big"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -31,8 +33,12 @@ func (c *Test_JsonPrecompileUser) Run(t *testing.T, build framework.BuildResult)
 
 	evmClient := c.w.EthClient(t)
 
-	_, _, instance, err := json_user.DeployJsonUser(alice.TransactOps(t, evmClient), evmClient)
+	balanceBefore, _ := evmClient.BalanceAt(t.Context(), alice.EthAddress(t), nil)
+	_, deployTx, instance, err := json_user.DeployJsonUser(alice.TransactOps(t, evmClient), evmClient)
 	require.NoError(t, err)
+
+	deployReceipt, err := bind.WaitMined(t.Context(), evmClient, deployTx)
+	fmt.Printf("deploy gas used %v\n", deployReceipt.GasUsed) // 5000000000
 
 	createdJsonTx, err := instance.DoSomeJsonActions(
 		alice.TransactOps(t, evmClient),
@@ -42,9 +48,12 @@ func (c *Test_JsonPrecompileUser) Run(t *testing.T, build framework.BuildResult)
 	receipt, err := bind.WaitMined(t.Context(), evmClient, createdJsonTx)
 	require.NoError(t, err)
 	require.Equal(t, receipt.Status, uint64(1))
+	balanceAfter, _ := evmClient.BalanceAt(t.Context(), alice.EthAddress(t), nil)
+	fmt.Printf("gas used %v\ngas fee %v\n", receipt.GasUsed, new(big.Int).Sub(balanceBefore, balanceAfter)) // 5000000000, 5.770225530000000000
+	//             3.032946190000000000
 
 	okEvents, err := checks.GetParsedEventsOnly(receipt, instance.ParseOk)
 	require.NoError(t, err)
 	require.Len(t, okEvents, 1)
-	require.Equal(t, okEvents[0].Arg0, int8(1))
+	require.Equal(t, new(big.Int).SetUint64(70), okEvents[0].Arg0)
 }

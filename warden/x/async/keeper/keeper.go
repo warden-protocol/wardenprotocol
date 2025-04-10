@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 
@@ -38,6 +39,7 @@ type (
 		asyncModuleAddress sdk.Address
 
 		tasks              *TaskKeeper
+		plugins            collections.Map[string, types.Plugin]
 		pluginsByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
 		getEvmKeeper       func(_placeHolder int16) *evmkeeper.Keeper
 		accountKeeper      types.AccountKeeper
@@ -55,6 +57,7 @@ var (
 	VotesPrefix         = collections.NewPrefix(4)
 	PendingTasksPrefix  = collections.NewPrefix(5)
 	PluginsByValidator  = collections.NewPrefix(6)
+	PluginsPrefix       = collections.NewPrefix(7)
 )
 
 func NewKeeper(
@@ -83,6 +86,7 @@ func NewKeeper(
 		collections.Int32Value,
 	)
 
+	plugins := collections.NewMap(sb, PluginsPrefix, "plugins", collections.StringKey, codec.CollValue[types.Plugin](cdc))
 	pluginsByValidator := collections.NewKeySet(sb, PluginsByValidator, "handlers_by_validator", collections.PairKeyCodec(sdk.ConsAddressKey, collections.StringKey))
 
 	_, err := sb.Build()
@@ -98,6 +102,7 @@ func NewKeeper(
 		logger:             logger,
 
 		tasks:              tasks,
+		plugins:            plugins,
 		pluginsByValidator: pluginsByValidator,
 		getEvmKeeper:       getEvmKeeper,
 		accountKeeper:      accountKeeper,
@@ -342,13 +347,38 @@ func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAd
 	return tasks, nil
 }
 
-// RegisterPlugin register validator as a handler provider.
-func (k *Keeper) RegisterPlugin(ctx context.Context, validator sdk.ConsAddress, handlerName string) error {
-	return k.pluginsByValidator.Set(ctx, collections.Join(validator, handlerName))
+func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
+	id := p.GetId()
+
+	if id == "" {
+		return errors.New("plugin ID cannot be empty")
+	}
+
+	found, err := k.plugins.Has(ctx, id)
+	if err != nil {
+		return err
+	}
+	if found {
+		return fmt.Errorf("duplicate plugin: %s", p.GetId())
+	}
+
+	return k.plugins.Set(ctx, id, p)
+}
+
+// RegisterPluginValidator registers a validator as a plugin provider.
+func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.ConsAddress, id string) error {
+	found, err := k.plugins.Has(ctx, id)
+	if err != nil {
+		return err
+	}
+	if !found {
+		return fmt.Errorf("plugin doesn't exist: %s", id)
+	}
+	return k.pluginsByValidator.Set(ctx, collections.Join(validator, id))
 }
 
 // ClearPlugins removes all handlers registered for a validator.
 func (k *Keeper) ClearPlugins(ctx context.Context, validator sdk.ConsAddress) error {
-	r := collections.Range[collections.Pair[sdk.ConsAddress, string]]{}
-	return k.pluginsByValidator.Clear(ctx, r.Prefix(collections.PairPrefix[sdk.ConsAddress, string](sdk.ConsAddress(validator))))
+	r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](validator)
+	return k.pluginsByValidator.Clear(ctx, r)
 }

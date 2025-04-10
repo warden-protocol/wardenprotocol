@@ -282,7 +282,7 @@ func (k Keeper) processVE(ctx sdk.Context, fromAddr []byte, ve types.AsyncVoteEx
 		}
 
 		for _, h := range ve.Plugins {
-			if err := k.RegisterPlugin(ctx, fromAddr, h); err != nil {
+			if err := k.RegisterPluginValidator(ctx, fromAddr, h); err != nil {
 				return fmt.Errorf("register validator: %w", err)
 			}
 		}

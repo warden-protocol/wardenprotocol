@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (precompiles) The JSON precompile allowing to operate on JSON
+
 ### Bug Fixes
 
 * (go-client) Fix additional goroutine being created for every signed transaction

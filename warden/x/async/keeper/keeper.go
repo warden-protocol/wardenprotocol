@@ -13,6 +13,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -36,6 +37,8 @@ type (
 		// should be the x/gov module account.
 		authority          string
 		asyncModuleAddress sdk.Address
+
+		stakingKeeper *stakingkeeper.Keeper
 
 		tasks              *TaskKeeper
 		plugins            collections.Map[string, types.Plugin]
@@ -68,6 +71,7 @@ func NewKeeper(
 	getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper,
 	asyncModuleAddress sdk.Address,
 	accountKeeper types.AccountKeeper,
+	stakingKeeper *stakingkeeper.Keeper,
 	// selfValAddr sdk.ConsAddress,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {

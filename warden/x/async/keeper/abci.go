@@ -24,7 +24,27 @@ func (k Keeper) BeginBlocker(ctx context.Context) error {
 // Prophet even if it's already in the Prophet's queue or it's being processed.
 // This is not a problem as Prophet filters out incoming duplicate tasks.
 func (k Keeper) EndBlocker(ctx context.Context) error {
-	tasks, err := k.tasks.PendingTasks(ctx, 10)
+	// update vals powers
+	totalPower, err := k.stakingKeeper.GetLastTotalPower(ctx)
+	if err != nil {
+		return err
+	}
+
+	valset := k.stakingKeeper.GetValidatorSet()
+	if err := valset.IterateValidators(ctx, func(index int64, validator types.ValidatorI) (stop bool) {
+
+		return false
+	}); err != nil {
+		return err
+	}
+
+	// schedule new tasks
+	selfAddress := k.p.SelfAddress()
+	if len(selfAddress) == 0 {
+		return nil
+	}
+
+	tasks, err := k.tasks.PendingTasksForValidator(ctx, selfAddress, 10)
 	if err != nil {
 		return err
 	}
@@ -37,12 +57,7 @@ func (k Keeper) EndBlocker(ctx context.Context) error {
 		})
 	}
 
-	selfAddress := k.p.SelfAddress()
-
-	if len(selfAddress) == 0 {
-		return nil
-	}
-
+	// schedule new task verifications
 	taskWithResults, err := k.getCompletedTasksWithoutValidatorVote(ctx, selfAddress, 10)
 	if err != nil {
 		return err

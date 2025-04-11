@@ -32,3 +32,9 @@ message Plugin {
   // Human-readable description of what this plugin can do.
   string description = 3;
 }
+
+// PluginValidator contains information about a validator (identified by its
+// cons address) running a specific plugin.
+message PluginValidator {
+  string address = 1;
+}

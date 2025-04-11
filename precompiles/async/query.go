@@ -14,10 +14,57 @@ import (
 )
 
 const (
+	PluginsMethod      = "plugins"
 	TaskByIdMethod     = "taskById"
 	TasksMethod        = "tasks"
 	PendingTasksMethod = "pendingTasks"
 )
+
+func (p Precompile) PluginsMethod(
+	ctx sdk.Context,
+	method *abi.Method,
+	args []any,
+) ([]byte, error) {
+	req, err := newPluginsRequest(method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := p.queryServer.Plugins(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if response == nil {
+		return nil, errors.New("received nil response from query server")
+	}
+
+	out, err := new(PluginsResponse).FromResponse(response)
+	if err != nil {
+		return nil, err
+	}
+
+	return method.Outputs.Pack(out)
+}
+
+func newPluginsRequest(method *abi.Method, args []any) (*types.QueryPluginsRequest, error) {
+	if len(args) != 1 {
+		return nil, wardencommon.WrongArgsNumber{Expected: 1, Got: len(args)}
+	}
+
+	var input pluginsInput
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, fmt.Errorf("error while unpacking args: %w", err)
+	}
+
+	return &types.QueryPluginsRequest{
+		Pagination: &input.PageRequest,
+	}, nil
+}
+
+type pluginsInput struct {
+	PageRequest query.PageRequest `abi:"pagination"`
+}
 
 // TaskByIdMethod constructs QueryTaskByIdRequest from args, passes it to query server and packs response into corresponding abi output.
 func (p Precompile) TaskByIdMethod(

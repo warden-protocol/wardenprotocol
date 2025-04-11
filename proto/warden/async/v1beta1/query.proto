@@ -21,6 +21,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
 import "warden/async/v1beta1/params.proto";
+import "warden/async/v1beta1/plugin.proto";
 import "warden/async/v1beta1/task.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
@@ -45,6 +46,10 @@ service Query {
   // Queries Tasks that do not have a result yet.
   rpc PendingTasks(QueryPendingTasksRequest) returns (QueryPendingTasksResponse) {
     option (google.api.http).get = "/warden/async/pending_tasks";
+  }
+
+  rpc Plugins(QueryPluginsRequest) returns (QueryPluginsResponse) {
+    option (google.api.http).get = "/warden/async/plugins";
   }
 
   // Queries Plugins by validator.
@@ -97,6 +102,15 @@ message QueryPendingTasksRequest {
 message QueryPendingTasksResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Task tasks = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryPluginsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryPluginsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Plugin plugins = 2 [(gogoproto.nullable) = false];
 }
 
 message QueryPluginsByValidatorRequest {

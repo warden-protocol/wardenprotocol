@@ -9,6 +9,17 @@ address constant IASYNC_PRECOMPILE_ADDRESS = 0x000000000000000000000000000000000
 /// @dev The IAsync contract's instance.
 IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS);
 
+struct Plugin {
+    string id;
+    address creator;
+    string description;
+}
+
+struct PluginsResponse {
+    Types.PageResponse pagination;
+    Plugin[] plugins;
+}
+
 struct Task {
     uint64 id;
     address creator;
@@ -94,6 +105,13 @@ interface IAsync {
     function pendingTasks(
         Types.PageRequest calldata pagination
     ) external view returns (PendingTasksResponse memory response);
+
+    /// @dev Defines a method to query available plugins.
+    /// @param pagination The pagination details
+    /// @return response The paged plugins
+    function plugins(
+        Types.PageRequest calldata pagination
+    ) external view returns (PluginsResponse memory response);
 
     /// @dev CreateTask defines an Event emitted when a task is created.
     /// @param creator The address of the creator

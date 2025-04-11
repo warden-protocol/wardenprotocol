@@ -206,4 +206,4 @@ Now you're ready to start creating smart contracts that utilize price prediction
 
 ## Next steps
 
-To implement price predictions, follow this guide: [Implement price predictions](implement-price-requests).
+To implement price predictions, follow this guide: [Implement price predictions](implement-price-prediction-requests).

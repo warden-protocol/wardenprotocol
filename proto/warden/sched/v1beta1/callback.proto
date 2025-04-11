@@ -18,7 +18,7 @@ message Callback {
   // Callback address.
   string address = 2;
   // The limit of gas for callback execution.
-  string gasLimit = 3;
+  uint64 gasLimit = 3;
   // The token that will be used to pay for callback execution.
   cosmos.base.v1beta1.Coin feeToken = 4 [
    (gogoproto.nullable) = false,

@@ -121,27 +121,60 @@ func (k Keeper) ExecuteCallback(
 		return err
 	}
 
-	res, err := k.callEVMWithData( //nolint:contextcheck
-		sdkCtx,
-		common.BytesToAddress(k.schedModuleAddress.Bytes()),
-		&cbAddress,
-		data,
-	)
+	moduleAddress := common.BytesToAddress(k.schedModuleAddress.Bytes())
+	gas, err := k.estimateGas(ctx, moduleAddress, &cbAddress, data)
 
+	if gas > cb.GasLimit {
+		// todo: write out of gas (estimate > max) to result
+		return nil
+	}
+
+	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
+	res, err := k.callEVM(sdkCtx, moduleAddress, &cbAddress, data, gas+sdkCtx.GasMeter().GasConsumed())
+	// take fee from cb address (after or before execution? check if contract changes saves if execute callback failed)
 	if res.Failed() {
 		// Do not throw error if contract fails
 		return nil
 	}
 
-	// TODO: write callback result
+	// TODO: write callback result (error or output)
 	return err
 }
 
-func (k Keeper) callEVMWithData(
+func (k Keeper) estimateGas(
+	ctx context.Context,
+	from common.Address,
+	contract *common.Address,
+	data []byte,
+) (uint64, error) {
+	evmKeeper := k.getEvmKeeper(0)
+
+	args, err := json.Marshal(evmostypes.TransactionArgs{
+		From: &from,
+		To:   contract,
+		Data: (*hexutil.Bytes)(&data),
+	})
+	if err != nil {
+		return 0, errorsmod.Wrapf(errortypes.ErrJSONMarshal, "failed to marshal tx args: %s", err.Error())
+	}
+
+	gasRes, err := evmKeeper.EstimateGasInternal(ctx, &evmostypes.EthCallRequest{
+		Args:   args,
+		GasCap: evmosconf.DefaultGasCap,
+	}, evmostypes.Internal)
+	if err != nil {
+		return 0, err
+	}
+
+	return gasRes.Gas, nil
+}
+
+func (k Keeper) callEVM(
 	ctx sdk.Context,
 	from common.Address,
 	contract *common.Address,
 	data []byte,
+	gasLimit uint64,
 ) (*evmostypes.MsgEthereumTxResponse, error) {
 	fromAcc := k.accountKeeper.GetAccount(ctx, from.Bytes())
 	if fromAcc == nil {
@@ -151,36 +184,12 @@ func (k Keeper) callEVMWithData(
 
 	nonce := fromAcc.GetSequence()
 
-	evmKeeper := k.getEvmKeeper(0)
-
-	args, err := json.Marshal(evmostypes.TransactionArgs{
-		From: &from,
-		To:   contract,
-		Data: (*hexutil.Bytes)(&data),
-	})
-	if err != nil {
-		return nil, errorsmod.Wrapf(errortypes.ErrJSONMarshal, "failed to marshal tx args: %s", err.Error())
-	}
-
-	gasRes, err := evmKeeper.EstimateGasInternal(ctx, &evmostypes.EthCallRequest{
-		Args:   args,
-		GasCap: evmosconf.DefaultGasCap,
-	}, evmostypes.Internal)
-	if err != nil {
-		return nil, err
-	}
-
-	// 1. Gas estimation also consumes gas.
-	// 2. Precompile creates new gas meter limited to contract gas cap. This new gas meter should consume gas from prev gas meter.
-	// 3. TODO: configurable gas limit on module level.
-	gasCap := gasRes.Gas + ctx.GasMeter().GasConsumed()
-
 	msg := ethtypes.NewMessage(
 		from,
 		contract,
 		nonce,
 		big.NewInt(0), // amount
-		gasCap,        // gasLimit
+		gasLimit,      // gasLimit
 		big.NewInt(0), // gasFeeCap
 		big.NewInt(0), // gasTipCap
 		big.NewInt(0), // gasPrice
@@ -189,6 +198,7 @@ func (k Keeper) callEVMWithData(
 		false,                 // isFake
 	)
 
+	evmKeeper := k.getEvmKeeper(0)
 	res, err := evmKeeper.ApplyMessage(ctx, msg, evmostypes.NewNoOpTracer(), true)
 	if err != nil {
 		return nil, err

@@ -108,8 +108,8 @@ func (x *fastReflection_Callback) Range(f func(protoreflect.FieldDescriptor, pro
 			return
 		}
 	}
-	if x.GasLimit != "" {
-		value := protoreflect.ValueOfString(x.GasLimit)
+	if x.GasLimit != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.GasLimit)
 		if !f(fd_Callback_gasLimit, value) {
 			return
 		}
@@ -140,7 +140,7 @@ func (x *fastReflection_Callback) Has(fd protoreflect.FieldDescriptor) bool {
 	case "warden.sched.v1beta1.Callback.address":
 		return x.Address != ""
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		return x.GasLimit != ""
+		return x.GasLimit != uint64(0)
 	case "warden.sched.v1beta1.Callback.feeToken":
 		return x.FeeToken != nil
 	default:
@@ -164,7 +164,7 @@ func (x *fastReflection_Callback) Clear(fd protoreflect.FieldDescriptor) {
 	case "warden.sched.v1beta1.Callback.address":
 		x.Address = ""
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		x.GasLimit = ""
+		x.GasLimit = uint64(0)
 	case "warden.sched.v1beta1.Callback.feeToken":
 		x.FeeToken = nil
 	default:
@@ -191,7 +191,7 @@ func (x *fastReflection_Callback) Get(descriptor protoreflect.FieldDescriptor) p
 		return protoreflect.ValueOfString(value)
 	case "warden.sched.v1beta1.Callback.gasLimit":
 		value := x.GasLimit
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfUint64(value)
 	case "warden.sched.v1beta1.Callback.feeToken":
 		value := x.FeeToken
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
@@ -220,7 +220,7 @@ func (x *fastReflection_Callback) Set(fd protoreflect.FieldDescriptor, value pro
 	case "warden.sched.v1beta1.Callback.address":
 		x.Address = value.Interface().(string)
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		x.GasLimit = value.Interface().(string)
+		x.GasLimit = value.Uint()
 	case "warden.sched.v1beta1.Callback.feeToken":
 		x.FeeToken = value.Message().Interface().(*v1beta1.Coin)
 	default:
@@ -272,7 +272,7 @@ func (x *fastReflection_Callback) NewField(fd protoreflect.FieldDescriptor) prot
 	case "warden.sched.v1beta1.Callback.address":
 		return protoreflect.ValueOfString("")
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		return protoreflect.ValueOfString("")
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.sched.v1beta1.Callback.feeToken":
 		m := new(v1beta1.Coin)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
@@ -352,9 +352,8 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.GasLimit)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.GasLimit != 0 {
+			n += 1 + runtime.Sov(uint64(x.GasLimit))
 		}
 		if x.FeeToken != nil {
 			l = options.Size(x.FeeToken)
@@ -403,12 +402,10 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x22
 		}
-		if len(x.GasLimit) > 0 {
-			i -= len(x.GasLimit)
-			copy(dAtA[i:], x.GasLimit)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.GasLimit)))
+		if x.GasLimit != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.GasLimit))
 			i--
-			dAtA[i] = 0x1a
+			dAtA[i] = 0x18
 		}
 		if len(x.Address) > 0 {
 			i -= len(x.Address)
@@ -523,10 +520,10 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 				x.Address = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
-				if wireType != 2 {
+				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field GasLimit", wireType)
 				}
-				var stringLen uint64
+				x.GasLimit = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -536,24 +533,11 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.GasLimit |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.GasLimit = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FeeToken", wireType)
@@ -1109,7 +1093,7 @@ type Callback struct {
 	// Callback address.
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// The limit of gas for callback execution.
-	GasLimit string `protobuf:"bytes,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
+	GasLimit uint64 `protobuf:"varint,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
 	// The token that will be used to pay for callback execution.
 	FeeToken *v1beta1.Coin `protobuf:"bytes,4,opt,name=feeToken,proto3" json:"feeToken,omitempty"`
 }
@@ -1148,11 +1132,11 @@ func (x *Callback) GetAddress() string {
 	return ""
 }
 
-func (x *Callback) GetGasLimit() string {
+func (x *Callback) GetGasLimit() uint64 {
 	if x != nil {
 		return x.GasLimit
 	}
-	return ""
+	return 0
 }
 
 func (x *Callback) GetFeeToken() *v1beta1.Coin {
@@ -1212,7 +1196,7 @@ var file_warden_sched_v1beta1_callback_proto_rawDesc = []byte{
 	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18,
 	0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x67, 0x61, 0x73, 0x4c,
-	0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x67, 0x61, 0x73, 0x4c,
+	0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x08, 0x67, 0x61, 0x73, 0x4c,
 	0x69, 0x6d, 0x69, 0x74, 0x12, 0x67, 0x0a, 0x08, 0x66, 0x65, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
 	0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
 	0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69,

@@ -10,7 +10,7 @@ Follow this tutorial to implement a more advanced example of handling HTTP reque
 
 You'll create a contract that fetches prices of **multiple cryptocurrencies** from the [CoinGecko API](https://docs.coingecko.com/reference/introduction) and extracts price values from the **CBOR-encoded** response.
 
-## Step 1. Create a contract
+## 1. Create a contract
 
 Create a new file `MultiCoinPrices.sol`:
 
@@ -174,7 +174,7 @@ contract MultiCoinPrices {
 }
 ```
 
-## Step 2. Deploy and test
+## 2. Deploy
 
 1. Deploy the contract:
    
@@ -188,8 +188,10 @@ contract MultiCoinPrices {
    ```
    export CONTRACT_ADDRESS=my-contract-address
    ```
+
+## 3. Make an HTTP request
    
-3. Make an HTTP request by calling the `run()` function:
+1. Make an HTTP request by calling the `run()` function:
 
    ```
    cast send $CONTRACT_ADDRESS "run()" \
@@ -197,7 +199,7 @@ contract MultiCoinPrices {
      --rpc-url $RPC_URL
    ```
    
-4. Wait a few seconds, then use the `cb()` function to process the result:
+2. Wait a few seconds, then use the `cb()` function to process the result:
    
    ```
    cast send $CONTRACT_ADDRESS "cb()" \
@@ -205,7 +207,7 @@ contract MultiCoinPrices {
      --rpc-url $RPC_URL
    ```
 
-4. Check the prices:
+3. Check the prices:
    
    ```
    cast call $CONTRACT_ADDRESS "bitcoinPrice()(uint256)" --rpc-url $RPC_URL

@@ -128,58 +128,66 @@ Create an interface for interacting with the [`x/async` precompile](../../precom
 
 Create a library `Types.sol`, which is referenced in the [interface file](#2-create-an-interface):
 
-```solidity title="warden-pricepredictions/src/interfaces/Types.sol"
-// SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity >=0.8.18;
+1. First, create an `src/common` directory:
 
-library Types {
-    struct AnyType {
-    string typeUrl;
-    bytes value;
-    }
+   ```bash
+   mkdir -p src/common
+   ```
 
-    struct Timestamp {
-        uint64 secs;
-        uint64 nanos;
-    }
+2. In the new directory, create a file `Types.sol`:
 
-    struct Dec {
-        uint256 value;
-        uint8 precision;
-    }
-
-    struct Coin {
-        string denom;
-        uint256 amount;
-    }
-
-    struct DecCoin {
-        string denom;
-        uint256 amount;
-        uint8 precision;
-    }
-
-    struct PageResponse {
-        bytes nextKey;
-        uint64 total;
-    }
-
-    struct PageRequest {
-        bytes key;
-        uint64 offset;
-        uint64 limit;
-        bool countTotal;
-        bool reverse;
-    }
-
-    struct Height {
-        // the revision that the client is currently on
-        uint64 revisionNumber;
-        // the height within the given revision
-        uint64 revisionHeight;
-    }
-}
-```
+   ```solidity title="warden-pricepredictions/src/interfaces/Types.sol"
+   // SPDX-License-Identifier: LGPL-3.0-only
+   pragma solidity >=0.8.18;
+   
+   library Types {
+       struct AnyType {
+       string typeUrl;
+       bytes value;
+       }
+   
+       struct Timestamp {
+           uint64 secs;
+           uint64 nanos;
+       }
+   
+       struct Dec {
+           uint256 value;
+           uint8 precision;
+       }
+   
+       struct Coin {
+           string denom;
+           uint256 amount;
+       }
+   
+       struct DecCoin {
+           string denom;
+           uint256 amount;
+           uint8 precision;
+       }
+   
+       struct PageResponse {
+           bytes nextKey;
+           uint64 total;
+       }
+   
+       struct PageRequest {
+           bytes key;
+           uint64 offset;
+           uint64 limit;
+           bool countTotal;
+           bool reverse;
+       }
+   
+       struct Height {
+           // the revision that the client is currently on
+           uint64 revisionNumber;
+           // the height within the given revision
+           uint64 revisionHeight;
+       }
+   }
+   ```
 
 ## 4. Configure Foundry
 

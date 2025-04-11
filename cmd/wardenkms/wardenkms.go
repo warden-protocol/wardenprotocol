@@ -34,6 +34,7 @@ type Config struct {
 	GasLimit      uint64        `env:"GAS_LIMIT, default=400000"`
 	TxTimeout     time.Duration `env:"TX_TIMEOUT, default=120s"`
 	TxFee         int64         `env:"TX_FEE, default=400000"`
+	Denom         string        `env:"DENOM, default=award"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
@@ -67,7 +68,7 @@ func main() {
 		BatchInterval: cfg.BatchInterval,
 		BatchSize:     cfg.BatchSize,
 		TxTimeout:     cfg.TxTimeout,
-		TxFees:        sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
+		TxFees:        sdk.NewCoins(sdk.NewCoin(cfg.Denom, math.NewInt(cfg.TxFee))),
 	})
 
 	app.SetKeyRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.KeyRequest) {

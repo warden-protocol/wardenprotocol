@@ -223,7 +223,7 @@ Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
 ## Node
 
-A Warden Protocol node is a server running the software (binary) of Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference) and [node commands](/operate-a-node/node-commands).
+A Warden Protocol node is a server running the software (binary) of Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api) and [node commands](/operate-a-node/node-commands).
 
 Reasons for running a node include the following:
 

@@ -44,7 +44,7 @@
         {"source":"/developers/architecture/adr-001-keychain-slashing-locking","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/adr-001.md", "statusCode": 301},
         {"source":"/developers/migration","destination":"/", "statusCode": 301},
         {"source":"/developers/migration/wardend-v0.2.0-upgrade","destination":"/", "statusCode": 301},
-        {"source":"/developers/api","destination":"/operate-a-node/node-api-reference", "statusCode": 301},
+        {"source":"/developers/api","destination":"/operate-a-node/node-api", "statusCode": 301},
         {"source":"/developers/metamask-snap","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/6-test-metamask-snap.md", "statusCode": 301},
         {"source":"/category/validate","destination":"/operate-a-node/introduction", "statusCode": 301},
         {"source":"/validate/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
@@ -65,6 +65,7 @@
         {"source":"/build-an-app/interact-with-warden-modules/get-started","destination":"/build-an-app/interact-with-warden-modules/get-started-with-precompiles", "statusCode": 301},
         {"source":"/build-an-agent/introduction#ai-blockchain-interface","destination":"/learn/warden-ai-agents#ai-integration", "statusCode": 301},
         {"source":"/category/use-the-http-handler","destination":"/category/use-the-http-plugin", "statusCode": 301},
-        {"source":"/category/use-the-price-prediction-handler","destination":"/category/use-the-price-prediction-plugin", "statusCode": 301}
+        {"source":"/category/use-the-price-prediction-handler","destination":"/category/use-the-price-prediction-plugin", "statusCode": 301},
+        {"source":"/operate-a-node/node-api-reference","destination":"/operate-a-node/node-api", "statusCode": 301}
     ]
 }

@@ -25,7 +25,7 @@ replace (
 require (
 	cosmossdk.io/api v0.9.0
 	cosmossdk.io/client/v2 v2.0.0-beta.4
-	cosmossdk.io/collections v0.4.0
+	cosmossdk.io/collections v1.2.0
 	cosmossdk.io/core v0.12.0
 	cosmossdk.io/depinject v1.1.0
 	cosmossdk.io/errors v1.0.2
@@ -85,6 +85,7 @@ require (
 	buf.build/go/spdx v0.2.0 // indirect
 	cel.dev/expr v0.21.2 // indirect
 	cloud.google.com/go/monitoring v1.21.2 // indirect
+	cosmossdk.io/schema v1.0.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.25.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.48.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.48.1 // indirect
@@ -391,6 +392,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gotest.tools/v3 v3.5.1 // indirect
 	nhooyr.io/websocket v1.8.10 // indirect
-	pgregory.net/rapid v1.1.0 // indirect
+	pgregory.net/rapid v1.2.0 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )

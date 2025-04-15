@@ -7,6 +7,19 @@ address constant IJSON_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000
 /// @dev The IJson contract's instance.
 IJson constant IJSON_CONTRACT = IJson(IJSON_PRECOMPILE_ADDRESS);
 
+struct SetKeyValue {
+    string key;
+    string valueType;
+    bytes value;
+    int64 decimals;
+}
+
+struct ReadKeyValue {
+    string key;
+    string valueType;
+    int64 decimals;
+}
+
 /**
  * @author Warden Team
  * @title x/json Interface
@@ -411,4 +424,37 @@ interface IJson {
         string memory key,
         bytes memory value
     ) external view returns (bytes memory);
+
+    /**
+     * @dev Defines a method to set multiple key-value pairs in JSON.
+     * @param input The JSON input as bytes.
+     * @param keyValues The key-value pairs to set.
+     * @return The modified JSON as bytes.
+     */
+    function write(
+        bytes memory input,
+        SetKeyValue[] memory keyValues
+    ) external view returns (bytes memory);
+
+    /**
+     * @dev Defines a method to read multiple key-value pairs in JSON.
+     * @param input The JSON input as bytes.
+     * @param keyValues The key-value pairs to set.
+     * @return The modified JSON as bytes.
+     */
+    function read(
+        bytes memory input,
+        ReadKeyValue[] memory keyValues
+    ) external view returns (bytes[] memory);
+
+    /**
+     * @dev Defines a method to read multiple key-value pairs in JSON.
+     * @param input The JSON input as bytes.
+     * @param keyValues The key-value pairs to set.
+     * @return result of operation.
+     */
+    function act(
+        bytes memory input,
+        ReadKeyValue[] memory keyValues
+    ) external view returns (int256 result);
 }

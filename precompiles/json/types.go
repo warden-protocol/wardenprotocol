@@ -37,3 +37,26 @@ type GetFloatInput struct {
 	Key      string
 	Decimals int64
 }
+
+type WriteInputKeyValue struct {
+	Key       string
+	ValueType string
+	Value     []byte
+	Decimals  int64
+}
+
+type WriteInput struct {
+	Input     []byte
+	KeyValues []WriteInputKeyValue
+}
+
+type ReadInputKeyValue struct {
+	Key       string
+	ValueType string
+	Decimals  int64
+}
+
+type ReadInput struct {
+	Input     []byte
+	KeyValues []ReadInputKeyValue
+}

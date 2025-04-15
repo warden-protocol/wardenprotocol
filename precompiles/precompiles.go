@@ -79,7 +79,7 @@ func NewWardenPrecompiles(
 
 	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateTask", newAsyncPrecompile.GetCreateTaskEvent)
 
-	newJsonPrecompile, err := jsonprecompile.NewPrecompile()
+	newJsonPrecompile, err := jsonprecompile.NewPrecompile(cmn.NewAbiEncoder())
 	if err != nil {
 		return nil, err
 	}

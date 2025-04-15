@@ -8,6 +8,47 @@
           "type": "bytes"
         },
         {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "key",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "valueType",
+              "type": "string"
+            },
+            {
+              "internalType": "int64",
+              "name": "decimals",
+              "type": "int64"
+            }
+          ],
+          "internalType": "struct ReadKeyValue[]",
+          "name": "keyValues",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "act",
+      "outputs": [
+        {
+          "internalType": "int256",
+          "name": "result",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
           "internalType": "string",
           "name": "key",
           "type": "string"
@@ -378,6 +419,47 @@
           "internalType": "bytes",
           "name": "",
           "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "key",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "valueType",
+              "type": "string"
+            },
+            {
+              "internalType": "int64",
+              "name": "decimals",
+              "type": "int64"
+            }
+          ],
+          "internalType": "struct ReadKeyValue[]",
+          "name": "keyValues",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "read",
+      "outputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "",
+          "type": "bytes[]"
         }
       ],
       "stateMutability": "view",
@@ -842,6 +924,52 @@
         }
       ],
       "name": "setUintArray",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "key",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "valueType",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "value",
+              "type": "bytes"
+            },
+            {
+              "internalType": "int64",
+              "name": "decimals",
+              "type": "int64"
+            }
+          ],
+          "internalType": "struct SetKeyValue[]",
+          "name": "keyValues",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "write",
       "outputs": [
         {
           "internalType": "bytes",

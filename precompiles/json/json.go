@@ -11,6 +11,8 @@ import (
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 	"github.com/evmos/evmos/v20/x/evm/core/vm"
+
+	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 )
 
 var _ vm.PrecompiledContract = &Precompile{}
@@ -25,6 +27,7 @@ var f embed.FS
 // Precompile defines the precompiled contract for x/async.
 type Precompile struct {
 	evmoscmn.Precompile
+	abiEncoder *wardencommon.AbiEncoder
 }
 
 // LoadABI loads the x/async ABI from the embedded abi.json file
@@ -33,7 +36,7 @@ func LoadABI() (abi.ABI, error) {
 	return evmoscmn.LoadABI(f, "abi.json")
 }
 
-func NewPrecompile() (*Precompile, error) {
+func NewPrecompile(abiEncoder *wardencommon.AbiEncoder) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -45,6 +48,7 @@ func NewPrecompile() (*Precompile, error) {
 			KvGasConfig:          storetypes.KVGasConfig(),
 			TransientKVGasConfig: storetypes.TransientGasConfig(),
 		},
+		abiEncoder: abiEncoder,
 	}
 
 	p.SetAddress(p.Address())
@@ -150,6 +154,12 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.GetAddressArray(ctx, method, args)
 	case GetObjectsArrayMethod:
 		bz, err = p.GetObjectsArray(ctx, method, args)
+	case ReadMethod:
+		bz, err = p.Read(ctx, method, args)
+	case WriteMethod:
+		bz, err = p.Write(ctx, method, args)
+	case ActMethod:
+		bz, err = p.Act(ctx, method, args)
 	}
 
 	if err != nil {
@@ -201,7 +211,10 @@ func (p *Precompile) IsTransaction(method string) bool {
 		GetAddressArrayMethod,
 		GetObjectsArrayMethod,
 		RemoveMethod,
-		NewJsonMethod:
+		NewJsonMethod,
+		ReadMethod,
+		WriteMethod,
+		ActMethod:
 		return false
 	}
 

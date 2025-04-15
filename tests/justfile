@@ -219,6 +219,6 @@ contract-caller:
 # regenerate json user contract
 contract-json-user:
   # cp -f ./../precompiles/json/IJson.sol ./testdata/contracts/json-user/IJson.sol
-  solc --evm-version paris --bin precompile-json/=../precompiles/json/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite 
-  solc --evm-version paris --abi precompile-json/=../precompiles/json/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite
+  solc --evm-version paris --bin precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  solc --evm-version paris --abi precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
   abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go

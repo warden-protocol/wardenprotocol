@@ -1,7 +1,6 @@
 package json
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"math/big"
@@ -47,14 +46,13 @@ const (
 	SetObjectMethod       = "setObject"
 	WriteMethod           = "write"
 	ReadMethod            = "read"
-	ActMethod             = "act"
 )
 
 // NewJson decodes new json object representation from args, encodes to bytes.
 func (p Precompile) NewJson(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	readJson, err := gabs.ParseJSON([]byte("{}"))
 	if err != nil {
@@ -70,7 +68,7 @@ func (p Precompile) NewJson(
 func (p Precompile) Remove(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[RemoveInput](method, args)
 	if err != nil {
@@ -95,9 +93,9 @@ func (p Precompile) Remove(
 func (p Precompile) Get(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]byte, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([]byte, error) {
 		return container.Bytes(), nil
 	})
 }
@@ -106,10 +104,10 @@ func (p Precompile) Get(
 func (p Precompile) GetString(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[string](ctx, method, args, func(container *gabs.Container, input *GetInput) (string, error) {
-		strValue, err := parseString(container)
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) (string, error) {
+		strValue, err := readString(container)
 		if err != nil {
 			return "", fmt.Errorf("error while parsing string value: %w", err)
 		}
@@ -118,23 +116,14 @@ func (p Precompile) GetString(
 	})
 }
 
-func parseString(container *gabs.Container) (string, error) {
-	strValue, ok := container.Data().(string)
-	if !ok {
-		return "", fmt.Errorf("value is not a string at path")
-	}
-
-	return strValue, nil
-}
-
 // GetBool decodes GetInput from args, returns boolean value by key.
 func (p Precompile) GetBool(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[bool](ctx, method, args, func(container *gabs.Container, input *GetInput) (bool, error) {
-		boolValue, err := parseBool(container)
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) (bool, error) {
+		boolValue, err := readBool(container)
 		if err != nil {
 			return false, fmt.Errorf("error while parsing bool value: %w", err)
 		}
@@ -143,23 +132,14 @@ func (p Precompile) GetBool(
 	})
 }
 
-func parseBool(container *gabs.Container) (bool, error) {
-	boolValue, ok := container.Data().(bool)
-	if !ok {
-		return false, fmt.Errorf("value is not a bool at path")
-	}
-
-	return boolValue, nil
-}
-
 // GetAddress decodes GetInput from args, returns address value by key.
 func (p Precompile) GetAddressValue(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) (common.Address, error) {
-		addressStr, err := parseAddress(container)
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) (common.Address, error) {
+		addressStr, err := readAddress(container)
 		if err != nil {
 			return common.Address{}, fmt.Errorf("error while parsing address value: %w", err)
 		}
@@ -168,23 +148,14 @@ func (p Precompile) GetAddressValue(
 	})
 }
 
-func parseAddress(container *gabs.Container) (common.Address, error) {
-	addressStr, ok := container.Data().(string)
-	if !ok || !common.IsHexAddress(addressStr) {
-		return common.Address{}, fmt.Errorf("value is not a valid address at path")
-	}
-
-	return common.HexToAddress(addressStr), nil
-}
-
 // GetInt256 decodes GetInput from args, returns int256 value by key.
 func (p Precompile) GetInt256(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
-		value, err := parseInt256(container)
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
+		value, err := readInt256(container)
 		if err != nil {
 			return nil, fmt.Errorf("error while parsing int256 value: %w", err)
 		}
@@ -193,23 +164,14 @@ func (p Precompile) GetInt256(
 	})
 }
 
-func parseInt256(container *gabs.Container) (*big.Int, error) {
-	value, success := new(big.Int).SetString(container.String(), 10)
-	if !success {
-		return nil, fmt.Errorf("value is not a valid int256 at path")
-	}
-
-	return value, nil
-}
-
 // GetUint256 decodes GetInput from args, returns uint256 value by key.
 func (p Precompile) GetUint256(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
-		value, err := parseUint256(container)
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) (*big.Int, error) {
+		value, err := readUint256(container)
 		if err != nil {
 			return nil, fmt.Errorf("error while parsing uint256 value: %w", err)
 		}
@@ -218,20 +180,11 @@ func (p Precompile) GetUint256(
 	})
 }
 
-func parseUint256(container *gabs.Container) (*big.Int, error) {
-	value, success := new(big.Int).SetString(container.String(), 10)
-	if !success {
-		return nil, fmt.Errorf("value is not a valid int256 at path")
-	}
-
-	return value, nil
-}
-
 // GetFloat decodes GetInput from args, returns an integer value by key with specified decimal points.
 func (p Precompile) GetFloat(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[GetFloatInput](method, args)
 	if err != nil {
@@ -248,7 +201,7 @@ func (p Precompile) GetFloat(
 		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
 	}
 
-	res, err := parseFloat(container, input.Decimals)
+	res, err := readFloat(container, input.Decimals)
 	if err != nil {
 		return nil, fmt.Errorf("error while parsing float value: %w", err)
 	}
@@ -256,36 +209,24 @@ func (p Precompile) GetFloat(
 	return method.Outputs.Pack(res)
 }
 
-func parseFloat(container *gabs.Container, decimals int64) (*big.Int, error) {
-	if err := ensureValidDecimalPoints(decimals); err != nil {
-		return nil, fmt.Errorf("error while validating decimal points: %w", err)
-	}
-
-	jsonNumber, ok := container.Data().(json.Number)
-	if !ok {
-		return nil, fmt.Errorf("value is not a valid number")
-	}
-
-	return ToInteger(jsonNumber.String(), decimals)
-}
-
 // GetStringArray decodes GetInput from args, returns string array by key.
 func (p Precompile) GetStringArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[]string](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]string, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([]string, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
 		objectsArray := make([]string, arrayCount)
 		for i, v := range container.Children() {
-			value, success := v.Data().(string)
-			if !success {
-				return nil, fmt.Errorf("value is not a string array at path: %s", input.Key)
+			value, err := readString(v)
+			if err != nil {
+				return nil, fmt.Errorf("value is not a string array at path: %s %w", input.Key, err)
 			}
+
 			objectsArray[i] = value
 		}
 
@@ -297,19 +238,20 @@ func (p Precompile) GetStringArray(
 func (p Precompile) GetUintArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
 		objectsArray := make([]*big.Int, arrayCount)
 		for i, v := range container.Children() {
-			value, success := new(big.Int).SetString(v.String(), 10)
-			if !success {
-				return nil, fmt.Errorf("error while parsing uint value at index %d", i)
+			value, err := readUint256(v)
+			if err != nil {
+				return nil, fmt.Errorf("error while parsing uint value at index %d %w", i, err)
 			}
+
 			objectsArray[i] = value
 		}
 
@@ -321,19 +263,20 @@ func (p Precompile) GetUintArray(
 func (p Precompile) GetIntArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[]*big.Int](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([]*big.Int, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
 		}
 		objectsArray := make([]*big.Int, arrayCount)
 		for i, v := range container.Children() {
-			value, success := new(big.Int).SetString(v.String(), 10)
-			if !success {
-				return nil, fmt.Errorf("error while parsing int value at index %d", i)
+			value, err := readInt256(v)
+			if err != nil {
+				return nil, fmt.Errorf("error while parsing int value at index %d %w", i, err)
 			}
+
 			objectsArray[i] = value
 		}
 
@@ -345,15 +288,11 @@ func (p Precompile) GetIntArray(
 func (p Precompile) GetFloatArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[GetFloatInput](method, args)
 	if err != nil {
 		return nil, err
-	}
-
-	if err := ensureValidDecimalPoints(input.Decimals); err != nil {
-		return nil, fmt.Errorf("error while validating decimal points: %w", err)
 	}
 
 	out, err := readJson(input.Input)
@@ -373,12 +312,7 @@ func (p Precompile) GetFloatArray(
 
 	objectsArray := make([]*big.Int, arrayCount)
 	for i, v := range container.Children() {
-		jsonNumber, ok := v.Data().(json.Number)
-		if !ok {
-			return nil, fmt.Errorf("element at index %d is not a valid number", i)
-		}
-
-		res, err := ToInteger(jsonNumber.String(), input.Decimals)
+		res, err := readFloat(v, input.Decimals)
 		if err != nil {
 			return nil, fmt.Errorf("error while parsing float value at index %d: %w", i, err)
 		}
@@ -393,9 +327,9 @@ func (p Precompile) GetFloatArray(
 func (p Precompile) GetBoolArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[]bool](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]bool, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([]bool, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
@@ -403,9 +337,9 @@ func (p Precompile) GetBoolArray(
 
 		objectsArray := make([]bool, arrayCount)
 		for i, v := range container.Children() {
-			value, ok := v.Data().(bool)
-			if !ok {
-				return nil, fmt.Errorf("element at index %d is not a bool value", i)
+			value, err := readBool(v)
+			if err != nil {
+				return nil, fmt.Errorf("element at index %d is not a bool value: %w", i, err)
 			}
 			objectsArray[i] = value
 		}
@@ -418,9 +352,9 @@ func (p Precompile) GetBoolArray(
 func (p Precompile) GetAddressArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[]common.Address](ctx, method, args, func(container *gabs.Container, input *GetInput) ([]common.Address, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([]common.Address, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
@@ -428,11 +362,12 @@ func (p Precompile) GetAddressArray(
 
 		objectsArray := make([]common.Address, arrayCount)
 		for i, v := range container.Children() {
-			stringValue, ok := v.Data().(string)
-			if !ok || !common.IsHexAddress(stringValue) {
-				return nil, fmt.Errorf("element at index %d is not a valid address", i)
+			addressValue, err := readAddress(v)
+			if err != nil {
+				return nil, fmt.Errorf("element at index %d is not a valid address: %w", i, err)
 			}
-			objectsArray[i] = common.HexToAddress(stringValue)
+
+			objectsArray[i] = addressValue
 		}
 
 		return objectsArray, nil
@@ -443,9 +378,9 @@ func (p Precompile) GetAddressArray(
 func (p Precompile) GetObjectsArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
-	return innerGet[[][]byte](ctx, method, args, func(container *gabs.Container, input *GetInput) ([][]byte, error) {
+	return innerGet(ctx, method, args, func(container *gabs.Container, input *GetInput) ([][]byte, error) {
 		arrayCount, err := container.ArrayCount()
 		if err != nil {
 			return nil, fmt.Errorf("error while getting array count: %w", err)
@@ -464,7 +399,7 @@ func (p Precompile) GetObjectsArray(
 func (p Precompile) SetString(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[string](ctx, method, args)
 }
@@ -473,7 +408,7 @@ func (p Precompile) SetString(
 func (p Precompile) SetAddressValue(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[common.Address](ctx, method, args)
 }
@@ -482,7 +417,7 @@ func (p Precompile) SetAddressValue(
 func (p Precompile) SetBool(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[bool](ctx, method, args)
 }
@@ -491,7 +426,7 @@ func (p Precompile) SetBool(
 func (p Precompile) SetInt256(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[*big.Int](ctx, method, args)
 }
@@ -500,7 +435,7 @@ func (p Precompile) SetInt256(
 func (p Precompile) SetUint256(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[*big.Int](ctx, method, args)
 }
@@ -509,7 +444,7 @@ func (p Precompile) SetUint256(
 func (p Precompile) SetFloat(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[SetFloatInput](method, args)
 	if err != nil {
@@ -544,7 +479,7 @@ func (p Precompile) SetFloat(
 func (p Precompile) SetObject(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[SetInput[[]byte]](method, args)
 	if err != nil {
@@ -574,7 +509,7 @@ func (p Precompile) SetObject(
 func (p Precompile) SetStringArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[[]string](ctx, method, args)
 }
@@ -583,7 +518,7 @@ func (p Precompile) SetStringArray(
 func (p Precompile) SetAddressArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[[]common.Address](ctx, method, args)
 }
@@ -592,7 +527,7 @@ func (p Precompile) SetAddressArray(
 func (p Precompile) SetBoolArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[[]bool](ctx, method, args)
 }
@@ -601,7 +536,7 @@ func (p Precompile) SetBoolArray(
 func (p Precompile) SetUintArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[[]*big.Int](ctx, method, args)
 }
@@ -610,7 +545,7 @@ func (p Precompile) SetUintArray(
 func (p Precompile) SetIntArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	return innerSet[[]*big.Int](ctx, method, args)
 }
@@ -619,7 +554,7 @@ func (p Precompile) SetIntArray(
 func (p Precompile) SetFloatArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[SetFloatArrayInput](method, args)
 	if err != nil {
@@ -667,7 +602,7 @@ func (p Precompile) SetFloatArray(
 func (p Precompile) SetObjectsArray(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[SetInput[[][]byte]](method, args)
 	if err != nil {
@@ -706,90 +641,11 @@ func (p Precompile) SetObjectsArray(
 	return method.Outputs.Pack(encodedJson)
 }
 
-func readJson(input []byte) (*gabs.Container, error) {
-	dec := json.NewDecoder(bytes.NewReader(input))
-	dec.UseNumber()
-	return gabs.ParseJSONDecoder(dec)
-}
-
-func parseInput[T any](method *abi.Method, args []interface{}) (*T, error) {
-	if len(args) != len(method.Inputs) {
-		return nil, wardencommon.WrongArgsNumber{Expected: len(method.Inputs), Got: len(args)}
-	}
-
-	var input T
-	if err := method.Inputs.Copy(&input, args); err != nil {
-		return nil, fmt.Errorf("error while unpacking args to struct: %w", err)
-	}
-
-	return &input, nil
-}
-
-func innerGet[T any](ctx sdk.Context,
-	method *abi.Method,
-	args []interface{},
-	get func(*gabs.Container, *GetInput) (T, error),
-) ([]byte, error) {
-	input, err := parseInput[GetInput](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	container := out.Path(input.Key)
-	if container == nil {
-		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
-	}
-
-	result, err := get(container, input)
-	if err != nil {
-		return nil, fmt.Errorf("error while getting value from JSON: %w", err)
-	}
-
-	return method.Outputs.Pack(result)
-}
-
-// innerSet decodes SetInput from args, adds value by key to input.
-func innerSet[T any](
-	_ sdk.Context,
-	method *abi.Method,
-	args []interface{},
-) ([]byte, error) {
-	input, err := parseInput[SetInput[T]](method, args)
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := readJson(input.Input)
-	if err != nil {
-		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
-	}
-
-	if out.ExistsP(input.Key) {
-		err := out.DeleteP(input.Key)
-		if err != nil {
-			return nil, fmt.Errorf("error while overwriting value in JSON: %w", err)
-		}
-	}
-
-	if _, err := out.SetP(input.Value, input.Key); err != nil {
-		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
-	}
-
-	encodedJson := out.EncodeJSON()
-
-	return method.Outputs.Pack(encodedJson)
-}
-
 // Read decodes ReadInput from args, returns value by key.
 func (p Precompile) Read(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[ReadInput](method, args)
 	if err != nil {
@@ -829,63 +685,11 @@ func (p Precompile) Read(
 	return method.Outputs.Pack(results)
 }
 
-func parseValue(
-	readKeyValue ReadInputKeyValue,
-	container *gabs.Container,
-) (any, error) {
-	switch readKeyValue.ValueType {
-	case "string":
-		value, err := parseString(container)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing string value: %w", err)
-		}
-
-		return value, nil
-	case "bool":
-		value, err := parseBool(container)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing bool value: %w", err)
-		}
-
-		return value, nil
-	case "address":
-		value, err := parseAddress(container)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing address value: %w", err)
-		}
-
-		return value, nil
-	case "int256":
-		value, err := parseInt256(container)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing int256 value: %w", err)
-		}
-
-		return value, nil
-	case "uint256":
-		value, err := parseUint256(container)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing uint256 value: %w", err)
-		}
-
-		return value, nil
-	case "float":
-		value, err := parseFloat(container, readKeyValue.Decimals)
-		if err != nil {
-			return nil, fmt.Errorf("error while parsing float value: %w", err)
-		}
-
-		return value, nil
-	default:
-		return nil, fmt.Errorf("unsupported value type: %s", readKeyValue.ValueType)
-	}
-}
-
 // Write decodes WriteInput from args, returns modified json.
 func (p Precompile) Write(
 	ctx sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
 ) ([]byte, error) {
 	input, err := parseInput[WriteInput](method, args)
 	if err != nil {
@@ -934,13 +738,65 @@ func (p Precompile) Write(
 	return method.Outputs.Pack(out.Bytes())
 }
 
-// Read decodes ReadInput from args, returns value by key.
-func (p Precompile) Act(
-	ctx sdk.Context,
+func parseValue(
+	readKeyValue ReadInputKeyValue,
+	container *gabs.Container,
+) (any, error) {
+	switch readKeyValue.ValueType {
+	case "string":
+		value, err := readString(container)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing string value: %w", err)
+		}
+
+		return value, nil
+	case "bool":
+		value, err := readBool(container)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing bool value: %w", err)
+		}
+
+		return value, nil
+	case "address":
+		value, err := readAddress(container)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing address value: %w", err)
+		}
+
+		return value, nil
+	case "int256":
+		value, err := readInt256(container)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing int256 value: %w", err)
+		}
+
+		return value, nil
+	case "uint256":
+		value, err := readUint256(container)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing uint256 value: %w", err)
+		}
+
+		return value, nil
+	case "float":
+		value, err := readFloat(container, readKeyValue.Decimals)
+		if err != nil {
+			return nil, fmt.Errorf("error while parsing float value: %w", err)
+		}
+
+		return value, nil
+	default:
+		return nil, fmt.Errorf("unsupported value type: %s", readKeyValue.ValueType)
+	}
+}
+
+func innerGet[T any](
+	_ sdk.Context,
 	method *abi.Method,
-	args []interface{},
+	args []any,
+	get func(*gabs.Container, *GetInput) (T, error),
 ) ([]byte, error) {
-	input, err := parseInput[ReadInput](method, args)
+	input, err := parseInput[GetInput](method, args)
 	if err != nil {
 		return nil, err
 	}
@@ -950,17 +806,60 @@ func (p Precompile) Act(
 		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
 	}
 
-	results := make([][]byte, 0, len(input.KeyValues))
-	for _, v := range input.KeyValues {
-		container := out.Path(v.Key)
-		if container == nil {
-			return nil, fmt.Errorf("value doesn't exist at path: %s", v.Key)
-		}
+	container := out.Path(input.Key)
+	if container == nil {
+		return nil, fmt.Errorf("value doesn't exist at path: %s", input.Key)
+	}
 
-		if !p.abiEncoder.IsSupportedType(v.ValueType) {
-			return nil, fmt.Errorf("unsupported value type: %s", v.ValueType)
+	result, err := get(container, input)
+	if err != nil {
+		return nil, fmt.Errorf("error while getting value from JSON: %w", err)
+	}
+
+	return method.Outputs.Pack(result)
+}
+
+// innerSet decodes SetInput from args, adds value by key to input.
+func innerSet[T any](
+	_ sdk.Context,
+	method *abi.Method,
+	args []any,
+) ([]byte, error) {
+	input, err := parseInput[SetInput[T]](method, args)
+	if err != nil {
+		return nil, err
+	}
+
+	out, err := readJson(input.Input)
+	if err != nil {
+		return nil, fmt.Errorf("error while parsing input as JSON: %w", err)
+	}
+
+	if out.ExistsP(input.Key) {
+		err := out.DeleteP(input.Key)
+		if err != nil {
+			return nil, fmt.Errorf("error while overwriting value in JSON: %w", err)
 		}
 	}
 
-	return results[0], nil
+	if _, err := out.SetP(input.Value, input.Key); err != nil {
+		return nil, fmt.Errorf("error while setting value in JSON: %w", err)
+	}
+
+	encodedJson := out.EncodeJSON()
+
+	return method.Outputs.Pack(encodedJson)
+}
+
+func parseInput[T any](method *abi.Method, args []any) (*T, error) {
+	if len(args) != len(method.Inputs) {
+		return nil, wardencommon.WrongArgsNumber{Expected: len(method.Inputs), Got: len(args)}
+	}
+
+	var input T
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, fmt.Errorf("error while unpacking args to struct: %w", err)
+	}
+
+	return &input, nil
 }

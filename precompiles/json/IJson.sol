@@ -446,15 +446,4 @@ interface IJson {
         bytes memory input,
         ReadKeyValue[] memory keyValues
     ) external view returns (bytes[] memory);
-
-    /**
-     * @dev Defines a method to read multiple key-value pairs in JSON.
-     * @param input The JSON input as bytes.
-     * @param keyValues The key-value pairs to set.
-     * @return result of operation.
-     */
-    function act(
-        bytes memory input,
-        ReadKeyValue[] memory keyValues
-    ) external view returns (int256 result);
 }

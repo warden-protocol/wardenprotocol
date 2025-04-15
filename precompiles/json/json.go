@@ -158,8 +158,6 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.Read(ctx, method, args)
 	case WriteMethod:
 		bz, err = p.Write(ctx, method, args)
-	case ActMethod:
-		bz, err = p.Act(ctx, method, args)
 	}
 
 	if err != nil {
@@ -213,8 +211,7 @@ func (p *Precompile) IsTransaction(method string) bool {
 		RemoveMethod,
 		NewJsonMethod,
 		ReadMethod,
-		WriteMethod,
-		ActMethod:
+		WriteMethod:
 		return false
 	}
 

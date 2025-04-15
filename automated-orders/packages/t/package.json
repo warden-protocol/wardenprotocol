@@ -1,0 +1,23 @@
+{
+  "name": "t",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@biconomy/abstractjs": "^0.3.0",
+    "@rhinestone/module-sdk": "^0.2.7",
+    "@warden-automated-orders/blockchain": "1.0.0",
+    "axios": "^1.8.4",
+    "viem": "^2.23.10"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

@@ -8,47 +8,6 @@
           "type": "bytes"
         },
         {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "key",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "valueType",
-              "type": "string"
-            },
-            {
-              "internalType": "int64",
-              "name": "decimals",
-              "type": "int64"
-            }
-          ],
-          "internalType": "struct ReadKeyValue[]",
-          "name": "keyValues",
-          "type": "tuple[]"
-        }
-      ],
-      "name": "act",
-      "outputs": [
-        {
-          "internalType": "int256",
-          "name": "result",
-          "type": "int256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes",
-          "name": "input",
-          "type": "bytes"
-        },
-        {
           "internalType": "string",
           "name": "key",
           "type": "string"

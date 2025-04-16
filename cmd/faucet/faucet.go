@@ -132,10 +132,6 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		logger.Fatal().Msgf("error loading config: %s", err)
 	}
 
-	if err != nil {
-		return Faucet{}, err
-	}
-
 	f := Faucet{
 		config:          cfg,
 		Mutex:           &sync.Mutex{},
@@ -143,7 +139,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		log:             logger,
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
-		Amount:          float64(cfg.Amount),
+		Amount:          cfg.Amount,
 		DisplayTokens:   bool(cfg.DisplayTokens),
 	}
 

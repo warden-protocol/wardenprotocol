@@ -353,7 +353,7 @@ async function main() {
         
         console.log(`8. Link to super tx: https://meescan.biconomy.io/details/${executePayload.hash}`);
     } catch (e) {
-        throw new Error(e.response ? e.response.data : e.message);
+        throw new Error(JSON.stringify(e.response ? e.response.data : e.message, null, 2));
     }
 }
 

@@ -3,6 +3,7 @@ package json
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 
@@ -19,7 +20,7 @@ func readJson(input []byte) (*gabs.Container, error) {
 func readString(container *gabs.Container) (string, error) {
 	strValue, ok := container.Data().(string)
 	if !ok {
-		return "", fmt.Errorf("value is not a string at path")
+		return "", errors.New("value is not a string at path")
 	}
 
 	return strValue, nil
@@ -28,7 +29,7 @@ func readString(container *gabs.Container) (string, error) {
 func readInt256(container *gabs.Container) (*big.Int, error) {
 	value, success := new(big.Int).SetString(container.String(), 10)
 	if !success {
-		return nil, fmt.Errorf("value is not a valid int256 at path")
+		return nil, errors.New("value is not a valid int256 at path")
 	}
 
 	return value, nil
@@ -37,7 +38,7 @@ func readInt256(container *gabs.Container) (*big.Int, error) {
 func readUint256(container *gabs.Container) (*big.Int, error) {
 	value, success := new(big.Int).SetString(container.String(), 10)
 	if !success {
-		return nil, fmt.Errorf("value is not a valid int256 at path")
+		return nil, errors.New("value is not a valid int256 at path")
 	}
 
 	return value, nil
@@ -50,7 +51,7 @@ func readFloat(container *gabs.Container, decimals int64) (*big.Int, error) {
 
 	jsonNumber, ok := container.Data().(json.Number)
 	if !ok {
-		return nil, fmt.Errorf("value is not a valid number")
+		return nil, errors.New("value is not a valid number")
 	}
 
 	return ToInteger(jsonNumber.String(), decimals)
@@ -59,7 +60,7 @@ func readFloat(container *gabs.Container, decimals int64) (*big.Int, error) {
 func readBool(container *gabs.Container) (bool, error) {
 	boolValue, ok := container.Data().(bool)
 	if !ok {
-		return false, fmt.Errorf("value is not a bool at path")
+		return false, errors.New("value is not a bool at path")
 	}
 
 	return boolValue, nil
@@ -68,7 +69,7 @@ func readBool(container *gabs.Container) (bool, error) {
 func readAddress(container *gabs.Container) (common.Address, error) {
 	addressStr, ok := container.Data().(string)
 	if !ok || !common.IsHexAddress(addressStr) {
-		return common.Address{}, fmt.Errorf("value is not a valid address at path")
+		return common.Address{}, errors.New("value is not a valid address at path")
 	}
 
 	return common.HexToAddress(addressStr), nil

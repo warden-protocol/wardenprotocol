@@ -6,181 +6,208 @@ sidebar_position: 4
 
 ## Overview
 
-The `IAsync.sol` precompile enables EVM smart contracts to interact with the [`x/async` module](/learn/warden-protocol-modules/x-async).
+The `IJson.sol` precompile enables... [`x/async` module](/learn/warden-protocol-modules/x-async).
 
-In this article, you'll find a full list of available methods, allowing you to query and manage the following components:
+In this article, you'll find a full list of available methods, allowing you to manage JSON objects. (?)
 
-- [Tasks](/learn/warden-protocol-modules/x-async#task)
-
-To learn how to use this precompile, refer to [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async).
+To learn how to use this precompile, refer to [Use the JSON precompile].
 
 :::note Code
-You can find the `x/async` precomile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol)
+You can find the `x/async` precomile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IJson.sol)
 :::
 
 ## Precompile address
 
-To reference the `IAsync` precompile in your code, use the following precompile address:
+To reference the `IJson` precompile in your code, use the following precompile address:
 
 ```
-0x0000000000000000000000000000000000000903
+0x0000000000000000000000000000000000000904
 ```
 
-## Tasks
+## JSON objects
 
-### Create a new Task
+### Create a new JSON object
 
-- **Method**: `addFuture()`
-- **Description**: Creates a Task. Emits the [`CreateFuture` event](#createfuture).
+- **Method**: `newJson()`
+- **Description**: XXX. Emits the [`XXX` event].
 - **Parameters** :
   ```sol
-  @param handler The unique name of the plugin
-  @param input The plugin's input
-  @param callback The address of callback contract
-  ```
-  **Notes**:
-  - The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Plugins](/learn/warden-protocol-modules/x-async#plugins). 
-  - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Task is ready.
-- **Output**:  
-  ```sol
-  @return futureId The id of the task
-  ```
-- **Usage example**: [Create a new Task](../interact-with-warden-modules/interact-with-x-async#create-a-new-task)
-
-### Query Tasks
-
-- **Method**: `futures()`
-- **Description**: Returns a list of all Tasks in all states (including pending ones). See the [`FuturesResponse` struct](#futureresponse).
-- **Parameters** :
-  ```sol
-  @param pagination The pagination details
-  @param creator Optional creator address filter
-  @return response The paged tasks
+  XXX
   ```
 - **Output**:  
   ```sol
-  @return response The paged tasks
+  XXX
   ```
-- **Usage example**: [Query Tasks](../interact-with-warden-modules/interact-with-x-async#query-tasks)
+- **Usage example**: [XXX]
 
-### Query pending Tasks
+### Remove a JSON object
 
-- **Method**: `pendingFutures()`
-- **Description**: Returns a list of all pending Tasks. See the [`PendingFuturesResponse` struct](#pendingfuturesresponse).
+- **Method**: `remove()`
+- **Description**: XXX. Emits the [`XXX` event].
 - **Parameters** :
   ```sol
-  @param pagination The pagination details  
+  XXX
   ```
 - **Output**:  
   ```sol
-  @return response The paged tasks
+  XXX
   ```
-- **Usage example**: [Query pending Tasks](../interact-with-warden-modules/interact-with-x-async#query-pending-tasks)
+- **Usage example**: [XXX]
 
-### Query a Task by ID
+## Values
 
-- **Method**: `futureById()`
-- **Description**: Returns a Task by ID (pending Tasks included). See the [`FutureByIdResponse` struct](#futurebyidresponse).
+### Get a value
+
+- **Method**: `get()`
+- **Description**: XXX. Emits the [`XXX` event].
 - **Parameters** :
   ```sol
-  @param futureId The task id   
+  XXX
   ```
 - **Output**:  
   ```sol
-  @return response The task response
+  XXX
   ```
-- **Usage example**: [Query a Task by ID](../interact-with-warden-modules/interact-with-x-async#query-a-task-by-id)
+- **Usage example**: [XXX]
+
+### Get a string value
+
+- **Method**: `getString()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a bool value
+
+- **Method**: `getBool()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get an address value
+
+- **Method**: `getAddress()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get an int256 value
+
+- **Method**: `getInt256()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a uint256 value
+
+- **Method**: `getUint256()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a float
+
+- **Method**: `getFloat()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a string array
+
+- **Method**: `getStringArray()`
+- **Description**: XXX. Emits the [`XXX` event].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### XXX
+
+- **Method**: `XXX()`
+- **Description**: XXX. See the [`XXX` struct].
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
 
 ## Structs
 
-### `Future`
+### `XXX`
 
-- **Description**: A struct representing a Task.
-
-```
-uint64 id;
-address creator;
-string handler;
-bytes input;
-```
-
-### `FutureVote`
-
-- **Description**: A struct representing a vote on the results of a Task. Includes the [`FutureVoteType` enum](#futurevotetype).
+- **Description**: A struct representing XXX. Includes the [`XXX` struct].
 
 ```
-uint64 futureId;
-bytes Voter;
-FutureVoteType vote;
-```
-
-### `FutureResult`
-
-- **Description**: A struct representing the result of a Task.
-
-```
-uint64 id;
-bytes output;
-bytes submitter;
-```
-
-### `FutureResponse`
-
-- **Description**: A struct representing a Task and its data. Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
-
-```
-Future future;
-FutureVote[] votes;
-FutureResult result;
-```
-
-### `FuturesResponse`
-
-- **Description**: A response returned when you [query Task](#query-tasks). Includes the [`FutureResponse` struct](#futureresponse).
-
-```
-Types.PageResponse pagination;
-FutureResponse[] futures;
-```
-
-### `PendingFuturesResponse`
-
-- **Description**: A response returned when you [query pending Task](#query-pending-tasks). Includes the [`Future` struct](#future).
-
-```
-Types.PageResponse pagination;
-Future[] futures;
-```
-
-### `FutureByIdResponse`
-
-- **Description**: A response returned when you [query a Task by ID](#query-a-task-by-id). Includes the [`FutureResponse` struct](#futureresponse).
-
-```
-FutureResponse futureResponse;
+XXX
 ```
 
 ## Enums
 
-### `FutureVoteType`
+### `XXX`
 
-- **Description**: The Task vote type.
+- **Description**: XXX.
 
 ```
-Unspecified,
-Verified,
-Rejected
+XXX
 ```
 
 ## Events
 
-### `CreateFuture`
+### `XXX`
 
-- **Description**: An event emitted when [a Task is created](#create-a-new-task).
+- **Description**: An event emitted when [XXX].
 - **Parameters**:  
   ```sol
-  uint64 indexed futureId,
-  address indexed creator,
-  string handler,
-  address callbackAddress
+  XXX
   ```

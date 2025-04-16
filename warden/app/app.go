@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/url"
@@ -15,6 +16,7 @@ import (
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -75,6 +77,7 @@ import (
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	"github.com/spf13/cast"
 
+	jsonprecompile "github.com/warden-protocol/wardenprotocol/precompiles/json"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
@@ -83,6 +86,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
+	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -514,6 +518,43 @@ func New(
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
 
 	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
+
+	v063UpgradeName := "v062-to-v063"
+	app.UpgradeKeeper.SetUpgradeHandler(v063UpgradeName, func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		toVM, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+		if err != nil {
+			return toVM, err
+		}
+
+		// add new x/evm precompiles
+		sdkCtx := sdk.UnwrapSDKContext(ctx)
+		evmParams := app.EvmKeeper.GetParams(sdkCtx)
+		evmParams.ActiveStaticPrecompiles = append(evmParams.ActiveStaticPrecompiles,
+			jsonprecompile.PrecompileAddress,
+		)
+
+		if err := evmParams.Validate(); err != nil {
+			return toVM, err
+		}
+
+		if err := app.EvmKeeper.SetParams(sdkCtx, evmParams); err != nil {
+			return toVM, err
+		}
+
+		// add new 1st party plugins
+		newPlugins := []asynctypes.Plugin{
+			{Id: "echo"},
+			{Id: "pricepred"},
+			{Id: "http"},
+		}
+		for _, p := range newPlugins {
+			if err := app.AsyncKeeper.AddPlugin(ctx, p); err != nil {
+				return toVM, err
+			}
+		}
+
+		return toVM, nil
+	})
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

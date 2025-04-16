@@ -25,7 +25,7 @@ _rm_rf dir:
 snapshot: snapshot-base snapshot-keychain snapshot-many-users
 
 # Define the new precompiles addresses
-warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903"]'
+warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904"]'
 
 # regenerate ./testdata/snapshot-base
 snapshot-base:
@@ -215,3 +215,10 @@ contract-caller:
   solc --evm-version paris --bin ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   solc --evm-version paris --abi ./testdata/contracts/caller/Caller.sol -o ./testdata/contracts/caller --overwrite
   abigen --bin=./testdata/contracts/caller/Caller.bin --abi=./testdata/contracts/caller/Caller.abi --pkg=caller --out=./testdata/contracts/caller/Caller.go
+
+# regenerate json user contract
+contract-json-user:
+  # cp -f ./../precompiles/json/IJson.sol ./testdata/contracts/json-user/IJson.sol
+  solc --evm-version paris --bin precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  solc --evm-version paris --abi precompile-json/=../precompiles/json/ precompile-act/=../precompiles/act/ precompile-common/=../precompiles/common/ ./testdata/contracts/json-user/JsonUser.sol -o ./testdata/contracts/json-user --overwrite --via-ir
+  abigen --bin=./testdata/contracts/json-user/JsonUser.bin --abi=./testdata/contracts/json-user/JsonUser.abi --pkg=json_user --out=./testdata/contracts/json-user/JsonUser.go

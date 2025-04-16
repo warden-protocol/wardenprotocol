@@ -39,6 +39,7 @@ require (
 	cosmossdk.io/x/tx v0.13.7
 	cosmossdk.io/x/upgrade v0.1.4
 	github.com/CosmWasm/wasmd v0.51.0
+	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.4
 	github.com/bufbuild/buf v1.51.0
 	github.com/caarlos0/env/v10 v10.0.0

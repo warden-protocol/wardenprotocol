@@ -109,28 +109,6 @@ func execute(cmdString string) (Out, error) {
 	return Out{Stdout: output, Stderr: errOutput}, nil
 }
 
-func (f *Faucet) setupNewAccount() error {
-	cmd := strings.Join([]string{
-		"echo",
-		f.config.Mnemonic,
-		"|",
-		f.config.CliName,
-		"keys",
-		"--keyring-backend",
-		"test",
-		"add",
-		f.config.AccountName,
-		"--recover",
-	}, " ")
-
-	_, err := execute(cmd)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func validAddress(addr string) error {
 	pref, _, err := bech32.DecodeAndConvert(addr)
 	if err != nil {
@@ -178,36 +156,6 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	}
 
 	return f, nil
-}
-
-func (f *Faucet) batchProcessInterval() {
-	f.log.Info().Msgf("starting batch process interval")
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	ticker := time.NewTicker(f.config.BatchInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			if len(f.Batch) > 0 {
-				if txHash, _, err := f.Send("", true); err != nil {
-					reqErrorCount.Inc()
-					f.log.Error().Msgf("error sending batch: %s", err)
-				} else {
-					f.log.Debug().Msgf("tx hash %s", txHash)
-					f.LatestTXHash = txHash
-
-					batchSendCount.Inc()
-					batchSize.Set(0)
-				}
-			}
-		}
-	}
 }
 
 func addressInBatch(batch []string, addr string) bool {
@@ -377,5 +325,57 @@ func (f *Faucet) DailyRefresh() {
 		f.Lock()
 		f.TokensAvailable = f.DailySupply
 		f.Unlock()
+	}
+}
+
+func (f *Faucet) setupNewAccount() error {
+	cmd := strings.Join([]string{
+		"echo",
+		f.config.Mnemonic,
+		"|",
+		f.config.CliName,
+		"keys",
+		"--keyring-backend",
+		"test",
+		"add",
+		f.config.AccountName,
+		"--recover",
+	}, " ")
+
+	_, err := execute(cmd)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *Faucet) batchProcessInterval() {
+	f.log.Info().Msgf("starting batch process interval")
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	ticker := time.NewTicker(f.config.BatchInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			if len(f.Batch) > 0 {
+				if txHash, _, err := f.Send("", true); err != nil {
+					reqErrorCount.Inc()
+					f.log.Error().Msgf("error sending batch: %s", err)
+				} else {
+					f.log.Debug().Msgf("tx hash %s", txHash)
+					f.LatestTXHash = txHash
+
+					batchSendCount.Inc()
+					batchSize.Set(0)
+				}
+			}
+		}
 	}
 }

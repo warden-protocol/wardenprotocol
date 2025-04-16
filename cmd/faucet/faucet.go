@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/big"
 	"net/http"
 	"os/exec"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -154,7 +154,6 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		logger.Fatal().Msgf("error loading config: %s", err)
 	}
 
-	amount, err := strconv.Atoi(cfg.Amount)
 	if err != nil {
 		return Faucet{}, err
 	}
@@ -166,7 +165,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		log:             logger,
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
-		Amount:          float64(amount),
+		Amount:          float64(cfg.Amount),
 		DisplayTokens:   bool(cfg.DisplayTokens),
 	}
 
@@ -284,9 +283,24 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Debug().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
+	f.log.Debug().Msgf("sending %s %s to %v", f.config.Amount, f.config.Denom, f.Batch)
 
-	amount := f.config.Amount + strings.Repeat("0", f.config.Decimals) + f.config.Denom
+	// Convert the float amount to a big.Float.
+	amt := new(big.Float).SetFloat64(f.config.Amount)
+
+	// Compute the multiplier as 10^decimals using big.Int and then convert to big.Float.
+	multiplierInt := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(f.config.Exponent)), nil)
+	multiplier := new(big.Float).SetInt(multiplierInt)
+
+	// Multiply the amount by the multiplier to shift the decimal point.
+	amt.Mul(amt, multiplier)
+
+	// Convert the scaled value to a big.Int, truncating any fractional part.
+	intAmt := new(big.Int)
+	amt.Int(intAmt)
+
+	// Build the final result string by concatenating the integer amount and the denomination.
+	amount := intAmt.String() + f.config.Denom
 	f.log.Debug().Msg(amount)
 
 	cmd := strings.Join([]string{

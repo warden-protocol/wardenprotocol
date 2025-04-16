@@ -1,9 +1,113 @@
 import { ADDRESS_ZERO, ExecuteSignedQuoteParams } from '@biconomy/abstractjs';
-import { sepolia } from "viem/chains";
-import { http, createPublicClient, createWalletClient, Hex, defineChain, encodeFunctionData, hashMessage, decodeEventLog, parseSignature, serializeSignature, concatHex } from "viem";
+import { arbitrumSepolia, baseSepolia, sepolia } from "viem/chains";
+import { http, createPublicClient, createWalletClient, Hex, defineChain, encodeFunctionData, hashMessage, decodeEventLog, parseSignature, serializeSignature, concatHex, serializeTransaction, parseEther, parseGwei, keccak256, encodeAbiParameters } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { BiconomyMEEClient } from '@warden-automated-orders/blockchain';
 // import { privateKeyToAccount } from 'viem/accounts';
+
+type WardenContractABI = readonly {
+    inputs: readonly { name: string; type: string }[];
+    name: string;
+    outputs?: readonly { name: string; type: string; components?: readonly { name: string; type: string }[] }[];
+    stateMutability?: string;
+    type: string;
+    anonymous?: boolean;
+}[];
+
+async function createAndWaitForSignRequest(
+    wardenChainClient: ReturnType<typeof createPublicClient>,
+    wardenWalletClient: ReturnType<typeof createWalletClient>,
+    keyId: bigint,
+    signRequestInput: Hex,
+    nonce: bigint,
+    wardenContractABI: WardenContractABI
+): Promise<Hex> {
+    const actionTimeoutHeight = (await wardenChainClient.getBlockNumber()) + 1000n;
+
+    console.log("Creating new sign request...");
+    const txHash = await wardenWalletClient.writeContract({
+        address: "0x0000000000000000000000000000000000000900",
+        abi: wardenContractABI,
+        functionName: "newSignRequest",
+        args: [
+            keyId, // keyId
+            signRequestInput, // input
+            [], // analyzers
+            "0x", // encryptionKey
+            [], // maxKeychainFees
+            nonce, // nonce
+            actionTimeoutHeight, // actionTimeoutHeight
+            "any(1, warden.space.owners)", // expectedApproveExpression
+            "any(1, warden.space.owners)", // expectedRejectExpression
+            0 // broadcastType
+        ] as const,
+        gas: 5000000n,
+        chain: wardenChainClient.chain,
+        account: wardenWalletClient.account ?? null
+    });
+    
+    // Wait for transaction receipt
+    const receipt = await wardenChainClient.waitForTransactionReceipt({ hash: txHash });
+    if (receipt.status === 'reverted') {
+        throw new Error("New sign request reverted");
+    }
+    // Get the NewSignRequest event from the receipt
+    const newSignRequestEvent = receipt.logs
+        .map(log => {
+            try {
+                return decodeEventLog({
+                    abi: wardenContractABI,
+                    data: log.data,
+                    topics: log.topics
+                });
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (e) {
+                return null;
+            }
+        })
+        .find(event => event && event.eventName === 'NewSignRequest');
+    
+    if (!newSignRequestEvent) {
+        throw new Error("No NewSignRequest event found in transaction");
+    }
+
+    const eventArgs = newSignRequestEvent.args as unknown;
+    if (!eventArgs || typeof eventArgs !== 'object' || !('id' in eventArgs)) {
+        throw new Error("Invalid event args structure");
+    }
+    const { id } = eventArgs as { id: bigint };
+    console.log("Waiting for sign request to be processed...");
+    
+    // Poll for sign request status
+    let signRequest;
+    let attempts = 0;
+    const maxAttempts = 200;
+    
+    while (attempts < maxAttempts) {
+        signRequest = await wardenChainClient.readContract({
+            address: "0x0000000000000000000000000000000000000900",
+            abi: wardenContractABI,
+            functionName: "signRequestById",
+            args: [id]
+        });
+        
+        // Status 1 = Pending
+        if (signRequest.status !== 1) {
+            if (signRequest.status === 3) {
+                throw new Error('Sign request rejected');
+            }
+
+            return signRequest.result as Hex;
+        }
+        
+        attempts++;
+        if (attempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 6000)); // Wait 6 seconds
+        }
+    }
+    
+    throw new Error("Timeout waiting for sign request to be processed");
+}
 
 async function main() {
     const wardenPrivate = process.env.PRIVATE_KEY!;
@@ -178,7 +282,7 @@ async function main() {
     }] as const;
 
     // Read key data from contract
-    console.log("1. Reading key data...");
+    console.log("Reading key data...");
     const keyResponse = await wardenChainClient.readContract({
         address: "0x0000000000000000000000000000000000000900",
         abi: wardenContractABI,
@@ -196,163 +300,179 @@ async function main() {
     });
 
     // Calculate deadline (timestamp for next year)
-    const nextYear = new Date();
-    nextYear.setFullYear(nextYear.getFullYear() + 1);
-    const deadline = Math.floor(nextYear.getTime() / 1000);
+    // const nextYear = new Date();
+    // nextYear.setFullYear(nextYear.getFullYear() + 1);
+    // const deadline = Math.floor(nextYear.getTime() / 1000);
 
     // Encode swap function calldata
-    const swapCalldata = encodeFunctionData({
-        abi: [{
-            inputs: [
-                { name: "amountOutMin", type: "uint256" },
-                { name: "path", type: "address[]" },
-                { name: "to", type: "address" },
-                { name: "deadline", type: "uint256" }
-            ],
-            name: "swapExactETHForTokens",
-            type: "function"
-        }],
-        functionName: "swapExactETHForTokens",
-        args: [
-            1n, // amountOutMin
-            [
-                "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
-                "0xE5a71132Ae99691ef35F68459aDde842118A86a5"
-            ], // path
-            keyAddress, // to
-            BigInt(deadline) // deadline
-        ]
-    });
+    // const swapCalldata = encodeFunctionData({
+    //     abi: [{
+    //         inputs: [
+    //             { name: "amountOutMin", type: "uint256" },
+    //             { name: "path", type: "address[]" },
+    //             { name: "to", type: "address" },
+    //             { name: "deadline", type: "uint256" }
+    //         ],
+    //         name: "swapExactETHForTokens",
+    //         type: "function"
+    //     }],
+    //     functionName: "swapExactETHForTokens",
+    //     args: [
+    //         1n, // amountOutMin
+    //         [
+    //             "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+    //             "0xE5a71132Ae99691ef35F68459aDde842118A86a5"
+    //         ], // path
+    //         keyAddress, // to
+    //         BigInt(deadline) // deadline
+    //     ]
+    // });
 
     const meeClient = new BiconomyMEEClient();
-    const targetChainId = sepolia.id;
+    // const targetChainId = sepolia.id;
+    // const targetChain = arbitrumSepolia;
+    const targetChain = baseSepolia;
+    const targetChainClient = createPublicClient({
+        chain: targetChain,
+        transport: http()
+    });
     // 1. construct super tx
+    const value = 1n;
     const instructions = [
         {
-            chainId: targetChainId,
+            chainId: targetChain.id,
             calls: [
                 {
-                    to: '0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3' as Hex,
-                    value: 100000000000000n, // 0.0001
-                    data: swapCalldata,
+                    to: '0xE85176CeBB04B4f10057BE76c6D95E8CDE583A70' as Hex,
+                    value,
+                    // data: swapCalldata,
                 }
             ]
         },
     ];
-    console.log("2. Prepare super tx...");
+    console.log("Prepare super tx...");
     console.log(JSON.stringify(instructions, (key, value) =>
         typeof value === 'bigint'
             ? value.toString()
             : value // return everything else unchanged
     , 2));
-    console.log("3. Get hash from biconomy node...");
-    const quote = await meeClient.getQuote(keyAddress, instructions, {
-        address: ADDRESS_ZERO,
-        chainId: targetChainId
-    });
+    console.log("Get hash from biconomy node...");
+    let quote;
+    try {
+        quote = await meeClient.getQuote(keyAddress, instructions, {
+            address: ADDRESS_ZERO,
+            chainId: targetChain.id
+        });
+    }  catch (e) {
+        console.log(JSON.stringify(JSON.parse(e.config.data), null, 2));
+        throw new Error(JSON.stringify(e.response ? e.response.data : e.message, null, 2));
+    }
     console.log('Hash:', quote.hash);
-    console.log('4. Prepare EIP191 hash...');
-    const signRequestInput = hashMessage({ raw: quote.hash });
-    console.log('Hash:', signRequestInput);
-    const actionTimeoutHeight = (await wardenChainClient.getBlockNumber()) + 1000n;
 
-    console.log("5. Creating new sign request with prepared hash...");
-    const txHash = await wardenWalletClient.writeContract({
-        address: "0x0000000000000000000000000000000000000900",
-        abi: wardenContractABI,
-        functionName: "newSignRequest",
-        args: [
-            BigInt(keyId), // keyId
-            signRequestInput, // input
-            [], // analyzers
-            "0x", // encryptionKey
-            [], // maxKeychainFees
-            spaceData.nonce, // nonce
-            actionTimeoutHeight, // actionTimeoutHeight
-            "any(1, warden.space.owners)", // expectedApproveExpression
-            "any(1, warden.space.owners)", // expectedRejectExpression
-            0 // broadcastType
-        ],
-        gas: 5000000n
-    });
-    
-    // Wait for transaction receipt
-    const receipt = await wardenChainClient.waitForTransactionReceipt({ hash: txHash });
-    if (receipt.status === 'reverted') {
-        throw new Error("New sign request reverted");
-    }
-    // Get the NewSignRequest event from the receipt
-    const newSignRequestEvent = receipt.logs
-        .map(log => {
-            try {
-                return decodeEventLog({
-                    abi: wardenContractABI,
-                    data: log.data,
-                    topics: log.topics
-                });
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            } catch (e) {
-                return null;
-            }
-        })
-        .find(event => event && event.eventName === 'NewSignRequest');
-    let signRequestResult;
-    if (newSignRequestEvent) {
-        const { id } = newSignRequestEvent.args;
-        console.log("6. Waiting for sign request to be processed...");
-        
-        // Poll for sign request status
-        let signRequest;
-        let attempts = 0;
-        const maxAttempts = 200;
-        
-        while (attempts < maxAttempts) {
-            signRequest = await wardenChainClient.readContract({
-                address: "0x0000000000000000000000000000000000000900",
-                abi: wardenContractABI,
-                functionName: "signRequestById",
-                args: [id]
-            });
-            
-            // Status 1 = Pending
-            if (signRequest.status !== 1) {
-                if (signRequest.status === 3) {
-                    throw new Error('Sign request rejected');
-                }
-
-                signRequestResult = signRequest.result as Hex;
-                break;
-            }
-            
-            attempts++;
-            if (attempts < maxAttempts) {
-                await new Promise(resolve => setTimeout(resolve, 6000)); // Wait 6 seconds
-            }
+    const spendAmount = BigInt(quote.paymentInfo.tokenWeiAmount) + value;
+    const sender = quote.userOps[0].userOp.sender;
+    console.log('Estimate sender balance...');
+    const senderBalance = await targetChainClient.getBalance({ address: sender });
+    let signature;
+    if (senderBalance < spendAmount) {
+        console.log('Sender has not enough balance, funding by EOA...');
+        const keyAddressBalance = await targetChainClient.getBalance({ address: keyAddress });
+        if (keyAddressBalance + senderBalance < spendAmount) {
+            throw new Error(`not enough balance. need ${spendAmount}, have ${keyAddressBalance + senderBalance}=sender ${senderBalance} + keyAccount ${keyAddressBalance}`);
         }
-        
-        if (attempts === maxAttempts) {
-            throw new Error("Timeout waiting for sign request to be processed");
-        }
-    } else {
-        throw new Error("No NewSignRequest event found in transaction");
-    }
-    
-    console.log(`Received signature ${signRequestResult}`);
-    
-    const parsedSignature = parseSignature(signRequestResult);
-    const signature = serializeSignature({ ...parsedSignature, v: parsedSignature.v ? parsedSignature.v : 27n + BigInt(parsedSignature.yParity) });
 
+        const toSend = spendAmount - senderBalance;
+        const gas = await targetChainClient.estimateGas({
+            account: keyAddress,
+            to: sender,
+            value: toSend,
+            data: quote.hash
+        });
+        const { maxFeePerGas, maxPriorityFeePerGas } = await targetChainClient.estimateFeesPerGas();
+        
+        const keyAddressNonce = await targetChainClient.getTransactionCount({ address: keyAddress });
+        
+        const tx = {
+            chainId: targetChain.id,
+            gas,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            nonce: keyAddressNonce,
+            to: sender,
+            value: toSend,
+            data: quote.hash
+        };
+        const fundSenderTx = serializeTransaction(tx);
+
+        const fundSenderUnsignedTxHash = keccak256(fundSenderTx);
+
+        const signRequestResult = await createAndWaitForSignRequest(
+            wardenChainClient,
+            wardenWalletClient,
+            BigInt(keyId),
+            fundSenderUnsignedTxHash,
+            spaceData.nonce,
+            wardenContractABI
+        );
+
+        // check that transaction succeed
+        const parsedSignature = parseSignature(signRequestResult);
+        const signedTx = serializeTransaction(tx, parsedSignature);
+        console.log("Send funding transaction...");
+        const hash = await targetChainClient.sendRawTransaction({
+            serializedTransaction: signedTx,
+        });
+        const receipt = await targetChainClient.waitForTransactionReceipt({ hash });
+        if (receipt.status == 'reverted') {
+            throw Error(`Funding reverted, receipt: ${JSON.stringify(receipt, (key, value) =>
+                typeof value === 'bigint'
+                    ? value.toString()
+                    : value // return everything else unchanged
+            , 2)}`);
+        }
+
+        signature = concatHex([
+            "0x01", // add "0x01" prefix to denote it's an EOA tx signature
+            encodeAbiParameters( // encoded EOA tx hash and the chain id where the EOA tx was executed
+              [
+                { name: "txHash", type: "bytes32" },
+                { name: "chainId", type: "uint256" }
+              ],
+              [ hash, BigInt(targetChain.id) ]
+            )
+          ])
+    } else {    
+        console.log('Prepare EIP191 hash...');
+        const signRequestInput = hashMessage({ raw: quote.hash });
+        console.log('Hash:', signRequestInput);
+
+        console.log("Creating new sign request with prepared hash...");
+        const signRequestResult = await createAndWaitForSignRequest(
+            wardenChainClient,
+            wardenWalletClient,
+            BigInt(keyId),
+            signRequestInput,
+            spaceData.nonce,
+            wardenContractABI
+        );
+
+        console.log(`Received signature ${signRequestResult}`);
+
+        const parsedSignature = parseSignature(signRequestResult);
+        signature = concatHex(['0x00', serializeSignature({ ...parsedSignature, v: parsedSignature.v ? parsedSignature.v : 27n + BigInt(parsedSignature.yParity) })]);
+    }
     const params: ExecuteSignedQuoteParams = {
-    signedQuote: { ...quote, signature: concatHex(["0x00", signature]) }
+        signedQuote: { ...quote, signature }
     };
 
-    console.log("7. Send signed super tx to biconomy node...");
+    console.log("Send signed super tx to biconomy node...");
     try {
         const executePayload = await meeClient.executeSignedQuote(params);
         console.log(executePayload);
-        
-        console.log(`8. Link to super tx: https://meescan.biconomy.io/details/${executePayload.hash}`);
+
+        console.log(`Link to super tx: https://meescan.biconomy.io/details/${executePayload.hash}`);
     } catch (e) {
+        console.log(JSON.stringify(JSON.parse(e.config.data), null, 2));
         throw new Error(JSON.stringify(e.response ? e.response.data : e.message, null, 2));
     }
 }

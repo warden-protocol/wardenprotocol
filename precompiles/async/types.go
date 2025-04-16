@@ -16,6 +16,26 @@ type TasksInput struct {
 	Creator    common.Address    `abi:"creator"`
 }
 
+func (r *PluginsResponse) FromResponse(res *types.QueryPluginsResponse) (PluginsResponse, error) {
+	if res != nil {
+		plugins := make([]Plugin, 0, len(res.Plugins))
+
+		for _, p := range res.Plugins {
+			mappedPlugin, err := mapPlugin(p)
+			if err != nil {
+				return PluginsResponse{}, err
+			}
+
+			plugins = append(plugins, mappedPlugin)
+		}
+
+		r.Plugins = plugins
+		r.Pagination = mapPageResponse(res.Pagination)
+	}
+
+	return *r, nil
+}
+
 // FromResponse needed to map QueryTasksResponse to TasksResponse.
 func (r *TasksResponse) FromResponse(res *types.QueryTasksResponse) (TasksResponse, error) {
 	if res != nil {
@@ -70,6 +90,19 @@ func (r *TaskByIdResponse) FromResponse(res *types.QueryTaskByIdResponse) (TaskB
 	}
 
 	return *r, nil
+}
+
+func mapPlugin(plugin types.Plugin) (Plugin, error) {
+	creator, err := precommon.AddressFromBech32Str(plugin.Creator)
+	if err != nil {
+		return Plugin{}, fmt.Errorf("invalid creator: %w", err)
+	}
+
+	return Plugin{
+		Id:          plugin.Id,
+		Creator:     creator,
+		Description: plugin.Description,
+	}, nil
 }
 
 func mapTask(task types.Task) (Task, error) {

@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -121,11 +120,6 @@ func main() {
 		DisplayTokens:          f.config.DisplayTokens,
 	}
 
-	amount, err := strconv.Atoi(f.config.Amount)
-	if err != nil {
-		logger.Error().Msgf("error converting amount to integer: %s", err)
-	}
-
 	// Start batch process
 	go f.batchProcessInterval()
 
@@ -187,7 +181,7 @@ func main() {
 		}
 
 		if txHash != "" {
-			page.Data.TokensAvailable -= float64(amount)
+			page.Data.TokensAvailable -= f.Amount
 			page.Data.TokensAvailablePercent = page.Data.TokensAvailable / page.Data.TokenSupply * totalPercent
 
 			logger.Info().Msgf("txHash: %s", txHash)

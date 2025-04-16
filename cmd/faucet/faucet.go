@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/big"
 	"net/http"
 	"os/exec"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -109,28 +109,6 @@ func execute(cmdString string) (Out, error) {
 	return Out{Stdout: output, Stderr: errOutput}, nil
 }
 
-func (f *Faucet) setupNewAccount() error {
-	cmd := strings.Join([]string{
-		"echo",
-		f.config.Mnemonic,
-		"|",
-		f.config.CliName,
-		"keys",
-		"--keyring-backend",
-		"test",
-		"add",
-		f.config.AccountName,
-		"--recover",
-	}, " ")
-
-	_, err := execute(cmd)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func validAddress(addr string) error {
 	pref, _, err := bech32.DecodeAndConvert(addr)
 	if err != nil {
@@ -154,11 +132,6 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		logger.Fatal().Msgf("error loading config: %s", err)
 	}
 
-	amount, err := strconv.Atoi(cfg.Amount)
-	if err != nil {
-		return Faucet{}, err
-	}
-
 	f := Faucet{
 		config:          cfg,
 		Mutex:           &sync.Mutex{},
@@ -166,7 +139,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		log:             logger,
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
-		Amount:          float64(amount),
+		Amount:          cfg.Amount,
 		DisplayTokens:   bool(cfg.DisplayTokens),
 	}
 
@@ -179,36 +152,6 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	}
 
 	return f, nil
-}
-
-func (f *Faucet) batchProcessInterval() {
-	f.log.Info().Msgf("starting batch process interval")
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	ticker := time.NewTicker(f.config.BatchInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			if len(f.Batch) > 0 {
-				if txHash, _, err := f.Send("", true); err != nil {
-					reqErrorCount.Inc()
-					f.log.Error().Msgf("error sending batch: %s", err)
-				} else {
-					f.log.Debug().Msgf("tx hash %s", txHash)
-					f.LatestTXHash = txHash
-
-					batchSendCount.Inc()
-					batchSize.Set(0)
-				}
-			}
-		}
-	}
 }
 
 func addressInBatch(batch []string, addr string) bool {
@@ -284,9 +227,24 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Debug().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
+	f.log.Debug().Msgf("sending %f %s to %v", f.config.Amount, f.config.Denom, f.Batch)
 
-	amount := f.config.Amount + strings.Repeat("0", f.config.Decimals) + f.config.Denom
+	// Convert the float amount to a big.Float.
+	amt := new(big.Float).SetFloat64(f.config.Amount)
+
+	// Compute the multiplier as 10^decimals using big.Int and then convert to big.Float.
+	multiplierInt := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(f.config.Exponent)), nil)
+	multiplier := new(big.Float).SetInt(multiplierInt)
+
+	// Multiply the amount by the multiplier to shift the decimal point.
+	amt.Mul(amt, multiplier)
+
+	// Convert the scaled value to a big.Int, truncating any fractional part.
+	intAmt := new(big.Int)
+	amt.Int(intAmt)
+
+	// Build the final result string by concatenating the integer amount and the denomination.
+	amount := intAmt.String() + f.config.Denom
 	f.log.Debug().Msg(amount)
 
 	cmd := strings.Join([]string{
@@ -363,5 +321,57 @@ func (f *Faucet) DailyRefresh() {
 		f.Lock()
 		f.TokensAvailable = f.DailySupply
 		f.Unlock()
+	}
+}
+
+func (f *Faucet) setupNewAccount() error {
+	cmd := strings.Join([]string{
+		"echo",
+		f.config.Mnemonic,
+		"|",
+		f.config.CliName,
+		"keys",
+		"--keyring-backend",
+		"test",
+		"add",
+		f.config.AccountName,
+		"--recover",
+	}, " ")
+
+	_, err := execute(cmd)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *Faucet) batchProcessInterval() {
+	f.log.Info().Msgf("starting batch process interval")
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	ticker := time.NewTicker(f.config.BatchInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			if len(f.Batch) > 0 {
+				if txHash, _, err := f.Send("", true); err != nil {
+					reqErrorCount.Inc()
+					f.log.Error().Msgf("error sending batch: %s", err)
+				} else {
+					f.log.Debug().Msgf("tx hash %s", txHash)
+					f.LatestTXHash = txHash
+
+					batchSendCount.Inc()
+					batchSize.Set(0)
+				}
+			}
+		}
 	}
 }

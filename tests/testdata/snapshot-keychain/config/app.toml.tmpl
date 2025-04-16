@@ -415,5 +415,19 @@ gas-prices = "4000000.000000000000000000award"
 # Is price prediction enabled
 enabled = "true"
 
-# URL used for price prediction handler
+# URL used for price prediction plugin
 url = "https://tpc.devnet.wardenprotocol.org"
+
+###############################################################################
+###                      HTTP configuration                                 ###
+###############################################################################
+[http]
+
+# Is HTTP plugin enabled
+enabled = "true"
+
+# URLs used for HTTP plugin
+urls = ["https://api.coingecko.com"]
+
+# Timeout in seconds for the HTTP client
+timeout_sec = 5

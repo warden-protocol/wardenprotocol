@@ -155,6 +155,93 @@
     {
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        }
+      ],
+      "name": "plugins",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "id",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "creator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "description",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct Plugin[]",
+              "name": "plugins",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct PluginsResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint64",
           "name": "taskId",
           "type": "uint64"

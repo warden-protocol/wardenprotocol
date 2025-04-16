@@ -2,6 +2,9 @@
 sidebar_position: 1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Chiado overview
 
 :::important
@@ -22,9 +25,28 @@ The latest binary version compatible with Chiado is [wardend v.0.6.2](https://gi
 
 ## Endpoints
 
-To interact with the node, use trusted Chiado endpoints. You can find them on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/chiado/chain.json).
+To interact with the node, use trusted Chiado endpoints:
 
-Note that Chiado supports EVM endpoints for [deploying EVM contracts](http://localhost:3000/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract).
+```bash title="RPC"
+https://rpc.chiado.wardenprotocol.org/
+```
+
+```bash title="REST"
+https://api.chiado.wardenprotocol.org/
+```
+
+```bash title="gRPC"
+https://grpc.chiado.wardenprotocol.org/
+```
+
+```bash title="EVM"
+https://evm.chiado.wardenprotocol.org
+```
+
+:::note Notes
+- You can also find these endpoints on GitHub in [chain.json](https://github.com/warden-protocol/networks/tree/main/testnets/chiado/chain.json).
+- The EVM endpoint allows [deploying EVM contracts](/build-an-app/deploy-smart-contracts-on-warden/deploy-an-evm-contract).
+:::
 
 ## Chain ID
 

@@ -347,10 +347,14 @@ async function main() {
     };
 
     console.log("7. Send signed super tx to biconomy node...");
-    const executePayload = await meeClient.executeSignedQuote(params);
-    console.log(executePayload);
-    
-    console.log(`8. Link to super tx: https://meescan.biconomy.io/details/${executePayload.hash}`);
+    try {
+        const executePayload = await meeClient.executeSignedQuote(params);
+        console.log(executePayload);
+        
+        console.log(`8. Link to super tx: https://meescan.biconomy.io/details/${executePayload.hash}`);
+    } catch (e) {
+        throw new Error(e.response ? e.response.data : e.message);
+    }
 }
 
 main().catch(console.error)

@@ -111,7 +111,7 @@ To connect to the [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overvie
 3. Clone the Warden Protocol repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.6.2 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.6.3 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 

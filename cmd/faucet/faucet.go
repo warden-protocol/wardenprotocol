@@ -283,7 +283,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Debug().Msgf("sending %s %s to %v", f.config.Amount, f.config.Denom, f.Batch)
+	f.log.Debug().Msgf("sending %f %s to %v", f.config.Amount, f.config.Denom, f.Batch)
 
 	// Convert the float amount to a big.Float.
 	amt := new(big.Float).SetFloat64(f.config.Amount)

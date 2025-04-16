@@ -43,7 +43,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Remove a JSON object
 
 - **Method**: `remove()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -54,12 +54,12 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-## Values
+## Getting values
 
 ### Get a value
 
 - **Method**: `get()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -73,7 +73,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get a string value
 
 - **Method**: `getString()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -87,7 +87,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get a bool value
 
 - **Method**: `getBool()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -101,7 +101,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get an address value
 
 - **Method**: `getAddress()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -115,7 +115,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get an int256 value
 
 - **Method**: `getInt256()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -129,7 +129,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get a uint256 value
 
 - **Method**: `getUint256()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -143,7 +143,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get a float
 
 - **Method**: `getFloat()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -157,7 +157,39 @@ To reference the `IJson` precompile in your code, use the following precompile a
 ### Get a string array
 
 - **Method**: `getStringArray()`
-- **Description**: XXX. Emits the [`XXX` event].
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+## Setting values
+
+### XXX
+
+- **Method**: `XXX()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+## Reading & writing
+
+### XXX
+
+- **Method**: `XXX()`
+- **Description**: XXX. See the [`XXX` struct].
 - **Parameters** :
   ```sol
   XXX
@@ -192,22 +224,10 @@ To reference the `IJson` precompile in your code, use the following precompile a
 XXX
 ```
 
-## Enums
-
 ### `XXX`
 
-- **Description**: XXX.
+- **Description**: A struct representing XXX. Includes the [`XXX` struct].
 
 ```
 XXX
 ```
-
-## Events
-
-### `XXX`
-
-- **Description**: An event emitted when [XXX].
-- **Parameters**:  
-  ```sol
-  XXX
-  ```

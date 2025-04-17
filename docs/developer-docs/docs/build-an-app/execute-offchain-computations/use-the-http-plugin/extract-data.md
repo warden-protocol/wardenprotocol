@@ -6,11 +6,11 @@ sidebar_position: 4
 
 ## Overview
 
-Warden encodes responses from HTTP requests in **CBOR** (Concise Binary Object Representation): a binary data format similar to JSON but more compact. You could see an example of such output in the previous guide, when [testing the CoinGecko API](implement-http-requests#22-test-the-coingecko-api).
+Warden encodes responses from HTTP requests in **CBOR** (Concise Binary Object Representation): a binary data format similar to JSON but more compact. You could see an example of such output in the previous guide, when [testing the CoinGecko API](implement-http-requests#31-call-the-coingecko-api).
 
 This tutorial will guide you through extracting specific data from CBOR-encoded responses. You'll create a contract that can extract the Bitcoin price from the [CoinGecko API](https://docs.coingecko.com/reference/introduction) responses.
 
-## Step 1. Create a contract
+## 1. Create a contract
 
 Create a new file `DataExtraction.sol`:
 
@@ -99,7 +99,7 @@ This contract adds:
 - Functions to inspect the raw response bytes
 - A simple function to extract the Bitcoin price from the CBOR data
 
-## Step 2. Deploy and test
+## 2. Deploy
 
 1. Deploy the contract:
    
@@ -113,8 +113,10 @@ This contract adds:
    ```bash
    export CONTRACT_ADDRESS=my-contract-address
    ```
+
+## 3. Make an HTTP request
    
-3. Make an HTTP request by calling the `getBitcoinPrice()` function:
+1. Make an HTTP request by calling the `getBitcoinPrice()` function:
 
    ```bash
    cast send $CONTRACT_ADDRESS "getBitcoinPrice()" \
@@ -122,7 +124,7 @@ This contract adds:
      --rpc-url $RPC_URL
    ```
    
-4. Wait a few seconds, then use the `processResponse()` function to process the result:
+2. Wait a few seconds, then use the `processResponse()` function to process the result:
    
    ```bash
    cast send $CONTRACT_ADDRESS "processResponse()" \
@@ -130,7 +132,7 @@ This contract adds:
      --rpc-url $RPC_URL
    ```
 
-4. Get the raw response bytes by calling `dumpResponseHex()`:
+3. Get the raw response bytes by calling `dumpResponseHex()`:
    
    ```bash
    cast call $CONTRACT_ADDRESS "dumpResponseHex()(bytes)" --rpc-url $RPC_URL
@@ -142,7 +144,7 @@ This contract adds:
    0xa1...
    ```
 
-5. Extract the Bitcoin price by calling `getBitcoinPriceSimple()(uint256) `:
+4. Extract the Bitcoin price by calling `getBitcoinPriceSimple()(uint256) `:
 
    ```bash
    cast call $CONTRACT_ADDRESS "getBitcoinPriceSimple()(uint256)" --rpc-url $RPC_URL

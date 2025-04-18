@@ -37,10 +37,12 @@ message Task {
   // The actual format is determined by the plugin being used.
   bytes input = 4;
   // Callback to be called when the Task is completed.
-  string callback = 5;
+  string callback = 5 [deprecated = true];
   // Deducted fee are the tokens collected this module when this Task was created.
   // When this Task is executed, the fees are distributed among the executor (the validator who included the result), and the plugin creator.
   DeductedFee fee = 6 [(gogoproto.nullable) = false];
+  // Id of callback to be called when the Task is completed.
+  uint64 callback_id = 7;
 }
 
 // TaskResult is the result of the execution of a Task.

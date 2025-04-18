@@ -14,7 +14,13 @@
         }
       ],
       "name": "cb",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     }

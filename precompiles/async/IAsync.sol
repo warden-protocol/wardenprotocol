@@ -36,6 +36,7 @@ struct Task {
     string plugin;
     bytes input;
     DeductedFee fee;
+    uint64 callbackId;
 }
 
 enum TaskVoteType {

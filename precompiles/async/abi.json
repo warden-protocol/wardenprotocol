@@ -207,6 +207,11 @@
                   "internalType": "struct DeductedFee",
                   "name": "fee",
                   "type": "tuple"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "callbackId",
+                  "type": "uint64"
                 }
               ],
               "internalType": "struct Task[]",
@@ -409,6 +414,11 @@
                       "internalType": "struct DeductedFee",
                       "name": "fee",
                       "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "callbackId",
+                      "type": "uint64"
                     }
                   ],
                   "internalType": "struct Task",
@@ -598,6 +608,11 @@
                       "internalType": "struct DeductedFee",
                       "name": "fee",
                       "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "callbackId",
+                      "type": "uint64"
                     }
                   ],
                   "internalType": "struct Task",

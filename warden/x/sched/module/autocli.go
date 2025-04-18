@@ -3,7 +3,7 @@ package sched
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/module"
+	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/v1beta1"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

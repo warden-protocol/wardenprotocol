@@ -5,7 +5,8 @@ package v1beta1
 
 import (
 	fmt "fmt"
-	types "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
@@ -24,34 +25,34 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type CallbackResultFlag int32
+type CallbackStatus int32
 
 const (
 	// Unspecified callback result.
-	CallbackResultFlag_CALLBACK_RESULT_UNSPECIFIED CallbackResultFlag = 0
+	CallbackStatus_CALLBACK_RESULT_UNSPECIFIED CallbackStatus = 0
 	// Indicates that the callback execution was successful.
-	CallbackResultFlag_CALLBACK_RESULT_SUCCEED CallbackResultFlag = 1
+	CallbackStatus_CALLBACK_RESULT_SUCCEED CallbackStatus = 1
 	// Indicates that the callback execution failed.
-	CallbackResultFlag_CALLBACK_RESULT_FAILED CallbackResultFlag = 2
+	CallbackStatus_CALLBACK_RESULT_FAILED CallbackStatus = 2
 )
 
-var CallbackResultFlag_name = map[int32]string{
+var CallbackStatus_name = map[int32]string{
 	0: "CALLBACK_RESULT_UNSPECIFIED",
 	1: "CALLBACK_RESULT_SUCCEED",
 	2: "CALLBACK_RESULT_FAILED",
 }
 
-var CallbackResultFlag_value = map[string]int32{
+var CallbackStatus_value = map[string]int32{
 	"CALLBACK_RESULT_UNSPECIFIED": 0,
 	"CALLBACK_RESULT_SUCCEED":     1,
 	"CALLBACK_RESULT_FAILED":      2,
 }
 
-func (x CallbackResultFlag) String() string {
-	return proto.EnumName(CallbackResultFlag_name, int32(x))
+func (x CallbackStatus) String() string {
+	return proto.EnumName(CallbackStatus_name, int32(x))
 }
 
-func (CallbackResultFlag) EnumDescriptor() ([]byte, []int) {
+func (CallbackStatus) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_fe57e65106114805, []int{0}
 }
 
@@ -66,9 +67,7 @@ type Callback struct {
 	// Callback address.
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// The limit of gas for callback execution.
-	GasLimit string `protobuf:"bytes,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
-	// The token that will be used to pay for callback execution.
-	FeeToken types.Coin `protobuf:"bytes,4,opt,name=feeToken,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"feeToken"`
+	GasLimit uint64 `protobuf:"varint,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
 }
 
 func (m *Callback) Reset()         { *m = Callback{} }
@@ -118,30 +117,87 @@ func (m *Callback) GetAddress() string {
 	return ""
 }
 
-func (m *Callback) GetGasLimit() string {
+func (m *Callback) GetGasLimit() uint64 {
 	if m != nil {
 		return m.GasLimit
+	}
+	return 0
+}
+
+// Used by other modules to set callback.
+type CallbackParams struct {
+	Address  string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	GasLimit uint64 `protobuf:"varint,2,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
+}
+
+func (m *CallbackParams) Reset()         { *m = CallbackParams{} }
+func (m *CallbackParams) String() string { return proto.CompactTextString(m) }
+func (*CallbackParams) ProtoMessage()    {}
+func (*CallbackParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fe57e65106114805, []int{1}
+}
+func (m *CallbackParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CallbackParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CallbackParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CallbackParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CallbackParams.Merge(m, src)
+}
+func (m *CallbackParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *CallbackParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_CallbackParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CallbackParams proto.InternalMessageInfo
+
+func (m *CallbackParams) GetAddress() string {
+	if m != nil {
+		return m.Address
 	}
 	return ""
 }
 
-func (m *Callback) GetFeeToken() types.Coin {
+func (m *CallbackParams) GetGasLimit() uint64 {
 	if m != nil {
-		return m.FeeToken
+		return m.GasLimit
 	}
-	return types.Coin{}
+	return 0
 }
 
 type CallbackResult struct {
-	// The result flag.
-	Flag CallbackResultFlag `protobuf:"varint,1,opt,name=flag,proto3,enum=warden.sched.v1beta1.CallbackResultFlag" json:"flag,omitempty"`
+	// The result status.
+	Status CallbackStatus `protobuf:"varint,1,opt,name=status,proto3,enum=warden.sched.v1beta1.CallbackStatus" json:"status,omitempty"`
+	// Result of the callback, depending on the status:
+	//
+	//	If unspecified, this field is empty.
+	//	If succeed, this field contains the callback output.
+	//	If failed, this field contains the reason.
+	//
+	// Types that are valid to be assigned to Result:
+	//
+	//	*CallbackResult_Output
+	//	*CallbackResult_FailReason
+	Result isCallbackResult_Result `protobuf_oneof:"result"`
 }
 
 func (m *CallbackResult) Reset()         { *m = CallbackResult{} }
 func (m *CallbackResult) String() string { return proto.CompactTextString(m) }
 func (*CallbackResult) ProtoMessage()    {}
 func (*CallbackResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fe57e65106114805, []int{1}
+	return fileDescriptor_fe57e65106114805, []int{2}
 }
 func (m *CallbackResult) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -170,16 +226,62 @@ func (m *CallbackResult) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CallbackResult proto.InternalMessageInfo
 
-func (m *CallbackResult) GetFlag() CallbackResultFlag {
+type isCallbackResult_Result interface {
+	isCallbackResult_Result()
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type CallbackResult_Output struct {
+	Output []byte `protobuf:"bytes,2,opt,name=output,proto3,oneof" json:"output,omitempty"`
+}
+type CallbackResult_FailReason struct {
+	FailReason string `protobuf:"bytes,7,opt,name=fail_reason,json=failReason,proto3,oneof" json:"fail_reason,omitempty"`
+}
+
+func (*CallbackResult_Output) isCallbackResult_Result()     {}
+func (*CallbackResult_FailReason) isCallbackResult_Result() {}
+
+func (m *CallbackResult) GetResult() isCallbackResult_Result {
 	if m != nil {
-		return m.Flag
+		return m.Result
 	}
-	return CallbackResultFlag_CALLBACK_RESULT_UNSPECIFIED
+	return nil
+}
+
+func (m *CallbackResult) GetStatus() CallbackStatus {
+	if m != nil {
+		return m.Status
+	}
+	return CallbackStatus_CALLBACK_RESULT_UNSPECIFIED
+}
+
+func (m *CallbackResult) GetOutput() []byte {
+	if x, ok := m.GetResult().(*CallbackResult_Output); ok {
+		return x.Output
+	}
+	return nil
+}
+
+func (m *CallbackResult) GetFailReason() string {
+	if x, ok := m.GetResult().(*CallbackResult_FailReason); ok {
+		return x.FailReason
+	}
+	return ""
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*CallbackResult) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*CallbackResult_Output)(nil),
+		(*CallbackResult_FailReason)(nil),
+	}
 }
 
 func init() {
-	proto.RegisterEnum("warden.sched.v1beta1.CallbackResultFlag", CallbackResultFlag_name, CallbackResultFlag_value)
+	proto.RegisterEnum("warden.sched.v1beta1.CallbackStatus", CallbackStatus_name, CallbackStatus_value)
 	proto.RegisterType((*Callback)(nil), "warden.sched.v1beta1.Callback")
+	proto.RegisterType((*CallbackParams)(nil), "warden.sched.v1beta1.CallbackParams")
 	proto.RegisterType((*CallbackResult)(nil), "warden.sched.v1beta1.CallbackResult")
 }
 
@@ -188,32 +290,35 @@ func init() {
 }
 
 var fileDescriptor_fe57e65106114805 = []byte{
-	// 399 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x52, 0xcd, 0xce, 0xd2, 0x40,
-	0x14, 0xed, 0x54, 0xa2, 0x38, 0x26, 0x84, 0x4c, 0x88, 0xd6, 0x92, 0x14, 0x82, 0x9b, 0xc6, 0x84,
-	0x19, 0xc1, 0xad, 0x1b, 0x28, 0x6d, 0x42, 0x6c, 0x88, 0x29, 0xb0, 0x71, 0x83, 0xd3, 0x76, 0x28,
-	0x0d, 0xa5, 0x43, 0x98, 0xe2, 0xcf, 0x5b, 0xf8, 0x1c, 0xbe, 0x81, 0x6f, 0xc0, 0x92, 0xa5, 0x2b,
-	0x35, 0xf0, 0x22, 0x86, 0x69, 0x8b, 0xca, 0xf7, 0xad, 0x7a, 0x4f, 0xef, 0x39, 0x37, 0xe7, 0x9e,
-	0x3b, 0xf0, 0xc5, 0x27, 0xba, 0x0b, 0x59, 0x4a, 0x44, 0xb0, 0x62, 0x21, 0xf9, 0xd8, 0xf3, 0x59,
-	0x46, 0x7b, 0x24, 0xa0, 0x49, 0xe2, 0xd3, 0x60, 0x8d, 0xb7, 0x3b, 0x9e, 0x71, 0xd4, 0xc8, 0x49,
-	0x58, 0x92, 0x70, 0x41, 0xd2, 0x8d, 0x80, 0x8b, 0x0d, 0x17, 0xc4, 0xa7, 0x82, 0xfd, 0x55, 0xf2,
-	0x38, 0xcd, 0x55, 0x7a, 0x23, 0xe2, 0x11, 0x97, 0x25, 0xb9, 0x54, 0xf9, 0xdf, 0xce, 0x77, 0x00,
-	0xab, 0x56, 0x31, 0x1e, 0xd5, 0xa0, 0x1a, 0x87, 0x1a, 0x68, 0x03, 0xb3, 0xe2, 0xa9, 0x71, 0x88,
-	0x34, 0xf8, 0x88, 0x86, 0xe1, 0x8e, 0x09, 0xa1, 0xa9, 0x6d, 0x60, 0x3e, 0xf6, 0x4a, 0x88, 0x74,
-	0x58, 0x8d, 0xa8, 0x70, 0xe3, 0x4d, 0x9c, 0x69, 0x0f, 0x64, 0xeb, 0x8a, 0x51, 0x04, 0xab, 0x4b,
-	0xc6, 0x66, 0x7c, 0xcd, 0x52, 0xad, 0xd2, 0x06, 0xe6, 0x93, 0xfe, 0x73, 0x9c, 0x7b, 0xc3, 0x17,
-	0x6f, 0xa5, 0x61, 0x6c, 0xf1, 0x38, 0x1d, 0xbe, 0x3a, 0xfc, 0x6c, 0x29, 0xdf, 0x7e, 0xb5, 0xcc,
-	0x28, 0xce, 0x56, 0x7b, 0x1f, 0x07, 0x7c, 0x43, 0x8a, 0x45, 0xf2, 0x4f, 0x57, 0x84, 0x6b, 0x92,
-	0x7d, 0xd9, 0x32, 0x21, 0x05, 0xc2, 0xbb, 0x0e, 0xef, 0x4c, 0x60, 0xad, 0xb4, 0xee, 0x31, 0xb1,
-	0x4f, 0x32, 0xf4, 0x06, 0x56, 0x96, 0x09, 0x8d, 0xe4, 0x0a, 0xb5, 0xbe, 0x89, 0xef, 0x0b, 0x0a,
-	0xff, 0xaf, 0x71, 0x12, 0x1a, 0x79, 0x52, 0xf5, 0x32, 0x85, 0xe8, 0x6e, 0x0f, 0xb5, 0x60, 0xd3,
-	0x1a, 0xb8, 0xee, 0x70, 0x60, 0xbd, 0x5d, 0x78, 0xf6, 0x74, 0xee, 0xce, 0x16, 0xf3, 0xc9, 0xf4,
-	0x9d, 0x6d, 0x8d, 0x9d, 0xb1, 0x3d, 0xaa, 0x2b, 0xa8, 0x09, 0x9f, 0xdd, 0x12, 0xa6, 0x73, 0xcb,
-	0xb2, 0xed, 0x51, 0x1d, 0x20, 0x1d, 0x3e, 0xbd, 0x6d, 0x3a, 0x83, 0xb1, 0x6b, 0x8f, 0xea, 0xea,
-	0xf0, 0xc3, 0xe1, 0x64, 0x80, 0xe3, 0xc9, 0x00, 0xbf, 0x4f, 0x06, 0xf8, 0x7a, 0x36, 0x94, 0xe3,
-	0xd9, 0x50, 0x7e, 0x9c, 0x0d, 0xe5, 0xbd, 0xf3, 0x4f, 0x1a, 0xf9, 0x0e, 0x5d, 0x79, 0xae, 0x80,
-	0x27, 0x05, 0xbe, 0x81, 0xe4, 0x73, 0xf1, 0x64, 0x64, 0x52, 0xe5, 0xf9, 0xfd, 0x87, 0x92, 0xf6,
-	0xfa, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe2, 0x5d, 0x2c, 0x5c, 0x57, 0x02, 0x00, 0x00,
+	// 434 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xcf, 0x6e, 0xd3, 0x40,
+	0x10, 0xc6, 0xbd, 0x06, 0xb9, 0x61, 0x8b, 0x42, 0x58, 0x55, 0x60, 0xa5, 0x92, 0xa9, 0x0a, 0x48,
+	0x55, 0x25, 0xbc, 0x6a, 0xb9, 0x72, 0x89, 0x1d, 0x5b, 0x8d, 0xb0, 0x20, 0xda, 0x90, 0x0b, 0x97,
+	0xb0, 0xb6, 0xb7, 0xe9, 0x82, 0x9d, 0x8d, 0xbc, 0x6b, 0xfe, 0xbc, 0x05, 0x8f, 0x82, 0xe0, 0x25,
+	0x38, 0xf6, 0xc8, 0x11, 0x25, 0x07, 0x5e, 0x03, 0x65, 0x6d, 0x27, 0xc8, 0xa2, 0x17, 0x6b, 0xbf,
+	0x99, 0xdf, 0x7c, 0x33, 0x1a, 0x0f, 0x7c, 0xfc, 0x89, 0x16, 0x29, 0x5b, 0x60, 0x99, 0x5c, 0xb1,
+	0x14, 0x7f, 0x3c, 0x8b, 0x99, 0xa2, 0x67, 0x38, 0xa1, 0x59, 0x16, 0xd3, 0xe4, 0x83, 0xbb, 0x2c,
+	0x84, 0x12, 0xe8, 0xa0, 0x82, 0x5c, 0x0d, 0xb9, 0x35, 0xd4, 0xbf, 0x4f, 0x73, 0xbe, 0x10, 0x58,
+	0x7f, 0x2b, 0xb0, 0xef, 0x24, 0x42, 0xe6, 0x42, 0xe2, 0x98, 0x4a, 0xb6, 0x33, 0x13, 0x7c, 0x51,
+	0xe7, 0x0f, 0xe6, 0x62, 0x2e, 0xf4, 0x13, 0x6f, 0x5e, 0x55, 0xf4, 0x78, 0x0c, 0x3b, 0x7e, 0xdd,
+	0x10, 0x75, 0xa1, 0xc9, 0x53, 0x1b, 0x1c, 0x81, 0x93, 0xdb, 0xc4, 0xe4, 0x29, 0xb2, 0xe1, 0x1e,
+	0x4d, 0xd3, 0x82, 0x49, 0x69, 0x9b, 0x47, 0xe0, 0xe4, 0x0e, 0x69, 0x24, 0xea, 0xc3, 0xce, 0x9c,
+	0xca, 0x88, 0xe7, 0x5c, 0xd9, 0xb7, 0x34, 0xbf, 0xd5, 0xc7, 0x21, 0xec, 0x36, 0x8e, 0x63, 0x5a,
+	0xd0, 0x5c, 0xfe, 0xeb, 0x03, 0x6e, 0xf6, 0x31, 0x5b, 0x3e, 0x3f, 0xc0, 0xce, 0x88, 0x30, 0x59,
+	0x66, 0x0a, 0xbd, 0x80, 0x96, 0x54, 0x54, 0x95, 0x95, 0x4f, 0xf7, 0xfc, 0x89, 0xfb, 0xbf, 0xe5,
+	0xb8, 0x4d, 0xd5, 0x44, 0xb3, 0xa4, 0xae, 0x41, 0x4f, 0xa1, 0x25, 0x4a, 0xb5, 0x2c, 0xab, 0x56,
+	0x77, 0xbd, 0xfd, 0xef, 0x7f, 0xbe, 0x9d, 0x5a, 0xaf, 0x75, 0xe8, 0xc2, 0x20, 0x75, 0x12, 0x9d,
+	0xc3, 0xfd, 0x4b, 0xca, 0xb3, 0x59, 0xc1, 0xa8, 0x14, 0x0b, 0x7b, 0x6f, 0x33, 0xb1, 0x77, 0x6f,
+	0xc3, 0xc2, 0x90, 0xf2, 0x8c, 0xe8, 0xf0, 0x85, 0x41, 0xe0, 0xe5, 0x56, 0x79, 0x1d, 0x68, 0x15,
+	0x7a, 0xc4, 0xd3, 0xf7, 0xbb, 0xa1, 0xab, 0xf6, 0xe8, 0x11, 0x3c, 0xf4, 0x07, 0x51, 0xe4, 0x0d,
+	0xfc, 0x97, 0x33, 0x12, 0x4c, 0xa6, 0xd1, 0x9b, 0xd9, 0xf4, 0xd5, 0x64, 0x1c, 0xf8, 0xa3, 0x70,
+	0x14, 0x0c, 0x7b, 0x06, 0x3a, 0x84, 0x0f, 0xdb, 0xc0, 0x64, 0xea, 0xfb, 0x41, 0x30, 0xec, 0x01,
+	0xd4, 0x87, 0x0f, 0xda, 0xc9, 0x70, 0x30, 0x8a, 0x82, 0x61, 0xcf, 0xf4, 0xde, 0xfd, 0x5c, 0x39,
+	0xe0, 0x7a, 0xe5, 0x80, 0xdf, 0x2b, 0x07, 0x7c, 0x5d, 0x3b, 0xc6, 0xf5, 0xda, 0x31, 0x7e, 0xad,
+	0x1d, 0xe3, 0x6d, 0x38, 0xe7, 0xea, 0xaa, 0x8c, 0xdd, 0x44, 0xe4, 0xb8, 0x5a, 0xd1, 0x33, 0xfd,
+	0xbb, 0x13, 0x91, 0xd5, 0xba, 0x25, 0xf1, 0xe7, 0xfa, 0x0a, 0xd5, 0x97, 0x25, 0x93, 0xcd, 0xf9,
+	0xc4, 0x96, 0xc6, 0x9e, 0xff, 0x0d, 0x00, 0x00, 0xff, 0xff, 0x8d, 0x98, 0xad, 0x82, 0xaa, 0x02,
+	0x00, 0x00,
 }
 
 func (m *Callback) Marshal() (dAtA []byte, err error) {
@@ -236,22 +341,10 @@ func (m *Callback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	{
-		size, err := m.FeeToken.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintCallback(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x22
-	if len(m.GasLimit) > 0 {
-		i -= len(m.GasLimit)
-		copy(dAtA[i:], m.GasLimit)
-		i = encodeVarintCallback(dAtA, i, uint64(len(m.GasLimit)))
+	if m.GasLimit != 0 {
+		i = encodeVarintCallback(dAtA, i, uint64(m.GasLimit))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x18
 	}
 	if len(m.Address) > 0 {
 		i -= len(m.Address)
@@ -264,6 +357,41 @@ func (m *Callback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintCallback(dAtA, i, uint64(m.Id))
 		i--
 		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CallbackParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CallbackParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CallbackParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.GasLimit != 0 {
+		i = encodeVarintCallback(dAtA, i, uint64(m.GasLimit))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintCallback(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -288,14 +416,53 @@ func (m *CallbackResult) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Flag != 0 {
-		i = encodeVarintCallback(dAtA, i, uint64(m.Flag))
+	if m.Result != nil {
+		{
+			size := m.Result.Size()
+			i -= size
+			if _, err := m.Result.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if m.Status != 0 {
+		i = encodeVarintCallback(dAtA, i, uint64(m.Status))
 		i--
 		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
 
+func (m *CallbackResult_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CallbackResult_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Output != nil {
+		i -= len(m.Output)
+		copy(dAtA[i:], m.Output)
+		i = encodeVarintCallback(dAtA, i, uint64(len(m.Output)))
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
+}
+func (m *CallbackResult_FailReason) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CallbackResult_FailReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.FailReason)
+	copy(dAtA[i:], m.FailReason)
+	i = encodeVarintCallback(dAtA, i, uint64(len(m.FailReason)))
+	i--
+	dAtA[i] = 0x3a
+	return len(dAtA) - i, nil
+}
 func encodeVarintCallback(dAtA []byte, offset int, v uint64) int {
 	offset -= sovCallback(v)
 	base := offset
@@ -320,12 +487,25 @@ func (m *Callback) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovCallback(uint64(l))
 	}
-	l = len(m.GasLimit)
+	if m.GasLimit != 0 {
+		n += 1 + sovCallback(uint64(m.GasLimit))
+	}
+	return n
+}
+
+func (m *CallbackParams) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
 	if l > 0 {
 		n += 1 + l + sovCallback(uint64(l))
 	}
-	l = m.FeeToken.Size()
-	n += 1 + l + sovCallback(uint64(l))
+	if m.GasLimit != 0 {
+		n += 1 + sovCallback(uint64(m.GasLimit))
+	}
 	return n
 }
 
@@ -335,9 +515,35 @@ func (m *CallbackResult) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Flag != 0 {
-		n += 1 + sovCallback(uint64(m.Flag))
+	if m.Status != 0 {
+		n += 1 + sovCallback(uint64(m.Status))
 	}
+	if m.Result != nil {
+		n += m.Result.Size()
+	}
+	return n
+}
+
+func (m *CallbackResult_Output) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Output != nil {
+		l = len(m.Output)
+		n += 1 + l + sovCallback(uint64(l))
+	}
+	return n
+}
+func (m *CallbackResult_FailReason) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.FailReason)
+	n += 1 + l + sovCallback(uint64(l))
 	return n
 }
 
@@ -428,8 +634,77 @@ func (m *Callback) Unmarshal(dAtA []byte) error {
 			m.Address = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field GasLimit", wireType)
+			}
+			m.GasLimit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallback
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.GasLimit |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCallback(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCallback
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CallbackParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCallback
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CallbackParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CallbackParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -457,13 +732,13 @@ func (m *Callback) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GasLimit = string(dAtA[iNdEx:postIndex])
+			m.Address = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FeeToken", wireType)
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GasLimit", wireType)
 			}
-			var msglen int
+			m.GasLimit = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowCallback
@@ -473,25 +748,11 @@ func (m *Callback) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				m.GasLimit |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
-				return ErrInvalidLengthCallback
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthCallback
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.FeeToken.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipCallback(dAtA[iNdEx:])
@@ -544,9 +805,9 @@ func (m *CallbackResult) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Flag", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			m.Flag = 0
+			m.Status = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowCallback
@@ -556,11 +817,76 @@ func (m *CallbackResult) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Flag |= CallbackResultFlag(b&0x7F) << shift
+				m.Status |= CallbackStatus(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallback
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthCallback
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallback
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := make([]byte, postIndex-iNdEx)
+			copy(v, dAtA[iNdEx:postIndex])
+			m.Result = &CallbackResult_Output{v}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FailReason", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallback
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCallback
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallback
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Result = &CallbackResult_FailReason{string(dAtA[iNdEx:postIndex])}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipCallback(dAtA[iNdEx:])

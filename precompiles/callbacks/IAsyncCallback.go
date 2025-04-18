@@ -31,7 +31,7 @@ var (
 
 // IAsyncCallbackMetaData contains all meta data concerning the IAsyncCallback contract.
 var IAsyncCallbackMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"}],\"name\":\"cb\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"}],\"name\":\"cb\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IAsyncCallbackABI is the input ABI used to generate the binding from.
@@ -182,21 +182,21 @@ func (_IAsyncCallback *IAsyncCallbackTransactorRaw) Transact(opts *bind.Transact
 
 // Cb is a paid mutator transaction binding the contract method 0x9b90a190.
 //
-// Solidity: function cb(uint64 id, bytes output) returns()
+// Solidity: function cb(uint64 id, bytes output) returns(bytes)
 func (_IAsyncCallback *IAsyncCallbackTransactor) Cb(opts *bind.TransactOpts, id uint64, output []byte) (*types.Transaction, error) {
 	return _IAsyncCallback.contract.Transact(opts, "cb", id, output)
 }
 
 // Cb is a paid mutator transaction binding the contract method 0x9b90a190.
 //
-// Solidity: function cb(uint64 id, bytes output) returns()
+// Solidity: function cb(uint64 id, bytes output) returns(bytes)
 func (_IAsyncCallback *IAsyncCallbackSession) Cb(id uint64, output []byte) (*types.Transaction, error) {
 	return _IAsyncCallback.Contract.Cb(&_IAsyncCallback.TransactOpts, id, output)
 }
 
 // Cb is a paid mutator transaction binding the contract method 0x9b90a190.
 //
-// Solidity: function cb(uint64 id, bytes output) returns()
+// Solidity: function cb(uint64 id, bytes output) returns(bytes)
 func (_IAsyncCallback *IAsyncCallbackTransactorSession) Cb(id uint64, output []byte) (*types.Transaction, error) {
 	return _IAsyncCallback.Contract.Cb(&_IAsyncCallback.TransactOpts, id, output)
 }

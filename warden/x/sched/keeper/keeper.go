@@ -10,6 +10,7 @@ import (
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
+	sdkmath "cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
@@ -155,9 +156,21 @@ func (k Keeper) ExecuteCallback(
 		return nil
 	}
 
+	feeAmt, fee := k.callbackFee(sdkCtx, gas)
+	evmKeeper := k.getEvmKeeper(0)
+	cbBalance := evmKeeper.GetBalance(sdkCtx, cbAddress)
+
+	if cbBalance.Cmp(feeAmt) == -1 {
+		k.callbacks.setFailed(ctx, id, types.ErrInsufficientFunds.Error())
+	}
+
+	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
+		k.callbacks.setFailed(ctx, id, err.Error())
+		return nil
+	}
+
 	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
 	res, err := k.callEVM(sdkCtx, moduleAddress, &cbAddress, data, gas+sdkCtx.GasMeter().GasConsumed())
-	// take fee from cb address (after or before execution? check if contract changes saves if execute callback failed)
 	if err == nil {
 		if res.Failed() {
 			k.callbacks.setFailed(ctx, id, res.VmError)
@@ -240,4 +253,16 @@ func (k Keeper) callEVM(
 	k.accountKeeper.SetAccount(ctx, fromAcc)
 
 	return res, nil
+}
+
+func (k Keeper) callbackFee(sdkCtx sdk.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
+	evmKeeper := k.getEvmKeeper(0)
+	params := evmKeeper.GetParams(sdkCtx)
+	ethCfg := params.ChainConfig.EthereumConfig(evmKeeper.ChainID())
+	baseFee := evmKeeper.GetBaseFee(sdkCtx, ethCfg)
+	gasInt := new(big.Int).SetUint64(gas)
+	feeAmt = new(big.Int).Mul(baseFee, gasInt)
+	fee = sdk.Coins{{Denom: params.EvmDenom, Amount: sdkmath.NewIntFromBigInt(feeAmt)}}
+
+	return feeAmt, fee
 }

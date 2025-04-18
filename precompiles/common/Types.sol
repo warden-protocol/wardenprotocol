@@ -63,4 +63,9 @@ library Types {
         // the height within the given revision
         uint64 revisionHeight;
     }
+
+    struct CallbackParams {
+        address addressValue;
+        uint64 gasLimit;
+    }
 }

@@ -88,6 +88,12 @@ type TasksResponse struct {
 	Tasks      []TaskResponse
 }
 
+// TypesCallbackParams is an auto generated low-level Go binding around an user-defined struct.
+type TypesCallbackParams struct {
+	AddressValue common.Address
+	GasLimit     uint64
+}
+
 // TypesPageRequest is an auto generated low-level Go binding around an user-defined struct.
 type TypesPageRequest struct {
 	Key        []byte
@@ -105,7 +111,7 @@ type TypesPageResponse struct {
 
 // IAsyncMetaData contains all meta data concerning the IAsync contract.
 var IAsyncMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"callbackAddress\",\"type\":\"address\"}],\"name\":\"CreateTask\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"callback\",\"type\":\"address\"}],\"name\":\"addTask\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"pendingTasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structPendingTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"plugins\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"id\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"internalType\":\"structPlugin[]\",\"name\":\"plugins\",\"type\":\"tuple[]\"}],\"internalType\":\"structPluginsResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"name\":\"taskById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse\",\"name\":\"taskResponse\",\"type\":\"tuple\"}],\"internalType\":\"structTaskByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"tasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"callbackId\",\"type\":\"uint64\"}],\"name\":\"CreateTask\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"addressValue\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"gasLimit\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.CallbackParams\",\"name\":\"callbackParams\",\"type\":\"tuple\"}],\"name\":\"addTask\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"pendingTasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structPendingTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"plugins\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"id\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"internalType\":\"structPlugin[]\",\"name\":\"plugins\",\"type\":\"tuple[]\"}],\"internalType\":\"structPluginsResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"name\":\"taskById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse\",\"name\":\"taskResponse\",\"type\":\"tuple\"}],\"internalType\":\"structTaskByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"tasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // IAsyncABI is the input ABI used to generate the binding from.
@@ -378,25 +384,25 @@ func (_IAsync *IAsyncCallerSession) Tasks(pagination TypesPageRequest, creator c
 	return _IAsync.Contract.Tasks(&_IAsync.CallOpts, pagination, creator)
 }
 
-// AddTask is a paid mutator transaction binding the contract method 0xfd81d3a5.
+// AddTask is a paid mutator transaction binding the contract method 0xf86af9ad.
 //
-// Solidity: function addTask(string plugin, bytes input, address callback) returns(uint64 taskId)
-func (_IAsync *IAsyncTransactor) AddTask(opts *bind.TransactOpts, plugin string, input []byte, callback common.Address) (*types.Transaction, error) {
-	return _IAsync.contract.Transact(opts, "addTask", plugin, input, callback)
+// Solidity: function addTask(string plugin, bytes input, (address,uint64) callbackParams) returns(uint64 taskId)
+func (_IAsync *IAsyncTransactor) AddTask(opts *bind.TransactOpts, plugin string, input []byte, callbackParams TypesCallbackParams) (*types.Transaction, error) {
+	return _IAsync.contract.Transact(opts, "addTask", plugin, input, callbackParams)
 }
 
-// AddTask is a paid mutator transaction binding the contract method 0xfd81d3a5.
+// AddTask is a paid mutator transaction binding the contract method 0xf86af9ad.
 //
-// Solidity: function addTask(string plugin, bytes input, address callback) returns(uint64 taskId)
-func (_IAsync *IAsyncSession) AddTask(plugin string, input []byte, callback common.Address) (*types.Transaction, error) {
-	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, callback)
+// Solidity: function addTask(string plugin, bytes input, (address,uint64) callbackParams) returns(uint64 taskId)
+func (_IAsync *IAsyncSession) AddTask(plugin string, input []byte, callbackParams TypesCallbackParams) (*types.Transaction, error) {
+	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, callbackParams)
 }
 
-// AddTask is a paid mutator transaction binding the contract method 0xfd81d3a5.
+// AddTask is a paid mutator transaction binding the contract method 0xf86af9ad.
 //
-// Solidity: function addTask(string plugin, bytes input, address callback) returns(uint64 taskId)
-func (_IAsync *IAsyncTransactorSession) AddTask(plugin string, input []byte, callback common.Address) (*types.Transaction, error) {
-	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, callback)
+// Solidity: function addTask(string plugin, bytes input, (address,uint64) callbackParams) returns(uint64 taskId)
+func (_IAsync *IAsyncTransactorSession) AddTask(plugin string, input []byte, callbackParams TypesCallbackParams) (*types.Transaction, error) {
+	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, callbackParams)
 }
 
 // IAsyncCreateTaskIterator is returned from FilterCreateTask and is used to iterate over the raw logs and unpacked data for CreateTask events raised by the IAsync contract.
@@ -468,16 +474,16 @@ func (it *IAsyncCreateTaskIterator) Close() error {
 
 // IAsyncCreateTask represents a CreateTask event raised by the IAsync contract.
 type IAsyncCreateTask struct {
-	TaskId          uint64
-	Creator         common.Address
-	Plugin          string
-	CallbackAddress common.Address
-	Raw             types.Log // Blockchain specific contextual infos
+	TaskId     uint64
+	Creator    common.Address
+	Plugin     string
+	CallbackId uint64
+	Raw        types.Log // Blockchain specific contextual infos
 }
 
-// FilterCreateTask is a free log retrieval operation binding the contract event 0x67376f514fb0752284fbe03fe1ecce5f115a351fd86110ef742e24c156ce36e7.
+// FilterCreateTask is a free log retrieval operation binding the contract event 0x44ece3c06003e6bf16f04e4c130ac1d044c320bd0bdfccf2d1cec873ba002a2d.
 //
-// Solidity: event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, address callbackAddress)
+// Solidity: event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, uint64 callbackId)
 func (_IAsync *IAsyncFilterer) FilterCreateTask(opts *bind.FilterOpts, taskId []uint64, creator []common.Address) (*IAsyncCreateTaskIterator, error) {
 
 	var taskIdRule []interface{}
@@ -496,9 +502,9 @@ func (_IAsync *IAsyncFilterer) FilterCreateTask(opts *bind.FilterOpts, taskId []
 	return &IAsyncCreateTaskIterator{contract: _IAsync.contract, event: "CreateTask", logs: logs, sub: sub}, nil
 }
 
-// WatchCreateTask is a free log subscription operation binding the contract event 0x67376f514fb0752284fbe03fe1ecce5f115a351fd86110ef742e24c156ce36e7.
+// WatchCreateTask is a free log subscription operation binding the contract event 0x44ece3c06003e6bf16f04e4c130ac1d044c320bd0bdfccf2d1cec873ba002a2d.
 //
-// Solidity: event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, address callbackAddress)
+// Solidity: event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, uint64 callbackId)
 func (_IAsync *IAsyncFilterer) WatchCreateTask(opts *bind.WatchOpts, sink chan<- *IAsyncCreateTask, taskId []uint64, creator []common.Address) (event.Subscription, error) {
 
 	var taskIdRule []interface{}
@@ -542,9 +548,9 @@ func (_IAsync *IAsyncFilterer) WatchCreateTask(opts *bind.WatchOpts, sink chan<-
 	}), nil
 }
 
-// ParseCreateTask is a log parse operation binding the contract event 0x67376f514fb0752284fbe03fe1ecce5f115a351fd86110ef742e24c156ce36e7.
+// ParseCreateTask is a log parse operation binding the contract event 0x44ece3c06003e6bf16f04e4c130ac1d044c320bd0bdfccf2d1cec873ba002a2d.
 //
-// Solidity: event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, address callbackAddress)
+// Solidity: event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, uint64 callbackId)
 func (_IAsync *IAsyncFilterer) ParseCreateTask(log types.Log) (*IAsyncCreateTask, error) {
 	event := new(IAsyncCreateTask)
 	if err := _IAsync.contract.UnpackLog(event, "CreateTask", log); err != nil {

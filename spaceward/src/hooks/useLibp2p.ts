@@ -27,7 +27,7 @@ async function getLibp2p() {
 	libp2p = await createLibp2p({
 		addresses: {
 			listen: [
-				// create listeners for incoming WebRTC connection attempts on on all
+				// create listeners for incoming WebRTC connection attempts on all
 				// available Circuit Relay connections
 				"/webrtc",
 			],

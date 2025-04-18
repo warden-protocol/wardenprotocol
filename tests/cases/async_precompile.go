@@ -50,7 +50,8 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 		"echo",
 		[]byte("USDT"),
 		maxFee,
-		common.HexToAddress("0x0000000000000000000000000000000000000000"))
+		common.HexToAddress("0x0000000000000000000000000000000000000000"),
+		async.TypesCallbackParams{})
 	require.NoError(t, err)
 
 	addTaskReceipt, err := bind.WaitMined(t.Context(), evmClient, addTaskTx)

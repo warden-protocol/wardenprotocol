@@ -25,5 +25,4 @@ var (
 	ErrInvalidPlugin        = sdkerrors.Register(ModuleName, 1102, "invalid plugin name")
 	ErrInvalidTaskInput     = sdkerrors.Register(ModuleName, 1103, "invalid task input")
 	ErrTaskAlreadyHasResult = sdkerrors.Register(ModuleName, 1104, "task already has result")
-	ErrInvalidCallback      = sdkerrors.Register(ModuleName, 1105, "invalid callback")
 )

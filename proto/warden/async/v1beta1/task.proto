@@ -32,8 +32,8 @@ message Task {
   // Input data to be used by the plugin to execute the Task.
   // The actual format is determined by the plugin being used.
   bytes input = 4;
-  // Callback to be called when the Task is completed.
-  string callback = 5;
+  // Id of callback to be called when the Task is completed.
+  uint64 callback_id = 5;
 }
 
 // TaskResult is the result of the execution of a Task.

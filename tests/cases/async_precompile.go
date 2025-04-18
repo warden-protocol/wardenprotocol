@@ -40,7 +40,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	require.NoError(t, err)
 	require.Len(t, tasksQuery.Tasks, 0)
 
-	addTaskTx, err := iAsyncClient.AddTask(alice.TransactOps(t, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
+	addTaskTx, err := iAsyncClient.AddTask(alice.TransactOps(t, evmClient), "echo", []byte("USDT"), async.TypesCallbackParams{})
 	require.NoError(t, err)
 
 	addTaskReceipt, err := bind.WaitMined(t.Context(), evmClient, addTaskTx)

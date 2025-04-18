@@ -37,10 +37,10 @@ func (k *CallbackKeeper) Get(ctx context.Context, id uint64) (types.Callback, er
 	return k.callbacks.Get(ctx, id)
 }
 
-func (k *CallbackKeeper) Append(ctx context.Context, t *types.Callback) (uint64, error) {
-	id, err := k.callbacks.Append(ctx, t)
+func (k *CallbackKeeper) Append(ctx context.Context, cb *types.Callback) (id uint64, err error) {
+	id, err = k.callbacks.Append(ctx, cb)
 	if err != nil {
-		return 0, err
+		return id, err
 	}
 
 	return id, nil
@@ -52,6 +52,24 @@ func (k *CallbackKeeper) SetResult(ctx context.Context, id uint64, result types.
 	}
 
 	return k.results.Set(ctx, id, result)
+}
+
+func (k *CallbackKeeper) setSucceed(ctx context.Context, id uint64, output []byte) error {
+	return k.SetResult(ctx, id, types.CallbackResult{
+		Status: types.CallbackStatus_CALLBACK_RESULT_SUCCEED,
+		Result: &types.CallbackResult_Output{
+			Output: output,
+		},
+	})
+}
+
+func (k *CallbackKeeper) setFailed(ctx context.Context, id uint64, reason string) error {
+	return k.SetResult(ctx, id, types.CallbackResult{
+		Status: types.CallbackStatus_CALLBACK_RESULT_FAILED,
+		Result: &types.CallbackResult_FailReason{
+			FailReason: reason,
+		},
+	})
 }
 
 func (k *CallbackKeeper) GetResult(ctx context.Context, id uint64) (types.CallbackResult, error) {

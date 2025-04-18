@@ -2,7 +2,8 @@
 package schedv1beta1
 
 import (
-	v1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
+	_ "cosmossdk.io/api/amino"
+	_ "cosmossdk.io/api/cosmos/base/v1beta1"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -19,7 +20,6 @@ var (
 	fd_Callback_id       protoreflect.FieldDescriptor
 	fd_Callback_address  protoreflect.FieldDescriptor
 	fd_Callback_gasLimit protoreflect.FieldDescriptor
-	fd_Callback_feeToken protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -28,7 +28,6 @@ func init() {
 	fd_Callback_id = md_Callback.Fields().ByName("id")
 	fd_Callback_address = md_Callback.Fields().ByName("address")
 	fd_Callback_gasLimit = md_Callback.Fields().ByName("gasLimit")
-	fd_Callback_feeToken = md_Callback.Fields().ByName("feeToken")
 }
 
 var _ protoreflect.Message = (*fastReflection_Callback)(nil)
@@ -108,15 +107,9 @@ func (x *fastReflection_Callback) Range(f func(protoreflect.FieldDescriptor, pro
 			return
 		}
 	}
-	if x.GasLimit != "" {
-		value := protoreflect.ValueOfString(x.GasLimit)
+	if x.GasLimit != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.GasLimit)
 		if !f(fd_Callback_gasLimit, value) {
-			return
-		}
-	}
-	if x.FeeToken != nil {
-		value := protoreflect.ValueOfMessage(x.FeeToken.ProtoReflect())
-		if !f(fd_Callback_feeToken, value) {
 			return
 		}
 	}
@@ -140,9 +133,7 @@ func (x *fastReflection_Callback) Has(fd protoreflect.FieldDescriptor) bool {
 	case "warden.sched.v1beta1.Callback.address":
 		return x.Address != ""
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		return x.GasLimit != ""
-	case "warden.sched.v1beta1.Callback.feeToken":
-		return x.FeeToken != nil
+		return x.GasLimit != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.Callback"))
@@ -164,9 +155,7 @@ func (x *fastReflection_Callback) Clear(fd protoreflect.FieldDescriptor) {
 	case "warden.sched.v1beta1.Callback.address":
 		x.Address = ""
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		x.GasLimit = ""
-	case "warden.sched.v1beta1.Callback.feeToken":
-		x.FeeToken = nil
+		x.GasLimit = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.Callback"))
@@ -191,10 +180,7 @@ func (x *fastReflection_Callback) Get(descriptor protoreflect.FieldDescriptor) p
 		return protoreflect.ValueOfString(value)
 	case "warden.sched.v1beta1.Callback.gasLimit":
 		value := x.GasLimit
-		return protoreflect.ValueOfString(value)
-	case "warden.sched.v1beta1.Callback.feeToken":
-		value := x.FeeToken
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
+		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.Callback"))
@@ -220,9 +206,7 @@ func (x *fastReflection_Callback) Set(fd protoreflect.FieldDescriptor, value pro
 	case "warden.sched.v1beta1.Callback.address":
 		x.Address = value.Interface().(string)
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		x.GasLimit = value.Interface().(string)
-	case "warden.sched.v1beta1.Callback.feeToken":
-		x.FeeToken = value.Message().Interface().(*v1beta1.Coin)
+		x.GasLimit = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.Callback"))
@@ -243,11 +227,6 @@ func (x *fastReflection_Callback) Set(fd protoreflect.FieldDescriptor, value pro
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Callback) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.sched.v1beta1.Callback.feeToken":
-		if x.FeeToken == nil {
-			x.FeeToken = new(v1beta1.Coin)
-		}
-		return protoreflect.ValueOfMessage(x.FeeToken.ProtoReflect())
 	case "warden.sched.v1beta1.Callback.id":
 		panic(fmt.Errorf("field id of message warden.sched.v1beta1.Callback is not mutable"))
 	case "warden.sched.v1beta1.Callback.address":
@@ -272,10 +251,7 @@ func (x *fastReflection_Callback) NewField(fd protoreflect.FieldDescriptor) prot
 	case "warden.sched.v1beta1.Callback.address":
 		return protoreflect.ValueOfString("")
 	case "warden.sched.v1beta1.Callback.gasLimit":
-		return protoreflect.ValueOfString("")
-	case "warden.sched.v1beta1.Callback.feeToken":
-		m := new(v1beta1.Coin)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
+		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.Callback"))
@@ -352,13 +328,8 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.GasLimit)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.FeeToken != nil {
-			l = options.Size(x.FeeToken)
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.GasLimit != 0 {
+			n += 1 + runtime.Sov(uint64(x.GasLimit))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -389,26 +360,10 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.FeeToken != nil {
-			encoded, err := options.Marshal(x.FeeToken)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+		if x.GasLimit != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.GasLimit))
 			i--
-			dAtA[i] = 0x22
-		}
-		if len(x.GasLimit) > 0 {
-			i -= len(x.GasLimit)
-			copy(dAtA[i:], x.GasLimit)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.GasLimit)))
-			i--
-			dAtA[i] = 0x1a
+			dAtA[i] = 0x18
 		}
 		if len(x.Address) > 0 {
 			i -= len(x.Address)
@@ -523,10 +478,10 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 				x.Address = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
-				if wireType != 2 {
+				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field GasLimit", wireType)
 				}
-				var stringLen uint64
+				x.GasLimit = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -536,60 +491,11 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.GasLimit |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.GasLimit = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 4:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FeeToken", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if x.FeeToken == nil {
-					x.FeeToken = &v1beta1.Coin{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.FeeToken); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -626,14 +532,486 @@ func (x *fastReflection_Callback) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_CallbackResult      protoreflect.MessageDescriptor
-	fd_CallbackResult_flag protoreflect.FieldDescriptor
+	md_CallbackParams          protoreflect.MessageDescriptor
+	fd_CallbackParams_address  protoreflect.FieldDescriptor
+	fd_CallbackParams_gasLimit protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_sched_v1beta1_callback_proto_init()
+	md_CallbackParams = File_warden_sched_v1beta1_callback_proto.Messages().ByName("CallbackParams")
+	fd_CallbackParams_address = md_CallbackParams.Fields().ByName("address")
+	fd_CallbackParams_gasLimit = md_CallbackParams.Fields().ByName("gasLimit")
+}
+
+var _ protoreflect.Message = (*fastReflection_CallbackParams)(nil)
+
+type fastReflection_CallbackParams CallbackParams
+
+func (x *CallbackParams) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_CallbackParams)(x)
+}
+
+func (x *CallbackParams) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_sched_v1beta1_callback_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_CallbackParams_messageType fastReflection_CallbackParams_messageType
+var _ protoreflect.MessageType = fastReflection_CallbackParams_messageType{}
+
+type fastReflection_CallbackParams_messageType struct{}
+
+func (x fastReflection_CallbackParams_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_CallbackParams)(nil)
+}
+func (x fastReflection_CallbackParams_messageType) New() protoreflect.Message {
+	return new(fastReflection_CallbackParams)
+}
+func (x fastReflection_CallbackParams_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_CallbackParams
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_CallbackParams) Descriptor() protoreflect.MessageDescriptor {
+	return md_CallbackParams
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_CallbackParams) Type() protoreflect.MessageType {
+	return _fastReflection_CallbackParams_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_CallbackParams) New() protoreflect.Message {
+	return new(fastReflection_CallbackParams)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_CallbackParams) Interface() protoreflect.ProtoMessage {
+	return (*CallbackParams)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_CallbackParams) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Address != "" {
+		value := protoreflect.ValueOfString(x.Address)
+		if !f(fd_CallbackParams_address, value) {
+			return
+		}
+	}
+	if x.GasLimit != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.GasLimit)
+		if !f(fd_CallbackParams_gasLimit, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_CallbackParams) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.sched.v1beta1.CallbackParams.address":
+		return x.Address != ""
+	case "warden.sched.v1beta1.CallbackParams.gasLimit":
+		return x.GasLimit != uint64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackParams"))
+		}
+		panic(fmt.Errorf("message warden.sched.v1beta1.CallbackParams does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CallbackParams) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.sched.v1beta1.CallbackParams.address":
+		x.Address = ""
+	case "warden.sched.v1beta1.CallbackParams.gasLimit":
+		x.GasLimit = uint64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackParams"))
+		}
+		panic(fmt.Errorf("message warden.sched.v1beta1.CallbackParams does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_CallbackParams) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.sched.v1beta1.CallbackParams.address":
+		value := x.Address
+		return protoreflect.ValueOfString(value)
+	case "warden.sched.v1beta1.CallbackParams.gasLimit":
+		value := x.GasLimit
+		return protoreflect.ValueOfUint64(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackParams"))
+		}
+		panic(fmt.Errorf("message warden.sched.v1beta1.CallbackParams does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CallbackParams) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.sched.v1beta1.CallbackParams.address":
+		x.Address = value.Interface().(string)
+	case "warden.sched.v1beta1.CallbackParams.gasLimit":
+		x.GasLimit = value.Uint()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackParams"))
+		}
+		panic(fmt.Errorf("message warden.sched.v1beta1.CallbackParams does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CallbackParams) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.sched.v1beta1.CallbackParams.address":
+		panic(fmt.Errorf("field address of message warden.sched.v1beta1.CallbackParams is not mutable"))
+	case "warden.sched.v1beta1.CallbackParams.gasLimit":
+		panic(fmt.Errorf("field gasLimit of message warden.sched.v1beta1.CallbackParams is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackParams"))
+		}
+		panic(fmt.Errorf("message warden.sched.v1beta1.CallbackParams does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_CallbackParams) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.sched.v1beta1.CallbackParams.address":
+		return protoreflect.ValueOfString("")
+	case "warden.sched.v1beta1.CallbackParams.gasLimit":
+		return protoreflect.ValueOfUint64(uint64(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackParams"))
+		}
+		panic(fmt.Errorf("message warden.sched.v1beta1.CallbackParams does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_CallbackParams) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.sched.v1beta1.CallbackParams", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_CallbackParams) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CallbackParams) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_CallbackParams) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_CallbackParams) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*CallbackParams)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Address)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.GasLimit != 0 {
+			n += 1 + runtime.Sov(uint64(x.GasLimit))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*CallbackParams)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.GasLimit != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.GasLimit))
+			i--
+			dAtA[i] = 0x10
+		}
+		if len(x.Address) > 0 {
+			i -= len(x.Address)
+			copy(dAtA[i:], x.Address)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Address)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*CallbackParams)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: CallbackParams: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: CallbackParams: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Address = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field GasLimit", wireType)
+				}
+				x.GasLimit = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.GasLimit |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_CallbackResult             protoreflect.MessageDescriptor
+	fd_CallbackResult_status      protoreflect.FieldDescriptor
+	fd_CallbackResult_output      protoreflect.FieldDescriptor
+	fd_CallbackResult_fail_reason protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_sched_v1beta1_callback_proto_init()
 	md_CallbackResult = File_warden_sched_v1beta1_callback_proto.Messages().ByName("CallbackResult")
-	fd_CallbackResult_flag = md_CallbackResult.Fields().ByName("flag")
+	fd_CallbackResult_status = md_CallbackResult.Fields().ByName("status")
+	fd_CallbackResult_output = md_CallbackResult.Fields().ByName("output")
+	fd_CallbackResult_fail_reason = md_CallbackResult.Fields().ByName("fail_reason")
 }
 
 var _ protoreflect.Message = (*fastReflection_CallbackResult)(nil)
@@ -645,7 +1023,7 @@ func (x *CallbackResult) ProtoReflect() protoreflect.Message {
 }
 
 func (x *CallbackResult) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_sched_v1beta1_callback_proto_msgTypes[1]
+	mi := &file_warden_sched_v1beta1_callback_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -701,10 +1079,26 @@ func (x *fastReflection_CallbackResult) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_CallbackResult) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Flag != 0 {
-		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.Flag))
-		if !f(fd_CallbackResult_flag, value) {
+	if x.Status != 0 {
+		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.Status))
+		if !f(fd_CallbackResult_status, value) {
 			return
+		}
+	}
+	if x.Result != nil {
+		switch o := x.Result.(type) {
+		case *CallbackResult_Output:
+			v := o.Output
+			value := protoreflect.ValueOfBytes(v)
+			if !f(fd_CallbackResult_output, value) {
+				return
+			}
+		case *CallbackResult_FailReason:
+			v := o.FailReason
+			value := protoreflect.ValueOfString(v)
+			if !f(fd_CallbackResult_fail_reason, value) {
+				return
+			}
 		}
 	}
 }
@@ -722,8 +1116,24 @@ func (x *fastReflection_CallbackResult) Range(f func(protoreflect.FieldDescripto
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_CallbackResult) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.sched.v1beta1.CallbackResult.flag":
-		return x.Flag != 0
+	case "warden.sched.v1beta1.CallbackResult.status":
+		return x.Status != 0
+	case "warden.sched.v1beta1.CallbackResult.output":
+		if x.Result == nil {
+			return false
+		} else if _, ok := x.Result.(*CallbackResult_Output); ok {
+			return true
+		} else {
+			return false
+		}
+	case "warden.sched.v1beta1.CallbackResult.fail_reason":
+		if x.Result == nil {
+			return false
+		} else if _, ok := x.Result.(*CallbackResult_FailReason); ok {
+			return true
+		} else {
+			return false
+		}
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackResult"))
@@ -740,8 +1150,12 @@ func (x *fastReflection_CallbackResult) Has(fd protoreflect.FieldDescriptor) boo
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_CallbackResult) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.sched.v1beta1.CallbackResult.flag":
-		x.Flag = 0
+	case "warden.sched.v1beta1.CallbackResult.status":
+		x.Status = 0
+	case "warden.sched.v1beta1.CallbackResult.output":
+		x.Result = nil
+	case "warden.sched.v1beta1.CallbackResult.fail_reason":
+		x.Result = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackResult"))
@@ -758,9 +1172,25 @@ func (x *fastReflection_CallbackResult) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_CallbackResult) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.sched.v1beta1.CallbackResult.flag":
-		value := x.Flag
+	case "warden.sched.v1beta1.CallbackResult.status":
+		value := x.Status
 		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
+	case "warden.sched.v1beta1.CallbackResult.output":
+		if x.Result == nil {
+			return protoreflect.ValueOfBytes(nil)
+		} else if v, ok := x.Result.(*CallbackResult_Output); ok {
+			return protoreflect.ValueOfBytes(v.Output)
+		} else {
+			return protoreflect.ValueOfBytes(nil)
+		}
+	case "warden.sched.v1beta1.CallbackResult.fail_reason":
+		if x.Result == nil {
+			return protoreflect.ValueOfString("")
+		} else if v, ok := x.Result.(*CallbackResult_FailReason); ok {
+			return protoreflect.ValueOfString(v.FailReason)
+		} else {
+			return protoreflect.ValueOfString("")
+		}
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackResult"))
@@ -781,8 +1211,14 @@ func (x *fastReflection_CallbackResult) Get(descriptor protoreflect.FieldDescrip
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_CallbackResult) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.sched.v1beta1.CallbackResult.flag":
-		x.Flag = (CallbackResultFlag)(value.Enum())
+	case "warden.sched.v1beta1.CallbackResult.status":
+		x.Status = (CallbackStatus)(value.Enum())
+	case "warden.sched.v1beta1.CallbackResult.output":
+		cv := value.Bytes()
+		x.Result = &CallbackResult_Output{Output: cv}
+	case "warden.sched.v1beta1.CallbackResult.fail_reason":
+		cv := value.Interface().(string)
+		x.Result = &CallbackResult_FailReason{FailReason: cv}
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackResult"))
@@ -803,8 +1239,12 @@ func (x *fastReflection_CallbackResult) Set(fd protoreflect.FieldDescriptor, val
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_CallbackResult) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.sched.v1beta1.CallbackResult.flag":
-		panic(fmt.Errorf("field flag of message warden.sched.v1beta1.CallbackResult is not mutable"))
+	case "warden.sched.v1beta1.CallbackResult.status":
+		panic(fmt.Errorf("field status of message warden.sched.v1beta1.CallbackResult is not mutable"))
+	case "warden.sched.v1beta1.CallbackResult.output":
+		panic(fmt.Errorf("field output of message warden.sched.v1beta1.CallbackResult is not mutable"))
+	case "warden.sched.v1beta1.CallbackResult.fail_reason":
+		panic(fmt.Errorf("field fail_reason of message warden.sched.v1beta1.CallbackResult is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackResult"))
@@ -818,8 +1258,12 @@ func (x *fastReflection_CallbackResult) Mutable(fd protoreflect.FieldDescriptor)
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_CallbackResult) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.sched.v1beta1.CallbackResult.flag":
+	case "warden.sched.v1beta1.CallbackResult.status":
 		return protoreflect.ValueOfEnum(0)
+	case "warden.sched.v1beta1.CallbackResult.output":
+		return protoreflect.ValueOfBytes(nil)
+	case "warden.sched.v1beta1.CallbackResult.fail_reason":
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.sched.v1beta1.CallbackResult"))
@@ -833,6 +1277,16 @@ func (x *fastReflection_CallbackResult) NewField(fd protoreflect.FieldDescriptor
 // It panics if the oneof descriptor does not belong to this message.
 func (x *fastReflection_CallbackResult) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
+	case "warden.sched.v1beta1.CallbackResult.result":
+		if x.Result == nil {
+			return nil
+		}
+		switch x.Result.(type) {
+		case *CallbackResult_Output:
+			return x.Descriptor().Fields().ByName("output")
+		case *CallbackResult_FailReason:
+			return x.Descriptor().Fields().ByName("fail_reason")
+		}
 	default:
 		panic(fmt.Errorf("%s is not a oneof field in warden.sched.v1beta1.CallbackResult", d.FullName()))
 	}
@@ -889,8 +1343,22 @@ func (x *fastReflection_CallbackResult) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		if x.Flag != 0 {
-			n += 1 + runtime.Sov(uint64(x.Flag))
+		if x.Status != 0 {
+			n += 1 + runtime.Sov(uint64(x.Status))
+		}
+		switch x := x.Result.(type) {
+		case *CallbackResult_Output:
+			if x == nil {
+				break
+			}
+			l = len(x.Output)
+			n += 1 + l + runtime.Sov(uint64(l))
+		case *CallbackResult_FailReason:
+			if x == nil {
+				break
+			}
+			l = len(x.FailReason)
+			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -921,8 +1389,22 @@ func (x *fastReflection_CallbackResult) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.Flag != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.Flag))
+		switch x := x.Result.(type) {
+		case *CallbackResult_Output:
+			i -= len(x.Output)
+			copy(dAtA[i:], x.Output)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Output)))
+			i--
+			dAtA[i] = 0x12
+		case *CallbackResult_FailReason:
+			i -= len(x.FailReason)
+			copy(dAtA[i:], x.FailReason)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.FailReason)))
+			i--
+			dAtA[i] = 0x3a
+		}
+		if x.Status != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Status))
 			i--
 			dAtA[i] = 0x8
 		}
@@ -977,9 +1459,9 @@ func (x *fastReflection_CallbackResult) ProtoMethods() *protoiface.Methods {
 			switch fieldNum {
 			case 1:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Flag", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 				}
-				x.Flag = 0
+				x.Status = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -989,11 +1471,76 @@ func (x *fastReflection_CallbackResult) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.Flag |= CallbackResultFlag(b&0x7F) << shift
+					x.Status |= CallbackStatus(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v := make([]byte, postIndex-iNdEx)
+				copy(v, dAtA[iNdEx:postIndex])
+				x.Result = &CallbackResult_Output{v}
+				iNdEx = postIndex
+			case 7:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FailReason", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Result = &CallbackResult_FailReason{string(dAtA[iNdEx:postIndex])}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -1042,55 +1589,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type CallbackResultFlag int32
+type CallbackStatus int32
 
 const (
 	// Unspecified callback result.
-	CallbackResultFlag_CALLBACK_RESULT_UNSPECIFIED CallbackResultFlag = 0
+	CallbackStatus_CALLBACK_RESULT_UNSPECIFIED CallbackStatus = 0
 	// Indicates that the callback execution was successful.
-	CallbackResultFlag_CALLBACK_RESULT_SUCCEED CallbackResultFlag = 1
+	CallbackStatus_CALLBACK_RESULT_SUCCEED CallbackStatus = 1
 	// Indicates that the callback execution failed.
-	CallbackResultFlag_CALLBACK_RESULT_FAILED CallbackResultFlag = 2
+	CallbackStatus_CALLBACK_RESULT_FAILED CallbackStatus = 2
 )
 
-// Enum value maps for CallbackResultFlag.
+// Enum value maps for CallbackStatus.
 var (
-	CallbackResultFlag_name = map[int32]string{
+	CallbackStatus_name = map[int32]string{
 		0: "CALLBACK_RESULT_UNSPECIFIED",
 		1: "CALLBACK_RESULT_SUCCEED",
 		2: "CALLBACK_RESULT_FAILED",
 	}
-	CallbackResultFlag_value = map[string]int32{
+	CallbackStatus_value = map[string]int32{
 		"CALLBACK_RESULT_UNSPECIFIED": 0,
 		"CALLBACK_RESULT_SUCCEED":     1,
 		"CALLBACK_RESULT_FAILED":      2,
 	}
 )
 
-func (x CallbackResultFlag) Enum() *CallbackResultFlag {
-	p := new(CallbackResultFlag)
+func (x CallbackStatus) Enum() *CallbackStatus {
+	p := new(CallbackStatus)
 	*p = x
 	return p
 }
 
-func (x CallbackResultFlag) String() string {
+func (x CallbackStatus) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (CallbackResultFlag) Descriptor() protoreflect.EnumDescriptor {
+func (CallbackStatus) Descriptor() protoreflect.EnumDescriptor {
 	return file_warden_sched_v1beta1_callback_proto_enumTypes[0].Descriptor()
 }
 
-func (CallbackResultFlag) Type() protoreflect.EnumType {
+func (CallbackStatus) Type() protoreflect.EnumType {
 	return &file_warden_sched_v1beta1_callback_proto_enumTypes[0]
 }
 
-func (x CallbackResultFlag) Number() protoreflect.EnumNumber {
+func (x CallbackStatus) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use CallbackResultFlag.Descriptor instead.
-func (CallbackResultFlag) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use CallbackStatus.Descriptor instead.
+func (CallbackStatus) EnumDescriptor() ([]byte, []int) {
 	return file_warden_sched_v1beta1_callback_proto_rawDescGZIP(), []int{0}
 }
 
@@ -1109,9 +1656,7 @@ type Callback struct {
 	// Callback address.
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// The limit of gas for callback execution.
-	GasLimit string `protobuf:"bytes,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
-	// The token that will be used to pay for callback execution.
-	FeeToken *v1beta1.Coin `protobuf:"bytes,4,opt,name=feeToken,proto3" json:"feeToken,omitempty"`
+	GasLimit uint64 `protobuf:"varint,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
 }
 
 func (x *Callback) Reset() {
@@ -1148,18 +1693,55 @@ func (x *Callback) GetAddress() string {
 	return ""
 }
 
-func (x *Callback) GetGasLimit() string {
+func (x *Callback) GetGasLimit() uint64 {
 	if x != nil {
 		return x.GasLimit
+	}
+	return 0
+}
+
+// Used by other modules to set callback.
+type CallbackParams struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address  string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	GasLimit uint64 `protobuf:"varint,2,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
+}
+
+func (x *CallbackParams) Reset() {
+	*x = CallbackParams{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_sched_v1beta1_callback_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CallbackParams) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CallbackParams) ProtoMessage() {}
+
+// Deprecated: Use CallbackParams.ProtoReflect.Descriptor instead.
+func (*CallbackParams) Descriptor() ([]byte, []int) {
+	return file_warden_sched_v1beta1_callback_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CallbackParams) GetAddress() string {
+	if x != nil {
+		return x.Address
 	}
 	return ""
 }
 
-func (x *Callback) GetFeeToken() *v1beta1.Coin {
+func (x *CallbackParams) GetGasLimit() uint64 {
 	if x != nil {
-		return x.FeeToken
+		return x.GasLimit
 	}
-	return nil
+	return 0
 }
 
 type CallbackResult struct {
@@ -1167,14 +1749,25 @@ type CallbackResult struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The result flag.
-	Flag CallbackResultFlag `protobuf:"varint,1,opt,name=flag,proto3,enum=warden.sched.v1beta1.CallbackResultFlag" json:"flag,omitempty"`
+	// The result status.
+	Status CallbackStatus `protobuf:"varint,1,opt,name=status,proto3,enum=warden.sched.v1beta1.CallbackStatus" json:"status,omitempty"`
+	// Result of the callback, depending on the status:
+	//
+	//	If unspecified, this field is empty.
+	//	If succeed, this field contains the callback output.
+	//	If failed, this field contains the reason.
+	//
+	// Types that are assignable to Result:
+	//
+	//	*CallbackResult_Output
+	//	*CallbackResult_FailReason
+	Result isCallbackResult_Result `protobuf_oneof:"result"`
 }
 
 func (x *CallbackResult) Reset() {
 	*x = CallbackResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_sched_v1beta1_callback_proto_msgTypes[1]
+		mi := &file_warden_sched_v1beta1_callback_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1188,15 +1781,52 @@ func (*CallbackResult) ProtoMessage() {}
 
 // Deprecated: Use CallbackResult.ProtoReflect.Descriptor instead.
 func (*CallbackResult) Descriptor() ([]byte, []int) {
-	return file_warden_sched_v1beta1_callback_proto_rawDescGZIP(), []int{1}
+	return file_warden_sched_v1beta1_callback_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CallbackResult) GetFlag() CallbackResultFlag {
+func (x *CallbackResult) GetStatus() CallbackStatus {
 	if x != nil {
-		return x.Flag
+		return x.Status
 	}
-	return CallbackResultFlag_CALLBACK_RESULT_UNSPECIFIED
+	return CallbackStatus_CALLBACK_RESULT_UNSPECIFIED
 }
+
+func (x *CallbackResult) GetResult() isCallbackResult_Result {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
+func (x *CallbackResult) GetOutput() []byte {
+	if x, ok := x.GetResult().(*CallbackResult_Output); ok {
+		return x.Output
+	}
+	return nil
+}
+
+func (x *CallbackResult) GetFailReason() string {
+	if x, ok := x.GetResult().(*CallbackResult_FailReason); ok {
+		return x.FailReason
+	}
+	return ""
+}
+
+type isCallbackResult_Result interface {
+	isCallbackResult_Result()
+}
+
+type CallbackResult_Output struct {
+	Output []byte `protobuf:"bytes,2,opt,name=output,proto3,oneof"`
+}
+
+type CallbackResult_FailReason struct {
+	FailReason string `protobuf:"bytes,7,opt,name=fail_reason,json=failReason,proto3,oneof"`
+}
+
+func (*CallbackResult_Output) isCallbackResult_Result() {}
+
+func (*CallbackResult_FailReason) isCallbackResult_Result() {}
 
 var File_warden_sched_v1beta1_callback_proto protoreflect.FileDescriptor
 
@@ -1204,50 +1834,55 @@ var file_warden_sched_v1beta1_callback_proto_rawDesc = []byte{
 	0x0a, 0x23, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x73, 0x63, 0x68, 0x65, 0x64, 0x2f, 0x76,
 	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x73, 0x63,
-	0x68, 0x65, 0x64, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x1a, 0x1e, 0x63, 0x6f, 0x73,
-	0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67,
-	0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x22, 0xb9, 0x01, 0x0a, 0x08, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18,
-	0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x67, 0x61, 0x73, 0x4c,
-	0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x67, 0x61, 0x73, 0x4c,
-	0x69, 0x6d, 0x69, 0x74, 0x12, 0x67, 0x0a, 0x08, 0x66, 0x65, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
-	0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69,
-	0x6e, 0x42, 0x30, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73,
-	0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f,
-	0x69, 0x6e, 0x73, 0x52, 0x08, 0x66, 0x65, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x4e, 0x0a,
-	0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12,
-	0x3c, 0x0a, 0x04, 0x66, 0x6c, 0x61, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x28, 0x2e,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x73, 0x63, 0x68, 0x65, 0x64, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x52, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x46, 0x6c, 0x61, 0x67, 0x52, 0x04, 0x66, 0x6c, 0x61, 0x67, 0x2a, 0x6e, 0x0a,
-	0x12, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x46,
-	0x6c, 0x61, 0x67, 0x12, 0x1f, 0x0a, 0x1b, 0x43, 0x41, 0x4c, 0x4c, 0x42, 0x41, 0x43, 0x4b, 0x5f,
-	0x52, 0x45, 0x53, 0x55, 0x4c, 0x54, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49,
-	0x45, 0x44, 0x10, 0x00, 0x12, 0x1b, 0x0a, 0x17, 0x43, 0x41, 0x4c, 0x4c, 0x42, 0x41, 0x43, 0x4b,
-	0x5f, 0x52, 0x45, 0x53, 0x55, 0x4c, 0x54, 0x5f, 0x53, 0x55, 0x43, 0x43, 0x45, 0x45, 0x44, 0x10,
-	0x01, 0x12, 0x1a, 0x0a, 0x16, 0x43, 0x41, 0x4c, 0x4c, 0x42, 0x41, 0x43, 0x4b, 0x5f, 0x52, 0x45,
-	0x53, 0x55, 0x4c, 0x54, 0x5f, 0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x02, 0x42, 0xec, 0x01,
-	0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x73, 0x63, 0x68,
-	0x65, 0x64, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0d, 0x43, 0x61, 0x6c, 0x6c,
-	0x62, 0x61, 0x63, 0x6b, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2f, 0x73, 0x63, 0x68, 0x65, 0x64, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b,
-	0x73, 0x63, 0x68, 0x65, 0x64, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57,
-	0x53, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x53, 0x63, 0x68, 0x65,
-	0x64, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x5c, 0x53, 0x63, 0x68, 0x65, 0x64, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x53, 0x63, 0x68, 0x65, 0x64, 0x5c,
-	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64,
-	0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x53, 0x63,
-	0x68, 0x65, 0x64, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x68, 0x65, 0x64, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69,
+	0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14,
+	0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0x50, 0x0a, 0x08, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b,
+	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64,
+	0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x67, 0x61,
+	0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x08, 0x67, 0x61,
+	0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x22, 0x46, 0x0a, 0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61,
+	0x63, 0x6b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72,
+	0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x67, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x08, 0x67, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x22, 0xb3,
+	0x01, 0x0a, 0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x12, 0x3c, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0e, 0x32, 0x24, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x73, 0x63, 0x68, 0x65, 0x64,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63,
+	0x6b, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12,
+	0x25, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x42,
+	0x0b, 0xb2, 0xe7, 0xb0, 0x2a, 0x06, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x48, 0x00, 0x52, 0x06,
+	0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x32, 0x0a, 0x0b, 0x66, 0x61, 0x69, 0x6c, 0x5f, 0x72,
+	0x65, 0x61, 0x73, 0x6f, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0f, 0xb2, 0xe7, 0xb0,
+	0x2a, 0x0a, 0x46, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0a,
+	0x66, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x42, 0x08, 0x0a, 0x06, 0x72, 0x65,
+	0x73, 0x75, 0x6c, 0x74, 0x2a, 0x6a, 0x0a, 0x0e, 0x43, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b,
+	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1f, 0x0a, 0x1b, 0x43, 0x41, 0x4c, 0x4c, 0x42, 0x41,
+	0x43, 0x4b, 0x5f, 0x52, 0x45, 0x53, 0x55, 0x4c, 0x54, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43,
+	0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x1b, 0x0a, 0x17, 0x43, 0x41, 0x4c, 0x4c, 0x42,
+	0x41, 0x43, 0x4b, 0x5f, 0x52, 0x45, 0x53, 0x55, 0x4c, 0x54, 0x5f, 0x53, 0x55, 0x43, 0x43, 0x45,
+	0x45, 0x44, 0x10, 0x01, 0x12, 0x1a, 0x0a, 0x16, 0x43, 0x41, 0x4c, 0x4c, 0x42, 0x41, 0x43, 0x4b,
+	0x5f, 0x52, 0x45, 0x53, 0x55, 0x4c, 0x54, 0x5f, 0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x02,
+	0x42, 0xec, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x73, 0x63, 0x68, 0x65, 0x64, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0d, 0x43,
+	0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2f, 0x73, 0x63, 0x68, 0x65, 0x64, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x3b, 0x73, 0x63, 0x68, 0x65, 0x64, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2,
+	0x02, 0x03, 0x57, 0x53, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x53,
+	0x63, 0x68, 0x65, 0x64, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x53, 0x63, 0x68, 0x65, 0x64, 0x5c, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x53, 0x63, 0x68,
+	0x65, 0x64, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
+	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a,
+	0x3a, 0x53, 0x63, 0x68, 0x65, 0x64, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1263,21 +1898,20 @@ func file_warden_sched_v1beta1_callback_proto_rawDescGZIP() []byte {
 }
 
 var file_warden_sched_v1beta1_callback_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_warden_sched_v1beta1_callback_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_warden_sched_v1beta1_callback_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_warden_sched_v1beta1_callback_proto_goTypes = []interface{}{
-	(CallbackResultFlag)(0), // 0: warden.sched.v1beta1.CallbackResultFlag
-	(*Callback)(nil),        // 1: warden.sched.v1beta1.Callback
-	(*CallbackResult)(nil),  // 2: warden.sched.v1beta1.CallbackResult
-	(*v1beta1.Coin)(nil),    // 3: cosmos.base.v1beta1.Coin
+	(CallbackStatus)(0),    // 0: warden.sched.v1beta1.CallbackStatus
+	(*Callback)(nil),       // 1: warden.sched.v1beta1.Callback
+	(*CallbackParams)(nil), // 2: warden.sched.v1beta1.CallbackParams
+	(*CallbackResult)(nil), // 3: warden.sched.v1beta1.CallbackResult
 }
 var file_warden_sched_v1beta1_callback_proto_depIdxs = []int32{
-	3, // 0: warden.sched.v1beta1.Callback.feeToken:type_name -> cosmos.base.v1beta1.Coin
-	0, // 1: warden.sched.v1beta1.CallbackResult.flag:type_name -> warden.sched.v1beta1.CallbackResultFlag
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 0: warden.sched.v1beta1.CallbackResult.status:type_name -> warden.sched.v1beta1.CallbackStatus
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_warden_sched_v1beta1_callback_proto_init() }
@@ -1299,6 +1933,18 @@ func file_warden_sched_v1beta1_callback_proto_init() {
 			}
 		}
 		file_warden_sched_v1beta1_callback_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CallbackParams); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_sched_v1beta1_callback_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CallbackResult); i {
 			case 0:
 				return &v.state
@@ -1311,13 +1957,17 @@ func file_warden_sched_v1beta1_callback_proto_init() {
 			}
 		}
 	}
+	file_warden_sched_v1beta1_callback_proto_msgTypes[2].OneofWrappers = []interface{}{
+		(*CallbackResult_Output)(nil),
+		(*CallbackResult_FailReason)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_sched_v1beta1_callback_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

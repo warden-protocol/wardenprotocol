@@ -16,6 +16,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	// this line is used by starport scaffolding # 1
@@ -182,6 +183,7 @@ type ModuleInputs struct {
 
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
+	GetEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper `optional:"true"`
 }
 
 type ModuleOutputs struct {
@@ -197,11 +199,17 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	if in.Config.Authority != "" {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
+
+	schedModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
+
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
+		schedModuleAddress,
+		in.AccountKeeper,
+		in.GetEvmKeeper,
 	)
 	m := NewAppModule(
 		in.Cdc,

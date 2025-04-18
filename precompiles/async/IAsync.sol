@@ -25,6 +25,7 @@ struct Task {
     address creator;
     string plugin;
     bytes input;
+    uint64 callbackId;
 }
 
 enum TaskVoteType {

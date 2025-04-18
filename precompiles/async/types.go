@@ -112,10 +112,11 @@ func mapTask(task types.Task) (Task, error) {
 	}
 
 	return Task{
-		Id:      task.Id,
-		Creator: creator,
-		Plugin:  task.Plugin,
-		Input:   task.Input,
+		Id:         task.Id,
+		Creator:    creator,
+		Plugin:     task.Plugin,
+		Input:      task.Input,
+		CallbackId: task.CallbackId,
 	}, nil
 }
 

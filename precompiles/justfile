@@ -12,7 +12,7 @@ abi: _tools
   just generate_artifacts warden IWarden
   just generate_artifacts slinky ISlinky
   just generate_artifacts async IAsync
-  just generate_artifacts callbacks IAsyncCallback abiAsyncCallback.json
+  just generate_artifacts callbacks ICallback abiCallback.json
   just generate_artifacts json IJson
 
 generate_artifacts target type abi_file='abi.json':

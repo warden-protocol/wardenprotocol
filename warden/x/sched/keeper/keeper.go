@@ -119,7 +119,7 @@ func (k Keeper) ExecuteCallback(
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	abi, err := callbacks.IAsyncCallbackMetaData.GetAbi()
+	abi, err := callbacks.ICallbackMetaData.GetAbi()
 	if err != nil {
 		return err
 	}

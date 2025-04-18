@@ -29,5 +29,5 @@ message EventCreateTask {
   string plugin = 3;
 
   // Address of callback that will be triggered after execution.
-  string callback_address = 4;
+  uint64 callback_id = 4;
 }

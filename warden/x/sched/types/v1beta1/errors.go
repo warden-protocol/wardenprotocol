@@ -12,4 +12,5 @@ var (
 	ErrCallbackAlreadyHasResult = sdkerrors.Register(ModuleName, 1101, "callback already has result")
 	ErrOutOfMaxGas              = sdkerrors.Register(ModuleName, 1102, "gas estimation more than max gas for callback")
 	ErrInvalidCallback          = sdkerrors.Register(ModuleName, 1103, "invalid callback")
+	ErrInsufficientFunds        = sdkerrors.Register(ModuleName, 1104, "not enough funds to pay fee")
 )

@@ -15,6 +15,10 @@ syntax = "proto3";
 
 package warden.async.v1beta1;
 
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+import "amino/amino.proto";
+
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
 // Task defines a task that will be executed asynchronously.
@@ -34,6 +38,8 @@ message Task {
   bytes input = 4;
   // Callback to be called when the Task is completed.
   string callback = 5;
+  // Deducted fee
+  DeductedFee fee = 6;
 }
 
 // TaskResult is the result of the execution of a Task.
@@ -67,4 +73,23 @@ enum TaskVoteType {
   VOTE_TYPE_VERIFIED = 1;
   // Vote to reject the result of the Task.
   VOTE_TYPE_REJECTED = 2;
+}
+
+// Deducted fee for a concrete task.
+message DeductedFee { 
+  // Reward for the executor of a task
+  repeated cosmos.base.v1beta1.Coin executor_reward = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
+
+  // Reward for the creator of the plugin
+  repeated cosmos.base.v1beta1.Coin plugin_creator_reward = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
 }

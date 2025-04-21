@@ -13,4 +13,5 @@ var (
 	ErrOutOfMaxGas              = sdkerrors.Register(ModuleName, 1102, "gas estimation more than max gas for callback")
 	ErrInvalidCallback          = sdkerrors.Register(ModuleName, 1103, "invalid callback")
 	ErrInsufficientFunds        = sdkerrors.Register(ModuleName, 1104, "not enough funds to pay fee")
+	ErrInvalidGasLimit          = sdkerrors.Register(ModuleName, 1105, "invalid gas limit")
 )

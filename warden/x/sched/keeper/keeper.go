@@ -96,6 +96,10 @@ func (k Keeper) SetCallback(ctx context.Context, cb *types.Callback) (id uint64,
 		return id, errorsmod.Wrapf(types.ErrInvalidCallback, "invalid callback address: %s", err)
 	}
 
+	if cb.GasLimit == 0 {
+		return id, errorsmod.Wrapf(types.ErrInvalidGasLimit, "gas limit should be more than zero")
+	}
+
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	evmKeeper := k.getEvmKeeper(0)
 	acc := evmKeeper.GetAccountWithoutBalance(sdkCtx, address)
@@ -147,13 +151,11 @@ func (k Keeper) ExecuteCallback(
 	}
 
 	if vmErr != "" {
-		k.callbacks.setFailed(ctx, id, vmErr)
-		return nil
+		return k.callbacks.setFailed(ctx, id, vmErr)
 	}
 
 	if gas > cb.GasLimit {
-		k.callbacks.setFailed(ctx, id, types.ErrOutOfMaxGas.Error())
-		return nil
+		return k.callbacks.setFailed(ctx, id, types.ErrOutOfMaxGas.Error())
 	}
 
 	feeAmt, fee := k.callbackFee(sdkCtx, gas)
@@ -161,22 +163,20 @@ func (k Keeper) ExecuteCallback(
 	cbBalance := evmKeeper.GetBalance(sdkCtx, cbAddress)
 
 	if cbBalance.Cmp(feeAmt) == -1 {
-		k.callbacks.setFailed(ctx, id, types.ErrInsufficientFunds.Error())
+		return k.callbacks.setFailed(ctx, id, types.ErrInsufficientFunds.Error())
 	}
 
 	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
-		k.callbacks.setFailed(ctx, id, err.Error())
-		return nil
+		return k.callbacks.setFailed(ctx, id, err.Error())
 	}
 
 	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
 	res, err := k.callEVM(sdkCtx, moduleAddress, &cbAddress, data, gas+sdkCtx.GasMeter().GasConsumed())
 	if err == nil {
 		if res.Failed() {
-			k.callbacks.setFailed(ctx, id, res.VmError)
-			return nil
+			return k.callbacks.setFailed(ctx, id, res.VmError)
 		} else {
-			k.callbacks.setSucceed(ctx, id, res.Return())
+			return k.callbacks.setSucceed(ctx, id, res.Return())
 		}
 	}
 

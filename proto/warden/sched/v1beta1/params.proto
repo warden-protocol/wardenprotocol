@@ -10,6 +10,4 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/sched/ty
 message Params {
   option (amino.name) = "wardenprotocol/x/sched/Params";
   option (gogoproto.equal) = true;
-
-  
 }

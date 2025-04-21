@@ -5,8 +5,8 @@ import "amino/amino.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "warden/sched/v1beta1/params.proto";
 import "warden/sched/v1beta1/callback.proto";
+import "warden/sched/v1beta1/params.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1";
 

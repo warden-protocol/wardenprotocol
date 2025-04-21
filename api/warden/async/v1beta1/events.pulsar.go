@@ -13,11 +13,12 @@ import (
 )
 
 var (
-	md_EventCreateTask             protoreflect.MessageDescriptor
-	fd_EventCreateTask_id          protoreflect.FieldDescriptor
-	fd_EventCreateTask_creator     protoreflect.FieldDescriptor
-	fd_EventCreateTask_plugin      protoreflect.FieldDescriptor
-	fd_EventCreateTask_callback_id protoreflect.FieldDescriptor
+	md_EventCreateTask                  protoreflect.MessageDescriptor
+	fd_EventCreateTask_id               protoreflect.FieldDescriptor
+	fd_EventCreateTask_creator          protoreflect.FieldDescriptor
+	fd_EventCreateTask_plugin           protoreflect.FieldDescriptor
+	fd_EventCreateTask_callback_address protoreflect.FieldDescriptor
+	fd_EventCreateTask_callback_id      protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -26,6 +27,7 @@ func init() {
 	fd_EventCreateTask_id = md_EventCreateTask.Fields().ByName("id")
 	fd_EventCreateTask_creator = md_EventCreateTask.Fields().ByName("creator")
 	fd_EventCreateTask_plugin = md_EventCreateTask.Fields().ByName("plugin")
+	fd_EventCreateTask_callback_address = md_EventCreateTask.Fields().ByName("callback_address")
 	fd_EventCreateTask_callback_id = md_EventCreateTask.Fields().ByName("callback_id")
 }
 
@@ -112,6 +114,12 @@ func (x *fastReflection_EventCreateTask) Range(f func(protoreflect.FieldDescript
 			return
 		}
 	}
+	if x.CallbackAddress != "" {
+		value := protoreflect.ValueOfString(x.CallbackAddress)
+		if !f(fd_EventCreateTask_callback_address, value) {
+			return
+		}
+	}
 	if x.CallbackId != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.CallbackId)
 		if !f(fd_EventCreateTask_callback_id, value) {
@@ -139,6 +147,8 @@ func (x *fastReflection_EventCreateTask) Has(fd protoreflect.FieldDescriptor) bo
 		return x.Creator != ""
 	case "warden.async.v1beta1.EventCreateTask.plugin":
 		return x.Plugin != ""
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
+		return x.CallbackAddress != ""
 	case "warden.async.v1beta1.EventCreateTask.callback_id":
 		return x.CallbackId != uint64(0)
 	default:
@@ -163,6 +173,8 @@ func (x *fastReflection_EventCreateTask) Clear(fd protoreflect.FieldDescriptor) 
 		x.Creator = ""
 	case "warden.async.v1beta1.EventCreateTask.plugin":
 		x.Plugin = ""
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
+		x.CallbackAddress = ""
 	case "warden.async.v1beta1.EventCreateTask.callback_id":
 		x.CallbackId = uint64(0)
 	default:
@@ -189,6 +201,9 @@ func (x *fastReflection_EventCreateTask) Get(descriptor protoreflect.FieldDescri
 		return protoreflect.ValueOfString(value)
 	case "warden.async.v1beta1.EventCreateTask.plugin":
 		value := x.Plugin
+		return protoreflect.ValueOfString(value)
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
+		value := x.CallbackAddress
 		return protoreflect.ValueOfString(value)
 	case "warden.async.v1beta1.EventCreateTask.callback_id":
 		value := x.CallbackId
@@ -219,6 +234,8 @@ func (x *fastReflection_EventCreateTask) Set(fd protoreflect.FieldDescriptor, va
 		x.Creator = value.Interface().(string)
 	case "warden.async.v1beta1.EventCreateTask.plugin":
 		x.Plugin = value.Interface().(string)
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
+		x.CallbackAddress = value.Interface().(string)
 	case "warden.async.v1beta1.EventCreateTask.callback_id":
 		x.CallbackId = value.Uint()
 	default:
@@ -247,6 +264,8 @@ func (x *fastReflection_EventCreateTask) Mutable(fd protoreflect.FieldDescriptor
 		panic(fmt.Errorf("field creator of message warden.async.v1beta1.EventCreateTask is not mutable"))
 	case "warden.async.v1beta1.EventCreateTask.plugin":
 		panic(fmt.Errorf("field plugin of message warden.async.v1beta1.EventCreateTask is not mutable"))
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
+		panic(fmt.Errorf("field callback_address of message warden.async.v1beta1.EventCreateTask is not mutable"))
 	case "warden.async.v1beta1.EventCreateTask.callback_id":
 		panic(fmt.Errorf("field callback_id of message warden.async.v1beta1.EventCreateTask is not mutable"))
 	default:
@@ -267,6 +286,8 @@ func (x *fastReflection_EventCreateTask) NewField(fd protoreflect.FieldDescripto
 	case "warden.async.v1beta1.EventCreateTask.creator":
 		return protoreflect.ValueOfString("")
 	case "warden.async.v1beta1.EventCreateTask.plugin":
+		return protoreflect.ValueOfString("")
+	case "warden.async.v1beta1.EventCreateTask.callback_address":
 		return protoreflect.ValueOfString("")
 	case "warden.async.v1beta1.EventCreateTask.callback_id":
 		return protoreflect.ValueOfUint64(uint64(0))
@@ -350,6 +371,10 @@ func (x *fastReflection_EventCreateTask) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		l = len(x.CallbackAddress)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.CallbackId != 0 {
 			n += 1 + runtime.Sov(uint64(x.CallbackId))
 		}
@@ -385,7 +410,14 @@ func (x *fastReflection_EventCreateTask) ProtoMethods() *protoiface.Methods {
 		if x.CallbackId != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.CallbackId))
 			i--
-			dAtA[i] = 0x20
+			dAtA[i] = 0x28
+		}
+		if len(x.CallbackAddress) > 0 {
+			i -= len(x.CallbackAddress)
+			copy(dAtA[i:], x.CallbackAddress)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CallbackAddress)))
+			i--
+			dAtA[i] = 0x22
 		}
 		if len(x.Plugin) > 0 {
 			i -= len(x.Plugin)
@@ -539,6 +571,38 @@ func (x *fastReflection_EventCreateTask) ProtoMethods() *protoiface.Methods {
 				x.Plugin = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CallbackAddress", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CallbackAddress = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 5:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CallbackId", wireType)
 				}
@@ -630,8 +694,10 @@ type EventCreateTask struct {
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	// Plugin is the name of the plugin that will be executed.
 	Plugin string `protobuf:"bytes,3,opt,name=plugin,proto3" json:"plugin,omitempty"`
-	// Address of callback that will be triggered after execution.
-	CallbackId uint64 `protobuf:"varint,4,opt,name=callback_id,json=callbackId,proto3" json:"callback_id,omitempty"`
+	// Deprecated: Do not use.
+	CallbackAddress string `protobuf:"bytes,4,opt,name=callback_address,json=callbackAddress,proto3" json:"callback_address,omitempty"`
+	// Id of callback that will be triggered after execution.
+	CallbackId uint64 `protobuf:"varint,5,opt,name=callback_id,json=callbackId,proto3" json:"callback_id,omitempty"`
 }
 
 func (x *EventCreateTask) Reset() {
@@ -675,6 +741,14 @@ func (x *EventCreateTask) GetPlugin() string {
 	return ""
 }
 
+// Deprecated: Do not use.
+func (x *EventCreateTask) GetCallbackAddress() string {
+	if x != nil {
+		return x.CallbackAddress
+	}
+	return ""
+}
+
 func (x *EventCreateTask) GetCallbackId() uint64 {
 	if x != nil {
 		return x.CallbackId
@@ -688,13 +762,16 @@ var file_warden_async_v1beta1_events_proto_rawDesc = []byte{
 	0x0a, 0x21, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76,
 	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x12, 0x14, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e,
-	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x22, 0x74, 0x0a, 0x0f, 0x45, 0x76, 0x65,
-	0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x0e, 0x0a, 0x02,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07,
-	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x12, 0x1f,
-	0x0a, 0x0b, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20,
+	0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x22, 0xa3, 0x01, 0x0a, 0x0f, 0x45, 0x76,
+	0x65, 0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a,
+	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x6c, 0x75, 0x67, 0x69,
+	0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x12,
+	0x2d, 0x0a, 0x10, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x5f, 0x61, 0x64, 0x64, 0x72,
+	0x65, 0x73, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x42, 0x02, 0x18, 0x01, 0x52, 0x0f, 0x63,
+	0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x1f,
+	0x0a, 0x0b, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x05, 0x20,
 	0x01, 0x28, 0x04, 0x52, 0x0a, 0x63, 0x61, 0x6c, 0x6c, 0x62, 0x61, 0x63, 0x6b, 0x49, 0x64, 0x42,
 	0xea, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
 	0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0b, 0x45, 0x76,

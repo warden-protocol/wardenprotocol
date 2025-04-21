@@ -28,6 +28,8 @@ message EventCreateTask {
   // Plugin is the name of the plugin that will be executed.
   string plugin = 3;
 
-  // Address of callback that will be triggered after execution.
-  uint64 callback_id = 4;
+  string callback_address = 4 [deprecated = true];
+
+  // Id of callback that will be triggered after execution.
+  uint64 callback_id = 5;
 }

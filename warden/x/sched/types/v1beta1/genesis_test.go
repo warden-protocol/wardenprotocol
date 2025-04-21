@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 

@@ -64,7 +64,6 @@ func newMsgAddTask(args []interface{}, origin common.Address, method *abi.Method
 
 	var callbackParams *schedtypes.CallbackParams
 	if input.CallbackParams.AddressValue.String() != "0x0000000000000000000000000000000000000000" {
-
 		callbackParams = &schedtypes.CallbackParams{
 			Address:  precommon.Bech32StrFromAddress(input.CallbackParams.AddressValue),
 			GasLimit: input.CallbackParams.GasLimit,

@@ -13,7 +13,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
-// avoid unused import issue
+// avoid unused import issue.
 var (
 	_ = schedsimulation.FindAccount
 	_ = rand.Rand{}

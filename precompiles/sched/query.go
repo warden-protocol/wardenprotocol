@@ -122,7 +122,6 @@ func (p Precompile) GetAddressMethod(
 	sdkAddress := p.schedKeeper.GetModuleAddress()
 
 	address, err := wardencommon.AddressFromBech32Str(sdkAddress.String())
-
 	if err != nil {
 		return nil, err
 	}

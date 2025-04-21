@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
+
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
@@ -50,6 +51,9 @@ func mapCallbackResponse(callbackResponse types.CallbackResponse) (CallbackRespo
 	}
 
 	result, err := mapCallbackResult(callbackResponse.Result)
+	if err != nil {
+		return CallbackResponse{}, err
+	}
 
 	return CallbackResponse{
 		Callback: callback,
@@ -59,7 +63,6 @@ func mapCallbackResponse(callbackResponse types.CallbackResponse) (CallbackRespo
 
 func mapCallback(callback types.Callback) (Callback, error) {
 	address, err := precommon.AddressFromBech32Str(callback.Address)
-
 	if err != nil {
 		return Callback{}, fmt.Errorf("invalid callback address: %w", err)
 	}
@@ -88,7 +91,7 @@ func mapCallbackResult(result *types.CallbackResult) (*CallbackResult, error) {
 		if c, ok := r.(*types.CallbackResult_Output); ok {
 			cbR.Result = c.Output
 		} else {
-			return nil, errors.New("unexpected result type for succeded callback")
+			return nil, errors.New("unexpected result type for succeeded callback")
 		}
 	case types.CallbackStatus_CALLBACK_RESULT_FAILED:
 		if c, ok := r.(*types.CallbackResult_FailReason); ok {

@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package warden.async.v1beta1;
 
-import "cosmos_proto/cosmos.proto";
-import "cosmos/base/v1beta1/coin.proto";
-import "gogoproto/gogo.proto";
 import "amino/amino.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -47,12 +47,12 @@ message PluginFees {
 }
 
 // Fees for creating and executing concrete task.
-message PluginFee { 
+message PluginFee {
   // The percent of the fee that goes to the creator of the plugin. The rest goes to the executor of the task.
   string plugin_creator_reward_in_percents = 1 [
-    (cosmos_proto.scalar)  = "cosmos.Dec",
+    (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
-    (gogoproto.nullable)   = false
+    (gogoproto.nullable) = false
   ];
 
   // Fee for creating and executing new Task.

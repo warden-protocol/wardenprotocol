@@ -5,8 +5,8 @@ import (
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
 
@@ -167,7 +167,8 @@ func TestDeductedFees_Total(t *testing.T) {
 				PluginCreatorRewardInPercents: math.LegacyNewDecWithPrec(50, 2),
 				TaskReq:                       sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(123))),
 			},
-		}, {
+		},
+		{
 			name: "100%",
 			fee: v1beta1.PluginFee{
 				PluginCreatorRewardInPercents: math.LegacyNewDecWithPrec(100, 2),

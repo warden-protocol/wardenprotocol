@@ -167,57 +167,6 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output 
 	return nil
 }
 
-func (k Keeper) releaseFee(ctx context.Context, id uint64, submitter []byte) error {
-	task, err := k.tasks.Get(ctx, id)
-	if err != nil {
-		return err
-	}
-
-	if task.Fee != nil {
-		plugin, err := k.plugins.Get(ctx, task.Plugin)
-		if err != nil {
-			return err
-		}
-
-		pluginCreator := k.asyncModuleAddress
-		if plugin.IsThirdPartyPlugin() {
-			pluginCreator, err = plugin.CreatorAccAddress()
-			if err != nil {
-				return err
-			}
-		}
-
-		taskExecutor, err := k.getValidatorAddress(ctx, submitter)
-		if err != nil {
-			return err
-		}
-
-		if err := k.releasePluginFees(ctx, pluginCreator, taskExecutor, *task.Fee); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (k Keeper) getValidatorAddress(
-	ctx context.Context,
-	submitter []byte,
-) (sdk.AccAddress, error) {
-	val, err := k.stakingKeeper.ValidatorByConsAddr(ctx, submitter)
-	if err != nil {
-		return nil, err
-	}
-
-	valAddr := val.GetOperator()
-	addr, err := sdk.ValAddressFromBech32(valAddr)
-	if err != nil {
-		return nil, err
-	}
-
-	return sdk.AccAddress(addr), nil
-}
-
 func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote types.TaskVoteType) error {
 	if !vote.IsValid() {
 		return fmt.Errorf("invalid vote type: %v", vote)
@@ -254,6 +203,56 @@ func (k Keeper) GetTaskVotes(ctx context.Context, taskId uint64) ([]types.TaskVo
 	}
 
 	return votes, nil
+}
+
+func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
+	id := p.GetId()
+
+	if id == "" {
+		return errors.New("plugin ID cannot be empty")
+	}
+
+	found, err := k.plugins.Has(ctx, id)
+	if err != nil {
+		return err
+	}
+	if found {
+		return fmt.Errorf("duplicate plugin: %s", p.GetId())
+	}
+
+	if !p.Fees.IsValid() {
+		return fmt.Errorf("invalid plugin fees: %s", p.Fees)
+	}
+
+	return k.plugins.Set(ctx, id, p)
+}
+
+func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {
+	return k.plugins.Get(ctx, id)
+}
+
+// RegisterPluginValidator registers a validator as a plugin provider.
+func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.ConsAddress, id string) error {
+	found, err := k.plugins.Has(ctx, id)
+	if err != nil {
+		return err
+	}
+	if !found {
+		return fmt.Errorf("plugin doesn't exist: %s", id)
+	}
+	return k.pluginsByValidator.Set(ctx, collections.Join(validator, id))
+}
+
+// HasPluginValidators returns whether there are some validators registered to the request plugin.
+func (k *Keeper) HasPluginValidators(ctx context.Context, id string) bool {
+	// TODO: will be implemented when we'll keep track of validators priorities.
+	return true
+}
+
+// ClearPlugins removes all handlers registered for a validator.
+func (k *Keeper) ClearPlugins(ctx context.Context, validator sdk.ConsAddress) error {
+	r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](validator)
+	return k.pluginsByValidator.Clear(ctx, r)
 }
 
 func (k Keeper) taskReadyCallback(
@@ -423,52 +422,53 @@ func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAd
 	return tasks, nil
 }
 
-func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
-	id := p.GetId()
-
-	if id == "" {
-		return errors.New("plugin ID cannot be empty")
-	}
-
-	found, err := k.plugins.Has(ctx, id)
+func (k Keeper) releaseFee(ctx context.Context, id uint64, submitter []byte) error {
+	task, err := k.tasks.Get(ctx, id)
 	if err != nil {
 		return err
 	}
-	if found {
-		return fmt.Errorf("duplicate plugin: %s", p.GetId())
+
+	if task.Fee != nil {
+		plugin, err := k.plugins.Get(ctx, task.Plugin)
+		if err != nil {
+			return err
+		}
+
+		pluginCreator := k.asyncModuleAddress
+		if plugin.IsThirdPartyPlugin() {
+			pluginCreator, err = plugin.CreatorAccAddress()
+			if err != nil {
+				return err
+			}
+		}
+
+		taskExecutor, err := k.getValidatorAddress(ctx, submitter)
+		if err != nil {
+			return err
+		}
+
+		if err := k.releasePluginFees(ctx, pluginCreator, taskExecutor, *task.Fee); err != nil {
+			return err
+		}
 	}
 
-	if !p.Fees.IsValid() {
-		return fmt.Errorf("invalid plugin fees: %s", p.Fees)
-	}
-
-	return k.plugins.Set(ctx, id, p)
+	return nil
 }
 
-func (k *Keeper) GetPlugin(ctx context.Context, id string) (types.Plugin, error) {
-	return k.plugins.Get(ctx, id)
-}
-
-// RegisterPluginValidator registers a validator as a plugin provider.
-func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.ConsAddress, id string) error {
-	found, err := k.plugins.Has(ctx, id)
+func (k Keeper) getValidatorAddress(
+	ctx context.Context,
+	submitter []byte,
+) (sdk.AccAddress, error) {
+	val, err := k.stakingKeeper.ValidatorByConsAddr(ctx, submitter)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if !found {
-		return fmt.Errorf("plugin doesn't exist: %s", id)
+
+	valAddr := val.GetOperator()
+	addr, err := sdk.ValAddressFromBech32(valAddr)
+	if err != nil {
+		return nil, err
 	}
-	return k.pluginsByValidator.Set(ctx, collections.Join(validator, id))
-}
 
-// HasPluginValidators returns whether there are some validators registered to the request plugin.
-func (k *Keeper) HasPluginValidators(ctx context.Context, id string) bool {
-	// TODO: will be implemented when we'll keep track of validators priorities.
-	return true
-}
-
-// ClearPlugins removes all handlers registered for a validator.
-func (k *Keeper) ClearPlugins(ctx context.Context, validator sdk.ConsAddress) error {
-	r := collections.NewPrefixedPairRange[sdk.ConsAddress, string](validator)
-	return k.pluginsByValidator.Clear(ctx, r)
+	return sdk.AccAddress(addr), nil
 }

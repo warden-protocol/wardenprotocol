@@ -60,7 +60,6 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 			Address:  msg.CallbackParams.Address,
 			GasLimit: msg.CallbackParams.GasLimit,
 		})
-
 		if err != nil {
 			return nil, err
 		}

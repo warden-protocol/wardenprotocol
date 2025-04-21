@@ -20,6 +20,7 @@ import (
 	evmosconf "github.com/evmos/evmos/v20/server/config"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	evmostypes "github.com/evmos/evmos/v20/x/evm/types"
+
 	"github.com/warden-protocol/wardenprotocol/precompiles/callbacks"
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
@@ -57,7 +58,7 @@ func NewKeeper(
 	getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
-		panic(fmt.Sprintf("invalid authority address: %s", authority))
+		panic("invalid authority address: " + authority)
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -87,7 +88,7 @@ func (k Keeper) GetAuthority() string {
 
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
 func (k Keeper) SetCallback(ctx context.Context, cb *types.Callback) (id uint64, err error) {
@@ -121,8 +122,6 @@ func (k Keeper) ExecuteCallback(
 		return err
 	}
 
-	sdkCtx := sdk.UnwrapSDKContext(ctx)
-
 	abi, err := callbacks.ICallbackMetaData.GetAbi()
 	if err != nil {
 		return err
@@ -145,7 +144,6 @@ func (k Keeper) ExecuteCallback(
 
 	moduleAddress := common.BytesToAddress(k.schedModuleAddress.Bytes())
 	gas, vmErr, err := k.estimateGas(ctx, moduleAddress, &cbAddress, data)
-
 	if err != nil {
 		return err
 	}
@@ -158,20 +156,12 @@ func (k Keeper) ExecuteCallback(
 		return k.callbacks.setFailed(ctx, id, types.ErrOutOfMaxGas.Error())
 	}
 
-	feeAmt, fee := k.callbackFee(sdkCtx, gas)
-	evmKeeper := k.getEvmKeeper(0)
-	cbBalance := evmKeeper.GetBalance(sdkCtx, cbAddress)
-
-	if cbBalance.Cmp(feeAmt) == -1 {
-		return k.callbacks.setFailed(ctx, id, types.ErrInsufficientFunds.Error())
-	}
-
-	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
-		return k.callbacks.setFailed(ctx, id, err.Error())
+	if err := k.tryDeductTxCost(ctx, gas, cbAddress, id); err != nil {
+		return err
 	}
 
 	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
-	res, err := k.callEVM(sdkCtx, moduleAddress, &cbAddress, data, gas+sdkCtx.GasMeter().GasConsumed())
+	res, err := k.callEVM(ctx, moduleAddress, &cbAddress, data, gas+k.getGasConsumed(ctx))
 	if err == nil {
 		if res.Failed() {
 			return k.callbacks.setFailed(ctx, id, res.VmError)
@@ -181,6 +171,33 @@ func (k Keeper) ExecuteCallback(
 	}
 
 	return err
+}
+
+func (k Keeper) getGasConsumed(ctx context.Context) uint64 {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	return sdkCtx.GasMeter().GasConsumed()
+}
+
+func (k Keeper) tryDeductTxCost(
+	ctx context.Context,
+	gas uint64,
+	cbAddress common.Address,
+	cbId uint64,
+) error {
+	feeAmt, fee := k.callbackFee(ctx, gas)
+	evmKeeper := k.getEvmKeeper(0)
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	cbBalance := evmKeeper.GetBalance(sdkCtx, cbAddress)
+
+	if cbBalance.Cmp(feeAmt) == -1 {
+		return k.callbacks.setFailed(ctx, cbId, types.ErrInsufficientFunds.Error())
+	}
+
+	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
+		return k.callbacks.setFailed(ctx, cbId, err.Error())
+	}
+
+	return nil
 }
 
 func (k Keeper) estimateGas(
@@ -212,7 +229,7 @@ func (k Keeper) estimateGas(
 }
 
 func (k Keeper) callEVM(
-	ctx sdk.Context,
+	ctx context.Context,
 	from common.Address,
 	contract *common.Address,
 	data []byte,
@@ -241,7 +258,8 @@ func (k Keeper) callEVM(
 	)
 
 	evmKeeper := k.getEvmKeeper(0)
-	res, err := evmKeeper.ApplyMessage(ctx, msg, evmostypes.NewNoOpTracer(), true)
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	res, err := evmKeeper.ApplyMessage(sdkCtx, msg, evmostypes.NewNoOpTracer(), true)
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +273,8 @@ func (k Keeper) callEVM(
 	return res, nil
 }
 
-func (k Keeper) callbackFee(sdkCtx sdk.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
+func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	evmKeeper := k.getEvmKeeper(0)
 	params := evmKeeper.GetParams(sdkCtx)
 	ethCfg := params.ChainConfig.EthereumConfig(evmKeeper.ChainID())

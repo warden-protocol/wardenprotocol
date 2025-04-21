@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * (x/async) Rename futures into tasks, and future handlers into plugins
 * (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
+* (x/async) Implement a reward system where task executors and plugin creators can earn fees for their services
 
 ### Consensus Breaking Changes
 

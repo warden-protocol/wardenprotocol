@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Consensus Breaking Changes
 
 * (precompiles) The JSON precompile allowing to operate on JSON
+* (x/sched) Add schedule module which allow register and execute callbacks
 
 ### Bug Fixes
 

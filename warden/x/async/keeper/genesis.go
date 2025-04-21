@@ -29,11 +29,16 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 }
 
 func (k *Keeper) AddProphetPlugins(ctx sdk.Context) error {
+	commonPluginFees := types.PluginFees{
+		Values: []types.PluginFee{},
+	}
+
 	for _, p := range prophet.RegisteredPlugins() {
 		if err := k.AddPlugin(ctx, types.Plugin{
 			Id:          p,
 			Creator:     "",
 			Description: "",
+			Fees:        commonPluginFees,
 		}); err != nil {
 			return err
 		}

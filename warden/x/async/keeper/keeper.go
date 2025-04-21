@@ -50,7 +50,7 @@ type (
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
 		authority          string
-		asyncModuleAddress sdk.Address
+		asyncModuleAddress sdk.AccAddress
 
 		stakingKeeper *stakingkeeper.Keeper
 
@@ -59,6 +59,7 @@ type (
 		pluginsByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
 		getEvmKeeper       func(_placeHolder int16) *evmkeeper.Keeper
 		accountKeeper      types.AccountKeeper
+		bankKeeper         types.BankKeeper
 		votes              collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
@@ -83,8 +84,9 @@ func NewKeeper(
 	authority string,
 	p *prophet.P,
 	getEvmKeeper func(_placeHolder int16) *evmkeeper.Keeper,
-	asyncModuleAddress sdk.Address,
+	asyncModuleAddress sdk.AccAddress,
 	accountKeeper types.AccountKeeper,
+	bankKeeper types.BankKeeper,
 	stakingKeeper *stakingkeeper.Keeper,
 	// selfValAddr sdk.ConsAddress,
 ) Keeper {
@@ -123,6 +125,7 @@ func NewKeeper(
 		pluginsByValidator: pluginsByValidator,
 		getEvmKeeper:       getEvmKeeper,
 		accountKeeper:      accountKeeper,
+		bankKeeper:         bankKeeper,
 		stakingKeeper:      stakingKeeper,
 		votes:              votes,
 
@@ -157,7 +160,62 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output 
 		return err
 	}
 
+	if err := k.releaseFee(ctx, id, submitter); err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func (k Keeper) releaseFee(ctx context.Context, id uint64, submitter []byte) error {
+	task, err := k.tasks.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if task.Fee != nil {
+		plugin, err := k.plugins.Get(ctx, task.Plugin)
+		if err != nil {
+			return err
+		}
+
+		pluginCreator := k.asyncModuleAddress
+		if plugin.IsThirdPartyPlugin() {
+			pluginCreator, err = plugin.CreatorAccAddress()
+			if err != nil {
+				return err
+			}
+		}
+
+		taskExecutor, err := k.getValidatorAddress(ctx, submitter)
+		if err != nil {
+			return err
+		}
+
+		if err := k.releasePluginFees(ctx, pluginCreator, taskExecutor, *task.Fee); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (k Keeper) getValidatorAddress(
+	ctx context.Context,
+	submitter []byte,
+) (sdk.AccAddress, error) {
+	val, err := k.stakingKeeper.ValidatorByConsAddr(ctx, submitter)
+	if err != nil {
+		return nil, err
+	}
+
+	valAddr := val.GetOperator()
+	addr, err := sdk.ValAddressFromBech32(valAddr)
+	if err != nil {
+		return nil, err
+	}
+
+	return sdk.AccAddress(addr), nil
 }
 
 func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote types.TaskVoteType) error {
@@ -378,6 +436,10 @@ func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
 	}
 	if found {
 		return fmt.Errorf("duplicate plugin: %s", p.GetId())
+	}
+
+	if !p.Fees.IsValid() {
+		return fmt.Errorf("invalid plugin fees: %s", p.Fees)
 	}
 
 	return k.plugins.Set(ctx, id, p)

@@ -236,6 +236,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.GetEvmKeeper,
 		asyncModuleAddress,
 		in.AccountKeeper,
+		in.BankKeeper,
 		in.StakingKeeper,
 	)
 	m := NewAppModule(

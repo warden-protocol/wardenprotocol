@@ -29,7 +29,7 @@ Reasons for running a node include the following:
 - [Create a validator](create-a-validator), [Operate Skip:Connect](operate-skip-connect)    
   After joining a network, you can become a validator and run the oracle service integrated with Warden.
 
-- [Node API reference](node-api-reference), [Node commands](node-commands)  
+- [Node API](node-api), [Node commands](node-commands)  
   To interact with the node, use the Node API and node commands.
 
 ## Get started

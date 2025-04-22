@@ -42,10 +42,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
+### Consensus Breaking Changes
+
+### Bug Fixes
+
+## [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) - 2025-04-16
+
+### Features (non-breaking)
+
 * (x/async) Rename futures into tasks, and future handlers into plugins
 * (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
 
 ### Consensus Breaking Changes
+
+* (precompiles) The JSON precompile allowing to operate on JSON
 
 ### Bug Fixes
 

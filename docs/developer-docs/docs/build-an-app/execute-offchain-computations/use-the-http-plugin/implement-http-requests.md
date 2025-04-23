@@ -8,11 +8,11 @@ sidebar_position: 3
 
 This tutorial explains how implement simple **HTTP requests** to **multiple APIs**:
 
-- The [CoinGecko API](https://docs.coingecko.com/reference/introduction)
-- The [GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
-- The [JSONPlaceholder API](https://jsonplaceholder.typicode.com)
+- [The CoinGecko API](https://docs.coingecko.com/reference/introduction)
+- [The GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
+- [The JSONPlaceholder API](https://jsonplaceholder.typicode.com)
 
-## Step 1. Create a contract
+## 1. Create a contract
 
 Create a new file called `MultiApiTest.sol`:
 
@@ -114,9 +114,7 @@ contract MultiApiTest {
 }
 ```
 
-## Step 2. Deploy and test
-
-### 2.1. Deploy
+## 2. Deploy 
 
 1. Deploy the contract:
    
@@ -131,7 +129,9 @@ contract MultiApiTest {
    export CONTRACT_ADDRESS=my-contract-address
    ```
 
-### 2.2. Test the CoinGecko API
+## 3. Make HTTP requests
+
+### 3.1. Call the CoinGecko API
 
 Test HTTP requests to the [CoinGecko API](https://docs.coingecko.com/reference/introduction):
 
@@ -187,7 +187,7 @@ Test HTTP requests to the [CoinGecko API](https://docs.coingecko.com/reference/i
    "�gbitcoin�cusd�@��P\0\0\0\0"
    ```
 
-### 2.3. Test the GitHub API   
+### 3.2. Call the GitHub API   
 
 Test requests to the [GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28) in a similar way:
 
@@ -211,7 +211,7 @@ The expected output is the following:
 200
    ```
 
-### 2.4. Test the JSONPlaceholder API
+### 3.3. Call the JSONPlaceholder API
 
 Test requests to the [JSONPlaceholder API](https://jsonplaceholder.typicode.com):
 

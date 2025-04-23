@@ -51,8 +51,8 @@ func (cli *Wardend) TransactOps(
 	require.NoError(t, err)
 
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(0)      // in wei
-	auth.GasLimit = uint64(1000000) // in units
+	auth.Value = big.NewInt(0)          // in wei
+	auth.GasLimit = uint64(10000000000) // in units
 	auth.GasPrice = gasPrice
 
 	return auth

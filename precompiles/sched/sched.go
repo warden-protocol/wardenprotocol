@@ -25,7 +25,7 @@ const PrecompileAddress = "0x0000000000000000000000000000000000000905"
 //go:embed abi.json
 var f embed.FS
 
-// Precompile defines the precompiled contract for x/async.
+// Precompile defines the precompiled contract for x/sched.
 type Precompile struct {
 	evmoscmn.Precompile
 	schedKeeper    schedkeeper.Keeper
@@ -33,8 +33,8 @@ type Precompile struct {
 	queryServer    types.QueryServer
 }
 
-// LoadABI loads the x/async ABI from the embedded abi.json file
-// for the x/async precompile.
+// LoadABI loads the x/sched ABI from the embedded abi.json file
+// for the x/sched precompile.
 func LoadABI() (abi.ABI, error) {
 	return evmoscmn.LoadABI(f, "abi.json")
 }

@@ -8,7 +8,7 @@ sidebar_position: 4
 
 The `IJson.sol` precompile enables... [`x/async` module](/learn/warden-protocol-modules/x-async).
 
-In this article, you'll find a full list of available methods, allowing you to manage JSON objects. (?)
+In this article, you'll find a full list of available methods, allowing you to manage JSON objects and to get and set different values.
 
 To learn how to use this precompile, refer to [Use the JSON precompile].
 
@@ -54,7 +54,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-## Getting values
+## Getters
 
 ### Get a value
 
@@ -84,7 +84,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-### Get a bool value
+### Get a boolean value
 
 - **Method**: `getBool()`
 - **Description**: XXX.
@@ -112,20 +112,6 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-### Get an int256 value
-
-- **Method**: `getInt256()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
 ### Get a uint256 value
 
 - **Method**: `getUint256()`
@@ -140,7 +126,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-### Get a float
+### Get an int256 value
+
+- **Method**: `getInt256()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a float value
 
 - **Method**: `getFloat()`
 - **Description**: XXX.
@@ -168,11 +168,9 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-## Setting values
+### Get a boolean array
 
-### XXX
-
-- **Method**: `XXX()`
+- **Method**: `getBoolArray()`
 - **Description**: XXX.
 - **Parameters** :
   ```sol
@@ -184,12 +182,10 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-## Reading & writing
+### Get an address array
 
-### XXX
-
-- **Method**: `XXX()`
-- **Description**: XXX. See the [`XXX` struct].
+- **Method**: `getAddressArray()`
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX
@@ -200,10 +196,306 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [XXX]
 
-### XXX
+### Get a uint256 array
 
-- **Method**: `XXX()`
-- **Description**: XXX. See the [`XXX` struct].
+- **Method**: `getUintArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get an int256 array
+
+- **Method**: `getIntArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a float array
+
+- **Method**: `getFloatArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get an object array
+
+- **Method**: `getObjectsArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get a nested object
+
+- **Method**: `getObject()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Get multiple key-value pairs
+
+- **Method**: `reatd()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+## Setters
+
+### Set a string value
+
+- **Method**: `setString()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a boolean value
+
+- **Method**: `setBool()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set an address value
+
+- **Method**: `setAddress()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a bytes value
+
+- **Method**: `setBytes()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set an int256 value
+
+- **Method**: `setInt256()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a uint256 value
+
+- **Method**: `setUint256()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a float value
+
+- **Method**: `setFloat()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a string array
+
+- **Method**: `setStringArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set an address array
+
+- **Method**: `setAddressArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a boolean array
+
+- **Method**: `setBoolArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a uint256 array
+
+- **Method**: `setUintArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set an int256 array
+
+- **Method**: `setIntArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a float array
+
+- **Method**: `setFloatArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set an object array
+
+- **Method**: `setObjectsArray()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set a nested object
+
+- **Method**: `setObject()`
+- **Description**: XXX.
+- **Parameters** :
+  ```sol
+  XXX
+  ```
+- **Output**:  
+  ```sol
+  XXX
+  ```
+- **Usage example**: [XXX]
+
+### Set multiple key-value pairs
+
+- **Method**: `write()`
+- **Description**: XXX.
 - **Parameters** :
   ```sol
   XXX

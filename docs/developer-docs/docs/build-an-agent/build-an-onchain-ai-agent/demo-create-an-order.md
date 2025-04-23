@@ -289,3 +289,7 @@ Paid: 0.000000000028419088 ETH (3552386 gas * 0.000000008 gwei)
    ```
    0x0000000000000000000000000000000000000000000000000000000000000000
    ```
+
+## Next steps
+
+To get started with implementing Orders, [meet the prerequisites](prerequisites).

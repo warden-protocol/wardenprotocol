@@ -10,15 +10,15 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
-// FromResponse needed to map QueryTaskByIdResponse to TaskByIdResponse.
+// FromResponse needed to map QueryCallbackByIdResponse to CallbackByIdResponse.
 func (r *CallbackByIdResponse) FromResponse(res *types.QueryCallbackByIdResponse) (CallbackByIdResponse, error) {
 	if res != nil {
-		mappedTaskResponse, err := mapCallbackResponse(res.CallbackResponse)
+		mappedCallbackResponse, err := mapCallbackResponse(res.CallbackResponse)
 		if err != nil {
 			return CallbackByIdResponse{}, err
 		}
 
-		r.CallbackResponse = mappedTaskResponse
+		r.CallbackResponse = mappedCallbackResponse
 	}
 
 	return *r, nil

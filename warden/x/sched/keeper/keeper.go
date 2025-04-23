@@ -26,6 +26,8 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
+const GET_EVM_KEEPER_PLACE_HOLDER int16 = 0
+
 type (
 	Keeper struct {
 		cdc          codec.BinaryCodec
@@ -102,7 +104,7 @@ func (k Keeper) SetCallback(ctx context.Context, cb *types.Callback) (id uint64,
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	evmKeeper := k.getEvmKeeper(0)
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	acc := evmKeeper.GetAccountWithoutBalance(sdkCtx, address)
 
 	if acc == nil || !acc.IsContract() {
@@ -185,7 +187,7 @@ func (k Keeper) tryDeductTxCost(
 	cbId uint64,
 ) error {
 	feeAmt, fee := k.callbackFee(ctx, gas)
-	evmKeeper := k.getEvmKeeper(0)
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	cbBalance := evmKeeper.GetBalance(sdkCtx, cbAddress)
 
@@ -206,7 +208,7 @@ func (k Keeper) estimateGas(
 	contract *common.Address,
 	data []byte,
 ) (uint64, string, error) {
-	evmKeeper := k.getEvmKeeper(0)
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 
 	args, err := json.Marshal(evmostypes.TransactionArgs{
 		From: &from,
@@ -257,7 +259,7 @@ func (k Keeper) callEVM(
 		false,                 // isFake
 	)
 
-	evmKeeper := k.getEvmKeeper(0)
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	res, err := evmKeeper.ApplyMessage(sdkCtx, msg, evmostypes.NewNoOpTracer(), true)
 	if err != nil {
@@ -275,7 +277,7 @@ func (k Keeper) callEVM(
 
 func (k Keeper) callbackFee(ctx context.Context, gas uint64) (feeAmt *big.Int, fee sdk.Coins) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	evmKeeper := k.getEvmKeeper(0)
+	evmKeeper := k.getEvmKeeper(GET_EVM_KEEPER_PLACE_HOLDER)
 	params := evmKeeper.GetParams(sdkCtx)
 	ethCfg := params.ChainConfig.EthereumConfig(evmKeeper.ChainID())
 	baseFee := evmKeeper.GetBaseFee(sdkCtx, ethCfg)

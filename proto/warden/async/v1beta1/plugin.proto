@@ -38,25 +38,21 @@ message Plugin {
   string description = 3;
 
   // Fees for creating and executing tasks.
-  PluginFees fees = 4 [(gogoproto.nullable) = false];
-}
-
-// Fees for creating and executing tasks.
-message PluginFees {
-  repeated PluginFee values = 1 [(gogoproto.nullable) = false];
+  PluginFee fee = 4 [(gogoproto.nullable) = false];
 }
 
 // Fees for creating and executing concrete task.
 message PluginFee {
-  // The percent of the fee that goes to the creator of the plugin. The rest goes to the executor of the task.
-  string plugin_creator_reward_in_percents = 1 [
+  // The percentage of the fee that goes to the creator of the plugin. The rest goes to the executor of the task.
+  // Expressed as a number in the range [0, 1].
+  string plugin_creator_reward_in_percent = 1 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
     (gogoproto.nullable) = false
   ];
 
   // Fee for creating and executing new Task.
-  repeated cosmos.base.v1beta1.Coin task_req = 3 [
+  repeated cosmos.base.v1beta1.Coin fee = 3 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (amino.dont_omitempty) = true,

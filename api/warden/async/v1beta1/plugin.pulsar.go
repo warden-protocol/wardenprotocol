@@ -21,7 +21,7 @@ var (
 	fd_Plugin_id          protoreflect.FieldDescriptor
 	fd_Plugin_creator     protoreflect.FieldDescriptor
 	fd_Plugin_description protoreflect.FieldDescriptor
-	fd_Plugin_fees        protoreflect.FieldDescriptor
+	fd_Plugin_fee         protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -30,7 +30,7 @@ func init() {
 	fd_Plugin_id = md_Plugin.Fields().ByName("id")
 	fd_Plugin_creator = md_Plugin.Fields().ByName("creator")
 	fd_Plugin_description = md_Plugin.Fields().ByName("description")
-	fd_Plugin_fees = md_Plugin.Fields().ByName("fees")
+	fd_Plugin_fee = md_Plugin.Fields().ByName("fee")
 }
 
 var _ protoreflect.Message = (*fastReflection_Plugin)(nil)
@@ -116,9 +116,9 @@ func (x *fastReflection_Plugin) Range(f func(protoreflect.FieldDescriptor, proto
 			return
 		}
 	}
-	if x.Fees != nil {
-		value := protoreflect.ValueOfMessage(x.Fees.ProtoReflect())
-		if !f(fd_Plugin_fees, value) {
+	if x.Fee != nil {
+		value := protoreflect.ValueOfMessage(x.Fee.ProtoReflect())
+		if !f(fd_Plugin_fee, value) {
 			return
 		}
 	}
@@ -143,8 +143,8 @@ func (x *fastReflection_Plugin) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Creator != ""
 	case "warden.async.v1beta1.Plugin.description":
 		return x.Description != ""
-	case "warden.async.v1beta1.Plugin.fees":
-		return x.Fees != nil
+	case "warden.async.v1beta1.Plugin.fee":
+		return x.Fee != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.Plugin"))
@@ -167,8 +167,8 @@ func (x *fastReflection_Plugin) Clear(fd protoreflect.FieldDescriptor) {
 		x.Creator = ""
 	case "warden.async.v1beta1.Plugin.description":
 		x.Description = ""
-	case "warden.async.v1beta1.Plugin.fees":
-		x.Fees = nil
+	case "warden.async.v1beta1.Plugin.fee":
+		x.Fee = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.Plugin"))
@@ -194,8 +194,8 @@ func (x *fastReflection_Plugin) Get(descriptor protoreflect.FieldDescriptor) pro
 	case "warden.async.v1beta1.Plugin.description":
 		value := x.Description
 		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.Plugin.fees":
-		value := x.Fees
+	case "warden.async.v1beta1.Plugin.fee":
+		value := x.Fee
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
@@ -223,8 +223,8 @@ func (x *fastReflection_Plugin) Set(fd protoreflect.FieldDescriptor, value proto
 		x.Creator = value.Interface().(string)
 	case "warden.async.v1beta1.Plugin.description":
 		x.Description = value.Interface().(string)
-	case "warden.async.v1beta1.Plugin.fees":
-		x.Fees = value.Message().Interface().(*PluginFees)
+	case "warden.async.v1beta1.Plugin.fee":
+		x.Fee = value.Message().Interface().(*PluginFee)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.Plugin"))
@@ -245,11 +245,11 @@ func (x *fastReflection_Plugin) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Plugin) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.Plugin.fees":
-		if x.Fees == nil {
-			x.Fees = new(PluginFees)
+	case "warden.async.v1beta1.Plugin.fee":
+		if x.Fee == nil {
+			x.Fee = new(PluginFee)
 		}
-		return protoreflect.ValueOfMessage(x.Fees.ProtoReflect())
+		return protoreflect.ValueOfMessage(x.Fee.ProtoReflect())
 	case "warden.async.v1beta1.Plugin.id":
 		panic(fmt.Errorf("field id of message warden.async.v1beta1.Plugin is not mutable"))
 	case "warden.async.v1beta1.Plugin.creator":
@@ -275,8 +275,8 @@ func (x *fastReflection_Plugin) NewField(fd protoreflect.FieldDescriptor) protor
 		return protoreflect.ValueOfString("")
 	case "warden.async.v1beta1.Plugin.description":
 		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.Plugin.fees":
-		m := new(PluginFees)
+	case "warden.async.v1beta1.Plugin.fee":
+		m := new(PluginFee)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
@@ -359,8 +359,8 @@ func (x *fastReflection_Plugin) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.Fees != nil {
-			l = options.Size(x.Fees)
+		if x.Fee != nil {
+			l = options.Size(x.Fee)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -392,8 +392,8 @@ func (x *fastReflection_Plugin) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.Fees != nil {
-			encoded, err := options.Marshal(x.Fees)
+		if x.Fee != nil {
+			encoded, err := options.Marshal(x.Fee)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -574,7 +574,7 @@ func (x *fastReflection_Plugin) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Fees", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -601,504 +601,10 @@ func (x *fastReflection_Plugin) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.Fees == nil {
-					x.Fees = &PluginFees{}
+				if x.Fee == nil {
+					x.Fee = &PluginFee{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Fees); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var _ protoreflect.List = (*_PluginFees_1_list)(nil)
-
-type _PluginFees_1_list struct {
-	list *[]*PluginFee
-}
-
-func (x *_PluginFees_1_list) Len() int {
-	if x.list == nil {
-		return 0
-	}
-	return len(*x.list)
-}
-
-func (x *_PluginFees_1_list) Get(i int) protoreflect.Value {
-	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
-}
-
-func (x *_PluginFees_1_list) Set(i int, value protoreflect.Value) {
-	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*PluginFee)
-	(*x.list)[i] = concreteValue
-}
-
-func (x *_PluginFees_1_list) Append(value protoreflect.Value) {
-	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*PluginFee)
-	*x.list = append(*x.list, concreteValue)
-}
-
-func (x *_PluginFees_1_list) AppendMutable() protoreflect.Value {
-	v := new(PluginFee)
-	*x.list = append(*x.list, v)
-	return protoreflect.ValueOfMessage(v.ProtoReflect())
-}
-
-func (x *_PluginFees_1_list) Truncate(n int) {
-	for i := n; i < len(*x.list); i++ {
-		(*x.list)[i] = nil
-	}
-	*x.list = (*x.list)[:n]
-}
-
-func (x *_PluginFees_1_list) NewElement() protoreflect.Value {
-	v := new(PluginFee)
-	return protoreflect.ValueOfMessage(v.ProtoReflect())
-}
-
-func (x *_PluginFees_1_list) IsValid() bool {
-	return x.list != nil
-}
-
-var (
-	md_PluginFees        protoreflect.MessageDescriptor
-	fd_PluginFees_values protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_warden_async_v1beta1_plugin_proto_init()
-	md_PluginFees = File_warden_async_v1beta1_plugin_proto.Messages().ByName("PluginFees")
-	fd_PluginFees_values = md_PluginFees.Fields().ByName("values")
-}
-
-var _ protoreflect.Message = (*fastReflection_PluginFees)(nil)
-
-type fastReflection_PluginFees PluginFees
-
-func (x *PluginFees) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_PluginFees)(x)
-}
-
-func (x *PluginFees) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_async_v1beta1_plugin_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_PluginFees_messageType fastReflection_PluginFees_messageType
-var _ protoreflect.MessageType = fastReflection_PluginFees_messageType{}
-
-type fastReflection_PluginFees_messageType struct{}
-
-func (x fastReflection_PluginFees_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_PluginFees)(nil)
-}
-func (x fastReflection_PluginFees_messageType) New() protoreflect.Message {
-	return new(fastReflection_PluginFees)
-}
-func (x fastReflection_PluginFees_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_PluginFees
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_PluginFees) Descriptor() protoreflect.MessageDescriptor {
-	return md_PluginFees
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_PluginFees) Type() protoreflect.MessageType {
-	return _fastReflection_PluginFees_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_PluginFees) New() protoreflect.Message {
-	return new(fastReflection_PluginFees)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_PluginFees) Interface() protoreflect.ProtoMessage {
-	return (*PluginFees)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_PluginFees) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if len(x.Values) != 0 {
-		value := protoreflect.ValueOfList(&_PluginFees_1_list{list: &x.Values})
-		if !f(fd_PluginFees_values, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_PluginFees) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFees.values":
-		return len(x.Values) != 0
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFees"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginFees does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginFees) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFees.values":
-		x.Values = nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFees"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginFees does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_PluginFees) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "warden.async.v1beta1.PluginFees.values":
-		if len(x.Values) == 0 {
-			return protoreflect.ValueOfList(&_PluginFees_1_list{})
-		}
-		listValue := &_PluginFees_1_list{list: &x.Values}
-		return protoreflect.ValueOfList(listValue)
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFees"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginFees does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginFees) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFees.values":
-		lv := value.List()
-		clv := lv.(*_PluginFees_1_list)
-		x.Values = *clv.list
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFees"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginFees does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginFees) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFees.values":
-		if x.Values == nil {
-			x.Values = []*PluginFee{}
-		}
-		value := &_PluginFees_1_list{list: &x.Values}
-		return protoreflect.ValueOfList(value)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFees"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginFees does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_PluginFees) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFees.values":
-		list := []*PluginFee{}
-		return protoreflect.ValueOfList(&_PluginFees_1_list{list: &list})
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFees"))
-		}
-		panic(fmt.Errorf("message warden.async.v1beta1.PluginFees does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_PluginFees) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.PluginFees", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_PluginFees) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_PluginFees) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_PluginFees) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_PluginFees) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*PluginFees)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		if len(x.Values) > 0 {
-			for _, e := range x.Values {
-				l = options.Size(e)
-				n += 1 + l + runtime.Sov(uint64(l))
-			}
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*PluginFees)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if len(x.Values) > 0 {
-			for iNdEx := len(x.Values) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.Values[iNdEx])
-				if err != nil {
-					return protoiface.MarshalOutput{
-						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-						Buf:               input.Buf,
-					}, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-				i--
-				dAtA[i] = 0xa
-			}
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*PluginFees)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PluginFees: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PluginFees: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Values", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Values = append(x.Values, &PluginFee{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Values[len(x.Values)-1]); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Fee); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -1189,16 +695,16 @@ func (x *_PluginFee_3_list) IsValid() bool {
 }
 
 var (
-	md_PluginFee                                   protoreflect.MessageDescriptor
-	fd_PluginFee_plugin_creator_reward_in_percents protoreflect.FieldDescriptor
-	fd_PluginFee_task_req                          protoreflect.FieldDescriptor
+	md_PluginFee                                  protoreflect.MessageDescriptor
+	fd_PluginFee_plugin_creator_reward_in_percent protoreflect.FieldDescriptor
+	fd_PluginFee_fee                              protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_async_v1beta1_plugin_proto_init()
 	md_PluginFee = File_warden_async_v1beta1_plugin_proto.Messages().ByName("PluginFee")
-	fd_PluginFee_plugin_creator_reward_in_percents = md_PluginFee.Fields().ByName("plugin_creator_reward_in_percents")
-	fd_PluginFee_task_req = md_PluginFee.Fields().ByName("task_req")
+	fd_PluginFee_plugin_creator_reward_in_percent = md_PluginFee.Fields().ByName("plugin_creator_reward_in_percent")
+	fd_PluginFee_fee = md_PluginFee.Fields().ByName("fee")
 }
 
 var _ protoreflect.Message = (*fastReflection_PluginFee)(nil)
@@ -1210,7 +716,7 @@ func (x *PluginFee) ProtoReflect() protoreflect.Message {
 }
 
 func (x *PluginFee) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_async_v1beta1_plugin_proto_msgTypes[2]
+	mi := &file_warden_async_v1beta1_plugin_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1266,15 +772,15 @@ func (x *fastReflection_PluginFee) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_PluginFee) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.PluginCreatorRewardInPercents != "" {
-		value := protoreflect.ValueOfString(x.PluginCreatorRewardInPercents)
-		if !f(fd_PluginFee_plugin_creator_reward_in_percents, value) {
+	if x.PluginCreatorRewardInPercent != "" {
+		value := protoreflect.ValueOfString(x.PluginCreatorRewardInPercent)
+		if !f(fd_PluginFee_plugin_creator_reward_in_percent, value) {
 			return
 		}
 	}
-	if len(x.TaskReq) != 0 {
-		value := protoreflect.ValueOfList(&_PluginFee_3_list{list: &x.TaskReq})
-		if !f(fd_PluginFee_task_req, value) {
+	if len(x.Fee) != 0 {
+		value := protoreflect.ValueOfList(&_PluginFee_3_list{list: &x.Fee})
+		if !f(fd_PluginFee_fee, value) {
 			return
 		}
 	}
@@ -1293,10 +799,10 @@ func (x *fastReflection_PluginFee) Range(f func(protoreflect.FieldDescriptor, pr
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_PluginFee) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percents":
-		return x.PluginCreatorRewardInPercents != ""
-	case "warden.async.v1beta1.PluginFee.task_req":
-		return len(x.TaskReq) != 0
+	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percent":
+		return x.PluginCreatorRewardInPercent != ""
+	case "warden.async.v1beta1.PluginFee.fee":
+		return len(x.Fee) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFee"))
@@ -1313,10 +819,10 @@ func (x *fastReflection_PluginFee) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_PluginFee) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percents":
-		x.PluginCreatorRewardInPercents = ""
-	case "warden.async.v1beta1.PluginFee.task_req":
-		x.TaskReq = nil
+	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percent":
+		x.PluginCreatorRewardInPercent = ""
+	case "warden.async.v1beta1.PluginFee.fee":
+		x.Fee = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFee"))
@@ -1333,14 +839,14 @@ func (x *fastReflection_PluginFee) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_PluginFee) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percents":
-		value := x.PluginCreatorRewardInPercents
+	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percent":
+		value := x.PluginCreatorRewardInPercent
 		return protoreflect.ValueOfString(value)
-	case "warden.async.v1beta1.PluginFee.task_req":
-		if len(x.TaskReq) == 0 {
+	case "warden.async.v1beta1.PluginFee.fee":
+		if len(x.Fee) == 0 {
 			return protoreflect.ValueOfList(&_PluginFee_3_list{})
 		}
-		listValue := &_PluginFee_3_list{list: &x.TaskReq}
+		listValue := &_PluginFee_3_list{list: &x.Fee}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
@@ -1362,12 +868,12 @@ func (x *fastReflection_PluginFee) Get(descriptor protoreflect.FieldDescriptor) 
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_PluginFee) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percents":
-		x.PluginCreatorRewardInPercents = value.Interface().(string)
-	case "warden.async.v1beta1.PluginFee.task_req":
+	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percent":
+		x.PluginCreatorRewardInPercent = value.Interface().(string)
+	case "warden.async.v1beta1.PluginFee.fee":
 		lv := value.List()
 		clv := lv.(*_PluginFee_3_list)
-		x.TaskReq = *clv.list
+		x.Fee = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFee"))
@@ -1388,14 +894,14 @@ func (x *fastReflection_PluginFee) Set(fd protoreflect.FieldDescriptor, value pr
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_PluginFee) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFee.task_req":
-		if x.TaskReq == nil {
-			x.TaskReq = []*v1beta1.Coin{}
+	case "warden.async.v1beta1.PluginFee.fee":
+		if x.Fee == nil {
+			x.Fee = []*v1beta1.Coin{}
 		}
-		value := &_PluginFee_3_list{list: &x.TaskReq}
+		value := &_PluginFee_3_list{list: &x.Fee}
 		return protoreflect.ValueOfList(value)
-	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percents":
-		panic(fmt.Errorf("field plugin_creator_reward_in_percents of message warden.async.v1beta1.PluginFee is not mutable"))
+	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percent":
+		panic(fmt.Errorf("field plugin_creator_reward_in_percent of message warden.async.v1beta1.PluginFee is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.PluginFee"))
@@ -1409,9 +915,9 @@ func (x *fastReflection_PluginFee) Mutable(fd protoreflect.FieldDescriptor) prot
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_PluginFee) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percents":
+	case "warden.async.v1beta1.PluginFee.plugin_creator_reward_in_percent":
 		return protoreflect.ValueOfString("")
-	case "warden.async.v1beta1.PluginFee.task_req":
+	case "warden.async.v1beta1.PluginFee.fee":
 		list := []*v1beta1.Coin{}
 		return protoreflect.ValueOfList(&_PluginFee_3_list{list: &list})
 	default:
@@ -1483,12 +989,12 @@ func (x *fastReflection_PluginFee) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		l = len(x.PluginCreatorRewardInPercents)
+		l = len(x.PluginCreatorRewardInPercent)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.TaskReq) > 0 {
-			for _, e := range x.TaskReq {
+		if len(x.Fee) > 0 {
+			for _, e := range x.Fee {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -1522,9 +1028,9 @@ func (x *fastReflection_PluginFee) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.TaskReq) > 0 {
-			for iNdEx := len(x.TaskReq) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.TaskReq[iNdEx])
+		if len(x.Fee) > 0 {
+			for iNdEx := len(x.Fee) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Fee[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1538,10 +1044,10 @@ func (x *fastReflection_PluginFee) ProtoMethods() *protoiface.Methods {
 				dAtA[i] = 0x1a
 			}
 		}
-		if len(x.PluginCreatorRewardInPercents) > 0 {
-			i -= len(x.PluginCreatorRewardInPercents)
-			copy(dAtA[i:], x.PluginCreatorRewardInPercents)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PluginCreatorRewardInPercents)))
+		if len(x.PluginCreatorRewardInPercent) > 0 {
+			i -= len(x.PluginCreatorRewardInPercent)
+			copy(dAtA[i:], x.PluginCreatorRewardInPercent)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PluginCreatorRewardInPercent)))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -1596,7 +1102,7 @@ func (x *fastReflection_PluginFee) ProtoMethods() *protoiface.Methods {
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PluginCreatorRewardInPercents", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PluginCreatorRewardInPercent", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1624,11 +1130,11 @@ func (x *fastReflection_PluginFee) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.PluginCreatorRewardInPercents = string(dAtA[iNdEx:postIndex])
+				x.PluginCreatorRewardInPercent = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TaskReq", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -1655,8 +1161,8 @@ func (x *fastReflection_PluginFee) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.TaskReq = append(x.TaskReq, &v1beta1.Coin{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.TaskReq[len(x.TaskReq)-1]); err != nil {
+				x.Fee = append(x.Fee, &v1beta1.Coin{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Fee[len(x.Fee)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -1740,7 +1246,7 @@ type Plugin struct {
 	// Human-readable description of what this plugin can do.
 	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	// Fees for creating and executing tasks.
-	Fees *PluginFees `protobuf:"bytes,4,opt,name=fees,proto3" json:"fees,omitempty"`
+	Fee *PluginFee `protobuf:"bytes,4,opt,name=fee,proto3" json:"fee,omitempty"`
 }
 
 func (x *Plugin) Reset() {
@@ -1784,45 +1290,9 @@ func (x *Plugin) GetDescription() string {
 	return ""
 }
 
-func (x *Plugin) GetFees() *PluginFees {
+func (x *Plugin) GetFee() *PluginFee {
 	if x != nil {
-		return x.Fees
-	}
-	return nil
-}
-
-// Fees for creating and executing tasks.
-type PluginFees struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Values []*PluginFee `protobuf:"bytes,1,rep,name=values,proto3" json:"values,omitempty"`
-}
-
-func (x *PluginFees) Reset() {
-	*x = PluginFees{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_async_v1beta1_plugin_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PluginFees) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PluginFees) ProtoMessage() {}
-
-// Deprecated: Use PluginFees.ProtoReflect.Descriptor instead.
-func (*PluginFees) Descriptor() ([]byte, []int) {
-	return file_warden_async_v1beta1_plugin_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *PluginFees) GetValues() []*PluginFee {
-	if x != nil {
-		return x.Values
+		return x.Fee
 	}
 	return nil
 }
@@ -1833,16 +1303,17 @@ type PluginFee struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The percent of the fee that goes to the creator of the plugin. The rest goes to the executor of the task.
-	PluginCreatorRewardInPercents string `protobuf:"bytes,1,opt,name=plugin_creator_reward_in_percents,json=pluginCreatorRewardInPercents,proto3" json:"plugin_creator_reward_in_percents,omitempty"`
+	// The percentage of the fee that goes to the creator of the plugin. The rest goes to the executor of the task.
+	// Expressed as a number in the range [0, 1].
+	PluginCreatorRewardInPercent string `protobuf:"bytes,1,opt,name=plugin_creator_reward_in_percent,json=pluginCreatorRewardInPercent,proto3" json:"plugin_creator_reward_in_percent,omitempty"`
 	// Fee for creating and executing new Task.
-	TaskReq []*v1beta1.Coin `protobuf:"bytes,3,rep,name=task_req,json=taskReq,proto3" json:"task_req,omitempty"`
+	Fee []*v1beta1.Coin `protobuf:"bytes,3,rep,name=fee,proto3" json:"fee,omitempty"`
 }
 
 func (x *PluginFee) Reset() {
 	*x = PluginFee{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_async_v1beta1_plugin_proto_msgTypes[2]
+		mi := &file_warden_async_v1beta1_plugin_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1856,19 +1327,19 @@ func (*PluginFee) ProtoMessage() {}
 
 // Deprecated: Use PluginFee.ProtoReflect.Descriptor instead.
 func (*PluginFee) Descriptor() ([]byte, []int) {
-	return file_warden_async_v1beta1_plugin_proto_rawDescGZIP(), []int{2}
+	return file_warden_async_v1beta1_plugin_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PluginFee) GetPluginCreatorRewardInPercents() string {
+func (x *PluginFee) GetPluginCreatorRewardInPercent() string {
 	if x != nil {
-		return x.PluginCreatorRewardInPercents
+		return x.PluginCreatorRewardInPercent
 	}
 	return ""
 }
 
-func (x *PluginFee) GetTaskReq() []*v1beta1.Coin {
+func (x *PluginFee) GetFee() []*v1beta1.Coin {
 	if x != nil {
-		return x.TaskReq
+		return x.Fee
 	}
 	return nil
 }
@@ -1885,55 +1356,49 @@ var file_warden_async_v1beta1_plugin_proto_rawDesc = []byte{
 	0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f,
 	0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
 	0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xaa, 0x01,
+	0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xa7, 0x01,
 	0x0a, 0x06, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x32, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61,
 	0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63,
 	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72,
 	0x69, 0x6e, 0x67, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x20, 0x0a, 0x0b,
 	0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3a,
-	0x0a, 0x04, 0x66, 0x65, 0x65, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x42, 0x04,
-	0xc8, 0xde, 0x1f, 0x00, 0x52, 0x04, 0x66, 0x65, 0x65, 0x73, 0x22, 0x4b, 0x0a, 0x0a, 0x50, 0x6c,
-	0x75, 0x67, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x12, 0x3d, 0x0a, 0x06, 0x76, 0x61, 0x6c, 0x75,
-	0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
-	0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
-	0x06, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x73, 0x22, 0x86, 0x02, 0x0a, 0x09, 0x50, 0x6c, 0x75, 0x67,
-	0x69, 0x6e, 0x46, 0x65, 0x65, 0x12, 0x7b, 0x0a, 0x21, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x5f,
+	0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x37,
+	0x0a, 0x03, 0x66, 0x65, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x2e, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x42, 0x04, 0xc8, 0xde,
+	0x1f, 0x00, 0x52, 0x03, 0x66, 0x65, 0x65, 0x22, 0xfb, 0x01, 0x0a, 0x09, 0x50, 0x6c, 0x75, 0x67,
+	0x69, 0x6e, 0x46, 0x65, 0x65, 0x12, 0x79, 0x0a, 0x20, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x5f,
 	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x5f, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x5f, 0x69,
-	0x6e, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x42, 0x31, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde, 0x1f, 0x1b, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d, 0x61, 0x74, 0x68, 0x2e, 0x4c, 0x65, 0x67, 0x61,
-	0x63, 0x79, 0x44, 0x65, 0x63, 0xd2, 0xb4, 0x2d, 0x0a, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
-	0x44, 0x65, 0x63, 0x52, 0x1d, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x6f, 0x72, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x49, 0x6e, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e,
-	0x74, 0x73, 0x12, 0x7c, 0x0a, 0x08, 0x74, 0x61, 0x73, 0x6b, 0x5f, 0x72, 0x65, 0x71, 0x18, 0x03,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61,
-	0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42,
-	0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e,
-	0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69,
-	0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x07, 0x74, 0x61, 0x73, 0x6b, 0x52, 0x65, 0x71,
-	0x42, 0xea, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0b, 0x50,
-	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x3b, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03,
-	0x57, 0x41, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79,
-	0x6e, 0x63, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63,
-	0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
-	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41,
-	0x73, 0x79, 0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42,
+	0x31, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde, 0x1f, 0x1b, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73,
+	0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d, 0x61, 0x74, 0x68, 0x2e, 0x4c, 0x65, 0x67, 0x61, 0x63,
+	0x79, 0x44, 0x65, 0x63, 0xd2, 0xb4, 0x2d, 0x0a, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x44,
+	0x65, 0x63, 0x52, 0x1c, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x49, 0x6e, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74,
+	0x12, 0x73, 0x0a, 0x03, 0x66, 0x65, 0x65, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf,
+	0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73,
+	0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74,
+	0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c, 0x6c,
+	0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a, 0x01,
+	0x52, 0x03, 0x66, 0x65, 0x65, 0x42, 0xea, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x42, 0x0b, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
+	0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69,
+	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca,
+	0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
+	0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50,
+	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1948,22 +1413,20 @@ func file_warden_async_v1beta1_plugin_proto_rawDescGZIP() []byte {
 	return file_warden_async_v1beta1_plugin_proto_rawDescData
 }
 
-var file_warden_async_v1beta1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_warden_async_v1beta1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_warden_async_v1beta1_plugin_proto_goTypes = []interface{}{
 	(*Plugin)(nil),       // 0: warden.async.v1beta1.Plugin
-	(*PluginFees)(nil),   // 1: warden.async.v1beta1.PluginFees
-	(*PluginFee)(nil),    // 2: warden.async.v1beta1.PluginFee
-	(*v1beta1.Coin)(nil), // 3: cosmos.base.v1beta1.Coin
+	(*PluginFee)(nil),    // 1: warden.async.v1beta1.PluginFee
+	(*v1beta1.Coin)(nil), // 2: cosmos.base.v1beta1.Coin
 }
 var file_warden_async_v1beta1_plugin_proto_depIdxs = []int32{
-	1, // 0: warden.async.v1beta1.Plugin.fees:type_name -> warden.async.v1beta1.PluginFees
-	2, // 1: warden.async.v1beta1.PluginFees.values:type_name -> warden.async.v1beta1.PluginFee
-	3, // 2: warden.async.v1beta1.PluginFee.task_req:type_name -> cosmos.base.v1beta1.Coin
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // 0: warden.async.v1beta1.Plugin.fee:type_name -> warden.async.v1beta1.PluginFee
+	2, // 1: warden.async.v1beta1.PluginFee.fee:type_name -> cosmos.base.v1beta1.Coin
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_warden_async_v1beta1_plugin_proto_init() }
@@ -1985,18 +1448,6 @@ func file_warden_async_v1beta1_plugin_proto_init() {
 			}
 		}
 		file_warden_async_v1beta1_plugin_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PluginFees); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_warden_async_v1beta1_plugin_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PluginFee); i {
 			case 0:
 				return &v.state
@@ -2015,7 +1466,7 @@ func file_warden_async_v1beta1_plugin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_async_v1beta1_plugin_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

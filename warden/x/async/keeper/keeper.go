@@ -156,11 +156,16 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output 
 		return err
 	}
 
-	if err := k.taskReadyCallback(ctx, id, output); err != nil {
+	task, err := k.tasks.Get(ctx, id)
+	if err != nil {
 		return err
 	}
 
-	if err := k.releaseFee(ctx, id, submitter); err != nil {
+	if err := k.taskReadyCallback(ctx, task, output); err != nil {
+		return err
+	}
+
+	if err := k.releaseFee(ctx, task, submitter); err != nil {
 		return err
 	}
 
@@ -220,8 +225,8 @@ func (k *Keeper) AddPlugin(ctx context.Context, p types.Plugin) error {
 		return fmt.Errorf("duplicate plugin: %s", p.GetId())
 	}
 
-	if !p.Fees.IsValid() {
-		return fmt.Errorf("invalid plugin fees: %s", p.Fees)
+	if !p.Fee.IsValid() {
+		return fmt.Errorf("invalid plugin fees: %s", p.Fee)
 	}
 
 	return k.plugins.Set(ctx, id, p)
@@ -257,14 +262,9 @@ func (k *Keeper) ClearPlugins(ctx context.Context, validator sdk.ConsAddress) er
 
 func (k Keeper) taskReadyCallback(
 	ctx context.Context,
-	id uint64,
+	task types.Task,
 	output []byte,
 ) error {
-	task, err := k.tasks.Get(ctx, id)
-	if err != nil {
-		return err
-	}
-
 	if task.Callback == "" {
 		return nil
 	}
@@ -286,7 +286,7 @@ func (k Keeper) taskReadyCallback(
 		return err
 	}
 
-	data, err := abi.Pack(method, id, output)
+	data, err := abi.Pack(method, task.Id, output)
 	if err != nil {
 		return err
 	}
@@ -422,34 +422,24 @@ func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAd
 	return tasks, nil
 }
 
-func (k Keeper) releaseFee(ctx context.Context, id uint64, submitter []byte) error {
-	task, err := k.tasks.Get(ctx, id)
+func (k Keeper) releaseFee(ctx context.Context, task types.Task, submitter sdk.ConsAddress) error {
+	plugin, err := k.plugins.Get(ctx, task.Plugin)
 	if err != nil {
 		return err
 	}
 
-	if task.Fee != nil {
-		plugin, err := k.plugins.Get(ctx, task.Plugin)
-		if err != nil {
-			return err
-		}
+	pluginCreator, err := plugin.CreatorAccAddress()
+	if err != nil {
+		return err
+	}
 
-		pluginCreator := k.asyncModuleAddress
-		if plugin.IsThirdPartyPlugin() {
-			pluginCreator, err = plugin.CreatorAccAddress()
-			if err != nil {
-				return err
-			}
-		}
+	taskExecutor, err := k.getValidatorAddress(ctx, submitter)
+	if err != nil {
+		return err
+	}
 
-		taskExecutor, err := k.getValidatorAddress(ctx, submitter)
-		if err != nil {
-			return err
-		}
-
-		if err := k.releasePluginFees(ctx, pluginCreator, taskExecutor, *task.Fee); err != nil {
-			return err
-		}
+	if err := k.releasePluginFees(ctx, pluginCreator, taskExecutor, task.Fee); err != nil {
+		return err
 	}
 
 	return nil
@@ -457,7 +447,7 @@ func (k Keeper) releaseFee(ctx context.Context, id uint64, submitter []byte) err
 
 func (k Keeper) getValidatorAddress(
 	ctx context.Context,
-	submitter []byte,
+	submitter sdk.ConsAddress,
 ) (sdk.AccAddress, error) {
 	val, err := k.stakingKeeper.ValidatorByConsAddr(ctx, submitter)
 	if err != nil {

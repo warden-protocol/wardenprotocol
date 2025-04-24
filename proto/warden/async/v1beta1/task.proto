@@ -38,8 +38,9 @@ message Task {
   bytes input = 4;
   // Callback to be called when the Task is completed.
   string callback = 5;
-  // Deducted fee
-  DeductedFee fee = 6;
+  // Deducted fee are the tokens collected this module when this Task was created.
+  // When this Task is executed, the fees are distributed among the executor (the validator who included the result), and the plugin creator.
+  DeductedFee fee = 6 [(gogoproto.nullable) = false];
 }
 
 // TaskResult is the result of the execution of a Task.
@@ -75,7 +76,7 @@ enum TaskVoteType {
   VOTE_TYPE_REJECTED = 2;
 }
 
-// Deducted fee for a concrete task.
+// Deducted fee for a task.
 message DeductedFee {
   // Reward for the executor of a task
   repeated cosmos.base.v1beta1.Coin executor_reward = 1 [

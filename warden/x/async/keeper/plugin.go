@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -14,35 +13,27 @@ func (k Keeper) deductPluginFees(
 	ctx context.Context,
 	pluginUser sdk.AccAddress,
 	fees types.PluginFee,
-) (*types.DeductedFee, error) {
-	if !fees.TaskReq.Empty() {
-		if !fees.IsValid() {
-			return nil, fmt.Errorf("invalid plugin fees: %s", fees)
-		}
+) (types.DeductedFee, error) {
+	toBeDeductedFee := fees.CalculateDistributedFees()
 
-		toBeDeductedFee, err := fees.CalculateDistributedFees()
+	if !toBeDeductedFee.IsEmpty() {
+		err := k.bankKeeper.SendCoins(ctx, pluginUser, k.asyncModuleAddress, toBeDeductedFee.Total())
 		if err != nil {
-			return nil, err
+			return types.DeductedFee{}, err
 		}
-
-		if err := k.bankKeeper.SendCoins(ctx, pluginUser, k.asyncModuleAddress, toBeDeductedFee.Total()); err != nil {
-			return nil, err
-		}
-
-		return &toBeDeductedFee, nil
 	}
 
-	return types.NewEmptyDeductedFee(), nil
+	return toBeDeductedFee, nil
 }
 
-// completed.
+// releasePluginFees is to distribute fees between the executor of a task and the creator of a plugin.
 func (k Keeper) releasePluginFees(
 	ctx context.Context,
 	pluginCreator sdk.AccAddress,
 	taskExecutor sdk.AccAddress,
 	fees types.DeductedFee,
 ) error {
-	if !fees.PluginCreatorReward.Empty() {
+	if !fees.PluginCreatorReward.IsZero() {
 		err := k.bankKeeper.SendCoins(
 			ctx,
 			k.asyncModuleAddress,
@@ -53,7 +44,7 @@ func (k Keeper) releasePluginFees(
 		}
 	}
 
-	if !fees.ExecutorReward.Empty() {
+	if !fees.ExecutorReward.IsZero() {
 		err := k.bankKeeper.SendCoins(
 			ctx,
 			k.asyncModuleAddress,
@@ -62,8 +53,6 @@ func (k Keeper) releasePluginFees(
 		if err != nil {
 			return err
 		}
-
-		return nil
 	}
 
 	return nil

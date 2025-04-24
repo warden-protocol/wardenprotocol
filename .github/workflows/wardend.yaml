@@ -100,5 +100,5 @@ jobs:
       - name: ${{ matrix.release }}
         run: just wardend ${{ matrix.release }}
         env:
-          SKIP: ${{ startsWith(github.head_ref, 'dependabot/') && '--skip=validate,publish' || '--skip=validate' }}
+          SKIP: ${{ github.event_name == 'pull_request' && '--skip=validate,publish' || '--skip=validate' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

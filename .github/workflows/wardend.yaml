@@ -53,6 +53,7 @@ jobs:
         run: go test -race -v ${{ env.modules }}
 
   release-dev:
+    if: ${{ github.event_name != 'pull_request' }}
     name: ${{ matrix.release }}
     runs-on: ubuntu-latest
     strategy:
@@ -100,5 +101,5 @@ jobs:
       - name: ${{ matrix.release }}
         run: just wardend ${{ matrix.release }}
         env:
-          SKIP: ${{ github.event_name == 'pull_request' && '--skip=validate,publish' || '--skip=validate' }}
+          SKIP: "--skip=validate"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,7 @@
 package cases
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -40,7 +41,16 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	require.NoError(t, err)
 	require.Len(t, tasksQuery.Tasks, 0)
 
-	addTaskTx, err := iAsyncClient.AddTask(alice.TransactOps(t, evmClient), "echo", []byte("USDT"), common.HexToAddress("0x0000000000000000000000000000000000000000"))
+	maxFee := []async.TypesCoin{{
+		Denom:  "award",
+		Amount: new(big.Int).SetInt64(1),
+	}}
+	addTaskTx, err := iAsyncClient.AddTask(
+		alice.TransactOps(t, evmClient),
+		"echo",
+		[]byte("USDT"),
+		maxFee,
+		common.HexToAddress("0x0000000000000000000000000000000000000000"))
 	require.NoError(t, err)
 
 	addTaskReceipt, err := bind.WaitMined(t.Context(), evmClient, addTaskTx)

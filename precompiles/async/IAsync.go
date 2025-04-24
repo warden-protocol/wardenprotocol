@@ -29,6 +29,12 @@ var (
 	_ = abi.ConvertType
 )
 
+// DeductedFee is an auto generated low-level Go binding around an user-defined struct.
+type DeductedFee struct {
+	PluginCreatorReward []TypesCoin
+	ExecutorReward      []TypesCoin
+}
+
 // PendingTasksResponse is an auto generated low-level Go binding around an user-defined struct.
 type PendingTasksResponse struct {
 	Pagination TypesPageResponse
@@ -40,6 +46,12 @@ type Plugin struct {
 	Id          string
 	Creator     common.Address
 	Description string
+	Fee         PluginFee
+}
+
+// PluginFee is an auto generated low-level Go binding around an user-defined struct.
+type PluginFee struct {
+	Fee []TypesCoin
 }
 
 // PluginsResponse is an auto generated low-level Go binding around an user-defined struct.
@@ -54,6 +66,7 @@ type Task struct {
 	Creator common.Address
 	Plugin  string
 	Input   []byte
+	Fee     DeductedFee
 }
 
 // TaskByIdResponse is an auto generated low-level Go binding around an user-defined struct.
@@ -88,6 +101,12 @@ type TasksResponse struct {
 	Tasks      []TaskResponse
 }
 
+// TypesCoin is an auto generated low-level Go binding around an user-defined struct.
+type TypesCoin struct {
+	Denom  string
+	Amount *big.Int
+}
+
 // TypesPageRequest is an auto generated low-level Go binding around an user-defined struct.
 type TypesPageRequest struct {
 	Key        []byte
@@ -105,7 +124,7 @@ type TypesPageResponse struct {
 
 // IAsyncMetaData contains all meta data concerning the IAsync contract.
 var IAsyncMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"callbackAddress\",\"type\":\"address\"}],\"name\":\"CreateTask\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"callback\",\"type\":\"address\"}],\"name\":\"addTask\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"pendingTasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structPendingTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"plugins\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"id\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"internalType\":\"structPlugin[]\",\"name\":\"plugins\",\"type\":\"tuple[]\"}],\"internalType\":\"structPluginsResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"name\":\"taskById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse\",\"name\":\"taskResponse\",\"type\":\"tuple\"}],\"internalType\":\"structTaskByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"tasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"callbackAddress\",\"type\":\"address\"}],\"name\":\"CreateTask\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"maxFee\",\"type\":\"tuple[]\"},{\"internalType\":\"address\",\"name\":\"callback\",\"type\":\"address\"}],\"name\":\"addTask\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"pendingTasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"pluginCreatorReward\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"executorReward\",\"type\":\"tuple[]\"}],\"internalType\":\"structDeductedFee\",\"name\":\"fee\",\"type\":\"tuple\"}],\"internalType\":\"structTask[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structPendingTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"}],\"name\":\"plugins\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"id\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"fee\",\"type\":\"tuple[]\"}],\"internalType\":\"structPluginFee\",\"name\":\"fee\",\"type\":\"tuple\"}],\"internalType\":\"structPlugin[]\",\"name\":\"plugins\",\"type\":\"tuple[]\"}],\"internalType\":\"structPluginsResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"}],\"name\":\"taskById\",\"outputs\":[{\"components\":[{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"pluginCreatorReward\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"executorReward\",\"type\":\"tuple[]\"}],\"internalType\":\"structDeductedFee\",\"name\":\"fee\",\"type\":\"tuple\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse\",\"name\":\"taskResponse\",\"type\":\"tuple\"}],\"internalType\":\"structTaskByIdResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"key\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"offset\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"limit\",\"type\":\"uint64\"},{\"internalType\":\"bool\",\"name\":\"countTotal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"reverse\",\"type\":\"bool\"}],\"internalType\":\"structTypes.PageRequest\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"tasks\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"nextKey\",\"type\":\"bytes\"},{\"internalType\":\"uint64\",\"name\":\"total\",\"type\":\"uint64\"}],\"internalType\":\"structTypes.PageResponse\",\"name\":\"pagination\",\"type\":\"tuple\"},{\"components\":[{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"plugin\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"},{\"components\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"pluginCreatorReward\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"denom\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"internalType\":\"structTypes.Coin[]\",\"name\":\"executorReward\",\"type\":\"tuple[]\"}],\"internalType\":\"structDeductedFee\",\"name\":\"fee\",\"type\":\"tuple\"}],\"internalType\":\"structTask\",\"name\":\"task\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"taskId\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"Voter\",\"type\":\"bytes\"},{\"internalType\":\"enumTaskVoteType\",\"name\":\"vote\",\"type\":\"uint8\"}],\"internalType\":\"structTaskVote[]\",\"name\":\"votes\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"id\",\"type\":\"uint64\"},{\"internalType\":\"bytes\",\"name\":\"output\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"submitter\",\"type\":\"bytes\"}],\"internalType\":\"structTaskResult\",\"name\":\"result\",\"type\":\"tuple\"}],\"internalType\":\"structTaskResponse[]\",\"name\":\"tasks\",\"type\":\"tuple[]\"}],\"internalType\":\"structTasksResponse\",\"name\":\"response\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // IAsyncABI is the input ABI used to generate the binding from.
@@ -256,7 +275,7 @@ func (_IAsync *IAsyncTransactorRaw) Transact(opts *bind.TransactOpts, method str
 
 // PendingTasks is a free data retrieval call binding the contract method 0x589ad877.
 //
-// Solidity: function pendingTasks((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,address,string,bytes)[]) response)
+// Solidity: function pendingTasks((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,address,string,bytes,((string,uint256)[],(string,uint256)[]))[]) response)
 func (_IAsync *IAsyncCaller) PendingTasks(opts *bind.CallOpts, pagination TypesPageRequest) (PendingTasksResponse, error) {
 	var out []interface{}
 	err := _IAsync.contract.Call(opts, &out, "pendingTasks", pagination)
@@ -273,21 +292,21 @@ func (_IAsync *IAsyncCaller) PendingTasks(opts *bind.CallOpts, pagination TypesP
 
 // PendingTasks is a free data retrieval call binding the contract method 0x589ad877.
 //
-// Solidity: function pendingTasks((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,address,string,bytes)[]) response)
+// Solidity: function pendingTasks((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,address,string,bytes,((string,uint256)[],(string,uint256)[]))[]) response)
 func (_IAsync *IAsyncSession) PendingTasks(pagination TypesPageRequest) (PendingTasksResponse, error) {
 	return _IAsync.Contract.PendingTasks(&_IAsync.CallOpts, pagination)
 }
 
 // PendingTasks is a free data retrieval call binding the contract method 0x589ad877.
 //
-// Solidity: function pendingTasks((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,address,string,bytes)[]) response)
+// Solidity: function pendingTasks((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(uint64,address,string,bytes,((string,uint256)[],(string,uint256)[]))[]) response)
 func (_IAsync *IAsyncCallerSession) PendingTasks(pagination TypesPageRequest) (PendingTasksResponse, error) {
 	return _IAsync.Contract.PendingTasks(&_IAsync.CallOpts, pagination)
 }
 
 // Plugins is a free data retrieval call binding the contract method 0x9fada3df.
 //
-// Solidity: function plugins((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(string,address,string)[]) response)
+// Solidity: function plugins((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(string,address,string,((string,uint256)[]))[]) response)
 func (_IAsync *IAsyncCaller) Plugins(opts *bind.CallOpts, pagination TypesPageRequest) (PluginsResponse, error) {
 	var out []interface{}
 	err := _IAsync.contract.Call(opts, &out, "plugins", pagination)
@@ -304,21 +323,21 @@ func (_IAsync *IAsyncCaller) Plugins(opts *bind.CallOpts, pagination TypesPageRe
 
 // Plugins is a free data retrieval call binding the contract method 0x9fada3df.
 //
-// Solidity: function plugins((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(string,address,string)[]) response)
+// Solidity: function plugins((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(string,address,string,((string,uint256)[]))[]) response)
 func (_IAsync *IAsyncSession) Plugins(pagination TypesPageRequest) (PluginsResponse, error) {
 	return _IAsync.Contract.Plugins(&_IAsync.CallOpts, pagination)
 }
 
 // Plugins is a free data retrieval call binding the contract method 0x9fada3df.
 //
-// Solidity: function plugins((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(string,address,string)[]) response)
+// Solidity: function plugins((bytes,uint64,uint64,bool,bool) pagination) view returns(((bytes,uint64),(string,address,string,((string,uint256)[]))[]) response)
 func (_IAsync *IAsyncCallerSession) Plugins(pagination TypesPageRequest) (PluginsResponse, error) {
 	return _IAsync.Contract.Plugins(&_IAsync.CallOpts, pagination)
 }
 
 // TaskById is a free data retrieval call binding the contract method 0xc7be4a58.
 //
-// Solidity: function taskById(uint64 taskId) view returns((((uint64,address,string,bytes),(uint64,bytes,uint8)[],(uint64,bytes,bytes))) response)
+// Solidity: function taskById(uint64 taskId) view returns((((uint64,address,string,bytes,((string,uint256)[],(string,uint256)[])),(uint64,bytes,uint8)[],(uint64,bytes,bytes))) response)
 func (_IAsync *IAsyncCaller) TaskById(opts *bind.CallOpts, taskId uint64) (TaskByIdResponse, error) {
 	var out []interface{}
 	err := _IAsync.contract.Call(opts, &out, "taskById", taskId)
@@ -335,21 +354,21 @@ func (_IAsync *IAsyncCaller) TaskById(opts *bind.CallOpts, taskId uint64) (TaskB
 
 // TaskById is a free data retrieval call binding the contract method 0xc7be4a58.
 //
-// Solidity: function taskById(uint64 taskId) view returns((((uint64,address,string,bytes),(uint64,bytes,uint8)[],(uint64,bytes,bytes))) response)
+// Solidity: function taskById(uint64 taskId) view returns((((uint64,address,string,bytes,((string,uint256)[],(string,uint256)[])),(uint64,bytes,uint8)[],(uint64,bytes,bytes))) response)
 func (_IAsync *IAsyncSession) TaskById(taskId uint64) (TaskByIdResponse, error) {
 	return _IAsync.Contract.TaskById(&_IAsync.CallOpts, taskId)
 }
 
 // TaskById is a free data retrieval call binding the contract method 0xc7be4a58.
 //
-// Solidity: function taskById(uint64 taskId) view returns((((uint64,address,string,bytes),(uint64,bytes,uint8)[],(uint64,bytes,bytes))) response)
+// Solidity: function taskById(uint64 taskId) view returns((((uint64,address,string,bytes,((string,uint256)[],(string,uint256)[])),(uint64,bytes,uint8)[],(uint64,bytes,bytes))) response)
 func (_IAsync *IAsyncCallerSession) TaskById(taskId uint64) (TaskByIdResponse, error) {
 	return _IAsync.Contract.TaskById(&_IAsync.CallOpts, taskId)
 }
 
 // Tasks is a free data retrieval call binding the contract method 0x7c55c233.
 //
-// Solidity: function tasks((bytes,uint64,uint64,bool,bool) pagination, address creator) view returns(((bytes,uint64),((uint64,address,string,bytes),(uint64,bytes,uint8)[],(uint64,bytes,bytes))[]) response)
+// Solidity: function tasks((bytes,uint64,uint64,bool,bool) pagination, address creator) view returns(((bytes,uint64),((uint64,address,string,bytes,((string,uint256)[],(string,uint256)[])),(uint64,bytes,uint8)[],(uint64,bytes,bytes))[]) response)
 func (_IAsync *IAsyncCaller) Tasks(opts *bind.CallOpts, pagination TypesPageRequest, creator common.Address) (TasksResponse, error) {
 	var out []interface{}
 	err := _IAsync.contract.Call(opts, &out, "tasks", pagination, creator)
@@ -366,37 +385,37 @@ func (_IAsync *IAsyncCaller) Tasks(opts *bind.CallOpts, pagination TypesPageRequ
 
 // Tasks is a free data retrieval call binding the contract method 0x7c55c233.
 //
-// Solidity: function tasks((bytes,uint64,uint64,bool,bool) pagination, address creator) view returns(((bytes,uint64),((uint64,address,string,bytes),(uint64,bytes,uint8)[],(uint64,bytes,bytes))[]) response)
+// Solidity: function tasks((bytes,uint64,uint64,bool,bool) pagination, address creator) view returns(((bytes,uint64),((uint64,address,string,bytes,((string,uint256)[],(string,uint256)[])),(uint64,bytes,uint8)[],(uint64,bytes,bytes))[]) response)
 func (_IAsync *IAsyncSession) Tasks(pagination TypesPageRequest, creator common.Address) (TasksResponse, error) {
 	return _IAsync.Contract.Tasks(&_IAsync.CallOpts, pagination, creator)
 }
 
 // Tasks is a free data retrieval call binding the contract method 0x7c55c233.
 //
-// Solidity: function tasks((bytes,uint64,uint64,bool,bool) pagination, address creator) view returns(((bytes,uint64),((uint64,address,string,bytes),(uint64,bytes,uint8)[],(uint64,bytes,bytes))[]) response)
+// Solidity: function tasks((bytes,uint64,uint64,bool,bool) pagination, address creator) view returns(((bytes,uint64),((uint64,address,string,bytes,((string,uint256)[],(string,uint256)[])),(uint64,bytes,uint8)[],(uint64,bytes,bytes))[]) response)
 func (_IAsync *IAsyncCallerSession) Tasks(pagination TypesPageRequest, creator common.Address) (TasksResponse, error) {
 	return _IAsync.Contract.Tasks(&_IAsync.CallOpts, pagination, creator)
 }
 
-// AddTask is a paid mutator transaction binding the contract method 0xfd81d3a5.
+// AddTask is a paid mutator transaction binding the contract method 0x349e1983.
 //
-// Solidity: function addTask(string plugin, bytes input, address callback) returns(uint64 taskId)
-func (_IAsync *IAsyncTransactor) AddTask(opts *bind.TransactOpts, plugin string, input []byte, callback common.Address) (*types.Transaction, error) {
-	return _IAsync.contract.Transact(opts, "addTask", plugin, input, callback)
+// Solidity: function addTask(string plugin, bytes input, (string,uint256)[] maxFee, address callback) returns(uint64 taskId)
+func (_IAsync *IAsyncTransactor) AddTask(opts *bind.TransactOpts, plugin string, input []byte, maxFee []TypesCoin, callback common.Address) (*types.Transaction, error) {
+	return _IAsync.contract.Transact(opts, "addTask", plugin, input, maxFee, callback)
 }
 
-// AddTask is a paid mutator transaction binding the contract method 0xfd81d3a5.
+// AddTask is a paid mutator transaction binding the contract method 0x349e1983.
 //
-// Solidity: function addTask(string plugin, bytes input, address callback) returns(uint64 taskId)
-func (_IAsync *IAsyncSession) AddTask(plugin string, input []byte, callback common.Address) (*types.Transaction, error) {
-	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, callback)
+// Solidity: function addTask(string plugin, bytes input, (string,uint256)[] maxFee, address callback) returns(uint64 taskId)
+func (_IAsync *IAsyncSession) AddTask(plugin string, input []byte, maxFee []TypesCoin, callback common.Address) (*types.Transaction, error) {
+	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, maxFee, callback)
 }
 
-// AddTask is a paid mutator transaction binding the contract method 0xfd81d3a5.
+// AddTask is a paid mutator transaction binding the contract method 0x349e1983.
 //
-// Solidity: function addTask(string plugin, bytes input, address callback) returns(uint64 taskId)
-func (_IAsync *IAsyncTransactorSession) AddTask(plugin string, input []byte, callback common.Address) (*types.Transaction, error) {
-	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, callback)
+// Solidity: function addTask(string plugin, bytes input, (string,uint256)[] maxFee, address callback) returns(uint64 taskId)
+func (_IAsync *IAsyncTransactorSession) AddTask(plugin string, input []byte, maxFee []TypesCoin, callback common.Address) (*types.Transaction, error) {
+	return _IAsync.Contract.AddTask(&_IAsync.TransactOpts, plugin, input, maxFee, callback)
 }
 
 // IAsyncCreateTaskIterator is returned from FilterCreateTask and is used to iterate over the raw logs and unpacked data for CreateTask events raised by the IAsync contract.

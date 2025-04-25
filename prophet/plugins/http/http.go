@@ -17,8 +17,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fxamacker/cbor/v2"
-
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http/generated"
 )
@@ -52,6 +50,10 @@ func NewPlugin(whitelist []*url.URL, timeout time.Duration) *Plugin {
 	}
 }
 
+type NonJsonPayload struct {
+	Result string
+}
+
 // Execute implements the Plugin interface.
 // It ABI‑decodes the input, validates the URL, performs the HTTP request,
 // converts the HTTP response body (JSON) to CBOR, and ABI‑encodes the output.
@@ -80,17 +82,6 @@ func (h *Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	}
 
 	bodyToSend := reqInput.Body
-	if len(bodyToSend) > 0 {
-		var tmp interface{}
-		if cborErr := cbor.Unmarshal(bodyToSend, &tmp); cborErr == nil {
-			jsonBytes, jerr := cborToJSONBytes(bodyToSend)
-			if jerr != nil {
-				return nil, fmt.Errorf("failed to re-encode CBOR body to JSON: %w", jerr)
-			}
-
-			bodyToSend = jsonBytes
-		}
-	}
 
 	req, err := http.NewRequestWithContext(ctx, method, reqInput.Url, bytes.NewReader(bodyToSend))
 	if err != nil {
@@ -113,24 +104,23 @@ func (h *Plugin) Execute(ctx context.Context, input []byte) ([]byte, error) {
 	}
 
 	var responseData interface{}
-
 	contentType := resp.Header.Get("Content-Type")
 	if strings.Contains(contentType, "application/json") {
 		if err := json.Unmarshal(bodyBytes, &responseData); err != nil {
 			return nil, fmt.Errorf("failed to parse JSON response: %w", err)
 		}
 	} else {
-		responseData = string(bodyBytes)
+		responseData = NonJsonPayload{Result: string(bodyBytes)}
 	}
 
-	cborBody, err := cbor.Marshal(responseData)
+	jsonBody, err := json.Marshal(responseData)
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal response body to CBOR: %w", err)
+		return nil, fmt.Errorf("failed to marshal response body to JSON: %w", err)
 	}
 
 	output := generated.HttpResponse{
 		Status: big.NewInt(int64(resp.StatusCode)),
-		Body:   cborBody,
+		Body:   jsonBody,
 	}
 
 	encodedOutput, err := prophet.EncodeOutputToABI(
@@ -162,34 +152,4 @@ func (h *Plugin) isWhitelisted(u *url.URL) bool {
 	}
 
 	return false
-}
-
-func cborToJSONBytes(cborData []byte) ([]byte, error) {
-	var i interface{}
-	if err := cbor.Unmarshal(cborData, &i); err != nil {
-		return nil, err
-	}
-
-	i = convertToStringKeys(i)
-
-	return json.Marshal(i)
-}
-
-// convertToStringKeys recursively converts map[interface{}]interface{} to map[string]interface{}.
-func convertToStringKeys(v interface{}) interface{} {
-	switch x := v.(type) {
-	case map[interface{}]interface{}:
-		m := map[string]interface{}{}
-		for k, v := range x {
-			m[fmt.Sprint(k)] = convertToStringKeys(v)
-		}
-
-		return m
-	case []interface{}:
-		for i, v := range x {
-			x[i] = convertToStringKeys(v)
-		}
-	}
-
-	return v
 }

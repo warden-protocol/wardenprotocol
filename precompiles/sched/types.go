@@ -75,9 +75,9 @@ func mapCallback(callback types.Callback) (Callback, error) {
 }
 
 func mapCallbackResult(result *types.CallbackResult) (*CallbackResult, error) {
-	if result == nil || result.Status == types.CallbackStatus_CALLBACK_RESULT_UNSPECIFIED {
+	if result == nil || result.Status == types.CallbackStatus_CALLBACK_STATUS_UNSPECIFIED {
 		return &CallbackResult{
-			Status: uint8(types.CallbackStatus_CALLBACK_RESULT_UNSPECIFIED),
+			Status: uint8(types.CallbackStatus_CALLBACK_STATUS_UNSPECIFIED),
 		}, nil
 	}
 
@@ -87,13 +87,13 @@ func mapCallbackResult(result *types.CallbackResult) (*CallbackResult, error) {
 
 	r := result.Result
 	switch result.Status {
-	case types.CallbackStatus_CALLBACK_RESULT_SUCCEED:
+	case types.CallbackStatus_CALLBACK_STATUS_SUCCEED:
 		if c, ok := r.(*types.CallbackResult_Output); ok {
 			cbR.Result = c.Output
 		} else {
 			return nil, errors.New("unexpected result type for succeeded callback")
 		}
-	case types.CallbackStatus_CALLBACK_RESULT_FAILED:
+	case types.CallbackStatus_CALLBACK_STATUS_FAILED:
 		if c, ok := r.(*types.CallbackResult_FailReason); ok {
 			cbR.Result = []byte(c.FailReason)
 		} else {

@@ -108,6 +108,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 		bz, err = p.TasksMethod(ctx, method, args)
 	case PendingTasksMethod:
 		bz, err = p.PendingTasksMethod(ctx, method, args)
+	case PluginsMethod:
+		bz, err = p.PluginsMethod(ctx, method, args)
 	}
 
 	if err != nil {
@@ -135,7 +137,8 @@ func (p *Precompile) IsTransaction(method string) bool {
 	// queries
 	case TaskByIdMethod,
 		TasksMethod,
-		PendingTasksMethod:
+		PendingTasksMethod,
+		PluginsMethod:
 		return false
 	}
 

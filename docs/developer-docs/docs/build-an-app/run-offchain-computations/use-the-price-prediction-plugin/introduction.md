@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # Introduction
 
-## The `pricepred` Plugin
+## The `pricepred` AVR Plugin
 
 You can request decentralized **price predictions** for different cryptocurrencies from your smart contract, receive responses asynchronously, and process the data within the contract.
 
-To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and use the `pricepred` [Plugin](/learn/warden-protocol-modules/x-async#plugin).
+To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and use the `pricepred` [AVR Plugin](/learn/warden-protocol-modules/x-async#avr-plugin).
 
 Tutorials in this section explain how to implement different price prediction requests and process their results.
 

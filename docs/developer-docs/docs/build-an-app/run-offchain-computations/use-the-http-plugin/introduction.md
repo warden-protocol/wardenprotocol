@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # Introduction
 
-## The `http` Plugin
+## The `http` AVR Plugin
 
 You can make **HTTP requests** to any external API from your smart contract, receive responses asynchronously, and process the data within the contract.
 
-To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and use the `http` [Plugin](/learn/warden-protocol-modules/x-async#plugin).
+To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and use the `http` [AVR Plugin](/learn/warden-protocol-modules/x-async#avr-plugin).
 
 Follow tutorials in this section to learn how to do the following:
 

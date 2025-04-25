@@ -1,11 +1,11 @@
 {
   "position": 6,
-  "label": "Execute offchain computations with x/async",
+  "label": "Run offchain computations with x/async AVR Plugins",
   "collapsible": true,
   "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "Execute offchain computations with x/async"
+    "title": "Run offchain computations with x/async AVR Plugins"
   },
   "customProps": {}
 }

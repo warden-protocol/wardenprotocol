@@ -44,7 +44,7 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 ### `x/async`
 
-The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) to implement [Tasks](glossary#task), [Plugins](glossary#plugin), and [Prophets](glossary#prophet).
+The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) to implement [Tasks](glossary#task), [AVR Plugins](glossary#avr-plugin), and [Prophets](glossary#prophet).
 
 The `x/async` module decouples transaction processing from consensus and moves away from the traditional wait-and-process model. Developers can initiate various crosschain computations including AI inferences and other tasks as asynchronous intents that are resolved later. This approach prevents smart contracts from blocking operations.
 

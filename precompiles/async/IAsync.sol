@@ -2,6 +2,7 @@
 pragma solidity >=0.8.25;
 
 import "../common/Types.sol";
+import "../sched/ISched.sol";
 
 /// @dev The IAsync contract's address.
 address constant IASYNC_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000903;
@@ -93,7 +94,7 @@ interface IAsync {
         string calldata plugin,
         bytes calldata input,
         Types.Coin[] calldata maxFee,
-        Types.CallbackParams calldata callbackParams
+        CallbackParams calldata callbackParams
     ) external returns (uint64 taskId);
 
     /// @dev Defines a method to query task by id.

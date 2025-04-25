@@ -40,6 +40,11 @@ enum CallbackStatus {
     Failed
 }
 
+struct CallbackParams {
+    address addressValue;
+    uint64 gasLimit;
+}
+
 /**
  * @author Warden Team
  * @title x/sched Interface

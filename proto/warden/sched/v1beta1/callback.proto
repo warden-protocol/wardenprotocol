@@ -18,22 +18,22 @@ message Callback {
   // Callback address.
   string address = 2;
   // The limit of gas for callback execution.
-  uint64 gasLimit = 3;
+  uint64 gas_limit = 3;
 }
 
 // Used by other modules to set callback.
 message CallbackParams {
   string address = 1;
-  uint64 gasLimit = 2;
+  uint64 gas_limit = 2;
 }
 
 enum CallbackStatus {
-  // Unspecified callback result.
-  CALLBACK_RESULT_UNSPECIFIED = 0;
+  // Unspecified callback status.
+  CALLBACK_STATUS_UNSPECIFIED = 0;
   // Indicates that the callback execution was successful.
-  CALLBACK_RESULT_SUCCEED = 1;
+  CALLBACK_STATUS_SUCCEED = 1;
   // Indicates that the callback execution failed.
-  CALLBACK_RESULT_FAILED = 2;
+  CALLBACK_STATUS_FAILED = 2;
 }
 
 message CallbackResult {

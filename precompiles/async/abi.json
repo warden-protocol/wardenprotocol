@@ -73,7 +73,7 @@
               "type": "uint64"
             }
           ],
-          "internalType": "struct Types.CallbackParams",
+          "internalType": "struct CallbackParams",
           "name": "callbackParams",
           "type": "tuple"
         }

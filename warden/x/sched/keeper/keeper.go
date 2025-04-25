@@ -67,6 +67,11 @@ func NewKeeper(
 
 	callbacks := NewCallbackKeeper(sb, cdc)
 
+	_, err := sb.Build()
+	if err != nil {
+		panic(fmt.Sprintf("failed to build schema: %s", err))
+	}
+
 	return Keeper{
 		cdc:                cdc,
 		storeService:       storeService,

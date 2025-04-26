@@ -1,0 +1,4 @@
+precompile-json/=../../../../precompiles/json/
+precompile-async/=../../../../precompiles/async/
+precompile-common/=../../../../precompiles/common/
+http/=../

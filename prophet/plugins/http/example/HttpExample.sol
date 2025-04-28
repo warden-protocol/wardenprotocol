@@ -39,6 +39,8 @@ contract HttpExample {
 
         responseBody = response.body;
 
+        // Json structure : {"bitcoin":{"usd":value},"tether":{"usd":value},"uniswap":{"usd":value}}
+
         json.ReadKeyValue[] memory keyValuePairs = new json.ReadKeyValue[](3);
         keyValuePairs[0] = json.ReadKeyValue("bitcoin.usd", "float", 2);
         keyValuePairs[1] = json.ReadKeyValue("tether.usd", "float", 2);
@@ -49,8 +51,6 @@ contract HttpExample {
         int256 bitcoin = abi.decode(readResult[0], (int256));
         int256 tether = abi.decode(readResult[1], (int256));
         int256 uniswap = abi.decode(readResult[2], (int256));
-
-        // // CBOR map structure: {"bitcoin":{"usd":value},"tether":{"usd":value},"uniswap":{"usd":value}}
 
         bitcoinPrice = bitcoin;
         tetherPrice = tether;

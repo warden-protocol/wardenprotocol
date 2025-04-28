@@ -14,6 +14,7 @@
 package keeper
 
 import (
+	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/warden-protocol/wardenprotocol/prophet"
@@ -29,11 +30,17 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 }
 
 func (k *Keeper) AddProphetPlugins(ctx sdk.Context) error {
+	zeroFees := types.PluginFee{
+		Fee:                          sdk.NewCoins(),
+		PluginCreatorRewardInPercent: math.LegacyZeroDec(),
+	}
+
 	for _, p := range prophet.RegisteredPlugins() {
 		if err := k.AddPlugin(ctx, types.Plugin{
 			Id:          p,
-			Creator:     "",
+			Creator:     k.asyncModuleAddress.String(),
 			Description: "",
+			Fee:         zeroFees,
 		}); err != nil {
 			return err
 		}

@@ -43,6 +43,8 @@ func AsyncKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		nil,
 		asyncModuleAddress,
 		nil,
+		nil,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

@@ -9,10 +9,20 @@ address constant IASYNC_PRECOMPILE_ADDRESS = 0x000000000000000000000000000000000
 /// @dev The IAsync contract's instance.
 IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS);
 
+struct PluginFee {
+    Types.Coin[] fee;
+}
+
+struct DeductedFee {
+    Types.Coin[] pluginCreatorReward;
+    Types.Coin[] executorReward;
+}
+
 struct Plugin {
     string id;
     address creator;
     string description;
+    PluginFee fee;
 }
 
 struct PluginsResponse {
@@ -25,6 +35,7 @@ struct Task {
     address creator;
     string plugin;
     bytes input;
+    DeductedFee fee;
 }
 
 enum TaskVoteType {
@@ -80,6 +91,7 @@ interface IAsync {
     function addTask(
         string calldata plugin,
         bytes calldata input,
+        Types.Coin[] calldata maxFee,
         address callback
     ) external returns (uint64 taskId);
 

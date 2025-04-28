@@ -50,38 +50,36 @@ func (p *Precompile) AddTaskMethod(
 }
 
 func newMsgAddTask(args []interface{}, origin common.Address, method *abi.Method) (*asynctypes.MsgAddTask, error) {
-	if len(args) != 3 {
-		return nil, precommon.WrongArgsNumber{Expected: 3, Got: len(args)}
+	if len(args) != 4 {
+		return nil, precommon.WrongArgsNumber{Expected: 4, Got: len(args)}
 	}
 
 	authority := precommon.Bech32StrFromAddress(origin)
 
-	plugin, ok := args[0].(string)
-	if !ok {
-		return nil, fmt.Errorf("expected string for plugin, got %T", args[0])
-	}
-
-	input, ok := args[1].([]byte)
-	if !ok {
-		return nil, fmt.Errorf("expected []byte for input, got %T", args[1])
-	}
-
-	callbackAddressEth, ok := args[2].(common.Address)
-	if !ok {
-		return nil, fmt.Errorf("expected common.Address for callback address, got %T", args[2])
+	var input addTaskInput
+	if err := method.Inputs.Copy(&input, args); err != nil {
+		return nil, fmt.Errorf("error while unpacking args to addTaskInput struct: %w", err)
 	}
 
 	var callbackAddress string
-	if callbackAddressEth.String() == "0x0000000000000000000000000000000000000000" {
+	if input.Callback.String() == "0x0000000000000000000000000000000000000000" {
 		callbackAddress = ""
 	} else {
-		callbackAddress = precommon.Bech32StrFromAddress(callbackAddressEth)
+		callbackAddress = precommon.Bech32StrFromAddress(input.Callback)
 	}
 
 	return &asynctypes.MsgAddTask{
 		Creator:  authority,
-		Input:    input,
-		Plugin:   plugin,
+		Input:    input.Input,
+		Plugin:   input.Plugin,
+		MaxFee:   mapCoins(input.MaxFee),
 		Callback: callbackAddress,
 	}, nil
+}
+
+type addTaskInput struct {
+	Plugin   string
+	Input    []byte
+	MaxFee   []TypesCoin
+	Callback common.Address
 }

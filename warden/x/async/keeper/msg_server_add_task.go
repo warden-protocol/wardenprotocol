@@ -28,7 +28,8 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "cannot be empty")
 	}
 
-	if _, err := k.GetPlugin(ctx, msg.Plugin); err != nil {
+	plugin, err := k.GetPlugin(ctx, msg.Plugin)
+	if err != nil {
 		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "doesn't exist")
 	}
 
@@ -40,11 +41,24 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		return nil, errorsmod.Wrapf(types.ErrInvalidTaskInput, "cannot be empty")
 	}
 
+	if err := plugin.Fee.EnsureSufficientFees(msg.MaxFee); err != nil {
+		return nil, errorsmod.Wrapf(
+			types.ErrInsufficientFees,
+			"insufficient fees for plugin %s, expected: %s, got: %s",
+			msg.Plugin, plugin.Fee, msg.MaxFee)
+	}
+
+	deductedFee, err := k.deductPluginFees(ctx, sdk.MustAccAddressFromBech32(msg.Creator), plugin.Fee)
+	if err != nil {
+		return nil, err
+	}
+
 	id, err := k.tasks.Append(ctx, &types.Task{
 		Creator:  msg.Creator,
 		Plugin:   msg.Plugin,
 		Input:    msg.Input,
 		Callback: msg.Callback,
+		Fee:      deductedFee,
 	})
 	if err != nil {
 		return nil, err

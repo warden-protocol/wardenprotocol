@@ -8,18 +8,18 @@ sidebar_position: 1
 
 **Warden Protocol modules** are [Cosmos SDK](https://docs.cosmos.network/) modules containing most of Warden Protocol's logic.
 
-Users can interact with modules by sending transactions or querying [nodes](/learn/glossary#node). We also provide [precompiles](/build-an-app/interact-with-warden-modules/introduction) that allow calling certain modules in EVM smart contracts.
+Users can interact with modules by sending transactions or querying [nodes](../glossary#node). We also provide [precompiles](/build-an-app/interact-with-warden-modules/introduction) that allow calling certain modules in EVM smart contracts.
 
 Articles in this section describe the following modules:
 
-- [`x/warden`](x-warden): It allows users to create and manage their [Spaces](/learn/glossary#space) and request [Keychains](/learn/glossary#keychain) to sign payloads.
-- [`x/act`](x-act): It executes arbitrary messages ([Actions](/learn/glossary#action)) under certain conditions ([Rules](/learn/glossary#approval-rule)).
-- [`x/async`](x-async): It executes offchain computations ([Tasks](/learn/glossary#task)) asynchronously and stores the results onchain. 
+- [`x/warden`](x-warden): It allows users to create and manage their [Spaces](../glossary#space) and request [Keychains](../glossary#keychain) to sign payloads.
+- [`x/act`](x-act): It executes arbitrary messages ([Actions](../glossary#action)) under certain conditions ([Rules](../glossary#approval-rule)).
+- [`x/async`](x-async): It executes offchain computations ([Tasks](../glossary#task)) asynchronously and stores the results onchain. 
 - [External modules](external-modules): `x/gmp`, `x/wasm`, etc.
 
 ## Usage
 
-Our modules allow [Omnichain Application](/learn/glossary#omnichain-application) builders to deploy EVM and WASM smart contracts and use Warden features in these contracts:
+Our modules allow [Omnichain Application](../glossary#omnichain-application) builders to deploy EVM and WASM smart contracts and use Warden features in these contracts:
 
 | Module                                 | Features                                | How to use  |
 | ---------------------------------------| --------------------------------------- | ----------- |

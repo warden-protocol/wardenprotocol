@@ -38,7 +38,7 @@ A **Task** is an offchain user-defined unit of computation that is executed asyn
 
 A user can request a Task, specifying an **input** and an [AVR Plugin](#avr-plugin), which determines what format of input to accept and how to handle it. There are different types of Tasks, depending on the Plugin type.
 
-After that, a [validator](/learn/glossary#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result of a Task. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
+After that, a [validator](../glossary#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result of a Task. Other validators vote on correctness of the result. It takes several blocks to get the output, but it doesn't slow the blockchain down thanks to asynchronous execution.
 
 You can learn more in the [Task execution flow](#task-execution-flow) section of this article.
 
@@ -54,12 +54,12 @@ You can learn more in the [AVR Plugins](#avr-plugins) section of this article.
 
 ### Prophet
 
-A **Prophet** is a subprocess running on [validator](/learn/glossary#validator) nodes, which has two responsibilities:
+A **Prophet** is a subprocess running on [validator](../glossary#validator) nodes, which has two responsibilities:
 
 - Fetching [Task](#task) requests and executing [AVR Plugins](#avr-plugin) to provide Task results
 - Fetching requests satisfied by other validators to vote on the results
 
-Prophets run on validator nodes separately from the [`wardend` process](/learn/glossary#node), without blocking the consensus. Running a Prophet is optional for a validator.
+Prophets run on validator nodes separately from the [`wardend` process](../glossary#node), without blocking the consensus. Running a Prophet is optional for a validator.
 
 You can learn more in the [Prohpets](#prophets) section of this article.
 

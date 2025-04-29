@@ -17,8 +17,8 @@ You can easily build Agents with the [Warden Agent Kit](/category/warden-agent-k
 As explained in the sections below, Warden Agents' integration with AI is based on the following key components (previously called AIBI):
 
 - [Orders](#orders)
-- [`x/async`](#xasync)
-- [SPEX](#spex)
+- [The `x/async` module](/learn/warden-protocol-modules/x-async) with [AVR Plugins](/learn/glossary#avr-plugin)
+- [SPEX (statistical proof of execution)](#spex)
 
 Warden allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific output. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 

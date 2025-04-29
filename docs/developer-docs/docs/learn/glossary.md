@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 9
+sidebar_position: 8
 ---
 
 # Glossary
@@ -77,7 +77,7 @@ Developers can create their own Plugins or use the existing ones. Currently, we 
 - AI-driven price predictions
 - HTTP requests to external services, such as blockchain APIs
 
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+AVR Plugins provide a universal and standard way for [smart contracts](#omnichain-contract) to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -155,7 +155,7 @@ Keys in blockchain are paired to identify users and secure the ownership of wall
 - **Public key**: A public wallet address
 - **Private key**: A private code for signing transactions on the wallet
 
-On Warden, [Keychains](#keychain) generate key pairs and sign transactions with private keys.
+On Warden, [Keychains](#keychain) generate key pairs and sign transactions with private keys. Every key belongs to a certain [Space](#space).
 
 This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
 
@@ -169,7 +169,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to Warden Protocol.
 
-Learn more: [Key request flow](/learn/request-flow#key-request-flow).
+Learn more: [Key request flow](warden-protocol-modules/x-warden#key-request-flow).
 
 ---
 
@@ -211,7 +211,7 @@ Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk).
 
 ## Module
 
-Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](/learn/glossary#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
+Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
 
 Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
@@ -267,7 +267,7 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 ## Precompile
 
-Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Tasks](/learn/glossary#task), and other components.
+Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](#space), [Keychains](#keychain), [Actions](#action), [Rules](#approval-rule), [Tasks](#task), and other components.
 
 Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
@@ -294,7 +294,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to Warden Protocol.
 
-Learn more: [Signature request flow](/learn/request-flow#signature-request-flow).
+Learn more: [Signature request flow](warden-protocol-modules/x-warden#signature-request-flow).
 
 ---
 

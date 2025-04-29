@@ -12,6 +12,10 @@ This tutorial explains how implement simple **HTTP requests** to **multiple APIs
 - [The GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
 - [The JSONPlaceholder API](https://jsonplaceholder.typicode.com)
 
+:::tip
+These APIs are just examples. You can make HTTP requests to **any external API**.
+:::
+
 ## 1. Create a contract
 
 Create a new file called `MultiApiTest.sol`:

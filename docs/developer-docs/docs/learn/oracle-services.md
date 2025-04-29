@@ -1,26 +1,28 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # Oracle services
+
+:::warning
+Please note that Skip:Connect is no longer maintained.
+:::
+
+:::tip
+You can use the [`x/async` module](warden-protocol-modules/x-async) as an oracle service: it supports [AVR Plugins](warden-protocol-modules/x-async#avr-plugin) that are able to make HTTP requests to external APIs—for example, for fetching prices.
+:::
 
 ## Overview
 
 An **oracle** is a third-party service that enables smart contracts to access real-life **data feeds**: prices, stock market data, weather conditions, etc.
 
-[Omnichain Application](/learn/glossary#omnichain-application) builders can incorporate **Connect**, an oracle service supported by Warden, into their apps. See the sections below to learn more.
+[Omnichain Application](glossary#omnichain-application) builders can incorporate **Connect**, an oracle service supported by Warden, into their apps. See the sections below to learn more.
 
-:::tip
-Access to oracle data feeds significantly enhances the capabilities of Warden's [Intents](/learn/glossary#intent), allowing users to create highly specific Intents such as limit orders for decentralized exchanges. For an advanced example of oracle data usage, see [Build an onchain AI Agent](/build-an-agent/introduction).
-:::
-
-:::tip
-You can also use the [`x/async` module](warden-protocol-modules/x-async) as an oracle service: it supports [AVR Plugins](warden-protocol-modules/x-async#avr-plugin) that are able to make HTTP requests to external APIs—for example, for fetching prices.
-:::
+Access to oracle data feeds significantly enhances the capabilities of Warden's [Intents](glossary#intent), allowing users to create highly specific Intents such as limit orders for decentralized exchanges. For an advanced example of oracle data usage, see [Build an onchain AI Agent](/build-an-agent/introduction).
 
 ## Skip\:Connect
 
-Warden integrates with [x/oracle](/learn/warden-protocol-modules/external-modules#xoracle)—an external module by **Skip Protocol**. This module provides access to **Skip:Connect**—an oracle service offering mostly price data, formerly known as Slinky.
+Warden integrates with [x/oracle](warden-protocol-modules/external-modules#xoracle)—an external module by **Skip Protocol**. This module provides access to **Skip:Connect**—an oracle service offering mostly price data, formerly known as Slinky.
 
 See also: [Connect documentation](https://docs.skip.build/connect/introduction)
 
@@ -33,7 +35,7 @@ This integration uses the security framework of the chain, ensuring rapid price 
 With millisecond-fresh price updates for every block, this oracle system can support over 2,000 currencies, providing unmatched flexibility and scalability.
 
 :::tip
-The data provided by Connect is [validated](/learn/glossary#validator) by Warden's network and written onchain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-skip-connect).
+The data provided by Connect is [validated](glossary#validator) by Warden's network and written onchain. If you're a validator, see the guide explaining how to [operate Connect](/operate-a-node/operate-skip-connect).
 :::
 
 ## Available data feeds

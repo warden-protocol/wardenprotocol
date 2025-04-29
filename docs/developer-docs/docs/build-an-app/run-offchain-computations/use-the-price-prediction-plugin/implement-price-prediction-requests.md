@@ -203,7 +203,7 @@ contract PricePredExample {
 
    Request predictions for other currencies:
    
-   - tetherPrice()
+   - `tetherPrice()`
    - `uniswapPrice()`
    
    Request metrics:

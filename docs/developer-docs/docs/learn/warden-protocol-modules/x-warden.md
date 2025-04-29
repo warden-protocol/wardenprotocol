@@ -27,9 +27,9 @@ The `x/warden` module is used for signing transactions in our [automated Orders 
 
 A **Space** is a collection of users (owners) that manage [public keys](#key) and share a common set of [Approval Rules](x-act#rule), which are implemented in the `x/act` module:
 
-- **Admin Rule**: It's a applied to all admin operations such as adding or removing Space owners.
-- **Signing Rule**: It's applied to all signature operations such as requesting a new key or signature from a [Keychain](#keychain).
-- **Default Rule**: It's applied if no Rule is specified, allowing any operation if at least 1 of the Space owners approves it.
+- **Admin Rule**: This rule applies to all admin operations such as adding or removing Space owners.
+- **Signing Rule**: This rule applies to all signature operations such as requesting a new key or signature from a [Keychain](#keychain).
+- **Default Rule**: This rule applies if no Rule is specified, allowing any operation if at least 1 of the Space owners approves it.
 
 ### Key
 

@@ -50,7 +50,7 @@ Build applications that allow aggregating multiple accounts for different chains
 Warden is an AI-ready protocol with three layers:
 
 - **Blockchain layer**  
-Warden lets users access responses from [Asynchronous Verifiable Resources](/learn/glossary#avr-plugin) (AVR Plugins) onchain. AVRs is a universal and standard way for smart contracts to access any resource or operate offchain systems. Users can also build, publish, and monetize their AVRs. The blockchain level acts as a coordination, messaging, and provenance layer AVR creators.
+Warden lets users access responses from [Asynchronous Verifiable Resources](/learn/glossary#avr-plugin) (AVR Plugins) onchain. AVRs are a universal and standard way for smart contracts to access any resource or operate offchain systems. Users can also build, publish, and monetize their AVRs. The blockchain level acts as a coordination, messaging, and provenance layer AVR creators.
 
 - **Verifiability layer**  
 Warden's verifiability layer acts like a firewall that uses cryptography to verify AVR responses. [Statistical Proof of Execution](#spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.

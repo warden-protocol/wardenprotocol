@@ -15,13 +15,16 @@ Warden Protocol changes this paradigm by providing a built-in mechanism for smar
 
 This section will guide you through using `x/async` to execute different types of computations in your smart contract.
 
-## Computation types
+## AVR Plugins
 
-The `x/async` module implements such concepts as [Tasks](/learn/warden-protocol-modules/x-async#plugin) and [Plugins](/learn/warden-protocol-modules/x-async#plugin).
+The `x/async` module implements such concepts as [Tasks](/learn/warden-protocol-modules/x-async#task) and [AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugin):
 
-A **Task** is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. A user can request a Task, specifying an input and a **Plugin**, which determines what format of input to accept and how to handle it. In other words, the type of the computation you're going to execute depends on the Plugin you reference in a Task.
+- A **Task** is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. A user can request a Task, specifying an input and an AVR Plugin.
+- An **AVR Plugin**, or **Asynchronous Verifiable Resource**, determines what format of input to accept and how to handle it.
 
-Currently, we support two Plugins, which allow executing **price predictions** and **HTTP requests**. You can learn how to use these Plugins by following our tutorials:
+In other words, the type of the computation you're going to execute depends on the AVR Plugin you reference in a Task.
+
+You can learn how to use the available Plugins by following our tutorials:
 
 - [Use the HTTP Plugin](use-the-http-plugin/introduction)
 - [Use the price prediction Plugin](use-the-price-prediction-plugin/introduction)

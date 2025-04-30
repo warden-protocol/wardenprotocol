@@ -66,6 +66,16 @@
         {"source":"/build-an-agent/introduction#ai-blockchain-interface","destination":"/learn/warden-ai-agents#ai-integration", "statusCode": 301},
         {"source":"/category/use-the-http-handler","destination":"/category/use-the-http-plugin", "statusCode": 301},
         {"source":"/category/use-the-price-prediction-handler","destination":"/category/use-the-price-prediction-plugin", "statusCode": 301},
-        {"source":"/operate-a-node/node-api-reference","destination":"/operate-a-node/node-api", "statusCode": 301}
+        {"source":"/operate-a-node/node-api-reference","destination":"/operate-a-node/node-api", "statusCode": 301},
+        {"source":"/category/run-offchain-computations-with-xasync","destination":"/category/run-offchain-computations-with-xasync-avr-plugins", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/introduction","destination":"/build-an-app/run-offchain-computations/introduction", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/introduction","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/introduction", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/set-up-the-environment","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/set-up-the-environment", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/implement-http-requests","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/implement-http-requests", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/extract-data","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/extract-data", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/fetch-multiple-prices","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/fetch-multiple-prices", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/introduction","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/introduction", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/set-up-the-environment","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/set-up-the-environment", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/implement-price-prediction-requests","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/implement-price-prediction-requests", "statusCode": 301}
     ]
 }

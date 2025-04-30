@@ -22,12 +22,12 @@ To interact with the node, you need to install the [Warden binary](https://githu
 
 You can follow installation instructions in one of these guides (depending on your goal):
 
-- [Run a local chain](/operate-a-node/run-a-local-chain)
-- [Join Chiado](/operate-a-node/chiado-testnet/join-chiado#1-install)
+- [Run a local chain](run-a-local-chain)
+- [Join Chiado](chiado-testnet/join-chiado#1-install)
 
 ## Execute `wardend` commands
 
-To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](/operate-a-node/chiado-testnet/chiado-overview).
+To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](chiado-testnet/chiado-overview).
 
 For example, to check the node status, run the example below using the preferred endpoint:
 

@@ -8,7 +8,7 @@ sidebar_position: 5
 
 To start building your own Agent, follow [Quick start](quick-start). If you'd like to explore the capabilities of Warden Agent Kit first, check out this guide: it demonstrates how to run our **Typescript example** built with the kit. You can also try to expand or modify this example.
 
-This example implements a **CLI Agent** that is able to do the following:
+Our example implements a **CLI Agent** that is able to do the following:
 
 - Process user prompts in natural language using the [LangChain](add-agent-capabilities#incorporate-langchain-tools) extension.
 - Interact with Warden Protocol using the supported [Agent Actions](agent-actions).
@@ -122,12 +122,12 @@ A new space has been successfully created! If you need any further assistance, j
 
 After running the CLI Agent example and creating a Space, you can ask the Agent to return your Space ID, create a key, and so on.
 
-A comprehensive list of all the available tools can be found in [Agent Actions](/build-an-agent/warden-agent-kit/agent-actions). Alternatively, you can just ask the Agent about it: `what capabilities do you have?`
+A comprehensive list of all the available tools can be found in [Agent Actions](agent-actions). Alternatively, you can just ask the Agent about it: `what capabilities do you have?`
 
 To stop the Agent, just type `exit`.
 
 :::tip
-You can add more Agent capabilities and even incorporate a custom tool, as shown in [Add Agent capabilities](/build-an-agent/warden-agent-kit/add-agent-capabilities).
+You can add more Agent capabilities and even incorporate a custom tool, as shown in [Add Agent capabilities](add-agent-capabilities).
 :::
 
 ## Next steps

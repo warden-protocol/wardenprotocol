@@ -17,8 +17,8 @@ You can easily build Agents with the [Warden Agent Kit](/category/warden-agent-k
 As explained in the sections below, Warden Agents' integration with AI is based on the following key components (previously called AIBI):
 
 - [Orders](#orders)
-- [`x/async`](#xasync)
-- [SPEX](#spex)
+- [The `x/async` module](/learn/warden-protocol-modules/x-async) with [AVR Plugins](/learn/glossary#avr-plugin)
+- [SPEX (statistical proof of execution)](#spex)
 
 Warden allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific output. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
@@ -44,7 +44,7 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 ### `x/async`
 
-The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) to implement [Tasks](glossary#task), [Plugins](glossary#plugin), and [Prophets](glossary#prophet).
+The `x/async` module is a [Cosmos SDK](https://docs.cosmos.network/) module for running offchain heavyweight computations asynchronously and storing the results onchain. It uses the [ABCI 2.0](https://docs.cometbft.com/v1.0/spec/abci/) framework and its [vote extensions](https://docs.cosmos.network/main/build/abci/vote-extensions) to implement [Tasks](glossary#task), [AVR Plugins](glossary#avr-plugin), and [Prophets](glossary#prophet).
 
 The `x/async` module decouples transaction processing from consensus and moves away from the traditional wait-and-process model. Developers can initiate various crosschain computations including AI inferences and other tasks as asynchronous intents that are resolved later. This approach prevents smart contracts from blocking operations.
 

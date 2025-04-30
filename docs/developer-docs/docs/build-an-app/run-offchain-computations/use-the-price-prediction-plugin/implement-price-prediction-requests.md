@@ -199,21 +199,27 @@ contract PricePredExample {
    818924905292177473536
    ```
 
+5. After requesting a Bitcoin price prediction, you can call other functions of the contract to get predictions for other cryptocurrencies and request metrics.
+
+   Request predictions for other currencies:
+   
+   - `tetherPrice()`
+   - `uniswapPrice()`
+   
+   Request metrics:
+   
+   - `bitcoinMetricCount()`
+   - `bitcoinMetricConfidence()`
+   - `tetherMetricCount()`
+   - `tetherMetricConfidence()`
+   - `uniswapMetricCount()`
+   - `uniswapMetricConfidence()`
+
 ## Next steps
 
-You can similarly request price prediction for other cryptocurrencies, using the following functions from the contract:
+You can use price predictions for creating automated Orders. For example, you can create a smart contract that executes a token swap on Uniswap once the predicted price meets a given condition.
 
-- `tetherPrice()`
-- `uniswapPrice()`
-
-To request metrics, call these functions:
-
-- `bitcoinMetricCount()`
-- `bitcoinMetricConfidence()`
-- `tetherMetricCount()`
-- `tetherMetricConfidence()`
-- `uniswapMetricCount()`
-- `uniswapMetricConfidence()`
+Learn more: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
 
 If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 

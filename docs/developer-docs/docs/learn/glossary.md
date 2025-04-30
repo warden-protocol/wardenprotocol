@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 9
+sidebar_position: 8
 ---
 
 # Glossary
@@ -35,7 +35,7 @@ A Warden AI Agent is an AI-driven program that supports both offchain and onchai
 Warden Agents' integration with AI is ensured by three components:
 
 - [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain [Action](#action) at any destination chain
-- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [Plugins](#plugin) and [Prophets](#prophet)
+- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [AVR Plugins](#avr-plugin) and [Prophets](#prophet)
 - [SPEX](#spex): Statistical Proof of Execution
 
 Learn more: [Warden AI Agents](warden-ai-agents).
@@ -65,6 +65,19 @@ An Approval Rule is a set of user-defined conditions under which an [Action](#ac
 You can define Approval Rules as part of [Intents](#intent), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
 This concept is implemented in the `x/act` [module](#module). Learn more: [`x/act`](warden-protocol-modules/x-act).
+
+---
+
+## AVR Plugin
+
+An AVR Plugin, or Asynchronous Verifiable Resource, is code determining what kind of [Task](#task) input to accept and how to handle it in order to retrieve the result (output). Plugins are executed by [Prophets](#prophet).
+
+Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing the following Task types:
+
+- AI-driven price predictions
+- HTTP requests to external services, such as blockchain APIs
+
+AVR Plugins provide a universal and standard way for [smart contracts](#omnichain-contract) to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -142,7 +155,7 @@ Keys in blockchain are paired to identify users and secure the ownership of wall
 - **Public key**: A public wallet address
 - **Private key**: A private code for signing transactions on the wallet
 
-Warden offers [Modular Key Management](#modular-key-management): you can use [Keychains](#keychain) to generate key pairs and sign transactions. This is how it works: [Key request](#key-request), [Signature request](#signature-request).
+On Warden, [Keychains](#keychain) generate key pairs and sign transactions with private keys. Every key belongs to a certain [Space](#space).
 
 This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
 
@@ -156,7 +169,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to Warden Protocol.
 
-Learn more: [Key request flow](/learn/request-flow#key-request-flow).
+Learn more: [Key request flow](warden-protocol-modules/x-warden#key-request-flow).
 
 ---
 
@@ -168,7 +181,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow).
 
 ## Keychain
 
-Every [Omnichain Application](#omnichain-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular security](#modular-security).
+Every [Omnichain Application](#omnichain-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions.
 
 Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
@@ -196,26 +209,9 @@ Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk).
 
 ---
 
-## Modular Key Management
-
-Modular Key Management is a flexible approach to managing keys in Warden. Instead of relying on a single provider for key management, users can manage different [keys](#key) with different [Keychains](#keychain). It reduces the risk of single points of failure and gives users greater control over their keys.
-
----
-
-## Modular Security
-
-Thanks to modularity, the same [Omnichain Application](#omnichain-application) can combine different security models:
-
-- OApp users can set and manage their own application security settings with the help of [Approval Rules](#approval-rule) and [Keychains](#keychain).
-- Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
-
-By decoupling application-layer and protocol-layer security, Warden takes the best from monolithic and isolated security systems and reducing the risks of both.
-
----
-
 ## Module
 
-Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](/learn/glossary#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
+Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
 
 Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
@@ -269,22 +265,9 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 ---
 
-## Plugin
-
-A Plugin is code that determines what kind of [Task](#task) input to accept and how to handle it in order to retrieve the result (output). When requesting a Task, a user references a Plugin by ID. Then the Plugin is executed by a [Prophet](#prophet).
-
-Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing the following Task types:
-
-- AI-driven price predictions
-- HTTP requests to external services, such as blockchain APIs
-
-This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
-
----
-
 ## Precompile
 
-Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](/learn/glossary#space), [Keychains](/learn/glossary#keychain), [Actions](/learn/glossary#action), [Rules](/learn/glossary#approval-rule), [Tasks](/learn/glossary#task), and other components.
+Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](#space), [Keychains](#keychain), [Actions](#action), [Rules](#approval-rule), [Tasks](#task), and other components.
 
 Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
@@ -294,7 +277,7 @@ Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-mo
 
 A Prophet is a subprocess running on [validator](#validator) nodes, which has two responsibilities:
 
-- Fetching [Task](#task) requests and executing [Plugins](#plugin) to provide Task results
+- Fetching [Task](#task) requests and executing [AVR Plugins](#avr-plugin) to provide Task results
 - Fetching requests satisfied by other validators to vote on the results
 
 Prophets run on validator nodes separately from the [wardend process](#node), without blocking the consensus. Running a Prophet is optional for a validator.
@@ -311,7 +294,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to Warden Protocol.
 
-Learn more: [Signature request flow](/learn/request-flow#signature-request-flow).
+Learn more: [Signature request flow](warden-protocol-modules/x-warden#signature-request-flow).
 
 ---
 
@@ -359,7 +342,7 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 A Task is an offchain user-defined unit of computation that is executed asynchronously. The result is stored onchain. Tasks don't slow the blockchain down thanks to asynchronous execution.
 
-A user requests a Task, specifying an input and a [Plugin](#plugin), which determines what format of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
+A user requests a Task, specifying an input and an [AVR Plugin](#avr-plugin), which determines what format of input to accept and how to handle it.  There are different types of Tasks, depending on the Plugin type. After that, a [validator](#validator) running a [Prophet](#prophet) executes the Plugin and provides the Task result, and other validators vote on correctness of the result.
 
 This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
@@ -421,19 +404,3 @@ Learn more: [WARD token](/tokens/ward-token/ward).
 The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
 
 Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
-
----
-
-## WARP token
-
-WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
-
-Learn more: [WARP token](/tokens/warp-token/warp).
-
----
-
-## YieldWard
-
-YieldWard is an [Omnichain Application](#omnichain-application) functioning as a smart yield generator that automates and optimizes your earnings across multiple protocols. YieldWard simplifies your yield and staking experience, letting you enjoy effortless management, decentralized security, and optimal yields.
-
-Learn more: [YieldWard documentation](https://docs.yieldward.com).

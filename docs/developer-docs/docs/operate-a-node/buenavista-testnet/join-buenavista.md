@@ -40,7 +40,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    ```
 
    :::tip
-   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands).
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](../node-commands).
    :::
 
 
@@ -71,7 +71,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    ```
    
    :::tip
-   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](../node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
    :::
 
 ## 2. Configure
@@ -170,6 +170,6 @@ We recommend [using Cosmovisor](https://docs.cosmos.network/v0.45/run-node/cosmo
 
 After joining Buenavista, you can take these steps:
 
-- If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
-- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
+- If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](../create-a-validator) section.
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](../node-commands).
 - Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).

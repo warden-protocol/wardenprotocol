@@ -42,7 +42,7 @@ Before you start, complete the following prerequisites:
 
 2. In the `src` directory, create a new contract named `Warden.sol`.
 
-   To call a precompile in your contract, do this::
+   To call a precompile in your contract, do this:
 
    - Define an `interface` for interacting with a [Warden precompile](/category/precompiles).
    - Add a `contract` with functions calling the precompile.

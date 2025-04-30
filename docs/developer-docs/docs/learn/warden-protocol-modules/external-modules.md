@@ -48,7 +48,7 @@ Learn more:
 
 - [Cosmos GMP documentation](https://docs.axelar.dev/dev/cosmos-gmp)
 - [Axelar GMP SDK on GitHub](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity)
-- [Warden docs: Bridging](/learn/bridging)
+- [Warden docs: Bridging](../bridging)
 
 ## x/oracle
 
@@ -63,4 +63,4 @@ Learn more:
 
 - [Connect documentation](https://docs.skip.build/connect/introduction)
 - [`x/oracle` on GitHub](https://github.com/skip-mev/slinky/tree/main/x/oracle)
-- [Warden docs: Oracle services](/learn/oracle-services)
+- [Warden docs: Oracle services](../oracle-services)

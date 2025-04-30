@@ -42,7 +42,7 @@ cast send $CONTRACT_ADDRESS "createFuture(string,bytes,address)" \
 ```
 
 :::tip
-- You need to specify a Plugin (`handler`). The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Plugins](/learn/warden-protocol-modules/x-async#plugins). 
+- You need to specify an AVR Plugin (`handler`). The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugins). 
 - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Task is ready.
 :::
 
@@ -245,3 +245,6 @@ contract AsyncExample {
     }
 }
 ```
+## Next steps
+
+Learn how to use different AVR Plugins: [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction).

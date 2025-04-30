@@ -118,10 +118,11 @@ interface IJson {
     ) external view returns (uint256);
 
     /**
-     * @dev Defines a method to get a bytes value from JSON by key.
+     * @dev Defines a method to get a float value from JSON by key.
      * @param input The JSON input as bytes.
      * @param key The key to look up.
-     * @return The bytes value.
+     * @param decimals The number of decimal places.
+     * @return The float value as int256.
      */
     function getFloat(
         bytes memory input,

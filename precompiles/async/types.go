@@ -3,6 +3,8 @@ package async
 import (
 	"fmt"
 
+	"cosmossdk.io/math"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common"
 
@@ -102,7 +104,43 @@ func mapPlugin(plugin types.Plugin) (Plugin, error) {
 		Id:          plugin.Id,
 		Creator:     creator,
 		Description: plugin.Description,
+		Fee: PluginFee{
+			Fee: mapSdkCoins(plugin.Fee.Fee),
+		},
 	}, nil
+}
+
+func mapSdkCoins(coins []sdk.Coin) []TypesCoin {
+	result := make([]TypesCoin, 0, len(coins))
+
+	for _, coin := range coins {
+		mappedCoin := mapSdkCoin(coin)
+		result = append(result, mappedCoin)
+	}
+
+	return result
+}
+
+func mapSdkCoin(coin sdk.Coin) TypesCoin {
+	return TypesCoin{
+		Denom:  coin.Denom,
+		Amount: coin.Amount.BigInt(),
+	}
+}
+
+func mapCoins(coins []TypesCoin) []sdk.Coin {
+	result := make([]sdk.Coin, 0, len(coins))
+
+	for _, coin := range coins {
+		mappedCoin := mapCoin(coin)
+		result = append(result, mappedCoin)
+	}
+
+	return result
+}
+
+func mapCoin(coin TypesCoin) sdk.Coin {
+	return sdk.NewCoin(coin.Denom, math.NewIntFromBigInt(coin.Amount))
 }
 
 func mapTask(task types.Task) (Task, error) {
@@ -116,6 +154,10 @@ func mapTask(task types.Task) (Task, error) {
 		Creator: creator,
 		Plugin:  task.Plugin,
 		Input:   task.Input,
+		Fee: DeductedFee{
+			PluginCreatorReward: mapSdkCoins(task.Fee.PluginCreatorReward),
+			ExecutorReward:      mapSdkCoins(task.Fee.ExecutorReward),
+		},
 	}, nil
 }
 

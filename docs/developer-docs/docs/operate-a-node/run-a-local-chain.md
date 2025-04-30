@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-This guide explains how to run a local chain for development and testing purposes. To interact with the chain, you'll use [node commands](/operate-a-node/node-commands).
+This guide explains how to run a local chain for development and testing purposes. To interact with the chain, you'll use [node commands](node-commands).
 
 There are two ways to run a node:
 
@@ -274,4 +274,4 @@ If you need to stop the node, use **Ctrl + C**. To start it again from block 0, 
   - [Deploy a WASM contract](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-wasm-contract)
 - You can also create and test a Keychain locally. Start with this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
 - To join our testnet, see [Join Chiado](chiado-testnet/join-chiado).
-- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](node-commands).

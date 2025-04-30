@@ -27,7 +27,7 @@ The Warden Agent Kit provides the following key features:
 
 You can quickly familiarize yourself with the Warden Agent Kit's capabilities by exploring and modifying the available examples:
 
-- [The CLI Agent example](/build-an-agent/warden-agent-kit/cli-agent-example)  
+- [The CLI Agent example](cli-agent-example)  
   This example demonstrates how to build and deploy a basic Agent using the Warden Agent Kit. It includes all the essential steps, from setting up your environment to executing onchain interactions.
 - [The Agent Kit examples repository](https://github.com/warden-protocol/agent-kit-examples)  
   This is a community-driven resource filled with practical examples, templates, and use cases to inspire and accelerate your development. You can add your own examples to this repository as well.

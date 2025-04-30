@@ -24,502 +24,558 @@ To reference the `IJson` precompile in your code, use the following precompile a
 0x0000000000000000000000000000000000000904
 ```
 
-## JSON objects
+## All value types
 
-### Create a new JSON object
+### Create a new root object
 
 - **Method**: `newJson()`
-- **Description**: XXX. Emits the [`XXX` event].
-- **Parameters** :
-  ```sol
-  XXX
-  ```
+- **Description**: Creates an empty root JSON object.
 - **Output**:  
   ```sol
-  XXX
+  @return The created JSON as bytes.
   ```
 - **Usage example**: [XXX]
-
-### Remove a JSON object
-
-- **Method**: `remove()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-## Getters
 
 ### Get a value
 
 - **Method**: `get()`
-- **Description**: XXX.
+- **Description**: Returns a value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The value as bytes.
   ```
 - **Usage example**: [XXX]
+
+### Remove a pair
+
+- **Method**: `remove()`
+- **Description**: Removes a key-value pair from the root object.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to remove.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Get multiple pairs
+
+- **Method**: `read()`
+- **Description**: Returns multiple key-value pairs, requires passing an array of pairs. See the [`ReadKeyValue` struct](#readkeyvalue).
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param keyValues The key-value pairs to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set multiple pairs
+
+- **Method**: `write()`
+- **Description**: Sets multiple key-value pairs, requires passing an array of pairs. See the [`SetKeyValue` struct](#setkeyvalue).
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param keyValues The key-value pairs to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+## Basic types and numbers
 
 ### Get a string value
 
 - **Method**: `getString()`
-- **Description**: XXX.
+- **Description**: Returns a string value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The string value.
   ```
 - **Usage example**: [XXX]
 
 ### Get a boolean value
 
 - **Method**: `getBool()`
-- **Description**: XXX.
+- **Description**: Returns a boolean value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The boolean value.
   ```
 - **Usage example**: [XXX]
 
 ### Get an address value
 
 - **Method**: `getAddress()`
-- **Description**: XXX.
+- **Description**: Returns an address value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The address value.
   ```
 - **Usage example**: [XXX]
 
 ### Get a uint256 value
 
 - **Method**: `getUint256()`
-- **Description**: XXX.
+- **Description**: Returns a uint256 value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The uint256 value
   ```
 - **Usage example**: [XXX]
 
 ### Get an int256 value
 
 - **Method**: `getInt256()`
-- **Description**: XXX.
+- **Description**: Returns an int256 value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The int256 value.
   ```
 - **Usage example**: [XXX]
 
 ### Get a float value
 
 - **Method**: `getFloat()`
-- **Description**: XXX.
+- **Description**: Returns a float value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
+  @param decimals The number of decimal places.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The float value as int256.
   ```
 - **Usage example**: [XXX]
+
+### Set a string pair
+
+- **Method**: `setString()`
+- **Description**: Sets a string key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The string value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set a boolean pair
+
+- **Method**: `setBool()`
+- **Description**: Sets a boolean key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The boolean value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set an address pair
+
+- **Method**: `setAddress()`
+- **Description**: Sets an address key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The address value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set a bytes pair
+
+- **Method**: `setBytes()`
+- **Description**: Set a bytes key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The bytes value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set an int256 pair
+
+- **Method**: `setInt256()`
+- **Description**: Set an int256 key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The int256 value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set a uint256 pair
+
+- **Method**: `setUint256()`
+- **Description**: Set a uint256 key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The uint256 value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+### Set a float pair
+
+- **Method**: `setFloat()`
+- **Description**: Set a float key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The uint256 value to set.
+  @param decimals The number of decimal places.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [XXX]
+
+## Arrays and nested objects
 
 ### Get a string array
 
 - **Method**: `getStringArray()`
-- **Description**: XXX.
+- **Description**: Returns a string array value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The string array value.
   ```
 - **Usage example**: [XXX]
 
 ### Get a boolean array
 
 - **Method**: `getBoolArray()`
-- **Description**: XXX.
+- **Description**: Returns a boolean array value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The boolean array value.
   ```
 - **Usage example**: [XXX]
 
 ### Get an address array
 
 - **Method**: `getAddressArray()`
-- **Description**: XXX.
+- **Description**: Returns an address array value by key.
 - **Parameters** :
   ```sol
-  XXX
+   @param input The JSON input as bytes.
+   @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The address array value.
   ```
 - **Usage example**: [XXX]
 
 ### Get a uint256 array
 
 - **Method**: `getUintArray()`
-- **Description**: XXX.
+- **Description**: Returns a uint256 array value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.XX
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The uint256 array value.
   ```
 - **Usage example**: [XXX]
 
 ### Get an int256 array
 
 - **Method**: `getIntArray()`
-- **Description**: XXX.
+- **Description**: Returns an int256 array value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The int256 array value.
   ```
 - **Usage example**: [XXX]
 
 ### Get a float array
 
 - **Method**: `getFloatArray()`
-- **Description**: XXX.
+- **Description**: Returns a float array value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The float array value.
   ```
 - **Usage example**: [XXX]
 
 ### Get an object array
 
 - **Method**: `getObjectsArray()`
-- **Description**: XXX.
+- **Description**: Returns an object array value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The nested object value as bytes.
   ```
 - **Usage example**: [XXX]
 
 ### Get a nested object
 
 - **Method**: `getObject()`
-- **Description**: XXX.
+- **Description**: Returns a nest object value by key.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The nested object value as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Get multiple key-value pairs
-
-- **Method**: `reatd()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-## Setters
-
-### Set a string value
-
-- **Method**: `setString()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set a boolean value
-
-- **Method**: `setBool()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set an address value
-
-- **Method**: `setAddress()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set a bytes value
-
-- **Method**: `setBytes()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set an int256 value
-
-- **Method**: `setInt256()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set a uint256 value
-
-- **Method**: `setUint256()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set a float value
-
-- **Method**: `setFloat()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set a string array
+### Set a string array pair
 
 - **Method**: `setStringArray()`
-- **Description**: XXX.
+- **Description**: Set a string array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The string array value to set.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set an address array
+### Set an address array pair
 
 - **Method**: `setAddressArray()`
-- **Description**: XXX.
+- **Description**: Set an address array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The address array value to set.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set a boolean array
+### Set a boolean array pair
 
 - **Method**: `setBoolArray()`
-- **Description**: XXX.
+- **Description**: Set a boolean array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The boolean array value to set.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set a uint256 array
+### Set a uint256 array pair
 
 - **Method**: `setUintArray()`
-- **Description**: XXX.
+- **Description**: Set a uint256 array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The uint256 array value to set.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set an int256 array
+### Set an int256 array pair
 
 - **Method**: `setIntArray()`
-- **Description**: XXX.
+- **Description**: Set an int256 array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The int256 array value to set.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set a float array
+### Set a float array pair
 
 - **Method**: `setFloatArray()`
-- **Description**: XXX.
+- **Description**: Set a float array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The int256 array value to set.
+  @param decimals The number of decimal places.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set an object array
+### Set an object array pair
 
 - **Method**: `setObjectsArray()`
-- **Description**: XXX.
+- **Description**: Set an object array key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The nested objects values as bytes.
   ```
 - **Output**:  
   ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
-### Set a nested object
+### Set a nested object pair
 
 - **Method**: `setObject()`
-- **Description**: XXX.
+- **Description**: Set a nested object key-value pair.
 - **Parameters** :
   ```sol
-  XXX
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The nested object value as bytes.
   ```
 - **Output**:  
   ```sol
-  XXX
-  ```
-- **Usage example**: [XXX]
-
-### Set multiple key-value pairs
-
-- **Method**: `write()`
-- **Description**: XXX.
-- **Parameters** :
-  ```sol
-  XXX
-  ```
-- **Output**:  
-  ```sol
-  XXX
+  @return The modified JSON as bytes.
   ```
 - **Usage example**: [XXX]
 
 ## Structs
 
-### `XXX`
+### `SetKeyValue`
 
-- **Description**: A struct representing XXX. Includes the [`XXX` struct].
+### `ReadKeyValue`
 
-```
-XXX
-```
-
-### `XXX`
-
-- **Description**: A struct representing XXX. Includes the [`XXX` struct].
+- **Description**: A struct representing a key-value pair. It's used for [getting multiple pairs](#get-multiple-pairs).
 
 ```
-XXX
+struct ReadKeyValue {
+    string key;
+    string valueType;
+    int64 decimals;
+}
+```
+
+- **Description**: A struct representing a key-value pair. It's used for [setting multiple pairs](#set-multiple-pairs).
+
+```
+struct SetKeyValue {
+    string key;
+    string valueType;
+    bytes value;
+    int64 decimals;
+}
 ```

@@ -13,7 +13,8 @@ This article explains how to use `x/act` to manage [Actions](/learn/warden-proto
 To understand how to set up and deploy your project, see [Get started with precompiles](../get-started-with-precompiles).
 
 :::tip
-For an overview of `x/act` functions, refer to [Precompiles: x/act](../../precompiles/x-act#actions)
+- For an overview of `x/act` functions, refer to [Precompiles: x/act](../../precompiles/x-act#actions).
+- The precompile address is `0x0000000000000000000000000000000000000901`.
 :::
 
 ## Vote for an Action

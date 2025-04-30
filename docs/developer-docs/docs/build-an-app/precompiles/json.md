@@ -6,14 +6,18 @@ sidebar_position: 4
 
 ## Overview
 
-The `IJson.sol` precompile enables... [`x/async` module](/learn/warden-protocol-modules/x-async).
+The `IJson.sol` precompile enables EVM smart contracts to manipulate JSON data.
 
-In this article, you'll find a full list of available methods, allowing you to manage JSON objects and to get and set different values.
+In this article, you'll find a full list of available methods, allowing you to handle different value types:
 
-To learn how to use this precompile, refer to [Use the JSON precompile].
+- [All value types](#all-value-types)
+- [Basic types and numbers](#basic-types-and-numbers)
+- [Arrays and nested objects](#arrays-and-nested-objects)
+
+To learn how to use this precompile, refer to [Use the JSON precompile](/category/use-the-json-precompile).
 
 :::note Code
-You can find the `x/async` precomile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IJson.sol)
+You can find the `JSON` precompile code on GitHub: [`IJson.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/json/IJson.sol)
 :::
 
 ## Precompile address
@@ -34,7 +38,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The created JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Create a new root object](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#create-a-new-root-object)
 
 ### Get a value
 
@@ -49,7 +53,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The value as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a value](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-a-value)
 
 ### Remove a pair
 
@@ -64,7 +68,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Remove a pair](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#remove-a-pair)
 
 ### Get multiple pairs
 
@@ -73,13 +77,13 @@ To reference the `IJson` precompile in your code, use the following precompile a
 - **Parameters** :
   ```sol
   @param input The JSON input as bytes.
-  @param keyValues The key-value pairs to set.
+  @param keyValues The key-value pairs to read.
   ```
 - **Output**:  
   ```sol
-  @return The modified JSON as bytes.
+  @return The array of key-value pairs as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get multiple pairs](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-multiple-pairs)
 
 ### Set multiple pairs
 
@@ -94,7 +98,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set multiple pairs](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-multiple-pairs)
 
 ## Basic types and numbers
 
@@ -111,7 +115,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The string value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a string value](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#get-a-string-value)
 
 ### Get a boolean value
 
@@ -126,7 +130,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The boolean value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a boolean value](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#get-a-boolean-value)
 
 ### Get an address value
 
@@ -141,7 +145,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The address value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get an address value](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#get-an-address-value)
 
 ### Get a uint256 value
 
@@ -156,7 +160,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The uint256 value
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a uint256 value](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#get-a-uint256-value)
 
 ### Get an int256 value
 
@@ -171,7 +175,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The int256 value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get an int256 value](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#get-an-int256-value)
 
 ### Get a float value
 
@@ -187,7 +191,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The float value as int256.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a float value](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#get-a-float-value)
 
 ### Set a string pair
 
@@ -203,7 +207,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a string pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-a-string-pair)
 
 ### Set a boolean pair
 
@@ -219,7 +223,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a boolean pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-a-boolean-pair)
 
 ### Set an address pair
 
@@ -235,7 +239,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set an address pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-an-address-pair)
 
 ### Set a bytes pair
 
@@ -251,23 +255,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
-
-### Set an int256 pair
-
-- **Method**: `setInt256()`
-- **Description**: Set an int256 key-value pair.
-- **Parameters** :
-  ```sol
-  @param input The JSON input as bytes.
-  @param key The key to set.
-  @param value The int256 value to set.
-  ```
-- **Output**:  
-  ```sol
-  @return The modified JSON as bytes.
-  ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a bytes pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-a-bytes-pair)
 
 ### Set a uint256 pair
 
@@ -283,7 +271,23 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a uint256 pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-a-uint256-pair)
+
+### Set an int256 pair
+
+- **Method**: `setInt256()`
+- **Description**: Set an int256 key-value pair.
+- **Parameters** :
+  ```sol
+  @param input The JSON input as bytes.
+  @param key The key to set.
+  @param value The int256 value to set.
+  ```
+- **Output**:  
+  ```sol
+  @return The modified JSON as bytes.
+  ```
+- **Usage example**: [Set an int256 pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-an-int256-pair)
 
 ### Set a float pair
 
@@ -293,14 +297,14 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
-  @param value The uint256 value to set.
+  @param value The int256 value to set.
   @param decimals The number of decimal places.
   ```
 - **Output**:  
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a float pair](../interact-with-warden-modules/use-the-json-precompile/handle-basic-types-and-numbers#set-a-float-pair)
 
 ## Arrays and nested objects
 
@@ -317,7 +321,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The string array value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a string array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-a-string-array)
 
 ### Get a boolean array
 
@@ -332,7 +336,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The boolean array value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a boolean array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-a-boolean-array)
 
 ### Get an address array
 
@@ -347,7 +351,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The address array value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get an address array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-an-address-array)
 
 ### Get a uint256 array
 
@@ -356,13 +360,13 @@ To reference the `IJson` precompile in your code, use the following precompile a
 - **Parameters** :
   ```sol
   @param input The JSON input as bytes.
-  @param key The key to look up.XX
+  @param key The key to look up.
   ```
 - **Output**:  
   ```sol
   @return The uint256 array value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a uint256 array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-a-uint256-array)
 
 ### Get an int256 array
 
@@ -377,7 +381,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The int256 array value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get an int256 array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-an-int256-array)
 
 ### Get a float array
 
@@ -392,7 +396,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The float array value.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a float array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-a-float-array)
 
 ### Get an object array
 
@@ -407,7 +411,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The nested object value as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get an object array](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-an-object-array)
 
 ### Get a nested object
 
@@ -422,7 +426,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The nested object value as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Get a nested object](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#get-a-nested-object)
 
 ### Set a string array pair
 
@@ -438,7 +442,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a string array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-a-string-array-pair)
 
 ### Set an address array pair
 
@@ -454,7 +458,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set an address array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-an-address-array-pair)
 
 ### Set a boolean array pair
 
@@ -470,7 +474,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a boolean array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-a-boolean-array-pair)
 
 ### Set a uint256 array pair
 
@@ -486,7 +490,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a uint256 array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-a-uint256-array-pair)
 
 ### Set an int256 array pair
 
@@ -502,7 +506,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set an int256 array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-an-int256-array-pair)
 
 ### Set a float array pair
 
@@ -519,7 +523,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a float array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-a-float-array-pair)
 
 ### Set an object array pair
 
@@ -535,7 +539,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set an object array pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-an-object-array-pair)
 
 ### Set a nested object pair
 
@@ -551,7 +555,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [XXX]
+- **Usage example**: [Set a nested object pair](../interact-with-warden-modules/use-the-json-precompile/handle-arrays-and-nested-objects#set-a-nested-object-pair)
 
 ## Structs
 

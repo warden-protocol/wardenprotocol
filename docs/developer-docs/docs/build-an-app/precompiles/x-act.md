@@ -16,7 +16,7 @@ In this article, you'll find a full list of available methods, allowing you to q
 To learn how to use this precompile, refer to [Interact with `x/act`](/category/interact-with-xact).
 
 :::note Code
-You can find the `x/act` precomile code on GitHub: [`IAct.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol)
+You can find the `x/act` precompile code on GitHub: [`IAct.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol)
 :::
 
 ## Precompile address

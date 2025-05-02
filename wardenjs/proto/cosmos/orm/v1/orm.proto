@@ -79,7 +79,7 @@ message SecondaryIndexDescriptor {
   // Index keys are prefixed by the varint encoded table id and the varint
   // encoded index id plus any additional prefix specified by the schema.
   //
-  // In addition the the field segments, non-unique index keys are suffixed with
+  // In addition to the field segments, non-unique index keys are suffixed with
   // any additional primary key fields not present in the index fields so that the
   // primary key can be reconstructed. Unique indexes instead of being suffixed
   // store the remaining primary key fields in the value..
@@ -90,7 +90,7 @@ message SecondaryIndexDescriptor {
   // be auto-generated.
   uint32 id = 2;
 
-  // unique specifies that this an unique index.
+  // unique specifies that this a unique index.
   bool unique = 3;
 }
 

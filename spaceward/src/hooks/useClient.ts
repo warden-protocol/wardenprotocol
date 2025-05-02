@@ -98,7 +98,7 @@ export function useTx() {
 				title: TxStatus.Failed,
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				description:
-					(e as any)?.message || "An unexpected error has occured",
+					(e as any)?.message || "An unexpected error has occurred",
 			});
 			return;
 		}
@@ -127,7 +127,7 @@ export function useTx() {
 						id,
 						title: TxStatus.Failed,
 						description:
-							res?.rawLog ?? "An unexpected error has occured",
+							res?.rawLog ?? "An unexpected error has occurred",
 						duration: 10000,
 					});
 

@@ -307,7 +307,7 @@ export interface QueryParamsResponse {
   /** @deprecated */
   tallyParams?: TallyParams;
   /**
-   * params defines all the paramaters of x/gov module.
+   * params defines all the parameters of x/gov module.
    * 
    * Since: cosmos-sdk 0.47
    */
@@ -338,7 +338,7 @@ export interface QueryParamsResponseAmino {
   /** @deprecated */
   tally_params?: TallyParamsAmino;
   /**
-   * params defines all the paramaters of x/gov module.
+   * params defines all the parameters of x/gov module.
    * 
    * Since: cosmos-sdk 0.47
    */

@@ -210,7 +210,7 @@ export interface DelegatorStartingInfoRecordSDKType {
 export interface ValidatorSlashEventRecord {
   /** validator_address is the address of the validator. */
   validatorAddress: string;
-  /** height defines the block height at which the slash event occured. */
+  /** height defines the block height at which the slash event occurred. */
   height: bigint;
   /** period is the period of the slash event. */
   period: bigint;
@@ -225,7 +225,7 @@ export interface ValidatorSlashEventRecordProtoMsg {
 export interface ValidatorSlashEventRecordAmino {
   /** validator_address is the address of the validator. */
   validator_address?: string;
-  /** height defines the block height at which the slash event occured. */
+  /** height defines the block height at which the slash event occurred. */
   height?: string;
   /** period is the period of the slash event. */
   period?: string;

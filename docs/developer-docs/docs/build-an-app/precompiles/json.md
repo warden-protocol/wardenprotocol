@@ -70,10 +70,10 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```
 - **Usage example**: [Remove a pair](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#remove-a-pair)
 
-### Get multiple pairs
+### Get multiple values
 
 - **Method**: `read()`
-- **Description**: Returns multiple key-value pairs, requires passing an array of pairs. See the [`ReadKeyValue` struct](#readkeyvalue).
+- **Description**: Returns multiple values by their keys. Requires passing an array of keys: see the [`ReadKeyValue` struct](#readkeyvalue).
 - **Parameters** :
   ```sol
   @param input The JSON input as bytes.
@@ -83,12 +83,12 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The array of key-value pairs as bytes.
   ```
-- **Usage example**: [Get multiple pairs](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-multiple-pairs)
+- **Usage example**: [Get multiple pairs](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-multiple-values)
 
 ### Set multiple pairs
 
 - **Method**: `write()`
-- **Description**: Sets multiple key-value pairs, requires passing an array of pairs. See the [`SetKeyValue` struct](#setkeyvalue).
+- **Description**: Sets multiple key-value pairs. Requires passing an array of pairs: seee the [`SetKeyValue` struct](#setkeyvalue).
 - **Parameters** :
   ```sol
   @param input The JSON input as bytes.
@@ -563,7 +563,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 ### `ReadKeyValue`
 
-- **Description**: A struct representing a key-value pair. It's used for [getting multiple pairs](#get-multiple-pairs).
+- **Description**: A struct representing a key. It's used for [getting multiple values](#get-multiple-values).
 
 ```
 struct ReadKeyValue {

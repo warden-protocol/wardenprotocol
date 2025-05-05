@@ -59,9 +59,9 @@ After deploying your contract, you can interact with it by calling the `XXX()` f
 XXX
 ```
 
-## Get multiple pairs
+## Get multiple values
 
-To get multiple key-value pairs, use the following code in your contract. It calls the [`read()` function](../../precompiles/json#get-multiple-pairs) of the precompile.
+To get multiple values by their keys, use the following code in your contract. It calls the [`read()` function](../../precompiles/json#get-multiple-values) of the precompile.
 
 ```solidity
 XXX

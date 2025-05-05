@@ -305,7 +305,7 @@ interface IJson {
      * @dev Defines a method to set a float key-value in JSON.
      * @param input The JSON input as bytes.
      * @param key The key to set.
-     * @param value The uint256 value to set.
+     * @param value The int256 value to set.
      * @param decimals The number of decimal places.
      * @return The modified JSON as bytes.
      */
@@ -358,7 +358,7 @@ interface IJson {
     ) external view returns (bytes memory);
 
     /**
-     * @dev Defines a method to set a int256 array key-value pair in JSON.
+     * @dev Defines a method to set a float array key-value pair in JSON.
      * @param input The JSON input as bytes.
      * @param key The key to set.
      * @param value The int256 array value to set.
@@ -438,10 +438,10 @@ interface IJson {
     ) external view returns (bytes memory);
 
     /**
-     * @dev Defines a method to read multiple key-value pairs in JSON.
+     * @dev Defines a method to read multiple values in JSON.
      * @param input The JSON input as bytes.
-     * @param keyValues The key-value pairs to set.
-     * @return The modified JSON as bytes.
+     * @param keyValues The key-value pairs to read.
+     * @return The array of values as bytes.
      */
     function read(
         bytes memory input,

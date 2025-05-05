@@ -441,7 +441,7 @@ interface IJson {
      * @dev Defines a method to read multiple key-value pairs in JSON.
      * @param input The JSON input as bytes.
      * @param keyValues The key-value pairs to read.
-     * @return The array of key-value pairs as bytes.
+     * @return The array of values as bytes.
      */
     function read(
         bytes memory input,

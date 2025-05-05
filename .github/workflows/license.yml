@@ -1,5 +1,7 @@
 ---
 name: license
+permissions:
+  contents: read
 
 on:
   push:
@@ -27,5 +29,3 @@ jobs:
           path: .
           config: ./.licenserc.json
           strict: false
-          permissions:
-            contents: read

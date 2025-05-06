@@ -23,8 +23,8 @@ import (
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 )
@@ -38,8 +38,9 @@ type (
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
 		authority          string
+		asyncModuleAddress sdk.AccAddress
 
-		stakingKeeper      *stakingkeeper.Keeper
+		stakingKeeper *stakingkeeper.Keeper
 
 		tasks              *TaskKeeper
 		plugins            collections.Map[string, types.Plugin]
@@ -72,6 +73,7 @@ func NewKeeper(
 	authority string,
 	p *prophet.P,
 	accountKeeper types.AccountKeeper,
+	asyncModuleAddress sdk.AccAddress,
 	bankKeeper types.BankKeeper,
 	stakingKeeper *stakingkeeper.Keeper,
 	schedKeeper types.SchedKeeper,
@@ -101,10 +103,11 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:          cdc,
-		storeService: storeService,
-		authority:    authority,
-		logger:       logger,
+		cdc:                cdc,
+		storeService:       storeService,
+		authority:          authority,
+		asyncModuleAddress: asyncModuleAddress,
+		logger:             logger,
 
 		tasks:              tasks,
 		plugins:            plugins,

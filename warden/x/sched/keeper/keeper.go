@@ -164,7 +164,8 @@ func (k Keeper) ExecuteCallback(
 	}
 
 	if err := k.tryDeductTxCost(ctx, gas, cbAddress, id); err != nil {
-		return err
+		// The error will be recorded in the callback result
+		return nil
 	}
 
 	// Add gas consumed during estimation to the final gas limit for case when precompile called inside callback
@@ -197,11 +198,19 @@ func (k Keeper) tryDeductTxCost(
 	cbBalance := evmKeeper.GetBalance(sdkCtx, cbAddress)
 
 	if cbBalance.Cmp(feeAmt) == -1 {
-		return k.callbacks.setFailed(ctx, cbId, types.ErrInsufficientFunds.Error())
+		if err := k.callbacks.setFailed(ctx, cbId, types.ErrInsufficientFunds.Error()); err != nil {
+			return err
+		}
+
+		return types.ErrInsufficientFunds
 	}
 
 	if err := evmKeeper.DeductTxCostsFromUserBalance(sdkCtx, fee, cbAddress); err != nil {
-		return k.callbacks.setFailed(ctx, cbId, err.Error())
+		if err2 := k.callbacks.setFailed(ctx, cbId, err.Error()); err2 != nil {
+			return err2
+		}
+
+		return err
 	}
 
 	return nil

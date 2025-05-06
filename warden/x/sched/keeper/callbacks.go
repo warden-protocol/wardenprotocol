@@ -65,7 +65,7 @@ func (k *CallbackKeeper) setSucceed(ctx context.Context, id uint64, output []byt
 
 func (k *CallbackKeeper) setFailed(ctx context.Context, id uint64, reason string) error {
 	return k.SetResult(ctx, id, types.CallbackResult{
-		Status: types.CallbackStatus_CALLBACK_STATUS_SUCCEED,
+		Status: types.CallbackStatus_CALLBACK_STATUS_FAILED,
 		Result: &types.CallbackResult_FailReason{
 			FailReason: reason,
 		},

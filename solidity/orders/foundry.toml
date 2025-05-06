@@ -17,6 +17,7 @@
   fs_permissions = [
     { access = "read-write", path = "./broadcast/Deploy.s.sol/"}
   ]
+  allow_paths = ["../../precompiles"]
 
 [profile.ci]
   fuzz = { runs = 10_000 }

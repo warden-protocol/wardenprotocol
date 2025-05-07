@@ -6,27 +6,28 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
-	storetypes "cosmossdk.io/store/types"
-	upgradetypes "cosmossdk.io/x/upgrade/types"
+	cometabci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/mempool"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	slinkytypes "github.com/skip-mev/slinky/pkg/types"
-
 	oraclepreblock "github.com/skip-mev/slinky/abci/preblock/oracle"
 	"github.com/skip-mev/slinky/abci/proposals"
 	"github.com/skip-mev/slinky/abci/strategies/aggregator"
 	compression "github.com/skip-mev/slinky/abci/strategies/codec"
 	"github.com/skip-mev/slinky/abci/strategies/currencypair"
 	"github.com/skip-mev/slinky/abci/ve"
+	vetypes "github.com/skip-mev/slinky/abci/ve/types"
 	slinkyaggregator "github.com/skip-mev/slinky/aggregator"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 	"github.com/skip-mev/slinky/pkg/math/voteweighted"
+	slinkytypes "github.com/skip-mev/slinky/pkg/types"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	servicemetrics "github.com/skip-mev/slinky/service/metrics"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+
+	"github.com/warden-protocol/wardenprotocol/warden/app/vemanager"
 )
 
 func (app *App) initializeOracles(appOpts types.AppOptions) {
@@ -47,10 +48,12 @@ func (app *App) setupMempool() {
 
 func (app *App) setupSlinkyClient(appOpts types.AppOptions) {
 	chainID := app.ChainID()
+
 	c, err := NewSlinkyClient(app.Logger(), chainID, appOpts, app.StakingKeeper, app.OracleKeeper)
 	if err != nil {
 		panic(err)
 	}
+
 	app.slinkyClient = c
 }
 
@@ -65,6 +68,7 @@ type SlinkyClient struct {
 	metrics        servicemetrics.Metrics
 	client         oracleclient.OracleClient
 	veCodec        compression.VoteExtensionCodec
+	wrappedVECodec compression.VoteExtensionCodec
 	extCommitCodec compression.ExtendedCommitCodec
 	stakingKeeper  *stakingkeeper.Keeper
 	oracleKeeper   *oraclekeeper.Keeper
@@ -115,15 +119,20 @@ func NewSlinkyClient(
 		logger.Info("started oracle client", "address", cfg.OracleAddress)
 	}()
 
+	veCodec := compression.NewCompressionVoteExtensionCodec(
+		compression.NewDefaultVoteExtensionCodec(),
+		compression.NewZLibCompressor(),
+	)
+
 	return &SlinkyClient{
 		logger:  logger,
 		cfg:     cfg,
 		metrics: metrics,
 		client:  client,
-		veCodec: compression.NewCompressionVoteExtensionCodec(
-			compression.NewDefaultVoteExtensionCodec(),
-			compression.NewZLibCompressor(),
-		),
+		veCodec: veCodec,
+		wrappedVECodec: &WardenSlinkyCodec{
+			slinkyCodec: veCodec,
+		},
 		extCommitCodec: compression.NewCompressionExtendedCommitCodec(
 			compression.NewDefaultExtendedCommitCodec(),
 			compression.NewZStdCompressor(),
@@ -142,11 +151,8 @@ func (sc *SlinkyClient) ProposalHandler(
 		prepareProposalHandler,
 		processProposalHandler,
 		ve.NewDefaultValidateVoteExtensionsFn(sc.stakingKeeper),
-		sc.veCodec,
-		compression.NewCompressionExtendedCommitCodec(
-			compression.NewDefaultExtendedCommitCodec(),
-			compression.NewZStdCompressor(),
-		),
+		sc.wrappedVECodec,
+		sc.extCommitCodec,
 		currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
 		sc.metrics,
 	)
@@ -169,13 +175,14 @@ func (sc *SlinkyClient) PreblockHandler() *oraclepreblock.PreBlockHandler {
 		sc.oracleKeeper,
 		sc.metrics,
 		currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
-		sc.veCodec,
+		sc.wrappedVECodec,
 		sc.extCommitCodec,
 	)
 }
 
 func (sc *SlinkyClient) VoteExtensionHandler() *ve.VoteExtensionHandler {
 	cps := currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper)
+
 	return ve.NewVoteExtensionHandler(
 		sc.logger,
 		sc.client,
@@ -191,7 +198,7 @@ func (sc *SlinkyClient) VoteExtensionHandler() *ve.VoteExtensionHandler {
 				currencypair.NewDeltaCurrencyPairStrategy(sc.oracleKeeper),
 			),
 			sc.oracleKeeper,
-			sc.veCodec,
+			sc.wrappedVECodec,
 			sc.extCommitCodec,
 			sc.logger,
 		),
@@ -210,15 +217,97 @@ func (app *App) setupABCILifecycle(
 	slinkyPreBlockHandler := app.slinkyClient.PreblockHandler()
 	slinkyVEHandler := app.slinkyClient.VoteExtensionHandler()
 
-	app.SetPrepareProposal(slinkyProposalHandler.PrepareProposalHandler())
-	app.SetProcessProposal(slinkyProposalHandler.ProcessProposalHandler())
-	app.SetPreBlocker(slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager))
-	app.SetExtendVoteHandler(slinkyVEHandler.ExtendVoteHandler())
-	app.SetVerifyVoteExtensionHandler(slinkyVEHandler.VerifyVoteExtensionHandler())
+	app.SetProcessProposal(combineProcessProposal(
+		slinkyProposalHandler.ProcessProposalHandler(),
+		app.AsyncKeeper.ProcessProposalHandler(),
+	))
+
+	app.SetPreBlocker(combinePreBlocker(
+		slinkyPreBlockHandler.WrappedPreBlocker(app.ModuleManager),
+		app.AsyncKeeper.PreBlocker(),
+	))
+
+	veManager := vemanager.NewVoteExtensionManager()
+
+	// register slinky handlers
+	veManager.Register(
+		slinkyVEHandler.ExtendVoteHandler(),
+		slinkyVEHandler.VerifyVoteExtensionHandler(),
+		slinkyProposalHandler.PrepareProposalHandler(),
+	)
+
+	// register x/async handlers
+	veManager.Register(
+		app.AsyncKeeper.ExtendVoteHandler(),
+		app.AsyncKeeper.VerifyVoteExtensionHandler(),
+		app.AsyncKeeper.PrepareProposalHandler(),
+	)
+
+	app.SetPrepareProposal(veManager.PrepareProposalHandler())
+	app.SetExtendVoteHandler(veManager.ExtendVoteHandler())
+	app.SetVerifyVoteExtensionHandler(veManager.VerifyVoteExtensionHandler())
 }
 
-type AppUpgrade struct {
-	Name         string
-	Handler      upgradetypes.UpgradeHandler
-	StoreUpgrade storetypes.StoreUpgrades
+func combineProcessProposal(a, b sdk.ProcessProposalHandler) sdk.ProcessProposalHandler {
+	return func(ctx sdk.Context, req *cometabci.RequestProcessProposal) (*cometabci.ResponseProcessProposal, error) {
+		resp, err := a(ctx, req)
+		if err != nil || resp.Status == cometabci.ResponseProcessProposal_REJECT {
+			return resp, err
+		}
+
+		return b(ctx, req)
+	}
+}
+
+func combinePreBlocker(a, b sdk.PreBlocker) sdk.PreBlocker {
+	return func(ctx sdk.Context, req *cometabci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+		respA, err := a(ctx, req)
+		if err != nil {
+			return respA, err
+		}
+
+		respB, err := b(ctx, req)
+		if err != nil {
+			return respB, err
+		}
+
+		return &sdk.ResponsePreBlock{
+			ConsensusParamsChanged: respA.ConsensusParamsChanged || respB.ConsensusParamsChanged,
+		}, nil
+	}
+}
+
+// WardenSlinkyCodec wraps slinky's codec.VoteExtensionCodec to support our
+// custom vote extension format (vemanager.VE).
+type WardenSlinkyCodec struct {
+	slinkyCodec compression.VoteExtensionCodec
+}
+
+var _ compression.VoteExtensionCodec = (*WardenSlinkyCodec)(nil)
+
+// Decode a vote extension []byte into a vemanager.VE, then decode the first
+// vote extension item using the wrapped slinky codec.
+func (a *WardenSlinkyCodec) Decode(b []byte) (vetypes.OracleVoteExtension, error) {
+	var w vemanager.VoteExtensions
+
+	if err := w.Unmarshal(b); err != nil {
+		// Backwards compatibility: during the upgrade from just Slinky's VE to
+		// the new vemanager.VoteExtensions format, we saw that nodes still
+		// could receive a Slinky VE, from the blocks before the
+		// upgrade.
+		//
+		// After the upgrade to v0.6 the following line should be safe to be
+		// changed to simply return the error.
+		return a.slinkyCodec.Decode(b)
+	}
+
+	if len(w.Extensions) == 0 {
+		return a.slinkyCodec.Decode(nil)
+	}
+
+	return a.slinkyCodec.Decode(w.Extensions[0])
+}
+
+func (a *WardenSlinkyCodec) Encode(ve vetypes.OracleVoteExtension) ([]byte, error) {
+	return a.slinkyCodec.Encode(ve)
 }

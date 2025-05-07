@@ -94,9 +94,9 @@ export default (
 					},
 					{
 						indexed: false,
-						internalType: "int32",
+						internalType: "enum KeyType",
 						name: "keyType",
-						type: "int32",
+						type: "uint8",
 					},
 					{
 						indexed: false,
@@ -161,7 +161,7 @@ export default (
 					},
 					{
 						indexed: false,
-						internalType: "uint8",
+						internalType: "enum KeyType",
 						name: "keyType",
 						type: "uint8",
 					},
@@ -214,6 +214,12 @@ export default (
 						internalType: "address",
 						name: "creator",
 						type: "address",
+					},
+					{
+						indexed: false,
+						internalType: "enum BroadcastType",
+						name: "broadcastType",
+						type: "uint8",
 					},
 				],
 				name: "NewSignRequest",
@@ -424,7 +430,7 @@ export default (
 					{
 						indexed: true,
 						internalType: "uint64",
-						name: "space_id",
+						name: "spaceId",
 						type: "uint64",
 					},
 					{
@@ -609,9 +615,9 @@ export default (
 										type: "uint64",
 									},
 									{
-										internalType: "int32",
+										internalType: "enum KeyType",
 										name: "keyType",
-										type: "int32",
+										type: "uint8",
 									},
 									{
 										internalType: "bytes",
@@ -636,14 +642,14 @@ export default (
 							{
 								components: [
 									{
-										internalType: "address",
+										internalType: "string",
 										name: "addressValue",
 										type: "string",
 									},
 									{
-										internalType: "int32",
+										internalType: "enum AddressType",
 										name: "addressType",
-										type: "int32",
+										type: "uint8",
 									},
 								],
 								internalType: "struct AddressesResponse[]",
@@ -759,9 +765,9 @@ export default (
 										type: "uint64",
 									},
 									{
-										internalType: "int32",
+										internalType: "enum KeyType",
 										name: "keyType",
-										type: "int32",
+										type: "uint8",
 									},
 									{
 										internalType: "bytes",
@@ -786,14 +792,14 @@ export default (
 							{
 								components: [
 									{
-										internalType: "address",
+										internalType: "string",
 										name: "addressValue",
 										type: "string",
 									},
 									{
-										internalType: "int32",
+										internalType: "enum AddressType",
 										name: "addressType",
-										type: "int32",
+										type: "uint8",
 									},
 								],
 								internalType: "struct AddressesResponse[]",
@@ -842,14 +848,14 @@ export default (
 								type: "uint64",
 							},
 							{
-								internalType: "int32",
+								internalType: "enum KeyType",
 								name: "keyType",
-								type: "int32",
+								type: "uint8",
 							},
 							{
-								internalType: "int32",
+								internalType: "enum KeyRequestStatus",
 								name: "status",
-								type: "int32",
+								type: "uint8",
 							},
 							{
 								internalType: "string",
@@ -932,9 +938,9 @@ export default (
 						type: "uint64",
 					},
 					{
-						internalType: "int32",
+						internalType: "enum KeyRequestStatus",
 						name: "status",
-						type: "int32",
+						type: "uint8",
 					},
 					{
 						internalType: "uint64",
@@ -967,14 +973,14 @@ export default (
 								type: "uint64",
 							},
 							{
-								internalType: "int32",
+								internalType: "enum KeyType",
 								name: "keyType",
-								type: "int32",
+								type: "uint8",
 							},
 							{
-								internalType: "int32",
+								internalType: "enum KeyRequestStatus",
 								name: "status",
-								type: "int32",
+								type: "uint8",
 							},
 							{
 								internalType: "string",
@@ -1349,9 +1355,9 @@ export default (
 										type: "uint64",
 									},
 									{
-										internalType: "int32",
+										internalType: "enum KeyType",
 										name: "keyType",
-										type: "int32",
+										type: "uint8",
 									},
 									{
 										internalType: "bytes",
@@ -1376,14 +1382,14 @@ export default (
 							{
 								components: [
 									{
-										internalType: "address",
+										internalType: "string",
 										name: "addressValue",
 										type: "string",
 									},
 									{
-										internalType: "int32",
+										internalType: "enum AddressType",
 										name: "addressType",
-										type: "int32",
+										type: "uint8",
 									},
 								],
 								internalType: "struct AddressesResponse[]",
@@ -1626,6 +1632,11 @@ export default (
 						name: "expectedRejectExpression",
 						type: "string",
 					},
+					{
+						internalType: "enum BroadcastType",
+						name: "broadcastType",
+						type: "uint8",
+					},
 				],
 				name: "newSignRequest",
 				outputs: [
@@ -1826,9 +1837,9 @@ export default (
 								type: "bytes",
 							},
 							{
-								internalType: "int32",
+								internalType: "enum SignRequestStatus",
 								name: "status",
-								type: "int32",
+								type: "uint8",
 							},
 							{
 								internalType: "bytes",
@@ -1856,6 +1867,11 @@ export default (
 								internalType: "struct Types.Coin[]",
 								name: "deductedKeychainFees",
 								type: "tuple[]",
+							},
+							{
+								internalType: "enum BroadcastType",
+								name: "broadcastType",
+								type: "uint8",
 							},
 						],
 						internalType: "struct SignRequest",
@@ -1906,9 +1922,14 @@ export default (
 						type: "uint64",
 					},
 					{
-						internalType: "int32",
+						internalType: "enum SignRequestStatus",
 						name: "status",
-						type: "int32",
+						type: "uint8",
+					},
+					{
+						internalType: "enum OptionalBroadcastType",
+						name: "optionalBroadcastType",
+						type: "uint8",
 					},
 				],
 				name: "signRequests",
@@ -1936,9 +1957,9 @@ export default (
 								type: "bytes",
 							},
 							{
-								internalType: "int32",
+								internalType: "enum SignRequestStatus",
 								name: "status",
-								type: "int32",
+								type: "uint8",
 							},
 							{
 								internalType: "bytes",
@@ -1966,6 +1987,11 @@ export default (
 								internalType: "struct Types.Coin[]",
 								name: "deductedKeychainFees",
 								type: "tuple[]",
+							},
+							{
+								internalType: "enum BroadcastType",
+								name: "broadcastType",
+								type: "uint8",
 							},
 						],
 						internalType: "struct SignRequest[]",

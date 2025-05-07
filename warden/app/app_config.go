@@ -35,6 +35,7 @@ import (
 	"cosmossdk.io/x/tx/signing"
 	_ "cosmossdk.io/x/upgrade" // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -72,29 +73,26 @@ import (
 	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
-	"google.golang.org/protobuf/types/known/durationpb"
-
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-
-	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
-	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
-	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
-	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
-	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
-	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
-	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-
-	// this line is used by starport scaffolding # stargate/app/moduleImport
-
+	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
+	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
 	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
 	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
+	"google.golang.org/protobuf/types/known/durationpb"
 
-	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
-	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
+	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
+	asyncmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/async/module"
+	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
+	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/async/module" // import for side-effects
+	asyncmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
+	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
+	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func init() {
@@ -162,6 +160,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
+		asyncmoduletypes.ModuleName,
 		gmpmoduletypes.ModuleName,
 		ibchookstypes.ModuleName,
 		// wasm module
@@ -174,11 +173,7 @@ var (
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
-	// During begin block slashing happens after distr.BeginBlocker so that
-	// there is nothing left over in the validator fee pool, so as to keep the
-	// CanWithdrawInvariant invariant.
-	// NOTE: staking module is required if HistoricalEntries param > 0
-	// NOTE: capability module's beginblocker must come before any modules using capabilities (e.g. IBC)
+	// NOTE: capability module's beginblocker must come before any modules using capabilities (e.g. IBC).
 	beginBlockers = []string{
 		// cosmos sdk modules
 		minttypes.ModuleName,
@@ -200,6 +195,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
+		asyncmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
@@ -230,6 +226,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
+		asyncmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
@@ -245,7 +242,7 @@ var (
 		// this line is used by starport scaffolding # stargate/app/preBlockers
 	}
 
-	// module account permissions
+	// module account permissions.
 	moduleAccPerms = []*authmodulev1.ModuleAccountPermission{
 		{Account: authtypes.FeeCollectorName},
 		{Account: distrtypes.ModuleName},
@@ -257,13 +254,14 @@ var (
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
 		{Account: actmoduletypes.ModuleName},
+		{Account: asyncmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
 		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
-	// blocked account addresses
+	// blocked account addresses.
 	blockAccAddrs = []string{
 		authtypes.FeeCollectorName,
 		distrtypes.ModuleName,
@@ -408,6 +406,10 @@ func moduleConfig() depinject.Config {
 					Config: appconfig.WrapAny(&actmodulev1.Module{}),
 				},
 				{
+					Name:   asyncmoduletypes.ModuleName,
+					Config: appconfig.WrapAny(&asyncmodulev1.Module{}),
+				},
+				{
 					Name: marketmaptypes.ModuleName,
 					Config: appconfig.WrapAny(&marketmapmodulev1.Module{
 						Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
@@ -416,5 +418,6 @@ func moduleConfig() depinject.Config {
 				// this line is used by starport scaffolding # stargate/app/moduleConfig
 			},
 		})
+
 	return cfg
 }

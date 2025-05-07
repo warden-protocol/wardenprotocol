@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
 	"github.com/warden-protocol/wardenprotocol/shield/token"
 )
 

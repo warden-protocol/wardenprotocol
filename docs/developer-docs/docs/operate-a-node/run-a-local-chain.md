@@ -1,12 +1,12 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Run a local chain
 
 ## Overview
 
-This guide explains how to run a local chain for development and testing purposes. To interact with the chain, you'll use [node commands](/operate-a-node/node-commands).
+This guide explains how to run a local chain for development and testing purposes. To interact with the chain, you'll use [node commands](node-commands).
 
 There are two ways to run a node:
 
@@ -20,11 +20,11 @@ We recommend this option if you wish to run a node with custom settings and lear
 
 Before you start, complete the following prerequisites:
 
-- [Install Go](https://golang.org/doc/install) 1.22.3 or later.
-- [Install just](https://github.com/casey/just) 1.34.0 or later.
+- [Install Go](https://go.dev/doc/install) 1.24 or later.
+- [Install Just](https://github.com/casey/just) 1.34.0 or later.
 
 :::tip
-You can install `just` it using `brew`:
+You can install `just` by using `brew`:
    
 ```bash
 brew install just
@@ -55,7 +55,7 @@ just localnet
 You'll see blocks being produced and height incrementing.
 
 :::note
-You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a Keychain, a Space, and other settings. See `accounts`, `keychains`, `spaces`, etc.
+You can check the settings of your node in the genesis file: `$HOME/.warden/config/genesis.json`. There you'll find two validator addresses, a [Keychain](/learn/glossary#keychain), a [Space](/learn/glossary#space), and other settings. See `accounts`, `keychains`, `spaces`, etc.
 :::
 
 ## Option 2. Configure manually
@@ -175,7 +175,7 @@ You'll see blocks being produced and height incrementing.
 
 ### 5. Add more settings
 
-In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features – for example, a Space and a Keychain.
+In the previous steps, you configured your node with the minimum settings required for running it. However, for testing purposes, you may need to enable more features—for example, a [Space](/learn/glossary#space) and a [Keychain](/learn/glossary#keychain).
 
 #### Create a Space
 
@@ -196,16 +196,16 @@ In the previous steps, you configured your node with the minimum settings requir
    ```
    
    The output should look like this:
-   
+
    ```bash
    pagination:
      total: "1"
    spaces:
    - creator: warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
      id: "1"
-   owners:
-   - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
-   ```
+     owners:
+     - warden1h7akmejqcrafp3mfpjqamghh89kzmkgjzsy3mc
+   ```   
 
 #### Create a Keychain
 
@@ -274,4 +274,4 @@ If you need to stop the node, use **Ctrl + C**. To start it again from block 0, 
   - [Deploy a WASM contract](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-wasm-contract)
 - You can also create and test a Keychain locally. Start with this guide: [Create a Keychain](/build-a-keychain/operate-a-keychain/create-a-keychain).
 - To join our testnet, see [Join Chiado](chiado-testnet/join-chiado).
-- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](node-commands).

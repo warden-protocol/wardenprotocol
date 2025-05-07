@@ -18,9 +18,7 @@ Each approver is identified by Warden address – an address that is assigned to
 
 To create a Rule, do this:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Rules**.
 3. Click **Create a new Rule**.
 4. Select the preferred Rule type:
@@ -37,9 +35,7 @@ To create a Rule, do this:
 
 You can edit your Rule at any moment:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. Navigate to **Rules**.
 3. Click the pencil symbol on your Rule, then click **Edit**.
 4. You can make the following adjustments:
@@ -58,9 +54,7 @@ You can edit your Rule at any moment:
 
 To configure an advanced Rule, take these steps:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. Navigate to **Rules**.
 3. Click the pencil symbol on your Rule. Click **Edit in Advanced mode**.
 4. Enter a custom expression for your Rule.

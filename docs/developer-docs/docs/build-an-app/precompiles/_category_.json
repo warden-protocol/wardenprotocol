@@ -1,0 +1,11 @@
+{
+  "position": 7,
+  "label": "Precompiles",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Precompiles"
+  },
+  "customProps": {}
+}

@@ -4,8 +4,9 @@ import (
 	"context"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	"google.golang.org/grpc"
+
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 type PageRequest = query.PageRequest
@@ -15,7 +16,7 @@ type WardenQueryClient struct {
 	client types.QueryClient
 }
 
-// NewWardenQueryClient returns a WardenQueryClient
+// NewWardenQueryClient returns a WardenQueryClient.
 func NewWardenQueryClient(c *grpc.ClientConn) *WardenQueryClient {
 	return &WardenQueryClient{
 		client: types.NewQueryClient(c),

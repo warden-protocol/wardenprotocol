@@ -41,10 +41,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased changes
 
 ### Features (non-breaking)
+
+### Consensus Breaking Changes
+
+### Bug Fixes
+
+## [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) - 2025-04-16
+
+### Features (non-breaking)
+
+* (x/async) Rename futures into tasks, and future handlers into plugins
+* (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
+* (x/async) Implement a reward system where task executors and plugin creators can earn fees for their services
+
+### Consensus Breaking Changes
+
+* (precompiles) The JSON precompile allowing to operate on JSON
+
+### Bug Fixes
+
+* (go-client) Fix additional goroutine being created for every signed transaction
+
+## [v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) - 2025-03-05
+
+### Bug Fixes
+* (x/act) Use constant formatting strings when wrapping errors
+* (wardend) fallback to handle Slinky vote extensions during v0.6.x upgrade
+
+## [v0.6.1](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.1) - 2025-03-03
+
+### Features (non-breaking)
 * (precompiles) Add an ability for contracts to approve actions
 * (go-client) Return transaction hash from SendWaitTx
 * (keychain-sdk) Log transaction hashes of broadcasted transactions
 * (relayer) #992 Added a service to relay transactions into Ethereum
+* (prophet) Add self consensus address to prophet
 
 ### Consensus Breaking Changes
 * (precompiles) Add slinky precompiled contract
@@ -52,8 +83,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (precompiles) Add broadcastType to SignRequest
 * (precompiles) #1077 Change status fields from int32 to enums/uint8 in precompile ABIs for improved type safety and consistency
 * (wardend) Bump IAVL to v1.2.2. Fixes some potential apphash mismatches that happen in some rare cases.
+* (x/async) Scaffold new module with create/read operations
+* (x/warden) Sign requests query return all request (not only with broadcastType=BroadcastType.Disabled)
+* (prophet) First version. Includes the task runner for Futures and Votes, and the interface for handlers.
+* (x/async) Add handlers storages and corresponding methods.
+* (x/async) Add contract-callback when future become ready.
+* (x/async) Extend async VE with handlers supported by validators.
 
 ### Bug Fixes
+* (x/async) [#1219](https://github.com/warden-protocol/wardenprotocol/issues/1219) Future results are made permanent. Attempting to set a result more than once causes an error.
 
 ## [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) - 2024-11-07
 

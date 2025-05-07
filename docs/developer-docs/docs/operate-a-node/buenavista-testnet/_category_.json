@@ -1,11 +1,11 @@
 {
-  "position": 4,
-  "label": "Buenavista testnet",
+  "position": 5,
+  "label": "Buenavista testnet (deprecated)",
   "collapsible": true,
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Networks"
+    "title": "Buenavista testnet (deprecated)"
   },
   "customProps": {}
 }

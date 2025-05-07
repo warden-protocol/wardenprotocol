@@ -1,10 +1,13 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
+	"time"
 
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
@@ -13,6 +16,7 @@ import (
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -61,30 +65,32 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-	"github.com/spf13/cast"
-	"github.com/warden-protocol/wardenprotocol/shield/ast"
-	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
-	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
-	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
-	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-
-	// this line is used by starport scaffolding # stargate/app/moduleImport
-
-	"github.com/warden-protocol/wardenprotocol/warden/docs"
-
 	evmosante "github.com/evmos/evmos/v20/app/ante"
 	ethante "github.com/evmos/evmos/v20/app/ante/evm"
+	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	srvflags "github.com/evmos/evmos/v20/server/flags"
 	evmostypes "github.com/evmos/evmos/v20/types"
 	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
-
-	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
+	"github.com/spf13/cast"
+
+	jsonprecompile "github.com/warden-protocol/wardenprotocol/precompiles/json"
+	"github.com/warden-protocol/wardenprotocol/prophet"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/http"
+	"github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
+	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
+	asyncmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
+	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
+	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
+	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
+	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 const (
@@ -92,10 +98,8 @@ const (
 	Name                 = "warden"
 )
 
-var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
-)
+// DefaultNodeHome default home directories for the application daemon.
+var DefaultNodeHome string
 
 var (
 	_ runtime.AppI            = (*App)(nil)
@@ -111,6 +115,8 @@ type App struct {
 	appCodec          codec.Codec
 	txConfig          client.TxConfig
 	interfaceRegistry codectypes.InterfaceRegistry
+
+	prophet *prophet.P
 
 	// keepers
 	AccountKeeper         authkeeper.AccountKeeper
@@ -153,6 +159,7 @@ type App struct {
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	ActKeeper    actmodulekeeper.Keeper
+	AsyncKeeper  asyncmodulekeeper.Keeper
 
 	// Slinky
 	OracleKeeper    *oraclekeeper.Keeper
@@ -204,6 +211,40 @@ func ProvideCustomRegisterInterfaces() runtime.CustomRegisterInterfaces {
 	return evmosencodingcodec.RegisterInterfaces
 }
 
+func registerProphetHanlders(appOpts servertypes.AppOptions) {
+	prophet.Register("echo", echo.Plugin{})
+
+	if cast.ToBool(appOpts.Get("pricepred.enabled")) {
+		u := cast.ToString(appOpts.Get("pricepred.url"))
+		url, err := url.Parse(u)
+		if err != nil {
+			panic(fmt.Errorf("invalid pricepred url: %s", u))
+		}
+
+		prophet.Register("pricepred", pricepred.NewPricePredictorSolidity(url))
+	}
+
+	if cast.ToBool(appOpts.Get("http.enabled")) {
+		urls := cast.ToStringSlice(appOpts.Get("http.urls"))
+		timeout := cast.ToInt(appOpts.Get("http.timeout"))
+
+		parsedURLs := make([]*url.URL, len(urls))
+
+		for i, u := range urls {
+			parsedURL, err := url.Parse(u)
+			if err != nil {
+				panic(fmt.Errorf("invalid http url: %s", u))
+			}
+
+			parsedURLs[i] = parsedURL
+		}
+
+		parsedTimeout := time.Duration(timeout) * time.Second
+
+		prophet.Register("http", http.NewPlugin(parsedURLs, parsedTimeout))
+	}
+}
+
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
@@ -228,6 +269,26 @@ func AppConfig() depinject.Config {
 	)
 }
 
+// NewTxConfig initializes a new TxConfig, equivalent to the one used by [App].
+func NewTxConfig() client.TxConfig {
+	var txConfig client.TxConfig
+
+	appConfig := depinject.Configs(
+		AppConfig(),
+		depinject.Supply(
+			log.NewNopLogger(),
+		),
+	)
+
+	if err := depinject.Inject(appConfig,
+		&txConfig,
+	); err != nil {
+		panic(err)
+	}
+
+	return txConfig
+}
+
 // New returns a reference to an initialized App.
 func New(
 	logger log.Logger,
@@ -238,6 +299,13 @@ func New(
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
+	registerProphetHanlders(appOpts)
+
+	prophetP, err := prophet.New()
+	if err != nil {
+		panic(fmt.Errorf("failed to create prophet: %w", err))
+	}
+
 	var (
 		app        = &App{}
 		appBuilder *runtime.AppBuilder
@@ -260,6 +328,10 @@ func New(
 				app.GetFeemarketKeeper,
 				// Supply the logger
 				logger,
+
+				// Supply the prophet
+				prophetP,
+
 				func() ast.Expander {
 					// I don't know if a lazy function is the best way to do this.
 					// x/act wants to access this ExpanderManager, but the
@@ -321,6 +393,7 @@ func New(
 		&app.legacyAmino,
 		&app.txConfig,
 		&app.interfaceRegistry,
+		&app.prophet,
 		&app.AccountKeeper,
 		&app.BankKeeper,
 		&app.StakingKeeper,
@@ -339,6 +412,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.ActKeeper,
+		&app.AsyncKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
@@ -384,6 +458,10 @@ func New(
 
 	// oracle initialization
 	app.initializeOracles(appOpts)
+
+	if err := app.prophet.Run(appOpts.Get("rpc.laddr").(string)); err != nil {
+		panic(fmt.Errorf("failed to run prophet: %w", err))
+	}
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)
@@ -433,19 +511,57 @@ func New(
 		if err := app.UpgradeKeeper.SetModuleVersionMap(ctx, app.ModuleManager.GetVersionMap()); err != nil {
 			return nil, err
 		}
-		return app.App.InitChainer(ctx, req)
+
+		return app.InitChainer(ctx, req)
 	})
 
 	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
 
 	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
 
+	v063UpgradeName := "v062-to-v063"
+	app.UpgradeKeeper.SetUpgradeHandler(v063UpgradeName, func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		toVM, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+		if err != nil {
+			return toVM, err
+		}
+
+		// add new x/evm precompiles
+		sdkCtx := sdk.UnwrapSDKContext(ctx)
+		evmParams := app.EvmKeeper.GetParams(sdkCtx)
+		evmParams.ActiveStaticPrecompiles = append(evmParams.ActiveStaticPrecompiles,
+			jsonprecompile.PrecompileAddress,
+		)
+
+		if err := evmParams.Validate(); err != nil {
+			return toVM, err
+		}
+
+		if err := app.EvmKeeper.SetParams(sdkCtx, evmParams); err != nil {
+			return toVM, err
+		}
+
+		// add new 1st party plugins
+		newPlugins := []asynctypes.Plugin{
+			{Id: "echo"},
+			{Id: "pricepred"},
+			{Id: "http"},
+		}
+		for _, p := range newPlugins {
+			if err := app.AsyncKeeper.AddPlugin(ctx, p); err != nil {
+				return toVM, err
+			}
+		}
+
+		return toVM, nil
+	})
+
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err
 	}
 
 	if loadLatest {
-		ctx := app.BaseApp.NewUncachedContext(true, tmproto.Header{})
+		ctx := app.NewUncachedContext(true, tmproto.Header{})
 
 		// Initialize pinned codes in wasmvm as they are not persisted there
 		if err := app.WasmKeeper.InitializePinnedCodes(ctx); err != nil {
@@ -478,6 +594,7 @@ func (app *App) GetKey(storeKey string) *storetypes.KVStoreKey {
 	if !ok {
 		return nil
 	}
+
 	return kvStoreKey
 }
 
@@ -503,6 +620,7 @@ func (app *App) GetTransientKey(storeKey string) *storetypes.TransientStoreKey {
 // kvStoreKeys returns all the kv store keys registered inside App.
 func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
 	keys := make(map[string]*storetypes.KVStoreKey)
+
 	for _, k := range app.GetStoreKeys() {
 		if kv, ok := k.(*storetypes.KVStoreKey); ok {
 			keys[kv.Name()] = kv
@@ -532,9 +650,6 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 	if err := server.RegisterSwaggerAPI(apiSvr.ClientCtx, apiSvr.Router, apiConfig.Swagger); err != nil {
 		panic(err)
 	}
-
-	// register app's OpenAPI routes.
-	docs.RegisterOpenAPIService(Name, apiSvr.Router)
 }
 
 // GetIBCKeeper returns the IBC keeper.
@@ -574,12 +689,14 @@ func GetMaccPerms() map[string][]string {
 	for _, perms := range moduleAccPerms {
 		dup[perms.Account] = perms.Permissions
 	}
+
 	return dup
 }
 
 // BlockedAddresses returns all the app's blocked account addresses.
 func BlockedAddresses() map[string]bool {
 	result := make(map[string]bool)
+
 	if len(blockAccAddrs) > 0 {
 		for _, addr := range blockAccAddrs {
 			result[addr] = true
@@ -589,6 +706,7 @@ func BlockedAddresses() map[string]bool {
 			result[addr] = true
 		}
 	}
+
 	return result
 }
 
@@ -615,7 +733,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 	}
 
 	if err := ValidateAnteHandlerOptions(options); err != nil {
-		panic(fmt.Errorf("failed to create AnteHandler: %s", err))
+		panic(fmt.Errorf("failed to create AnteHandler: %w", err))
 	}
 
 	anteHandler := NewAnteHandler(options)

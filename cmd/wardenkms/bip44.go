@@ -41,7 +41,6 @@ func (k *Bip44Keychain) PublicKey(keyID [4]byte) (pubKey []byte, err error) {
 	}
 
 	pubKey, err = generateECDSAPubKey(privKeySeed)
-
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +107,7 @@ func generateECDSAPubKey(seed []byte) (pubKeyBytes []byte, err error) {
 	}
 	prv, err := crypto.ToECDSA(prvD)
 	if err != nil {
-		return nil, fmt.Errorf("error genertaing ecdsa private/public key pair: Error %v. Priv key bitlength: %v", err, 8*len(seed))
+		return nil, fmt.Errorf("error generating ecdsa private/public key pair: Error %v. Priv key bitlength: %v", err, 8*len(seed))
 	}
 	pubKeyBytes = crypto.CompressPubkey(&prv.PublicKey)
 

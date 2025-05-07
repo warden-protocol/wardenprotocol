@@ -86,6 +86,12 @@ const config: Config = {
                 },
                 {
                     type: "docSidebar",
+                    sidebarId: "buildAgent",
+                    label: "Build an Agent",
+                    position: "left",
+                },
+                {
+                    type: "docSidebar",
                     sidebarId: "buildKeychain",
                     label: "Build a Keychain",
                     position: "left",

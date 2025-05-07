@@ -46,8 +46,8 @@ jobs:
         with:
           images: ${{ vars.REGISTRY }}/${{ inputs.service_name }}
           tags: |
-            type=match,pattern=${{ inputs.service_name }}/v(.+),group=1,prefix=v
-            type=semver,pattern={{raw}}
+            type=match,pattern=${{ inputs.service_name }}/v(.+),group=1,prefix=v,latest=true
+            type=semver,pattern={{raw}},latest=true
             type=sha,format=short,prefix=
       - name: Build and push Docker image
         uses: docker/build-push-action@v5

@@ -1,0 +1,96 @@
+// Copyright (c) 2025 Warden Labs. All Rights Reserved.
+//
+// ** RESTRICTED LICENSE **
+//
+// This file is part of the 'async' module. It is NOT licensed
+// under the Apache 2.0 license governing the rest of the project.
+// Refer to the LICENSE file in this module's directory for full terms.
+// Use, modification, and distribution are strictly limited.
+// Do NOT use this file unless you agree to the terms stated in that license.
+//
+// SPDX-FileCopyrightText: 2025 Warden Labs
+// SPDX-License-Identifier: LicenseRef-Proprietary-RestrictedModule
+
+syntax = "proto3";
+
+package warden.async.v1beta1;
+
+import "amino/amino.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
+
+// Task defines a task that will be executed asynchronously.
+// Validators will be able to submit the proposed result of the Task
+// execution.
+// Other validators will then be able to vote on the validity of the proposed
+// result.
+message Task {
+  // Unique ID of the Task.
+  uint64 id = 1;
+  // Creator of the Task.
+  string creator = 2;
+  // Unique name of the plugin to be used to execute the Task.
+  string plugin = 3;
+  // Input data to be used by the plugin to execute the Task.
+  // The actual format is determined by the plugin being used.
+  bytes input = 4;
+  // Callback to be called when the Task is completed.
+  string callback = 5;
+  // Deducted fee are the tokens collected this module when this Task was created.
+  // When this Task is executed, the fees are distributed among the executor (the validator who included the result), and the plugin creator.
+  DeductedFee fee = 6 [(gogoproto.nullable) = false];
+}
+
+// TaskResult is the result of the execution of a Task.
+// It is submitted by validators as vote extensions.
+// Only one TaskResult per Task is allowed to be submitted, subsequent
+// attempts to submit a TaskResult will be rejected.
+message TaskResult {
+  // ID of the Task this result is for.
+  uint64 id = 1;
+  // Output of the Task.
+  // The actual format is determined by the plugin being used.
+  bytes output = 2;
+  // Address of the validator that submitted the result.
+  bytes submitter = 3;
+}
+
+// TaskVote is the vote of a validator on the validity of a Task result.
+message TaskVote {
+  // ID of the Task this vote is for.
+  uint64 task_id = 1;
+  // Address of the validator who voted.
+  bytes voter = 2;
+  // Vote type.
+  TaskVoteType vote = 3;
+}
+
+enum TaskVoteType {
+  // Unspecified vote type.
+  VOTE_TYPE_UNSPECIFIED = 0;
+  // Vote to approve the result of the Task.
+  VOTE_TYPE_VERIFIED = 1;
+  // Vote to reject the result of the Task.
+  VOTE_TYPE_REJECTED = 2;
+}
+
+// Deducted fee for a task.
+message DeductedFee {
+  // Reward for the executor of a task
+  repeated cosmos.base.v1beta1.Coin executor_reward = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
+
+  // Reward for the creator of the plugin
+  repeated cosmos.base.v1beta1.Coin plugin_creator_reward = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
+}

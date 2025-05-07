@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"cosmossdk.io/log"
-
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -17,7 +16,6 @@ import (
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -50,7 +48,8 @@ func LoadABI() (abi.ABI, error) {
 func NewPrecompile(
 	wardenkeeper wardenmodulekeeper.Keeper,
 	actkeeper actmodulekeeper.Keeper,
-	e *precommon.EthEventsRegistry) (*Precompile, error) {
+	e *precommon.EthEventsRegistry,
+) (*Precompile, error) {
 	abi, err := LoadABI()
 	if err != nil {
 		return nil, err
@@ -116,13 +115,13 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz 
 	case AddKeychainWriterMethod:
 		bz, err = p.AddKeychainWriterMethod(ctx, evm.Origin, stateDB, method, args)
 	case FulfilKeyRequestMethod:
-		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, stateDB, method, args)
+		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED, stateDB, method, args)
 	case RejectKeyRequestMethod:
-		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, v1beta3.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED, stateDB, method, args)
+		bz, err = p.FulfilKeyRequestMethod(ctx, evm.Origin, types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED, stateDB, method, args)
 	case FulfilSignRequestMethod:
-		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, stateDB, method, args)
+		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, stateDB, method, args)
 	case RejectSignRequestMethod:
-		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, v1beta3.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED, stateDB, method, args)
+		bz, err = p.FulfilSignRequestMethod(ctx, evm.Origin, types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED, stateDB, method, args)
 	case NewKeychainMethod:
 		bz, err = p.NewKeychainMethod(ctx, evm.Origin, stateDB, method, args)
 	case NewSpaceMethod:

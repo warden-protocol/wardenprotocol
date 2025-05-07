@@ -12,7 +12,7 @@ export enum ActionStatus {
   ACTION_STATUS_UNSPECIFIED = 0,
   /** ACTION_STATUS_PENDING - Action is pending approval. This is the initial status. */
   ACTION_STATUS_PENDING = 1,
-  /** ACTION_STATUS_COMPLETED - Template has been satified, action has been executed. */
+  /** ACTION_STATUS_COMPLETED - Template has been satisfied, action has been executed. */
   ACTION_STATUS_COMPLETED = 2,
   /** ACTION_STATUS_REVOKED - Action has been revoked by its creator. */
   ACTION_STATUS_REVOKED = 3,

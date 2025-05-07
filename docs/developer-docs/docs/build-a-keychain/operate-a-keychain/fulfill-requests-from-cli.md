@@ -11,43 +11,29 @@ import TabItem from '@theme/TabItem';
 
 This is a step-by-step guide explaining how to fulfill key and signature requests with your Keychain from the command line.
 
-You'll interact with the node through [node commands](/operate-a-node/node-commands). For generating keys and signing messages, you'll use **CLIChain** – a command-line tool for managing cryptographic keys and operations.
+You'll interact with the node through [node commands](/operate-a-node/node-commands). For generating keys and signing messages, you'll use **CLIChain**—a command-line tool for managing cryptographic keys and operations.
 
 You can either run a [local chain](/operate-a-node/run-a-local-chain) to test your configuration or interact with [Chiado testnet](/operate-a-node/chiado-testnet/join-chiado). In the provided code snippets, you'll find tabs with different versions of node commands.
 
 Learn more:
 
 - For a list of CLIChain commands, see [Implementation: CLIChain](../implementations/clichain).
-- To learn more about key and signature requests, see [Request flow](/learn/request-flow).
+- To learn more about requests, see [Key request flow](/learn/warden-protocol-modules/x-warden#key-request-flow) and [Signature request flow](/learn/warden-protocol-modules/x-warden#signature-request-flow).
 
 ## Prerequisites
 
 If you wish to operate a Keychain locally, complete the following prerequisites:
 
-- [Run a local chain](/operate-a-node/run-a-local-chain). If you used [manual configuration](/operate-a-node/run-a-local-chain#option-2-configure-manually), make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings).
-
-- [Create a Keychain](create-a-keychain). You can skip it if you used our [`just` script](/operate-a-node/run-a-local-chain#option-1-run-a-just-script) to run the node with default settings.
+- [Set up an account on a local chain](/build-an-app/set-up-a-warden-account#set-up-an-account-on-a-local-chain). Note down your **key name**.
+- Make sure there is a Space associated with your key, a Keychain and a Keychain Writer:
+  - If you used manual chain configuration, make sure you [created a Space](/operate-a-node/run-a-local-chain#5-add-more-settings) and note down the **Space ID**. Then [create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
+  - If you ran the node with default settings, you can use the default Keychain, Writer, and Space, as shown in this guide. See the genesis file: `$HOME/.warden/config/genesis.json`.
 
 To operate a Keychain on Chiado, complete these prerequisites:
 
-- [Create a Keychain](create-a-keychain). These steps involve creating an account (key) on Chiado.
-
-- Use your key to create a Space:
-
-  ```
-  wardend tx warden new-space \
-    --from my-key-name \
-    --fees 400000000award \
-    --chain-id chiado_1001-1 \
-    --node https://rpc.chiado.wardenprotocol.org:443
-  ```
-
-- Query Spaces. The list will contain Space IDs and account addresses. You should note down the Space ID associated with your address.
-
-  ```
-  wardend query warden spaces \
-  --node https://rpc.chiado.wardenprotocol.org:443
-  ```
+- [Set up an account on Chiado](/build-an-app/set-up-a-warden-account#set-up-an-account-on-chiado). Note down your **key name**.
+- [Create a Space](/build-an-app/set-up-a-warden-account#create-a-space) with your key. [List Spaces](/build-an-app/set-up-a-warden-account#list-spaces) and note down the **Space ID** associated with your address.
+- [Create a Keychain](create-a-keychain). Note down your **Keychain ID** and **Keychain Writer name**.
 
 ## 1. Install CLIChain
 
@@ -57,9 +43,9 @@ To install CLIChain, navigate to the `wardenprotocol` directory and run this:
 go install ./cmd/clichain
 ```
 
-## 2. Export variables
+## 2. Set environment variables
 
-The next steps require that you export your node and Keychain settings as environment variables. If you used our `just` script to run the node, you can export the predefined settings. Otherwise, use custom values.
+The next steps require that you set your node and Keychain settings as environment variables. If you ran the node with our `just` script, you can use the predefined settings. Otherwise, use custom values.
 
    <Tabs>
    <TabItem value="local-default" label="Local node: default settings">
@@ -98,9 +84,9 @@ The next steps require that you export your node and Keychain settings as enviro
   Returned by `wardend keys list`.
 - `SPACE_ID`: Your Space ID.  
   Returned by `wardend query warden spaces`.
-- `KEYCHAIN_ID`: Your Keychain ID obtained when [registering a Keychain](create-a-keychain#2-register-a-keychain).  
+- `KEYCHAIN_ID`: Your Keychain ID obtained when [registering a Keychain](create-a-keychain#1-register-a-keychain).  
   Returned by `wardend query warden keychains` in the `id` field.
-- `KEYCHAIN_WRITER_NAME`: Your Keychain Writer name specified when [adding a Keychain Writer](create-a-keychain#3-add-a-keychain-writer).  
+- `KEYCHAIN_WRITER_NAME`: Your Keychain Writer name specified when [adding a Keychain Writer](create-a-keychain#2-add-a-keychain-writer).  
   Returned by `wardend keys list`.
 - `RPC_URL`: The RPC URL for interacting with Chiado.
 
@@ -170,19 +156,19 @@ When a user requests a new key, the Keychain generates a new private key, stores
      total: "1"
    ```
 
-3. Export the request ID using the command below. Replace `1` with the actual ID you obtained.
+3. Set the request ID as an environment variable, as shown in the command below. Replace `1` with the actual ID you obtained.
    
    ```bash
    export KEY_REQUEST_ID=1
    ```
 
-4. Use the CLIChain [`generate`](../implementations/clichain#generate-a-private-key) command to generate the key:
+4. Use the CLIChain [`generate` command](../implementations/clichain#generate-a-private-key) to generate the key:
    
    ```bash
    clichain generate -o private_$KEY_REQUEST_ID.key
    ```
 
-5. Export the public key, derived with the CLIChain [`public-key`](../implementations/clichain#derive-a-public-key) command:
+5. Set the public key, derived with the CLIChain [`public-key` command](../implementations/clichain#derive-a-public-key), as an environmental variable:
    
    ```
    export PUBLIC_KEY=$(go run ./cmd/clichain public-key -k private_$KEY_REQUEST_ID.key -o base64)
@@ -271,7 +257,7 @@ When a user requests a signature, the Keychain signs a message with the private 
    </Tabs>
 
    :::tip
-   In the `--input` flag, you should provide a Base64-encoded hash. For testing purposes, you can use the hash from the example above. Alternatively, you can create one yourself – run the following command, replacing `00112233` with arbitrary raw data:
+   In the `--input` flag, you should provide a Base64-encoded hash. For testing purposes, you can use the hash from the example above. Alternatively, you can create one yourself—run the following command, replacing `00112233` with arbitrary raw data:
 
    ```bash
    RAW_DATA="00112233"
@@ -313,14 +299,14 @@ When a user requests a signature, the Keychain signs a message with the private 
      status: SIGN_REQUEST_STATUS_PENDING
    ```
 
-3. Export the request details using the command below. Specify the actual request ID and data you obtained.
+3. Set the request details as environment variables, as shown below. Specify the actual request ID and data you obtained.
 
    ```bash
    export DATA=MrT1dvxgez7QoVFudyVn5S8xCTJjxUi5xxZyWHcji5Q=
    export SIGN_REQUEST_ID=1
    ``` 
 
-4. Use the CLIChain [`sign`](../implementations/clichain#sign-a-message) command to sign the message with the key generated in the previous step. Export the signature.
+4. Use the CLIChain [`sign` command](../implementations/clichain#sign-a-message) to sign the message with the key generated in the previous step. Set the signature as an environment variable.
    
    ```bash
    export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k private_$KEY_REQUEST_ID.key -o base64)

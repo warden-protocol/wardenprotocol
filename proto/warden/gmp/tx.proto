@@ -1,11 +1,11 @@
 syntax = "proto3";
 package warden.gmp;
 
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "warden/gmp/gmp.proto";
-import "cosmos_proto/cosmos.proto";
-import "cosmos/msg/v1/msg.proto";
-import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types";
 

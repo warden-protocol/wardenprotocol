@@ -40,7 +40,7 @@ const (
 
 var FlagEnableStreamingValue bool
 
-// Get flags every time the simulator is run
+// Get flags every time the simulator is run.
 func init() {
 	simcli.GetSimulatorFlags()
 	flag.BoolVar(&FlagEnableStreamingValue, "EnableStreaming", false, "Enable streaming service")
@@ -58,11 +58,7 @@ func interBlockCacheOpt() func(*baseapp.BaseApp) {
 	return baseapp.SetInterBlockCache(store.NewCommitKVStoreCacheManager())
 }
 
-// BenchmarkSimulation run the chain simulation
-// Running using starport command:
-// `ignite chain simulate -v --numBlocks 200 --blockSize 50`
-// Running as go benchmark test:
-// `go test -benchmem -run=^$ -bench ^BenchmarkSimulation ./app -NumBlocks=200 -BlockSize 50 -Commit=true -Verbose=true -Enabled=true`
+// `go test -benchmem -run=^$ -bench ^BenchmarkSimulation ./app -NumBlocks=200 -BlockSize 50 -Commit=true -Verbose=true -Enabled=true`.
 func BenchmarkSimulation(b *testing.B) {
 	simcli.FlagSeedValue = time.Now().Unix()
 	simcli.FlagVerboseValue = true
@@ -76,6 +72,7 @@ func BenchmarkSimulation(b *testing.B) {
 	if skip {
 		b.Skip("skipping application simulation")
 	}
+
 	require.NoError(b, err, "simulation setup failed")
 
 	defer func() {
@@ -122,6 +119,7 @@ func TestAppImportExport(t *testing.T) {
 	if skip {
 		t.Skip("skipping application import/export simulation")
 	}
+
 	require.NoError(t, err, "simulation setup failed")
 
 	defer func() {
@@ -159,12 +157,12 @@ func TestAppImportExport(t *testing.T) {
 		simtestutil.PrintStats(db)
 	}
 
-	fmt.Printf("exporting genesis...\n")
+	t.Log("exporting genesis...\n")
 
 	exported, err := bApp.ExportAppStateAndValidators(false, []string{}, []string{})
 	require.NoError(t, err)
 
-	fmt.Printf("importing genesis...\n")
+	t.Log("importing genesis...\n")
 
 	newDB, newDir, _, _, err := simtestutil.SetupSimulation(config, "leveldb-app-sim-2", "Simulation-2", simcli.FlagVerboseValue, simcli.FlagEnabledValue)
 	require.NoError(t, err, "simulation setup failed")
@@ -184,19 +182,21 @@ func TestAppImportExport(t *testing.T) {
 
 	ctxA := bApp.NewContextLegacy(true, cmtproto.Header{Height: bApp.LastBlockHeight()})
 	ctxB := newApp.NewContextLegacy(true, cmtproto.Header{Height: bApp.LastBlockHeight()})
-	_, err = newApp.ModuleManager.InitGenesis(ctxB, bApp.AppCodec(), genesisState)
 
+	_, err = newApp.ModuleManager.InitGenesis(ctxB, bApp.AppCodec(), genesisState)
 	if err != nil {
 		if strings.Contains(err.Error(), "validator set is empty after InitGenesis") {
 			logger.Info("Skipping simulation as all validators have been unbonded")
 			logger.Info("err", err, "stacktrace", string(debug.Stack()))
+
 			return
 		}
 	}
+
 	require.NoError(t, err)
 	err = newApp.StoreConsensusParams(ctxB, exported.ConsensusParams)
 	require.NoError(t, err)
-	fmt.Printf("comparing stores...\n")
+	t.Log("comparing stores...\n")
 
 	// skip certain prefixes
 	skipPrefixes := map[string][][]byte{
@@ -228,9 +228,9 @@ func TestAppImportExport(t *testing.T) {
 		failedKVAs, failedKVBs := simtestutil.DiffKVStores(storeA, storeB, skipPrefixes[keyName])
 		require.Equal(t, len(failedKVAs), len(failedKVBs), "unequal sets of key-values to compare %s", keyName)
 
-		fmt.Printf("compared %d different key/value pairs between %s and %s\n", len(failedKVAs), appKeyA, appKeyB)
+		t.Logf("compared %d different key/value pairs between %s and %s\n", len(failedKVAs), appKeyA, appKeyB)
 
-		require.Equal(t, 0, len(failedKVAs), simtestutil.GetSimulationLog(keyName, bApp.SimulationManager().StoreDecoders, failedKVAs, failedKVBs))
+		require.Empty(t, failedKVAs, simtestutil.GetSimulationLog(keyName, bApp.SimulationManager().StoreDecoders, failedKVAs, failedKVBs))
 	}
 }
 
@@ -242,6 +242,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 	if skip {
 		t.Skip("skipping application simulation after import")
 	}
+
 	require.NoError(t, err, "simulation setup failed")
 
 	defer func() {
@@ -280,16 +281,16 @@ func TestAppSimulationAfterImport(t *testing.T) {
 	}
 
 	if stopEarly {
-		fmt.Println("can't export or import a zero-validator genesis, exiting test...")
+		t.Log("can't export or import a zero-validator genesis, exiting test...")
 		return
 	}
 
-	fmt.Printf("exporting genesis...\n")
+	t.Log("exporting genesis...\n")
 
 	exported, err := bApp.ExportAppStateAndValidators(true, []string{}, []string{})
 	require.NoError(t, err)
 
-	fmt.Printf("importing genesis...\n")
+	t.Log("importing genesis...\n")
 
 	newDB, newDir, _, _, err := simtestutil.SetupSimulation(config, "leveldb-app-sim-2", "Simulation-2", simcli.FlagVerboseValue, simcli.FlagEnabledValue)
 	require.NoError(t, err, "simulation setup failed")
@@ -344,34 +345,40 @@ func TestAppStateDeterminism(t *testing.T) {
 	}
 
 	appOptions := viper.New()
+
 	if FlagEnableStreamingValue {
 		m := make(map[string]interface{})
 		m["streaming.abci.keys"] = []string{"*"}
 		m["streaming.abci.plugin"] = "abci_v1"
 		m["streaming.abci.stop-node-on-err"] = true
+
 		for key, value := range m {
 			appOptions.SetDefault(key, value)
 		}
 	}
+
 	appOptions.SetDefault(flags.FlagHome, app.DefaultNodeHome)
 	appOptions.SetDefault(server.FlagInvCheckPeriod, simcli.FlagPeriodValue)
+
 	if simcli.FlagVerboseValue {
 		appOptions.SetDefault(flags.FlagLogLevel, "debug")
 	}
 
-	for i := 0; i < numSeeds; i++ {
+	for i := range numSeeds {
 		if config.Seed == simcli.DefaultSeedValue {
 			config.Seed = rand.Int63()
 		}
-		fmt.Println("config.Seed: ", config.Seed)
 
-		for j := 0; j < numTimesToRunPerSeed; j++ {
+		t.Log("config.Seed: ", config.Seed)
+
+		for j := range numTimesToRunPerSeed {
 			var logger log.Logger
 			if simcli.FlagVerboseValue {
 				logger = log.NewTestLogger(t)
 			} else {
 				logger = log.NewNopLogger()
 			}
+
 			chainID := fmt.Sprintf("chain-id-%d-%d", i, j)
 			config.ChainID = chainID
 
@@ -388,7 +395,7 @@ func TestAppStateDeterminism(t *testing.T) {
 			)
 			require.NoError(t, err)
 
-			fmt.Printf(
+			t.Logf(
 				"running non-determinism simulation; seed %d: %d/%d, attempt: %d/%d\n",
 				config.Seed, i+1, numSeeds, j+1, numTimesToRunPerSeed,
 			)

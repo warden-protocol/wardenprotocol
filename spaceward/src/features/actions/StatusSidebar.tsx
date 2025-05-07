@@ -27,6 +27,7 @@ import { queryCosmosClients } from "../assets/queries";
 import actPrecompileAbi from "@/contracts/actPrecompileAbi";
 import { env } from "@/env";
 import { PRECOMPILE_ACT_ADDRESS } from "@/contracts/constants";
+import { useConnectWallet } from "@web3-onboard/react";
 
 interface ItemProps extends QueuedAction {
 	single?: boolean;
@@ -54,7 +55,10 @@ function ActionItem({ single, ...item }: ItemProps) {
 	const walletClient = useWalletClient().data;
 	const queryClient = useQueryClient();
 	const { walletManager } = useContext(walletContext);
-	const cosmosClients = useQuery(queryCosmosClients(walletManager)).data;
+	const [{ wallet }] = useConnectWallet();
+	const account = wallet?.accounts?.[0];
+	const address = account?.address;
+	const cosmosClients = useQuery({ ...(address ? queryCosmosClients(walletManager, address!) : {}), enabled: Boolean(address) }).data;
 	const clientsRef = useRef(cosmosClients);
 	clientsRef.current = cosmosClients;
 	const { data: ks, setData: setKeySettings } = useKeySettingsState();
@@ -94,7 +98,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 
 		console.log("processing", item);
 		async function processItem() {
-			if (canceled) {
+			if (canceled || !address) {
 				return;
 			}
 
@@ -387,7 +391,7 @@ function ActionItem({ single, ...item }: ItemProps) {
 							res = await handleEth({ action: item, w, queryClient });
 						} else if (item.networkType === "cosmos") {
 							const [, , rpcEndpoint] = clientsRef.current?.find((v) => v[1] === item?.chainName) ?? [];
-							res = await handleCosmos({ action: item, w, queryClient, rpcEndpoint });
+							res = await handleCosmos({ address, action: item, w, queryClient, rpcEndpoint });
 						}
 					} catch (e) {
 						console.error("broadcast failed", e);

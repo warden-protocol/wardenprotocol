@@ -12,11 +12,11 @@ This section explains how to acquire WARP on Base using Squid Router powered by 
 
 ## Squid Router
 
-Squid, with Axelar's backing, enables the seamless exchange of tokens between different blockchains, facilitating instant access to applications spanning multiple chains with just one click. Utilize Squid to create user-friendly interfaces that leverage cross-chain liquidity, expanding your reach to users with crypto wallets on various chains.
+Squid, with Axelar's backing, enables the seamless exchange of tokens between different blockchains, facilitating instant access to applications spanning multiple chains with just one click. Utilize Squid to create user-friendly interfaces that leverage crosschain liquidity, expanding your reach to users with crypto wallets on various chains.
 
 In short? Transfer your assets from any EVM or Cosmos chain towards any EVM chain (including Base) or Cosmos chain! It's as simple as a Swap.
 
-- Squid, powered by Axelar, facilitates secure bridging to Base through its decentralized cross-chain communication network.
+- Squid, powered by Axelar, facilitates secure bridging to Base through its decentralized crosschain communication network.
 - Axelar enables Squid to connect Base with over 45 other blockchains using a proof-of-stake network with 75 active validators.
 - Users who bridge to Base via Squid maintain their original asset position on the connected chain, secured by Axelar network.
 
@@ -46,7 +46,7 @@ First, you should get some ETH for future transactions on Base. Base fees are ve
 
 8. Once the transaction and verification is complete, you'll receive your assets on Base chain.
 
-9. Add a Base chain RPC to your MetaMask: just click **Connect Wallet** on [ChainList](https://chainlist.org/chain/8453). Alternatively, you can add a Base RPC to any other wallet that that supports EVM chains using ChainList.
+9. Add a Base chain RPC to your MetaMask: just click **Connect Wallet** on [ChainList](https://chainlist.org/chain/8453). Alternatively, you can add a Base RPC to any other wallet that supports EVM chains using ChainList.
 
 
 ## 2. Get USDC
@@ -77,4 +77,4 @@ Then you should get some USDC for the WARP-USDC trading pair:
 
 ## 3. Get WARP
 
-You're now all set! You can acquire and accumulate WARP on the Base chain's DEXes – see the [WARP-USDC pair](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823).
+You're now all set! You can acquire and accumulate WARP on the Base chain's DEXes—see the [WARP-USDC pair](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823).

@@ -1,13 +1,15 @@
 package keeper
 
 import (
-	"cosmossdk.io/errors"
+	"context"
 	"crypto/ed25519"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"cosmossdk.io/errors"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
-func (k Keeper) fullfilSignRequest(ctx sdk.Context, msg *types.MsgFulfilSignRequest, key types.Key, req types.SignRequest) error {
+func (k Keeper) fullfilSignRequest(ctx context.Context, msg *types.MsgFulfilSignRequest, key types.Key, req types.SignRequest) error {
 	sigData := (msg.Result.(*types.MsgFulfilSignRequest_Payload)).Payload.SignedData
 
 	if err := ensureSignatureFormatting(key, sigData); err != nil {
@@ -40,14 +42,16 @@ func ensureSignatureFormatting(key types.Key, sigData []byte) error {
 	default:
 		return errors.Wrap(types.ErrUnsupportedKeyType, key.Type.String())
 	}
+
 	return nil
 }
 
-func (k Keeper) rejectSignRequest(ctx sdk.Context, req types.SignRequest, msg *types.MsgFulfilSignRequest) error {
+func (k Keeper) rejectSignRequest(ctx context.Context, req types.SignRequest, msg *types.MsgFulfilSignRequest) error {
 	req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
 	req.Result = &types.SignRequest_RejectReason{
 		RejectReason: msg.Result.(*types.MsgFulfilSignRequest_RejectReason).RejectReason,
 	}
+
 	if err := k.signRequests.Set(ctx, req.Id, req); err != nil {
 		return err
 	}

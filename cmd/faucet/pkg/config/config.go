@@ -27,7 +27,7 @@ type Config struct {
 	CliName        string        `env:"CLI_NAME"       envDefault:"wardend"                                   mapstructure:"CLI_NAME"`
 	AccountName    string        `env:"ACCOUNT_NAME"   envDefault:"faucet"                                    mapstructure:"ACCOUNT_NAME"`
 	Denom          string        `env:"DENOM"          envDefault:"award"                                     mapstructure:"DENOM"`
-	Amount         string        `env:"AMOUNT"         envDefault:"1"                                         mapstructure:"AMOUNT"`
+	Amount         float64       `env:"AMOUNT"         envDefault:"1"                                         mapstructure:"AMOUNT"`
 	Fees           string        `env:"FEES"           envDefault:"25000000000000award"                       mapstructure:"FEES"`
 	KeyringBackend string        `env:"KEYRING"        envDefault:"test"                                      mapstructure:"KEYRING"`
 	BatchInterval  time.Duration `env:"BATCH_INTERVAL" envDefault:"5s"                                        mapstructure:"BATCH_INTERVAL"`
@@ -35,7 +35,7 @@ type Config struct {
 	BatchLimit     int           `env:"BATCH_LIMIT"    envDefault:"10"                                        mapstructure:"BATCH_LIMIT"`
 	TXRetry        int           `env:"TX_RETRY"       envDefault:"10"                                        mapstructure:"TX_RETRY"`
 	Chain          string        `env:"CHAIN"          envDefault:"Chiado"                                    mapstructure:"CHAIN"`
-	Decimals       int           `env:"DECIMALS"       envDefault:"18"                                        mapstructure:"DECIMALS"`
+	Exponent       int           `env:"EXPONENT"       envDefault:"18"                                        mapstructure:"EXPONENT"`
 	DisplayTokens  bool          `env:"DISPLAY_TOKENS" envDefault:"true"                                      mapstructure:"DISPLAY_TOKENS"`
 	Blacklist      string        `env:"BLACKLIST"      envDefault:""                                          mapstructure:"BLACKLIST"`
 	LogLevel       string        `env:"LOG_LEVEL"      envDefault:"Info"                                      mapstructure:"LOG_LEVEL"`
@@ -46,11 +46,13 @@ func GetLogLevel() string {
 	if err != nil {
 		return "Info"
 	}
+
 	return cfg.LogLevel
 }
 
 func LoadConfig() (Config, error) {
 	cfg := Config{}
+
 	var err error
 
 	if err = env.Parse(&cfg); err != nil {
@@ -62,6 +64,7 @@ func LoadConfig() (Config, error) {
 			return Config{}, configError(err.Error())
 		}
 	}
+
 	return cfg, nil
 }
 
@@ -84,6 +87,7 @@ func loadConfigFile(cfg *Config) error {
 	viper.SetConfigType(ext)
 
 	viper.AutomaticEnv()
+
 	err = viper.ReadInConfig()
 	if err != nil {
 		return err
@@ -92,5 +96,6 @@ func loadConfigFile(cfg *Config) error {
 	if err = viper.Unmarshal(&cfg); err != nil {
 		return err
 	}
+
 	return nil
 }

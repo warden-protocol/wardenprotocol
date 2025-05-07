@@ -406,3 +406,28 @@ denom-to-suggest = "award"
 
 # GasPrices defines the gas prices for fee suggestion
 gas-prices = "4000000.000000000000000000award"
+
+###############################################################################
+###                      Price prediction configuration                     ###
+###############################################################################
+[pricepred]
+
+# Is price prediction enabled
+enabled = "true"
+
+# URL used for price prediction handler
+url = "https://tpc.devnet.wardenprotocol.org"
+
+###############################################################################
+###                      HTTP configuration                                 ###
+###############################################################################
+[http]
+
+# Is HTTP handler enabled
+enabled = "true"
+
+# URLs used for HTTP handler
+urls = ["https://api.coingecko.com"]
+
+# Timeout in seconds for the HTTP client
+timeout_sec = 5

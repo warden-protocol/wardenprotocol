@@ -6,8 +6,8 @@ import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "shield/ast/ast.proto";
-import "warden/act/v1beta1/template.proto";
 import "warden/act/v1beta1/action_vote.proto";
+import "warden/act/v1beta1/template.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
 
@@ -25,11 +25,17 @@ message Action {
   // TimeoutHeight is the block height up until this action can be executed.
   uint64 timeout_height = 6;
   // created_at is a timestamp specifying when the action was created
-  google.protobuf.Timestamp created_at = 7
-      [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
+  google.protobuf.Timestamp created_at = 7 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdtime) = true
+  ];
   // updated_at is a timestamp specifying when the action's status was updated
-  google.protobuf.Timestamp updated_at = 8
-      [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
+  google.protobuf.Timestamp updated_at = 8 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
+    (gogoproto.stdtime) = true
+  ];
   // mentions is a list of addresses that are mentioned in the template.
   repeated string mentions = 9;
   // The expression to be evaluated for approval.

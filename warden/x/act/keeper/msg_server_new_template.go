@@ -5,6 +5,7 @@ import (
 
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/warden-protocol/wardenprotocol/shield"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -27,7 +28,7 @@ func (k msgServer) NewTemplate(goCtx context.Context, msg *types.MsgNewTemplate)
 		return nil, err
 	}
 
-	id, err := k.templates.Append(ctx, &template)
+	id, err := k.templates.Append(goCtx, &template)
 	if err != nil {
 		return nil, err
 	}

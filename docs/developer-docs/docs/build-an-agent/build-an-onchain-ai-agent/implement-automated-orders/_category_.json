@@ -1,0 +1,11 @@
+{
+  "position": 6,
+  "label": "Implement automated Orders",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Implement automated Orders"
+  },
+  "customProps": {}
+}

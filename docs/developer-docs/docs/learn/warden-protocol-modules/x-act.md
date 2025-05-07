@@ -8,39 +8,35 @@ sidebar_position: 3
 
 The `x/act` module is a [Cosmos SDK](https://docs.cosmos.network/) module executing messages (called Actions) under certain conditions, or Rules, defined by users.
 
-This module implements the following concepts, which you can find in our Glossary:
+This module implements the following concepts:
 
-- [Approval Rule](/learn/glossary#approval-rule)
-- [Action](/learn/glossary#action)
-- [Intent-Specific Language](/learn/glossary#intent-specific-language)
+- [Rule](#rule)
+- [Action](#action)
+- [Intent-Specific Language](#intent-specific-language)
 
 ## Usage
 
-You can call the `x/act` module from your [EVM smart contract](/category/deploy-smart-contracts-on-warden) using the [`IAct` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/act/IAct.sol).
+You can call the `x/act` module from your EVM smart contract using the [`x/act` precompile](/build-an-app/precompiles/x-act), as show in the [Interact with x/act](/category/interact-with-xact) section.
 
 ## Concepts
 
 ### Rule
 
-The **Rule** struct represents a set of user-defined conditions that must be met before something can be executed.
+An **Approval Rule** is a set of user-defined conditions under which an [Action](#action) is performed. The `Rule` struct represents a set of conditions that must be met before something can be executed.
 
-Users can register Rules on-chain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
+Users can register Rules onchain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
 
-Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available on-chain. To learn more, see [Hooks](#hooks).
-
-See also [Glossary: Approval Rule](/learn/glossary#approval-rule).
+Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available onchain. To learn more, see [Hooks](#hooks).
 
 ### Action
 
-An **Action** wraps another message. Each Action contains a [Rule](#rule): when the conditions specified in the Rule are met, the wrapped message is executed.
+An **Action** wraps another message: an onchain transaction on Warden Protocol or an offchain operation. Each Action contains a [Rule](#rule): when the conditions specified in the Rule are met, the wrapped message is executed.
 
 When created, an Action has a *pending* state. When the wrapped message is executed, the Action state changes to *completed*. The creator of the Action can **revoke** it at any time, changing the Action status to *revoked*.
 
 Optionally, it's possible to specify a **timeout height** for an Action. After this height is reached by the blockchain, the Action state will change to *timeout*.
 
 An Action can be **approved** by one or more users. The addresses of the users that approved the Action are stored in its `approvers` field. These addresses can be used as boolean conditions in the Rule expression.
-
-See also [Glossary: Action](/learn/glossary#action).
 
 ### Intent-Specific Language
 
@@ -51,8 +47,6 @@ Here is an example of a basic Rule that is satisfied when one of two addresses a
 ```
 any(2, [warden1jdeysw88gtzz8da6qr6cqepl7ghleane5u46yh, warden1r4d7gh3ysfy3dz3nufpsmj4ad6t5qz2cs33xu3])
 ```
-
-See also [Glossary: ISL](/learn/glossary#intent-specific-language).
 
 ## State
 
@@ -116,7 +110,7 @@ After a [Rule handler](#rule-handlers) is invoked and the [Rule](#rule) is fetch
 
 #### Example
 
-You can register a preprocessor in `app.go`. For example, an expander for the dummy [`x/satellites` ](#example) module from the previous section would look like this:
+You can register a preprocessor in `app.go`. For example, an expander for the dummy [`x/satellites` module](#example) from the previous section would look like this:
 
 ```go
 appConfig = depinject.Configs(
@@ -134,7 +128,7 @@ appConfig = depinject.Configs(
     },
 ```
 
-`PrefixedExpander` handles all identifiers that start with the module name (`satellitetypes.ModuleName`) followed by a dot. `ShieldExpander` receives the rest of the identifiers and returns any other [abstract syntax tree](/learn/glossary#abstract-syntax-tree) node to replace it.
+`PrefixedExpander` handles all identifiers that start with the module name (`satellitetypes.ModuleName`) followed by a dot. `ShieldExpander` receives the rest of the identifiers and returns any other [abstract syntax tree](../glossary#abstract-syntax-tree) node to replace it.
 
 `SatelliteKeeper` could implement an expander like this:
 
@@ -159,7 +153,7 @@ func (e SatelliteExpander) Expand(ctx context.Context, ident *Identifier) (Expre
 }
 ```
 
-A user can then write a Rule – for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
+A user can then write a Rule—for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
 
 ```isl
 satellite.123.cost <= 100 || any(2, [warden1j6yh, warden1rxu3, warden1r4d7])
@@ -183,7 +177,7 @@ Every time an Action is approved, it gets re-evaluated. During evaluation, all i
 
 #### Example
 
-The [preprocessing example](#example-1) uses a value that needs to be fetched only once – when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
+The [preprocessing example](#example-1) uses a value that needs to be fetched only once—when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
 
 You can register a module environment in `app.go`. For example, registering an environment for the dummy [`x/satellites` ](#example) module would look like this:
 
@@ -222,7 +216,7 @@ func (e SatelliteEnv) Get(ctx context.Context, name string) (object.Object, bool
 }
 ```
 
-A user can then write a Rule – for example, to keep launches on hold until the fuel cost is lower than 100:
+A user can then write a Rule—for example, to keep launches on hold until the fuel cost is lower than 100:
 
 ```isl
 satellite.fuel_price < 100
@@ -230,16 +224,16 @@ satellite.fuel_price < 100
 
 ## Messages
 
-### MsgNewRule
+### `MsgNewRule`
 
-Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored on-chain.
+Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](../glossary#abstract-syntax-tree) and stored onchain.
 
 This message is expected to fail in the following cases:
 
 - The name is empty.
 - The expression is not a valid [Intent-Specific Language](#intent-specific-language) expression.
 
-### MsgUpdateRule
+### `MsgUpdateRule`
 
 Updates an existing [Rule](#rule) with a given human-readable name and a new expression.
 
@@ -248,7 +242,7 @@ This message is expected to fail in the following cases:
 - The name is empty.
 - The expression is not a valid [Intent-Specific Language](#intent-specific-language) expression.
 
-### MsgNewAction
+### `MsgNewAction`
 
 Creates a new [Action](#action) with a wrapped message, optionally specifying a timeout height.
 
@@ -259,7 +253,7 @@ This message is expected to fail in the following cases:
 - The message doesn't have a registered Rule handler.
 - The timeout height is in the past.
 
-### MsgApproveAction
+### `MsgApproveAction`
 
 Adds an approval to an [Action](#action) with a given ID.
 
@@ -268,7 +262,7 @@ This message is expected to fail in the following cases:
 - An approval from this address is already present.
 - The Action state isn't *pending*.
 
-### MsgRevokeAction
+### `MsgRevokeAction`
 
 Revokes a pending [Action](#action), aborting its execution.
 

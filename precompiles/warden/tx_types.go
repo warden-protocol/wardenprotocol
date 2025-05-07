@@ -3,8 +3,9 @@ package warden
 import (
 	"fmt"
 
+	"cosmossdk.io/math"
 	codecTypes "github.com/cosmos/cosmos-sdk/codec/types"
-	cosmosTypes "github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 
@@ -167,6 +168,7 @@ func newMsgNewKeychain(method *abi.Method, args []interface{}, origin common.Add
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
+
 	var input newKeyChainInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
 		return nil, fmt.Errorf("error while unpacking args to newKeyChainInput struct: %w", err)
@@ -267,6 +269,7 @@ func newMsgUpdateKeychain(method *abi.Method, args []interface{}, origin common.
 	}
 
 	creator := wardencommon.Bech32StrFromAddress(origin)
+
 	var input updateKeyChainInput
 	if err := method.Inputs.Copy(&input, args); err != nil {
 		return nil, fmt.Errorf("error while unpacking args to updateKeyChainInput struct: %w", err)
@@ -416,7 +419,7 @@ type newKeyRequestInput struct {
 	KeyType                   uint8
 	ApproveTemplateId         uint64
 	RejectTemplateId          uint64
-	MaxKeychainFees           []cosmosTypes.Coin
+	MaxKeychainFees           []TypesCoin
 	Nonce                     uint64
 	ActionTimeoutHeight       uint64
 	ExpectedApproveExpression string
@@ -460,7 +463,7 @@ func newMsgNewKeyRequest(method *abi.Method, args []interface{}, origin common.A
 		KeyType:           keyType,
 		ApproveTemplateId: input.ApproveTemplateId,
 		RejectTemplateId:  input.RejectTemplateId,
-		MaxKeychainFees:   input.MaxKeychainFees,
+		MaxKeychainFees:   mapCoins(input.MaxKeychainFees),
 		Nonce:             input.Nonce,
 	}
 
@@ -483,7 +486,7 @@ type newSignRequestInput struct {
 	Input                     []byte
 	Analyzers                 [][]byte
 	EncryptionKey             []byte
-	MaxKeychainFees           []cosmosTypes.Coin
+	MaxKeychainFees           []TypesCoin
 	Nonce                     uint64
 	ActionTimeoutHeight       uint64
 	ExpectedApproveExpression string
@@ -530,7 +533,7 @@ func newMsgNewSignRequest(method *abi.Method, args []interface{}, origin common.
 		Input:           input.Input,
 		Analyzers:       analyzers,
 		EncryptionKey:   input.EncryptionKey,
-		MaxKeychainFees: input.MaxKeychainFees,
+		MaxKeychainFees: mapCoins(input.MaxKeychainFees),
 		Nonce:           input.Nonce,
 		BroadcastType:   broadcastType,
 	}
@@ -681,4 +684,19 @@ func newMsgUpdateSpace(args []interface{}, origin common.Address, act string) (*
 		ExpectedApproveExpression: expectedApproveExpression,
 		ExpectedRejectExpression:  expectedRejectExpression,
 	}, nil
+}
+
+func mapCoins(coins []TypesCoin) []sdk.Coin {
+	result := make([]sdk.Coin, 0, len(coins))
+
+	for _, coin := range coins {
+		mappedCoin := mapCoin(coin)
+		result = append(result, mappedCoin)
+	}
+
+	return result
+}
+
+func mapCoin(coin TypesCoin) sdk.Coin {
+	return sdk.NewCoin(coin.Denom, math.NewIntFromBigInt(coin.Amount))
 }

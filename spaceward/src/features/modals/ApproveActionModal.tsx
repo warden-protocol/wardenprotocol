@@ -11,8 +11,11 @@ import { useModalState } from "./state";
 import clsx from "clsx";
 import { usePublicClient } from "wagmi";
 import { env } from "@/env";
+import { useConnectWallet } from "@web3-onboard/react";
 
 export default function ApproveModal({ hidden }: ModalParams<{}>) {
+	const [{ wallet }] = useConnectWallet();
+	const address = wallet?.accounts?.[0]?.address;
 	const { w, sessionRequests, activeSessions } = useWeb3Wallet(
 		env.wcWalletRelayUrl,
 	);
@@ -72,11 +75,16 @@ export default function ApproveModal({ hidden }: ModalParams<{}>) {
 					<Button
 						disabled={!w || loading}
 						onClick={async () => {
+							if (!address) {
+								return;
+							}
+
 							let req = sessionRequests[0];
 							setLoading(true);
 
 							try {
 								const close = await approveRequest({
+									address,
 									w,
 									eth,
 									cosm,

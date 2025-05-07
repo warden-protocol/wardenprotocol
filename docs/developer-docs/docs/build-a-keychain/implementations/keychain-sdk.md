@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Overview
 
-The **Keychain SDK** offers a robust framework for managing cryptographic operations on the Warden Protocol. It simplifies the development of applications that interact with the Warden Protocol, handling both key requests and signature requests with efficiency and security.
+The **Keychain SDK** offers a robust framework for managing cryptographic operations on Warden Protocol. It simplifies the development of applications that interact with Warden Protocol, handling both key requests and signature requests with efficiency and security.
 
 ## Module descriptions
 
@@ -18,11 +18,11 @@ In this section, we will walk you through different modules of the **Keychain SD
 
 **Key components:**
 
-- **SignResponseWriter interface**: Provides methods to fulfill or reject signature requests.
+- **Writer interface**: Provides methods to fulfill or reject signature requests.
   - `Fulfil(signature []byte) error`: Writes a signature to a signature request.
   - `Reject(reason string) error`: Writes a rejection message to a signature request.
 - **SignRequestHandler**: A function type that processes individual signature requests.
-- **signResponseWriter struct**: Implements the `SignResponseWriter` interface, managing encryption and transaction writing.
+- **signResponseWriter struct**: Implements the `Writer` interface, managing encryption and transaction writing.
 
 **Functions:**
 
@@ -43,7 +43,7 @@ In this section, we will walk you through different modules of the **Keychain SD
   - `SetSignRequestHandler`: Sets the handler for signature requests.
 - **Start method**: Begins the Keychain application's operations, managing request channels and transaction writing.
 - `ConnectionState`: Returns the state of the gRPC connection.
-- `initConnections`: Establishes connections to the Warden Protocol via gRPC.
+- `initConnections`: Establishes connections to Warden Protocol via gRPC.
 
 ### Key requests (`key_requests.go`)
 
@@ -51,11 +51,11 @@ In this section, we will walk you through different modules of the **Keychain SD
 
 **Key components:**
 
-- **KeyResponseWriter Interface**: Contains methods to fulfill or reject key requests.
+- **Writer Interface**: Contains methods to fulfill or reject key requests.
   - `Fulfil(publicKey []byte) error`: Sends a public key in response.
   - `Reject(reason string) error`: Sends a rejection reason.
 - **KeyRequestHandler**: A function type for handling key requests.
-- **keyResponseWriter Struct**: Implements the `KeyResponseWriter` interface, processing key requests and writing results.
+- **Writer Struct**: Implements the `Writer` interface, processing key requests and writing results.
 
 **Functions:**
 

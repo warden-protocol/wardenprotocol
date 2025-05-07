@@ -85,7 +85,7 @@ The main use cases include the following:
 
 **CLIChain** relies on the following Go packages:
 
-- [`go-ehtereum/crypto`](https://github.com/ethereum/go-ethereum/tree/master/crypto) for cryptographic functions
+- [`go-ethereum/crypto`](https://github.com/ethereum/go-ethereum/tree/master/crypto) for cryptographic functions
 - [`spf13/cobra`](https://github.com/spf13/cobra) for building the command-line interface
 - [`encoding/base64`](https://pkg.go.dev/encoding/base64) and [`encoding/hex`](https://pkg.go.dev/encoding/hex) for encoding
 

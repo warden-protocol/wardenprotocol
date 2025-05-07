@@ -18,9 +18,7 @@ As the testnet phase advances, we plan to enhance connectivity with Cosmos chain
 
 To access the **SpaceWard-curated collection** of dApps, take these steps:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **dApps**.
 3. Click a dApp and follow the prompts.
 
@@ -32,9 +30,7 @@ You can connect to any EVM-based decentralized application through WalletConnect
 
 1. In the external app you're using, find a section for connecting wallets. Select **WalletConnect**.
 2. Copy the pairing code or save the QR code as an image.
-3. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+3. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 4. Click the WalletConnect logo in the right sidebar.
 5. Paste the pairing code or the QR code and click **Connect**.
 6. Select the Space or address you wish to use and click **Approve connection**.
@@ -61,9 +57,8 @@ The Warden Protocol is in the testnet phase, so you have to use MetaMask Flask. 
 
 ### Integrate
 
-1. Connect to SpaceWard. If it's your first time, see the [Quick start guide](quick-start).
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)  
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)  
+  If it's your first time, see the [Quick start guide](quick-start).
 2. On the right panel, click the MetaMask logo and then **Install Snap**.
 3. When your MetaMask Flask wallet opens, accept the installation prompt.
 4. In the left menu, navigate to **Keys**.

@@ -8,6 +8,9 @@
     "noFallthroughCasesInSwitch": false,
     "outDir": "dist",
     "rootDir": "src",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "composite": true
   },
   "include": [

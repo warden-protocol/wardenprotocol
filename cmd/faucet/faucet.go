@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"math/big"
 	"net/http"
 	"os/exec"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -65,18 +66,22 @@ func execute(cmdString string) (Out, error) {
 
 	// Read the output
 	var output, errOutput []byte
+
 	var stdoutErr, stderrErr error
 
 	var wg sync.WaitGroup
+
 	wg.Add(workers)
 
 	go func() {
 		defer wg.Done()
+
 		output, stdoutErr = io.ReadAll(stdout)
 	}()
 
 	go func() {
 		defer wg.Done()
+
 		errOutput, stderrErr = io.ReadAll(stderr)
 	}()
 
@@ -85,6 +90,7 @@ func execute(cmdString string) (Out, error) {
 	if stdoutErr != nil {
 		return Out{}, fmt.Errorf("error reading stdout: %w", stdoutErr)
 	}
+
 	if stderrErr != nil {
 		return Out{}, fmt.Errorf("error reading stderr: %w", stderrErr)
 	}
@@ -96,31 +102,11 @@ func execute(cmdString string) (Out, error) {
 		if len(errOutput) > 0 {
 			return Out{}, fmt.Errorf("command failed: %w\nStderr: %s", err, string(errOutput))
 		}
+
 		return Out{}, fmt.Errorf("command failed: %w", err)
 	}
 
 	return Out{Stdout: output, Stderr: errOutput}, nil
-}
-
-func (f *Faucet) setupNewAccount() error {
-	cmd := strings.Join([]string{
-		"echo",
-		f.config.Mnemonic,
-		"|",
-		f.config.CliName,
-		"keys",
-		"--keyring-backend",
-		"test",
-		"add",
-		f.config.AccountName,
-		"--recover",
-	}, " ")
-
-	_, err := execute(cmd)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func validAddress(addr string) error {
@@ -129,23 +115,21 @@ func validAddress(addr string) error {
 		reqInvalidAddrCount.Inc()
 		return fmt.Errorf("invalid address: %w", err)
 	}
+
 	if pref != "warden" {
 		reqInvalidAddrCount.Inc()
 		return fmt.Errorf("invalid address prefix: %s", pref)
 	}
+
 	return nil
 }
 
 func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	var err error
+
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		logger.Fatal().Msgf("error loading config: %s", err)
-	}
-
-	amount, err := strconv.Atoi(cfg.Amount)
-	if err != nil {
-		return Faucet{}, err
 	}
 
 	f := Faucet{
@@ -155,7 +139,7 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 		log:             logger,
 		TokensAvailable: float64(cfg.DailyLimit),
 		DailySupply:     float64(cfg.DailyLimit),
-		Amount:          float64(amount),
+		Amount:          cfg.Amount,
 		DisplayTokens:   bool(cfg.DisplayTokens),
 	}
 
@@ -170,40 +154,13 @@ func InitFaucet(logger zerolog.Logger) (Faucet, error) {
 	return f, nil
 }
 
-func (f *Faucet) batchProcessInterval() {
-	f.log.Info().Msgf("starting batch process interval")
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	ticker := time.NewTicker(f.config.BatchInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			if len(f.Batch) > 0 {
-				if txHash, _, err := f.Send("", true); err != nil {
-					reqErrorCount.Inc()
-					f.log.Error().Msgf("error sending batch: %s", err)
-				} else {
-					f.log.Debug().Msgf("tx hash %s", txHash)
-					f.LatestTXHash = txHash
-					batchSendCount.Inc()
-					batchSize.Set(0)
-				}
-			}
-		}
-	}
-}
-
 func addressInBatch(batch []string, addr string) bool {
 	for _, a := range batch {
 		if a == addr {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -218,22 +175,23 @@ func convertHexToBech32(hexAddr string) (string, error) {
 				err,
 			)
 		}
+
 		return bech32Addr, nil
 	}
-	return "", fmt.Errorf(
-		"error converting hex address to bech32: address is not hex",
-	)
+
+	return "", errors.New("error converting hex address to bech32: address is not hex")
 }
 
 func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	var err error
+
 	f.Lock()
 	defer f.Unlock()
 
 	if f.TokensAvailable <= 0 {
 		return "",
 			http.StatusTooManyRequests,
-			fmt.Errorf("no tokens available, please come back tomorrow")
+			errors.New("no tokens available, please come back tomorrow")
 	}
 
 	// if the address is a hex string, convert it to bech32
@@ -252,12 +210,15 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		if err := validAddress(addr); err != nil {
 			return "", http.StatusUnprocessableEntity, err
 		}
+
 		if addressInBatch(f.Batch, addr) {
-			return "", http.StatusUnprocessableEntity, fmt.Errorf("address already in batch")
+			return "", http.StatusUnprocessableEntity, errors.New("address already in batch")
 		}
 
 		f.Batch = append(f.Batch, addr)
+
 		batchSize.Inc()
+
 		return "", 0, nil
 	}
 
@@ -266,9 +227,24 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 		send = "multi-send"
 	}
 
-	f.log.Debug().Msgf("sending %s WARD to %v", f.config.Amount, f.Batch)
+	f.log.Debug().Msgf("sending %f %s to %v", f.config.Amount, f.config.Denom, f.Batch)
 
-	amount := f.config.Amount + strings.Repeat("0", f.config.Decimals) + f.config.Denom
+	// Convert the float amount to a big.Float.
+	amt := new(big.Float).SetFloat64(f.config.Amount)
+
+	// Compute the multiplier as 10^decimals using big.Int and then convert to big.Float.
+	multiplierInt := new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(f.config.Exponent)), nil)
+	multiplier := new(big.Float).SetInt(multiplierInt)
+
+	// Multiply the amount by the multiplier to shift the decimal point.
+	amt.Mul(amt, multiplier)
+
+	// Convert the scaled value to a big.Int, truncating any fractional part.
+	intAmt := new(big.Int)
+	amt.Int(intAmt)
+
+	// Build the final result string by concatenating the integer amount and the denomination.
+	amount := intAmt.String() + f.config.Denom
 	f.log.Debug().Msg(amount)
 
 	cmd := strings.Join([]string{
@@ -328,6 +304,7 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	dailySupply.Set(f.TokensAvailable)
 
 	f.Batch = []string{}
+
 	return result.TxHash, http.StatusOK, nil
 }
 
@@ -344,5 +321,57 @@ func (f *Faucet) DailyRefresh() {
 		f.Lock()
 		f.TokensAvailable = f.DailySupply
 		f.Unlock()
+	}
+}
+
+func (f *Faucet) setupNewAccount() error {
+	cmd := strings.Join([]string{
+		"echo",
+		f.config.Mnemonic,
+		"|",
+		f.config.CliName,
+		"keys",
+		"--keyring-backend",
+		"test",
+		"add",
+		f.config.AccountName,
+		"--recover",
+	}, " ")
+
+	_, err := execute(cmd)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *Faucet) batchProcessInterval() {
+	f.log.Info().Msgf("starting batch process interval")
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	ticker := time.NewTicker(f.config.BatchInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			if len(f.Batch) > 0 {
+				if txHash, _, err := f.Send("", true); err != nil {
+					reqErrorCount.Inc()
+					f.log.Error().Msgf("error sending batch: %s", err)
+				} else {
+					f.log.Debug().Msgf("tx hash %s", txHash)
+					f.LatestTXHash = txHash
+
+					batchSendCount.Inc()
+					batchSize.Set(0)
+				}
+			}
+		}
 	}
 }

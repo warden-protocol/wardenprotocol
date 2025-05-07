@@ -9,7 +9,7 @@ sidebar_position: 6
 |Property|Details|
 |-|--|
 | Token | WARD |
-| Initial Total Supply | 250,000,000 WARD |
+| Initial Total Supply | 1,000,000,000 WARD |
 | Decimals | 6 |
 
 
@@ -26,7 +26,7 @@ An **emission** of WARD tokens is a programmatic emission based on the proportio
 | Inflation Rate of Change | 100% |
 
 ## Issuance rate
-As above, the Warden Protocol adjusts the WARD **issuance rate** based on the actual staking ratio relative to the target:
+As above, Warden Protocol adjusts the WARD **issuance rate** based on the actual staking ratio relative to the target:
 
 - **Below target staking**: If the percentage of staked WARD is less than the target of 65%, the issuance rate will incrementally increase. This adjustment continues until it reaches the maximum rate of 10% or until the staking target is met.
 

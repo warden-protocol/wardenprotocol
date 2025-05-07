@@ -1,4 +1,4 @@
-import { AbiFunction, Hex } from 'viem';
+import { AbiFunction, Address, Hex } from 'viem';
 
 export enum SignRequestStatus {
   /** SIGN_REQUEST_STATUS_UNSPECIFIED - The request is missing the status field. */
@@ -29,7 +29,7 @@ export interface ICoin {
 
 export interface ISignRequest {
   id: bigint;
-  creator: string;
+  creator: Address;
   keyId: bigint;
   dataForSigning: Hex;
   status: SignRequestStatus;
@@ -37,6 +37,12 @@ export interface ISignRequest {
   encryptionKey: Hex;
   deductedKeychainFees: ICoin[];
   broadcastType: BroadcastType;
+};
+
+export enum OptionalBroadcastType {
+  UNSPECIFIED = 0,
+  DISABLED = 1,
+  AUTOMATIC = 2,
 };
 
 export enum BroadcastType {
@@ -96,8 +102,8 @@ export const SignRequestsAbi: AbiFunction = {
       type: "uint8"
     },
     {
-      internalType: "enum BroadcastType",
-      name: "broadcastType",
+      internalType: "enum OptionalBroadcastType",
+      name: "optionalBroadcastType",
       type: "uint8"
     }
   ],

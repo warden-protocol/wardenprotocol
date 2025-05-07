@@ -113,6 +113,12 @@ enum BroadcastType {
     Automatic
 }
 
+enum OptionalBroadcastType {
+    Nonspecified,
+    Disabled,
+    Automatic
+}
+
 /**
  * @author Warden Team
  * @title x/warden Interface
@@ -431,14 +437,14 @@ interface IWarden {
     /// @param pageRequest The pagination details
     /// @param keychainId The id of the keychain
     /// @param status The sign requests status
-    /// @param broadcastType The broadcast type
+    /// @param optionalBroadcastType The optional broadcast type to query
     /// @return signRequests An array of `SignRequest` structs containing the retrieved sign requests
     /// @return pageResponse  pagination details
     function signRequests(
         Types.PageRequest calldata pageRequest,
         uint64 keychainId,
         SignRequestStatus status,
-        BroadcastType broadcastType
+        OptionalBroadcastType optionalBroadcastType
     ) external view returns(SignRequest[] memory signRequests, Types.PageResponse memory pageResponse);
 
     /// @dev Defines a method to query space by id.

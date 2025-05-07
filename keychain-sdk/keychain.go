@@ -12,10 +12,11 @@ import (
 	"io"
 	"log/slog"
 
+	"google.golang.org/grpc/connectivity"
+
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
-	"google.golang.org/grpc/connectivity"
 )
 
 // App is the Keychain application. It is responsible for handling key requests
@@ -82,13 +83,13 @@ func (a *App) Start(ctx context.Context) error {
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
 	defer close(keyRequestsCh)
 	for _, appClient := range a.clientsPool.clients {
-		go a.ingestKeyRequests(keyRequestsCh, appClient)
+		go a.ingestKeyRequests(ctx, keyRequestsCh, appClient)
 	}
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
 	defer close(signRequestsCh)
 	for _, appClient := range a.clientsPool.clients {
-		go a.ingestSignRequests(signRequestsCh, appClient)
+		go a.ingestSignRequests(ctx, signRequestsCh, appClient)
 	}
 
 	flushErrors := make(chan error)
@@ -106,9 +107,9 @@ func (a *App) Start(ctx context.Context) error {
 		case err := <-flushErrors:
 			a.logger().Error("tx writer flush error", "error", err)
 		case keyRequest := <-keyRequestsCh:
-			go a.handleKeyRequest(keyRequest)
+			go a.handleKeyRequest(ctx, keyRequest)
 		case signRequest := <-signRequestsCh:
-			go a.handleSignRequest(signRequest)
+			go a.handleSignRequest(ctx, signRequest)
 		}
 	}
 }

@@ -1,0 +1,11 @@
+{
+    "position": 4,
+    "label": "Interact with x/act",
+    "collapsible": true,
+    "collapsed": true,
+    "link": {
+      "type": "generated-index",
+      "title": "Interact with x/act"
+    },
+    "customProps": {}
+  }

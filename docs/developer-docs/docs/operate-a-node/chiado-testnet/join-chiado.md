@@ -20,8 +20,8 @@ Before you start, complete the following prerequisites:
   - at least 4 cores
   - 16GB of RAM
   - 300GB of disk space
-- [Install Go](https://golang.org/doc/install) 1.22.3 or later.
-- If you wish to build the binary from the source code, [install just](https://github.com/casey/just) 1.34.0 or later.
+- [Install Go](https://go.dev/doc/install) 1.24 or later.
+- If you wish to build the binary from the source code, [install Just](https://github.com/casey/just) 1.34.0 or later.
 
 ## 1. Install
 
@@ -29,7 +29,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 
 ### Option 1: Use the prebuilt binary
 
-1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) and unzip it. The archive contains the `wardend` binary.
+1. Download the binary for your platform from the [release page](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) and unzip it. The archive contains the `wardend` binary.
 
 2. Navigate to the directory containing the binary and initialize the node:
 
@@ -38,7 +38,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    ```
 
    :::tip
-   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands).
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](../node-commands).
    :::
 
 ### Option 2: Use the source code
@@ -46,11 +46,11 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
 1. Clone the repository and navigate to the root directory:
 
    ```bash
-   git clone --depth 1 --branch v0.5.4 https://github.com/warden-protocol/wardenprotocol
+   git clone --depth 1 --branch v0.6.2 https://github.com/warden-protocol/wardenprotocol
    cd wardenprotocol
    ```
 
-   The binary is located in `/wardenprotocol/build`.
+   The binary is located in `wardenprotocol/build`.
 
 2. Use our `just` script to build the `wardend` binary and install it to the `$GOPATH/bin` directory. Then initialize the node.
 
@@ -68,7 +68,7 @@ To be able to interact with the node, install `wardend` (the Warden binary) usin
    ```
 
    :::tip
-   When interacting with the node, you should add the path to the binary before `wardend` [commands](/operate-a-node/node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
+   When interacting with the node, you should add the path to the binary before `wardend` [commands](../node-commands). If you install the binary to `$GOPATH/bin`, it's not required.
    :::
 
 ## 2. Configure
@@ -105,7 +105,7 @@ This step is recommended but optional.
 
 To speed up the initial sync, you can use the state sync feature. This will allow you to download the state at a specific height from a trusted node and after that only download the blocks from the network.
 
-You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/chiado/chain.json) – for example, the following:
+You'll need to use a [trusted RPC endpoint](https://github.com/warden-protocol/networks/blob/main/testnets/chiado/chain.json)—for example, the following:
 
 ```bash
 https://rpc.chiado.wardenprotocol.org
@@ -167,6 +167,6 @@ We recommend [using Cosmovisor](https://docs.cosmos.network/v0.45/run-node/cosmo
 
 After joining Chiado, you can take these steps:
 
-- If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](/operate-a-node/create-a-validator) section.
-- To learn more about `wardend` commands for interacting with the node, see [Node commands](/operate-a-node/node-commands).
+- If you want to create a [validator](/learn/glossary#validator), follow the instructions in the [Create a validator](../create-a-validator) section.
+- To learn more about `wardend` commands for interacting with the node, see [Node commands](../node-commands).
 - Don't forget to join our community in [Discord](https://discord.com/invite/wardenprotocol).

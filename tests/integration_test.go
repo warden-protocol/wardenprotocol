@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"os"
@@ -22,8 +21,9 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+//nolint:forbidigo
 func TestIntegration(t *testing.T) {
-	var casesToRun = cases.List()
+	casesToRun := cases.List()
 	if list {
 		fmt.Println("Available test cases:")
 		for _, c := range casesToRun {
@@ -37,13 +37,10 @@ func TestIntegration(t *testing.T) {
 
 	for _, c := range casesToRun {
 		t.Run(getName(c), func(t *testing.T) {
-			ctx, cancel := context.WithCancel(context.Background())
-			defer cancel()
-
 			fmt.Println("setup test:", getName(c))
-			c.Setup(t, ctx, build)
+			c.Setup(t, build)
 			fmt.Println("run test:", getName(c))
-			c.Run(t, ctx, build)
+			c.Run(t, build)
 		})
 	}
 

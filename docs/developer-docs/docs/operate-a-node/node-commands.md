@@ -12,7 +12,7 @@ These commands allow you to do the following:
 
 - Query the node
 - Initiate transactions
-- Manage your key
+- Manage your keys
 - Edit the genesis file
 - and much more
 
@@ -20,14 +20,14 @@ These commands allow you to do the following:
 
 To interact with the node, you need to install the [Warden binary](https://github.com/warden-protocol/wardenprotocol/releases), `wardend`.
 
-You can follow installations instructions in one of these guides (depending on your goal):
+You can follow installation instructions in one of these guides (depending on your goal):
 
-- [Run a local chain](/operate-a-node/run-a-local-chain)
-- [Join Chiado](/operate-a-node/chiado-testnet/join-chiado#1-install)
+- [Run a local chain](run-a-local-chain)
+- [Join Chiado](chiado-testnet/join-chiado#1-install)
 
 ## Execute `wardend` commands
 
-To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](/operate-a-node/chiado-testnet/chiado-overview).
+To execute a node command, just run `wardend`, followed by the command. If you need to specify a node to interact with, include the `--node` flag with a [node endpoint](chiado-testnet/chiado-overview).
 
 For example, to check the node status, run the example below using the preferred endpoint:
 
@@ -72,7 +72,7 @@ To get a full list of commands for querying a node, run this:
 wardend query --help
 ```
 
-For example, the `warden` command allows you to query the [Warden](/learn/warden-protocol-modules/x-warden) module.
+For example, the `warden` command allows you to query the [`x-warden` module](/learn/warden-protocol-modules/x-warden).
 
 Here are some of the available `wardend query warden` subcommands with examples:
 

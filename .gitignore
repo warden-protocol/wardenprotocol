@@ -38,3 +38,6 @@ dist-linux-amd64
 *.sln
 *.sw?
 .envrc
+
+cache
+out

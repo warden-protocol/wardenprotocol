@@ -54,7 +54,7 @@ Also, the more WARP is accumulated by an address, the bigger the airdrop of WARD
 
 ## Phases
 
-WARP evolves alongside the Warden Protocol, adapting to its milestones and community needs.
+WARP evolves alongside Warden Protocol, adapting to its milestones and community needs.
 
 The phases will be split into:
 
@@ -62,6 +62,6 @@ The phases will be split into:
 
 2. You can now acquire WARP on [DEXes](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823) and on [MEXC](https://www.mexc.com/exchange/WARP_USDT).
 
-3. **The Farming Phase**: Accumulate WARP through on-chain and off-chain activities, as well as providing liquidity for WARP-USDC LP tokens.
+3. **The Farming Phase**: Accumulate WARP through onchain and offchain activities, as well as providing liquidity for WARP-USDC LP tokens.
 
 4. **The Redeeming Phase**: Get WARD tokens based on your WARP amount - and join Warden Mainnet.

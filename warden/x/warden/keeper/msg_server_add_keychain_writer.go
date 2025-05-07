@@ -5,6 +5,7 @@ import (
 
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
@@ -16,7 +17,7 @@ func (k msgServer) AddKeychainWriter(goCtx context.Context, msg *types.MsgAddKey
 		return nil, errors.Wrapf(types.ErrInvalidKeychainWriterAddress, "%v", err)
 	}
 
-	kr, err := k.keychains.Get(ctx, msg.KeychainId)
+	kr, err := k.keychains.Get(goCtx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +32,7 @@ func (k msgServer) AddKeychainWriter(goCtx context.Context, msg *types.MsgAddKey
 
 	kr.AddWriter(msg.Writer)
 
-	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
+	if err := k.keychains.Set(goCtx, kr.Id, kr); err != nil {
 		return nil, err
 	}
 

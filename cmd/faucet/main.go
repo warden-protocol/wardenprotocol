@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -83,11 +82,14 @@ func newPage() Page {
 
 func main() {
 	e := echo.New()
+
 	logLevel, err := log.ParseLevel(config.GetLogLevel())
 	if err != nil {
-		fmt.Printf("error parsing log level: %s", err)
+		fmt.Fprintf(os.Stderr, "error parsing log level: %s", err)
+
 		logLevel = log.InfoLevel
 	}
+
 	logger := log.New(
 		log.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
 	).Level(logLevel).With().Timestamp().Logger()
@@ -95,6 +97,7 @@ func main() {
 	if logger.GetLevel() == log.DebugLevel {
 		e.Use(middleware.Logger())
 	}
+
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
 		TokenLookup: "header:X-CSRF-Token",
 	}))
@@ -115,10 +118,6 @@ func main() {
 		Denom:                  f.config.Denom,
 		Chain:                  f.config.Chain,
 		DisplayTokens:          f.config.DisplayTokens,
-	}
-	amount, err := strconv.Atoi(f.config.Amount)
-	if err != nil {
-		logger.Error().Msgf("error converting amount to integer: %s", err)
 	}
 
 	// Start batch process
@@ -147,21 +146,25 @@ func main() {
 		page.Form.CSRFToken = c.Get("csrf").(string)
 		page.Form.Address = c.QueryParam("addr")
 		logger.Debug().Msgf("page.Form: %v", page.Form)
+
 		return c.Render(http.StatusOK, "index", page)
 	})
 
 	e.GET("/check-tx", func(c echo.Context) error {
 		logger.Debug().Msg("checking tx")
 		logger.Debug().Msgf("Batch: %v", f.Batch)
+
 		if len(f.Batch) == 0 {
 			page.Data.TXHash = f.LatestTXHash
 			return c.Render(http.StatusOK, "tx-result", page.Data)
 		}
+
 		return c.Render(http.StatusOK, "spinner", "")
 	})
 
 	e.POST("/send-tokens", func(c echo.Context) error {
 		var txHash string
+
 		var httpStatusCode int
 
 		reqCount.Inc()
@@ -169,18 +172,23 @@ func main() {
 		txHash, httpStatusCode, err = f.Send(c.FormValue("address"), false)
 		if err != nil {
 			logger.Error().Msgf("error sending tokens: %s", err)
+
 			formData := newFormData()
 			formData.Address = ""
 			formData.Errors["address"] = err.Error()
 
 			return c.Render(httpStatusCode, "form", formData)
 		}
+
 		if txHash != "" {
-			page.Data.TokensAvailable -= float64(amount)
+			page.Data.TokensAvailable -= f.Amount
 			page.Data.TokensAvailablePercent = page.Data.TokensAvailable / page.Data.TokenSupply * totalPercent
+
 			logger.Info().Msgf("txHash: %s", txHash)
+
 			return c.Render(http.StatusOK, "form", nil)
 		}
+
 		return c.Render(http.StatusOK, "tx-status", "")
 	})
 
@@ -191,6 +199,7 @@ func main() {
 		if page.Data.TokensAvailable <= 0 {
 			return c.Render(http.StatusOK, "red-cross", "")
 		}
+
 		return c.Render(http.StatusOK, "tokens-section", page.Data)
 	})
 

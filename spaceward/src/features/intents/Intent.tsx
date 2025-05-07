@@ -282,7 +282,7 @@ const IntentComponent = ({
 								)}
 							>
 								{editState === "simple"
-									? `Add Сonditions or Whitelist Addres`
+									? `Add Сonditions or Whitelist Address`
 									: `Add Whitelist Address`}
 							</div>
 

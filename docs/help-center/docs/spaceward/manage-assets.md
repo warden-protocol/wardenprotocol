@@ -18,9 +18,7 @@ SpaceWard currently operates on the **Chiado testnet**, so you should use **only
 
 To receive assets, take these steps:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Assets**. You'll see a list of assets you hold.
 3. Click **Receive**.
 4. Select the key you wish to use and the asset & network pair.
@@ -36,9 +34,7 @@ For **Sepolia ETH**, you can use these faucets:
 
 To send assets, do the following:
 
-1. Connect to SpaceWard:
-   - 👉 [SpaceWard on Buenavista](https://spaceward.buenavista.wardenprotocol.org/)
-   - 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
+1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)
 2. In the left menu, navigate to **Assets**. You'll see a list of assets you hold.
 3. Click **Send**.
 4. Select the key you wish to use. Specify the amount, asset, and the destination address.

@@ -1,0 +1,11 @@
+{
+  "position": 5,
+  "label": "Interact with Warden modules",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Interact with Warden modules"
+  },
+  "customProps": {}
+}

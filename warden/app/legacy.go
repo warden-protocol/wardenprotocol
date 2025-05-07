@@ -5,8 +5,6 @@ import (
 	"maps"
 	"path/filepath"
 
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
-
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -21,7 +19,9 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
 	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
+	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -39,17 +39,25 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibc "github.com/cosmos/ibc-go/v8/modules/core"
-	ibcclienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types" //nolint:all
+	ibcclienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 	ibcconnectiontypes "github.com/cosmos/ibc-go/v8/modules/core/03-connection/types"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
+	srvflags "github.com/evmos/evmos/v20/server/flags"
+	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
+	erc20types "github.com/evmos/evmos/v20/x/erc20/types"
+	"github.com/evmos/evmos/v20/x/evm"
+	"github.com/evmos/evmos/v20/x/evm/core/vm"
+	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
+	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
+	"github.com/evmos/evmos/v20/x/feemarket"
+	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 	"github.com/spf13/cast"
 
-	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
-	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	wardenprecompiles "github.com/warden-protocol/wardenprotocol/precompiles"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
@@ -59,18 +67,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/module"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-
-	// evmos
-	srvflags "github.com/evmos/evmos/v20/server/flags"
-	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
-	erc20types "github.com/evmos/evmos/v20/x/erc20/types"
-	"github.com/evmos/evmos/v20/x/evm"
-	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
-	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
-	"github.com/evmos/evmos/v20/x/feemarket"
-	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
-	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
-	// this line is used by starport scaffolding # ibc/app/import
 )
 
 // registerLegacyModules register IBC and WASM keepers and non dependency inject modules.
@@ -235,6 +231,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	homePath := cast.ToString(appOpts.Get(flags.FlagHome))
 	wasmDir := filepath.Join(homePath, "wasm")
+
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
@@ -340,15 +337,23 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// NOTE: we are just adding the default Ethereum precompiles here.
 	// Additional precompiles could be added if desired.
 	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
-	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(app.WardenKeeper, app.ActKeeper, *app.OracleKeeper)
+
+	wardenprecompiles, err := wardenprecompiles.NewWardenPrecompiles(
+		app.WardenKeeper,
+		app.ActKeeper,
+		*app.OracleKeeper,
+		app.AsyncKeeper,
+	)
 	if err != nil {
 		panic(err)
 	}
+
 	for a, p := range wardenprecompiles {
 		_, found := precompiles[a]
 		if found {
 			panic(fmt.Errorf("precompiles address already registered: %v", a))
 		}
+
 		precompiles[a] = p
 	}
 
@@ -367,7 +372,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		ibctm.AppModule{},
 		solomachine.AppModule{},
 		ibchooks.NewAppModule(app.AccountKeeper),
-		//wasm module
+		// wasm module
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		// evmOS modules
 		feemarket.NewAppModule(app.FeeMarketKeeper, app.GetSubspace(feemarkettypes.ModuleName)),
@@ -375,6 +380,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	); err != nil {
 		panic(err)
 	}
+
 	return wasmConfig
 }
 

@@ -3,25 +3,19 @@ package app
 import (
 	"errors"
 
-	ibcante "github.com/cosmos/ibc-go/v8/modules/core/ante"
-	"github.com/cosmos/ibc-go/v8/modules/core/keeper"
-
 	corestoretypes "cosmossdk.io/core/store"
+	errorsmod "cosmossdk.io/errors"
 	circuitante "cosmossdk.io/x/circuit/ante"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
-
-	evmante "github.com/evmos/evmos/v20/app/ante/evm"
-
-	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
+	ibcante "github.com/cosmos/ibc-go/v8/modules/core/ante"
+	"github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	cosmosante "github.com/evmos/evmos/v20/app/ante/cosmos"
+	evmante "github.com/evmos/evmos/v20/app/ante/evm"
 	anteutils "github.com/evmos/evmos/v20/app/ante/utils"
 	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
 )
@@ -29,7 +23,7 @@ import (
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
 // channel keeper, wasm keeper and EvmOS keepers.
 type HandlerOptions struct {
-	ante.HandlerOptions
+	authante.HandlerOptions
 
 	IBCKeeper             *keeper.Keeper
 	WasmConfig            *wasmTypes.WasmConfig
@@ -40,7 +34,7 @@ type HandlerOptions struct {
 	// evmos
 	FeeMarketKeeper    evmante.FeeMarketKeeper
 	EvmKeeper          evmante.EVMKeeper
-	TxFeeChecker       ante.TxFeeChecker
+	TxFeeChecker       authante.TxFeeChecker
 	AccountKeeper      evmtypes.AccountKeeper
 	BankKeeper         evmtypes.BankKeeper
 	DistributionKeeper anteutils.DistributionKeeper
@@ -54,23 +48,23 @@ func newCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
 		cosmosante.NewAuthzLimiterDecorator( // disable the Msg types that cannot be included on an authz.MsgExec msgs field
 			sdk.MsgTypeURL(&evmtypes.MsgEthereumTx{}),
 		),
-		ante.NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
+		authante.NewSetUpContextDecorator(),                                              // outermost AnteDecorator. SetUpContext must be called first
 		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit), // after setup context to enforce limits early
 		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreService),
 		wasmkeeper.NewGasRegisterDecorator(options.WasmKeeper.GetGasRegister()),
 		circuitante.NewCircuitBreakerDecorator(options.CircuitKeeper),
-		ante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
-		ante.NewValidateBasicDecorator(),
-		ante.NewTxTimeoutHeightDecorator(),
-		ante.NewValidateMemoDecorator(options.AccountKeeper),
+		authante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
+		authante.NewValidateBasicDecorator(),
+		authante.NewTxTimeoutHeightDecorator(),
+		authante.NewValidateMemoDecorator(options.AccountKeeper),
 		cosmosante.NewMinGasPriceDecorator(options.FeeMarketKeeper, options.EvmKeeper),
-		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.HandlerOptions.TxFeeChecker),
-		ante.NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
-		ante.NewValidateSigCountDecorator(options.AccountKeeper),
-		ante.NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
-		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
-		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
+		authante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
+		authante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.HandlerOptions.TxFeeChecker),
+		authante.NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
+		authante.NewValidateSigCountDecorator(options.AccountKeeper),
+		authante.NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
+		authante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
+		authante.NewIncrementSequenceDecorator(options.AccountKeeper),
 		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
 	}
 
@@ -95,36 +89,47 @@ func ValidateAnteHandlerOptions(options HandlerOptions) error {
 	if options.AccountKeeper == nil {
 		return errors.New("account keeper is required for ante builder")
 	}
+
 	if options.BankKeeper == nil {
 		return errors.New("bank keeper is required for ante builder")
 	}
+
 	if options.SignModeHandler == nil {
 		return errors.New("sign mode handler is required for ante builder")
 	}
+
 	if options.WasmConfig == nil {
 		return errors.New("wasm config is required for ante builder")
 	}
+
 	if options.TXCounterStoreService == nil {
 		return errors.New("wasm store service is required for ante builder")
 	}
+
 	if options.CircuitKeeper == nil {
 		return errors.New("circuit keeper is required for ante builder")
 	}
+
 	if options.EvmKeeper == nil {
 		return errors.New("evm keeper is required for ante builder")
 	}
+
 	if options.FeeMarketKeeper == nil {
 		return errors.New("feemarket keeper is required for ante builder")
 	}
+
 	if options.TxFeeChecker == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
+
 	if options.StakingKeeper == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
+
 	if options.DistributionKeeper == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
+
 	if options.StakingKeeper == nil {
 		return errors.New("tx fee checker is required for ante builder")
 	}
@@ -132,7 +137,7 @@ func ValidateAnteHandlerOptions(options HandlerOptions) error {
 	return nil
 }
 
-// NewAnteHandler constructor
+// NewAnteHandler constructor.
 func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 	return func(
 		ctx sdk.Context, tx sdk.Tx, sim bool,
@@ -168,5 +173,4 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 
 		return anteHandler(ctx, tx, sim)
 	}
-
 }

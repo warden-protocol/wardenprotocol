@@ -10,11 +10,11 @@ import { fromBech32 } from "@cosmjs/encoding";
 import { isDeliverTxSuccess, StargateClient } from "@cosmjs/stargate";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
-import { IWeb3Wallet } from "@walletconnect/web3wallet";
+import { IWalletKit } from "@reown/walletkit";
 import { cosmos, warden } from "@wardenprotocol/wardenjs";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { env } from "@/env";
-import { COSMOS_CHAINS } from "@/config/tokens";
+import { getEnabledCosmosChains } from "@/config/tokens";
 import type { getClient } from "@/hooks/useClient";
 import { getBalanceQueryKey } from "@/features/assets/queries";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
@@ -41,12 +41,7 @@ const getStatusDefault = async () => ({
 	done: true,
 });
 
-export const getActionHandler = ({
-	action,
-	call,
-	wc,
-	snap,
-}: QueuedAction) => {
+export const getActionHandler = ({ action, call, wc, snap }: QueuedAction) => {
 	let getStatus: GetStatus;
 	const queryKeys: QueryKey[] = [];
 
@@ -200,7 +195,7 @@ export const handleEthRaw = async ({
 	w,
 }: {
 	action: QueuedAction;
-	w: IWeb3Wallet | null;
+	w: IWalletKit | null;
 }) => {
 	const { value } = action;
 
@@ -266,7 +261,7 @@ export const handleEth = async ({
 	queryClient,
 }: {
 	action: QueuedAction;
-	w: IWeb3Wallet | null;
+	w: IWalletKit | null;
 	queryClient: QueryClient;
 }) => {
 	const { chainName, value, snap, wc, ethRequest } = action;
@@ -339,29 +334,27 @@ export const handleEth = async ({
 };
 
 export const handleCosmos = async ({
+	address,
 	action,
 	w,
 	queryClient,
 	rpcEndpoint,
 }: {
+	address: `0x${string}`;
 	action: QueuedAction;
-	w: IWeb3Wallet | null;
+	w: IWalletKit | null;
 	rpcEndpoint?: string;
 	queryClient: QueryClient;
 }) => {
-	const {
-		chainName,
-		value,
-		signDoc,
-		pubkey,
-		wc
-	} = action;
+	const { chainName, value, signDoc, pubkey, wc } = action;
 
 	if (!chainName || !signDoc || !pubkey) {
 		throw new Error("missing chainName, signDoc, pubkey");
 	}
 
-	const chain = COSMOS_CHAINS.find((item) => item.chainName === chainName);
+	const chain = getEnabledCosmosChains(address).find(
+		(item) => item.chainName === chainName,
+	);
 
 	if (!chain) {
 		throw new Error("chain not found");

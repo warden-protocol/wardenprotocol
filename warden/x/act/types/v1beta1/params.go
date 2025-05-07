@@ -1,22 +1,25 @@
 package v1beta1
 
 import (
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"time"
+
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
-var DefaultMaxPendingTime time.Duration = time.Hour * 24    // day
-var DefaultMaxCompletedTime time.Duration = time.Hour * 168 // week
-var PruneCheckBlockFrequency int64 = 10000                  // ~17 hours
+var (
+	DefaultMaxPendingTime    time.Duration = time.Hour * 24  // day
+	DefaultMaxCompletedTime  time.Duration = time.Hour * 168 // week
+	PruneCheckBlockFrequency int64         = 10000           // ~17 hours
+)
 
-// NewParams creates a new Params instance
+// NewParams creates a new Params instance.
 func NewParams() Params {
 	return Params{}
 }
 
-// DefaultParams returns a default set of parameters
+// DefaultParams returns a default set of parameters.
 func DefaultParams() Params {
 	return Params{
 		MaxPendingTime:           DefaultMaxPendingTime,
@@ -25,12 +28,12 @@ func DefaultParams() Params {
 	}
 }
 
-// ParamSetPairs get the params.ParamSet
+// ParamSetPairs get the params.ParamSet.
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{}
 }
 
-// Validate validates the set of params
+// Validate validates the set of params.
 func (p Params) Validate() error {
 	return nil
 }

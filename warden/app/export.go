@@ -25,6 +25,7 @@ func (app *App) ExportAppStateAndValidators(forZeroHeight bool, jailAllowedAddrs
 	height := app.LastBlockHeight() + 1
 	if forZeroHeight {
 		height = 0
+
 		app.prepForZeroHeightGenesis(ctx, jailAllowedAddrs)
 	}
 
@@ -39,11 +40,12 @@ func (app *App) ExportAppStateAndValidators(forZeroHeight bool, jailAllowedAddrs
 	}
 
 	validators, err := staking.WriteValidators(ctx, app.StakingKeeper)
+
 	return servertypes.ExportedApp{
 		AppState:        appState,
 		Validators:      validators,
 		Height:          height,
-		ConsensusParams: app.BaseApp.GetConsensusParams(ctx),
+		ConsensusParams: app.GetConsensusParams(ctx),
 	}, err
 }
 
@@ -52,12 +54,9 @@ func (app *App) ExportAppStateAndValidators(forZeroHeight bool, jailAllowedAddrs
 //
 //	in favor of export at a block height
 func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []string) {
-	applyAllowedAddrs := false
+	applyAllowedAddrs := len(jailAllowedAddrs) > 0
 
 	// check if there is a allowed address list
-	if len(jailAllowedAddrs) > 0 {
-		applyAllowedAddrs = true
-	}
 
 	allowedAddrsMap := make(map[string]bool)
 
@@ -66,6 +65,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		allowedAddrsMap[addr] = true
 	}
 
@@ -80,7 +80,9 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err != nil {
 			panic(err)
 		}
+
 		_, _ = app.DistrKeeper.WithdrawValidatorCommission(ctx, valBz)
+
 		return false
 	})
 	if err != nil {
@@ -125,10 +127,12 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err != nil {
 			panic(err)
 		}
+
 		feePool, err := app.DistrKeeper.FeePool.Get(ctx)
 		if err != nil {
 			panic(err)
 		}
+
 		feePool.CommunityPool = feePool.CommunityPool.Add(scraps...)
 		if err := app.DistrKeeper.FeePool.Set(ctx, feePool); err != nil {
 			panic(err)
@@ -137,6 +141,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err := app.DistrKeeper.Hooks().AfterValidatorCreated(ctx, valBz); err != nil {
 			panic(err)
 		}
+
 		return false
 	})
 
@@ -146,6 +151,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err != nil {
 			panic(err)
 		}
+
 		delAddr := sdk.MustAccAddressFromBech32(del.DelegatorAddress)
 
 		if err := app.DistrKeeper.Hooks().BeforeDelegationCreated(ctx, delAddr, valAddr); err != nil {
@@ -169,10 +175,12 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		for i := range red.Entries {
 			red.Entries[i].CreationHeight = 0
 		}
+
 		err = app.StakingKeeper.SetRedelegation(ctx, red)
 		if err != nil {
 			panic(err)
 		}
+
 		return false
 	})
 	if err != nil {
@@ -184,10 +192,12 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		for i := range ubd.Entries {
 			ubd.Entries[i].CreationHeight = 0
 		}
+
 		err = app.StakingKeeper.SetUnbondingDelegation(ctx, ubd)
 		if err != nil {
 			panic(err)
 		}
+
 		return false
 	})
 	if err != nil {
@@ -202,6 +212,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 
 	for ; iter.Valid(); iter.Next() {
 		addr := sdk.ValAddress(stakingtypes.AddressFromValidatorsKey(iter.Key()))
+
 		validator, err := app.StakingKeeper.GetValidator(ctx, addr)
 		if err != nil {
 			panic("expected validator, not found")
@@ -215,6 +226,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 		if err := app.StakingKeeper.SetValidator(ctx, validator); err != nil {
 			panic(err)
 		}
+
 		counter++
 	}
 
@@ -238,6 +250,7 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 			if err := app.SlashingKeeper.SetValidatorSigningInfo(ctx, addr, info); err != nil {
 				panic(err)
 			}
+
 			return false
 		},
 	)

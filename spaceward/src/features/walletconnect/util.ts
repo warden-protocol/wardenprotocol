@@ -1,6 +1,6 @@
 import { fromBech32, fromHex, toBech32 } from "@cosmjs/encoding";
 import type { PendingRequestTypes, ProposalTypes } from "@walletconnect/types";
-import { IWeb3Wallet } from "@walletconnect/web3wallet";
+import { IWalletKit } from "@reown/walletkit";
 import { chains } from "chain-registry";
 
 import {
@@ -10,7 +10,7 @@ import {
 } from "@walletconnect/utils";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 
-import { COSMOS_CHAINS } from "@/config/tokens";
+import { getEnabledCosmosChains } from "@/config/tokens";
 import { PRECOMPILE_WARDEN_ADDRESS } from "@/contracts/constants";
 import wardenPrecompileAbi from "@/contracts/wardenPrecompileAbi";
 import { AddressType } from "@/hooks/query/warden";
@@ -84,7 +84,7 @@ export function encodeRemoteMessage(
 	}
 }
 
-export async function rejectSession(w: IWeb3Wallet, id: number) {
+export async function rejectSession(w: IWalletKit, id: number) {
 	try {
 		const session = await w.rejectSession({
 			id,
@@ -97,7 +97,7 @@ export async function rejectSession(w: IWeb3Wallet, id: number) {
 }
 
 export async function approveSession(
-	w: IWeb3Wallet,
+	w: IWalletKit,
 	spaceId: string,
 	proposal: ProposalTypes.Struct,
 	addresses?: KeyModel["addresses"],
@@ -246,13 +246,15 @@ const isValidEthParams = (params: any): params is EthParams => {
 };
 
 export async function approveRequest({
+	address,
 	w,
 	req,
 	eth,
 	cosm,
 	client,
 }: {
-	w?: IWeb3Wallet | null;
+	address: `0x${string}`;
+	w?: IWalletKit | null;
 	req: PendingRequestTypes.Struct;
 	eth: ReturnType<typeof useEthereumTx>;
 	cosm: ReturnType<typeof useKeychainSigner>;
@@ -525,7 +527,7 @@ export async function approveRequest({
 					throw new Error(`Unknown address ${signerAddress}`);
 				}
 
-				const feeAmount = COSMOS_CHAINS.find(
+				const feeAmount = getEnabledCosmosChains(address).find(
 					({ chainName }) => chainName === chain.chain_name,
 				)?.feeAmount;
 

@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Warden Protocol nodes
 
-A Warden Protocol node is a server running the software (binary) of the Warden Protocol.
+A Warden Protocol node is a server running the software (binary) of Warden Protocol.
 
 Reasons for running a node include the following:
 
@@ -16,14 +16,25 @@ Reasons for running a node include the following:
 
 ## Section overview
 
-This section explains how to run a node and become a validator.
+- [Delegation plan](delegation-plan)  
+  Here you can learn about our delegation plan.
 
-Here are the main steps to take:
+- [Run a local chain](run-a-local-chain)  
+  Follow this guide if you wish to run a local chain for testing purposes.
 
-1. If you wish to run a local chain for testing purposes, follow this guide: [Run a local chain](run-a-local-chain).
-2. To get started with our testnet, follow [Join Chiado](chiado-testnet/join-chiado).
-3. After joining the network, you can become a validator: [Create a validator](create-a-validator).
-4. To run the oracle service integrated with Warden, follow [Operate Skip:Connect](operate-skip-connect).
-4. To interact with a node, use the [Node API](node-api-reference) and [node commands](node-commands).
-5. You can also learn about our [delegation plan](delegation-plan).
+- [Chiado testnet](chiado-testnet/chiado-overview), [Buenavista testnet](buenavista-testnet/buenavista-overview)  
+  These sections cover our testnets. To get started, follow [Join Chiado](chiado-testnet/join-chiado).  
+  Please note that we've sunsetted Buenavista. 
 
+- [Create a validator](create-a-validator), [Operate Skip:Connect](operate-skip-connect)    
+  After joining a network, you can become a validator and run the oracle service integrated with Warden.
+
+- [Node API](node-api), [Node commands](node-commands)  
+  To interact with the node, use the Node API and node commands.
+
+## Get started
+
+You can get started with operating a node by following one of these guides:
+
+- [Run a local chain](run-a-local-chain)
+- [Join Chiado](chiado-testnet/join-chiado)

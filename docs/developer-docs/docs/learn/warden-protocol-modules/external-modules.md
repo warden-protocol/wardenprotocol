@@ -1,12 +1,12 @@
 ﻿---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # External modules
 
 ## Overview
 
-In this section, you'll find descriptions of external [Cosmos SDK](https://docs.cosmos.network) modules used by the Warden Protocol. For more details, follow the provided links to external documentation.
+In this section, you'll find descriptions of external [Cosmos SDK](https://docs.cosmos.network) modules used by Warden Protocol. For more details, follow the provided links to external documentation.
 
 ## x/evm
 
@@ -23,7 +23,7 @@ Learn more:
 
 ## x/wasm
 
-The `x/wasm` module is a Cosmos SDK module that processes certain messages and uses them to upload, instantiate, and execute smart contracts. It's an integral part of **CosmWasm** – a smart contract platform that can be integrated into any blockchain built on top of the Cosmos SDK.
+The `x/wasm` module is a Cosmos SDK module that processes certain messages and uses them to upload, instantiate, and execute smart contracts. It's an integral part of **CosmWasm**—a smart contract platform that can be integrated into any blockchain built on top of the Cosmos SDK.
 
 To start using `x/wasm`, follow this guide:
 
@@ -42,20 +42,25 @@ GMP allows smart contracts on one chain to send messages and data to smart contr
 
 To start using `x/gmp`, follow this guide:
 
-- [Deploy a cross-chain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
+- [Deploy a crosschain app](/build-an-app/deploy-smart-contracts-on-warden/deploy-a-cross-chain-app)
 
 Learn more:
 
 - [Cosmos GMP documentation](https://docs.axelar.dev/dev/cosmos-gmp)
 - [Axelar GMP SDK on GitHub](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity)
-- [Warden docs: Bridging](/learn/bridging)
+- [Warden docs: Bridging](../bridging)
 
 ## x/oracle
 
-The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices on-chain in **Skip:Connect** (an oracle service).
+The `x/oracle` module is a Cosmos SDK module by **Skip Protocol** that enables storing prices onchain in **Skip:Connect** (an oracle service).
+
+To use `x/oracle`, call the [`x/oracle` precompile](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/slinky/ISlinky.sol) in your contract. To get started and find a usage example, see these guides:
+
+- [Get started with precompiles](/build-an-app/interact-with-warden-modules/get-started-with-precompiles)
+- [Implement automated Orders](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders/introduction)
 
 Learn more:
 
 - [Connect documentation](https://docs.skip.build/connect/introduction)
 - [`x/oracle` on GitHub](https://github.com/skip-mev/slinky/tree/main/x/oracle)
-- [Warden docs: Oracle services](/learn/oracle-services)
+- [Warden docs: Oracle services](../oracle-services)

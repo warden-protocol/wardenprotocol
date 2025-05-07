@@ -15,5 +15,13 @@ pnpm-lock.yaml
 yarn.lock
 
 # broadcasts
-!broadcast
-broadcast/*/1337/
+broadcast/**
+!broadcast/Deploy.s.sol
+!broadcast/Deploy.s.sol/12345
+!broadcast/Deploy.s.sol/12345/latest.json
+!broadcast/Deploy.s.sol/12345/run-latest.json
+
+# chiado orders
+!broadcast/Deploy.s.sol/10010
+!broadcast/Deploy.s.sol/10010/latest.json
+!broadcast/Deploy.s.sol/10010/run-latest.json

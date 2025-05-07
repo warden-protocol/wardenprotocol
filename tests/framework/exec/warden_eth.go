@@ -1,7 +1,6 @@
 package exec
 
 import (
-	"context"
 	"crypto/ecdsa"
 	"math/big"
 	"testing"
@@ -35,25 +34,25 @@ func (cli *Wardend) EthAddress(t *testing.T) common.Address {
 
 func (cli *Wardend) TransactOps(
 	t *testing.T,
-	ctx context.Context,
-	client *ethclient.Client) *bind.TransactOpts {
+	client *ethclient.Client,
+) *bind.TransactOpts {
 	privateKey, err := crypto.HexToECDSA(cli.PrivateKey(t))
 	require.NoError(t, err)
 
 	fromAddress := cli.EthAddress(t)
 
-	nonce, err := client.PendingNonceAt(ctx, fromAddress)
+	nonce, err := client.PendingNonceAt(t.Context(), fromAddress)
 	require.NoError(t, err)
 
-	gasPrice, err := client.SuggestGasPrice(ctx)
+	gasPrice, err := client.SuggestGasPrice(t.Context())
 	require.NoError(t, err)
 
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1337))
 	require.NoError(t, err)
 
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(0)      // in wei
-	auth.GasLimit = uint64(1000000) // in units
+	auth.Value = big.NewInt(0)          // in wei
+	auth.GasLimit = uint64(10000000000) // in units
 	auth.GasPrice = gasPrice
 
 	return auth

@@ -44,7 +44,7 @@
         {"source":"/developers/architecture/adr-001-keychain-slashing-locking","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/adr-001.md", "statusCode": 301},
         {"source":"/developers/migration","destination":"/", "statusCode": 301},
         {"source":"/developers/migration/wardend-v0.2.0-upgrade","destination":"/", "statusCode": 301},
-        {"source":"/developers/api","destination":"/operate-a-node/node-api-reference", "statusCode": 301},
+        {"source":"/developers/api","destination":"/operate-a-node/node-api", "statusCode": 301},
         {"source":"/developers/metamask-snap","destination":"https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs/6-test-metamask-snap.md", "statusCode": 301},
         {"source":"/category/validate","destination":"/operate-a-node/introduction", "statusCode": 301},
         {"source":"/validate/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
@@ -59,6 +59,23 @@
         {"source":"/build-an-oapp/useful-links","destination":"/build-an-app/useful-links", "statusCode": 301},
         {"source":"/build-an-oapp/test/run-a-local-chain","destination":"/operate-a-node/run-a-local-chain", "statusCode": 301},
         {"source":"/build-an-oapp","destination":"/build-an-app/test/fulfill-requests-from-cli", "statusCode": 301},
-        {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301}
+        {"source":"/tokens/ward-token/delegation-program","destination":"/operate-a-node/delegation-plan", "statusCode": 301},
+        {"source":"/learn/aibi","destination":"/learn/warden-ai-agents", "statusCode": 301},
+        {"source":"/operate-a-node/buenavista-testnet/upgrade/v0.4.0","destination":"/operate-a-node/buenavista-testnet/upgrade/v0.4.1", "statusCode": 301},
+        {"source":"/build-an-app/interact-with-warden-modules/get-started","destination":"/build-an-app/interact-with-warden-modules/get-started-with-precompiles", "statusCode": 301},
+        {"source":"/build-an-agent/introduction#ai-blockchain-interface","destination":"/learn/warden-ai-agents#ai-integration", "statusCode": 301},
+        {"source":"/category/use-the-http-handler","destination":"/category/use-the-http-plugin", "statusCode": 301},
+        {"source":"/category/use-the-price-prediction-handler","destination":"/category/use-the-price-prediction-plugin", "statusCode": 301},
+        {"source":"/operate-a-node/node-api-reference","destination":"/operate-a-node/node-api", "statusCode": 301},
+        {"source":"/category/run-offchain-computations-with-xasync","destination":"/category/run-offchain-computations-with-xasync-avr-plugins", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/introduction","destination":"/build-an-app/run-offchain-computations/introduction", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/introduction","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/introduction", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/set-up-the-environment","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/set-up-the-environment", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/implement-http-requests","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/implement-http-requests", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/extract-data","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/extract-data", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-http-plugin/fetch-multiple-prices","destination":"/build-an-app/run-offchain-computations/use-the-http-plugin/fetch-multiple-prices", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/introduction","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/introduction", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/set-up-the-environment","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/set-up-the-environment", "statusCode": 301},
+        {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/implement-price-prediction-requests","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/implement-price-prediction-requests", "statusCode": 301}
     ]
 }

@@ -1,0 +1,124 @@
+// Copyright (c) 2025 Warden Labs. All Rights Reserved.
+//
+// ** RESTRICTED LICENSE **
+//
+// This file is part of the 'async' module. It is NOT licensed
+// under the Apache 2.0 license governing the rest of the project.
+// Refer to the LICENSE file in this module's directory for full terms.
+// Use, modification, and distribution are strictly limited.
+// Do NOT use this file unless you agree to the terms stated in that license.
+//
+// SPDX-FileCopyrightText: 2025 Warden Labs
+// SPDX-License-Identifier: LicenseRef-Proprietary-RestrictedModule
+
+syntax = "proto3";
+package warden.async.v1beta1;
+
+import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
+import "warden/async/v1beta1/params.proto";
+import "warden/async/v1beta1/plugin.proto";
+import "warden/async/v1beta1/task.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/warden/async/params";
+  }
+
+  // Queries a list of Tasks.
+  rpc Tasks(QueryTasksRequest) returns (QueryTasksResponse) {
+    option (google.api.http).get = "/warden/async/tasks";
+  }
+
+  // Queries a Task by its id.
+  rpc TaskById(QueryTaskByIdRequest) returns (QueryTaskByIdResponse) {
+    option (google.api.http).get = "/warden/async/task/{id}";
+  }
+
+  // Queries Tasks that do not have a result yet.
+  rpc PendingTasks(QueryPendingTasksRequest) returns (QueryPendingTasksResponse) {
+    option (google.api.http).get = "/warden/async/pending_tasks";
+  }
+
+  rpc Plugins(QueryPluginsRequest) returns (QueryPluginsResponse) {
+    option (google.api.http).get = "/warden/async/plugins";
+  }
+
+  // Queries Plugins by validator.
+  rpc PluginsByValidator(QueryPluginsByValidatorRequest) returns (QueryPluginsByValidatorResponse) {
+    option (google.api.http).get = "/warden/async/plugins_by_validator/{validator}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryTasksRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  // optional filter to query tasks by creator
+  string creator = 2 [
+    (gogoproto.nullable) = true,
+    (cosmos_proto.scalar) = "cosmos.AddressString"
+  ];
+}
+
+message TaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false];
+  repeated TaskVote votes = 2 [(gogoproto.nullable) = false];
+  TaskResult result = 3 [(gogoproto.nullable) = true];
+}
+
+message QueryTasksResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated TaskResponse tasks = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryTaskByIdRequest {
+  uint64 id = 1;
+}
+
+message QueryTaskByIdResponse {
+  TaskResponse taskResponse = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryPendingTasksRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryPendingTasksResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Task tasks = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryPluginsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryPluginsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Plugin plugins = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryPluginsByValidatorRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string validator = 2 [(cosmos_proto.scalar) = "cosmos.ConsensusAddressString"];
+}
+
+message QueryPluginsByValidatorResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated string plugins = 2 [(gogoproto.nullable) = false];
+}

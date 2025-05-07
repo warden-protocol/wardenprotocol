@@ -181,6 +181,9 @@ export class LCDQueryClient {
     if (typeof params?.status !== "undefined") {
       options.params.status = params.status;
     }
+    if (typeof params?.null !== "undefined") {
+      options.params.null = params.null;
+    }
     if (typeof params?.broadcastType !== "undefined") {
       options.params.broadcast_type = params.broadcastType;
     }

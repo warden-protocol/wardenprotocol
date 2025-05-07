@@ -6,6 +6,7 @@ on:
     branches:
       - main
     paths:
+      - "go.mod"
       - "cmd/wardenkms/**"
       - "go-client/**"
       - "keychain-sdk/**"
@@ -13,6 +14,7 @@ on:
       - "wardenkms/v*"
   pull_request:
     paths:
+      - "go.mod"
       - "cmd/wardenkms/**"
       - "go-client/**"
       - "keychain-sdk/**"
@@ -23,14 +25,14 @@ jobs:
     name: lint
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.24"
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v7
         with:
-          version: v1.56
+          version: v2.0
           args: --timeout=10m ./cmd/wardenkms/...
 
   unit-test:
@@ -38,9 +40,9 @@ jobs:
     name: test
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.24"
       - name: Build
         run: go build -v -o build/wardenkms ./cmd/wardenkms/...
       - name: Test (-race)

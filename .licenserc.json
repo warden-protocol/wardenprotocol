@@ -1,0 +1,8 @@
+[
+  {
+    "include": ["warden/x/async/**/*.go"],
+    "exclude": ["warden/x/async/**/*.pb.go", "warden/x/async/**/*.pb.gw.go"],
+    "license": "./warden/x/async/license-header.txt",
+    "strict": false
+  }
+]

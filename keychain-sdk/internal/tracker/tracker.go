@@ -1,7 +1,7 @@
 package tracker
 
 import (
-	"fmt"
+	"errors"
 	"sync"
 )
 
@@ -14,7 +14,7 @@ const (
 
 type stringSet map[string]struct{}
 
-// add safely adds a string to the set
+// add safely adds a string to the set.
 func (s stringSet) add(str string) bool {
 	if _, exists := s[str]; exists {
 		return false
@@ -54,7 +54,7 @@ func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
 	value := t.ingestTracker(id)
 
 	if !value.add(ingesterId) {
-		return ActionSkip, fmt.Errorf("already ingested")
+		return ActionSkip, errors.New("already ingested")
 	}
 
 	if uint64(len(value)) < uint64(t.threshold) {

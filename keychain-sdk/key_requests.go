@@ -68,7 +68,8 @@ func (a *App) ingestRequest(
 	_ context.Context,
 	keyRequestsCh chan *wardentypes.KeyRequest,
 	keyRequest *wardentypes.KeyRequest,
-	client *wardenClient) {
+	client *wardenClient,
+) {
 	action, err := a.keyRequestTracker.Ingest(keyRequest.Id, client.grpcURL)
 	if err != nil {
 		a.logger().Error("failed to ingest key request", "id", keyRequest.Id, "grpcUrl", client.grpcURL, "error", err)

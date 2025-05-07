@@ -2,6 +2,7 @@ package keychain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 
@@ -53,7 +54,8 @@ func (cp *clientsPool) initConnection(
 	logger *slog.Logger,
 	grpcNodeConfig GRPCNodeConfig,
 	chainID string,
-	identity client.Identity) (*wardenClient, error) {
+	identity client.Identity,
+) (*wardenClient, error) {
 	appClient := &wardenClient{
 		grpcURL:      grpcNodeConfig.Host,
 		grpcInsecure: grpcNodeConfig.Insecure,
@@ -83,7 +85,7 @@ func (cp *clientsPool) liveTxClient() (*client.TxClient, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("all node clients are down")
+	return nil, errors.New("all node clients are down")
 }
 
 func isOnline(state connectivity.State) bool {

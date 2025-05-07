@@ -64,7 +64,7 @@ message MsgAddTask {
   string creator = 1;
   string plugin = 2;
   bytes input = 3;
-  string callback = 4 [deprecated = true];
+  reserved 4;
 
   repeated cosmos.base.v1beta1.Coin max_fee = 5 [
     (gogoproto.nullable) = false,

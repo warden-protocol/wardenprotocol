@@ -11,7 +11,8 @@ import {
     IAsync,
     PendingTasksResponse
 } from "precompile-async/IAsync.sol";
-import { Types } from "precompile-async/IAsync.sol";
+import { DeductedFee, PluginsResponse, Types } from "precompile-async/IAsync.sol";
+import { CallbackParams } from "precompile-sched/ISched.sol";
 
 contract MockAsyncPrecompile is IAsync {
     uint64 public tasksCount = 0;
@@ -21,16 +22,20 @@ contract MockAsyncPrecompile is IAsync {
     function addTask(
         string calldata plugin,
         bytes calldata input,
-        address
+        Types.Coin[] calldata,
+        CallbackParams calldata
     ) external returns (uint64 taskId)
     {
         taskId = uint64(++tasksCount);
+        DeductedFee memory fee;
         Task memory task = Task({
             id: taskId,
             // solhint-disable-next-line
             creator: tx.origin,
             plugin: plugin,
-            input: input
+            fee: fee,
+            input: input,
+            callbackId: 0
         });
 
         TaskVote[] memory emptyVotes = new TaskVote[](0);
@@ -67,6 +72,13 @@ contract MockAsyncPrecompile is IAsync {
     function pendingTasks(
         Types.PageRequest calldata
     ) external pure returns (PendingTasksResponse memory) {
+        // solhint-disable-next-line
+        revert("Unimplemented");
+    }
+
+    function plugins(
+        Types.PageRequest calldata pagination
+    ) external view returns (PluginsResponse memory response) {
         // solhint-disable-next-line
         revert("Unimplemented");
     }

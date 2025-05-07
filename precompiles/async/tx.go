@@ -11,6 +11,7 @@ import (
 	precommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
 	asynctypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
+	schedtypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
 const (
@@ -61,25 +62,31 @@ func newMsgAddTask(args []interface{}, origin common.Address, method *abi.Method
 		return nil, fmt.Errorf("error while unpacking args to addTaskInput struct: %w", err)
 	}
 
-	var callbackAddress string
-	if input.Callback.String() == "0x0000000000000000000000000000000000000000" {
-		callbackAddress = ""
-	} else {
-		callbackAddress = precommon.Bech32StrFromAddress(input.Callback)
+	var callbackParams *schedtypes.CallbackParams
+	if input.CallbackParams.AddressValue.String() != "0x0000000000000000000000000000000000000000" {
+		callbackParams = &schedtypes.CallbackParams{
+			Address:  precommon.Bech32StrFromAddress(input.CallbackParams.AddressValue),
+			GasLimit: input.CallbackParams.GasLimit,
+		}
 	}
 
 	return &asynctypes.MsgAddTask{
-		Creator:  authority,
-		Input:    input.Input,
-		Plugin:   input.Plugin,
-		MaxFee:   mapCoins(input.MaxFee),
-		Callback: callbackAddress,
+		Creator:        authority,
+		Input:          input.Input,
+		Plugin:         input.Plugin,
+		MaxFee:         mapCoins(input.MaxFee),
+		CallbackParams: callbackParams,
 	}, nil
 }
 
 type addTaskInput struct {
-	Plugin   string
-	Input    []byte
-	MaxFee   []TypesCoin
-	Callback common.Address
+	Plugin         string
+	Input          []byte
+	MaxFee         []TypesCoin
+	CallbackParams callbackParams
+}
+
+type callbackParams struct {
+	AddressValue common.Address
+	GasLimit     uint64
 }

@@ -2,6 +2,7 @@
 pragma solidity >=0.8.25;
 
 import "../common/Types.sol";
+import "../sched/ISched.sol";
 
 /// @dev The IAsync contract's address.
 address constant IASYNC_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000903;
@@ -36,6 +37,7 @@ struct Task {
     string plugin;
     bytes input;
     DeductedFee fee;
+    uint64 callbackId;
 }
 
 enum TaskVoteType {
@@ -86,13 +88,13 @@ interface IAsync {
     /// @dev Defines a method to add a task.
     /// @param plugin The unique name of the plugin
     /// @param input The plugin's input
-    /// @param callback The address of callback contract
+    /// @param callbackParams The params for callback. Zero address interpretes as no-callback
     /// @return taskId The id of the task
     function addTask(
         string calldata plugin,
         bytes calldata input,
         Types.Coin[] calldata maxFee,
-        address callback
+        CallbackParams calldata callbackParams
     ) external returns (uint64 taskId);
 
     /// @dev Defines a method to query task by id.
@@ -129,11 +131,11 @@ interface IAsync {
     /// @param creator The address of the creator
     /// @param taskId The task Id
     /// @param plugin The name of the plugin
-    /// @param callbackAddress The address of callback contract
+    /// @param callbackId The id of callback
     event CreateTask(
         uint64 indexed taskId,
         address indexed creator,
         string plugin,
-        address callbackAddress
+        uint64 callbackId
     );
 }

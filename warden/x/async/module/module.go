@@ -207,6 +207,7 @@ type ModuleInputs struct {
 	BankKeeper    types.BankKeeper
 	StakingKeeper *stakingkeeper.Keeper
 	GetEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper `optional:"true"`
+	SchedKeeper   types.SchedKeeper
 
 	Prophet *prophet.P `optional:"true"`
 }
@@ -233,11 +234,11 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Logger,
 		authority.String(),
 		in.Prophet,
-		in.GetEvmKeeper,
-		asyncModuleAddress,
 		in.AccountKeeper,
+		asyncModuleAddress,
 		in.BankKeeper,
 		in.StakingKeeper,
+		in.SchedKeeper,
 	)
 	m := NewAppModule(
 		in.Cdc,

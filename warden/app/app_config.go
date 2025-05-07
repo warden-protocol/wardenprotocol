@@ -85,12 +85,15 @@ import (
 
 	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
 	asyncmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/async/module"
+	schedmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/sched/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
 	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/async/module" // import for side-effects
 	asyncmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"
 	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/sched/module" // import for side-effects
+	schedmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
 	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
@@ -161,6 +164,7 @@ var (
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
 		asyncmoduletypes.ModuleName,
+		schedmoduletypes.ModuleName,
 		gmpmoduletypes.ModuleName,
 		ibchookstypes.ModuleName,
 		// wasm module
@@ -196,6 +200,7 @@ var (
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
 		asyncmoduletypes.ModuleName,
+		schedmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
@@ -227,6 +232,7 @@ var (
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
 		asyncmoduletypes.ModuleName,
+		schedmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
@@ -255,6 +261,7 @@ var (
 		{Account: icatypes.ModuleName},
 		{Account: actmoduletypes.ModuleName},
 		{Account: asyncmoduletypes.ModuleName},
+		{Account: schedmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
 		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
@@ -408,6 +415,10 @@ func moduleConfig() depinject.Config {
 				{
 					Name:   asyncmoduletypes.ModuleName,
 					Config: appconfig.WrapAny(&asyncmodulev1.Module{}),
+				},
+				{
+					Name:   schedmoduletypes.ModuleName,
+					Config: appconfig.WrapAny(&schedmodulev1.Module{}),
 				},
 				{
 					Name: marketmaptypes.ModuleName,

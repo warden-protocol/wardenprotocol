@@ -17,13 +17,13 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	schedtypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 )
 
 // AccountKeeper defines the expected interface for the Account module.
 type AccountKeeper interface {
-	GetAccount(context.Context, sdk.AccAddress) sdk.AccountI
-	NewAccountWithAddress(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
-	SetAccount(ctx context.Context, acc sdk.AccountI)
+	GetAccount(context.Context, sdk.AccAddress) sdk.AccountI // only used for simulation
 	// Methods imported from account should be defined here
 }
 
@@ -38,4 +38,10 @@ type BankKeeper interface {
 type ParamSubspace interface {
 	Get(context.Context, []byte, interface{})
 	Set(context.Context, []byte, interface{})
+}
+
+// ScheduleKeeper defined the expected interface for the Schedule module.
+type SchedKeeper interface {
+	SetCallback(ctx context.Context, cb *schedtypes.Callback) (id uint64, err error)
+	ExecuteCallback(ctx context.Context, id uint64, output []byte) error
 }

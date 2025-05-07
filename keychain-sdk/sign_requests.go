@@ -16,10 +16,10 @@ import (
 // SignResponseWriter is the interface for writing responses to sign requests.
 type SignResponseWriter interface {
 	// Fulfil writes the signature to the sign request.
-	Fulfil(signature []byte) error
+	Fulfil(ctx context.Context, signature []byte) error
 
 	// Reject writes a rejection to the sign request.
-	Reject(reason string) error
+	Reject(ctx context.Context, reason string) error
 }
 
 // SignRequest is a sign request.
@@ -87,7 +87,7 @@ func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *warde
 }
 
 func (a *App) ingestSignRequest(_ context.Context, signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *wardenClient) {
-	action, err := a.keyRequestTracker.Ingest(signRequest.Id, appClient.grpcURL)
+	action, err := a.signRequestTracker.Ingest(signRequest.Id, appClient.grpcURL)
 	if err != nil {
 		a.logger().Error("failed to ingest sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcURL, "error", err)
 		return

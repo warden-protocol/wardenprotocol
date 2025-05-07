@@ -57,11 +57,11 @@ func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
 		return ActionSkip, fmt.Errorf("already ingested")
 	}
 
-	if uint64(len(value)) == uint64(t.threshold) {
-		return ActionProcess, nil
+	if uint64(len(value)) < uint64(t.threshold) {
+		return ActionSkip, nil
 	}
 
-	return ActionSkip, nil
+	return ActionProcess, nil
 }
 
 func (t *T) Done(id uint64) {

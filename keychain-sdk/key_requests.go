@@ -65,7 +65,7 @@ func (a *App) ingestKeyRequests(ctx context.Context, keyRequestsCh chan *wardent
 }
 
 func (a *App) ingestRequest(
-	ctx context.Context,
+	_ context.Context,
 	keyRequestsCh chan *wardentypes.KeyRequest,
 	keyRequest *wardentypes.KeyRequest,
 	client *wardenClient) {

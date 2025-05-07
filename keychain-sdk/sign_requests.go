@@ -78,7 +78,7 @@ func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *warde
 			a.logger().Error("failed to get sign requests", "error", err)
 		} else {
 			for _, signRequest := range signRequests {
-				a.ingestSignRequest(signRequestsCh, signRequest, appClient)
+				a.ingestSignRequest(ctx, signRequestsCh, signRequest, appClient)
 			}
 		}
 
@@ -86,24 +86,7 @@ func (a *App) ingestSignRequests(ctx context.Context, signRequestsCh chan *warde
 	}
 }
 
-func (a *App) ingestSignRequest(signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *wardenClient) {
-	action, err := a.keyRequestTracker.Ingest(signRequest.Id, appClient.grpcURL)
-	if err != nil {
-		a.logger().Error("failed to ingest sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcURL, "error", err)
-		return
-	}
-
-	if action == tracker.ActionSkip {
-		a.logger().Debug("skipping sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcURL)
-		return
-	}
-
-	if action == tracker.ActionProcess {
-		signRequestsCh <- signRequest
-	}
-}
-
-func (a *App) ingestSignRequest(ctx context.Context, signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *wardenClient) {
+func (a *App) ingestSignRequest(_ context.Context, signRequestsCh chan *wardentypes.SignRequest, signRequest *wardentypes.SignRequest, appClient *wardenClient) {
 	action, err := a.keyRequestTracker.Ingest(signRequest.Id, appClient.grpcURL)
 	if err != nil {
 		a.logger().Error("failed to ingest sign request", "id", signRequest.Id, "grpcUrl", appClient.grpcURL, "error", err)

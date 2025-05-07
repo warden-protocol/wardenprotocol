@@ -36,17 +36,6 @@ func New(threshold uint8) *T {
 	}
 }
 
-func (t *T) ingestTracker(id uint64) stringSet {
-	value, ok := t.ingested[id]
-	if !ok {
-		t.ingested[id] = make(stringSet)
-
-		return t.ingested[id]
-	}
-
-	return value
-}
-
 func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
 	t.rw.Lock()
 	defer t.rw.Unlock()
@@ -69,4 +58,15 @@ func (t *T) Done(id uint64) {
 	defer t.rw.Unlock()
 
 	delete(t.ingested, id)
+}
+
+func (t *T) ingestTracker(id uint64) stringSet {
+	value, ok := t.ingested[id]
+	if !ok {
+		t.ingested[id] = make(stringSet)
+
+		return t.ingested[id]
+	}
+
+	return value
 }

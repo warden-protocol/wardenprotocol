@@ -7,8 +7,9 @@ import (
 	"log/slog"
 
 	sdkTypes "github.com/cosmos/cosmos-sdk/types"
-	client "github.com/warden-protocol/wardenprotocol/go-client"
 	"google.golang.org/grpc/connectivity"
+
+	client "github.com/warden-protocol/wardenprotocol/go-client"
 )
 
 type wardenClient struct {
@@ -30,6 +31,40 @@ func newClientsPool(config Config) *clientsPool {
 	}
 
 	return &pool
+}
+
+func (cp *clientsPool) BuildTx(
+	ctx context.Context,
+	gasLimit uint64,
+	fees sdkTypes.Coins,
+	msgers ...client.Msger,
+) ([]byte, error) {
+	liveClient, err := cp.liveTxClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to acquire live client for BuildTx: %w", err)
+	}
+
+	return liveClient.BuildTx(ctx, gasLimit, fees, msgers...)
+}
+
+func (cp *clientsPool) SendWaitTx(ctx context.Context, txBytes []byte) (string, error) {
+	liveClient, err := cp.liveTxClient()
+	if err != nil {
+		return "", fmt.Errorf("failed to acquire live client for SendWaitTx: %w", err)
+	}
+
+	return liveClient.SendWaitTx(ctx, txBytes)
+}
+
+func (cp *clientsPool) ConnectionState() map[string]connectivity.State {
+	statuses := make(map[string]connectivity.State)
+
+	for _, appClient := range cp.clients {
+		state := appClient.query.Conn().GetState()
+		statuses[appClient.grpcURL] = state
+	}
+
+	return statuses
 }
 
 func (cp *clientsPool) initConnections(logger *slog.Logger) error {
@@ -90,37 +125,4 @@ func (cp *clientsPool) liveTxClient() (*client.TxClient, error) {
 
 func isOnline(state connectivity.State) bool {
 	return state == connectivity.Ready || state == connectivity.Idle
-}
-
-func (cp *clientsPool) BuildTx(
-	ctx context.Context,
-	gasLimit uint64,
-	fees sdkTypes.Coins,
-	msgers ...client.Msger) ([]byte, error) {
-	liveClient, err := cp.liveTxClient()
-	if err != nil {
-		return nil, fmt.Errorf("failed to acquire live client for BuildTx: %w", err)
-	}
-
-	return liveClient.BuildTx(ctx, gasLimit, fees, msgers...)
-}
-
-func (cp *clientsPool) SendWaitTx(ctx context.Context, txBytes []byte) (string, error) {
-	liveClient, err := cp.liveTxClient()
-	if err != nil {
-		return "", fmt.Errorf("failed to acquire live client for SendWaitTx: %w", err)
-	}
-
-	return liveClient.SendWaitTx(ctx, txBytes)
-}
-
-func (cp *clientsPool) ConnectionState() map[string]connectivity.State {
-	statuses := make(map[string]connectivity.State)
-
-	for _, appClient := range cp.clients {
-		state := appClient.query.Conn().GetState()
-		statuses[appClient.grpcURL] = state
-	}
-
-	return statuses
 }

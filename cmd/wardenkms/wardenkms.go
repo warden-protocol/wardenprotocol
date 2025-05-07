@@ -151,7 +151,6 @@ func main() {
 				Nodes:     nodes,
 				Threshold: cfg.ConsensusNodeThreshold,
 			})
-
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				return

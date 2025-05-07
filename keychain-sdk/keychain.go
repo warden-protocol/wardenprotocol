@@ -9,7 +9,6 @@ package keychain
 import (
 	"context"
 	"fmt"
-	"io"
 	"log/slog"
 
 	"google.golang.org/grpc/connectivity"
@@ -41,14 +40,6 @@ func NewApp(config Config) *App {
 		keyRequestTracker:  tracker.New(config.ConsensusNodeThreshold),
 		signRequestTracker: tracker.New(config.ConsensusNodeThreshold),
 	}
-}
-
-func (a *App) logger() *slog.Logger {
-	if a.config.Logger == nil {
-		a.config.Logger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{}))
-	}
-
-	return a.config.Logger
 }
 
 // SetKeyRequestHandler sets the handler for key requests.
@@ -117,4 +108,12 @@ func (a *App) Start(ctx context.Context) error {
 // ConnectionState returns the current state of the gRPC connection.
 func (a *App) ConnectionState() map[string]connectivity.State {
 	return a.clientsPool.ConnectionState()
+}
+
+func (a *App) logger() *slog.Logger {
+	if a.config.Logger == nil {
+		a.config.Logger = slog.New(slog.DiscardHandler)
+	}
+
+	return a.config.Logger
 }

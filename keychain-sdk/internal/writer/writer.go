@@ -86,20 +86,6 @@ func (w *W) Write(ctx context.Context, msg client.Msger) error {
 	return <-item.Done
 }
 
-func (w *W) gasLimit() uint64 {
-	if w.GasLimit == 0 {
-		return client.DefaultGasLimit
-	}
-	return w.GasLimit
-}
-
-func (w *W) fees() sdk.Coins {
-	if w.Fees == nil {
-		return client.DefaultFees
-	}
-	return w.Fees
-}
-
 func (w *W) Flush(ctx context.Context, txClient SyncTxClient) error {
 	msgs := w.batch.Clear()
 	if len(msgs) == 0 {
@@ -147,6 +133,20 @@ func (w *W) sendWaitTx(ctx context.Context, txClient SyncTxClient, msgs ...clien
 	w.Logger.Info("flush complete", "tx_hash", hash)
 
 	return nil
+}
+
+func (w *W) gasLimit() uint64 {
+	if w.GasLimit == 0 {
+		return client.DefaultGasLimit
+	}
+	return w.GasLimit
+}
+
+func (w *W) fees() sdk.Coins {
+	if w.Fees == nil {
+		return client.DefaultFees
+	}
+	return w.Fees
 }
 
 type Batch struct {

@@ -34,7 +34,11 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `newJson()`
 - **Description**: Creates an empty root JSON object.
-- **Output**:  
+- **Code**:
+  ```
+  function newJson() external view returns (bytes memory);
+  ```
+- **Output**: 
   ```sol
   @return The created JSON as bytes.
   ```
@@ -44,12 +48,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `get()`
 - **Description**: Returns a value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function get(
+      bytes memory input,
+      string memory key
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The value as bytes.
   ```
@@ -59,12 +70,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `remove()`
 - **Description**: Removes a key-value pair from the root object.
-- **Parameters** :
+- **Code**:
+  ```
+  function remove(
+      bytes memory input,
+      string memory key
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to remove.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -74,12 +92,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `read()`
 - **Description**: Returns multiple values by their keys. Requires passing an array of keys: see the [`ReadKeyValue` struct](#readkeyvalue).
-- **Parameters** :
+- **Code**:
+  ```
+  function read(
+      bytes memory input,
+      ReadKeyValue[] memory keyValues
+  ) external view returns (bytes[] memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param keyValues The key-value pairs to read.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The array of key-value pairs as bytes.
   ```
@@ -89,12 +114,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `write()`
 - **Description**: Sets multiple key-value pairs. Requires passing an array of pairs: seee the [`SetKeyValue` struct](#setkeyvalue).
-- **Parameters** :
+- **Code**:
+  ```
+  function write(
+      bytes memory input,
+      SetKeyValue[] memory keyValues
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param keyValues The key-value pairs to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -106,12 +138,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getString()`
 - **Description**: Returns a string value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getString(
+      bytes memory input,
+      string memory key
+  ) external view returns (string memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The string value.
   ```
@@ -121,12 +160,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getBool()`
 - **Description**: Returns a boolean value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getBool(
+      bytes memory input,
+      string memory key
+  ) external view returns (bool);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The boolean value.
   ```
@@ -136,12 +182,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getAddress()`
 - **Description**: Returns an address value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getAddress(
+      bytes memory input,
+      string memory key
+  ) external view returns (address);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The address value.
   ```
@@ -151,12 +204,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getUint256()`
 - **Description**: Returns a uint256 value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getUint256(
+      bytes memory input,
+      string memory key
+  ) external view returns (uint256);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The uint256 value
   ```
@@ -166,12 +226,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getInt256()`
 - **Description**: Returns an int256 value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getInt256(
+      bytes memory input,
+      string memory key
+  ) external view returns (int256);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The int256 value.
   ```
@@ -181,13 +248,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getFloat()`
 - **Description**: Returns a float value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getFloat(
+      bytes memory input,
+      string memory key,
+      int64 decimals
+  ) external view returns (int256);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   @param decimals The number of decimal places.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The float value as int256.
   ```
@@ -197,13 +272,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setString()`
 - **Description**: Sets a string key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setString(
+      bytes memory input,
+      string memory key,
+      string memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The string value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -213,13 +296,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setBool()`
 - **Description**: Sets a boolean key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setBool(
+      bytes memory input,
+      string memory key,
+      bool value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The boolean value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -229,13 +320,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setAddress()`
 - **Description**: Sets an address key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setAddress(
+      bytes memory input,
+      string memory key,
+      address value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The address value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -245,13 +344,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setBytes()`
 - **Description**: Set a bytes key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setBytes(
+      bytes memory input,
+      string memory key,
+      bytes memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The bytes value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -261,13 +368,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setUint256()`
 - **Description**: Set a uint256 key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setUint256(
+      bytes memory input,
+      string memory key,
+      uint256 value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The uint256 value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -277,13 +392,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setInt256()`
 - **Description**: Set an int256 key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setInt256(
+      bytes memory input,
+      string memory key,
+      int256 value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The int256 value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -293,14 +416,23 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setFloat()`
 - **Description**: Set a float key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setFloat(
+      bytes memory input,
+      string memory key,
+      int256 value,
+      int64 decimals
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The int256 value to set.
   @param decimals The number of decimal places.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -312,12 +444,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getStringArray()`
 - **Description**: Returns a string array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getStringArray(
+      bytes memory input,
+      string memory key
+  ) external view returns (string[] memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The string array value.
   ```
@@ -327,12 +466,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getBoolArray()`
 - **Description**: Returns a boolean array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getBoolArray(
+      bytes memory input,
+      string memory key
+  ) external view returns (bool[] memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The boolean array value.
   ```
@@ -342,12 +488,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getAddressArray()`
 - **Description**: Returns an address array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getAddressArray(
+      bytes memory input,
+      string memory key
+  ) external view returns (address[] memory);
+  ```
+- **Parameters**:
   ```sol
    @param input The JSON input as bytes.
    @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The address array value.
   ```
@@ -357,12 +510,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getUintArray()`
 - **Description**: Returns a uint256 array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getUintArray(
+      bytes memory input,
+      string memory key
+  ) external view returns (uint256[] memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The uint256 array value.
   ```
@@ -372,12 +532,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getIntArray()`
 - **Description**: Returns an int256 array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getIntArray(
+      bytes memory input,
+      string memory key
+  ) external view returns (int256[] memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The int256 array value.
   ```
@@ -387,12 +554,20 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getFloatArray()`
 - **Description**: Returns a float array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getFloatArray(
+      bytes memory input,
+      string memory key,
+      int64 decimals
+  ) external view returns (int256[] memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The float array value.
   ```
@@ -402,12 +577,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getObjectsArray()`
 - **Description**: Returns an object array value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getObjectsArray(
+      bytes memory input,
+      string memory key
+  ) external view returns (bytes[] memory);
+  ```
+  - **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The nested object value as bytes.
   ```
@@ -417,12 +599,19 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `getObject()`
 - **Description**: Returns a nest object value by key.
-- **Parameters** :
+- **Code**:
+  ```
+  function getObject(
+      bytes memory input,
+      string memory key
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to look up.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The nested object value as bytes.
   ```
@@ -432,13 +621,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setStringArray()`
 - **Description**: Set a string array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setStringArray(
+      bytes memory input,
+      string memory key,
+      string[] memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The string array value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -448,13 +645,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setAddressArray()`
 - **Description**: Set an address array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setAddressArray(
+      bytes memory input,
+      string memory key,
+      address[] memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The address array value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -464,13 +669,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setBoolArray()`
 - **Description**: Set a boolean array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setBoolArray(
+      bytes memory input,
+      string memory key,
+      bool[] memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The boolean array value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -480,13 +693,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setUintArray()`
 - **Description**: Set a uint256 array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setUintArray(
+      bytes memory input,
+      string memory key,
+      uint256[] memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The uint256 array value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -496,13 +717,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setIntArray()`
 - **Description**: Set an int256 array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setIntArray(
+      bytes memory input,
+      string memory key,
+      int256[] memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The int256 array value to set.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -512,14 +741,23 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setFloatArray()`
 - **Description**: Set a float array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setFloatArray(
+      bytes memory input,
+      string memory key,
+      int256[] memory value,
+      int64 decimals
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The int256 array value to set.
   @param decimals The number of decimal places.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -529,13 +767,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setObjectsArray()`
 - **Description**: Set an object array key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setObjectsArray(
+      bytes memory input,
+      string memory key,
+      bytes[] memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The nested objects values as bytes.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```
@@ -545,13 +791,21 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 - **Method**: `setObject()`
 - **Description**: Set a nested object key-value pair.
-- **Parameters** :
+- **Code**:
+  ```
+  function setObject(
+      bytes memory input,
+      string memory key,
+      bytes memory value
+  ) external view returns (bytes memory);
+  ```
+- **Parameters**:
   ```sol
   @param input The JSON input as bytes.
   @param key The key to set.
   @param value The nested object value as bytes.
   ```
-- **Output**:  
+- **Output**: 
   ```sol
   @return The modified JSON as bytes.
   ```

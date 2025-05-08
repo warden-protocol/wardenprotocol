@@ -6,10 +6,11 @@ sidebar_position: 3
 
 ## Overview
 
-This tutorial explains how to implement different **price predictions**. You'll also learn how to request **metrics** providing metadata about predictions and their accuracy.
+This tutorial explains how to implement a **price prediction request** for **Bitcoin**. You'll also learn how to request **metrics** providing metadata about predictions and their accuracy.
 
-- Price predictions: **Bitcoin**, **Ethereum**, **Uniswap**
-- Metrics: **confidence scores**, **prediction counts**
+:::tip
+You can expand the example code from this tutorial to implement multiple price predictions for different cryptocurrencies.
+:::
 
 ## 1. Create a contract
 
@@ -76,19 +77,9 @@ contract PricePredExample {
     uint256 public bitcoinMetricCount;
     uint256 public bitcoinMetricConfidence;
 
-    uint256 public tetherPrice;
-    uint256 public tetherMetricCount;
-    uint256 public tetherMetricConfidence;
-
-    uint256 public uniswapPrice;
-    uint256 public uniswapMetricCount;
-    uint256 public uniswapMetricConfidence;
-
     function run() external {
-        string[] memory tokens = new string[](3);
+        string[] memory tokens = new string[](1);
         tokens[0] = "bitcoin";
-        tokens[1] = "ethereum";
-        tokens[2] = "uniswap";
 
         PricePredictMetric[] memory metrics = new PricePredictMetric[](2);
         metrics[0] = PricePredictMetric.Count;
@@ -106,14 +97,8 @@ contract PricePredExample {
 
         // Reset predictions while the Task is running
         bitcoinPrice = 0;
-        tetherPrice = 0;
-        uniswapPrice = 0;
         bitcoinMetricCount = 0;
         bitcoinMetricConfidence = 0;
-        tetherMetricCount = 0;
-        tetherMetricConfidence = 0;
-        uniswapMetricCount = 0;
-        uniswapMetricConfidence = 0;
     }
 
     function cb() external {
@@ -123,14 +108,6 @@ contract PricePredExample {
         bitcoinPrice = pricePredictOutput.predictions[0];
         bitcoinMetricCount = pricePredictOutput.metrics[0][0];
         bitcoinMetricConfidence = pricePredictOutput.metrics[0][1];
-
-        tetherPrice = pricePredictOutput.predictions[1];
-        tetherMetricCount = pricePredictOutput.metrics[1][0];
-        tetherMetricConfidence = pricePredictOutput.metrics[1][1];
-        
-        uniswapPrice = pricePredictOutput.predictions[2];
-        uniswapMetricCount = pricePredictOutput.metrics[2][0];
-        uniswapMetricConfidence = pricePredictOutput.metrics[2][1];
     }
     
     // A helper function to check if the price prediction is ready
@@ -199,21 +176,20 @@ contract PricePredExample {
    818924905292177473536
    ```
 
-5. After requesting a Bitcoin price prediction, you can call other functions of the contract to get predictions for other cryptocurrencies and request metrics.
+5. After requesting a Bitcoin price prediction, you can call other functions of the contract to request metrics:
 
-   Request predictions for other currencies:
-   
-   - `tetherPrice()`
-   - `uniswapPrice()`
-   
-   Request metrics:
-   
    - `bitcoinMetricCount()`
    - `bitcoinMetricConfidence()`
-   - `tetherMetricCount()`
-   - `tetherMetricConfidence()`
-   - `uniswapMetricCount()`
-   - `uniswapMetricConfidence()`
+
+## 4. Implement more requests
+
+You can extend the price prediction for other currencies:
+
+1. In the `run()` function of the example contract, add the desired currency names to the `tokens` array. Update the reset section.
+
+2. At the beginning of the contract, declare corresponding state variables.
+
+3. In the `cb`() function (the callback handler), add lines to extract each new token's predicted price and metrics from the response.
 
 ## Next steps
 

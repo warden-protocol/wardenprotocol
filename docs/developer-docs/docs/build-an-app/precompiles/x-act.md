@@ -55,7 +55,7 @@ To reference the `IAct` precompile in your code, use the following precompile ad
 ### Update a Rule
 
 - **Method**: `updateTemplate()`
-- **Description**: Updates a Rule (template). Emits the [`UpdateTemplate` event](#createtemplate).
+- **Description**: Updates a Rule (template). Emits the [`UpdateTemplate` event](#updatetemplate).
 - **Code**:
   ```
   function updateTemplate(

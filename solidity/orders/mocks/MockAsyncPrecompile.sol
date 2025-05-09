@@ -2,6 +2,7 @@
 pragma solidity >=0.8.25 <0.9.0;
 
 import {
+    DeductedFee,
     Task,
     TaskByIdResponse,
     TaskResponse,
@@ -9,8 +10,10 @@ import {
     TaskResult,
     TaskVote,
     IAsync,
-    PendingTasksResponse
+    PendingTasksResponse,
+    PluginsResponse
 } from "precompile-async/IAsync.sol";
+import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Types } from "precompile-async/IAsync.sol";
 
 contract MockAsyncPrecompile is IAsync {
@@ -21,24 +24,31 @@ contract MockAsyncPrecompile is IAsync {
     function addTask(
         string calldata plugin,
         bytes calldata input,
+        CommonTypes.Coin[] calldata maxFee,
         address
     ) external returns (uint64 taskId)
     {
         taskId = uint64(++tasksCount);
+        bytes memory solver = "";
+        CommonTypes.Coin[] memory emptyFee;
+        DeductedFee memory fee = DeductedFee({
+            pluginCreatorReward: emptyFee,
+            executorReward: emptyFee
+        });
         Task memory task = Task({
             id: taskId,
             // solhint-disable-next-line
             creator: tx.origin,
             plugin: plugin,
-            input: input
+            input: input,
+            fee: fee,
+            solver: solver
         });
 
         TaskVote[] memory emptyVotes = new TaskVote[](0);
-        bytes memory emptySubmitter;
         TaskResult memory taskResult = TaskResult({
             id: taskId,
-            output: input,
-            submitter: emptySubmitter
+            output: input
         });
         TaskResponse memory taskResponse = TaskResponse({
             task: task,
@@ -67,6 +77,13 @@ contract MockAsyncPrecompile is IAsync {
     function pendingTasks(
         Types.PageRequest calldata
     ) external pure returns (PendingTasksResponse memory) {
+        // solhint-disable-next-line
+        revert("Unimplemented");
+    }
+
+    function plugins(
+        Types.PageRequest calldata pagination
+    ) external view returns (PluginsResponse memory response) {
         // solhint-disable-next-line
         revert("Unimplemented");
     }

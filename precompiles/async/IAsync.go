@@ -85,7 +85,6 @@ type TaskResponse struct {
 type TaskResult struct {
 	Id        uint64
 	Output    []byte
-	Submitter []byte
 }
 
 // TaskVote is an auto generated low-level Go binding around an user-defined struct.

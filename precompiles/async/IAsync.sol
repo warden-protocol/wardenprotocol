@@ -36,6 +36,7 @@ struct Task {
     string plugin;
     bytes input;
     DeductedFee fee;
+    bytes solver;
 }
 
 enum TaskVoteType {
@@ -53,7 +54,6 @@ struct TaskVote {
 struct TaskResult { 
     uint64 id;
     bytes output;
-    bytes submitter;
 }
 
 struct TaskResponse {

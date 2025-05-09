@@ -6446,6 +6446,2046 @@ func (x *fastReflection_QueryPluginsByValidatorResponse) ProtoMethods() *protoif
 	}
 }
 
+var (
+	md_QueryPluginValidatorsRequest      protoreflect.MessageDescriptor
+	fd_QueryPluginValidatorsRequest_name protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_async_v1beta1_query_proto_init()
+	md_QueryPluginValidatorsRequest = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPluginValidatorsRequest")
+	fd_QueryPluginValidatorsRequest_name = md_QueryPluginValidatorsRequest.Fields().ByName("name")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueryPluginValidatorsRequest)(nil)
+
+type fastReflection_QueryPluginValidatorsRequest QueryPluginValidatorsRequest
+
+func (x *QueryPluginValidatorsRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPluginValidatorsRequest)(x)
+}
+
+func (x *QueryPluginValidatorsRequest) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_async_v1beta1_query_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueryPluginValidatorsRequest_messageType fastReflection_QueryPluginValidatorsRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPluginValidatorsRequest_messageType{}
+
+type fastReflection_QueryPluginValidatorsRequest_messageType struct{}
+
+func (x fastReflection_QueryPluginValidatorsRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPluginValidatorsRequest)(nil)
+}
+func (x fastReflection_QueryPluginValidatorsRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginValidatorsRequest)
+}
+func (x fastReflection_QueryPluginValidatorsRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginValidatorsRequest
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueryPluginValidatorsRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginValidatorsRequest
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueryPluginValidatorsRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPluginValidatorsRequest_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueryPluginValidatorsRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginValidatorsRequest)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueryPluginValidatorsRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryPluginValidatorsRequest)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueryPluginValidatorsRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Name != "" {
+		value := protoreflect.ValueOfString(x.Name)
+		if !f(fd_QueryPluginValidatorsRequest_name, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueryPluginValidatorsRequest) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsRequest.name":
+		return x.Name != ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsRequest"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsRequest) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsRequest.name":
+		x.Name = ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsRequest"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueryPluginValidatorsRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsRequest.name":
+		value := x.Name
+		return protoreflect.ValueOfString(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsRequest"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsRequest does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsRequest.name":
+		x.Name = value.Interface().(string)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsRequest"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsRequest.name":
+		panic(fmt.Errorf("field name of message warden.async.v1beta1.QueryPluginValidatorsRequest is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsRequest"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueryPluginValidatorsRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsRequest.name":
+		return protoreflect.ValueOfString("")
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsRequest"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueryPluginValidatorsRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPluginValidatorsRequest", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueryPluginValidatorsRequest) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsRequest) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueryPluginValidatorsRequest) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueryPluginValidatorsRequest) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueryPluginValidatorsRequest)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Name)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPluginValidatorsRequest)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Name) > 0 {
+			i -= len(x.Name)
+			copy(dAtA[i:], x.Name)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Name)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPluginValidatorsRequest)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginValidatorsRequest: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginValidatorsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Name = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_QueuePriority           protoreflect.MessageDescriptor
+	fd_QueuePriority_validator protoreflect.FieldDescriptor
+	fd_QueuePriority_priority  protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_async_v1beta1_query_proto_init()
+	md_QueuePriority = File_warden_async_v1beta1_query_proto.Messages().ByName("QueuePriority")
+	fd_QueuePriority_validator = md_QueuePriority.Fields().ByName("validator")
+	fd_QueuePriority_priority = md_QueuePriority.Fields().ByName("priority")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueuePriority)(nil)
+
+type fastReflection_QueuePriority QueuePriority
+
+func (x *QueuePriority) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueuePriority)(x)
+}
+
+func (x *QueuePriority) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_async_v1beta1_query_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueuePriority_messageType fastReflection_QueuePriority_messageType
+var _ protoreflect.MessageType = fastReflection_QueuePriority_messageType{}
+
+type fastReflection_QueuePriority_messageType struct{}
+
+func (x fastReflection_QueuePriority_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueuePriority)(nil)
+}
+func (x fastReflection_QueuePriority_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueuePriority)
+}
+func (x fastReflection_QueuePriority_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueuePriority
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueuePriority) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueuePriority
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueuePriority) Type() protoreflect.MessageType {
+	return _fastReflection_QueuePriority_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueuePriority) New() protoreflect.Message {
+	return new(fastReflection_QueuePriority)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueuePriority) Interface() protoreflect.ProtoMessage {
+	return (*QueuePriority)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueuePriority) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Validator) != 0 {
+		value := protoreflect.ValueOfBytes(x.Validator)
+		if !f(fd_QueuePriority_validator, value) {
+			return
+		}
+	}
+	if x.Priority != int64(0) {
+		value := protoreflect.ValueOfInt64(x.Priority)
+		if !f(fd_QueuePriority_priority, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueuePriority) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueuePriority.validator":
+		return len(x.Validator) != 0
+	case "warden.async.v1beta1.QueuePriority.priority":
+		return x.Priority != int64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueuePriority"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueuePriority does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueuePriority) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueuePriority.validator":
+		x.Validator = nil
+	case "warden.async.v1beta1.QueuePriority.priority":
+		x.Priority = int64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueuePriority"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueuePriority does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueuePriority) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.async.v1beta1.QueuePriority.validator":
+		value := x.Validator
+		return protoreflect.ValueOfBytes(value)
+	case "warden.async.v1beta1.QueuePriority.priority":
+		value := x.Priority
+		return protoreflect.ValueOfInt64(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueuePriority"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueuePriority does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueuePriority) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueuePriority.validator":
+		x.Validator = value.Bytes()
+	case "warden.async.v1beta1.QueuePriority.priority":
+		x.Priority = value.Int()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueuePriority"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueuePriority does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueuePriority) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueuePriority.validator":
+		panic(fmt.Errorf("field validator of message warden.async.v1beta1.QueuePriority is not mutable"))
+	case "warden.async.v1beta1.QueuePriority.priority":
+		panic(fmt.Errorf("field priority of message warden.async.v1beta1.QueuePriority is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueuePriority"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueuePriority does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueuePriority) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueuePriority.validator":
+		return protoreflect.ValueOfBytes(nil)
+	case "warden.async.v1beta1.QueuePriority.priority":
+		return protoreflect.ValueOfInt64(int64(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueuePriority"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueuePriority does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueuePriority) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueuePriority", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueuePriority) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueuePriority) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueuePriority) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueuePriority) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueuePriority)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Validator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Priority != 0 {
+			n += 1 + runtime.Sov(uint64(x.Priority))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueuePriority)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Priority != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Priority))
+			i--
+			dAtA[i] = 0x10
+		}
+		if len(x.Validator) > 0 {
+			i -= len(x.Validator)
+			copy(dAtA[i:], x.Validator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Validator)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueuePriority)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueuePriority: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueuePriority: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Validator = append(x.Validator[:0], dAtA[iNdEx:postIndex]...)
+				if x.Validator == nil {
+					x.Validator = []byte{}
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Priority", wireType)
+				}
+				x.Priority = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.Priority |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_QueueWeight           protoreflect.MessageDescriptor
+	fd_QueueWeight_validator protoreflect.FieldDescriptor
+	fd_QueueWeight_weight    protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_async_v1beta1_query_proto_init()
+	md_QueueWeight = File_warden_async_v1beta1_query_proto.Messages().ByName("QueueWeight")
+	fd_QueueWeight_validator = md_QueueWeight.Fields().ByName("validator")
+	fd_QueueWeight_weight = md_QueueWeight.Fields().ByName("weight")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueueWeight)(nil)
+
+type fastReflection_QueueWeight QueueWeight
+
+func (x *QueueWeight) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueueWeight)(x)
+}
+
+func (x *QueueWeight) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_async_v1beta1_query_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueueWeight_messageType fastReflection_QueueWeight_messageType
+var _ protoreflect.MessageType = fastReflection_QueueWeight_messageType{}
+
+type fastReflection_QueueWeight_messageType struct{}
+
+func (x fastReflection_QueueWeight_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueueWeight)(nil)
+}
+func (x fastReflection_QueueWeight_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueueWeight)
+}
+func (x fastReflection_QueueWeight_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueueWeight
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueueWeight) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueueWeight
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueueWeight) Type() protoreflect.MessageType {
+	return _fastReflection_QueueWeight_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueueWeight) New() protoreflect.Message {
+	return new(fastReflection_QueueWeight)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueueWeight) Interface() protoreflect.ProtoMessage {
+	return (*QueueWeight)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueueWeight) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Validator) != 0 {
+		value := protoreflect.ValueOfBytes(x.Validator)
+		if !f(fd_QueueWeight_validator, value) {
+			return
+		}
+	}
+	if x.Weight != int64(0) {
+		value := protoreflect.ValueOfInt64(x.Weight)
+		if !f(fd_QueueWeight_weight, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueueWeight) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueueWeight.validator":
+		return len(x.Validator) != 0
+	case "warden.async.v1beta1.QueueWeight.weight":
+		return x.Weight != int64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueueWeight"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueueWeight does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueueWeight) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueueWeight.validator":
+		x.Validator = nil
+	case "warden.async.v1beta1.QueueWeight.weight":
+		x.Weight = int64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueueWeight"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueueWeight does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueueWeight) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.async.v1beta1.QueueWeight.validator":
+		value := x.Validator
+		return protoreflect.ValueOfBytes(value)
+	case "warden.async.v1beta1.QueueWeight.weight":
+		value := x.Weight
+		return protoreflect.ValueOfInt64(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueueWeight"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueueWeight does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueueWeight) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueueWeight.validator":
+		x.Validator = value.Bytes()
+	case "warden.async.v1beta1.QueueWeight.weight":
+		x.Weight = value.Int()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueueWeight"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueueWeight does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueueWeight) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueueWeight.validator":
+		panic(fmt.Errorf("field validator of message warden.async.v1beta1.QueueWeight is not mutable"))
+	case "warden.async.v1beta1.QueueWeight.weight":
+		panic(fmt.Errorf("field weight of message warden.async.v1beta1.QueueWeight is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueueWeight"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueueWeight does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueueWeight) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueueWeight.validator":
+		return protoreflect.ValueOfBytes(nil)
+	case "warden.async.v1beta1.QueueWeight.weight":
+		return protoreflect.ValueOfInt64(int64(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueueWeight"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueueWeight does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueueWeight) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueueWeight", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueueWeight) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueueWeight) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueueWeight) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueueWeight) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueueWeight)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Validator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Weight != 0 {
+			n += 1 + runtime.Sov(uint64(x.Weight))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueueWeight)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Weight != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Weight))
+			i--
+			dAtA[i] = 0x10
+		}
+		if len(x.Validator) > 0 {
+			i -= len(x.Validator)
+			copy(dAtA[i:], x.Validator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Validator)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueueWeight)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueueWeight: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueueWeight: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Validator = append(x.Validator[:0], dAtA[iNdEx:postIndex]...)
+				if x.Validator == nil {
+					x.Validator = []byte{}
+				}
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Weight", wireType)
+				}
+				x.Weight = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.Weight |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var _ protoreflect.List = (*_QueryPluginValidatorsResponse_2_list)(nil)
+
+type _QueryPluginValidatorsResponse_2_list struct {
+	list *[]*QueuePriority
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*QueuePriority)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*QueuePriority)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) AppendMutable() protoreflect.Value {
+	v := new(QueuePriority)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) NewElement() protoreflect.Value {
+	v := new(QueuePriority)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_QueryPluginValidatorsResponse_2_list) IsValid() bool {
+	return x.list != nil
+}
+
+var _ protoreflect.List = (*_QueryPluginValidatorsResponse_3_list)(nil)
+
+type _QueryPluginValidatorsResponse_3_list struct {
+	list *[]*QueueWeight
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*QueueWeight)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*QueueWeight)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) AppendMutable() protoreflect.Value {
+	v := new(QueueWeight)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) NewElement() protoreflect.Value {
+	v := new(QueueWeight)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_QueryPluginValidatorsResponse_3_list) IsValid() bool {
+	return x.list != nil
+}
+
+var (
+	md_QueryPluginValidatorsResponse                    protoreflect.MessageDescriptor
+	fd_QueryPluginValidatorsResponse_queue_total_weight protoreflect.FieldDescriptor
+	fd_QueryPluginValidatorsResponse_queue_priorities   protoreflect.FieldDescriptor
+	fd_QueryPluginValidatorsResponse_queue_weights      protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_async_v1beta1_query_proto_init()
+	md_QueryPluginValidatorsResponse = File_warden_async_v1beta1_query_proto.Messages().ByName("QueryPluginValidatorsResponse")
+	fd_QueryPluginValidatorsResponse_queue_total_weight = md_QueryPluginValidatorsResponse.Fields().ByName("queue_total_weight")
+	fd_QueryPluginValidatorsResponse_queue_priorities = md_QueryPluginValidatorsResponse.Fields().ByName("queue_priorities")
+	fd_QueryPluginValidatorsResponse_queue_weights = md_QueryPluginValidatorsResponse.Fields().ByName("queue_weights")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueryPluginValidatorsResponse)(nil)
+
+type fastReflection_QueryPluginValidatorsResponse QueryPluginValidatorsResponse
+
+func (x *QueryPluginValidatorsResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPluginValidatorsResponse)(x)
+}
+
+func (x *QueryPluginValidatorsResponse) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_async_v1beta1_query_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueryPluginValidatorsResponse_messageType fastReflection_QueryPluginValidatorsResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPluginValidatorsResponse_messageType{}
+
+type fastReflection_QueryPluginValidatorsResponse_messageType struct{}
+
+func (x fastReflection_QueryPluginValidatorsResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPluginValidatorsResponse)(nil)
+}
+func (x fastReflection_QueryPluginValidatorsResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginValidatorsResponse)
+}
+func (x fastReflection_QueryPluginValidatorsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginValidatorsResponse
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueryPluginValidatorsResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPluginValidatorsResponse
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueryPluginValidatorsResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPluginValidatorsResponse_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueryPluginValidatorsResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryPluginValidatorsResponse)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueryPluginValidatorsResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryPluginValidatorsResponse)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueryPluginValidatorsResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.QueueTotalWeight != int64(0) {
+		value := protoreflect.ValueOfInt64(x.QueueTotalWeight)
+		if !f(fd_QueryPluginValidatorsResponse_queue_total_weight, value) {
+			return
+		}
+	}
+	if len(x.QueuePriorities) != 0 {
+		value := protoreflect.ValueOfList(&_QueryPluginValidatorsResponse_2_list{list: &x.QueuePriorities})
+		if !f(fd_QueryPluginValidatorsResponse_queue_priorities, value) {
+			return
+		}
+	}
+	if len(x.QueueWeights) != 0 {
+		value := protoreflect.ValueOfList(&_QueryPluginValidatorsResponse_3_list{list: &x.QueueWeights})
+		if !f(fd_QueryPluginValidatorsResponse_queue_weights, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueryPluginValidatorsResponse) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_total_weight":
+		return x.QueueTotalWeight != int64(0)
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities":
+		return len(x.QueuePriorities) != 0
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights":
+		return len(x.QueueWeights) != 0
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsResponse"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsResponse) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_total_weight":
+		x.QueueTotalWeight = int64(0)
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities":
+		x.QueuePriorities = nil
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights":
+		x.QueueWeights = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsResponse"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueryPluginValidatorsResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_total_weight":
+		value := x.QueueTotalWeight
+		return protoreflect.ValueOfInt64(value)
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities":
+		if len(x.QueuePriorities) == 0 {
+			return protoreflect.ValueOfList(&_QueryPluginValidatorsResponse_2_list{})
+		}
+		listValue := &_QueryPluginValidatorsResponse_2_list{list: &x.QueuePriorities}
+		return protoreflect.ValueOfList(listValue)
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights":
+		if len(x.QueueWeights) == 0 {
+			return protoreflect.ValueOfList(&_QueryPluginValidatorsResponse_3_list{})
+		}
+		listValue := &_QueryPluginValidatorsResponse_3_list{list: &x.QueueWeights}
+		return protoreflect.ValueOfList(listValue)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsResponse"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsResponse does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_total_weight":
+		x.QueueTotalWeight = value.Int()
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities":
+		lv := value.List()
+		clv := lv.(*_QueryPluginValidatorsResponse_2_list)
+		x.QueuePriorities = *clv.list
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights":
+		lv := value.List()
+		clv := lv.(*_QueryPluginValidatorsResponse_3_list)
+		x.QueueWeights = *clv.list
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsResponse"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities":
+		if x.QueuePriorities == nil {
+			x.QueuePriorities = []*QueuePriority{}
+		}
+		value := &_QueryPluginValidatorsResponse_2_list{list: &x.QueuePriorities}
+		return protoreflect.ValueOfList(value)
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights":
+		if x.QueueWeights == nil {
+			x.QueueWeights = []*QueueWeight{}
+		}
+		value := &_QueryPluginValidatorsResponse_3_list{list: &x.QueueWeights}
+		return protoreflect.ValueOfList(value)
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_total_weight":
+		panic(fmt.Errorf("field queue_total_weight of message warden.async.v1beta1.QueryPluginValidatorsResponse is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsResponse"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueryPluginValidatorsResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_total_weight":
+		return protoreflect.ValueOfInt64(int64(0))
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities":
+		list := []*QueuePriority{}
+		return protoreflect.ValueOfList(&_QueryPluginValidatorsResponse_2_list{list: &list})
+	case "warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights":
+		list := []*QueueWeight{}
+		return protoreflect.ValueOfList(&_QueryPluginValidatorsResponse_3_list{list: &list})
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.async.v1beta1.QueryPluginValidatorsResponse"))
+		}
+		panic(fmt.Errorf("message warden.async.v1beta1.QueryPluginValidatorsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueryPluginValidatorsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.async.v1beta1.QueryPluginValidatorsResponse", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueryPluginValidatorsResponse) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPluginValidatorsResponse) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueryPluginValidatorsResponse) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueryPluginValidatorsResponse) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueryPluginValidatorsResponse)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.QueueTotalWeight != 0 {
+			n += 1 + runtime.Sov(uint64(x.QueueTotalWeight))
+		}
+		if len(x.QueuePriorities) > 0 {
+			for _, e := range x.QueuePriorities {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
+		if len(x.QueueWeights) > 0 {
+			for _, e := range x.QueueWeights {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPluginValidatorsResponse)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.QueueWeights) > 0 {
+			for iNdEx := len(x.QueueWeights) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.QueueWeights[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x1a
+			}
+		}
+		if len(x.QueuePriorities) > 0 {
+			for iNdEx := len(x.QueuePriorities) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.QueuePriorities[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x12
+			}
+		}
+		if x.QueueTotalWeight != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.QueueTotalWeight))
+			i--
+			dAtA[i] = 0x8
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPluginValidatorsResponse)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginValidatorsResponse: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPluginValidatorsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueueTotalWeight", wireType)
+				}
+				x.QueueTotalWeight = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.QueueTotalWeight |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueuePriorities", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.QueuePriorities = append(x.QueuePriorities, &QueuePriority{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueuePriorities[len(x.QueuePriorities)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueueWeights", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.QueueWeights = append(x.QueueWeights, &QueueWeight{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueueWeights[len(x.QueueWeights)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
 // Copyright (c) 2025 Warden Labs. All Rights Reserved.
 //
 // ** RESTRICTED LICENSE **
@@ -6986,6 +9026,178 @@ func (x *QueryPluginsByValidatorResponse) GetPlugins() []string {
 	return nil
 }
 
+type QueryPluginValidatorsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *QueryPluginValidatorsRequest) Reset() {
+	*x = QueryPluginValidatorsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_async_v1beta1_query_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryPluginValidatorsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryPluginValidatorsRequest) ProtoMessage() {}
+
+// Deprecated: Use QueryPluginValidatorsRequest.ProtoReflect.Descriptor instead.
+func (*QueryPluginValidatorsRequest) Descriptor() ([]byte, []int) {
+	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *QueryPluginValidatorsRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type QueuePriority struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Validator []byte `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	Priority  int64  `protobuf:"varint,2,opt,name=priority,proto3" json:"priority,omitempty"`
+}
+
+func (x *QueuePriority) Reset() {
+	*x = QueuePriority{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_async_v1beta1_query_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueuePriority) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueuePriority) ProtoMessage() {}
+
+// Deprecated: Use QueuePriority.ProtoReflect.Descriptor instead.
+func (*QueuePriority) Descriptor() ([]byte, []int) {
+	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *QueuePriority) GetValidator() []byte {
+	if x != nil {
+		return x.Validator
+	}
+	return nil
+}
+
+func (x *QueuePriority) GetPriority() int64 {
+	if x != nil {
+		return x.Priority
+	}
+	return 0
+}
+
+type QueueWeight struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Validator []byte `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	Weight    int64  `protobuf:"varint,2,opt,name=weight,proto3" json:"weight,omitempty"`
+}
+
+func (x *QueueWeight) Reset() {
+	*x = QueueWeight{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_async_v1beta1_query_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueueWeight) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueueWeight) ProtoMessage() {}
+
+// Deprecated: Use QueueWeight.ProtoReflect.Descriptor instead.
+func (*QueueWeight) Descriptor() ([]byte, []int) {
+	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *QueueWeight) GetValidator() []byte {
+	if x != nil {
+		return x.Validator
+	}
+	return nil
+}
+
+func (x *QueueWeight) GetWeight() int64 {
+	if x != nil {
+		return x.Weight
+	}
+	return 0
+}
+
+type QueryPluginValidatorsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	QueueTotalWeight int64            `protobuf:"varint,1,opt,name=queue_total_weight,json=queueTotalWeight,proto3" json:"queue_total_weight,omitempty"`
+	QueuePriorities  []*QueuePriority `protobuf:"bytes,2,rep,name=queue_priorities,json=queuePriorities,proto3" json:"queue_priorities,omitempty"`
+	QueueWeights     []*QueueWeight   `protobuf:"bytes,3,rep,name=queue_weights,json=queueWeights,proto3" json:"queue_weights,omitempty"`
+}
+
+func (x *QueryPluginValidatorsResponse) Reset() {
+	*x = QueryPluginValidatorsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_async_v1beta1_query_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryPluginValidatorsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryPluginValidatorsResponse) ProtoMessage() {}
+
+// Deprecated: Use QueryPluginValidatorsResponse.ProtoReflect.Descriptor instead.
+func (*QueryPluginValidatorsResponse) Descriptor() ([]byte, []int) {
+	return file_warden_async_v1beta1_query_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *QueryPluginValidatorsResponse) GetQueueTotalWeight() int64 {
+	if x != nil {
+		return x.QueueTotalWeight
+	}
+	return 0
+}
+
+func (x *QueryPluginValidatorsResponse) GetQueuePriorities() []*QueuePriority {
+	if x != nil {
+		return x.QueuePriorities
+	}
+	return nil
+}
+
+func (x *QueryPluginValidatorsResponse) GetQueueWeights() []*QueueWeight {
+	if x != nil {
+		return x.QueueWeights
+	}
+	return nil
+}
+
 var File_warden_async_v1beta1_query_proto protoreflect.FileDescriptor
 
 var file_warden_async_v1beta1_query_proto_rawDesc = []byte{
@@ -7108,7 +9320,41 @@ var file_warden_async_v1beta1_query_proto_rawDesc = []byte{
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61,
 	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x07, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x18,
 	0x02, 0x20, 0x03, 0x28, 0x09, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x07, 0x70, 0x6c, 0x75,
-	0x67, 0x69, 0x6e, 0x73, 0x32, 0xd8, 0x06, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x7b,
+	0x67, 0x69, 0x6e, 0x73, 0x22, 0x32, 0x0a, 0x1c, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75,
+	0x67, 0x69, 0x6e, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x7d, 0x0a, 0x0d, 0x51, 0x75, 0x65, 0x75,
+	0x65, 0x50, 0x72, 0x69, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x50, 0x0a, 0x09, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x42, 0x32, 0xfa, 0xde,
+	0x1f, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73,
+	0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74,
+	0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1a, 0x0a, 0x08, 0x70,
+	0x72, 0x69, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x08, 0x70,
+	0x72, 0x69, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x22, 0x77, 0x0a, 0x0b, 0x51, 0x75, 0x65, 0x75, 0x65,
+	0x57, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x50, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
+	0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x42, 0x32, 0xfa, 0xde, 0x1f, 0x2e, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
+	0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65,
+	0x73, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x09, 0x76,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x77, 0x65, 0x69, 0x67,
+	0x68, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x77, 0x65, 0x69, 0x67, 0x68, 0x74,
+	0x22, 0xf1, 0x01, 0x0a, 0x1d, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e,
+	0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x2c, 0x0a, 0x12, 0x71, 0x75, 0x65, 0x75, 0x65, 0x5f, 0x74, 0x6f, 0x74, 0x61,
+	0x6c, 0x5f, 0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x10,
+	0x71, 0x75, 0x65, 0x75, 0x65, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x57, 0x65, 0x69, 0x67, 0x68, 0x74,
+	0x12, 0x54, 0x0a, 0x10, 0x71, 0x75, 0x65, 0x75, 0x65, 0x5f, 0x70, 0x72, 0x69, 0x6f, 0x72, 0x69,
+	0x74, 0x69, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x77, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x50, 0x72, 0x69, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x42,
+	0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0f, 0x71, 0x75, 0x65, 0x75, 0x65, 0x50, 0x72, 0x69, 0x6f,
+	0x72, 0x69, 0x74, 0x69, 0x65, 0x73, 0x12, 0x4c, 0x0a, 0x0d, 0x71, 0x75, 0x65, 0x75, 0x65, 0x5f,
+	0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x57, 0x65, 0x69, 0x67, 0x68, 0x74,
+	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71, 0x75, 0x65, 0x75, 0x65, 0x57, 0x65, 0x69,
+	0x67, 0x68, 0x74, 0x73, 0x32, 0x86, 0x08, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x7b,
 	0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x28, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
 	0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
 	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
@@ -7150,34 +9396,45 @@ var file_warden_async_v1beta1_query_proto_rawDesc = []byte{
 	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1d, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x12, 0x15, 0x2f, 0x77,
 	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x70, 0x6c, 0x75, 0x67,
-	0x69, 0x6e, 0x73, 0x12, 0xb9, 0x01, 0x0a, 0x12, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42,
-	0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x34, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79,
-	0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x35, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75,
-	0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x36, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x30, 0x12,
-	0x2e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x70,
-	0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x5f, 0x62, 0x79, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x6f, 0x72, 0x2f, 0x7b, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x7d, 0x42,
-	0xe9, 0x01, 0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61,
-	0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0a, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61,
-	0x73, 0x79, 0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41,
-	0x58, 0xaa, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63,
-	0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2,
-	0x02, 0x20, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79,
-	0x6e, 0x63, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x69, 0x6e, 0x73, 0x12, 0xab, 0x01, 0x0a, 0x10, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x56, 0x61,
+	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x12, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x56, 0x61, 0x6c, 0x69, 0x64,
+	0x61, 0x74, 0x6f, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x33, 0x2e, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x56,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x2e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x28, 0x12, 0x26, 0x2f, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x5f,
+	0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x2f, 0x7b, 0x6e, 0x61, 0x6d, 0x65,
+	0x7d, 0x12, 0xb9, 0x01, 0x0a, 0x12, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x34, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x42, 0x79, 0x56, 0x61,
+	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x35,
+	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x6c, 0x75, 0x67, 0x69,
+	0x6e, 0x73, 0x42, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x36, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x30, 0x12, 0x2e, 0x2f,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x73, 0x79, 0x6e, 0x63, 0x2f, 0x70, 0x6c, 0x75,
+	0x67, 0x69, 0x6e, 0x73, 0x5f, 0x62, 0x79, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f,
+	0x72, 0x2f, 0x7b, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x7d, 0x42, 0xe9, 0x01,
+	0x0a, 0x18, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x61, 0x73, 0x79,
+	0x6e, 0x63, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x61,
+	0x73, 0x79, 0x6e, 0x63, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x73, 0x79,
+	0x6e, 0x63, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x57, 0x41, 0x58, 0xaa,
+	0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x2e, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x14, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
+	0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x20,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x41, 0x73, 0x79, 0x6e, 0x63, 0x5c, 0x56, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
+	0xea, 0x02, 0x16, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x41, 0x73, 0x79, 0x6e, 0x63,
+	0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -7192,7 +9449,7 @@ func file_warden_async_v1beta1_query_proto_rawDescGZIP() []byte {
 	return file_warden_async_v1beta1_query_proto_rawDescData
 }
 
-var file_warden_async_v1beta1_query_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_warden_async_v1beta1_query_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_warden_async_v1beta1_query_proto_goTypes = []interface{}{
 	(*QueryParamsRequest)(nil),              // 0: warden.async.v1beta1.QueryParamsRequest
 	(*QueryParamsResponse)(nil),             // 1: warden.async.v1beta1.QueryParamsResponse
@@ -7207,48 +9464,56 @@ var file_warden_async_v1beta1_query_proto_goTypes = []interface{}{
 	(*QueryPluginsResponse)(nil),            // 10: warden.async.v1beta1.QueryPluginsResponse
 	(*QueryPluginsByValidatorRequest)(nil),  // 11: warden.async.v1beta1.QueryPluginsByValidatorRequest
 	(*QueryPluginsByValidatorResponse)(nil), // 12: warden.async.v1beta1.QueryPluginsByValidatorResponse
-	(*Params)(nil),                          // 13: warden.async.v1beta1.Params
-	(*v1beta1.PageRequest)(nil),             // 14: cosmos.base.query.v1beta1.PageRequest
-	(*Task)(nil),                            // 15: warden.async.v1beta1.Task
-	(*TaskVote)(nil),                        // 16: warden.async.v1beta1.TaskVote
-	(*TaskResult)(nil),                      // 17: warden.async.v1beta1.TaskResult
-	(*v1beta1.PageResponse)(nil),            // 18: cosmos.base.query.v1beta1.PageResponse
-	(*Plugin)(nil),                          // 19: warden.async.v1beta1.Plugin
+	(*QueryPluginValidatorsRequest)(nil),    // 13: warden.async.v1beta1.QueryPluginValidatorsRequest
+	(*QueuePriority)(nil),                   // 14: warden.async.v1beta1.QueuePriority
+	(*QueueWeight)(nil),                     // 15: warden.async.v1beta1.QueueWeight
+	(*QueryPluginValidatorsResponse)(nil),   // 16: warden.async.v1beta1.QueryPluginValidatorsResponse
+	(*Params)(nil),                          // 17: warden.async.v1beta1.Params
+	(*v1beta1.PageRequest)(nil),             // 18: cosmos.base.query.v1beta1.PageRequest
+	(*Task)(nil),                            // 19: warden.async.v1beta1.Task
+	(*TaskVote)(nil),                        // 20: warden.async.v1beta1.TaskVote
+	(*TaskResult)(nil),                      // 21: warden.async.v1beta1.TaskResult
+	(*v1beta1.PageResponse)(nil),            // 22: cosmos.base.query.v1beta1.PageResponse
+	(*Plugin)(nil),                          // 23: warden.async.v1beta1.Plugin
 }
 var file_warden_async_v1beta1_query_proto_depIdxs = []int32{
-	13, // 0: warden.async.v1beta1.QueryParamsResponse.params:type_name -> warden.async.v1beta1.Params
-	14, // 1: warden.async.v1beta1.QueryTasksRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	15, // 2: warden.async.v1beta1.TaskResponse.task:type_name -> warden.async.v1beta1.Task
-	16, // 3: warden.async.v1beta1.TaskResponse.votes:type_name -> warden.async.v1beta1.TaskVote
-	17, // 4: warden.async.v1beta1.TaskResponse.result:type_name -> warden.async.v1beta1.TaskResult
-	18, // 5: warden.async.v1beta1.QueryTasksResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	17, // 0: warden.async.v1beta1.QueryParamsResponse.params:type_name -> warden.async.v1beta1.Params
+	18, // 1: warden.async.v1beta1.QueryTasksRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	19, // 2: warden.async.v1beta1.TaskResponse.task:type_name -> warden.async.v1beta1.Task
+	20, // 3: warden.async.v1beta1.TaskResponse.votes:type_name -> warden.async.v1beta1.TaskVote
+	21, // 4: warden.async.v1beta1.TaskResponse.result:type_name -> warden.async.v1beta1.TaskResult
+	22, // 5: warden.async.v1beta1.QueryTasksResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
 	3,  // 6: warden.async.v1beta1.QueryTasksResponse.tasks:type_name -> warden.async.v1beta1.TaskResponse
 	3,  // 7: warden.async.v1beta1.QueryTaskByIdResponse.taskResponse:type_name -> warden.async.v1beta1.TaskResponse
-	14, // 8: warden.async.v1beta1.QueryPendingTasksRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	18, // 9: warden.async.v1beta1.QueryPendingTasksResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	15, // 10: warden.async.v1beta1.QueryPendingTasksResponse.tasks:type_name -> warden.async.v1beta1.Task
-	14, // 11: warden.async.v1beta1.QueryPluginsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	18, // 12: warden.async.v1beta1.QueryPluginsResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	19, // 13: warden.async.v1beta1.QueryPluginsResponse.plugins:type_name -> warden.async.v1beta1.Plugin
-	14, // 14: warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	18, // 15: warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	0,  // 16: warden.async.v1beta1.Query.Params:input_type -> warden.async.v1beta1.QueryParamsRequest
-	2,  // 17: warden.async.v1beta1.Query.Tasks:input_type -> warden.async.v1beta1.QueryTasksRequest
-	5,  // 18: warden.async.v1beta1.Query.TaskById:input_type -> warden.async.v1beta1.QueryTaskByIdRequest
-	7,  // 19: warden.async.v1beta1.Query.PendingTasks:input_type -> warden.async.v1beta1.QueryPendingTasksRequest
-	9,  // 20: warden.async.v1beta1.Query.Plugins:input_type -> warden.async.v1beta1.QueryPluginsRequest
-	11, // 21: warden.async.v1beta1.Query.PluginsByValidator:input_type -> warden.async.v1beta1.QueryPluginsByValidatorRequest
-	1,  // 22: warden.async.v1beta1.Query.Params:output_type -> warden.async.v1beta1.QueryParamsResponse
-	4,  // 23: warden.async.v1beta1.Query.Tasks:output_type -> warden.async.v1beta1.QueryTasksResponse
-	6,  // 24: warden.async.v1beta1.Query.TaskById:output_type -> warden.async.v1beta1.QueryTaskByIdResponse
-	8,  // 25: warden.async.v1beta1.Query.PendingTasks:output_type -> warden.async.v1beta1.QueryPendingTasksResponse
-	10, // 26: warden.async.v1beta1.Query.Plugins:output_type -> warden.async.v1beta1.QueryPluginsResponse
-	12, // 27: warden.async.v1beta1.Query.PluginsByValidator:output_type -> warden.async.v1beta1.QueryPluginsByValidatorResponse
-	22, // [22:28] is the sub-list for method output_type
-	16, // [16:22] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	18, // 8: warden.async.v1beta1.QueryPendingTasksRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	22, // 9: warden.async.v1beta1.QueryPendingTasksResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	19, // 10: warden.async.v1beta1.QueryPendingTasksResponse.tasks:type_name -> warden.async.v1beta1.Task
+	18, // 11: warden.async.v1beta1.QueryPluginsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	22, // 12: warden.async.v1beta1.QueryPluginsResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	23, // 13: warden.async.v1beta1.QueryPluginsResponse.plugins:type_name -> warden.async.v1beta1.Plugin
+	18, // 14: warden.async.v1beta1.QueryPluginsByValidatorRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	22, // 15: warden.async.v1beta1.QueryPluginsByValidatorResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	14, // 16: warden.async.v1beta1.QueryPluginValidatorsResponse.queue_priorities:type_name -> warden.async.v1beta1.QueuePriority
+	15, // 17: warden.async.v1beta1.QueryPluginValidatorsResponse.queue_weights:type_name -> warden.async.v1beta1.QueueWeight
+	0,  // 18: warden.async.v1beta1.Query.Params:input_type -> warden.async.v1beta1.QueryParamsRequest
+	2,  // 19: warden.async.v1beta1.Query.Tasks:input_type -> warden.async.v1beta1.QueryTasksRequest
+	5,  // 20: warden.async.v1beta1.Query.TaskById:input_type -> warden.async.v1beta1.QueryTaskByIdRequest
+	7,  // 21: warden.async.v1beta1.Query.PendingTasks:input_type -> warden.async.v1beta1.QueryPendingTasksRequest
+	9,  // 22: warden.async.v1beta1.Query.Plugins:input_type -> warden.async.v1beta1.QueryPluginsRequest
+	13, // 23: warden.async.v1beta1.Query.PluginValidators:input_type -> warden.async.v1beta1.QueryPluginValidatorsRequest
+	11, // 24: warden.async.v1beta1.Query.PluginsByValidator:input_type -> warden.async.v1beta1.QueryPluginsByValidatorRequest
+	1,  // 25: warden.async.v1beta1.Query.Params:output_type -> warden.async.v1beta1.QueryParamsResponse
+	4,  // 26: warden.async.v1beta1.Query.Tasks:output_type -> warden.async.v1beta1.QueryTasksResponse
+	6,  // 27: warden.async.v1beta1.Query.TaskById:output_type -> warden.async.v1beta1.QueryTaskByIdResponse
+	8,  // 28: warden.async.v1beta1.Query.PendingTasks:output_type -> warden.async.v1beta1.QueryPendingTasksResponse
+	10, // 29: warden.async.v1beta1.Query.Plugins:output_type -> warden.async.v1beta1.QueryPluginsResponse
+	16, // 30: warden.async.v1beta1.Query.PluginValidators:output_type -> warden.async.v1beta1.QueryPluginValidatorsResponse
+	12, // 31: warden.async.v1beta1.Query.PluginsByValidator:output_type -> warden.async.v1beta1.QueryPluginsByValidatorResponse
+	25, // [25:32] is the sub-list for method output_type
+	18, // [18:25] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_warden_async_v1beta1_query_proto_init() }
@@ -7416,6 +9681,54 @@ func file_warden_async_v1beta1_query_proto_init() {
 				return nil
 			}
 		}
+		file_warden_async_v1beta1_query_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryPluginValidatorsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_async_v1beta1_query_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueuePriority); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_async_v1beta1_query_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueueWeight); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_async_v1beta1_query_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryPluginValidatorsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -7423,7 +9736,7 @@ func file_warden_async_v1beta1_query_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_async_v1beta1_query_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

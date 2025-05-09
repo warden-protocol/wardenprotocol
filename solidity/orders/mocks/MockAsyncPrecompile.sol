@@ -10,7 +10,8 @@ import {
     TaskResult,
     TaskVote,
     IAsync,
-    PendingTasksResponse
+    PendingTasksResponse,
+    PluginsResponse
 } from "precompile-async/IAsync.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { Types } from "precompile-async/IAsync.sol";
@@ -41,14 +42,13 @@ contract MockAsyncPrecompile is IAsync {
             plugin: plugin,
             input: input,
             fee: fee,
+            solver: solver
         });
 
         TaskVote[] memory emptyVotes = new TaskVote[](0);
-        bytes memory emptySubmitter;
         TaskResult memory taskResult = TaskResult({
             id: taskId,
-            output: input,
-            submitter: emptySubmitter
+            output: input
         });
         TaskResponse memory taskResponse = TaskResponse({
             task: task,
@@ -77,6 +77,13 @@ contract MockAsyncPrecompile is IAsync {
     function pendingTasks(
         Types.PageRequest calldata
     ) external pure returns (PendingTasksResponse memory) {
+        // solhint-disable-next-line
+        revert("Unimplemented");
+    }
+
+    function plugins(
+        Types.PageRequest calldata pagination
+    ) external view returns (PluginsResponse memory response) {
         // solhint-disable-next-line
         revert("Unimplemented");
     }

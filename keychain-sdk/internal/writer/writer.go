@@ -19,9 +19,6 @@ type W struct {
 	// included in a block after being broadcasted.
 	TxTimeout time.Duration
 
-	// Client is the client used to send transactions to the chain.
-	Client *client.TxClient
-
 	Logger *slog.Logger
 
 	GasLimit uint64
@@ -36,15 +33,18 @@ type W struct {
 	batch Batch
 }
 
+type SyncTxClient interface {
+	SendWaitTx(ctx context.Context, txBytes []byte) (string, error)
+	BuildTx(ctx context.Context, gasLimit uint64, fees sdk.Coins, msgers ...client.Msger) ([]byte, error)
+}
+
 func New(
-	client *client.TxClient,
 	batchSize int,
 	batchInterval time.Duration,
 	txTimeout time.Duration,
 	logger *slog.Logger,
 ) *W {
 	return &W{
-		Client:        client,
 		BatchInterval: batchInterval,
 		TxTimeout:     txTimeout,
 		Logger:        logger,
@@ -52,7 +52,7 @@ func New(
 	}
 }
 
-func (w *W) Start(ctx context.Context, flushErrors chan error) error {
+func (w *W) Start(ctx context.Context, client SyncTxClient, flushErrors chan error) error {
 	w.Logger.Info("starting tx writer")
 	for {
 		select {
@@ -63,9 +63,11 @@ func (w *W) Start(ctx context.Context, flushErrors chan error) error {
 			if w.TxTimeout > 0 {
 				ctx, cancel = context.WithTimeout(ctx, w.TxTimeout)
 			}
-			if err := w.Flush(ctx); err != nil {
+
+			if err := w.Flush(ctx, client); err != nil {
 				flushErrors <- err
 			}
+
 			cancel()
 			time.Sleep(w.BatchInterval)
 		}
@@ -84,21 +86,7 @@ func (w *W) Write(ctx context.Context, msg client.Msger) error {
 	return <-item.Done
 }
 
-func (w *W) gasLimit() uint64 {
-	if w.GasLimit == 0 {
-		return client.DefaultGasLimit
-	}
-	return w.GasLimit
-}
-
-func (w *W) fees() sdk.Coins {
-	if w.Fees == nil {
-		return client.DefaultFees
-	}
-	return w.Fees
-}
-
-func (w *W) Flush(ctx context.Context) error {
+func (w *W) Flush(ctx context.Context, txClient SyncTxClient) error {
 	msgs := w.batch.Clear()
 	if len(msgs) == 0 {
 		w.Logger.Debug("flushing batch", "empty", true)
@@ -116,7 +104,7 @@ func (w *W) Flush(ctx context.Context) error {
 		msgers[i] = item.Msger
 	}
 
-	if err := w.sendWaitTx(ctx, msgers...); err != nil {
+	if err := w.sendWaitTx(ctx, txClient, msgers...); err != nil {
 		for _, item := range msgs {
 			item.Done <- err
 		}
@@ -126,18 +114,18 @@ func (w *W) Flush(ctx context.Context) error {
 	return nil
 }
 
-func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
+func (w *W) sendWaitTx(ctx context.Context, txClient SyncTxClient, msgs ...client.Msger) error {
 	w.sendTxLock.Lock()
 	defer w.sendTxLock.Unlock()
 
 	w.Logger.Info("flushing batch", "count", len(msgs))
 
-	tx, err := w.Client.BuildTx(ctx, w.gasLimit(), w.fees(), msgs...)
+	tx, err := txClient.BuildTx(ctx, w.gasLimit(), w.fees(), msgs...)
 	if err != nil {
 		return err
 	}
 
-	hash, err := w.Client.SendWaitTx(ctx, tx)
+	hash, err := txClient.SendWaitTx(ctx, tx)
 	if err != nil {
 		return err
 	}
@@ -145,6 +133,20 @@ func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 	w.Logger.Info("flush complete", "tx_hash", hash)
 
 	return nil
+}
+
+func (w *W) gasLimit() uint64 {
+	if w.GasLimit == 0 {
+		return client.DefaultGasLimit
+	}
+	return w.GasLimit
+}
+
+func (w *W) fees() sdk.Coins {
+	if w.Fees == nil {
+		return client.DefaultFees
+	}
+	return w.Fees
 }
 
 type Batch struct {

@@ -46,6 +46,9 @@ type (
 
 		plugins            collections.Map[string, types.Plugin]
 		pluginsByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
+		queuePriorities    QueuePriorityCollection
+		queueTotalWeights  QueueTotalWeightCollection
+		queueWeights       QueueWeightCollection
 		tasks              *TaskKeeper
 		votes              collections.Map[collections.Pair[uint64, []byte], int32]
 
@@ -56,14 +59,17 @@ type (
 )
 
 var (
-	TaskSeqPrefix       = collections.NewPrefix(0)
-	TasksPrefix         = collections.NewPrefix(1)
-	TaskByAddressPrefix = collections.NewPrefix(2)
-	ResultsPrefix       = collections.NewPrefix(3)
-	VotesPrefix         = collections.NewPrefix(4)
-	PendingTasksPrefix  = collections.NewPrefix(5)
-	PluginsByValidator  = collections.NewPrefix(6)
-	PluginsPrefix       = collections.NewPrefix(7)
+	TaskSeqPrefix          = collections.NewPrefix(0)
+	TasksPrefix            = collections.NewPrefix(1)
+	TaskByAddressPrefix    = collections.NewPrefix(2)
+	ResultsPrefix          = collections.NewPrefix(3)
+	VotesPrefix            = collections.NewPrefix(4)
+	PendingTasksPrefix     = collections.NewPrefix(5)
+	PluginsByValidator     = collections.NewPrefix(6)
+	PluginsPrefix          = collections.NewPrefix(7)
+	QueueWeightPrefix      = collections.NewPrefix(8)
+	QueueTotalWeightPrefix = collections.NewPrefix(9)
+	QueuePriorityPrefix    = collections.NewPrefix(10)
 )
 
 func NewKeeper(
@@ -96,6 +102,9 @@ func NewKeeper(
 
 	plugins := collections.NewMap(sb, PluginsPrefix, "plugins", collections.StringKey, codec.CollValue[types.Plugin](cdc))
 	pluginsByValidator := collections.NewKeySet(sb, PluginsByValidator, "handlers_by_validator", collections.PairKeyCodec(sdk.ConsAddressKey, collections.StringKey))
+	queueWeights := collections.NewMap(sb, QueueWeightPrefix, "queue_weights", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), WeightValue)
+	queueTotalWeights := collections.NewMap(sb, QueueTotalWeightPrefix, "queue_total_weight", QueueIDKey, WeightValue)
+	queuePriorities := collections.NewMap(sb, QueuePriorityPrefix, "queue_priorities", collections.PairKeyCodec(QueueIDKey, sdk.ConsAddressKey), PriorityValue)
 
 	_, err := sb.Build()
 	if err != nil {
@@ -116,6 +125,9 @@ func NewKeeper(
 
 		plugins:            plugins,
 		pluginsByValidator: pluginsByValidator,
+		queuePriorities:    queuePriorities,
+		queueTotalWeights:  queueTotalWeights,
+		queueWeights:       queueWeights,
 		tasks:              tasks,
 		votes:              votes,
 
@@ -245,8 +257,8 @@ func (k *Keeper) RegisterPluginValidator(ctx context.Context, validator sdk.Cons
 
 // HasPluginValidators returns whether there are some validators registered to the request plugin.
 func (k *Keeper) HasPluginValidators(ctx context.Context, id string) bool {
-	// TODO: will be implemented when we'll keep track of validators priorities.
-	return true
+	v, _ := k.queueTotalWeights.Get(ctx, QueueID(id))
+	return v > 0
 }
 
 // ClearPlugins removes all handlers registered for a validator.

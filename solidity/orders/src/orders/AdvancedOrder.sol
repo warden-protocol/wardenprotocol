@@ -101,7 +101,8 @@ contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
             falsePositiveRate: falsePositiveRate,
             metrics: metrics
         });
-        taskId = ASYNC_PRECOMPILE.addTask("pricepred", abi.encode(pricePredictInput), address(0));
+        CommonTypes.Coin[] memory maxTaskFee;
+        taskId = ASYNC_PRECOMPILE.addTask("pricepred", abi.encode(pricePredictInput), maxTaskFee, address(0));
         REGISTRY = Registry(registry);
 
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {

@@ -133,21 +133,24 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", "x/"+types.ModuleName)
 }
 
-func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter, output []byte) error {
-	if err := k.tasks.SetResult(ctx, types.TaskResult{
-		Id:        id,
-		Output:    output,
-		Submitter: submitter,
+func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.ConsAddress, output []byte) error {
+	task, err := k.tasks.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if !task.Solver.Equals(submitter) {
+		return fmt.Errorf("task %d expected result from %s, got one from %s", id, task.Solver, submitter)
+	}
+
+	if err := k.tasks.SetResult(ctx, task, types.TaskResult{
+		Id:     id,
+		Output: output,
 	}); err != nil {
 		return err
 	}
 
 	if err := k.SetTaskVote(ctx, id, submitter, types.TaskVoteType_VOTE_TYPE_VERIFIED); err != nil {
-		return err
-	}
-
-	task, err := k.tasks.Get(ctx, id)
-	if err != nil {
 		return err
 	}
 

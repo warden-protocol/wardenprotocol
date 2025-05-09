@@ -9,7 +9,8 @@ import {
     TaskResult,
     TaskVote,
     IAsync,
-    PendingTasksResponse
+    PendingTasksResponse,
+    PluginsResponse
 } from "precompile-async/IAsync.sol";
 import { DeductedFee, PluginsResponse, Types } from "precompile-async/IAsync.sol";
 import { CallbackParams } from "precompile-sched/ISched.sol";
@@ -27,6 +28,7 @@ contract MockAsyncPrecompile is IAsync {
     ) external returns (uint64 taskId)
     {
         taskId = uint64(++tasksCount);
+        bytes memory solver = "";
         DeductedFee memory fee;
         Task memory task = Task({
             id: taskId,
@@ -35,15 +37,14 @@ contract MockAsyncPrecompile is IAsync {
             plugin: plugin,
             fee: fee,
             input: input,
-            callbackId: 0
+            callbackId: 0,
+            solver: solver
         });
 
         TaskVote[] memory emptyVotes = new TaskVote[](0);
-        bytes memory emptySubmitter;
         TaskResult memory taskResult = TaskResult({
             id: taskId,
-            output: input,
-            submitter: emptySubmitter
+            output: input
         });
         TaskResponse memory taskResponse = TaskResponse({
             task: task,

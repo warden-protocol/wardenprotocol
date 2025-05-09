@@ -52,14 +52,14 @@ type (
 		authority          string
 		asyncModuleAddress sdk.AccAddress
 
+		accountKeeper types.AccountKeeper
+		bankKeeper    types.BankKeeper
+		getEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper
 		stakingKeeper *stakingkeeper.Keeper
 
-		tasks              *TaskKeeper
 		plugins            collections.Map[string, types.Plugin]
 		pluginsByValidator collections.KeySet[collections.Pair[sdk.ConsAddress, string]]
-		getEvmKeeper       func(_placeHolder int16) *evmkeeper.Keeper
-		accountKeeper      types.AccountKeeper
-		bankKeeper         types.BankKeeper
+		tasks              *TaskKeeper
 		votes              collections.Map[collections.Pair[uint64, []byte], int32]
 
 		p *prophet.P
@@ -114,19 +114,19 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:                cdc,
-		storeService:       storeService,
+		cdc:          cdc,
+		storeService: storeService,
+		logger:       logger,
+
 		authority:          authority,
 		asyncModuleAddress: asyncModuleAddress,
-		logger:             logger,
 
-		tasks:              tasks,
+		accountKeeper: accountKeeper,
+		bankKeeper:    bankKeeper,
+		getEvmKeeper:  getEvmKeeper,
+		stakingKeeper: stakingKeeper,
 		plugins:            plugins,
 		pluginsByValidator: pluginsByValidator,
-		getEvmKeeper:       getEvmKeeper,
-		accountKeeper:      accountKeeper,
-		bankKeeper:         bankKeeper,
-		stakingKeeper:      stakingKeeper,
 		votes:              votes,
 
 		p: p,

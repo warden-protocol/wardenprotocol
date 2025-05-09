@@ -12,10 +12,13 @@ In this article, you'll find a full list of available methods, allowing you to q
 
 - [Tasks](/learn/warden-protocol-modules/x-async#task)
 
-To learn how to use this precompile, refer to [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async).
+To learn how to use this precompile, refer to the following guides:
+
+- [Interact with `x/async`](../interact-with-warden-modules/interact-with-x-async)
+- [Run offchain computations with x/async AVR Plugins](../run-offchain-computations/introduction)
 
 :::note Code
-You can find the `x/async` precomile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol)
+You can find the `x/async` precompile code on GitHub: [`IAsync.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/precompiles/async/IAsync.sol)
 :::
 
 ## Precompile address

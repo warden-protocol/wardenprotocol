@@ -183,9 +183,9 @@ Now you can interact with the contract.
 
 Now you can dive deeper and expand your contract with other functions from Warden precompiles:
 
-- To find code samples for each function, see the following guides:
   - [Interact with `x/warden`](/category/interact-with-xwarden)
   - [Interact with `x/act`](/category/interact-with-xact)
   - [Interact with `x/async`](interact-with-x-async)
-- For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.
-- Learn how to build an Agent using `x/warden`, `x/oracle`, and `x/async`: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
+  - [Use the `JSON` precompile](/category/use-the-json-precompile)
+
+For an overview of the available functions, refer to the [Precompiles](/category/precompiles) section.

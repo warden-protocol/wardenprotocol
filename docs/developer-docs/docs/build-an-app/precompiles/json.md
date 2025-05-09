@@ -815,9 +815,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
 
 ### `SetKeyValue`
 
-### `ReadKeyValue`
-
-- **Description**: A struct representing a key. It's used for [getting multiple values](#get-multiple-values).
+- **Description**: A struct representing a key and its value type. It's used for [getting multiple values](#get-multiple-values).
 
 ```
 struct ReadKeyValue {
@@ -826,6 +824,8 @@ struct ReadKeyValue {
     int64 decimals;
 }
 ```
+
+### `ReadKeyValue`
 
 - **Description**: A struct representing a key-value pair. It's used for [setting multiple pairs](#set-multiple-pairs).
 

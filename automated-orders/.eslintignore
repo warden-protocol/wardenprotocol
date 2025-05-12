@@ -1,9 +1,0 @@
-# directories
-.yarn/
-**/dist
-**/node_modules
-**/types
-
-# files
-*.env
-*.log

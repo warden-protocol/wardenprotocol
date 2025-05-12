@@ -3,7 +3,8 @@ name: Release Wardend development image
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - "go.mod"
       - "cmd/wardend/**"
@@ -54,11 +55,8 @@ jobs:
 
   release-dev:
     if: ${{ github.event_name != 'pull_request' }}
-    name: ${{ matrix.release }}
+    name: release-dev
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        release: ["release"]
     permissions:
       actions: read
       contents: write
@@ -98,8 +96,8 @@ jobs:
         with:
           just-version: 1.39.0
 
-      - name: ${{ matrix.release }}
-        run: just wardend ${{ matrix.release }}
+      - name: Release
+        run: just release wardend
         env:
           SKIP: "--skip=validate"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

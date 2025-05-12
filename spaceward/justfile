@@ -1,5 +1,0 @@
-dev:
-	pnpm vite --force
-
-build:
-	pnpm build

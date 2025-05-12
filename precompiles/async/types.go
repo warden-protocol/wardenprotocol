@@ -158,6 +158,7 @@ func mapTask(task types.Task) (Task, error) {
 			PluginCreatorReward: mapSdkCoins(task.Fee.PluginCreatorReward),
 			ExecutorReward:      mapSdkCoins(task.Fee.ExecutorReward),
 		},
+		CallbackId: task.CallbackId,
 	}, nil
 }
 

@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package warden.sched.v1beta1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1";
+
+// Task defines a task that will be executed asynchronously.
+// Validators will be able to submit the proposed result of the Task
+// execution.
+// Other validators will then be able to vote on the validity of the proposed
+// result.
+message Callback {
+  // Unique ID of the Callback.
+  uint64 id = 1;
+  // Callback address.
+  string address = 2;
+  // The limit of gas for callback execution.
+  uint64 gas_limit = 3;
+}
+
+// Used by other modules to set callback.
+message CallbackParams {
+  string address = 1;
+  uint64 gas_limit = 2;
+}
+
+enum CallbackStatus {
+  // Unspecified callback status.
+  CALLBACK_STATUS_UNSPECIFIED = 0;
+  // Indicates that the callback execution was successful.
+  CALLBACK_STATUS_SUCCEED = 1;
+  // Indicates that the callback execution failed.
+  CALLBACK_STATUS_FAILED = 2;
+}
+
+message CallbackResult {
+  // The result status.
+  CallbackStatus status = 1;
+  // Result of the callback, depending on the status:
+  //   If unspecified, this field is empty.
+  //   If succeed, this field contains the callback output.
+  //   If failed, this field contains the reason.
+  oneof result {
+    bytes output = 2 [(amino.oneof_name) = "Output"];
+    string fail_reason = 7 [(amino.oneof_name) = "FailReason"];
+  }
+}

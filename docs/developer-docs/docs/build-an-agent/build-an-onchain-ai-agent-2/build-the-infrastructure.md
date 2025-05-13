@@ -81,7 +81,7 @@ Mock precompiles are essential for end-to-end testing of the onchain Agent. You'
    [`mocks/MockWardenPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockWardenPrecompile.sol)
    :::
 
-3. Create an Async precompile mocking [`x/async`](/build-an-app/precompiles/x-async). Its goal is creating and tracking [Tasks](/learn/glossary#task) using [AVR Plugings](/learn/glossary#avr-plugin). Note that this precompile is required only for [automated Orders with price prediction](implement-price-prediction).
+3. Create an Async precompile mocking [`x/async`](/build-an-app/precompiles/x-async). Its goal is creating and tracking [Tasks](/learn/glossary#task) using [AVR Plugins](/learn/glossary#avr-plugin). Note that this precompile is required only for [automated Orders with price prediction](implement-price-prediction).
 
    :::note Code
    [`mocks/MockAsyncPrecompile.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/mocks/MockAsyncPrecompile.sol)

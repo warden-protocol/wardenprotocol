@@ -198,8 +198,6 @@ Store `BasicOrderFactory` in the [`src` directory](https://github.com/warden-pro
 You can find the full code on GitHub: [`src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
 :::
 
-## 1. Create the contract
-
 1. To start implementing the deployment of Orders, create a file `BasicOrderFactory.sol`.
 
 2. In this contract, implement the core function for deploying new Orders: `createBasicOrder()`.

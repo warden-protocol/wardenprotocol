@@ -56,7 +56,11 @@ orders/
 ├── mocks/            # Mock services
 ├── script/           # Deployment scripts
 ├── src/              # Core contracts
-└── test/             # Test files
+│   └── factories/    # Factories
+│   └── lib/          # Libraries
+│   └── orders/       # Orders
+│   └── types/        # Types
+└── test/             # Tests
 ```
 
 :::note Full code

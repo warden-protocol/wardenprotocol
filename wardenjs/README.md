@@ -223,7 +223,7 @@ import {
 } from 'wardenjs';
 
 const signer: OfflineSigner = /* create your signer (see above)  */
-const rpcEndpint = 'https://rpc.cosmos.directory/wardenprotocol'; // or another URL
+const rpcEndpint = 'https://rpc.chiado.wardenprotocol.org'; // or another URL
 
 const protoRegistry: ReadonlyArray<[string, GeneratedType]> = [
     ...cosmosProtoRegistry,

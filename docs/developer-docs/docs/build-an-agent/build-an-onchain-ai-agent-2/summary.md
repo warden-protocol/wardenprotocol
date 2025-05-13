@@ -16,7 +16,7 @@ In this section, you'll find a brief summary highlighting the differences betwee
 | Price sources | The oracle | The oracle and predictions |
 | Execution window | None | 24-hour validity |
 | State management | A simple execution flag | Prediction tracking |
-| Infrastructure | The [Slinky precompile](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) | The [Slinky](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and [Async](build-the-infrastructure-for-orders/create-mock-precompiles#13-create-an-async-precompile) precompiles |
+| Infrastructure | The Slinky precompile | The Slinky and Async precompiles |
 
 ## Use cases
 

@@ -25,11 +25,11 @@ You can find the full code of the example on GitHub: [`orders`](https://github.c
 
 You'll learn how to build two types of Orders:
 
-- **Automated Orders**: the [`BasicOrder` contract](implement-automated-orders/implement-orders)  
+- **Automated Orders**: the [`BasicOrder` contract](implement-automated-orders#1-implement-orders)  
 
   The basic automated Orders monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met, signing transactions with [Keychains](/learn/glossary#keychain).
 
-- **Automated Orders with price prediction**: the [`AdvancedOrder` contract](implement-automated-orders-with-price-prediction/implement-orders)  
+- **Automated Orders with price prediction**: the [`AdvancedOrder` contract](implement-price-prediction#1-implement-orders)  
 
   This is a more advanced version of automated Orders. It uses the [`x/async` module](/learn/warden-protocol-modules/x-async) to make AI-driven price predictions. Then it performs token swaps based on these predictions, signing transactions with [Keychains](/learn/glossary#keychain).
 
@@ -41,21 +41,18 @@ You'll learn how to build two types of Orders:
 
 The core logic of Orders in implemented in two smart contracts:
 
-- [`BasicOrder`](implement-automated-orders/implement-orders): A contract implementing [Automated Orders](implement-automated-orders/introduction)
-- [`AdvancedOrder`](implement-automated-orders-with-price-prediction/implement-orders): A contract implementing [Automated Orders with price prediction](implement-automated-orders-with-price-prediction/introduction)
+- `BasicOrder`: A contract implementing [Automated Orders](implement-automated-orders)
+- `AdvancedOrder`: A contract implementing [Automated Orders with price prediction](implement-price-prediction)
 
-Both Order types share [common infrastructure](/category/build-the-infrastructure-for-orders):
+Both Order types share [common infrastructure](build-the-infrastructure):
 
-  - [Helpers and utils](build-the-infrastructure-for-orders/create-helpers-and-utils), including the [`Registry` contract](build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) for storing the Order and transaction data
-  - [Warden](build-the-infrastructure-for-orders/create-mock-precompiles#12-create-a-warden-precompile) & [Slinky](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile): Mock precompiles for signing transactions and fetching prices
-  - [`IExecution`](build-the-infrastructure-for-orders/implement-the-execution-interface): A contract implementing the Order execution interface
-  - [`OrderFactory`](build-the-infrastructure-for-orders/implement-the-creation-of-orders): A contract facilitating the creation of Orders
+  - [Helpers and utils](build-the-infrastructure#1-create-helpers-and-utils), including the `Registry` contract for storing the Order and transaction data
+  - [Mock precompiles](build-the-infrastructure#2-create-mock-precompiles) for signing transactions and fetching prices: Warden & Slinky
+  - [`IExecution`](build-the-infrastructure#4-implement-the-execution-interface): A contract implementing the Order execution interface
+  - [`OrderFactory`](build-the-infrastructure#5-implement-the-creation-of-orders): A contract facilitating the creation of Orders
 
 ## Get started
 
 To see how to create an automated Order with price prediction, run the [Create an Order](demo-create-an-order) demo.
 
-To get started with implementing Orders, take these steps:
-
-1. [Meet the prerequisites](prerequisites).
-2. [Build the infrastructure for Orders](/category/build-the-infrastructure-for-orders).
+To get started with implementing Orders, [meet the prerequisites](prerequisites).

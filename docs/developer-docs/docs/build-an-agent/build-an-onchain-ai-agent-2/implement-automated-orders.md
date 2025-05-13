@@ -6,9 +6,9 @@ sidebar_position: 2.2
 
 ## Overview
 
-This section explains how to implement basic **automated Orders**—smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds, signing transactions with [Keychains](/learn/glossary#keychain). This Order type serves as a foundation for building more advanced [Orders with price prediction](../implement-automated-orders-with-price-prediction/introduction).
+This section explains how to implement basic **automated Orders**—smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds, signing transactions with [Keychains](/learn/glossary#keychain). This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-price-prediction).
 
-You'll implement the core logic in the [`BasicOrder` contract](implement-orders), implement the creation of Orders in [`BasicOrderFactory`](implement-the-creation-of-orders), and finally [deploy an Order](deploy-an-order). To learn about the full architecture of this project, refer to the [main introduction](../introduction#architecture).
+You'll implement the core logic in the [`BasicOrder` contract](#1-implement-orders), implement the creation of Orders in [`BasicOrderFactory`](#2-implement-the-creation-of-orders), and finally [deploy an Order](#3-deploy-an-order). To learn about the full architecture of this project, refer to the [main introduction](introduction#architecture).
 
 :::note Full code
 Please note that the articles in this section typically contain only fragments of code.  
@@ -29,18 +29,18 @@ A user can create and manage multiple automated Orders. The user flow includes t
     - The token pair to monitor
     - Swap details such as amount, path, recipient, deadline
     - Transaction signing details
-2. The [`OrderFactory` contract](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) calls [`BasicOrderFactory`](implement-the-creation-of-orders), which deploys a new [`BasicOrder` contract](implement-orders) (Order) and registers it in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
-3. The Order continuously monitors prices using [Slinky](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile).
+2. The [`OrderFactory` contract](build-the-infrastructure#5-implement-the-creation-of-orders) calls [`BasicOrderFactory`](#2-implement-the-creation-of-orders), which deploys a new [`BasicOrder` contract](#1-implement-orders) (Order) and registers it in the [registry](build-the-infrastructure#1-create-helpers-and-utils).
+3. The Order continuously monitors prices using [Slinky](build-the-infrastructure#2-create-mock-precompiles).
 4. When the price threshold is met, the Order executes a swap:
     - Constructs a swap transaction
-    - Sends the transaction to [Warden](../build-the-infrastructure-for-orders/create-mock-precompiles#12-create-a-warden-precompile) for signing
-    - Records the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
+    - Sends the transaction to [Warden](build-the-infrastructure#2-create-mock-precompiles) for signing
+    - Records the transaction in the [registry](build-the-infrastructure#1-create-helpers-and-utils)
     - Executes the swap on Uniswap
-5. Transaction details are stored in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
+5. Transaction details are stored in the [registry](build-the-infrastructure#1-create-helpers-and-utils).
 
 ## 1. Implement Orders
 
-The `BasicOrder` contract implements the core of logic of this example—**automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met. Note that you can extend some parts to [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders).
+The `BasicOrder` contract implements the core of logic of this example—**automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met. Note that you can extend some parts to [implement Orders with price prediction].
 
 This article will guide you through creating the `BasicOrder` contract. You'll implement the following architecture:
 
@@ -70,24 +70,24 @@ You can find the full code on GitHub: [`src/BasicOrder.sol`](https://github.com/
 
 1. Create core components: define the state variables and imports.
 
-   **Note:** You can extend and expand all these components to [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders).
+   **Note:** You can extend and expand all these components to [implement Orders with price prediction].
 
 2. Now create a `constructor` with validations. Your constructor should handle the following tasks:
 
-   - Validate all inputs: the scheduler, the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry), price conditions
-   - Set up connections with the [price feed](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and the [signing service](../build-the-infrastructure-for-orders/create-helpers-and-utils#2-create-an-abstract-order)
+   - Validate all inputs: the scheduler, the [registry], price conditions
+   - Set up connections with the [price feed] and the [signing service] (`AbstractOrder`)
    - Initialize the Order parameters
 
-3. In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold—see the `PriceCondtion` enum in [`Types.sol`](../build-the-infrastructure-for-orders/create-helpers-and-utils#1-define-data-structures).
+3. In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold—see the `PriceCondtion` enum in [`Types.sol`].
 
 4. In the `execute()` function, implement the logic for executing trades. This function should do the following:
 
    - Verify the caller and conditions
    - Pack the swap data for Uniswap
    - Create and encode a transaction
-   - Request a signature through the [Warden precompile](../build-the-infrastructure-for-orders/create-helpers-and-utils#2-create-an-abstract-order)
+   - Request a signature through the [Warden precompile]
    - Emit the `Executed()` event
-   - Register the transaction in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry)
+   - Register the transaction in the [registry](
    - Return the execution status
 
 5. To test price conditions, use the following code:
@@ -139,7 +139,7 @@ In the previous steps, you've implemented the following security measures:
 
 #### Extension points
 
-To [implement Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-orders), you need to extend your basic contract with the following advanced features:
+To [implement Orders with price prediction], you need to extend your basic contract with the following advanced features:
 
 - **Complex price conditions**  
   The basic implementation shown in this guide supports the `<=` and `>=` price conditions:  
@@ -186,9 +186,9 @@ To [implement Orders with price prediction](../implement-automated-orders-with-p
 
 ## 2. Implement the creation of Orders
 
-This article will guide you through creating the `BasicOrderFactory` contract. `BasicOrderFactory`,  when triggered by [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders), deploys Orders (instances of [`BasicOrder`](implement-orders)) and registers them in the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry).
+This article will guide you through creating the `BasicOrderFactory` contract. `BasicOrderFactory`,  when triggered by [`OrderFactory`], deploys Orders (instances of [`BasicOrder`]) and registers them in the [registry].
 
-This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security. Note that you can extend some parts to [implement the creation of Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders).
+This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security. Note that you can extend some parts to [implement the creation of Orders with price prediction].
 
 :::note Directory
 Store `BasicOrderFactory` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
@@ -240,7 +240,7 @@ You can find the full code on GitHub: [`src/BasicOrderFactory.sol`](https://gith
 
 #### Extension points
 
-To [implement the creation Orders with price prediction](../implement-automated-orders-with-price-prediction/implement-the-creation-of-orders), you need to extend the factory pattern with the following advanced features:
+To [implement the creation Orders with price prediction], you need to extend the factory pattern with the following advanced features:
 
 - **Complex validation**  
   ```solidity
@@ -257,7 +257,7 @@ To [implement the creation Orders with price prediction](../implement-automated-
   ```
 
 :::tip
-When you were [implementing the Order creation logic](#2-implement-the-order-creation-logic), you enabled deployment with the `CREATE3` opcode. It ensures that Order addresses are known in advance, which becomes crucial for Orders with price prediction since they may need to reference each other.
+When you were [implementing the Order creation logic], you enabled deployment with the `CREATE3` opcode. It ensures that Order addresses are known in advance, which becomes crucial for Orders with price prediction since they may need to reference each other.
 :::
 
 ## 3. Deploy an Order
@@ -266,10 +266,10 @@ This article will guide you through deploying and monitoring automated Orders.
 
 You'll deploy the following:
 
-- The core infrastructure including the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts
-- The [`BasicOrder` contract](implement-orders)
+- The core infrastructure including the [`OrderFactory`] and [`Registry`] contracts
+- The [`BasicOrder` contract]
 
-When you implement more advanced Orders with price prediction, you'll [deploy them](../implement-automated-orders-with-price-prediction/deploy-an-order) in a similar way, adding extra parameters for the advanced features.
+When you implement more advanced Orders with price prediction, you'll [deploy them] in a similar way, adding extra parameters for the advanced features.
 
 1. Create an `.env` file with your environment configuration:
 
@@ -297,7 +297,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
    source .env
    ```
    
-4. Deploy the infrastructure by using the [main deployment script](../build-the-infrastructure-for-orders/create-deployment-scripts#1-implement-the-main-deployment-script):
+4. Deploy the infrastructure by using the [main deployment script]:
    
    ```bash
    forge script script/Deploy.s.sol:Deploy \
@@ -306,7 +306,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
        --chain-id $CHAIN_ID
    ```
   
-   This will deploy the [`OrderFactory`](../build-the-infrastructure-for-orders/implement-the-creation-of-orders) and [`Registry`](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry) contracts.
+   This will deploy the [`OrderFactory`] and [`Registry`] contracts.
 
 5. Set the Order parameters:
    
@@ -326,7 +326,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
    0x7ff3...)`           # Encoded swap data
    ```
 
-5. Deploy an Order by using the [script for creating Orders](../build-the-infrastructure-for-orders/create-deployment-scripts#2-implement-the-script-for-creating-orders):
+5. Deploy an Order by using the [script for creating Orders]:
    
    ```
    forge script script/CreateOrder.s.sol:CreateOrder \
@@ -369,7 +369,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
 
 #### Monitor prices
 
-- Get prices from the [oracle](../build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile):
+- Get prices from the [oracle]:
   ```bash
   cast call $SLINKY_PRECOMPILE "getPrice(string,string)" "ETH" "USD"
   ```
@@ -382,11 +382,11 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
   ```
 #### Get data from the registry 
 
-- Get the order creator from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
+- Get the order creator from the [registry]:
   ```bash
   cast call $REGISTRY_ADDRESS "executions(address)" $ORDER_ADDRESS
   ```
-- Get the transaction details from the [registry](../build-the-infrastructure-for-orders/create-helpers-and-utils#3-implement-the-registry):
+- Get the transaction details from the [registry]:
   ```bash
   cast call $REGISTRY_ADDRESS "transactions(bytes32)" $TX_HASH
   ```
@@ -410,7 +410,7 @@ Here are some of the common deployment issues and solutions for them:
 
 ## Extension points
 
-When you implement more advanced Orders with price prediction, you'll [deploy them](../implement-automated-orders-with-price-prediction/deploy-an-order) in a similar way, adding extra parameters for the advanced features:
+When you implement more advanced Orders with price prediction, you'll [deploy them] in a similar way, adding extra parameters for the advanced features:
 
 - **Prediction integration**  
   ```bash

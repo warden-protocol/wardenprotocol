@@ -6,9 +6,9 @@ sidebar_position: 1.5
 
 ## Overview
 
-This article will guide you through creating an [automated Order with price prediction](implement-automated-orders-with-price-prediction/introduction).
+This article will guide you through creating an [automated Order with price prediction](implement-price-prediction).
 
-You'll prepare an input for your Order and run a script that will deploy an instance of the [`AdvancedOrder` contract](implement-automated-orders-with-price-prediction/implement-orders) on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview). This contract will compare oracle and predicted prices and automatically perform a swap on Uniswap once the oracle price is less than the predicted price.
+You'll prepare an input for your Order and run a script that will deploy an instance of the [`AdvancedOrder` contract](implement-price-prediction#1-implement-orders) on [Chiado testnet](/operate-a-node/chiado-testnet/chiado-overview). This contract will compare oracle and predicted prices and automatically perform a swap on Uniswap once the oracle price is less than the predicted price.
 
 ## Prerequisites
 

@@ -105,4 +105,4 @@ contract Implementation is Base, IExecution {
 
 ## Next steps
 
-After meeting these prerequisites, you can start [creating helpers and utils](build-the-infrastructure-for-orders/create-helpers-and-utils).
+After meeting these prerequisites, you can start [building the infrastructure for Orders](build-the-infrastructure).

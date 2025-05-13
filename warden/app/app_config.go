@@ -36,6 +36,10 @@ import (
 	_ "cosmossdk.io/x/upgrade" // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	hyperlanemodulev1 "github.com/bcp-innovations/hyperlane-cosmos/api/core/module/v1"
+	warpmodulev1 "github.com/bcp-innovations/hyperlane-cosmos/api/warp/module/v1"
+	hyperlanetypes "github.com/bcp-innovations/hyperlane-cosmos/x/core/types"
+	warptypes "github.com/bcp-innovations/hyperlane-cosmos/x/warp/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -161,6 +165,10 @@ var (
 		marketmaptypes.ModuleName,
 
 		epochstypes.ModuleName,
+		// hyperlane and warp module
+		warptypes.ModuleName,
+		hyperlanetypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -257,6 +265,9 @@ var (
 		{Account: feemarkettypes.ModuleName, Permissions: nil},                                            // Fee market doesn't need permissions
 		{Account: erc20types.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},       // Allows erc20 module to mint/burn for token pairs
 		{Account: precisebanktypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // Allows precise bank module to mint/burn for token pairs
+		// Hyperlane,
+		{Account: hyperlanetypes.ModuleName},
+		{Account: warptypes.ModuleName, Permissions: []string{authtypes.Burner, authtypes.Minter}}, {Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -417,6 +428,19 @@ func moduleConfig() depinject.Config {
 				{
 					Name:   epochstypes.ModuleName,
 					Config: appconfig.WrapAny(&epochsmodulev1.Module{}),
+				},
+				{
+					Name: warptypes.ModuleName,
+					Config: appconfig.WrapAny(&warpmodulev1.Module{
+						EnabledTokens: []int32{
+							int32(warptypes.HYP_TOKEN_TYPE_COLLATERAL),
+							int32(warptypes.HYP_TOKEN_TYPE_SYNTHETIC),
+						},
+					}),
+				},
+				{
+					Name:   hyperlanetypes.ModuleName,
+					Config: appconfig.WrapAny(&hyperlanemodulev1.Module{}),
 				},
 				// this line is used by starport scaffolding # stargate/app/moduleConfig
 			},

@@ -13,14 +13,14 @@ To achieve this, call the [`x/async` precompile](../../precompiles/x-async) and 
 Follow tutorials in this section to learn how to do the following:
 
 - Implement HTTP requests and process asynchronous responses
-- Extract data from CBOR-encoded responses
+- Extract data from JSON responses using the JSON precompile
 - Make multiple requests to an API
 
-## CBOR encoding
+## JSON parsing
 
-Responses from HTTP requests are encoded in **CBOR** (Concise Binary Object Representation): a binary data format similar to JSON but more compact.
+Responses from HTTP requests are returned as JSON data. To extract specific values from these responses, you can use the JSON precompile, which provides a convenient way to parse JSON data within your smart contract.
 
-Extracting data from such response requires special handling in your contract, as shown in [Extract data](extract-data).
+Extracting data from JSON responses requires using the JSON precompile's `read` function, as shown in [Extract data](extract-data).
 
 ## Get started
 

@@ -19,6 +19,10 @@ import (
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	_ "github.com/bcp-innovations/hyperlane-cosmos/x/core"
+	hyperlaneKeeper "github.com/bcp-innovations/hyperlane-cosmos/x/core/keeper"
+	_ "github.com/bcp-innovations/hyperlane-cosmos/x/warp"
+	warpKeeper "github.com/bcp-innovations/hyperlane-cosmos/x/warp/keeper"
 	abci "github.com/cometbft/cometbft/abci/types"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
@@ -135,6 +139,8 @@ type App struct {
 	GroupKeeper           groupkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 	CircuitBreakerKeeper  circuitkeeper.Keeper
+	HyperlaneKeeper       *hyperlaneKeeper.Keeper
+	WarpKeeper            warpKeeper.Keeper
 
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
@@ -415,6 +421,8 @@ func New(
 		&app.AsyncKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
+		&app.HyperlaneKeeper,
+		&app.WarpKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

@@ -36,6 +36,10 @@ import (
 	_ "cosmossdk.io/x/upgrade" // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	hyperlanemodulev1 "github.com/bcp-innovations/hyperlane-cosmos/api/core/module/v1"
+	warpmodulev1 "github.com/bcp-innovations/hyperlane-cosmos/api/warp/module/v1"
+	hyperlanetypes "github.com/bcp-innovations/hyperlane-cosmos/x/core/types"
+	warptypes "github.com/bcp-innovations/hyperlane-cosmos/x/warp/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -170,6 +174,10 @@ var (
 		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
 		marketmaptypes.ModuleName,
 
+		// hyperlane and warp module
+		warptypes.ModuleName,
+		hyperlanetypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -257,7 +265,9 @@ var (
 		{Account: asyncmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
-		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
+		// Hyperlane,
+		{Account: hyperlanetypes.ModuleName},
+		{Account: warptypes.ModuleName, Permissions: []string{authtypes.Burner, authtypes.Minter}}, {Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -414,6 +424,19 @@ func moduleConfig() depinject.Config {
 					Config: appconfig.WrapAny(&marketmapmodulev1.Module{
 						Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 					}),
+				},
+				{
+					Name: warptypes.ModuleName,
+					Config: appconfig.WrapAny(&warpmodulev1.Module{
+						EnabledTokens: []int32{
+							int32(warptypes.HYP_TOKEN_TYPE_COLLATERAL),
+							int32(warptypes.HYP_TOKEN_TYPE_SYNTHETIC),
+						},
+					}),
+				},
+				{
+					Name:   hyperlanetypes.ModuleName,
+					Config: appconfig.WrapAny(&hyperlanemodulev1.Module{}),
 				},
 				// this line is used by starport scaffolding # stargate/app/moduleConfig
 			},

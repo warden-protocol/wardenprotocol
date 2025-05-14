@@ -50,7 +50,7 @@ type (
 		queueTotalWeights  QueueTotalWeightCollection
 		queueWeights       QueueWeightCollection
 		tasks              *TaskKeeper
-		votes              collections.Map[collections.Pair[uint64, []byte], int32]
+		votes              collections.Map[collections.Pair[uint64, sdk.ConsAddress], int32]
 
 		p *prophet.P
 
@@ -96,7 +96,7 @@ func NewKeeper(
 		sb,
 		VotesPrefix,
 		"votes",
-		collections.PairKeyCodec(collections.Uint64Key, collections.BytesKey),
+		collections.PairKeyCodec(collections.Uint64Key, sdk.ConsAddressKey),
 		collections.Int32Value,
 	)
 
@@ -179,7 +179,7 @@ func (k Keeper) AddTaskResult(ctx context.Context, id uint64, submitter sdk.Cons
 	return nil
 }
 
-func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote types.TaskVoteType) error {
+func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter sdk.ConsAddress, vote types.TaskVoteType) error {
 	if !vote.IsValid() {
 		return fmt.Errorf("invalid vote type: %v", vote)
 	}
@@ -188,7 +188,7 @@ func (k Keeper) SetTaskVote(ctx context.Context, id uint64, voter []byte, vote t
 }
 
 func (k Keeper) GetTaskVotes(ctx context.Context, taskId uint64) ([]types.TaskVote, error) {
-	it, err := k.votes.Iterate(ctx, collections.NewPrefixedPairRange[uint64, []byte](taskId))
+	it, err := k.votes.Iterate(ctx, collections.NewPrefixedPairRange[uint64, sdk.ConsAddress](taskId))
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +261,7 @@ func (k Keeper) taskReadyCallback(
 	return k.schedKeeper.ExecuteCallback(ctx, task.CallbackId, output)
 }
 
-func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAddress []byte, limit int) ([]prophet.TaskResult, error) {
+func (k Keeper) getCompletedTasksWithoutValidatorVote(ctx context.Context, valAddress sdk.ConsAddress, limit int) ([]prophet.TaskResult, error) {
 	it, err := k.tasks.results.IterateRaw(ctx, nil, nil, collections.OrderDescending)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-﻿---
+---
 sidebar_position: 6
 ---
 
@@ -17,7 +17,7 @@ In the Warden Protocol keys are associated with **Keychains** – custodians tha
 To obtain a new key, do this:
 
 1. Connect to SpaceWard: 👉 [SpaceWard on Chiado](https://spaceward.chiado.wardenprotocol.org/)  
-  If it's your first time, see the [Quick start guide](quick-start).
+  If it's your first time, see the [Quick start guide](./quick-start.md).
 2. In the left menu, navigate to **Keys**.
 3. Click **Create key**.
 4. Select the Keychain you wish to operate from and click **Create**.

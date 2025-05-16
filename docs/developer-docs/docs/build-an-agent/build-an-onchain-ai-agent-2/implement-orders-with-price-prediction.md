@@ -18,7 +18,7 @@ You'll take the following steps:
 
 1. Implement the core logic of Orders in the `AdvancedOrder` contract: set up prediction integration, handle multiple price sources, and implement an execution time window
 2. Implement the creation of Orders in `AdvancedOrderFactory`: create the validation logic and enable prediction setup during deployment
-3. Deploy an Order: specify the Order input, including price pairs and the price condition, and monitor the prediction result
+3. Deploy an Order: specify the Order input, including tokens to monitor and the price condition, and monitor the prediction result
 
 :::tip
 The price prediction model is just an example of what you can build with [`x/async`](/learn/warden-protocol-modules/x-async) and [AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugin). With this module, you can implement any logic combining offchain computation with onchain verification—limited only by your imagination.

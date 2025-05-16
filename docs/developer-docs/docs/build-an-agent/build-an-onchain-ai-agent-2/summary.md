@@ -12,8 +12,8 @@ In this section, you'll find a brief summary highlighting the differences betwee
 
 | Feature | Automated Orders | Automated Orders with price prediction |
 |---------|-------------|-----------------|
-| Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
 | Price sources | The oracle | The oracle and predictions |
+| Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
 | Execution window | None | 24-hour validity |
 | State management | A simple execution flag | Prediction tracking |
 | Mock precompiles | Slinky, Warden | Async, Slinky, Warden |
@@ -33,18 +33,6 @@ In this section, you'll find a brief summary highlighting the differences betwee
 - Complex price conditions
 - Time-sensitive operations
 - Multi-source validation
-
-## Development path
-
-1. Start with automated Orders to understand the following:
-   - Order lifecycle
-   - Price monitoring
-   - Execution flow
-
-2. To implement automated Orders with price prediction, add these features:
-   - Prediction integration
-   - Time windows
-   - Complex conditions
 
 ## Development complexity
 

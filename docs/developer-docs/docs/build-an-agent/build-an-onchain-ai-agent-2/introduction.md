@@ -51,10 +51,22 @@ Both Order types share [common infrastructure](build-the-infrastructure):
   - [`OrderFactory`](build-the-infrastructure#4-implement-order-creation): A contract facilitating the creation of Orders
   - Scripts for deploying the infrastructure and orders
 
+## Development path
+
+Start with automated Orders to understand the following:
+  - Order lifecycle
+  - Price monitoring
+  - Execution flow
+
+To implement automated Orders with price prediction, add these features:
+  - Prediction integration
+  - Time windows
+  - Complex conditions
+
 ## Get started
 
 You can take either of these steps to get started:
 
-- To test the creation of Orders with price prediction, run the [Create an Order](demo-create-an-order) demo.
+- To test the creation of Orders with price prediction, run [Demo: Create an Order](demo-create-an-order).
 - To start implementing Orders, [meet the prerequisites](prerequisites) and [build the infrastructure](build-the-infrastructure).
 - To explore the core logic, see the [`BasicOrder`](implement-automated-orders#1-implement-orders) and [`AdvancedOrder`](implement-orders-with-price-prediction#1-implement-orders) contracts.

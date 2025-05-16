@@ -1,7 +1,7 @@
 ---
 version: 2
 
-project_name: wardend
+project_name: faucet
 
 env:
   - CGO_ENABLED=1
@@ -71,148 +71,111 @@ builds:
       - muslc
       - osusergo
 
-  - id: wardend-darwin-amd64
-    main: ./cmd/wardend/main.go
-    binary: wardend
-    hooks:
-      pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
-    env:
-      - CC=o64-clang
-      - CGO_CFLAGS=-mmacosx-version-min=10.12
-      - CGO_LDFLAGS=-L/lib -mmacosx-version-min=10.12
+  - id: faucet-linux-amd64
+    main: ./cmd/faucet
+    binary: faucet
     goos:
-      - darwin
+      - linux
     goarch:
       - amd64
+    env:
+      - CC=x86_64-linux-gnu-gcc
     flags:
       - -mod=readonly
       - -trimpath
     ldflags:
       - -X github.com/cosmos/cosmos-sdk/version.Name=warden
-      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
-      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
     tags:
       - netgo
       - ledger
-      - static_wasm
+      - muslc
+      - osusergo
 
-  - id: wardend-darwin-arm64
-    main: ./cmd/wardend/main.go
-    binary: wardend
-    hooks:
-      pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
-    env:
-      - CC=oa64-clang
-      - CGO_LDFLAGS=-L/lib
+  - id: faucet-linux-arm64
+    main: ./cmd/faucet
+    binary: faucet
     goos:
-      - darwin
+      - linux
     goarch:
       - arm64
+    env:
+      - CC=aarch64-linux-gnu-gcc
     flags:
       - -mod=readonly
       - -trimpath
     ldflags:
       - -X github.com/cosmos/cosmos-sdk/version.Name=warden
-      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
-      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
     tags:
       - netgo
       - ledger
-      - static_wasm
-
-universal_binaries:
-  - id: wardend-darwin-universal
-    ids:
-      - wardend-darwin-amd64
-      - wardend-darwin-arm64
-    replace: false
-
-archives:
-  - id: zipped
-    builds:
-      - wardend-darwin-universal
-      - wardend-linux-amd64
-      - wardend-linux-arm64
-      - wardend-darwin-amd64
-      - wardend-darwin-arm64
-    name_template: "{{.ProjectName}}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-    format: tar.gz
-    files:
-      - none*
-  - id: binaries
-    builds:
-      - wardend-darwin-universal
-      - wardend-linux-amd64
-      - wardend-linux-arm64
-      - wardend-darwin-amd64
-      - wardend-darwin-arm64
-    name_template: "{{.ProjectName}}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-    format: binary
-    files:
-      - none*
-
-checksum:
-  name_template: "sha256sum.txt"
-  algorithm: sha256
+      - muslc
+      - osusergo
 
 changelog:
   disable: true
 
 release:
-  mode: append
-  skip_upload: '{{ if eq .Env.RELEASE "true" }}false{{else}}true{{end}}'
+  disable: true
 
 dockers:
   - use: buildx
     goos: linux
     goarch: amd64
-    dockerfile: Dockerfile-releaser
+    dockerfile: faucet/Dockerfile
     image_templates:
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}{{else}}{{ .ShortCommit }}{{end}}-amd64'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}-amd64'
     build_flag_templates:
       - "--pull"
       - "--platform=linux/amd64"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.description={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version=v{{.Version}}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version=v{{ .Version }}"
       - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
       - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
+    extra_files:
+      - cmd/faucet
   - use: buildx
     goos: linux
     goarch: arm64
-    dockerfile: Dockerfile-releaser
+    dockerfile: faucet/Dockerfile
     image_templates:
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{else}}{{ .ShortCommit }}-arm64v8{{end}}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'
     build_flag_templates:
       - "--pull"
       - "--platform=linux/arm64"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.description={{.ProjectName}}d"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version=v{{.Version}}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version=v{{ .Version }}"
       - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
       - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
+    extra_files:
+      - cmd/faucet
 docker_manifests:
-  - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true" }}v{{ .Version }}{{else}}{{ .ShortCommit }}{{end}}'
+  - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}'
     create_flags:
       - --insecure
     push_flags:
       - --insecure
     image_templates:
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}-amd64{{else}}{{ .ShortCommit }}-amd64{{end}}'
-      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{else}}{{ .ShortCommit }}-arm64v8{{end}}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-amd64{{ else }}{{ .ShortCommit }}-amd64{{ end }}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'

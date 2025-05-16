@@ -10,7 +10,7 @@ This guide explains how to implement basic **automated Orders**—smart contract
 
 Automated Orders use the following Warden modules:
 
-- [`x/oracle`](learn/warden-protocol-modules/external-modules#xoracle) to fetch oracle prices
+- [`x/oracle`](/learn/warden-protocol-modules/external-modules#xoracle) to fetch oracle prices
 - [`x/warden`](/learn/warden-protocol-modules/x-warden) to sign transactions with [Keychains](/learn/warden-protocol-modules/x-warden#keychain)
 
 You'll take these steps:

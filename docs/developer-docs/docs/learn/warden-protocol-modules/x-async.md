@@ -28,7 +28,7 @@ You can learn the basics and then dive deeper by following these guides:
 
 - [Interact with `x/async`](/build-an-app/interact-with-warden-modules/interact-with-x-async)
 - [Run offchain computations with `x/async` AVR Plugins](/build-an-app/run-offchain-computations/introduction)
-- [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction)
+- [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-orders-with-price-prediction)
 
 ## Concepts
 
@@ -93,7 +93,7 @@ The `pricepred` Plugin allows producing **AI-driven price predictions**.
 You can find usage examples in the following guides:
 
 - [Use the price prediction Plugin](/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/introduction)
-- [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction)
+- [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-orders-with-price-prediction)
 
 ### `http`  
 

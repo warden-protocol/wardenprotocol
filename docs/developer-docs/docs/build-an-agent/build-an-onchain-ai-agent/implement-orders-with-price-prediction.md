@@ -11,7 +11,7 @@ This guide explains how to implement advanced **automated Orders with price pred
 Automated Orders with price prediction use the following Warden modules:
 
 - [`x/async`](/learn/warden-protocol-modules/x-async) to fetch price predictions using an [AVR Plugin](/learn/warden-protocol-modules/x-async#avr-plugin)
-- [`x/oracle`](learn/warden-protocol-modules/external-modules#xoracle) to fetch oracle prices
+- [`x/oracle`](/learn/warden-protocol-modules/external-modules#xoracle) to fetch oracle prices
 - [`x/warden`](/learn/warden-protocol-modules/x-warden) to sign transactions with [Keychains](/learn/warden-protocol-modules/x-warden#keychain)
 
 You'll take the following steps:
@@ -75,7 +75,7 @@ To create this logic, add `AdvancedOrder` to the `src/orders` directory and take
 
 5. Implement price normalization in `_normalizePrices()`.
 
-6. Create a `_checkPriceCondition` function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold. See the `PriceCondtion` enum in [`Types.sol`](build-the-infrastructure-for-orders#1-create-helpers-and-utils).
+6. Create a `_checkPriceCondition` function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold. See the `PriceCondtion` enum in [`Types.sol`](build-the-infrastructure#1-create-helpers-and-utils).
 
 7. To test the contract, use the following code:
    
@@ -430,6 +430,6 @@ Here are some of the common deployment issues and solutions for them:
 
 ## Next steps
 
-Congratulations! You have successfully implemented both automated Orders and automated Orders with price prediction! You can quickly glance through the [summary](../summary) to get a quick overview of the project.
+Congratulations! You have successfully implemented both automated Orders and automated Orders with price prediction! You can quickly glance through the [summary](summary) to get a quick overview of the project.
 
 For any questions, reach us on [Discord](https://discord.com/invite/wardenprotocol).

@@ -195,7 +195,7 @@ You can extend the price prediction for other currencies:
 
 You can use price predictions for creating automated Orders. For example, you can create a smart contract that executes a token swap on Uniswap once the predicted price meets a given condition.
 
-Learn more: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-automated-orders-with-price-prediction/introduction).
+Learn more: [Implement automated Orders with price prediction](/build-an-agent/build-an-onchain-ai-agent/implement-orders-with-price-prediction).
 
 If you encounter any issues, please reach out to us in [Discord](https://discord.com/invite/wardenprotocol) or [Twitter](https://twitter.com/wardenprotocol).
 

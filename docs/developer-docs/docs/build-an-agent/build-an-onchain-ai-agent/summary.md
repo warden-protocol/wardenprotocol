@@ -12,11 +12,11 @@ In this section, you'll find a brief summary highlighting the differences betwee
 
 | Feature | Automated Orders | Automated Orders with price prediction |
 |---------|-------------|-----------------|
-| Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
 | Price sources | The oracle | The oracle and predictions |
+| Price conditions | `>=`, `<=` | `>`, `<`, `>=`, `<=` |
 | Execution window | None | 24-hour validity |
 | State management | A simple execution flag | Prediction tracking |
-| Infrastructure | The [Slinky precompile](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) | The [Slinky](build-the-infrastructure-for-orders/create-mock-precompiles#11-create-a-slinky-precompile) and [Async](build-the-infrastructure-for-orders/create-mock-precompiles#13-create-an-async-precompile) precompiles |
+| Mock precompiles | Slinky, Warden | Async, Slinky, Warden |
 
 ## Use cases
 
@@ -33,18 +33,6 @@ In this section, you'll find a brief summary highlighting the differences betwee
 - Complex price conditions
 - Time-sensitive operations
 - Multi-source validation
-
-## Development path
-
-1. Start with automated Orders to understand the following:
-   - Order lifecycle
-   - Price monitoring
-   - Execution flow
-
-2. To implement automated Orders with price prediction, add these features:
-   - Prediction integration
-   - Time windows
-   - Complex conditions
 
 ## Development complexity
 
@@ -70,7 +58,7 @@ contract BasicOrder {
 ```solidity
 contract AdvancedOrder {
     // Complex state
-    uint64 public futureId;
+    uint64 public taskId;
     uint256 private _validUntil;
     
     // Multiple integrations
@@ -80,8 +68,8 @@ contract AdvancedOrder {
     // Advanced execution check
     function canExecute() public view returns (bool) {
         if (block.timestamp > _validUntil) return false;
-        FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
-        return _checkPredictionAndPrice(future, getCurrentPrice());
+        taskByIdResponse memory task = ASYNC_PRECOMPILE.taskById(taskId);
+        return _checkPredictionAndPrice(task, getCurrentPrice());
     }
 }
 ```
@@ -103,8 +91,8 @@ cast call $ORDER "canExecute()"
 just create-advanced-order $CONDITION $ORACLE_PAIR $PREDICT_PAIR
 ```
 ```
-cast call $ORDER "futureId()"
-cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
+cast call $ORDER "taskId()"
+cast call $ASYNC_PRECOMPILE "taskById(uint64)" $TASK_ID
 cast call $ORDER "validUntil()"
 cast call $ORDER "canExecute()"
 ```

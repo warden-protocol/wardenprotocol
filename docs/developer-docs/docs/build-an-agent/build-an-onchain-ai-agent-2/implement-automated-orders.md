@@ -6,88 +6,59 @@ sidebar_position: 2.2
 
 ## Overview
 
-This section explains how to implement basic **automated Orders**—smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds, signing transactions with [Keychains](/learn/glossary#keychain). This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-price-prediction).
+This guide explains how to implement basic **automated Orders**—smart contracts that monitor prices and execute token swaps on Uniswap based on simple price thresholds.
 
-You'll implement the core logic in the [`BasicOrder` contract](#1-implement-orders), implement the creation of Orders in [`BasicOrderFactory`](#2-implement-the-creation-of-orders), and finally [deploy an Order](#3-deploy-an-order). To learn about the full architecture of this project, refer to the [main introduction](introduction#architecture).
+Automated Orders use the following Warden modules:
 
-:::note Full code
-Please note that the articles in this section typically contain only fragments of code.  
-You can find the full code of the example on GitHub: [`orders`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders)
+- [`x/oracle`](learn/warden-protocol-modules/external-modules#xoracle) to fetch oracle prices
+- [`x/warden`](/learn/warden-protocol-modules/x-warden) to sign transactions with [Keychains](/learn/warden-protocol-modules/x-warden#keychain)
+
+You'll take these steps:
+
+1. Implement the core logic of Orders in the `BasicOrder` contract: create the logic for price monitoring and trade execution
+2. Implement the creation of Orders in `BasicOrderFactory`: implement Order deployment, register and track the Order
+3. Deploy an Order: specify the Order input, including the price pair and threshold, and  monitor the result
+
+:::note
+This Order type serves as a foundation for building more advanced [Orders with price prediction](implement-orders-with-price-prediction). When implementing them, you'll add such features as mupltiple price sources (predicted and oracle), strict inequality comparisons (`<`, `>`), and a 24-hour execution time window.
 :::
-
-Automated Orders provide the following key features:
-
-- Price threshold monitoring
-- Single price source integration
-- Direct Uniswap interactions
-- Basic execution security
-
-A user can create and manage multiple automated Orders. The user flow includes the following steps:
-
-1. The user specifies the Order input with these details:
-    - The price threshold and condition (greater/less than)
-    - The token pair to monitor
-    - Swap details such as amount, path, recipient, deadline
-    - Transaction signing details
-2. The [`OrderFactory` contract](build-the-infrastructure#5-implement-the-creation-of-orders) calls [`BasicOrderFactory`](#2-implement-the-creation-of-orders), which deploys a new [`BasicOrder` contract](#1-implement-orders) (Order) and registers it in the [registry](build-the-infrastructure#1-create-helpers-and-utils).
-3. The Order continuously monitors prices using [Slinky](build-the-infrastructure#2-create-mock-precompiles).
-4. When the price threshold is met, the Order executes a swap:
-    - Constructs a swap transaction
-    - Sends the transaction to [Warden](build-the-infrastructure#2-create-mock-precompiles) for signing
-    - Records the transaction in the [registry](build-the-infrastructure#1-create-helpers-and-utils)
-    - Executes the swap on Uniswap
-5. Transaction details are stored in the [registry](build-the-infrastructure#1-create-helpers-and-utils).
 
 ## 1. Implement Orders
 
-The `BasicOrder` contract implements the core of logic of this example—**automated Orders** that monitor prices and automatically execute token swaps on Uniswap when user-defined price thresholds are met. Note that you can extend some parts to [implement Orders with price prediction].
+In our example, the core logic of Orders resides in the `BasicOrder` contract.
 
-This article will guide you through creating the `BasicOrder` contract. You'll implement the following architecture:
-
-```solidity
-contract BasicOrder is AbstractOrder, IExecution {
-    // Core components
-    ISlinky private immutable SLINKY_PRECOMPILE;
-    Registry private immutable REGISTRY;
-    
-    // Order configuration
-    Types.BasicOrderData public orderData;     // Price conditions
-    Types.CommonExecutionData public commonExecutionData;  // Transaction details
-    
-    // State tracking
-    bool private _executed;
-    bytes private _unsignedTx;
-}
-```
-
-:::note Directory
-Store `BasicOrder` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
+:::note Code
+[`src/orders/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/BasicOrder.sol)
 :::
 
-:::note Full code
-You can find the full code on GitHub: [`src/BasicOrder.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrder.sol)
-:::
+This contract implements the logic for price monitoring and trade execution using the [Slinky and Warden precompiles](build-the-infrastructure#2-create-mock-precompiles). Once the price threshold is met, the Order will construct a swap transaction, send it for signing, and record the transaction the [registry](build-the-infrastructure#1-create-helpers-and-utils).
 
-1. Create core components: define the state variables and imports.
+To create this logic, `BasicOrder` to the `src/orders` directory and take these steps:
 
-   **Note:** You can extend and expand all these components to [implement Orders with price prediction].
+1. Declare the following state variables:
 
-2. Now create a `constructor` with validations. Your constructor should handle the following tasks:
+   - The Order and execution data structures from [`Types` and `TypesV0`](build-the-infrastructure#1-create-helpers-and-utils)
+   - References to the Slinky precompile and the registry
+   - State tracking (`_executed`, `_unsignedTx`, etc.)
 
-   - Validate all inputs: the scheduler, the [registry], price conditions
-   - Set up connections with the [price feed] and the [signing service] (`AbstractOrder`)
-   - Initialize the Order parameters
+2. Create a `constructor` handling the following tasks:
 
-3. In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold—see the `PriceCondtion` enum in [`Types.sol`].
+   - Validate all inputs
+   - Set up a connection with [`AbstractOrder`](build-the-infrastructure#1-create-helpers-and-utils) (the transaction signing service)
+   - Validate the threshold price
+   - Initialize the Slinky price feed
+   - Store the Order and execution data
+
+3. In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold. See the `PriceCondtion` enum in `Types`.
 
 4. In the `execute()` function, implement the logic for executing trades. This function should do the following:
 
    - Verify the caller and conditions
    - Pack the swap data for Uniswap
    - Create and encode a transaction
-   - Request a signature through the [Warden precompile]
+   - Request a signature through the Warden precompile 
    - Emit the `Executed()` event
-   - Register the transaction in the [registry](
+   - Register the transaction in the registry
    - Return the execution status
 
 5. To test price conditions, use the following code:
@@ -120,91 +91,44 @@ You can find the full code on GitHub: [`src/BasicOrder.sol`](https://github.com/
    }
    ```
 
-#### Security measures
-
-In the previous steps, you've implemented the following security measures:
-
-- **Reentrancy protection**  
+:::note Security measures
+- **Reentrancy protection**: The execution function can't be re-entered before the previous execution finishes.
   ```solidity
   function execute(...) external nonReentrant { ... }
   ```
-- **Access control**  
+- **Access control**: If the caller is unauthorized, the execution will be reverted.
   ```solidity
   if (msg.sender != scheduler) revert Unauthorized();
   ```
-- **State management**
+- **State management**: If the Order has already been executed, the execution will be reverted.
   ```solidity
   if (_executed) revert ExecutedError();
   ```
-
-#### Extension points
-
-To [implement Orders with price prediction], you need to extend your basic contract with the following advanced features:
-
-- **Complex price conditions**  
-  The basic implementation shown in this guide supports the `<=` and `>=` price conditions:  
-  ```solidity
-  Types.PriceCondition condition = orderData.priceCondition;
-  if (condition == Types.PriceCondition.GTE) {
-     value = priceResponse.price.price >= orderData.thresholdPrice;
-  } else if (condition == Types.PriceCondition.LTE) {
-     value = priceResponse.price.price <= orderData.thresholdPrice;
-  } else {
-     revert InvalidPriceCondition();
-  }
-  ```
-  In the advanced implementation, you can add strict inequality comparisons: `<` and `>`.  
-  ```solidity
-  function _checkPriceCondition(uint256 oraclePrice, uint256 predictedPrice) internal view returns (bool) {
-      if (
-          (orderData.priceCondition == Types.PriceCondition.GTE && oraclePrice >= predictedPrice) ||
-          (orderData.priceCondition == Types.PriceCondition.LTE && oraclePrice <= predictedPrice) ||
-          (orderData.priceCondition == Types.PriceCondition.GT && oraclePrice > predictedPrice) ||
-          (orderData.priceCondition == Types.PriceCondition.LT && oraclePrice < predictedPrice)
-      ) {
-          return true;
-      }
-      return false;
-  }
-  ```
-- **Multiple price sources**  
-  The basic implementation uses prices from a single source—the oracle service:  
-  ```solidity
-  GetPriceResponse memory priceResponse = SLINKY_PRECOMPILE.getPrice(...);
-  ```
-  In the advanced implementation, you can use oracle and prediction prices:    
-  ```solidity
-  function _getPrices() internal virtual returns (uint256[] memory) {
-      // ...
-  }
-  ```
-- **A time-based execution window**  
-   In the advanced implementation, you can limit the execution of Orders by a validity window:  
-   ```solidity
-   uint256 public validUntil;
-   ```
-
-## 2. Implement the creation of Orders
-
-This article will guide you through creating the `BasicOrderFactory` contract. `BasicOrderFactory`,  when triggered by [`OrderFactory`], deploys Orders (instances of [`BasicOrder`]) and registers them in the [registry].
-
-This factory pattern supports deterministic address computation, front-running protection, and salt-based deployment security. Note that you can extend some parts to [implement the creation of Orders with price prediction].
-
-:::note Directory
-Store `BasicOrderFactory` in the [`src` directory](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src), alongside with other contracts.
 :::
 
-:::note Full code
-You can find the full code on GitHub: [`src/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/BasicOrderFactory.sol)
+## 2. Implement Order creation
+
+In our example, the creation of Orders is implemented in the `BasicOrderFactory` contract.
+
+:::note Code
+[`src/factories/BasicOrderFactory.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/factories/BasicOrderFactory.sol)
 :::
 
-1. To start implementing the deployment of Orders, create a file `BasicOrderFactory.sol`.
+`BasicOrderFactory`, when triggered by [`OrderFactory`](build-the-infrastructure#4-implement-order-creation), deploys Orders (instances of [`BasicOrder`](#1-implement-orders)) and registers them in the [registry](build-the-infrastructure#1-create-helpers-and-utils). Orders are deployed with the `CREATE3` opcode to provide front-running protection, salt-based deployment security, and deterministic address computation.
 
-2. In this contract, implement the core function for deploying new Orders: `createBasicOrder()`.
+To create this logic, add `BasicOrderFactory` to the `src/factories` directory and take the following steps:
 
-3. Add address computation: allow users to preview the Order addresses. See the `computeOrderAddress()` function.
+1. Include a `createBasicOrder()` function implementing the deployment of Orders. It should do the following:
 
-5. Finally, implement tests:
+   - Create the deployment bytecode
+   - Deploy an Orders with an precomputed address using the `CREATE3` opcode
+   - Verify the contract address
+   - Register and track the Order
+   - Emit the `BasicOrderCreated()` event
+
+2. Include a `computeOrderAddress()` function for previewing the deterministic address of an Order without deploying it.
+
+3. To test the contract, you can use the following code:
 
    ```solidity
    contract BasicOrderFactoryTest is Test {
@@ -238,38 +162,22 @@ You can find the full code on GitHub: [`src/BasicOrderFactory.sol`](https://gith
    }
    ```
 
-#### Extension points
-
-To [implement the creation Orders with price prediction], you need to extend the factory pattern with the following advanced features:
-
-- **Complex validation**  
-  ```solidity
-  function _validateAdvancedOrder(
-      Types.AdvancedOrderData memory orderData
-  ) internal pure returns (bool);
+:::note Security measures
+- **Salt management**: Salts are guarded by `tx.origin` to prevent front-running. Each salt can only be used once per creator.
   ```
-- **Prediction setup**  
-  ```solidity
-  function _setupPrediction(
-      address order,
-      Types.PredictionData memory predData
-  ) internal returns (uint64 futureId);
-  ```
+  address origin = tx.origin;
+  bytes32 guardedSalt = keccak256(
+      abi.encodePacked(uint256(uint160(origin)), salt)
 
-:::tip
-When you were [implementing the Order creation logic], you enabled deployment with the `CREATE3` opcode. It ensures that Order addresses are known in advance, which becomes crucial for Orders with price prediction since they may need to reference each other.
+  if (usedSalts[guardedSalt]) {
+        revert SaltAlreadyUsed();
+  }
+  ```
 :::
 
 ## 3. Deploy an Order
 
-This article will guide you through deploying and monitoring automated Orders.
-
-You'll deploy the following:
-
-- The core infrastructure including the [`OrderFactory`] and [`Registry`] contracts
-- The [`BasicOrder` contract]
-
-When you implement more advanced Orders with price prediction, you'll [deploy them] in a similar way, adding extra parameters for the advanced features.
+To deploy an Order, take these steps:
 
 1. Create an `.env` file with your environment configuration:
 
@@ -297,7 +205,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
    source .env
    ```
    
-4. Deploy the infrastructure by using the [main deployment script]:
+4. Deploy the infrastructure by using the [main deployment script](build-the-infrastructure#5-create-deployment-scripts):
    
    ```bash
    forge script script/Deploy.s.sol:Deploy \
@@ -306,7 +214,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
        --chain-id $CHAIN_ID
    ```
   
-   This will deploy the [`OrderFactory`] and [`Registry`] contracts.
+   This will deploy the [`OrderFactory`](build-the-infrastructure#4-implement-order-creation) and [`Registry`](build-the-infrastructure#1-create-helpers-and-utils) contracts.
 
 5. Set the Order parameters:
    
@@ -326,7 +234,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
    0x7ff3...)`           # Encoded swap data
    ```
 
-5. Deploy an Order by using the [script for creating Orders]:
+7. Deploy an Order by using the [script for creating Orders](build-the-infrastructure#5-create-deployment-scripts):
    
    ```
    forge script script/CreateOrder.s.sol:CreateOrder \
@@ -337,7 +245,7 @@ When you implement more advanced Orders with price prediction, you'll [deploy th
        $PRICE_CONDITION \
        $PRICE_PAIR \
        $TX_FIELDS
-   ```
+   ```  
 
 ## Utility commands
 
@@ -408,22 +316,6 @@ Here are some of the common deployment issues and solutions for them:
   cast call $ORDER_ADDRESS "scheduler()"
   ```
 
-## Extension points
-
-When you implement more advanced Orders with price prediction, you'll [deploy them] in a similar way, adding extra parameters for the advanced features:
-
-- **Prediction integration**  
-  ```bash
-  ORACLE_PAIR='("ETH","USD")'
-  PREDICT_PAIR='("ethereum","tether")'
-  ```
-- **Complex price conditions**
-  ```bash
-  PRICE_CONDITION="2"  # 2 for LT, 3 for GT
-  ```
-- **Time windows**
-  ```bash
-  cast call $ORDER_ADDRESS "validUntil()"
-  ```
-
 ## Next steps
+
+Now you can implement more advanced [Orders with price prediction](implement-orders-with-price-prediction).

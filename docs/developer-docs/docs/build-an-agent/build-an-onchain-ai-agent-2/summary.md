@@ -16,7 +16,7 @@ In this section, you'll find a brief summary highlighting the differences betwee
 | Price sources | The oracle | The oracle and predictions |
 | Execution window | None | 24-hour validity |
 | State management | A simple execution flag | Prediction tracking |
-| Infrastructure | The Slinky precompile | The Slinky and Async precompiles |
+| Mock precompiles | Slinky, Warden | Async, Slinky, Warden |
 
 ## Use cases
 
@@ -70,7 +70,7 @@ contract BasicOrder {
 ```solidity
 contract AdvancedOrder {
     // Complex state
-    uint64 public futureId;
+    uint64 public taskId;
     uint256 private _validUntil;
     
     // Multiple integrations
@@ -80,8 +80,8 @@ contract AdvancedOrder {
     // Advanced execution check
     function canExecute() public view returns (bool) {
         if (block.timestamp > _validUntil) return false;
-        FutureByIdResponse memory future = ASYNC_PRECOMPILE.futureById(futureId);
-        return _checkPredictionAndPrice(future, getCurrentPrice());
+        taskByIdResponse memory task = ASYNC_PRECOMPILE.taskById(taskId);
+        return _checkPredictionAndPrice(task, getCurrentPrice());
     }
 }
 ```
@@ -103,8 +103,8 @@ cast call $ORDER "canExecute()"
 just create-advanced-order $CONDITION $ORACLE_PAIR $PREDICT_PAIR
 ```
 ```
-cast call $ORDER "futureId()"
-cast call $ASYNC_PRECOMPILE "futureById(uint64)" $FUTURE_ID
+cast call $ORDER "taskId()"
+cast call $ASYNC_PRECOMPILE "taskById(uint64)" $TASK_ID
 cast call $ORDER "validUntil()"
 cast call $ORDER "canExecute()"
 ```

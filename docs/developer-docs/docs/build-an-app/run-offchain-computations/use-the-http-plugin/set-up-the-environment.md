@@ -31,10 +31,10 @@ forge init
 
 ## 2. Create interfaces
 
-Create interfaces for interacting with the [`x/async` precompile](../../precompiles/x-async):
+Create interfaces for interacting with the [`x/async` precompile](../../precompiles/x-async) and JSON precompile:
 
 1. Create an `src/interfaces` directory:
-   
+
    ```bash
    mkdir -p src/interfaces
    ```
@@ -48,23 +48,23 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    address constant IASYNC_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000903;   
    IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS);
    
-   struct FutureResponse {
+   struct TaskResponse {
        uint64 id;
        bytes output;
        string error;
    }
    
-   struct FutureResult {
-       FutureResponse result;
+   struct TaskResult {
+       TaskResponse result;
    }
    
-   struct FutureByIdResponse {
-       FutureResult futureResponse;
+   struct TaskByIdResponse {
+       TaskResult taskResponse;
    }
    
    interface IAsync {
-       function addFuture(string calldata handler, bytes calldata input, address callback) external returns (uint64);
-       function futureById(uint64 id) external view returns (FutureByIdResponse memory);
+       function addTask(string calldata handler, bytes calldata input, address callback) external returns (uint64);
+       function taskById(uint64 id) external view returns (TaskByIdResponse memory);
    }
    ```
 
@@ -72,8 +72,28 @@ Create interfaces for interacting with the [`x/async` precompile](../../precompi
    To learn more about the interface for interacting with `x/async`, see [Interact with `x/async`](../../interact-with-warden-modules/interact-with-x-async).
    :::
    
-3. Next, create a second interface, `Http.sol`:
-   
+3. Create a file `IJson.sol`:
+
+   ```solidity title="warden-http-examples/src/interfaces/IJson.sol"
+   // SPDX-License-Identifier: UNLICENSED
+   pragma solidity ^0.8.25;
+
+   address constant IJSON_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000904;
+   IJson constant IJSON_CONTRACT = IJson(IJSON_PRECOMPILE_ADDRESS);
+
+   struct ReadKeyValue {
+       string path;
+       string type;
+       uint8 decimals;
+   }
+
+   interface IJson {
+       function read(bytes calldata json, ReadKeyValue[] calldata keyValuePairs) external view returns (bytes[] memory);
+   }
+   ```
+
+4. Create a file `Http.sol`:
+
    ```solidity title="warden-http-examples/src/interfaces/Http.sol"
    // SPDX-License-Identifier: UNLICENSED
    pragma solidity ^0.8.25;

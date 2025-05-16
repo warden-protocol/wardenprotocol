@@ -26,6 +26,7 @@ pragma solidity ^0.8.25;
 
 import "./interfaces/IAsync.sol";
 import "./interfaces/Http.sol";
+import "./interfaces/IJson.sol";
 
 contract MultiApiTest {
     uint64 public lastFutureId;
@@ -40,7 +41,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addFuture("http", abi.encode(request), address(this));
+        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try the GitHub API
@@ -50,7 +51,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addFuture("http", abi.encode(request), address(this));
+        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try the JSONPlaceholder API
@@ -60,7 +61,7 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addFuture("http", abi.encode(request), address(this));
+        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Try OpenWeatherMap API
@@ -70,24 +71,24 @@ contract MultiApiTest {
         request.method = "GET";
         request.body = "";
         
-        lastFutureId = IASYNC_CONTRACT.addFuture("http", abi.encode(request), address(this));
+        lastFutureId = IASYNC_CONTRACT.addTask("http", abi.encode(request), address(this));
     }
     
     // Check if the response is ready
     function isReady() public view returns (bool) {
-        FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
-        return future.futureResponse.result.id != 0;
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        return task.taskResponse.result.id != 0;
     }
     
     // Try to process the response without reverting
     function tryProcess() public returns (bool) {
-        FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
-        if (future.futureResponse.result.id == 0) {
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        if (task.taskResponse.result.id == 0) {
             return false; // Not ready yet
         }
         
         // Decode the response
-        Http.Response memory response = abi.decode(future.futureResponse.result.output, (Http.Response));
+        Http.Response memory response = abi.decode(task.taskResponse.result.output, (Http.Response));
         
         // Store the response data
         statusCode = response.status;
@@ -98,13 +99,13 @@ contract MultiApiTest {
     
     // A callback function: the precompile will call it when the response is ready
     function cb() external {
-        FutureByIdResponse memory future = IASYNC_CONTRACT.futureById(lastFutureId);
-        if (future.futureResponse.result.id == 0) {
+        TaskByIdResponse memory task = IASYNC_CONTRACT.taskById(lastFutureId);
+        if (task.taskResponse.result.id == 0) {
             return; // Not ready yet
         }
         
         // Decode the response
-        Http.Response memory response = abi.decode(future.futureResponse.result.output, (Http.Response));
+        Http.Response memory response = abi.decode(task.taskResponse.result.output, (Http.Response));
         
         // Store the response data
         statusCode = response.status;
@@ -118,10 +119,10 @@ contract MultiApiTest {
 }
 ```
 
-## 2. Deploy 
+## 2. Deploy
 
 1. Deploy the contract:
-   
+
    ```bash
    forge create --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
      src/MultiApiTest.sol:MultiApiTest --broadcast
@@ -129,7 +130,7 @@ contract MultiApiTest {
 
 2. Note down the value returned as `Deployed to` and set it as an environment variable:
 
-   ```
+   ```bash
    export CONTRACT_ADDRESS=my-contract-address
    ```
 
@@ -152,15 +153,15 @@ Test HTTP requests to the [CoinGecko API](https://docs.coingecko.com/reference/i
    ```bash
    cast call $CONTRACT_ADDRESS "isReady()(bool)" --rpc-url $RPC_URL
    ```
-   
+
    The expected output is the following:
-   
+
    ```bash
    true
    ```
-   
+
 3. Call `tryProcess()`. This function will process the response without reverting in case it's not ready yet.
-   
+
    ```bash
    cast send $CONTRACT_ADDRESS "tryProcess()" \
      --private-key $PRIVATE_KEY \
@@ -168,7 +169,7 @@ Test HTTP requests to the [CoinGecko API](https://docs.coingecko.com/reference/i
    ```
 
 4. Finally, get the status code by calling `statusCode()`:
-   
+
    ```bash
    cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
    ```
@@ -185,13 +186,13 @@ Test HTTP requests to the [CoinGecko API](https://docs.coingecko.com/reference/i
    cast call $CONTRACT_ADDRESS "getResponseAsString()(string)" --rpc-url $RPC_URL
    ```
 
-   This will print a CBOR-encoded output:
-   
+   This will print the JSON response:
+
    ```bash
-   "�gbitcoin�cusd�@��P\0\0\0\0"
+   {"bitcoin":{"usd":50000.0}}
    ```
 
-### 3.2. Call the GitHub API   
+### 3.2. Call the GitHub API
 
 Test requests to the [GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28) in a similar way:
 
@@ -199,12 +200,14 @@ Test requests to the [GitHub API](https://docs.github.com/en/rest?apiVersion=202
 cast send $CONTRACT_ADDRESS "tryGitHub()" \
   --private-key $PRIVATE_KEY \
   --rpc-url $RPC_URL
-```
+  ```
+
 ```bash
 cast send $CONTRACT_ADDRESS "tryProcess()"
   --private-key $PRIVATE_KEY \
   --rpc-url $RPC_URL
 ```
+
 ```bash
 cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
 ```
@@ -213,7 +216,7 @@ The expected output is the following:
 
 ```bash
 200
-   ```
+```
 
 ### 3.3. Call the JSONPlaceholder API
 
@@ -224,11 +227,13 @@ cast send $CONTRACT_ADDRESS "tryJSONPlaceholder()" \
 --private-key $PRIVATE_KEY \
 --rpc-url $RPC_URL
 ```
+
 ```bash
 cast send $CONTRACT_ADDRESS "tryProcess()"
 --private-key $PRIVATE_KEY \
 --rpc-url $RPC_URL
 ```
+
 ```bash
 cast call $CONTRACT_ADDRESS "statusCode()(uint256)" --rpc-url $RPC_URL
 ```
@@ -245,6 +250,4 @@ If you're experiencing troubles querying a particular API with `x/async`, please
 
 ## Next steps
 
-When you made a request to the CoinGecko API, you received a CBOR-encoded output. To learn how to extract data from such responses, follow the next guide: [Extract data](extract-data).
-
-
+When you made a request to the CoinGecko API, you received a JSON response. To learn how to extract data from such responses using the JSON precompile, follow the next guide: [Extract data](extract-data).

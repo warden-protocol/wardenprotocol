@@ -212,6 +212,11 @@
                   "internalType": "uint64",
                   "name": "callbackId",
                   "type": "uint64"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "solver",
+                  "type": "bytes"
                 }
               ],
               "internalType": "struct Task[]",
@@ -419,6 +424,11 @@
                       "internalType": "uint64",
                       "name": "callbackId",
                       "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "solver",
+                      "type": "bytes"
                     }
                   ],
                   "internalType": "struct Task",
@@ -457,11 +467,6 @@
                     {
                       "internalType": "bytes",
                       "name": "output",
-                      "type": "bytes"
-                    },
-                    {
-                      "internalType": "bytes",
-                      "name": "submitter",
                       "type": "bytes"
                     }
                   ],
@@ -613,6 +618,11 @@
                       "internalType": "uint64",
                       "name": "callbackId",
                       "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "solver",
+                      "type": "bytes"
                     }
                   ],
                   "internalType": "struct Task",
@@ -651,11 +661,6 @@
                     {
                       "internalType": "bytes",
                       "name": "output",
-                      "type": "bytes"
-                    },
-                    {
-                      "internalType": "bytes",
-                      "name": "submitter",
                       "type": "bytes"
                     }
                   ],

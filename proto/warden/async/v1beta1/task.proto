@@ -22,8 +22,8 @@ import "gogoproto/gogo.proto";
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
 // Task defines a task that will be executed asynchronously.
-// Validators will be able to submit the proposed result of the Task
-// execution.
+// A validator will be selected to be the "solver".
+// The solver must include a result for the Task.
 // Other validators will then be able to vote on the validity of the proposed
 // result.
 message Task {
@@ -43,6 +43,9 @@ message Task {
   DeductedFee fee = 6 [(gogoproto.nullable) = false];
   // Id of callback to be called when the Task is completed.
   uint64 callback_id = 7;
+  // Solver is the consensus address of the validator selected to resolve this
+  // Task.
+  bytes solver = 8 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.ConsAddress"];
 }
 
 // TaskResult is the result of the execution of a Task.
@@ -55,8 +58,7 @@ message TaskResult {
   // Output of the Task.
   // The actual format is determined by the plugin being used.
   bytes output = 2;
-  // Address of the validator that submitted the result.
-  bytes submitter = 3;
+  reserved 3;
 }
 
 // TaskVote is the vote of a validator on the validity of a Task result.

@@ -1,0 +1,123 @@
+---
+version: 2
+
+project_name: wardenkms
+
+env:
+  - CGO_ENABLED=1
+
+git:
+  tag_sort: -version:creatordate
+  prerelease_suffix: "-"
+
+builds:
+  - id: wardenkms-linux-amd64
+    main: ./cmd/wardenkms
+    binary: wardenkms
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm.x86_64.so -O /usr/lib/libwasmvm.x86_64.so
+    goos:
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CC=x86_64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=warden
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,osusergo
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-Wl,-z,now -Wl,-z,relro -ldl -pthread -lm -L/usr/lib -lwasmvm.x86_64'
+    tags:
+      - netgo
+      - ledger
+      - osusergo
+
+  - id: wardenkms-linux-arm64
+    main: ./cmd/wardenkms
+    binary: wardenkms
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm.aarch64.so -O /usr/lib/libwasmvm.aarch64.so
+    goos:
+      - linux
+    goarch:
+      - arm64
+    env:
+      - CC=aarch64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=warden
+      - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,osusergo
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-Wl,-z,now -Wl,-z,relro -ldl -pthread -lm -L/usr/lib -lwasmvm.aarch64'
+    tags:
+      - netgo
+      - ledger
+      - osusergo
+
+changelog:
+  disable: true
+
+release:
+  disable: true
+
+dockers:
+  - use: buildx
+    goos: linux
+    goarch: amd64
+    dockerfile: wardenkms/Dockerfile
+    image_templates:
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}-amd64'
+    build_flag_templates:
+      - "--build-arg=LIBWASM_VERSION={{ .Env.LIBWASM_VERSION }}"
+      - "--pull"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version=v{{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
+      - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+  - use: buildx
+    goos: linux
+    goarch: arm64
+    dockerfile: wardenkms/Dockerfile
+    image_templates:
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'
+    build_flag_templates:
+      - "--build-arg=LIBWASM_VERSION={{ .Env.LIBWASM_VERSION }}"
+      - "--pull"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version=v{{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
+      - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+docker_manifests:
+  - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}'
+    create_flags:
+      - --insecure
+    push_flags:
+      - --insecure
+    image_templates:
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-amd64{{ else }}{{ .ShortCommit }}-amd64{{ end }}'
+      - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'

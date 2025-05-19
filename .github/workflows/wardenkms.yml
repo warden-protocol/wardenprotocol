@@ -1,5 +1,5 @@
 ---
-name: wardenkms
+name: Release WardenKMS development image
 
 on:
   push:
@@ -48,10 +48,12 @@ jobs:
       - name: Test (-race)
         run: go test -race -v ./cmd/wardenkms/...
 
-  build-and-push:
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/wardenkms/v')
-    needs: [lint, unit-test]
-    uses: ./.github/workflows/build_push.yml
+  release-dev:
+    if: ${{ github.event_name != 'pull_request' }}
+    needs:
+      - lint
+      - unit-test
+    uses: ./.github/workflows/release-dev.yml
     with:
-      service_name: wardenkms
+      app_name: wardenkms
     secrets: inherit

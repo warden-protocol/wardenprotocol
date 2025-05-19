@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
+- (go-client) Fix handling of EthAccounts in AuthQueryClient
+
 ### Consensus Breaking Changes
 
 ### Bug Fixes

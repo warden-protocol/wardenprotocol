@@ -158,6 +158,7 @@ func mapTask(task types.Task) (Task, error) {
 			PluginCreatorReward: mapSdkCoins(task.Fee.PluginCreatorReward),
 			ExecutorReward:      mapSdkCoins(task.Fee.ExecutorReward),
 		},
+		CallbackId: task.CallbackId,
 	}, nil
 }
 
@@ -213,9 +214,8 @@ func mapTaskResult(value *types.TaskResult) (TaskResult, error) {
 	}
 
 	return TaskResult{
-		Id:        value.Id,
-		Output:    value.Output,
-		Submitter: value.Submitter,
+		Id:     value.Id,
+		Output: value.Output,
 	}, nil
 }
 

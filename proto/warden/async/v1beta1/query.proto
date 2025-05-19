@@ -52,6 +52,10 @@ service Query {
     option (google.api.http).get = "/warden/async/plugins";
   }
 
+  rpc PluginValidators(QueryPluginValidatorsRequest) returns (QueryPluginValidatorsResponse) {
+    option (google.api.http).get = "/warden/async/plugin_validators/{name}";
+  }
+
   // Queries Plugins by validator.
   rpc PluginsByValidator(QueryPluginsByValidatorRequest) returns (QueryPluginsByValidatorResponse) {
     option (google.api.http).get = "/warden/async/plugins_by_validator/{validator}";
@@ -121,4 +125,24 @@ message QueryPluginsByValidatorRequest {
 message QueryPluginsByValidatorResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated string plugins = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryPluginValidatorsRequest {
+  string name = 1;
+}
+
+message QueuePriority {
+  bytes validator = 1 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.ConsAddress"];
+  int64 priority = 2;
+}
+
+message QueueWeight {
+  bytes validator = 1 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.ConsAddress"];
+  int64 weight = 2;
+}
+
+message QueryPluginValidatorsResponse {
+  int64 queue_total_weight = 1;
+  repeated QueuePriority queue_priorities = 2 [(gogoproto.nullable) = false];
+  repeated QueueWeight queue_weights = 3 [(gogoproto.nullable) = false];
 }

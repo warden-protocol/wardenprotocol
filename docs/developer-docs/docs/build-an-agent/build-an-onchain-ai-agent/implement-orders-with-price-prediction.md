@@ -431,5 +431,3 @@ Here are some of the common deployment issues and solutions for them:
 ## Next steps
 
 Congratulations! You have successfully implemented both automated Orders and automated Orders with price prediction! You can quickly glance through the [summary](summary) to get a quick overview of the project.
-
-For any questions, reach us on [Discord](https://discord.com/invite/wardenprotocol).

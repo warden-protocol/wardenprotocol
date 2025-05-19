@@ -47,7 +47,7 @@ First, you need to build a foundation for the Agent executing Orders. Create hel
    [`src/orders/AbstractOrderV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/AbstractOrderV0.sol)
    :::
 
-   Your code should include a function `createSignRequest()`. It creates [signature requests](/learn/glossary#signature-request) for [Keychains](/learn/glossary#keychain) using the [Warden precompile](#2-create-mock-precompiles).
+   Your code should include a function `createSignRequest()`. It creates [signature requests](/learn/glossary#signature-request) for [Keychains](/learn/glossary#keychain) using the [`newSignRequest()` function](/build-an-app/precompiles/x-warden#create-a-new-signature-request) of the [Warden precompile](#2-create-mock-precompiles).
 
 3. In a file `Registry.sol`, implement a registry for tracking transactions.
 

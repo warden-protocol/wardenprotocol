@@ -1,0 +1,23 @@
+{
+    "event_signature": "",
+    "reconnect_interval": "5s",
+    "max_retries": 3,
+    "source_chains": [
+        {
+            "name": "ethereum-mainnet",
+            "rpc_url": "https://mainnet.infura.io/v3/YOUR-PROJECT-ID",
+            "contract_address": "0x1234567890123456789012345678901234567890",
+            "from_block": 18000000
+        },
+        {
+            "name": "polygon-mainnet",
+            "rpc_url": "https://polygon-rpc.com",
+            "contract_address": "0x1234567890123456789012345678901234567890",
+            "from_block": 45000000
+        }
+    ],
+    "warden_chain": {
+        "name": "warden",
+        "rpc_url": "http://localhost:26657"
+    }
+} 

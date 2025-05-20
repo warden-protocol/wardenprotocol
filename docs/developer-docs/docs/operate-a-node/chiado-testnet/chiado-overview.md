@@ -62,6 +62,6 @@ Chiado's denomination is `award` / 0.000000000000000001 [WARD](/tokens/ward-toke
 
 ## Faucet
 
-Here is the faucet for getting [WARD](https://docs.wardenprotocol.org/tokens/ward-token/ward) on Chiado:
+Here is the faucet for getting [WARD](https://docs.wardenprotocol.org/tokens/ward) on Chiado:
 
 - [Chiado faucet](https://faucet.chiado.wardenprotocol.org/)

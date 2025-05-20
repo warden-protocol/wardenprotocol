@@ -387,9 +387,9 @@ Validators enter this state either when they decide to stop participating in [st
 
 ## WARD token
 
-WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations such as [governance](#governance), [staking](#staking), protocol fees and acts as a medium of payment for operators, such as [Keychain](#keychain) operators.
+$WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations—such as [governance](#governance), [staking](#staking), protocol fees—and serves as a medium of payment for operators, such as [Keychain](#keychain) operators.
 
-Learn more: [WARD token](/tokens/ward-token/ward).
+Learn more: [$WARD](/tokens/ward-token/ward).
 
 ---
 

@@ -91,7 +91,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build an Agent](/build-an-agent/introduction): Guides for AI Agent builders
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
-- [Tokens](/tokens/introduction): A detailed overview of Warden tokens—WARD and WARP
+- [Tokens](/tokens/introduction): A detailed overview of Warden tokenomics
 - [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end Intelligent Application
 
 ## Contribute

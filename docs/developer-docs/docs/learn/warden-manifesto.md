@@ -61,7 +61,7 @@ Warden's founding team consists of experienced builders from crypto, AI, and the
 
 ### A Blockchain For Intelligent Apps
 
-![Dumb contracts vs. Intelligent Apps](../../static/img/manifesto-1.png)
+![AI transforms blockchain apps into intelligent systems](../../static/img/manifesto-1.png)
 
 Warden took a full-stack approach to solve a complex challenge. When we first designed Warden our guiding question was clear: **how can we use AI to enable more intelligent applications?** We quickly found traditional, general-purpose blockchains are not well equipped to handle inferences.
 
@@ -170,7 +170,7 @@ We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering ob
    - Fee token for all operations
    - Payment and incentives for AVRs
 
-   Tokenomics overview [here](https://docs.wardenprotocol.org/tokens/introduction).
+   Tokenomics overview [here](https://docs.wardenprotocol.org/tokens/ward-token/ward).
 
 10. **What other net-new applications can be built on Warden?**
 

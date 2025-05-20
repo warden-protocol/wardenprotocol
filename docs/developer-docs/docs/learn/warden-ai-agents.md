@@ -36,7 +36,7 @@ Easily integrate AI with your application, protocols, and smart contracts. Autom
 
 Warden Agents support the creation and management of **Orders**.
 
-An Order is a Solidity [smart contract](glossary#omnichain-contract) performing onchain Actions at any destination chain. When creating an Order, you can implement custom logic by using [Warden modules](glossary#module), [Keychains](glossary#keychain), and other features.
+An Order is a Solidity smart contract performing onchain Actions at any destination chain. When creating an Order, you can implement custom logic by using [Warden modules](glossary#module), [Keychains](glossary#keychain), and other features.
 
 In particular, the `x/async` module allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 

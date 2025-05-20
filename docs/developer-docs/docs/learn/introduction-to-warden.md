@@ -56,7 +56,7 @@ Warden lets users access responses from [Asynchronous Verifiable Resources](/lea
 Warden's verifiability layer acts like a firewall that uses cryptography to verify AVR responses. [Statistical Proof of Execution](#spex) (SPEX) ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in applications.
 
 - **Application layer**  
-Warden's developer platform features two smart contract platforms: [EVM and CosmWasm](/build-an-app/introduction#omnichain-contracts). Application builders can create AVRs and use them to build the logic of their applications. Warden also provides custom infrastructure for AI-specific needs and interoperability tools allowing users to access AVRs from anywhere. 
+Warden's developer platform features two smart contract platforms: [EVM and CosmWasm](/build-an-app/introduction#smart-contracts). Application builders can create AVRs and use them to build the logic of their applications. Warden also provides custom infrastructure for AI-specific needs and interoperability tools allowing users to access AVRs from anywhere. 
 
 ## Build with Warden
 
@@ -65,7 +65,7 @@ Warden provides operator sets and integrations with leading wallets, explorers, 
 Here is what you can do with Warden:
 
 - **Build an application**  
-[Omnichain Applications (OApps)](/learn/glossary#omnichain-application) are smart contracts that allow signing transactions at any chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward)—our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible OApps with Solidity or Rust & CosmWasm.
+[Intelligent Applications](/learn/glossary#intelligent-application) are smart contracts that allow signing transactions at any chain. An example of an Intelligent App is [SpaceWard](/learn/glossary#spaceward)—our application functioning as the front-end interface for the protocol. You can deploy EVM-compatible Intelligent Apps with Solidity or Rust & CosmWasm.
 
 - **Build an Agent**  
 Warden allows you to unleash new user experiences by integrating AI into your application, protocol, or smart contract. With the [`x/async` Warden module](/learn/warden-protocol-modules/x-async), you can create smart contracts utilizing outputs of AI models and [build onchain AI Agents](/build-an-agent/introduction) with custom logic.
@@ -88,7 +88,7 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed overview of Warden tokens—WARD and WARP
-- [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
+- [SpaceWard](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end Intelligent Application
 
 ## Contribute
 

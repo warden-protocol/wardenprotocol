@@ -34,8 +34,8 @@ A Warden AI Agent is an AI-driven program that supports both offchain and onchai
 
 Warden Agents' integration with AI is ensured by three components:
 
-- [Orders](#order): EVM [smart contracts](#omnichain-contract) performing onchain [Action](#action) at any destination chain
-- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [AVR Plugins](#avr-plugin) and [Prophets](#prophet)
+- [Orders](#order): EVM smart contracts performing onchain [Actions](#action) at any destination chain
+- `x/async`: a [Warden module](#module) implementing [Tasks](#task), [AVR Plugins](#avr-plugin), and [Prophets](#prophet)
 - [SPEX](#spex): Statistical Proof of Execution
 
 Learn more: [Warden AI Agents](warden-ai-agents).
@@ -74,10 +74,10 @@ An AVR Plugin, or Asynchronous Verifiable Resource, is code determining what kin
 
 Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing the following Task types:
 
-- AI-driven price predictions
+- AI-driven price predictions (verified by [SPEX](#spex))
 - HTTP requests to external services, such as blockchain APIs
 
-AVR Plugins provide a universal and standard way for [smart contracts](#omnichain-contract) to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
+AVR Plugins provide a universal and standard way for smart contracts to access any resource or operate offchain systems. This concept is implemented in the `x/async` [module](#module). Learn more: [`x/async`](warden-protocol-modules/x-async).
 
 ---
 
@@ -99,7 +99,7 @@ Learn more: [Bridging](bridging).
 
 ## Builder incentive
 
-Warden Protocol is open to third-party contributions: core protocol development or building [Omnichain Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
+Warden Protocol is open to third-party contributions: core protocol development or building [Intelligent Applications](#intelligent-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
 
 ---
 
@@ -122,6 +122,18 @@ A full node is a server running a software (binary) that maintains a complete up
 Warden Protocol supports onchain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded onchain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
+
+---
+
+## Intelligent Application
+
+An Intelligent Application is a smart contract integrating AI or any offchain logic. Unlike traditional contracts bound by static logic, Intelligent Apps unlock more dynamic user experiences: they are able to reason, adapt, and interact across onchain and offchain environments.
+
+With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and the [Warden App](https://app.wardenprotocol.org/).
+
+We support two smart contract platforms: EVM and CosmWasm. In contracts, you can interact with our [modules](#module) and [AVR Plugins](#avr-plugin) toaccess all Warden's core features from any chain. For advanced usage of smart contracts, refer to [Order](#order).
+
+Learn more: [Build an app](/build-an-app/introduction), [Build an Agent](/build-an-agent/introduction).
 
 ---
 
@@ -181,7 +193,7 @@ Learn more: [Key request flow](warden-protocol-modules/x-warden#key-request-flow
 
 ## Keychain
 
-Every [Omnichain Application](#omnichain-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions.
+Every [Intelligent Application](#intelligent-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions.
 
 Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 
@@ -211,7 +223,7 @@ Learn more: [Keychain SDK](/build-a-keychain/implementations/keychain-sdk).
 
 ## Module
 
-Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](#node). We also provide [precompiles](#precompile) that allow [Omnichain Application](#omnichain-application) builders to call certain modules in EVM smart contracts.
+Warden protocol modules are [Cosmos SDK](https://docs.cosmos.network) modules containing most of Warden Protocol's logic. Users can interact with modules by sending transactions or querying [nodes](#node). We also provide [precompiles](#precompile) that allow [Intelligent Application](#intelligent-application) builders to call certain modules in EVM smart contracts.
 
 Learn more: [Warden Protocol modules](warden-protocol-modules/introduction).
 
@@ -229,24 +241,6 @@ Reasons for running a node include the following:
 
 ---
 
-## Omnichain Application
-
-An Omnichain Application (OApp) in an application that builds upon an [Omnichain Contract](#omnichain-contract). OApps allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. An example of an OApp is [SpaceWard](#spaceward)—our application functioning as the front-end interface for Warden.
-
-Learn more: [Build an app](/build-an-app/introduction).
-
----
-
-## Omnichain Contract
-
-An Omnichain Contract is the main part of any [Omnichain Application](#omnichain-application): a smart contract that allows signing transactions and messages at any destination chain.
-
-In EVM smart contracts, application builders can call [Warden precompiles](#precompile) to interact with [Warden protocol modules](#module), accessing all core features of Warden Protocol. For advanced usage of EVM contracts with AI Agents, refer to [Order](#order).
-
-Learn more: [Build an app](/build-an-app/introduction).
-
----
-
 ## Oracle service
 
 An oracle is a third-party service that enables smart contracts to access real-life data feeds: prices, stock market data, weather conditions, etc. Warden is integrated with [Skip:Connect](https://docs.skip.build/connect/introduction)—an oracle service provided by Skip Protocol and offering mostly price data. Connect's data is [validated](#validator) by Warden's network and written onchain.
@@ -257,9 +251,9 @@ Learn more: [Oracle services](oracle-services).
 
 ## Order
 
-An Order is a Solidity [smart contract](#omnichain-contract) performing onchain actions at any destination chain.
+An Order is a Solidity smart contract performing onchain actions at any destination chain.
 
-When creating an Order, you can implement custom logic by using [Warden modules](#module), [Keychains](#keychain), and other features. In particular, the `x/async` module allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
+When creating an Order, you can implement custom logic by using [Warden modules](#module), [Keychains](#keychain), and other features. In particular, the `x/async` module with [AVR Plugins](#avr-plugin) allows you to create smart contracts utilizing outputs of AI models. Orders can send any transactions to any Ethereum-based and EVM L2 application.
 
 Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agent/introduction).
 
@@ -267,7 +261,7 @@ Learn more: [Build an onchain AI Agent](/build-an-agent/build-an-onchain-ai-agen
 
 ## Precompile
 
-Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Omnichain Application](#omnichain-application) builders to manage [Spaces](#space), [Keychains](#keychain), [Actions](#action), [Rules](#approval-rule), [Tasks](#task), and other components.
+Warden precompiles are precompiled smart contracts that you can call in your EVM smart contract to interact with [Warden Protocol modules](#module). This allows [Intelligent Application](#intelligent-application) builders to manage [Spaces](#space), [Keychains](#keychain), [Actions](#action), [Rules](#approval-rule), [Tasks](#task), and other components.
 
 Learn more: [Interact with Warden modules](/build-an-app/interact-with-warden-modules/introduction).
 
@@ -306,7 +300,7 @@ Learn more: [Signature request flow](warden-protocol-modules/x-warden#signature-
 
 ## Space
 
-A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
+A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Intelligent Applications](#intelligent-application).
 
 This concept is implemented in the `x/warden` [module](#module). Learn more: [`x/warden`](warden-protocol-modules/x-warden).
 
@@ -314,7 +308,7 @@ This concept is implemented in the `x/warden` [module](#module). Learn more: [`x
 
 ## SpaceWard
 
-SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
+SpaceWard is an [Intelligent Application](#intelligent-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
 Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).
 
@@ -324,7 +318,7 @@ Learn more: [SpaceWard documentation](https://help.wardenprotocol.org).
 
 SPEX (Statistical Proof of Execution) is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines.
 
-SPEX is used as a verifiability layer for AI on Warden Protocol. At the moment, SPEX verifies AI-driven price predictions generated by the `x/async` [Warden module](#module). However, you can extend the module with other computational tasks and use SPEX to protect them.
+SPEX is used as a verifiability layer for AI on Warden Protocol. At the moment, SPEX verifies AI-driven price predictions generated by the `x/async` [Warden module](#module) and [AVR Plugins](#avr-plugin). However, you can extend the module with other computational tasks and use SPEX to protect them.
 
 Learn more: [SPEX](spex).
 
@@ -404,3 +398,11 @@ Learn more: [WARD token](/tokens/ward-token/ward).
 The Warden Agent Kit allows creating [AI Agents](#ai-agent) that are able to access both offchain and onchain functionalities. The kit offers native integration with Warden Protocol for onchain [Actions](#action) and supports compatibility with Typescript, any AI Agent framework, and [LangChain](https://js.langchain.com/docs/introduction/) tools.
 
 Learn more: [Warden Agent Kit](/build-an-agent/warden-agent-kit/introduction).
+
+---
+
+## Warden App
+
+The Warden App is an AI-driven [Intelligent Application](#intelligent-application) that lets users perform complex Web3 actions—like swaps and transfers—through simple chat or voice commands. The Warden App does all the thinking and problem solving for the user, making complex work like cross-chain transactions, portfolio management, or risk assessments easy.
+
+To test the Warden App, [join our waitlist](https://app.wardenprotocol.org/).

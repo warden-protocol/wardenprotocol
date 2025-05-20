@@ -2,11 +2,17 @@
 sidebar_position: 2
 ---
 
-# Examples of OApps
+# Examples of Intelligent Apps
 
 ## Overview
 
-In this section you'll find a full list of **Omnichain Applications** that are currently available on Warden Protocol.
+In this section you'll find a full list of **Intelligent Applications** that are currently available on Warden Protocol.
+
+## Warden App
+
+The Warden App is an AI-driven application for performing Web3 actions through chat or voice commands:
+
+- 👉 [Join our waitlist to test the Warden App](https://app.wardenprotocol.org/)
 
 ## SpaceWard
 

@@ -131,9 +131,9 @@ An Intelligent Application is a smart contract integrating AI or any offchain lo
 
 With Warden, you can build crypto super apps, smart [AI Agents](#ai-agent), and intelligent custody solutions. For example, see [SpaceWard](#spaceward) and the [Warden App](https://app.wardenprotocol.org/).
 
-We support two smart contract platforms: EVM and CosmWasm. In contracts, you can interact with our [modules](#module) and [AVR Plugins](#avr-plugin) toaccess all Warden's core features from any chain. For advanced usage of smart contracts, refer to [Order](#order).
+We support two smart contract platforms: EVM and CosmWasm. In contracts, you can interact with our [modules](#module) and [AVR Plugins](#avr-plugin) to access all Warden's core features from any chain. For advanced usage of smart contracts, refer to [Order](#order).
 
-Learn more: [Build an app](/build-an-app/introduction), [Build an Agent](/build-an-agent/introduction).
+Learn more: [Warden Manifesto](warden-manifesto), [Build an app](/build-an-app/introduction), [Build an Agent](/build-an-agent/introduction).
 
 ---
 
@@ -193,7 +193,7 @@ Learn more: [Key request flow](warden-protocol-modules/x-warden#key-request-flow
 
 ## Keychain
 
-Every [Intelligent Application](#intelligent-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions.
+Every [Intelligent Application](#intelligent-application) has at least one Keychain—a custodian that generates and stores [keys](#key) and signs transactions on any chain. This helps avoiding manual crosschain coordination.
 
 Warden Protocol allows users or external organizations to become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures.
 

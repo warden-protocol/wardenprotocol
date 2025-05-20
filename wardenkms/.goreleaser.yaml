@@ -84,6 +84,7 @@ dockers:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}-amd64'
     build_flag_templates:
       - "--build-arg=LIBWASM_VERSION={{ .Env.LIBWASM_VERSION }}"
+      - "--build-arg=ARCH=x86_64"
       - "--pull"
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
@@ -102,6 +103,7 @@ dockers:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'
     build_flag_templates:
       - "--build-arg=LIBWASM_VERSION={{ .Env.LIBWASM_VERSION }}"
+      - "--build-arg=ARCH=aarch64"
       - "--pull"
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
@@ -114,10 +116,6 @@ dockers:
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
 docker_manifests:
   - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}'
-    create_flags:
-      - --insecure
-    push_flags:
-      - --insecure
     image_templates:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-amd64{{ else }}{{ .ShortCommit }}-amd64{{ end }}'
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true"}}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'

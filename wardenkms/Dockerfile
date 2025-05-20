@@ -8,7 +8,8 @@ RUN apt update && \
 COPY ./wardenkms /usr/bin/wardenkms
 
 ARG LIBWASM_VERSION
-ADD --chmod=444 --chown=nobody:nogroup https://github.com/CosmWasm/wasmvm/releases/download/${LIBWASM_VERSION}/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+ARG ARCH
+ADD --chmod=444 --chown=nobody:nogroup https://github.com/CosmWasm/wasmvm/releases/download/${LIBWASM_VERSION}/libwasmvm.${ARCH}.so /lib/libwasmvm.${ARCH}.so
 
 USER warden
 CMD ["wardenkms"]

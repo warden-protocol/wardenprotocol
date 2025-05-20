@@ -65,8 +65,14 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 		}
 	}
 
+	solver, err := k.QueueNext(ctx, QueueID(msg.Plugin))
+	if err != nil {
+		return nil, err
+	}
+
 	id, err := k.tasks.Append(ctx, &types.Task{
 		Creator:    msg.Creator,
+		Solver:     solver,
 		Plugin:     msg.Plugin,
 		Input:      msg.Input,
 		CallbackId: callbackId,

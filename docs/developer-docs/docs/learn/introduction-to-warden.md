@@ -26,7 +26,6 @@ AI integration is ensured by three key components:
 - [SPEX (statistical proof of execution)](/learn/warden-protocol-modules/x-async#spex)
 - [Orders](/learn/glossary#order)
 
-
 ## SPEX
 
 **Statistical Proof of Execution (SPEX)** is a sampling-based verifiable computing protocol that ensures the integrity of computational tasks through probabilistic guarantees. This includes tasks with potentially non-deterministic outputs, such as those involving large language models (LLMs) or stochastic training pipelines.

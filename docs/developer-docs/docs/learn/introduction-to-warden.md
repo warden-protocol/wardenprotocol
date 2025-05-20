@@ -56,7 +56,7 @@ A **Warden AI Agent** is an AI-driven program that supports both offchain and on
 
 Within Warden, AI is integrated on the verification and execution layers. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct. On the execution layer, you can easily integrate AI with your application, protocols, and smart contracts, automating their execution across any chain.
 
-Warden allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific output. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+Warden allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific output. These proofs are then verified on Warden's blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
 
 AI integration is ensured by three key components:
 
@@ -78,7 +78,7 @@ Warden allows you to integrate AI into your Intelligent Apps, utilizing outputs 
 [Keychains](/learn/glossary#keychain) are custodians that generate and store keys and sign transactions on any chain. You can become a Keychain operator or build a custom Keychain.
 
 - **Run a validator node**  
-You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden’s network.
+You can run a [validator](/learn/glossary#validator) node and earn rewards while securing Warden's network.
 
 ## Documentation overview
 

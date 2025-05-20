@@ -10,7 +10,7 @@ Warden Protocol aims to drive a sustainable equilibrium between supply and deman
 
 - **Transaction fees**: $WARD will be the primary gas/fee abstraction token in the ecosystem, for both the Protocol and the Warden App.
 - **Operator bonds**: Operators of certain services must bond $WARD, reducing the circulating supply of $WARD and enhancing the protocol’s collective security and stability.
-- **Governance**: $WARD will be used for community governance initiatives, creating a last need for a meaningful stake in Warden.
+- **Governance**: $WARD will be used for community governance initiatives, creating a lasting need for a meaningful stake in Warden.
 
 ## Keychain operators
 

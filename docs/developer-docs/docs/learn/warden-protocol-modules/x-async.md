@@ -50,7 +50,7 @@ An **AVR Plugin**, or **Asynchronous Verifiable Resource**, is code that determi
 
 When requesting a Task, a user references a Plugin by ID. Then the Plugin is executed by a [Prophet](#prophet).
 
-Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing **price predictions** and **HTTP requests**.
+Developers can create their own Plugins or use the existing ones. Currently, we support two Plugin types, which allow executing **price predictions** and **HTTP requests**.
 
 You can learn more in the [AVR Plugins](#avr-plugins) section of this article.
 
@@ -99,7 +99,7 @@ You can find usage examples in the following guides:
 
 ### `http`  
 
-The `http` Plugin allows making **HTTP requests** to any external service. For example, developers can use `x/async` as an advanced [oracle service](../oracle-services) for fetching token prices from external APIs.
+The `http` Plugin allows making **HTTP requests** to any external service. For example, developers can use `x/async` as an advanced [oracle service](../oracle-services) for fetching token prices from external APIs. The `http` Plugin supports multiple APIs, so in this sense it includes multiple Plugins.
 
 Note that Warden automatically converts HTTP responses to the CBOR format.
 

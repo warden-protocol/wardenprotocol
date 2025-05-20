@@ -72,7 +72,7 @@ This concept is implemented in the `x/act` [module](#module). Learn more: [`x/ac
 
 An AVR Plugin, or Asynchronous Verifiable Resource, is code determining what kind of [Task](#task) input to accept and how to handle it in order to retrieve the result (output). Plugins are executed by [Prophets](#prophet).
 
-Developers can create their own Plugins or use the existing ones. Currently, we support two Plugins, which allow executing the following Task types:
+Developers can create their own Plugins or use the existing ones. Currently, we support two Plugin types, which allow executing the following Task types:
 
 - AI-driven price predictions (verified by [SPEX](#spex))
 - HTTP requests to external services, such as blockchain APIs

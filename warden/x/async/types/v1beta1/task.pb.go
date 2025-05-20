@@ -5,6 +5,10 @@ package v1beta1
 
 import (
 	fmt "fmt"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
+	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
@@ -54,8 +58,8 @@ func (TaskVoteType) EnumDescriptor() ([]byte, []int) {
 }
 
 // Task defines a task that will be executed asynchronously.
-// Validators will be able to submit the proposed result of the Task
-// execution.
+// A validator will be selected to be the "solver".
+// The solver must include a result for the Task.
 // Other validators will then be able to vote on the validity of the proposed
 // result.
 type Task struct {
@@ -68,8 +72,14 @@ type Task struct {
 	// Input data to be used by the plugin to execute the Task.
 	// The actual format is determined by the plugin being used.
 	Input []byte `protobuf:"bytes,4,opt,name=input,proto3" json:"input,omitempty"`
-	// Callback to be called when the Task is completed.
-	Callback string `protobuf:"bytes,5,opt,name=callback,proto3" json:"callback,omitempty"`
+	// Deducted fee are the tokens collected this module when this Task was created.
+	// When this Task is executed, the fees are distributed among the executor (the validator who included the result), and the plugin creator.
+	Fee DeductedFee `protobuf:"bytes,6,opt,name=fee,proto3" json:"fee"`
+	// Id of callback to be called when the Task is completed.
+	CallbackId uint64 `protobuf:"varint,7,opt,name=callback_id,json=callbackId,proto3" json:"callback_id,omitempty"`
+	// Solver is the consensus address of the validator selected to resolve this
+	// Task.
+	Solver github_com_cosmos_cosmos_sdk_types.ConsAddress `protobuf:"bytes,8,opt,name=solver,proto3,casttype=github.com/cosmos/cosmos-sdk/types.ConsAddress" json:"solver,omitempty"`
 }
 
 func (m *Task) Reset()         { *m = Task{} }
@@ -133,11 +143,25 @@ func (m *Task) GetInput() []byte {
 	return nil
 }
 
-func (m *Task) GetCallback() string {
+func (m *Task) GetFee() DeductedFee {
 	if m != nil {
-		return m.Callback
+		return m.Fee
 	}
-	return ""
+	return DeductedFee{}
+}
+
+func (m *Task) GetCallbackId() uint64 {
+	if m != nil {
+		return m.CallbackId
+	}
+	return 0
+}
+
+func (m *Task) GetSolver() github_com_cosmos_cosmos_sdk_types.ConsAddress {
+	if m != nil {
+		return m.Solver
+	}
+	return nil
 }
 
 // TaskResult is the result of the execution of a Task.
@@ -150,8 +174,6 @@ type TaskResult struct {
 	// Output of the Task.
 	// The actual format is determined by the plugin being used.
 	Output []byte `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
-	// Address of the validator that submitted the result.
-	Submitter []byte `protobuf:"bytes,3,opt,name=submitter,proto3" json:"submitter,omitempty"`
 }
 
 func (m *TaskResult) Reset()         { *m = TaskResult{} }
@@ -197,13 +219,6 @@ func (m *TaskResult) GetId() uint64 {
 func (m *TaskResult) GetOutput() []byte {
 	if m != nil {
 		return m.Output
-	}
-	return nil
-}
-
-func (m *TaskResult) GetSubmitter() []byte {
-	if m != nil {
-		return m.Submitter
 	}
 	return nil
 }
@@ -272,42 +287,112 @@ func (m *TaskVote) GetVote() TaskVoteType {
 	return TaskVoteType_VOTE_TYPE_UNSPECIFIED
 }
 
+// Deducted fee for a task.
+type DeductedFee struct {
+	// Reward for the executor of a task
+	ExecutorReward github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,1,rep,name=executor_reward,json=executorReward,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"executor_reward"`
+	// Reward for the creator of the plugin
+	PluginCreatorReward github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=plugin_creator_reward,json=pluginCreatorReward,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"plugin_creator_reward"`
+}
+
+func (m *DeductedFee) Reset()         { *m = DeductedFee{} }
+func (m *DeductedFee) String() string { return proto.CompactTextString(m) }
+func (*DeductedFee) ProtoMessage()    {}
+func (*DeductedFee) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4690a0e780221c72, []int{3}
+}
+func (m *DeductedFee) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeductedFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeductedFee.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeductedFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeductedFee.Merge(m, src)
+}
+func (m *DeductedFee) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeductedFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeductedFee.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeductedFee proto.InternalMessageInfo
+
+func (m *DeductedFee) GetExecutorReward() github_com_cosmos_cosmos_sdk_types.Coins {
+	if m != nil {
+		return m.ExecutorReward
+	}
+	return nil
+}
+
+func (m *DeductedFee) GetPluginCreatorReward() github_com_cosmos_cosmos_sdk_types.Coins {
+	if m != nil {
+		return m.PluginCreatorReward
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterEnum("warden.async.v1beta1.TaskVoteType", TaskVoteType_name, TaskVoteType_value)
 	proto.RegisterType((*Task)(nil), "warden.async.v1beta1.Task")
 	proto.RegisterType((*TaskResult)(nil), "warden.async.v1beta1.TaskResult")
 	proto.RegisterType((*TaskVote)(nil), "warden.async.v1beta1.TaskVote")
+	proto.RegisterType((*DeductedFee)(nil), "warden.async.v1beta1.DeductedFee")
 }
 
 func init() { proto.RegisterFile("warden/async/v1beta1/task.proto", fileDescriptor_4690a0e780221c72) }
 
 var fileDescriptor_4690a0e780221c72 = []byte{
-	// 385 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x92, 0xdf, 0x8e, 0x93, 0x40,
-	0x18, 0xc5, 0x19, 0x64, 0xd9, 0xdd, 0x2f, 0xcd, 0x66, 0x33, 0x59, 0x2b, 0x1a, 0x83, 0x0d, 0x57,
-	0x8d, 0x89, 0x90, 0xd5, 0xc4, 0x07, 0xb0, 0x9d, 0x26, 0xf5, 0x42, 0x9b, 0x11, 0x9b, 0xd4, 0x9b,
-	0x3a, 0xc0, 0xa4, 0x92, 0x52, 0x06, 0x61, 0xa8, 0xd6, 0xa7, 0xf0, 0xb1, 0xbc, 0xec, 0xa5, 0x97,
-	0xa6, 0x7d, 0x11, 0x33, 0x03, 0x6d, 0xfd, 0xb3, 0x77, 0xfc, 0xce, 0x77, 0x38, 0x1c, 0x66, 0x3e,
-	0x78, 0xf2, 0x85, 0x95, 0x09, 0xcf, 0x03, 0x56, 0x6d, 0xf2, 0x38, 0x58, 0xdf, 0x46, 0x5c, 0xb2,
-	0xdb, 0x40, 0xb2, 0x6a, 0xe9, 0x17, 0xa5, 0x90, 0x02, 0xdf, 0x34, 0x06, 0x5f, 0x1b, 0xfc, 0xd6,
-	0xe0, 0x7d, 0x03, 0x2b, 0x64, 0xd5, 0x12, 0x5f, 0x81, 0x99, 0x26, 0x0e, 0xea, 0xa1, 0xbe, 0x45,
-	0xcd, 0x34, 0xc1, 0x0e, 0x9c, 0xc7, 0x25, 0x67, 0x52, 0x94, 0x8e, 0xd9, 0x43, 0xfd, 0x4b, 0x7a,
-	0x40, 0xdc, 0x05, 0xbb, 0xc8, 0xea, 0x45, 0x9a, 0x3b, 0xf7, 0xf4, 0xa0, 0x25, 0x7c, 0x03, 0x67,
-	0x69, 0x5e, 0xd4, 0xd2, 0xb1, 0x7a, 0xa8, 0xdf, 0xa1, 0x0d, 0xe0, 0x47, 0x70, 0x11, 0xb3, 0x2c,
-	0x8b, 0x58, 0xbc, 0x74, 0xce, 0xb4, 0xff, 0xc8, 0x1e, 0x05, 0x50, 0xdf, 0xa6, 0xbc, 0xaa, 0x33,
-	0xf9, 0x5f, 0x83, 0x2e, 0xd8, 0xa2, 0x96, 0x2a, 0xd0, 0xd4, 0x81, 0x2d, 0xe1, 0xc7, 0x70, 0x59,
-	0xd5, 0xd1, 0x2a, 0x95, 0x92, 0x97, 0xba, 0x42, 0x87, 0x9e, 0x04, 0xef, 0x33, 0x5c, 0xa8, 0xcc,
-	0xa9, 0x90, 0x1c, 0x3f, 0x80, 0x73, 0xf5, 0xff, 0xf3, 0x63, 0xac, 0xad, 0x70, 0x9c, 0xa8, 0xaa,
-	0x6b, 0xa1, 0x5e, 0x6f, 0x92, 0x1b, 0xc0, 0x2f, 0xc1, 0x52, 0x0f, 0x3a, 0xf3, 0xea, 0xb9, 0xe7,
-	0xdf, 0x75, 0x5e, 0xfe, 0x21, 0x3c, 0xdc, 0x14, 0x9c, 0x6a, 0xff, 0xd3, 0x19, 0x74, 0xfe, 0x54,
-	0xf1, 0x43, 0xb8, 0x3f, 0x7d, 0x1b, 0x92, 0x79, 0x38, 0x9b, 0x90, 0xf9, 0xfb, 0x37, 0xef, 0x26,
-	0x64, 0x30, 0x1e, 0x8d, 0xc9, 0xf0, 0xda, 0xc0, 0x5d, 0xc0, 0xa7, 0xd1, 0x94, 0xd0, 0x46, 0x47,
-	0x7f, 0xeb, 0x94, 0xbc, 0x26, 0x83, 0x90, 0x0c, 0xaf, 0xcd, 0x57, 0x1f, 0x7f, 0xec, 0x5c, 0xb4,
-	0xdd, 0xb9, 0xe8, 0xd7, 0xce, 0x45, 0xdf, 0xf7, 0xae, 0xb1, 0xdd, 0xbb, 0xc6, 0xcf, 0xbd, 0x6b,
-	0x7c, 0x18, 0x2d, 0x52, 0xf9, 0xa9, 0x8e, 0xfc, 0x58, 0xac, 0x82, 0xa6, 0xe8, 0x33, 0x7d, 0xcd,
-	0xb1, 0xc8, 0x5a, 0xfe, 0x07, 0x83, 0xaf, 0xed, 0x6a, 0xc8, 0x4d, 0xc1, 0xab, 0xc3, 0x82, 0x44,
-	0xb6, 0xb6, 0xbd, 0xf8, 0x1d, 0x00, 0x00, 0xff, 0xff, 0xb1, 0xe6, 0x01, 0x1a, 0x3f, 0x02, 0x00,
-	0x00,
+	// 613 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x54, 0x31, 0x6f, 0xd3, 0x40,
+	0x14, 0xce, 0x39, 0xae, 0x1b, 0x2e, 0x55, 0x09, 0x47, 0x5b, 0xdc, 0x0e, 0x4e, 0xc8, 0x64, 0x55,
+	0xaa, 0xad, 0x06, 0x09, 0x09, 0x36, 0x92, 0x3a, 0x52, 0x32, 0x40, 0x65, 0x42, 0xa5, 0xb2, 0x18,
+	0xc7, 0x3e, 0x82, 0x15, 0xd7, 0x17, 0x7c, 0xe7, 0xd2, 0xfc, 0x05, 0xc4, 0xc0, 0xc2, 0xc2, 0x2f,
+	0x40, 0x4c, 0x15, 0xbf, 0xa2, 0x63, 0x47, 0xa6, 0x82, 0x9a, 0xa1, 0xff, 0x81, 0x09, 0xdd, 0x9d,
+	0x1d, 0x02, 0x74, 0x60, 0x62, 0x49, 0xee, 0x7b, 0xf7, 0xdd, 0xf7, 0xde, 0xfb, 0xee, 0x9d, 0x61,
+	0xfd, 0x8d, 0x9f, 0x86, 0x38, 0xb1, 0x7d, 0x3a, 0x4d, 0x02, 0xfb, 0x78, 0x77, 0x88, 0x99, 0xbf,
+	0x6b, 0x33, 0x9f, 0x8e, 0xad, 0x49, 0x4a, 0x18, 0x41, 0x6b, 0x92, 0x60, 0x09, 0x82, 0x95, 0x13,
+	0xb6, 0x6e, 0xf9, 0x47, 0x51, 0x42, 0x6c, 0xf1, 0x2b, 0x89, 0x5b, 0x46, 0x40, 0xe8, 0x11, 0xa1,
+	0xf6, 0xd0, 0xa7, 0x78, 0x2e, 0x14, 0x90, 0x28, 0xc9, 0xf7, 0xd7, 0x46, 0x64, 0x44, 0xc4, 0xd2,
+	0xe6, 0x2b, 0x19, 0x6d, 0xbe, 0x53, 0xa0, 0x3a, 0xf0, 0xe9, 0x18, 0xad, 0x42, 0x25, 0x0a, 0x75,
+	0xd0, 0x00, 0xa6, 0xea, 0x2a, 0x51, 0x88, 0x74, 0xb8, 0x1c, 0xa4, 0xd8, 0x67, 0x24, 0xd5, 0x95,
+	0x06, 0x30, 0x6f, 0xb8, 0x05, 0x44, 0x1b, 0x50, 0x9b, 0xc4, 0xd9, 0x28, 0x4a, 0xf4, 0xb2, 0xd8,
+	0xc8, 0x11, 0x5a, 0x83, 0x4b, 0x51, 0x32, 0xc9, 0x98, 0xae, 0x36, 0x80, 0xb9, 0xe2, 0x4a, 0x80,
+	0x1e, 0xc0, 0xf2, 0x4b, 0x8c, 0x75, 0xad, 0x01, 0xcc, 0x6a, 0xeb, 0xae, 0x75, 0x5d, 0x37, 0xd6,
+	0x1e, 0x0e, 0xb3, 0x80, 0xe1, 0xb0, 0x8b, 0x71, 0x5b, 0x3d, 0xbb, 0xa8, 0x97, 0x5c, 0x7e, 0x06,
+	0xd5, 0x61, 0x35, 0xf0, 0xe3, 0x78, 0xe8, 0x07, 0x63, 0x2f, 0x0a, 0xf5, 0x65, 0x51, 0x1b, 0x2c,
+	0x42, 0xbd, 0x10, 0xf5, 0xa1, 0x46, 0x49, 0x7c, 0x8c, 0x53, 0xbd, 0xc2, 0x53, 0xb6, 0x5b, 0x3f,
+	0x2e, 0xea, 0xd6, 0x28, 0x62, 0xaf, 0xb2, 0xa1, 0x15, 0x90, 0x23, 0x3b, 0x77, 0x44, 0xfe, 0xed,
+	0xd0, 0x70, 0x6c, 0xb3, 0xe9, 0x04, 0x53, 0xab, 0x43, 0x12, 0xfa, 0x28, 0x0c, 0x53, 0x4c, 0xa9,
+	0x9b, 0x2b, 0xf4, 0xd5, 0xca, 0x52, 0x4d, 0x6b, 0x3e, 0x84, 0x90, 0xbb, 0xe1, 0x62, 0x9a, 0xc5,
+	0xec, 0x2f, 0x4f, 0x36, 0xa0, 0x46, 0x32, 0xc6, 0x5b, 0x54, 0x44, 0x8b, 0x39, 0xea, 0xab, 0x95,
+	0x72, 0x4d, 0x6d, 0xbe, 0x86, 0x15, 0x7e, 0xf6, 0x80, 0x30, 0x8c, 0xee, 0xc0, 0x65, 0x7e, 0x87,
+	0xde, 0xfc, 0xb8, 0xc6, 0x61, 0x2f, 0xe4, 0x26, 0x1d, 0x13, 0x86, 0xd3, 0x5c, 0x41, 0x02, 0x74,
+	0x1f, 0xaa, 0x7c, 0x21, 0x0c, 0x5d, 0x6d, 0x35, 0xaf, 0x77, 0xa9, 0x10, 0x1f, 0x4c, 0x27, 0xd8,
+	0x15, 0xfc, 0xe6, 0x17, 0x05, 0x56, 0x17, 0xcc, 0x43, 0x6f, 0x01, 0xbc, 0x89, 0x4f, 0x70, 0x90,
+	0x31, 0x92, 0x7a, 0x29, 0xe6, 0x32, 0x3a, 0x68, 0x94, 0xcd, 0x6a, 0x6b, 0xd3, 0x92, 0x2e, 0x58,
+	0x7c, 0x3c, 0xe6, 0x92, 0x1d, 0x12, 0x25, 0xed, 0x2e, 0x77, 0xfc, 0xf3, 0xb7, 0xba, 0xf9, 0x4f,
+	0xce, 0x45, 0x09, 0xfd, 0x78, 0x75, 0xba, 0xbd, 0x12, 0xe3, 0x91, 0x1f, 0x4c, 0x3d, 0x3e, 0x60,
+	0xf4, 0xd3, 0xd5, 0xe9, 0x36, 0x70, 0x57, 0x8b, 0xcc, 0xae, 0x48, 0x8c, 0x3e, 0x00, 0xb8, 0x2e,
+	0x47, 0xc3, 0xcb, 0x47, 0xa7, 0x28, 0x49, 0xf9, 0x5f, 0x25, 0xdd, 0x96, 0xf9, 0x3b, 0x32, 0xbd,
+	0xac, 0x6b, 0xfb, 0x10, 0xae, 0x2c, 0x5a, 0x89, 0x36, 0xe1, 0xfa, 0xc1, 0x93, 0x81, 0xe3, 0x0d,
+	0x0e, 0xf7, 0x1d, 0xef, 0xd9, 0xe3, 0xa7, 0xfb, 0x4e, 0xa7, 0xd7, 0xed, 0x39, 0x7b, 0xb5, 0x12,
+	0xda, 0x80, 0xe8, 0xd7, 0xd6, 0x81, 0xe3, 0xca, 0x38, 0xf8, 0x3d, 0xee, 0x3a, 0x7d, 0xa7, 0x33,
+	0x70, 0xf6, 0x6a, 0x4a, 0xfb, 0xc5, 0xd9, 0xa5, 0x01, 0xce, 0x2f, 0x0d, 0xf0, 0xfd, 0xd2, 0x00,
+	0xef, 0x67, 0x46, 0xe9, 0x7c, 0x66, 0x94, 0xbe, 0xce, 0x8c, 0xd2, 0xf3, 0xee, 0x42, 0x27, 0xf2,
+	0x76, 0x77, 0xc4, 0x03, 0x0c, 0x48, 0x9c, 0xe3, 0x3f, 0xa0, 0x7d, 0x92, 0x7f, 0x13, 0x44, 0x97,
+	0xc5, 0x83, 0x1e, 0x6a, 0x82, 0x76, 0xef, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0x56, 0x23, 0xc8,
+	0x5e, 0x38, 0x04, 0x00, 0x00,
 }
 
 func (m *Task) Marshal() (dAtA []byte, err error) {
@@ -330,13 +415,28 @@ func (m *Task) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Callback) > 0 {
-		i -= len(m.Callback)
-		copy(dAtA[i:], m.Callback)
-		i = encodeVarintTask(dAtA, i, uint64(len(m.Callback)))
+	if len(m.Solver) > 0 {
+		i -= len(m.Solver)
+		copy(dAtA[i:], m.Solver)
+		i = encodeVarintTask(dAtA, i, uint64(len(m.Solver)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x42
 	}
+	if m.CallbackId != 0 {
+		i = encodeVarintTask(dAtA, i, uint64(m.CallbackId))
+		i--
+		dAtA[i] = 0x38
+	}
+	{
+		size, err := m.Fee.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTask(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x32
 	if len(m.Input) > 0 {
 		i -= len(m.Input)
 		copy(dAtA[i:], m.Input)
@@ -386,13 +486,6 @@ func (m *TaskResult) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Submitter) > 0 {
-		i -= len(m.Submitter)
-		copy(dAtA[i:], m.Submitter)
-		i = encodeVarintTask(dAtA, i, uint64(len(m.Submitter)))
-		i--
-		dAtA[i] = 0x1a
-	}
 	if len(m.Output) > 0 {
 		i -= len(m.Output)
 		copy(dAtA[i:], m.Output)
@@ -448,6 +541,57 @@ func (m *TaskVote) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *DeductedFee) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeductedFee) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeductedFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.PluginCreatorReward) > 0 {
+		for iNdEx := len(m.PluginCreatorReward) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.PluginCreatorReward[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTask(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.ExecutorReward) > 0 {
+		for iNdEx := len(m.ExecutorReward) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ExecutorReward[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTask(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTask(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTask(v)
 	base := offset
@@ -480,7 +624,12 @@ func (m *Task) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTask(uint64(l))
 	}
-	l = len(m.Callback)
+	l = m.Fee.Size()
+	n += 1 + l + sovTask(uint64(l))
+	if m.CallbackId != 0 {
+		n += 1 + sovTask(uint64(m.CallbackId))
+	}
+	l = len(m.Solver)
 	if l > 0 {
 		n += 1 + l + sovTask(uint64(l))
 	}
@@ -497,10 +646,6 @@ func (m *TaskResult) Size() (n int) {
 		n += 1 + sovTask(uint64(m.Id))
 	}
 	l = len(m.Output)
-	if l > 0 {
-		n += 1 + l + sovTask(uint64(l))
-	}
-	l = len(m.Submitter)
 	if l > 0 {
 		n += 1 + l + sovTask(uint64(l))
 	}
@@ -522,6 +667,27 @@ func (m *TaskVote) Size() (n int) {
 	}
 	if m.Vote != 0 {
 		n += 1 + sovTask(uint64(m.Vote))
+	}
+	return n
+}
+
+func (m *DeductedFee) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.ExecutorReward) > 0 {
+		for _, e := range m.ExecutorReward {
+			l = e.Size()
+			n += 1 + l + sovTask(uint64(l))
+		}
+	}
+	if len(m.PluginCreatorReward) > 0 {
+		for _, e := range m.PluginCreatorReward {
+			l = e.Size()
+			n += 1 + l + sovTask(uint64(l))
+		}
 	}
 	return n
 }
@@ -678,11 +844,11 @@ func (m *Task) Unmarshal(dAtA []byte) error {
 				m.Input = []byte{}
 			}
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Callback", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTask
@@ -692,23 +858,77 @@ func (m *Task) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTask
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTask
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Callback = string(dAtA[iNdEx:postIndex])
+			if err := m.Fee.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CallbackId", wireType)
+			}
+			m.CallbackId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CallbackId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Solver", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTask
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Solver = append(m.Solver[:0], dAtA[iNdEx:postIndex]...)
+			if m.Solver == nil {
+				m.Solver = []byte{}
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -811,40 +1031,6 @@ func (m *TaskResult) Unmarshal(dAtA []byte) error {
 			m.Output = append(m.Output[:0], dAtA[iNdEx:postIndex]...)
 			if m.Output == nil {
 				m.Output = []byte{}
-			}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Submitter", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTask
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthTask
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTask
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Submitter = append(m.Submitter[:0], dAtA[iNdEx:postIndex]...)
-			if m.Submitter == nil {
-				m.Submitter = []byte{}
 			}
 			iNdEx = postIndex
 		default:
@@ -969,6 +1155,124 @@ func (m *TaskVote) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTask(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTask
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeductedFee) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTask
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeductedFee: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeductedFee: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ExecutorReward", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTask
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ExecutorReward = append(m.ExecutorReward, types.Coin{})
+			if err := m.ExecutorReward[len(m.ExecutorReward)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PluginCreatorReward", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTask
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PluginCreatorReward = append(m.PluginCreatorReward, types.Coin{})
+			if err := m.PluginCreatorReward[len(m.PluginCreatorReward)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTask(dAtA[iNdEx:])

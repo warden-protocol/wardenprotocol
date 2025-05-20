@@ -16,11 +16,13 @@ syntax = "proto3";
 package warden.async.v1beta1;
 
 import "amino/amino.proto";
+import "cosmos/base/v1beta1/coin.proto";
 import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "warden/async/v1beta1/params.proto";
+import "warden/sched/v1beta1/callback.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1";
 
@@ -62,7 +64,15 @@ message MsgAddTask {
   string creator = 1;
   string plugin = 2;
   bytes input = 3;
-  string callback = 4;
+  reserved 4;
+
+  repeated cosmos.base.v1beta1.Coin max_fee = 5 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty) = true,
+    (amino.encoding) = "legacy_coins"
+  ];
+  warden.sched.v1beta1.CallbackParams callback_params = 6 [(gogoproto.nullable) = true];
 }
 
 message MsgAddTaskResponse {

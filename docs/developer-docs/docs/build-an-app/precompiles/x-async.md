@@ -32,15 +32,24 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 - **Method**: `addFuture()`
 - **Description**: Creates a Task. Emits the [`CreateFuture` event](#createfuture).
-- **Parameters** :
+- **Code**:
+  ```
+  function addFuture(
+      string calldata handler,
+      bytes calldata input,
+      address callback
+  ) external returns (uint64 futureId);
+  ```
+- **Parameters**:
   ```sol
   @param handler The unique name of the plugin
   @param input The plugin's input
   @param callback The address of callback contract
   ```
-  **Notes**:
-  - The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: Plugins](/learn/warden-protocol-modules/x-async#plugins). 
+  :::note Notes
+  - The following Plugins are currently available: `pricepred`, `http`. To learn more, see [`x/async`: AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugins). 
   - The `callback` parameter is optional. The callback contract must have a `cb()` function, allowing it to be invoked once the Task is ready.
+  :::
 - **Output**:  
   ```sol
   @return futureId The id of the task
@@ -51,11 +60,17 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 - **Method**: `futures()`
 - **Description**: Returns a list of all Tasks in all states (including pending ones). See the [`FuturesResponse` struct](#futureresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function futures(
+      Types.PageRequest calldata pagination,
+      address creator
+  ) external view returns (FuturesResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param pagination The pagination details
   @param creator Optional creator address filter
-  @return response The paged tasks
   ```
 - **Output**:  
   ```sol
@@ -67,7 +82,13 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 - **Method**: `pendingFutures()`
 - **Description**: Returns a list of all pending Tasks. See the [`PendingFuturesResponse` struct](#pendingfuturesresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function pendingFutures(
+      Types.PageRequest calldata pagination
+  ) external view returns (PendingFuturesResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param pagination The pagination details  
   ```
@@ -81,7 +102,13 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 
 - **Method**: `futureById()`
 - **Description**: Returns a Task by ID (pending Tasks included). See the [`FutureByIdResponse` struct](#futurebyidresponse).
-- **Parameters** :
+- **Code**:
+  ```
+  function futureById(
+      uint64 taskId
+  ) external view returns (FutureByIdResponse memory response);
+  ```
+- **Parameters**:
   ```sol
   @param futureId The task id   
   ```
@@ -96,91 +123,116 @@ To reference the `IAsync` precompile in your code, use the following precompile 
 ### `Future`
 
 - **Description**: A struct representing a Task.
-
-```
-uint64 id;
-address creator;
-string handler;
-bytes input;
-```
+- **Code**:
+  ```
+  struct Task {
+      uint64 id;
+      address creator;
+      string handler;
+      bytes input;
+  }
+  ```
 
 ### `FutureVote`
 
 - **Description**: A struct representing a vote on the results of a Task. Includes the [`FutureVoteType` enum](#futurevotetype).
-
-```
-uint64 futureId;
-bytes Voter;
-FutureVoteType vote;
-```
+- **Code**:
+  ```
+  struct FutureVote {
+      uint64 taskId;
+      bytes Voter;
+      FutureVoteType vote;
+  }
+  ```
 
 ### `FutureResult`
 
 - **Description**: A struct representing the result of a Task.
-
-```
-uint64 id;
-bytes output;
-bytes submitter;
-```
+- **Code**:
+  ```
+  struct FutureResult {
+      uint64 id;
+      bytes output;
+      bytes submitter;
+  }
+  ```
 
 ### `FutureResponse`
 
 - **Description**: A struct representing a Task and its data. Includes the [`Future`](#future), [`FutureVote`](#futurevote), and [`FutureResult`](#futureresult) structs.
-
-```
-Future future;
-FutureVote[] votes;
-FutureResult result;
-```
+- **Code**:
+  ```
+  struct FutureResponse {
+      Future future;
+      FutureVote[] votes;
+      FutureResult result;
+  }
+  ```
 
 ### `FuturesResponse`
 
 - **Description**: A response returned when you [query Task](#query-tasks). Includes the [`FutureResponse` struct](#futureresponse).
-
-```
-Types.PageResponse pagination;
-FutureResponse[] futures;
-```
+- **Code**:
+  ```
+  struct FuturesResponse {
+      Types.PageResponse pagination;
+      FutureResponse[] futures;
+  }
+  ```
 
 ### `PendingFuturesResponse`
 
 - **Description**: A response returned when you [query pending Task](#query-pending-tasks). Includes the [`Future` struct](#future).
-
-```
-Types.PageResponse pagination;
-Future[] futures;
-```
+- **Code**:
+  ```
+  struct PendingFuturesResponse {
+      Types.PageResponse pagination;
+      Future[] futures;
+  }
+  ```
 
 ### `FutureByIdResponse`
 
 - **Description**: A response returned when you [query a Task by ID](#query-a-task-by-id). Includes the [`FutureResponse` struct](#futureresponse).
-
-```
-FutureResponse futureResponse;
-```
+- **Code**:
+  ```
+  struct FutureByIdResponse {
+      FutureResponse futureResponse;
+  }
+  ```
 
 ## Enums
 
 ### `FutureVoteType`
 
 - **Description**: The Task vote type.
-
-```
-Unspecified,
-Verified,
-Rejected
-```
+- **Code**:
+  ```
+  enum FutureVoteType {
+     Unspecified,
+     Verified,
+     Rejected
+  }
+  ```
 
 ## Events
 
 ### `CreateFuture`
 
 - **Description**: An event emitted when [a Task is created](#create-a-new-task).
-- **Parameters**:  
+- **Code**:  
   ```sol
-  uint64 indexed futureId,
-  address indexed creator,
-  string handler,
-  address callbackAddress
+  event CreateFuture(
+      uint64 indexed futureId,
+      address indexed creator,
+      string handler,
+      address callbackAddress
+  );
+  ```
+- **Parameters**:
+  ```
+  @param creator The address of the creator
+  @param futureId The task Id
+  @param handler The name of the plugin
+  @param callbackAddress The address of callback contract
   ```

@@ -13,7 +13,7 @@ jobs:
       matrix:
         release: ["release"]
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:

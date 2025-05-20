@@ -22,7 +22,7 @@ You can call the `x/act` module from your EVM smart contract using the [`x/act` 
 
 ### Rule
 
-A **Rule** is a set of user-defined conditions under which an [Action](#action) is performed. The `Rule` struct represents a set of conditions that must be met before something can be executed.
+An **Approval Rule** is a set of user-defined conditions under which an [Action](#action) is performed. The `Rule` struct represents a set of conditions that must be met before something can be executed.
 
 Users can register Rules onchain, writing their expressions in the [Intent-Specific Language](#intent-specific-language).
 
@@ -128,7 +128,7 @@ appConfig = depinject.Configs(
     },
 ```
 
-`PrefixedExpander` handles all identifiers that start with the module name (`satellitetypes.ModuleName`) followed by a dot. `ShieldExpander` receives the rest of the identifiers and returns any other [abstract syntax tree](/learn/glossary#abstract-syntax-tree) node to replace it.
+`PrefixedExpander` handles all identifiers that start with the module name (`satellitetypes.ModuleName`) followed by a dot. `ShieldExpander` receives the rest of the identifiers and returns any other [abstract syntax tree](../glossary#abstract-syntax-tree) node to replace it.
 
 `SatelliteKeeper` could implement an expander like this:
 
@@ -226,7 +226,7 @@ satellite.fuel_price < 100
 
 ### `MsgNewRule`
 
-Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored onchain.
+Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](../glossary#abstract-syntax-tree) and stored onchain.
 
 This message is expected to fail in the following cases:
 

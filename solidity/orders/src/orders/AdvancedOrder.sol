@@ -3,6 +3,7 @@ pragma solidity >=0.8.25 <0.9.0;
 
 import { GetPriceResponse, ISlinky, ISLINKY_PRECOMPILE_ADDRESS } from "precompile-slinky/ISlinky.sol";
 import { TaskByIdResponse, IAsync, IASYNC_PRECOMPILE_ADDRESS } from "precompile-async/IAsync.sol";
+import { CallbackParams } from "precompile-sched/ISched.sol";
 import { Types as CommonTypes } from "precompile-common/Types.sol";
 import { AbstractOrderV0 } from "../orders/AbstractOrderV0.sol";
 import { ExecutionData, IExecutionV0 } from "../types/IExecutionV0.sol";
@@ -101,7 +102,9 @@ contract AdvancedOrder is AbstractOrderV0, IExecutionV0 {
             falsePositiveRate: falsePositiveRate,
             metrics: metrics
         });
-        taskId = ASYNC_PRECOMPILE.addTask("pricepred", abi.encode(pricePredictInput), address(0));
+        CommonTypes.Coin[] memory maxFee;
+        CallbackParams memory callbackParams;
+        taskId = ASYNC_PRECOMPILE.addTask("pricepred", abi.encode(pricePredictInput), maxFee, callbackParams);
         REGISTRY = Registry(registry);
 
         for (uint256 i = 0; i < maxKeychainFees.length; i++) {

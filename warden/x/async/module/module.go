@@ -29,6 +29,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
@@ -204,7 +205,9 @@ type ModuleInputs struct {
 
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
+	StakingKeeper *stakingkeeper.Keeper
 	GetEvmKeeper  func(_placeHolder int16) *evmkeeper.Keeper `optional:"true"`
+	SchedKeeper   types.SchedKeeper
 
 	Prophet *prophet.P `optional:"true"`
 }
@@ -231,9 +234,11 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Logger,
 		authority.String(),
 		in.Prophet,
-		in.GetEvmKeeper,
-		asyncModuleAddress,
 		in.AccountKeeper,
+		asyncModuleAddress,
+		in.BankKeeper,
+		in.StakingKeeper,
+		in.SchedKeeper,
 	)
 	m := NewAppModule(
 		in.Cdc,

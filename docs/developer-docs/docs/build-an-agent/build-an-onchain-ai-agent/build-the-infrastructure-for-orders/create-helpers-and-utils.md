@@ -14,7 +14,7 @@ Store helper libraries and contracts in the [`src` directory](https://github.com
 
 ## 1. Define data structures
 
-First, create a library `Types.sol`  with the core data structures:
+First, create a library `Types.sol` with the core data structures:
 
 :::note Full code
 You can find the full code on GitHub: [`src/Types.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Types.sol)

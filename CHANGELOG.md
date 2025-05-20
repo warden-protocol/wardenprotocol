@@ -42,10 +42,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features (non-breaking)
 
-* (x/async) Rename futures into tasks, and future handlers into plugins
-* (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
+- (go-client) Fix handling of EthAccounts in AuthQueryClient
 
 ### Consensus Breaking Changes
+
+- (x/async) Move to a push-based fair selection algorithm, instead of validators competing for solving pending Tasks
+
+### Bug Fixes
+
+## [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) - 2025-04-16
+
+### Features (non-breaking)
+
+* (x/async) Rename futures into tasks, and future handlers into plugins
+* (x/async) Add a simple Plugin registry for tracking Plugins' IDs onchain
+* (x/async) Implement a reward system where task executors and plugin creators can earn fees for their services
+
+### Consensus Breaking Changes
+
+* (precompiles) The JSON precompile allowing to operate on JSON
+* (x/sched) Add schedule module which allow registering and executing callbacks
 
 ### Bug Fixes
 

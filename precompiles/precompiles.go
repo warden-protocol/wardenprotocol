@@ -8,10 +8,13 @@ import (
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
 	asyncprecompile "github.com/warden-protocol/wardenprotocol/precompiles/async"
 	cmn "github.com/warden-protocol/wardenprotocol/precompiles/common"
+	jsonprecompile "github.com/warden-protocol/wardenprotocol/precompiles/json"
+	schedprecompile "github.com/warden-protocol/wardenprotocol/precompiles/sched"
 	slinkyprecompile "github.com/warden-protocol/wardenprotocol/precompiles/slinky"
 	wardenprecompile "github.com/warden-protocol/wardenprotocol/precompiles/warden"
 	actkeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	asynckeeper "github.com/warden-protocol/wardenprotocol/warden/x/async/keeper"
+	schedkeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
 
@@ -21,6 +24,7 @@ func NewWardenPrecompiles(
 	actkeeper actkeeper.Keeper,
 	oraclekeeper oraclekeeper.Keeper,
 	asynckeeper asynckeeper.Keeper,
+	schedkeeper schedkeeper.Keeper,
 ) (map[ethcmn.Address]vm.PrecompiledContract, error) {
 	precompiles := make(map[ethcmn.Address]vm.PrecompiledContract)
 	eventsRegistry := cmn.NewEthEventsRegistry()
@@ -77,6 +81,20 @@ func NewWardenPrecompiles(
 	precompiles[newAsyncPrecompile.Address()] = newAsyncPrecompile
 
 	eventsRegistry.RegisterEvent("warden.async.v1beta1.EventCreateTask", newAsyncPrecompile.GetCreateTaskEvent)
+
+	newJsonPrecompile, err := jsonprecompile.NewPrecompile(cmn.NewAbiEncoder())
+	if err != nil {
+		return nil, err
+	}
+
+	precompiles[newJsonPrecompile.Address()] = newJsonPrecompile
+
+	newSchedPrecompile, err := schedprecompile.NewPrecompile(schedkeeper, eventsRegistry)
+	if err != nil {
+		return nil, err
+	}
+
+	precompiles[newSchedPrecompile.Address()] = newSchedPrecompile
 
 	return precompiles, nil
 }

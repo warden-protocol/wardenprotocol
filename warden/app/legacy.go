@@ -343,6 +343,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.ActKeeper,
 		*app.OracleKeeper,
 		app.AsyncKeeper,
+		app.SchedKeeper,
 	)
 	if err != nil {
 		panic(err)

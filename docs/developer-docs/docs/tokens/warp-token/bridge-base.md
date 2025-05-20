@@ -46,7 +46,7 @@ First, you should get some ETH for future transactions on Base. Base fees are ve
 
 8. Once the transaction and verification is complete, you'll receive your assets on Base chain.
 
-9. Add a Base chain RPC to your MetaMask: just click **Connect Wallet** on [ChainList](https://chainlist.org/chain/8453). Alternatively, you can add a Base RPC to any other wallet that that supports EVM chains using ChainList.
+9. Add a Base chain RPC to your MetaMask: just click **Connect Wallet** on [ChainList](https://chainlist.org/chain/8453). Alternatively, you can add a Base RPC to any other wallet that supports EVM chains using ChainList.
 
 
 ## 2. Get USDC

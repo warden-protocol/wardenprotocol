@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Warden Manifesto
 
-![cover.png](../../static/img/manifesto-cover.png)
+![Warden manifesto: The home of Intelligent Applications](../../static/img/manifesto-cover.png)
 
 ## *Warden—the Home of Intelligent Applications*
 
@@ -17,15 +17,15 @@ sidebar_position: 2
 
 ### Problem: Blockchain Apps Are Dumb
 
-We think AI will be integrated into every application. It's an inevitability. But, at the heart of most applications in crypto, there are over 600 million smart contracts. We think they’re rigid, and unfairly limited by their determinism. This limited design space holds back applications from becoming more intelligent. **To enable net new applications, we need to break open a new design space.**
+We think AI will be integrated into every application. It's an inevitability. But, at the heart of most applications in crypto, there are over 600 million smart contracts. We think they're rigid, and unfairly limited by their determinism. This limited design space holds back applications from becoming more intelligent. **To enable net new applications, we need to break open a new design space.**
 
 We believe AI will power this new design space. It will change what crypto applications are capable of—not just at the smart contract level, it will also simplify front-ends, interpret complex data and adapt the user experience in real time. Every major blockchain application will use AI.
 
-However, current crypto infrastructure doesn’t support this shift at all. Taking AI onchain, and building with AI, is a complex deep tech challenge. Building a truly intelligent crypto app today is almost impossible. Most attempts have been surface-level—driven by buzzwords, not breakthroughs. The result? Truly intelligent crypto apps remain nearly impossible to build.
+However, current crypto infrastructure doesn't support this shift at all. Taking AI onchain, and building with AI, is a complex deep tech challenge. Building a truly intelligent crypto app today is almost impossible. Most attempts have been surface-level—driven by buzzwords, not breakthroughs. The result? Truly intelligent crypto apps remain nearly impossible to build.
 
 ### Mission: Expand Blockchain Capabilities
 
-Warden was built to 10x the application design space—unlocking a new wave of intelligent, adaptive applications. This isn’t a marginal upgrade; it’s a foundational upgrade towards what we call “**Intelligent Applications**”: systems that break free from rigid constraints, allowing developers to fully express ideas and tap into decades of established software development. In a nutshell, Warden creates a verifiable, AI-native blockchain where models are accessible to anyone, anywhere—and their outputs can directly power smarter, more expressive applications.  Our design principles are:
+Warden was built to 10x the application design space—unlocking a new wave of intelligent, adaptive applications. This isn't a marginal upgrade; it's a foundational upgrade towards what we call “**Intelligent Applications**”: systems that break free from rigid constraints, allowing developers to fully express ideas and tap into decades of established software development. In a nutshell, Warden creates a verifiable, AI-native blockchain where models are accessible to anyone, anywhere—and their outputs can directly power smarter, more expressive applications.  Our design principles are:
 
 - **Anything:** Build without limits—our Intelligent Applications run seamlessly onchain and operate offchain, or vice versa.
 - **Anyone:** Developers on Cosmos, Ethereum, or Solana can build with Warden.
@@ -35,19 +35,19 @@ This became our mission: to build the foundational infrastructure for Intelligen
 
 ### Solution: A Home for Intelligent Applications
 
-We’ve invested $4.5M of founders’ capital to build Warden from the ground up—**a full-stack purpose-built blockchain designed for developers to create Intelligent Applications**. And **for everyday users, we built the Warden App**: free, private, and uncensored AI that lets anyone use voice or chat to do anything in crypto. Yes, anything.
+We've invested $4.5M of founders' capital to build Warden from the ground up—**a full-stack purpose-built blockchain designed for developers to create Intelligent Applications**. And **for everyday users, we built the Warden App**: free, private, and uncensored AI that lets anyone use voice or chat to do anything in crypto. Yes, anything.
 
 The Warden stack enables any application or smart contract to access and verify AI models, bringing AI onchain with cryptographic guarantees. Warden is structured across three layers: a Blockchain Layer with access to Asynchronous Verifiable Resources (“**AVRs**”), a Verifiability Layer powered by a Statistical Proof of Execution (“**SPEx**”) for verifying models and AVRs, and an Application Layer with tools and primitives to build Intelligent Applications. Making this possible meant deep **innovation**, we built:
 
 - **A permissionless, EVM-compatible blockchain** that connects your app to anything digital—onchain or offchain—using scalable, programmable AVRs.
 - **AVRs (Asynchronous Verifiable Resources)**: let smart contracts read from and write to the world—request AI outputs, trigger PayPal payments, mint NFTs on OpenSea, or place Amazon orders. Use 20+ pre-built AVRs or create your own.
 - **A fast, low-cost Verification Layer powered by SPEx**—handling large inferences up to 1000x faster and cheaper than ZKMLs, OPMLs, or TEEs.
-- **Ubiquitous access to/from 100+ protocols**, starting with all of Cosmos and Ethereum via IBC—and Hyperlane next, so developers can build on Warden or with Warden—we’re chain-agnostic by design.
+- **Ubiquitous access to/from 100+ protocols**, starting with all of Cosmos and Ethereum via IBC—and Hyperlane next, so developers can build on Warden or with Warden—we're chain-agnostic by design.
 - **A complete developer platform** with AVR primitives, AI verification, and tools built to make blockchains invisible.
 
 ## A Seasoned AI x Crypto Leadership Team
 
-Warden's founding team consists of experienced builders from crypto, AI and the Tech space. Together we've raised over $50m in capital, GTM’d tokens, and scaled some of the largest crypto consumer, enterprise platforms and web2 businesses. Blended with this expertise, we have attracted a serious depth of talent in AI and ML. This forms the Core team at Warden:
+Warden's founding team consists of experienced builders from crypto, AI and the Tech space. Together we've raised over $50m in capital, GTM'd tokens, and scaled some of the largest crypto consumer, enterprise platforms and web2 businesses. Blended with this expertise, we have attracted a serious depth of talent in AI and ML. This forms the Core team at Warden:
 
 - David Pinger (CEO): Ex-Binance, Ex-Uber
 - Dr. Michele Dallachiesa (Chief AI Officer): Ex-Google, Ex-Nasa
@@ -61,41 +61,41 @@ Warden's founding team consists of experienced builders from crypto, AI and the 
 
 ### A Blockchain For Intelligent Apps
 
-![1.png](../../static/img/manifesto-1.png)
+![Dumb contracts vs. Intelligent Apps](../../static/img/manifesto-1.png)
 
 Warden took a full-stack approach to solve a complex challenge. When we first designed Warden our guiding question was clear: **how can we use AI to enable more intelligent applications?** We quickly found traditional, general-purpose blockchains are not well equipped to handle inferences.
 
-The most difficult questions we solved along the way were: how do we handle heavy, long-running computations without blocking the chain; how do we verify and reach consensus on AI models like LLMs that produce different responses each time; how can we extend blockchain’s trust perimeter so Intelligent Applications can operate both onchain and offchain; and how do we turn AVRs into a low-code experience?
+The most difficult questions we solved along the way were: how do we handle heavy, long-running computations without blocking the chain; how do we verify and reach consensus on AI models like LLMs that produce different responses each time; how can we extend blockchain's trust perimeter so Intelligent Applications can operate both onchain and offchain; and how do we turn AVRs into a low-code experience?
 
 ### A Purpose-Built Full-Stack Design
 
-Creating a fullstack AI x Blockchain from scratch was challenging—we were able to do this through converging advances in blockchain consensus, artificial intelligence and cryptography—it is **truly purpose-built**. Among the many things we’ve done, we created AVRs, built scalable verification systems, integrated smart contract platforms, customized transaction types, repurposed nodes and invented consensus mechanisms. The outcome is an AI-ready blockchain with three layers:
+Creating a fullstack AI x Blockchain from scratch was challenging—we were able to do this through converging advances in blockchain consensus, artificial intelligence and cryptography—it is **truly purpose-built**. Among the many things we've done, we created AVRs, built scalable verification systems, integrated smart contract platforms, customized transaction types, repurposed nodes and invented consensus mechanisms. The outcome is an AI-ready blockchain with three layers:
 
-![2.png](../../static/img/manifesto-2.png)
+![The layers of Warden Protocol](../../static/img/manifesto-2.png)
 
-- **Blockchain Layer** Warden Chain is a purpose-built blockchain that offers a unique capability not seen in other blockchains—it lets users use any arbitrary AVR response onchain, within a smart contract or application. *AVR authors* have full flexibility to build, publish and monetize their AVRs, with the Blockchain Layer acting as a coordination, messaging and provenance layer for their work. Using consensus advances like ABCI++, and vote extensions, AVRs can be both small and lightweight, or heavy, long-running asynchronous AI inferences. *Validators* that run AVRs can join Warden’s permissionless network. Any validator can choose what AVRs to support and start earning—even on lower-spec hardware.
+- **Blockchain Layer** Warden Chain is a purpose-built blockchain that offers a unique capability not seen in other blockchains—it lets users use any arbitrary AVR response onchain, within a smart contract or application. *AVR authors* have full flexibility to build, publish and monetize their AVRs, with the Blockchain Layer acting as a coordination, messaging and provenance layer for their work. Using consensus advances like ABCI++, and vote extensions, AVRs can be both small and lightweight, or heavy, long-running asynchronous AI inferences. *Validators* that run AVRs can join Warden's permissionless network. Any validator can choose what AVRs to support and start earning—even on lower-spec hardware.
 - **Verifiability Layer** unverified inferences are a rug waiting to happen. Our verifiability layer acts like a firewall that uses cryptography to verify AVR responses. Remarkably our verification has an extremely low overhead thanks to our core innovation “**SPEX**”; a fast and cost-efficient Verification protocol capable of handling even the largest inferences—up to 1,000x faster than ZKML—while being significantly simpler than OPML for consensus, as it avoids the need for VM-based execution of sampled code, and unlike TEE-based solutions, it requires no dedicated hardware. This means no ZK bottlenecks, TEE lock-ins or optimistic guesswork—just provable security. SPEX ensures the model you see is the model you get, and in addition it can check if the outputs are accurate and confident enough to be used in apps. It removes trust assumptions, enabling incorruptible applications that are impervious to manipulations by bad actors and malicious hackers.
 - **Application Layer**  without a complete **developer platform** to build Intelligent Applications, AI is stuck in 2024—relegated to playthings, gimmicks and chatbots instead of practical applications. Our developer platform features **two smart contract platforms**—EVM and CosmWasm—giving *anyone* the ability to build AVRs, and to use them to build the logic of their application. It provides **custom infrastructure for AI-specific needs** like automated smart contract invocations, scheduling and data feeds to ensure apps are responsive to real-time changes. Lastly, we have introduced **interoperability tools** to make AI responses widely accessible alongside making the underlying blockchain invisible—this means users can access AVRs from anywhere and interact seamlessly with Intelligent Applications, without needing to worry about cross-chain coordination, bridging, funds, gas fees or multiple accounts.
 
 ## From Storytelling to Application Development
 
-![3.png](../../static/img/manifesto-3.png)
+![Types of Intelligent Applications](../../static/img/manifesto-3.png)
 
 Warden is built by builders, for builders—we actually use our infrastructure to build consumer applications. Instead of theoretical posturing and empty whitepaper promises, we build real-world apps with real users. Our belief is that all applications will use AI. **These will be applications where AI simplifies front-ends, interprets complex data sets, adapts to environments and reaches intelligent decisions; while blockchain-enabled backends ensure high integrity data, decentralization and automated execution.** Over the course of many hackathons, we received many great ideas. Below is a curated list of Intelligent Applications we are currently focused on.
 
 - **Crypto Super Apps:** To demonstrate how powerful AI will be for crypto UX, we built the [Warden App](https://app.wardenprotocol.org). Warden makes DeFi incredibly easy—complex Web3 actions, like swaps and transfers, are now simple chat or voice commands. It does all the thinking and problem solving for you, making complex work like cross-chain transactions, portfolio management, or risk assessments easy. We see this as the first of an upcoming wave of agentic interfaces that simplify the entire Web3 experience.
-- **Smart Agents:** Let’s be brutally honest—true onchain agents don’t exist (yet). Leading agent frameworks produced *offchain* Agents that lack utility. These agents are, by design, broken—they are easily ruggable, fraught with private key risks, and unable to live onchain. We think Agents should be smart contracts managed onchain—because this is what makes them defensibly sovereign, autonomous and non-custodial. In H2 2025, we will launch *Warden Buffett*—a reference trading agent made with our own Agent Kit that will be the first truly autonomous, profit generating entity that lives onchain.
+- **Smart Agents:** Let's be brutally honest—true onchain agents don't exist (yet). Leading agent frameworks produced *offchain* Agents that lack utility. These agents are, by design, broken—they are easily ruggable, fraught with private key risks, and unable to live onchain. We think Agents should be smart contracts managed onchain—because this is what makes them defensibly sovereign, autonomous and non-custodial. In H2 2025, we will launch *Warden Buffett*—a reference trading agent made with our own Agent Kit that will be the first truly autonomous, profit generating entity that lives onchain.
 - **Intelligent Custody:** Custody today is remarkably clunky—we think machine learning, artificial intelligence and automation will fundamentally reshape this user experience, enabling teams to leverage a suite of tools. From personalization, intelligent portfolio optimizations, to dynamic risk management systems to prevent exposure to hacks; AI will re-define the custody market. We built a reference “omnichain SAFE”—[SpaceWard](https://spaceward.chiado.wardenprotocol.org)—which will spin out and become a standalone app in the Warden ecosystem to build out this vision.
 
-## Warden’s Path to Mainnet by Q3, 2025
+## Warden's Path to Mainnet by Q3, 2025
 
-![4.png](../../static/img/manifesto-4.png)
+![Warden's development and launch timeline](../../static/img/manifesto-4.png)
 
 We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering objectives.
 
 - [**Warden App**](https://app.wardenprotocol.org): it is an absolute priority to acquire retail users, and mindshare, for Warden. The Warden App will offer free, private and uncensored AI to users via an intuitive web, iOS or Android app. **Warden app lets users do complex Web3 activity, like swapping and transferring assets, using chat and voice commands**. Under the hood, Warden agents will execute the complexities. Fully gamified and designed to incentivise habitual use, Warden App launches in May 2025.
 - **Warden Studio & AVR marketplace**: sometimes an AVR you create is just for your application. But many builders will want to share their AVRs with the rest of the community. Our initial focus is on AVRs that use AI, that are built by the Warden Team. In the next step, we will expand this to a developer platform—Warden Studio—with an open marketplace for community-authored AVRs of *any* type, incentivising and rewarding AVR authors through onchain provenance. To facilitate this, we have onboarded 20+ AVRs already.
-- **Feature completion:** we’re upgrading our Application Layer with more tools. These changes will boost the developer experience. This involves account abstraction and co-designing IBC Eureka’s general message passing for AVRs—this lets us distribute responses to ~100 chains and in Q3 all EVM and Solana chains.
+- **Feature completion:** we're upgrading our Application Layer with more tools. These changes will boost the developer experience. This involves account abstraction and co-designing IBC Eureka's general message passing for AVRs—this lets us distribute responses to ~100 chains and in Q3 all EVM and Solana chains.
 - **Onchain agent framework**: any application can be built on Warden, however, onchain Agents that use machine learning for trading stand out as a key use case developers want to create on Warden. We have built an [Agent Kit](/build-an-agent/warden-agent-kit/introduction) to make Warden the best place to build agents, along with tools like our Quant Kit to enable builders to test and deploy onchain agents.
 
 ---
@@ -114,11 +114,11 @@ We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering ob
 
 ## FAQs
 
-1. **What’s the status of Warden *today*?**
+1. **What's the status of Warden *today*?**
 
-   Warden isn’t a whitepaper pitch or an “idea”—yes, we’re doing a Seed, but we are going to mainnet in Q3, 2025. All the core infrastructure like the Blockchain, Verification and Application Layer are live, hardened over 3 testnets and audited. The team is staffed and runway secured until Q1 2026. We are executing, relentlessly.
+   Warden isn't a whitepaper pitch or an “idea”—yes, we're doing a Seed, but we are going to mainnet in Q3, 2025. All the core infrastructure like the Blockchain, Verification and Application Layer are live, hardened over 3 testnets and audited. The team is staffed and runway secured until Q1 2026. We are executing, relentlessly.
 
-2. **What’s a simple way to think about AVRs?**
+2. **What's a simple way to think about AVRs?**
 
    We think of them like plugins/add-ons/extensions. In the same way you can install an extension in a Google Sheet, you can add an AVR to a smart contract.
 
@@ -162,7 +162,7 @@ We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering ob
 
     Verification depends on the type of the AVR. For AVRs that use AI models we use SPEx. We will complement SPEx to support verification for more general AVRs.
 
-9. **What’s the role of your token, WARD?**
+9. **What's the role of your token, WARD?**
 
    WARD is used to pay for:
 
@@ -181,7 +181,7 @@ We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering ob
    - **Model Training:** using Warden as a coordination layer across compute resources. We are actively exploring this with a hackathon applicant.
    - **DAO Governance**: abstracting the complexity and bureaucracy of human coordination through DAO-agent governance.
 
-11. **What is Warden’s Position in the Crypto x AI Market?**
+11. **What is Warden's Position in the Crypto x AI Market?**
 
    There are over 637 million smart contracts today, projected to top $5 trillion by 2030. With an AI mindshare of 37% —demand for robust blockchain and AI integrations is clear, present and growing. Warden is better placed to compete with many of the incumbents:
 
@@ -195,7 +195,7 @@ We plan to launch mainnet in Q3 2025. Before mainnet we have four engineering ob
     
    - **Onchain Agents > Offchain Agents**
     
-      Frameworks like Eliza or Virtuals are used to create offchain Agents -  have we not learned that opaque, closed, offchain systems don’t scale well in Web3? Warden is building an onchain agent framework, where agents are embodied by smart contracts. This makes them discoverable, queryable, and easily coordinated—all onchain.
+      Frameworks like Eliza or Virtuals are used to create offchain Agents -  have we not learned that opaque, closed, offchain systems don't scale well in Web3? Warden is building an onchain agent framework, where agents are embodied by smart contracts. This makes them discoverable, queryable, and easily coordinated—all onchain.
     
    - **Sampling-Based Verification > Traditional Verification Methods**
     

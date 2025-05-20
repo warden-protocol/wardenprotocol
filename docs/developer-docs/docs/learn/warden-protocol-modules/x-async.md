@@ -99,7 +99,7 @@ You can find usage examples in the following guides:
 
 ### `http`  
 
-The `http` Plugin allows making **HTTP requests** to any external service. For example, developers can use `x/async` as an advanced [oracle service](../oracle-services) for fetching token prices from external APIs. The `http` Plugin supports multiple APIs, so in this sense it includes multiple Plugins.
+The `http` Plugin allows making **HTTP requests** to any external service. For example, developers can use `x/async` as an advanced [oracle service](../oracle-services) for fetching token prices from external APIs. The `http` Plugin supports multiple APIs, so in this sense it includes multiple AVRs.
 
 Note that Warden automatically converts HTTP responses to the CBOR format.
 

@@ -78,8 +78,8 @@
         {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/set-up-the-environment","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/set-up-the-environment", "statusCode": 301},
         {"source":"/build-an-app/execute-offchain-computations/use-the-price-prediction-plugin/implement-price-prediction-requests","destination":"/build-an-app/run-offchain-computations/use-the-price-prediction-plugin/implement-price-prediction-requests", "statusCode": 301},
         {"source":"/build-an-app/examples-of-oapps","destination":"/build-an-app/examples-of-intelligent-apps", "statusCode": 301},
-        {"source":"XXX","destination":"XXX", "statusCode": 301},
-        {"source":"XXX","destination":"XXX", "statusCode": 301},
+        {"source":"/learn/spex","destination":"/learn/warden-protocol-modules/x-async#spex", "statusCode": 301},
+        {"source":"/learn/warden-ai-agents","destination":"/#warden-ai-agents", "statusCode": 301},
         {"source":"XXX","destination":"XXX", "statusCode": 301},
     ]
 }

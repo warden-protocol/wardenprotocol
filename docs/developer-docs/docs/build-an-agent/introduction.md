@@ -12,7 +12,17 @@ Thanks to their native integration with Warden Protocol, Warden Agents can perfo
 
 You can easily build Agents with the [Warden Agent Kit](warden-agent-kit/introduction).
 
-To learn more about Warden Agents and how they integrate with AI, see [Warden AI Agents](/learn/warden-ai-agents) and [SPEX](/learn/spex).
+## AI integration
+
+Within Warden, AI is integrated on the verification and execution layers. Our verification layer uses blockchain, cryptography, and consensus to verify AI results are correct. On the execution layer, you can easily integrate AI with your application, protocols, and smart contracts, automating their execution across any chain.
+
+Warden allows inference endpoints to create cryptographic proofs that verify that an AI model produced a specific output. These proofs are then verified on Wardens’ blockchain through a new consensus mechanism, ensuring AI outputs are not just delivered, but can be trusted.
+
+AI integration is ensured by three key components:
+
+- [The `x/async` module](/learn/warden-protocol-modules/x-async) with [AVR Plugins](/learn/warden-protocol-modules/x-async#avr-plugin)
+- [SPEX (statistical proof of execution)](/learn/warden-protocol-modules/x-async#spex)
+- [Orders](build-an-onchain-ai-agent/introduction)
 
 ## Section overview
 

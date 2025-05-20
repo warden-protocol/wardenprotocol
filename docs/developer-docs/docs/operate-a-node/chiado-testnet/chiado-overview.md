@@ -17,7 +17,7 @@ Chiado is our new and improved testnet. Please make sure to transition all your 
 | ------------------------------------------------------------------------------- | -------------------- | ------------- | ------------------------------------ |
 | [v0.5.4](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.5.4) | genesis              |               |                                      |
 | [v0.6.2](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.2) | 2041100              | March 5, 2025 | [Upgrade to v0.6.2](upgrade/v0.6.2)  |
-| [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) | XXX                  | XXX           | [Upgrade to v0.6.3](upgrade/v0.6.3)  |
+| [v0.6.3](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.6.3) | 3111000              | May 20, 2025  | [Upgrade to v0.6.3](upgrade/v0.6.3)  |
 
 ## Binary
 

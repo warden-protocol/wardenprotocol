@@ -200,7 +200,6 @@ interface IAsync {
         TaskVoteType vote;
     }
         
-
     struct TaskResult { 
         uint64 id;
         bytes output;

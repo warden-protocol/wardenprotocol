@@ -16,7 +16,15 @@ builds:
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm_muslc.x86_64.a -O /usr/lib/libwasmvm_muslc.x86_64.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.x86_64.a" -O "/usr/lib/libwasmvm_muslc.x86_64.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvm_muslc.x86_64.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_MUSLC_AMD64_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     goos:
       - linux
     goarch:
@@ -46,7 +54,15 @@ builds:
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm_muslc.aarch64.a -O /usr/lib/libwasmvm_muslc.aarch64.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.aarch64.a" -O "/usr/lib/libwasmvm_muslc.aarch64.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvm_muslc.aarch64.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_MUSLC_ARM64_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     goos:
       - linux
     goarch:
@@ -76,7 +92,15 @@ builds:
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/usr/lib/libwasmvmstatic_darwin.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_STATIC_DARWIN_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     env:
       - CC=o64-clang
       - CGO_CFLAGS=-mmacosx-version-min=10.12
@@ -106,7 +130,15 @@ builds:
     binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/usr/lib/libwasmvmstatic_darwin.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_STATIC_DARWIN_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
     env:
       - CC=oa64-clang
       - CGO_LDFLAGS=-L/lib
@@ -176,7 +208,7 @@ dockers:
   - use: buildx
     goos: linux
     goarch: amd64
-    dockerfile: wardend/Dockerfile
+    dockerfile: cmd/wardend/Dockerfile
     image_templates:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}-amd64'
     build_flag_templates:
@@ -193,7 +225,7 @@ dockers:
   - use: buildx
     goos: linux
     goarch: arm64
-    dockerfile: wardend/Dockerfile
+    dockerfile: cmd/wardend/Dockerfile
     image_templates:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'
     build_flag_templates:

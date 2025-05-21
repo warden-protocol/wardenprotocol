@@ -1,7 +1,7 @@
 ---
 version: 2
 
-project_name: wardenkms
+project_name: faucet
 
 env:
   - CGO_ENABLED=1
@@ -11,12 +11,85 @@ git:
   prerelease_suffix: "-"
 
 builds:
-  - id: wardenkms-linux-amd64
-    main: ./cmd/wardenkms
-    binary: wardenkms
+  - id: wardend-linux-amd64
+    main: ./cmd/wardend
+    binary: wardend
     hooks:
       pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm.x86_64.so -O /usr/lib/libwasmvm.x86_64.so
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.x86_64.a" -O "/usr/lib/libwasmvm_muslc.x86_64.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvm_muslc.x86_64.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_MUSLC_AMD64_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
+    goos:
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CC=x86_64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=warden
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
+    tags:
+      - netgo
+      - ledger
+      - muslc
+      - osusergo
+
+  - id: wardend-linux-arm64
+    main: ./cmd/wardend
+    binary: wardend
+    hooks:
+      pre:
+        - |
+          sh -eu -c '
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.aarch64.a" -O "/usr/lib/libwasmvm_muslc.aarch64.a"
+            CHECKSUM=$(sha256sum "/usr/lib/libwasmvm_muslc.aarch64.a" | awk "{print \$1}")
+            if [ "$CHECKSUM" != "${WASMVM_MUSLC_ARM64_CHECKSUM}" ]; then
+              echo "checksum mismatch!" >&2
+              exit 1
+            fi
+          '
+    goos:
+      - linux
+    goarch:
+      - arm64
+    env:
+      - CC=aarch64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=warden
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
+    tags:
+      - netgo
+      - ledger
+      - muslc
+      - osusergo
+
+  - id: faucet-linux-amd64
+    main: ./cmd/faucet
+    binary: faucet
     goos:
       - linux
     goarch:
@@ -31,21 +104,19 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
-      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,osusergo
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-Wl,-z,now -Wl,-z,relro -ldl -pthread -lm -L/usr/lib -lwasmvm.x86_64'
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
     tags:
       - netgo
       - ledger
+      - muslc
       - osusergo
 
-  - id: wardenkms-linux-arm64
-    main: ./cmd/wardenkms
-    binary: wardenkms
-    hooks:
-      pre:
-        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.LIBWASM_VERSION }}/libwasmvm.aarch64.so -O /usr/lib/libwasmvm.aarch64.so
+  - id: faucet-linux-arm64
+    main: ./cmd/faucet
+    binary: faucet
     goos:
       - linux
     goarch:
@@ -60,13 +131,14 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.AppName={{ .ProjectName }}
       - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
-      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,osusergo
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-Wl,-z,now -Wl,-z,relro -ldl -pthread -lm -L/usr/lib -lwasmvm.aarch64'
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
     tags:
       - netgo
       - ledger
+      - muslc
       - osusergo
 
 changelog:
@@ -79,12 +151,10 @@ dockers:
   - use: buildx
     goos: linux
     goarch: amd64
-    dockerfile: wardenkms/Dockerfile
+    dockerfile: cmd/faucet/Dockerfile
     image_templates:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}-amd64'
     build_flag_templates:
-      - "--build-arg=LIBWASM_VERSION={{ .Env.LIBWASM_VERSION }}"
-      - "--build-arg=ARCH=x86_64"
       - "--pull"
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
@@ -95,15 +165,15 @@ dockers:
       - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
       - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
+    extra_files:
+      - cmd/faucet
   - use: buildx
     goos: linux
     goarch: arm64
-    dockerfile: wardenkms/Dockerfile
+    dockerfile: cmd/faucet/Dockerfile
     image_templates:
       - 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}-arm64v8{{ else }}{{ .ShortCommit }}-arm64v8{{ end }}'
     build_flag_templates:
-      - "--build-arg=LIBWASM_VERSION={{ .Env.LIBWASM_VERSION }}"
-      - "--build-arg=ARCH=aarch64"
       - "--pull"
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
@@ -114,6 +184,8 @@ dockers:
       - "--label=org.opencontainers.image.url=https://wardenprotocol.org"
       - "--label=org.opencontainers.image.source=https://github.com/warden-protocol/wardenprotocol"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
+    extra_files:
+      - cmd/faucet
 docker_manifests:
   - name_template: 'ghcr.io/warden-protocol/wardenprotocol/{{ .ProjectName }}:{{ if eq .Env.RELEASE "true" }}v{{ .Version }}{{ else }}{{ .ShortCommit }}{{ end }}'
     image_templates:

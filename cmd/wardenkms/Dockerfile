@@ -7,9 +7,10 @@ RUN apt update && \
     install -o 1000 -g 1000 -d /data
 COPY ./wardenkms /usr/bin/wardenkms
 
-ARG LIBWASM_VERSION
+ARG WASMVM_VERSION
 ARG ARCH
-ADD --chmod=444 --chown=nobody:nogroup https://github.com/CosmWasm/wasmvm/releases/download/${LIBWASM_VERSION}/libwasmvm.${ARCH}.so /lib/libwasmvm.${ARCH}.so
+ARG WASMVM_CHECKSUM
+ADD --checksum=sha256:${WASMVM_CHECKSUM} --chmod=444 --chown=nobody:nogroup https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm.${ARCH}.so /lib/libwasmvm.${ARCH}.so
 
 USER warden
 CMD ["wardenkms"]

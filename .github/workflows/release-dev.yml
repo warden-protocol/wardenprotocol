@@ -49,7 +49,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v2
         with:
-          just-version: 1.39.0
+          just-version: 1.40.0
 
       - name: Release
         run: just release ${{ inputs.app_name }}

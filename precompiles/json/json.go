@@ -7,10 +7,10 @@ import (
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	evmoscmn "github.com/cosmos/evm/precompiles/common"
+	"github.com/cosmos/evm/x/vm/core/vm"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethcmn "github.com/ethereum/go-ethereum/common"
-	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
 
 	wardencommon "github.com/warden-protocol/wardenprotocol/precompiles/common"
 )
@@ -77,7 +77,7 @@ func (p *Precompile) RequiredGas(input []byte) uint64 {
 		return 0
 	}
 
-	return p.Precompile.RequiredGas(input, p.IsTransaction(method.Name))
+	return p.Precompile.RequiredGas(input, p.IsTransaction(method))
 }
 
 // Run implements vm.PrecompiledContract.
@@ -176,8 +176,8 @@ func (p *Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) (bz 
 	return bz, nil
 }
 
-func (p *Precompile) IsTransaction(method string) bool {
-	switch method {
+func (p *Precompile) IsTransaction(method *abi.Method) bool {
+	switch method.Name {
 	// queries
 	case SetStringMethod,
 		SetBoolMethod,

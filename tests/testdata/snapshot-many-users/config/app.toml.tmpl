@@ -363,51 +363,6 @@ certificate-path = ""
 key-path = ""
 
 ###############################################################################
-###                           Rosetta Configuration                         ###
-###############################################################################
-
-[rosetta]
-
-# Enable defines if the Rosetta API server should be enabled.
-enable = false
-
-# Address defines the Rosetta API server to listen on.
-address = ":8080"
-
-# Network defines the name of the blockchain that will be returned by Rosetta.
-blockchain = "evmos"
-
-# Network defines the name of the network that will be returned by Rosetta.
-network = "evmos"
-
-# TendermintRPC defines the endpoint to connect to CometBFT RPC,
-# specifying 'tcp://' before is not required, usually it's at port 26657
-tendermint-rpc = "localhost:26657"
-
-# GRPCEndpoint defines the cosmos application gRPC endpoint
-# usually it is located at 9090 port
-grpc-endpoint = "localhost:{{ .GRPCPort }}"
-
-# Retries defines the number of retries when connecting to the node before failing.
-retries = 5
-
-# Offline defines if Rosetta server should run in offline mode.
-offline = false
-
-# EnableFeeSuggestion indicates to use fee suggestion when 'construction/metadata' is called without gas limit and price.
-enable-fee-suggestion = false
-
-# GasToSuggest defines gas limit when calculating the fee
-gas-to-suggest = 300000
-
-# DenomToSuggest defines the defult denom for fee suggestion.
-# Price must be in minimum-gas-prices.
-denom-to-suggest = "award"
-
-# GasPrices defines the gas prices for fee suggestion
-gas-prices = "4000000.000000000000000000award"
-
-###############################################################################
 ###                      Price prediction configuration                     ###
 ###############################################################################
 [pricepred]
@@ -415,7 +370,7 @@ gas-prices = "4000000.000000000000000000award"
 # Is price prediction enabled
 enabled = "true"
 
-# URL used for price prediction handler
+# URL used for price prediction plugin
 url = "https://tpc.devnet.wardenprotocol.org"
 
 ###############################################################################
@@ -423,10 +378,10 @@ url = "https://tpc.devnet.wardenprotocol.org"
 ###############################################################################
 [http]
 
-# Is HTTP handler enabled
+# Is HTTP plugin enabled
 enabled = "true"
 
-# URLs used for HTTP handler
+# URLs used for HTTP plugin
 urls = ["https://api.coingecko.com"]
 
 # Timeout in seconds for the HTTP client

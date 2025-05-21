@@ -3,7 +3,7 @@ shulgin := "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 val2 := "warden194j3dx4t7u80765k2puu3082vc39yfqnvrxqu7"
 val2_mnemonic := "door blast other element embark noodle maple agent drastic bunker swarm logic wide deputy exhibit bicycle evil exile air other mesh foot tackle spot"
-warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
+warden-precompiles := '["0x0000000000000000000000000000000000000100","0x0000000000000000000000000000000000000400","0x0000000000000000000000000000000000000800","0x0000000000000000000000000000000000000801","0x0000000000000000000000000000000000000802","0x0000000000000000000000000000000000000803","0x0000000000000000000000000000000000000804","0x0000000000000000000000000000000000000805","0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
 
 # run a single-node chain locally, use "bin" to specify the binary name
 start bin="wardend" install="true":
@@ -23,9 +23,9 @@ start bin="wardend" install="true":
     }
 
     rm -rf ~/.warden
-    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set client chain-id {{chain_id}}
     {{bin}} config set client keyring-backend test
+    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set app minimum-gas-prices 0award
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
@@ -39,6 +39,14 @@ start bin="wardend" install="true":
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS" "{\"key_req\":[],\"sig_req\":[]}"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
     replace 's/aevmos/award/' ~/.warden/config/app.toml
+      
+    # Change parameter token denominations to desired value
+    jq '.app_state["staking"]["params"]["bond_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+    jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+    jq '.app_state["gov"]["params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+    jq '.app_state["evm"]["params"]["evm_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+    jq '.app_state["mint"]["params"]["mint_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+
     jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs

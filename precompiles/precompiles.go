@@ -1,8 +1,8 @@
 package precompiles
 
 import (
+	"github.com/cosmos/evm/x/vm/core/vm"
 	ethcmn "github.com/ethereum/go-ethereum/common"
-	"github.com/evmos/evmos/v20/x/evm/core/vm"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 
 	actprecompile "github.com/warden-protocol/wardenprotocol/precompiles/act"
@@ -17,6 +17,17 @@ import (
 	schedkeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 )
+
+func WardenPrecompilesAddresses() []string {
+	return []string{
+		actprecompile.PrecompileAddress,
+		slinkyprecompile.PrecompileAddress,
+		jsonprecompile.PrecompileAddress,
+		schedprecompile.PrecompileAddress,
+		wardenprecompile.PrecompileAddress,
+		asyncprecompile.PrecompileAddress,
+	}
+}
 
 // Single point of all wardenprotocol precompiles initialization, including precompiles and events registry.
 func NewWardenPrecompiles(

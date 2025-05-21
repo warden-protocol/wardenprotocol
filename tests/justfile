@@ -25,7 +25,7 @@ _rm_rf dir:
 snapshot: snapshot-base snapshot-keychain snapshot-many-users
 
 # Define the new precompiles addresses
-warden-precompiles := '["0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
+warden-precompiles := '["0x0000000000000000000000000000000000000100","0x0000000000000000000000000000000000000400","0x0000000000000000000000000000000000000800","0x0000000000000000000000000000000000000801","0x0000000000000000000000000000000000000802","0x0000000000000000000000000000000000000803","0x0000000000000000000000000000000000000804","0x0000000000000000000000000000000000000805","0x0000000000000000000000000000000000000900", "0x0000000000000000000000000000000000000901", "0x0000000000000000000000000000000000000902", "0x0000000000000000000000000000000000000903", "0x0000000000000000000000000000000000000904", "0x0000000000000000000000000000000000000905"]'
 
 # regenerate ./testdata/snapshot-base
 snapshot-base:
@@ -45,14 +45,22 @@ snapshot-base:
   just _rm_rf $WARDEND_HOME
 
   # prepare state
-  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
   wardend config set client chain-id warden_1337-1 --home $WARDEND_HOME
   wardend config set client keyring-backend test --home $WARDEND_HOME
+  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
 
   wardend keys add alice --keyring-backend test --home $WARDEND_HOME > /dev/null
   wardend genesis add-genesis-account alice 10000000000000000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
+  
+  # Change parameter token denominations to desired value
+  jq '.app_state["staking"]["params"]["bond_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["gov"]["params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["evm"]["params"]["evm_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["mint"]["params"]["mint_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   wardend genesis gentx alice 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
@@ -101,9 +109,9 @@ snapshot-keychain:
   just _rm_rf $WARDEND_HOME
 
   # prepare state
-  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
   wardend config set client chain-id warden_1337-1 --home $WARDEND_HOME
   wardend config set client keyring-backend test --home $WARDEND_HOME
+  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
 
   wardend keys add val --keyring-backend test --home $WARDEND_HOME > /dev/null
   wardend keys add writer --keyring-backend test --home $WARDEND_HOME > /dev/null
@@ -115,6 +123,14 @@ snapshot-keychain:
   wardend genesis add-genesis-keychain $(wardend keys show -a writer --keyring-backend test --home $WARDEND_HOME) "Test Keychain" "{\"key_req\":[{\"denom\":\"award\",\"amount\":\"2\"}],\"sig_req\":[{\"denom\":\"award\",\"amount\": \"2\"}]}" --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
+
+  # Change parameter token denominations to desired value
+  jq '.app_state["staking"]["params"]["bond_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["gov"]["params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["evm"]["params"]["evm_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["mint"]["params"]["mint_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   wardend genesis gentx val 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME
@@ -163,9 +179,9 @@ snapshot-many-users:
   just _rm_rf $WARDEND_HOME
 
   # prepare state
-  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
   wardend config set client chain-id warden_1337-1 --home $WARDEND_HOME
   wardend config set client keyring-backend test --home $WARDEND_HOME
+  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
 
   wardend keys add alice --keyring-backend test --home $WARDEND_HOME > /dev/null
   wardend keys add bob --keyring-backend test --home $WARDEND_HOME > /dev/null
@@ -180,6 +196,14 @@ snapshot-many-users:
   wardend genesis add-genesis-space $(wardend keys show -a alice --keyring-backend test --home $WARDEND_HOME) --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml
+  
+  # Change parameter token denominations to desired value
+  jq '.app_state["staking"]["params"]["bond_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["gov"]["params"]["min_deposit"][0]["denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["evm"]["params"]["evm_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+  jq '.app_state["mint"]["params"]["mint_denom"]="award"' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
+
   jq '.app_state.evm.params.active_static_precompiles += {{warden-precompiles}}' $WARDEND_HOME/config/genesis.json > $WARDEND_HOME/config/temp.json && mv  $WARDEND_HOME/config/temp.json $WARDEND_HOME/config/genesis.json
   wardend genesis gentx alice 1000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   wardend genesis collect-gentxs --home $WARDEND_HOME

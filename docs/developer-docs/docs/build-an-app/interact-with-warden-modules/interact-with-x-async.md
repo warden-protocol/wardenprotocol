@@ -233,7 +233,7 @@ interface IAsync {
     }
 
     struct PluginsResponse {
-        Types.PageResponse pagination;
+        TypesPageResponse pagination;
         Plugin[] plugins;
     }
     

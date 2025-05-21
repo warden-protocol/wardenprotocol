@@ -23,9 +23,9 @@
         },
         {
           "indexed": false,
-          "internalType": "address",
-          "name": "callbackAddress",
-          "type": "address"
+          "internalType": "uint64",
+          "name": "callbackId",
+          "type": "uint64"
         }
       ],
       "name": "CreateTask",
@@ -61,9 +61,21 @@
           "type": "tuple[]"
         },
         {
-          "internalType": "address",
-          "name": "callback",
-          "type": "address"
+          "components": [
+            {
+              "internalType": "address",
+              "name": "addressValue",
+              "type": "address"
+            },
+            {
+              "internalType": "uint64",
+              "name": "gasLimit",
+              "type": "uint64"
+            }
+          ],
+          "internalType": "struct CallbackParams",
+          "name": "callbackParams",
+          "type": "tuple"
         }
       ],
       "name": "addTask",
@@ -195,6 +207,16 @@
                   "internalType": "struct DeductedFee",
                   "name": "fee",
                   "type": "tuple"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "callbackId",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "solver",
+                  "type": "bytes"
                 }
               ],
               "internalType": "struct Task[]",
@@ -397,6 +419,16 @@
                       "internalType": "struct DeductedFee",
                       "name": "fee",
                       "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "callbackId",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "solver",
+                      "type": "bytes"
                     }
                   ],
                   "internalType": "struct Task",
@@ -435,11 +467,6 @@
                     {
                       "internalType": "bytes",
                       "name": "output",
-                      "type": "bytes"
-                    },
-                    {
-                      "internalType": "bytes",
-                      "name": "submitter",
                       "type": "bytes"
                     }
                   ],
@@ -586,6 +613,16 @@
                       "internalType": "struct DeductedFee",
                       "name": "fee",
                       "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "callbackId",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "solver",
+                      "type": "bytes"
                     }
                   ],
                   "internalType": "struct Task",
@@ -624,11 +661,6 @@
                     {
                       "internalType": "bytes",
                       "name": "output",
-                      "type": "bytes"
-                    },
-                    {
-                      "internalType": "bytes",
-                      "name": "submitter",
                       "type": "bytes"
                     }
                   ],

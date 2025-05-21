@@ -50,7 +50,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 		"echo",
 		[]byte("USDT"),
 		maxFee,
-		common.HexToAddress("0x0000000000000000000000000000000000000000"))
+		async.CallbackParams{})
 	require.NoError(t, err)
 
 	addTaskReceipt, err := bind.WaitMined(t.Context(), evmClient, addTaskTx)
@@ -75,8 +75,7 @@ func (c *Test_AsyncPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	require.Equal(t, "echo", oneTask.Task.Plugin)
 	require.Equal(t, []byte("USDT"), oneTask.Task.Input)
 	require.Equal(t, async.TaskResult{
-		Output:    []byte{},
-		Submitter: []byte{},
+		Output: []byte{},
 	}, oneTask.Result)
 
 	onePendingTasksQuery, err := iAsyncClient.PendingTasks(alice.CallOps(t), async.TypesPageRequest{})

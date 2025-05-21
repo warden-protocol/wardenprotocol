@@ -29,20 +29,9 @@ func (p *Precompile) GetCreateTaskEvent(ctx sdk.Context, writerAddress *ethcmn.A
 		return nil, err
 	}
 
-	var callbackAddress ethcmn.Address
-	if typedEvent.GetCallbackAddress() == "" {
-		callbackAddress = ethcmn.HexToAddress("0x0000000000000000000000000000000000000000")
-	} else {
-		callbackAddress, err = common.AddressFromBech32Str(typedEvent.GetCallbackAddress())
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
 	packed, err := event.Inputs.NonIndexed().Pack(
 		typedEvent.GetPlugin(),
-		callbackAddress,
+		typedEvent.GetCallbackId(),
 	)
 	if err != nil {
 		return nil, err

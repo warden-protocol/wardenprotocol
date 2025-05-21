@@ -1,0 +1,195 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "id",
+          "type": "uint64"
+        }
+      ],
+      "name": "callbackById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "addressValue",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "gasLimit",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Callback",
+                  "name": "callback",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "enum CallbackStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "result",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct CallbackResult",
+                  "name": "result",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct CallbackResponse",
+              "name": "callbackResponse",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct CallbackByIdResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "key",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "offset",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "limit",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "countTotal",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "reverse",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Types.PageRequest",
+          "name": "pagination",
+          "type": "tuple"
+        }
+      ],
+      "name": "callbacks",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "nextKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "total",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Types.PageResponse",
+              "name": "pagination",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint64",
+                      "name": "id",
+                      "type": "uint64"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "addressValue",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "gasLimit",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Callback",
+                  "name": "callback",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "enum CallbackStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "result",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct CallbackResult",
+                  "name": "result",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct CallbackResponse[]",
+              "name": "callbacks",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct CallbacksResponse",
+          "name": "response",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

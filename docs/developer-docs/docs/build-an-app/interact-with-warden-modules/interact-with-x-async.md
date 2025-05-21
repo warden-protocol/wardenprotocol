@@ -57,7 +57,7 @@ contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
     function queryTasks(uint64 limit, address creator) external view returns (TasksResponse memory) {
-        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
+        TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -88,7 +88,7 @@ contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
     function queryPendingTasks(uint64 limit) external view returns (PendingTasksResponse memory) {
-        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
+        TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -140,7 +140,7 @@ contract AsyncExample {
     IAsync constant ASYNC = IAsync(0x0000000000000000000000000000000000000903);
     
     function queryPlugins(uint64 limit) external view returns (PluginsResponse memory) {
-        IAsync.TypesPageRequest memory pagination = TypesPageRequest({
+        TypesPageRequest memory pagination = TypesPageRequest({
             key: new bytes(0),
             offset: 0,
             limit: limit,
@@ -242,7 +242,7 @@ interface IAsync {
     function tasks(TypesPageRequest calldata pagination, address creator) external view returns (TasksResponse memory response);
     function pendingTasks(TypesPageRequest calldata pagination) external view returns (PendingTasksResponse memory response);
     function taskById(uint64 taskId) external view returns (TaskByIdResponse memory response);
-    function plugins(uint64) external view returns (PluginsResponse memory response);
+    function plugins(TypesPageRequest calldata pagination) external view returns (PluginsResponse memory response);
     
     event CreateTask(uint64 indexed taskId, address indexed creator, string plugin, address callbackAddress);
 }

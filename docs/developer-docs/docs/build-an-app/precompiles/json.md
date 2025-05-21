@@ -130,7 +130,7 @@ To reference the `IJson` precompile in your code, use the following precompile a
   ```sol
   @return The modified JSON as bytes.
   ```
-- **Usage example**: [Set multiple pairs](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-multiple-pairs)
+- **Usage example**: [Set multiple pairs](../interact-with-warden-modules/use-the-json-precompile/handle-all-value-types#get-multiple-values)
 
 ## Basic types and numbers
 

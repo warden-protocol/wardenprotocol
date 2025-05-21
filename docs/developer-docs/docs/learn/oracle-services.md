@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 5
+sidebar_position: 4
 ---
 
 # Oracle services
@@ -16,7 +16,7 @@ You can use the [`x/async` module](warden-protocol-modules/x-async) as an oracle
 
 An **oracle** is a third-party service that enables smart contracts to access real-life **data feeds**: prices, stock market data, weather conditions, etc.
 
-[Omnichain Application](glossary#omnichain-application) builders can incorporate **Connect**, an oracle service supported by Warden, into their apps. See the sections below to learn more.
+[Intelligent Application](glossary#intelligent-application) builders can incorporate **Connect**, an oracle service supported by Warden, into their apps. See the sections below to learn more.
 
 Access to oracle data feeds significantly enhances the capabilities of Warden's [Intents](glossary#intent), allowing users to create highly specific Intents such as limit orders for decentralized exchanges. For an advanced example of oracle data usage, see [Build an onchain AI Agent](/build-an-agent/introduction).
 

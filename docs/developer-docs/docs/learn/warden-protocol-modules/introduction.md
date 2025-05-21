@@ -19,7 +19,7 @@ Articles in this section describe the following modules:
 
 ## Usage
 
-Our modules allow [Omnichain Application](../glossary#omnichain-application) builders to deploy EVM and WASM smart contracts and use Warden features in these contracts:
+Our modules allow [Intelligent Application](../glossary#intelligent-application) builders to deploy EVM and WASM smart contracts and use Warden features in these contracts:
 
 | Module                                 | Features                                | How to use  |
 | ---------------------------------------| --------------------------------------- | ----------- |

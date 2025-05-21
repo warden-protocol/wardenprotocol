@@ -4,10 +4,8 @@ sidebar_position: 1
 
 # Introduction
 
-There are two tokens available on Warden Protocol:
+Warden Protocol is powered by **$WARD**, its native utility token.
 
-- **WARD**: It's the native utility token integral to Warden Protocol ecosystem. WARD is designed to facilitate various operations such as governance, staking, protocol fees and as a medium of payment for operators.
+$WARD is designed to facilitate various operations—such as governance, staking, protocol fees—and to serve as a medium of payment for operators. For the [Warden App](/learn/glossary#warden-app), it'll act as a gas abstraction token and unlock gated functionality. 
 
-- **WARP**: It's the dynamic counterpart to WARD, adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
-
-See the sections below to learn how to get WARD and WARP and other details.
+See the sections below to learn more.

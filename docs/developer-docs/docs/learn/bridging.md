@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # Bridging
@@ -16,7 +16,7 @@ This technology utilizes **crosschain bridges**—smart contracts that receive a
 
 ## Axelar
 
-Thanks to Warden's [x/gmp](warden-protocol-modules/external-modules#xgmp) module, [Omnichain Applications](glossary#omnichain-application) support crosschain token transfers and general message passing through **Axelar**.
+Thanks to Warden's [x/gmp](warden-protocol-modules/external-modules#xgmp) module, [Intelligent Applications](glossary#intelligent-application) support crosschain token transfers and general message passing through **Axelar**.
 
 More integrations are coming soon.
 

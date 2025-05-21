@@ -71,7 +71,7 @@ Completed Tasks are pruned after some time, to avoid state bloat.
 
 ## Messages
 
-### `MsgAddFuture`
+### `MsgAddTask`
 
 Creates a new [Task](#task), providing the following:
 
@@ -158,7 +158,7 @@ sequenceDiagram
 
 
     critical Block H
-        Alice->>+Node 1: AddFuture("MathPlugin", "2+4")
+        Alice->>+Node 1: AddTask("MathPlugin", "2+4")
       Node 1->>-Alice: Task ID: 143
       Node 1-->>Node 2: p2p
       Node 2-->>Node 1: p2p

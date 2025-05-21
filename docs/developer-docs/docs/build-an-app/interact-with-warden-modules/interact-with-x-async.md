@@ -286,7 +286,7 @@ contract AsyncExample {
     }
 
     // Query all Plugins
-    function queryPlugins(uint64 limit) external view returns (PluginsResponse memory) {
+    function queryPlugins(uint64 limit) external view returns (IAsync.PluginsResponse memory) {
         IAsync.TypesPageRequest memory pagination = IAsync.TypesPageRequest({
             key: new bytes(0),
             offset: 0,

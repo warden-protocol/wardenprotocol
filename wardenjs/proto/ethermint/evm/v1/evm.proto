@@ -6,7 +6,7 @@ package ethermint.evm.v1;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/evmos/evmos/v20/x/evm/types";
+option go_package = "github.com/cosmos/evm/x/evm/types";
 
 // Params defines the EVM module parameters
 message Params {

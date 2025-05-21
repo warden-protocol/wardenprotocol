@@ -64,6 +64,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -73,8 +74,6 @@ import (
 	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
-	evmtypes "github.com/evmos/evmos/v20/x/evm/types"
-	feemarkettypes "github.com/evmos/evmos/v20/x/feemarket/types"
 	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
 	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
 	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
@@ -96,6 +95,12 @@ import (
 	schedmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/sched/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
 	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+	_ "github.com/cosmos/evm/x/vm/core/tracers/js"
+	_ "github.com/cosmos/evm/x/vm/core/tracers/native"
+	// Replace default transfer with EVM's transfer (if using IBC)
 )
 
 func init() {
@@ -145,6 +150,7 @@ var (
 		// NOTE: feemarket module needs to be initialized before genutil module:
 		// gentx transactions use MinGasPriceDecorator.AnteHandle
 		feemarkettypes.ModuleName,
+		erc20types.ModuleName,
 
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
@@ -179,8 +185,15 @@ var (
 
 	// NOTE: capability module's beginblocker must come before any modules using capabilities (e.g. IBC).
 	beginBlockers = []string{
-		// cosmos sdk modules
 		minttypes.ModuleName,
+
+		// evmOS modules
+		erc20types.ModuleName,
+		feemarkettypes.ModuleName,
+		evmtypes.ModuleName,
+
+		// cosmos sdk modules
+
 		distrtypes.ModuleName,
 		slashingtypes.ModuleName,
 		evidencetypes.ModuleName,
@@ -205,9 +218,6 @@ var (
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
 
-		// evmOS modules
-		evmtypes.ModuleName,
-		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -240,6 +250,7 @@ var (
 		// evmOS modules
 		evmtypes.ModuleName,
 		feemarkettypes.ModuleName,
+		erc20types.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -264,7 +275,9 @@ var (
 		{Account: schedmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
-		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // used for secure addition and subtraction of balance using module account
+		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},   // Allows EVM module to mint/burn
+		{Account: feemarkettypes.ModuleName, Permissions: nil},                                      // Fee market doesn't need permissions
+		{Account: erc20types.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}}, // Allows erc20 module to mint/burn for token pairs
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

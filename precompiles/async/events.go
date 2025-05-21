@@ -2,9 +2,9 @@ package async
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	evmoscmn "github.com/cosmos/evm/precompiles/common"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	evmoscmn "github.com/evmos/evmos/v20/precompiles/common"
 
 	"github.com/warden-protocol/wardenprotocol/precompiles/common"
 	"github.com/warden-protocol/wardenprotocol/warden/x/async/types/v1beta1"

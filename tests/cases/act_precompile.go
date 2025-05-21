@@ -31,6 +31,7 @@ func (c *Test_ActPrecompile) Setup(t *testing.T, build framework.BuildResult) {
 
 	go c.w.Start(t, "./testdata/snapshot-many-users")
 	c.w.WaitRunning(t)
+	// c.w.PrintLogsAtTheEnd(t, []string{})
 }
 
 func (c *Test_ActPrecompile) Run(t *testing.T, _ framework.BuildResult) {
@@ -87,7 +88,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 	})
 
 	t.Run("work with actions", func(t *testing.T) {
-		newActionTxText := fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d", 1, bob.Address(t), 0)
+		newActionTxText := fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --gas-prices 10000000000award", 1, bob.Address(t), 0)
 		tx := alice.Tx(t, newActionTxText)
 		checks.SuccessTx(t, tx)
 
@@ -122,12 +123,12 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 		require.Len(t, actionsByAddress.Actions, 1)
 
 		tx = alice.Tx(t,
-			"warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1")
+			"warden new-action update-space --space-id 1 --approve-admin-template-id 1 --nonce 1 --gas-prices 10000000000award")
 		checks.SuccessTx(t, tx)
 		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
 
 		tx = alice.Tx(t,
-			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"",
+			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\" --gas-prices 10000000000award",
 				1, dave.Address(t), 2, "any(2, warden.space.owners)"))
 		checks.SuccessTx(t, tx)
 		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually
@@ -150,7 +151,7 @@ func (c *Test_ActPrecompile) Run(t *testing.T, _ framework.BuildResult) {
 		require.Equal(t, actionById.Action.Status, uint8(actv1beta1.ActionStatus_ACTION_STATUS_REVOKED))
 
 		tx = alice.Tx(t,
-			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\"",
+			fmt.Sprintf("warden new-action add-space-owner --space-id %d --new-owner %s --nonce %d --expected-approve-expression \"%s\" --gas-prices 10000000000award",
 				1, dave.Address(t), 2, "any(2, warden.space.owners)"))
 		checks.SuccessTx(t, tx)
 		time.Sleep(2 * time.Second) // TODO AT: replace by require.Eventually

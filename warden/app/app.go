@@ -35,7 +35,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -57,6 +56,8 @@ import (
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	evmosante "github.com/cosmos/evm/ante"
+	evmosencodingcodec "github.com/cosmos/evm/encoding/codec"
 	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
 	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
@@ -65,18 +66,11 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-	evmosante "github.com/evmos/evmos/v20/app/ante"
-	ethante "github.com/evmos/evmos/v20/app/ante/evm"
-	evmosencodingcodec "github.com/evmos/evmos/v20/encoding/codec"
-	srvflags "github.com/evmos/evmos/v20/server/flags"
-	evmostypes "github.com/evmos/evmos/v20/types"
-	erc20keeper "github.com/evmos/evmos/v20/x/erc20/keeper"
-	evmkeeper "github.com/evmos/evmos/v20/x/evm/keeper"
-	feemarketkeeper "github.com/evmos/evmos/v20/x/feemarket/keeper"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 	"github.com/spf13/cast"
 
+	"github.com/warden-protocol/wardenprotocol/precompiles"
 	jsonprecompile "github.com/warden-protocol/wardenprotocol/precompiles/json"
 	"github.com/warden-protocol/wardenprotocol/prophet"
 	"github.com/warden-protocol/wardenprotocol/prophet/plugins/echo"
@@ -92,15 +86,48 @@ import (
 	schedmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/sched/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
+
+	// Add these imports
+	"math/big"
+
+	"cosmossdk.io/math"
+	evmevmante "github.com/cosmos/evm/ante/evm"
+	srvflags "github.com/cosmos/evm/server/flags"
+	cosmosevmtypes "github.com/cosmos/evm/types"
+	evmutils "github.com/cosmos/evm/utils"
+	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
+	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
+	_ "github.com/cosmos/evm/x/vm/core/tracers/js"
+	_ "github.com/cosmos/evm/x/vm/core/tracers/native"
+	"github.com/cosmos/evm/x/vm/core/vm"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
+
+	// Replace default transfer with EVM's transfer (if using IBC)
+	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
+
+	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
+	localante "github.com/warden-protocol/wardenprotocol/warden/app/ante"
 )
 
 const (
 	AccountAddressPrefix = "warden"
 	Name                 = "warden"
+	ChainID              = "warden_1337-1"
 )
 
-// DefaultNodeHome default home directories for the application daemon.
-var DefaultNodeHome string
+var (
+	// DefaultNodeHome default home directories for the application daemon.
+	DefaultNodeHome string
+	// CoinType uint32 = 118 // ?spawntag:evm
+	CoinType uint32 = 60 // spawntag:evm
+
+	// BaseDenomUnit = 6 // ?spawntag:evm
+	BaseDenomUnit int64 = 18 // spawntag:evm
+
+	BaseDenom    = "award"
+	DisplayDenom = "AWARD"
+)
 
 var (
 	_ runtime.AppI            = (*App)(nil)
@@ -168,8 +195,8 @@ type App struct {
 	MarketMapKeeper *marketmapkeeper.Keeper
 
 	// evmOS
-	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
+	EvmKeeper       *evmkeeper.Keeper
 	Erc20Keeper     erc20keeper.Keeper
 
 	// simulation manager
@@ -190,6 +217,9 @@ func init() {
 	}
 
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
+
+	// Update power reduction based on the new 18-decimal base unit
+	sdk.DefaultPowerReduction = math.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(BaseDenomUnit), nil))
 }
 
 // getGovProposalHandlers return the chain proposal handlers.
@@ -197,7 +227,8 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 	var govProposalHandlers []govclient.ProposalHandler
 	// this line is used by starport scaffolding # stargate/app/govProposalHandlers
 
-	govProposalHandlers = append(govProposalHandlers,
+	govProposalHandlers = append(
+		govProposalHandlers,
 		paramsclient.ProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
@@ -249,6 +280,7 @@ func registerProphetHanlders(appOpts servertypes.AppOptions) {
 
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
+
 	return depinject.Configs(
 		// used in runtime.ProvideApp to register eth signing types
 		depinject.Provide(ProvideCustomRegisterCrypto),
@@ -268,6 +300,13 @@ func AppConfig() depinject.Config {
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
 		),
+		// depinject.Supply(
+		// 	encodingConfig,
+		// 	appCodec,
+		// 	legacyAmino,
+		// 	interfaceRegistry,
+		// 	txConfig,
+		// ),
 	)
 }
 
@@ -298,6 +337,7 @@ func New(
 	traceStore io.Writer,
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
+	evmAppOptions EVMOptionsFn,
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) (*App, error) {
@@ -359,7 +399,7 @@ func New(
 				// For providing a custom a base account type add it below.
 				// By default the auth module uses authtypes.ProtoBaseAccount().
 				//
-				evmostypes.ProtoAccount,
+				// func() authtypes.AccountI { return <- custom base account type -> }
 				//
 				// For providing a different address codec, add it below.
 				// By default the auth module uses a Bech32 address codec,
@@ -455,7 +495,20 @@ func New(
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
 
-	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
+	updatedBaseAppOptions := append(
+		[]func(*baseapp.BaseApp){
+			func(bApp *baseapp.BaseApp) {
+				bApp.SetTxDecoder(app.txConfig.TxDecoder())
+			},
+		}, baseAppOptions...)
+
+	app.App = appBuilder.Build(db, traceStore, updatedBaseAppOptions...)
+
+	app.App.SetTxEncoder(app.txConfig.TxEncoder())
+
+	if err := evmAppOptions(app.ChainID()); err != nil {
+		panic(err)
+	}
 
 	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
 
@@ -710,16 +763,33 @@ func BlockedAddresses() map[string]bool {
 		}
 	}
 
+	// Add static EVM precompiles
+	blockedPrecompilesHex := evmtypes.AvailableStaticPrecompiles
+	for _, addr := range vm.PrecompiledAddressesBerlin {
+		blockedPrecompilesHex = append(blockedPrecompilesHex, addr.Hex())
+	}
+
+	// Add warden precompiles
+	blockedPrecompilesHex = append(blockedPrecompilesHex, precompiles.WardenPrecompilesAddresses()...)
+
+	for _, precompile := range blockedPrecompilesHex {
+		result[evmutils.EthHexToCosmosAddr(precompile).String()] = true
+	}
+
 	return result
 }
 
 func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey, maxGasWanted uint64) {
-	options := HandlerOptions{
-		HandlerOptions: ante.HandlerOptions{
-			SignModeHandler: txConfig.SignModeHandler(),
-			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  evmosante.SigVerificationGasConsumer,
+	options := localante.HandlerOptions{
+		HandlerOptions: authante.HandlerOptions{
+			ExtensionOptionChecker: cosmosevmtypes.HasDynamicFeeExtensionOption,
+			FeegrantKeeper:         app.FeeGrantKeeper,
+			SignModeHandler:        txConfig.SignModeHandler(),
+			SigGasConsumer:         evmosante.SigVerificationGasConsumer,
+			TxFeeChecker:           evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
 		},
+		AccountKeeper:         app.AccountKeeper,
+		BankKeeper:            app.BankKeeper,
 		IBCKeeper:             app.IBCKeeper,
 		WasmConfig:            &wasmConfig,
 		WasmKeeper:            &app.WasmKeeper,
@@ -727,19 +797,17 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 		CircuitKeeper:         &app.CircuitBreakerKeeper,
 		EvmKeeper:             app.EvmKeeper,
 		FeeMarketKeeper:       app.FeeMarketKeeper,
-		TxFeeChecker:          ethante.NewDynamicFeeChecker(app.EvmKeeper),
-		AccountKeeper:         app.AccountKeeper,
-		BankKeeper:            app.BankKeeper,
-		DistributionKeeper:    app.DistrKeeper,
-		StakingKeeper:         app.StakingKeeper,
-		MaxTxGasWanted:        maxGasWanted,
+		Cdc:                   app.appCodec,
+		// TxFeeChecker:          evmevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
+
+		MaxTxGasWanted: maxGasWanted,
 	}
 
-	if err := ValidateAnteHandlerOptions(options); err != nil {
+	if err := options.Validate(); err != nil {
 		panic(fmt.Errorf("failed to create AnteHandler: %w", err))
 	}
 
-	anteHandler := NewAnteHandler(options)
+	anteHandler := localante.NewAnteHandler(options)
 
 	// Set the AnteHandler for the app
 	app.SetAnteHandler(anteHandler)

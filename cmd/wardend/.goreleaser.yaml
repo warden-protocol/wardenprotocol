@@ -94,8 +94,8 @@ builds:
       pre:
         - |
           sh -eu -c '
-            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/usr/lib/libwasmvmstatic_darwin.a"
-            CHECKSUM=$(sha256sum "/usr/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/lib/libwasmvmstatic_darwin.a"
+            CHECKSUM=$(sha256sum "/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
             if [ "$CHECKSUM" != "${WASMVM_STATIC_DARWIN_CHECKSUM}" ]; then
               echo "checksum mismatch!" >&2
               exit 1
@@ -132,8 +132,8 @@ builds:
       pre:
         - |
           sh -eu -c '
-            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/usr/lib/libwasmvmstatic_darwin.a"
-            CHECKSUM=$(sha256sum "/usr/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
+            wget -q "https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvmstatic_darwin.a" -O "/lib/libwasmvmstatic_darwin.a"
+            CHECKSUM=$(sha256sum "/lib/libwasmvmstatic_darwin.a" | awk "{print \$1}")
             if [ "$CHECKSUM" != "${WASMVM_STATIC_DARWIN_CHECKSUM}" ]; then
               echo "checksum mismatch!" >&2
               exit 1

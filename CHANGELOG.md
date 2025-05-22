@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - (go-client) Fix handling of EthAccounts in AuthQueryClient
 - (x/async) Improve error message when there are no solvers registered for a plugin
+- (x/async) Add a list of plugins to register onchain to the genesis file
 
 ### Consensus Breaking Changes
 

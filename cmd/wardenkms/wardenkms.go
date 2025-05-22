@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/binary"
+	"encoding/json"
 	"errors"
 	"log"
 	"log/slog"
@@ -20,11 +21,10 @@ import (
 )
 
 type Config struct {
-	ChainID      string `env:"CHAIN_ID, default=warden_1337-1"`
-	GRPCURL      string `env:"GRPC_URL, default=localhost:9090"`
-	GRPCInsecure bool   `env:"GRPC_INSECURE, default=true"`
-	Mnemonic     string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
-	KeychainId   uint64 `env:"KEYCHAIN_ID, default=1"`
+	ChainID    string `env:"CHAIN_ID, default=warden_1337-1"`
+	GRPCURLs   string `env:"GRPC_URLS, default=[{\"GRPCUrl\":\"localhost:9090\",\"GRPCInsecure\":true}]"`
+	Mnemonic   string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
+	KeychainId uint64 `env:"KEYCHAIN_ID, default=1"`
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
@@ -39,6 +39,8 @@ type Config struct {
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
 	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
+
+	ConsensusNodeThreshold uint8 `env:"CONSENSUS_NODE_THRESHOLD, default=1"`
 }
 
 func main() {
@@ -57,18 +59,24 @@ func main() {
 		return
 	}
 
+	var grpcConfigs []keychain.GRPCNodeConfig
+	if err := json.Unmarshal([]byte(cfg.GRPCURLs), &grpcConfigs); err != nil {
+		logger.Error("failed to initialize grpc configs", "error", err)
+		return
+	}
+
 	app := keychain.NewApp(keychain.Config{
-		Logger:        logger,
-		ChainID:       cfg.ChainID,
-		GRPCURL:       cfg.GRPCURL,
-		GRPCInsecure:  cfg.GRPCInsecure,
-		Mnemonic:      cfg.Mnemonic,
-		KeychainID:    cfg.KeychainId,
-		GasLimit:      cfg.GasLimit,
-		BatchInterval: cfg.BatchInterval,
-		BatchSize:     cfg.BatchSize,
-		TxTimeout:     cfg.TxTimeout,
-		TxFees:        sdk.NewCoins(sdk.NewCoin(cfg.Denom, math.NewInt(cfg.TxFee))),
+		Logger:                 logger,
+		ChainID:                cfg.ChainID,
+		Mnemonic:               cfg.Mnemonic,
+		KeychainID:             cfg.KeychainId,
+		GasLimit:               cfg.GasLimit,
+		BatchInterval:          cfg.BatchInterval,
+		BatchSize:              cfg.BatchSize,
+		TxTimeout:              cfg.TxTimeout,
+		TxFees:                 sdk.NewCoins(sdk.NewCoin(cfg.Denom, math.NewInt(cfg.TxFee))),
+		Nodes:                  grpcConfigs,
+		ConsensusNodeThreshold: cfg.ConsensusNodeThreshold,
 	})
 
 	app.SetKeyRequestHandler(func(ctx context.Context, w keychain.Writer, req *keychain.KeyRequest) {
@@ -121,11 +129,40 @@ func main() {
 	if cfg.HttpAddr != "" {
 		logger.Info("starting HTTP server", "addr", cfg.HttpAddr)
 		http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
-			if app.ConnectionState() == connectivity.Ready {
+			connectionStates := app.ConnectionState()
+
+			readyConnectionsCount := uint(0)
+			nodes := make([]NodeStatus, 0, len(connectionStates))
+
+			for url, state := range connectionStates {
+				if state == connectivity.Ready {
+					readyConnectionsCount += 1
+				}
+
+				nodes = append(nodes, NodeStatus{
+					Address: url,
+					Status:  state.String(),
+				})
+			}
+
+			bytes, err := json.Marshal(HealthCheckResponse{
+				Online:    readyConnectionsCount,
+				Total:     uint(len(connectionStates)),
+				Nodes:     nodes,
+				Threshold: cfg.ConsensusNodeThreshold,
+			})
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			if readyConnectionsCount >= uint(cfg.ConsensusNodeThreshold) {
 				w.WriteHeader(http.StatusOK)
 			} else {
 				w.WriteHeader(http.StatusServiceUnavailable)
 			}
+
+			_, _ = w.Write(bytes)
 		})
 		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}

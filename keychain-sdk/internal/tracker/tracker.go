@@ -1,35 +1,72 @@
 package tracker
 
 import (
+	"errors"
 	"sync"
 )
 
-type T struct {
-	rw       sync.RWMutex
-	ingested map[uint64]struct{}
+type Action int
+
+const (
+	ActionSkip Action = iota
+	ActionProcess
+)
+
+type stringSet map[string]struct{}
+
+// add safely adds a string to the set.
+func (s stringSet) add(str string) bool {
+	if _, exists := s[str]; exists {
+		return false
+	}
+	s[str] = struct{}{}
+	return true
 }
 
-func New() *T {
+type T struct {
+	threshold uint8
+	rw        sync.RWMutex
+	ingested  map[uint64]stringSet
+}
+
+func New(threshold uint8) *T {
 	return &T{
-		ingested: make(map[uint64]struct{}),
+		threshold: threshold,
+		ingested:  make(map[uint64]stringSet),
 	}
 }
 
-func (t *T) IsNew(id uint64) bool {
-	t.rw.RLock()
-	defer t.rw.RUnlock()
-	_, ok := t.ingested[id]
-	return !ok
-}
-
-func (t *T) Ingested(id uint64) {
+func (t *T) Ingest(id uint64, ingesterId string) (Action, error) {
 	t.rw.Lock()
 	defer t.rw.Unlock()
-	t.ingested[id] = struct{}{}
+
+	value := t.ingestTracker(id)
+
+	if !value.add(ingesterId) {
+		return ActionSkip, errors.New("already ingested")
+	}
+
+	if uint64(len(value)) < uint64(t.threshold) {
+		return ActionSkip, nil
+	}
+
+	return ActionProcess, nil
 }
 
 func (t *T) Done(id uint64) {
 	t.rw.Lock()
 	defer t.rw.Unlock()
+
 	delete(t.ingested, id)
+}
+
+func (t *T) ingestTracker(id uint64) stringSet {
+	value, ok := t.ingested[id]
+	if !ok {
+		t.ingested[id] = make(stringSet)
+
+		return t.ingested[id]
+	}
+
+	return value
 }

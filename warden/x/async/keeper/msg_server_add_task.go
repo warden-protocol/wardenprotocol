@@ -35,7 +35,7 @@ func (k msgServer) AddTask(ctx context.Context, msg *types.MsgAddTask) (*types.M
 	}
 
 	if !k.HasPluginValidators(ctx, msg.Plugin) {
-		return nil, errorsmod.Wrapf(types.ErrInvalidPlugin, "plugin doesn't have any registered validators providers")
+		return nil, errorsmod.Wrapf(types.ErrNoSolvers, "no validators can handle requests for this plugin")
 	}
 
 	if len(msg.Input) == 0 {

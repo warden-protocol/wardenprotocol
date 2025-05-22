@@ -45,11 +45,11 @@ snapshot-base:
   just _rm_rf $WARDEND_HOME
 
   # prepare state
-  wardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
-  wardend config set client chain-id warden_1337-1 --home $WARDEND_HOME
-  wardend config set client keyring-backend test --home $WARDEND_HOME
+  xxwardend init testing --chain-id warden_1337-1 --default-denom award --home $WARDEND_HOME > /dev/null
+  xxwardend config set client chain-id warden_1337-1 --home $WARDEND_HOME
+  xxwardend config set client keyring-backend test --home $WARDEND_HOME
 
-  wardend keys add alice --keyring-backend test --home $WARDEND_HOME > /dev/null
+  xxwardend keys add alice --keyring-backend test --home $WARDEND_HOME > /dev/null
   wardend genesis add-genesis-account alice 10000000000000000000000000000000000000award --keyring-backend test --home $WARDEND_HOME
   replace 's/aevmos/award/' $WARDEND_HOME/config/genesis.json
   replace 's/aevmos/award/' $WARDEND_HOME/config/app.toml

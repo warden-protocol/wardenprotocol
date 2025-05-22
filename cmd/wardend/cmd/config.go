@@ -10,6 +10,7 @@ import (
 
 	httpconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/http/config"
 	pricepredconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/pricepred/config"
+	veniceconfig "github.com/warden-protocol/wardenprotocol/prophet/plugins/venice/config"
 )
 
 // initCometBFTConfig helps to override default CometBFT Config values.
@@ -40,6 +41,7 @@ func initAppConfig() (string, interface{}) {
 		// Prophet plugins
 		PricePred pricepredconfig.Config `mapstructure:"pricepred"`
 		Http      httpconfig.Config      `mapstructure:"http"`
+		Venice    veniceconfig.Config    `mapstructure:"venice"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -93,6 +95,7 @@ func initAppConfig() (string, interface{}) {
 
 	pricePredictionConfig := pricepredconfig.DefaultConfig()
 	httpConfig := httpconfig.DefaultConfig()
+	veniceConfig := veniceconfig.DefaultConfig()
 
 	customAppConfig := CustomAppConfig{
 		Config:    *srvCfg,
@@ -103,6 +106,7 @@ func initAppConfig() (string, interface{}) {
 		Rosetta:   *evmservercfg.DefaultRosettaConfig(),
 		PricePred: *pricePredictionConfig,
 		Http:      *httpConfig,
+		Venice:    *veniceConfig,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate +
@@ -110,7 +114,8 @@ func initAppConfig() (string, interface{}) {
 		evmservercfg.DefaultEVMConfigTemplate +
 		evmservercfg.DefaultRosettaConfigTemplate +
 		pricepredconfig.DefaultConfigTemplate +
-		httpconfig.DefaultConfigTemplate
+		httpconfig.DefaultConfigTemplate +
+		veniceconfig.DefaultConfigTemplate
 
 	// Edit the default template file
 	//

@@ -50,75 +50,75 @@ Create an interface for interacting with the [`x/async` precompile](../../precom
    address constant IASYNC_PRECOMPILE_ADDRESS = 0x0000000000000000000000000000000000000903;   
    IAsync constant IASYNC_CONTRACT = IAsync(IASYNC_PRECOMPILE_ADDRESS);
    
-   struct Future {
+   struct Task {
        uint64 id;
        address creator;
-       string handler;
+       string plugin;
        bytes input;
    }
    
-   enum FutureVoteType {
+   enum TaskVoteType {
        Unspecified,
        Verified,
        Rejected
    }
    
-   struct FutureVote {
-       uint64 futureId;
+   struct TaskVote {
+       uint64 taskId;
        bytes Voter;
-       FutureVoteType vote;
+       TaskVoteType vote;
    }
    
-   struct FutureResult { 
+   struct TaskResult { 
        uint64 id;
        bytes output;
        bytes submitter;
    }
    
-   struct FutureResponse {
-       Future future;
-       FutureVote[] votes;
-       FutureResult result;
+   struct TaskResponse {
+       Task task;
+       TaskVote[] votes;
+       TaskResult result;
    }
    
-   struct PendingFuturesResponse {
+   struct PendingTasksResponse {
        Types.PageResponse pagination;
-       Future[] futures;
+       Task[] tasks;
    }
    
-   struct FuturesResponse {
+   struct TasksResponse {
        Types.PageResponse pagination;
-       FutureResponse[] futures;
+       TaskResponse[] tasks;
    }
    
-   struct FutureByIdResponse {
-       FutureResponse futureResponse;
+   struct TaskByIdResponse {
+       TaskResponse taskResponse;
    }
    
    interface IAsync {
-       function addFuture(
-           string calldata handler,
+       function addTask(
+           string calldata plugin,
            bytes calldata input,
            address callback
-       ) external returns (uint64 futureId);
+       ) external returns (uint64 taskId);
    
-       function futureById(
-           uint64 futureId
-       ) external view returns (FutureByIdResponse memory response);
+       function taskById(
+           uint64 taskId
+       ) external view returns (TaskByIdResponse memory response);
    
-       function futures(
+       function tasks(
            Types.PageRequest calldata pagination,
            address creator
-       ) external view returns (FuturesResponse memory response);
+       ) external view returns (TasksResponse memory response);
    
-       function pendingFutures(
+       function pendingTasks(
            Types.PageRequest calldata pagination
-       ) external view returns (PendingFuturesResponse memory response);
+       ) external view returns (PendingTasksResponse memory response);
    
-       event CreateFuture(
-           uint64 indexed futureId,
+       event CreateTask(
+           uint64 indexed taskId,
            address indexed creator,
-           string handler,
+           string plugin,
            address callbackAddress
        );
    }

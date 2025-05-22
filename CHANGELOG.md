@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features (non-breaking)
 
 - (go-client) Fix handling of EthAccounts in AuthQueryClient
+- (x/async) Add a list of plugins to register onchain to the genesis file
 
 ### Consensus Breaking Changes
 

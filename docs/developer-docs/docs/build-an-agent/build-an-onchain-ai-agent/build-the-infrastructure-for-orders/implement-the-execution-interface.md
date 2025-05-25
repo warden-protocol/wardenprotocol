@@ -13,7 +13,7 @@ Store `IExecution` in the [`src` directory](https://github.com/warden-protocol/w
 :::
 
 :::note Full code
-You can find the full code on GitHub: [`src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/IExecution.sol)
+You can find the full code on GitHub: [`src/IExecution.sol`](https://github.com/warden-protocol/wardenprotocol/tree/main/solidity/orders/src/types)
 :::
 
 ## Create the `IExecution` contract

@@ -29,7 +29,7 @@ First, you need to create contracts defining data structures and interfaces for 
    ```
     enum PriceCondition {
         LTE,    // Less than or equal to the threshold
-        GTE     // Greater than or equal to the threshold
+        GTE,    // Greater than or equal to the threshold
         LT,     // Less than the threshold
         GT      // Greater than the threshold
    }
@@ -75,7 +75,7 @@ In the `src/lib` directory, create helper and utility libraries for Orders:
 
 ## 3. Implement the registry
 
-In the `scr` directory, add a file `Registry.sol` implementing a registry for tracking transactions.
+In the `src` directory, add a file `Registry.sol` implementing a registry for tracking transactions.
 
 :::note Code
 [`src/Registry.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/Registry.sol)
@@ -230,7 +230,7 @@ You can test mock precompiles in the [`test` directory](https://github.com/warde
 
 ## 5. Implement transaction signing
 
-In the `scr/orders` directory, create an abstract contract `AbstractOrderV0.sol` for signing transactions. It'll be called by all types of Orders.
+In the `src/orders` directory, create an abstract contract `AbstractOrderV0.sol` for signing transactions. It'll be called by all types of Orders.
 
 :::note Code
 [`src/orders/AbstractOrderV0.sol`](https://github.com/warden-protocol/wardenprotocol/blob/main/solidity/orders/src/orders/AbstractOrderV0.sol)

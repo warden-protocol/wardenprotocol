@@ -56,7 +56,7 @@ To create this logic, add `BasicOrder` to the `src/orders` directory and take th
    - Initialize the Slinky price feed
    - Store the Order and execution data
 
-3. In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold. See the `PriceCondtion` enum in `Types`.
+3. In the `canExecute()` function, implement the logic for monitoring prices. This function should check if the price meets a given condition: `>=` or `<=` than the threshold. See the `PriceCondition` enum in `Types`.
 
 4. In the `execute()` function, implement the logic for executing trades. This function should do the following:
 

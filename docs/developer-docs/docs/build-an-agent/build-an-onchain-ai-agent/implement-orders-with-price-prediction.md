@@ -82,7 +82,7 @@ To create this logic, add `AdvancedOrder` to the `src/orders` directory and take
 
 5. Implement price normalization in `_normalizePrices()`.
 
-6. Create a `_checkPriceCondition` function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold. See the `PriceCondtion` enum in [`Types.sol`](build-the-infrastructure#1-create-data-structures).
+6. Create a `_checkPriceCondition` function checking if the price meets a given condition: `>=`/`<=`/`>`/`<` than the threshold. See the `PriceCondition` enum in [`Types.sol`](build-the-infrastructure#1-create-data-structures).
 
 7. To test the contract, use the following code:
    
